@@ -1,0 +1,78 @@
+{
+  "bgpAggregations" : [ ],
+  "bgpMultipath" : {
+    "node" : "columbus",
+    "num" : -1,
+    "relax" : false
+  },
+  "bgpNetworks" : [ ],
+  "bgpReflectClients" : [ ],
+  "deviceName" : "columbus",
+  "eBgpNeighbors" : [ ],
+  "iBgpNeighbors" : [ ],
+  "intfs" : [
+    {
+      "intf" : "FastEthernet0/0",
+      "ip" : "100.0.81.1",
+      "node" : "columbus",
+      "prefix" : {
+        "ip" : "100.0.81.1",
+        "mask" : "255.255.255.0"
+      }
+    },
+    {
+      "intf" : "FastEthernet0/1",
+      "ip" : "10.0.0.65",
+      "node" : "columbus",
+      "prefix" : {
+        "ip" : "10.0.0.65",
+        "mask" : "255.255.255.254"
+      }
+    },
+    {
+      "intf" : "FastEthernet1/0",
+      "ip" : "10.0.0.23",
+      "node" : "columbus",
+      "prefix" : {
+        "ip" : "10.0.0.23",
+        "mask" : "255.255.255.254"
+      }
+    }
+  ],
+  "node" : {
+    "as" : 0,
+    "id" : 1677742337,
+    "node" : "columbus"
+  },
+  "ospfIntfSetting" : [
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet0/1",
+      "node" : "columbus",
+      "passive" : false,
+      "process" : 100
+    },
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet1/0",
+      "node" : "columbus",
+      "passive" : false,
+      "process" : 100
+    }
+  ],
+  "ospfNeighbors" : [ ],
+  "ospfRedises" : [
+    {
+      "enable" : true,
+      "node" : "columbus",
+      "processId" : 100,
+      "protocol" : "connected"
+    }
+  ],
+  "ospfStubAreas" : [ ],
+  "routeMapIns" : [ ],
+  "routeMapOuts" : [ ],
+  "staticRoutes" : [ ]
+}

@@ -1,0 +1,290 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "sumter",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "200.4.130.0/24",
+      "node": "sumter",
+      "prefix": {
+        "ip": "200.4.130.0",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "bgpReflectClients": [],
+  "deviceName": "sumter",
+  "eBgpNeighbors": [
+    {
+      "ip1": "10.0.0.137",
+      "ip2": "10.0.0.136",
+      "node1": "sumter",
+      "node2": "nodeid82"
+    },
+    {
+      "ip1": "10.0.0.238",
+      "ip2": "10.0.0.239",
+      "node1": "sumter",
+      "node2": "florence"
+    },
+    {
+      "ip1": "10.0.0.240",
+      "ip2": "10.0.0.241",
+      "node1": "sumter",
+      "node2": "columbia"
+    }
+  ],
+  "iBgpNeighbors": [],
+  "intfs": [
+    {
+      "intf": "FastEthernet0/0",
+      "ip": "10.0.0.240",
+      "node": "sumter",
+      "prefix": {
+        "ip": "10.0.0.240",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet0/1",
+      "ip": "10.0.0.238",
+      "node": "sumter",
+      "prefix": {
+        "ip": "10.0.0.238",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet1/0",
+      "ip": "10.0.0.137",
+      "node": "sumter",
+      "prefix": {
+        "ip": "10.0.0.137",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "GigabitEthernet0/0",
+      "ip": "200.4.130.1",
+      "node": "sumter",
+      "prefix": {
+        "ip": "200.4.130.1",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "node": {
+    "as": 1390,
+    "id": 3355738625,
+    "node": "sumter"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [
+    {
+      "from_node": "nodeid82",
+      "node": "sumter",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.12.0",
+                  "mask": "255.255.255.0"
+                }
+              ]
+            }
+          },
+          "permit": true,
+          "setAttributes": {
+            "SetCommunity": {
+              "additive": true,
+              "community": {
+                "as": "100",
+                "tag": "15"
+              }
+            },
+            "SetLocalPref": {
+              "localPref": 1
+            }
+          }
+        },
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.11.0",
+                  "mask": "255.255.255.0"
+                }
+              ]
+            }
+          },
+          "permit": true,
+          "setAttributes": {
+            "SetCommunity": {
+              "additive": true,
+              "community": {
+                "as": "100",
+                "tag": "13"
+              }
+            },
+            "SetLocalPref": {
+              "localPref": 1
+            }
+          }
+        },
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "florence",
+      "node": "sumter",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "columbia",
+      "node": "sumter",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.4.0",
+                  "mask": "255.255.255.0"
+                }
+              ]
+            }
+          },
+          "permit": true,
+          "setAttributes": {
+            "SetCommunity": {
+              "additive": true,
+              "community": {
+                "as": "100",
+                "tag": "14"
+              }
+            },
+            "SetLocalPref": {
+              "localPref": 1
+            }
+          }
+        },
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    }
+  ],
+  "routeMapOuts": [
+    {
+      "node": "sumter",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "nodeid82"
+    },
+    {
+      "node": "sumter",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "florence"
+    },
+    {
+      "node": "sumter",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "columbia"
+    }
+  ],
+  "staticRoutes": []
+}

@@ -1,0 +1,78 @@
+{
+  "bgpAggregations" : [ ],
+  "bgpMultipath" : {
+    "node" : "courtney",
+    "num" : -1,
+    "relax" : false
+  },
+  "bgpNetworks" : [ ],
+  "bgpReflectClients" : [ ],
+  "deviceName" : "courtney",
+  "eBgpNeighbors" : [ ],
+  "iBgpNeighbors" : [ ],
+  "intfs" : [
+    {
+      "intf" : "FastEthernet0/0",
+      "ip" : "100.0.148.1",
+      "node" : "courtney",
+      "prefix" : {
+        "ip" : "100.0.148.1",
+        "mask" : "255.255.255.0"
+      }
+    },
+    {
+      "intf" : "FastEthernet0/1",
+      "ip" : "10.0.0.211",
+      "node" : "courtney",
+      "prefix" : {
+        "ip" : "10.0.0.211",
+        "mask" : "255.255.255.254"
+      }
+    },
+    {
+      "intf" : "FastEthernet1/0",
+      "ip" : "10.0.1.36",
+      "node" : "courtney",
+      "prefix" : {
+        "ip" : "10.0.1.36",
+        "mask" : "255.255.255.254"
+      }
+    }
+  ],
+  "node" : {
+    "as" : 0,
+    "id" : 1677759489,
+    "node" : "courtney"
+  },
+  "ospfIntfSetting" : [
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet0/1",
+      "node" : "courtney",
+      "passive" : false,
+      "process" : 100
+    },
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet1/0",
+      "node" : "courtney",
+      "passive" : false,
+      "process" : 100
+    }
+  ],
+  "ospfNeighbors" : [ ],
+  "ospfRedises" : [
+    {
+      "enable" : true,
+      "node" : "courtney",
+      "processId" : 100,
+      "protocol" : "connected"
+    }
+  ],
+  "ospfStubAreas" : [ ],
+  "routeMapIns" : [ ],
+  "routeMapOuts" : [ ],
+  "staticRoutes" : [ ]
+}

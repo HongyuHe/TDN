@@ -1,0 +1,78 @@
+{
+  "bgpAggregations" : [ ],
+  "bgpMultipath" : {
+    "node" : "durham",
+    "num" : -1,
+    "relax" : false
+  },
+  "bgpNetworks" : [ ],
+  "bgpReflectClients" : [ ],
+  "deviceName" : "durham",
+  "eBgpNeighbors" : [ ],
+  "iBgpNeighbors" : [ ],
+  "intfs" : [
+    {
+      "intf" : "FastEthernet0/0",
+      "ip" : "100.0.36.1",
+      "node" : "durham",
+      "prefix" : {
+        "ip" : "100.0.36.1",
+        "mask" : "255.255.255.0"
+      }
+    },
+    {
+      "intf" : "FastEthernet0/1",
+      "ip" : "10.0.0.174",
+      "node" : "durham",
+      "prefix" : {
+        "ip" : "10.0.0.174",
+        "mask" : "255.255.255.254"
+      }
+    },
+    {
+      "intf" : "FastEthernet1/0",
+      "ip" : "10.0.0.176",
+      "node" : "durham",
+      "prefix" : {
+        "ip" : "10.0.0.176",
+        "mask" : "255.255.255.254"
+      }
+    }
+  ],
+  "node" : {
+    "as" : 0,
+    "id" : 1677730817,
+    "node" : "durham"
+  },
+  "ospfIntfSetting" : [
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet0/1",
+      "node" : "durham",
+      "passive" : false,
+      "process" : 100
+    },
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet1/0",
+      "node" : "durham",
+      "passive" : false,
+      "process" : 100
+    }
+  ],
+  "ospfNeighbors" : [ ],
+  "ospfRedises" : [
+    {
+      "enable" : true,
+      "node" : "durham",
+      "processId" : 100,
+      "protocol" : "connected"
+    }
+  ],
+  "ospfStubAreas" : [ ],
+  "routeMapIns" : [ ],
+  "routeMapOuts" : [ ],
+  "staticRoutes" : [ ]
+}

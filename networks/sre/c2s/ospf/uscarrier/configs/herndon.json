@@ -1,0 +1,78 @@
+{
+  "bgpAggregations" : [ ],
+  "bgpMultipath" : {
+    "node" : "herndon",
+    "num" : -1,
+    "relax" : false
+  },
+  "bgpNetworks" : [ ],
+  "bgpReflectClients" : [ ],
+  "deviceName" : "herndon",
+  "eBgpNeighbors" : [ ],
+  "iBgpNeighbors" : [ ],
+  "intfs" : [
+    {
+      "intf" : "FastEthernet0/0",
+      "ip" : "100.0.111.1",
+      "node" : "herndon",
+      "prefix" : {
+        "ip" : "100.0.111.1",
+        "mask" : "255.255.255.0"
+      }
+    },
+    {
+      "intf" : "FastEthernet0/1",
+      "ip" : "10.0.0.55",
+      "node" : "herndon",
+      "prefix" : {
+        "ip" : "10.0.0.55",
+        "mask" : "255.255.255.254"
+      }
+    },
+    {
+      "intf" : "FastEthernet1/0",
+      "ip" : "10.0.1.42",
+      "node" : "herndon",
+      "prefix" : {
+        "ip" : "10.0.1.42",
+        "mask" : "255.255.255.254"
+      }
+    }
+  ],
+  "node" : {
+    "as" : 0,
+    "id" : 1677750017,
+    "node" : "herndon"
+  },
+  "ospfIntfSetting" : [
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet0/1",
+      "node" : "herndon",
+      "passive" : false,
+      "process" : 100
+    },
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet1/0",
+      "node" : "herndon",
+      "passive" : false,
+      "process" : 100
+    }
+  ],
+  "ospfNeighbors" : [ ],
+  "ospfRedises" : [
+    {
+      "enable" : true,
+      "node" : "herndon",
+      "processId" : 100,
+      "protocol" : "connected"
+    }
+  ],
+  "ospfStubAreas" : [ ],
+  "routeMapIns" : [ ],
+  "routeMapOuts" : [ ],
+  "staticRoutes" : [ ]
+}

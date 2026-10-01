@@ -1,0 +1,95 @@
+{
+  "bgpAggregations" : [ ],
+  "bgpMultipath" : {
+    "node" : "rockhill",
+    "num" : -1,
+    "relax" : false
+  },
+  "bgpNetworks" : [ ],
+  "bgpReflectClients" : [ ],
+  "deviceName" : "rockhill",
+  "eBgpNeighbors" : [ ],
+  "iBgpNeighbors" : [ ],
+  "intfs" : [
+    {
+      "intf" : "FastEthernet0/0",
+      "ip" : "100.0.147.1",
+      "node" : "rockhill",
+      "prefix" : {
+        "ip" : "100.0.147.1",
+        "mask" : "255.255.255.0"
+      }
+    },
+    {
+      "intf" : "FastEthernet0/1",
+      "ip" : "10.0.0.157",
+      "node" : "rockhill",
+      "prefix" : {
+        "ip" : "10.0.0.157",
+        "mask" : "255.255.255.254"
+      }
+    },
+    {
+      "intf" : "FastEthernet1/0",
+      "ip" : "10.0.1.17",
+      "node" : "rockhill",
+      "prefix" : {
+        "ip" : "10.0.1.17",
+        "mask" : "255.255.255.254"
+      }
+    },
+    {
+      "intf" : "FastEthernet1/1",
+      "ip" : "10.0.1.54",
+      "node" : "rockhill",
+      "prefix" : {
+        "ip" : "10.0.1.54",
+        "mask" : "255.255.255.254"
+      }
+    }
+  ],
+  "node" : {
+    "as" : 0,
+    "id" : 1677759233,
+    "node" : "rockhill"
+  },
+  "ospfIntfSetting" : [
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet0/1",
+      "node" : "rockhill",
+      "passive" : false,
+      "process" : 100
+    },
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet1/0",
+      "node" : "rockhill",
+      "passive" : false,
+      "process" : 100
+    },
+    {
+      "area" : 0,
+      "cost" : 1,
+      "intf" : "FastEthernet1/1",
+      "node" : "rockhill",
+      "passive" : false,
+      "process" : 100
+    }
+  ],
+  "ospfNeighbors" : [ ],
+  "ospfRedises" : [
+    {
+      "enable" : true,
+      "node" : "rockhill",
+      "processId" : 100,
+      "protocol" : "connected"
+    }
+  ],
+  "ospfStubAreas" : [ ],
+  "routeMapIns" : [ ],
+  "routeMapOuts" : [ ],
+  "staticRoutes" : [ ]
+}

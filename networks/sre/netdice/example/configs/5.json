@@ -1,0 +1,136 @@
+{
+  "node": {
+    "as": 100,
+    "id": 15,
+    "node": "5"
+  },
+  "intfs": [{
+    "intf": "p0",
+    "ip": "128.0.6.6",
+    "node": "5",
+    "prefix": {
+      "ip": "128.0.6.6",
+      "mask": "255.255.255.0"
+    }
+  }, {
+    "intf": "p1",
+    "ip": "40.0.0.6",
+    "node": "5",
+    "prefix": {
+      "ip": "40.0.0.6",
+      "mask": "255.255.255.0"
+    }
+  }, {
+    "intf": "p2",
+    "ip": "30.0.0.6",
+    "node": "5",
+    "prefix": {
+      "ip": "30.0.0.6",
+      "mask": "255.255.255.0"
+    }
+  }, {
+    "intf": "lookback",
+    "ip": "192.168.0.6",
+    "node": "0",
+    "prefix": {
+      "ip": "192.168.0.6",
+      "mask": "255.255.255.255"
+    }
+  }],
+  "bgpAggregations": [],
+  "bgpMultipath": {},
+  "bgpNetworks": [],
+  "bgpReflectClients": [],
+  "bgpRouteReflector": [{
+    "ip1": "192.168.0.6",
+    "ip2": "192.168.0.3",
+    "node1": "5",
+    "node2": "2"
+  }],
+  "eBgpNeighbors": [{
+    "ip1": "30.0.0.6",
+    "ip2": "30.0.0.26",
+    "node1": "5",
+    "node2": "Z"
+  }, {
+    "ip1": "40.0.0.6",
+    "ip2": "40.0.0.23",
+    "node1": "5",
+    "node2": "W"
+  }],
+  "iBgpNeighbors": [],
+  "routeMapIns": [{
+    "from_node": "Z",
+    "node": "5",
+    "policy": [{
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "42.42.0.0",
+            "mask": "255.255.0.0"
+          }]
+        }
+      },
+      "permit": true,
+      "setAttributes": {
+        "SetLocalPref": {
+          "localPref": 1
+        }
+      }
+    }, {
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "99.99.99.0",
+            "mask": "255.255.255.0"
+          }]
+        }
+      },
+      "permit": true,
+      "setAttributes": {
+        "SetLocalPref": {
+          "localPref": 2
+        }
+      }
+    }, {
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }]
+  }, {
+    "from_node": "W",
+    "node": "5",
+    "policy": [{
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "42.42.0.0",
+            "mask": "255.255.0.0"
+          }]
+        }
+      },
+      "permit": true,
+      "setAttributes": {
+        "SetLocalPref": {
+          "localPref": 3
+        }
+      }
+    }, {
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }]
+  }],
+  "ospfIntfSetting": [{
+    "area" : 0,
+    "cost" : 0,
+    "intf" : "p0",
+    "node" : "5",
+    "passive" : false,
+    "process" : 100
+  }],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "staticRoutes": []
+}

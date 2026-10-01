@@ -1,0 +1,18 @@
+{
+  "acl": [
+    {
+      "1": {
+        "rules": [
+          "access-list 1 deny null null 0.0.0.0 0.0.0.0 null null 192.0.0.0 192.0.0.0 null null 65535",
+          "access-list 1 permit 1 1 0.0.0.0 0.0.0.0 null null 0.0.0.0 0.0.0.0 null null 65534"
+        ],
+        "applications": [
+          {
+            "interface": "intf0",
+            "direction": "in"
+          }
+        ]
+      }
+    }
+  ]
+}

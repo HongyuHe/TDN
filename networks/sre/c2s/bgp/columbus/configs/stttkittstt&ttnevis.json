@@ -1,0 +1,197 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "stttkittstt&ttnevis",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [{
+    "formatPrefix": "200.2.58.0/24",
+    "node": "stttkittstt&ttnevis",
+    "prefix": {
+      "ip": "200.2.58.0",
+      "mask": "255.255.255.0"
+    }
+  }],
+  "bgpReflectClients": [],
+  "deviceName": "stttkittstt&ttnevis",
+  "eBgpNeighbors": [{
+    "ip1": "10.0.0.43",
+    "ip2": "10.0.0.42",
+    "node1": "stttkittstt&ttnevis",
+    "node2": "dominica"
+  }, {
+    "ip1": "10.0.0.67",
+    "ip2": "10.0.0.66",
+    "node1": "stttkittstt&ttnevis",
+    "node2": "antigua"
+  }, {
+    "ip1": "10.0.0.79",
+    "ip2": "10.0.0.78",
+    "node1": "stttkittstt&ttnevis",
+    "node2": "stttmartin"
+  }],
+  "iBgpNeighbors": [],
+  "intfs": [{
+    "intf": "FastEthernet0/0",
+    "ip": "10.0.0.67",
+    "node": "stttkittstt&ttnevis",
+    "prefix": {
+      "ip": "10.0.0.67",
+      "mask": "255.255.255.254"
+    }
+  }, {
+    "intf": "FastEthernet0/1",
+    "ip": "10.0.0.43",
+    "node": "stttkittstt&ttnevis",
+    "prefix": {
+      "ip": "10.0.0.43",
+      "mask": "255.255.255.254"
+    }
+  }, {
+    "intf": "FastEthernet1/0",
+    "ip": "10.0.0.79",
+    "node": "stttkittstt&ttnevis",
+    "prefix": {
+      "ip": "10.0.0.79",
+      "mask": "255.255.255.254"
+    }
+  }, {
+    "intf": "GigabitEthernet0/0",
+    "ip": "200.2.58.1",
+    "node": "stttkittstt&ttnevis",
+    "prefix": {
+      "ip": "200.2.58.1",
+      "mask": "255.255.255.0"
+    }
+  }],
+  "node": {
+    "as": 630,
+    "id": 3355589121,
+    "node": "stttkittstt&ttnevis"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [{
+    "from_node": "dominica",
+    "node": "stttkittstt&ttnevis",
+    "policy": [{
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "128.0.14.0",
+            "mask": "255.255.255.0"
+          }]
+        }
+      },
+      "permit": true,
+      "setAttributes": {
+        "SetCommunity": {
+          "additive": true,
+          "community": {
+            "as": "100",
+            "tag": "14"
+          }
+        },
+        "SetLocalPref": {
+          "localPref": 1
+        }
+      }
+    }, {
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "128.0.0.0",
+            "mask": "255.255.240.0"
+          }]
+        }
+      },
+      "permit": false,
+      "setAttributes": null
+    }, {
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }]
+  }, {
+    "from_node": "antigua",
+    "node": "stttkittstt&ttnevis",
+    "policy": [{
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "128.0.0.0",
+            "mask": "255.255.240.0"
+          }]
+        }
+      },
+      "permit": false,
+      "setAttributes": null
+    }, {
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }]
+  }, {
+    "from_node": "stttmartin",
+    "node": "stttkittstt&ttnevis",
+    "policy": [{
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "128.0.14.0",
+            "mask": "255.255.255.0"
+          }]
+        }
+      },
+      "permit": true,
+      "setAttributes": {
+        "SetCommunity": {
+          "additive": true,
+          "community": {
+            "as": "100",
+            "tag": "14"
+          }
+        },
+        "SetLocalPref": {
+          "localPref": 1
+        }
+      }
+    }, {
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "128.0.0.0",
+            "mask": "255.255.240.0"
+          }]
+        }
+      },
+      "permit": false,
+      "setAttributes": null
+    }, {
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }]
+  }],
+  "routeMapOuts": [{
+    "node": "stttkittstt&ttnevis",
+    "policy": [{
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }],
+    "to_node": "dominica"
+  }, {
+    "node": "stttkittstt&ttnevis",
+    "policy": [{
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }],
+    "to_node": "antigua"
+  }],
+  "staticRoutes": []
+}

@@ -1,0 +1,278 @@
+[
+  {
+    "theorem": "walk_preserves",
+    "module": "Topology",
+    "scope": "instance-only",
+    "note": "Checks the implication for this Gray graph and labeling, not for arbitrary graphs, label types, or edge lists."
+  },
+  {
+    "theorem": "device_count",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "link_count",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "device_ids_unique",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "cable_endpoints_valid",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "red_hosts_attach_to_inner",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "gray_edges_preserve_label",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "no_cross_level_gray_bypass",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "site_a_gray_cut",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "site_b_gray_cut",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "management_edges_preserve_domain",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "no_cross_domain_management_cable_path",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "inner_outer_admin_separate",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "tunnel_peers_symmetric",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "inner_peers_same_level",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "inner_trust_domains_separate",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "sampled_devices_running",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "sampled_tunnels_established",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "sampled_probe_report_passed",
+    "module": "Topology",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "protected_rule_blocks_untagged",
+    "module": "Policy",
+    "scope": "instance-only",
+    "note": "Checks imported guarded rules on generated packet cases. The arbitrary-rule/packet theorem is not reproduced."
+  },
+  {
+    "theorem": "protected_table_blocks_untagged",
+    "module": "Policy",
+    "scope": "instance-only",
+    "note": "Checks imported guarded tables on generated packet cases. The arbitrary-table/packet theorem is not reproduced."
+  },
+  {
+    "theorem": "encryptor_tables_guarded",
+    "module": "Policy",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "encryptor_without_policy_drops",
+    "module": "Policy",
+    "scope": "structural condition",
+    "note": "Checks a sufficient condition over the complete imported rules. The condition-to-all-packets soundness argument is trusted documentation, not a clingo proof."
+  },
+  {
+    "theorem": "gray_firewall_denies_all",
+    "module": "Policy",
+    "scope": "structural condition",
+    "note": "Checks a sufficient condition over the complete imported rules. The condition-to-all-packets soundness argument is trusted documentation, not a clingo proof."
+  },
+  {
+    "theorem": "outer_firewall_accepts_declared_esp",
+    "module": "Policy",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "outer_firewall_rejects_icmp",
+    "module": "Policy",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "outer_firewall_rejects_wrong_peer",
+    "module": "Policy",
+    "scope": "snapshot",
+    "note": "Same proposition on the imported finite data; evaluation is trusted."
+  },
+  {
+    "theorem": "host_labels_match_snapshot",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "authorized_same_level",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "cross_level_blocked",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "unauthorized_peer_blocked",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "inner_failure_closed",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "inner_policy_loss_closed",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "inner_authentication_failure_closed",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "outer_failure_closed",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "outer_policy_loss_closed",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "outer_authentication_failure_closed",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "transport_failure_blocks",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "forwarded_has_both_steps",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "forwarded_same_level",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "delivered_has_decryption_steps",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "cross_level_not_delivered",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "receiver_inner_failure_closed",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "receiver_outer_failure_closed",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "ready_authorized_forwards",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  },
+  {
+    "theorem": "ready_authorized_delivers",
+    "module": "Flow",
+    "scope": "finite-state abstraction",
+    "note": "All 16 host pairs and all 512 states per endpoint; payload is abstracted because guards ignore it. No generic Lean proof term is produced."
+  }
+]

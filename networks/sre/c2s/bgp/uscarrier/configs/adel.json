@@ -1,0 +1,127 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "adel",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "200.4.180.0/24",
+      "node": "adel",
+      "prefix": {
+        "ip": "200.4.180.0",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "bgpReflectClients": [],
+  "deviceName": "adel",
+  "eBgpNeighbors": [
+    {
+      "ip1": "10.0.1.77",
+      "ip2": "10.0.1.76",
+      "node1": "adel",
+      "node2": "tifton"
+    },
+    {
+      "ip1": "10.0.1.100",
+      "ip2": "10.0.1.101",
+      "node1": "adel",
+      "node2": "vadosta"
+    }
+  ],
+  "iBgpNeighbors": [],
+  "intfs": [
+    {
+      "intf": "FastEthernet0/0",
+      "ip": "10.0.1.77",
+      "node": "adel",
+      "prefix": {
+        "ip": "10.0.1.77",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet0/1",
+      "ip": "10.0.1.100",
+      "node": "adel",
+      "prefix": {
+        "ip": "10.0.1.100",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "GigabitEthernet0/0",
+      "ip": "200.4.180.1",
+      "node": "adel",
+      "prefix": {
+        "ip": "200.4.180.1",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "node": {
+    "as": 30,
+    "id": 3355751425,
+    "node": "adel"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [
+    {
+      "from_node": "tifton",
+      "node": "adel",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "vadosta",
+      "node": "adel",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    }
+  ],
+  "routeMapOuts": [],
+  "staticRoutes": []
+}

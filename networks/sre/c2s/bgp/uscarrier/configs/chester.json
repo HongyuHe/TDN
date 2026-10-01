@@ -1,0 +1,241 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "chester",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "200.4.164.0/24",
+      "node": "chester",
+      "prefix": {
+        "ip": "200.4.164.0",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "bgpReflectClients": [],
+  "deviceName": "chester",
+  "eBgpNeighbors": [
+    {
+      "ip1": "10.0.1.33",
+      "ip2": "10.0.1.32",
+      "node1": "chester",
+      "node2": "columbia"
+    },
+    {
+      "ip1": "10.0.1.39",
+      "ip2": "10.0.1.38",
+      "node1": "chester",
+      "node2": "rocktthill"
+    },
+    {
+      "ip1": "10.0.1.49",
+      "ip2": "10.0.1.48",
+      "node1": "chester",
+      "node2": "peerchester_4"
+    },
+    {
+      "ip1": "10.0.1.64",
+      "ip2": "10.0.1.65",
+      "node1": "chester",
+      "node2": "abbeville"
+    }
+  ],
+  "iBgpNeighbors": [],
+  "intfs": [
+    {
+      "intf": "FastEthernet0/0",
+      "ip": "10.0.1.64",
+      "node": "chester",
+      "prefix": {
+        "ip": "10.0.1.64",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet0/1",
+      "ip": "10.0.1.33",
+      "node": "chester",
+      "prefix": {
+        "ip": "10.0.1.33",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet1/0",
+      "ip": "10.0.1.49",
+      "node": "chester",
+      "prefix": {
+        "ip": "10.0.1.49",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet1/1",
+      "ip": "10.0.1.39",
+      "node": "chester",
+      "prefix": {
+        "ip": "10.0.1.39",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "GigabitEthernet0/0",
+      "ip": "200.4.164.1",
+      "node": "chester",
+      "prefix": {
+        "ip": "200.4.164.1",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "node": {
+    "as": 410,
+    "id": 3355747329,
+    "node": "chester"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [
+    {
+      "from_node": "columbia",
+      "node": "chester",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "rocktthill",
+      "node": "chester",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "peerchester_4",
+      "node": "chester",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "abbeville",
+      "node": "chester",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    }
+  ],
+  "routeMapOuts": [
+    {
+      "node": "chester",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "columbia"
+    },
+    {
+      "node": "chester",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "rocktthill"
+    },
+    {
+      "node": "chester",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "abbeville"
+    }
+  ],
+  "staticRoutes": []
+}

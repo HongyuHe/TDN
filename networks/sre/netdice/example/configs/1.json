@@ -1,0 +1,93 @@
+{
+  "node": {
+    "as": 100,
+    "id": 11,
+    "node": "1"
+  },
+  "intfs": [{
+    "intf": "p0",
+    "ip": "128.0.1.2",
+    "node": "1",
+    "prefix": {
+      "ip": "128.0.1.2",
+      "mask": "255.255.255.0"
+    }
+  }, {
+    "intf": "p1",
+    "ip": "128.0.4.2",
+    "node": "1",
+    "prefix": {
+      "ip": "128.0.4.2",
+      "mask": "255.255.255.0"
+    }
+  }, {
+    "intf": "p2",
+    "ip": "128.0.2.2",
+    "node": "1",
+    "prefix": {
+      "ip": "128.0.2.2",
+      "mask": "255.255.255.0"
+    }
+  }, {
+    "intf": "lookback",
+    "ip": "192.168.0.2",
+    "node": "0",
+    "prefix": {
+      "ip": "192.168.0.2",
+      "mask": "255.255.255.255"
+    }
+  }],
+  "bgpAggregations": [],
+  "bgpMultipath": {},
+  "bgpNetworks": [],
+  "bgpReflectClients": [{
+    "ip1": "192.168.0.2",
+    "ip2": "192.168.0.1",
+    "node1": "1",
+    "node2": "0"
+  }, {
+    "ip1": "192.168.0.2",
+    "ip2": "192.168.0.4",
+    "node1": "1",
+    "node2": "3"
+  }, {
+    "ip1": "192.168.0.2",
+    "ip2": "192.168.0.5",
+    "node1": "1",
+    "node2": "4"
+  }],
+  "bgpRouteReflector": [],
+  "eBgpNeighbors": [],
+  "iBgpNeighbors": [{
+    "ip1": "192.168.0.2",
+    "ip2": "192.168.0.3",
+    "node1": "1",
+    "node2": "2"
+  }],
+  "ospfIntfSetting": [{
+    "area" : 0,
+    "cost" : 2,
+    "intf" : "p0",
+    "node" : "1",
+    "passive" : false,
+    "process" : 100
+  }, {
+    "area" : 0,
+    "cost" : 3,
+    "intf" : "p1",
+    "node" : "1",
+    "passive" : false,
+    "process" : 100
+  }, {
+    "area" : 0,
+    "cost" : 1,
+    "intf" : "p2",
+    "node" : "1",
+    "passive" : false,
+    "process" : 100
+  }],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "staticRoutes": []
+}

@@ -1,0 +1,123 @@
+{
+    "acl": [
+        {
+            "P-T-AIMSiSCSINetworks": {
+                "rules": [
+                    "access-list P-T-AIMSiSCSINetworks permit null null 10.128.20.128 255.255.255.192 null null 10.128.20.192 255.255.255.192 null null 65535",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 10.128.20.192 255.255.255.192 null null 10.128.20.128 255.255.255.192 null null 65534",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 10.128.20.0 255.255.255.128 null null 0.0.0.0 0.0.0.0 null null 65533",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 0.0.0.0 0.0.0.0 null null 10.128.20.0 255.255.255.128 null null 65532",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 128.104.67.128 255.255.255.224 null null 10.128.20.128 255.255.255.192 null null 65531",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 128.104.67.128 255.255.255.224 null null 10.128.20.192 255.255.255.192 null null 65530",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 128.104.30.17 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65529",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 144.92.20.100 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65528",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 144.92.104.20 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65527",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 144.92.9.22 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65526",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 146.151.144.0 255.255.255.128 null null 0.0.0.0 0.0.0.0 null null 65525",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 146.151.156.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65524",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 146.151.160.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65523",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 146.151.164.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65522",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 146.151.168.0 255.255.248.0 null null 0.0.0.0 0.0.0.0 null null 65521",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 146.151.176.0 255.255.240.0 null null 0.0.0.0 0.0.0.0 null null 65520",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 146.151.224.0 255.255.240.0 null null 0.0.0.0 0.0.0.0 null null 65519",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 10.151.0.0 255.255.0.0 null null 0.0.0.0 0.0.0.0 null null 65518",
+                    "access-list P-T-AIMSiSCSINetworks permit null null 144.92.104.160 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65517",
+                    "access-list P-T-AIMSiSCSINetworks deny null null 0.0.0.0 0.0.0.0 null null 0.0.0.0 0.0.0.0 null null 65516"
+                ],
+                "applications": [
+                    {
+                        "interface": "Vlan2790",
+                        "direction": "out"
+                    },
+                    {
+                        "interface": "Vlan2813",
+                        "direction": "out"
+                    }
+                ]
+            },
+            "P-T-LtgCsscplatClusterSan": {
+                "rules": [
+                    "access-list P-T-LtgCsscplatClusterSan permit null null 10.128.27.0 255.255.255.0 null null 0.0.0.0 0.0.0.0 null null 65535"
+                ],
+                "applications": [
+                    {
+                        "interface": "Vlan2508",
+                        "direction": "out"
+                    }
+                ]
+            },
+            "110": {
+                "rules": [
+                    "access-list 110 permit null null 128.104.254.254 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65535",
+                    "access-list 110 permit null null 144.92.254.254 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65534",
+                    "access-list 110 permit null null 146.151.156.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65533",
+                    "access-list 110 permit null null 146.151.160.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65532",
+                    "access-list 110 permit null null 146.151.164.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65531",
+                    "access-list 110 permit null null 146.151.168.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65530",
+                    "access-list 110 permit null null 146.151.176.0 255.255.240.0 null null 0.0.0.0 0.0.0.0 null null 65529",
+                    "access-list 110 permit null null 146.151.224.0 255.255.240.0 null null 0.0.0.0 0.0.0.0 null null 65528",
+                    "access-list 110 permit null null 144.92.67.0 255.255.255.0 null null 0.0.0.0 0.0.0.0 null null 65527",
+                    "access-list 110 permit null null 146.151.148.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65526",
+                    "access-list 110 permit null null 146.151.152.0 255.255.252.0 null null 0.0.0.0 0.0.0.0 null null 65525",
+                    "access-list 110 permit null null 10.151.0.0 255.255.0.0 null null 0.0.0.0 0.0.0.0 null null 65524",
+                    "access-list 110 permit null null 144.92.104.160 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65523",
+                    "access-list 110 permit null null 144.92.104.75 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65522",
+                    "access-list 110 permit null null 128.104.22.203 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65521",
+                    "access-list 110 permit null null 144.92.9.161 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65520",
+                    "access-list 110 permit null null 144.92.9.162 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65519",
+                    "access-list 110 permit null null 144.92.9.182 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65518",
+                    "access-list 110 permit null null 144.92.9.43 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65517",
+                    "access-list 110 permit null null 144.92.194.22 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65516",
+                    "access-list 110 permit null null 128.104.144.172 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65515",
+                    "access-list 110 permit null null 128.104.144.173 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65514",
+                    "access-list 110 permit null null 128.104.144.174 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65513",
+                    "access-list 110 permit null null 128.104.144.175 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65512",
+                    "access-list 110 permit null null 128.104.144.176 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65511",
+                    "access-list 110 permit null null 144.92.9.114 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65510",
+                    "access-list 110 permit null null 144.92.104.12 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65509",
+                    "access-list 110 permit null null 144.92.9.207 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65508",
+                    "access-list 110 permit null null 128.104.22.202 255.255.255.255 null null 146.151.149.132 255.255.255.255 null null 65507",
+                    "access-list 110 permit null null 128.104.136.13 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65506",
+                    "access-list 110 permit null null 128.104.136.10 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65505",
+                    "access-list 110 permit null null 144.92.9.22 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65504",
+                    "access-list 110 permit null null 144.92.20.100 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65503",
+                    "access-list 110 permit null null 128.104.30.17 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65502",
+                    "access-list 110 permit null null 205.213.14.14 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65501",
+                    "access-list 110 permit null null 205.213.110.242 255.255.255.255 null null 0.0.0.0 0.0.0.0 null null 65500",
+                    "access-list 110 permit null null 146.151.144.0 255.255.255.128 null null 0.0.0.0 0.0.0.0 null null 65499"
+                ],
+                "applications": [
+                    {
+                        "interface": "Vlan1102",
+                        "direction": "out"
+                    },
+                    {
+                        "interface": "Vlan1159",
+                        "direction": "out"
+                    },
+                    {
+                        "interface": "Vlan995",
+                        "direction": "out"
+                    }
+                ]
+            },
+            "P-T-iSCSIStorageNetwork": {
+                "rules": [
+                    "access-list P-T-iSCSIStorageNetwork permit 6 6 128.104.0.0 255.254.0.0 null null 0.0.0.0 0.0.0.0 3260 3260 65535",
+                    "access-list P-T-iSCSIStorageNetwork permit 6 6 144.92.0.0 255.255.0.0 null null 0.0.0.0 0.0.0.0 3260 3260 65534",
+                    "access-list P-T-iSCSIStorageNetwork permit 6 6 146.151.128.0 255.255.128.0 null null 0.0.0.0 0.0.0.0 3260 3260 65533",
+                    "access-list P-T-iSCSIStorageNetwork permit 1 1 128.104.0.0 255.254.0.0 null null 0.0.0.0 0.0.0.0 null null 65532",
+                    "access-list P-T-iSCSIStorageNetwork permit 1 1 144.92.0.0 255.255.0.0 null null 0.0.0.0 0.0.0.0 null null 65531",
+                    "access-list P-T-iSCSIStorageNetwork permit 1 1 146.151.128.0 255.255.128.0 null null 0.0.0.0 0.0.0.0 null null 65530",
+                    "access-list P-T-iSCSIStorageNetwork deny null null 0.0.0.0 0.0.0.0 null null 0.0.0.0 0.0.0.0 null null 65529"
+                ],
+                "applications": [
+                    {
+                        "interface": "Vlan656",
+                        "direction": "out"
+                    }
+                ]
+            }
+        }
+    ]
+}

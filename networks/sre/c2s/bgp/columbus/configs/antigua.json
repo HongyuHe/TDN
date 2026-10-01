@@ -1,0 +1,105 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "antigua",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [{
+    "formatPrefix": "200.2.56.0/24",
+    "node": "antigua",
+    "prefix": {
+      "ip": "200.2.56.0",
+      "mask": "255.255.255.0"
+    }
+  }],
+  "bgpReflectClients": [],
+  "deviceName": "antigua",
+  "eBgpNeighbors": [{
+    "ip1": "10.0.0.64",
+    "ip2": "10.0.0.65",
+    "node1": "antigua",
+    "node2": "guadeloupe"
+  }, {
+    "ip1": "10.0.0.66",
+    "ip2": "10.0.0.67",
+    "node1": "antigua",
+    "node2": "stttkittstt&ttnevis"
+  }],
+  "iBgpNeighbors": [],
+  "intfs": [{
+    "intf": "FastEthernet0/0",
+    "ip": "10.0.0.64",
+    "node": "antigua",
+    "prefix": {
+      "ip": "10.0.0.64",
+      "mask": "255.255.255.254"
+    }
+  }, {
+    "intf": "FastEthernet0/1",
+    "ip": "10.0.0.66",
+    "node": "antigua",
+    "prefix": {
+      "ip": "10.0.0.66",
+      "mask": "255.255.255.254"
+    }
+  }, {
+    "intf": "GigabitEthernet0/0",
+    "ip": "200.2.56.1",
+    "node": "antigua",
+    "prefix": {
+      "ip": "200.2.56.1",
+      "mask": "255.255.255.0"
+    }
+  }],
+  "node": {
+    "as": 10,
+    "id": 3355588609,
+    "node": "antigua"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [{
+    "from_node": "guadeloupe",
+    "node": "antigua",
+    "policy": [{
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "128.0.0.0",
+            "mask": "255.255.240.0"
+          }]
+        }
+      },
+      "permit": false,
+      "setAttributes": null
+    }, {
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }]
+  }, {
+    "from_node": "stttkittstt&ttnevis",
+    "node": "antigua",
+    "policy": [{
+      "matchConditions": {
+        "MatchPrefixList": {
+          "prefixSet": [{
+            "ip": "128.0.0.0",
+            "mask": "255.255.240.0"
+          }]
+        }
+      },
+      "permit": false,
+      "setAttributes": null
+    }, {
+      "matchConditions": null,
+      "permit": true,
+      "setAttributes": null
+    }]
+  }],
+  "routeMapOuts": [],
+  "staticRoutes": []
+}

@@ -1,0 +1,127 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "abingdon",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "200.4.206.0/24",
+      "node": "abingdon",
+      "prefix": {
+        "ip": "200.4.206.0",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "bgpReflectClients": [],
+  "deviceName": "abingdon",
+  "eBgpNeighbors": [
+    {
+      "ip1": "10.0.0.205",
+      "ip2": "10.0.0.204",
+      "node1": "abingdon",
+      "node2": "marion"
+    },
+    {
+      "ip1": "10.0.1.153",
+      "ip2": "10.0.1.152",
+      "node1": "abingdon",
+      "node2": "bristol"
+    }
+  ],
+  "iBgpNeighbors": [],
+  "intfs": [
+    {
+      "intf": "FastEthernet0/0",
+      "ip": "10.0.1.153",
+      "node": "abingdon",
+      "prefix": {
+        "ip": "10.0.1.153",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet0/1",
+      "ip": "10.0.0.205",
+      "node": "abingdon",
+      "prefix": {
+        "ip": "10.0.0.205",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "GigabitEthernet0/0",
+      "ip": "200.4.206.1",
+      "node": "abingdon",
+      "prefix": {
+        "ip": "200.4.206.1",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "node": {
+    "as": 20,
+    "id": 3355758081,
+    "node": "abingdon"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [
+    {
+      "from_node": "marion",
+      "node": "abingdon",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "bristol",
+      "node": "abingdon",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    }
+  ],
+  "routeMapOuts": [],
+  "staticRoutes": []
+}

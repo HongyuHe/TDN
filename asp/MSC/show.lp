@@ -1,0 +1,13 @@
+#show result/3.
+#show violation/3.
+#show counterexample/3.
+#show statistics/2.
+#show gray_reach/2.
+#show management_reach/2.
+#show decision/3.
+#show transmitted/3.
+#show delivered/4.
+#show delivery_witness/4.
+#show guarded_table/1.
+#show denies_all/1.
+#show untagged_may_accept/1.

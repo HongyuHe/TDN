@@ -1,0 +1,18 @@
++,acl,r-432nm-b3a-1-core,P-T-LtgHcwhiteIscsi,permit ip 10.128.30.0 0.0.0.255 any,65535
++,acl,r-432nm-b3a-1-core,P-T-LtgMemlibIscsi,permit ip 10.128.31.0 0.0.0.255 any,65535
++,accesslist,110,r-432nm-b3a-1-core,Vlan1169,out
++,accesslist,P-T-LtgMemlibIscsi,r-432nm-b3a-1-core,Vlan2944,out
++,accesslist,P-T-LtgHcwhiteIscsi,r-432nm-b3a-1-core,Vlan2946,out
++,acl,r-432nm-b3a-2-core,P-T-LtgHcwhiteIscsi,permit ip 10.128.30.0 0.0.0.255 any,65535
++,acl,r-432nm-b3a-2-core,P-T-LtgMemlibIscsi,permit ip 10.128.31.0 0.0.0.255 any,65535
++,accesslist,110,r-432nm-b3a-2-core,Vlan1169,out
++,accesslist,P-T-LtgMemlibIscsi,r-432nm-b3a-2-core,Vlan2944,out
++,accesslist,P-T-LtgHcwhiteIscsi,r-432nm-b3a-2-core,Vlan2946,out
++,accesslist,110,r-animal-122a-1-core,Vlan1171,out
++,accesslist,110,r-animal-122a-2-core,Vlan1171,out
++,accesslist,110,r-cssc-b280c-1-core,Vlan1170,out
++,accesslist,P-T-DatacenterUpsMgmt,r-cssc-b280c-1-core,Vlan3168,out
++,accesslist,110,r-cssc-b280c-2-core,Vlan1170,out
++,accesslist,P-T-DatacenterUpsMgmt,r-cssc-b280c-2-core,Vlan3168,out
+-,accesslist,P-T-DatacenterUpsMgmt,r-cssc-b280c-1-core,Vlan1168,out
+-,accesslist,P-T-DatacenterUpsMgmt,r-cssc-b280c-2-core,Vlan1168,out

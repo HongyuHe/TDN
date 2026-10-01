@@ -1,0 +1,21 @@
+{
+    "acl": [
+        {
+            "D-T-WimaxMgmt": {
+                "rules": [
+                    "access-list D-T-WimaxMgmt permit null null 147.226.1.11 255.255.255.255 null null 128.104.230.132 255.255.255.255 null null 65535",
+                    "access-list D-T-WimaxMgmt permit null null 172.19.0.0 255.255.0.0 null null 128.104.230.132 255.255.255.255 null null 65534",
+                    "access-list D-T-WimaxMgmt permit null null 128.105.0.0 255.255.0.0 null null 128.104.230.132 255.255.255.255 null null 65533",
+                    "access-list D-T-WimaxMgmt deny null null 0.0.0.0 0.0.0.0 null null 128.104.230.132 255.255.255.255 null null 65532",
+                    "access-list D-T-WimaxMgmt permit null null 0.0.0.0 0.0.0.0 null null 0.0.0.0 0.0.0.0 null null 65531"
+                ],
+                "applications": [
+                    {
+                        "interface": "GigabitEthernet0/1.1356",
+                        "direction": "out"
+                    }
+                ]
+            }
+        }
+    ]
+}

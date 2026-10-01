@@ -1,0 +1,280 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "florence",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "200.4.220.0/24",
+      "node": "florence",
+      "prefix": {
+        "ip": "200.4.220.0",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "bgpReflectClients": [],
+  "deviceName": "florence",
+  "eBgpNeighbors": [
+    {
+      "ip1": "10.0.0.29",
+      "ip2": "10.0.0.28",
+      "node1": "florence",
+      "node2": "myrtlettbeach"
+    },
+    {
+      "ip1": "10.0.0.161",
+      "ip2": "10.0.0.160",
+      "node1": "florence",
+      "node2": "tarttheel"
+    },
+    {
+      "ip1": "10.0.0.239",
+      "ip2": "10.0.0.238",
+      "node1": "florence",
+      "node2": "sumter"
+    },
+    {
+      "ip1": "10.0.1.124",
+      "ip2": "10.0.1.125",
+      "node1": "florence",
+      "node2": "bethune"
+    }
+  ],
+  "iBgpNeighbors": [],
+  "intfs": [
+    {
+      "intf": "FastEthernet0/0",
+      "ip": "10.0.1.124",
+      "node": "florence",
+      "prefix": {
+        "ip": "10.0.1.124",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet0/1",
+      "ip": "10.0.0.29",
+      "node": "florence",
+      "prefix": {
+        "ip": "10.0.0.29",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet1/0",
+      "ip": "10.0.0.239",
+      "node": "florence",
+      "prefix": {
+        "ip": "10.0.0.239",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet1/1",
+      "ip": "10.0.0.161",
+      "node": "florence",
+      "prefix": {
+        "ip": "10.0.0.161",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "GigabitEthernet0/0",
+      "ip": "200.4.220.1",
+      "node": "florence",
+      "prefix": {
+        "ip": "200.4.220.1",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "node": {
+    "as": 600,
+    "id": 3355761665,
+    "node": "florence"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [
+    {
+      "from_node": "myrtlettbeach",
+      "node": "florence",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "tarttheel",
+      "node": "florence",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "sumter",
+      "node": "florence",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.4.0",
+                  "mask": "255.255.255.0"
+                }
+              ]
+            }
+          },
+          "permit": true,
+          "setAttributes": {
+            "SetCommunity": {
+              "additive": true,
+              "community": {
+                "as": "100",
+                "tag": "13"
+              }
+            },
+            "SetLocalPref": {
+              "localPref": 1
+            }
+          }
+        },
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "bethune",
+      "node": "florence",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    }
+  ],
+  "routeMapOuts": [
+    {
+      "node": "florence",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "myrtlettbeach"
+    },
+    {
+      "node": "florence",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "tarttheel"
+    },
+    {
+      "node": "florence",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "bethune"
+    }
+  ],
+  "staticRoutes": []
+}

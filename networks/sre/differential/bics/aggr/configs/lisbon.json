@@ -1,0 +1,127 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": {
+      "as": 0,
+      "id": 0,
+      "node": "lisbon",
+      "vrf": "default"
+    },
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "200.1.32.0/24",
+      "node": {
+        "as": 0,
+        "id": 0,
+        "node": "lisbon",
+        "vrf": "default"
+      },
+      "prefix": {
+        "ip": "200.1.32.0",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "bgpRedises": [],
+  "bgpReflectClients": [],
+  "eBgpNeighbors": [
+    {
+      "ip1": "10.0.0.127",
+      "ip2": "10.0.0.126",
+      "node1": {
+        "as": 0,
+        "id": 0,
+        "node": "lisbon",
+        "vrf": "default"
+      },
+      "node2": {
+        "as": 0,
+        "id": 0,
+        "node": "london",
+        "vrf": "default"
+      }
+    }
+  ],
+  "iBgpNeighbors": [],
+  "intfs": [
+    {
+      "intf": "FastEthernet0/0",
+      "ip": "10.0.0.127",
+      "node": {
+        "as": 0,
+        "id": 0,
+        "node": "lisbon",
+        "vrf": "default"
+      },
+      "prefix": {
+        "ip": "10.0.0.127",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "GigabitEthernet0/0",
+      "ip": "200.1.32.1",
+      "node": {
+        "as": 0,
+        "id": 0,
+        "node": "lisbon",
+        "vrf": "default"
+      },
+      "prefix": {
+        "ip": "200.1.32.1",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "node": {
+    "as": 140,
+    "id": 3355516929,
+    "node": "lisbon",
+    "vrf": "default"
+  },
+  "ospfIntfSetting": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [
+    {
+      "from_node": {
+        "as": 0,
+        "id": 0,
+        "node": "london",
+        "vrf": "default"
+      },
+      "node": {
+        "as": 0,
+        "id": 0,
+        "node": "lisbon",
+        "vrf": "default"
+      },
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    }
+  ],
+  "routeMapOuts": [],
+  "staticRoutes": []
+}

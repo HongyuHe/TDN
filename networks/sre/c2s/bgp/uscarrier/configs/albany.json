@@ -1,0 +1,226 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "albany",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "200.4.170.0/24",
+      "node": "albany",
+      "prefix": {
+        "ip": "200.4.170.0",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "bgpReflectClients": [],
+  "deviceName": "albany",
+  "eBgpNeighbors": [
+    {
+      "ip1": "10.0.0.8",
+      "ip2": "10.0.0.9",
+      "node1": "albany",
+      "node2": "tallahassee"
+    },
+    {
+      "ip1": "10.0.0.10",
+      "ip2": "10.0.0.11",
+      "node1": "albany",
+      "node2": "peeralbany_0"
+    },
+    {
+      "ip1": "10.0.0.12",
+      "ip2": "10.0.0.13",
+      "node1": "albany",
+      "node2": "macon"
+    }
+  ],
+  "iBgpNeighbors": [],
+  "intfs": [
+    {
+      "intf": "FastEthernet0/0",
+      "ip": "10.0.0.12",
+      "node": "albany",
+      "prefix": {
+        "ip": "10.0.0.12",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet0/1",
+      "ip": "10.0.0.10",
+      "node": "albany",
+      "prefix": {
+        "ip": "10.0.0.10",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet1/0",
+      "ip": "10.0.0.8",
+      "node": "albany",
+      "prefix": {
+        "ip": "10.0.0.8",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "GigabitEthernet0/0",
+      "ip": "200.4.170.1",
+      "node": "albany",
+      "prefix": {
+        "ip": "200.4.170.1",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "node": {
+    "as": 50,
+    "id": 3355748865,
+    "node": "albany"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [
+    {
+      "from_node": "tallahassee",
+      "node": "albany",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "peeralbany_0",
+      "node": "albany",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "macon",
+      "node": "albany",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.8.0",
+                  "mask": "255.255.255.0"
+                }
+              ]
+            }
+          },
+          "permit": true,
+          "setAttributes": {
+            "SetCommunity": {
+              "additive": true,
+              "community": {
+                "as": "100",
+                "tag": "15"
+              }
+            },
+            "SetLocalPref": {
+              "localPref": 1
+            }
+          }
+        },
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    }
+  ],
+  "routeMapOuts": [
+    {
+      "node": "albany",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "tallahassee"
+    },
+    {
+      "node": "albany",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "peeralbany_0"
+    },
+    {
+      "node": "albany",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "macon"
+    }
+  ],
+  "staticRoutes": []
+}

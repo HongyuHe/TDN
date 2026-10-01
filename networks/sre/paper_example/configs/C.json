@@ -1,0 +1,110 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "C",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "128.0.0.0/1",
+      "node": "C",
+      "prefix": {
+        "ip": "128.0.0.0",
+        "mask": "128.0.0.0"
+      }
+    },
+    {
+      "formatPrefix": "192.0.0.0/2",
+      "node": "C",
+      "prefix": {
+        "ip": "192.0.0.0",
+        "mask": "192.0.0.0"
+      }
+    }
+  ],
+  "bgpReflectClients": [],
+  "deviceName": "C",
+  "eBgpNeighbors": [{
+    "ip1": "10.0.0.68",
+    "ip2": "10.0.0.69",
+    "node1": "C",
+    "node2": "A"
+  }, {
+    "ip1": "10.0.0.115",
+    "ip2": "10.0.0.114",
+    "node1": "C",
+    "node2": "B"
+  }],
+  "iBgpNeighbors": [],
+  "intfs": [{
+    "intf": "intf0",
+    "ip": "10.0.0.68",
+    "node": "C",
+    "prefix": {
+      "ip": "10.0.0.68",
+      "mask": "255.255.255.254"
+    }
+  }, {
+    "intf": "intf1",
+    "ip": "10.0.0.115",
+    "node": "C",
+    "prefix": {
+      "ip": "10.0.0.115",
+      "mask": "255.255.255.254"
+    }
+  }, {
+    "intf": "loopback0",
+    "ip": "128.0.0.1",
+    "node": "C",
+    "prefix": {
+      "ip": "128.0.0.1",
+      "mask": "128.0.0.0"
+    }
+  }, {
+      "intf": "loopback1",
+      "ip": "192.0.0.1",
+      "node": "C",
+      "prefix": {
+        "ip": "192.0.0.1",
+        "mask": "192.0.0.0"
+      }
+  }],
+  "node": {
+    "as": 3,
+    "id": 3,
+    "node": "C"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [],
+  "routeMapOuts": [
+    {
+      "node": "C",
+      "policy": [
+          {
+            "matchConditions": {
+              "MatchPrefixList": {
+                "prefixSet": [
+                  {
+                    "ip": "192.0.0.0",
+                    "mask": "192.0.0.0"
+                  }
+                ]
+              }
+            },
+            "permit": false,
+            "setAttributes": null
+        }, {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "A"
+    }
+  ],
+  "staticRoutes": []
+}

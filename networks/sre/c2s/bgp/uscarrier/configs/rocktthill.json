@@ -1,0 +1,254 @@
+{
+  "bgpAggregations": [],
+  "bgpMultipath": {
+    "node": "rocktthill",
+    "num": -1,
+    "relax": false
+  },
+  "bgpNetworks": [
+    {
+      "formatPrefix": "200.4.174.0/24",
+      "node": "rocktthill",
+      "prefix": {
+        "ip": "200.4.174.0",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "bgpReflectClients": [],
+  "deviceName": "rocktthill",
+  "eBgpNeighbors": [
+    {
+      "ip1": "10.0.0.175",
+      "ip2": "10.0.0.174",
+      "node1": "rocktthill",
+      "node2": "charlotte"
+    },
+    {
+      "ip1": "10.0.1.36",
+      "ip2": "10.0.1.37",
+      "node1": "rocktthill",
+      "node2": "lancaster"
+    },
+    {
+      "ip1": "10.0.1.38",
+      "ip2": "10.0.1.39",
+      "node1": "rocktthill",
+      "node2": "chester"
+    }
+  ],
+  "iBgpNeighbors": [],
+  "intfs": [
+    {
+      "intf": "FastEthernet0/0",
+      "ip": "10.0.0.175",
+      "node": "rocktthill",
+      "prefix": {
+        "ip": "10.0.0.175",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet0/1",
+      "ip": "10.0.1.38",
+      "node": "rocktthill",
+      "prefix": {
+        "ip": "10.0.1.38",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "FastEthernet1/0",
+      "ip": "10.0.1.36",
+      "node": "rocktthill",
+      "prefix": {
+        "ip": "10.0.1.36",
+        "mask": "255.255.255.254"
+      }
+    },
+    {
+      "intf": "GigabitEthernet0/0",
+      "ip": "200.4.174.1",
+      "node": "rocktthill",
+      "prefix": {
+        "ip": "200.4.174.1",
+        "mask": "255.255.255.0"
+      }
+    }
+  ],
+  "node": {
+    "as": 1300,
+    "id": 3355749889,
+    "node": "rocktthill"
+  },
+  "ospfIntfSetting": [],
+  "ospfNeighbors": [],
+  "ospfRedises": [],
+  "ospfStubAreas": [],
+  "routeMapIns": [
+    {
+      "from_node": "charlotte",
+      "node": "rocktthill",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "lancaster",
+      "node": "rocktthill",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.4.0",
+                  "mask": "255.255.255.0"
+                }
+              ]
+            }
+          },
+          "permit": true,
+          "setAttributes": {
+            "SetCommunity": {
+              "additive": true,
+              "community": {
+                "as": "100",
+                "tag": "3"
+              }
+            },
+            "SetLocalPref": {
+              "localPref": 1
+            }
+          }
+        },
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    },
+    {
+      "from_node": "chester",
+      "node": "rocktthill",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.4.0",
+                  "mask": "255.255.255.0"
+                }
+              ]
+            }
+          },
+          "permit": true,
+          "setAttributes": {
+            "SetCommunity": {
+              "additive": true,
+              "community": {
+                "as": "100",
+                "tag": "6"
+              }
+            },
+            "SetLocalPref": {
+              "localPref": 1
+            }
+          }
+        },
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ]
+    }
+  ],
+  "routeMapOuts": [
+    {
+      "node": "rocktthill",
+      "policy": [
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "charlotte"
+    },
+    {
+      "node": "rocktthill",
+      "policy": [
+        {
+          "matchConditions": {
+            "MatchPrefixList": {
+              "prefixSet": [
+                {
+                  "ip": "128.0.0.0",
+                  "mask": "255.255.240.0"
+                }
+              ]
+            }
+          },
+          "permit": false,
+          "setAttributes": null
+        },
+        {
+          "matchConditions": null,
+          "permit": true,
+          "setAttributes": null
+        }
+      ],
+      "to_node": "lancaster"
+    }
+  ],
+  "staticRoutes": []
+}

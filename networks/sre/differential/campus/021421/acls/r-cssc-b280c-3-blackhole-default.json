@@ -1,0 +1,31 @@
+{
+    "acl": [
+        {
+            "do-not-let-wail-respond": {
+                "rules": [
+                    "access-list do-not-let-wail-respond deny null null 0.0.0.0 0.0.0.0 null null 146.151.144.23 255.255.255.255 null null 65535",
+                    "access-list do-not-let-wail-respond deny null null 0.0.0.0 0.0.0.0 null null 146.151.144.45 255.255.255.255 null null 65534",
+                    "access-list do-not-let-wail-respond deny null null 144.92.68.128 255.255.255.192 null null 0.0.0.0 0.0.0.0 null null 65533",
+                    "access-list do-not-let-wail-respond deny null null 128.104.27.120 255.255.255.248 null null 0.0.0.0 0.0.0.0 null null 65532",
+                    "access-list do-not-let-wail-respond deny null null 128.104.74.40 255.255.255.248 null null 0.0.0.0 0.0.0.0 null null 65531",
+                    "access-list do-not-let-wail-respond deny null null 128.104.142.32 255.255.255.224 null null 0.0.0.0 0.0.0.0 null null 65530",
+                    "access-list do-not-let-wail-respond deny null null 144.92.106.0 255.255.254.0 null null 0.0.0.0 0.0.0.0 null null 65529",
+                    "access-list do-not-let-wail-respond deny null null 144.92.152.0 255.255.255.240 null null 0.0.0.0 0.0.0.0 null null 65528",
+                    "access-list do-not-let-wail-respond deny null null 144.92.201.48 255.255.255.248 null null 0.0.0.0 0.0.0.0 null null 65527",
+                    "access-list do-not-let-wail-respond deny null null 144.92.205.128 255.255.255.128 null null 0.0.0.0 0.0.0.0 null null 65526",
+                    "access-list do-not-let-wail-respond deny null null 144.92.245.64 255.255.255.192 null null 0.0.0.0 0.0.0.0 null null 65525",
+                    "access-list do-not-let-wail-respond deny null null 144.92.249.32 255.255.255.248 null null 0.0.0.0 0.0.0.0 null null 65524",
+                    "access-list do-not-let-wail-respond deny null null 144.92.249.192 255.255.255.224 null null 0.0.0.0 0.0.0.0 null null 65523",
+                    "access-list do-not-let-wail-respond deny null null 144.92.254.192 255.255.255.224 null null 0.0.0.0 0.0.0.0 null null 65522",
+                    "access-list do-not-let-wail-respond permit null null 0.0.0.0 0.0.0.0 null null 0.0.0.0 0.0.0.0 null null 65521"
+                ],
+                "applications": [
+                    {
+                        "interface": "Vlan400",
+                        "direction": "in"
+                    }
+                ]
+            }
+        }
+    ]
+}
