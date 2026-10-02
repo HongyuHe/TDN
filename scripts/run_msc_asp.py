@@ -26,8 +26,8 @@ from run_msc_datalog import packet_cases
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = ROOT / "asp/MSC"
-DEFAULT_SNAPSHOT = ROOT / "artifacts/msc-node1-model/snapshot"
-DEFAULT_CHECKS = ROOT / "artifacts/msc-node1-model/check.json"
+DEFAULT_SNAPSHOT = ROOT / "artifacts/msc-2026-09-27T215205Z/snapshot"
+DEFAULT_CHECKS = ROOT / "artifacts/msc-2026-09-27T215205Z/check.json"
 MUTATIONS = ["gray-bypass", "unguarded-encryptor", "gray-default-accept", "cross-level-authorization", "missing-sa"]
 RELATIONS = {"gray_reach": "GrayReach", "management_reach": "ManagementReach",
              "decision": "Decision", "transmitted": "Transmitted", "delivered": "Delivered"}

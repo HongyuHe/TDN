@@ -120,7 +120,7 @@ class RequirementScopeTests(unittest.TestCase):
 
     def test_management_exclusion_preserves_the_data_fabric_and_scopes_claims(self):
         projection = self.scope["assessment_projection"]
-        snapshot = json.loads((ROOT / "artifacts/msc-node1-model/snapshot/spec.json").read_text())
+        snapshot = json.loads((ROOT / "artifacts/msc-2026-09-27T215205Z/snapshot/spec.json").read_text())
         excluded = set(projection["excluded_device_ids"])
         management_devices = {
             device["id"] for device in snapshot["devices"]

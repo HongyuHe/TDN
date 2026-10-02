@@ -193,10 +193,10 @@ Of those descriptions, 213 match after whitespace normalization; VG-19 contains 
 VG-19's assessment records the PDF spelling without silently changing the inventory quotation.
 Threshold/objective choices, permissions, conditions, and source conflicts are retained rather than collapsed into unconditional rules.
 
-The node-1 evidence is the [reviewed export](../artifacts/msc-node1-reviewed/snapshot/manifest.json) collected on 1 October 2026 from 19:37:31 to 19:37:55 UTC after the gateway protocol and IPv4-options guards were deployed.
-The [probe report](../artifacts/msc-node1-reviewed/check.json) precedes that export and records 273 passing checks; the observations are not atomic.
+The node-1 evidence is the [reviewed export](../artifacts/msc-2026-10-01T193731Z/snapshot/manifest.json) collected on 1 October 2026 from 19:37:31 to 19:37:55 UTC after the gateway protocol and IPv4-options guards were deployed.
+The [probe report](../artifacts/msc-2026-10-01T193731Z/check.json) precedes that export and records 273 passing checks; the observations are not atomic.
 Additional [live guard probes](../artifacts/msc-lean-review/deployment-hardening/guard-probes.json) check protocol rejection at all four inner gateways and option rejection with a positive control at all four outer gateways.
-The [original September export](../artifacts/msc-node1-model/snapshot/manifest.json) remains unchanged for explicitly historical diagnostics and the original Datalog/ASP comparison.
+The [original September export](../artifacts/msc-2026-09-27T215205Z/snapshot/manifest.json) remains unchanged for explicitly historical diagnostics and the original Datalog/ASP comparison.
 The full evidence snapshot has 35 logical devices and 44 virtual cables, including the excluded management infrastructure.
 The selected experiment retains two sites, two unordered security labels, IPsec at both layers, IPv4, separate Gray segments, and separate outer encryptors per level.
 The assessment concerns the recorded October observation interval and does not assert that future live state will remain identical.

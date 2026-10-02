@@ -874,43 +874,43 @@
   "evidence_catalog": {
     "snapshot": [
       "Pinned snapshot and manifest",
-      "artifacts/msc-node1-reviewed/snapshot/manifest.json"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/manifest.json"
     ],
     "spec": [
       "Declared devices, interfaces, links, and peers",
-      "artifacts/msc-node1-reviewed/snapshot/spec.json"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/spec.json"
     ],
     "status": [
       "Sampled device state, processes, certificates, SAs, and routes",
-      "artifacts/msc-node1-reviewed/snapshot/status.json"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/status.json"
     ],
     "checks": [
       "273-probe report",
-      "artifacts/msc-node1-reviewed/check.json"
+      "artifacts/msc-2026-10-01T193731Z/check.json"
     ],
     "inner_config": [
       "Intended I_A1 strongSwan configuration",
-      "artifacts/msc-node1-reviewed/snapshot/devices/I_A1/intended.swanctl.conf"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/I_A1/intended.swanctl.conf"
     ],
     "outer_config": [
       "Intended O_A1 strongSwan configuration",
-      "artifacts/msc-node1-reviewed/snapshot/devices/O_A1/intended.swanctl.conf"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/O_A1/intended.swanctl.conf"
     ],
     "inner_filter": [
       "Observed I_A1 filter rules",
-      "artifacts/msc-node1-reviewed/snapshot/devices/I_A1/observed.iptables"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/I_A1/observed.iptables"
     ],
     "outer_filter": [
       "Observed O_A1 filter rules",
-      "artifacts/msc-node1-reviewed/snapshot/devices/O_A1/observed.iptables"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/O_A1/observed.iptables"
     ],
     "gray_filter": [
       "Observed GF_A filter rules",
-      "artifacts/msc-node1-reviewed/snapshot/devices/GF_A/observed.iptables"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/GF_A/observed.iptables"
     ],
     "of_filter": [
       "Observed OF_A1 filter rules",
-      "artifacts/msc-node1-reviewed/snapshot/devices/OF_A1/observed.iptables"
+      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/OF_A1/observed.iptables"
     ],
     "topology": [
       "Topology model and proofs",
@@ -6710,7 +6710,7 @@
     ],
     "control_traffic": "Retain applicable control obligations and the explicit control-plane encryption exceptions. Excluding management does not remove IKE, OSPF, revocation, or trusted-time obligations on retained appliances.",
     "operator_boundary": "Worker SSH, container consoles, and docker exec are trusted experiment controls outside the network model. Claims concern a fixed configuration without concurrent operator reconfiguration or packet injection.",
-    "evidence_boundary": "Required Lean facts use artifacts/msc-node1-reviewed, collected on 2026-10-01 after gateway guard fixes. Projection counts are checked in Lean. The original artifacts/msc-node1-model snapshot remains unchanged for explicit HistoricalDeployment/SnapshotDiagnostics and the original Datalog/ASP comparison.",
+    "evidence_boundary": "Required Lean facts use artifacts/msc-2026-10-01T193731Z, collected on 2026-10-01 after gateway guard fixes. Projection counts are checked in Lean. The original artifacts/msc-2026-09-27T215205Z snapshot remains unchanged for explicit HistoricalDeployment/SnapshotDiagnostics and the original Datalog/ASP comparison.",
     "compliance_boundary": "Exclusion is a research scope choice. N-28 retains its mandatory AW wording. No excluded obligation is treated as proved, failed, or optional in the complete CP.",
     "management_acceptance_policy": "The admin and management plane is optional. Its requirements, lemmas, observations, and full-report probe results are excluded from required MSC proof acceptance and independent PASS/FAIL criteria. Seven positive regressions exercise absent and unavailable management, missing status, firewall drift, invalid management addresses, corrupt unused files, and absent probe reports."
   },

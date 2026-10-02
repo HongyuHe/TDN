@@ -16,8 +16,8 @@ import re
 import shlex
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_EVIDENCE = ROOT / "artifacts/msc-node1-reviewed"
-HISTORICAL_EVIDENCE = ROOT / "artifacts/msc-node1-model"
+CURRENT_EVIDENCE = ROOT / "artifacts/msc-2026-10-01T193731Z"
+HISTORICAL_EVIDENCE = ROOT / "artifacts/msc-2026-09-27T215205Z"
 
 
 def quoted(value):

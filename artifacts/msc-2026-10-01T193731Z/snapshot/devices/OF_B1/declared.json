@@ -1,0 +1,23 @@
+{
+  "id": "OF_B1",
+  "role": "firewall",
+  "site": "B",
+  "interfaces": [
+    {
+      "name": "outside",
+      "address": "172.21.21.1/30",
+      "zone": "black"
+    },
+    {
+      "name": "inside",
+      "address": "172.20.21.2/30",
+      "zone": "black"
+    },
+    {
+      "name": "mgmt",
+      "address": "172.30.119.23/24",
+      "zone": "management"
+    }
+  ],
+  "admin": "172.30.119.10"
+}
