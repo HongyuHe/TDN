@@ -1,0 +1,11 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+-A INPUT -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+-A INPUT -i mgmt -s 172.30.109.10 -p icmp -j ACCEPT
+-A INPUT -i mgmt -s 172.30.109.10 -p tcp --dport 8443 -j ACCEPT
+-A OUTPUT -o mgmt -d 172.30.109.10 -p icmp -j ACCEPT
+-A OUTPUT -o mgmt -d 172.30.109.10 -p tcp --sport 8443 -j ACCEPT
+COMMIT

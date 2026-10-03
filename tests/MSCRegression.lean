@@ -62,3 +62,16 @@ example : Prefix.parse? "10.1.1.0/33" = none := by decide
 #print axioms accepted_outbound_requires_declared_policy
 #print axioms no_outer_firewall_bypass
 #print axioms intended_ike_lifetime_bound
+
+/- The receiver guards are tested one at a time against a healthy sender. -/
+example : TDN.MSC.deliver TDN.MSC.healthy
+    { TDN.MSC.healthy with transportReady := false } TDN.MSC.sameLevelPacket = none := by decide
+
+example : TDN.MSC.deliver TDN.MSC.healthy
+    { TDN.MSC.healthy with outerFirewallReady := false } TDN.MSC.sameLevelPacket = none := by decide
+
+example : TDN.MSC.deliver TDN.MSC.healthy
+    { TDN.MSC.healthy with grayPathReady := false } TDN.MSC.sameLevelPacket = none := by decide
+
+example : TDN.MSC.deliver TDN.MSC.healthy TDN.MSC.healthy TDN.MSC.sameLevelPacket =
+    some TDN.MSC.sameLevelPacket := by decide

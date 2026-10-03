@@ -8,7 +8,9 @@ checks use every reported end-entity and CA record from that command. They bind
 local and peer identities to their declared tunnel and compare reported public
 key identifiers across trust domains. They do not validate signatures, read
 private keys, prove key independence, or establish an exhaustive credential
-store. Certificate validity and revocation execution remain separate obligations.
+store. `MSC.Authentication` adds public PEM verification, validity/usage checks,
+revocation admission, and complete loaded-connection/session bindings. Correct
+signature checking and runtime authentication remain trusted dependencies.
 -/
 namespace TDN.MSC
 open Deployment

@@ -15,7 +15,7 @@ class RequirementScopeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.source = (ROOT / "docs/CSfC_network_properties.md").read_text()
-        cls.scope = json.loads((ROOT / "models/msc_requirement_scope.json").read_text())
+        cls.scope = json.loads((ROOT / "specs/msc_requirement_scope.json").read_text())
         cls.rows = cls.scope["entries"]
         cls.indexed = {row["id"]: row for row in cls.rows}
         cls.originals = {
@@ -42,7 +42,7 @@ class RequirementScopeTests(unittest.TestCase):
         for row in counts:
             self.assertEqual(row["checked"] + row["unchecked"], row["denominator"])
         summary = renderer.category_summary(self.scope)
-        self.assertIn("34/171 (19.9%)", summary)
+        self.assertIn("52/171 (30.4%)", summary)
         self.assertIn("| Coverage (partial) |", summary)
         self.assertNotIn("With checked contribution", summary)
         self.assertNotIn("Without checked contribution", summary)
@@ -54,6 +54,24 @@ class RequirementScopeTests(unittest.TestCase):
             self.assertIn(summary, path.read_text())
             self.assertLess(path.read_text().index("## Coverage by Table 3 category"),
                             path.read_text().index("## Selected experiment"))
+
+    def test_assessments_name_the_selected_evidence_and_current_semantics(self):
+        spec = importlib.util.spec_from_file_location("msc_docs", ROOT / "scripts/render_msc_property_docs.py")
+        renderer = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(renderer)
+        current = renderer.CURRENT_EVIDENCE
+        manifest = json.loads((current / "snapshot/manifest.json").read_text())
+        checks = json.loads((current / "check.json").read_text())
+        for path in [renderer.PROVABLE, renderer.UNPROVABLE]:
+            rendered = path.read_text()
+            self.assertIn(current.relative_to(ROOT).as_posix(), rendered)
+            self.assertIn(manifest["started"], rendered)
+            self.assertIn(manifest["finished"], rendered)
+            self.assertIn(checks["at"], rendered)
+            self.assertIn("MSC/Execution.lean", rendered)
+            self.assertIn("MSC/FirewallControl.lean", rendered)
+            self.assertNotIn("It omits INPUT, OUTPUT", rendered)
+            self.assertNotIn("still need local-control analysis", rendered)
 
     def test_every_inventory_entry_has_one_individual_assessment(self):
         self.assertEqual(len(self.rows), 293)
@@ -120,7 +138,8 @@ class RequirementScopeTests(unittest.TestCase):
 
     def test_management_exclusion_preserves_the_data_fabric_and_scopes_claims(self):
         projection = self.scope["assessment_projection"]
-        snapshot = json.loads((ROOT / "artifacts/msc-2026-09-27T215205Z/snapshot/spec.json").read_text())
+        manifest = ROOT / self.scope["evidence_catalog"]["snapshot"][1]
+        snapshot = json.loads((manifest.parent / "spec.json").read_text())
         excluded = set(projection["excluded_device_ids"])
         management_devices = {
             device["id"] for device in snapshot["devices"]

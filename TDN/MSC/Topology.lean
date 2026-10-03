@@ -1,4 +1,5 @@
 import TDN.MSC.Deployment
+import TDN.Network.Graph
 
 /-!
 # Facts about the deployed graph
@@ -33,19 +34,16 @@ def grayEdges : List (String × String) :=
 /-- `Walk edges a b` is evidence that a finite walk exists from `a` to `b`.
 `refl` permits a zero-length walk. `step` prepends one known edge to a walk.
 The definition does not choose a routing protocol or claim packet delivery. -/
-inductive Walk (edges : List (String × String)) : String → String → Prop where
-  | refl (a : String) : Walk edges a a
-  | step {a b c : String} : (a, b) ∈ edges → Walk edges b c → Walk edges a c
+abbrev Walk (edges : List (String × String)) : String → String → Prop :=
+  TDN.Network.Reach (fun a b => (a, b) ∈ edges)
 
-/-- Any label preserved on each edge is preserved along an arbitrary walk.
-The induction hypothesis describes the remaining walk after its first edge. -/
+/-- The MSC interface reuses the deployment-independent induction theorem.
+Only the finite edge list and its checked local invariant specialize the proof. -/
 theorem walk_preserves {α : Type} (label : String → α)
     (edges : List (String × String))
     (localInvariant : ∀ e ∈ edges, label e.1 = label e.2)
-    {a b : String} (path : Walk edges a b) : label a = label b := by
-  induction path with
-  | refl => rfl
-  | step edge _ remaining => exact (localInvariant _ edge).trans remaining
+    {a b : String} (path : Walk edges a b) : label a = label b :=
+  path.preserves label (fun x y h => localInvariant (x, y) h)
 
 /-- Only devices with retained data interfaces belong to the MSC proof scope.
 Administration workstations and management-only switches are optional. The
@@ -132,7 +130,7 @@ theorem gray_edges_preserve_label : ∀ e ∈ grayEdges,
 
 /-- Distinct labels cannot be connected after Gray Firewalls are removed.
 Equivalently, every Gray walk connecting those labels in the full graph must
-visit a removed firewall. The conclusion concerns physical cable paths, not
+visit a removed firewall. The conclusion concerns imported virtual-link paths, not
 whether the firewall currently drops a packet. -/
 theorem no_cross_level_gray_bypass (a b : String)
     (different : grayLabel a ≠ grayLabel b) : ¬ Walk grayEdges a b := by
@@ -144,6 +142,39 @@ theorem site_a_gray_cut : ¬ Walk grayEdges "I_A1" "I_A2" :=
 
 theorem site_b_gray_cut : ¬ Walk grayEdges "I_B1" "I_B2" :=
   no_cross_level_gray_bypass _ _ (by decide)
+
+/-- All Gray links retain their firewall vertices for explicit route claims. -/
+def fullGrayEdges : List (String × String) :=
+  (links.filter (fun link => link.zone == .gray)).flatMap
+    (fun link => [(link.a, link.b), (link.b, link.a)])
+
+theorem gray_full_edge_certificate : ∀ edge ∈ fullGrayEdges,
+    role? edge.1 ≠ some .grayFirewall → role? edge.2 ≠ some .grayFirewall →
+    grayLabel edge.1 = grayLabel edge.2 := by decide
+
+/-- SR-7's virtual-topology counterpart identifies a firewall on each full
+route. A route may have any finite length and may revisit vertices. -/
+theorem gray_route_contains_firewall {a b : String} {nodes : List String}
+    (different : grayLabel a ≠ grayLabel b)
+    (path : TDN.Network.Route (fun x y => (x, y) ∈ fullGrayEdges) a b nodes) :
+    ∃ firewall ∈ a :: nodes, role? firewall = some .grayFirewall := by
+  apply path.must_visit_of_labels (fun id => role? id = some .grayFirewall) grayLabel _ different
+  intro x y step
+  exact gray_full_edge_certificate (x, y) step.1 step.2.1 step.2.2
+
+/-- Both sites contain a full cross-level route through a Gray Firewall.
+Those topology witnesses remain separate from permission to forward traffic. -/
+theorem site_a_gray_route_present :
+    TDN.Network.Route (fun x y => (x, y) ∈ fullGrayEdges) "I_A1" "I_A2"
+      ["G_A1", "GF_A", "G_A2", "I_A2"] := by
+  exact .cons (by decide) (.cons (by decide) (.cons (by decide)
+    (.cons (by decide) (.nil _))))
+
+theorem site_b_gray_route_present :
+    TDN.Network.Route (fun x y => (x, y) ∈ fullGrayEdges) "I_B1" "I_B2"
+      ["G_B1", "GF_B", "G_B2", "I_B2"] := by
+  exact .cons (by decide) (.cons (by decide) (.cons (by decide)
+    (.cons (by decide) (.nil _))))
 
 /-- The retained data graph includes Red, Gray, and Black cables. Removing
 Outer Firewall vertices tests whether any retained cable path bypasses them.
@@ -183,6 +214,23 @@ theorem outer_has_black_cable_path (d : Device) (member : d ∈ devices)
     (outer : d.role = .outer) : Walk dataEdges d.id "BLACK" := by
   obtain ⟨firewall, _, _, first, second⟩ := outer_firewall_paths_present d member outer
   exact .step first (.step second (.refl "BLACK"))
+
+theorem outer_full_edge_certificate : ∀ edge ∈ dataEdges,
+    role? edge.1 ≠ some .firewall → role? edge.2 ≠ some .firewall →
+    blackRegion edge.1 = blackRegion edge.2 := by decide
+
+/-- Every full route from an outer encryptor to the declared Black transport
+contains an Outer Firewall. SR-12's Public Internet trigger remains a separate
+deployment condition; the graph claim also supports N-12's untrusted Black case. -/
+theorem outer_route_contains_firewall (d : Device) (member : d ∈ devices)
+    (outer : d.role = .outer) {nodes : List String}
+    (path : TDN.Network.Route (fun x y => (x, y) ∈ dataEdges) d.id "BLACK" nodes) :
+    ∃ firewall ∈ d.id :: nodes, role? firewall = some .firewall := by
+  apply path.must_visit_of_labels (fun id => role? id = some .firewall) blackRegion
+  · intro x y step
+    exact outer_full_edge_certificate (x, y) step.1 step.2.1 step.2.2
+  · rw [outer_devices_outside_black_region d member outer]
+    decide
 
 /-- Every tunnel has a reverse declaration with matching endpoints, selectors,
 trust domain, and policy ID. Eight endpoint records represent four peer pairs. -/

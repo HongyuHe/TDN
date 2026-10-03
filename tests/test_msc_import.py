@@ -218,10 +218,13 @@ class SnapshotImportTests(unittest.TestCase):
                     IMPORTER.translate(self.snapshot, self.checks)
                 manifest_path.write_text(before)
 
-    def test_historical_generation_remains_explicit_and_strict(self):
+    @unittest.skipUnless(IMPORTER.HISTORICAL_EVIDENCE.is_dir(), "optional historical snapshot is not retained in Git")
+    def test_historical_generation_matches_retained_snapshot(self):
         self.assertEqual(IMPORTER.translate(IMPORTER.HISTORICAL_EVIDENCE / "snapshot",
                          IMPORTER.HISTORICAL_EVIDENCE / "check.json", include_management=True),
                          (ROOT / "TDN/MSC/HistoricalDeployment.lean").read_text())
+
+    def test_historical_generation_remains_explicit_and_strict(self):
         relative = "devices/AW_A1/observed.iptables"
         self.replace_hashed(relative, (self.snapshot / relative).read_text().replace(
             ":FORWARD DROP", ":FORWARD ACCEPT"))
