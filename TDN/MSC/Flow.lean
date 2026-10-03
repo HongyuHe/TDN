@@ -3,6 +3,11 @@ import TDN.MSC.Policy
 /-!
 # Symbolic protected-data processing for the deployed host pairs
 
+`TDN.MSC.Execution` now supplies the evidence-connected packet-execution
+semantics and arbitrary-execution layer guarantees. The simpler readiness
+composition below remains an explicit conditional model. Its wrapper theorems
+alone do not establish behavior of the observed routes, filters, or XFRM state.
+
 This module describes one packet at a time under fixed readiness assumptions.
 It does not model OSPF convergence, timers, spoofed host identities, or changes
 during a packet's journey. `healthy` supplies example assumptions; a successful
@@ -45,7 +50,7 @@ def authorized (packet : Packet) : Bool :=
 
 /-- Readiness summarizes the encryptors and the chosen path for one packet.
 SA means usable encryption state; policy means the expected XFRM policy exists.
-Baseline firewall guards are a separate assumption supported by Policy.lean.
+Baseline firewall guards are a separate assumption supported by `Policy.lean`.
 Authentication summarizes identity, trust, expiry, and revocation acceptance.
 Transport includes installed routes and usable links. Filter readiness means
 the selected packet is allowed on its declared path. None of these Booleans
@@ -92,14 +97,18 @@ outer operation. The type prevents the outer step from taking raw Red data. -/
 def transmit (state : GatewayState) (packet : Packet) : Option BlackPacket :=
   (innerEncrypt state packet).bind (outerEncrypt state)
 
-/-- Outer decryption retains the inner wrapper and checks receiver readiness. -/
+/-- Receiving the outer packet requires the receiver's transport and outer
+firewall path. Outer decryption then retains the inner wrapper. Each receiver
+guard describes its own side of the journey, independently of sender readiness. -/
 def outerDecrypt (state : GatewayState) (packet : BlackPacket) : Option InnerPacket :=
-  if state.outerSA = true ∧ state.outerPeerAuthenticated = true ∧ state.outerPolicy = true then
+  if state.transportReady = true ∧ state.outerFirewallReady = true ∧
+      state.outerSA = true ∧ state.outerPeerAuthenticated = true ∧ state.outerPolicy = true then
     some packet.protectedInner
   else none
 
 def innerDecrypt (state : GatewayState) (packet : InnerPacket) : Option Packet :=
-  if state.innerSA = true ∧ state.innerPeerAuthenticated = true ∧ state.innerPolicy = true then
+  if state.grayPathReady = true ∧ state.innerSA = true ∧
+      state.innerPeerAuthenticated = true ∧ state.innerPolicy = true then
     some packet.protectedPayload
   else none
 
@@ -203,6 +212,20 @@ theorem receiver_inner_failure_closed (sender receiver : GatewayState) (packet :
 theorem receiver_outer_failure_closed (sender receiver : GatewayState) (packet : Packet)
     (down : receiver.outerSA = false) : deliver sender receiver packet = none := by
   simp [deliver, outerDecrypt, down]
+
+/-- Each path failure is checked independently and for every protected packet.
+The sender may remain completely healthy while the receiver path is blocked. -/
+theorem receiver_transport_failure_blocks (sender receiver : GatewayState) (packet : Packet)
+    (down : receiver.transportReady = false) : deliver sender receiver packet = none := by
+  simp [deliver, outerDecrypt, down]
+
+theorem receiver_outer_firewall_failure_blocks (sender receiver : GatewayState) (packet : Packet)
+    (down : receiver.outerFirewallReady = false) : deliver sender receiver packet = none := by
+  simp [deliver, outerDecrypt, down]
+
+theorem receiver_gray_path_failure_blocks (sender receiver : GatewayState) (packet : Packet)
+    (down : receiver.grayPathReady = false) : deliver sender receiver packet = none := by
+  simp [deliver, innerDecrypt, down]
 
 /-- Assumptions for runnable examples, kept separate from sampled evidence. -/
 def healthy : GatewayState := ⟨true, true, true, true, true, true, true, true, true⟩

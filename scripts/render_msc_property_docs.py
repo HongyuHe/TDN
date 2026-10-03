@@ -8,9 +8,14 @@ import json
 from pathlib import Path
 import re
 
+try:
+    from import_msc_snapshot import CURRENT_EVIDENCE
+except ModuleNotFoundError:
+    from scripts.import_msc_snapshot import CURRENT_EVIDENCE
+
 ROOT = Path(__file__).resolve().parents[1]
 INVENTORY = ROOT / "docs/CSfC_network_properties.md"
-SCOPE = ROOT / "models/msc_requirement_scope.json"
+SCOPE = ROOT / "specs/msc_requirement_scope.json"
 PROVABLE = ROOT / "docs/CSfC_network_provable_properties.md"
 UNPROVABLE = ROOT / "docs/CSfC_network_unprovable_properties.md"
 ENTRY_PATTERN = re.compile(
@@ -135,6 +140,23 @@ def linked_theorems(row, sources):
     return ", ".join(f"[`{name}`](../{sources[name]})" for name in row["theorems"])
 
 
+def evidence_summary(scope):
+    """Derive displayed provenance from the importer's selected evidence."""
+    relative = CURRENT_EVIDENCE.relative_to(ROOT).as_posix()
+    expected = relative + "/snapshot/manifest.json"
+    if scope["evidence_catalog"]["snapshot"][1] != expected:
+        raise ValueError("assessment snapshot does not match the importer's selected evidence")
+    manifest = json.loads((CURRENT_EVIDENCE / "snapshot/manifest.json").read_text())
+    checks = json.loads((CURRENT_EVIDENCE / "check.json").read_text())
+    passed = sum(check["passed"] is True for check in checks["checks"])
+    return (
+        f"The selected node-1 evidence is the [pinned export](../{expected}), collected from {manifest['started']} to {manifest['finished']}.\n"
+        f"The associated [check report](../{relative}/check.json), dated {checks['at']}, records {passed}/{len(checks['checks'])} passing checks.\n"
+        "The export and probes are separate, sequential observations; they are not an atomic capture.\n"
+        "Git tracks only the selected snapshot. Historical diagnostics require the separately retained original September export.\n"
+    )
+
+
 def header(scope, checked):
     count = sum(bool(row["theorems"]) for row in scope["entries"])
     excluded = sum(row["assessment_scope"] == "excluded_management" for row in scope["entries"])
@@ -179,7 +201,7 @@ The pinned export retains its original management devices.
 Required Lean regeneration projects out optional management before checking device evidence and emits 23 devices and 24 cables.
 The retained counts are checked by Lean; unavailable or misconfigured optional management cannot block required regeneration.
 HistoricalDeployment.lean and SnapshotDiagnostics.lean preserve the full export and its seven diagnostics behind explicit generation and import.
-The existing data-path results concern unchanged Red/Gray/Black edges, retained appliance FORWARD rules, or protected-Red packet operations.
+The required results concern retained Red/Gray/Black links, local and forwarding filter chains, observed routing and IPsec state, credential admission, and modeled packet executions.
 They do not require the management graph invariants or the HTTPS management probes as premises.
 Full-snapshot count and observation theorems are identified as historical evidence where cited; their management portions are not added obligations for the projection.
 
@@ -193,10 +215,7 @@ Of those descriptions, 213 match after whitespace normalization; VG-19 contains 
 VG-19's assessment records the PDF spelling without silently changing the inventory quotation.
 Threshold/objective choices, permissions, conditions, and source conflicts are retained rather than collapsed into unconditional rules.
 
-The node-1 evidence is the [reviewed export](../artifacts/msc-2026-10-01T193731Z/snapshot/manifest.json) collected on 1 October 2026 from 19:37:31 to 19:37:55 UTC after the gateway protocol and IPv4-options guards were deployed.
-The [probe report](../artifacts/msc-2026-10-01T193731Z/check.json) precedes that export and records 273 passing checks; the observations are not atomic.
-Additional [live guard probes](../artifacts/msc-lean-review/deployment-hardening/guard-probes.json) check protocol rejection at all four inner gateways and option rejection with a positive control at all four outer gateways.
-The [original September export](../artifacts/msc-2026-09-27T215205Z/snapshot/manifest.json) remains unchanged for explicitly historical diagnostics and the original Datalog/ASP comparison.
+""" + evidence_summary(scope) + """
 The full evidence snapshot has 35 logical devices and 44 virtual cables, including the excluded management infrastructure.
 The selected experiment retains two sites, two unordered security labels, IPsec at both layers, IPv4, separate Gray segments, and separate outer encryptors per level.
 The assessment concerns the recorded October observation interval and does not assert that future live state will remain identical.
@@ -205,16 +224,22 @@ Neither type of evidence is silently substituted for the other.
 
 The [importer](../scripts/import_msc_snapshot.py) validates evidence hashes and translates selected fields into [Deployment.lean](../TDN/MSC/Deployment.lean).
 The [topology model](../TDN/MSC/Topology.lean) reasons about imported virtual cables and declarations.
-The [policy model](../TDN/MSC/Policy.lean) represents a restricted IPv4 FORWARD-rule subset, including the exact supported header-length guard for rejecting IPv4 options.
-It omits INPUT, OUTPUT, NAT, fragment and malformed-packet processing, IPv6, and OVS switching semantics.
-The [flow model](../TDN/MSC/Flow.lean) represents protected Red payloads using symbolic wrappers and explicit readiness/authentication assumptions.
-Those wrappers prove processing order, not cryptographic secrecy or Linux/strongSwan correctness.
-Evidence completeness, correct translation, real packet identity, and implementation fidelity remain explicit boundaries when applying model results to the deployment.
+The [policy model](../TDN/MSC/Policy.lean) represents the supported IPv4 rule subset, including exact interface, address, protocol, policy-tag, and header-length conditions.
+[Gateway local contracts](../TDN/MSC/LocalPolicy.lean) and [firewall controls](../TDN/MSC/FirewallControl.lean) apply that matcher to retained INPUT and OUTPUT chains as well as FORWARD.
+The [execution model](../TDN/MSC/Execution.lean) composes observed virtual links, conservative OVS NORMAL switching, route selection, filters, and XFRM processing for complete IPv4 datagrams.
+The [protection theory](../TDN/MSC/Protection.lean) derives ordered inner/outer layers and observed SA provenance along arbitrary finite admitted executions.
+[Credential admission](../TDN/MSC/Authentication.lean) checks public verification evidence, validity, revocation, loaded peer policies, and sampled session/SA bindings.
+The [lifecycle model](../TDN/MSC/Lifecycle.lean) proves endpoint-local authentication ordering for the selected automatic-renewal events and explicit fresh-evidence premises.
+The earlier [flow model](../TDN/MSC/Flow.lean) remains a conditional pipeline illustration with explicit readiness flags.
+NAT, fragmented and malformed packet processing, IPv6, concurrent state changes, and a complete refinement of Linux behavior remain outside the fixed-state execution model.
+Symbolic sealing denotes trusted authenticated IPsec encryption; cryptographic secrecy and implementation correctness require separate arguments.
+Evidence completeness, correct translation, actual packet-origin interpretation, and the stated trusted dependencies remain explicit boundaries when applying the results to the deployment.
 
 The double-encryption scope is classified data crossing the untrusted network, as stated in Section 4 on printed page 3 / PDF page 10.
 OR-4 explicitly excepts control-plane traffic on Gray ingress, and PF-3 permits IKE/ESP and approved control traffic on Black-facing VPN interfaces.
 Permitted control packets are therefore not counterexamples to the specified data-protection claim.
-Within the selected scope, the remaining OR-4 gap is coverage of all retained non-control Gray ingress and its relation to actual packet processing.
+The ordered protection theorems cover Red-origin complete datagrams under the sampled processing state.
+Extending those conclusions to other packet origins requires an explicit origin and service interpretation; an ESP-looking header alone does not establish an inner encryption operation.
 Management traffic is excluded and creates no additional gap.
 The assessment does not assume arbitrary hostile access to trusted Gray and then call that unprovided threat assumption a CP violation.
 
@@ -230,7 +255,7 @@ The assessment does not assume arbitrary hostile access to trusted Gray and then
 External approvals, physical conditions, and human actions require evidence beyond the packet/topology model.
 Default-deny forwarding proves a negative restriction but does not prove a separate obligation to allow required services.
 
-The [machine-readable review](../models/msc_requirement_scope.json) stores every individual assessment and its theorem/evidence references.
+The [machine-readable review](../specs/msc_requirement_scope.json) stores every individual assessment and its theorem/evidence references.
 Run `python3 scripts/render_msc_property_docs.py --check` from the repository root to check that both documents match that review and the unchanged inventory.
 """
 

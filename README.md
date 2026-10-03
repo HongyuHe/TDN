@@ -68,9 +68,10 @@ Encryption wrappers are readable symbolic data.
 
 ## Refresh the pinned deployment data
 
-The current input is [artifacts/msc-2026-10-01T193731Z/snapshot](artifacts/msc-2026-10-01T193731Z/snapshot/manifest.json), with its separately collected [273-check report](artifacts/msc-2026-10-01T193731Z/check.json).
+The current input is [artifacts/msc-2026-10-03T070453Z/snapshot](artifacts/msc-2026-10-03T070453Z/snapshot/manifest.json), with its separately collected [273-check report](artifacts/msc-2026-10-03T070453Z/check.json).
 Snapshot directory names use the export-start timestamp in UTC; `Z` denotes UTC.
-The [September 27 snapshot](artifacts/msc-2026-09-27T215205Z/snapshot/manifest.json) remains the baseline for historical diagnostics and the original solver experiments.
+Git tracks only the latest snapshot. Older snapshots remain local and ignored.
+Historical diagnostics and the original solver experiments require a separately retained September 27 snapshot.
 The offline importer verifies all export hashes, checks declared/deployed identities, and requires supported intended and observed forwarding rules to agree.
 Unsupported rules and mismatched evidence produce errors.
 

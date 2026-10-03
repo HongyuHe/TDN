@@ -1,0 +1,51 @@
+{
+  "id": "I_A1",
+  "role": "inner",
+  "site": "A",
+  "level": "S1",
+  "interfaces": [
+    {
+      "mtu": 1370,
+      "name": "red",
+      "address": "10.1.1.1/24",
+      "zone": "red"
+    },
+    {
+      "mtu": 1435,
+      "name": "gray",
+      "address": "10.100.1.2/24",
+      "zone": "gray"
+    },
+    {
+      "name": "mgmt",
+      "address": "172.30.11.20/24",
+      "zone": "management"
+    }
+  ],
+  "routes": [
+    {
+      "prefix": "10.2.1.0/24",
+      "via": "10.100.1.1"
+    },
+    {
+      "prefix": "10.200.1.2/32",
+      "via": "10.100.1.1"
+    },
+    {
+      "prefix": "10.100.2.0/24",
+      "via": "10.100.1.254"
+    }
+  ],
+  "tunnel": {
+    "peer": "I_B1",
+    "local": "10.100.1.2",
+    "remote": "10.200.1.2",
+    "local_ts": "10.1.1.0/24",
+    "remote_ts": "10.2.1.0/24",
+    "trust": "inner-s1",
+    "reqid": 101,
+    "inside": "red",
+    "outside": "gray"
+  },
+  "admin": "172.30.11.10"
+}

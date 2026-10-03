@@ -22,7 +22,7 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 NETWORKS = ROOT / "networks"
 PAGES = ROOT / "docs/prior-work"
-MODEL = ROOT / "models/prior_work_network_properties.json"
+MODEL = ROOT / "specs/prior_work_network_properties.json"
 INDEX = ROOT / "docs/prior_work_network_properties.md"
 
 PAPERS = {

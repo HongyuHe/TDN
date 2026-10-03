@@ -1,0 +1,51 @@
+{
+  "id": "I_B2",
+  "role": "inner",
+  "site": "B",
+  "level": "S2",
+  "interfaces": [
+    {
+      "mtu": 1370,
+      "name": "red",
+      "address": "10.2.2.1/24",
+      "zone": "red"
+    },
+    {
+      "mtu": 1435,
+      "name": "gray",
+      "address": "10.200.2.2/24",
+      "zone": "gray"
+    },
+    {
+      "name": "mgmt",
+      "address": "172.30.22.20/24",
+      "zone": "management"
+    }
+  ],
+  "routes": [
+    {
+      "prefix": "10.1.2.0/24",
+      "via": "10.200.2.1"
+    },
+    {
+      "prefix": "10.100.2.2/32",
+      "via": "10.200.2.1"
+    },
+    {
+      "prefix": "10.200.1.0/24",
+      "via": "10.200.2.254"
+    }
+  ],
+  "tunnel": {
+    "peer": "I_A2",
+    "local": "10.200.2.2",
+    "remote": "10.100.2.2",
+    "local_ts": "10.2.2.0/24",
+    "remote_ts": "10.1.2.0/24",
+    "trust": "inner-s2",
+    "reqid": 102,
+    "inside": "red",
+    "outside": "gray"
+  },
+  "admin": "172.30.22.10"
+}

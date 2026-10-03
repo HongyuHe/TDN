@@ -16,7 +16,7 @@ SPEC.loader.exec_module(EXTRACT)
 class PriorWorkProperties(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.model = json.loads((ROOT / "models/prior_work_network_properties.json").read_text())
+        cls.model = json.loads((ROOT / "specs/prior_work_network_properties.json").read_text())
         cls.by_path = {d["path"]: d for d in cls.model["datasets"]}
 
     def test_all_manifest_datasets_and_aliases_are_preserved(self):

@@ -16,7 +16,8 @@ if HAS_CLINGO:
     import run_msc_asp as asp
 
 
-@unittest.skipUnless(HAS_CLINGO, "run with .venv-asp/bin/python for clingo")
+@unittest.skipUnless(HAS_CLINGO and (ROOT / "artifacts/msc-2026-09-27T215205Z").is_dir(),
+                     "requires clingo and the separately retained historical snapshot")
 class ASPTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

@@ -1,11 +1,14 @@
 import TDN.MSC.Topology
+import TDN.Network.Filter
 
 /-!
 # A deliberately restricted model of exported FORWARD rules
 
-The importer accepts only rules whose semantics are represented here. Input,
-output, conntrack, NAT, fragments, IPv6, rule updates, and OVS switching are not
-silently included. The current forwarding chains contain ACCEPT rules followed
+The importer accepts only rules whose semantics are represented here. The same
+matcher is reused for INPUT and OUTPUT contracts. Supported connection-state
+tags are explicit inputs. NAT, fragments, IPv6, and dynamic rule updates are
+separate boundaries; OVS switching is modeled in the execution module.
+The current forwarding chains contain ACCEPT rules followed
 by a chain policy, so acceptance is the disjunction of rule matches and that
 policy. Kernel fidelity remains an assumption even when observed and intended
 rules agree byte-for-byte after supported normalization.
@@ -30,6 +33,7 @@ def ForwardRule.matches (rule : ForwardRule) (packet : RoutedPacket) : Bool :=
   rule.destination.all (fun cidr => cidr.contains packet.destination) &&
   optionalMatch rule.protocol packet.protocol &&
   (rule.destinationPorts.isEmpty || rule.destinationPorts.contains packet.destinationPort) &&
+  (rule.connectionStates.isEmpty || rule.connectionStates.contains packet.connectionState) &&
   policyMatch rule.inPolicy packet.inPolicy &&
   policyMatch rule.outPolicy packet.outPolicy &&
   (!rule.noOptions || packet.headerWords == 5)
@@ -65,11 +69,10 @@ theorem protected_table_blocks_untagged (table : ForwardTable) (packet : RoutedP
     (guarded : ∀ rule ∈ table.rules, rule.requiresPolicy = true)
     (hin : packet.inPolicy = none) (hout : packet.outPolicy = none) :
     table.accepts packet = false := by
-  simp only [ForwardTable.accepts, deny, Bool.or_false]
-  apply List.any_eq_false.mpr
-  intro rule member
-  rw [protected_rule_blocks_untagged rule packet (guarded rule member) hin hout]
-  decide
+  change TDN.Network.Filter.accepts ForwardRule.matches table.rules table.defaultAccept packet = false
+  rw [deny]
+  exact TDN.Network.Filter.all_rules_reject _ _ _
+    (fun rule member => protected_rule_blocks_untagged rule packet (guarded rule member) hin hout)
 
 def encryptorTables : List ForwardTable :=
   forwardTables.filter (fun table =>

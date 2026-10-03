@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "source": "docs/CSfC_network_properties.md",
-  "profile": "MSC data and control experiment projected from the reviewed node-1 IPv4 IPsec/IPsec snapshot of 2026-10-01; management devices and traffic excluded by assumption",
+  "profile": "MSC data and control experiment projected from the node-1 IPv4 IPsec/IPsec snapshot of 2026-10-03T070453Z; management devices and traffic excluded by assumption",
   "full_compliance_proven": false,
   "document_policy": "Preserve every inventory entry verbatim. Assess retained data, tunnel, trust, and control claims independently of excluded management devices and traffic. Management-only entries remain in the complete register as outside the experiment, without counting them as failures or vacuous proofs. Mixed entries retain only their non-management proof contributions. Full CP compliance is not claimed.",
   "review": {
@@ -874,43 +874,43 @@
   "evidence_catalog": {
     "snapshot": [
       "Pinned snapshot and manifest",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/manifest.json"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/manifest.json"
     ],
     "spec": [
       "Declared devices, interfaces, links, and peers",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/spec.json"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/spec.json"
     ],
     "status": [
       "Sampled device state, processes, certificates, SAs, and routes",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/status.json"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/status.json"
     ],
     "checks": [
       "273-probe report",
-      "artifacts/msc-2026-10-01T193731Z/check.json"
+      "artifacts/msc-2026-10-03T070453Z/check.json"
     ],
     "inner_config": [
       "Intended I_A1 strongSwan configuration",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/I_A1/intended.swanctl.conf"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/devices/I_A1/intended.swanctl.conf"
     ],
     "outer_config": [
       "Intended O_A1 strongSwan configuration",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/O_A1/intended.swanctl.conf"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/devices/O_A1/intended.swanctl.conf"
     ],
     "inner_filter": [
       "Observed I_A1 filter rules",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/I_A1/observed.iptables"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/devices/I_A1/observed.iptables"
     ],
     "outer_filter": [
       "Observed O_A1 filter rules",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/O_A1/observed.iptables"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/devices/O_A1/observed.iptables"
     ],
     "gray_filter": [
       "Observed GF_A filter rules",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/GF_A/observed.iptables"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/devices/GF_A/observed.iptables"
     ],
     "of_filter": [
       "Observed OF_A1 filter rules",
-      "artifacts/msc-2026-10-01T193731Z/snapshot/devices/OF_A1/observed.iptables"
+      "artifacts/msc-2026-10-03T070453Z/snapshot/devices/OF_A1/observed.iptables"
     ],
     "topology": [
       "Topology model and proofs",
@@ -940,9 +940,101 @@
       "Sampled public credential identity proofs",
       "TDN/MSC/Credentials.lean"
     ],
-    "gateway_probes": [
-      "Bounded live protocol and IPv4-options guard probes",
-      "artifacts/msc-lean-review/deployment-hardening/guard-probes.json"
+    "operational": [
+      "Typed runtime evidence and correspondence checks",
+      "TDN/MSC/Operational.lean"
+    ],
+    "local_policy": [
+      "Gateway INPUT and OUTPUT contracts",
+      "TDN/MSC/LocalPolicy.lean"
+    ],
+    "mtu": [
+      "Observed per-zone MTUs and nested ESP size bounds",
+      "TDN/MSC/MTU.lean"
+    ],
+    "execution": [
+      "Snapshot-connected packet execution and protection invariants",
+      "TDN/MSC/Execution.lean"
+    ],
+    "execution_traces": [
+      "Checked complete data paths and control-traffic witness",
+      "TDN/MSC/ExecutionTrace.lean"
+    ],
+    "authentication": [
+      "Observed credential admission and session binding",
+      "TDN/MSC/Authentication.lean"
+    ],
+    "authentication_theory": [
+      "Reusable credential and revocation semantics",
+      "TDN/Network/Authentication.lean"
+    ],
+    "credential_importer": [
+      "Complete credential and session import",
+      "scripts/msc_credentials.py"
+    ],
+    "protection": [
+      "Observed layer provenance and ordered encryption stack",
+      "TDN/MSC/Protection.lean"
+    ],
+    "protection_theory": [
+      "Reusable layer provenance and stack induction",
+      "TDN/Network/Protection.lean"
+    ],
+    "hardening": [
+      "Sampled appliance configuration and hardening proofs",
+      "TDN/MSC/Hardening.lean"
+    ],
+    "hardening_theory": [
+      "Reusable startup traces, resolver policy, and interface-use checks",
+      "TDN/Network/Hardening.lean"
+    ],
+    "appliance_importer": [
+      "Startup and namespace-wide appliance evidence parser",
+      "scripts/msc_appliances.py"
+    ],
+    "lifecycle": [
+      "Automatic IKE renewal ordering from loaded peer policies",
+      "TDN/MSC/Lifecycle.lean"
+    ],
+    "lifecycle_theory": [
+      "Reusable renewal events, clock progression, and authentication receipts",
+      "TDN/Network/Lifecycle.lean"
+    ],
+    "firewall_control": [
+      "Outer and Gray Firewall local control contracts",
+      "TDN/MSC/FirewallControl.lean"
+    ],
+    "local_control_theory": [
+      "Reusable local service grant semantics",
+      "TDN/Network/LocalControl.lean"
+    ],
+    "source_reachability": [
+      "Gray ingress source and reverse-routing proofs",
+      "TDN/MSC/SourceReachability.lean"
+    ],
+    "routing_theory": [
+      "Reusable route selection and reverse source reachability",
+      "TDN/Network/Routing.lean"
+    ],
+    "control_services": [
+      "Retained control-service placement and admitted route witnesses",
+      "TDN/MSC/ControlServices.lean"
+    ],
+    "service_theory": [
+      "Reusable retrieval-demand and next-hop checks",
+      "TDN/Network/Services.lean"
+    ],
+    "trace_theory": [
+      "Reusable executable traces with checked footprints",
+      "TDN/Network/ExecutionTrace.lean"
+    ],
+    "service_config": [
+      "Hashed declared service mechanisms",
+      "artifacts/msc-2026-10-03T070453Z/snapshot/devices/I_A1/intended.services.json"
+    ],
+    "multicast": [
+      "Multicast filtering and arrival-packet rejection theory",
+      "TDN/MSC/Multicast.lean"
     ]
   },
   "entries": [
@@ -1272,7 +1364,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The saved SA observations and successful same-level probes establish tested interoperability of the configured peer pairs at collection time. Lean checks the recorded tunnel-established and probe-result facts rather than the underlying protocol executions. Those observations support the selected deployment; a complete proof still needs a stated interoperability criterion and a link between actual peer behavior and the model, without inventing a requirement to support every hypothetical configuration. Excluded management probe outcomes do not serve as premises of the retained data-path theorems. The full probe report and management observations are optional diagnostics and cannot block the retained MSC proof review.",
+      "reason": "Saved SA observations and successful same-level probes support the configured peer pairs at collection time. The execution theory also supplies admitted data and IKE paths through observed filters, routes, links, and XFRM state. The generic receive model permits different endpoint-local request IDs for a shared wire association. These results concern the selected configuration and fixed sampled state. Protocol implementation fidelity, future negotiation behavior, and service availability for arbitrary applications remain separate boundaries. Optional management probes do not gate retained proofs.",
       "theorems": [
         "tunnel_peers_symmetric",
         "sampled_tunnels_established"
@@ -1311,7 +1403,7 @@
     },
     {
       "disposition": "Model or evidence gap",
-      "reason": "The retained outer encryptors and Gray Firewalls still require trusted time synchronization. The clause about Gray Management Services is excluded, and no missing AW or management packet is counted against the data-path claims. The export does not establish the required trusted time source or synchronization for the retained appliances. The source placement wording is preserved as a time-service boundary, not treated as satisfied by the scope exclusion.",
+      "reason": "The retained outer encryptors and Gray Firewalls still require the specified trusted time source and placement. Captured worker/device clock intervals, the worker synchronization flag, and the declared shared-worker-clock mechanism support sampled agreement. Those facts do not establish the CP time-source trust or source-location clauses. The Gray Management Services clause is excluded, and management absence supplies neither a failure nor a proof of the retained time requirement.",
       "theorems": [],
       "model_claim": "",
       "id": "MSC-SR-4",
@@ -1371,9 +1463,15 @@
         "walk_preserves",
         "no_cross_level_gray_bypass",
         "site_a_gray_cut",
-        "site_b_gray_cut"
+        "site_b_gray_cut",
+        "gray_full_edge_certificate",
+        "gray_route_contains_firewall",
+        "site_a_gray_route_present",
+        "site_b_gray_route_present",
+        "observed_data_port_indices_unique",
+        "observed_wires_equal_declared"
       ],
-      "model_claim": "After removing Gray Firewalls, each remaining Gray edge preserves its site/security label. Induction extends that local fact to every finite walk, so no such walk connects the differently labeled inner encryptors. The imported virtual graph therefore satisfies the cross-level Gray waypoint condition.",
+      "model_claim": "After removing Gray Firewalls, each remaining Gray edge preserves its site/security label. Induction extends that local fact to every finite walk, so no such walk connects the differently labeled inner encryptors. The imported virtual graph therefore satisfies the cross-level Gray waypoint condition. The explicit full-route theorem identifies a Gray Firewall among the visited vertices of every cross-label Gray route. Both sites have concrete full-route witnesses through their Gray Firewall.",
       "id": "MSC-SR-7",
       "title": "",
       "full_statement_established": false,
@@ -1383,7 +1481,8 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "execution"
       ],
       "assessment_scope": "retained"
     },
@@ -1467,9 +1566,11 @@
         "outer_devices_outside_black_region",
         "no_outer_firewall_bypass",
         "outer_firewall_paths_present",
-        "outer_has_black_cable_path"
+        "outer_has_black_cable_path",
+        "outer_full_edge_certificate",
+        "outer_route_contains_firewall"
       ],
-      "model_claim": "Removing Outer Firewall vertices from the retained Red/Gray/Black cable graph disconnects every outer encryptor from BLACK for all finite walks. Each outer also has a checked two-edge path through an Outer Firewall in the original graph, so the cut does not rely on disconnection.",
+      "model_claim": "Removing Outer Firewall vertices from the retained Red/Gray/Black cable graph disconnects every outer encryptor from BLACK for all finite walks. Each outer also has a checked two-edge path through an Outer Firewall in the original graph, so the cut does not rely on disconnection. The full-route theorem explicitly identifies an Outer Firewall among the visited vertices of each outer-to-Black route.",
       "id": "MSC-SR-12",
       "title": "",
       "full_statement_established": false,
@@ -1559,10 +1660,17 @@
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "Each inner encryptor serves its own Red subnet, but the current proofs do not universally establish that it never routes or switches traffic on behalf of another encryption component. Such a proof needs packet origin, interface roles, and all forwarding paths. The Red-cable theorem alone is insufficient.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The result combines observed forwarding rules, observed virtual links, interface roles, switching state, and sampled forwarding flags. It covers every packet admitted by the fixed-state IPv4 execution model, with no assumption that a caller supplies a safe next hop. Arbitrary spoofed physical origin, unmodeled kernel paths, and future configuration changes remain outside the interpretation. The theorem establishes the selected transit restriction without claiming full implementation correctness.",
+      "theorems": [
+        "inner_direction_certificate",
+        "inner_switching_absent",
+        "inner_red_wire_reaches_host",
+        "inner_forward_crosses_red_boundary",
+        "inner_gray_forward_reaches_only_red_host",
+        "host_forwarding_disabled"
+      ],
+      "model_claim": "Every admitted inner forwarding operation crosses between its Red and Gray interfaces. Gray ingress can leave the inner only on its Red interface, whose observed virtual wire leads to a host. Retained hosts have IPv4 forwarding disabled, and the observed switch relation contains no inner transition. These facts exclude modeled Gray-to-Gray transit through an inner.",
       "id": "MSC-SR-17",
       "title": "",
       "full_statement_established": false,
@@ -1572,7 +1680,9 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "inner_filter",
+        "policy"
       ],
       "assessment_scope": "retained"
     },
@@ -1596,7 +1706,7 @@
     },
     {
       "disposition": "Model or evidence gap",
-      "reason": "The snapshot does not export a complete DNS resolver and daemon configuration for every network device. Absence of DNS from the protected-data model is not evidence that DNS lookup is disabled. An explicit resolver audit could make the configuration claim checkable.",
+      "reason": "The optional DNS-disabling objective is unselected. The retained profile instead selects SR-20’s specified-server branch, with resolver configurations checked against the declared server. The captured resolver and process records do not establish that all DNS lookup is disabled, and the assessment does not infer disabling from an absent packet-model branch.",
       "theorems": [],
       "model_claim": "",
       "id": "MSC-SR-19",
@@ -1613,10 +1723,14 @@
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "The required disjunction is a specified DNS server address or disabled DNS lookup. The export does not establish either branch exhaustively across devices. Collect resolver configuration and check the selected branch rather than treating every DNS use as forbidden.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The selected branch specifies a DNS server. Finite checks compare every captured resolver with an independent selected-server constant. Optional DNS disabling under SR-19 remains unselected. Resolver library conformance, custom application DNS, and future configuration changes remain outside the snapshot claim.",
+      "theorems": [
+        "appliance_observations_complete",
+        "resolver_settings_match_selected_policy",
+        "retained_resolver_queries_use_selected_servers"
+      ],
+      "model_claim": "All retained device containers and their FRR sidecars use the explicitly selected DNS server 130.127.132.51. The generic resolver-policy theorem establishes that any modeled resolver query targets a selected server.",
       "id": "MSC-SR-20",
       "title": "",
       "full_statement_established": false,
@@ -1626,15 +1740,24 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "hardening",
+        "hardening_theory",
+        "appliance_importer",
+        "operational",
+        "local_policy"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "No complete boot configuration or remote-autoconfiguration policy is exported. An ordinary running-state snapshot cannot prove that network-driven autoconfiguration is disabled at boot. A boot-path audit and configuration evidence are needed.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The export retains configured entrypoints, command arguments, complete supported entrypoint scripts, and namespace participants. The importer recognizes complete audited startup shapes and represents unknown commands conservatively. The proof covers the captured startup configuration and fixed OVS settings under trusted container/runtime semantics. It does not reconstruct past boots or prevent later operator changes.",
+      "theorems": [
+        "appliance_observations_complete",
+        "startup_programs_are_local",
+        "retained_startup_never_fetches_remote_configuration"
+      ],
+      "model_claim": "Every captured container startup program uses local operations. A reusable trace theorem proves that every modeled execution of those programs has no remote configuration read. OVS startup additionally requires the captured manager/controller destination set to be empty.",
       "id": "MSC-SR-21",
       "title": "",
       "full_statement_established": false,
@@ -1644,7 +1767,12 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "hardening",
+        "hardening_theory",
+        "appliance_importer",
+        "operational",
+        "local_policy"
       ],
       "assessment_scope": "retained"
     },
@@ -1667,10 +1795,16 @@
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Configuration evidence; no complete proof",
-      "reason": "The specification sets MTU 1400, and interface observations report MTUs. Those values do not prove that all permitted packet sizes avoid fragmentation or its performance effects after both encapsulations. The mandatory T=O requirement needs a packet-size and path-MTU model plus measurements or bounds for the selected IPv4 paths.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The deployment now reserves 65 bytes per encapsulation layer. Finite interface and SA checks instantiate a generic size theorem for all admitted datagram lengths and all retained links. Boundary probes in all four Red-host directions deliver 1369- and 1370-byte packets and reject 1371-byte DF packets locally. The remaining work is input-fragment handling, PMTU control behavior, and the connection between the size model and all runtime processing paths. The result assumes ordinary new outer IPv4 headers and the stated ESP encoding.",
+      "theorems": [
+        "declared_data_mtus",
+        "observed_link_mtus_agree",
+        "observed_sa_sizing_profile",
+        "protected_size_within_zone_mtu",
+        "protected_size_fits_every_observed_link"
+      ],
+      "model_claim": "Every retained observed link endpoint has the declared zone MTU: Red 1370, Gray 1435, and Black 1500. Every modeled Red IPv4 datagram of at most 1370 bytes fits the Gray and Black link MTUs after one and two AES-GCM ESP encapsulations. The bound includes alignment padding and optional UDP encapsulation at either layer; sampled SAs use the supported mode and no extra TFC padding.",
       "id": "MSC-SR-23",
       "title": "",
       "full_statement_established": false,
@@ -1680,7 +1814,9 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "mtu",
+        "operational"
       ],
       "assessment_scope": "retained"
     },
@@ -1704,12 +1840,16 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The theorem checks intended proposal strings. Certificate/signature algorithms, loaded settings, actual negotiation coverage, and cryptographic implementation remain separate obligations. The CNSA 2.0 alternative is not claimed.",
+      "reason": "The selected CNSA 1.0 configuration and sampled public algorithms are checked. Initial IKEv2 CHILD keys derive from the parent IKE exchange, which explains an omitted CHILD group; the report alone does not identify the creating exchange or prove separate CHILD Diffie-Hellman. Intended CHILD rekey proposals require P-384, but future negotiations remain outside the sampled theorem. Signature/path verification uses trusted Go X.509 results. Implementation correctness, product approval, and the unselected CNSA 2.0 alternative remain separate.",
       "theorems": [
         "crypto_configs_complete",
-        "intended_gcm_proposals"
+        "intended_gcm_proposals",
+        "loaded_connections_match_intent",
+        "public_certificate_views_agree",
+        "sampled_public_credentials_usable",
+        "sampled_sessions_match_declared_peers"
       ],
-      "model_claim": "Every intended IKE proposal is aes256gcm16-prfsha384-ecp384 and every intended ESP proposal is aes256gcm16-ecp384. The explicit single alternatives check the represented proposal portion of the CNSA 1.0 branch.",
+      "model_claim": "Intended IKE proposals and every sampled IKE session select AES-256-GCM, SHA-384 PRF, and P-384. Every sampled CHILD selects AES-256-GCM and either reports P-384 or omits a separate exchange group. Public PEM certificates and CRLs use ECDSA P-384 with SHA-384 signatures. Loaded connections match declared peers and selectors; wrong additional sessions and weakened public-key metadata fail finite checks.",
       "id": "MSC-VG-1",
       "title": "",
       "full_statement_established": false,
@@ -1721,15 +1861,21 @@
         "outer_config",
         "status",
         "flow",
-        "configuration"
+        "configuration",
+        "authentication",
+        "authentication_theory",
+        "credential_importer"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Configuration evidence; no complete proof",
-      "reason": "Observed end-entity certificates have device identities and lab-CA issuers rather than self-signed endpoint identities. A self-signed CA trust anchor must not be mistaken for a prohibited self-signed endpoint certificate. The model does not audit every credential source or prove that no default/vendor endpoint certificate can be used.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "Issuer/subject separation and validated public paths provide a bounded contribution to rejecting self-signed device credentials. Full default-certificate and proprietary-certificate provenance requires an inventory of provisioning origins and all relevant credential stores. A self-signed CA trust anchor is a separate role and remains permitted by the selected model.",
+      "theorems": [
+        "sampled_public_credentials_usable",
+        "every_sampled_peer_is_admitted"
+      ],
+      "model_claim": "Every sampled end-entity certificate has a subject distinct from its issuing CA, validates under the selected public trust anchor, and participates in the checked peer-admission inventory. The selected end-entity certificates are not self-issued device certificates.",
       "id": "MSC-VG-2",
       "title": "",
       "full_statement_established": false,
@@ -1740,7 +1886,10 @@
         "inner_config",
         "outer_config",
         "status",
-        "flow"
+        "flow",
+        "authentication",
+        "authentication_theory",
+        "credential_importer"
       ],
       "assessment_scope": "retained"
     },
@@ -1765,15 +1914,19 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Lean checks complete sampled public certificate inventories, declared local and peer identities, matching issuer/authority-key metadata, agreement of peer certificate observations, and distinct local public-key identifiers across encryptors. The export does not establish exhaustive chain installation, cryptographic signature validation, private-key uniqueness, or continuous certificate validity. Optional management devices are outside the inventory used by these proofs.",
+      "reason": "The public export includes the selected flat CA hierarchy and a trusted certificate-path result. The model checks its binding to each endpoint and loaded peer configuration. Private-key possession during IKE relies on the trusted daemon authentication operation, and exhaustive stores outside the captured IKE inventory remain a separate boundary.",
       "theorems": [
         "sampled_credentials_complete",
         "sampled_credentials_match_identities",
         "sampled_certificates_match_ca_metadata",
         "sampled_peer_certificate_identifiers_match",
-        "sampled_local_certificate_identifiers_unique"
+        "sampled_local_certificate_identifiers_unique",
+        "authentication_observations_complete",
+        "public_certificate_views_agree",
+        "sampled_public_credentials_usable",
+        "sampled_peer_public_objects_match"
       ],
-      "model_claim": "Every retained encryptor has the expected local, peer, and CA public metadata. Sampled local public-key identifiers are unique, and peer certificate identifiers match the corresponding endpoint observations.",
+      "model_claim": "Every tunnel endpoint has a complete credential observation. Reported local and peer identities agree with public PEM records; each observed end entity validates under the explicitly configured CA anchor. Existing public-identifier checks retain unique local identities and agreement with the peer endpoint. Cached peer PEM fingerprints match the public certificate observed at the owning endpoint.",
       "id": "MSC-VG-4",
       "title": "",
       "full_statement_established": false,
@@ -1785,7 +1938,10 @@
         "outer_config",
         "status",
         "flow",
-        "credentials"
+        "credentials",
+        "authentication",
+        "authentication_theory",
+        "credential_importer"
       ],
       "assessment_scope": "retained"
     },
@@ -1810,15 +1966,19 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Lean checks public-key authentication settings and nonempty certificate/CA references in all eight intended files. It also checks that intended local and remote identities match the declared endpoints under the experiment's device-name.msc.test convention. The flow model rejects traffic when a peer-authenticated flag is false. Those results do not validate certificate contents, key possession, the loaded daemon configuration, or actual IKE authentication. Protocol and implementation evidence must connect execution to the model flag.",
+      "reason": "The admission model checks identities, public path-verification results, algorithms, usages, validity, and revocation. An ESTABLISHED IKE observation supplies the trusted proof-of-possession result. Lean does not independently reconstruct the IKE authentication signature or prove the strongSwan implementation.",
       "theorems": [
         "inner_authentication_failure_closed",
         "outer_authentication_failure_closed",
         "crypto_configs_complete",
         "intended_certificate_authentication",
-        "intended_peer_identities"
+        "intended_peer_identities",
+        "loaded_connections_match_intent",
+        "every_sampled_peer_is_admitted",
+        "sampled_xfrm_states_belong_to_sessions",
+        "sampled_xfrm_state_has_admitted_peer"
       ],
-      "model_claim": "Every imported intended endpoint selects pubkey authentication on both sides and explicit certificate/CA references. Every declared tunnel has matching intended endpoint identities, excluding wildcard peers. A false inner or outer peer-authenticated flag blocks modeled transmission.",
+      "model_claim": "Both authentication directions of every loaded connection require public-key authentication and explicit certificate/CA identities. Every observed session supplies an admitted certificate request. Every sampled kernel XFRM SA belongs to a listed CHILD session whose peer request passes the same admission policy.",
       "id": "MSC-VG-6",
       "title": "",
       "full_statement_established": false,
@@ -1832,18 +1992,25 @@
         "flow",
         "configuration",
         "contracts",
-        "topology"
+        "topology",
+        "authentication",
+        "authentication_theory",
+        "credential_importer"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Lean checks revocation=strict in all eight intended endpoint configurations. The observation includes CRLs, but the model does not verify certificate paths, CRL freshness, loaded settings, or actual revocation failure handling. An OCSP server is not required when an allowed CRL method is used. Those execution obligations remain separate from the checked intended setting.",
+      "reason": "The generic admission proofs establish that every accepted request has a current selected CRL and an unrevoked certificate. The concrete peer requests pass that procedure. Signature checks and the daemon interpretation of the loaded strict revocation setting are trusted dependencies. Future CRL distribution, reload timing, and ongoing runtime conformance remain separate obligations.",
       "theorems": [
         "crypto_configs_complete",
-        "intended_strict_revocation"
+        "intended_strict_revocation",
+        "loaded_connections_match_intent",
+        "public_crl_views_agree",
+        "sampled_public_credentials_usable",
+        "every_sampled_peer_is_admitted"
       ],
-      "model_claim": "All imported intended crypto configurations select strict remote revocation checking, and the completeness theorem ties those configurations to every declared tunnel endpoint.",
+      "model_claim": "Every loaded connection requires revocation status GOOD. Reported CRLs agree with public PEM CRLs; their signatures, issuer bindings, update periods, and revocation serials remain explicit. Admission selects the newest authenticated CRL by number and requires freshness and absence of the presented serial. Missing, stale, or revoking evidence blocks the modeled request.",
       "id": "MSC-VG-7",
       "title": "",
       "full_statement_established": false,
@@ -1857,15 +2024,25 @@
         "flow",
         "configuration",
         "contracts",
-        "topology"
+        "topology",
+        "authentication",
+        "authentication_theory",
+        "credential_importer"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Configuration evidence; no complete proof",
-      "reason": "Observed certificates report validity intervals and their sampled validity status. The flow model does not contain a clock or certificate-expiration procedure. A proof of mandatory expiry checking needs time and validation semantics rather than a currently valid certificate alone.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The snapshot retains actual validity intervals and public-path results. The admission procedure checks those intervals, and the automatic-renewal model binds each authentication event to its current modeled clock and new exchange. Absolute clock accuracy, fresh cryptographic verification, and correct implementation of future protocol transitions remain trusted runtime boundaries. The proof does not establish a complete dynamic Linux/XFRM refinement.",
+      "theorems": [
+        "public_certificate_views_agree",
+        "sampled_public_credentials_usable",
+        "credential_clocks_match_runtime",
+        "every_sampled_peer_is_admitted",
+        "sampled_appliance_clocks_agree_with_synchronized_worker",
+        "renewal_receipt_uses_credential_admission"
+      ],
+      "model_claim": "Every sampled certificate validity interval contains the audit time. Credential audits agree with the sampled container clock within five seconds. The generic admission theorem requires the presented certificate to be current; an expired or not-yet-valid certificate is rejected even if a stored signature-verification result remains positive. Separate enclosing worker/device time observations agree, and the worker reports NTP synchronization. Automatic-renewal authentication events use an audit at the current modeled time and apply the same admission checks; the old snapshot audit time cannot be replayed after the clock advances.",
       "id": "MSC-VG-8",
       "title": "",
       "full_statement_established": false,
@@ -1876,18 +2053,26 @@
         "inner_config",
         "outer_config",
         "status",
-        "flow"
+        "flow",
+        "authentication",
+        "authentication_theory",
+        "credential_importer",
+        "hardening",
+        "lifecycle",
+        "lifecycle_theory"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The finite configuration claim is established for the hashed intended files. Loaded configuration, IETF protocol conformance, and future negotiations remain separate. Sampled tunnel establishment is retained as a distinct observation.",
+      "reason": "The configuration and sampled runtime claims are checked together with declared peer consistency. IETF protocol conformance, future negotiations, and faithful daemon implementation remain separate. Sampled establishment supplies a distinct current-state observation.",
       "theorems": [
         "crypto_configs_complete",
-        "intended_ikev2_tunnel_mode"
+        "intended_ikev2_tunnel_mode",
+        "loaded_connections_match_intent",
+        "sampled_sessions_match_declared_peers"
       ],
-      "model_claim": "All eight intended configurations explicitly select IKE version 2.",
+      "model_claim": "All eight intended configurations, every loaded connection, and every sampled IKE session select version 2.",
       "id": "MSC-VG-9",
       "title": "",
       "full_statement_established": false,
@@ -1899,7 +2084,8 @@
         "outer_config",
         "status",
         "flow",
-        "configuration"
+        "configuration",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
@@ -1943,12 +2129,13 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The selected GCM alternative has a configuration check. Loaded settings, complete session negotiation coverage, and implementation fidelity remain separate; the CBC alternative is not imposed.",
+      "reason": "The selected GCM alternative is checked in intended configuration and every sampled session. Future negotiations and cryptographic implementation correctness remain external. The CBC alternative is not imposed as an additional simultaneous requirement.",
       "theorems": [
         "crypto_configs_complete",
-        "intended_gcm_proposals"
+        "intended_gcm_proposals",
+        "sampled_sessions_match_declared_peers"
       ],
-      "model_claim": "All eight intended ESP proposal strings select AES-256-GCM.",
+      "model_claim": "All eight intended ESP proposals and every corresponding sampled CHILD session select AES-256-GCM.",
       "id": "MSC-VG-12",
       "title": "",
       "full_statement_established": false,
@@ -1960,18 +2147,21 @@
         "outer_config",
         "status",
         "flow",
-        "configuration"
+        "configuration",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Under the documented strongSwan interpretation, over_time is a relative overrun allowance and randomization subtracts from scheduled reauthentication. The checked sum is a configured upper bound for the explicit profile. The files are intended settings; loaded settings and actual timer execution have not been proved.",
+      "reason": "The new contribution checks loaded settings and sampled timers as well as intended files. It does not prove future scheduler execution, time-source availability, or every possible lifecycle transition.",
       "theorems": [
         "crypto_configs_complete",
-        "intended_ike_lifetime_bound"
+        "intended_ike_lifetime_bound",
+        "loaded_connections_match_intent",
+        "sampled_authentication_lifetimes"
       ],
-      "model_claim": "Every intended configuration has positive reauthentication time, disables ordinary IKE rekeying, and satisfies reauth_time + over_time <= 24 hours. The files specify 3 hours plus 10 minutes.",
+      "model_claim": "The intended IKE reauthentication plus overrun bound is below 24 hours. Loaded reauthentication/rekey settings agree with intent. Every observed IKE session has a reauthentication timer, no IKE rekey timer, and an elapsed-age plus remaining-reauthentication interval within the configured schedule.",
       "id": "MSC-VG-13",
       "title": "",
       "full_statement_established": false,
@@ -1983,18 +2173,23 @@
         "outer_config",
         "status",
         "flow",
-        "configuration"
+        "configuration",
+        "authentication",
+        "authentication_theory",
+        "credential_importer"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The numerical bound is checked on intended life_time values. The proof does not establish that those values are loaded or that clocks and daemon timers enforce the bound at runtime.",
+      "reason": "These facts cover configuration and the observed timer/state records. Continuous expiration enforcement and all future rekeys require a lifecycle/implementation argument beyond the snapshot.",
       "theorems": [
         "crypto_configs_complete",
-        "intended_child_lifetime_bound"
+        "intended_child_lifetime_bound",
+        "sampled_authentication_lifetimes",
+        "sampled_xfrm_states_belong_to_sessions"
       ],
-      "model_claim": "Every intended CHILD_SA hard lifetime is positive and at most 8 hours. All eight files specify 1 hour.",
+      "model_claim": "The intended CHILD lifetime and sampled kernel hard-lifetime fields respect the eight-hour bound. Every listed CHILD session has installation age plus remaining expiration at most eight hours, and its public SPIs bind the session to sampled kernel SAs.",
       "id": "MSC-VG-14",
       "title": "",
       "full_statement_established": false,
@@ -2006,20 +2201,29 @@
         "outer_config",
         "status",
         "flow",
-        "configuration"
+        "configuration",
+        "authentication",
+        "authentication_theory",
+        "credential_importer"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Lean checks that every declared inner peer pair has equal security labels and that authorized modeled Red flows preserve those labels. The proof treats S1 and S2 as complete, unordered labels. Actual certificate acceptance and rejection of undeclared peers remain implementation obligations beyond the declaration check.",
+      "reason": "Level equality is derived from checked loaded rules; the admission function does not assume equality as a guard. Certificate path and possession checks are explicit trusted operations. The conclusion concerns the declared complete labels and modeled admission policy; physical classification assignments and full daemon conformance remain external.",
       "theorems": [
         "inner_peers_same_level",
         "authorized_same_level",
         "forwarded_same_level",
-        "cross_level_not_delivered"
+        "cross_level_not_delivered",
+        "inner_peer_rules_preserve_level",
+        "peer_rule_labels_match_identities",
+        "admitted_inner_peer_has_same_level",
+        "admitted_inner_identity_levels_equal",
+        "sampled_sessions_match_declared_peers",
+        "sampled_anchor_objects_match_trust_domains"
       ],
-      "model_claim": "All imported inner peer pairs have equal declared security labels. Authorized modeled packets preserve their source/destination label, and cross-level modeled delivery is blocked. The result checks declarations and symbolic flow, not every actual IKE authentication event.",
+      "model_claim": "Peer rules come from every loaded connection and bind explicit identities to configured trust anchors. A finite certificate shows that all inner rules connect known identities at the same complete security level. The reusable admission theorem then proves that any admitted inner request has equal known identity labels. Every observed IKE session also matches its declared peer. Public CA fingerprints also agree within each declared trust domain and differ between distinct domains.",
       "id": "MSC-VG-15",
       "title": "",
       "full_statement_established": false,
@@ -2030,15 +2234,27 @@
         "inner_config",
         "outer_config",
         "status",
-        "flow"
+        "flow",
+        "authentication",
+        "authentication_theory",
+        "credential_importer"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Configuration evidence; no complete proof",
-      "reason": "The intended profile requests periodic reauthentication and sets IKE rekey_time=0s. Those settings support the chosen reauthentication strategy, but the current model has no IKE lifecycle or ordering of reauthentication and rekey events. A protocol-trace invariant is needed to establish the stated ordering for all executions.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The generic transition model includes ordinary inline rekey as a separate branch. A finite check over all loaded connection timers excludes its automatic origins, and induction derives the ordering result for arbitrarily many attempts. Fresh exchange-bound cryptographic verification and correct strongSwan execution are trusted dependencies. The scope is automatic requests emitted by the configured gateways; disabling a local timer does not reject unconstrained peer-initiated or operator-forced inline rekeys outside that model. Deletion order, service continuity during renewal, and future data-plane/XFRM evolution remain separate claims. Activation is local to each endpoint; the theorem does not impose an incorrect atomic activation after both endpoints finish. The strongSwan 5.9.13 establishment paths were inspected to justify that distinction.",
+      "theorems": [
+        "loaded_connections_match_intent",
+        "sampled_authentication_lifetimes",
+        "loaded_renewal_policies",
+        "every_loaded_connection_disables_inline",
+        "automatic_inline_requests_disabled",
+        "both_peers_schedule_reauthentication",
+        "automatic_replacement_has_fresh_peer_authentication",
+        "renewal_receipt_uses_credential_admission"
+      ],
+      "model_claim": "Every loaded connection schedules reauthentication and disables ordinary IKE rekey on both endpoints. In every finite modeled automatic-renewal execution, each gateway activates its local replacement association only after checking its peer in that exact new attempt. The receipt passes full credential admission, uses the current modeled time, follows the attempt start, and precedes that gateway's activation. Old-attempt receipts and unbound possession results are rejected. The responder may activate before the initiator processes its response. Candidate IKE key derivation remains before IKE_AUTH.",
       "id": "MSC-VG-16",
       "title": "",
       "full_statement_established": false,
@@ -2049,7 +2265,12 @@
         "inner_config",
         "outer_config",
         "status",
-        "flow"
+        "flow",
+        "authentication",
+        "authentication_theory",
+        "credential_importer",
+        "lifecycle",
+        "lifecycle_theory"
       ],
       "assessment_scope": "retained"
     },
@@ -2074,12 +2295,13 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The selected GCM alternative has a configuration check. Loaded settings and actual negotiation/implementation coverage remain separate. The CBC threshold alternative is not imposed.",
+      "reason": "The selected GCM alternative is checked in intended configuration and every sampled session. Future negotiations and cryptographic implementation correctness remain external. The CBC alternative is not imposed as an additional simultaneous requirement.",
       "theorems": [
         "crypto_configs_complete",
-        "intended_gcm_proposals"
+        "intended_gcm_proposals",
+        "sampled_sessions_match_declared_peers"
       ],
-      "model_claim": "All eight intended IKE proposal strings select AES-256-GCM.",
+      "model_claim": "All eight intended IKE proposals and every corresponding sampled IKE session select AES-256-GCM.",
       "id": "MSC-VG-18",
       "title": "",
       "full_statement_established": false,
@@ -2091,7 +2313,8 @@
         "outer_config",
         "status",
         "flow",
-        "configuration"
+        "configuration",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
@@ -2498,10 +2721,16 @@
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Configuration evidence; no complete proof",
-      "reason": "Inner interfaces use the declared MTU 1400, but no theorem relates that value to packet sizes, both layers' overhead, or Black path MTU. The Objective concerns reducing fragmentation and its performance impact. A packet-size/path model and appropriate measurements are needed rather than assuming that any reduced MTU suffices.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The deployment now reserves 65 bytes per encapsulation layer. Finite interface and SA checks instantiate a generic size theorem for all admitted datagram lengths and all retained links. Boundary probes in all four Red-host directions deliver 1369- and 1370-byte packets and reject 1371-byte DF packets locally. The remaining work is input-fragment handling, PMTU control behavior, and the connection between the size model and all runtime processing paths. The result assumes ordinary new outer IPv4 headers and the stated ESP encoding. The requirement retains its Objective status; the same engineering bound also contributes to mandatory SR-23.",
+      "theorems": [
+        "declared_data_mtus",
+        "observed_link_mtus_agree",
+        "observed_sa_sizing_profile",
+        "protected_size_within_zone_mtu",
+        "protected_size_fits_every_observed_link"
+      ],
+      "model_claim": "Every retained observed link endpoint has the declared zone MTU: Red 1370, Gray 1435, and Black 1500. Every modeled Red IPv4 datagram of at most 1370 bytes fits the Gray and Black link MTUs after one and two AES-GCM ESP encapsulations. The bound includes alignment padding and optional UDP encapsulation at either layer; sampled SAs use the supported mode and no extra TFC padding.",
       "id": "MSC-IR-2",
       "title": "",
       "full_statement_established": false,
@@ -2514,13 +2743,15 @@
         "inner_filter",
         "outer_filter",
         "policy",
-        "flow"
+        "flow",
+        "mtu",
+        "operational"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The imported inner FORWARD tables require outbound IPsec policy tags on Red-to-Gray allow rules, and Lean proves untagged modeled forwarding is rejected. The symbolic transmit pipeline also requires the inner encryption step and blocks on missing inner SA or policy. Coverage of all real packets and correctness of XFRM tags remain assumptions to discharge. The address-level restriction is now linked to the attached Red prefixes, while actual source attribution remains external.",
+      "reason": "The imported contract requires the outbound IPsec tag. A generic send lemma shows that a successful operation with that tag seals the body with an observed matching SA; the unchanged-packet branch cannot satisfy the rule. The conclusion concerns forwarding across the selected Red/Gray interfaces. Local delivery, fragmentation, dynamic changes, and implementation conformance remain separate obligations.",
       "theorems": [
         "protected_rule_blocks_untagged",
         "protected_table_blocks_untagged",
@@ -2542,9 +2773,13 @@
         "inner_selectors_match_red_prefixes",
         "inner_contracts_match_red_prefixes",
         "accepted_inner_outbound_in_red_prefixes",
-        "accepted_inner_inbound_in_red_prefixes"
+        "accepted_inner_inbound_in_red_prefixes",
+        "gray_payload_has_encryption_layer",
+        "processing_budget",
+        "red_payload_on_gray_has_observed_inner_layer",
+        "gateway_outbound_forward_adds_observed_layer"
       ],
-      "model_claim": "Every imported encryptor FORWARD table is default deny and every allow rule requires an IPsec policy tag. Any modeled packet with neither tag is rejected. Successful symbolic transmission includes inner encryption, and loss of the inner SA or policy blocks transmission. The imported tables now match tunnel-derived contracts for every encryptor. Accepted outbound and inbound packets require the declared request ID in the correct direction and the declared selectors. Every packet satisfying the contract is accepted. The inner selectors equal the attached local and peer Red subnets. Accepted inner FORWARD traffic is therefore restricted to those declared subnets in the corresponding direction.",
+      "model_claim": "Any successful modeled forward from an inner gateway's Red interface performs an observed IPsec sealing operation. That local guarantee covers every modeled packet and requires no assumed initial protection stack. The end-to-end invariant also identifies an exact observed inner layer around every tracked Red-origin datagram reaching Gray. Imported rules enforce the declared request ID and selectors.",
       "id": "MSC-IR-3",
       "title": "",
       "full_statement_established": false,
@@ -2558,7 +2793,13 @@
         "outer_filter",
         "policy",
         "flow",
-        "contracts"
+        "contracts",
+        "execution",
+        "execution_traces",
+        "operational",
+        "protection",
+        "protection_theory",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
@@ -2585,7 +2826,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The imported Gray-to-Red allow rules require inbound IPsec policy, and the symbolic delivery theorem includes inner decryption before Red delivery. Those results establish the modeled data-path contribution. They do not prove that every kernel receive path follows the model or that real decryption is cryptographically sound. The address-level restriction is now linked to the attached Red prefixes, while actual source attribution remains external.",
+      "reason": "The imported inbound contract requires an inbound IPsec tag. The generic receive lemma distinguishes unchanged transit from actual unwrapping; only the unwrapping branch can satisfy the rule. The theorem covers arbitrary modeled incoming packets, independently of a Red-origin path premise. Authenticated decryption is the trusted meaning of the operation. Complete raw-packet, fragment, dynamic, and kernel behavior remains outside the present model.",
       "theorems": [
         "encryptor_without_policy_drops",
         "delivered_has_decryption_steps",
@@ -2603,9 +2844,13 @@
         "inner_selectors_match_red_prefixes",
         "inner_contracts_match_red_prefixes",
         "accepted_inner_outbound_in_red_prefixes",
-        "accepted_inner_inbound_in_red_prefixes"
+        "accepted_inner_inbound_in_red_prefixes",
+        "receiver_gray_path_failure_blocks",
+        "gray_payload_has_encryption_layer",
+        "processing_budget",
+        "gateway_inbound_forward_removes_layer"
       ],
-      "model_claim": "Untagged modeled encryptor forwarding is rejected. Every successful symbolic delivery includes the receive-side inner decryption step, and loss of the receiving inner SA blocks delivery. These claims do not establish the semantics of all actual kernel receive paths. The imported tables now match tunnel-derived contracts for every encryptor. Accepted outbound and inbound packets require the declared request ID in the correct direction and the declared selectors. Every packet satisfying the contract is accepted. The inner selectors equal the attached local and peer Red subnets. Accepted inner FORWARD traffic is therefore restricted to those declared subnets in the corresponding direction.",
+      "model_claim": "Any successful modeled forward from an inner gateway's Gray interface removes one wrapper before routing its body toward Red. The observed inbound/forwarding XFRM state and policy checks supply the required inbound tag. A clear packet or a missing required state cannot satisfy that forwarding acceptance.",
       "id": "MSC-IR-5",
       "title": "",
       "full_statement_established": false,
@@ -2619,7 +2864,13 @@
         "outer_filter",
         "policy",
         "flow",
-        "contracts"
+        "contracts",
+        "execution",
+        "execution_traces",
+        "operational",
+        "protection",
+        "protection_theory",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
@@ -2711,7 +2962,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Every imported outer FORWARD allow rule requires an IPsec policy tag, and the model's successful transmit path includes the outer encryption step. Missing outer SA or policy blocks modeled transmission. The proof applies to modeled protected-data forwarding; kernel processing and coverage of all actual ingress remain external premises.",
+      "reason": "The proof uses observed routes, interfaces, filters, selectors, XFRM states, and virtual-link/OVS transitions. Selector compatibility rules out impossible decrypt-and-reencrypt combinations in the finite certificate. Generic stack and provenance induction establish the exact ordered layers without prescribing a fixed route. The model covers complete IPv4 datagrams and fixed sampled state. Arbitrary traffic injected outside the modeled starts, local service generation, fragmentation, dynamic transitions, and implementation conformance remain separate obligations.",
       "theorems": [
         "encryptor_tables_guarded",
         "encryptor_without_policy_drops",
@@ -2727,9 +2978,14 @@
         "declared_contract_accepts_iff",
         "encryptor_contract_directions",
         "accepted_outbound_requires_declared_policy",
-        "accepted_inbound_requires_declared_policy"
+        "accepted_inbound_requires_declared_policy",
+        "black_payload_has_nested_protection",
+        "no_plaintext_red_to_black_execution",
+        "clear_red_message_is_doubly_wrapped_on_black",
+        "red_payload_on_black_has_admitted_ordered_layers",
+        "gateway_outbound_forward_adds_observed_layer"
       ],
-      "model_claim": "The imported outer forwarding tables are among the guarded encryptor tables. The symbolic pipeline contains an outer encryption step and rejects transmission without outer SA/policy readiness. Real encryption and complete traffic coverage remain outside the theorem. The imported tables now match tunnel-derived contracts for every encryptor. Accepted outbound and inbound packets require the declared request ID in the correct direction and the declared selectors. Every packet satisfying the contract is accepted.",
+      "model_claim": "Any successful modeled forward from an outer gateway's Gray interface performs an observed IPsec sealing operation, including permitted control traffic. Separately, every tracked Red-origin datagram reaching Black has the exact observed inner-then-outer nesting, with both SAs bound to admitted peer sessions.",
       "id": "MSC-OR-2",
       "title": "",
       "full_statement_established": false,
@@ -2743,7 +2999,13 @@
         "outer_filter",
         "policy",
         "flow",
-        "contracts"
+        "contracts",
+        "execution",
+        "execution_traces",
+        "operational",
+        "protection",
+        "protection_theory",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
@@ -2770,11 +3032,17 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The symbolic protected-Red pipeline encrypts at the inner component before passing its result to outer encryption. Management traffic is absent by scope assumption and contributes no counterexample or missing packet class. Permitted IKE and other control packets retain the explicit control-plane exception. Within the retained scope, the unresolved step is showing that every relevant non-control Gray ingress event is represented by the protected-data model and follows its actual processing order. The existing theorem proves the modeled order without requiring a management proof.",
+      "reason": "The invariant is established from observed forwarding and outgoing-policy selectors and lifted to arbitrary finite executions. The source-origin premise is explicit: arbitrary injected Gray packets require a separate attribution and service-origin argument. An ESP-looking header alone is not treated as evidence of an inner seal. Management traffic remains excluded. Crypto operations and the interpretation of Linux processing remain trusted dependencies.",
       "theorems": [
-        "forwarded_has_both_steps"
+        "forwarded_has_both_steps",
+        "processing_budget_certificate",
+        "processing_budget",
+        "every_execution_preserves_protection",
+        "gray_payload_has_encryption_layer",
+        "inner_ike_control_is_allowed_on_black",
+        "red_payload_on_gray_has_observed_inner_layer"
       ],
-      "model_claim": "For every successful modeled protected-Red transmission, an inner encryption result is passed to outer encryption. The theorem proves the required order for the modeled data type. Management traffic is excluded from the assessment, while permitted control traffic is expressly excepted by OR-4. Coverage of all retained non-control Gray ingress and actual kernel processing remains a separate refinement question.",
+      "model_claim": "Every tracked clear Red-origin datagram reaching a Gray interface through any admitted finite execution is the original datagram sealed by an observed inner SA. The result identifies the inner operation and its observed SA. A checked inner-IKE control trace reaches Black with one outer layer and no protected Red payload, preserving the CP exception.",
       "id": "MSC-OR-4",
       "title": "",
       "full_statement_established": false,
@@ -2787,7 +3055,13 @@
         "inner_filter",
         "outer_filter",
         "policy",
-        "flow"
+        "flow",
+        "execution",
+        "execution_traces",
+        "operational",
+        "protection",
+        "protection_theory",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
@@ -2807,9 +3081,11 @@
         "declared_contract_accepts_iff",
         "encryptor_contract_directions",
         "accepted_outbound_requires_declared_policy",
-        "accepted_inbound_requires_declared_policy"
+        "accepted_inbound_requires_declared_policy",
+        "receiver_transport_failure_blocks",
+        "receiver_outer_firewall_failure_blocks"
       ],
-      "model_claim": "Every successful symbolic delivery includes outer decryption before inner decryption, and failure of the receiving outer SA blocks delivery. Imported encryptor forwarding rejects packets with neither policy tag. Permitted gateway-local control processing is outside the protected-data path. The imported tables now match tunnel-derived contracts for every encryptor. Accepted outbound and inbound packets require the declared request ID in the correct direction and the declared selectors. Every packet satisfying the contract is accepted.",
+      "model_claim": "Every successful symbolic delivery includes outer decryption before inner decryption, and failure of the receiving outer SA blocks delivery. Imported encryptor forwarding rejects packets with neither policy tag. Permitted gateway-local control processing is outside the protected-data path. The imported tables now match tunnel-derived contracts for every encryptor. Accepted outbound and inbound packets require the declared request ID in the correct direction and the declared selectors. Every packet satisfying the contract is accepted. Receiver transport loss and Outer Firewall path loss each independently block symbolic delivery.",
       "id": "MSC-OR-5",
       "title": "",
       "full_statement_established": false,
@@ -2850,7 +3126,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Modeled protected transmission requires the outer SA and policy, while imported outer FORWARD rules deny untagged forwarding. Those results support no plaintext split path for the modeled flows. A complete claim needs all selectors, routing, local/output traffic, and implementation paths to be covered.",
+      "reason": "The proof uses observed routes, interfaces, filters, selectors, XFRM states, and virtual-link/OVS transitions. Selector compatibility rules out impossible decrypt-and-reencrypt combinations in the finite certificate. Generic stack and provenance induction establish the exact ordered layers without prescribing a fixed route. The model covers complete IPv4 datagrams and fixed sampled state. Arbitrary traffic injected outside the modeled starts, local service generation, fragmentation, dynamic transitions, and implementation conformance remain separate obligations.",
       "theorems": [
         "encryptor_without_policy_drops",
         "outer_failure_closed",
@@ -2864,9 +3140,13 @@
         "declared_contract_accepts_iff",
         "encryptor_contract_directions",
         "accepted_outbound_requires_declared_policy",
-        "accepted_inbound_requires_declared_policy"
+        "accepted_inbound_requires_declared_policy",
+        "black_payload_has_nested_protection",
+        "no_plaintext_red_to_black_execution",
+        "clear_red_message_is_doubly_wrapped_on_black",
+        "red_payload_on_black_has_admitted_ordered_layers"
       ],
-      "model_claim": "The symbolic protected-data path has no successful transmission without outer SA/policy readiness. Imported outer forwarding also rejects packets with neither tag. The result does not cover every actual route, selector, or local-output path. The imported tables now match tunnel-derived contracts for every encryptor. Accepted outbound and inbound packets require the declared request ID in the correct direction and the declared selectors. Every packet satisfying the contract is accepted.",
+      "model_claim": "Every tracked clear Red-origin datagram reaching Black along any admitted finite execution is the original datagram sealed by an observed inner SA and then an observed outer SA. Both states are bound to admitted peer sessions, and their owners have different roles and trust domains. A clear or single-layer Red payload cannot reach Black through the modeled execution. The earlier default-deny and missing-policy/SA results retain their local contributions.",
       "id": "MSC-OR-7",
       "title": "",
       "full_statement_established": false,
@@ -2880,15 +3160,25 @@
         "outer_filter",
         "policy",
         "flow",
-        "contracts"
+        "contracts",
+        "execution",
+        "execution_traces",
+        "operational",
+        "protection",
+        "protection_theory",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Configuration evidence; no complete proof",
-      "reason": "The outer encryptors have static routes and no declared routing-protocol role. OSPF runs on BLACK and the Outer Firewalls, which are different devices and are not prohibited by this row. A complete proof needs exhaustive outer-process/interface evidence and a model of protocol execution; the current Lean topology proof supplies neither.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The namespace scan includes host-launched processes and control sidecars, preventing a container-local process list from hiding a routing daemon. OSPF on BLACK and the Outer Firewalls remains allowed because those devices are separate from the outer encryptors. Executable classification, arbitrary concealed protocol implementations, omitted packet paths, and future process changes remain implementation boundaries.",
+      "theorems": [
+        "appliance_observations_complete",
+        "outer_namespaces_have_no_routing_daemon",
+        "external_gateway_local_traffic_excludes_ospf_and_bgp"
+      ],
+      "model_claim": "The complete sampled outer network-namespace process inventories contain no recognized routing-protocol daemon. Every accepted external local gateway packet is IKE or ESP, so OSPF and TCP-based BGP cannot pass the modeled INPUT or OUTPUT chains.",
       "id": "MSC-OR-8",
       "title": "",
       "full_statement_established": false,
@@ -2901,7 +3191,13 @@
         "inner_filter",
         "outer_filter",
         "policy",
-        "flow"
+        "flow",
+        "status",
+        "hardening",
+        "hardening_theory",
+        "appliance_importer",
+        "operational",
+        "local_policy"
       ],
       "assessment_scope": "retained"
     },
@@ -2927,10 +3223,12 @@
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Configuration evidence; no complete proof",
-      "reason": "Declared outer peers and FORWARD allow rules constrain data to intended remote addresses. The source also allows another intended destination device, so a universal remote-outer-only predicate would be too strong. Local OUTPUT is ACCEPT and is not modeled; proving that every initiated connection has an intended destination requires a complete destination policy and local-output analysis.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The cited local-output theorem follows from exact agreement between observed chains and tunnel-derived contracts. The CP also permits another intended destination device; the selected profile chooses the peer gateway. The execution model now includes routing, encapsulation, and observed SA provenance. The OR-10 local theorem concerns OUTPUT events; a complete external-wire destination claim must also connect every relevant execution event to its permitted destination. Fragmented or malformed packets, future state, and implementation fidelity remain separate boundaries.",
+      "theorems": [
+        "accepted_external_output_has_intended_destination"
+      ],
+      "model_claim": "Every accepted modeled external OUTPUT packet of a VPN gateway has that gateway's declared local address, intended peer destination, and external interface. The selected outer policy uses the remote outer gateway as its intended external destination.",
       "id": "MSC-OR-10",
       "title": "",
       "full_statement_established": false,
@@ -2943,13 +3241,15 @@
         "inner_filter",
         "outer_filter",
         "policy",
-        "flow"
+        "flow",
+        "local_policy",
+        "status"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Model or evidence gap",
-      "reason": "The snapshot has explicit ingress and forwarding allowlists, but locally generated OUTPUT traffic is broadly accepted. The model omits INPUT/OUTPUT semantics and the organization has supplied no authoritative minimum service set. Proving minimum necessary addresses, ports, and protocols on every interface requires that policy and a complete filter model.",
+      "reason": "Gateway INPUT/OUTPUT and FORWARD tables are compared with explicit tunnel-derived contracts. Outer and Gray Firewall local chains are checked against declared control grants, including exact Black OSPF adjacencies. Required service-path witnesses explain the selected absence of Gray transit demands. Those checks establish the selected permissions, while the complete smallest-possible-service requirement needs an authoritative service/minimality policy covering every retained device. The assessment does not infer global minimality from agreement with a chosen contract.",
       "theorems": [],
       "model_claim": "",
       "id": "MSC-PF-1",
@@ -2968,10 +3268,15 @@
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "Declared interfaces are present, but the export does not identify the complete hardware/interface inventory or which interfaces are unused. A proof must compare that inventory with an approved enabled set and observed administrative state. Interface counts alone cannot establish that all unused interfaces are disabled.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The complete observed interface lists are checked against a used set derived from virtual-link endpoints and explicit implementation roles. Separate correspondence proofs check the observed wiring. The model covers the retained virtual appliance interfaces; optional management ports are projected out, and worker hardware or future interface creation is outside the snapshot claim.",
+      "theorems": [
+        "observed_interfaces_covered",
+        "observed_links_have_reciprocal_peers",
+        "enabled_interfaces_have_a_declared_use",
+        "retained_unused_interface_is_disabled"
+      ],
+      "model_claim": "Every active retained interface belongs to a declared virtual link or has an explicit loopback/OVS implementation purpose. Any observed interface outside that used set is administratively down.",
       "id": "MSC-PF-2",
       "title": "",
       "full_statement_established": false,
@@ -2983,15 +3288,30 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "status",
+        "hardening",
+        "hardening_theory",
+        "appliance_importer",
+        "operational",
+        "local_policy"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "Outer INPUT rules admit peer IKE/ESP and reject other Black ingress by default, while OUTPUT defaults to ACCEPT. Lean models neither local direction and no approved control-protocol policy is supplied. A proof must cover both directions on the outer Black interface; permitted IKE and control traffic must remain allowed.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "Retained gateway INPUT/OUTPUT tables match a tunnel-derived default-deny service contract. The selected IPsec profile permits peer IKE and ESP with loopback separate. The execution model now connects forwarding acceptance, route selection, encapsulation, and the external packet representation, while the cited local-contract claims retain their explicit scope. Organization approval, malformed or fragmented packet handling, and complete Linux processing fidelity remain outside the claim. Optional management traffic supplies no proof obligation.",
+      "theorems": [
+        "local_contracts_cover",
+        "local_contract_tables_match",
+        "local_contract_external_interfaces",
+        "local_contract_table_semantics",
+        "local_contract_decision",
+        "accepted_external_local_packet_is_declared_control",
+        "undeclared_local_service_rejected",
+        "every_gateway_permits_declared_local_controls"
+      ],
+      "model_claim": "Every modeled local INPUT or OUTPUT packet on an outer Black interface is accepted exactly when its interface, peer addresses, IKE/ESP service, and applicable header guard satisfy the declared contract. Every gateway has positive INPUT and OUTPUT witnesses for UDP 500, UDP 4500, and ESP. Ordinary external local TCP and ICMP are rejected.",
       "id": "MSC-PF-3",
       "title": "",
       "full_statement_established": false,
@@ -3003,7 +3323,10 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "local_policy",
+        "contracts",
+        "status"
       ],
       "assessment_scope": "retained"
     },
@@ -3028,10 +3351,19 @@
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "Inner Gray INPUT restricts peer traffic to IKE/ESP, but OUTPUT defaults to ACCEPT. The current model covers only routed FORWARD packets and lacks the approved control-protocol set. Complete interface filtering needs both local and forwarding directions, with only the protocols appropriate to the selected IPsec branch.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "Retained gateway INPUT/OUTPUT tables match a tunnel-derived default-deny service contract. The selected IPsec profile permits peer IKE and ESP with loopback separate. The execution model now connects forwarding acceptance, route selection, encapsulation, and the external packet representation, while the cited local-contract claims retain their explicit scope. Organization approval, malformed or fragmented packet handling, and complete Linux processing fidelity remain outside the claim. Optional management traffic supplies no proof obligation.",
+      "theorems": [
+        "local_contracts_cover",
+        "local_contract_tables_match",
+        "local_contract_external_interfaces",
+        "local_contract_table_semantics",
+        "local_contract_decision",
+        "accepted_external_local_packet_is_declared_control",
+        "undeclared_local_service_rejected",
+        "every_gateway_permits_declared_local_controls"
+      ],
+      "model_claim": "Every modeled local INPUT or OUTPUT packet on an inner Gray interface is accepted exactly when its interface, peer addresses, IKE/ESP service, and applicable header guard satisfy the declared contract. Every gateway has positive INPUT and OUTPUT witnesses for UDP 500, UDP 4500, and ESP. Ordinary external local TCP and ICMP are rejected.",
       "id": "MSC-PF-5",
       "title": "",
       "full_statement_established": false,
@@ -3043,13 +3375,16 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "local_policy",
+        "contracts",
+        "status"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Model or evidence gap",
-      "reason": "The evidence bundle does not enumerate every third-party feature or service on outer components. Default-deny ingress is useful but does not prove blocking on all paths, especially with permissive local OUTPUT. A service inventory and all-direction reachability analysis are needed for this Threshold branch.",
+      "reason": "Gateway local OUTPUT now restricts external destinations to the declared peer. That blocks ordinary third-party local traffic in the modeled IPv4 path. Complete service enumeration, all possible traffic paths, and runtime connection provenance remain open; no exhaustive third-party-feature audit is claimed.",
       "theorems": [],
       "model_claim": "",
       "id": "MSC-PF-6",
@@ -3108,10 +3443,17 @@
       "assessment_scope": "excluded_management"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "Outer Black INPUT is restricted to unicast peers, but the current model does not cover multicast destination classes across all receive paths. A multicast-specific predicate over INPUT and FORWARD would be needed to prove every externally received multicast packet is dropped. One successful unicast test does not establish the universal exclusion.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "A finite certificate checks every potentially accepting outer Black INPUT/FORWARD rule for an exact non-multicast destination and a denying default. Generic rule reasoning lifts that certificate to all destinations in 224.0.0.0/4. A receive lemma shows that local INPUT denial prevents decapsulation from changing the arrival packet before the forwarding restriction applies. Both modeled forwarding and local delivery reject multicast arrivals. The claim covers complete IPv4 datagrams in the sampled processing model; fragmentation, malformed traffic, future changes, and full Linux conformance remain separate.",
+      "theorems": [
+        "outer_black_rules_have_unicast_destinations",
+        "outer_black_multicast_is_rejected",
+        "outer_black_multicast_input_rejected",
+        "outer_black_multicast_forward_filter_rejected",
+        "outer_black_multicast_forward_rejected",
+        "outer_black_multicast_delivery_rejected"
+      ],
+      "model_claim": "Every modeled packet arriving at an outer encryptor’s Black interface with an IPv4 multicast destination is rejected by the retained INPUT and FORWARD policies and cannot complete modeled forwarding or local delivery.",
       "id": "MSC-PF-9",
       "title": "",
       "full_statement_established": false,
@@ -3119,24 +3461,26 @@
       "modality": "T=O",
       "alternative": "(blank in source)",
       "evidence": [
-        "inner_filter",
+        "snapshot",
         "outer_filter",
-        "gray_filter",
-        "of_filter",
-        "policy"
+        "operational",
+        "execution",
+        "multicast"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Checked model contribution; complete statement not established",
-      "reason": "The reviewed deployment adds an exact IPv4 header-length guard to every outer gateway ACCEPT rule and uses default DROP in INPUT, FORWARD, and OUTPUT. Lean imports the supported guard and proves its consequence for arbitrary modeled FORWARD packets. Live probes on all four outer gateways reject packets with options while matching packets without options reach the corresponding ACCEPT rule. Full INPUT/OUTPUT semantics, malformed/fragmented packet processing, and kernel refinement remain outside the proof. The source marks PF-10 as Objective with a blank Alternative cell, which is preserved.",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The exact header-length guard is retained in every observed outer ACCEPT rule. Separate general forwarding and local-chain lemmas cover arbitrary packet fields. Malformed packets, fragment handling, and implementation fidelity remain distinct obligations. The Objective status and blank Alternative cell are preserved.",
       "theorems": [
         "outer_contracts_require_no_options",
         "accepted_outer_has_no_options",
         "contract_lookup_matches",
-        "declared_contract_accepts_iff"
+        "declared_contract_accepts_iff",
+        "outer_local_contracts_require_no_options",
+        "outer_local_packets_with_options_rejected"
       ],
-      "model_claim": "Every modeled packet accepted by any of the four outer VPN gateway FORWARD tables has an IPv4 header length of five words, so it has no IPv4 options. Contract equality also preserves the positive allowances for option-free authorized traffic.",
+      "model_claim": "All modeled outer FORWARD, INPUT, and OUTPUT paths reject IPv4 headers whose length is not five words.",
       "id": "MSC-PF-10",
       "title": "",
       "full_statement_established": false,
@@ -3147,20 +3491,21 @@
         "outer_filter",
         "policy",
         "contracts",
-        "gateway_probes"
+        "local_policy"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Checked model contribution; complete statement not established",
-      "reason": "The reviewed deployment restricts every gateway ACCEPT rule to TCP, UDP, ESP, or ICMP, with default DROP in INPUT, FORWARD, and OUTPUT. Inner FORWARD allowances now enumerate those four protocols; outer allowances retain their narrower ESP/IKE class. Lean proves the restriction for all modeled FORWARD packets. Live protocol-99 probes are rejected by all four inner gateways, and the existing 273 checks retain required connectivity and encryption. The complete requirement also concerns packet processing outside the modeled FORWARD subset, so INPUT/OUTPUT and kernel refinement remain explicit proof boundaries.",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The imported ACCEPT-only chains and exact contract comparisons cover both forwarding and local directions. Connection-state tags in host rules remain trusted runtime metadata. Fragment handling and a complete refinement of Linux packet processing remain separate obligations.",
       "theorems": [
         "accepted_gateway_protocol",
         "encryptor_contracts_cover",
         "contract_lookup_matches",
-        "declared_contract_accepts_iff"
+        "declared_contract_accepts_iff",
+        "accepted_gateway_local_protocol"
       ],
-      "model_claim": "Every modeled packet accepted by any of the eight VPN gateway FORWARD tables uses TCP, UDP, ESP, or ICMP. The result quantifies over all modeled packet fields and both directions.",
+      "model_claim": "All modeled gateway FORWARD, INPUT, and OUTPUT acceptances require TCP, UDP, ESP, or ICMP. External local paths use the narrower peer IKE/ESP policy.",
       "id": "MSC-PF-11",
       "title": "",
       "full_statement_established": false,
@@ -3172,8 +3517,8 @@
         "outer_filter",
         "policy",
         "contracts",
-        "gateway_probes",
-        "checks"
+        "checks",
+        "local_policy"
       ],
       "assessment_scope": "retained"
     },
@@ -3199,7 +3544,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The bounded FORWARD contract is checked for every outer encryptor and includes positive allowances. INPUT/OUTPUT, packet attribution, complete control/revocation classification, and Linux refinement remain outside the model. Gray-management traffic is excluded by the experiment assumption. The result preserves the applicable control exceptions and does not establish the complete interface requirement.",
+      "reason": "The FORWARD contract is checked for every outer encryptor and includes positive allowances. Gateway INPUT and OUTPUT are now modeled separately with peer-bound IKE/ESP contracts. Packet provenance, required revocation/control exchanges, fragmentation, and Linux processing fidelity remain separate obligations. Gray-management traffic is excluded from the experiment.",
       "theorems": [
         "encryptor_contracts_cover",
         "encryptor_contracts_match",
@@ -3229,7 +3574,8 @@
         "gray_filter",
         "of_filter",
         "policy",
-        "contracts"
+        "contracts",
+        "local_policy"
       ],
       "assessment_scope": "mixed"
     },
@@ -3295,7 +3641,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The bounded FORWARD contract is checked for every outer encryptor and includes positive allowances. INPUT/OUTPUT, packet attribution, complete control/revocation classification, and Linux refinement remain outside the model. Gray-management traffic is excluded by the experiment assumption. The result preserves the applicable control exceptions and does not establish the complete interface requirement.",
+      "reason": "The FORWARD contract is checked for every outer encryptor and includes positive allowances. Gateway INPUT and OUTPUT are now modeled separately with peer-bound IKE/ESP contracts. Packet provenance, fragmentation, and Linux processing fidelity remain separate obligations. Gray-management traffic is excluded from the experiment. The selected revocation and control-service placement is now checked separately.",
       "theorems": [
         "encryptor_contracts_cover",
         "encryptor_contracts_match",
@@ -3310,9 +3656,10 @@
         "outer_selectors_bind_inner_peers",
         "tunnel_addresses_match_interfaces",
         "outer_contracts_restrict_protocols",
-        "accepted_outer_protocol"
+        "accepted_outer_protocol",
+        "observed_policy_spis_select_states"
       ],
-      "model_claim": "For all four outer encryptors and every modeled IPv4 FORWARD packet, acceptance is equivalent to the tunnel-derived address, interface, policy-ID and ESP/IKE contract. The /32 selectors match inner peers at the same security level and their declared external interface addresses. ESP and UDP 500/4500 exchanges satisfying the expected policy are positively allowed in both directions.",
+      "model_claim": "For all four outer encryptors and every modeled IPv4 FORWARD packet, acceptance is equivalent to the tunnel-derived address, interface, policy-ID and ESP/IKE contract. The /32 selectors match inner peers at the same security level and their declared external interface addresses. ESP and UDP 500/4500 exchanges satisfying the expected policy are positively allowed in both directions. Every observed XFRM policy can select a sampled SA with matching tunnel endpoints, request ID, and any pinned SPI; modeled processing honors that SPI constraint.",
       "id": "MSC-PF-17",
       "title": "",
       "full_statement_established": false,
@@ -3325,15 +3672,28 @@
         "gray_filter",
         "of_filter",
         "policy",
-        "contracts"
+        "contracts",
+        "local_policy",
+        "operational",
+        "execution"
       ],
       "assessment_scope": "mixed"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "Outer forwarding rules constrain source prefixes and interface direction. The model does not relate those filters to a complete reachability/routing set or cover locally received traffic. An antispoofing proof needs an explicit definition of reachable sources per interface and a check of every relevant rule against it.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The source policy is derived from observed routes independently of the filter. Finite source-guard checks and routing checks lift to arbitrary packet fields, covering PF-18 in the fixed-state complete-IPv4-datagram model. Route knowledge does not authenticate the physical sender. Fragment handling, observations over time, and faithful kernel interpretation remain separate. Optional management contributes no gap.",
+      "theorems": [
+        "gray_interfaces_have_return_routes",
+        "gray_ingress_source_certificate",
+        "gray_local_input_impossible",
+        "known_source_has_reverse_route",
+        "accepted_gray_ingress_has_reachable_source",
+        "unreachable_gray_source_rejected",
+        "gray_input_filter_denies",
+        "admitted_gray_forward_has_reachable_wire_source",
+        "observed_route_scopes_supported"
+      ],
+      "model_claim": "Every modeled packet accepted from an Outer Gateway Gray interface has a source whose reverse lookup selects a unicast route through the same interface. The lookup uses the sampled interface address and observed FIB and routing rules. Unreachable sources receive a definite rejection in both INPUT and FORWARD. The forwarding theorem applies to the source on the arriving wire packet because local decryption on Gray is separately excluded.",
       "id": "MSC-PF-18",
       "title": "",
       "full_statement_established": false,
@@ -3345,7 +3705,12 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "source_reachability",
+        "routing_theory",
+        "operational",
+        "execution",
+        "local_policy"
       ],
       "assessment_scope": "retained"
     },
@@ -3371,7 +3736,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The bounded FORWARD contract is checked for every outer encryptor and includes positive allowances. INPUT/OUTPUT, packet attribution, complete control/revocation classification, and Linux refinement remain outside the model. Gray-management traffic is excluded by the experiment assumption. The result preserves the applicable control exceptions and does not establish the complete interface requirement.",
+      "reason": "The FORWARD contract is checked for every outer encryptor and includes positive allowances. Gateway INPUT and OUTPUT are now modeled separately with peer-bound IKE/ESP contracts. Packet provenance, required revocation/control exchanges, fragmentation, and Linux processing fidelity remain separate obligations. Gray-management traffic is excluded from the experiment.",
       "theorems": [
         "encryptor_contracts_cover",
         "encryptor_contracts_match",
@@ -3401,7 +3766,8 @@
         "gray_filter",
         "of_filter",
         "policy",
-        "contracts"
+        "contracts",
+        "local_policy"
       ],
       "assessment_scope": "mixed"
     },
@@ -3427,7 +3793,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The proof now covers all four Outer Firewalls and all modeled FORWARD packets. The complete requirement also concerns INPUT/OUTPUT, the organization-approved control set, physical interfaces, and implementation fidelity. OSPF to the firewall is gateway-local INPUT traffic and is outside the FORWARD theorem.",
+      "reason": "All three retained IPv4 filter chains are checked for every Outer Firewall. External local controls are limited to OSPF on declared Black adjacencies, with exact interface, source, and destination bindings. The selected lab control policy is explicit; organization approval, physical realization, and kernel fidelity remain external. Fragment handling requires a separate packet model.",
       "theorems": [
         "outer_firewall_accepts_declared_esp",
         "outer_firewall_rejects_icmp",
@@ -3440,9 +3806,21 @@
         "outer_firewall_contracts_cover",
         "outer_firewall_contracts_match",
         "outer_firewall_contracts_restrict_protocols",
-        "accepted_outer_protocol"
+        "accepted_outer_protocol",
+        "firewall_local_tables_match",
+        "control_adjacencies_are_observed",
+        "firewall_has_control_adjacency",
+        "firewall_local_decision",
+        "declared_firewall_grant_allowed",
+        "every_adjacency_permits_declared_controls",
+        "accepted_external_firewall_event_has_grant",
+        "outer_firewall_every_chain_restricts_protocols",
+        "all_control_grants_are_ospf",
+        "grant_rule_semantics",
+        "accepted_external_local_firewall_packet_is_ospf",
+        "expected_table_semantics"
       ],
-      "model_claim": "For every Outer Firewall and every modeled FORWARD packet, acceptance is equivalent to the declared outer-peer address pair, inside/outside direction, and ESP or UDP ports 500/4500. The equivalence includes positive allowance in both directions. Contracts derive peer addresses from adjacent outer encryptors and their tunnels.",
+      "model_claim": "Every accepted FORWARD packet matches the declared outer-peer addresses and direction and uses ESP or UDP ports 500/4500. Every accepted external INPUT or OUTPUT packet matches a declared OSPF grant. Each Black adjacency has positive local unicast and AllSPFRouters witnesses in both directions, and complete table equality detects added grants and missing controls.",
       "id": "MSC-PF-22",
       "title": "",
       "full_statement_established": false,
@@ -3455,15 +3833,25 @@
         "gray_filter",
         "of_filter",
         "policy",
-        "contracts"
+        "contracts",
+        "local_policy",
+        "firewall_control",
+        "local_control_theory",
+        "operational"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "The deployed Gray Firewalls drop every modeled forwarded packet, while the intended same-level data paths bypass those firewalls. Deny-all proves isolation but does not by itself establish the required positive allowance. The assessment must identify which same-level IKE/ESP exchanges are appropriate through a Gray Firewall in this layout. If that required set is nonempty, the current rules block it; if it is empty, the topology and policy must justify the empty set rather than assuming a violation or an allowance proof.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The required allowance set is derived from declared peers and successful routing-consistent paths. Same-level IKE and protected traffic do not require a Gray Firewall hop in this layout. The IPsec branch is selected; MKA/MACsec is unselected. A shared-Gray layout would require different paths and positive Gray Firewall allowances. The result covers the fixed-state complete-IPv4-datagram model under the stated kernel and cryptographic interpretation.",
+      "theorems": [
+        "inner_service_demands_have_plans",
+        "red_data_demands_have_plans",
+        "selected_service_paths_checked",
+        "selected_services_require_no_gray_transit",
+        "required_service_has_executable_gray_free_path"
+      ],
+      "model_claim": "Every declared inner peer direction has admitted UDP 500 and 4500 paths, and every declared Red-host direction has an admitted protected-data path. Each path checks actual forwarding and peer INPUT, follows observed next hops, and avoids Gray Firewalls. The required Gray transit set is therefore empty for the selected separate-Gray layout, with positive service delivery witnesses rather than denial alone.",
       "id": "MSC-PF-23",
       "title": "",
       "full_statement_established": false,
@@ -3475,7 +3863,13 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "control_services",
+        "service_theory",
+        "trace_theory",
+        "service_config",
+        "operational",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
@@ -3500,10 +3894,17 @@
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "The Gray Firewalls block all forwarded HTTP, and no CDP/OCSP service is declared. The required allow set is therefore not established; the requirement cannot be declared satisfied merely because all HTTP is denied. If revocation HTTP is necessary, those exact exchanges must be allowed while other HTTP remains blocked; otherwise the assessment must justify why the necessary set is empty.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "Public PEM metadata and the complete loaded authority inventory justify the absence of required HTTP retrieval in the current profile. Missing retrieval metadata remains unknown and fails the certificate. Missing, expired, or revoking CRLs cannot be replaced by the empty network demand. Future CRL distribution and availability after configuration changes remain separate; no continuous refresh guarantee is claimed.",
+      "theorems": [
+        "service_configurations_cover_tunnels",
+        "selected_service_mechanisms_are_declared",
+        "revocation_retrieval_sets_are_observed_empty",
+        "admitted_peer_has_local_revocation_evidence",
+        "gray_firewall_denies_all",
+        "gray_firewall_rejects_external_local_traffic"
+      ],
+      "model_claim": "The declared local-CRL mechanism agrees with an observed empty set of certificate and authority retrieval locations. Any admitted peer request uses a loaded current CRL and an unrevoked public certificate. No HTTP revocation transit is required by that selected arrangement. Both Gray Firewalls reject other modeled HTTP traffic across retained INPUT, FORWARD, and OUTPUT paths.",
       "id": "MSC-PF-25",
       "title": "",
       "full_statement_established": false,
@@ -3515,7 +3916,13 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "control_services",
+        "service_theory",
+        "trace_theory",
+        "service_config",
+        "operational",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
@@ -3561,11 +3968,17 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Lean proves that GF_A and GF_B deny every modeled forwarded packet. The negative peer-address restriction therefore holds vacuously within that chain model. Positive service allowances in PF-23/PF-25 and local/control handling remain separate questions. Management traffic is excluded and contributes no coverage gap.",
+      "reason": "Both Gray Firewalls reject all modeled FORWARD traffic and external local INPUT/OUTPUT traffic. Separate service-placement proofs now justify the empty required Gray transit set in the selected layout, with positive IKE and protected-data paths through the intended outer gateways. Other layouts and future service changes need new allowances. Optional management contributes no coverage gap.",
       "theorems": [
-        "gray_firewall_denies_all"
+        "gray_firewall_denies_all",
+        "firewall_local_tables_match",
+        "gray_firewalls_have_no_local_grants",
+        "gray_firewall_rejects_external_local_traffic",
+        "selected_services_require_no_gray_transit",
+        "required_service_has_executable_gray_free_path",
+        "revocation_retrieval_sets_are_observed_empty"
       ],
-      "model_claim": "GF_A and GF_B reject every RoutedPacket in their imported FORWARD tables. Therefore no modeled forwarded packet violates the negative peer-address restriction. The result is vacuous with respect to the separate required positive service allowances.",
+      "model_claim": "GF_A and GF_B reject every modeled FORWARD packet and every external local packet, so the retained negative peer-address restriction holds. The selected IKE, protected-data, and local-revocation arrangements require no Gray Firewall hop and have separate positive or local-evidence witnesses.",
       "id": "MSC-PF-28",
       "title": "",
       "full_statement_established": false,
@@ -3577,17 +3990,36 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "firewall_control",
+        "local_control_theory",
+        "control_services",
+        "service_theory",
+        "trace_theory"
       ],
       "assessment_scope": "mixed"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The all-packet Gray FORWARD denial also blocks every spoofed-source packet in that modeled chain. That is a limited, vacuous forwarding guarantee, not a proof that every input source is reachable through its arrival interface. Full antispoofing requires a reachability definition and coverage of local/input handling.",
+      "reason": "Both Gray Firewalls have observed connected return routes, and the explicit source policy respects the arrival interface. Negative admission covers arbitrary packet fields. Separate service-placement proofs justify the current empty Gray forwarding set, while address reachability supplies no physical-sender authentication.",
       "theorems": [
-        "gray_firewall_denies_all"
+        "gray_firewall_denies_all",
+        "firewall_local_tables_match",
+        "gray_firewalls_have_no_local_grants",
+        "gray_firewall_rejects_external_local_traffic",
+        "gray_interfaces_have_return_routes",
+        "gray_ingress_source_certificate",
+        "gray_local_input_impossible",
+        "known_source_has_reverse_route",
+        "accepted_gray_ingress_has_reachable_source",
+        "unreachable_gray_source_rejected",
+        "gray_input_filter_denies",
+        "admitted_gray_forward_has_reachable_wire_source",
+        "selected_services_require_no_gray_transit",
+        "required_service_has_executable_gray_free_path",
+        "revocation_retrieval_sets_are_observed_empty"
       ],
-      "model_claim": "Every modeled Gray Firewall FORWARD packet is rejected, including any packet later classified as having an unreachable source. The theorem does not define source reachability or cover local INPUT; it supplies only the universal forwarding-denial component.",
+      "model_claim": "Every modeled Gray Firewall INPUT or FORWARD packet with a source that lacks a reverse unicast route through its arrival interface is rejected. The reachable-source predicate uses observed addresses, routes, and policy rules. The current Gray Firewall tables deny all such data-interface traffic, so the source restriction holds through denial while the routing predicate remains independently defined.",
       "id": "MSC-PF-29",
       "title": "",
       "full_statement_established": false,
@@ -3599,15 +4031,36 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "firewall_control",
+        "local_control_theory",
+        "source_reachability",
+        "routing_theory",
+        "operational",
+        "execution",
+        "control_services",
+        "service_theory",
+        "trace_theory"
       ],
       "assessment_scope": "retained"
     },
     {
-      "disposition": "Model or evidence gap",
-      "reason": "Gray Firewalls have no forwarding allowlist for a declared control-service policy. The source permits appropriate control traffic, not every possible NTP/DHCP exchange unconditionally. The owner must identify the required control exchanges before their allowance can be checked. Excluded management probes neither satisfy nor obstruct that control obligation.",
-      "theorems": [],
-      "model_claim": "",
+      "disposition": "Checked model contribution; full statement not established",
+      "reason": "The required control set is explicit and checked against service configuration, address metadata, namespace-wide process records, clock observations, and actual routes. Static addressing and the shared worker clock avoid DHCP and NTP exchanges over Gray in this emulation. The result depends on the trusted mechanism and process interpretations. Adding a retained service, a lease, a daemon, or a required Gray route requires extending and rechecking the demand set. Optional administration remains excluded.",
+      "theorems": [
+        "retained_ipv4_addresses_are_permanent",
+        "retained_namespaces_have_no_time_or_address_client",
+        "ospf_control_uses_black_interfaces",
+        "sampled_appliance_clocks_agree_with_synchronized_worker",
+        "service_configurations_cover_tunnels",
+        "selected_service_mechanisms_are_declared",
+        "inner_service_demands_have_plans",
+        "red_data_demands_have_plans",
+        "selected_service_paths_checked",
+        "selected_services_require_no_gray_transit",
+        "required_service_has_executable_gray_free_path"
+      ],
+      "model_claim": "The selected IKE controls have positive routing-consistent paths without Gray Firewall transit. IPv4 addresses have observed permanent lifetimes, retained namespaces have no selected DHCP/NTP client or server, and the service configuration selects the shared worker clock with sampled clock agreement. OSPF grants use Black interfaces. The selected service arrangement creates no required Gray Firewall forwarding demand.",
       "id": "MSC-PF-30",
       "title": "",
       "full_statement_established": false,
@@ -3619,17 +4072,29 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "control_services",
+        "service_theory",
+        "trace_theory",
+        "service_config",
+        "operational",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The Gray Firewall FORWARD chains deny every modeled packet, so they admit none outside the retained peer, revocation, and control exceptions. The result proves the negative forwarding restriction. Positive service allowances and retained INPUT/OUTPUT behavior still need separate analysis. The excluded management clause PF-27 adds no obligation.",
+      "reason": "The Gray Firewall FORWARD chains and external local INPUT/OUTPUT chains deny all modeled traffic. Positive routed service witnesses, empty observed retrieval demands, permanent addresses, and the shared worker-clock profile justify the empty Gray forwarding requirement set in the selected deployment. Future services or a shared-Gray layout require changed rules and proofs. PF-27 adds no obligation under the explicit management exclusion.",
       "theorems": [
-        "gray_firewall_denies_all"
+        "gray_firewall_denies_all",
+        "firewall_local_tables_match",
+        "gray_firewalls_have_no_local_grants",
+        "gray_firewall_rejects_external_local_traffic",
+        "selected_services_require_no_gray_transit",
+        "required_service_has_executable_gray_free_path",
+        "revocation_retrieval_sets_are_observed_empty"
       ],
-      "model_claim": "No modeled packet is forwarded by either Gray Firewall, so no forwarded packet outside the allowed exceptions is admitted. The theorem proves a negative restriction and does not establish that traffic inside the required allow set can pass.",
+      "model_claim": "No modeled packet is forwarded by either Gray Firewall or accepted on its external local paths. Every selected same-level service has an admitted route avoiding those firewalls, and the local revocation arrangement needs no HTTP transit. The retained denial therefore excludes traffic outside the selected exception set without blocking a required route in this profile.",
       "id": "MSC-PF-31",
       "title": "",
       "full_statement_established": false,
@@ -3641,7 +4106,12 @@
         "outer_filter",
         "gray_filter",
         "of_filter",
-        "policy"
+        "policy",
+        "firewall_control",
+        "local_control_theory",
+        "control_services",
+        "service_theory",
+        "trace_theory"
       ],
       "assessment_scope": "mixed"
     },
@@ -5168,14 +5638,25 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Lean represents S1 and S2 as distinct unordered labels and proves that authorized modeled Red communication preserves the label. The label abstraction must stand for the complete classification/compartment/dissemination tuple, not merely a numeric rank. The actual classification assignments remain external inputs and cannot be inferred from the picture.",
+      "reason": "The imported S1 and S2 labels are unordered and must represent the complete classification/compartment/dissemination tuple. The current execution result uses observed forwarding rules and XFRM state, rather than an assumed authorized host-pair guard. It requires a correctly addressed source packet, a fixed sampled state, complete IPv4 datagrams, and trusted interpretation of the modeled Linux operations. Physical source authentication, arbitrary spoofing, all runtime behaviors, and actual classification assignments remain outside the established conclusion.",
       "theorems": [
         "host_labels_match_snapshot",
         "authorized_same_level",
         "forwarded_same_level",
-        "cross_level_not_delivered"
+        "cross_level_not_delivered",
+        "forwarding_source_certificate",
+        "executions_preserve_source_constraint",
+        "host_delivery_arrives_clear",
+        "delivered_host_traffic_preserves_level",
+        "wires_preserve_source_constraint",
+        "bridges_preserve_source_constraint",
+        "red_domains_separate_levels",
+        "hosts_have_red_domains",
+        "host_input_source_domains",
+        "host_output_unconstrained",
+        "forwarding_establishes_source_constraint"
       ],
-      "model_claim": "The four symbolic Red hosts have the same labels as their imported device records. Authorized and forwarded modeled traffic preserves those complete abstract labels, while cross-level delivery is rejected. No numeric ordering or real classification is assigned to S1/S2.",
+      "model_claim": "The execution-based theorem quantifies over arbitrary IPv4 headers, messages, and finite paths. A source host whose source address belongs to its Red subnet can deliver through the observed route/filter/XFRM and virtual-link model only to a Red host with the same complete security label. Finite checks establish source restrictions on inner-to-Red outputs, their transfer to host inputs, and disjoint cross-level address ranges. Generic induction preserves those restrictions and the original source header. The older authorized-host-pair pipeline also retains its narrower conditional theorems.",
       "id": "N-01",
       "title": "Meaning of security level",
       "full_statement_established": false,
@@ -5185,18 +5666,57 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "inner_filter",
+        "policy"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The transmit and delivery theorems establish inner-then-outer wrapping and outer-then-inner unwrapping for modeled classified payloads. The readable symbolic wrappers do not prove cryptographic confidentiality or integrity, and the shared strongSwan/kernel deployment does not establish implementation independence. The remaining gaps concern independence, cryptography, and implementation coverage; allowed control traffic is not a counterexample to the classified-data statement.",
+      "reason": "Concrete checks cover every retained interface pair, possible IPsec tag, compatible outgoing selector, observed SA owner, and trust-domain relationship. Generic provenance and stack induction lift those checks to arbitrary finite executions, including loops. The seal operation denotes trusted authenticated IPsec encryption. Cryptographic secrecy, implementation independence, physical appliance independence, fragmentation, dynamic state changes, and a complete refinement of Linux behavior remain separate obligations.",
       "theorems": [
         "forwarded_has_both_steps",
-        "delivered_has_decryption_steps"
+        "delivered_has_decryption_steps",
+        "matching_rule_has_signature",
+        "accepted_forward_has_signature",
+        "accepted_input_has_port_signature",
+        "processing_budget_certificate",
+        "wire_protection_levels_match",
+        "switch_protection_levels_match",
+        "processing_budget",
+        "every_execution_preserves_protection",
+        "red_origin_execution_has_required_layers",
+        "gray_payload_has_encryption_layer",
+        "black_payload_has_nested_protection",
+        "no_plaintext_red_to_black_execution",
+        "clear_red_message_is_doubly_wrapped_on_black",
+        "observed_data_port_indices_unique",
+        "observed_wires_equal_declared",
+        "stack_transition_certificate",
+        "wire_stacks_match",
+        "bridge_stacks_match",
+        "observed_request_ids_identify_roles",
+        "observed_state_owners_have_tunnels",
+        "inner_outer_tunnel_trusts_differ",
+        "observed_sa_identifies_owner_role",
+        "observed_sa_has_owner_tunnel",
+        "observed_layer_state_has_admitted_peer",
+        "optional_prefixes_with_shared_address_are_compatible",
+        "matching_rule_and_policy_are_compatible",
+        "accepted_forward_has_stack_signature",
+        "processing_preserves_required_stack",
+        "every_execution_preserves_required_stack",
+        "clear_red_execution_has_required_stack",
+        "red_payload_on_black_has_ordered_observed_layers",
+        "red_payload_on_gray_has_observed_inner_layer",
+        "red_payload_on_black_has_admitted_ordered_layers",
+        "observed_inner_outer_layers_have_distinct_trust",
+        "forward_uses_imported_acceptance",
+        "gateway_outbound_forward_adds_observed_layer",
+        "gateway_inbound_forward_removes_layer"
       ],
-      "model_claim": "Successful symbolic transmission contains inner and then outer encryption. Successful delivery contains outer and then inner decryption. The proof establishes processing order for classified payloads, not independence or computational secrecy of the two implementations.",
+      "model_claim": "A clear Red-origin datagram that reaches Black through any admitted finite execution is exactly the original datagram sealed by an observed inner SA and then by an observed outer SA. The layer witnesses identify different logical appliances, distinct declared trust domains, and complete admitted peer sessions. The exact order follows from filter/selector compatibility and a reusable stack invariant. Observed virtual links and OVS switching supply the execution graph.",
       "id": "N-02",
       "title": "Two independent nested tunnels",
       "full_statement_established": false,
@@ -5206,18 +5726,27 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "execution",
+        "execution_traces",
+        "operational",
+        "protection",
+        "protection_theory",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The model has separate Packet, InnerPacket, and BlackPacket types and proves the corresponding processing order. Those types formalize the protection-stage definitions for classified payloads. They do not assert that all headers or control packets are ciphertext, nor prove that every actual packet has been classified and mapped to the correct type.",
+      "reason": "The stages are derived from actual admitted steps in the snapshot model. A two-wrapper packet using two outer SAs fails the ordered-stack condition. The statements concern protected Red payloads in fixed sampled IPv4 state under trusted IPsec operations; they do not assert encryption of visible routing headers or control packets.",
       "theorems": [
         "forwarded_has_both_steps",
-        "delivered_has_decryption_steps"
+        "delivered_has_decryption_steps",
+        "clear_red_execution_has_required_stack",
+        "red_payload_on_gray_has_observed_inner_layer",
+        "red_payload_on_black_has_ordered_observed_layers"
       ],
-      "model_claim": "The Packet, InnerPacket, and BlackPacket constructors represent the Red plaintext, once-protected Gray payload, and twice-protected Black payload stages. Theorems connect successful symbolic transmission/delivery to those stages. They make no claim that every header or control packet is encrypted.",
+      "model_claim": "For a clear tracked Red-origin message, every reachable Gray packet has exactly one observed inner seal around the original datagram. Every reachable Black packet has an observed outer seal around that inner seal. The original header and message are preserved inside the wrappers. Approved control traffic retains its explicit exception.",
       "id": "N-03",
       "title": "Red, Gray and Black data",
       "full_statement_established": false,
@@ -5227,18 +5756,41 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "protection",
+        "protection_theory",
+        "authentication"
       ],
       "assessment_scope": "retained"
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Lean checks symmetric declarations for the four configured tunnel pairs, with matching endpoint addresses, selectors, trust domains, and policy IDs. Sampled SAs support establishment for those peers. The current theorem does not independently prove full direct-site-pair coverage or all runtime authentication/encapsulation semantics; the selected IPsec/IPsec option must be kept explicit.",
+      "reason": "Symmetric declarations and sampled SAs are supplemented by typed runtime correspondence, observed route selection, supported packet-processing semantics, and credential/session admission checks. Missing lists remain distinct from observed empty lists, and extra interfaces or policies cannot disappear behind intended records. Positive traces establish nonempty admitted executions for selected data and IKE headers. The observations were collected sequentially; an atomic capture, future service availability, all application protocols, and complete Linux/strongSwan conformance remain outside the claim.",
       "theorems": [
         "tunnel_peers_symmetric",
-        "sampled_tunnels_established"
+        "sampled_tunnels_established",
+        "operational_observations_complete",
+        "observed_interfaces_realize_declaration",
+        "observed_interfaces_covered",
+        "observed_links_have_reciprocal_peers",
+        "observed_forwarding_matches_roles",
+        "declared_static_routes_installed",
+        "observed_route_interfaces_covered",
+        "observed_routing_rules_supported",
+        "observed_policies_match_tunnels",
+        "observed_states_match_tunnels",
+        "observed_switches_realize_ports",
+        "advance_is_step",
+        "run_is_execution",
+        "all_four_directions_reach_remote_red",
+        "all_four_directions_pass_host_input",
+        "inner_ike_control_is_allowed_on_black",
+        "red_hosts_have_no_xfrm",
+        "authentication_observations_complete",
+        "sampled_xfrm_states_belong_to_sessions",
+        "sampled_xfrm_state_has_admitted_peer"
       ],
-      "model_claim": "Every imported tunnel record has a matching reversed record, and all sampled encryptors report established tunnels. Eight endpoint records describe four peer pairs in the selected IPsec/IPsec instance. Full architectural pair coverage and protocol correctness are separate obligations.",
+      "model_claim": "Every imported tunnel record has a matching reversed record, and all sampled encryptors report established tunnels. Eight endpoint records describe four peer pairs in the selected IPsec/IPsec instance. Full architectural pair coverage and protocol correctness are separate obligations. Additional finite checks compare all retained live interfaces, peer attachments, static routes, routing-rule shapes, forwarding flags, XFRM policies/states, and switch ports with the declared profile. Four checked 19-step ICMP-shaped data traces cover both directions at both security levels, remove both layers, and pass the destination host's INPUT policy. A proved runner lemma turns each successful computation into an execution of the safety relation.",
       "id": "N-04",
       "title": "Site-to-site tunnel structure",
       "full_statement_established": false,
@@ -5248,7 +5800,10 @@
       "evidence": [
         "spec",
         "status",
-        "checks"
+        "checks",
+        "operational",
+        "execution",
+        "execution_traces"
       ],
       "assessment_scope": "retained"
     },
@@ -5398,7 +5953,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "Imported outer FORWARD tables have their own policy guards independently of the Gray Firewalls, and modeled unauthorized/cross-level Red flows are blocked. Those facts support an additional outer enforcement layer. Full outer interface filtering, approved control/service exceptions, and real peer authentication still need explicit semantics and evidence.",
+      "reason": "Outer forwarding rules have independent policy guards, and all retained local filter chains use explicit peer or control-service contracts. Credential admission checks bind sampled SAs to permitted peer sessions. Execution-based protection and isolation supply the retained processing consequences. Organization approval of the selected controls, complete implementation fidelity, fragmented packets, and future state remain separate boundaries.",
       "theorems": [
         "encryptor_tables_guarded",
         "encryptor_without_policy_drops",
@@ -5434,9 +5989,11 @@
         "outer_firewall_contracts_cover",
         "outer_firewall_contracts_match",
         "outer_firewall_contracts_restrict_protocols",
-        "declared_contract_accepts_iff"
+        "declared_contract_accepts_iff",
+        "outer_full_edge_certificate",
+        "outer_route_contains_firewall"
       ],
-      "model_claim": "Removing Outer Firewall vertices from the retained Red/Gray/Black cable graph disconnects every outer encryptor from BLACK for all finite walks. Each outer also has a checked two-edge path through an Outer Firewall in the original graph, so the cut does not rely on disconnection. The bounded FORWARD allowlist is checked at every Outer Firewall.",
+      "model_claim": "Removing Outer Firewall vertices from the retained Red/Gray/Black cable graph disconnects every outer encryptor from BLACK for all finite walks. Each outer also has a checked two-edge path through an Outer Firewall in the original graph, so the cut does not rely on disconnection. The bounded FORWARD allowlist is checked at every Outer Firewall. The full-route theorem explicitly identifies an Outer Firewall among the visited vertices of each outer-to-Black route.",
       "id": "N-12",
       "title": "Untrusted Black requires Outer Firewall in prose",
       "full_statement_established": false,
@@ -5655,7 +6212,7 @@
     },
     {
       "disposition": "Checked model contribution; full statement not established",
-      "reason": "The outer data model requires an outer policy and encryption step; the imported FORWARD tables reject untagged packets. Static routes are declared on outer encryptors, while OSPF belongs to BLACK and the separate Outer Firewalls. The no-routing-protocol clause and full real Gray-to-Black coverage still require process/interface semantics beyond the existing data-path theorem.",
+      "reason": "Observed routes and XFRM state connect outer forwarding to the selected encryption operation. Captured namespace processes and startup evidence support the no-routing-daemon check for outer encryptors; OSPF belongs to BLACK and the separate Outer Firewalls. The retained complete-datagram execution model supplies routing and layer provenance. Unknown future programs, fragmented packets, actual source attribution, and full implementation conformance remain outside the current claim.",
       "theorems": [
         "encryptor_without_policy_drops",
         "forwarded_has_both_steps",
@@ -6710,7 +7267,7 @@
     ],
     "control_traffic": "Retain applicable control obligations and the explicit control-plane encryption exceptions. Excluding management does not remove IKE, OSPF, revocation, or trusted-time obligations on retained appliances.",
     "operator_boundary": "Worker SSH, container consoles, and docker exec are trusted experiment controls outside the network model. Claims concern a fixed configuration without concurrent operator reconfiguration or packet injection.",
-    "evidence_boundary": "Required Lean facts use artifacts/msc-2026-10-01T193731Z, collected on 2026-10-01 after gateway guard fixes. Projection counts are checked in Lean. The original artifacts/msc-2026-09-27T215205Z snapshot remains unchanged for explicit HistoricalDeployment/SnapshotDiagnostics and the original Datalog/ASP comparison.",
+    "evidence_boundary": "Required Lean facts use artifacts/msc-2026-10-03T070453Z, collected on 2026-10-03 with all-device XFRM capture, public PEM/CRL verification, and complete raw connection/session inventories. Projection counts are checked in Lean. The original artifacts/msc-2026-09-27T215205Z snapshot remains unchanged for explicit HistoricalDeployment/SnapshotDiagnostics and the original Datalog/ASP comparison.",
     "compliance_boundary": "Exclusion is a research scope choice. N-28 retains its mandatory AW wording. No excluded obligation is treated as proved, failed, or optional in the complete CP.",
     "management_acceptance_policy": "The admin and management plane is optional. Its requirements, lemmas, observations, and full-report probe results are excluded from required MSC proof acceptance and independent PASS/FAIL criteria. Seven positive regressions exercise absent and unavailable management, missing status, firewall drift, invalid management addresses, corrupt unused files, and absent probe reports."
   },
@@ -6726,5 +7283,14 @@
   "proof_review": {
     "date": "2026-10-01",
     "records": "artifacts/msc-lean-review/"
+  },
+  "current_refinement": {
+    "batch": "artifacts/msc-theory-refinement-20261002/",
+    "round": 3,
+    "verdict": "PASS",
+    "last_independent_verdict": "PASS",
+    "snapshot": "artifacts/msc-2026-10-03T070453Z/",
+    "stage": "independent round-3 PASS; accepted theory integrated and canonical validation complete",
+    "reviewer_response": "artifacts/msc-theory-refinement-20261002/round-03/reviewer-response.md"
   }
 }

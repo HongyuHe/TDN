@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Translate a verified Twinet export into data declarations, never proof axioms.
 
-Only the current IPv4 profile and its ACCEPT-only FORWARD rule syntax are
+Only the current IPv4 profile and its supported ACCEPT-only chain syntax are
 supported. Required translation projects out optional management before semantic
 validation. Retained evidence remains strict. Full historical diagnostics use
 the explicit include_management mode and cannot gate required regeneration.
@@ -15,8 +15,17 @@ from pathlib import Path
 import re
 import shlex
 
+try:
+    from msc_operational import parse_operational, render_operational
+    from msc_appliances import parse_appliance, render_appliance
+    from msc_credentials import validity_field, parse_audit, parse_connections, parse_sessions, bind_connection_details, parse_reported_crls, parse_authorities, parse_service_configuration, render_record
+except ModuleNotFoundError:
+    from scripts.msc_operational import parse_operational, render_operational
+    from scripts.msc_appliances import parse_appliance, render_appliance
+    from scripts.msc_credentials import validity_field, parse_audit, parse_connections, parse_sessions, bind_connection_details, parse_reported_crls, parse_authorities, parse_service_configuration, render_record
+
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_EVIDENCE = ROOT / "artifacts/msc-2026-10-01T193731Z"
+CURRENT_EVIDENCE = ROOT / "artifacts/msc-2026-10-03T070453Z"
 HISTORICAL_EVIDENCE = ROOT / "artifacts/msc-2026-09-27T215205Z"
 
 
@@ -41,21 +50,28 @@ def prefix(value):
     return record(address=str(int(net.network_address)), length=str(net.prefixlen))
 
 
-def parse_forward_data(text, device):
-    """Parse the supported FORWARD subset without approximating unknown rules."""
+def parse_forward_data(text, device, chain="FORWARD", excluded_interfaces=()):
+    """Parse one ACCEPT-only chain and project out exact management interfaces."""
+    if chain not in {"INPUT", "FORWARD", "OUTPUT"}:
+        raise ValueError("unsupported filter chain")
     rules = []
     default = None
     for line in text.splitlines():
-        if line.startswith(":FORWARD "):
+        if line.startswith(f":{chain} "):
             if default is not None:
-                raise ValueError(f"{device}: repeated FORWARD policy")
+                raise ValueError(f"{device}: repeated {chain} policy")
             policy = line.split()[1]
             if policy not in {"DROP", "ACCEPT"}:
                 raise ValueError(f"{device}: unsupported default policy")
             default = policy == "ACCEPT"
-        if not line.startswith("-A FORWARD "):
+        if not line.startswith(f"-A {chain} "):
             continue
         tokens = shlex.split(line)[2:]
+        #* The projected model has no events on optional management ports.
+        #* Only an exact interface match can exclude a rule before parsing.
+        if any(key in {"-i", "-o"} and value in excluded_interfaces
+               for key, value in zip(tokens, tokens[1:])):
+            continue
         fields = {}
         direction = reqid = None
         modules = set()
@@ -75,15 +91,21 @@ def parse_forward_data(text, device):
                 fields[{"-i": "input", "-o": "output"}[key]] = value
             elif key in {"-s", "-d"}:
                 fields[{"-s": "source", "-d": "destination"}[key]] = str(ipaddress.IPv4Network(value, strict=False))
-            elif key == "-p" and value in {"esp", "udp", "tcp", "icmp"}:
-                fields["protocol"] = {"esp": 50, "udp": 17, "tcp": 6, "icmp": 1}[value]
+            elif key == "-p" and value in {"esp", "udp", "tcp", "icmp", "ospf"}:
+                fields["protocol"] = {"esp": 50, "udp": 17, "tcp": 6, "icmp": 1, "ospf": 89}[value]
             elif key in {"--dports", "--dport"}:
                 if "destinationPorts" in fields:
                     raise ValueError(f"{device}: unsupported repeated port match")
                 fields["destinationPorts"] = [int(p) for p in value.split(",")]
                 if any(p < 0 or p > 65535 for p in fields["destinationPorts"]):
                     raise ValueError(f"{device}: invalid destination port")
-            elif key == "-m" and value in {"policy", "multiport", "udp", "tcp", "u32"}:
+            elif key == "--ctstate":
+                states = value.split(",")
+                if not states or len(states) != len(set(states)) or not set(states) <= {
+                        "INVALID", "NEW", "ESTABLISHED", "RELATED", "UNTRACKED"}:
+                    raise ValueError(f"{device}: unsupported connection state")
+                fields["connectionStates"] = sorted(states)
+            elif key == "-m" and value in {"policy", "multiport", "udp", "tcp", "u32", "conntrack"}:
                 if value in modules:
                     raise ValueError(f"{device}: unsupported repeated match module {value}")
                 modules.add(value)
@@ -112,6 +134,8 @@ def parse_forward_data(text, device):
             raise ValueError(f"{device}: expected an ACCEPT target")
         if ("u32" in modules) != ("noOptions" in fields):
             raise ValueError(f"{device}: incomplete u32 match")
+        if ("conntrack" in modules) != ("connectionStates" in fields):
+            raise ValueError(f"{device}: incomplete conntrack match")
         if "destinationPorts" in fields and fields.get("protocol") not in {6, 17}:
             raise ValueError(f"{device}: port match without TCP/UDP protocol")
         if any(module in modules and fields.get("protocol") != protocol
@@ -125,7 +149,7 @@ def parse_forward_data(text, device):
             raise ValueError(f"{device}: policy fields without policy module")
         rules.append(dict(sorted(fields.items())))
     if default is None:
-        raise ValueError(f"{device}: missing FORWARD policy")
+        raise ValueError(f"{device}: missing {chain} policy")
     return {"device": device, "defaultAccept": default, "rules": rules}
 
 
@@ -143,6 +167,8 @@ def render_forward(table):
                 fields[key] = "some " + prefix(value)
             elif key == "destinationPorts":
                 fields[key] = sequence(map(str, value))
+            elif key == "connectionStates":
+                fields[key] = sequence(map(quoted, value))
             else:
                 fields[key] = "some " + str(value)
         rules.append(record(**fields))
@@ -158,8 +184,9 @@ def sampled_tunnel_established(text, name, tunnel):
 
     The supported swanctl text format uses unindented IKE headers, two-space
     CHILD headers, and four-space traffic selectors. A missing/malformed field
-    cannot provide a positive observation. Rekey overlap may contain several
-    sessions/children; one complete matching installed child is sufficient.
+    cannot provide a positive observation. This compatibility summary witnesses
+    one expected installed child. The required Authentication module separately
+    imports and checks every session, including additional peer sessions.
     """
     sessions = re.split(r"(?m)(?=^\S)", text)
     for session in sessions:
@@ -271,7 +298,8 @@ def parse_crypto_config(text, name):
 def parse_public_certificates(text, name):
     """Retain public identity metadata from every sampled EE and CA record.
 
-    Validity strings and CRL bodies are not interpreted by this bounded parser.
+    Validity, key algorithms and usage flags remain explicit fields. CRL bodies
+    are represented by the separately captured public credential audit.
     Missing observations are handled separately, never converted to empty success.
     """
     headers = list(re.finditer(r"(?m)^List of X\.509 (.+)\s*$", text))
@@ -289,13 +317,18 @@ def parse_public_certificates(text, name):
             end = blocks[position + 1].start() if position + 1 < len(blocks) else len(body)
             fields = {}
             for line in body[block.start():end].splitlines():
-                if not line.strip() or re.fullmatch(r"\s+not after\s+.+", line):
+                if not line.strip():
+                    continue
+                if re.fullmatch(r"\s+not after\s+.+", line):
+                    if "notAfter" in fields:
+                        raise ValueError(f"{name}: duplicate certificate expiry")
+                    fields["notAfter"] = line.strip()
                     continue
                 match = re.fullmatch(r"  (\w+):\s*(.*?)\s*", line)
                 if not match or match[1] in fields:
                     raise ValueError(f"{name}: unsupported or repeated certificate field")
                 fields[match[1]] = match[2]
-            required = {"subject", "issuer", "validity", "serial", "flags", "subjkeyId", "pubkey", "keyid", "subjkey"}
+            required = {"subject", "issuer", "validity", "serial", "flags", "subjkeyId", "pubkey", "keyid", "subjkey", "notAfter"}
             if index == 0:
                 required |= {"altNames", "authkeyId"}
             if not required <= fields.keys() or fields.keys() - required - {"altNames", "authkeyId"}:
@@ -306,19 +339,24 @@ def parse_public_certificates(text, name):
             for field in ["serial", "subjkeyId", "keyid", "subjkey", "authkeyId"]:
                 if field in fields and not re.fullmatch(r"[0-9a-fA-F]{2}(?::[0-9a-fA-F]{2})*", fields[field]):
                     raise ValueError(f"{name}: malformed certificate identifier")
-            key = re.fullmatch(r"[A-Za-z0-9_-]+ \d+ bits(, has private key)?", fields["pubkey"])
+            key = re.fullmatch(r"([A-Za-z0-9_-]+) (\d+) bits(, has private key)?", fields["pubkey"])
             if not key:
                 raise ValueError(f"{name}: unsupported public-key description")
+            before, before_status = validity_field(fields["validity"], "not before")
+            after, after_status = validity_field(fields["notAfter"], "not after")
             result.append({"subject": fields["subject"][1:-1], "issuer": fields["issuer"][1:-1],
                            "serial": fields["serial"].lower(), "subjectKeyId": fields["subjkeyId"].lower(),
                            "authorityKeyId": fields.get("authkeyId", "").lower(), "keyId": fields["keyid"].lower(),
                            "altNames": fields.get("altNames", "").split(), "isCA": index == 1,
-                           "hasPrivateKey": key[1] is not None})
+                           "hasPrivateKey": key[3] is not None, "publicKeyAlgorithm": key[1], "publicKeyBits": int(key[2]),
+                           "notBefore": before, "notAfter": after, "notBeforeStatus": before_status, "notAfterStatus": after_status,
+                           "usageFlags": fields["flags"].split()})
     return result
 
 
 def render_public_certificate(certificate):
     return record(**{key: str(value).lower() if isinstance(value, bool) else
+                     str(value) if isinstance(value, int) else
                      sequence(quoted(v) for v in value) if isinstance(value, list) else quoted(value)
                      for key, value in certificate.items()})
 
@@ -370,6 +408,8 @@ def translate(snapshot, checks_path, *, as_data=False, include_management=False)
             verify(name)
     spec = json.loads(read("spec.json"))
     status = json.loads(read("status.json"))
+    management_ports = {d["id"]: {i["name"] for i in d["interfaces"] if i["zone"] == "management"}
+                        for d in spec["devices"]}
     checks = json.loads(checks_path.read_text()) if include_management else None
     #* JSON strings and numbers must never acquire Boolean meaning by truthiness.
     #* A valid false outcome is retained; malformed or missing outcomes are errors.
@@ -436,6 +476,10 @@ def translate(snapshot, checks_path, *, as_data=False, include_management=False)
 
     device_rows, tunnel_rows, tables, observations = [], [], [], []
     table_data, tunnel_observations, crypto_configs, certificate_inventories = [], {}, [], []
+    operational = []
+    authentication_observations = []
+    service_configurations = []
+    local_tables = {"INPUT": [], "OUTPUT": []}
     roles = {r: r for r in ["transport", "firewall", "host", "inner", "outer", "switch", "admin"]}
     roles["gray-firewall"] = "grayFirewall"
     for d in devices.values():
@@ -444,21 +488,35 @@ def translate(snapshot, checks_path, *, as_data=False, include_management=False)
             id=quoted(name), role="." + roles[d["role"]],
             site=optional(d.get("site"), lambda v: {"A": ".a", "B": ".b"}[v]),
             level=optional(d.get("level") if d.get("level") in {"S1", "S2"} else None, lambda v: "." + v.lower()),
-            interfaces=sequence(record(name=quoted(p["name"]), zone="." + p["zone"], address=quoted(p.get("address", ""))) for p in d["interfaces"]),
+            interfaces=sequence(record(name=quoted(p["name"]), zone="." + p["zone"], address=quoted(p.get("address", "")), mtu=str(p.get("mtu", spec["mtu"]))) for p in d["interfaces"]),
             routes=sequence(record(network=quoted(r["prefix"]), via=quoted(r["via"])) for r in d.get("routes", [])),
             managementDomain=optional(domains.get(name)), admin=optional(d.get("admin"))))
-        intended = parse_forward_data(read(f"devices/{name}/intended.iptables"), name)
-        actual = parse_forward_data(read(f"devices/{name}/observed.iptables"), name)
+        excluded = () if include_management else management_ports[name]
+        intended = parse_forward_data(read(f"devices/{name}/intended.iptables"), name,
+                                      "FORWARD", excluded)
+        actual = parse_forward_data(read(f"devices/{name}/observed.iptables"), name,
+                                    "FORWARD", excluded)
         if intended != actual:
             raise ValueError(f"{name}: observed FORWARD rules differ from intended rules")
         table_data.append(actual)
         tables.append(render_forward(actual))
+        if not include_management:
+            for chain in local_tables:
+                intended_local = parse_forward_data(read(f"devices/{name}/intended.iptables"), name,
+                                                    chain, management_ports[name])
+                observed_local = parse_forward_data(read(f"devices/{name}/observed.iptables"), name,
+                                                    chain, management_ports[name])
+                if intended_local != observed_local:
+                    raise ValueError(f"{name}: observed {chain} rules differ from intended rules")
+                local_tables[chain].append(observed_local)
         tunnel = d.get("tunnel")
         if tunnel:
             tunnel_rows.append(record(owner=quoted(name), peer=quoted(tunnel["peer"]), localAddress=quoted(tunnel["local"]), remoteAddress=quoted(tunnel["remote"]), localSelector=quoted(tunnel["local_ts"]), remoteSelector=quoted(tunnel["remote_ts"]), trust=quoted(tunnel["trust"]), reqid=str(tunnel["reqid"])))
             config = parse_crypto_config(read(f"devices/{name}/intended.swanctl.conf"), name)
             crypto_configs.append(config)
         o = observed[name]
+        if not include_management:
+            operational.append(parse_operational(o, management_ports[name]))
         if tunnel:
             certificate_text = o["facts"].get("certificates")
             certificates = None
@@ -466,6 +524,19 @@ def translate(snapshot, checks_path, *, as_data=False, include_management=False)
                 certificates = parse_public_certificates(certificate_text, name)
             certificate_inventories.append({"device": name, "observedAt": o["observed_at"],
                                            "certificates": certificates})
+            if not include_management:
+                service_configurations.append(parse_service_configuration(read(f"devices/{name}/intended.services.json"), name))
+                facts, errors = o["facts"], o.get("errors", {})
+                available = lambda key: key in facts and key not in errors
+                audit = None
+                if all(available(key) for key in ["credential-audit", "certificate-pem", "trusted-ca-pem"]):
+                    audit = parse_audit(facts["credential-audit"], facts["certificate-pem"], facts["trusted-ca-pem"])
+                connections = bind_connection_details(parse_connections(facts["connections"]), facts["connections-raw"]) if available("connections") and available("connections-raw") else None
+                sessions = parse_sessions(facts["sas"]) if available("sas") else None
+                authentication_observations.append({"device": name, "observedAt": o["observed_at"],
+                    "audit": audit, "connections": connections, "sessions": sessions,
+                    "authorities": parse_authorities(facts["authorities-raw"]) if available("authorities-raw") else None,
+                    "reportedCRLs": parse_reported_crls(facts["certificates"]) if available("certificates") else None})
         #* A positive SA observation summarizes the command text, not a PKI proof.
         #* Missing output or an observation error remains unknown.
         sas = o["facts"].get("sas")
@@ -515,6 +586,8 @@ def translate(snapshot, checks_path, *, as_data=False, include_management=False)
                 "tables": table_data, "tunnel_observations": tunnel_observations,
                 "crypto_configs": crypto_configs,
                 "certificate_inventories": certificate_inventories,
+                "operational": operational,
+                "local_tables": local_tables,
                 "authorized_pairs": pairs, "checks_passed": passed}
     header = '''import TDN.MSC.Types
 
@@ -524,16 +597,19 @@ def translate(snapshot, checks_path, *, as_data=False, include_management=False)
 Generated by `scripts/import_msc_snapshot.py`; edit the source snapshot or the
 translator, then regenerate. Do not manually adjust these facts to make a proof
 pass. The importer verifies every consumed file's SHA-256 and rejects unsupported
-or drifting retained FORWARD rules. Lean checks the downstream proofs, not the
+or drifting retained filter rules. Lean checks the downstream proofs, not the
 importer. Required data exclude optional management before semantic validation;
 the separately generated HistoricalDeployment retains full-export diagnostics.
 
-Topology and tunnel records describe intent. Forward tables match the sampled
-observed configuration. Observations and probe results retain their own times.
+Topology and tunnel records describe intent. Filter tables match the sampled
+observed configuration. Required data also retain typed runtime observations.
+Observations and probe results retain their own times.
 Neither the file hashes nor the successful probes establish ongoing correctness.
 -/
 '''
     namespace = "HistoricalDeployment" if include_management else "Deployment"
+    if not include_management:
+        header = header.replace("import TDN.MSC.Types", "import TDN.MSC.Types\nimport TDN.Network.Operational\nimport TDN.Network.CredentialEvidence\nimport TDN.Network.Hardening\nimport TDN.Network.Services")
     header += f"namespace TDN.MSC.{namespace}\n"
     defs = [
         ("specHash", "String", quoted(digest)),
@@ -553,6 +629,24 @@ Neither the file hashes nor the successful probes establish ongoing correctness.
         ("observations", "List DeviceObservation", "[\n  " + ",\n  ".join(observations) + "\n]"),
         ("authorizedHostPairs", "List (String × String)", sequence("(" + quoted(a) + ", " + quoted(b) + ")" for a, b in pairs)),
     ]
+    if not include_management:
+        for chain in local_tables:
+            defs.append((chain.lower() + "Tables", "List ForwardTable",
+                         sequence(render_forward(table) for table in local_tables[chain])))
+        defs.append(("operationalSnapshots", "List TDN.Network.OperationalSnapshot",
+                     sequence(render_operational(o, record, sequence, optional, quoted) for o in operational)))
+        defs.append(("applianceObservations", "List (Option TDN.Network.Hardening.ApplianceObservation)",
+                     sequence(optional(parse_appliance(o), lambda value: render_appliance(value, record, sequence, quoted))
+                              for o in observed.values())))
+        render_evidence = lambda value: render_record(value, record, sequence, optional, quoted)
+        defs.append(("serviceConfigurations", "List (TDN.Network.Services.Configuration String)",
+            sequence(render_evidence(value) for value in service_configurations)))
+        defs.append(("authenticationObservations", "List TDN.Network.AuthenticationObservation",
+            sequence(record(device=quoted(o["device"]), observedAt=quoted(o["observedAt"]),
+                audit=optional(o["audit"], render_evidence), reportedCRLs=optional(o["reportedCRLs"], render_evidence),
+                connections=optional(o["connections"], render_evidence),
+                authorities=optional(o["authorities"], render_evidence),
+                sessions=optional(o["sessions"], render_evidence)) for o in authentication_observations)))
     if include_management:
         defs += [("probeSHA256", "String", quoted(hashlib.sha256(checks_path.read_bytes()).hexdigest())),
                  ("probeAt", "String", quoted(checks["at"])),
