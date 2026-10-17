@@ -1,0 +1,41 @@
+Threshold/
+Req. # Requirement Description Alternative
+Objective
+from being fragmented and impacting performance.
+This requires proper configuration of the Maximum
+Transmission Unit (MTU) for IPv4 or Path MTU
+(PMTU) for IPv6 and should consider the Outer VPN
+Gateway MTU/PMTU values for achievement.
+MSC-SR-24 All solution components (Firewalls, VPN Gateways, O Optional
+Authentication Servers, etc) must use software and
+firmware signing algorithms in Table 2.
+10.2 VPN GATEWAY REQUIREMENTS
+This section addresses requirements for VPN Gateways. Table 6 identifies the CNSA 1.0 algorithms
+approved for IPsec encryption. Table 7 identifies the CNSA 2.0 algorithms approved for IPsec
+encryption. Table 8 defines requirements for VPN Gateways.
+Table 6. Approved CNSA 1.0 Algorithms for IPsec
+Security Service Algorithm Suite Specifications
+Confidentiality (Encryption) Advanced Encryption Standard FIPS PUB 197
+(AES)-256 IETF RFC 7296
+IETF RFC 9206
+Authentication (Digital Rivest Shamir Adelman (RSA) FIPS PUB 186-5
+Signature) 3072 or Elliptic Curve Digital IETF RFC 4754
+Signature Algorithm over the IETF RFC 7427
+curve P-384 with SHA-384 IETF RFC 7296
+IETF RFC 9206
+Key Exchange/ Establishment Elliptic Curve Diffie-Hellman NIST SP 800-56A
+over the curve P-384 (Diffie- IETF RFC 3526
+Hellman (DH) Group 20) IETF RFC 5903
+or IETF RFC 7296
+DH with prime modulus of 3072 IETF RFC 9206
+bits (group 15) or 4096 bits
+(group 16)
+Integrity (Hashing) SHA-384 or SHA-512 FIPS PUB 180-4
+IETF RFC 6234
+IETF RFC 9206
+Table 7. Approved CNSA 2.0 Algorithms for IPsec
+Security Service Algorithm Suite Specifications
+Confidentiality (Encryption) AES-256-GCM FIPS PUB 197
+Authentication (Digital ML-DSA-87 FIPS 204
+Signature)
+30

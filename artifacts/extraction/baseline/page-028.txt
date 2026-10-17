@@ -1,0 +1,25 @@
+Figure 10. CNSA 2.0 IKEv2 Exchanges
+As detailed in Figure 10, RFC 9370 enables peers to perform multiple key exchanges. The key-
+establishment algorithm used in the Initial IKE SA (IKE_SA_INIT) exchange must be constrained enough
+in size as to not induce IP fragmentation. The ML-KEM-1024 public key and ciphertext sizes are too large
+for this initial exchange and thus the IKE_SA_INIT exchange must use a CNSA 1.0-compliant key
+establishment algorithm. A subsequent Intermediate IKE (IKE_INTERMEDIATE) exchange (as specified in
+RFC 9242) is then used to perform an ML-KEM key establishment. This second exchange, encrypted
+using keys established by IKE_SA_INIT, can leverage the IKEv2-level fragmentation mechanism specified
+in RFC 7383.
+5.12 CNSA 2.0 MACSEC
+As part of the CNSA 2.0 migration, MACsec Devices will have to implement CNSA 2.0-compliant key
+establishment and digital signatures when utilizing EAP-TLS for mutual authentication. As of now, this is
+an objective design feature but will be required in the future for the use of MACsec in MSC. The EAP-TLS
+negotiation to mutually authenticate MACsec Devices will need to use ML-KEM 1024 for key
+establishment and ML-DSA 87 for digital signatures. For implementations of EAP-TLS to use CNSA 2.0-
+compliant algorithms, TLS 1.3 will be required per RFC 9190 EAP-TLS 1.3 Using the Extensible
+Authentication Protocol with TLS 1.3 and CNSA 2.0 Suite Profile for TLS 1.3 (draft-becker-cnsa2-tls-
+profile).
+5.13 SOFTWARE AND FIRMWARE SIGNING
+As part of the requirement laid out in NSM-10, the CSfC Program has added Software and Firmware
+Signing requirements for all components listed on the CSfC Components list. As of now this is an
+objective security feature but the implementation timeline for these requirements will be the same as
+the CNSA 2.0 timeline in CSfC. These timelines are subject to change depending on market acceptance,
+vendor and customer feedback for these new requirements.
+21

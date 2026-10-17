@@ -1,0 +1,44 @@
+Security Service Algorithm Suite Specifications
+Key Establishment ML-KEM-1024 FIPS 203
+Integrity (Hashing) SHA-384 or FIPS PUB 180-4
+SHA-512 IETF RFC 6239
+IETF RFC 6379
+IETF RFC 6380
+IETF RFC 6460
+Table 8. VPN Gateway (VG) Requirements
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+MSC-VG-1 The proposals offered by VPN Gateways in the T MSC-VG-19,
+course of establishing the Internet Key Exchange MSC-VG-20,
+(IKE) Security Association and the Encapsulating and MSC-VG-
+Security Payload (ESP) SA for inner and outer 21
+tunnels must be configured to offer algorithm
+suite(s) containing only CNSA 1.0 algorithms as
+detailed in Table 6.
+MSC-VG-2 Default, self-signed or proprietary device T MSC-VG-3
+certificates, which are frequently preinstalled by
+the vendor, for any VPN Gateway must not be used
+for establishing SAs.
+MSC-VG-3 Default, self-signed or proprietary device O MSC-VG-2
+certificates, which are frequently preinstalled by
+the vendor, for any VPN Gateway must be
+removed.
+MSC-VG-4 When using certificate-based authentication, a T=O
+unique device certificate must be loaded onto each
+VPN Gateway along with the corresponding CA
+certificate chain, to include the Trust Anchor CA
+certificate.
+MSC-VG-5 The private key stored on VPN Gateways must not T=O
+be accessible through an interface.
+MSC-VG-6 A device certificate must be used for VPN Gateway T=O
+authentication during IKE.
+MSC-VG-7 VPN Gateway authentication must include a check T=O
+that the certificate is not revoked, which can
+include a CRL, OCSP Responder, or other similar
+revocation reporting mechanism.
+MSC-VG-8 The VPN Gateway authentication must include a T=O
+check that certificates are not expired.
+MSC-VG-9 All VPN Gateways must use IKEv2 (IETF RFC 7296) T=O
+key exchange.
+31

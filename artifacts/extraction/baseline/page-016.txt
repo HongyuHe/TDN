@@ -1,0 +1,25 @@
+There is no limit to the number of different security levels that an MSC Solution may support. An
+unclassified network can also be included behind the Outer Encryption Component but must be behind
+its own Inner Encryption Component and meet the requirements in this CP as if it was a Red Network.
+MSC Solutions supporting multiple security levels may include independently managed sites (see Section
+4.2.1.1) or centrally managed sites (see Section 4.2.1.2). Given both cases, separate CAs, CAKs, and
+management devices are needed to manage the Inner Encryption Components at each security level.
+For example, Figure 5 shows a Central Management Site (Site A) and a Remote Site (Site B), but network
+1 and network 2 each has its own Red Management Services, which prevents the Inner Encryption
+Components of the two networks from being able to authenticate with one another.
+4.2.2.1 Networks Operating at the Same Security Level
+When Red Networks that operate at the same security level are implemented, the cryptographic
+separation provided by the Inner Encryption Components is sufficient to protect against unintended
+data flows between the two networks. Two Inner Encryption Components for networks of different
+security levels will be unable to mutually authenticate with each other because they trust different CAs
+that do not have a trust relationship with one another or they use different CAKs that will not provide
+authentication. This difference prevents the establishment of an encryption tunnel between the two
+components.
+Figure 5 shows an MSC Solution between two sites that carries traffic between two Red Networks; a
+Secret U.S.-only Network (Network 1), and a Secret U.S.-only Network (Network 2). Because Network 1
+and Network 2 both operate at the same security level, their singly-encrypted traffic can be carried over
+the Gray Network without any additional security controls in place.
+Although not required by this CP, a Solution Owner may choose to implement the additional security
+described in Section 4.2.2.2 to provide additional protection against unintended data flows between Red
+Networks at the same security level.
+9

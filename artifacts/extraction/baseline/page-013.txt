@@ -1,0 +1,37 @@
+• Network address configuration (e.g., Dynamic Host Configuration Protocol (DHCP), Neighbor
+Discovery Protocol (NDP))
+• Address resolution (e.g., Address Resolution Protocol (ARP), NDP)
+• Time synchronization (e.g., Network Time Protocol (NTP), Precision Time Protocol)
+• Route advertisement (e.g., Routing Information Protocol, Open Shortest Path First (OSPF),
+Intermediate System to Intermediate System, Border Gateway Protocol (BGP))
+• Certificate status distribution (e.g., Online Certificate Status Protocol (OCSP), Hypertext Transfer
+Protocol (HTTP) download of Certificate Revocation Lists (CRLs))
+In general, this CP does not impose detailed requirements on control plane traffic, although control
+plane protocols may be used to implement certain requirements. For example, requirements MSC-SR-3
+and MSC-SR-4 (see Section 10.1) require that time synchronization be performed but does not require
+the use of any particular time synchronization protocol or technique. Notable exceptions are for IPsec
+session establishment and for certain certificate status distribution scenarios where, given their impact
+on the security of the solution, this CP does provide detailed requirements. Restrictions are also placed
+on control plane traffic for the Outer Encryption Component. The Outer Encryption Component is
+prohibited from implementing routing protocols on external and internal interfaces. The Outer
+Encryption Component may not perform routing functionality. If an Outer Firewall is present, the Outer
+Firewall can perform routing functions.
+Except as otherwise specified in this CP, the use of specific control plane protocols is left to the Solution
+Owner to approve. The Solution Owner must disable or block any unapproved control plane protocols.
+Data plane and management plane traffic must be physically and cryptographically separated from one
+another. Use of a Virtual Local Area Network (VLAN) alone is not sufficient to separate data plane and
+management plane traffic. As a result, a solution may have a Gray Data Network and a Gray
+Management Network that are separate from one another, where the components on the Gray
+Management Network are used to manage the components on the Gray Data Network. Unless
+otherwise specified given that some control plane traffic is necessary for a network to function, there is
+no general requirement that control plane traffic be similarly separated.
+4.2 HIGH LEVEL DESIGN
+Depending on the needs of the customer implementing the solution, the MSC Solution is adaptable to
+support capabilities for multiple sites and/or multiple security levels. If a customer does not have a
+need to support multiple sites or multiple security levels, then those elements need not be included as
+part of the implementation. As explained in Section 8, any implementation of the MSC Solution must
+satisfy all of the applicable requirements specified in this CP.
+4.2.1 MULTIPLE SITES
+Sites in the solution may be managed independently of one another or may be remotely managed from
+a central site.
+6

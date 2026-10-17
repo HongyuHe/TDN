@@ -1,0 +1,46 @@
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+MSC-VG-10 All VPN Gateways must use Cipher Block Chaining T MSC-VG-18
+for IKE encryption.
+MSC-VG-11 All VPN Gateways must use Cipher Block Chaining T MSC-VG-12
+for ESP encryption with a Host-based Message
+Authentication Code for integrity.
+MSC-VG-12 All VPN Gateways must use Galois Counter Mode O MSC-VG-11
+for ESP encryption.
+MSC-VG-13 All VPN Gateways must set the IKE SA lifetime to at T=O
+most 24 hours.
+MSC-VG-14 All VPN Gateways must set the ESP SA lifetime to T=O
+no more than 8 hours.
+MSC-VG-15 Inner VPN Gateways must only authenticate and T=O
+establish an IPsec tunnel with one another if their
+Red Networks operate at the same security level as
+defined in this CP.
+MSC-VG-16 All VPN Gateways must re-authenticate the identity T=O
+of the VPN Gateway at the other end of the
+established tunnel before rekeying the IKE SA.
+MSC-VG-17 The Mandatory Access Control policy must only O Optional
+allow the VPN Gateway to access the private key of
+the VPN Gateway.
+MSC-VG-18 All VPN Gateways must use Galois Counter Mode O MSC-VG-10
+(GCM) for IKE encryption.
+MSC-VG-19 All IPsec connections must use multiple key O MSC-VG-1
+exchanges with an initial IKEv2 SA key exchange
+and an intermediate IKEv2 key exchange:
+• IKE_SA_INIT: The IKEv2 SA key exchange
+performed in IKE_SA_INIT must use a CNSA
+1.0 key establishment algorithm (as
+specified in Table 6).
+• IKE_INTERMEDIATE: The IKEv2 SA key
+establishment performed in the
+IKE_INTERMEDIATE exchange must use ML-
+KEM-1024 (as specified in Table 7).
+MSC-VG-20 All IPsec connections must use IETF standards O MSC-VG-1
+compliant with IKE implementations as specified in
+Commercial National Security Algorithm (CNSA)
+Suite 2.0 Profile for IPsec (draft-guthrie-cnsa2-
+ipsec-profile) including RFC 9370, RFC 9242, and
+RFC 7383.
+MSC-VG-21 The VPN Components must use algorithms from O MSC-VG-1
+the algorithm suite in Table 7 for all IPsec VPN
+32

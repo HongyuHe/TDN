@@ -1,0 +1,434 @@
+{
+  "status": "preliminary_semantic_review_complete_implementation_pending",
+  "reviewer": "/root/role_ontology_review",
+  "decisions_sha256": "67b6f5f4c370a07cb13fa7034414721a6662bcf99e3407feb592b3fc81c1b7fe",
+  "roles": 76,
+  "curated_subclass_edges": 40,
+  "generated_root_edges_expected": 44,
+  "classes_with_multiple_curated_parents": {
+    "ROLE-gray-aw": [
+      "ROLE-aw",
+      "ROLE-solution-component"
+    ],
+    "ROLE-gray-firewall": [
+      "ROLE-firewall",
+      "ROLE-solution-component"
+    ],
+    "ROLE-inner-macsec": [
+      "ROLE-inner-encryption",
+      "ROLE-macsec-device"
+    ],
+    "ROLE-inner-vpn": [
+      "ROLE-inner-encryption",
+      "ROLE-vpn-gateway"
+    ],
+    "ROLE-outer-firewall": [
+      "ROLE-firewall",
+      "ROLE-solution-component"
+    ],
+    "ROLE-outer-macsec": [
+      "ROLE-macsec-device",
+      "ROLE-outer-encryption"
+    ],
+    "ROLE-outer-vpn": [
+      "ROLE-outer-encryption",
+      "ROLE-vpn-gateway"
+    ],
+    "ROLE-red-aw": [
+      "ROLE-aw",
+      "ROLE-solution-component"
+    ]
+  },
+  "annotation_associations": 31,
+  "excluded_inferences": 14,
+  "ui_families": 8,
+  "errors": [],
+  "semantic_assessment": "Every curated subtype and association was read with its cited source-index text. No unsupported universal subclass was identified in the current decisions. This assessment does not cover generated serialization, visualization, implementation guards, or a frozen package.",
+  "decision_cases": [
+    {
+      "child": "ROLE-encryption-component",
+      "parent": "ROLE-solution-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u005.s001"
+      ]
+    },
+    {
+      "child": "ROLE-vpn-gateway",
+      "parent": "ROLE-encryption-component",
+      "basis": "source_stated",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001"
+      ]
+    },
+    {
+      "child": "ROLE-macsec-device",
+      "parent": "ROLE-encryption-component",
+      "basis": "source_stated",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001"
+      ]
+    },
+    {
+      "child": "ROLE-inner-encryption",
+      "parent": "ROLE-encryption-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u003.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001"
+      ]
+    },
+    {
+      "child": "ROLE-outer-encryption",
+      "parent": "ROLE-encryption-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u007.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001"
+      ]
+    },
+    {
+      "child": "ROLE-inner-vpn",
+      "parent": "ROLE-vpn-gateway",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001"
+      ]
+    },
+    {
+      "child": "ROLE-inner-vpn",
+      "parent": "ROLE-inner-encryption",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p042:u016.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p042:u018"
+      ]
+    },
+    {
+      "child": "ROLE-outer-vpn",
+      "parent": "ROLE-vpn-gateway",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001"
+      ]
+    },
+    {
+      "child": "ROLE-outer-vpn",
+      "parent": "ROLE-outer-encryption",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p043:u010.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p043:u012"
+      ]
+    },
+    {
+      "child": "ROLE-inner-macsec",
+      "parent": "ROLE-macsec-device",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001"
+      ]
+    },
+    {
+      "child": "ROLE-inner-macsec",
+      "parent": "ROLE-inner-encryption",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u003.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001"
+      ]
+    },
+    {
+      "child": "ROLE-outer-macsec",
+      "parent": "ROLE-macsec-device",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p044:u017"
+      ]
+    },
+    {
+      "child": "ROLE-outer-macsec",
+      "parent": "ROLE-outer-encryption",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u007.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p044:u017"
+      ]
+    },
+    {
+      "child": "ROLE-outer-firewall",
+      "parent": "ROLE-firewall",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s004"
+      ]
+    },
+    {
+      "child": "ROLE-gray-firewall",
+      "parent": "ROLE-firewall",
+      "basis": "source_stated",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u009.s001"
+      ]
+    },
+    {
+      "child": "ROLE-inner-firewall",
+      "parent": "ROLE-firewall",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u008",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u009.s001"
+      ]
+    },
+    {
+      "child": "ROLE-outer-firewall",
+      "parent": "ROLE-solution-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u006.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u006.s002"
+      ]
+    },
+    {
+      "child": "ROLE-gray-firewall",
+      "parent": "ROLE-solution-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u005.s001"
+      ]
+    },
+    {
+      "child": "ROLE-aw",
+      "parent": "ROLE-management-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s002"
+      ]
+    },
+    {
+      "child": "ROLE-red-aw",
+      "parent": "ROLE-aw",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001"
+      ]
+    },
+    {
+      "child": "ROLE-gray-aw",
+      "parent": "ROLE-aw",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u009",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s001"
+      ]
+    },
+    {
+      "child": "ROLE-black-aw",
+      "parent": "ROLE-aw",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s006"
+      ]
+    },
+    {
+      "child": "ROLE-red-aw",
+      "parent": "ROLE-solution-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s003"
+      ]
+    },
+    {
+      "child": "ROLE-gray-aw",
+      "parent": "ROLE-solution-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s003"
+      ]
+    },
+    {
+      "child": "ROLE-red-siem",
+      "parent": "ROLE-siem",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u004.s001"
+      ]
+    },
+    {
+      "child": "ROLE-gray-siem",
+      "parent": "ROLE-siem",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u011",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u012.s001"
+      ]
+    },
+    {
+      "child": "ROLE-inner-ca",
+      "parent": "ROLE-ca",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002"
+      ]
+    },
+    {
+      "child": "ROLE-outer-ca",
+      "parent": "ROLE-ca",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002"
+      ]
+    },
+    {
+      "child": "ROLE-local-ca",
+      "parent": "ROLE-ca",
+      "basis": "source_stated",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002"
+      ]
+    },
+    {
+      "child": "ROLE-enterprise-ca",
+      "parent": "ROLE-ca",
+      "basis": "source_stated",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002"
+      ]
+    },
+    {
+      "child": "ROLE-root-ca",
+      "parent": "ROLE-ca",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s005",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s006",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s007"
+      ]
+    },
+    {
+      "child": "ROLE-signing-ca",
+      "parent": "ROLE-ca",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s005"
+      ]
+    },
+    {
+      "child": "ROLE-trust-anchor-ca",
+      "parent": "ROLE-ca",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p038:u009"
+      ]
+    },
+    {
+      "child": "ROLE-key-server",
+      "parent": "ROLE-macsec-device",
+      "basis": "source_stated",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u013.s001"
+      ]
+    },
+    {
+      "child": "ROLE-gray-router",
+      "parent": "ROLE-router",
+      "basis": "source_stated",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003"
+      ]
+    },
+    {
+      "child": "ROLE-screening-router",
+      "parent": "ROLE-router",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s002"
+      ]
+    },
+    {
+      "child": "ROLE-customer-edge-router",
+      "parent": "ROLE-router",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s004",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005"
+      ]
+    },
+    {
+      "child": "ROLE-authentication-server",
+      "parent": "ROLE-solution-component",
+      "basis": "source_stated",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p037:u003"
+      ]
+    },
+    {
+      "child": "ROLE-kgs",
+      "parent": "ROLE-solution-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u005.s001"
+      ]
+    },
+    {
+      "child": "ROLE-key-management-component",
+      "parent": "ROLE-management-component",
+      "basis": "source_interpretation",
+      "result": "supported_with_recorded_qualification",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u007"
+      ]
+    }
+  ]
+}

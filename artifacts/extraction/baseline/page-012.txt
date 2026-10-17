@@ -1,0 +1,24 @@
+are prohibited from managing Inner Encryption Components. Inner Encryption Components must be
+managed from a Red AW.
+4.1.3 BLACK NETWORK
+Black data is classified data that has been encrypted twice. The network connecting the Outer
+Encryption Components together is a Black Network. Black Networks may be referred to as Black
+transport networks. Black Networks are not necessarily (and often will not be) under the control of the
+Solution Owner, and may be operated by an untrusted third party. As shown in Figure 2, if the Black
+Network is an untrusted network such as the Public Internet, an Outer Firewall is required between the
+Black Network and the Outer Encryption Component.
+Figure 2. MSC Solution Using the Public Internet as the Black Transport Network
+4.1.4 DATA, MANAGEMENT AND CONTROL PLANE TRAFFIC
+Data plane traffic is classified information, encrypted or unencrypted, that passes through the MSC
+Solution. The MSC Solution exists to encrypt and decrypt data plane traffic. All data plane traffic within
+the Gray and Black Networks is encapsulated within the IPsec’s Encapsulating Security Payload (ESP)
+and/or MACsec protocols.
+Management plane traffic is used to configure and monitor Solution Components. It includes the
+communications between a system administrator and a component, as well as the logs and other status
+information forwarded from a Solution Component to a SIEM, or similar repository. Management plane
+traffic on Red and Gray Networks is encapsulated within the Secure Shell version 2 (SSHv2), IPsec,
+MACsec, or Transport Layer Security (TLS) 1.2 or later protocols.
+Control plane traffic consists of standard protocols necessary for the network to function. Unlike data
+or management plane traffic, control plane traffic is typically not initiated directly on behalf of a user or
+a system administrator. Examples of control plane traffic include, but are not limited to the following:
+5

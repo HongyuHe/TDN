@@ -25,8 +25,8 @@ except ModuleNotFoundError:
     from scripts.msc_credentials import validity_field, parse_audit, parse_connections, parse_sessions, bind_connection_details, parse_reported_crls, parse_authorities, parse_service_configuration, render_record
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_EVIDENCE = ROOT / "artifacts/msc-2026-10-03T070453Z"
-HISTORICAL_EVIDENCE = ROOT / "artifacts/msc-2026-09-27T215205Z"
+CURRENT_EVIDENCE = ROOT / "artifacts/snapshots/msc-2026-10-03T070453Z"
+HISTORICAL_EVIDENCE = ROOT / "artifacts/snapshots/msc-2026-09-27T215205Z"
 
 
 def quoted(value):
@@ -653,16 +653,6 @@ Neither the file hashes nor the successful probes establish ongoing correctness.
                  ("probeCount", "Nat", str(len(checks["checks"]))),
                  ("sampledChecksPassed", "Bool", str(passed).lower())]
     return header + "\n\n".join(f"def {name} : {typ} :=\n{value}" for name, typ, value in defs) + f"\n\nend TDN.MSC.{namespace}\n"
-
-
-def load_snapshot(snapshot, checks_path):
-    """Validate the same evidence and expose normalized inputs to other backends.
-
-    This shared boundary intentionally makes importer bugs common-mode. Neither
-    Lean nor Souffle proves that the Python normalization matches Linux.
-    """
-    #* The original Datalog/ASP comparison explicitly retains historical scope.
-    return translate(snapshot, checks_path, as_data=True, include_management=True)
 
 
 def main():

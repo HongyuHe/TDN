@@ -1,0 +1,47 @@
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+configuration of the Maximum Transmission Unit
+(MTU) (for IPv4 or MACsec) or Path MTU (PMTU)
+(for IPv6) and should consider Black Network and
+Outer Encryption Component MTU/PMTU values to
+achieve this.
+MSC-IR-3 The Inner Encryption Component must not allow T MSC-IR-4
+packets received on an interface connected to a Red
+Network to bypass encryption and be forwarded out
+through an interface connected to a Gray Network.
+MSC-IR-4 The Inner Encryption Component must use a O MSC-IR-3
+Mandatory Access Control policy to not allow
+packets received on an interface connected to a Red
+Network to bypass encryption and be forwarded out
+through an interface connected to a Gray Network.
+MSC-IR-5 The Inner Encryption Component must not allow T MSC-IR-6
+packets received on an interface connected to a
+Gray Network to bypass decryption and be
+forwarded out through an interface connected to a
+Red Network.
+MSC-IR-6 The Inner Encryption Component must use O MSC-IR-5
+Mandatory Access Control policy to not allow
+packets received on an interface connected to a
+Gray Network to bypass decryption and be
+forwarded out through an interface connected to a
+Red Network.
+MSC-IR-7 The Inner Encryption Component must not permit T=O
+split-tunneling.
+10.5 ADDITIONAL REQUIREMENTS FOR OUTER ENCRYPTION COMPONENTS
+Table 15 defines additional Outer Encryption Components Requirements.
+Table 15. Additional Outer Encryption Components (OR) Requirements
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+MSC-OR-1 Outer VPN Gateways must use ESP Tunnel mode T=O
+IPsec.
+MSC-OR-2 Outer Encryption Components must not allow T MSC-OR-3
+packets received on an interface connected to a
+Gray Network to bypass encryption and be
+forwarded out through an interface connected to a
+Black Network.
+MSC-OR-3 Outer Encryption Components must use Mandatory O MSC-OR-2
+Access Control policy to not allow packets received
+on an interface connected to a Gray Network to
+36

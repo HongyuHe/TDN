@@ -1,0 +1,47 @@
+Threshold/
+Req. # Requirement Description Alternative
+Objective
+MSC-SR-12 If the MSC Solution uses the Public Internet for its T=O
+Black transport network, an Outer Firewall must be
+located between the Black transport network and
+the Outer Encryption Component.
+MSC-SR-13 If the MSC Solution is combined with other CSfC T=O
+data-in-transit solutions that include end user
+devices, the Inner Firewall requirements from that
+CP must be followed.
+MSC-SR-14 The only approved physical paths leaving the Red T=O
+Network must be through an MSC Solution in
+accordance with this CP or via an AO-approved
+solution for protecting data in transit1.
+MSC-SR-15 Solution Components must receive virus signature T=O
+updates as required by the local agency policy and
+the AO.
+MSC-SR-16 When multiple Inner Encryption Components share T=O
+an Outer Encryption Component, they must be
+placed in parallel.
+MSC-SR-17 Inner Encryption Components must not perform T=O
+switching or routing for other Encryption
+Components.
+MSC-SR-18 Solution Components must only be configured over T=O
+an interface dedicated for management.
+MSC-SR-19 DNS lookup services on network devices must be O Optional
+disabled.
+MSC-SR-20 DNS server addresses on Solution Components must T=O
+be specified or DNS services must be disabled.
+MSC-SR-21 Automatic remote boot-time configuration services T=O
+must be disabled on all solution components (i.e.,
+automatic configuration via Trivial File Transfer
+Protocol on boot).
+MSC-SR-22 If a CDS is being leveraged within the solution, then T=O
+it must adhere with DoDI 8540.01, the DISN
+Connection Process Guide, and the CDS must be on
+the National Cross Domain Strategy Management
+Office CDS Baseline.
+MSC-SR-23 The packet size for packets leaving the external T=O
+interface of the Gray Firewall/Encryption
+Component must be configured to keep the packets
+1
+In some cases, the customer will need to communicate with other sites that have NSA-certified Government-off-
+the-Shelf products. In particular, it is acceptable for a given site to have both an egress path via an NSA-certified
+product and an egress path via a CSfC Solution conforming to a CP.
+29

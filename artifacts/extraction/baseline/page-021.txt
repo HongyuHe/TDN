@@ -1,0 +1,37 @@
+Management Requirements Annex, and guidance and requirements for using public key certificates can
+be found in the CSfC Key Management Requirements Annex.
+4.3 OTHER PROTOCOLS
+Throughout this CP, when IP traffic is discussed, it may refer to either Internet Protocol version 4 (IPv4)
+or Internet Protocol version 6 (IPv6) traffic, unless otherwise specified, as the MSC Solution is agnostic to
+most named data handling protocols. In addition, Red, Gray and Black Networks can run either IPv4 or
+IPv6, and each network can independently make that decision. In the remainder of the CP, if no
+protocols or standards are specified then any appropriate protocols may be used to achieve the
+objective.
+Public standards conformant Layer 2 control protocols, such as ARP, are allowed as necessary to ensure
+the operational usability of the network. Public standards conformant Layer 3 control protocols, such as
+Internet Control Message Protocol (ICMP), may be allowed based on local Authorizing Official (AO)
+policy, but the default configuration of this solution is for all Layer 3 control protocols to be disabled.
+Red and Gray Network multicast messages and Internet Group Management Protocol or Multicast
+Listener Discovery may also be allowed depending on local AO policy. Multicast messages received on
+external interfaces of the Outer Encryption Component must be dropped.
+The MSC Solution can be implemented to take advantage of standards-based routing protocols that are
+already used in the Black and/or Red Network. For example, networks that currently use Generic
+Routing Encapsulation (GRE), Multiprotocol Label Switching or OSPF protocols can continue to use these
+in conjunction with this solution to provide routing as long as the AO approves their use.
+4.4 AVAILABILITY
+The high-level designs described in Section 4.2 are not designed with the intent of automatically
+providing high availability. Supporting solution implementations where high availability is important is
+not a goal of this version of the CP. However, this CP does not prohibit adding redundant components in
+parallel to allow for component failover or to increase the throughput of the MSC Solution, as long as
+each redundant component adheres to the requirements of this CP.
+Figure 9 shows an MSC Solution between two sites where each site has a redundant Outer Encryption
+Component (Management components are omitted from the figure for clarity). There are two outer
+encryption tunnels that transit the Black Network: one between the upper pair of Outer Encryption
+Components, and one between the lower pair of Outer Encryption Components. Each site’s Gray
+Network contains an ordinary router between the Inner and Outer Encryption Components that selects
+which Outer Encryption Component to route outbound packets. This router is part of the solution only
+in the sense that it is part of the network infrastructure of the Gray Network; this CP does not levy any
+security requirements on the router/switch. The MSC Solution can maintain connectivity between the
+two sites even if one of the Outer Encryption Components fails because traffic will be routed through
+the tunnel that has not failed.
+14

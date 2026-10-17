@@ -1,0 +1,39 @@
+Administrator delivers the Outer Encryption’s CSR to the Outer CA and the Inner VPN Gateway’s CSR to
+the Inner CA. The appropriate CA processes the CSR for each encryption component and returns a
+signed X.509 certificate. The Security Administrator then installs the unique signed certificate and the
+certificate chain, which consists of the signing CA’s certificate and the Trust Anchor certificate (e.g., Root
+CA certificate). The Security Administrator may also install an initial CRL.
+6.2 ADMINISTRATION OF COMPONENTS
+Each component in the solution has one or more AWs that maintain, monitor, and control all security
+functions for that component. It should be noted that all of the required administrative functionality
+does not need to be present in each individual management component, but the entire set of AWs must
+collectively meet administrative functionality requirements. Implementations may employ a SIEM in the
+Gray Management Services for log management of Gray infrastructure components except where AOs
+use a CDS to move Gray Network log data to a Red SIEM.
+AWs may be virtual machines (VMs) on a physical host/server that is dedicated to hosting AWs VMs. A
+physical host/server that hosts AWs VMs must not host VMs that are used for enrollment or
+provisioning servers, certificate registrations, or SIEMs. A physical host/server that hosts AWs VMs may
+not host VMs used for non-CSfC purposes. If an AW is a physical workstation, then that workstation
+cannot also be used for provisioning, enrollment, certificate registrations, SIEM services, or for any non-
+CSfC functions. AWs (physical or virtual) must be configured, patched, and operated in accordance to
+the organizational or local policy. AWs must also be powered off when not in use.
+Given the architecture of the solution, each layer has its own distinct administration LAN or VLAN; the
+Inner Encryption Component and supporting components are managed from the Red Management
+Services, and the Outer Encryption Component and supporting components are managed from the Gray
+Management Services.
+The Gray AWs along with all Gray Management Services, are physically connected to the Gray Firewall, if
+required, or the Outer Encryption Component. The Gray Firewall maintains separate Access Control
+Lists (ACLs) to permit management traffic to/from the Gray Management Services but prohibits such
+traffic from all other components. These ACLs ensure that approved management traffic is only capable
+of flowing in the intended direction. This architecture provides the separation necessary for two
+independent layers of protection.
+Management traffic for all MSC Solution Components is always encrypted to protect confidentially and
+integrity, except in the case where components are locally managed through a direct physical
+connection (i.e., serial cable from a Gray AW to the Outer Encryption Component). Management traffic
+must be encrypted with SSHv2, TLS 1.2 or later, IPsec or MACsec. When components are managed over
+the Black Network, a CSfC Solution must be implemented to provide two layers of approved encryption.
+This requirement is not applicable if the MSC Solution Components are managed from the same LAN or
+VLAN. For example, a Gray AW residing within the Gray Management Services at the same site as the
+Outer Encryption Component need not use CNSA Suite algorithms since this traffic does not traverse an
+untrusted network.
+23

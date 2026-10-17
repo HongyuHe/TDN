@@ -1,0 +1,64 @@
+{
+  "record_kind": "summaries_of_actual_agent_exchanges",
+  "requested_model": "GPT-6 Astra",
+  "requested_reasoning_effort": "xhigh",
+  "agents": {
+    "producer": "/root/network_requirement_mappings",
+    "independent_reviewer": "/root/extraction_plan_auditor"
+  },
+  "plan_copy": "coordination/preprocessing_plan.md",
+  "plan_sha256": "91f0565525d491f482574f1d3b4830b36ae4d002bf38224a156230585389286f",
+  "events": [
+    {
+      "sender": "user",
+      "recipient": "root",
+      "summary": "Replace blanket example compliance labels with grouped-requirement satisfaction or violation assessments, and audit other artifacts against the preprocessing plan."
+    },
+    {
+      "sender": "root",
+      "recipient": "network_requirement_mappings",
+      "summary": "Produce source-grounded scoped group mappings for all 27 examples; preserve exceptions and original wording; distinguish applicability from demonstrated source presentation."
+    },
+    {
+      "sender": "root",
+      "recipient": "extraction_plan_auditor",
+      "summary": "Independently audit original PDF, plan, source artifacts, groups, background, roles and new mappings. Do not rely on the historical no-defect claim."
+    },
+    {
+      "sender": "extraction_plan_auditor",
+      "recipient": "root",
+      "summary": "PA-001: the RFC4303 publication year was split out of its reference-table row. Other findings cover status consistency, export validation, replay portability, blanket compliance, serial-medium unknowns, inferred device placeholders, issue categorization, and missing IKE roles."
+    },
+    {
+      "sender": "root",
+      "recipient": "extraction_plan_auditor",
+      "summary": "Repaired reference row and preserved source IDs via structural correction ledger. Added export/mapping validation and mutation regressions. Replay now uses retained PDF. Requested source-scope reassessment of I06, I07, I13 and I14."
+    },
+    {
+      "sender": "extraction_plan_auditor",
+      "recipient": "root",
+      "summary": "I06 and I07 are compatible cumulative constraints. I13 is legal review limited to RG076. I14 is an ordinary nonblocking evidence limit."
+    },
+    {
+      "sender": "network_requirement_mappings",
+      "recipient": "root",
+      "summary": "Implemented 92 scoped mappings, removed unsourced device placeholders, corrected serial-link unknowns, added contextual IKE initiator/responder roles, and verified idempotent generation."
+    },
+    {
+      "sender": "extraction_plan_auditor",
+      "recipient": "root",
+      "summary": "Independently verified all nine corrections and all 92 mappings; bound 57 artifact and script files. Eleven source or external-scope questions remain."
+    },
+    {
+      "sender": "root",
+      "recipient": "extraction_plan_auditor",
+      "summary": "Full current-checkout replay passed all ten steps and retained the independent review hashes; final retained-only full replay is recorded separately."
+    },
+    {
+      "sender": "root",
+      "recipient": "user",
+      "summary": "Full retained-only replay also passed without docs/, reproduced all 57 reviewed files, and passed 17 tests. The corrected extraction and reproduction scripts are staged."
+    }
+  ],
+  "review_policy": "Producer and coordinator do not approve their own semantic work. The independent reviewer issues current findings and hashes after correction verification."
+}

@@ -1,0 +1,38 @@
+There are three acceptable algorithms for software and firmware digital signatures, which are all
+included as part of the CNSA 2.0 cipher suites. These algorithms are enumerated within Table 2 and
+only one of the algorithms will be required to meet this requirement.
+Table 2. CNSA 2.0 Algorithms for Software and Firmware Signing
+Algorithm Function Specification Parameters
+Leighton-Micali Asymmetric algorithm NIST SP 800-208 All parameters
+Signature (LMS) for digitally signing approved for all
+firmware and software classification levels.
+SHA-256/192
+recommended.
+Xtended Merkle Asymmetric algorithm NIST SP 800-208 All parameters
+Signature Scheme for digitally signing approved for all
+(XMSS) firmware and software classification levels.
+ML-DSA Asymmetric algorithm FIPS 204 Category 5 parameter,
+for digital signatures ML-DSA-87.
+6 CONFIGURATION AND MANAGEMENT
+This CP includes design details for the provisioning and management of Solution Components. The MSC
+Solution Owner must identify authorized Security Administrators to perform configuration and
+management tasks. The following sections describe the design in detail and Section 10.8 states specific
+configuration requirements that must be met to comply with this CP.
+6.1 COMPONENT PROVISIONING
+Provisioning is an out-of-band process performed in a physically secured area (e.g., the Red Network
+location) where MSC Solution Components are configured and initialized before their first use. During
+the provisioning process, the Security Administrator configures the Outer Firewall, Outer Encryption
+Component, Gray Firewall, Gray Management Services, Inner Encryption Component, Red Management
+Services and Inner Firewall in accordance with the requirements of this CP.
+For provisioning IPsec Outer VPN Gateways and Inner VPN Gateways generate a public/private key pair
+and output the public key in a Certificate Signing Request (CSR). The Security Administrator delivers the
+Outer VPN Gateway’s CSR to the Outer CA and the Inner VPN Gateway’s CSR to the Inner CA. The
+appropriate CA processes the CSR for each encryption component and returns a signed X.509 certificate.
+The Security Administrator then installs the unique signed certificate and the certificate chain, which
+consists of the signing CA’s certificate and the Trust Anchor certificate (e.g., Root CA certificate). The
+Security Administrator may also install an initial CRL.
+For provisioning MACsec PSK Encryption Components, the Security Administrator obtains a Symmetric
+Key from an NSA-approved KGS and applies them to each Encryption Component.
+For provisioning Certificate-based MACsec, Outer Encryption Components and/or Inner Encryption
+Components generate a public/private key pair and output the public key in a CSR. The Security
+22

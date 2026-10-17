@@ -1,0 +1,45 @@
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+protected to the highest classification of the MACsec
+Device's CAK.
+MSC-MD-12 MACsec Devices must have the Confidentiality T=O
+Offset set to 0 (zero).
+MSC-MD-13 If a standalone device is required to provide T=O
+encapsulation of MACsec traffic between an Inner
+MACsec Device and an Outer Encryption
+Component, the standalone device must be
+considered a Solution Component when satisfying
+requirements in Section 11.1.
+MSC-MD-14 MACsec Devices must authenticate using EAP-TLS T MSC-MD-3
+(certificate based).
+MSC-MD-15 Must disable Fallback (rollover) CAKs. T=O
+MSC-MD-16 MACsec Devices must be configured to “must- T=O
+secure”.
+Table 13. Certificate-based MACsec Authentication and Authorization (AA) Requirements
+Threshold
+Req. # Requirement Description Alternative
+/ Objective
+MSC-AA-1 The AS must be used to provide mutual authentication T=O
+using EAP-TLS with device certificates between MACsec
+Devices.
+MSC-AA-2 The AS must only connect to one site’s network when a T=O
+MACsec device is an Outer or Inner Encryption
+Component.
+MSC-AA-3 The MACsec Devices and the AS must use the CNSA 1.0 T MSC-AA-4
+EAP-TLS Ciphersuite in Table 10.
+MSC-AA-4 The MACsec Devices and the AS must use the CNSA 2.0 O MSC-AA-3
+EAP-TLS Ciphersuite in Table 11.
+10.4 ADDITIONAL INNER ENCRYPTION COMPONENT REQUIREMENTS
+Table 14 defines additional Inner Encryption Component Requirements.
+Table 14. Additional Inner Encryption Component (IR) Requirements
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+MSC-IR-1 The Inner VPN Gateway must use ESP Tunnel mode T=O
+IPsec, with an associated IP tunneling protocol.
+MSC-IR-2 Packet sizes, or frames leaving the external interface O Optional
+of the Inner Encryption Component must be
+configured to reduce fragmentation and lessen the
+impact on performance. This requires proper
+35

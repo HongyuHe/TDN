@@ -1,0 +1,29 @@
+Figure 3 shows two Red Networks at different sites that operate at the same security level and
+connected to one another through the MSC Solution. Here, each Red Network has two Encryption
+Components associated with it; an Inner Encryption Component connected to the Red Network, and an
+Outer Encryption Component between the Inner Encryption Component and the Black Network.
+There are two layers of encryption tunnels between any pair of sites communicating directly with one
+another; one encryption tunnel between their Outer Encryption Components, and a second encryption
+tunnel between their Inner Encryption Components. Each set of Inner or Outer Encryption Components
+can provide encryption using either IPsec or MACsec.
+Figure 3. MSC Solution Connecting Two Independently Managed Sites
+There is no limit to the number of sites that may be incorporated into a single MSC Solution.
+4.2.1.1 Independently Managed Sites
+For independently managed sites, each site performs the administration of its own Encryption
+Components. If Certification Authorities (CAs) are part of the MSC Solution, each site has the option to
+use either locally run CAs that they manage and control or, where available, enterprise CAs that are not
+necessarily managed by the Solution Owner. Each site needs to ensure that the Encryption Components
+selected interoperate with those at the other sites.
+When using independent managed sites, management traffic will not cross the Black Network,
+encrypted or unencrypted. In the MSC Solution, Encryption Components at each site using public key
+certificates need to have the signing certificates and revocation information for the corresponding CAs
+used by the other sites. This high-level design requires cooperation between the various sites in the
+solution to ensure that all CAs used by each site are trusted at all the other sites. Similarly, MACsec
+Devices using a Connectivity Association Key (CAK) need to have the same CAK used by the other site in
+the MSC Solution. If MACsec Devices are authenticating using certificates, the authentication server
+(AS) must not connect to both Gray and/or Red Networks.
+This model has the advantage of allowing communication between larger organizations that have a need
+to share information while maintaining independence.
+Note that while Figure 3 shows only two sites, this solution can scale to include numerous sites, with
+each additional site having the same design as that in Figure 3.
+7

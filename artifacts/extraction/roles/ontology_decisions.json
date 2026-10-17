@@ -1,0 +1,1175 @@
+{
+  "schema_version": "1.0.0",
+  "source_roles_sha256": "6a12f5298603f2cfd51af099a48ae761d561e25b60e7b753ab990cb76454d8e5",
+  "source_index_sha256": "39b9770a52900512a58e468a83839238d4583e030ac76870fd8f11e4aff2d5dc",
+  "root": {
+    "id": "ExtractedRole",
+    "label": "Extracted role or concept realization",
+    "description": "Analyst-defined organizational superclass for realizations of the role and concept categories extracted from the CSfC MSC v1.3.0 source. Each role class denotes the entities or bearers that realize its source-context category. The categories include devices, services, aggregates, mixed authorities, and protocol functions. The root does not reproduce a CP definition and does not assert that every category is a physical device or an MSC Solution Component. Classes without a curated parent receive a generated organizational edge to the root; that edge is separate from source-backed subtype evidence.",
+    "basis": "analyst_organization"
+  },
+  "families": [
+    {
+      "id": "encryption",
+      "label": "Encryption",
+      "role_ids": [
+        "ROLE-encryption-component",
+        "ROLE-inner-encryption",
+        "ROLE-outer-encryption",
+        "ROLE-vpn-gateway",
+        "ROLE-inner-vpn",
+        "ROLE-outer-vpn",
+        "ROLE-macsec-device",
+        "ROLE-inner-macsec",
+        "ROLE-outer-macsec",
+        "ROLE-high-assurance-encryptor",
+        "ROLE-government-product"
+      ]
+    },
+    {
+      "id": "filtering-routing",
+      "label": "Filtering and routing",
+      "role_ids": [
+        "ROLE-firewall",
+        "ROLE-outer-firewall",
+        "ROLE-gray-firewall",
+        "ROLE-inner-firewall",
+        "ROLE-router",
+        "ROLE-gray-router",
+        "ROLE-screening-router",
+        "ROLE-customer-edge-router",
+        "ROLE-switch",
+        "ROLE-encapsulation-device",
+        "ROLE-ips",
+        "ROLE-perimeter-device"
+      ]
+    },
+    {
+      "id": "administration",
+      "label": "Administration and realization",
+      "role_ids": [
+        "ROLE-aw",
+        "ROLE-red-aw",
+        "ROLE-gray-aw",
+        "ROLE-black-aw",
+        "ROLE-aw-host",
+        "ROLE-virtual-machine",
+        "ROLE-physical-workstation",
+        "ROLE-locally-managed-device",
+        "ROLE-remotely-managed-device",
+        "ROLE-network-administration-device"
+      ]
+    },
+    {
+      "id": "management-monitoring",
+      "label": "Management and monitoring",
+      "role_ids": [
+        "ROLE-management-component",
+        "ROLE-red-management",
+        "ROLE-gray-management",
+        "ROLE-siem",
+        "ROLE-red-siem",
+        "ROLE-gray-siem",
+        "ROLE-log-repository",
+        "ROLE-cds"
+      ]
+    },
+    {
+      "id": "authentication",
+      "label": "Authentication and protocol roles",
+      "role_ids": [
+        "ROLE-authentication-server",
+        "ROLE-supplicant",
+        "ROLE-authenticator",
+        "ROLE-key-server",
+        "ROLE-authentication-service",
+        "ROLE-ike-initiator",
+        "ROLE-ike-responder"
+      ]
+    },
+    {
+      "id": "keys-certificates",
+      "label": "Keys and certificates",
+      "role_ids": [
+        "ROLE-ca",
+        "ROLE-inner-ca",
+        "ROLE-outer-ca",
+        "ROLE-local-ca",
+        "ROLE-enterprise-ca",
+        "ROLE-root-ca",
+        "ROLE-signing-ca",
+        "ROLE-trust-anchor-ca",
+        "ROLE-kgs",
+        "ROLE-key-management-component",
+        "ROLE-cdp",
+        "ROLE-ocsp-responder",
+        "ROLE-registration-authority",
+        "ROLE-enrollment-server",
+        "ROLE-provisioning-server",
+        "ROLE-certificate-registration"
+      ]
+    },
+    {
+      "id": "infrastructure",
+      "label": "Infrastructure and supporting services",
+      "role_ids": [
+        "ROLE-solution-component",
+        "ROLE-infrastructure-component",
+        "ROLE-network-device",
+        "ROLE-auxiliary-network-device",
+        "ROLE-trusted-time-source",
+        "ROLE-dns-server",
+        "ROLE-control-plane-service",
+        "ROLE-third-party-server",
+        "ROLE-end-user-device"
+      ]
+    },
+    {
+      "id": "utilities-testing",
+      "label": "Utilities and testing",
+      "role_ids": [
+        "ROLE-password-generator",
+        "ROLE-testing-equipment",
+        "ROLE-testing-software"
+      ]
+    }
+  ],
+  "subclass_edges": [
+    {
+      "child": "ROLE-encryption-component",
+      "parent": "ROLE-solution-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u005.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Section 5 presents the encryption components as components of the MSC Solution. The edge applies to the source-context Encryption Component category.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-vpn-gateway",
+      "parent": "ROLE-encryption-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The glossary defines an Encryption Component as either a VPN Gateway or a MACsec Device. Each named alternative is included under the defined category.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-macsec-device",
+      "parent": "ROLE-encryption-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The glossary includes MACsec Devices in the Encryption Component category.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-inner-encryption",
+      "parent": "ROLE-encryption-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u003.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Inner Encryption Components use the VPN Gateway or MACsec Device alternatives that define an Encryption Component.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-outer-encryption",
+      "parent": "ROLE-encryption-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u007.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Outer Encryption Components use the VPN Gateway or MACsec Device alternatives that define an Encryption Component.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-inner-vpn",
+      "parent": "ROLE-vpn-gateway",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The provisioning text names Inner VPN Gateways as the inner specialization of VPN Gateways.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-inner-vpn",
+      "parent": "ROLE-inner-encryption",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p042:u016.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p042:u018"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The Inner Encryption Component requirements identify the Inner VPN Gateway as their VPN realization.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-outer-vpn",
+      "parent": "ROLE-vpn-gateway",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The provisioning text names Outer VPN Gateways as the outer specialization of VPN Gateways.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-outer-vpn",
+      "parent": "ROLE-outer-encryption",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p043:u010.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p043:u012"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The Outer Encryption Component requirements identify Outer VPN Gateways as their VPN realization.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-inner-macsec",
+      "parent": "ROLE-macsec-device",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The source names an Inner MACsec Device as the inner specialization of a MACsec Device.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-inner-macsec",
+      "parent": "ROLE-inner-encryption",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u003.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Section 5.5 identifies MACsec Devices as an Inner Encryption Component realization and then describes the Inner MACsec Device.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-outer-macsec",
+      "parent": "ROLE-macsec-device",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p044:u017"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "MSC-PF-4 names the Outer MACsec Device specialization.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-outer-macsec",
+      "parent": "ROLE-outer-encryption",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u007.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p044:u017"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The outer component can be a MACsec Device; MSC-PF-4 names the Outer MACsec Device and its Black Network interfaces.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-outer-firewall",
+      "parent": "ROLE-firewall",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s004"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The source names the firewall at the outer edge as the Outer Firewall.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-gray-firewall",
+      "parent": "ROLE-firewall",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u009.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The glossary explicitly defines a Gray Firewall as a traffic filtering firewall.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-inner-firewall",
+      "parent": "ROLE-firewall",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u008",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u009.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Section 5.6 names the firewall between the Inner Encryption Component and Red Network as the Inner Firewall.",
+      "qualifications": [
+        "The edge does not make an Inner Firewall mandatory. Requirements can come from another CP."
+      ]
+    },
+    {
+      "child": "ROLE-outer-firewall",
+      "parent": "ROLE-solution-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u006.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u006.s002"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The source describes individual solution components and identifies the Outer Firewall as an exception to their physical-protection requirement.",
+      "qualifications": [
+        "Membership does not imply presence in every MSC deployment."
+      ]
+    },
+    {
+      "child": "ROLE-gray-firewall",
+      "parent": "ROLE-solution-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u005.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Section 5 includes Gray Firewalls among the solution components.",
+      "qualifications": [
+        "The source makes Gray Firewall deployment depend on the network design. The subtype axiom expresses category membership only."
+      ]
+    },
+    {
+      "child": "ROLE-aw",
+      "parent": "ROLE-management-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s002"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The administration section describes AWs as the components whose combined management functions satisfy the administrative requirements.",
+      "qualifications": [
+        "The superclass is the generic extracted Management component category. No universal Solution Component membership follows."
+      ]
+    },
+    {
+      "child": "ROLE-red-aw",
+      "parent": "ROLE-aw",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The Red AW is the named Red-side specialization of the Administrative Workstation.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-gray-aw",
+      "parent": "ROLE-aw",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u009",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The Gray Administrative Workstation subsection defines the Gray AW specialization.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-black-aw",
+      "parent": "ROLE-aw",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s006"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The prohibition names Black AWs alongside Red AWs, supporting the workstation specialization without supplying a positive MSC assignment.",
+      "qualifications": [
+        "The subtype axiom does not authorize Black AW management of Gray components or place Black AWs inside the MSC Solution."
+      ]
+    },
+    {
+      "child": "ROLE-red-aw",
+      "parent": "ROLE-solution-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s003"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The source includes AWs among solution components and requires at least one Red AW in every MSC Solution.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-gray-aw",
+      "parent": "ROLE-solution-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s003"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The source includes AWs among solution components and requires at least one Gray AW in every MSC Solution.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-red-siem",
+      "parent": "ROLE-siem",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u004.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Section 5.7.2 identifies the Red SIEM specialization of Security Information and Event Management.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-gray-siem",
+      "parent": "ROLE-siem",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u011",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u012.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Section 5.4.2 identifies the Gray SIEM specialization of Security Information and Event Management.",
+      "qualifications": [
+        "Gray SIEM membership does not make a Gray SIEM mandatory."
+      ]
+    },
+    {
+      "child": "ROLE-inner-ca",
+      "parent": "ROLE-ca",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The provisioning text names the CA receiving Inner VPN Gateway certificate signing requests as the Inner CA.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-outer-ca",
+      "parent": "ROLE-ca",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The provisioning text names the CA receiving Outer VPN Gateway certificate signing requests as the Outer CA.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-local-ca",
+      "parent": "ROLE-ca",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source explicitly presents locally run CAs as one CA option.",
+      "qualifications": [
+        "The ontology does not declare local and enterprise CAs disjoint."
+      ]
+    },
+    {
+      "child": "ROLE-enterprise-ca",
+      "parent": "ROLE-ca",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source explicitly presents enterprise CAs as another CA option.",
+      "qualifications": [
+        "The source says enterprise CAs are not necessarily managed by the Solution Owner. No Solution Component subclass is asserted for the generic CA category."
+      ]
+    },
+    {
+      "child": "ROLE-root-ca",
+      "parent": "ROLE-ca",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s005",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s006",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s007"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The certificate-chain example names a Root CA certificate, preserving Root CA as a CA specialization.",
+      "qualifications": [
+        "The example does not establish Root CA and Trust Anchor CA equivalence or a universal subclass relationship between them."
+      ]
+    },
+    {
+      "child": "ROLE-signing-ca",
+      "parent": "ROLE-ca",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s005"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The certificate-chain passage names the signing CA as the authority whose certificate appears in the chain.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-trust-anchor-ca",
+      "parent": "ROLE-ca",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p038:u009"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "MSC-VG-4 names the Trust Anchor CA certificate within the corresponding CA certificate chain.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-key-server",
+      "parent": "ROLE-macsec-device",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u013.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The glossary defines a Key Server as the MACsec Device designated to distribute Secure Association Keys.",
+      "qualifications": [
+        "The class denotes a MACsec Device bearing the designated key-server role. No assertion makes every MACsec Device a Key Server."
+      ]
+    },
+    {
+      "child": "ROLE-gray-router",
+      "parent": "ROLE-router",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003"
+      ],
+      "basis": "source_stated",
+      "rationale": "The availability example identifies an ordinary router on each Gray Network as the device that selects an outer component.",
+      "qualifications": [
+        "The edge does not impose general Solution Component requirements on the Gray Network router."
+      ]
+    },
+    {
+      "child": "ROLE-screening-router",
+      "parent": "ROLE-router",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s002"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The source describes a screening router as a router used to filter packets from Black Networks.",
+      "qualifications": [
+        "The source excludes the screening router from the MSC Solution itself."
+      ]
+    },
+    {
+      "child": "ROLE-customer-edge-router",
+      "parent": "ROLE-router",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s004",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The source names a Customer Edge Router as an existing Black Network router that can provide the screening realization.",
+      "qualifications": [
+        "The example does not make all Customer Edge Routers Screening Routers."
+      ]
+    },
+    {
+      "child": "ROLE-authentication-server",
+      "parent": "ROLE-solution-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p037:u003"
+      ],
+      "basis": "source_stated",
+      "rationale": "MSC-SR-24 lists Authentication Servers among solution components. The extracted category is the MSC Authentication Server described in Section 5.8.",
+      "qualifications": []
+    },
+    {
+      "child": "ROLE-kgs",
+      "parent": "ROLE-solution-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p022:u005.s001"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "Section 5 includes a KGS among solution components for generating pre-shared CAKs.",
+      "qualifications": [
+        "The edge identifies the KGS category in the source solution. It does not require the pre-shared-key option in every deployment."
+      ]
+    },
+    {
+      "child": "ROLE-key-management-component",
+      "parent": "ROLE-management-component",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u007"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The named Key and Certificate Management Components category specializes the extracted generic Management component category.",
+      "qualifications": [
+        "The heading supplies the category, while detailed requirements are relocated to annexes. No device realization or CA membership follows from the heading alone."
+      ]
+    }
+  ],
+  "associations": [
+    {
+      "source": "ROLE-red-aw",
+      "target": "ROLE-inner-encryption",
+      "relation": "administers",
+      "label": "administers",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns maintenance, monitoring, and security control of the named target to the Red AW.",
+      "qualifications": [
+        "Annotation of the source assignment; no universal or existential property restriction is asserted.",
+        "The target can comprise multiple deployed components. Presence and management exclusions remain in the source requirements."
+      ]
+    },
+    {
+      "source": "ROLE-red-aw",
+      "target": "ROLE-inner-firewall",
+      "relation": "administers",
+      "label": "administers",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns maintenance, monitoring, and security control of the named target to the Red AW.",
+      "qualifications": [
+        "Annotation of the source assignment; no universal or existential property restriction is asserted.",
+        "The target can comprise multiple deployed components. Presence and management exclusions remain in the source requirements."
+      ]
+    },
+    {
+      "source": "ROLE-red-aw",
+      "target": "ROLE-red-management",
+      "relation": "administers",
+      "label": "administers",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns maintenance, monitoring, and security control of the named target to the Red AW.",
+      "qualifications": [
+        "Annotation of the source assignment; no universal or existential property restriction is asserted.",
+        "The target can comprise multiple deployed components. Presence and management exclusions remain in the source requirements."
+      ]
+    },
+    {
+      "source": "ROLE-gray-aw",
+      "target": "ROLE-outer-encryption",
+      "relation": "administers",
+      "label": "administers",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns maintenance, monitoring, and security control of the named target to the Gray AW.",
+      "qualifications": [
+        "Annotation of the source assignment; no universal or existential property restriction is asserted.",
+        "The target can comprise multiple deployed components. Presence and management exclusions remain in the source requirements."
+      ]
+    },
+    {
+      "source": "ROLE-gray-aw",
+      "target": "ROLE-gray-firewall",
+      "relation": "administers",
+      "label": "administers",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns maintenance, monitoring, and security control of the named target to the Gray AW.",
+      "qualifications": [
+        "Annotation of the source assignment; no universal or existential property restriction is asserted.",
+        "The target can comprise multiple deployed components. Presence and management exclusions remain in the source requirements."
+      ]
+    },
+    {
+      "source": "ROLE-gray-aw",
+      "target": "ROLE-gray-management",
+      "relation": "administers",
+      "label": "administers",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns maintenance, monitoring, and security control of the named target to the Gray AW.",
+      "qualifications": [
+        "Annotation of the source assignment; no universal or existential property restriction is asserted.",
+        "The target can comprise multiple deployed components. Presence and management exclusions remain in the source requirements."
+      ]
+    },
+    {
+      "source": "ROLE-aw",
+      "target": "ROLE-virtual-machine",
+      "relation": "may_be_realized_as",
+      "label": "may be realized as",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source permits an AW to be a VM on a physical host/server dedicated to AW VMs.",
+      "qualifications": [
+        "Optional realization only. The host and VM are separate entities."
+      ]
+    },
+    {
+      "source": "ROLE-aw",
+      "target": "ROLE-physical-workstation",
+      "relation": "may_be_realized_as",
+      "label": "may be realized as",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s004"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source permits a physical-workstation AW and applies dedicated-function restrictions to that realization.",
+      "qualifications": [
+        "Optional realization only; no AW-to-physical-device subclass is asserted."
+      ]
+    },
+    {
+      "source": "ROLE-aw-host",
+      "target": "ROLE-virtual-machine",
+      "relation": "hosts",
+      "label": "hosts",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002"
+      ],
+      "basis": "source_stated",
+      "rationale": "The host/server houses VMs used as AWs.",
+      "qualifications": [
+        "The referenced VMs are AW VMs. The source prohibits cohosting the listed enrollment, provisioning, registration, and SIEM VMs.",
+        "The annotation does not identify the physical host with the VM or AW."
+      ]
+    },
+    {
+      "source": "ROLE-macsec-device",
+      "target": "ROLE-supplicant",
+      "relation": "performs_role",
+      "label": "performs role",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source requires each MACsec Device to perform the supplicant function during the described authentication process.",
+      "qualifications": [
+        "The function is retained separately from its device bearer; no subtype is asserted."
+      ]
+    },
+    {
+      "source": "ROLE-macsec-device",
+      "target": "ROLE-authenticator",
+      "relation": "performs_role",
+      "label": "performs role",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source requires each MACsec Device to perform the authenticator function during the described authentication process.",
+      "qualifications": [
+        "The function is retained separately from its device bearer and from the Authentication Server."
+      ]
+    },
+    {
+      "source": "ROLE-authentication-server",
+      "target": "ROLE-macsec-device",
+      "relation": "supports_authentication",
+      "label": "supports authentication of",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s003"
+      ],
+      "basis": "source_stated",
+      "rationale": "The MSC Authentication Server supports EAP-TLS mutual authentication between MACsec Devices.",
+      "qualifications": [
+        "The annotation does not identify the server with a supplicant or authenticator."
+      ]
+    },
+    {
+      "source": "ROLE-key-server",
+      "target": "ROLE-macsec-device",
+      "relation": "distributes_keys_to",
+      "label": "distributes keys to",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u013.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The designated Key Server distributes Secure Association Keys to the other MACsec Device.",
+      "qualifications": [
+        "The target is the peer in the applicable MACsec pair; no universal relation to every MACsec Device is asserted."
+      ]
+    },
+    {
+      "source": "ROLE-root-ca",
+      "target": "ROLE-trust-anchor-ca",
+      "relation": "example_of_role_realization",
+      "label": "example realization of role",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s005",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s006",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s007"
+      ],
+      "basis": "source_interpretation",
+      "rationale": "The certificate-chain passage gives a Root CA certificate as an example Trust Anchor certificate.",
+      "qualifications": [
+        "Certificate-level example supports a role association only. It does not make every Root CA a Trust Anchor CA or equate the categories."
+      ]
+    },
+    {
+      "source": "ROLE-outer-encryption",
+      "target": "ROLE-perimeter-device",
+      "relation": "may_perform_role",
+      "label": "may perform role",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "An Outer Encryption Component may serve as a perimeter device when no Outer Firewall is present.",
+      "qualifications": [
+        "Conditional on the Outer Firewall being absent. No unconditional subclass is asserted."
+      ]
+    },
+    {
+      "source": "ROLE-screening-router",
+      "target": "ROLE-customer-edge-router",
+      "relation": "may_be_realized_as",
+      "label": "may be realized as",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s004",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source gives an existing Customer Edge Router as an example screening-router realization.",
+      "qualifications": [
+        "Example only. No Customer Edge Router subclass of Screening Router is asserted."
+      ]
+    },
+    {
+      "source": "ROLE-encapsulation-device",
+      "target": "ROLE-router",
+      "relation": "may_be_realized_as",
+      "label": "may be realized as",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003"
+      ],
+      "basis": "source_stated",
+      "rationale": "A separate standalone router or switch can provide the required encapsulation when the selected encryption component lacks the feature.",
+      "qualifications": [
+        "The standalone device is conditional. Encapsulation may instead be a feature of an encryption component.",
+        "Source-scope issue REQ-I01 remains unresolved; the annotation does not settle universal Solution Component membership."
+      ]
+    },
+    {
+      "source": "ROLE-encapsulation-device",
+      "target": "ROLE-switch",
+      "relation": "may_be_realized_as",
+      "label": "may be realized as",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003"
+      ],
+      "basis": "source_stated",
+      "rationale": "A separate standalone router or switch can provide the required encapsulation when the selected encryption component lacks the feature.",
+      "qualifications": [
+        "The standalone device is conditional. Encapsulation may instead be a feature of an encryption component.",
+        "Source-scope issue REQ-I01 remains unresolved; the annotation does not settle universal Solution Component membership."
+      ]
+    },
+    {
+      "source": "ROLE-red-siem",
+      "target": "ROLE-inner-encryption",
+      "relation": "collects_logs_from",
+      "label": "collects logs from",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u004.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns collection and analysis of the named target logs to the Red SIEM.",
+      "qualifications": [
+        "The association records the source configuration without asserting deployment or a property restriction."
+      ]
+    },
+    {
+      "source": "ROLE-red-siem",
+      "target": "ROLE-inner-firewall",
+      "relation": "collects_logs_from",
+      "label": "collects logs from",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u004.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns collection and analysis of the named target logs to the Red SIEM.",
+      "qualifications": [
+        "The association records the source configuration without asserting deployment or a property restriction."
+      ]
+    },
+    {
+      "source": "ROLE-red-siem",
+      "target": "ROLE-red-management",
+      "relation": "collects_logs_from",
+      "label": "collects logs from",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u004.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns collection and analysis of the named target logs to the Red SIEM.",
+      "qualifications": [
+        "The association records the source configuration without asserting deployment or a property restriction."
+      ]
+    },
+    {
+      "source": "ROLE-gray-siem",
+      "target": "ROLE-outer-encryption",
+      "relation": "collects_logs_from",
+      "label": "collects logs from",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u012.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns collection and analysis of the named target logs to the Gray SIEM.",
+      "qualifications": [
+        "The association records the source configuration without asserting deployment or a property restriction."
+      ]
+    },
+    {
+      "source": "ROLE-gray-siem",
+      "target": "ROLE-gray-firewall",
+      "relation": "collects_logs_from",
+      "label": "collects logs from",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u012.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns collection and analysis of the named target logs to the Gray SIEM.",
+      "qualifications": [
+        "The association records the source configuration without asserting deployment or a property restriction."
+      ]
+    },
+    {
+      "source": "ROLE-gray-siem",
+      "target": "ROLE-gray-management",
+      "relation": "collects_logs_from",
+      "label": "collects logs from",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u012.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source assigns collection and analysis of the named target logs to the Gray SIEM.",
+      "qualifications": [
+        "The association records the source configuration without asserting deployment or a property restriction."
+      ]
+    },
+    {
+      "source": "ROLE-cds",
+      "target": "ROLE-red-siem",
+      "relation": "supports",
+      "label": "supports",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u001.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s003"
+      ],
+      "basis": "source_stated",
+      "rationale": "An approved CDS can move Gray Network log data to a Red SIEM.",
+      "qualifications": [
+        "The source permits the Red-side alternative under the stated approval and annex conditions."
+      ]
+    },
+    {
+      "source": "ROLE-red-management",
+      "target": "ROLE-management-component",
+      "relation": "comprises",
+      "label": "comprises",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u011.s002"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source describes Red Management Services as an aggregate of components.",
+      "qualifications": [
+        "Composition is recorded as an annotation. The aggregate is not made a subclass of its constituent Management component category."
+      ]
+    },
+    {
+      "source": "ROLE-gray-management",
+      "target": "ROLE-management-component",
+      "relation": "comprises",
+      "label": "comprises",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u008.s002"
+      ],
+      "basis": "source_stated",
+      "rationale": "The source describes Gray Management Services as an aggregate of components.",
+      "qualifications": [
+        "Composition is recorded as an annotation. The aggregate is not made a subclass of its constituent Management component category."
+      ]
+    },
+    {
+      "source": "ROLE-inner-ca",
+      "target": "ROLE-inner-vpn",
+      "relation": "supports_certificate_provisioning",
+      "label": "supports certificate provisioning of",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s004"
+      ],
+      "basis": "source_stated",
+      "rationale": "The Security Administrator delivers the inner gateway CSR to the corresponding CA, which returns a signed certificate.",
+      "qualifications": [
+        "The relation records the certificate-based provisioning passage. No CA administration or device identity is inferred."
+      ]
+    },
+    {
+      "source": "ROLE-outer-ca",
+      "target": "ROLE-outer-vpn",
+      "relation": "supports_certificate_provisioning",
+      "label": "supports certificate provisioning of",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s004"
+      ],
+      "basis": "source_stated",
+      "rationale": "The Security Administrator delivers the outer gateway CSR to the corresponding CA, which returns a signed certificate.",
+      "qualifications": [
+        "The relation records the certificate-based provisioning passage. No CA administration or device identity is inferred."
+      ]
+    },
+    {
+      "source": "ROLE-cdp",
+      "target": "ROLE-vpn-gateway",
+      "relation": "provides_revocation_information_to",
+      "label": "provides revocation information to",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p060:u001.s001"
+      ],
+      "basis": "source_stated",
+      "rationale": "The CDP hosts a CRL issued by a CA for VPN Gateways to download.",
+      "qualifications": [
+        "The relation describes the CDP function. No location or deployment cardinality is asserted."
+      ]
+    },
+    {
+      "source": "ROLE-registration-authority",
+      "target": "ROLE-ca",
+      "relation": "supports",
+      "label": "supports",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p061:u005.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p061:u005.s002"
+      ],
+      "basis": "source_stated",
+      "rationale": "The RA collects, verifies, and submits certificate information under CA authorization.",
+      "qualifications": [
+        "The RA can comprise hardware, software, and personnel. The annotation does not type the RA as a physical device or equate it with the certificate registration component."
+      ]
+    }
+  ],
+  "excluded_inferences": [
+    {
+      "claim": "Every Router or Screening Router is a Solution Component.",
+      "reason": "The Gray Network redundancy router has no CP security requirements, and the screening router is explicitly outside the MSC Solution.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s004",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s006"
+      ]
+    },
+    {
+      "claim": "Every Customer Edge Router is a Screening Router.",
+      "reason": "The source supplies an example realization, which does not establish universal class inclusion.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s004",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005"
+      ]
+    },
+    {
+      "claim": "Every Encapsulation/Decapsulation Device is a Solution Component.",
+      "reason": "The extracted source-scope issue REQ-I01 remains unresolved. Some passages apply Solution Component requirements; another excludes the device from the solution and recommends those requirements. A universal subclass assertion would settle the unresolved scope.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s004",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p020:u002.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p020:u002.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p042:u004"
+      ]
+    },
+    {
+      "claim": "Root CA and Trust Anchor CA are equivalent, or every Root CA is a Trust Anchor CA.",
+      "reason": "The provisioning passage gives a Root CA certificate as an example Trust Anchor certificate. MSC-VG-4 names the Trust Anchor CA separately.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s005",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s006",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s007",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p038:u009"
+      ]
+    },
+    {
+      "claim": "Locally run CA and Enterprise CA are disjoint classes.",
+      "reason": "The source offers operating/management choices without establishing a universal logical partition of CA realizations.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002"
+      ]
+    },
+    {
+      "claim": "Every CA is a Solution Component.",
+      "reason": "The source conditionally says CAs can be part of an MSC Solution and permits enterprise CAs outside Solution Owner management. The general CA category is broader than the explicitly scoped component subclasses.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002"
+      ]
+    },
+    {
+      "claim": "Every AW is a Solution Component.",
+      "reason": "The source also mentions prohibited Black AW management. Positive MSC component membership is asserted for Red and Gray AW specializations only.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s006",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s003"
+      ]
+    },
+    {
+      "claim": "Supplicant, Authenticator, IKEv2 initiator, and IKEv2 responder are physical-device subclasses.",
+      "reason": "The authentication passage describes performed functions. The IKE exchange passage describes protocol endpoint roles without defining physical-device categories or identifying the named illustrative participants.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p027:u008.s002"
+      ]
+    },
+    {
+      "claim": "AW is universally a Virtual Machine or Physical workstation, or the AW host is the AW.",
+      "reason": "The source permits alternative realizations and distinguishes the physical host/server from hosted VMs.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s004"
+      ]
+    },
+    {
+      "claim": "Outer Encryption Component is universally a Perimeter device.",
+      "reason": "The source makes the perimeter-device role conditional on Outer Firewall absence.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s001"
+      ]
+    },
+    {
+      "claim": "Red or Gray Management Services are subclasses of their Management components.",
+      "reason": "The source describes aggregates composed of components. Composition does not imply subclass membership.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u008.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p025:u011.s002"
+      ]
+    },
+    {
+      "claim": "A device that administers another category inherits that category.",
+      "reason": "The Red and Gray AW descriptions assign administration of encryption components, firewalls, and services. Those functional relationships do not establish class inclusion.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p024:u010.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001"
+      ]
+    },
+    {
+      "claim": "Registration Authority is equivalent to Certificate registration component or is a physical-device subclass.",
+      "reason": "The RA definition collectively includes hardware, software, and people; the cohosting passages mention certificate registration functions without equating the terms.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p061:u005.s001",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p061:u005.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002"
+      ]
+    },
+    {
+      "claim": "Source aliases, example alternatives, and UI families define equivalent or disjoint OWL classes.",
+      "reason": "Lexical aliases, examples, and navigation groups do not establish equality or a logical partition. No equivalence, disjointness, or exhaustive covering axiom is introduced.",
+      "source_ids": [
+        "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s003",
+        "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+Threshold/
+Req. # Requirement Description Alternative
+Objective
+applied to both inbound and outbound traffic, such
+that only MACsec Protocol Data Units and control
+plane protocols (as defined in this CP) approved by
+organization-defined policy are allowed.
+MSC-PF-5 For all Inner Encryption Component interfaces T=O
+connected to a Gray Network, traffic filtering rules
+must be applied to both inbound and outbound
+traffic, such that only IKE, IPsec, MKA, MACsec, and
+control plane protocols (as defined in this CP)
+approved by organization-defined policy are
+allowed.
+MSC-PF-6 Any service or feature that allows an Outer T MSC-PF-7
+Encryption Component to contact a third-party
+server (such as one maintained by the
+manufacturer) must be blocked.
+MSC-PF-7 Any service or feature that allows an Outer O MSC-PF-6
+Encryption Component to contact a third party
+server (such as one maintained by the
+manufacturer) must be disabled.
+MSC-PF-8 Management plane traffic must only be initiated T=O
+from a Gray AW with the exception of logging or
+authentication traffic that may be initiated from
+Outer Encryption Components.
+MSC-PF-9 Multicast messages received on external interfaces T=O
+of Outer Encryption Components must be dropped.
+MSC-PF-10 For solutions using IPv4, Outer VPN Gateways using O
+IPsec must drop all packets that use IP options.
+MSC-PF-11 For solutions using IPv4, each VPN Gateway must T=O
+only accept packets with Transmission Control
+Protocol (TCP), User Datagram Protocol (UDP), ESP,
+or ICMP in the IPv4 Protocol field and drop all other
+packets.
+MSC-PF-12 For solutions using IPv6, each VPN Gateway must T=O
+only accept packets with ESP, TCP, UDP, or ICMPv6
+in the IPv6 Next Header field and drop all other
+packets.
+MSC-PF-13 The Gray Network interfaces of Outer Encryption T=O
+Components must allow IKE and IPsec, or MKA and
+MACsec traffic, as appropriate, between two Inner
+Encryption Components protecting networks of the
+same security level or that is being used for
+management of the Gray Network.
+MSC-PF-14 Withdrawn
+MSC-PF-15 If the CDP/OCSP is on the gray data plane, the Gray T=O
+Network interfaces of Outer VPN Gateways must
+38

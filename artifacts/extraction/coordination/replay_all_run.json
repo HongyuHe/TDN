@@ -1,0 +1,107 @@
+{
+  "timestamp_utc": "2026-10-16T01:19:47.469138+00:00",
+  "python": "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "stage": "all",
+  "render": false,
+  "mode": "deterministic_replay_of_agent_authored_extraction_and_review_inputs",
+  "steps": [
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/preprocess_csfc_source.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"front_matter\": 108,\n  \"table_header\": 43,\n  \"table_row\": 407,\n  \"page_furniture\": 65,\n  \"heading\": 72,\n  \"sentence\": 688,\n  \"trailing_text\": 72,\n  \"figure_label\": 131,\n  \"figure\": 10,\n  \"footnote_label\": 1\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/validate_csfc_extraction.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"pass\",\n  \"counts\": {\n    \"front_matter\": 108,\n    \"table_header\": 43,\n    \"table_row\": 407,\n    \"page_furniture\": 65,\n    \"heading\": 72,\n    \"sentence\": 688,\n    \"trailing_text\": 72,\n    \"figure_label\": 131,\n    \"figure\": 10,\n    \"footnote_label\": 1\n  },\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/validate_csfc_extraction.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"pass\",\n  \"counts\": {\n    \"front_matter\": 108,\n    \"table_header\": 43,\n    \"table_row\": 407,\n    \"page_furniture\": 65,\n    \"heading\": 72,\n    \"sentence\": 688,\n    \"trailing_text\": 72,\n    \"figure_label\": 131,\n    \"figure\": 10,\n    \"footnote_label\": 1\n  },\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/preprocess_csfc_requirements.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"pass\",\n  \"scope\": \"Mechanical checks only; not semantic approval.\",\n  \"source_index_sha256\": \"ca5c5657485674b336589eb4811c8f2ecd68be578e85b62d048186d74b81cc6e\",\n  \"source_units\": 1597,\n  \"groups\": 76,\n  \"theorem_targets\": 76,\n  \"background_source_units\": 648,\n  \"assigned_source_units\": 1597,\n  \"unassigned_source_units\": [],\n  \"indexed_quotation_mismatches\": [],\n  \"all_original_requirement_ids_mapped\": 214,\n  \"logical_cell_description_force_alternative_mismatches\": [],\n  \"missing_applicable_table_notes\": [],\n  \"active_requirement_rows_in_groups\": 194,\n  \"background_requirement_rows\": 20,\n  \"background_relocated_requirement_rows\": 15,\n  \"background_withdrawn_requirement_rows\": 5,\n  \"figure_labels_in_background\": 131,\n  \"uncertain_background_units\": 0,\n  \"open_issues\": 15,\n  \"semantic_review_status\": \"pending_independent_review\",\n  \"ready_for_downstream_formalization\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/preprocess_csfc_networks_roles.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"mechanical_checks_pass_semantic_review_pending\",\n  \"source_unit_count_scanned\": 1597,\n  \"pages_scanned\": [\n    1,\n    2,\n    3,\n    4,\n    5,\n    6,\n    7,\n    8,\n    9,\n    10,\n    11,\n    12,\n    13,\n    14,\n    15,\n    16,\n    17,\n    18,\n    19,\n    20,\n    21,\n    22,\n    23,\n    24,\n    25,\n    26,\n    27,\n    28,\n    29,\n    30,\n    31,\n    32,\n    33,\n    34,\n    35,\n    36,\n    37,\n    38,\n    39,\n    40,\n    41,\n    42,\n    43,\n    44,\n    45,\n    46,\n    47,\n    48,\n    49,\n    50,\n    51,\n    52,\n    53,\n    54,\n    55,\n    56,\n    57,\n    58,\n    59,\n    60,\n    61,\n    62,\n    63,\n    64,\n    65,\n    66\n  ],\n  \"figure_count\": 10,\n  \"figure_count_expected\": 10,\n  \"topology_figure_count\": 9,\n  \"protocol_figure_count\": 1,\n  \"network_record_count\": 27,\n  \"role_count\": 74,\n  \"role_mention_count\": 1326,\n  \"unresolved_role_count\": 0,\n  \"all_example_roles_present\": true,\n  \"all_crops_visually_inspected\": true,\n  \"independent_semantic_review\": \"pending\",\n  \"limitations\": [\n    \"Role mention matching is evidence indexing after manual document review, not a proof that every semantic role was recognized.\",\n    \"Requirement-group links require final cross-artifact reconciliation.\",\n    \"Source inconsistencies are retained as open issues.\"\n  ],\n  \"memory_use\": \"Prior memory prompted checking encapsulation boundary wording; all recorded source facts were reverified against this PDF.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/reconcile_csfc_extraction.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"networks\": 27, \"mapped_requirement_links\": 57}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/validate_csfc_extraction.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"pass\",\n  \"counts\": {\n    \"front_matter\": 108,\n    \"table_header\": 43,\n    \"table_row\": 407,\n    \"page_furniture\": 65,\n    \"heading\": 72,\n    \"sentence\": 688,\n    \"trailing_text\": 72,\n    \"figure_label\": 131,\n    \"figure\": 10,\n    \"footnote_label\": 1\n  },\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/validate_csfc_artifacts.py",
+        "--require-semantic-review"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"pass\",\n  \"counts\": {\n    \"source_units\": 1597,\n    \"requirement_groups\": 76,\n    \"background_units\": 648,\n    \"examples\": 27,\n    \"roles\": 74,\n    \"role_mentions\": 1326\n  },\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/hongyu/Projects/Formal/TDN/scripts/summarize_csfc_extraction.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"status\": \"reviewed_with_unresolved_source_interpretations\", \"open_source_issues\": 15, \"affected_groups\": 19}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/hongyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_csfc_preprocessing.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_changed_source_pdf_is_rejected (test_csfc_preprocessing.HarnessFailureContract.test_changed_source_pdf_is_rejected) ... ok\ntest_missing_final_artifacts_fail (test_csfc_preprocessing.HarnessFailureContract.test_missing_final_artifacts_fail) ... ok\ntest_missing_required_tools_fail (test_csfc_preprocessing.HarnessFailureContract.test_missing_required_tools_fail) ... ok\ntest_abbreviations_have_no_linguistic_exception (test_csfc_preprocessing.LiteralPeriodContract.test_abbreviations_have_no_linguistic_exception) ... ok\ntest_decimals_versions_and_urls_end_at_every_period (test_csfc_preprocessing.LiteralPeriodContract.test_decimals_versions_and_urls_end_at_every_period) ... ok\ntest_line_wrap_does_not_end_a_sentence (test_csfc_preprocessing.LiteralPeriodContract.test_line_wrap_does_not_end_a_sentence) ... ok\ntest_normalization_preserves_punctuation_and_hyphens (test_csfc_preprocessing.LiteralPeriodContract.test_normalization_preserves_punctuation_and_hyphens) ... ok\ntest_repeated_periods_remain_distinct (test_csfc_preprocessing.LiteralPeriodContract.test_repeated_periods_remain_distinct) ... ok\ntest_unterminated_text_and_whitespace_are_explicit (test_csfc_preprocessing.LiteralPeriodContract.test_unterminated_text_and_whitespace_are_explicit) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.003s\n\nOK\n"
+    }
+  ]
+}

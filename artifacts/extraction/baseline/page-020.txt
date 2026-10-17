@@ -1,0 +1,34 @@
+Figure 8. Encapsulating MACsec with a Separate Device
+When the Inner Encryption Component is a MACsec Device the traffic requires additional encapsulation
+before it is passed through the Outer Encryption Component to the Black Network. This additional step
+falls outside the boundary of the MSC Solution. However, it is highly recommended to apply the general
+device management (DM) and port filtering requirements for Solution Components.
+In the current MACsec standard, the entire frame is encrypted with the exception of the source and
+destination addresses. Institute of Electrical and Electronics Engineers (IEEE) 802.1AE-2018 provides the
+option of moving the Virtual Local Area Network (VLAN) identification (ID) tag out of the encrypted
+payload and into the clear in the header. The benefits of moving the VLAN ID tag into the clear include
+service multiplexing (i.e., multiple point-to-point or multipoint services existing on a single physical
+interface) and providing quality of service across a Service Provider’s network. If supported in the
+MACsec Device, this CP allows VLAN ID tags to be used in the clear.
+At high speeds (100 GB/s or higher), some MACsec Devices may be configured to use an extended
+Packet Number (XPN), as described in IEEE 802.1AE-2018. Without XPN, the unique packet numbers
+may be exhausted quickly at high speeds and re-keying at high speeds may interrupt traffic flow. If
+supported in the MACsec Device, this CP allows the XPN feature to be used.
+4.2.4 AUTHENTICATION
+The MSC Solution provides mutual device authentication between Outer Encryption Components and
+between Inner Encryption Components. The method of authentication is different for VPN Gateways
+and MACsec Devices.
+VPN Gateways authenticate via public key certificates. VPN Gateways may also implement Internet
+Engineering Task Force (IETF) Request for Comments (RFC) 8784-compliant IKEv2 and use Pre-Shared
+Key (PSK) in addition to public key certificates to provide quantum resistant confidentiality.
+MACsec Devices authenticate using a PSK called a CAK or using EAP-TLS over 802.1X to pass public key
+device certificates for mutual authentication between devices. The EAP-TLS mechanism is used to
+mutually authenticate and get the Master Session Key (MSK) from which the Connectivity Association
+Key (CAK) is derived for the MACsec Key Agreement (MKA) protocol. For each MACsec tunnel, a Key
+Server is identified. The Key Server authenticates the other MACsec Device and issues a Secure
+Association Key to provide confidentiality and integrity for the MACsec tunnel.
+This CP requires all authentication certificates issued to VPN Gateways and MACsec Devices to be Non-
+Person Entity certificates. This CP also requires all CAKs and their associated Connectivity Key Names
+(CKNs) to be generated using an NSA-approved Key Generation Solution (KGS). Guidance and
+requirements for using PSKs, including RFC 8784 compliance, can be found in the CSfC Symmetric Key
+13

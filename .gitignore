@@ -1,27 +1,17 @@
 .lake/
 .lavish/
 .vscode/
-.venv-asp/
 __pycache__/
 .DS_Store
 .playwright-cli/
 
-# Local assessments and solver comparison documentation.
+# Local documentation and source assets.
 docs/
-
-# Local Datalog/ASP experiments and cross-language comparison tooling.
 assets/
-datalog/
-# asp/
-scripts/run_msc_datalog.py
-# scripts/run_msc_asp.py
-scripts/compare_msc_models.py
-# scripts/compare_msc_asp.py
-tests/test_msc_datalog.py
-# tests/test_msc_asp.py
-tests/MSCDatalogOracle.lean
 
-# Version only the latest snapshot; names use UTC export-start timestamps.
-artifacts/*
-!/artifacts/msc-2026-10-03T070453Z/
-!/artifacts/msc-2026-10-03T070453Z/**
+# Version the extraction and pinned proof snapshot; snapshot names use UTC timestamps.
+/artifacts/*
+!/artifacts/extraction/
+!/artifacts/snapshots/
+/artifacts/snapshots/*
+!/artifacts/snapshots/msc-2026-10-03T070453Z/

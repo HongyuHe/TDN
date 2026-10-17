@@ -1,0 +1,240 @@
+[
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p012:u003.s005",
+    "text": "As shown in Figure 2, if the Black Network is an untrusted network such as the Public Internet, an Outer Firewall is required between the Black Network and the Outer Encryption Component.",
+    "example_ids": [
+      "NET-002"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p012:u008.s003",
+    "text": "Examples of control plane traffic include, but are not limited to the following: • Network address configuration (e.",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p013:u006.s002",
+    "text": "For example, requirements MSC-SR-3 and MSC-SR-4 (see Section 10.",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p016:u002.s009",
+    "text": "For example, Figure 5 shows a Central Management Site (Site A) and a Remote Site (Site B), but network 1 and network 2 each has its own Red Management Services, which prevents the Inner Encryption Components of the two networks from being able to authenticate with one another.",
+    "example_ids": [
+      "NET-005"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p018:u004.s001",
+    "text": "Figure 6 also shows an example placement of Gray Firewalls, as long as any path between Inner Encryption Components for networks of different security levels includes a Gray Firewall.",
+    "example_ids": [
+      "NET-006"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p021:u004.s001",
+    "text": "Public standards conformant Layer 2 control protocols, such as ARP, are allowed as necessary to ensure the operational usability of the network.",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p021:u004.s002",
+    "text": "Public standards conformant Layer 3 control protocols, such as Internet Control Message Protocol (ICMP), may be allowed based on local Authorizing Official (AO) policy, but the default configuration of this solution is for all Layer 3 control protocols to be disabled.",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p021:u005.s002",
+    "text": "For example, networks that currently use Generic Routing Encapsulation (GRE), Multiprotocol Label Switching or OSPF protocols can continue to use these in conjunction with this solution to provide routing as long as the AO approves their use.",
+    "example_ids": [
+      "NET-021"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p022:u002.s001",
+    "text": "Figure 9 shows a simple example of how redundancy could be added, if needed, for an MSC Solution.",
+    "example_ids": [
+      "NET-009",
+      "NET-020"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s001",
+    "text": "An MSC Solution that uses an untrusted network such as the Public Internet as its Black Network must include an Outer Firewall (see Section 4.",
+    "example_ids": [
+      "NET-001",
+      "NET-002"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p023:u010.s002",
+    "text": "Since this filtering is primarily based on the source and destination addresses in the packet on a Gray Network, the Gray Network itself must use an addressing scheme that supports the necessary filtering (such as using separate address ranges for the Gray interfaces of Inner Encryption Components supporting each Red Network).",
+    "example_ids": [
+      "NET-024"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s008",
+    "text": "For example, a Gray AW residing within the Gray Management Services at the same site as the Outer Encryption Component need not use CNSA Suite algorithms since this traffic does not traverse an untrusted network.",
+    "example_ids": [
+      "NET-017"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p035:u003",
+    "text": "MSC-SR-1 Network services provided by control plane protocols (such as NTP) must be located on the inside network (i.e., Gray Network for Outer Encryption Component and Red Network for Inner Encryption Component). T=O",
+    "example_ids": [
+      "NET-026"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p035:u012",
+    "text": "MSC-SR-10 The Outer Encryption Component must use a unique physical internal interface for each Red Network in the MSC Solution (i.e., VLAN trunking of multiple enclaves is not permitted). T=O",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p036:u011",
+    "text": "MSC-SR-21 Automatic remote boot-time configuration services must be disabled on all solution components (i.e., automatic configuration via Trivial File Transfer Protocol on boot). T=O",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p041:u015",
+    "text": "MSC-MD-10 MACsec Devices must require all data traffic on an external facing port to be encrypted (e.g., must- secure). T=O",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p044:u007",
+    "text": "MSC-OR-8 Outer Encryption Components must not use routing protocols (e.g., OSPF, BGP). T=O",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p045:u004",
+    "text": "MSC-PF-6 Any service or feature that allows an Outer Encryption Component to contact a third-party server (such as one maintained by the manufacturer) must be blocked. T MSC-PF-7",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p045:u005",
+    "text": "MSC-PF-7 Any service or feature that allows an Outer Encryption Component to contact a third party server (such as one maintained by the manufacturer) must be disabled. O MSC-PF-6",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p045:u013",
+    "text": "MSC-PF-15 If the CDP/OCSP is on the gray data plane, the Gray Network interfaces of Outer VPN Gateways must T=O allow HTTP traffic that is necessary to perform revocation checking for the Inner encryption layer (i.e., requests/replies between the Inner VPN Gateways and the CDPs/OCSP Responders) and block all other HTTP traffic. Refer to IETF RFC 5280 and IETF RFC 6960 for further details on this type of traffic.",
+    "example_ids": [
+      "NET-025"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p046:u010",
+    "text": "MSC-PF-23 If a Gray Firewall is required (i.e., networks of multiple protection levels are included in the solution) the Gray Firewall must allow appropriate traffic (IKE, IPsec, MKA and MACsec) between Red Networks operating at the same security level. T=O",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p046:u012",
+    "text": "MSC-PF-25 If a Gray Firewall is required, the Gray Firewall must allow HTTP traffic that is necessary to perform revocation checking for the Inner encryption layer (i.e., requests/replies between the Inner VPN Gateways and CDPs/OCSP Responders) and block all T=O other HTTP traffic. Refer to IETF RFC 5280 and IETF RFC 6960 for further details on this type of traffic.",
+    "example_ids": [
+      "NET-025"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p047:u007",
+    "text": "MSC-PF-30 If a Gray Firewall is required, the Gray Firewall must allow control plane traffic (e.g., NTP and DHCP). T=O",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p048:u007",
+    "text": "MSC-DM-8 All administration of Solution Components must securely be performed from an AW remotely using an NSA-approved solution (e.g., CP or High Assurance encryptor), or by managing the Solution Components locally. T=O",
+    "example_ids": [
+      "NET-027"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p049:u012",
+    "text": "MSC-DM-24 VMs that perform management services must not also perform other functions within the solution (i.e., provisioning, enrollment, CA registration, SIEM, etc. must be performed by separate workstations or VMs). T=O",
+    "example_ids": [
+      "NET-016"
+    ],
+    "disposition": "represented_in_context",
+    "reason": "Mapped source discussion is retained with the network records."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p054:u008.s001",
+    "text": "1) Ensure the latest security-critical software patches and updates (such as Information Assurance Vulnerability Alerts) are applied to each product.",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p059:u007.s001",
+    "text": "Black Box Testing – Testing the functionality of a component of the solution, such that testing is limited to the subset of functionality that is available from the external interfaces of the box during its normal operational configuration without any additional privileges (such as given to the Security Administrator or Auditor).",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p059:u012.s002",
+    "text": "For example, a particular Certificate Policy might indicate applicability of a type of certificate to the authentication of parties engaging in business-to-business transactions for the trading of goods or services within a given price range.",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p060:u014.s001",
+    "text": "Locally Managed Device – A device that is being managed by the direct connection of the AW to the device in a hardwired fashion (such as a console cable).",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  },
+  {
+    "source_id": "CSFC-MSC-1.3.0-4e40e3d83708:p061:u011.s001",
+    "text": "Transmission Security (TRANSEC) – Measures (security controls) applied to transmissions in order to prevent interception, disruption of reception, communications deception, and/ or derivation of intelligence by analysis of transmission characteristics such as signal parameters or message externals.",
+    "example_ids": [],
+    "disposition": "excluded_as_no_additional_network",
+    "reason": "The passage gives a protocol, setting, personnel privilege, glossary, or requirement example without another network arrangement."
+  }
+]

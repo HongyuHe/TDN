@@ -1,0 +1,45 @@
+Threshold/
+Req. # Requirement Description Alternative
+Objective
+other HTTP traffic. Refer to IETF RFC 5280 and IETF
+RFC 6960 for further details on this type of traffic.
+MSC-PF-26 Withdrawn
+MSC-PF-27 If a Gray Firewall is required, the Gray Firewall must T=O
+only accept management traffic on the physical
+ports connected to the Gray Management Network.
+MSC-PF-28 If a Gray Firewall is required, the Gray Firewall must T=O
+only permit packets whose source and destination IP
+addresses match the external interfaces of Inner
+Encryption Components that support Red Networks
+of the same security level.
+MSC-PF-29 If a Gray Firewall is required, the Gray Firewall must T=O
+block all packets whose source address does not
+match a list of addresses or address ranges known to
+be reachable from the interface where the packet
+was received.
+MSC-PF-30 If a Gray Firewall is required, the Gray Firewall must T=O
+allow control plane traffic (e.g., NTP and DHCP).
+MSC-PF-31 If a Gray Firewall is required, the Gray Firewall must T=O
+deny all traffic that is not explicitly allowed by
+requirements MSC-PF-23, MSC-PF-25, MSC-PF-27 or
+MSC-PF-30.
+MSC-PF-32 The Gray Firewall must block all traffic routed to and T=O
+between two or more Inner VPN Gateways of
+different classification levels.
+10.7 CONFIGURATION CHANGE DETECTION REQUIREMENTS
+Configuration Change Detection Requirements have been moved to the CSfC Continuous
+Monitoring Annex.
+10.8 DEVICE MANAGEMENT REQUIREMENTS
+Table 17 defines device management requirements.
+Table 17. Device Management (DM) Requirements
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+MSC-DM-1 If using physical AWs, they must be dedicated for T=O
+the purposes given in this CP and must be
+physically separated from workstations used to
+manage non-CSfC solutions.
+MSC-DM-2 AWs (or hosts/servers hosting VMs serving as AWs) T=O
+must physically reside within a protected facility
+where CSfC solution(s) are managed.
+40

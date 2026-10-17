@@ -1,0 +1,36 @@
+The draft profile (draft-guthrie-cnsa2-ipsec-profile) specifies the use of the CNSA 2.0-compliant
+algorithms ML-KEM-1024 [FIPS203] for key establishment and ML-DSA-87 [FIPS204] for digital
+signatures within IPsec. It describes the use of RFCs that are required in order to support the large ML-
+KEM-1024 public key and ciphertext sizes, including:
+• RFC 7383 IKEv2 Message Fragmentation
+• RFC 9242 Intermediate Key Exchanges in IKEv2
+• RFC 9370 Multiple Key Exchanges in IKEv2
+• draft-ietf-ipsecme-ikev2-pqc-auth Signature Authentication in the IKEv2 using PQC
+• RFC 9881 Internet X.509 Public Key Infrastructure - Algorithm Identifiers for the Module-Lattice-
+Based Digital Signature Algorithm (ML-DSA)
+• draft-ietf-ipsecme-ikev2-mlkem Post-quantum Key Exchange with ML-KEM in the IKEv2
+These additional RFCs facilitate the use of ML-KEM-1024 without causing IP-level fragmentation, which
+can create operational challenges and prevent the establishment of a connection. In particular, if ML-
+KEM-1024 were used in the initial IKEv2 Security Association (SA) key exchange (IKE_SA_INIT), the sizes
+of its public key and ciphertext would cause the initiator and responder messages to exceed the typical
+path Maximum Transmission Unit (MTU) and necessitate IP-level fragmentation. In order to prevent this
+issue, the solution leveraged first performs a CNSA 1.0-compliant key establishment that does not
+exceed PMTU and subsequently performs an additional key establishment using a newly-defined
+exchange called Intermediate Exchange (IKE_INTERMEDIATE). IKE_INTERMEDIATE exchanges can
+circumvent IP-level fragmentation by using IKEv2-level fragmentation, which does not incur the same
+operational issues. The specifications of which this solution is comprised work as follows:
+RFC 7383 IKEv2 Fragmentation: Describes a way to prevent IP fragmentation of large encrypted IKEv2
+messages by fragmenting at the IKEv2 layer. This allows IKEv2 messages to traverse network devices
+that do not allow IP fragments to pass through.
+RFC 9242 Intermediate Key Exchanges: Specifies a new exchange type called IKE_INTERMEDIATE.
+IKE_INTERMEDIATE exchanges can be used for transferring large amounts of data in the process of
+establishing an IKEv2 Security Association. It is sent after IKE_SA_INIT and before IKE_AUTH.
+RFC 9370 Multiple Key Exchanges: Leverages the IKE_INTERMEDIATE exchange specified in RFC 9242 in
+order to perform multiple key establishments. In particular, this document enables the use of a
+quantum resistant key establishment algorithm whose public key and ciphertexts would exceed MTU
+and cause IP fragmentation of the IKE_SA_INIT messages. The document resolves this issue by specifying
+how to perform such large key establishments in IKE_INTERMEDIATE which can benefit from the IKEv2
+fragmentation mechanism specified in RFC 7383. An initial key establishment that does not cause IP
+fragmentation is first performed in IKE_SA_INIT, followed by additional key establishment(s) using
+IKE_INTERMEDIATE message(s).
+20

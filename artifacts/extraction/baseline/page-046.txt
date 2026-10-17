@@ -1,0 +1,49 @@
+Threshold/
+Req. # Requirement Description Alternative
+Objective
+allow HTTP traffic that is necessary to perform
+revocation checking for the Inner encryption layer
+(i.e., requests/replies between the Inner VPN
+Gateways and the CDPs/OCSP Responders) and
+block all other HTTP traffic. Refer to IETF RFC 5280
+and IETF RFC 6960 for further details on this type of
+traffic.
+MSC-PF-16 Withdrawn
+MSC-PF-17 The Gray Network interfaces of Outer Encryption T=O
+Components must only permit packets whose
+source and destination IP addresses match the
+external interfaces of Inner Encryption Components
+that support Red Networks of the same security
+level.
+MSC-PF-18 The Gray Network interfaces of Outer Encryption T=O
+Components must block all packets whose source
+address does not match a list of addresses or
+address ranges known to be reachable from the
+interface where the packet was received.
+MSC-PF-19 The Gray Network interfaces of Outer Encryption T=O
+Components must allow management and control
+plane protocols (as defined in this CP) that have
+been approved by policy.
+MSC-PF-20 The Gray Network interfaces of Outer Encryption T=O
+Components must deny all traffic that is not
+explicitly allowed by requirements MSC-PF-8, MSC-
+PF-13, MSC-PF-15, or MSC-PF-19.
+MSC-PF-21 Withdrawn
+MSC-PF-22 If an Outer Firewall is required, for all Outer Firewall T=O
+interfaces, traffic filtering rules must be applied to
+both inbound and outbound traffic, such that only
+IKE, ESP, MKA, MACsec and control plane protocols
+(as defined in this CP) approved by organization-
+defined policy are allowed.
+MSC-PF-23 If a Gray Firewall is required (i.e., networks of T=O
+multiple protection levels are included in the
+solution) the Gray Firewall must allow appropriate
+traffic (IKE, IPsec, MKA and MACsec) between Red
+Networks operating at the same security level.
+MSC-PF-24 Withdrawn
+MSC-PF-25 If a Gray Firewall is required, the Gray Firewall must T=O
+allow HTTP traffic that is necessary to perform
+revocation checking for the Inner encryption layer
+(i.e., requests/replies between the Inner VPN
+Gateways and CDPs/OCSP Responders) and block all
+39

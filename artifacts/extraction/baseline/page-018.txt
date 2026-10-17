@@ -1,0 +1,23 @@
+Additionally, filtering components are included between the components used for management of the
+Gray Networks themselves (namely, AWs and locally run CAs) and Inner Encryption Components that
+support Red Networks of a lower security level than the Red Network with the highest security level
+supported by the solution. In other words, AWs and locally run CAs on Gray Networks are treated as,
+and grouped with, the Inner Encryption Component for the Red Network with the highest security level.
+One or more Gray Firewalls must be included in the Gray Network to perform filtering. Standalone Gray
+Firewalls have been placed at each site between the Inner Encryption Components and the Outer
+Encryption Component; these Gray Firewalls are responsible for dropping packets between Inner
+Encryption Components of different security levels.
+Figure 6. MSC Solution for Networks at Different Security Levels
+Figure 6 also shows an example placement of Gray Firewalls, as long as any path between Inner
+Encryption Components for networks of different security levels includes a Gray Firewall.
+Including one or more standalone Gray Firewalls in a solution does not remove the requirement to
+perform the filtering on the Outer Encryption Component as well. Outer Encryption Components are
+uniquely positioned to block traffic between Inner Encryption Components supporting Red Networks of
+different security levels when one of those Inner Encryption Components is located at a different site.
+4.2.3 LAYERING OPTIONS
+Each layer of the MSC Solution can use either an IPsec tunnel or MACsec tunnel. An IPsec tunnel is
+established between VPN Gateways. A MACsec tunnel is established between MACsec Devices. Table 1
+identifies four different layering options provided by this CP. For configurations 2 and 4 which use an
+outer MACsec tunnel these solutions would only be point to point solutions instead of a multi-site
+solution.
+11

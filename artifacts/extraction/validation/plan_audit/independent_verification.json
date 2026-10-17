@@ -1,0 +1,74 @@
+{
+  "timestamp_utc": "2026-10-17T16:59:30.241475+00:00",
+  "scope": "Independent direct comparisons of current structured artifacts. Source-span and PDF-character coverage are separate producer-validator checks, not independently reimplemented here.",
+  "status": "pass",
+  "errors": [],
+  "pdf_hashes": {
+    "docs/CSfC_documentation_v1.3.0.pdf": "4e40e3d83708f33a033808d8362f78127973f53239dc03b72163fa6cfa5925c4",
+    "artifacts/extraction/source/CSfC_documentation_v1.3.0.pdf": "4e40e3d83708f33a033808d8362f78127973f53239dc03b72163fa6cfa5925c4"
+  },
+  "source_index_sha256": "39b9770a52900512a58e468a83839238d4583e030ac76870fd8f11e4aff2d5dc",
+  "source_units": 1596,
+  "source_types": {
+    "front_matter": 108,
+    "table_header": 43,
+    "table_row": 407,
+    "page_furniture": 65,
+    "heading": 72,
+    "sentence": 688,
+    "trailing_text": 71,
+    "figure_label": 131,
+    "figure": 10,
+    "footnote_label": 1
+  },
+  "requirement_groups": 76,
+  "background_units": 647,
+  "active_numbered_requirements": 194,
+  "background_numbered_requirements": [
+    "MSC-PS-4",
+    "MSC-PS-9",
+    "MSC-PS-13",
+    "MSC-PS-14",
+    "MSC-MD-4",
+    "MSC-PF-14",
+    "MSC-PF-16",
+    "MSC-PF-21",
+    "MSC-PF-24",
+    "MSC-PF-26",
+    "MSC-DM-15",
+    "MSC-DM-16",
+    "MSC-DM-18",
+    "MSC-DM-19",
+    "MSC-DM-20",
+    "MSC-DM-21",
+    "MSC-RB-4",
+    "MSC-RB-7",
+    "MSC-RB-9",
+    "MSC-RB-10"
+  ],
+  "examples": 27,
+  "scoped_mappings": 92,
+  "mapping_status_counts": {
+    "presented_as_satisfying": 40,
+    "required_but_not_demonstrated": 41,
+    "ambiguous": 8,
+    "not_applicable": 3
+  },
+  "roles": 76,
+  "role_mentions": 1328,
+  "checks": [
+    "unique source IDs",
+    "literal-period record boundaries",
+    "ordered exhaustive JSONL partitions",
+    "source assignment coverage",
+    "exact requirement/context quotations",
+    "one unique theorem target per group and none for background",
+    "mapping clause membership and quotations",
+    "current mapping qualifications and issue references",
+    "exact role evidence and mention spans"
+  ],
+  "focused_tests": {
+    "command": "python3 -m unittest discover -s tests -p 'test_csfc_preprocessing.py' -v",
+    "result": "17 tests passed in independent auditor invocation"
+  }
+}

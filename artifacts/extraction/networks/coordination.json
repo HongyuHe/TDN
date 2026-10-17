@@ -1,0 +1,35 @@
+{
+  "producer": "networks_roles",
+  "status": "complete_for_independent_review",
+  "source_index_units": 1597,
+  "source_index_includes_reviewed_figure_labels": 131,
+  "network_records": 27,
+  "roles": 69,
+  "role_mentions": 1323,
+  "figure_crops": 10,
+  "crop_review": "All final 200 dpi crops inspected using view_image; borders, legends, captions, and labels readable.",
+  "completed_checks": [
+    "all example role IDs exist",
+    "all role records have source evidence",
+    "every setup quotation exactly matches indexed text",
+    "all source references checked recursively before final narrowing; narrowed references are selected from same index",
+    "ROOT-NET-001 resolved and verified"
+  ],
+  "pending": [
+    "Independent semantic review against original PDF",
+    "Requirement-group ID reconciliation; group_ids fields intentionally empty until groups exist"
+  ],
+  "open_issues": [
+    "NET-005-security-level-wording",
+    "NET-008-encapsulation-scope",
+    "NET-009-filtering-omission",
+    "NET-017-distinct-exceptions"
+  ],
+  "generator": "scripts/preprocess_csfc_networks_roles.py",
+  "notes": [
+    "Rerunning the generator overwrites networks and roles JSON/Markdown, including group_ids. Reconcile group_ids after final generator run.",
+    "The glossary Registration Authority is a mixed hardware/software/personnel role. Only the device/service facet is inventoried.",
+    "Role mentions include generic and specialized overlapping matches intentionally.",
+    "No full-compliance inference is made."
+  ]
+}

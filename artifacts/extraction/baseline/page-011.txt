@@ -1,0 +1,40 @@
+Agreement with the NSA and commence evaluation against a NIAP-approved Protection Profile using
+the CSfC mandated selections that will enable them to be listed on the CSfC Components List. NIAP
+Certification alone does not guarantee inclusion on the CSfC Components List. Products listed on the
+CSfC Components List are not guaranteed to be interoperable with all other products on the CSfC
+Components List. Customers and Integrators should perform interoperability testing to ensure the
+components selected for their MSC Solution are interoperable. If you need assistance obtaining vendor
+Point of Contact (POC) information, please email csfc_components@nsa.gov.
+4.1 NETWORKS
+This CP uses the following terminology to describe the various networks in an MSC Solution and the
+types of traffic present on each. The terms Red, Gray, and Black refer to the level of protection applied
+to the data as described below.
+4.1.1 RED NETWORK
+Red data consists of unencrypted classified data. The Red Network is logically located behind an Inner
+Encryption Component. The networks connected to one another through the MSC Solution are Red
+Networks. Red Networks may only communicate with one another through the MSC Solution if the
+networks operate at the same security level. Red Networks are under the control of the Solution Owner
+or a trusted third party using a Red Administrative Workstation (AW). The Red AWs maintain, monitor,
+and control all security functions for the Inner Encryption Components, Inner Firewall, and all Red
+Management Service Components. The Red AWs are not permitted to maintain, monitor, or control
+Outer Encryption Components or Gray Management Services.
+4.1.2 GRAY NETWORK
+Gray data is classified data that has been encrypted once. Gray Networks are composed of Gray data
+and Gray Management Services. Gray Networks are under the physical and logical control of the
+Solution Owner or a trusted third party.
+The Gray Network is physically treated as a classified network even though all classified data is singly
+encrypted. If a Solution Owner’s classification authority determines that the data on a Gray Network is
+classified, perhaps by determining the Internet Protocol (IP) addresses used on the Gray Network
+interfaces are classified at some level, then the MSC Solution described in this CP cannot be
+implemented. The MSC Solutions are not designed to ensure that such information will be afforded two
+layers of protection.
+Gray Network components consist of the Outer Encryption Component, Gray Firewall, and Gray
+Management Services. All Gray Network components are physically protected at the same level as the
+Red Network components of the MSC Solution. Gray Management Services are physically connected to
+the Gray Firewall and include, at a minimum, a AW that can be a physical workstation or Virtual Machine
+(VM). The Gray Management Services may also include a Security Information and Event Management
+(SIEM) unless the SIEM is implemented in the Red Network in conjunction with a cross domain solution
+(CDS) (see CSfC Continuous Monitoring Annex). This CP requires the management of Gray Network
+components through a Gray AW. As a result, neither Red nor Black AWs are permitted to manage the
+Outer Encryption Component, Gray Firewall, or Gray Management Services. Additionally, the Gray AWs
+4

@@ -1,0 +1,39 @@
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+tunnels, with the exception of the IKE_SA_INIT
+exchange.
+10.3 MACSEC DEVICE REQUIREMENTS
+This section addresses requirements for MACsec Devices. Table 9 identifies the approved algorithms for
+MACsec encryption. Table 10 identifies the approved CNSA 1.0 algorithms for MACsec EAP-TLS. Table
+11 identifies the approved CNSA 2.0 algorithms for MACsec EAP-TLS. Table 12 defines MACsec Device
+requirements. Table 13 defines certificate based MACsec authentication and authorization
+requirements.
+Table 9. Approved Algorithms for MACsec Encryption
+Security Service Algorithm Suite Specifications
+Confidentiality (Encryption) Galois Counter Mode (GCM)- FIPS PUB 197
+AES-256 IEEE 802.1AE-2018
+GCM-AES-XPN-256
+Key Wrap AES Key Wrap IETF RFC 3394
+Table 10. Approved CNSA 1.0 Algorithms for MACsec EAP-TLS
+Security Service Algorithm Suite Specifications
+Confidentiality AES-256-GCM FIPS PUB 197
+(Encryption)
+Authentication RSA 3072 or ECDSA over the curve P-384 with SHA- FIPS PUB 186-5
+(Digital Signature) 384 IETF RFC 5216
+IETF RFC 6460
+Key Exchange/ ECDH over the curve P-384 (DH group 20) NIST SP 800-56A
+Establishment or IETF RFC 5216
+DH with prime modulus of 3072 bits (group 15) or IETF RFC 6460
+4096 bits (group 16)
+Integrity (Hashing) SHA-384 or SHA-512 FIPS PUB 180-4
+IETF RFC 5216
+IETF RFC 6234
+IETF RFC 6460
+Table 11. Approved CNSA 2.0 Algorithms for MACsec EAP-TLS
+Security Service Algorithm Suite Specifications
+Confidentiality AES-256-GCM FIPS PUB 197
+(Encryption)
+Authentication ML-DSA-87 FIPS 204
+(Digital Signature)
+33

@@ -1,0 +1,29 @@
+4.2.1.2 Centrally Managed Sites
+As shown in Figure 4, if remote management is used, personnel at a single geographic site administer
+and perform keying and device management for all the sites included in the solution. In this case,
+because the administration is done by one group of Security Administrators, CA Administrators, and Key
+Generation Solution Administrators (see Section 12), they ensure the interoperability of each site as new
+sites are added. At least two CAs are needed; one for all the Inner Encryption Components and one for
+all the Outer Encryption Components. If available, enterprise CAs should be used. If MACsec Devices
+are used on either or both layers and EAP-TLS is used for authentication, then CAs and an AS located at
+the Central site are required, otherwise, PSKs may be used for authentication for one of the layers of the
+solution and that layer would not require a CA.
+Figure 4. MSC Solution Connecting a Central Management Site and a Remote Site
+Because the central management site manages the Encryption Components at the other sites over the
+network, encryption is used to logically separate data and management traffic as it passes between
+sites. Central Management of the Gray Network must be done in accordance with the CSfC Enterprise
+Gray Implementation Requirements Annex. Red management traffic is encrypted before being routed
+through the Inner and Outer Encryption Components to another site. As a result, all management traffic
+between sites is encrypted at least twice before traversing the Black Network. See the CSfC Enterprise
+Gray Implementation Requirements Annex for additional details and requirements.
+While Figure 4 shows only two sites, this solution can scale to include numerous sites, with each
+additional site having the same high-level design as the remotely managed site.
+4.2.2 MULTIPLE SECURITY LEVELS
+A single implementation of the MSC Solution may support Red Networks of different security levels. The
+MSC Solution provides secure connectivity between the Red Networks within each security level while
+preventing Red Networks of different security levels from communicating with one another. This
+enables a customer to use the same physical infrastructure to carry traffic from multiple networks.
+Although each Red Network requires its own Inner Encryption Component, a site may use a single Outer
+Encryption Component to encrypt and transport traffic that has been encrypted by Inner Encryption
+Components of varying security levels.
+8

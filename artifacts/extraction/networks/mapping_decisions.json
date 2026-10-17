@@ -1,0 +1,1915 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Source-grounded decisions for clause-scoped network-to-requirement-group assessments.",
+  "status_meanings": {
+    "presented_as_satisfying": "The document presents the selected clause or permitted alternative as fulfilled by the described design. No deployed implementation or whole-group proof is asserted.",
+    "presented_as_violating": "The document explicitly identifies or clearly demonstrates a violation of the selected clause. No such examples were found in the extracted set.",
+    "required_but_not_demonstrated": "The selected obligation applies, or applies under the recorded condition, and the example lacks the evidence needed to establish its implementation.",
+    "ambiguous": "Source wording, applicability, or the relation between the example and clause remains unresolved.",
+    "not_applicable": "The selected conditional obligation does not apply to the recorded alternative, or an explicit source exemption covers the selected role."
+  },
+  "coverage_policy": "Map requirements illustrated by each example and material obligations triggered by its specific features. General procurement, personnel, lifecycle, audit, and testing duties are not exhaustively repeated for every schematic. Unmapped groups are unassessed, not exempted.",
+  "examples": [
+    {
+      "example_id": "NET-001",
+      "scope_limit": "Figure 1 presents nested encryption across untrusted transport. The explicit text supplies the required Outer Firewall omitted from the schematic. Product independence and physical implementation remain separate obligations.",
+      "mappings": [
+        {
+          "group_id": "RG-007",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s002"
+          ],
+          "clause_scope": "Encrypt classified data first at the Inner component and then at the Outer component; decrypt in reverse order.",
+          "applicability": "Classified data crossing the illustrated Black Network.",
+          "rationale": "The prose expressly identifies Figure 1 and describes both encryption and decryption sequences.",
+          "qualifications_and_exceptions": "The sequence does not establish product diversity or every permitted control-plane exception."
+        },
+        {
+          "group_id": "RG-008",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s004"
+          ],
+          "clause_scope": "Allow Red-to-Red communication only at the same security level.",
+          "applicability": "The two Red Networks linked through the encrypted path.",
+          "rationale": "The setup states the same-level condition, but the figure does not identify classification, compartments, or dissemination controls for either network.",
+          "qualifications_and_exceptions": "A matching Red label alone does not establish equal security levels."
+        },
+        {
+          "group_id": "RG-004",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p033:u010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p033:u011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p033:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u006.s002"
+          ],
+          "clause_scope": "Use independent products, operating systems, and cryptographic implementations for the two layers.",
+          "applicability": "The illustrated Inner and Outer Encryption Components.",
+          "rationale": "Nested tunnels establish two layers; the example gives no manufacturer, operating system, or cryptographic-library identities.",
+          "qualifications_and_exceptions": "Preserve the NSA-determined same-manufacturer product and library alternatives. Version differences alone do not satisfy the operating-system clause."
+        },
+        {
+          "group_id": "RG-005",
+          "status": "required_but_not_demonstrated",
+          "basis": "visual_interpretation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p034:u003"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:f01:label001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:f01:label002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:f01:label003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:f01:label004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:f01:label005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:f01:label006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:f01:label007"
+          ],
+          "clause_scope": "Use physically separate Inner and Outer components.",
+          "applicability": "The two encryption roles at each side.",
+          "rationale": "Separate symbols distinguish roles, but Figure 1 does not document a hardware deployment or exclusive physical functions.",
+          "qualifications_and_exceptions": "Physical separation remains required; symbolic separation does not demonstrate it."
+        },
+        {
+          "group_id": "RG-034",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p010:u008.s002"
+          ],
+          "clause_scope": "Include an Outer Firewall when the Black transport meets the untrusted/Public Internet condition.",
+          "applicability": "Figure 1 explicitly uses an untrusted Black Network, which meets the prose condition for an Outer Firewall.",
+          "rationale": "The explicit untrusted-network requirement supplies the Outer Firewall omitted from Figure 1. MSC-SR-12 additionally names the Public Internet; that narrower statement does not cancel the broader prose requirement. The described design includes the required firewall under the text-precedence policy.",
+          "qualifications_and_exceptions": "The assessment covers the intended design including explicit textual requirements. The figure does not supply a firewall model, rule configuration, or deployment evidence."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-002",
+      "scope_limit": "Figure 2 presents Outer Firewall placement and separation for Public Internet transport. Configured filtering and product eligibility require additional evidence.",
+      "mappings": [
+        {
+          "group_id": "RG-034",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p012:u003.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p012:u003.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u008.s001"
+          ],
+          "clause_scope": "Place an Outer Firewall between the Public Internet and each Outer Encryption Component.",
+          "applicability": "Public Internet is explicitly the Black transport.",
+          "rationale": "The prose links Figure 2 to the mandatory placement and states the external-to-internal interface relationship.",
+          "qualifications_and_exceptions": "The assessment covers firewall location and connection only."
+        },
+        {
+          "group_id": "RG-005",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u005.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p034:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u005.s001"
+          ],
+          "clause_scope": "Make the Outer Firewall physically separate from the Outer Encryption Component.",
+          "applicability": "The illustrated firewall/outer-component pair.",
+          "rationale": "The Figure 2 discussion expressly says the firewall must be physically separate and presents the figure as that arrangement.",
+          "qualifications_and_exceptions": "MSC-PS-12 also covers other required components; the mapping assesses only the illustrated pair."
+        },
+        {
+          "group_id": "RG-035",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u003.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s001"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u003.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s001"
+          ],
+          "clause_scope": "Describe the Outer Firewall ingress/egress protocol and Outer-component address restrictions.",
+          "applicability": "The Outer Firewall interfaces described with Figure 2.",
+          "rationale": "The setup gives an intended filter policy for both interfaces, including necessary control-plane traffic on the internal side.",
+          "qualifications_and_exceptions": "The clauses present a policy design. No live rule table or traffic test is supplied."
+        },
+        {
+          "group_id": "RG-035",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p046:u009"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p012:u003.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s003"
+          ],
+          "clause_scope": "Apply the complete MSC-PF-22 allowlist bidirectionally on all Outer Firewall interfaces.",
+          "applicability": "The required Outer Firewalls in Figure 2.",
+          "rationale": "The example gives a prose policy, but it does not enumerate all configured IKE, ESP, MKA, MACsec, and approved control-plane rules on every interface.",
+          "qualifications_and_exceptions": "Do not treat the narrower prose list as proof of a rule violation; protocol choice and policy approval remain unspecified."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-003",
+      "scope_limit": "Figure 3 presents independent site administration and nested tunnels. Peer interoperability, trust material, and authentication-server attachment depend on the selected components.",
+      "mappings": [
+        {
+          "group_id": "RG-010",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s001"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s001"
+          ],
+          "clause_scope": "Administer each site locally without management traffic crossing the Black Network.",
+          "applicability": "The independently managed site design.",
+          "rationale": "The source explicitly assigns local administration to each site and states that management traffic does not cross Black transport.",
+          "qualifications_and_exceptions": "Locally run and enterprise CAs are alternatives; the source does not assign every management service to a specific device."
+        },
+        {
+          "group_id": "RG-007",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s002"
+          ],
+          "clause_scope": "Provide an Inner tunnel and an Outer tunnel between directly communicating sites.",
+          "applicability": "The communicating sites in Figure 3.",
+          "rationale": "The discussion expressly describes both layers and permits either IPsec or MACsec at each layer.",
+          "qualifications_and_exceptions": "Outer MACsec remains subject to the point-to-point limitation in RG-007."
+        },
+        {
+          "group_id": "RG-010",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s004"
+          ],
+          "clause_scope": "Provide peer signing certificates and revocation information, or a shared peer CAK under the selected authentication method.",
+          "applicability": "Certificate or CAK authentication at independently managed sites.",
+          "rationale": "The source states the required trust relationships but supplies no certificate stores, revocation data, or CAK values.",
+          "qualifications_and_exceptions": "Certificate and CAK clauses are conditional alternatives; cross-site trust does not erase layer or security-level separation."
+        },
+        {
+          "group_id": "RG-054",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s003"
+          ],
+          "clause_scope": "Ensure the components selected at communicating sites interoperate.",
+          "applicability": "Each illustrated intersite tunnel.",
+          "rationale": "The setup requires interoperability but identifies no products or compatibility results.",
+          "qualifications_and_exceptions": "Drawing a tunnel does not demonstrate successful interoperability testing."
+        },
+        {
+          "group_id": "RG-008",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p039:u007"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s002"
+          ],
+          "clause_scope": "Restrict Inner VPN peers to Red Networks at the same security level.",
+          "applicability": "Only the IPsec Inner-layer alternative.",
+          "rationale": "Neither Red security-level details nor an Inner VPN authentication policy are supplied.",
+          "qualifications_and_exceptions": "MSC-VG-15 is conditional on using Inner VPN Gateways; MACsec alternatives retain the general same-level rule."
+        },
+        {
+          "group_id": "RG-024",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u011"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s005"
+          ],
+          "clause_scope": "Connect each MACsec Authentication Server to only one site network.",
+          "applicability": "The certificate-authenticated MACsec alternative.",
+          "rationale": "The setup mentions the AS but gives no concrete attachment diagram sufficient to check MSC-AA-2.",
+          "qualifications_and_exceptions": "The separate phrase \"both Gray and/or Red Networks\" is ambiguous and does not authorize a multi-site attachment."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-004",
+      "scope_limit": "Figure 4 presents central administration and protected intersite management. CA/AS deployment, annex requirements, and MACsec Key Server configuration remain conditional obligations.",
+      "mappings": [
+        {
+          "group_id": "RG-011",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u004.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u004.s004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u004.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u004.s004"
+          ],
+          "clause_scope": "Use one central management site and encrypt intersite management at least twice before Black transport.",
+          "applicability": "Central management of the remote site in Figure 4.",
+          "rationale": "The source explicitly names the centralized arrangement and describes the protected Red management path.",
+          "qualifications_and_exceptions": "Detailed central Gray management follows the external Enterprise Gray annex."
+        },
+        {
+          "group_id": "RG-044",
+          "status": "presented_as_satisfying",
+          "basis": "visual_interpretation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p048:u003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p048:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label007",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label008",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:f04:label012"
+          ],
+          "clause_scope": "Place Red management with the Inner layer and Gray management with the Outer layer.",
+          "applicability": "The central site management-services connections.",
+          "rationale": "The figure places Red and Gray Management Services on their respective sides of the encryption layers.",
+          "qualifications_and_exceptions": "The mapping covers intended placement only. AW exclusivity, ACLs, and every management interface are not depicted."
+        },
+        {
+          "group_id": "RG-011",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u004.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u004.s002"
+          ],
+          "clause_scope": "Provide the applicable per-layer CAs, central EAP-TLS AS, and central Gray annex controls.",
+          "applicability": "The selected certificate or PSK authentication alternatives.",
+          "rationale": "The source prescribes the components and annex, but aggregate management symbols do not identify their instances or configuration.",
+          "qualifications_and_exceptions": "The PSK layer does not require a CA. Enterprise CAs are recommended when available. EAP-TLS makes central CAs and an AS necessary."
+        },
+        {
+          "group_id": "RG-027",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p041:u011"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s005"
+          ],
+          "clause_scope": "Configure the central-site MACsec peer as Key Server with value 0 and the other peer with value 1.",
+          "applicability": "Any MACsec tunnel using the Central Management Site.",
+          "rationale": "The setup allows MACsec but gives no Key Server values or role labels.",
+          "qualifications_and_exceptions": "The clause does not apply to an all-IPsec selection."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-005",
+      "scope_limit": "Figure 5 presents two same-security-level Red Networks sharing an Outer component. Per-network management is depicted, while authentication wording and physical interface details remain unresolved.",
+      "mappings": [
+        {
+          "group_id": "RG-012",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u002.s009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u005.s006"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u002.s009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u005.s006"
+          ],
+          "clause_scope": "Provide distinct Red Management Services and allow singly encrypted same-level traffic on the shared Gray Network.",
+          "applicability": "Network 1 and Network 2 are both Secret U.S.-only.",
+          "rationale": "The prose names Figure 5, assigns each network its own management services, and expressly permits the shared Gray transport without extra separation controls.",
+          "qualifications_and_exceptions": "The permission concerns same-level networks; optional additional controls remain allowed."
+        },
+        {
+          "group_id": "RG-012",
+          "status": "ambiguous",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u004.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u004.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u004.s003"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u004.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u004.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u004.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u005.s006"
+          ],
+          "clause_scope": "Interpret the authentication separation intended for the two illustrated same-level networks.",
+          "applicability": "The same-security-level subsection accompanying Figure 5.",
+          "rationale": "The subsection moves from same-level networks to a sentence about different-level components and their distinct CAs or CAKs. The exact authentication assignment for the illustrated same-level pair is unresolved.",
+          "qualifications_and_exceptions": "Retain the source wording. Do not relabel the two Secret U.S.-only networks as different levels."
+        },
+        {
+          "group_id": "RG-013",
+          "status": "not_applicable",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u009"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u005.s006"
+          ],
+          "clause_scope": "Require Gray Firewalls on paths between Inner components of different security levels.",
+          "applicability": "The depicted pair has the same security level.",
+          "rationale": "The different-level antecedent is false for the stated Network 1/Network 2 pair, and the setup expressly says additional controls are unnecessary.",
+          "qualifications_and_exceptions": "Another CP, management path, or a changed security-level assignment can introduce firewall obligations. The mapping concerns the depicted pair only."
+        },
+        {
+          "group_id": "RG-053",
+          "status": "presented_as_satisfying",
+          "basis": "visual_interpretation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u006"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label007",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label008",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label012",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label014",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label015",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label016",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label017",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label018",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label019"
+          ],
+          "clause_scope": "Place multiple Inner components in parallel when sharing an Outer component.",
+          "applicability": "The two Inner components at each site.",
+          "rationale": "The diagram branches the shared Gray path toward the two Inner components and shows neither Inner component in series with the other.",
+          "qualifications_and_exceptions": "The mapping does not establish unique Outer physical interfaces under MSC-SR-10."
+        },
+        {
+          "group_id": "RG-053",
+          "status": "required_but_not_demonstrated",
+          "basis": "visual_interpretation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label007",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label008",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label012",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label014",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label015",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label016",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label017",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label018",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:f05:label019"
+          ],
+          "clause_scope": "Give each Red Network a unique physical internal Outer-component interface.",
+          "applicability": "Each site shares an Outer Encryption Component across two Red Networks.",
+          "rationale": "The Gray Data Network symbol does not identify physical Outer interface counts or exclude VLAN trunking.",
+          "qualifications_and_exceptions": "A shared Gray segment is not sufficient evidence of either satisfaction or violation of the interface requirement."
+        },
+        {
+          "group_id": "RG-039",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p046:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u005.s006"
+          ],
+          "clause_scope": "Permit only the appropriate same-security-level source/destination addresses on Outer Gray interfaces.",
+          "applicability": "The shared Outer components.",
+          "rationale": "The source permits same-level transport, but supplies no addresses or packet-filter rules.",
+          "qualifications_and_exceptions": "Separate network names do not identify approved peer address pairs."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-006",
+      "scope_limit": "Figure 6 presents different-level isolation with Gray Firewalls and separate management. Address assignments, full ACLs, and unique Outer physical interfaces still need evidence.",
+      "mappings": [
+        {
+          "group_id": "RG-013",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u004.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u009"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u004.s001"
+          ],
+          "clause_scope": "Place Gray Firewalls on physical Gray paths between Inner components of different security levels.",
+          "applicability": "Top Secret, Secret U.S.-only, and Secret Coalition networks share Gray infrastructure.",
+          "rationale": "The prose identifies Figure 6 as an example firewall placement and explicitly ties that placement to all paths between different-level Inner components.",
+          "qualifications_and_exceptions": "MSC-SR-8 adds management and revocation-service path conditions; unshown service placements are not established."
+        },
+        {
+          "group_id": "RG-008",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s002"
+          ],
+          "clause_scope": "Provide connectivity within each security level and prevent communication across levels.",
+          "applicability": "The different-level design described with Figure 6.",
+          "rationale": "The prose expressly describes the intended allowed and prohibited communication pattern.",
+          "qualifications_and_exceptions": "The assessment records the presented isolation design, not verified packet-filter behavior."
+        },
+        {
+          "group_id": "RG-005",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p024:u006.s001"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p024:u006.s001"
+          ],
+          "clause_scope": "Use standalone Gray Firewalls physically separate from Inner and Outer Encryption Components.",
+          "applicability": "The required Gray Firewalls in Figure 6.",
+          "rationale": "The component discussion directly refers to Figure 6 and states the physical separation.",
+          "qualifications_and_exceptions": "Product eligibility and actual device identities remain outside the demonstrated placement."
+        },
+        {
+          "group_id": "RG-040",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p046:u010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p047:u005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p047:u009"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s006"
+          ],
+          "clause_scope": "Configure the Gray Firewall same-level allowlist and cross-level denial rules.",
+          "applicability": "Each required Gray Firewall.",
+          "rationale": "The prose gives the intended filtering effect, but no address assignments, rule ordering, or protocol-specific rules establish the complete numbered clauses.",
+          "qualifications_and_exceptions": "MSC-PF-32 names Inner VPN Gateways and classification levels; the broader security-level clauses also account for dissemination controls."
+        },
+        {
+          "group_id": "RG-039",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p046:u004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p046:u007"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u005.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u005.s002"
+          ],
+          "clause_scope": "Apply the Outer Gray-interface same-level allowlist and default denial despite the Gray Firewalls.",
+          "applicability": "Every Outer Encryption Component in the design.",
+          "rationale": "The source expressly retains Outer filtering obligations. The example does not supply Outer ACLs.",
+          "qualifications_and_exceptions": "A Gray Firewall does not discharge Outer-component filtering obligations."
+        },
+        {
+          "group_id": "RG-014",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:u006.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:u006.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:u006.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p017:u006.s002"
+          ],
+          "clause_scope": "Assign addresses unique to each security level to support the required peer filtering.",
+          "applicability": "The multiple security levels in the example.",
+          "rationale": "The setup states the address-assignment obligation but supplies no ranges or addresses.",
+          "qualifications_and_exceptions": "The same-level wording conflict in the other RG-014 passage remains open; no conflicting sentence is silently repaired."
+        },
+        {
+          "group_id": "RG-053",
+          "status": "required_but_not_demonstrated",
+          "basis": "visual_interpretation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label007",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label008",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label012",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label014",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label015",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label016",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label017",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label018",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label019",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label020",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label021",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label022",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label023",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label024",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label025",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label026",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label027",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:f06:label028"
+          ],
+          "clause_scope": "Provide a unique physical Outer internal interface for each Red Network.",
+          "applicability": "Three Red Networks share each Outer component.",
+          "rationale": "The figure shows an aggregate connection through a Gray Firewall without physical port identities or counts.",
+          "qualifications_and_exceptions": "Do not infer VLAN trunking or a missing interface from a high-level line."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-007",
+      "scope_limit": "Figure 7 presents encapsulation on the Outer component incoming interface. The separate-encapsulator condition is absent; protocol approval and deployed parameters remain unspecified.",
+      "mappings": [
+        {
+          "group_id": "RG-015",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s002"
+          ],
+          "clause_scope": "Encapsulate Inner MACsec traffic at the Outer incoming interface before applying Outer encryption.",
+          "applicability": "The integrated-encapsulation alternative in Figure 7.",
+          "rationale": "The text explicitly identifies Figure 7 as the internal-interface pseudowire arrangement and permits integrated encapsulation on VPN or MACsec Outer devices.",
+          "qualifications_and_exceptions": "The clause does not specify one encapsulation protocol or a concrete configuration."
+        },
+        {
+          "group_id": "RG-015",
+          "status": "not_applicable",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s002"
+          ],
+          "clause_scope": "Treat a required standalone encapsulator as a Solution Component for Section 11.1.",
+          "applicability": "Figure 7 uses the integrated feature and does not require a standalone encapsulator.",
+          "rationale": "MSC-MD-13 has a standalone-device antecedent. The illustrated integrated alternative does not meet that antecedent.",
+          "qualifications_and_exceptions": "The exemption is limited to the standalone-device clause; normal requirements still apply to the Outer Encryption Component."
+        },
+        {
+          "group_id": "RG-015",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u010.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u010.s002"
+          ],
+          "clause_scope": "Use an AO-approved encapsulation protocol.",
+          "applicability": "The pseudowire carrying Inner MACsec traffic.",
+          "rationale": "The setup lists protocol examples but gives no selected protocol or AO approval.",
+          "qualifications_and_exceptions": "L2TPv3 and Ethernet over MPLS are examples, not mandatory protocol choices."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-008",
+      "scope_limit": "Figure 8 presents a standalone encapsulator and its two interfaces. The scope and strength of the encapsulator controls conflict across prose and MSC-MD-13.",
+      "mappings": [
+        {
+          "group_id": "RG-015",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s003"
+          ],
+          "clause_scope": "Insert the standalone encapsulator between Inner MACsec and Outer encryption, with the stated internal/external attachments.",
+          "applicability": "The selected Outer component lacks integrated encapsulation.",
+          "rationale": "The source explicitly names Figure 8 and specifies both interface attachments.",
+          "qualifications_and_exceptions": "The arrangement establishes the encapsulation location only."
+        },
+        {
+          "group_id": "RG-015",
+          "status": "ambiguous",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u002.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u002.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u004"
+          ],
+          "clause_scope": "Determine the standalone encapsulator boundary and applicable Solution Component controls.",
+          "applicability": "The separate encapsulation device in Figure 8.",
+          "rationale": "Pages 19 and 25 require all Solution Component requirements; page 20 places the step outside the solution and highly recommends DM and filtering; MSC-MD-13 explicitly applies Section 11.1. The source does not reconcile those scopes.",
+          "qualifications_and_exceptions": "No single mandatory scope is substituted for the conflicting passages. Section 11.1 remains explicit in MSC-MD-13."
+        },
+        {
+          "group_id": "RG-036",
+          "status": "ambiguous",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p044:u014",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p044:u015"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003"
+          ],
+          "clause_scope": "Apply minimal address/port/protocol exposure and disable unused interfaces on the standalone encapsulator.",
+          "applicability": "Applicability depends on the unresolved standalone Solution Component scope.",
+          "rationale": "The broad prose would impose MSC-PF-1 and MSC-PF-2; the outside-boundary passage recommends filtering. The figure supplies no interface restriction settings under either reading.",
+          "qualifications_and_exceptions": "The mapping records ambiguous applicability and unshown configuration. It does not turn the recommendation into an unconditional mandate."
+        },
+        {
+          "group_id": "RG-015",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u010.s002"
+          ],
+          "clause_scope": "Use an AO-approved encapsulation protocol.",
+          "applicability": "The selected standalone device and protocol.",
+          "rationale": "The source permits any AO-approved protocol, but the example identifies neither the selected protocol nor approval evidence.",
+          "qualifications_and_exceptions": "The named protocol options are non-exhaustive."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-009",
+      "scope_limit": "Figure 9 presents redundant outer components and shared Gray routing. MSC-SR-7 supplies the required Gray Firewalls on paths between different security levels. Device counts, exact placement, filtering rules, and failover settings remain unspecified.",
+      "mappings": [
+        {
+          "group_id": "RG-074",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u007.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003"
+          ],
+          "clause_scope": "Add parallel redundant Outer components with two Outer tunnels and a Gray router selecting an outbound component.",
+          "applicability": "The availability arrangement in Figure 9.",
+          "rationale": "The prose explicitly describes those components and paths as the redundancy example.",
+          "qualifications_and_exceptions": "Every redundant component must still meet applicable requirements. No concrete failover mechanism or availability test is supplied."
+        },
+        {
+          "group_id": "RG-013",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u009"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label007",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label008",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label012",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label014",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label015",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label016",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label017",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label018"
+          ],
+          "clause_scope": "Include a Gray Firewall on paths between Inner components of different security levels.",
+          "applicability": "The figure labels Secret U.S.-only and Secret Coalition networks and connects their Inner components through shared Gray routers.",
+          "rationale": "MSC-SR-7 explicitly requires a Gray Firewall on every physical Gray path between Inner components for different security levels. The requirement supplies the missing firewall detail in the simplified redundancy diagram. The described design includes that path constraint under the text-precedence policy.",
+          "qualifications_and_exceptions": "The drawing records schematic connectivity. It does not establish a direct physical bypass of the textually required Gray Firewall. The number of firewalls, their exact attachment points, and their rules remain unspecified."
+        },
+        {
+          "group_id": "RG-031",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p044:u007"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003"
+          ],
+          "clause_scope": "Keep routing protocols off Outer Encryption Components.",
+          "applicability": "The Outer components in the redundancy design.",
+          "rationale": "The source assigns route selection to separate Gray routers, but gives no Outer routing-protocol configuration.",
+          "qualifications_and_exceptions": "An ordinary Gray router is outside the component-specific MSC-OR-8 prohibition; moving the routing role does not verify disabled Outer routing protocols."
+        },
+        {
+          "group_id": "RG-074",
+          "status": "not_applicable",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s004"
+          ],
+          "clause_scope": "Apply Solution Component security requirements to the ordinary Gray router solely because it forwards redundancy traffic.",
+          "applicability": "The ordinary router in Figure 9.",
+          "rationale": "The source explicitly says the CP levies no security requirements on that router/switch.",
+          "qualifications_and_exceptions": "A router that also performs standalone MACsec encapsulation has a different scope under RG-015."
+        },
+        {
+          "group_id": "RG-053",
+          "status": "presented_as_satisfying",
+          "basis": "visual_interpretation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u006"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label007",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label008",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label012",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label014",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label015",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label016",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label017",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label018"
+          ],
+          "clause_scope": "Place the multiple Inner components in parallel when sharing Outer components.",
+          "applicability": "The two Inner components at each site.",
+          "rationale": "Each Inner component has its own branch to the Gray router; neither is placed behind the other.",
+          "qualifications_and_exceptions": "The assertion is limited to the drawn parallel arrangement."
+        },
+        {
+          "group_id": "RG-053",
+          "status": "required_but_not_demonstrated",
+          "basis": "visual_interpretation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label007",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label008",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label009",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label012",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label014",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label015",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label016",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label017",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p022:f09:label018"
+          ],
+          "clause_scope": "Use a unique physical Outer internal interface for each Red Network.",
+          "applicability": "The two Red Networks sharing each Outer component.",
+          "rationale": "The schematic does not enumerate physical Outer interfaces or reveal how the shared router reaches those interfaces.",
+          "qualifications_and_exceptions": "The single drawn connection does not prove an interface-count violation."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-010",
+      "scope_limit": "Figure 10 presents the CNSA 2.0 Objective exchange sequence. Full profile conformance and all tunnel algorithm settings are not established by the exchange arrows.",
+      "mappings": [
+        {
+          "group_id": "RG-019",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p039:u011"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p027:u001.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s005"
+          ],
+          "clause_scope": "Use CNSA 1.0 in IKE_SA_INIT and ML-KEM in a subsequent IKE_INTERMEDIATE exchange.",
+          "applicability": "The illustrated CNSA 2.0 IPsec Objective alternative.",
+          "rationale": "The text explicitly describes Figure 10 and the order of the two key establishments. The preceding profile text specifies ML-KEM-1024.",
+          "qualifications_and_exceptions": "MSC-VG-19 is Objective and an alternative to Threshold MSC-VG-1. The example does not make the Objective profile a current universal mandate."
+        },
+        {
+          "group_id": "RG-019",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p039:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p027:u003.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p027:u004.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p027:u009.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p028:u002.s006"
+          ],
+          "clause_scope": "Implement the complete Objective profile, including RFC 9370, RFC 9242, and RFC 7383.",
+          "applicability": "An implementation selecting the CNSA 2.0 Objective profile.",
+          "rationale": "The explanation describes the RFC mechanisms and permitted IKEv2 fragmentation, but supplies no implementation-conformance evidence.",
+          "qualifications_and_exceptions": "The document references a draft profile. The extraction preserves the versioned source claim without updating it to a later standard."
+        },
+        {
+          "group_id": "RG-019",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p039:u013"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p027:u001.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p027:u001.s002"
+          ],
+          "clause_scope": "Use the complete Table 7 algorithm suite for all IPsec tunnels except IKE_SA_INIT.",
+          "applicability": "The Objective profile represented by the exchange.",
+          "rationale": "The source names ML-KEM-1024 and ML-DSA-87 but the example does not show every ESP or IKE algorithm setting for every tunnel.",
+          "qualifications_and_exceptions": "The IKE_SA_INIT exception remains explicit; Objective status is preserved."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-011",
+      "scope_limit": "Table 1 presents four permitted layer pairings. Outer MACsec point-to-point scope and Inner MACsec encapsulation are conditional requirements for the selected row.",
+      "mappings": [
+        {
+          "group_id": "RG-007",
+          "status": "presented_as_satisfying",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s005"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u006"
+          ],
+          "clause_scope": "Select one of the four Inner/Outer IPsec and MACsec pairings.",
+          "applicability": "The four Table 1 configuration alternatives.",
+          "rationale": "The table enumerates all four pairings identified by the grouped prose.",
+          "qualifications_and_exceptions": "Rows 2 and 4 use Outer MACsec and are limited to point-to-point solutions. The table does not identify deployed sites or protocols beyond the layer choices."
+        },
+        {
+          "group_id": "RG-015",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p019:u006"
+          ],
+          "clause_scope": "Encapsulate Inner MACsec before Outer encryption; apply MSC-MD-13 if a standalone device is required.",
+          "applicability": "Table 1 configurations 3 and 4.",
+          "rationale": "The table identifies Inner MACsec but gives no encapsulation location or device capability.",
+          "qualifications_and_exceptions": "Rows 1 and 2 have Inner IPsec. MSC-MD-13 is conditional on a standalone device and retains the scope issue documented in NET-008."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-012",
+      "scope_limit": "The prose presents separate Gray data and management networks. Physical separation, cryptographic separation, and minimum ACL separation are cumulative controls whose implementation is not shown.",
+      "mappings": [
+        {
+          "group_id": "RG-044",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s003"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s003"
+          ],
+          "clause_scope": "Separate Gray data and management traffic physically and cryptographically, with management components administering data components.",
+          "applicability": "The separated-network configuration described in the prose.",
+          "rationale": "The source directly presents separate Gray networks as the resulting architecture and explicitly rejects VLAN-only separation.",
+          "qualifications_and_exceptions": "Control-plane traffic has no general matching separation obligation unless another clause specifies one."
+        },
+        {
+          "group_id": "RG-044",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p013:u008.s002"
+          ],
+          "clause_scope": "Satisfy physical and cryptographic traffic separation together with minimum Gray Firewall ACL separation.",
+          "applicability": "Gray Management and Gray Data Networks.",
+          "rationale": "The clauses impose cumulative restrictions: MSC-DM-25 requires at least logical ACL separation, and the prose adds physical and cryptographic separation. The partial configuration supplies no implementation evidence for all three controls.",
+          "qualifications_and_exceptions": "VLAN or ACL separation alone does not discharge the physical and cryptographic requirements. No source conflict is inferred merely because the requirements operate at different levels."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-013",
+      "scope_limit": "The text permits an unclassified network behind its own Inner component. Treating that network as Red triggers the same conditional isolation and parallel-placement obligations as other shared-Outer networks.",
+      "mappings": [
+        {
+          "group_id": "RG-008",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002"
+          ],
+          "clause_scope": "Place the included unclassified network behind its own Inner component and apply Red Network requirements.",
+          "applicability": "An unclassified network included behind an Outer Encryption Component.",
+          "rationale": "The source expressly gives the permitted arrangement and the Red-equivalent requirement condition.",
+          "qualifications_and_exceptions": "Unclassified status does not waive the Inner layer or other applicable CP requirements."
+        },
+        {
+          "group_id": "RG-013",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u009"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002"
+          ],
+          "clause_scope": "Include Gray Firewalls on shared paths to Inner components of different security levels.",
+          "applicability": "If the unclassified network shares Gray paths with classified networks.",
+          "rationale": "The text permits inclusion but supplies no full path diagram or firewall placement for the conditional mixed-level deployment.",
+          "qualifications_and_exceptions": "The condition depends on actual shared paths and other networks. Missing details are not evidence of a violation."
+        },
+        {
+          "group_id": "RG-053",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002"
+          ],
+          "clause_scope": "Use parallel Inner components and unique physical Outer internal interfaces when sharing an Outer component.",
+          "applicability": "If the included unclassified network shares its Outer component with other Red-equivalent networks.",
+          "rationale": "The prose supplies the own-Inner condition but not a physical interface or parallel-path implementation.",
+          "qualifications_and_exceptions": "The two numbered clauses apply when their stated shared/multiple-network conditions hold."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-014",
+      "scope_limit": "The text permits Gray logs to reach a Red SIEM through an approved CDS. Required external CDS approval conditions and concrete monitoring configuration remain separate evidence needs.",
+      "mappings": [
+        {
+          "group_id": "RG-050",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u001.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u001.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s003"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u001.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u001.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s003"
+          ],
+          "clause_scope": "Use a Red SIEM with an approved CDS as the alternative to a Gray SIEM for Gray log functions.",
+          "applicability": "The Gray-to-Red log transfer arrangement.",
+          "rationale": "The source explicitly permits the Red SIEM/CDS alternative and states that a Gray SIEM is not mandatory.",
+          "qualifications_and_exceptions": "The Continuous Monitoring Annex supplies additional requirements; the example does not establish all alert rules or log-transport protection."
+        },
+        {
+          "group_id": "RG-051",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u001.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u012"
+          ],
+          "clause_scope": "Meet DoDI 8540.01, the DISN Connection Process Guide, and the NCDSMO CDS Baseline condition.",
+          "applicability": "Any CDS selected for the illustrated transfer.",
+          "rationale": "Calling the CDS approved describes the required class, but the example names no product, baseline entry, or approval record.",
+          "qualifications_and_exceptions": "All three external conditions are conjunctive. The mapping does not infer approval evidence from the word approved."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-015",
+      "scope_limit": "The screening-router example is an optional Black Network control outside the MSC Solution. It does not replace the conditional Outer Firewall requirement.",
+      "mappings": [
+        {
+          "group_id": "RG-075",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s006"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s006"
+          ],
+          "clause_scope": "Use an existing or added screening router to filter Black packets before Outer components.",
+          "applicability": "The optional screening-router alternatives.",
+          "rationale": "The source directly describes both locations and places the router outside the MSC Solution.",
+          "qualifications_and_exceptions": "A Customer Edge Router is an example of the screening role, not an additional mandatory device."
+        },
+        {
+          "group_id": "RG-034",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s006"
+          ],
+          "clause_scope": "Add the required Outer Firewall if the Black transport is the Public Internet.",
+          "applicability": "Conditional on the unspecified Black transport being the Public Internet.",
+          "rationale": "The screening passage does not identify the transport type or an Outer Firewall. Its optional screening control does not demonstrate the mandatory firewall placement under that condition.",
+          "qualifications_and_exceptions": "No violation is asserted when the antecedent is unknown. The screening router is not silently reclassified as an Outer Firewall."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-016",
+      "scope_limit": "The text presents physical and virtual AW alternatives with dedication and cohosting constraints. Facility protection and operating policy compliance require evidence beyond a permitted arrangement.",
+      "mappings": [
+        {
+          "group_id": "RG-045",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p047:u016",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u016"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p047:u016",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u016"
+          ],
+          "clause_scope": "Use dedicated physical AWs or dedicated AW VM hosts and exclude the listed non-AW and non-CSfC functions.",
+          "applicability": "The physical-AW and virtual-AW alternatives.",
+          "rationale": "The source presents both realization choices together with their explicit restrictions. The extracted configurations preserve those restrictions.",
+          "qualifications_and_exceptions": "The example is a constrained design alternative. It does not attest the applications installed on a real workstation."
+        },
+        {
+          "group_id": "RG-045",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u012"
+          ],
+          "clause_scope": "Keep provisioning, enrollment, registration, and SIEM functions off AW hosts even when those functions use separate VMs.",
+          "applicability": "The virtual-AW hosting alternative.",
+          "rationale": "The clauses impose cumulative restrictions. Separate service VMs satisfy functional separation only when their placement also respects the explicit AW-host prohibition. The example gives no host-to-VM allocation to verify both conditions.",
+          "qualifications_and_exceptions": "The allowance for separate workstations or VMs does not authorize otherwise prohibited cohosting on an AW host."
+        },
+        {
+          "group_id": "RG-045",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p047:u017",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u014",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p049:u015"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p047:u017",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s006"
+          ],
+          "clause_scope": "Protect the AW facility, apply required hardening and operating policies, and power off AWs when idle.",
+          "applicability": "Both physical and virtual AW realizations.",
+          "rationale": "The setup states operating and facility obligations but gives no protected-facility, hardening, patching, or power-state evidence.",
+          "qualifications_and_exceptions": "The requirements apply to the selected realization; hosting permissions do not discharge operational duties."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-017",
+      "scope_limit": "The source distinguishes the direct physical management exception from the same-site CNSA algorithm exception. Neither exception establishes an unrestricted plaintext LAN management option.",
+      "mappings": [
+        {
+          "group_id": "RG-046",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p048:u007"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s003"
+          ],
+          "clause_scope": "Allow local management through a direct physical connection, exemplified by a serial cable from Gray AW to Outer component.",
+          "applicability": "The direct-cable local-management alternative.",
+          "rationale": "The source explicitly gives the serial-cable example as the exception to management encryption.",
+          "qualifications_and_exceptions": "The permission is tied to a direct physical connection. It does not cover an arbitrary same-site network path."
+        },
+        {
+          "group_id": "RG-046",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s008"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s008"
+          ],
+          "clause_scope": "Permit the same-site Gray AW example to omit CNSA Suite algorithms when traffic avoids an untrusted network.",
+          "applicability": "The Gray AW and Outer component are at the same site in the stated example.",
+          "rationale": "The source expressly states the algorithm exception and its transport rationale.",
+          "qualifications_and_exceptions": "The exception concerns CNSA algorithms; the listed secure management protocols and other applicable controls remain separate obligations."
+        },
+        {
+          "group_id": "RG-046",
+          "status": "ambiguous",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s007"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s007"
+          ],
+          "clause_scope": "Interpret the LAN/VLAN exception relative to the preceding Black-network two-layer requirement.",
+          "applicability": "The same-LAN/VLAN management alternative.",
+          "rationale": "The phrase \"This requirement\" immediately follows the two-layer Black-network sentence. The source does not explicitly say that all same-LAN management can be plaintext.",
+          "qualifications_and_exceptions": "The extraction retains the ambiguity and makes no broad plaintext permission."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-018",
+      "scope_limit": "The footnote permits two approved egress alternatives at one site. Authorization and conformity of particular products or a complete CSfC deployment are not supplied.",
+      "mappings": [
+        {
+          "group_id": "RG-056",
+          "status": "presented_as_satisfying",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u015.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u015.s002"
+          ],
+          "clause_scope": "Provide parallel protected egress through an NSA-certified product and through a CP-conforming CSfC solution.",
+          "applicability": "The two physical egress alternatives in the MSC-SR-14 footnote.",
+          "rationale": "The footnote explicitly permits both paths at one site, so the alternatives illustrate the approved-path condition.",
+          "qualifications_and_exceptions": "The CSfC path denotes a whole solution, not a single component. No unprotected egress is permitted."
+        },
+        {
+          "group_id": "RG-056",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u015.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u015.s002"
+          ],
+          "clause_scope": "Establish AO approval or CP conformity for every actual physical path leaving Red.",
+          "applicability": "A deployment selecting the described egress alternatives.",
+          "rationale": "The footnote identifies permitted solution classes but gives no actual authorization record, conformity evidence, or exhaustive inventory of egress links.",
+          "qualifications_and_exceptions": "Permitted coexistence does not certify every path in a deployed network."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-019",
+      "scope_limit": "The combined-CP example describes inherited firewall conditions and Inner Firewall placement. The companion CP and complete combined topology remain unspecified.",
+      "mappings": [
+        {
+          "group_id": "RG-055",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u009.s001"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u009.s001"
+          ],
+          "clause_scope": "Place an Inner Firewall between the Red Network and Inner Encryption Component when an Inner Firewall is deployed.",
+          "applicability": "The conditional Inner Firewall arrangement.",
+          "rationale": "The source states the two-sided placement directly.",
+          "qualifications_and_exceptions": "The MSC CP alone does not require an Inner Firewall; companion CP conditions determine deployment."
+        },
+        {
+          "group_id": "RG-055",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u003"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u009.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u013",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u003"
+          ],
+          "clause_scope": "Implement a required companion-CP Gray Firewall and follow companion Inner Firewall requirements for combined data-in-transit solutions with end-user devices.",
+          "applicability": "The combined solution when the respective antecedents hold.",
+          "rationale": "The source gives conditional inheritance rules, but identifies no companion CP, device set, or implemented firewall policy.",
+          "qualifications_and_exceptions": "A combined solution does not automatically trigger every firewall condition. The other CP must require a Gray Firewall, or the data-in-transit solution must include end-user devices as specified."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-020",
+      "scope_limit": "The text permits parallel redundancy and load balancing. It does not demonstrate all redundant-component controls or an implementation of failover.",
+      "mappings": [
+        {
+          "group_id": "RG-074",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u007.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p024:u003.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p024:u006.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u003.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u007.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p024:u003.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p024:u006.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u003.s002"
+          ],
+          "clause_scope": "Add parallel redundant components or multiple Outer components, Gray Firewalls, and Inner components for performance.",
+          "applicability": "The redundancy and load-balancing alternatives.",
+          "rationale": "The source expressly permits the alternatives subject to each component meeting CP requirements.",
+          "qualifications_and_exceptions": "Standby, failover, and load-balancing mechanisms are outside the described CP design scope."
+        },
+        {
+          "group_id": "RG-053",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p036:u006",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p025:u003.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p024:u003.s001"
+          ],
+          "clause_scope": "Place shared-Outer Inner components in parallel and preserve unique physical internal interfaces for each Red Network.",
+          "applicability": "Any selected redundancy arrangement that shares an Outer component across multiple Red Networks.",
+          "rationale": "The text permits multiple components but gives no concrete shared-Outer interface or per-network wiring plan.",
+          "qualifications_and_exceptions": "The generic permission does not establish that every possible redundancy layout meets the conditional constraints."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-021",
+      "scope_limit": "The text permits existing Black/Red routing protocols with AO approval. That permission does not authorize routing protocols on Outer Encryption Components.",
+      "mappings": [
+        {
+          "group_id": "RG-041",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u005.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u005.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u005.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u005.s002"
+          ],
+          "clause_scope": "Continue using existing GRE, MPLS, or OSPF in Black and/or Red Networks when the AO approves.",
+          "applicability": "The existing-protocol configuration example.",
+          "rationale": "The source explicitly states the continuation permission and its approval condition.",
+          "qualifications_and_exceptions": "No specific protocol deployment or AO approval record is supplied; the status concerns the permitted alternative."
+        },
+        {
+          "group_id": "RG-031",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p044:u007"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u005.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u005.s002"
+          ],
+          "clause_scope": "Keep routing protocols disabled on Outer Encryption Components.",
+          "applicability": "Any Outer components in the solution using the permitted surrounding-network routing.",
+          "rationale": "The example locates routing in Black/Red networks but supplies no Outer component configuration.",
+          "qualifications_and_exceptions": "The permission for existing network protocols does not repeal the component-specific prohibition."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-022",
+      "scope_limit": "The text presents independent IP-version choice for Red, Gray, and Black Networks. It supplies no deployed addressing or filtering configuration.",
+      "mappings": [
+        {
+          "group_id": "RG-041",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u003.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u003.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u003.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p021:u003.s002"
+          ],
+          "clause_scope": "Choose IPv4 or IPv6 independently for each Red, Gray, and Black Network.",
+          "applicability": "The IP-version alternatives described in the source.",
+          "rationale": "The source directly permits independent network choices.",
+          "qualifications_and_exceptions": "Other protocol-specific, addressing, and filtering requirements remain applicable to the chosen versions; the permission does not claim translation or interoperability between arbitrary endpoints."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-023",
+      "scope_limit": "The text presents alternative certificate and CAK arrangements and provisioning procedures. AS attachment wording, actual trust material, and concrete key settings remain incomplete.",
+      "mappings": [
+        {
+          "group_id": "RG-024",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p041:u008",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u010"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s003"
+          ],
+          "clause_scope": "Select MACsec CAK/PSK authentication or certificate-based EAP-TLS with an AS providing mutual authentication.",
+          "applicability": "The MACsec authentication alternatives.",
+          "rationale": "The source explicitly describes the alternatives and AS role. The paired Threshold rows identify CAK and EAP-TLS as alternatives.",
+          "qualifications_and_exceptions": "The mapping does not require both methods on the same tunnel or establish the full EAP-TLS algorithm profile."
+        },
+        {
+          "group_id": "RG-010",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s004"
+          ],
+          "clause_scope": "Supply peer CA signing certificates and revocation information or the shared peer CAK.",
+          "applicability": "Independently managed-site alternatives.",
+          "rationale": "The text prescribes trust and key relationships without concrete stores, revocation state, or CAK equality evidence.",
+          "qualifications_and_exceptions": "Apply the clause for the selected authentication method. Cross-site trust must preserve layer and security-level separation."
+        },
+        {
+          "group_id": "RG-011",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s005"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s005"
+          ],
+          "clause_scope": "Use the required per-layer CAs and central AS in the centralized EAP-TLS design.",
+          "applicability": "The central-site authentication alternative.",
+          "rationale": "The source describes required roles but gives no actual CA/AS deployment or trust hierarchy.",
+          "qualifications_and_exceptions": "A PSK-selected layer need not have a CA. Enterprise CAs are recommended when available."
+        },
+        {
+          "group_id": "RG-024",
+          "status": "ambiguous",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u011"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p014:u007.s005"
+          ],
+          "clause_scope": "Apply the one-site AS attachment constraint together with the prose Gray/Red attachment wording.",
+          "applicability": "Certificate-authenticated MACsec with an AS.",
+          "rationale": "MSC-AA-2 clearly limits the AS to one site network, while the independent-site prose says the AS must not connect to \"both Gray and/or Red Networks\". The example provides no attachments that resolve that phrase.",
+          "qualifications_and_exceptions": "The ambiguity does not erase the clear one-site requirement or authorize combined Gray/Red connectivity."
+        },
+        {
+          "group_id": "RG-027",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u009.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u012.s001"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u009.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u012.s001"
+          ],
+          "clause_scope": "Generate CAKs and CKNs through an NSA-approved KGS and provision the symmetric key out of band.",
+          "applicability": "The MACsec PSK provisioning alternative.",
+          "rationale": "The text describes the prescribed KGS-based key acquisition and application procedure.",
+          "qualifications_and_exceptions": "The mapping records the procedure; it does not establish actual KGS approval, key values, CKN length, or rollover configuration."
+        },
+        {
+          "group_id": "RG-048",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u010.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u010.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u010.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u010.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u010.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u010.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s003",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s004"
+          ],
+          "clause_scope": "Provision out of band in a physically secured area and deliver Inner/Outer VPN CSRs to their respective CAs for device certificates.",
+          "applicability": "The certificate-based provisioning procedure.",
+          "rationale": "The source expressly describes the secured provisioning location, layer-specific CSR delivery, and CA response.",
+          "qualifications_and_exceptions": "The MACsec paragraph calls an inner device an Inner VPN Gateway; that terminology issue remains unresolved. Installing an initial CRL is optional in the prose."
+        },
+        {
+          "group_id": "RG-027",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p041:u010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p041:u011",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p042:u006"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s004",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p020:u009.s002"
+          ],
+          "clause_scope": "Set CKN length and generation, Key Server values, and disabled Fallback CAKs.",
+          "applicability": "The selected MACsec tunnel configuration.",
+          "rationale": "The source describes KGS and Key Server roles but supplies no configured values or rollover state.",
+          "qualifications_and_exceptions": "The Central Management Site must be Key Server when present; the selected authentication variant does not demonstrate that setting."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-024",
+      "scope_limit": "The source gives separate Gray-interface address ranges as a filtering aid. Its adjacent same-level denial sentence conflicts with the same-level allowlist and leaves filter semantics unresolved.",
+      "mappings": [
+        {
+          "group_id": "RG-014",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u010.s002"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u010.s002"
+          ],
+          "clause_scope": "Use separate Gray-interface address ranges for Inner components supporting each Red Network as an addressing-scheme example.",
+          "applicability": "The proposed Gray addressing arrangement.",
+          "rationale": "The source explicitly gives separate ranges as an example supporting the necessary filtering.",
+          "qualifications_and_exceptions": "The example does not assign actual ranges or require that every permitted addressing scheme use ranges in the same manner."
+        },
+        {
+          "group_id": "RG-014",
+          "status": "ambiguous",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u010.s001"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u010.s001",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u010.s002"
+          ],
+          "clause_scope": "Determine which same-level peer traffic the proposed addressing supports or prevents.",
+          "applicability": "The Outer Gray-interface filtering explanation.",
+          "rationale": "The preceding sentence says to prevent same-security-level traffic, while MSC-PF-17 permits only matching same-level endpoint addresses. The document does not reconcile that tension.",
+          "qualifications_and_exceptions": "The wording is retained verbatim; the source is not silently changed to different security levels."
+        },
+        {
+          "group_id": "RG-039",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p046:u004"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p023:u010.s002"
+          ],
+          "clause_scope": "Configure the Outer Gray-interface same-security-level endpoint allowlist.",
+          "applicability": "Any implementation of the example address-range scheme.",
+          "rationale": "Separate ranges aid policy expression but do not supply addresses, peer identities, or ACL rules establishing MSC-PF-17.",
+          "qualifications_and_exceptions": "The conflicting prose in RG-014 remains a separate ambiguity."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-025",
+      "scope_limit": "The rows describe revocation-service placement and conditional HTTP allowances. They supply policy specifications without a complete physical firewall layout or tested ACL implementation.",
+      "mappings": [
+        {
+          "group_id": "RG-039",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p045:u013"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p045:u013"
+          ],
+          "clause_scope": "Allow only necessary Inner-layer revocation HTTP through Outer VPN Gray interfaces when CDP/OCSP is on the Gray data plane.",
+          "applicability": "The stated Gray-data-plane revocation-service arrangement.",
+          "rationale": "MSC-PF-15 directly defines the allowed requests/replies and requires all other HTTP to be blocked.",
+          "qualifications_and_exceptions": "The clause is conditional on Gray-data-plane placement and Outer VPN Gateways. The assessment concerns the prescribed policy, not an installed rule table."
+        },
+        {
+          "group_id": "RG-040",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p046:u012"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p046:u012"
+          ],
+          "clause_scope": "Allow necessary Inner-layer revocation HTTP through a required Gray Firewall and block other HTTP.",
+          "applicability": "The revocation arrangement when a Gray Firewall is required.",
+          "rationale": "MSC-PF-25 directly provides the conditional HTTP exception and denial rule.",
+          "qualifications_and_exceptions": "The allowance does not make arbitrary HTTP acceptable; its precedence relative to other filtering clauses remains part of the broader group interpretation."
+        },
+        {
+          "group_id": "RG-013",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u010"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u010",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p045:u013"
+          ],
+          "clause_scope": "Place a Gray Firewall on every qualifying path between a CDP/OCSP responder and an Inner component of a different security level.",
+          "applicability": "The service and Inner component have different security levels under MSC-SR-8.",
+          "rationale": "The extracted rows specify the path obligation but do not identify service levels or physical paths.",
+          "qualifications_and_exceptions": "The revocation HTTP allowance does not waive the required physical filtering path. Missing placement evidence is not a violation."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-026",
+      "scope_limit": "The rows prescribe inside-network service placement and layer-specific trusted time sources. Concrete source trust, addresses, and achieved synchronization remain unspecified.",
+      "mappings": [
+        {
+          "group_id": "RG-041",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u003"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u003"
+          ],
+          "clause_scope": "Locate control-plane services on Gray for Outer components and Red for Inner components.",
+          "applicability": "The stated inside-network service configuration.",
+          "rationale": "MSC-SR-1 directly supplies the placement arrangement, with NTP as an example service.",
+          "qualifications_and_exceptions": "The document does not require NTP as the only time protocol or identify concrete servers."
+        },
+        {
+          "group_id": "RG-042",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u006"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u006"
+          ],
+          "clause_scope": "Use a Red trusted time source for Inner/Red management and a Gray Management trusted time source for Outer/Gray components.",
+          "applicability": "The layer-specific time-source placement alternative described by the rows.",
+          "rationale": "Both rows directly state the intended source placement and the components that synchronize to each source.",
+          "qualifications_and_exceptions": "The status concerns the prescribed arrangement. Source trust and actual synchronization accuracy are not demonstrated."
+        },
+        {
+          "group_id": "RG-042",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u006"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u005",
+            "CSFC-MSC-1.3.0-4e40e3d83708:p035:u006"
+          ],
+          "clause_scope": "Establish that each listed component actually synchronizes its time to the required trusted source.",
+          "applicability": "A deployed instance of the prescribed arrangement.",
+          "rationale": "No source identity, trust evidence, synchronization state, or timing measurements are given.",
+          "qualifications_and_exceptions": "A stated configuration requirement is not an observation of operational synchronization."
+        }
+      ]
+    },
+    {
+      "example_id": "NET-027",
+      "scope_limit": "MSC-DM-8 presents approved remote administration and local management as alternatives. The chosen remote product, authorization, and transport details remain unspecified.",
+      "mappings": [
+        {
+          "group_id": "RG-046",
+          "status": "presented_as_satisfying",
+          "basis": "explicit_source_statement",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p048:u007"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p048:u007"
+          ],
+          "clause_scope": "Perform remote administration from an AW through an NSA-approved solution, exemplified by a CP or High Assurance encryptor.",
+          "applicability": "The remote-management alternative in MSC-DM-8.",
+          "rationale": "The row explicitly presents the approved protection classes and the AW requirement.",
+          "qualifications_and_exceptions": "Local management is an alternative in the same row; the example does not impose a High Assurance encryptor on every solution."
+        },
+        {
+          "group_id": "RG-046",
+          "status": "required_but_not_demonstrated",
+          "basis": "interpreted_source_presentation",
+          "clause_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s006"
+          ],
+          "example_source_ids": [
+            "CSFC-MSC-1.3.0-4e40e3d83708:p048:u007"
+          ],
+          "clause_scope": "Provide two approved encryption layers when component management crosses the Black Network.",
+          "applicability": "The remote-administration path if it crosses Black transport.",
+          "rationale": "MSC-DM-8 does not specify the route or complete protection stack, so the Black-network two-layer condition cannot be demonstrated from the named protection class alone.",
+          "qualifications_and_exceptions": "The relationship between NSA-approved alternatives and the Black-network CSfC sentence remains subject to the group qualifications. Local and same-LAN/VLAN exceptions are retained in NET-017."
+        }
+      ]
+    }
+  ],
+  "source_precedence_policy": "Explicit textual descriptions and applicable requirements supply details omitted from a schematic. An omitted symbol alone does not make the described design ambiguous or violating. Preserve genuine conflicts between textual statements, stated conditions, and unspecified implementation values.",
+  "coordinator_revisions": [
+    {
+      "mapping_ids": [
+        "NET-001-MAP-05",
+        "NET-009-MAP-02"
+      ],
+      "reason": "User clarified that explicit text is authoritative when figures omit details. Apply the textual firewall requirements to the described designs.",
+      "previous_status": "ambiguous",
+      "status": "presented_as_satisfying",
+      "independent_semantic_review_repeated": false
+    }
+  ]
+}

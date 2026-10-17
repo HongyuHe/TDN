@@ -1,0 +1,48 @@
+Table 5. Overall Solution Requirements (SR)
+Threshold/
+Req. # Requirement Description Alternative
+Objective
+MSC-SR-1 Network services provided by control plane T=O
+protocols (such as NTP) must be located on the
+inside network (i.e., Gray Network for Outer
+Encryption Component and Red Network for Inner
+Encryption Component).
+MSC-SR-2 Sites that need to communicate must ensure that T=O
+Encryption Components selected by each site for
+each tunnel are interoperable.
+MSC-SR-3 The time of day on the Inner Encryption Component T=O
+and Red Management Services must be
+synchronized to a trusted time source located in the
+Red Network.
+MSC-SR-4 The time of day on the Outer Encryption T=O
+Component, Gray Management Services and Gray
+Firewall (if present) must be synchronized to a
+trusted time source located in the Gray
+Management Network.
+MSC-SR-5 Default accounts, passwords, community strings, T=O
+and other default access control mechanisms for all
+Solution Components must be changed or removed.
+MSC-SR-6 All components must be properly configured in T=O
+accordance with local policy and applicable U.S.
+Government guidance. In the event of conflict
+between the requirements in this CP and local
+policy, this CP takes precedence.
+MSC-SR-7 All physical paths within a Gray Network between T=O
+Inner Encryption Components for Red Networks of
+different security levels must include a Gray Firewall.
+MSC-SR-8 All physical paths within a Gray Network between a T=O
+CA, a AW, or a CRL Distribution Point (CDP)/OCSP
+Responder and an Inner Encryption Component for
+Red Networks of different security levels must
+include a Gray Firewall.
+MSC-SR-9 Gray Network components must be physically T=O
+protected to the level of the highest classified
+network.
+MSC-SR-10 The Outer Encryption Component must use a unique T=O
+physical internal interface for each Red Network in
+the MSC Solution (i.e., VLAN trunking of multiple
+enclaves is not permitted).
+MSC-SR-11 A Gray Firewall must be implemented if the MSC T=O
+Solution is combined with another CSfC solution that
+requires a Gray Firewall.
+28

@@ -68,10 +68,10 @@ Encryption wrappers are readable symbolic data.
 
 ## Refresh the pinned deployment data
 
-The current input is [artifacts/msc-2026-10-03T070453Z/snapshot](artifacts/msc-2026-10-03T070453Z/snapshot/manifest.json), with its separately collected [273-check report](artifacts/msc-2026-10-03T070453Z/check.json).
+The current input is [artifacts/snapshots/msc-2026-10-03T070453Z/snapshot](artifacts/snapshots/msc-2026-10-03T070453Z/snapshot/manifest.json), with its separately collected [273-check report](artifacts/snapshots/msc-2026-10-03T070453Z/check.json).
 Snapshot directory names use the export-start timestamp in UTC; `Z` denotes UTC.
-Git tracks only the latest snapshot. Older snapshots remain local and ignored.
-Historical diagnostics and the original solver experiments require a separately retained September 27 snapshot.
+Git tracks only the pinned proof snapshot. Other snapshots remain local and ignored under `artifacts/snapshots/`.
+Historical Lean diagnostics require a separately retained September 27 snapshot.
 The offline importer verifies all export hashes, checks declared/deployed identities, and requires supported intended and observed forwarding rules to agree.
 Unsupported rules and mismatched evidence produce errors.
 
@@ -79,12 +79,12 @@ Unsupported rules and mismatched evidence produce errors.
 python3 scripts/import_msc_snapshot.py --check
 ```
 
-To use a new export, retain it in a new artifact directory and regenerate:
+To use a new export, retain it in a new directory under `artifacts/snapshots/` and regenerate:
 
 ```sh
 python3 scripts/import_msc_snapshot.py \
-  --snapshot artifacts/new-run/snapshot \
-  --checks artifacts/new-run/check.json
+  --snapshot artifacts/snapshots/new-run/snapshot \
+  --checks artifacts/snapshots/new-run/check.json
 lake build
 ```
 
@@ -129,6 +129,6 @@ sudo bin/twinet msc export --output /tmp/msc-snapshot-001
 The [Twinet operator guide](https://github.com/HongyuHe/Twinet/blob/tdn/docs/13_msc.md) explains native CLI access, shared Outer Firewalls and Gray networks, layout configuration, exports, faults, and recovery.
 Small JSON files under `examples/msc/layouts/` select firewall counts and Gray sharing.
 Export bundles separate declared configurations from sampled live facts and include timestamps, image identities, and file hashes for later theory construction.
-The [model's verified node-1 snapshot](artifacts/msc-2026-10-01T193731Z/snapshot/manifest.json) is available locally under `artifacts/msc-2026-10-01T193731Z/snapshot/`.
+The [model's pinned snapshot](artifacts/snapshots/msc-2026-10-03T070453Z/snapshot/manifest.json) is available under `artifacts/snapshots/msc-2026-10-03T070453Z/snapshot/`.
 Its `spec.json` and `facts.json` are ready to inspect.
-Earlier snapshots remain in `artifacts/`.
+Other collected snapshots remain in `artifacts/snapshots/`. Moving a snapshot does not change the model's selected evidence or refresh its observations.

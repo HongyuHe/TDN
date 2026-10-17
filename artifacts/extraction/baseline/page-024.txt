@@ -1,0 +1,40 @@
+functionality. The Outer Encryption Component, selected from the CSfC Components List, must be
+physically separate from the Outer Firewall and Gray Firewall.
+The Outer Encryption Component cannot route packets between Gray and Black Networks; any packets
+received on a Gray Network interface and sent out on a Black Network interface must be transmitted
+within an IPsec or MACsec tunnel configured according to this CP. As described in this CP, Management
+traffic on a Gray Network, which originates from the AW, must include two layers of encryption.
+For load balancing or other performance reasons, multiple Outer Encryption Components that comply
+with the requirements of this CP are acceptable.
+5.3 GRAY FIREWALL
+The Gray Firewall is located between the Outer Encryption Component and Inner Encryption
+Component(s). As described in Section 4.2.2.2, an MSC Solution that supports multiple Red Networks of
+different security levels must include one or more Gray Firewalls. The Gray Firewall blocks any packets
+sent between Inner Encryption Components for Red Networks of different security levels. A Gray
+Firewall also blocks any packets sent between management components on the Gray Network and Inner
+Encryption Components for Red Networks that operate at a security level other than the highest security
+level of data protected by the solution. Gray Firewalls are physically protected as classified devices.
+As shown in Figure 6, a standalone Gray Firewall, selected from the CSfC Components List, must be
+physically separate from the Outer Encryption Component and Inner Encryption Component. A Gray
+Firewall would typically only be used in solutions where the physical design of the Gray Network
+includes paths between Inner Encryption Components for Red Networks of different security levels that
+do not pass through the Outer Encryption Components. Effectively, each Gray Firewall is another
+instance of the Gray Network filtering performed by the Outer Encryption Component. For load
+balancing or other performance reasons, multiple Gray Firewalls that comply with the requirements of
+this CP are acceptable.
+5.4 GRAY MANAGEMENT SERVICES
+Secure administration of components in the Gray Network and continuous monitoring of the Gray
+Network are essential roles provided by the Gray Management Services. Gray Management Services are
+composed of multiple components that provide distinct security to the solution. This CP allows
+flexibility in the placement of some Gray Management Services as described below. The Gray
+Management Services are physically protected as classified devices.
+5.4.1 GRAY ADMINISTRATIVE WORKSTATION (AW)
+The Gray AW maintains, monitors, and controls all security functionality for the Outer Encryption
+Component, Gray Firewall, and all Gray Management Service components. The Gray AW is not
+permitted to maintain, monitor, or control Inner Encryption Components or Red Management Services.
+All MSC Solutions must have at least one Gray AW.
+5.4.2 GRAY SECURITY INFORMATION AND EVENT MANAGEMENT (SIEM)
+The Gray SIEM collects and analyzes log data from the Outer Encryption Component, Gray Firewall, and
+other Gray Management Service components. Log data should be encrypted between the originating
+component and the Gray SIEM with SSHv2, TLS 1.2 or later, IPsec, or MACsec to maintain confidentiality
+17

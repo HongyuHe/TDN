@@ -1,0 +1,47 @@
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+bypass encryption and be forwarded out through an
+interface connected to a Black Network.
+MSC-OR-4 All traffic received by Outer Encryption Components T=O
+on an interface connected to a Gray Network, with
+the exception of control plane traffic, must have
+already been encrypted once.
+MSC-OR-5 Outer Encryption Components must not allow any T MSC-OR-6
+packets received on an interface connected to a
+Black Network to bypass decryption.
+MSC-OR-6 Outer Encryption Components must use Mandatory O MSC-OR-5
+Access Control policy to not allow any packets
+received on an interface connected to a Black
+Network to bypass decryption.
+MSC-OR-7 The Outer Encryption Components must not permit T=O
+split-tunneling.
+MSC-OR-8 Outer Encryption Components must not use routing T=O
+protocols (e.g., OSPF, BGP).
+MSC-OR-9 Outer Encryption must enable TRANSEC when O
+external interface is MACsec enabled and connected
+to the Outer Firewall.
+MSC-OR-10 Packets leaving the external interface of the Outer T=O
+Encryption Component must only make connections
+with the remote Outer Encryption Component or
+the other intended device.
+10.6 PORT FILTERING SOLUTION COMPONENTS REQUIREMENTS
+Table 16 defines Port Filtering Solution Components Requirements.
+Table 16. Port Filtering (PF) Solution Components Requirements
+Threshold/
+Req. # Requirement Description Alternative
+Objective
+MSC-PF-1 All Solution Components must have all network T=O
+interfaces restricted to the smallest address ranges,
+ports, and protocols possible.
+MSC-PF-2 All Solution Components must have all unused T=O
+network interfaces disabled.
+MSC-PF-3 For all Outer VPN Gateway interfaces connected to a T=O
+Black Network, traffic filtering rules must be applied
+to both inbound and outbound traffic, such that only
+IKE, ESP, and control plane protocols (as defined in
+this CP) approved by organization-defined policy are
+allowed.
+MSC-PF-4 For all Outer MACsec Device interfaces connected to T=O
+a Black Network, traffic filtering rules must be
+37

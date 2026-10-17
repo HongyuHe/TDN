@@ -1,0 +1,40 @@
+5.7.1 RED ADMINISTRATION MANAGEMENT COMPONENTS
+The Red AWs maintain, monitor, and control all security functions for the Inner Encryption Components,
+Inner Firewall, and all Red Management Service components. The Red AWs are not permitted to
+maintain, monitor, or control Outer Encryption Components or Gray Management Services. All MSC
+Solutions will have at least one Red AW.
+5.7.2 RED SECURITY INFORMATION AND EVENT MANAGEMENT (SIEM)
+Red SIEMs collect and analyze log data and flow data from the Inner Encryption Components, the Inner
+Firewall and other Red Management Service components. Log data should be encrypted between the
+originating component and the Red SIEM with SSHv2, TLS 1.2 or later, IPsec, or MACsec to ensure
+confidentiality and integrity. The SIEM is configured to provide alerts for specific events.
+5.8 MSC AUTHENTICATION SERVER (AS)
+The MSC AS is responsible for mutual authentication between MACsec Devices. Authentication must be
+established between the MACsec device and the AS, where each MACsec device must perform the
+functions of a supplicant and authenticator. This communication is used throughout the EAP-TLS
+negotiation to mutually authenticate two MACsec Devices to pass MACsec traffic. Objectively, the MSC
+Authentication Server should use CNSA 2.0-compliant algorithms as part of the EAP-TLS negotiation to
+mutually authenticate the MACsec Devices with ML-KEM 1024 for key establishment and ML-DSA 87 for
+digital signatures as vendors enable support for these algorithms.
+5.9 KEY AND CERTIFICATE MANAGEMENT COMPONENTS
+Key Management Requirements have been relocated to a separate CSfC Key Management Requirements
+Annex and the CSfC Symmetric Key Management Requirements Annex.
+5.10 OTHER CONTROLS
+There are additional controls that could be used within this solution to potentially reduce the overall
+risk. A screening router can be used to filter packets from Black Networks before they arrive at Outer
+Encryption Components. The screening router could be part of an existing Black Network (e.g.,
+Customer Edge Router), or could be added between Outer Encryption Components and existing Black
+Network components. However, since the screening router would become part of a Black Network, it is
+not considered to be part of the MSC Solution itself.
+Additionally, if an Integrator is used for implementation of this solution, the customer can require
+separation of roles between individuals working on Red and Gray components. The separation of roles
+ensures that during the development of the solution no single individual can compromise Red and Gray
+components simultaneously.
+5.11 CNSA 2.0 IPSEC
+As part of the CNSA 2.0 migration, the VPN Gateways will have to implement CNSA 2.0-compliant key
+establishment and digital signatures. As of now, this is an objective design feature but will be required in
+the future for the use of IPsec in MSC. The CNSA Suite 2.0 is relevant to the choice of cryptography
+employed in IPsec and especially affects the Internet Key Exchange Protocol Version 2 (IKEv2) key
+establishment construction, requiring support for several new RFCs. NSA has worked with industry to
+develop an implementation profile, CNSA Suite 2.0 Profile for IPsec (draft-guthrie-cnsa2-ipsec-profile).
+19

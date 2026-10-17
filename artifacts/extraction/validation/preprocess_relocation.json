@@ -1,0 +1,471 @@
+{
+  "schema_version": "1.0",
+  "timestamp_utc": "2026-10-17T17:40:14.169604+00:00",
+  "author": "coordinator",
+  "scope": "Move CSfC preprocessing tools, template and optional dependencies into scripts/preprocess; update repository-root resolution, callers, test imports and generated usage commands. Extend validation to resolve the recorded moves while retaining the immutable independent review manifest.",
+  "independent_semantic_review_repeated": false,
+  "paths_relative_to": "artifacts/extraction",
+  "review_manifest_path": "validation/ontology_review/reviewed_artifact_hashes.json",
+  "review_manifest_sha256": "d01a0c0924d4e490359b290bb018ed6e8def03613601a61aa3ff930ade0b19c3",
+  "changes": [
+    {
+      "old_path": "../../scripts/preprocess_csfc_networks_roles.py",
+      "new_path": "../../scripts/preprocess/preprocess_csfc_networks_roles.py",
+      "before_sha256": "ffddc0013e5264510feeac31ad2a2003cacd2fb6838e93937d5370b708c65c0a",
+      "after_sha256": "45b9cee1b675143b66d58a7950b90913e2c48578f1cb4fd6836c77f6f3c83e5f",
+      "edits": [
+        {
+          "after_start": 9,
+          "before_lines": [
+            "ROOT = Path(__file__).resolve().parents[1]\n"
+          ],
+          "after_lines": [
+            "ROOT = Path(__file__).resolve().parents[2]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "../../scripts/preprocess_csfc_ontology.py",
+      "new_path": "../../scripts/preprocess/preprocess_csfc_ontology.py",
+      "before_sha256": "82882fb228d624724724e3b00bebd5d8d8df4ff3d9425426f8fb2c1e95492f72",
+      "after_sha256": "2a247d369a33d21b061d66e173ec9cb26b831099526ba262b11bbebcb3d07e04",
+      "edits": [
+        {
+          "after_start": 10,
+          "before_lines": [
+            "ROOT = Path(__file__).resolve().parents[1]\n"
+          ],
+          "after_lines": [
+            "ROOT = Path(__file__).resolve().parents[2]\n"
+          ]
+        },
+        {
+          "after_start": 18,
+          "before_lines": [
+            "TEMPLATE = ROOT / 'scripts/templates/csfc_role_ontology.html'\n"
+          ],
+          "after_lines": [
+            "TEMPLATE = ROOT / 'scripts/preprocess/templates/csfc_role_ontology.html'\n"
+          ]
+        },
+        {
+          "after_start": 257,
+          "before_lines": [
+            "    lines += ['', '## Regenerate and check', '', 'Run from the repository root:', '', '```bash', 'python3 scripts/run_csfc_preprocessing.py --stage ontology', 'python3 scripts/preprocess_csfc_ontology.py --check', '```', '', 'The pipeline uses explicit curated decisions for the pinned source. Changes to the role inventory or source index invalidate the decision hashes and require updating the hierarchy evidence.', '', 'An optional independent RDF parser check is available after installing the package in `scripts/requirements-csfc-ontology.txt`:', '', '```bash', 'python3 scripts/preprocess_csfc_ontology.py --check --rdf-check', '```', '', 'OWL semantics and RDF/XML mapping follow the [W3C OWL 2 Primer](https://www.w3.org/TR/owl2-primer/) and [OWL 2 Mapping to RDF Graphs](https://www.w3.org/TR/owl2-mapping-to-rdf/).', '']\n"
+          ],
+          "after_lines": [
+            "    lines += ['', '## Regenerate and check', '', 'Run from the repository root:', '', '```bash', 'python3 scripts/preprocess/run_csfc_preprocessing.py --stage ontology', 'python3 scripts/preprocess/preprocess_csfc_ontology.py --check', '```', '', 'The pipeline uses explicit curated decisions for the pinned source. Changes to the role inventory or source index invalidate the decision hashes and require updating the hierarchy evidence.', '', 'An optional independent RDF parser check is available after installing the package in `scripts/preprocess/requirements-csfc-ontology.txt`:', '', '```bash', 'python3 scripts/preprocess/preprocess_csfc_ontology.py --check --rdf-check', '```', '', 'OWL semantics and RDF/XML mapping follow the [W3C OWL 2 Primer](https://www.w3.org/TR/owl2-primer/) and [OWL 2 Mapping to RDF Graphs](https://www.w3.org/TR/owl2-mapping-to-rdf/).', '']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "../../scripts/preprocess_csfc_requirements.py",
+      "new_path": "../../scripts/preprocess/preprocess_csfc_requirements.py",
+      "before_sha256": "48c057781c18fb85080388cc630316e45201c72843b12ec1154072e3a7fb5d5d",
+      "after_sha256": "7d337971e10eff1436e8e7282acd254cf60236136b22a6b55c99677b1fb7dd9a",
+      "edits": [
+        {
+          "after_start": 12,
+          "before_lines": [
+            "ROOT = Path(__file__).resolve().parents[1]\n"
+          ],
+          "after_lines": [
+            "ROOT = Path(__file__).resolve().parents[2]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "../../scripts/preprocess_csfc_source.py",
+      "new_path": "../../scripts/preprocess/preprocess_csfc_source.py",
+      "before_sha256": "83c75a8faa087e2889f7150df7dc157cc299a30e8edca5d85f8fc4776389d55b",
+      "after_sha256": "83c75a8faa087e2889f7150df7dc157cc299a30e8edca5d85f8fc4776389d55b",
+      "edits": []
+    },
+    {
+      "old_path": "../../scripts/reconcile_csfc_extraction.py",
+      "new_path": "../../scripts/preprocess/reconcile_csfc_extraction.py",
+      "before_sha256": "0a194c6cfe96e084cddf0ad5ed181ebd68d2c3b7a704d26b4edd671cf57f322f",
+      "after_sha256": "410aef57608417943861146e8911fc46de0162fe41d18dfd094b98f6978a2a70",
+      "edits": [
+        {
+          "after_start": 7,
+          "before_lines": [
+            "ROOT = Path(__file__).resolve().parents[1]\n"
+          ],
+          "after_lines": [
+            "ROOT = Path(__file__).resolve().parents[2]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "../../scripts/requirements-csfc-ontology.txt",
+      "new_path": "../../scripts/preprocess/requirements-csfc-ontology.txt",
+      "before_sha256": "a5f5df72bd0b58be635d507e9d6e6ca7f526adf60366dc7d6fff353d1d4887ce",
+      "after_sha256": "a5f5df72bd0b58be635d507e9d6e6ca7f526adf60366dc7d6fff353d1d4887ce",
+      "edits": []
+    },
+    {
+      "old_path": "../../scripts/run_csfc_preprocessing.py",
+      "new_path": "../../scripts/preprocess/run_csfc_preprocessing.py",
+      "before_sha256": "3beb006d50c5f94828e1c006eaf392135c59f4f59db3737c13715c2f0abaac14",
+      "after_sha256": "ee3449d9c275dedfc1e9c0aabd11ddfb9b07df9c9a4e9c3a5aab1808a488e7a0",
+      "edits": [
+        {
+          "after_start": 11,
+          "before_lines": [
+            "ROOT = Path(__file__).resolve().parents[1]\n"
+          ],
+          "after_lines": [
+            "ROOT = Path(__file__).resolve().parents[2]\n"
+          ]
+        },
+        {
+          "after_start": 62,
+          "before_lines": [
+            "    absent = [name for name in required_tools if not (ROOT / 'scripts' / name).is_file()]\n"
+          ],
+          "after_lines": [
+            "    absent = [name for name in required_tools if not (ROOT / 'scripts/preprocess' / name).is_file()]\n"
+          ]
+        },
+        {
+          "after_start": 68,
+          "before_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess_csfc_source.py'), '--pdf', str(PDF)]))\n",
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/validate_csfc_extraction.py')]))\n"
+          ],
+          "after_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess/preprocess_csfc_source.py'), '--pdf', str(PDF)]))\n",
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess/validate_csfc_extraction.py')]))\n"
+          ]
+        },
+        {
+          "after_start": 72,
+          "before_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/validate_csfc_extraction.py')]))\n"
+          ],
+          "after_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess/validate_csfc_extraction.py')]))\n"
+          ]
+        },
+        {
+          "after_start": 74,
+          "before_lines": [
+            "            log['steps'].append(run([sys.executable, str(ROOT / 'scripts' / name)]))\n",
+            "        reconciler = ROOT / 'scripts/reconcile_csfc_extraction.py'\n"
+          ],
+          "after_lines": [
+            "            log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess' / name)]))\n",
+            "        reconciler = ROOT / 'scripts/preprocess/reconcile_csfc_extraction.py'\n"
+          ]
+        },
+        {
+          "after_start": 78,
+          "before_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/validate_csfc_extraction.py')]))\n"
+          ],
+          "after_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess/validate_csfc_extraction.py')]))\n"
+          ]
+        },
+        {
+          "after_start": 80,
+          "before_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess_csfc_ontology.py')]))\n"
+          ],
+          "after_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess/preprocess_csfc_ontology.py')]))\n"
+          ]
+        },
+        {
+          "after_start": 82,
+          "before_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess_csfc_ontology.py'), '--check']))\n"
+          ],
+          "after_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess/preprocess_csfc_ontology.py'), '--check']))\n"
+          ]
+        },
+        {
+          "after_start": 84,
+          "before_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/validate_csfc_extraction.py')]))\n",
+            "        checker = ROOT / 'scripts/validate_csfc_artifacts.py'\n"
+          ],
+          "after_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess/validate_csfc_extraction.py')]))\n",
+            "        checker = ROOT / 'scripts/preprocess/validate_csfc_artifacts.py'\n"
+          ]
+        },
+        {
+          "after_start": 91,
+          "before_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/summarize_csfc_extraction.py')]))\n"
+          ],
+          "after_lines": [
+            "        log['steps'].append(run([sys.executable, str(ROOT / 'scripts/preprocess/summarize_csfc_extraction.py')]))\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "../../scripts/summarize_csfc_extraction.py",
+      "new_path": "../../scripts/preprocess/summarize_csfc_extraction.py",
+      "before_sha256": "8b0963ff5539d6f7028d4a43e42dc6af9c682509a44c530e1671349c8ebebbec",
+      "after_sha256": "576690801524164b3a208e2ddc13f1bfd8089290b433463d4d124ec09e5cba9e",
+      "edits": [
+        {
+          "after_start": 6,
+          "before_lines": [
+            "ROOT = Path(__file__).resolve().parents[1]\n"
+          ],
+          "after_lines": [
+            "ROOT = Path(__file__).resolve().parents[2]\n"
+          ]
+        },
+        {
+          "after_start": 81,
+          "before_lines": [],
+          "after_lines": [
+            "    if binding.get('relocation_receipt'):\n",
+            "        lines += ['', 'The preprocessing scripts now live under `scripts/preprocess/`. The [relocation record](' + binding['relocation_receipt'] + ') preserves the original review manifest and records reversible path updates. The move changes file locations and invocation paths; it adds no new independent semantic review.', '']\n"
+          ]
+        },
+        {
+          "after_start": 107,
+          "before_lines": [
+            "        '```bash', 'python3 scripts/run_csfc_preprocessing.py --stage ontology', 'python3 scripts/run_csfc_preprocessing.py --stage check', 'python3 scripts/run_csfc_preprocessing.py --stage all', '```', '',\n",
+            "        'The ontology stage regenerates the hierarchy, OWL RDF/XML, Turtle, Markdown, and standalone HTML from the current roles and reviewed [relationship decisions](roles/ontology_decisions.json). The check stage verifies those outputs and the full review binding. For optional independent RDF parsing, install `scripts/requirements-csfc-ontology.txt` in a virtual environment and run `python3 scripts/preprocess_csfc_ontology.py --check --rdf-check`.', '',\n"
+          ],
+          "after_lines": [
+            "        '```bash', 'python3 scripts/preprocess/run_csfc_preprocessing.py --stage ontology', 'python3 scripts/preprocess/run_csfc_preprocessing.py --stage check', 'python3 scripts/preprocess/run_csfc_preprocessing.py --stage all', '```', '',\n",
+            "        'The ontology stage regenerates the hierarchy, OWL RDF/XML, Turtle, Markdown, and standalone HTML from the current roles and reviewed [relationship decisions](roles/ontology_decisions.json). The check stage verifies those outputs and the full review binding. For optional independent RDF parsing, install `scripts/preprocess/requirements-csfc-ontology.txt` in a virtual environment and run `python3 scripts/preprocess/preprocess_csfc_ontology.py --check --rdf-check`.', '',\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "../../scripts/templates/csfc_role_ontology.html",
+      "new_path": "../../scripts/preprocess/templates/csfc_role_ontology.html",
+      "before_sha256": "594111ed9585482a772cb1ade4117be425efbda9bc394845e4e99217368b58cc",
+      "after_sha256": "594111ed9585482a772cb1ade4117be425efbda9bc394845e4e99217368b58cc",
+      "edits": []
+    },
+    {
+      "old_path": "../../scripts/validate_csfc_artifacts.py",
+      "new_path": "../../scripts/preprocess/validate_csfc_artifacts.py",
+      "before_sha256": "9e69f274d1eec6cb701ee250132798fcf465ff803f3646b3ed348ef0a675c726",
+      "after_sha256": "8957731fa9b1f9f976fa795e8d87845f9e621f790212dcbd6851a06b9694934b",
+      "edits": [
+        {
+          "after_start": 10,
+          "before_lines": [
+            "ROOT = Path(__file__).resolve().parents[1]\n"
+          ],
+          "after_lines": [
+            "ROOT = Path(__file__).resolve().parents[2]\n"
+          ]
+        },
+        {
+          "after_start": 20,
+          "before_lines": [],
+          "after_lines": [
+            "\n",
+            "\n",
+            "def relocated_review_bindings(bound, manifest_path):\n",
+            "    \"\"\"Verify a recorded relocation against the original reviewed file bytes.\"\"\"\n",
+            "    receipt_name = 'validation/preprocess_relocation.json'\n",
+            "    if not (OUT / receipt_name).is_file():\n",
+            "        return bound, {}, None\n",
+            "    receipt = load(receipt_name)\n",
+            "    if receipt['review_manifest_sha256'] != sha(manifest_path):\n",
+            "        raise ValueError('Preprocessing relocation refers to a different review manifest.')\n",
+            "    relocated, paths = dict(bound), {}\n",
+            "    for change in receipt['changes']:\n",
+            "        old, new = change['old_path'], change['new_path']\n",
+            "        if old not in bound or bound[old] != change['before_sha256']:\n",
+            "            raise ValueError('Relocation lacks the original reviewed hash: ' + old)\n",
+            "        current = (OUT / new).read_bytes()\n",
+            "        if hashlib.sha256(current).hexdigest() != change['after_sha256']:\n",
+            "            raise ValueError('Relocated artifact changed: ' + new)\n",
+            "        lines = current.decode().splitlines(keepends=True)\n",
+            "        #* Reverse the recorded edits to recover the exact independently reviewed bytes.\n",
+            "        for edit in reversed(change['edits']):\n",
+            "            start = edit['after_start']\n",
+            "            end = start + len(edit['after_lines'])\n",
+            "            if lines[start:end] != edit['after_lines']:\n",
+            "                raise ValueError('Relocation edit differs from current content: ' + new)\n",
+            "            lines[start:end] = edit['before_lines']\n",
+            "        if hashlib.sha256(''.join(lines).encode()).hexdigest() != bound[old]:\n",
+            "            raise ValueError('Relocation cannot recover the reviewed content: ' + old)\n",
+            "        relocated.pop(old)\n",
+            "        relocated[new] = change['after_sha256']\n",
+            "        paths[old] = new\n",
+            "    if len(relocated) != len(bound):\n",
+            "        raise ValueError('Relocation must preserve all review bindings.')\n",
+            "    return relocated, paths, receipt_name\n"
+          ]
+        },
+        {
+          "after_start": 197,
+          "before_lines": [
+            "    ontology_spec = importlib.util.spec_from_file_location('csfc_ontology_validation', ROOT / 'scripts/preprocess_csfc_ontology.py')\n"
+          ],
+          "after_lines": [
+            "    ontology_spec = importlib.util.spec_from_file_location('csfc_ontology_validation', ROOT / 'scripts/preprocess/preprocess_csfc_ontology.py')\n"
+          ]
+        },
+        {
+          "after_start": 233,
+          "before_lines": [],
+          "after_lines": [
+            "        bound, relocated_paths, relocation_receipt = relocated_review_bindings(bound, manifest_path)\n"
+          ]
+        },
+        {
+          "after_start": 235,
+          "before_lines": [
+            "        mandatory.update({'roles/ontology_decisions.json', *{'roles/' + name for name in ontology_module.OUTPUT_NAMES}, '../../scripts/preprocess_csfc_ontology.py', '../../scripts/templates/csfc_role_ontology.html', '../../tests/test_csfc_ontology.py'})\n"
+          ],
+          "after_lines": [
+            "        mandatory.update({'roles/ontology_decisions.json', *{'roles/' + name for name in ontology_module.OUTPUT_NAMES}, '../../scripts/preprocess/preprocess_csfc_ontology.py', '../../scripts/preprocess/templates/csfc_role_ontology.html', '../../tests/test_csfc_ontology.py'})\n"
+          ]
+        },
+        {
+          "after_start": 240,
+          "before_lines": [],
+          "after_lines": [
+            "        mandatory = {relocated_paths.get(path, path) for path in mandatory}\n"
+          ]
+        },
+        {
+          "after_start": 246,
+          "before_lines": [],
+          "after_lines": [
+            "        if relocation_receipt:\n",
+            "            review_binding['relocation_receipt'] = relocation_receipt\n",
+            "            review_binding['relocation_scope'] = 'Coordinator-recorded directory and command-path changes, with reversible edits back to the original reviewed hashes. No new independent semantic review is claimed.'\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "../../scripts/validate_csfc_extraction.py",
+      "new_path": "../../scripts/preprocess/validate_csfc_extraction.py",
+      "before_sha256": "4a493cf28ad93af6bbe816826f49c640090f4e9fad7c335bdc961059fb963ffc",
+      "after_sha256": "4a493cf28ad93af6bbe816826f49c640090f4e9fad7c335bdc961059fb963ffc",
+      "edits": []
+    },
+    {
+      "old_path": "../../tests/test_csfc_ontology.py",
+      "new_path": "../../tests/test_csfc_ontology.py",
+      "before_sha256": "57d44c219cff7c5686096287e517543ba6677711d0c89b4444b83697a1bbbf30",
+      "after_sha256": "22fcea284185519c6490398e1f08742d9228862c27d794ef05a60207c06ace16",
+      "edits": [
+        {
+          "after_start": 10,
+          "before_lines": [
+            "SPEC = importlib.util.spec_from_file_location('csfc_ontology', ROOT / 'scripts/preprocess_csfc_ontology.py')\n"
+          ],
+          "after_lines": [
+            "SPEC = importlib.util.spec_from_file_location('csfc_ontology', ROOT / 'scripts/preprocess/preprocess_csfc_ontology.py')\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "../../tests/test_csfc_preprocessing.py",
+      "new_path": "../../tests/test_csfc_preprocessing.py",
+      "before_sha256": "8be129acb108acbcadff273caffdd609f4d4066c80f00787d23ba4857f2c239a",
+      "after_sha256": "992e85277c719ae0b7f84835697bfdef5c7d6006fa4e6eeec112b6eede9fe9ac",
+      "edits": [
+        {
+          "after_start": 8,
+          "before_lines": [
+            "MODULE = Path(__file__).resolve().parents[1] / 'scripts/preprocess_csfc_source.py'\n"
+          ],
+          "after_lines": [
+            "MODULE = Path(__file__).resolve().parents[1] / 'scripts/preprocess/preprocess_csfc_source.py'\n"
+          ]
+        },
+        {
+          "after_start": 47,
+          "before_lines": [
+            "        directory = MODULE.parents[1] / 'artifacts/extraction/validation'\n"
+          ],
+          "after_lines": [
+            "        directory = MODULE.parents[2] / 'artifacts/extraction/validation'\n"
+          ]
+        },
+        {
+          "after_start": 108,
+          "before_lines": [
+            "        path = MODULE.parents[1] / 'artifacts/extraction/source/source_index.jsonl'\n"
+          ],
+          "after_lines": [
+            "        path = MODULE.parents[2] / 'artifacts/extraction/source/source_index.jsonl'\n"
+          ]
+        },
+        {
+          "after_start": 118,
+          "before_lines": [
+            "        path = MODULE.parents[1] / 'artifacts/extraction/source/source_index.jsonl'\n"
+          ],
+          "after_lines": [
+            "        path = MODULE.parents[2] / 'artifacts/extraction/source/source_index.jsonl'\n"
+          ]
+        },
+        {
+          "after_start": 141,
+          "before_lines": [
+            "        root = MODULE.parents[1] / 'artifacts/extraction'\n"
+          ],
+          "after_lines": [
+            "        root = MODULE.parents[2] / 'artifacts/extraction'\n"
+          ]
+        }
+      ]
+    },
+    {
+      "old_path": "roles/ontology.md",
+      "new_path": "roles/ontology.md",
+      "before_sha256": "76a3cf068c42faa15499497d78899d9866541af2b183041ea5f7e404a5f336b8",
+      "after_sha256": "1844540a9502a26a0b99247885589966fccf876b458ea8144b8fc5bca149728c",
+      "edits": [
+        {
+          "after_start": 1096,
+          "before_lines": [
+            "python3 scripts/run_csfc_preprocessing.py --stage ontology\n",
+            "python3 scripts/preprocess_csfc_ontology.py --check\n"
+          ],
+          "after_lines": [
+            "python3 scripts/preprocess/run_csfc_preprocessing.py --stage ontology\n",
+            "python3 scripts/preprocess/preprocess_csfc_ontology.py --check\n"
+          ]
+        },
+        {
+          "after_start": 1102,
+          "before_lines": [
+            "An optional independent RDF parser check is available after installing the package in `scripts/requirements-csfc-ontology.txt`:\n"
+          ],
+          "after_lines": [
+            "An optional independent RDF parser check is available after installing the package in `scripts/preprocess/requirements-csfc-ontology.txt`:\n"
+          ]
+        },
+        {
+          "after_start": 1105,
+          "before_lines": [
+            "python3 scripts/preprocess_csfc_ontology.py --check --rdf-check\n"
+          ],
+          "after_lines": [
+            "python3 scripts/preprocess/preprocess_csfc_ontology.py --check --rdf-check\n"
+          ]
+        }
+      ]
+    }
+  ]
+}

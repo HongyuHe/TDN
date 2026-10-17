@@ -1,0 +1,47 @@
+# Network requirement mapping rationale
+
+The network extraction now records 92 clause-scoped assessments for all 27 examples. The assessments cover 33 requirement groups, including eight groups without numbered requirement rows. Every record names the group, selected clauses, applicability, status, evidence basis, reasoning, requirement strength, and qualifications. Requirement and example quotations are copied from the indexed source without rewriting their text.
+
+The decision source is `networks/mapping_decisions.json`. The reconciler resolves group titles, verbatim passages, original requirement IDs, requirement-strength records, open issues, and scope notes from the current source and requirement artifacts. It checks that clause IDs belong to their stated group and that example evidence belongs to the example. The numbered `requirement_links` list is derived from those assessments. The Markdown views share one assessment renderer and link directly to requirement-group anchors.
+
+The status distribution is 40 `presented_as_satisfying`, 41 `required_but_not_demonstrated`, eight `ambiguous`, and three `not_applicable`. No example is asserted to be presented as violating a requirement. The source supplies permitted designs, procedures, and partial configurations. Omitted details do not establish violations.
+
+A satisfying status applies to the selected clause or permitted alternative as presented by the document. A prose arrangement can illustrate satisfaction of its placement clause without supplying operational evidence for related obligations. For example, NET-026 presents layer-specific time-source placement, while a separate assessment records that achieved synchronization and source trust are not demonstrated. No satisfying status certifies an encompassing group theorem or a deployed whole solution.
+
+The mappings cover illustrated requirements and material obligations triggered by each example's features. General procurement, personnel, lifecycle, audit, and testing duties are not repeated for every schematic. Unmapped groups remain unassessed. Each example also has a specific scope limit that identifies the evidence its design lacks.
+
+| Examples | Substantive judgment |
+| --- | --- |
+| NET-001 | Figure 1 expressly presents Inner-then-Outer encryption and reverse decryption. Manufacturer/OS/library independence, hardware separation, and network security-level assignments remain unshown. Its untrusted-network caption and missing Outer Firewall leave a specific applicability question; the omission is not called a violation. |
+| NET-002 | Figure 2 and its discussion present Public Internet Outer Firewall placement and physical separation. The prose gives interface-policy intent, while the complete bidirectional MSC-PF-22 configuration remains unshown. |
+| NET-003 | The independent-site design presents local administration and two intersite tunnels. Peer trust material, interoperability, and conditional AS attachment require separate evidence. |
+| NET-004 | The central-site design presents centralized administration, layer-specific management placement, and at least two encryption layers for intersite management. CA/AS choices and central MACsec Key Server settings remain conditional. |
+| NET-005 | The same-level design permits shared singly encrypted Gray traffic without additional different-level filtering controls. Parallel Inner placement is visible. Unique Outer physical interfaces remain unshown. The same-level subsection's different-level authentication sentence remains explicitly ambiguous. |
+| NET-006 | Figure 6 and its discussion present Gray Firewall placement and cross-level isolation. Full ACLs, address assignments, Outer filtering, and unique physical interface counts are not inferred from symbols. |
+| NET-007 | Integrated incoming-interface encapsulation is explicitly presented. The standalone-device antecedent of MSC-MD-13 does not apply to that alternative. AO approval of the selected protocol remains unshown. |
+| NET-008 | Standalone encapsulator placement is explicit. Pages 19 and 25, page 20, and MSC-MD-13 give different boundary/control scopes. The mappings preserve the scope ambiguity and do not convert a recommendation into a mandate. |
+| NET-009 | Redundant Outer tunnels and separate Gray routers are permitted. Secret U.S.-only and Secret Coalition labels denote different security levels. The absent Gray Firewall symbol remains a schematic ambiguity. The ordinary router's explicit scope exemption does not extend to an encapsulating router. |
+| NET-010 | The CNSA 1.0 initial exchange followed by ML-KEM intermediate exchange is presented as the CNSA 2.0 Objective alternative. Full RFC/profile conformance and every Table 7 setting are not demonstrated. Objective status is not upgraded to a current universal mandate. |
+| NET-011 | The four Table 1 pairings are permitted alternatives. Outer MACsec retains the point-to-point restriction, and Inner MACsec triggers encapsulation conditions. |
+| NET-012 | Physical separation, cryptographic separation, and minimum Gray Firewall ACL separation are cumulative controls. Their different levels of detail do not alone create a source contradiction. Their joint implementation is not demonstrated. |
+| NET-013 | An unclassified network can be included only behind its own Inner component and under Red-equivalent requirements. Mixed-level shared paths and shared Outer interfaces trigger further conditional obligations. |
+| NET-014 | An approved CDS and Red SIEM are a permitted alternative to a Gray SIEM. Concrete approval and the three external CDS conditions remain unverified. |
+| NET-015 | The screening router is an optional Black Network control outside the MSC Solution. It does not establish the conditional Public Internet Outer Firewall obligation. |
+| NET-016 | Dedicated physical and virtual AW alternatives retain both functional separation and host exclusions. Separate service VMs do not authorize prohibited cohosting on an AW host. Facility, hardening, and idle-power obligations remain unshown. |
+| NET-017 | The direct serial connection exception and the same-site CNSA algorithm exception are separate. Neither is rewritten into a general plaintext LAN/VLAN permission. |
+| NET-018 | The footnote permits approved government-product and CP-conforming CSfC egress at the same site. It supplies no exhaustive path inventory or deployment approval evidence. |
+| NET-019 | Conditional Inner Firewall placement is explicit. Companion-CP Gray/Inner Firewall obligations depend on the actual companion CP and end-user-device conditions. |
+| NET-020 | Parallel redundancy and load-balancing alternatives are permitted subject to per-component requirements. Shared-Outer physical interface and placement details remain unshown. |
+| NET-021 | Existing Black/Red routing protocols are permitted with AO approval. The surrounding-network permission does not authorize Outer-component routing protocols. |
+| NET-022 | Independent IPv4/IPv6 choices are expressly permitted for Red, Gray, and Black. No device realization or complete address/filter configuration is asserted. |
+| NET-023 | Certificate/EAP-TLS and CAK authentication remain alternatives. Provisioning procedures are distinguished from actual trust/key settings. The ambiguous AS attachment phrase remains visible. |
+| NET-024 | Separate ranges illustrate a suitable Gray addressing scheme. The adjacent same-level denial sentence conflicts with the same-level filtering allowance. Actual peer allowlist implementation is unshown. |
+| NET-025 | Revocation HTTP allowances retain their service-placement and required-firewall conditions. They do not waive qualifying physical Gray Firewall paths. |
+| NET-026 | The prescribed inside-network and layer-specific time-source placement is presented directly. Actual synchronization and source trust need operational evidence. |
+| NET-027 | MSC-DM-8 permits NSA-approved remote protection or local management. The route, protection stack, and conditional Black-network two-layer requirement remain unshown. |
+
+The figure evidence was checked against all ten existing crop images. Figures 1, 5, 6, and 9 were inspected specifically for ambiguous firewall and physical-interface claims. Figures 2, 4, 7, and 8 were inspected for placement and encapsulation claims. Figure 10 confirms bidirectional peer-exchange arrows without identifying an initiator endpoint. Figure 3 confirms the separate site management-services symbols. Crop locations and relative image links are preserved.
+
+Three related extraction corrections follow the plan auditor's findings. PA-006 removes the contradictory unknown physical-medium claim from NET-017's explicitly serial connection. PA-007 removes the unsourced Router and Solution Component device realizations from NET-021 and NET-022 and their role-instance projection. PA-009 adds separate IKEv2 initiator and responder roles from `p027:u008.s002`, with exact mention spans. The responder match is constrained to the IKEv2 context so it cannot absorb OCSP responder mentions. Neither role is assigned to Bob or Alice.
+
+Producer output records semantic review separately. The source count is read dynamically from the current index, and the role inventory now contains 76 roles and 1,328 mentions. Mechanical checks establish references and reproducibility; the independent plan audit remains responsible for semantic assessment and readiness.

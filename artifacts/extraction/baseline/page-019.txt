@@ -1,0 +1,24 @@
+Table 1. Layering Options
+Configuration Inner Outer Tunnel
+1 IPsTeucn nel IPsec
+2 IPsec MACsec
+3 MACsec IPsec
+4 MACsec MACsec
+MACsec was designed to provide hop-to-hop security within a Local Area Network (LAN). As MACsec-
+encrypted traffic arrives at an interface, it is typically decrypted, examined, and re-encrypted after
+determining its destination.
+The MACsec-encrypted traffic needs to be encapsulated if the MACsec Device is the first layer of
+encryption in the MSC Solution or if the MACsec-encrypted traffic needs to traverse an IP-based
+network. Encapsulation creates a new packet by adding a new header, and sometimes trailer, to the
+MACsec-encrypted traffic. Encapsulation ensures the MACsec-encrypted traffic is not decrypted prior to
+reaching its destination and ensures the second layer of encryption can be applied.
+In some commercial MACsec Devices, encapsulation can be applied on the internal interface by creating
+a pseudowire (see Figure 7), which emulates a point-to-point connection. If this feature is not
+supported, a standalone device is needed to encapsulate the MACsec-encrypted data (see Figure 8). If
+using a standalone device, the internal interface will be connected to the Inner MACsec Device and the
+external interface will be connected to the Outer Encryption Component. Since this device resides in
+the Gray Network, all requirements for Solution Components must be implemented.
+This CP does not mandate the use of a specific protocol for encapsulation. Options include, but are not
+limited to, Layer 2 Tunneling Protocol version 3, and Ethernet over Multiprotocol Label Switching.
+Figure 7. Encapsulating MACsec on an Internal Interface
+12

@@ -1,0 +1,51 @@
+[
+  {
+    "finding_id": "ONT-001",
+    "severity": "medium",
+    "status": "resolved_verified",
+    "origin": "independent_reviewer",
+    "affected_artifact_ids": [
+      "scripts/preprocess_csfc_ontology.py",
+      "roles/ontology.owl",
+      "roles/ontology.ttl"
+    ],
+    "problem": "Annotated OWL axioms use named IRI subjects instead of the blank nodes required by the OWL 2 structural mapping.",
+    "evidence": "The initial triples() implementation sets axiom = BASE + edge[edge_id] and rdf_xml() emits every subject with rdf:about. W3C Mapping to RDF Graphs section 2.3.1 translates annotated main-triple axioms through fresh blank nodes. The canonical parser identifies reification blank nodes in Table 8. Ordinary RDF parsing and graph equality do not establish the OWL mapping.",
+    "reference_url": "https://www.w3.org/TR/owl2-mapping-to-rdf/#Axioms_that_Generate_a_Main_Triple",
+    "proposed_correction": "Represent each axiom annotation record with a deterministic blank node ID. Emit rdf:nodeID in RDF/XML and _: identifiers in Turtle. Update the round-trip reader and add a focused regression guard for blank-node reification.",
+    "resolution": "The final exporter emits deterministic blank nodes for all 115 axiom annotations. RDF/XML uses rdf:nodeID and Turtle uses blank-node identifiers. Independent RDFLib parsing found isomorphic 4,292-triple graphs and verified every annotation record. The focused blank-node regression passes."
+  },
+  {
+    "finding_id": "ONT-002",
+    "severity": "low",
+    "status": "resolved_verified",
+    "origin": "independent_reviewer",
+    "affected_artifact_ids": [
+      "validation/ontology_review/curation_notes.md"
+    ],
+    "problem": "Curation notes describe the AW-host versus separate-VM issue as retained even though the current review resolved its cumulative applicability.",
+    "evidence": "The initial notes say the ontology does not settle the retained host-exclusivity versus separate-VM wording issue. Current validation/plan_audit/review.json records REQ-I06 as resolved_by_cumulative_applicability. REQ-I01 remains unresolved.",
+    "proposed_correction": "State that the ontology does not encode the already-resolved cumulative AW-host and VM-separation constraints. Preserve the distinct unresolved encapsulator issue.",
+    "resolution": "The final curation notes explicitly state that REQ-I06 is resolved by applying AW-host exclusivity and VM-separation requirements together. They state that the ontology does not encode those operational constraints. REQ-I01 remains separately unresolved."
+  },
+  {
+    "finding_id": "ONT-003",
+    "severity": "medium",
+    "status": "resolved_verified",
+    "origin": "coordinator_observation_independently_confirmed",
+    "affected_artifact_ids": [
+      "scripts/preprocess_csfc_ontology.py",
+      "scripts/templates/csfc_role_ontology.html",
+      "tests/test_csfc_ontology.py",
+      "roles/ontology.json",
+      "roles/ontology.owl",
+      "roles/ontology.ttl",
+      "roles/ontology.md",
+      "roles/ontology.html"
+    ],
+    "problem": "The initial graph read a nonexistent kind field and omitted the Registration Authority inventory-scope qualification.",
+    "evidence": "The initial builder used role.get(kind, extracted_role), while all 76 source records use role_kind. The source Registration Authority record also states that only the hardware/software function falls within the device-role inventory. The initial graph did not carry that uncertainty field.",
+    "proposed_correction": "Preserve the original role_kind and uncertainty values in the graph, OWL annotations, and readable scope views. Add a focused metadata projection regression.",
+    "resolution": "Independently verified every role kind and uncertainty value against roles.json. OWL roleKind annotations preserve the original categories, and the Registration Authority qualification is exact. The HTML displays the qualification as a callout and Markdown includes role scope notes. The new regression and all 30 tests pass."
+  }
+]

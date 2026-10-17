@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSfC role ontology | TDN</title>
+<style>
+:root{--bg:#f8fafc;--text:#0f172a;--muted:#526277;--panel:#fff;--border:#d8e0eb;--cyan:#087e98;--purple:#6d3cc5;--green:#087950;--amber:#986400;--code:#f1f5f9;--selected:#e6f5f8;color-scheme:light}
+:root[data-theme=dark]{--bg:#020617;--text:#f8fafc;--muted:#a6b3c7;--panel:#0f172a;--border:#334155;--cyan:#67d9e8;--purple:#c4a1ff;--green:#6ee7b7;--amber:#fcd34d;--code:#172337;--selected:#153744;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit;color:inherit}button,select,input{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:8px 11px}button,select{cursor:pointer}button:hover{border-color:var(--cyan)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}button[aria-pressed=true]{color:var(--cyan);border-color:var(--cyan);background:var(--selected)}h1,h2,h3,p{margin:0}h1{font-size:clamp(28px,3.2vw,42px);letter-spacing:-.035em;line-height:1.15}h2{font-size:20px;line-height:1.3}h3{font-size:16px;line-height:1.35}a{color:var(--cyan)}code{font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere;background:var(--code);padding:2px 4px;border-radius:4px}.muted{color:var(--muted)}.small{font-size:12px}.topbar{padding:15px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--panel)}.brand{font-weight:700;letter-spacing:-.02em}.topbar-actions{display:flex;gap:8px;flex-wrap:wrap}.hero{max-width:1720px;margin:auto;padding:32px 28px 22px;display:flex;justify-content:space-between;gap:26px;align-items:end}.hero p{max-width:800px;margin-top:12px;color:var(--muted);font-size:16px}.stats{display:flex;gap:20px;flex-wrap:wrap;flex-shrink:0}.stat strong{display:block;font-size:29px;line-height:1.25;letter-spacing:-.03em}.stat span{color:var(--muted);font-size:12px}.workspace{max-width:1720px;margin:auto;padding:0 28px 28px;display:grid;grid-template-columns:235px minmax(0,1fr) 340px;gap:16px;align-items:start}.workspace>*{min-width:0}.panel{border:1px solid var(--border);border-radius:14px;background:var(--panel);overflow-wrap:anywhere}.panel-head{padding:18px;border-bottom:1px solid var(--border)}.search-wrap{display:grid;gap:9px;padding:15px}.search-wrap>*{min-width:0;width:100%}label{font-size:12px;color:var(--muted);font-weight:600}.role-list{max-height:592px;overflow:auto;padding:0 8px 10px}.role-item{display:block;width:100%;text-align:left;margin:3px 0;border-color:transparent;background:transparent;padding:9px;font-size:13px;line-height:1.4;overflow-wrap:anywhere}.role-item[aria-current=true]{background:var(--selected);border-color:var(--cyan);font-weight:600}.role-item small{display:block;font-size:11px;color:var(--muted);margin-top:3px}.family-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;flex-shrink:0}.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--border)}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tabs button{font-size:12px;padding:6px 9px}.legend{display:flex;gap:14px;font-size:11px;color:var(--muted);padding:12px 18px 0;flex-wrap:wrap}.line-key{display:inline-block;width:23px;border-top:2px solid var(--cyan);vertical-align:middle;margin-right:5px}.line-key.dashed{border-top-style:dashed;border-color:var(--purple)}.line-key.root{border-top-style:dotted;border-color:var(--muted)}.graph-wrap{padding:8px 12px;max-height:540px;overflow:auto}.graph-wrap svg{display:block;width:100%;height:auto}.svg-node rect{fill:var(--panel);stroke:var(--border);stroke-width:1.5}.svg-node.selected rect{fill:var(--selected);stroke:var(--cyan);stroke-width:2.3}.svg-node{cursor:pointer}.svg-node:hover rect{stroke:var(--cyan);stroke-width:2.5}.svg-node text{fill:var(--text);font-family:inherit;font-size:14px}.svg-edge{fill:none;stroke:var(--cyan);stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round;cursor:pointer}.svg-edge.annotation{stroke:var(--purple);stroke-dasharray:7 5}.svg-edge.organizational{stroke:var(--muted);stroke-dasharray:2 5}.svg-edge:hover{stroke-width:3}.svg-edge-hit{fill:none;stroke:transparent;stroke-width:12;pointer-events:stroke;cursor:pointer}.svg-hint{fill:var(--muted);font-size:12px;font-family:inherit}.focus-description{padding:18px;border-top:1px solid var(--border);display:grid;gap:10px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{font-size:11px;padding:4px 8px;border:1px solid var(--border);border-radius:99px;color:var(--muted)}.edge-actions{display:grid;gap:7px;padding:0 18px 18px}.edge-button{font-size:12px;text-align:left;line-height:1.45;padding:10px}.edge-button span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.detail-body{padding:18px;display:grid;gap:15px;max-height:735px;overflow:auto}.detail-body p{font-size:13px}.badge{display:inline-block;width:fit-content;font-size:11px;padding:4px 8px;border-radius:5px;background:var(--code);color:var(--muted)}.callout{border-left:3px solid var(--amber);padding:9px 12px;background:var(--code);font-size:12px}.evidence-source{border:1px solid var(--border);border-radius:8px;padding:10px;min-width:0}.evidence-source summary{cursor:pointer;font-size:12px;color:var(--cyan)}blockquote{margin:12px 0 0;padding:0 0 0 11px;border-left:2px solid var(--border);font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.source-id{display:block;margin-top:8px;color:var(--muted);font-size:10px}.details-list{margin:0;padding-left:18px;font-size:12px}.details-list li{margin:7px 0}.tree-view{padding:18px;max-height:540px;overflow:auto}.tree-view ul{list-style:none;padding-left:16px;border-left:1px solid var(--border);margin:7px 0}.tree-view>ul{padding:0;border:0}.tree-view summary{cursor:pointer;font-size:13px;margin:8px 0}.tree-view button{border:0;background:transparent;padding:3px 6px;text-align:left;font-size:13px;line-height:1.4}.tree-view button:hover{background:var(--selected)}.tree-view .shared{font-size:10px;color:var(--purple);margin-left:5px}.guide{width:calc(100% - 56px);max-width:1664px;margin:0 auto 28px;border-top:1px solid var(--border);padding:22px 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.guide p{font-size:13px;color:var(--muted);margin-top:7px}.guide summary{cursor:pointer;font-size:14px;font-weight:600}.guide ul{padding-left:20px;font-size:12px;color:var(--muted)}[hidden]{display:none!important}.empty{padding:20px;color:var(--muted);font-size:13px}.footer{max-width:1720px;margin:auto;padding:0 28px 30px;color:var(--muted);font-size:12px}.noscript{margin:24px;padding:20px;border:1px solid var(--border)}
+@media(max-width:1250px){.workspace{grid-template-columns:215px minmax(0,1fr)}.detail{grid-column:1/-1}.detail-body{max-height:none;grid-template-columns:repeat(2,minmax(0,1fr))}.detail-body>h3,.detail-body>.badge,.detail-body>.callout{grid-column:1/-1}.hero{align-items:start}.stats{gap:13px}.guide{margin-left:28px;margin-right:28px}.role-list{max-height:570px}}
+@media(max-width:760px){.hero{display:block;padding:24px 18px 20px}.stats{margin-top:20px}.workspace{display:block;padding:0 18px 24px}.workspace>.panel{margin-bottom:16px}.role-list{max-height:175px}.search-wrap{grid-template-columns:1fr 1fr}.search-wrap label,.search-wrap #result-count{grid-column:1/-1}.detail-body{display:grid;grid-template-columns:minmax(0,1fr)}.detail-body>*{grid-column:1}.topbar{padding:12px 18px}.topbar-actions button{font-size:12px;padding:6px 8px}.guide{width:calc(100% - 36px);grid-template-columns:1fr;margin:0 18px 20px;padding:18px 0}.graph-wrap{max-height:650px}.footer{padding:0 18px 24px}}
+@media print{.topbar-actions,.search-wrap,.role-list,.toolbar{display:none}.workspace{display:block}.detail-body,.graph-wrap{max-height:none}.panel{break-inside:avoid;margin-bottom:16px}.guide{display:block}.guide>div{margin-bottom:12px}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="brand">TDN <span class="muted">/ CSfC role ontology</span></div><div class="topbar-actions"><button id="download-owl">Download OWL</button><button id="download-ttl">Download Turtle</button><button id="download-json">Download graph</button><button id="theme" aria-pressed="false">Dark theme</button></div></header>
+<section class="hero"><div><h1>How MSC roles relate</h1><p>Explore broader roles, specialized roles, and documented associations. Select a role or relationship to see the source passages behind it.</p></div><div class="stats" aria-label="Ontology counts"><div class="stat"><strong id="role-count"></strong><span>extracted roles</span></div><div class="stat"><strong id="subtype-count"></strong><span>subtype links</span></div><div class="stat"><strong id="association-count"></strong><span>associations</span></div></div></section>
+<noscript><p class="noscript">JavaScript is needed for the interactive explorer. The adjacent ontology.md and ontology.owl files provide the complete hierarchy and source evidence.</p></noscript>
+<main class="workspace">
+<aside class="panel" aria-label="Browse roles"><div class="panel-head"><h2>Find a role</h2></div><div class="search-wrap"><label for="search">Search names, aliases, or role IDs</label><input id="search" type="search" placeholder="Try “inner VPN”"><select id="family" aria-label="Filter by topic"><option value="all">All topics</option></select><p id="result-count" class="small muted" aria-live="polite"></p></div><div id="role-list" class="role-list"></div></aside>
+<section class="panel" aria-label="Ontology visualization"><div class="toolbar"><div class="tabs" role="group" aria-label="Visualization mode"><button id="mode-neighborhood" aria-pressed="true">Role relationships</button><button id="mode-hierarchy" aria-pressed="false">Full hierarchy</button></div><button id="associations" aria-pressed="false">Show associations</button></div><div class="legend"><span><i class="line-key"></i>Is a type of</span><span><i class="line-key root"></i>Organizing root</span><span><i class="line-key dashed"></i>Documented association</span></div><div class="graph-wrap" id="graph-wrap"><svg id="graph" role="img" aria-label="Selected role and its broader and specialized roles"></svg></div><div id="tree-view" class="tree-view" hidden></div><div class="focus-description"><div class="chips" id="focus-chips"></div><h2 id="focus-label"></h2><p id="focus-description" class="muted"></p><p id="graph-caption" class="small muted">Arrows point from a specialized role to its broader role. Selecting an arrow opens its evidence.</p></div><div id="edge-actions" class="edge-actions"></div></section>
+<aside class="panel detail" aria-label="Source evidence"><div class="panel-head"><h2>Meaning and evidence</h2><p class="small muted">Exact source passages and stated limits</p></div><div class="detail-body" id="details"></div></aside>
+</main>
+<section class="guide"><div><h3>Read a subtype link</h3><p>“Inner VPN Gateway is a type of VPN Gateway” includes every Inner VPN Gateway in the broader VPN Gateway class. Multiple parents preserve both technology and inner/outer roles.</p></div><div><h3>Keep associations separate</h3><p>Links such as “administers” and “may be realized as” preserve documented relationships. They are annotations in OWL and do not impose a relationship on every member of a class.</p></div><div><details id="limits"><summary>What the ontology leaves unasserted</summary><p>The organizing root and topic filters help navigation. Missing relationships remain unknown. The export asserts no class equivalence, disjointness, deployed device instances, or CSfC compliance.</p><ul id="excluded"></ul></details></div></section>
+<footer class="footer">Generated from the CSfC MSC v1.3.0 extraction. The source-backed subtype decisions and their interpretation status remain inspectable. Design follows the TDN walkthrough’s light theme. The hierarchy is available offline in OWL RDF/XML, Turtle, JSON, and Markdown.</footer>
+<script id="ontology-data" type="application/json">__ONTOLOGY_DATA__</script>
+<script>
+'use strict';
+const data=JSON.parse(document.getElementById('ontology-data').textContent);
+const byId=new Map(data.nodes.map(n=>[n.role_id,n]));
+const familyById=new Map(data.families.map((f,i)=>[f.id,{...f,color:['#087e98','#6d3cc5','#087950','#ac5d1a','#b43762','#4e61b8','#6b7733','#8b5f45'][i%8]}]));
+let selected='ROLE-inner-vpn',mode='neighborhood',showAssociations=false;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function el(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
+function selectRole(id){selected=id;if($('family').value!=='all'&&byId.get(id).family!==$('family').value)$('family').value='all';renderList();renderGraph();renderTree();renderRoleDetail(id);}
+function matchingNodes(){const query=$('search').value.toLowerCase().trim();const family=$('family').value;return data.nodes.filter(n=>n.role_id!==data.root_id&&(family==='all'||n.family===family)&&(!query||[n.label,n.role_id,...n.aliases].join(' ').toLowerCase().includes(query))).sort((a,b)=>a.label.localeCompare(b.label));}
+function renderList(){const nodes=matchingNodes();$('role-list').replaceChildren();$('result-count').textContent=`${nodes.length} of ${data.counts.extracted_roles} roles`;for(const n of nodes){const b=el('button');b.className='role-item';b.dataset.role=n.role_id;b.setAttribute('aria-current',String(n.role_id===selected));const dot=el('span','','family-dot');dot.style.background=familyById.get(n.family)?.color||'var(--muted)';b.append(dot,document.createTextNode(n.label));b.append(el('small',n.parents.length>1?`${n.parents.length} broader roles`:familyById.get(n.family)?.label||'Organizing root'));b.addEventListener('click',()=>selectRole(n.role_id));$('role-list').append(b);}if(!nodes.length)$('role-list').append(el('p','No roles match. Clear the search or choose another topic.','empty'));}
+const measureContext=document.createElement('canvas').getContext('2d');
+function wrapWords(text,maxWidth){
+  measureContext.font='14px '+getComputedStyle(document.body).fontFamily;
+  const pieces=[];
+  for(const word of text.split(/\s+/)){
+    let part='';
+    for(const letter of word){
+      if(part&&measureContext.measureText(part+letter).width>maxWidth){pieces.push(part);part='';}
+      part+=letter;
+    }
+    if(part)pieces.push(part);
+  }
+  const lines=[];let line='';
+  for(const part of pieces){
+    const next=line?line+' '+part:part;
+    if(line&&measureContext.measureText(next).width>maxWidth){lines.push(line);line=part;}else line=next;
+  }
+  if(line)lines.push(line);
+  return lines;
+}
+function graphNode(id,maxWidth,minimumHeight=0){
+  const node=byId.get(id),lines=wrapWords(node.label,maxWidth-24);
+  const w=Math.min(maxWidth,Math.max(Math.min(96,maxWidth),Math.ceil(Math.max(...lines.map(line=>measureContext.measureText(line).width)))+24));
+  return{id,lines,w,h:Math.max(36,lines.length*18+18,minimumHeight),x:0,y:0};
+}
+function nodeMarkup(node){
+  const {id,x,y,w,h,lines}=node,label=byId.get(id).label;
+  const baseline=y+(h-lines.length*18)/2+14;
+  return `<g id="node-${esc(id)}" class="svg-node ${id===selected?'selected':''}" data-role="${esc(id)}" tabindex="0" role="button" aria-pressed="${id===selected}" aria-label="Inspect ${esc(label)}"><title>${esc(label)}</title><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7"/><text x="${x+w/2}" text-anchor="middle">${lines.map((line,i)=>`<tspan x="${x+w/2}" y="${baseline+i*18}">${esc(line)}</tspan>`).join('')}</text></g>`;
+}
+function orthogonalPath(points){
+  const clean=[];
+  for(const point of points){
+    if(clean.length&&point[0]===clean.at(-1)[0]&&point[1]===clean.at(-1)[1])continue;
+    if(clean.length>1){
+      const a=clean.at(-2),b=clean.at(-1);
+      if((a[0]===b[0]&&b[0]===point[0])||(a[1]===b[1]&&b[1]===point[1]))clean.pop();
+    }
+    clean.push(point);
+  }
+  return clean.map((p,i)=>`${i?'L':'M'}${p[0]},${p[1]}`).join(' ');
+}
+function renderGraph(){
+  const n=byId.get(selected);
+  $('associations').setAttribute('aria-pressed',String(showAssociations));
+  $('associations').textContent=showAssociations?'Hide associations':'Show associations';
+  $('focus-label').textContent=n.label;$('focus-description').textContent=n.description;
+  $('focus-chips').replaceChildren(el('span',familyById.get(n.family)?.label||'Analyst organization','chip'),el('span',`${n.parents.length} direct broader role${n.parents.length===1?'':'s'}`,'chip'),el('span',`${n.ancestors.length} inherited broader roles`,'chip'));
+  const W=Math.max(240,$('graph-wrap').clientWidth-24),margin=12,gap=W>=640?36:24;
+  const parents=data.subclass_edges.filter(e=>e.child===selected),children=data.subclass_edges.filter(e=>e.parent===selected);
+  const related=showAssociations?data.associations.filter(e=>e.source===selected||e.target===selected):[];
+  const edges=[...parents,...children,...related];
+  const otherId=e=>e.type==='subclass'?(e.child===selected?e.parent:e.child):(e.source===selected?e.target:e.source);
+  const leftIds=[...new Set(children.map(e=>e.child))],rightIds=[...new Set(parents.map(e=>e.parent))];
+  for(const e of related){
+    const id=otherId(e);
+    if(!leftIds.includes(id)&&!rightIds.includes(id))(e.source===selected?rightIds:leftIds).push(id);
+  }
+  const columnCount=1+Number(leftIds.length>0)+Number(rightIds.length>0);
+  const columnWidth=Math.min(230,(W-margin*2-gap*(columnCount-1))/columnCount);
+  const startX=(W-columnCount*columnWidth-(columnCount-1)*gap)/2;
+  const leftEdges=edges.filter(e=>leftIds.includes(otherId(e))),rightEdges=edges.filter(e=>rightIds.includes(otherId(e)));
+  const center=graphNode(selected,columnWidth,18+Math.max(leftEdges.length,rightEdges.length)*9);
+  const neighborNode=id=>graphNode(id,columnWidth,18+edges.filter(e=>otherId(e)===id).length*9);
+  const left=leftIds.map(neighborNode),right=rightIds.map(neighborNode);
+  const stackHeight=nodes=>nodes.reduce((sum,node)=>sum+node.h,0)+Math.max(0,nodes.length-1)*12;
+  const H=Math.max(center.h,stackHeight(left),stackHeight(right))+24;
+  center.x=startX+(left.length?columnWidth+gap:0)+(columnWidth-center.w)/2;center.y=(H-center.h)/2;
+  function place(nodes,leftSide){
+    let y=(H-stackHeight(nodes))/2;
+    for(const node of nodes){node.x=leftSide?startX+columnWidth-node.w:startX+(columnCount-1)*(columnWidth+gap);node.y=y;y+=node.h+12;}
+  }
+  place(left,true);place(right,false);
+  const nodes=[...left,center,...right],positions=new Map(nodes.map(node=>[node.id,node]));
+  const ports=new Map();
+  for(const [side,list] of [['left',leftEdges],['right',rightEdges]]){
+    list.sort((a,b)=>positions.get(otherId(a)).y-positions.get(otherId(b)).y||a.edge_id.localeCompare(b.edge_id));
+    list.forEach((edge,i)=>ports.set(edge.edge_id,{side,centerY:center.y+center.h/2+(i-(list.length-1)/2)*9}));
+  }
+  let paths='';
+  for(const e of edges){
+    const neighbor=positions.get(otherId(e)),port=ports.get(e.edge_id),leftSide=port.side==='left';
+    const parallel=edges.filter(edge=>otherId(edge)===neighbor.id),index=parallel.indexOf(e);
+    const neighborY=neighbor.y+neighbor.h/2+(index-(parallel.length-1)/2)*9;
+    const centerPort=[leftSide?center.x-3:center.x+center.w+3,port.centerY];
+    const neighborPort=[leftSide?neighbor.x+neighbor.w+3:neighbor.x-3,neighborY];
+    const association=e.type==='annotation_association',org=e.basis==='analyst_organization';
+    const rail=(centerPort[0]+neighborPort[0])/2+(association?1:-1)*(W>=640?4:1);
+    const fromCenter=e.type==='subclass'?e.child===selected:e.source===selected;
+    let points=[centerPort,[rail,centerPort[1]],[rail,neighborPort[1]],neighborPort];
+    if(!fromCenter)points.reverse();
+    const path=orthogonalPath(points),source=fromCenter?selected:neighbor.id,target=fromCenter?neighbor.id:selected;
+    paths+=`<path class="svg-edge-hit" data-edge="${esc(e.edge_id)}" d="${path}"/><path id="edge-${esc(e.edge_id)}" class="svg-edge ${association?'annotation':org?'organizational':''}" data-edge="${esc(e.edge_id)}" data-source="${esc(source)}" data-target="${esc(target)}" d="${path}" marker-end="url(#arrow-${association?'association':org?'root':'subclass'})"><title>${esc(association?e.label:'is a type of')}</title></path>`;
+  }
+  $('graph').setAttribute('viewBox',`0 0 ${W} ${H}`);
+  $('graph').innerHTML=`<defs>${[['subclass','var(--cyan)'],['association','var(--purple)'],['root','var(--muted)']].map(([id,c])=>`<marker id="arrow-${id}" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" viewBox="0 0 8 8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="${c}"/></marker>`).join('')}</defs>${paths}${nodes.map(nodeMarkup).join('')}`;
+  $('graph-wrap').scrollTop=Math.max(0,(H-$('graph-wrap').clientHeight)/2);
+  for(const g of $('graph').querySelectorAll('[data-role]')){
+    g.addEventListener('click',()=>selectRole(g.dataset.role));
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectRole(g.dataset.role);}});
+  }
+  for(const path of $('graph').querySelectorAll('[data-edge]'))path.addEventListener('click',()=>renderEdgeDetail(path.dataset.edge));
+  $('edge-actions').replaceChildren();
+  for(const edge of edges){
+    const a=byId.get(edge.type==='subclass'?edge.child:edge.source),b=byId.get(edge.type==='subclass'?edge.parent:edge.target);
+    const button=el('button',`${a.label} ${edge.type==='subclass'?'is a type of':edge.label} ${b.label}`,'edge-button');
+    button.dataset.edgeButton=edge.edge_id;
+    button.append(el('span',edge.basis==='analyst_organization'?'Organizing edge; no source claim':`${edge.source_ids.length} source passage${edge.source_ids.length===1?'':'s'} | ${edge.basis.replaceAll('_',' ')}`));
+    button.addEventListener('click',()=>renderEdgeDetail(edge.edge_id));$('edge-actions').append(button);
+  }
+  if(!edges.length)$('edge-actions').append(el('p','No immediate relationships are recorded for the selected view.','muted small'));
+}
+function renderTree(){const target=$('tree-view'),openPaths=new Set([...target.querySelectorAll('details[open]')].map(n=>n.dataset.path));target.replaceChildren(el('p','A role may appear under more than one broader role. Topic filters are navigation aids.','muted small'));const allowed=new Set();for(const n of matchingNodes()){allowed.add(n.role_id);n.ancestors.forEach(x=>allowed.add(x));}const children=new Map();for(const e of data.subclass_edges){if(!children.has(e.parent))children.set(e.parent,[]);children.get(e.parent).push(e.child);}let serial=0;function branch(id,depth,path=''){path+='/'+id;if(!allowed.has(id))return null;const n=byId.get(id),li=el('li'),kids=(children.get(id)||[]).filter(x=>allowed.has(x)).sort((a,b)=>byId.get(a).label.localeCompare(byId.get(b).label));const button=el('button',n.label);button.dataset.treeRole=id;button.setAttribute('aria-current',String(id===selected));button.addEventListener('click',e=>{e.preventDefault();selectRole(id);});if(n.parents.length>1)button.append(el('span',`${n.parents.length} parents`,'shared'));if(kids.length){const d=el('details');d.open=depth===0||openPaths.has(path);d.dataset.path=path;d.id='branch-'+serial++;const summary=el('summary');summary.append(button);d.append(summary);const ul=el('ul');for(const child of kids){const c=branch(child,depth+1,path);if(c)ul.append(c);}d.append(ul);li.append(d);}else li.append(button);return li;}const ul=el('ul');const top=branch(data.root_id,0);if(top)ul.append(top);else target.append(el('p','No roles match the current filters.','empty'));target.append(ul);}
+function sourceBlock(sid,open){const s=data.sources[sid],d=el('details',undefined,'evidence-source');d.open=open;d.append(el('summary',`PDF page${s.pages.length>1?'s':''} ${s.pages.join(', ')}`),el('code',sid,'source-id'),el('blockquote',s.text));return d;}
+function renderRoleDetail(id){const n=byId.get(id),d=$('details');d.replaceChildren(el('h3',n.label),el('p',n.description),el('code',n.role_id));if(n.uncertainty)d.append(el('p',n.uncertainty,'callout'));if(n.parents.length){d.append(el('h3','Broader roles'));const list=el('div',undefined,'chips');for(const pid of n.parents){const b=el('button',byId.get(pid).label);b.style.fontSize='12px';b.addEventListener('click',()=>selectRole(pid));list.append(b);}d.append(list);}if(n.aliases.length)d.append(el('p','Source wording: '+n.aliases.join('; ')+'.'));if(n.source_ids.length){d.append(el('h3','Role evidence'));n.source_ids.slice(0,4).forEach((sid,i)=>d.append(sourceBlock(sid,i===0)));if(n.source_ids.length>4){const b=el('button',`Show all ${n.source_ids.length} source references`);b.addEventListener('click',()=>{b.remove();n.source_ids.slice(4).forEach(sid=>d.append(sourceBlock(sid,false)));});d.append(b);}}else d.append(el('p','The root organizes the extracted vocabulary. It is not a category defined by the CP.','callout'));}
+function renderEdgeDetail(id){const edge=[...data.subclass_edges,...data.associations].find(e=>e.edge_id===id),association=edge.type==='annotation_association',a=byId.get(association?edge.source:edge.child),b=byId.get(association?edge.target:edge.parent),d=$('details');d.replaceChildren(el('span',association?'Association annotation':edge.basis==='analyst_organization'?'Organizational subclass':'OWL subclass','badge'),el('h3',`${a.label} ${association?edge.label:'is a type of'} ${b.label}`),el('p',edge.rationale),el('p','Evidence basis: '+edge.basis.replaceAll('_',' ')+'.','small muted'));if(association)d.append(el('p','The export records a relationship between the role descriptions. It imposes no object-property restriction on every entity in either class.','callout'));if(edge.qualifications.length){const ul=el('ul',undefined,'details-list');edge.qualifications.forEach(q=>ul.append(el('li',q)));d.append(ul);}edge.source_ids.forEach((sid,i)=>d.append(sourceBlock(sid,i===0)));if(!edge.source_ids.length)d.append(el('p','The organizing edge is explicitly analyst-defined.','callout'));}
+function download(text,filename,type){const a=el('a');const url=URL.createObjectURL(new Blob([text],{type}));a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+$('role-count').textContent=data.counts.extracted_roles;$('subtype-count').textContent=data.counts.source_backed_subclass_edges;$('association-count').textContent=data.counts.annotation_associations;
+for(const family of data.families){const o=el('option',family.label);o.value=family.id;$('family').append(o);}for(const x of data.excluded_inferences)$('excluded').append(el('li',x.claim+': '+x.reason));
+$('search').addEventListener('input',()=>{renderList();renderTree();});$('family').addEventListener('change',()=>{renderList();renderTree();});
+for(const value of ['neighborhood','hierarchy'])$('mode-'+value).addEventListener('click',()=>{mode=value;$('graph-wrap').hidden=mode!=='neighborhood';$('tree-view').hidden=mode!=='hierarchy';$('mode-neighborhood').setAttribute('aria-pressed',String(mode==='neighborhood'));$('mode-hierarchy').setAttribute('aria-pressed',String(mode==='hierarchy'));$('associations').disabled=mode==='hierarchy';renderGraph();renderTree();});
+$('associations').addEventListener('click',()=>{showAssociations=!showAssociations;$('associations').setAttribute('aria-pressed',String(showAssociations));$('associations').textContent=showAssociations?'Hide associations':'Show associations';renderGraph();});
+$('theme').addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='light';document.documentElement.dataset.theme=dark?'dark':'light';$('theme').setAttribute('aria-pressed',String(dark));$('theme').textContent=dark?'Light theme':'Dark theme';});
+$('download-owl').addEventListener('click',()=>download(data.downloads.owl,'csfc-role-ontology.owl','application/rdf+xml'));
+$('download-ttl').addEventListener('click',()=>download(data.downloads.turtle,'csfc-role-ontology.ttl','text/turtle'));
+$('download-json').addEventListener('click',()=>{const {downloads,...graph}=data;download(JSON.stringify(graph,null,2)+'\n','csfc-role-ontology.json','application/json');});
+let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(renderGraph,100);});
+selectRole(selected);
+</script>
+</body>
+</html>

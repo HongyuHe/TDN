@@ -1,0 +1,44 @@
+Security Service Algorithm Suite Specifications
+Key Establishment ML-KEM-1024 FIPS 203
+Integrity (Hashing) SHA-384 or FIPS PUB 180-4
+SHA-512 IETF RFC 6239
+IETF RFC 6379
+IETF RFC 6380
+IETF RFC 6460
+Table 12. MACsec Device (MD) Requirements
+Threshold /
+Req. # Requirement Description Alternative
+Objective
+MSC-MD-1 MACsec Devices must use AES Key Wrap for key T=O
+distribution with a cryptographic key size of 256 bits.
+MSC-MD-2 MACsec Devices must use AES GCM for MACsec with T=O
+a cryptographic key size of 256 bits.
+MSC-MD-3 MACsec Devices must authenticate using Pre-Shared T MSC-MD-14
+Keys (PSKs), known as Connectivity Association Keys
+(CAKs).
+MSC-MD-4 Requirement has been relocated to the CSfC Key
+Management Requirements Annex.
+MSC-MD-5 MACsec Devices must have the length of the CKN set T=O
+to a minimum of 16 bytes (128 bits) and generate
+the CKN using an NSA-approved KGS.
+MSC-MD-6 For each pair of MACsec Devices establishing an T=O
+encryption tunnel, one of the two must be
+configured to be the Key Server by setting its Key
+Server value to 0 (zero). The other MACsec Device
+must have its Key Server value set to 1. If a Central
+Management Site is part of the MSC Solution, it
+must be the Key Server.
+MSC-MD-7 MACsec Devices must enable data delay protection T=O
+for MACsec Key Agreement (MKA).
+MSC-MD-8 MACsec Devices must have an MKA Lifetime T=O
+Timeout limit set to 6.0 seconds and Hello Timeout
+limit set to 2.0 seconds.
+MSC-MD-9 MACsec Devices must have the replay window set to T=O
+2 or as low as possible given the nature of the Black
+Network being traversed.
+MSC-MD-10 MACsec Devices must require all data traffic on an T=O
+external facing port to be encrypted (e.g., must-
+secure).
+MSC-MD-11 MACsec Device configuration files, whether printed T=O
+or electronically copied, must be physically
+34

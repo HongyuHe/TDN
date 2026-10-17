@@ -1,0 +1,38 @@
+and integrity of the log data. The SIEM is configured to provide alerts for specific events including if the
+Outer Encryption Component or Gray Firewall receives and drops any unexpected traffic that could
+indicate a compromise. These functions can also be performed on a Red SIEM using an approved CDS,
+as described in the CSfC Continuous Monitoring Annex. A Gray SIEM is not a mandatory component of
+the MSC Solution.
+5.5 INNER ENCRYPTION COMPONENTS
+Inner Encryption Components can either be VPN Gateways or MACsec Devices. For load balance or
+other performance reasons, multiple Inner Encryption Components that comply with the requirements
+of this CP are acceptable.
+Similar to an Outer Encryption Component, an Inner Encryption Component provides authentication of
+peer VPN Gateways or MACsec Devices, cryptographic protection of data in transit, and configuration
+and enforcement of network packet handling rules.
+Similar to the Outer Encryption Component, the external interface of the Inner Encryption Component
+only permits egress of IPsec/MACsec traffic and AO-approved control plane traffic. The internal
+interface of the Inner Encryption Component is configured to only permit traffic with an IP address and
+port associated with Red Network services.
+The Inner Encryption Component must not route packets between Red and Gray Networks; any packets
+received on a Red Network interface and sent to a Gray Network interface must be transmitted within
+an IPsec or MACsec tunnel configured according to this CP. The Inner Encryption Component, selected
+from the CSfC Components List, must be physically separate from the Gray Firewall and Inner Firewall, if
+either are required by this CP.
+When an Inner MACsec Device is used, the MACsec traffic needs to be encapsulated prior to being
+processed by the Outer Encryption Component, regardless of whether it is a VPN Gateway or a MACsec
+Device. Some VPN Gateways and MACsec Devices allow this encapsulation to occur on the incoming
+interface, prior to encrypting traffic for the outer tunnel. If the selected VPN Gateway or MACsec Device
+does not have this feature, a separate standalone router or switch is necessary to provide encapsulation
+and all requirements for Solution Components in this CP must apply to it. Any AO-approved
+encapsulation protocol may be used.
+5.6 INNER FIREWALL
+An Inner Firewall is located between the Inner Encryption Component and the Red Network. In this CP,
+an Inner Firewall is not required. If the MSC Solution is deployed with solutions from other CSfC CPs
+then those CPs will specify the Inner Firewall requirements.
+5.7 RED MANAGEMENT SERVICES
+Secure administration of Inner Encryption Components and continuous monitoring of the Red Network
+are essential roles provided by the Red Management Services. Red Management Services are composed
+of a number of components that provide distinct security to the solution. As described below, this CP
+allows flexibility in the placement of some Red Management Services.
+18

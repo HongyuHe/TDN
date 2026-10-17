@@ -1,0 +1,23 @@
+Figure 5. MSC Solution for Two Networks at the Same Security Level
+4.2.2.2 Networks Operating at Different Security Levels
+A single implementation of the MSC Solution may support Red Networks of different security levels, to
+include unclassified networks. The MSC Solution provides secure connectivity between the Red
+Networks within each security level while preventing Red Networks of different security levels from
+communicating with one another. This enables a customer to use the same infrastructure to carry
+traffic from multiple networks.
+For Red Networks of different security levels, the cryptographic separation of their traffic on a Gray
+Network, as described in Section 4.2.2.1, is still present. However, because the consequences of an
+unintended data flow between different security levels are more severe than of one with a single
+security level, an additional mechanism is necessary to prevent such a flow from occurring.
+This CP uses packet filtering within Gray Networks as an additional mechanism to prevent data flows
+between networks of different security levels. Any physical path through a Gray Network between
+multiple Inner Encryption Components supporting Red Networks of different security levels must
+include at least one filtering component. This filtering component restricts the traffic flow based
+primarily on the Gray Network source and destination addresses, and only allows a packet through if the
+source and destination components intend to communicate with one another and drops the packet if
+they are not.
+When multiple security levels are used, it is critical to enforce proper IP address assignment and firewall
+rule sets. The IP address assigned must be unique to that security level such that each network’s Inner
+Encryption Component is only able to send and receive traffic to its respective Inner Encryption
+Component at the other site.
+10
