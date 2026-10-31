@@ -1,0 +1,11 @@
+{
+  "started_at": "2026-10-17T20:54:31.521105+00:00",
+  "ended_at": "2026-10-17T20:54:33.732812+00:00",
+  "command": [
+    "bash",
+    "-c",
+    "tar -czf outputs/twinet-source.tar.gz --exclude=VALIDATION.md --exclude=VALIDATION_NATIVE.md --exclude=.git --exclude=pki --exclude=private --exclude=secrets Twinet; scp -o BatchMode=yes -o ConnectTimeout=10 outputs/twinet-source.tar.gz hy@clnode176.clemson.cloudlab.us:/users/hy/tdn-evidence-v2/source.tar.gz"
+  ],
+  "returncode": 0,
+  "output": ""
+}

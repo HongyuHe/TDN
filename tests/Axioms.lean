@@ -1,0 +1,19 @@
+import TDN
+#print axioms TDN.black_has_two_layers
+#print axioms TDN.concrete_black_protection
+#print axioms TDN.Boundary.checked_machine_preserves_layers
+#print axioms TDN.PacketPolicy.forwarding_policy_protects
+#print axioms TDN.Paths.no_firewall_free_crossing
+#print axioms TDN.Imported.baseline_20261017T2101Z.chain_I_A1_filters4_FORWARD_protects
+#print axioms TDN.Imported.baseline_20261017T2101Z.observed_vpn_modes_conform
+#print axioms TDN.Imported.baseline_20261017T2101Z.observed_inner_peers_same_declared_level
+#print axioms TDN.Imported.baseline_20261017T2101Z.observed_esp_hard_lifetimes_within_bound
+#print axioms TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.snapshot_public_internet_RG034
+#print axioms TDN.Imported.baseline_loaded_20261017T2117Z.snapshot_loaded_configuration_RG022
+#print axioms TDN.Imported.shared_three_level_20261017T2117Z_gray.concrete_bypass
+#print axioms TDN.Imported.shared_inline_20261017T2128Z_gray.all_cross_level_paths_cross_firewall
+#print axioms TDN.Imported.Headers.snapshot_RG038
+#print axioms TDN.Imported.Events.observed_objective_exchange_sequence
+#print axioms TDN.Imported.Events.matching_mka_outcome
+#print axioms TDN.Imported.Events.mismatched_mka_outcome
+#print axioms TDN.Imported.IKEHeaders.recorded_headers_fit_without_ip_fragmentation

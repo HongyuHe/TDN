@@ -1,0 +1,15 @@
+{
+  "started_at": "2026-10-17T20:54:37.227118+00:00",
+  "ended_at": "2026-10-17T20:54:38.701879+00:00",
+  "command": [
+    "ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectTimeout=10",
+    "hy@clnode176.clemson.cloudlab.us",
+    "cd /users/hy/tdn-evidence-v2; ls -l bootstrap.done go/bin/go source.tar.gz 2>/dev/null; ps -eo comm= | sort | uniq -c | sort -rn | head -15"
+  ],
+  "returncode": 0,
+  "output": "-rw-r--r-- 1 hy netsyn-PG0 2178200 Oct 17 20:54 source.tar.gz\n      6 kworker/R-scsi_\n      5 sshd\n      3 dpkg-deb\n      2 systemd\n      2 sort\n      2 sh\n      2 psimon\n      2 kworker/R-kmpat\n      2 kworker/R-ib-co\n      2 chronyd\n      2 bash\n      2 agetty\n      1 watchdogd\n      1 watchdog\n      1 upowerd\n"
+}

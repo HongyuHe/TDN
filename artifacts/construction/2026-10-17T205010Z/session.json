@@ -1,0 +1,44 @@
+{
+  "run_id": "2026-10-17T205010Z",
+  "started_at": "2026-10-17T20:50:10.538794+00:00",
+  "status": "active",
+  "root": "/Users/hongyu/Projects/Formal/TDN",
+  "run_directory": "/Users/hongyu/Projects/Formal/TDN/artifacts/construction/2026-10-17T205010Z",
+  "workspaces": {
+    "evidence": "/Users/hongyu/Projects/Formal/TDN-evidence-v2",
+    "construction": "/Users/hongyu/Projects/Formal/TDN-construction-v2"
+  },
+  "models": {
+    "evidence": {
+      "model": "gpt-6-astra",
+      "reasoning": "xhigh",
+      "fresh_context": true
+    },
+    "construction": {
+      "model": "gpt-6-astra",
+      "reasoning": "xhigh",
+      "fresh_context": true
+    }
+  },
+  "twinet_source_commit": "26f056df61a728144cf83102d109492e44e98eb8",
+  "isolation": {
+    "filesystem_command_sandbox": "deny original TDN repository and legacy histories/reports",
+    "input_copy": "specification extraction only; no old proofs, importers, snapshots or proof reports",
+    "limitation": "The agent tool platform provides no per-agent permission override. Agents must use the sandbox runner; direct tool bypass is prohibited but cannot be disabled by the coordinator."
+  },
+  "agents": {
+    "evidence": {
+      "task_name": "/root/evidence_v2",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "fork_turns": "none"
+    },
+    "construction": {
+      "task_name": "/root/construction_v2",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "fork_turns": "none"
+    }
+  },
+  "workflow_sha256": "e41a92baa4c407e69f27bc669863c2b62a7b4370fcfa679928b408e701cd105a"
+}

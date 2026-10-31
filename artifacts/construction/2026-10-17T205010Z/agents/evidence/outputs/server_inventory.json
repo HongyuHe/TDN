@@ -1,0 +1,120 @@
+{
+  "schema_version": "csfc-server-inventory/v1",
+  "generated_at": "2026-10-17T20:52:18.425732+00:00",
+  "servers": [
+    {
+      "host": "clnode176.clemson.cloudlab.us",
+      "started_at": "2026-10-17T20:52:16.404275+00:00",
+      "ended_at": "2026-10-17T20:52:18.032204+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "hy@clnode176.clemson.cloudlab.us",
+        "date -u +%FT%TZ; hostname; uname -r; uptime; free -m; df -h /; command -v docker; command -v podman; command -v go; command -v ip; sudo -n true && echo SUDO_OK; sudo -n docker ps --format '{{.Names}} {{.Status}} {{.Image}}' 2>/dev/null; sudo -n ip netns list 2>/dev/null"
+      ],
+      "returncode": 0,
+      "stdout": "2026-10-17T20:52:17Z\nnode-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us\n6.8.0-138-generic\n 20:52:17 up  3:44,  1 user,  load average: 0.00, 0.00, 0.00\n               total        used        free      shared  buff/cache   available\nMem:          257820        2449      256292           5         407      255371\nSwap:              0           0           0\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda3       917G  2.7G  876G   1% /\n/usr/sbin/ip\nSUDO_OK\n",
+      "stderr": "Warning: Permanently added 'clnode176.clemson.cloudlab.us' (ED25519) to the list of known hosts.\n"
+    },
+    {
+      "host": "clnode159.clemson.cloudlab.us",
+      "started_at": "2026-10-17T20:52:16.404596+00:00",
+      "ended_at": "2026-10-17T20:52:17.995811+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "hy@clnode159.clemson.cloudlab.us",
+        "date -u +%FT%TZ; hostname; uname -r; uptime; free -m; df -h /; command -v docker; command -v podman; command -v go; command -v ip; sudo -n true && echo SUDO_OK; sudo -n docker ps --format '{{.Names}} {{.Status}} {{.Image}}' 2>/dev/null; sudo -n ip netns list 2>/dev/null"
+      ],
+      "returncode": 0,
+      "stdout": "2026-10-17T20:52:17Z\nnode-1.twinet-msc.netsyn-pg0.clemson.cloudlab.us\n6.8.0-138-generic\n 20:52:17 up  3:45,  1 user,  load average: 0.04, 0.01, 0.00\n               total        used        free      shared  buff/cache   available\nMem:          257820        2461      256268           5         429      255358\nSwap:              0           0           0\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda3       917G  2.7G  876G   1% /\n/usr/sbin/ip\nSUDO_OK\n",
+      "stderr": "Warning: Permanently added 'clnode159.clemson.cloudlab.us' (ED25519) to the list of known hosts.\n"
+    },
+    {
+      "host": "clnode163.clemson.cloudlab.us",
+      "started_at": "2026-10-17T20:52:16.404691+00:00",
+      "ended_at": "2026-10-17T20:52:18.053080+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "hy@clnode163.clemson.cloudlab.us",
+        "date -u +%FT%TZ; hostname; uname -r; uptime; free -m; df -h /; command -v docker; command -v podman; command -v go; command -v ip; sudo -n true && echo SUDO_OK; sudo -n docker ps --format '{{.Names}} {{.Status}} {{.Image}}' 2>/dev/null; sudo -n ip netns list 2>/dev/null"
+      ],
+      "returncode": 0,
+      "stdout": "2026-10-17T20:52:17Z\nnode-2.twinet-msc.netsyn-pg0.clemson.cloudlab.us\n6.8.0-138-generic\n 20:52:17 up  3:44,  1 user,  load average: 0.05, 0.02, 0.00\n               total        used        free      shared  buff/cache   available\nMem:          257820        2457      256281           5         413      255363\nSwap:              0           0           0\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda3       917G  2.7G  876G   1% /\n/usr/sbin/ip\nSUDO_OK\n",
+      "stderr": "Warning: Permanently added 'clnode163.clemson.cloudlab.us' (ED25519) to the list of known hosts.\n"
+    },
+    {
+      "host": "pc08.cloudlab.umass.edu",
+      "started_at": "2026-10-17T20:52:16.404802+00:00",
+      "ended_at": "2026-10-17T20:52:18.424876+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "hy@pc08.cloudlab.umass.edu",
+        "date -u +%FT%TZ; hostname; uname -r; uptime; free -m; df -h /; command -v docker; command -v podman; command -v go; command -v ip; sudo -n true && echo SUDO_OK; sudo -n docker ps --format '{{.Names}} {{.Status}} {{.Image}}' 2>/dev/null; sudo -n ip netns list 2>/dev/null"
+      ],
+      "returncode": 0,
+      "stdout": "2026-10-17T20:52:18Z\nnode-0.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n6.8.0-138-generic\n 14:52:18 up 22 min,  1 user,  load average: 0.00, 0.00, 0.00\n               total        used        free      shared  buff/cache   available\nMem:          257829        2085      256726           5         282      255743\nSwap:              0           0           0\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda3        63G  2.7G   57G   5% /\n/usr/sbin/ip\nSUDO_OK\n",
+      "stderr": "Warning: Permanently added 'pc08.cloudlab.umass.edu' (ED25519) to the list of known hosts.\n"
+    },
+    {
+      "host": "pc22.cloudlab.umass.edu",
+      "started_at": "2026-10-17T20:52:16.404882+00:00",
+      "ended_at": "2026-10-17T20:52:17.841183+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "hy@pc22.cloudlab.umass.edu",
+        "date -u +%FT%TZ; hostname; uname -r; uptime; free -m; df -h /; command -v docker; command -v podman; command -v go; command -v ip; sudo -n true && echo SUDO_OK; sudo -n docker ps --format '{{.Names}} {{.Status}} {{.Image}}' 2>/dev/null; sudo -n ip netns list 2>/dev/null"
+      ],
+      "returncode": 0,
+      "stdout": "2026-10-17T20:52:17Z\nnode-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n6.8.0-138-generic\n 14:52:17 up 22 min,  1 user,  load average: 0.00, 0.00, 0.00\n               total        used        free      shared  buff/cache   available\nMem:          257829        2187      256605           5         321      255642\nSwap:              0           0           0\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda3        63G  2.7G   57G   5% /\n/usr/sbin/ip\nSUDO_OK\n",
+      "stderr": "Warning: Permanently added 'pc22.cloudlab.umass.edu' (ED25519) to the list of known hosts.\n"
+    },
+    {
+      "host": "pc16.cloudlab.umass.edu",
+      "started_at": "2026-10-17T20:52:16.406602+00:00",
+      "ended_at": "2026-10-17T20:52:17.836082+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "hy@pc16.cloudlab.umass.edu",
+        "date -u +%FT%TZ; hostname; uname -r; uptime; free -m; df -h /; command -v docker; command -v podman; command -v go; command -v ip; sudo -n true && echo SUDO_OK; sudo -n docker ps --format '{{.Names}} {{.Status}} {{.Image}}' 2>/dev/null; sudo -n ip netns list 2>/dev/null"
+      ],
+      "returncode": 0,
+      "stdout": "2026-10-17T20:52:17Z\nnode-2.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n6.8.0-138-generic\n 14:52:17 up 22 min,  1 user,  load average: 0.00, 0.00, 0.00\n               total        used        free      shared  buff/cache   available\nMem:          257829        2157      256633           5         325      255671\nSwap:              0           0           0\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda3        63G  2.7G   57G   5% /\n/usr/sbin/ip\nSUDO_OK\n",
+      "stderr": "Warning: Permanently added 'pc16.cloudlab.umass.edu' (ED25519) to the list of known hosts.\n"
+    }
+  ]
+}

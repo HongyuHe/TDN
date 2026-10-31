@@ -1,0 +1,15 @@
+{
+  "started_at": "2026-10-17T20:58:21.920176+00:00",
+  "ended_at": "2026-10-17T20:59:09.202857+00:00",
+  "command": [
+    "ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectTimeout=10",
+    "hy@clnode176.clemson.cloudlab.us",
+    "set -eu; cd /users/hy/tdn-evidence-v2/Twinet; while ! sudo docker image inspect twinet-msc:construction-v2 >/dev/null 2>&1; do sleep 5; done; sudo bin/twinet msc --spec examples/msc/construction/ipsec-baseline.json --state-dir /users/hy/tdn-evidence-v2/private/ipsec-baseline up"
+  ],
+  "returncode": 0,
+  "output": "ready O_A1 <-> O_B1\nready O_A2 <-> O_B2\nready I_A1 <-> I_B1\nready I_A2 <-> I_B2\nMSC lab csfc-v2: 23 devices, 24 links, image twinet-msc:construction-v2\n"
+}
