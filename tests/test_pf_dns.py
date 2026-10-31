@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_pf_dns import parse
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/freebsd-PF-complete-v12"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z/freebsd-PF-complete-v12"
 
 
 class PFDNSImportTests(unittest.TestCase):

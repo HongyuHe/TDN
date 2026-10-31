@@ -18,7 +18,7 @@ class ClockImportTests(unittest.TestCase):
         self.paths = {}
         for red, name in [(True, "independent-Red-clocks-v3"), (False, "independent-Gray-clocks-v3")]:
             self.paths[red] = Path(self.temp.name) / name
-            shutil.copytree(ROOT / "artifacts/snapshots/2026-10-24T014455Z" / name, self.paths[red])
+            shutil.copytree(ROOT / "data/snapshots/2026-10-24T014455Z" / name, self.paths[red])
 
     def tearDown(self):
         self.temp.cleanup()

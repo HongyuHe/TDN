@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_ike_contexts import parse, parse_listing
 from validate_evidence import EvidenceError
 
-BUNDLE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/native-shared-four-levels-20261024T015300Z-coverage-v1"
+BUNDLE = ROOT / "data/snapshots/2026-10-24T014455Z/native-shared-four-levels-20261024T015300Z-coverage-v1"
 
 
 class IKEContextTests(unittest.TestCase):

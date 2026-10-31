@@ -2,9 +2,6 @@ import TDN.Semantics.KernelResponses
 
 namespace TDN.KernelResponses
 
-/-- When every generated response is confined to loopback, a resulting network
-state has an execution in the underlying network model. Generation, routing and
-consumption remain represented, but cannot create an external packet state. -/
 theorem strict_response_result_has_network_execution {S A : Type}
     (network : Cslib.LTS S A) (config : Config S)
     (checked : ∀ source, config.generates source → ∀ port,

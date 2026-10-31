@@ -12,8 +12,8 @@ sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_macsec_key_sources import parse, public_config
 from validate_evidence import EvidenceError
 
-BASE = ROOT / "artifacts/snapshots/2026-10-24T014455Z"
-SOURCES = ROOT / "artifacts/construction/2026-10-24T014455Z/evidence/runtime/hostap-source"
+BASE = ROOT / "data/snapshots/2026-10-24T014455Z"
+SOURCES = ROOT / "data/construction/2026-10-24T014455Z/evidence/runtime/hostap-source"
 
 
 class KeySourcesTests(unittest.TestCase):

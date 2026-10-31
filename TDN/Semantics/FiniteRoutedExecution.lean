@@ -2,7 +2,6 @@ import TDN.Semantics.FiniteExecution
 
 namespace TDN.Execution
 
-/-- A disjoint destination interval makes a rule impossible on a selected route. -/
 def ExcludesRoute (rule : PacketPolicy.Rule) (route : Route) : Prop :=
   ∃ atom ∈ rule.atoms, match atom with
     | .destinationRange low high => high < route.low ∨ route.high < low
@@ -25,7 +24,6 @@ lemma matching_route_not_excluded {rule : PacketPolicy.Rule} {route : Route}
   unfold Route.matches at routed
   omega
 
-/-- The route destination interval is a checked fact at the following hook. -/
 def withRoute (rule : PacketPolicy.Rule) (route : Route) : PacketPolicy.Rule :=
   { rule with atoms := .destinationRange route.low route.high :: rule.atoms }
 
@@ -37,8 +35,6 @@ lemma matches_with_route {rule : PacketPolicy.Rule} {route : Route}
     PacketPolicy.Atom.holds]
   exact ⟨decide_eq_true routed, matched⟩
 
-/-- Every route alternative is checked. A rule is skipped only when its destination
-interval cannot match that route. No captured rule or default action is removed. -/
 def FiniteRoutedForwardChecks (devices : List DeviceData) (ports : List PortData)
     (routes : List Route) : Prop :=
   ∀ route ∈ routes,
@@ -87,8 +83,6 @@ theorem finite_routed_forward_checks_sound (devices : List DeviceData) (ports : 
   · exact False.elim (matching_route_not_excluded matched selected.2.1 excluded)
   · exact checked_rule_stack_effect ingress stack (matches_with_route matched selected.2.1)
 
-/-- Route-aware literal checks establish the same local conditions and global theorem
-used by the native IPv4 cases. The output check remains a stronger sufficient condition. -/
 theorem local_stack_conditions_of_routed_finite_checks
     (devices : List DeviceData) (ports : List PortData)
     (routes : List Route) (links switches : List (Nat × Nat))

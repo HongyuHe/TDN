@@ -4,7 +4,7 @@ import json
 from datetime import datetime, timezone
 
 root = Path.cwd()
-source = root / "artifacts/extraction/requirements/groups.json"
+source = root / "data/extraction/requirements/groups.json"
 data = json.loads(source.read_text())
 semantic = """
 001|For every selected capability and applicable requirement, satisfy its mandatory branch or one documented alternative; evaluate policy precedence explicitly.|capabilities, components, applicable policies, requirement branches

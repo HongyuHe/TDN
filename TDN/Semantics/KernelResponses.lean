@@ -3,9 +3,6 @@ import Cslib.Foundations.Semantics.LTS.Basic
 
 namespace TDN.KernelResponses
 
-/-- Echo replies and error quotes both copy bytes from an existing packet.
-The pending response retains that source state for payload/protection provenance.
-No assumption about whether generation precedes INPUT or FORWARD is needed. -/
 inductive Kind where
   | echo | errorQuote
   deriving DecidableEq, Repr
@@ -17,9 +14,6 @@ instance (protocol : String) : Decidable (ResponseProtocol protocol) := by
   unfold ResponseProtocol
   infer_instance
 
-/-- An allow rule either restricts output to loopback or names a protocol
-outside the kernel-response class. This finite syntactic check is sufficient,
-without assuming any packet's desired global protection property. -/
 def SafeResponseRule (rule : PacketPolicy.Rule) : Prop :=
   PacketPolicy.Atom.egress "lo" ∈ rule.atoms ∨
   ∃ atom ∈ rule.atoms, match atom with
@@ -33,8 +27,6 @@ instance (rule : PacketPolicy.Rule) : Decidable (SafeResponseRule rule) := by
     cases atom <;> infer_instance
   infer_instance
 
-/-- Ordered rules with default denial confine every kernel-response protocol
-to loopback, regardless of source/destination fields or copied content. -/
 theorem accepted_response_is_loopback (rules : List PacketPolicy.Rule)
     (checked : ∀ rule ∈ rules, rule.verdict = .allow → SafeResponseRule rule)
     (packet : PacketPolicy.Packet) (response : ResponseProtocol packet.protocol)
@@ -49,8 +41,6 @@ theorem accepted_response_is_loopback (rules : List PacketPolicy.Rule)
     case protocol name =>
       exact False.elim (excludes (holds ▸ response))
 
-/-- The response copies from source. Header bytes may be changed arbitrarily
-within ICMP/ICMPv6, which conservatively includes echo and all error quotes. -/
 inductive State (NetworkState : Type) where
   | network (state : NetworkState)
   | generated (source : NetworkState) (kind : Kind) (header : PacketPolicy.Packet)
@@ -61,9 +51,6 @@ inductive Action (NetworkAction : Type) where
   | network (action : NetworkAction)
   | generate | route | emit | consume
 
-/-- The hook sees the actual selected output interface. A concrete application
-binds routing, enabled generators and rules to the same captured device.
-emit reconstructs the copied-body response, preserving its source provenance. -/
 structure Config (NetworkState : Type) where
   generates : NetworkState → Prop
   selectedRoute : NetworkState → PacketPolicy.Packet → Nat → Prop
@@ -104,10 +91,6 @@ def Invariant {S : Type} (config : Config S) (safe : S → Prop) : State S → P
       config.generates source ∧ ResponseProtocol header.protocol
   | .consumed => True
 
-/-- Rule-local OUTPUT checks preserve an existing network safety invariant
-when kernel responses are added at arbitrary enabled processing points.
-Generation and routing are modeled explicitly; no response can escape to
-a non-loopback interface under these checked rules. -/
 lemma response_output_guards_preserve_network_invariant {S A : Type}
     (network : Cslib.LTS S A) (config : Config S) (safe : S → Prop)
     (networkPreserves : network.TrInv safe)
@@ -142,9 +125,6 @@ theorem network_observations_remain_safe_with_kernel_responses {S A : Type}
     (response_output_guards_preserve_network_invariant network config safe networkPreserves checked)
     (.network before) actions (.network after) run initial
 
-
-/-- Pending copied-byte responses retain their triggering network state's
-safety facts. The routed case also retains the actual route relation. -/
 def ProvenanceInvariant {S : Type} (config : Config S) (safe : S → Prop) : State S → Prop
   | .network state => safe state
   | .generated source _ header =>
@@ -154,9 +134,6 @@ def ProvenanceInvariant {S : Type} (config : Config S) (safe : S → Prop) : Sta
         config.selectedRoute source header port
   | .consumed => True
 
-/-- Replies may be emitted when local ingress, association, route and OUTPUT
-checks establish that their copied bytes retain the required protection.
-The assumption is local to one emission; CSLib supplies the execution proof. -/
 lemma local_reply_checks_preserve_network_safety {S A : Type}
     (network : Cslib.LTS S A) (config : Config S) (safe : S → Prop)
     (networkPreserves : network.TrInv safe)

@@ -44,8 +44,6 @@ initialize derivedCodecTypes : SimplePersistentEnvExtension Name NameSet ←
       names.foldl (fun state name => state.insert name) state) {}
   }
 
-/-- Build codecs from the existing record types and their fields. The same type
-therefore controls both the JSON decoder and the Lean expression constructor. -/
 private partial def deriveCodecs (name : Name) (visited : NameSet := {}) : CommandElabM NameSet := do
   if visited.contains name then return visited
   let visited := visited.insert name
@@ -119,7 +117,6 @@ unsafe def elabData : CommandElab := fun original => do
   liftCoreM <| enableRealizationsForConst name
   addDocStringCore name s!"Imported from {path}, record {(stx[7].isStrLit?.getD "")}."
 
-/-- Export is used only to migrate the already checked v3 literal definitions. -/
 syntax (name := tdnExport) "tdn_export " ident " to " str " [" str "]" : command
 
 @[command_elab tdnExport]

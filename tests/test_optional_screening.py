@@ -16,7 +16,7 @@ class OptionalScreeningTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.path = Path(self.temp.name) / "bundle"
-        shutil.copytree(ROOT / "artifacts/snapshots/2026-10-24T014455Z/utility-v4/screen-existing", self.path)
+        shutil.copytree(ROOT / "data/snapshots/2026-10-24T014455Z/utility-v4/screen-existing", self.path)
 
     def tearDown(self):
         self.temp.cleanup()

@@ -53,7 +53,6 @@ structure NetworkSnapshot where
   routes : List ObservedRoute
   deriving DecidableEq, Repr, Lean.ToJson, Lean.FromJson, Lean.ToExpr
 
-/-- Every route must name an observed source on its own device. -/
 def RoutesHaveSources (snapshot : NetworkSnapshot) : Prop :=
   ∀ route ∈ snapshot.routes, ∃ observation ∈ snapshot.observations,
     observation.id = route.observationId ∧ observation.device = route.device ∧

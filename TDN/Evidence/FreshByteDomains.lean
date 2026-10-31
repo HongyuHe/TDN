@@ -57,9 +57,6 @@ lemma all_byte_source_domains : ∀ port ∈ redSources, ∀ d,
   rw [assigned] at present
   simpa using present
 
-/-- Every source byte retains its full domain label through arbitrary simultaneous
-packet execution, splitting and intermediate plaintext reassembly. Actual kernel
-reassembly/hook and authenticated-envelope correspondence remain explicit. -/
 theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
     {after : List (ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
     {actions : List (ByteFlows.Action Execution.Action)}
@@ -73,7 +70,6 @@ theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
     config redSources domains byteLayout byteAllowed all_byte_domain_conditions all_byte_source_domains
     all_byte_source_checks all_byte_recipient_checks run packet present delivered recipientDomain recipient
   exact fun byte member => congrArg fullLevel (checked byte member)
-
 
 lemma all_byte_black_checks : ∀ d ∈ domains, ∀ port ∈ TDN.Imported.FreshSharedExecution.blackPorts,
     byteLayout d port = [2, d + 10] := by
@@ -154,9 +150,6 @@ lemma all_byte_source_domains : ∀ port ∈ redSources, ∀ d,
   rw [assigned] at present
   simpa using present
 
-/-- Every source byte retains its full domain label through arbitrary simultaneous
-packet execution, splitting and intermediate plaintext reassembly. Actual kernel
-reassembly/hook and authenticated-envelope correspondence remain explicit. -/
 theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
     {after : List (ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
     {actions : List (ByteFlows.Action Execution.Action)}
@@ -170,7 +163,6 @@ theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
     config redSources domains byteLayout byteAllowed all_byte_domain_conditions all_byte_source_domains
     all_byte_source_checks all_byte_recipient_checks run packet present delivered recipientDomain recipient
   exact fun byte member => congrArg fullLevel (checked byte member)
-
 
 lemma all_byte_black_checks : ∀ d ∈ domains, ∀ port ∈ TDN.Imported.FreshBaselineExecution.blackPorts,
     byteLayout d port = [2, d + 10] := by

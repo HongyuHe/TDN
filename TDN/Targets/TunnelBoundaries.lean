@@ -5,9 +5,6 @@ import TDN.Semantics.ExecutionAuthentication
 namespace TDN.Targets
 open Execution
 
-/-- The boundary view selects physical receiving and transmitting ports. Outbound envelopes
-are inherited from the surrounding protected-payload execution. Inbound packets may have arbitrary
-envelope contents; only their initial local authentication metadata is empty. -/
 def operationalTunnelBoundary (c : Config) (layout : Nat → List Nat)
     (inside outside : List Nat) (tag component : Nat) : TunnelBoundaryView Execution.State Action where
   system := RestrictedExecution.within (lts c) (fun s => c.owner s.port = component)
@@ -23,8 +20,6 @@ def operationalTunnelBoundary (c : Config) (layout : Nat → List Nat)
         c.owner left.port = component)
   splitTunnelExit := fun s => s.phase = .ready ∧ s.port ∈ outside ∧ tag ∉ s.frame.tags
 
-/-- Literal port layouts and the local routing/filter/SA checks imply both boundary directions.
-The inbound result identifies an actual decryption of the selected layer on the same payload. -/
 theorem tunnel_boundary_from_local_stack_checks (c : Config) (layout : Nat → List Nat)
     (inside outside : List Nat) (tag component : Nat)
     (conditions : LocalStackConditions c layout)
@@ -59,8 +54,6 @@ theorem tunnel_boundary_from_local_stack_checks (c : Config) (layout : Nat → L
     rw [stack] at missing
     exact missing (outsideCheck finish.port outsideMember)
 
-/-- The local boundary proof supplies the operational clauses of RG-029. The remaining
-finite configuration checks retain the selected tunnel mode and optional MAC objectives. -/
 theorem inner_tunnel_requirements_from_local_checks
     (c : Config) (layout : Nat → List Nat) (inside outside : List Nat) (component : Nat)
     (conditions : LocalStackConditions c layout)
@@ -79,8 +72,6 @@ theorem inner_tunnel_requirements_from_local_checks
   ⟨tunnel_boundary_from_local_stack_checks c layout inside outside 1 component
     conditions inboundTags insideCheck outsideCheck, settings⟩
 
-/-- Outer input inherits the Inner protection of the surrounding data-path execution.
-The finite Gray-port check supplies that layer; actual Outer decryption remains device-bound. -/
 theorem outer_tunnel_requirements_from_local_checks
     (c : Config) (layout : Nat → List Nat) (inside outside : List Nat) (component : Nat)
     (conditions : LocalStackConditions c layout)

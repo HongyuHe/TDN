@@ -9,7 +9,7 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts/construction/evidence'))
 from derive_routing_inventory import derive
-BASE=ROOT/'artifacts/snapshots/2026-10-24T014455Z'
+BASE=ROOT/'data/snapshots/2026-10-24T014455Z'
 SOURCE=BASE/'native-all-process-inventory-v3'
 BUNDLES=[BASE/'native-baseline-20261024T015000Z',BASE/'native-shared-four-levels-20261024T015300Z-coverage-v1']
 

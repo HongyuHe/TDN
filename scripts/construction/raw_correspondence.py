@@ -1,2 +1,3 @@
 """Compatibility import for the shared evidence-service parser."""
-from evidence_service.parsers.correspondence import *
+import evidence_package
+from tdn_evidence.parsers.correspondence import *

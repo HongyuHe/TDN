@@ -3,8 +3,6 @@ import TDN.Semantics.DistributedFragments
 
 namespace TDN.Targets
 
-/-- Each independently forwarded fragment at Black retains both protection layers and the
-original payload identity. Different fragments may take different permitted route choices. -/
 theorem every_distributed_black_piece_is_double_protected {Byte : Type}
     (c : Execution.Config) (layout : Nat → List Nat) (sources blackPorts : List Nat)
     (encodedBytes : Execution.Frame → List Byte)

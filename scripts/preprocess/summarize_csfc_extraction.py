@@ -5,7 +5,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/extraction'
+OUT = ROOT / 'data/extraction'
 
 
 def read(name):
@@ -115,7 +115,7 @@ def main():
             lines.append('- ' + note['issue_id'] + ' (' + ', '.join(note['group_ids']) + '): ' + note.get('resolution', note['detail']))
     lines += [
         '', '## Reproduce the saved extraction', '',
-        'Run commands from the repository root. The replay uses the retained, hash-checked PDF under `artifacts/extraction/source/`. The separate copy under `docs/` is optional.', '',
+        'Run commands from the repository root. The replay uses the retained, hash-checked PDF under `data/extraction/source/`. The separate copy under `docs/` is optional.', '',
         'For regeneration, use Python with `pdfplumber==0.11.9` and `Pillow==12.3.0`. Final checks use Python standard-library modules and Perl. The optional `--render` path also requires Poppler and Tesseract; the saved renders and crops are already included.', '',
         '```bash', 'python3 scripts/preprocess/run_csfc_preprocessing.py --stage ontology', 'python3 scripts/preprocess/run_csfc_preprocessing.py --stage check', 'python3 scripts/preprocess/run_csfc_preprocessing.py --stage all', '```', '',
         'The ontology stage regenerates the hierarchy, OWL RDF/XML, Turtle, Markdown, and standalone HTML from the current roles and reviewed [relationship decisions](roles/ontology_decisions.json). The check stage verifies those outputs and the full review binding. For optional independent RDF parsing, install `scripts/preprocess/requirements-csfc-ontology.txt` in a virtual environment and run `python3 scripts/preprocess/preprocess_csfc_ontology.py --check --rdf-check`.', '',

@@ -2,8 +2,6 @@ import TDN.Semantics.TraceEvents
 
 namespace TDN.RestrictedExecution
 
-/-- Restrict a traversal to states in one declared processing scope. A device-local traversal
-ends at its egress; a later wire transfer belongs to the surrounding network execution. -/
 def within {S A : Type} (system : Cslib.LTS S A) (scope : S → Prop) : Cslib.LTS S A where
   Tr := fun before action after => system.Tr before action after ∧ scope before ∧ scope after
 

@@ -8,7 +8,8 @@ import re
 from validate_evidence import validate_bundle, EvidenceError
 from loaded_policy import loaded_policies
 
-from evidence_service.adapters import Unsupported
+import evidence_package
+from tdn_evidence.adapters import Unsupported
 
 
 def quoted(value):
@@ -28,7 +29,7 @@ def identifier(value):
     return "x_" + value if not value or value[0].isdigit() else value
 
 
-from evidence_service.parsers.packet_policy import parse_rule
+from tdn_evidence.parsers.packet_policy import parse_rule
 
 
 def lean_atom(atom):

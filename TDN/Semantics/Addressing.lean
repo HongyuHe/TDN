@@ -18,7 +18,6 @@ def Owns {Label : Type} (ranges : List (Range Label)) (address : Nat) (label : L
 def Separated {Label : Type} (ranges : List (Range Label)) : Prop :=
   ∀ a ∈ ranges, ∀ b ∈ ranges, a.label ≠ b.label → a.high < b.low ∨ b.high < a.low
 
-/-- Disjoint ranges at distinct labels make address ownership unambiguous. -/
 theorem separated_ranges_unique_label {Label : Type} {ranges : List (Range Label)}
     (separated : Separated ranges) {address : Nat} {a b : Label}
     (ha : Owns ranges address a) (hb : Owns ranges address b) : a = b := by

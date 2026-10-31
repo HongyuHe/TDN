@@ -40,15 +40,9 @@ inductive Action where
   | encapsulate | decapsulate | wire | bridge | plain | deliver | drop
   deriving DecidableEq, Repr
 
-/-- Local policy metadata is reconstructed from the visible header and actual
-local decryptions. A carrier's concealed Ethernet body supplies no IP matches. -/
 def policyHeader (c : Config) (state : State) (header : PacketPolicy.Packet) : PacketPolicy.Packet :=
   { header with ingress := c.ip.interfaceName state.enteredPort, egress := c.ip.interfaceName state.port, inboundPolicies := state.authenticated, outboundPolicies := (Execution.selectedAssociations (c.ip.outbound state.port) header).map Execution.Association.id, connectionState := state.tracking }
 
-/-- MACsec transmit uses the reusable controlled-port operation. Only protected,
-fully encrypted data maps to a confidentiality envelope. Other configurations
-use a conservative plain branch when protection, encryption or zero offset is absent.
-That branch exposes at least as much data as integrity-only or partial encryption. -/
 def fullMACsecTransmit (port : MACPort) (association : MACsecAssociation) (body : Body) : Prop :=
   port.transmitAssociation = some association ∧
   LinkProtection.transmit port.settings (some association.keyGeneration) body =
@@ -168,8 +162,6 @@ lemma step_preserves_payload {c : Config} {before after : State} {action : Actio
     after.frame.originDomain = before.frame.originDomain := by
   cases step <;> exact ⟨rfl, rfl⟩
 
-/-- All mechanisms conserve the original payload and origin throughout routing,
-filtering, wire transfer, nested encryption and carrier encapsulation. -/
 theorem all_executions_preserve_payload (c : Config)
     {before after : State} {actions : List Action}
     (run : (lts c).MTr before actions after) :

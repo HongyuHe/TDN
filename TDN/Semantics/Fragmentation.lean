@@ -3,9 +3,6 @@ import Mathlib.Data.List.Basic
 
 namespace TDN.Fragmentation
 
-/-- Header is the metadata selected by an abstraction. Ghost origin or protection
-annotations are not wire reassembly keys. A concrete implementation must justify their
-preservation separately; equal ordinary fragment keys do not imply equal origins. -/
 structure Datagram (Header Byte : Type) where
   header : Header
   bytes : List Byte
@@ -35,15 +32,12 @@ theorem reassembly_restores_bytes {Header Byte : Type} [DecidableEq Header]
   cases packet
   simp [join, split]
 
-/-- Internal fragment bookkeeping uses none; a visible network operation retains its label. -/
 def stuttering {State Action : Type} (system : Cslib.LTS State Action) :
     Cslib.LTS State (Option Action) where
   Tr before action after := match action with
     | none => before = after
     | some label => system.Tr before label after
 
-/-- A detailed implementation step either preserves the datagram projection or performs one
-modeled network operation. This local implementation contract includes reassembly validation. -/
 def StepProjection {Detailed Abstract Action : Type}
     (detailed : Cslib.LTS Detailed (Option Action)) (abstract : Cslib.LTS Abstract Action)
     (project : Detailed → Abstract) : Prop :=
@@ -66,8 +60,6 @@ lemma stuttering_preserves_invariant {State Action : Type} (system : Cslib.LTS S
   | none => exact step ▸ initial
   | some label => exact preserved before label after step initial
 
-/-- CSLib simulation transfers the datagram invariant to every fragmented execution.
-The result applies to all matching implementations, not merely one size or one observed trace. -/
 theorem fragmented_execution_preserves_invariant {Detailed Abstract Action : Type}
     (detailed : Cslib.LTS Detailed (Option Action)) (abstract : Cslib.LTS Abstract Action)
     (project : Detailed → Abstract) (checked : StepProjection detailed abstract project)
@@ -82,8 +74,6 @@ theorem fragmented_execution_preserves_invariant {Detailed Abstract Action : Typ
     (project before) actions finish matched initial
   simpa [← equal] using result
 
-/-- Every fragment has the same inherited metadata and a contiguous nonoverlapping offset.
-The byte concatenation defines the reassembled body. These are finite local assembly checks. -/
 def Contiguous {Header Byte : Type} (offset : Nat) :
     List (Fragment Header Byte) → Prop
   | [] => True
@@ -134,8 +124,6 @@ theorem arbitrary_partition_is_valid {Header Byte : Type} (packet : Datagram Hea
   | nil => exact False.elim (nonempty rfl)
   | cons first rest => simp [makePieces]
 
-/-- Any finite number of simultaneous fragments can be carried. A valid assembly preserves
-the logical packet; malformed, overlapping or inconsistent assemblies have no reassembly step. -/
 structure SegmentedState (Logical Header Byte : Type) where
   logical : Logical
   fragments : Option (List (Fragment Header Byte))
@@ -171,7 +159,6 @@ theorem segmented_projection_checked {Logical Header Byte Action : Type}
   | moveFragments step header bytes => exact step
   | reassemble => rfl
 
-/-- The fragment-list invariant binds each in-flight piece to the projected datagram. -/
 def PiecesConsistent {Logical Header Byte : Type}
     (encode : Logical → Datagram Header Byte) (state : SegmentedState Logical Header Byte) : Prop :=
   ∀ pieces, state.fragments = some pieces → ValidPieces (encode state.logical) pieces

@@ -45,7 +45,7 @@ class HarnessFailureContract(unittest.TestCase):
         return module
 
     def temporary(self):
-        directory = MODULE.parents[2] / 'artifacts/extraction/validation'
+        directory = MODULE.parents[2] / 'data/extraction/validation'
         directory.mkdir(parents=True, exist_ok=True)
         return tempfile.TemporaryDirectory(prefix='harness-test-', dir=directory)
 
@@ -106,7 +106,7 @@ class ExportConsistencyContract(unittest.TestCase):
             self.assertTrue(validator.exhaustive_view_errors(root, records))
 
     def test_reference_date_stays_in_its_table_row(self):
-        path = MODULE.parents[2] / 'artifacts/extraction/source/source_index.jsonl'
+        path = MODULE.parents[2] / 'data/extraction/source/source_index.jsonl'
         records = {r['source_id']: r for r in map(json.loads, path.read_text().splitlines())}
         prefix = 'CSFC-MSC-1.3.0-4e40e3d83708:p064:'
         row = records[prefix + 'u021']
@@ -116,7 +116,7 @@ class ExportConsistencyContract(unittest.TestCase):
 
     def test_omitted_table_qualification_is_rejected(self):
         validator = self.module('validate_csfc_extraction.py')
-        path = MODULE.parents[2] / 'artifacts/extraction/source/source_index.jsonl'
+        path = MODULE.parents[2] / 'data/extraction/source/source_index.jsonl'
         source = list(map(json.loads, path.read_text().splitlines()))
         index = {r['source_id']: r for r in source}
         row = next(r for r in source if r.get('requirement_id') == 'MSC-SR-14')
@@ -139,7 +139,7 @@ class NetworkMappingContract(unittest.TestCase):
     module = HarnessFailureContract.module
 
     def fixture(self):
-        root = MODULE.parents[2] / 'artifacts/extraction'
+        root = MODULE.parents[2] / 'data/extraction'
         examples = json.loads((root / 'networks/examples.json').read_text())[1:2]
         groups = {g['group_id']: g for g in json.loads((root / 'requirements/groups.json').read_text())['groups']}
         index = {r['source_id']: r for r in map(json.loads, (root / 'source/source_index.jsonl').read_text().splitlines())}
@@ -179,7 +179,7 @@ class NetworkPresentationContract(unittest.TestCase):
     module = HarnessFailureContract.module
 
     def caption_fixture(self):
-        root = MODULE.parents[2] / 'artifacts/extraction'
+        root = MODULE.parents[2] / 'data/extraction'
         units = [json.loads(line) for line in (root / 'source/source_index.jsonl').read_text().splitlines()]
         spans = [json.loads(line) for line in (root / 'baseline/spans.jsonl').read_text().splitlines()]
         figures = json.loads((root / 'networks/crop_manifest.json').read_text())
@@ -202,7 +202,7 @@ class NetworkPresentationContract(unittest.TestCase):
 
     def test_details_cannot_leak_back_into_overview(self):
         validator = self.module('validate_csfc_artifacts.py')
-        root = MODULE.parents[2] / 'artifacts/extraction/networks'
+        root = MODULE.parents[2] / 'data/extraction/networks'
         examples = json.loads((root / 'examples.json').read_text())
         captions = json.loads((root / 'figure_captions.json').read_text())
         overview = '\n'.join((root / name).read_text() for name in ['networks.md', 'protocol_exchanges.md', 'configurations.md'])
@@ -212,7 +212,7 @@ class NetworkPresentationContract(unittest.TestCase):
 
     def test_configuration_in_network_topologies_is_rejected(self):
         validator = self.module('validate_csfc_artifacts.py')
-        root = MODULE.parents[2] / 'artifacts/extraction/networks'
+        root = MODULE.parents[2] / 'data/extraction/networks'
         examples = json.loads((root / 'examples.json').read_text())
         overviews = {kind: (root / name).read_text() for kind, name in [('topology', 'networks.md'), ('protocol_exchange', 'protocol_exchanges.md'), ('textual_configuration', 'configurations.md')]}
         self.assertEqual(validator.example_partition_errors(examples, overviews), [])

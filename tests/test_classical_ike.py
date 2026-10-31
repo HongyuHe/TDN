@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_classical_ike import parse, parse_offers
 from validate_evidence import EvidenceError
 
-SNAPSHOTS = ROOT / "artifacts/snapshots/2026-10-24T014455Z"
+SNAPSHOTS = ROOT / "data/snapshots/2026-10-24T014455Z"
 BASELINE = SNAPSHOTS / "native-baseline-20261024T015000Z"
 PUBLIC = SNAPSHOTS / "native-public-auth-bindings-20261024T020200Z"
 

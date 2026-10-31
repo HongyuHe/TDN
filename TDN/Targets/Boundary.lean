@@ -2,7 +2,6 @@ import TDN.Targets.Architecture
 
 namespace TDN.Boundary
 
-/-- Unlike Step, an edge may perform an unsafe plaintext forwarding operation. -/
 inductive Operation where
   | forward | pushInner | pushOuter | popInner | popOuter
   deriving DecidableEq, Repr
@@ -13,7 +12,6 @@ structure Edge where
   operation : Operation
   deriving DecidableEq
 
-/-- Local syntactic obligation, to be checked against every translated forwarding edge. -/
 def Safe (e : Edge) : Prop :=
   match e.operation with
   | .forward => e.sourceZone = e.destinationZone
@@ -33,7 +31,6 @@ inductive StackEffect : Operation → List Seal → List Seal → Prop
   | popOuter (seals : List Seal) (o : Seal) (layer : o.layer = .outer) :
       StackEffect .popOuter (o :: seals) seals
 
-/-- Operational forwarding allows all supplied edges, including unsafe ones. -/
 def Executes (e : Edge) (a b : State) : Prop :=
   a.zone = e.sourceZone ∧ b.zone = e.destinationZone ∧
   b.level = a.level ∧ StackEffect e.operation a.seals b.seals
@@ -63,7 +60,6 @@ lemma checked_edge_preserves_layers (e : Edge) (safe : Safe e)
 def MachineStep (edges : List Edge) (a b : State) : Prop :=
   ∃ e ∈ edges, Executes e a b
 
-/-- A finite per-edge certificate lifts to every finite modeled forwarding execution. -/
 theorem checked_machine_preserves_layers (edges : List Edge)
     (checked : ∀ e ∈ edges, Safe e) {a b : State}
     (execution : Relation.ReflTransGen (MachineStep edges) a b)
@@ -74,12 +70,10 @@ theorem checked_machine_preserves_layers (edges : List Edge)
       obtain ⟨e, he, hs⟩ := step
       exact checked_edge_preserves_layers e (checked e he) hs ih
 
-/-- Mutation witness: adding a Red-to-Gray plain forward edge fails its local obligation. -/
 theorem plaintext_bypass_is_unsafe : ¬ Safe ⟨.red, .gray, .forward⟩ := by
   unfold Safe
   decide
 
-/-- A missing Outer encryption operation also fails, even with a working Inner layer. -/
 theorem outer_bypass_is_unsafe : ¬ Safe ⟨.gray, .black, .forward⟩ := by
   unfold Safe
   decide

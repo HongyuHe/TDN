@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_family_execution import main
 from nft_source_policy import parse_table
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/families-v13/families-444"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z/families-v13/families-444"
 
 
 class FamilySourceGuardTests(unittest.TestCase):

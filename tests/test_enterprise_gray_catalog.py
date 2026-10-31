@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT / "scripts/construction"))
 from catalog_enterprise_gray import extract, TABLE_COUNTS
 from validate_evidence import EvidenceError
 
-SOURCE = ROOT / "artifacts/construction/2026-10-24T014455Z/references/enterprise-gray.indexed.txt"
+SOURCE = ROOT / "data/construction/2026-10-24T014455Z/references/enterprise-gray.indexed.txt"
 
 
 class EnterpriseGrayCatalogTests(unittest.TestCase):

@@ -117,7 +117,7 @@ def parse(bundle):
     require(set(before) == set(after) == set(devices), "Incomplete observed device inventory")
     before_interfaces = bind_attachments(before, devices, evidence, by_id)
     after_interfaces = bind_attachments(after, devices, evidence, by_id)
-    kernel_path = Path(__file__).resolve().parents[2] / "artifacts/construction/2026-10-24T014455Z/references/transec/linux-v6.8-macsec.c"
+    kernel_path = Path(__file__).resolve().parents[2] / "data/construction/2026-10-24T014455Z/references/transec/linux-v6.8-macsec.c"
     require(hashlib.sha256(kernel_path.read_bytes()).hexdigest() == KERNEL_SOURCE,
             "Reviewed MACsec software-path source changed")
     endpoints = []

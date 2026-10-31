@@ -68,9 +68,9 @@ Run from the chosen project root with Python 3 and the pinned Lean toolchain:
 
 ```sh
 python3 scripts/construction/run_validation.py \
-  --input-manifest artifacts/construction/RUN/source_paths.json \
-  --output-dir artifacts/construction/RUN/integration \
-  --history-dir artifacts/construction/RUN/integration/history \
+  --input-manifest data/construction/RUN/source_paths.json \
+  --output-dir data/construction/RUN/integration \
+  --history-dir data/construction/RUN/integration/history \
   --recorder scripts/construction/record.py \
   --label integration-validation
 ```

@@ -3,7 +3,6 @@ import TDN.Targets.Architecture
 
 namespace TDN.Targets
 
-/-- Each Inner peer uses the certificate or shared-key authentication branch actually selected. -/
 inductive InnerCredential where
   | certificate (issuer : String) (trustedIssuers : List String)
   | sharedKey (keyIdentity : String)
@@ -23,8 +22,6 @@ def InnerCanAuthenticate (a b : InnerAuthentication) : Prop :=
   | .sharedKey keyA, .sharedKey keyB => keyA = keyB
   | _, _ => False
 
-/-- Certificate identities denote full verified authority keys and trust-chain closure.
-Plain display names are insufficient evidence for these identifiers. -/
 def MaterialsSeparated (a b : InnerAuthentication) : Prop :=
   match a.credential, b.credential with
   | .certificate issuerA trustA, .certificate issuerB trustB =>
@@ -33,9 +30,6 @@ def MaterialsSeparated (a b : InnerAuthentication) : Prop :=
   | .sharedKey keyA, .sharedKey keyB => keyA ≠ keyB
   | _, _ => True
 
-/-- RG-012 includes separate applicable credential material, applicable management devices,
-management separation, and exclusion of cross-level authentication. INT-012 distinguishes
-full security levels from distinct Red networks at the same level. -/
 def msc_security_level_key_and_management_separation
     (managementSelected : Bool) (peers : List InnerAuthentication) : Prop :=
   (managementSelected = true → ∀ a ∈ peers, a.managementDevices.Nonempty) ∧
@@ -44,7 +38,6 @@ def msc_security_level_key_and_management_separation
     (managementSelected = true → Disjoint a.managementDevices b.managementDevices) ∧
     ¬ InnerCanAuthenticate a b)
 
-/-- Finite credential facts assign every used authority/key to one full security level. -/
 def CredentialScoped (authorityLevel keyLevel : String → SecurityLevel)
     (peer : InnerAuthentication) : Prop :=
   match peer.credential with
@@ -104,8 +97,6 @@ lemma scoped_materials_separated
       intro same
       exact different (ha.symm.trans ((congrArg keyLevel same).trans hb))
 
-/-- Issuer/key ownership derives both material separation and authentication exclusion.
-Management-device presence and assignments remain finite supporting checks. -/
 theorem separate_authentication_and_management_of_scoped_material
     (managementSelected : Bool) (peers : List InnerAuthentication) (authorityLevel keyLevel : String → SecurityLevel)
     (scopeFacts : ∀ peer ∈ peers, CredentialScoped authorityLevel keyLevel peer)

@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_nested_sizing import parse
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/MTU-sizing-v3/layers-ipsec-ipsec-integrated"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z/MTU-sizing-v3/layers-ipsec-ipsec-integrated"
 
 
 class NestedSizingTests(unittest.TestCase):

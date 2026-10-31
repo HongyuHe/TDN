@@ -4,9 +4,6 @@ import TDN.Targets.DeliveryIsolation
 
 namespace TDN.Targets
 
-/-- The checked strict gateway OUTPUT policy transfers the existing domain-delivery
-result to arbitrary gateway echo/error generation phases. No initial quote-content
-restriction is needed because those responses cannot leave the gateway. -/
 theorem same_domain_delivery_with_strict_gateway_responses
     (c : Execution.Config) (sources gateways : List Nat)
     (delivery : msc_same_domain_plaintext_delivery c sources)

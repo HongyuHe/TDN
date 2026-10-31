@@ -13,7 +13,7 @@ class RegisterTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.root=Path(__file__).parents[1]
-        cls.source=json.loads((cls.root/"artifacts/extraction/requirements/groups.json").read_text())["groups"]
+        cls.source=json.loads((cls.root/"data/extraction/requirements/groups.json").read_text())["groups"]
         cls.register=json.loads((output_path("theorem_register.json")).read_text())["groups"]
 
     def test_all_76_exact_targets(self):

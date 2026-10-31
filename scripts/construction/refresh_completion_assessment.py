@@ -45,7 +45,7 @@ def main():
         data = json.loads(path.read_text())
         responses.append((path, data))
     at = datetime.now(timezone.utc).isoformat()
-    evidence_path = Path("artifacts/snapshots/2026-10-24T014455Z/assessment-and-replay-v7") / RUN / "evidence/assessment-all76-v3.json"
+    evidence_path = Path("data/snapshots/2026-10-24T014455Z/assessment-and-replay-v7") / RUN / "evidence/assessment-all76-v3.json"
     evidence = {g["group_id"]: g for g in json.loads(evidence_path.read_text())["groups"]}
     preserve(RUN / "completion_assessment.md")
     preserve(RUN / "completion_assessment.json")

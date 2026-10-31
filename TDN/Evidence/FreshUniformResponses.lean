@@ -7,7 +7,7 @@ namespace TDN.Imported.Family444V13
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
-tdn_data uniformResponseOwners : List Nat from "../../evidence/lean/FreshUniformResponses.json" ["TDN.Imported.Family444V13.uniformResponseOwners"]
+tdn_data uniformResponseOwners : List Nat from "../../data/evidence/FreshUniformResponses.json" ["TDN.Imported.Family444V13.uniformResponseOwners"]
 
 lemma uniform_response_regions_checked :
     UniformResponseRegions.FiniteUniform devices ports uniformResponseOwners := by
@@ -42,8 +42,6 @@ def responseHistoryConfig :=
   HistoricalResponses.responseConfig
     (UniformResponseRegions.responseConfig responseData uniformResponseOwners)
 
-/-- Delayed error handling may select any saved packet context. All retained
-contexts satisfy the same fixed-configuration local emission checks. -/
 theorem all_retained_packet_responses_keep_stack
     {before after : HistoricalResponses.State Execution.State}
     {actions : List (KernelResponses.Action (HistoricalResponses.Action Execution.Action))}

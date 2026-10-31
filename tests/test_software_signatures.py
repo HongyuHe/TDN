@@ -18,7 +18,7 @@ class SoftwareSignatureTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name) / "software-signing-v3"
-        shutil.copytree(ROOT / "artifacts/snapshots/2026-10-24T014455Z/software-signing-v3", self.root)
+        shutil.copytree(ROOT / "data/snapshots/2026-10-24T014455Z/software-signing-v3", self.root)
 
     def tearDown(self):
         self.temp.cleanup()

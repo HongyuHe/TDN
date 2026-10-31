@@ -7,7 +7,7 @@ from analyze_topology import validated_graph
 from import_ike_contexts import parse
 from validate_evidence import require
 
-RUN = Path(os.environ.get("TDN_OUTPUT_DIR", "artifacts/construction/2026-10-24T014455Z"))
+RUN = Path(os.environ.get("TDN_OUTPUT_DIR", "data/construction/2026-10-24T014455Z"))
 
 
 def check():

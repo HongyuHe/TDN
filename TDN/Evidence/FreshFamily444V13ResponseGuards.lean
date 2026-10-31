@@ -5,7 +5,7 @@ import TDN.Evidence.FreshFamily444V13
 
 namespace TDN.Imported.Family444V13
 
-tdn_data responseSourceGuards : List (Nat × List PacketPolicy.Rule) from "../../evidence/lean/FreshFamily444V13ResponseGuards.json" ["TDN.Imported.Family444V13.responseSourceGuards"]
+tdn_data responseSourceGuards : List (Nat × List PacketPolicy.Rule) from "../../data/evidence/FreshFamily444V13ResponseGuards.json" ["TDN.Imported.Family444V13.responseSourceGuards"]
 
 lemma all_input_interfaces_covered :
     SourceResponseGuards.FiniteGuardCoverage ports responseSourceGuards := by decide
@@ -13,9 +13,6 @@ lemma all_input_interfaces_covered :
 lemma all_source_output_reply_pairs_checked :
     SourceResponseGuards.FiniteReplyChecks devices ports responseSourceGuards := by decide
 
-/-- Local guard checks cover every gateway input/output pair and every installed
-inbound authentication alternative. The general theorem still requires actual
-ingress acceptance, rule coverage and the kernel's return-to-source relation. -/
 theorem source_output_reply_layers
     {guard : Nat × List PacketPolicy.Rule} (guardMember : guard ∈ responseSourceGuards)
     {entry output : Execution.PortData} (entryMember : entry ∈ ports)

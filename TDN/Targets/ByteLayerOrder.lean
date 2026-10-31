@@ -4,9 +4,6 @@ import TDN.Targets.ByteResponseDelivery
 namespace TDN.Targets
 open Execution
 
-/-- Each byte's path contains an actual Inner encryption before an actual
-Outer encryption. The two operations may act on different packet headers
-after a permitted assembly, but belong to the same byte's constructed path. -/
 def BytePathOrderedEncryptions (c : Execution.Config) (strict uniformOwners : List Nat)
     (innerTag outerTag : Nat) (before : KernelResponses.State Execution.State)
     (actions : List (Option (KernelResponses.Action Execution.Action)))
@@ -59,9 +56,6 @@ theorem byte_path_nested_layers_require_ordered_encryptions
   exact ByteProtectionEvents.trace_tag_addition_has_encryption c strict uniformOwners innerTag
     first (by simp [empty]) (by simp [ByteProtectionEvents.tags, inner])
 
-/-- A byte's source port and the checked local conditions yield its own ordered
-encryption history after arbitrary simultaneous flows, replies and plaintext
-assembly. The conclusion contains actual operation states and trace splits. -/
 theorem every_black_byte_has_ordered_encryption_path {Byte : Type}
     (c : Execution.Config) (sources domains strict uniformOwners blackPorts : List Nat)
     (layout : Nat → Nat → List Nat) (allowed : Nat → Nat → Prop)

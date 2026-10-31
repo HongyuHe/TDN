@@ -3,9 +3,6 @@ import TDN.Semantics.Execution
 namespace TDN.FragmentHeaders
 open PacketPolicy
 
-/-- Noninitial IPv4 fragments have an IP header but no independent transport
-header. Missing transport fields never match a port or ICMP-type/code atom.
-The packet record's values for those unavailable fields are unconstrained. -/
 def availableWithoutTransport : Atom → Bool
   | .sourcePorts _ | .destinationPorts _ | .icmpType _ | .icmpCode _ => false
   | _ => true
@@ -20,10 +17,6 @@ lemma fragment_match_implies_completed_match (r : Rule) (packet : Packet)
   intro atom member
   exact (Bool.and_eq_true_iff.mp (List.all_eq_true.mp matched atom member)).2
 
-/-- When every explicit rule allows, completing unavailable transport fields
-can only add matches. Therefore each actual accepted noninitial fragment is
-included in the complete-header model, whatever completion values are chosen.
-The checked condition rules out an earlier transport-specific denial. -/
 theorem allow_only_rules_cover_noninitial_fragments (rules : List Rule)
     (onlyAllows : ∀ r ∈ rules, r.verdict = .allow)
     (fallback : Filter.Verdict) (packet : Packet)
@@ -41,9 +34,6 @@ theorem allow_only_rules_cover_noninitial_fragments (rules : List Rule)
       simp only [List.map_cons, Filter.evaluate, noFragment, Bool.false_eq_true, ↓reduceIte] at accepted
       exact ih (fun r member => onlyAllows r (List.mem_cons_of_mem _ member)) accepted
 
-/-- A selected implementation must also account for fragment offsets, complete
-IP source/destination/protocol fields, policy matching and authenticated
-reassembly. This theorem handles ordered filtering alone. -/
 theorem fragment_forwarding_inherits_packet_policy (rules : List Rule)
     (onlyAllows : ∀ r ∈ rules, r.verdict = .allow) (inside outside : String)
     (guards : ∀ r ∈ rules, r.verdict = .allow → Guarded r inside outside)
@@ -53,8 +43,6 @@ theorem fragment_forwarding_inherits_packet_policy (rules : List Rule)
   forwarding_policy_protects rules inside outside guards packet
     (allow_only_rules_cover_noninitial_fragments rules onlyAllows .deny packet accepted)
 
-/-- Changing unavailable transport values leaves the supported route and
-address-only XFRM selector calculations unchanged. -/
 def completeTransport (packet : Packet) (sourcePort destinationPort kind code : Nat) : Packet :=
   { packet with
     sourcePort := sourcePort

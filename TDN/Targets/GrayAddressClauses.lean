@@ -3,8 +3,6 @@ import TDN.Semantics.HeaderPolicy
 
 namespace TDN.Targets
 
-/-- Exact named peer rules and observed address ownership imply the same-level
-address condition. The result covers every accepted packet, not just probes. -/
 theorem accepted_named_peer_addresses_share_level
     (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
     (rules : List PacketPolicy.Rule)
@@ -23,8 +21,6 @@ theorem accepted_named_peer_addresses_share_level
   obtain ⟨pair, member, source, destination⟩ := intended
   exact ⟨pair.level, source ▸ (peers pair member).1, destination ▸ (peers pair member).2⟩
 
-/-- Unique address ownership makes a cross-level packet incompatible with every
-allow rule in the selected chain. Unknown addresses require their own statement. -/
 theorem different_level_addresses_are_denied
     (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
     (rules : List PacketPolicy.Rule) (separated : Addressing.Separated ranges)

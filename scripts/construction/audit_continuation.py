@@ -94,7 +94,7 @@ def main():
                               "line": clean.count("\n", 0, match.start()) + 1})
         records.append({"path": str(relative), "sha256": hashlib.sha256(source.encode()).hexdigest(),
                         "imports": imports, "declarations": found})
-    register_path = root / "artifacts/construction" / args.run / "theorem_register.json"
+    register_path = root / "data/construction" / args.run / "theorem_register.json"
     register = json.loads(register_path.read_text())
     targets = []
     for group in register["groups"]:

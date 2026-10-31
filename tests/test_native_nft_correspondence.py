@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT / "scripts/construction"))
 from native_nft_correspondence import check_native_nft, check_ruleset, read_observation
 from validate_evidence import EvidenceError
 
-BUNDLE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/native-shared-four-levels-20261024T015300Z-coverage-v1"
+BUNDLE = ROOT / "data/snapshots/2026-10-24T014455Z/native-shared-four-levels-20261024T015300Z-coverage-v1"
 
 
 class NativeNftTests(unittest.TestCase):

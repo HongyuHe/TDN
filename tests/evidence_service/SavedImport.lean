@@ -5,17 +5,17 @@ import TDN.Semantics.PacketPolicy
 namespace TDN.ImportTests
 
 tdn_data captured : TDN.Evidence.Snapshot
-  from "../../evidence/lean/v3-baseline.json" ["snapshot"]
+  from "../../data/evidence/v3-baseline.json" ["snapshot"]
 
 tdn_data grayEdges : List (Nat × Nat)
-  from "../../evidence/lean/v3-baseline-topology.json" ["grayEdges"]
+  from "../../data/evidence/v3-baseline-topology.json" ["grayEdges"]
 tdn_data grayFirewalls : List Nat
-  from "../../evidence/lean/v3-baseline-topology.json" ["grayFirewalls"]
+  from "../../data/evidence/v3-baseline-topology.json" ["grayFirewalls"]
 tdn_data grayRegions : List Nat
-  from "../../evidence/lean/v3-baseline-topology.json" ["grayRegions"]
+  from "../../data/evidence/v3-baseline-topology.json" ["grayRegions"]
 
 tdn_data innerForward : List TDN.PacketPolicy.Rule
-  from "../../evidence/lean/v3-baseline-packet_filters.json" ["NB_I_A1:filters4:FORWARD"]
+  from "../../data/evidence/v3-baseline-packet_filters.json" ["NB_I_A1:filters4:FORWARD"]
 
 lemma saved_inventory_has_sources : TDN.Evidence.HasProvenance captured := by
   unfold TDN.Evidence.HasProvenance captured

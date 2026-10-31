@@ -7,7 +7,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/extraction'
+OUT = ROOT / 'data/extraction'
 STATUSES = {
     'presented_as_satisfying', 'presented_as_violating',
     'required_but_not_demonstrated', 'ambiguous', 'not_applicable',

@@ -3,11 +3,6 @@ import TDN.Targets.PacketExecution
 
 namespace TDN.Targets
 
-/-- The native response extension reads OUTPUT from the actual generating
-device, including its fallback. Routing stays within that device. Source
-states are retained through response generation and routing, including
-pre-INPUT and pre-FORWARD points. The source frame records copied payload
-and existing protection; the strict-hook theorem proves emit unreachable. -/
 def nativeKernelResponses (c : Execution.Config) (gatewayDevices : List Nat) :
     KernelResponses.Config Execution.State where
   generates state := c.owner state.port ∈ gatewayDevices
@@ -24,10 +19,6 @@ def GatewayResponseGuards (c : Execution.Config) (gatewayDevices : List Nat) : P
     c.outputFallback port = .deny ∧
     ∀ rule ∈ c.outputRules port, rule.verdict = .allow → KernelResponses.SafeResponseRule rule
 
-/-- Complete raw OUTPUT guards preserve the packet-stack conclusion after
-adding arbitrary ICMP echo/error generation at every modeled gateway phase.
-The theorem does not claim guard coverage for other enabled programs or
-for a separate backend without its own imported hook correspondence. -/
 theorem native_packet_stack_with_kernel_response_guards
     (c : Execution.Config) (layout : Nat → List Nat) (gatewayDevices : List Nat)
     (conditions : Execution.LocalStackConditions c layout)

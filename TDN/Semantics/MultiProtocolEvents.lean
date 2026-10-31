@@ -4,7 +4,6 @@ import TDN.Semantics.TraceEvents
 namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
-/-- A carrier removal preserves the original Ethernet header, including its VLAN stack. -/
 lemma unwrap_preserves_original_ethernet
     (localAddress remote sourcePort destinationPort localSession : Nat) (before after : Body)
     (unwrapped : unwrapCarrier localAddress remote sourcePort destinationPort localSession before = some after) :
@@ -23,9 +22,6 @@ lemma step_preserves_original_ethernet {c : Config} {before after : State} {acti
   all_goals try simp_all only [Body.originalEthernet]
   all_goals exact unwrap_preserves_original_ethernet _ _ _ _ _ _ _ ‹_›
 
-/-- Every allowed execution preserves opaque Ethernet source, destination,
-EtherType and protected VLAN fields. The carrier and encryption steps restore
-the same original data on successful decryption and decapsulation. -/
 theorem all_executions_preserve_original_ethernet (c : Config)
     {before after : State} {actions : List Action} (run : (lts c).MTr before actions after) :
     after.frame.body.originalEthernet = before.frame.body.originalEthernet := by
@@ -41,9 +37,6 @@ def IsEncryption (action : Action) : Prop :=
 def IsDecryption (action : Action) : Prop :=
   action = .decryptIPsec ∨ action = .decryptMACsec
 
-/-- Only the two actual encryption operations push a protection layer. Only
-their corresponding successful decryptions pop a layer. Carrier wrapping
-and unwrapping leave the layer list unchanged. -/
 lemma step_layer_effect {c : Config} {before after : State} {action : Action}
     (step : Step c before action after) :
     after.frame.body.protectionLayers = before.frame.body.protectionLayers ∨
@@ -84,8 +77,6 @@ lemma removed_layer_requires_decryption {c : Config} {before after : State} {act
     · exact ⟨label, by simpa [equal] using removed⟩
     · exact False.elim (absent previous)
 
-/-- A boundary-layer appearance has a specific actual encryption transition
-on the same original payload, with the complete execution split at that event. -/
 theorem boundary_addition_has_actual_encryption (c : Config) (tag : Nat)
     {before after : State} {actions : List Action} (run : (lts c).MTr before actions after)
     (initial : tag ∉ before.frame.body.protectionLayers)
@@ -101,8 +92,6 @@ theorem boundary_addition_has_actual_encryption (c : Config) (tag : Nat)
   exact ⟨earlier, later, left, action, right, sequence, first, step, last,
     label, added, (all_executions_preserve_payload c first).1⟩
 
-/-- Removing a selected boundary layer requires the matching decrypt operation
-on this payload. A different packet's decryption cannot supply the event. -/
 theorem boundary_removal_has_actual_decryption (c : Config) (tag : Nat)
     {before after : State} {actions : List Action} (run : (lts c).MTr before actions after)
     (initial : tag ∈ before.frame.body.protectionLayers)
@@ -118,8 +107,6 @@ theorem boundary_removal_has_actual_decryption (c : Config) (tag : Nat)
   exact ⟨earlier, later, left, action, right, sequence, first, step, last,
     label, removed, (all_executions_preserve_payload c first).1⟩
 
-/-- Both encryption operations end at a phase whose actual layer list is
-the output port's checked layout. IPsec still performs its subsequent outer route. -/
 lemma encryption_output_layout {c : Config} {layout : Nat → List Nat}
     {before after : State} {action : Action}
     (step : Step c before action after) (label : IsEncryption action)
@@ -144,9 +131,6 @@ def OrderedEncryptions (c : Config) (innerTag outerTag : Nat)
         b.frame.body.protectionLayers = innerTag :: a.frame.body.protectionLayers ∧
         a.frame.payload = before.frame.payload)
 
-/-- Every outer-protected execution from a plain origin contains an actual
-Inner encryption before the actual Outer encryption on the same payload.
-Carrier wrapping cannot supply either event. -/
 theorem nested_stack_requires_ordered_encryptions (c : Config) (layout : Nat → List Nat)
     (conditions : LocalConditions c layout) (innerTag outerTag : Nat)
     (placement : ∀ port, (layout port).head? = some outerTag →

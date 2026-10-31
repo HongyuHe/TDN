@@ -24,7 +24,7 @@ def main():
     parser.add_argument("--attempt", required=True)
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
-    run_relative = Path("artifacts/construction") / relative_path(args.run)
+    run_relative = Path("data/construction") / relative_path(args.run)
     run = root / run_relative
     session = json.loads((run / "session.json").read_text())
     actor = Path(session["workspaces"]["construction"]["path"])

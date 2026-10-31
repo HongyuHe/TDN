@@ -3,8 +3,6 @@ import Lean.Elab.Tactic.Omega
 
 namespace TDN.InternetAddresses
 
-/-- The existing packet model uses natural-number address keys. IPv4 keeps its ordinary
-numeric value; IPv6 receives a disjoint tagged range. These are model keys, not wire integers. -/
 def encode4 (address : Fin (2^32)) : Nat := address.val
 def encode6 (address : Fin (2^128)) : Nat := 2^128 + address.val
 
@@ -23,7 +21,6 @@ theorem ipv6_encoding_injective (a b : Fin (2^128)) (same : encode6 a = encode6 
   simp only [encode6] at same
   omega
 
-/-- Only IPv4 has an IHL field. A zero value records its absence in the IPv6 header model. -/
 def headerWords (addressKey : Nat) : Nat := if addressKey < 2^32 then 5 else 0
 
 theorem ipv6_has_no_ipv4_ihl (address : Fin (2^128)) :

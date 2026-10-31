@@ -27,8 +27,6 @@ theorem snapshot_received_domain :
       domainAllowed4 redSources 4 local_domain_conditions4 source_checks4
       recipient_checks4 origin sourceLevel run received recipientLevel
 
-/-- Fragment keys and packet identities can collide. The separate implementation
-correspondence must map each received piece to its byte source and admitted path. -/
 theorem reassembled_bytes_have_recipient_full_label {Header Byte : Type}
     [DecidableEq Header] (recipientPort recipientDomain : Nat)
     (recipient : config.recipientDomain recipientPort = some recipientDomain)
@@ -65,8 +63,6 @@ theorem snapshot_received_domain :
       domainAllowed2 redSources 2 local_domain_conditions2 source_checks2
       recipient_checks2 origin sourceLevel run received recipientLevel
 
-/-- Fragment keys and packet identities can collide. The separate implementation
-correspondence must map each received piece to its byte source and admitted path. -/
 theorem reassembled_bytes_have_recipient_full_label {Header Byte : Type}
     [DecidableEq Header] (recipientPort recipientDomain : Nat)
     (recipient : config.recipientDomain recipientPort = some recipientDomain)

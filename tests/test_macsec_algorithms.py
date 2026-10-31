@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_macsec_algorithms import parse, parse_vectors, parse_bindings
 
-BASE = ROOT / "artifacts/snapshots/2026-10-24T014455Z"
+BASE = ROOT / "data/snapshots/2026-10-24T014455Z"
 
 
 class MACsecAlgorithmTests(unittest.TestCase):

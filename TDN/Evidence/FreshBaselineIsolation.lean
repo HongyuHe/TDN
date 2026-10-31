@@ -50,7 +50,7 @@ def allowedRecord (domain : Nat) (port : PortData) : Bool :=
 
 def config : Execution.Config := finiteConfig taggedDevices TDN.Imported.FreshBaselineExecution.ports TDN.Imported.FreshBaselineExecution.routes TDN.Imported.FreshBaselineExecution.links TDN.Imported.FreshBaselineExecution.switches
 def redSources : List Nat := TDN.Imported.FreshBaselineExecution.redSources
-tdn_data domains : List Nat from "../../evidence/lean/FreshBaselineIsolation.json" ["TDN.Imported.FreshBaselineIsolation.domains"]
+tdn_data domains : List Nat from "../../data/evidence/FreshBaselineIsolation.json" ["TDN.Imported.FreshBaselineIsolation.domains"]
 
 lemma peer_tag_checks : FinitePeerTagAgreement taggedDevices := by
   (try simp only [FinitePeerTagAgreement, taggedDevices, TDN.Imported.FreshBaselineExecution.devices, ownerTag, ownerDomain, StateBindsPolicy, SameWireAssociation]); all_goals decide

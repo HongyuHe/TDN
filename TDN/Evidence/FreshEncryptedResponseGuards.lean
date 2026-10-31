@@ -14,8 +14,6 @@ lemma locally_encrypted_response_denial : EncryptedResponseGuards.LocalDeny conf
   EncryptedResponseGuards.finite_deny_sound devices ports routes links switches
     locally_encrypted_response_rules_checked
 
-/-- The same captured source guards and OUTPUT rules now cover encrypted
-local error quotes as well as the earlier processing points. -/
 theorem gateway_pre_and_post_encryption_responses_keep_stack
     {before after : Execution.State} {actions : List (KernelResponses.Action Execution.Action)}
     (run : (KernelResponses.lts (GuardedResponseNetwork.network responseData)

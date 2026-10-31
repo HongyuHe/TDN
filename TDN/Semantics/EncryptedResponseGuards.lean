@@ -3,15 +3,11 @@ import TDN.Semantics.GuardedResponseNetwork
 namespace TDN.EncryptedResponseGuards
 open Execution
 
-/-- A quoted packet was most recently encrypted at the current component.
-The witness identifies the actual configured association and its visible header. -/
 def LocallyEncrypted (c : Execution.Config) (state : Execution.State) : Prop :=
   ∃ port, c.owner state.port = c.owner port ∧
     ∃ association ∈ c.outbound port, ∃ sa previous,
       state.frame = encrypt association sa previous
 
-/-- An ICMP response to a locally produced outer packet returns to that
-association's local wire source. Local rules can exclude that destination. -/
 def ExcludesWireSource (rule : PacketPolicy.Rule) (source : Nat) : Prop :=
   ∃ atom ∈ rule.atoms, match atom with
     | .destinationRange low high => source < low ∨ high < source
@@ -36,8 +32,6 @@ lemma matching_destination_not_excluded {rule : PacketPolicy.Rule}
   simp only [PacketPolicy.Atom.holds] at holds
   omega
 
-/-- This check quantifies over the installed local association inventory and
-OUTPUT rules. It contains no assertion about a network execution. -/
 def LocalDeny (c : Execution.Config) : Prop :=
   ∀ input output, c.owner input = c.owner output →
     ∀ association ∈ c.outbound input,
@@ -94,8 +88,6 @@ theorem finite_deny_sound (devices : List DeviceData) (ports : List PortData)
   rw [← owner]
   exact result
 
-/-- Both pre-encryption processing and a locally produced encrypted packet
-may trigger an error. The latter includes the interval before and after outer routing. -/
 def combinedConfig (data : GuardedResponseNetwork.Data) : KernelResponses.Config Execution.State :=
   { GuardedResponseNetwork.responseConfig data with
     generates := fun state =>
@@ -130,8 +122,6 @@ lemma combined_reply_preserves_safe (data : GuardedResponseNetwork.Data)
       (KernelResponses.outputPacket (combinedConfig data) header output) output encrypted owner
       returns protocol external accepted)
 
-/-- The existing CSLib preservation argument now also covers local encrypted
-quotes. No assumption on the source phase removes the post-encryption error case. -/
 theorem combined_executions_preserve_stack (data : GuardedResponseNetwork.Data)
     (conditions : LocalStackConditions data.config data.layout)
     (pairs : SourceResponseGuards.FiniteReplyChecks data.devices data.ports data.sourceGuards)

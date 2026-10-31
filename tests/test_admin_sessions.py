@@ -16,7 +16,7 @@ class AdminSessionImportTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.paths = {}
-        base = ROOT / "artifacts/snapshots/2026-10-24T014455Z"
+        base = ROOT / "data/snapshots/2026-10-24T014455Z"
         for key, name in [("deployment", "role-admin-deploy-v4"),
                           ("effective", "role-admin-effective-v3"),
                           ("matrix", "role-admin-matrix-v3")]:

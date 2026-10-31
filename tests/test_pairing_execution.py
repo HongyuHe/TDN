@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_pairing_execution import parse
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/pairings-v5/layers-macsec-ipsec-integrated"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z/pairings-v5/layers-macsec-ipsec-integrated"
 
 
 class PairingExecutionTests(unittest.TestCase):
@@ -80,11 +80,11 @@ class PairingExecutionTests(unittest.TestCase):
 
 
 class PairingV7Tests(PairingExecutionTests):
-    source = ROOT / "artifacts/snapshots/2026-10-24T014455Z/pairings-v7/layers-macsec-ipsec-integrated"
+    source = ROOT / "data/snapshots/2026-10-24T014455Z/pairings-v7/layers-macsec-ipsec-integrated"
 
 
 class BridgedV8Tests(PairingExecutionTests):
-    source = ROOT / "artifacts/snapshots/2026-10-24T014455Z/bridged-macsec-v8/bridged-Inner-MACsec-Outer-IPsec"
+    source = ROOT / "data/snapshots/2026-10-24T014455Z/bridged-macsec-v8/bridged-Inner-MACsec-Outer-IPsec"
 
     def test_ethernet_only_inner_is_imported(self):
         result = parse(self.source)

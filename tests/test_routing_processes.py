@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_routing_processes import selected_processes
 
-SOURCE = ROOT / "artifacts/construction/2026-10-24T014455Z/evidence/derived-routing-v3/routing-evidence.json"
+SOURCE = ROOT / "data/construction/2026-10-24T014455Z/evidence/derived-routing-v3/routing-evidence.json"
 
 
 class RoutingProcessTests(unittest.TestCase):

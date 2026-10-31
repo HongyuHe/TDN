@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_family_execution import load_bundle, main
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/families-v9/families-666"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z/families-v9/families-666"
 
 
 class FamilyExecutionImportTests(unittest.TestCase):

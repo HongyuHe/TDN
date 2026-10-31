@@ -21,7 +21,6 @@ lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
     carrier_inbound_checks_1
 
-
 lemma carrier_inbound_checks_2 :
     FiniteCarrierInputChecks devices ports carriers 2 := by
   unfold FiniteCarrierInputChecks
@@ -30,7 +29,6 @@ lemma carrier_inbound_checks_2 :
 lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
     carrier_inbound_checks_2
-
 
 def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
   [13] [11] 1 5
@@ -60,7 +58,6 @@ theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
@@ -70,7 +67,6 @@ theorem mixedBoundaryIA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep31, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
   [16] [14] 1 6
@@ -100,7 +96,6 @@ theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
@@ -110,7 +105,6 @@ theorem mixedBoundaryIB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep31, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
   [18] [17] 2 7
@@ -140,7 +134,6 @@ theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
@@ -150,7 +143,6 @@ theorem mixedBoundaryOA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
   [21] [20] 2 8
@@ -180,7 +172,6 @@ theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
@@ -190,7 +181,6 @@ theorem mixedBoundaryOB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
-
 
 end TDN.Imported.PairingIpsecIpsecIntegrated
 
@@ -211,7 +201,6 @@ lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
     carrier_inbound_checks_1
 
-
 lemma carrier_inbound_checks_2 :
     FiniteCarrierInputChecks devices ports carriers 2 := by
   unfold FiniteCarrierInputChecks
@@ -220,7 +209,6 @@ lemma carrier_inbound_checks_2 :
 lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
     carrier_inbound_checks_2
-
 
 def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
   [11] [9] 1 4
@@ -250,7 +238,6 @@ theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
@@ -260,7 +247,6 @@ theorem mixedBoundaryIA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
   [14] [12] 1 5
@@ -290,7 +276,6 @@ theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
@@ -300,7 +285,6 @@ theorem mixedBoundaryIB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
   [16] [15] 2 6
@@ -330,7 +314,6 @@ theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
@@ -340,7 +323,6 @@ theorem mixedBoundaryOA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep18, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
   [20] [19] 2 7
@@ -370,7 +352,6 @@ theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
@@ -380,7 +361,6 @@ theorem mixedBoundaryOB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep18, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
-
 
 end TDN.Imported.PairingIpsecMacsecIntegrated
 
@@ -401,7 +381,6 @@ lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
     carrier_inbound_checks_1
 
-
 lemma carrier_inbound_checks_2 :
     FiniteCarrierInputChecks devices ports carriers 2 := by
   unfold FiniteCarrierInputChecks
@@ -410,7 +389,6 @@ lemma carrier_inbound_checks_2 :
 lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
     carrier_inbound_checks_2
-
 
 def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
   [14] [11] 1 5
@@ -440,7 +418,6 @@ theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
@@ -450,7 +427,6 @@ theorem mixedBoundaryIA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
   [18] [15] 1 6
@@ -480,7 +456,6 @@ theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
@@ -490,7 +465,6 @@ theorem mixedBoundaryIB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
   [21] [19] 2 7
@@ -520,7 +494,6 @@ theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
@@ -530,7 +503,6 @@ theorem mixedBoundaryOA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep30, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
   [26] [24] 2 8
@@ -560,7 +532,6 @@ theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
@@ -570,7 +541,6 @@ theorem mixedBoundaryOB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep30, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
-
 
 end TDN.Imported.PairingMacsecIpsecIntegrated
 
@@ -591,7 +561,6 @@ lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
     carrier_inbound_checks_1
 
-
 lemma carrier_inbound_checks_2 :
     FiniteCarrierInputChecks devices ports carriers 2 := by
   unfold FiniteCarrierInputChecks
@@ -600,7 +569,6 @@ lemma carrier_inbound_checks_2 :
 lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
     carrier_inbound_checks_2
-
 
 def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
   [24] [21] 1 7
@@ -630,7 +598,6 @@ theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
@@ -640,7 +607,6 @@ theorem mixedBoundaryIA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep42, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep43, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep44, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep45, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep46, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
   [28] [25] 1 8
@@ -670,7 +636,6 @@ theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
@@ -680,7 +645,6 @@ theorem mixedBoundaryIB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep42, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep43, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep44, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep45, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep46, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
   [30] [29] 2 9
@@ -710,7 +674,6 @@ theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
@@ -720,7 +683,6 @@ theorem mixedBoundaryOA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
   [33] [32] 2 10
@@ -750,7 +712,6 @@ theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
@@ -760,7 +721,6 @@ theorem mixedBoundaryOB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
-
 
 end TDN.Imported.PairingMacsecIpsecStandalone
 
@@ -781,7 +741,6 @@ lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
     carrier_inbound_checks_1
 
-
 lemma carrier_inbound_checks_2 :
     FiniteCarrierInputChecks devices ports carriers 2 := by
   unfold FiniteCarrierInputChecks
@@ -790,7 +749,6 @@ lemma carrier_inbound_checks_2 :
 lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
     carrier_inbound_checks_2
-
 
 def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
   [12] [9] 1 4
@@ -820,7 +778,6 @@ theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
@@ -830,7 +787,6 @@ theorem mixedBoundaryIA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
   [16] [13] 1 5
@@ -860,7 +816,6 @@ theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
@@ -870,7 +825,6 @@ theorem mixedBoundaryIB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
   [19] [17] 2 6
@@ -900,7 +854,6 @@ theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
@@ -910,7 +863,6 @@ theorem mixedBoundaryOA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep23, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
   [25] [23] 2 7
@@ -940,7 +892,6 @@ theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
@@ -950,7 +901,6 @@ theorem mixedBoundaryOB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep23, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
-
 
 end TDN.Imported.PairingMacsecMacsecIntegrated
 
@@ -971,7 +921,6 @@ lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
     carrier_inbound_checks_1
 
-
 lemma carrier_inbound_checks_2 :
     FiniteCarrierInputChecks devices ports carriers 2 := by
   unfold FiniteCarrierInputChecks
@@ -980,7 +929,6 @@ lemma carrier_inbound_checks_2 :
 lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
     carrier_inbound_checks_2
-
 
 def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
   [22] [19] 1 6
@@ -1010,7 +958,6 @@ theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
@@ -1020,7 +967,6 @@ theorem mixedBoundaryIA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep37, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep38, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep39, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
   [26] [23] 1 7
@@ -1050,7 +996,6 @@ theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
@@ -1060,7 +1005,6 @@ theorem mixedBoundaryIB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep37, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep38, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep39, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
   [28] [27] 2 8
@@ -1090,7 +1034,6 @@ theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
@@ -1100,7 +1043,6 @@ theorem mixedBoundaryOA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
   [32] [31] 2 9
@@ -1130,7 +1072,6 @@ theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
@@ -1140,7 +1081,6 @@ theorem mixedBoundaryOB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
-
 
 end TDN.Imported.PairingMacsecMacsecStandalone
 
@@ -1161,7 +1101,6 @@ lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
     carrier_inbound_checks_1
 
-
 lemma carrier_inbound_checks_2 :
     FiniteCarrierInputChecks devices ports carriers 2 := by
   unfold FiniteCarrierInputChecks
@@ -1170,7 +1109,6 @@ lemma carrier_inbound_checks_2 :
 lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
   finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
     carrier_inbound_checks_2
-
 
 def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
   [15] [12] 1 5
@@ -1200,7 +1138,6 @@ theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
@@ -1210,7 +1147,6 @@ theorem mixedBoundaryIA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
   [20] [17] 1 6
@@ -1240,7 +1176,6 @@ theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
@@ -1250,7 +1185,6 @@ theorem mixedBoundaryIB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
   [23] [21] 2 7
@@ -1280,7 +1214,6 @@ theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
@@ -1290,7 +1223,6 @@ theorem mixedBoundaryOA_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep23, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
-
 
 def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
   [28] [26] 2 8
@@ -1320,7 +1252,6 @@ theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
-
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
@@ -1330,6 +1261,5 @@ theorem mixedBoundaryOB_positive_inbound :
   · exact Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep23, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
-
 
 end TDN.Imported.PairingInnerMacsecOuterIpsec

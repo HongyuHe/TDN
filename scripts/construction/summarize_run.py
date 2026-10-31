@@ -14,14 +14,14 @@ def read(path):
 
 
 def main():
-    pointer = read(ROOT / 'artifacts/construction/current.json')
-    run = ROOT / 'artifacts/construction' / pointer['directory']
+    pointer = read(ROOT / 'data/construction/current.json')
+    run = ROOT / 'data/construction' / pointer['directory']
     state = read(run / 'session.json')
     groups_path = run / 'agents/construction/outputs/theorem_register.json'
     cases_path = run / 'agents/evidence/outputs/case_coverage.json'
     groups = read(groups_path)['groups'] if groups_path.exists() else []
     cases = read(cases_path)['cases'] if cases_path.exists() else []
-    original = read(ROOT / 'artifacts/extraction/requirements/groups.json')['groups']
+    original = read(ROOT / 'data/extraction/requirements/groups.json')['groups']
     expected = {g['group_id']: g for g in original}
     errors = []
     if groups:
@@ -31,7 +31,7 @@ def main():
             source = expected.get(group['group_id'])
             if source and group['original_intended_statement'] != source['theorem_statement']:
                 errors.append('Original statement changed: ' + group['group_id'])
-    source_examples = read(ROOT / 'artifacts/extraction/networks/examples.json')
+    source_examples = read(ROOT / 'data/extraction/networks/examples.json')
     if cases and {c['example_id'] for c in cases} != {e['example_id'] for e in source_examples}:
         errors.append('The case register does not cover exactly the extracted examples.')
     events = []

@@ -1,11 +1,21 @@
-import TDN.Targets.Components
 import TDN.Semantics.CoverTraffic
 
 namespace TDN.Targets
 
-/-- RG-032's selected size-masking interpretation has a concrete sender model.
-The sender emits fixed records and keeps a bounded FIFO. Shared send times and
-link outcomes imply equal size observations. The timing premise remains explicit. -/
+structure TransecUse where
+  publicInternet : Bool
+  externalMACsec : Bool
+  outerFirewallAttached : Bool
+  objectiveSelected : Bool
+  enabled : Bool
+  deriving DecidableEq, Repr
+
+def msc_transec_conditions (uses : List TransecUse) : Prop :=
+  ∀ use ∈ uses,
+    (use.publicInternet = true → use.enabled = true) ∧
+    (use.objectiveSelected = true → use.externalMACsec = true →
+      use.outerFirewallAttached = true → use.enabled = true)
+
 def ScheduledCoverGuarantee (config : CoverTraffic.Config) : Prop :=
   config.Valid ∧
   ∀ firstDeadline actions finish,
@@ -17,9 +27,6 @@ theorem scheduled_cover_guarantee_from_parameters (config : CoverTraffic.Config)
   ⟨checked, fun _ _ _ run =>
     CoverTraffic.all_executions_have_bounded_queues_and_fixed_records checked run⟩
 
-/-- An installed mechanism is bound to its RG-032 applicability record. Active is
-observed for the captured process interval. Continued execution assumes that the
-reviewed sender and MACsec path stay installed and follow their recorded semantics. -/
 structure CoverInstallation where
   device : String
   use : TransecUse
@@ -27,10 +34,6 @@ structure CoverInstallation where
   active : Bool
   deriving DecidableEq, Repr
 
-/-- Public-Internet applicability and the selected OR-9 objective retain their
-separate triggers. Enabling the bounded mechanism supplies the size-masking reading
-of TRANSEC. Product approval and other transmission-security services are not supplied
-by this record. INT032-COVER records the chosen interpretation and its limits. -/
 theorem transec_conditions_from_cover_installations (installations : List CoverInstallation)
     (binding : ∀ i ∈ installations, i.use.enabled = i.active)
     (checked : ∀ i ∈ installations,

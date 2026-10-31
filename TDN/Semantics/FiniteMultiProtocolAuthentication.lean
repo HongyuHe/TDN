@@ -40,8 +40,6 @@ instance (devices : List Execution.DeviceData) (ports : List Execution.PortData)
   unfold FiniteCarrierInputChecks
   infer_instance
 
-/-- Literal hook atoms rule out unauthenticated carrier admission wherever it would
-cross the boundary. Arbitrary conntrack classifications remain possible. -/
 theorem finite_carrier_input_checks_sound (devices : List Execution.DeviceData)
     (ports : List Execution.PortData) (routes : List Execution.Route)
     (links bridges : List (Nat × Nat)) (macPorts : List MACPort) (carriers : List CarrierPort)

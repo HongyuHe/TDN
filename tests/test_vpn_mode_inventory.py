@@ -12,8 +12,8 @@ sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_vpn_modes import parse
 from loaded_policy import proposal_modes
 
-BASE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/native-baseline-20261024T015000Z"
-SHARED = ROOT / "artifacts/snapshots/2026-10-24T014455Z/native-shared-four-levels-20261024T015300Z-coverage-v1"
+BASE = ROOT / "data/snapshots/2026-10-24T014455Z/native-baseline-20261024T015000Z"
+SHARED = ROOT / "data/snapshots/2026-10-24T014455Z/native-shared-four-levels-20261024T015300Z-coverage-v1"
 
 
 class VPNModeInventoryTests(unittest.TestCase):

@@ -8,7 +8,7 @@ from pathlib import Path
 from reconcile_csfc_extraction import apply_mappings, write_networks, write_requirement_links
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/extraction'
+OUT = ROOT / 'data/extraction'
 NETWORKS = OUT / 'networks'
 ROLES = OUT / 'roles'
 

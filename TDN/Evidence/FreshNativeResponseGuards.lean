@@ -7,7 +7,7 @@ namespace TDN.Imported.FreshSharedExecution
 open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
-tdn_data responseGateways : List Nat from "../../evidence/lean/FreshNativeResponseGuards.json" ["TDN.Imported.FreshSharedExecution.responseGateways"]
+tdn_data responseGateways : List Nat from "../../data/evidence/FreshNativeResponseGuards.json" ["TDN.Imported.FreshSharedExecution.responseGateways"]
 
 lemma finite_gateway_response_guards : ∀ device ∈ responseGateways,
     (deviceAt devices device).outputFallback = .deny ∧
@@ -31,7 +31,7 @@ namespace TDN.Imported.FreshBaselineExecution
 open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
-tdn_data responseGateways : List Nat from "../../evidence/lean/FreshNativeResponseGuards.json" ["TDN.Imported.FreshBaselineExecution.responseGateways"]
+tdn_data responseGateways : List Nat from "../../data/evidence/FreshNativeResponseGuards.json" ["TDN.Imported.FreshBaselineExecution.responseGateways"]
 
 lemma finite_gateway_response_guards : ∀ device ∈ responseGateways,
     (deviceAt devices device).outputFallback = .deny ∧

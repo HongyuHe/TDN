@@ -38,9 +38,6 @@ lemma mixed_red_initial_invariant (c : MultiProtocolExecution.Config) (layout : 
       · simpa [entered] using admitted
   · exact ⟨by simp [CarrierBodies, plain], by simp [phase, plain, Body.protectionLayers, stack]⟩
 
-/-- The same encompassing nested-layer specification applies to mixed IPsec/MACsec
-paths with explicit L2TP carriers. The imported local checks cover all equal-priority
-routing and policy alternatives; the carrier contributes no encryption layer. -/
 theorem mixed_nested_layers_from_local_checks
     (c : MultiProtocolExecution.Config) (layout : Nat → List Nat)
     (sources grayPorts blackPorts : List Nat) (network : Nat → String)
@@ -86,8 +83,6 @@ lemma mixed_red_origin_has_no_layers (sources : List Nat)
   rcases origin.2.2.2 with ⟨_, header, plain⟩ | ⟨_, header, plain⟩ <;>
     simp [plain, Body.protectionLayers]
 
-/-- Imported port checks force an actual Inner encryption before an actual
-Outer encryption on every protected Black transmission, for either mechanism. -/
 theorem mixed_black_transmission_has_ordered_encryptions
     (c : MultiProtocolExecution.Config) (layout : Nat → List Nat)
     (sources blackPorts : List Nat)

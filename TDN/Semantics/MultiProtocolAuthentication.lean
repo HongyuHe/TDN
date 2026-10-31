@@ -17,8 +17,6 @@ def carrierInputPacket (c : Config) (entry : Nat) (tracking : String)
       (carrierReceiveHeader port)).map Execution.Association.id,
     connectionState := tracking }
 
-/-- A local carrier cannot remove a boundary through an unauthenticated INPUT path.
-The check concerns one fixed carrier header and local hook, not a network execution. -/
 def CarrierInputCheck (c : Config) (layout : Nat → List Nat) (tag : Nat) : Prop :=
   ∀ port ∈ c.carriers, ∀ entry tracking,
     c.ip.owner entry = c.ip.owner port.routingPort →
@@ -40,8 +38,6 @@ lemma successful_unwrap_has_receiving_header (port : CarrierPort) (before after 
       simp only [Body.visibleHeader, carrierReceiveHeader, destination, source, sourcePort, destinationPort]
     next missed => cases unwrapped
 
-/-- The region is inferred from ports and accepted local rules. No initial encrypted
-body, carrier provenance or successful authentication is assumed. -/
 def UndecryptedRegion (c : Config) (layout : Nat → List Nat) (tag : Nat) (s : State) : Prop :=
   s.authenticated = [] ∧
   match s.phase with
@@ -192,8 +188,6 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
     exact ⟨trivial, carrierCheck port configured before.port before.tracking owner (entered ▸ member) input⟩
   | drop => exact ⟨invariant.1, trivial⟩
 
-/-- The actual receiving association identifies the boundary layer. A MACsec role
-annotation on an arbitrary incoming frame is not treated as an extra wire field. -/
 def BoundaryDecryption (c : Config) (tag : Nat) (left : State)
     (action : Action) (right : State) : Prop :=
   (action = .decryptIPsec ∧ ∃ policy ∈ c.ip.inbound left.port,
@@ -204,9 +198,6 @@ def BoundaryDecryption (c : Config) (tag : Nat) (left : State)
       ∃ transmitted body, left.frame.body = .macsec transmitted body ∧
         right.frame.body = body ∧ SameMACWireIdentity transmitted association)
 
-/-- An arbitrary arriving body cannot cross the component boundary without the
-actual IPsec or MACsec receiving operation for that layer on the same payload.
-The carrier premise is a local INPUT/header condition, checked separately. -/
 theorem inbound_crossing_has_actual_boundary_decryption
     (c : Config) (layout : Nat → List Nat) (tag component : Nat)
     (conditions : LocalConditions c layout) (carrierCheck : CarrierInputCheck c layout tag)

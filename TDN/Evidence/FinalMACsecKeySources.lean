@@ -3,8 +3,6 @@ import TDN.Targets.MACsecFallback
 namespace TDN.Imported.FinalMACsecKeySources
 open KeySources Targets
 
-/-- Complete public configurations from both EAP role arrangements. The import
-report records source bindings and the fresh-process/fixed-configuration assumptions. -/
 def ports : List (String × Config) := [("eap-tls-forward-v18/P0", ⟨false, false⟩), ("eap-tls-forward-v18/P1", ⟨false, false⟩), ("eap-tls-reverse-v18/P0", ⟨false, false⟩), ("eap-tls-reverse-v18/P1", ⟨false, false⟩)]
 
 lemma no_configured_pre_shared_pair : ∀ port ∈ ports,

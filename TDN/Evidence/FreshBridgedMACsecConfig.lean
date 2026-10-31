@@ -6,27 +6,27 @@ namespace TDN.Imported.PairingInnerMacsecOuterIpsec
 open MultiProtocolExecution LayeredFrame
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
-tdn_data devices : List Execution.DeviceData from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.devices"]
+tdn_data devices : List Execution.DeviceData from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.devices"]
 
-tdn_data ports : List Execution.PortData from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ports"]
+tdn_data ports : List Execution.PortData from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ports"]
 
-tdn_data routes : List Execution.Route from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.routes"]
+tdn_data routes : List Execution.Route from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.routes"]
 
-tdn_data links : List (Nat × Nat) from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.links"]
+tdn_data links : List (Nat × Nat) from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.links"]
 
-tdn_data bridges : List (Nat × Nat) from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.bridges"]
+tdn_data bridges : List (Nat × Nat) from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.bridges"]
 
-tdn_data macPorts : List MACPort from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.macPorts"]
+tdn_data macPorts : List MACPort from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.macPorts"]
 
-tdn_data carriers : List CarrierPort from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.carriers"]
+tdn_data carriers : List CarrierPort from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.carriers"]
 
 def config : Config := MultiProtocolExecution.finiteConfig devices ports routes links bridges macPorts carriers
 def layout := Execution.finiteLayout ports
-tdn_data redSources : List Nat from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.redSources"]
+tdn_data redSources : List Nat from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.redSources"]
 
-tdn_data grayPorts : List Nat from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.grayPorts"]
+tdn_data grayPorts : List Nat from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.grayPorts"]
 
-tdn_data blackPorts : List Nat from "../../evidence/lean/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.blackPorts"]
+tdn_data blackPorts : List Nat from "../../data/evidence/FreshBridgedMACsecConfig.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.blackPorts"]
 
 lemma mac_configuration_checked : ∀ port ∈ macPorts,
     port.settings.controlledPortEnabled = true ∧ port.settings.protectFrames = true ∧

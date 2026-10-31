@@ -3,9 +3,6 @@ import TDN.Semantics.EncryptedResponseGuards
 namespace TDN.UniformResponseRegions
 open Execution
 
-/-- A component whose interfaces share one protection region cannot expose copied
-bytes to a less protected interface. Its lack of inbound policies also prevents
-an unmodeled local decryption from removing a layer. -/
 def Uniform (c : Execution.Config) (layout : Nat → List Nat) (owner : Nat) : Prop :=
   (∀ input, c.owner input = owner → c.inbound input = []) ∧
   ∀ input output, c.owner input = owner → c.owner output = owner →

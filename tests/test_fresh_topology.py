@@ -11,8 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from analyze_topology import analyze
 
-BASE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/native-baseline-20261024T015000Z"
-DECLARATION = ROOT / "artifacts/construction/2026-10-24T014455Z/current-topology-scenarios-v1.json"
+BASE = ROOT / "data/snapshots/2026-10-24T014455Z/native-baseline-20261024T015000Z"
+DECLARATION = ROOT / "data/construction/2026-10-24T014455Z/current-topology-scenarios-v1.json"
 
 
 class FreshTopologyTests(unittest.TestCase):

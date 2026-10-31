@@ -3,13 +3,11 @@ import TDN.Semantics.LinkProtection
 
 namespace TDN.LayeredFrame
 
-/-- IPsec and MACsec have different visible headers. The protection tag annotates
-the configured security role; it is not an additional authenticated wire field. -/
 structure MACsecAssociation where
   tag : Nat
   sci : Nat
   associationNumber : Nat
-  /-- Local bookkeeping used for the transmit-SA operation, never a receive-side wire guard. -/
+
   keyGeneration : Nat
   deriving DecidableEq, Repr
 
@@ -20,8 +18,6 @@ instance (first second : MACsecAssociation) : Decidable (SameMACWireIdentity fir
   unfold SameMACWireIdentity
   infer_instance
 
-/-- A carrier is an unencrypted Ethernet pseudowire over UDP. The local and peer
-session identifiers are distinct. Only the peer session appears on transmitted data. -/
 structure Carrier where
   source : Nat
   destination : Nat
@@ -30,9 +26,6 @@ structure Carrier where
   peerSession : Nat
   deriving DecidableEq, Repr
 
-/-- Original Ethernet data retains its source, destination, EtherType and full
-inner VLAN stack. Clear VLAN tags outside a MACsec envelope require a separate
-wire-layout contract; the current mixed captures use an untagged MACsec carrier. -/
 structure EthernetHeader where
   source : Nat
   destination : Nat
@@ -40,9 +33,6 @@ structure EthernetHeader where
   vlanTags : List Nat
   deriving DecidableEq, Repr
 
-/-- Nested contents are semantic values. Cryptographic constructors hide their
-contents under the same authenticated-encryption contract used by IPsec.
-An L2TP carrier preserves its Ethernet body without adding confidentiality. -/
 inductive Body where
   | datagram (header : PacketPolicy.Packet)
   | ethernet (header : EthernetHeader)
@@ -62,8 +52,6 @@ def outerHeader (source destination : Nat) (protocol : String)
     ipv4HeaderWords := InternetAddresses.headerWords source,
     ipv6NextHeader := if source < 2^32 then 0 else if protocol = "esp" then 50 else 17, inboundPolicies := [], outboundPolicies := [], connectionState := "" }
 
-/-- Routing and IP filters can inspect only the currently visible IP header.
-A physical MACsec frame has no visible IP header, even when its hidden body is IP. -/
 def Body.visibleHeader : Body → Option PacketPolicy.Packet
   | .datagram header => some header
   | .ethernet _ => none
@@ -88,7 +76,6 @@ def Body.originalEthernet : Body → Option EthernetHeader
   | .ethernet header => some header
   | .ipsec _ body | .macsec _ body | .carrier _ body => body.originalEthernet
 
-/-- The outer wire protocol distinguishes encrypted Ethernet from routable IP. -/
 def Body.isEthernetCiphertext : Body → Bool
   | .macsec _ _ => true
   | _ => false
@@ -103,8 +90,6 @@ lemma nested_outer_inner_order (outer inner : MACsecAssociation) (header : Packe
     (Body.macsec outer (.macsec inner (.datagram header))).protectionLayers =
       [outer.tag, inner.tag] := rfl
 
-/-- Unwrapping is tied to the receiving endpoint and its local session identifier.
-The body is returned exactly, including any MACsec protection it already contains. -/
 def unwrapCarrier (localAddress remote sourcePort destinationPort localSession : Nat) :
     Body → Option Body
   | .carrier endpoint body =>

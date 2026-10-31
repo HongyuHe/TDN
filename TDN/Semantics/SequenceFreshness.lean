@@ -3,8 +3,6 @@ import Lean.Elab.Tactic.Omega
 
 namespace TDN.SequenceFreshness
 
-/-- Time uses physical milliseconds on one monotone timeline. Association and generation
-identify one non-wrapping sequence-number space. -/
 structure Transmission where
   association : Nat
   generation : Nat
@@ -22,18 +20,13 @@ structure Sample where
 def SameCounter (packet : Transmission) (sample : Sample) : Prop :=
   packet.association = sample.association ∧ packet.generation = sample.generation
 
-/-- The sender's sample reports the next unused number in its actual counter space. -/
 def CounterSampleValid (history : List Transmission) (sample : Sample) : Prop :=
   ∀ packet ∈ history, SameCounter packet sample → packet.sentAt < sample.sampledAt →
     packet.packetNumber < sample.nextPacketNumber
 
-/-- Zero replay window makes the installed next-PN field the receive lower threshold. -/
 def accepts (installedNext replayWindow : Nat) (packet : Transmission) : Bool :=
   decide (installedNext - replayWindow ≤ packet.packetNumber)
 
-/-- A receiver using a sufficiently recent authenticated counter sample cannot accept an
-older transmission. The same association and generation exclude unrelated SA updates.
-Control delivery freshness and the counter contract are explicit local premises. -/
 theorem accepted_transmission_is_recent (history : List Transmission) (sample : Sample)
     (packet : Transmission) (now maximumAge installedNext : Nat)
     (valid : CounterSampleValid history sample)
@@ -49,7 +42,6 @@ theorem accepted_transmission_is_recent (history : List Transmission) (sample : 
     omega
   · omega
 
-/-- A stale or unrelated sample cannot silently supply the receive-side premise. -/
 def InstallMatches (sample : Sample) (installation : Sample) : Prop :=
   sample.association = installation.association ∧
   sample.generation = installation.generation ∧

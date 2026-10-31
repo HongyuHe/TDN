@@ -4,9 +4,7 @@ import TDN.Evidence.FreshSharedExecution
 
 namespace TDN.Imported.FreshOuterPeerOutput
 
-/-- Complete Outer inventory and the corresponding raw SAD/configured peer
-endpoint addresses from the shared native execution import. -/
-tdn_data outerPeers : List (Nat × Nat) from "../../evidence/lean/FreshOuterPeerOutput.json" ["TDN.Imported.FreshOuterPeerOutput.outerPeers"]
+tdn_data outerPeers : List (Nat × Nat) from "../../data/evidence/FreshOuterPeerOutput.json" ["TDN.Imported.FreshOuterPeerOutput.outerPeers"]
 
 def rules (device : Nat) : List PacketPolicy.Rule :=
   (Execution.deviceAt FreshSharedExecution.devices device).outputRules
@@ -17,8 +15,6 @@ lemma actual_defaults : ∀ row ∈ outerPeers,
 lemma peer_rule_checks : ∀ row ∈ outerPeers, ∀ rule ∈ rules row.1,
     rule.verdict = .allow → Targets.PeerOutputGuard row.2 rule := by decide
 
-/-- OR10's local-output subclause. Forwarded traffic and additional interface
-protocol clauses are accounted separately; no requirement approval is assumed. -/
 theorem every_external_local_output_targets_the_actual_peer (row : Nat × Nat)
     (member : row ∈ outerPeers) (packet : PacketPolicy.Packet)
     (accepted : Filter.evaluate ((rules row.1).map PacketPolicy.Rule.toFilter)
@@ -28,9 +24,6 @@ theorem every_external_local_output_targets_the_actual_peer (row : Nat × Nat)
   exact Targets.accepted_nonloopback_output_has_peer_destination (rules row.1) row.2
     (peer_rule_checks row member) packet accepted external
 
-/-- PF6's blocking alternative for locally generated contacts. Every destination
-other than the recorded Outer peer is denied on non-loopback output under the
-captured OUTPUT hook semantics and fixed policy. -/
 theorem locally_generated_third_party_contacts_are_blocked (row : Nat × Nat)
     (member : row ∈ outerPeers) (packet : PacketPolicy.Packet)
     (external : packet.egress ≠ "lo") (thirdParty : packet.destination ≠ row.2) :

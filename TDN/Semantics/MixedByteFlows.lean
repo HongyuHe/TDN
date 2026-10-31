@@ -4,9 +4,6 @@ import TDN.Semantics.MultiProtocolEvents
 namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
-/-- Plain assembly may combine different packets at one receiving interface.
-Its output is ordinary IP or Ethernet data, with arbitrary data headers.
-Encrypted assembly requires the separate authentication/provenance contract. -/
 def PlainByteAssembly (before after : State) : Prop :=
   before.phase = .received ∧ after.phase = .received ∧ before.port = after.port ∧
   before.frame.body.protectionLayers = [] ∧
@@ -80,8 +77,6 @@ theorem byte_path_layer_addition_has_encryption (c : Config) (tag : Nat)
   intro left action right step changed
   exact byte_layer_added_only_by_encryption c step changed.1 (Classical.not_not.mp changed.2)
 
-/-- The events lie on the individual byte's path. Mutable packet identifiers
-need not be equal across an intermediate plaintext assembly. -/
 def ByteOrderedEncryptions (c : Config) (inner outer : Nat)
     (before : State) (actions : List (Option Action)) (after : State) : Prop :=
   ∃ earlier later left action right,

@@ -2,7 +2,6 @@ import TDN.Semantics.ExecutionProvenance
 
 namespace TDN.Execution
 
-/-- A payload's source domain restricts plaintext endpoints while permitting shared transit ports. -/
 def DomainProcessing (c : Config) (layout : Nat → List Nat) (allowed : Nat → Prop)
     (s : State) : Prop :=
   ProcessingInvariant c layout s ∧ allowed s.frame.enteredPort
@@ -132,7 +131,6 @@ theorem execution_preserves_domain_invariant (c : Config) (layout : Nat → List
     fun _ _ _ step before => step_preserves_domain_invariant conditions step before
   exact Cslib.LTS.mtrInv_of_trInv preservation a actions b run initial
 
-/-- Only plaintext delivery endpoints are constrained. Shared ciphertext transit remains permitted. -/
 theorem delivered_port_is_allowed (c : Config) (layout : Nat → List Nat)
     (allowed : Nat → Prop) (conditions : LocalDomainConditions c layout allowed)
     {a b : State} {actions : List Action} (run : (lts c).MTr a actions b)

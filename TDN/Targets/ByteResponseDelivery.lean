@@ -5,9 +5,6 @@ import TDN.Semantics.UniformDomainResponses
 
 namespace TDN.Targets
 
-/-- The same checked local policies cover byte histories with intermediate
-plaintext assembly and arbitrary gateway echo/error generation. Quotes may copy
-any source bytes. OUTPUT denial makes their external emission unreachable. -/
 theorem bytes_with_plaintext_assembly_and_gateway_responses_keep_domains {Byte : Type}
     (c : Execution.Config) (sources domains gateways : List Nat)
     (layout : Nat → Nat → List Nat) (allowed : Nat → Nat → Prop)
@@ -42,9 +39,6 @@ theorem bytes_with_plaintext_assembly_and_gateway_responses_keep_domains {Byte :
   · intro state enabled port
     exact guards state.port enabled
 
-/-- Actual gateway OUTPUT rules and per-component interface regions preserve
-source-byte domains through both denied and permitted copied-byte responses.
-Hosts and transport components may emit replies from any active processing phase. -/
 theorem bytes_with_plaintext_assembly_and_component_responses_keep_domains {Byte : Type}
     (c : Execution.Config) (sources domains gateways uniformOwners : List Nat)
     (layout : Nat → Nat → List Nat) (allowed : Nat → Nat → Prop)

@@ -28,9 +28,6 @@ lemma assembled_response_state_preserves {S B : Type} (responses : KernelRespons
   cases before <;> cases after <;> simp only [assembly] at compatible <;> try contradiction
   exact preserved _ _ byte compatible safe
 
-/-- A single model permits simultaneous byte-carrying packets, splitting,
-assembly, and arbitrary enabled kernel response generation. Strict local OUTPUT
-guards prevent response emissions from introducing a new external packet. -/
 theorem all_fragment_and_response_histories_preserve_bytes {S B A : Type}
     (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
     (origin : S → B → Prop) (canAssemble : S → S → Prop)
@@ -61,9 +58,6 @@ theorem all_fragment_and_response_histories_preserve_bytes {S B A : Type}
       byte compatible safe
   · simp [ByteFlows.Safe]
 
-/-- Local reply checks also permit safe responses. Pending packets retain the
-source-byte property until a permitted emission. The same machine allows
-splitting, arbitrary permutations and assembly between response steps. -/
 theorem all_fragment_and_permitted_response_histories_preserve_bytes {S B A : Type}
     (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
     (origin : S → B → Prop) (canAssemble : S → S → Prop)

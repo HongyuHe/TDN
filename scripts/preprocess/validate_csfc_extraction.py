@@ -163,6 +163,6 @@ def validate(out):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--out', type=Path, default=Path('artifacts/extraction'))
+    parser.add_argument('--out', type=Path, default=Path('data/extraction'))
     args = parser.parse_args()
     raise SystemExit(0 if validate(args.out) else 1)

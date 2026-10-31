@@ -3,8 +3,6 @@ import Mathlib.Data.List.Basic
 
 namespace TDN.ByteFlows
 
-/-- Bytes retain their source annotations when packets split or are reassembled.
-Those annotations are not wire fields or reassembly matching conditions. -/
 structure Carrier (State Byte : Type) where
   state : State
   bytes : List Byte
@@ -13,12 +11,6 @@ inductive Action (NetworkAction : Type) where
   | inject | split | assemble | copy | discard | permute
   | network (label : NetworkAction)
 
-/-- Any number of packets and fragments may coexist. Splitting permits arbitrary
-finite partitions. Copying retains any subset of a packet's bytes in a saved
-context while the original packet can continue. Permutation lets assembly select pieces interleaved with unrelated
-packets. Assembly uses the supplied operational state relation and can
-combine different source packets. Actual key/offset restrictions can narrow this
-relation without weakening the preservation result. -/
 inductive Step {S B A : Type} (network : Cslib.LTS S A)
     (origin : S → B → Prop) (canAssemble : S → S → Prop) :
     List (Carrier S B) → Action A → List (Carrier S B) → Prop where
@@ -113,8 +105,6 @@ lemma step_preserves_bytes {S B A : Type} (network : Cslib.LTS S A)
   | discard retained =>
     exact fun packet member byte contains => initial packet (retained.subset member) byte contains
 
-/-- CSLib lifts the local injection, packet-processing and assembly rules across
-arbitrary interleavings, repeated splitting and mixed-packet reassembly. -/
 theorem all_executions_preserve_byte_properties {S B A : Type}
     (network : Cslib.LTS S A) (origin : S → B → Prop) (canAssemble : S → S → Prop)
     (property : B → S → Prop)
@@ -129,8 +119,6 @@ theorem all_executions_preserve_byte_properties {S B A : Type}
     (step_preserves_bytes network origin canAssemble property injection forwarding assembly)
     before actions after run initial
 
-
-/-- Every ordinary packet path remains possible with any retained source-byte list. -/
 theorem network_trace_on_one_carrier {S B A : Type}
     (network : Cslib.LTS S A) (origin : S → B → Prop) (canAssemble : S → S → Prop)
     (bytes : List B) {before after : S} {actions : List A}

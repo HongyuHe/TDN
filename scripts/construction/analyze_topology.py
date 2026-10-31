@@ -9,7 +9,8 @@ from native_runtime import validate_native
 from import_domains import validate_declaration,bind_native_declaration
 
 
-from evidence_service.parsers.topology import components, inactive_fallback, raw_interface_kind, verify_peer_namespace, adjacency_projection, validated_graph
+import evidence_package
+from tdn_evidence.parsers.topology import components, inactive_fallback, raw_interface_kind, verify_peer_namespace, adjacency_projection, validated_graph
 
 
 def analyze(bundle,output,report_path,scenario_key="scenario",scenario_declaration=None,namespace=None):

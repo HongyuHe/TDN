@@ -37,7 +37,6 @@ theorem accepted_protocol (rules : List Rule) (allowed : List String)
   have equality : packet.protocol = name := matching_atom matched atom
   exact equality ▸ permitted
 
-/-- The immediate IPv6 Next Header is distinct from a parsed upper-layer protocol. -/
 def ImmediateHeaderGuard (allowed : List Nat) (rule : Rule) : Prop :=
   .ipv6NextHeaders allowed ∈ rule.atoms
 

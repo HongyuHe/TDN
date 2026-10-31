@@ -4,8 +4,6 @@ import TDN.Semantics.ReassemblyOrigins
 
 namespace TDN.Targets
 
-/-- Source annotations are assigned at the actual Red interface, independently
-of claimed IP source addresses. They follow copied or partitioned source bytes. -/
 def RedByteOrigin {Byte : Type} (c : Execution.Config) (sources : List Nat)
     (state : Execution.State) (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) : Prop :=
   RedPayloadOrigin c sources state ∧
@@ -16,10 +14,6 @@ def ByteDomainInvariant {Byte : Type} (c : Execution.Config) (domains : List Nat
     (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (state : Execution.State) : Prop :=
   byte.domain ∈ domains ∧ Execution.DomainInvariant c (layout byte.domain) (allowed byte.domain) state
 
-/-- Per-domain route, filter, association and source checks cover any number of
-simultaneous packets. Plaintext reassembly may mix different original packets at
-any receiving interface and may change headers before further forwarding.
-The model does not use equal packet IDs or domain labels as an assembly guard. -/
 theorem all_packet_and_plaintext_assembly_histories_preserve_domains {Byte : Type}
     (c : Execution.Config) (sources domains : List Nat)
     (layout : Nat → Nat → List Nat) (allowed : Nat → Nat → Prop)
@@ -49,9 +43,6 @@ theorem all_packet_and_plaintext_assembly_histories_preserve_domains {Byte : Typ
       (layout byte.domain) (allowed byte.domain) compatible safe.2⟩
   · simp [ByteFlows.Safe]
 
-/-- The recipient's full security domain matches every delivered source byte,
-including bytes assembled from multiple original packets. Local recipient checks
-derive the conclusion; assembly does not assume it. -/
 theorem assembled_packet_delivery_preserves_each_byte_domain {Byte : Type}
     (c : Execution.Config) (sources domains : List Nat)
     (layout : Nat → Nat → List Nat) (allowed : Nat → Nat → Prop)
@@ -82,9 +73,6 @@ theorem assembled_packet_delivery_preserves_each_byte_domain {Byte : Type}
   · simp [recipient] at absent
   · exact Option.some.inj (same.symm.trans recipient)
 
-
-/-- Every Black transmission keeps the required two-layer stack for each source
-byte, even after earlier plaintext assemblies mixed source packet identities. -/
 theorem assembled_packet_at_black_keeps_each_byte_protected {Byte : Type}
     (c : Execution.Config) (sources domains blackPorts : List Nat)
     (layout : Nat → Nat → List Nat) (allowed : Nat → Nat → Prop)

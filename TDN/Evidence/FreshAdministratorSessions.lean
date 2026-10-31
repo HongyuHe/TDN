@@ -6,55 +6,53 @@ open Targets
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
-/-- Credential identities are modeled here. Human appointments and AW accounts remain external. -/
-tdn_data accounts : List AdministrativeAccount from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.accounts"]
+tdn_data accounts : List AdministrativeAccount from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.accounts"]
 
-tdn_data authentication0 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication0"]
+tdn_data authentication0 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication0"]
 
-tdn_data operation0 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation0"]
+tdn_data operation0 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation0"]
 
-tdn_data authentication1 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication1"]
+tdn_data authentication1 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication1"]
 
-tdn_data operation1 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation1"]
+tdn_data operation1 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation1"]
 
-tdn_data authentication2 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication2"]
+tdn_data authentication2 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication2"]
 
-tdn_data operation2 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation2"]
+tdn_data operation2 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation2"]
 
-tdn_data authentication3 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication3"]
+tdn_data authentication3 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication3"]
 
-tdn_data operation3 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation3"]
+tdn_data operation3 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation3"]
 
-tdn_data authentication4 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication4"]
+tdn_data authentication4 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication4"]
 
-tdn_data operation4 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation4"]
+tdn_data operation4 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation4"]
 
-tdn_data authentication5 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication5"]
+tdn_data authentication5 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication5"]
 
-tdn_data operation5 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation5"]
+tdn_data operation5 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation5"]
 
-tdn_data authentication6 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication6"]
+tdn_data authentication6 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication6"]
 
-tdn_data operation6 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation6"]
+tdn_data operation6 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation6"]
 
-tdn_data authentication7 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication7"]
+tdn_data authentication7 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication7"]
 
-tdn_data operation7 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation7"]
+tdn_data operation7 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation7"]
 
-tdn_data authentication8 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication8"]
+tdn_data authentication8 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication8"]
 
-tdn_data operation8 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation8"]
+tdn_data operation8 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation8"]
 
-tdn_data authentication9 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication9"]
+tdn_data authentication9 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication9"]
 
-tdn_data operation9 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation9"]
+tdn_data operation9 : AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation9"]
 
-/-- Session names and causal orders are witnesses derived from the reviewed handler sequence. -/
-tdn_data sessions : List AdministrativeSession from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.sessions"]
+tdn_data sessions : List AdministrativeSession from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.sessions"]
 
-tdn_data events : List AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.events"]
+tdn_data events : List AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.events"]
 
-tdn_data actions : List AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.actions"]
+tdn_data actions : List AdminEvent from "../../data/evidence/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.actions"]
 
 def needsAuthentication (event : AdminEvent) : Prop := event.kind = .operation
 def prerequisite := MatchingAdministratorAuthentication false false events accounts sessions
@@ -142,7 +140,6 @@ lemma step19 : (Admission.lts needsAuthentication prerequisite).Tr [authenticati
 lemma admitted_history : (Admission.lts needsAuthentication prerequisite).MTr [] actions events := by
   exact Cslib.LTS.MTr.stepL step0 (Cslib.LTS.MTr.stepL step1 (Cslib.LTS.MTr.stepL step2 (Cslib.LTS.MTr.stepL step3 (Cslib.LTS.MTr.stepL step4 (Cslib.LTS.MTr.stepL step5 (Cslib.LTS.MTr.stepL step6 (Cslib.LTS.MTr.stepL step7 (Cslib.LTS.MTr.stepL step8 (Cslib.LTS.MTr.stepL step9 (Cslib.LTS.MTr.stepL step10 (Cslib.LTS.MTr.stepL step11 (Cslib.LTS.MTr.stepL step12 (Cslib.LTS.MTr.stepL step13 (Cslib.LTS.MTr.stepL step14 (Cslib.LTS.MTr.stepL step15 (Cslib.LTS.MTr.stepL step16 (Cslib.LTS.MTr.stepL step17 (Cslib.LTS.MTr.stepL step18 (Cslib.LTS.MTr.stepL step19 (Cslib.LTS.MTr.refl))))))))))))))))))))
 
-/-- The result is limited to the retained service requests. The import report records the source contract. -/
 theorem recorded_service_authentication :
     msc_administrator_authentication false false events accounts sessions [] := by
   apply administrator_authentication_from_admitted_operations false false events actions accounts sessions [] (fun _ => 0)

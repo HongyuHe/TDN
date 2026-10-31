@@ -2,6 +2,8 @@
 
 This directory contains the active tools for theory construction, evidence provision and workflow coordination. Run the commands from the TDN repository root. The [workflow](../../workflows/construction.md) defines the agents' responsibilities and stopping conditions.
 
+New evidence requests use the [MCP server](../../mcp/README.md), which exports JSON into `data/evidence/` for Lean import commands. The generation commands below reproduce earlier construction runs. Several of their target modules were retired by the formalization-value assessment. Run those recipes in a checkout of the corresponding historical revision; they must not recreate retired modules in the active theory. Their parser entry points import shared code from `mcp/tdn_evidence/parsers/`.
+
 | Location | Purpose |
 | --- | --- |
 | `import_*.py`, `analyze_topology.py`, `audit_gray_paths.py`, `bind_domains.py` | Validate observations and generate Lean evidence modules |
@@ -14,13 +16,24 @@ This directory contains the active tools for theory construction, evidence provi
 
 The shared `record.py` preserves nested history through manifest references. Both the validation runner and coordinator use that implementation.
 
-## Validate the current continuation
+## Validate the active theory
+
+```sh
+lake build
+python3 scripts/construction/run_lean_tests.py
+python3 scripts/construction/check_configuration_records.py
+lake env lean scripts/construction/audit_axioms.lean
+```
+
+The [scope guide](../../docs/theory_scope.md) and [76-group scope register](../../specs/proof_scope.json) describe the current theory. The direct-check command validates the migrated configuration and recorded-operation clauses without generating Lean code. Its JSON output includes the checked claims and input hashes.
+
+## Replay the historical continuation
 
 Run from the repository root. Set both workspace-relative paths explicitly. The derived current manifest selects the immutable Evidence v7 case ledger with all 59 representative cases. The original input manifest and previous run remain unchanged.
 
 ~~~sh
-export TDN_INPUT_MANIFEST=artifacts/construction/2026-10-24T014455Z/source_paths_current.json
-export TDN_OUTPUT_DIR=artifacts/construction/2026-10-24T014455Z
+export TDN_INPUT_MANIFEST=data/construction/2026-10-24T014455Z/source_paths_current.json
+export TDN_OUTPUT_DIR=data/construction/2026-10-24T014455Z
 
 python3 scripts/construction/record_attempt.py --label local-current-build -- lake build
 python3 scripts/construction/record_attempt.py --label local-current-axioms -- lake env lean scripts/construction/audit_axioms.lean
@@ -39,9 +52,9 @@ The older run_validation tool remains available for its original selected input 
 These commands rebuild the six final routed pairings and the separate bridged opaque-Ethernet case. The generators validate manifest hashes, raw command bindings, complete operational inventories, epochs and local forwarding settings before writing Lean facts.
 
 ~~~sh
-python3 scripts/construction/generate_pairing_configs.py --bundles artifacts/snapshots/2026-10-24T014455Z/pairings-v7 --output TDN/Evidence/FreshPairingConfigs.lean --reports "$TDN_OUTPUT_DIR/pairing-execution-v7"
+python3 scripts/construction/generate_pairing_configs.py --bundles data/snapshots/2026-10-24T014455Z/pairings-v7 --output TDN/Evidence/FreshPairingConfigs.lean --reports "$TDN_OUTPUT_DIR/pairing-execution-v7"
 python3 scripts/construction/generate_pairing_checks.py --reports "$TDN_OUTPUT_DIR/pairing-execution-v7" --output TDN/Evidence/FreshPairingStackChecks.lean
-python3 scripts/construction/generate_pairing_configs.py --bundles artifacts/snapshots/2026-10-24T014455Z/bridged-macsec-v8 --output TDN/Evidence/FreshBridgedMACsecConfig.lean --reports "$TDN_OUTPUT_DIR/bridged-macsec-execution-v8"
+python3 scripts/construction/generate_pairing_configs.py --bundles data/snapshots/2026-10-24T014455Z/bridged-macsec-v8 --output TDN/Evidence/FreshBridgedMACsecConfig.lean --reports "$TDN_OUTPUT_DIR/bridged-macsec-execution-v8"
 python3 scripts/construction/generate_pairing_checks.py --reports "$TDN_OUTPUT_DIR/bridged-macsec-execution-v8" --config-module TDN.Evidence.FreshBridgedMACsecConfig --output TDN/Evidence/FreshBridgedMACsecChecks.lean
 python3 scripts/construction/generate_mixed_suite.py --reports "$TDN_OUTPUT_DIR/pairing-execution-v7" --bridged-reports "$TDN_OUTPUT_DIR/bridged-macsec-execution-v8" --traces "$TDN_OUTPUT_DIR/mixed-traces"
 lake build TDN.Evidence.FreshMixedDeliverySuite
@@ -58,7 +71,7 @@ The refresh_progress tool maintains current declaration locations and hashes. Th
 
 ## Preserve historical evidence
 
-The snapshots and source checkpoints under `artifacts/` retain their original paths, content and hashes. References inside those historical records describe the commands that actually ran. Current commands use this directory. The [relocation record](../../artifacts/construction/script-organization/relocation.json) maps the previous locations to the active tools.
+The snapshots and source checkpoints under `artifacts/` retain their original paths, content and hashes. References inside those historical records describe the commands that actually ran. Current commands use this directory. The [relocation record](../../data/construction/script-organization/relocation.json) maps the previous locations to the active tools.
 
 Specification preprocessing remains in `scripts/preprocess`. Prior-work property extraction remains in `scripts/extract_prior_work_properties.py`.
 
@@ -67,9 +80,9 @@ Specification preprocessing remains in `scripts/preprocess`. Prior-work property
 The exact recorded commands also appear in the run experiment records. Use distinct record_attempt labels for each invocation.
 
 ~~~sh
-python3 scripts/construction/import_vpn_modes.py artifacts/snapshots/2026-10-24T014455Z/native-baseline-20261024T015000Z --namespace FreshBaselineVPNModes --output TDN/Evidence/FreshBaselineVPNModes.lean --report "$TDN_OUTPUT_DIR/fresh-baseline-vpn-modes.json"
-python3 scripts/construction/import_vpn_modes.py artifacts/snapshots/2026-10-24T014455Z/native-shared-four-levels-20261024T015300Z-coverage-v1 --namespace FreshSharedVPNModes --output TDN/Evidence/FreshSharedVPNModes.lean --report "$TDN_OUTPUT_DIR/fresh-shared-vpn-modes.json"
-python3 scripts/construction/import_family_execution.py artifacts/snapshots/2026-10-24T014455Z/families-v13/families-444 --namespace Family444V13 --output TDN/Evidence/FreshFamily444V13.lean --report "$TDN_OUTPUT_DIR/family444-v13-execution.json"
+python3 scripts/construction/import_vpn_modes.py data/snapshots/2026-10-24T014455Z/native-baseline-20261024T015000Z --namespace FreshBaselineVPNModes --output TDN/Evidence/FreshBaselineVPNModes.lean --report "$TDN_OUTPUT_DIR/fresh-baseline-vpn-modes.json"
+python3 scripts/construction/import_vpn_modes.py data/snapshots/2026-10-24T014455Z/native-shared-four-levels-20261024T015300Z-coverage-v1 --namespace FreshSharedVPNModes --output TDN/Evidence/FreshSharedVPNModes.lean --report "$TDN_OUTPUT_DIR/fresh-shared-vpn-modes.json"
+python3 scripts/construction/import_family_execution.py data/snapshots/2026-10-24T014455Z/families-v13/families-444 --namespace Family444V13 --output TDN/Evidence/FreshFamily444V13.lean --report "$TDN_OUTPUT_DIR/family444-v13-execution.json"
 python3 scripts/construction/generate_execution_witness.py "$TDN_OUTPUT_DIR/family444-v13-execution.json" --module TDN.Evidence.FreshFamily444V13 --namespace Family444V13 --source-port HA:red --destination-port HB:red --output TDN/Evidence/FreshFamily444V13Witness.lean --trace "$TDN_OUTPUT_DIR/family444-v13-positive-trace.json"
 python3 scripts/construction/generate_family_response_guards.py "$TDN_OUTPUT_DIR/family444-v13-execution.json" --module TDN.Evidence.FreshFamily444V13 --namespace Family444V13 --output TDN/Evidence/FreshFamily444V13ResponseGuards.lean --trace "$TDN_OUTPUT_DIR/family444-v13-positive-trace.json" --witness-module TDN.Evidence.FreshFamily444V13Witness
 python3 scripts/construction/generate_guarded_response_execution.py "$TDN_OUTPUT_DIR/family444-v13-positive-trace.json" --namespace Family444V13 --guard-module TDN.Evidence.FreshFamily444V13ResponseGuards --output TDN/Evidence/FreshFamily444V13ResponseExecution.lean
@@ -92,8 +105,8 @@ Run these commands through record_attempt.py with distinct labels. The mixed-bou
 
 ~~~sh
 python3 scripts/construction/generate_mixed_boundaries.py
-python3 scripts/construction/import_admin_sessions.py --deployment artifacts/snapshots/2026-10-24T014455Z/role-admin-deploy-v4 --effective artifacts/snapshots/2026-10-24T014455Z/role-admin-effective-v3 --matrix artifacts/snapshots/2026-10-24T014455Z/role-admin-matrix-v3 --output TDN/Evidence/FreshAdministratorSessions.lean --report "$TDN_OUTPUT_DIR/fresh-administrator-sessions.json"
-python3 scripts/construction/import_optional_screening.py --bundle artifacts/snapshots/2026-10-24T014455Z/utility-v4/screen-existing --output TDN/Evidence/FreshOptionalScreening.lean --report "$TDN_OUTPUT_DIR/fresh-optional-screening.json"
+python3 scripts/construction/import_admin_sessions.py --deployment data/snapshots/2026-10-24T014455Z/role-admin-deploy-v4 --effective data/snapshots/2026-10-24T014455Z/role-admin-effective-v3 --matrix data/snapshots/2026-10-24T014455Z/role-admin-matrix-v3 --output TDN/Evidence/FreshAdministratorSessions.lean --report "$TDN_OUTPUT_DIR/fresh-administrator-sessions.json"
+python3 scripts/construction/import_optional_screening.py --bundle data/snapshots/2026-10-24T014455Z/utility-v4/screen-existing --output TDN/Evidence/FreshOptionalScreening.lean --report "$TDN_OUTPUT_DIR/fresh-optional-screening.json"
 lake build
 python3 scripts/construction/run_lean_tests.py
 python3 -m unittest discover -s tests -p test_admin_sessions.py
@@ -107,7 +120,7 @@ The mixed applications permit arbitrary inward bodies and require actual receivi
 The following commands consume accepted local artifacts. They perform no collection or remote action. Set TDN_INPUT_MANIFEST and TDN_OUTPUT_DIR as shown above. Preserve each command through record_attempt.py.
 
 ~~~sh
-TDN_SNAP=artifacts/snapshots/2026-10-24T014455Z
+TDN_SNAP=data/snapshots/2026-10-24T014455Z
 python3 scripts/construction/import_macsec_runtime.py "$TDN_SNAP/eap-tls-forward-v18" "$TDN_SNAP/eap-tls-reverse-v18" --namespace FinalMACsecRuntime --output TDN/Evidence/FinalMACsecRuntime.lean --report "$TDN_OUTPUT_DIR/final-macsec-runtime.json"
 python3 scripts/construction/import_macsec_algorithms.py "$TDN_SNAP/eap-tls-forward-v18" "$TDN_SNAP/eap-tls-reverse-v18" --bindings "$TDN_SNAP/hostap-kdf-bindings-v4" --runtime "$TDN_SNAP/final-hostap-runtime-v4" --vectors "$TDN_SNAP/hostap-kdf-vectors-v3" --output TDN/Evidence/FinalMACsecAlgorithms.lean --report "$TDN_OUTPUT_DIR/final-macsec-algorithms.json"
 python3 scripts/construction/import_macsec_protection.py "$TDN_SNAP/eap-tls-forward-v18" "$TDN_SNAP/eap-tls-reverse-v18" --bindings "$TDN_SNAP/hostap-kdf-bindings-v4" --runtime "$TDN_SNAP/final-hostap-runtime-v4" --callback "$TDN_SNAP/hostap-auth-lowest-pn-v5" --output TDN/Evidence/FinalMACsecProtection.lean --report "$TDN_OUTPUT_DIR/final-macsec-protection.json"
@@ -130,7 +143,7 @@ The MACsec results distinguish configured protection, negotiated algorithms, rep
 ## Regenerate the recorded audit-copy contribution
 
 ~~~sh
-python3 scripts/construction/import_audit_offload.py artifacts/snapshots/2026-10-24T014455Z --output TDN/Evidence/FreshAuditOffload.lean --report "$TDN_OUTPUT_DIR/fresh-audit-offload.json"
+python3 scripts/construction/import_audit_offload.py data/snapshots/2026-10-24T014455Z --output TDN/Evidence/FreshAuditOffload.lean --report "$TDN_OUTPUT_DIR/fresh-audit-offload.json"
 python3 -m unittest discover -s tests -p test_audit_offload.py
 ~~~
 
@@ -152,7 +165,7 @@ Wrap each generator in record_attempt.py. The native generators use the already 
 ## Regenerate provisioning execution locations
 
 ~~~sh
-python3 scripts/construction/import_provisioning_locations.py artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18 artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18 --output TDN/Evidence/FreshProvisioningLocations.lean --report "$TDN_OUTPUT_DIR/fresh-provisioning-locations.json"
+python3 scripts/construction/import_provisioning_locations.py data/snapshots/2026-10-24T014455Z/eap-tls-forward-v18 data/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18 --output TDN/Evidence/FreshProvisioningLocations.lean --report "$TDN_OUTPUT_DIR/fresh-provisioning-locations.json"
 python3 -m unittest discover -s tests -p test_provisioning_locations.py
 ~~~
 
@@ -218,8 +231,8 @@ The revised user goal requires a meaningful positive partial application for eac
 Use the current relative run paths and retain each command through record_attempt.py:
 
 ~~~sh
-export TDN_OUTPUT_DIR=artifacts/construction/2026-10-24T014455Z
-export TDN_INPUT_MANIFEST=artifacts/construction/2026-10-24T014455Z/source_paths_current.json
+export TDN_OUTPUT_DIR=data/construction/2026-10-24T014455Z
+export TDN_INPUT_MANIFEST=data/construction/2026-10-24T014455Z/source_paths_current.json
 python3 scripts/construction/refresh_progress.py
 python3 scripts/construction/build_practical_provability.py
 python3 scripts/construction/refresh_completion_assessment.py
@@ -241,7 +254,7 @@ The final partial-clause imports include import_routing_processes.py, import_vpn
 The final retained clause facts can be regenerated with the following inputs. Wrap each command with record_attempt.py and a distinct label.
 
 ~~~sh
-TDN_SNAP=artifacts/snapshots/2026-10-24T014455Z
+TDN_SNAP=data/snapshots/2026-10-24T014455Z
 python3 scripts/construction/import_routing_processes.py --inventory "$TDN_SNAP/native-all-process-inventory-v3" --bundles "$TDN_SNAP/native-baseline-20261024T015000Z" "$TDN_SNAP/native-shared-four-levels-20261024T015300Z-coverage-v1" --output TDN/Evidence/FreshRoutingProcesses.lean --report "$TDN_OUTPUT_DIR/fresh-routing-processes.json"
 python3 scripts/construction/import_vpn_observed_clauses.py "$TDN_SNAP/native-shared-four-levels-20261024T015300Z-coverage-v1" --public "$TDN_SNAP/native-public-auth-bindings-20261024T020200Z" --output TDN/Evidence/FreshVPNObservedClauses.lean --report "$TDN_OUTPUT_DIR/fresh-vpn-observed-clauses.json"
 python3 scripts/construction/import_unused_interfaces.py "$TDN_SNAP/native-shared-four-levels-20261024T015300Z-coverage-v1" --output TDN/Evidence/FreshUnusedInterfaces.lean --report "$TDN_OUTPUT_DIR/fresh-unused-interfaces.json"
@@ -254,7 +267,7 @@ python3 scripts/construction/check_clause_role_bindings.py
 The final RG069 application uses the actual retained Auditor log rotation:
 
 ~~~sh
-python3 scripts/construction/import_auditor_rotation.py --base artifacts/snapshots/2026-10-24T014455Z --derived "$TDN_OUTPUT_DIR/evidence/derived-auditor-rotation-v1" --output TDN/Evidence/FreshAuditorRotation.lean --report "$TDN_OUTPUT_DIR/fresh-auditor-rotation.json"
+python3 scripts/construction/import_auditor_rotation.py --base data/snapshots/2026-10-24T014455Z --derived "$TDN_OUTPUT_DIR/evidence/derived-auditor-rotation-v1" --output TDN/Evidence/FreshAuditorRotation.lean --report "$TDN_OUTPUT_DIR/fresh-auditor-rotation.json"
 python3 -m unittest discover -s tests -p 'test_auditor_rotation_*.py'
 ~~~
 

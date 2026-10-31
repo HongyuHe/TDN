@@ -10,12 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("service_import", ROOT / "scripts/construction/import_service_authorization.py")
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
-BASE = ROOT / "artifacts/snapshots/2026-10-24T014455Z"
+BASE = ROOT / "data/snapshots/2026-10-24T014455Z"
 
 
 class ServiceAuthorizationTests(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(dir=ROOT / "artifacts/construction/2026-10-24T014455Z/experiments")
+        self.temp = tempfile.TemporaryDirectory(dir=ROOT / "data/construction/2026-10-24T014455Z/experiments")
         self.root = Path(self.temp.name)
         self.paths = []
         for name in ["role-admin-deploy-v4", "role-admin-effective-v3", "role-admin-matrix-v3"]:

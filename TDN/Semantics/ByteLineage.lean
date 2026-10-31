@@ -2,9 +2,6 @@ import TDN.Semantics.ByteFlows
 
 namespace TDN.ByteLineage
 
-/-- A byte's path follows one actual packet operation or one assembly edge.
-Each assembled byte keeps the path through its own input piece. Copying and
-list permutations do not invent a new path or change its source. -/
 inductive Step {S A : Type} (network : Cslib.LTS S A) (assembly : S → S → Prop) :
     S → Option A → S → Prop where
   | network {before after action} (step : network.Tr before action after) :
@@ -19,9 +16,6 @@ def HasOrigin {S B A : Type} (network : Cslib.LTS S A) (origin : S → B → Pro
     (assembly : S → S → Prop) (byte : B) (state : S) : Prop :=
   ∃ start actions, origin start byte ∧ (lts network assembly).MTr start actions state
 
-/-- Every byte after an arbitrary simultaneous execution has an individual
-source-to-current path. The proof constructs each path from injection, actual
-packet steps and the assembly relation, without using packet-identity equality. -/
 theorem every_byte_has_source_path {S B A : Type}
     (network : Cslib.LTS S A) (origin : S → B → Prop) (assembly : S → S → Prop)
     {after : List (ByteFlows.Carrier S B)} {actions : List (ByteFlows.Action A)}

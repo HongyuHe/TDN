@@ -2,9 +2,6 @@ import Mathlib.Data.List.Basic
 
 namespace TDN.IKEContexts
 
-/-- These are public observations of one installed IKE/CHILD association.
-No field is a secret-key identity. Local daemon IDs and reqids are deliberately
-absent from the peer comparison. -/
 structure Endpoint where
   device : Nat
   localIdentity : String
@@ -40,8 +37,6 @@ instance (sender receiver : Endpoint) : Decidable (Peer sender receiver) := by
   unfold Peer
   infer_instance
 
-/-- A public directional name helps bind records across devices. It does not
-establish equality or uniqueness of the actual traffic keys. -/
 def sendName (endpoint : Endpoint) : List Nat :=
   [endpoint.ikeInitiatorSPI, endpoint.ikeResponderSPI, endpoint.localAddress,
    endpoint.remoteAddress, endpoint.outboundSPI, endpoint.inboundSPI]
@@ -55,10 +50,6 @@ theorem reciprocal_peers_agree_on_directional_record (sender receiver : Endpoint
   rcases checked with ⟨_, _, addresses, remote, initiator, responder, outbound, inbound, _⟩
   simp only [sendName, receiveName, addresses, remote, initiator, responder, outbound, inbound]
 
-/-- Concrete cryptographic correspondence must connect the public names to
-actual derived traffic keys. The key function ranges over real key identities,
-and is not defined by the public names in this library. The theorem exposes
-that contract rather than inferring secret equality from equal SPIs. -/
 theorem reciprocal_peers_share_key_under_derivation_contract
     {Secret : Type} (sender receiver : Endpoint)
     (sendKey receiveKey : Endpoint → Secret)

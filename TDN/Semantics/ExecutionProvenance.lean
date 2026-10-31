@@ -2,7 +2,6 @@ import TDN.Semantics.FiniteExecution
 
 namespace TDN.Execution
 
-/-- Tags annotate configured encryption operations. They are not additional ESP wire fields. -/
 def ProducedSeal (c : Config) (token : Seal) : Prop :=
   ∃ port association, association ∈ c.outbound port ∧
     ∃ state, state ∈ c.outboundStates port ∧ StateBindsPolicy state association ∧
@@ -63,8 +62,6 @@ def PeerTagAgreement (c : Config) : Prop :=
 def WireMatchesSeal (token : Seal) (state : SecurityAssociation) : Prop :=
   token.association = state.wireIdentity ∧ token.sender = state.sender ∧ token.receiver = state.receiver
 
-/-- For a reachable envelope, wire identity alone determines the receiving annotation.
-The proof discharges the apparent extra tag comparison in the operational decrypt rule. -/
 theorem wire_match_determines_annotated_seal {c : Config}
     (agreement : PeerTagAgreement c) {token : Seal} (produced : ProducedSeal c token)
     (receiver : Nat) (incoming : Association) (configured : incoming ∈ c.inbound receiver)

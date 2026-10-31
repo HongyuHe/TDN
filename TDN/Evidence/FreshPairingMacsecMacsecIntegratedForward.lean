@@ -7,75 +7,75 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 set_option linter.unusedSimpArgs false
 
-tdn_data usefulState0 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState0"]
+tdn_data usefulState0 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState0"]
 
-tdn_data usefulState1 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState1"]
+tdn_data usefulState1 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState1"]
 
-tdn_data usefulState2 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState2"]
+tdn_data usefulState2 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState2"]
 
-tdn_data usefulState3 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState3"]
+tdn_data usefulState3 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState3"]
 
-tdn_data usefulState4 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState4"]
+tdn_data usefulState4 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState4"]
 
-tdn_data usefulState5 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState5"]
+tdn_data usefulState5 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState5"]
 
-tdn_data usefulState6 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState6"]
+tdn_data usefulState6 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState6"]
 
-tdn_data usefulState7 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState7"]
+tdn_data usefulState7 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState7"]
 
-tdn_data usefulState8 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState8"]
+tdn_data usefulState8 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState8"]
 
-tdn_data usefulState9 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState9"]
+tdn_data usefulState9 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState9"]
 
-tdn_data usefulState10 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState10"]
+tdn_data usefulState10 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState10"]
 
-tdn_data usefulState11 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState11"]
+tdn_data usefulState11 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState11"]
 
-tdn_data usefulState12 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState12"]
+tdn_data usefulState12 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState12"]
 
-tdn_data usefulState13 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState13"]
+tdn_data usefulState13 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState13"]
 
-tdn_data usefulState14 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState14"]
+tdn_data usefulState14 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState14"]
 
-tdn_data usefulState15 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState15"]
+tdn_data usefulState15 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState15"]
 
-tdn_data usefulState16 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState16"]
+tdn_data usefulState16 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState16"]
 
-tdn_data usefulState17 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState17"]
+tdn_data usefulState17 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState17"]
 
-tdn_data usefulState18 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState18"]
+tdn_data usefulState18 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState18"]
 
-tdn_data usefulState19 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState19"]
+tdn_data usefulState19 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState19"]
 
-tdn_data usefulState20 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState20"]
+tdn_data usefulState20 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState20"]
 
-tdn_data usefulState21 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState21"]
+tdn_data usefulState21 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState21"]
 
-tdn_data usefulState22 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState22"]
+tdn_data usefulState22 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState22"]
 
-tdn_data usefulState23 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState23"]
+tdn_data usefulState23 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState23"]
 
-tdn_data usefulState24 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState24"]
+tdn_data usefulState24 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState24"]
 
-tdn_data usefulState25 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState25"]
+tdn_data usefulState25 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState25"]
 
-tdn_data usefulState26 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState26"]
+tdn_data usefulState26 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState26"]
 
-tdn_data usefulState27 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState27"]
+tdn_data usefulState27 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState27"]
 
-tdn_data usefulState28 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState28"]
+tdn_data usefulState28 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState28"]
 
-tdn_data usefulState29 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState29"]
+tdn_data usefulState29 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState29"]
 
-tdn_data usefulState30 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState30"]
+tdn_data usefulState30 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState30"]
 
-tdn_data usefulState31 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState31"]
+tdn_data usefulState31 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState31"]
 
-tdn_data usefulState32 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState32"]
+tdn_data usefulState32 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState32"]
 
-tdn_data usefulState33 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState33"]
+tdn_data usefulState33 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState33"]
 
-tdn_data usefulState34 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState34"]
+tdn_data usefulState34 : MultiProtocolExecution.State from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulState34"]
 
 lemma usefulStep0 : MultiProtocolExecution.Step config usefulState0 .route usefulState1 := by
   exact MultiProtocolExecution.Step.outputRoute ⟨6, 6, 167903232, 167903487, 24, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
@@ -179,28 +179,28 @@ lemma usefulStep32 : MultiProtocolExecution.Step config usefulState32 .inputFilt
 lemma usefulStep33 : MultiProtocolExecution.Step config usefulState33 .deliver usefulState34 := by
   exact MultiProtocolExecution.Step.deliver 1 rfl rfl rfl
 
-tdn_data bridgeRules10 : List PacketPolicy.Rule from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgeRules10"]
+tdn_data bridgeRules10 : List PacketPolicy.Rule from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgeRules10"]
 
-tdn_data bridgePacket10 : PacketPolicy.Packet from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgePacket10"]
+tdn_data bridgePacket10 : PacketPolicy.Packet from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgePacket10"]
 
 lemma positive_bridge_filter10 : Execution.accepts bridgeRules10 .deny bridgePacket10 := by
   unfold Execution.accepts bridgeRules10 bridgePacket10; decide
 
-tdn_data bridgeRules17 : List PacketPolicy.Rule from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgeRules17"]
+tdn_data bridgeRules17 : List PacketPolicy.Rule from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgeRules17"]
 
-tdn_data bridgePacket17 : PacketPolicy.Packet from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgePacket17"]
+tdn_data bridgePacket17 : PacketPolicy.Packet from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgePacket17"]
 
 lemma positive_bridge_filter17 : Execution.accepts bridgeRules17 .deny bridgePacket17 := by
   unfold Execution.accepts bridgeRules17 bridgePacket17; decide
 
-tdn_data bridgeRules23 : List PacketPolicy.Rule from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgeRules23"]
+tdn_data bridgeRules23 : List PacketPolicy.Rule from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgeRules23"]
 
-tdn_data bridgePacket23 : PacketPolicy.Packet from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgePacket23"]
+tdn_data bridgePacket23 : PacketPolicy.Packet from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.bridgePacket23"]
 
 lemma positive_bridge_filter23 : Execution.accepts bridgeRules23 .deny bridgePacket23 := by
   unfold Execution.accepts bridgeRules23 bridgePacket23; decide
 
-tdn_data usefulActions : List MultiProtocolExecution.Action from "../../evidence/lean/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulActions"]
+tdn_data usefulActions : List MultiProtocolExecution.Action from "../../data/evidence/FreshPairingMacsecMacsecIntegratedForward.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.Forward.usefulActions"]
 
 theorem positive_mixed_delivery : (lts config).MTr usefulState0 usefulActions usefulState34 := by
   exact Cslib.LTS.MTr.stepL usefulStep0 (Cslib.LTS.MTr.stepL usefulStep1 (Cslib.LTS.MTr.stepL usefulStep2 (Cslib.LTS.MTr.stepL usefulStep3 (Cslib.LTS.MTr.stepL usefulStep4 (Cslib.LTS.MTr.stepL usefulStep5 (Cslib.LTS.MTr.stepL usefulStep6 (Cslib.LTS.MTr.stepL usefulStep7 (Cslib.LTS.MTr.stepL usefulStep8 (Cslib.LTS.MTr.stepL usefulStep9 (Cslib.LTS.MTr.stepL usefulStep10 (Cslib.LTS.MTr.stepL usefulStep11 (Cslib.LTS.MTr.stepL usefulStep12 (Cslib.LTS.MTr.stepL usefulStep13 (Cslib.LTS.MTr.stepL usefulStep14 (Cslib.LTS.MTr.stepL usefulStep15 (Cslib.LTS.MTr.stepL usefulStep16 (Cslib.LTS.MTr.stepL usefulStep17 (Cslib.LTS.MTr.stepL usefulStep18 (Cslib.LTS.MTr.stepL usefulStep19 (Cslib.LTS.MTr.stepL usefulStep20 (Cslib.LTS.MTr.stepL usefulStep21 (Cslib.LTS.MTr.stepL usefulStep22 (Cslib.LTS.MTr.stepL usefulStep23 (Cslib.LTS.MTr.stepL usefulStep24 (Cslib.LTS.MTr.stepL usefulStep25 (Cslib.LTS.MTr.stepL usefulStep26 (Cslib.LTS.MTr.stepL usefulStep27 (Cslib.LTS.MTr.stepL usefulStep28 (Cslib.LTS.MTr.stepL usefulStep29 (Cslib.LTS.MTr.stepL usefulStep30 (Cslib.LTS.MTr.stepL usefulStep31 (Cslib.LTS.MTr.stepL usefulStep32 (Cslib.LTS.MTr.stepL usefulStep33 (Cslib.LTS.MTr.refl))))))))))))))))))))))))))))))))))

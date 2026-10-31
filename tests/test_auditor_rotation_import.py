@@ -10,8 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"scripts/construction"))
 from import_auditor_rotation import parse
 
-BASE = Path("artifacts/snapshots/2026-10-24T014455Z")
-DERIVED = Path("artifacts/construction/2026-10-24T014455Z/evidence/derived-auditor-rotation-v1")
+BASE = Path("data/snapshots/2026-10-24T014455Z")
+DERIVED = Path("data/construction/2026-10-24T014455Z/evidence/derived-auditor-rotation-v1")
 
 
 class AuditorRotationImportTests(unittest.TestCase):

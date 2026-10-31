@@ -66,7 +66,7 @@ def main():
     args = parser.parse_args()
     if Path(args.run).name != args.run:
         parser.error("Run must be one directory name")
-    root = Path(__file__).resolve().parents[2] / "artifacts/snapshots" / args.run
+    root = Path(__file__).resolve().parents[2] / "data/snapshots" / args.run
     if not root.is_dir():
         parser.error("Snapshot run directory does not exist")
     result = audit(root)

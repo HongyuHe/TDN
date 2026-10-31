@@ -9,7 +9,7 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/extraction'
+OUT = ROOT / 'data/extraction'
 BASE = 'urn:tdn:csfc:msc:roles:'
 ONTOLOGY_IRI = 'urn:tdn:csfc:msc:roles'
 NS = {'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'owl': 'http://www.w3.org/2002/07/owl#', 'skos': 'http://www.w3.org/2004/02/skos/core#', 'tdn': BASE}

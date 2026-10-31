@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_dns_hardening import parse
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/native-DNS-hardening-v11"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z/native-DNS-hardening-v11"
 
 
 class DNSHardeningTests(unittest.TestCase):

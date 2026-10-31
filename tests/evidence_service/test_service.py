@@ -4,8 +4,8 @@ import json
 import tempfile
 import time
 import unittest
-from scripts.construction.evidence_service.adapters import bird_routes, linux_routes, Unsupported, ADAPTERS, Adapter, register_adapter
-from scripts.construction.evidence_service.service import EvidenceService
+from tdn_evidence.adapters import bird_routes, linux_routes, Unsupported, ADAPTERS, Adapter, register_adapter
+from tdn_evidence.service import EvidenceService
 
 
 class FakeTransport:

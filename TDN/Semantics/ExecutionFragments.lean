@@ -3,8 +3,6 @@ import TDN.Semantics.Fragmentation
 
 namespace TDN.Execution
 
-/-- The descriptor contains inherited semantic provenance, not extra authenticated wire fields.
-Address and origin projections remain explicit; layers describe the operations that produced bytes. -/
 structure FragmentDescriptor where
   payload : Nat
   originDomain : Nat
@@ -21,8 +19,6 @@ def encodeForFragmentation {Byte : Type} (encodedBytes : Frame → List Byte)
     (state : State) : Fragmentation.Datagram FragmentDescriptor Byte :=
   ⟨fragmentDescriptor state, encodedBytes state.frame⟩
 
-/-- Every in-flight piece inherits the current logical packet's source, destination, origin
-and protection provenance. Reassembly cannot cross a changed descriptor. -/
 theorem execution_fragment_descriptors_match {Byte : Type} (c : Config)
     (encodedBytes : Frame → List Byte)
     {before after : Fragmentation.SegmentedState State FragmentDescriptor Byte}

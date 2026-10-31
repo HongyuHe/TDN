@@ -8,13 +8,13 @@ def roles (fingerprint : String) : Option String :=
   if fingerprint = "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02" then some "SecurityAdministrator" else
   none
 
-tdn_data permissions : List AccessControl.Permission from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.permissions"]
+tdn_data permissions : List AccessControl.Permission from "../../data/evidence/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.permissions"]
 
-tdn_data security_admin : String from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.security_admin"]
+tdn_data security_admin : String from "../../data/evidence/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.security_admin"]
 
-tdn_data auditor : String from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.auditor"]
+tdn_data auditor : String from "../../data/evidence/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.auditor"]
 
-tdn_data unmapped : String from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.unmapped"]
+tdn_data unmapped : String from "../../data/evidence/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.unmapped"]
 
 theorem all_private_key_paths_denied (fingerprint method : String) :
     AccessControl.authorize roles permissions ⟨fingerprint, method, "/private-key"⟩ = false := by
@@ -44,7 +44,7 @@ theorem auditor_filter_change_denied :
 theorem administrator_filter_change_permitted :
     AccessControl.authorize roles permissions ⟨security_admin, "POST", "/filter"⟩ = true := by decide
 
-tdn_data observed : List (AccessControl.Request × Bool) from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.observed"]
+tdn_data observed : List (AccessControl.Request × Bool) from "../../data/evidence/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.observed"]
 
 theorem retained_http_results_match_model : ∀ pair ∈ observed,
     AccessControl.authorize roles permissions pair.1 = pair.2 := by decide

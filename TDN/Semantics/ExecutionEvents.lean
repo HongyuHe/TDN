@@ -42,8 +42,6 @@ lemma execution_payload_identity (c : Config) {before after : State} {actions : 
     have same : _ := ih
     cases step <;> exact same
 
-/-- Removing the selected boundary layer requires an actual decrypt step on this payload.
-The step relation also binds the receiving association, wire SA and restored header. -/
 theorem boundary_layer_removal_has_decryption (c : Config) (tag : Nat)
     {before after : State} {actions : List Action}
     (run : (lts c).MTr before actions after)
@@ -58,7 +56,6 @@ theorem boundary_layer_removal_has_decryption (c : Config) (tag : Nat)
   exact ⟨earlier, later, left, action, right, sequence, first, step, last,
     label, removed, execution_payload_identity c first⟩
 
-/-- A newly present boundary tag comes from an actual encrypt step, with a complete trace split. -/
 theorem boundary_layer_addition_has_encryption (c : Config) (tag : Nat)
     {before after : State} {actions : List Action}
     (run : (lts c).MTr before actions after)
@@ -74,7 +71,6 @@ theorem boundary_layer_addition_has_encryption (c : Config) (tag : Nat)
   exact ⟨earlier, later, left, action, right, sequence, first, step, last,
     label, added, execution_payload_identity c first⟩
 
-/-- Literal output-role annotations determine the inner stack present at an outer encryptor. -/
 lemma outer_encryption_has_inner_stack {c : Config} {layout : Nat → List Nat}
     {innerTag outerTag : Nat} {before after : State} {action : Action}
     (placement : ∀ port, (layout port).head? = some outerTag →
@@ -96,8 +92,6 @@ lemma outer_encryption_has_inner_stack {c : Config} {layout : Nat → List Nat}
       added.symm.trans (invariant.1.trans expected)
     exact (List.cons.inj shape).2
 
-/-- Ordered encryption means an actual inner encryption lies in the trace prefix ending
-before an actual outer encryption. Both events operate on the same immutable payload. -/
 def OrderedEncryptions (c : Config) (innerTag outerTag : Nat)
     (before : State) (actions : List Action) (after : State) : Prop :=
   ∃ earlier later left action right,
@@ -110,8 +104,6 @@ def OrderedEncryptions (c : Config) (innerTag outerTag : Nat)
       (fun a label b => label = .encrypt ∧ b.frame.tags = innerTag :: a.frame.tags ∧
         a.frame.payload = before.frame.payload)
 
-/-- The same local stack proof that protects Black transmission also forces the operation
-order. Tags come from configured associations; they do not add a wire authentication field. -/
 theorem nested_stack_requires_ordered_encryptions (c : Config) (layout : Nat → List Nat)
     (conditions : LocalStackConditions c layout) (innerTag outerTag : Nat)
     (placement : ∀ port, (layout port).head? = some outerTag →

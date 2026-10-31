@@ -7,14 +7,11 @@ open Execution
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
-tdn_data responseData : GuardedResponseNetwork.Data from "../../evidence/lean/FreshFamily444V13ResponseExecution.json" ["TDN.Imported.Family444V13.responseData"]
+tdn_data responseData : GuardedResponseNetwork.Data from "../../data/evidence/FreshFamily444V13ResponseExecution.json" ["TDN.Imported.Family444V13.responseData"]
 
 lemma response_default_checks : ∀ guard ∈ responseSourceGuards,
     (deviceAt devices guard.1).outputFallback = .deny := by decide
 
-/-- The copied-byte guarantee covers the explicit pre-encryption processing
-points, including pre-FORWARD errors and local INPUT handling. Prefix-copy
-provenance and kernel hook correspondence are the stated implementation contract. -/
 theorem gateway_response_executions_keep_stack
     {before after : Execution.State} {actions : List (KernelResponses.Action Execution.Action)}
     (run : (KernelResponses.lts (GuardedResponseNetwork.network responseData)

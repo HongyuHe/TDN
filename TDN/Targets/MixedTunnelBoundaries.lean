@@ -4,8 +4,6 @@ import TDN.Semantics.MultiProtocolAuthentication
 namespace TDN.Targets
 open MultiProtocolExecution
 
-/-- Outbound bodies come from the surrounding protected-payload execution.
-Inbound bodies are arbitrary and carry no initial local authentication assertion. -/
 def mixedTunnelBoundary (c : MultiProtocolExecution.Config) (layout : Nat → List Nat)
     (inside outside : List Nat) (tag component : Nat) :
     TunnelBoundaryView MultiProtocolExecution.State MultiProtocolExecution.Action where
@@ -25,8 +23,6 @@ def mixedTunnelBoundary (c : MultiProtocolExecution.Config) (layout : Nat → Li
   splitTunnelExit := fun state => state.phase = .ready ∧ state.port ∈ outside ∧
     tag ∉ state.frame.body.protectionLayers
 
-/-- The same local route, hook and association checks establish outward protection
-and require an actual local receiving operation on every arbitrary inward traversal. -/
 theorem mixed_tunnel_boundary_from_local_checks (c : MultiProtocolExecution.Config)
     (layout : Nat → List Nat) (inside outside : List Nat) (tag component : Nat)
     (conditions : MultiProtocolExecution.LocalConditions c layout)

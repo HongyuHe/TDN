@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"scripts/construction"))
 from import_vpn_observed_clauses import lifetime_rows, parse
 
-BASE = ROOT/"artifacts/snapshots/2026-10-24T014455Z"
+BASE = ROOT/"data/snapshots/2026-10-24T014455Z"
 BUNDLE = BASE/"native-shared-four-levels-20261024T015300Z-coverage-v1"
 
 

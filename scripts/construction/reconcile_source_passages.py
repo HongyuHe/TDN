@@ -31,7 +31,7 @@ def fragment_kind(text):
 def main():
     path = RUN / "theorem_register.json"
     register = json.loads(path.read_text())
-    source_path = Path("artifacts/extraction/source/source_index.jsonl")
+    source_path = Path("data/extraction/source/source_index.jsonl")
     indexed = [json.loads(line) for line in source_path.read_text().splitlines()]
     buckets = {}
     for row in indexed:

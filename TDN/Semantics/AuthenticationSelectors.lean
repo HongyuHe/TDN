@@ -2,9 +2,6 @@ import TDN.Semantics.ExecutionInvariant
 
 namespace TDN.Execution
 
-/-- Successful inbound authentication binds the restored header to the receiving
-policy's selectors. This predicate applies before any subsequent encryption changes
-the visible header. The association is local; its reqid is not a wire identifier. -/
 def AuthenticationMatches (c : Config) (s : State) : Prop :=
   ∀ id ∈ s.authenticated, ∃ association ∈ c.inbound s.frame.enteredPort,
     association.id = id ∧ association.matches s.frame.packet = true

@@ -19,7 +19,6 @@ def HasOutboundGuard (rule : PacketPolicy.Rule) : Prop :=
     | .outboundPolicy _ => True
     | _ => False
 
-/-- A syntactic interval conflict excludes an association for every matching header. -/
 def ExcludesSelector (rule : PacketPolicy.Rule) (association : Association) : Prop :=
   ∃ atom ∈ rule.atoms, match atom with
     | .sourceRange low high => high < association.sourceLow ∨ association.sourceHigh < low
@@ -80,8 +79,6 @@ lemma excluded_selector_cannot_match {rule : PacketPolicy.Rule}
   cases atom <;> simp only at disjoint <;> try contradiction
   all_goals simp only [PacketPolicy.Atom.holds] at holds; omega
 
-/-- The check inspects literal interfaces, policy atoms, intervals and stack tags.
-It contains no execution quantifier or global protection assumption. -/
 def RuleStackCheck (c : Config) (layout : Nat → List Nat)
     (entry port : Nat) (authenticated : List Nat) (rule : PacketPolicy.Rule) : Prop :=
   ¬ PortCompatible rule (c.interfaceName entry) (c.interfaceName port) ∨
@@ -121,7 +118,6 @@ lemma checked_rule_stack_effect {c : Config} {layout : Nat → List Nat}
         contradiction
       · exact same
 
-/-- Ordered first-match filtering reduces to the literal checks on each allowing rule. -/
 theorem checked_hook_stack_effect (c : Config) (layout : Nat → List Nat)
     (rules : List PacketPolicy.Rule) (port : Nat) (frame : Frame) (authenticated : List Nat)
     (ingress : frame.packet.ingress = c.interfaceName frame.enteredPort)

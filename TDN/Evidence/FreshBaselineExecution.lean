@@ -9,15 +9,15 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-tdn_data devices : List DeviceData from "../../evidence/lean/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.devices"]
+tdn_data devices : List DeviceData from "../../data/evidence/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.devices"]
 
-tdn_data ports : List PortData from "../../evidence/lean/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.ports"]
+tdn_data ports : List PortData from "../../data/evidence/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.ports"]
 
-tdn_data routes : List Route from "../../evidence/lean/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.routes"]
+tdn_data routes : List Route from "../../data/evidence/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.routes"]
 
-tdn_data links : List (Nat × Nat) from "../../evidence/lean/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.links"]
+tdn_data links : List (Nat × Nat) from "../../data/evidence/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.links"]
 
-tdn_data switches : List (Nat × Nat) from "../../evidence/lean/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.switches"]
+tdn_data switches : List (Nat × Nat) from "../../data/evidence/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.switches"]
 
 def config : Config := finiteConfig devices ports routes links switches
 def layout : Nat → List Nat := finiteLayout ports
@@ -52,9 +52,9 @@ theorem every_transmission_has_port_stack {start finish : Execution.State} {acti
     (ready : finish.phase = .ready) : finish.frame.tags = layout finish.port :=
   transmitted_stack config layout local_stack_conditions run initial ready
 
-tdn_data redSources : List Nat from "../../evidence/lean/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.redSources"]
+tdn_data redSources : List Nat from "../../data/evidence/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.redSources"]
 
-tdn_data blackPorts : List Nat from "../../evidence/lean/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.blackPorts"]
+tdn_data blackPorts : List Nat from "../../data/evidence/FreshBaselineExecution.json" ["TDN.Imported.FreshBaselineExecution.blackPorts"]
 
 lemma sources_checked : ∀ p ∈ redSources, layout p = [] ∧ config.payloadOrigin p := by
   unfold redSources layout config finiteLayout finiteConfig ports; decide
@@ -63,6 +63,5 @@ lemma black_ports_checked : ∀ p ∈ blackPorts, layout p = [2, 1] := by
 theorem snapshot_RG007_IPv4_ESP_packet_stack : Targets.msc_protected_red_payload_stack config redSources blackPorts :=
   Targets.protected_red_stack_from_local_checks config layout redSources blackPorts
     local_stack_conditions sources_checked black_ports_checked
-
 
 end TDN.Imported.FreshBaselineExecution

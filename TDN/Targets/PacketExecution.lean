@@ -4,15 +4,11 @@ import TDN.Semantics.ExecutionFragments
 
 namespace TDN.Targets
 
-/-- An admitted Red payload starts at a declared source interface, before its first route.
-The source may choose arbitrary packet addresses; these are not assumed truthful here. -/
 def RedPayloadOrigin (c : Execution.Config) (sources : List Nat) (s : Execution.State) : Prop :=
   s.port ∈ sources ∧ s.phase = .localOutput ∧
   s.frame.enteredPort = s.port ∧ s.frame.envelopes = [] ∧
   s.frame.packet.ingress = c.interfaceName s.port ∧ s.authenticated = []
 
-/-- RG007's packet-stack clause for selected IP/ESP configurations.
-Product independence, other technology pairings and management clauses remain separate. -/
 def msc_protected_red_payload_stack (c : Execution.Config) (sources blackPorts : List Nat) : Prop :=
   ∀ start finish actions, RedPayloadOrigin c sources start →
     (Execution.lts c).MTr start actions finish → finish.phase = .ready →
@@ -32,8 +28,6 @@ lemma red_origin_has_initial_stack (c : Execution.Config) (layout : Nat → List
   · simp [entry]
   · simpa [entry] using admitted
 
-/-- Raw hook and routing checks establish the layer order for every admitted Red execution,
-including arbitrary loops and all equally preferred routing/policy choices. -/
 theorem protected_red_stack_from_local_checks (c : Execution.Config) (layout : Nat → List Nat)
     (sources blackPorts : List Nat)
     (conditions : Execution.LocalStackConditions c layout)
@@ -45,7 +39,6 @@ theorem protected_red_stack_from_local_checks (c : Execution.Config) (layout : N
     (red_origin_has_initial_stack c layout sources sourceCheck origin) ready).trans
       (blackCheck finish.port black)
 
-/-- A Black transmission has actual Inner-before-Outer encryption events for this payload. -/
 theorem protected_black_execution_applies_layers_in_order
     (c : Execution.Config) (layout : Nat → List Nat) (sources blackPorts : List Nat)
     (conditions : Execution.LocalStackConditions c layout)
@@ -64,9 +57,6 @@ theorem protected_black_execution_applies_layers_in_order
   · simp [Execution.Frame.tags, origin.2.2.2.1]
   · simp [stack]
 
-/-- Fragment splitting, transport and checked reassembly preserve the packet-stack result.
-Connecting real fragment processing to SegmentedStep is an implementation contract, stated
-separately from the source requirement and from the checked literal network conditions. -/
 theorem fragmented_black_transmission_keeps_layers {Header Byte : Type} [DecidableEq Header]
     (c : Execution.Config) (layout : Nat → List Nat) (sources blackPorts : List Nat)
     (encode : Execution.State → Fragmentation.Datagram Header Byte)
@@ -90,8 +80,6 @@ theorem fragmented_black_transmission_keeps_layers {Header Byte : Type} [Decidab
     simpa [Execution.StackInvariant, ready] using preserved
   exact stack.trans (blackCheck finish.logical.port black)
 
-/-- The stack theorem applies to each actual piece of a modeled fragmented transmission,
-not only to the retained whole-datagram projection. Endpoint and origin metadata are inherited. -/
 theorem every_black_fragment_has_both_layers {Byte : Type}
     (c : Execution.Config) (layout : Nat → List Nat) (sources blackPorts : List Nat)
     (encodedBytes : Execution.Frame → List Byte)

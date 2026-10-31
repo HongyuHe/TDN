@@ -16,7 +16,7 @@ class AuditorRotationDerivationTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.base = Path(self.temp.name)
         for name in ['role-admin-deploy-v4', 'role-admin-effective-v3', 'role-admin-matrix-v3']:
-            shutil.copytree(ROOT / 'artifacts/snapshots/2026-10-24T014455Z' / name, self.base / name)
+            shutil.copytree(ROOT / 'data/snapshots/2026-10-24T014455Z' / name, self.base / name)
 
     def tearDown(self):
         self.temp.cleanup()

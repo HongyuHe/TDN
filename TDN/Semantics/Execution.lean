@@ -4,7 +4,6 @@ import TDN.Semantics.InternetAddresses
 
 namespace TDN.Execution
 
-/-- A seal identifies the selected association and authenticated wire endpoints. -/
 structure Seal where
   tag : Nat
   association : Nat
@@ -12,12 +11,10 @@ structure Seal where
   receiver : Nat
   deriving DecidableEq, Repr
 
-/-- Encryption retains the preceding header so that successful decryption restores it. -/
 structure Envelope where
   authentication : Seal
   header : PacketPolicy.Packet
 
-/-- Payload identity and originating domain are immutable throughout network processing. -/
 structure Frame where
   payload : Nat
   originDomain : Nat
@@ -25,7 +22,6 @@ structure Frame where
   envelopes : List Envelope
   enteredPort : Nat := 0
 
-/-- The innermost saved header identifies the original protected packet addresses. -/
 def payloadAddresses (packet : PacketPolicy.Packet) : List Envelope → Nat × Nat
   | [] => (packet.source, packet.destination)
   | envelope :: rest => payloadAddresses envelope.header rest
@@ -51,7 +47,6 @@ structure State where
   frame : Frame
   authenticated : List Nat
 
-/-- The association includes installed selectors, priority, and actual outer endpoints. -/
 structure Association where
   id : Nat
   tag : Nat
@@ -65,8 +60,6 @@ structure Association where
   templateSPI : Option Nat := none
   deriving DecidableEq, Repr
 
-/-- Installed states are distinct from policies. A required policy without a matching
-state cannot encrypt and cannot fall back to plaintext. -/
 structure SecurityAssociation where
   localRequestId : Nat
   wireIdentity : Nat
@@ -86,7 +79,6 @@ def Association.matches (a : Association) (p : PacketPolicy.Packet) : Bool :=
   decide (a.sourceLow ≤ p.source ∧ p.source ≤ a.sourceHigh ∧
     a.destinationLow ≤ p.destination ∧ p.destination ≤ a.destinationHigh)
 
-/-- All equally best matching policies remain possible. A snapshot must preserve their coverage. -/
 def selectedAssociations (associations : List Association) (p : PacketPolicy.Packet) :
     List Association :=
   associations.filter fun a => a.matches p &&
@@ -109,8 +101,6 @@ structure Route where
 def Route.matches (r : Route) (p : PacketPolicy.Packet) : Prop :=
   r.low ≤ p.destination ∧ p.destination ≤ r.high
 
-/-- The first matching policy table wins, followed by longest prefix and smallest metric.
-Rules with marks, source selectors or terminating non-forward actions require richer routing. -/
 def SelectedRoute (routes : List Route) (r : Route) (p : PacketPolicy.Packet) : Prop :=
   r ∈ routes ∧ r.matches p ∧ ∀ other ∈ routes, other.ingress = r.ingress →
     other.matches p → r.tablePriority ≤ other.tablePriority ∧
@@ -137,8 +127,6 @@ structure Config where
   recipientDomain : Nat → Option Nat
   payloadOrigin : Nat → Prop
 
-/-- Firewall policy metadata is recomputed from local selectors and successful local decryptions.
-Packet-supplied policy fields never authorize an operation. -/
 def policyPacket (c : Config) (port : Nat) (f : Frame) (authenticated : List Nat) :
     PacketPolicy.Packet :=
   { f.packet with
@@ -150,7 +138,6 @@ def accepts (rules : List PacketPolicy.Rule) (fallback : Filter.Verdict)
     (packet : PacketPolicy.Packet) : Prop :=
   Filter.evaluate (rules.map PacketPolicy.Rule.toFilter) fallback packet = .allow
 
-/-- ESP tunnel mode changes the wire-visible header and retains the prior complete header. -/
 def encrypt (a : Association) (sa : SecurityAssociation) (f : Frame) : Frame :=
   { f with
     packet := { f.packet with
@@ -165,9 +152,6 @@ def encrypt (a : Association) (sa : SecurityAssociation) (f : Frame) : Frame :=
       ipv6NextHeader := if a.sender < 2^32 then 0 else 50 }
     envelopes := ⟨a.seal sa, f.packet⟩ :: f.envelopes }
 
-/-- The IP pipeline uses disjoint address-family keys and includes routing, all three filter hooks, ESP stack changes,
-and wire transfer. NAT, policy-routing marks, fragmentation and arbitrary local applications
-require an extension and must be rejected by an importer using this model. -/
 inductive Step (c : Config) : State → Action → State → Prop
   | receive {port : Nat} {f : Frame} (tracking : String) :
       Step c ⟨port, .received, f, []⟩ .local
@@ -267,8 +251,6 @@ lemma step_preserves_original_addresses {c : Config} {a b : State} {action : Act
   | deliver => rfl
   | drop => rfl
 
-/-- Nested tunnel transformations preserve the original packet addresses even though each
-wire header uses new endpoints. This result does not assume truthful initial source addresses. -/
 theorem execution_preserves_original_addresses (c : Config) {a b : State}
     {actions : List Action} (execution : (lts c).MTr a actions b) :
     b.frame.addresses = a.frame.addresses := by
@@ -277,8 +259,6 @@ theorem execution_preserves_original_addresses (c : Config) {a b : State}
     exact (step_preserves_original_addresses step).trans earlier
   exact Cslib.LTS.mtrInv_of_trInv localProof a actions b execution rfl
 
-/-- Any eventual plaintext delivery retains the source and destination of the initial
-plaintext packet. Ingress ownership and permitted recipient levels are separate obligations. -/
 theorem plaintext_delivery_retains_addresses (c : Config) {a b : State}
     {actions : List Action} (execution : (lts c).MTr a actions b)
     (initial : a.frame.envelopes = []) (delivered : b.frame.envelopes = []) :
@@ -288,7 +268,6 @@ theorem plaintext_delivery_retains_addresses (c : Config) {a b : State}
   simp only [Frame.addresses, initial, delivered, payloadAddresses, Prod.mk.injEq] at same
   exact same
 
-/-- CSLib lifts the operation-by-operation conservation proof to every finite trace. -/
 theorem execution_preserves_payload (c : Config) {a b : State} {actions : List Action}
     (h : (lts c).MTr a actions b) :
     b.frame.payload = a.frame.payload ∧ b.frame.originDomain = a.frame.originDomain := by
@@ -308,8 +287,6 @@ lemma matched_policy_is_configured {associations : List Association} {p : Packet
   have both := Bool.and_eq_true_iff.mp matched
   exact both.1
 
-/-- An outbound-policy firewall match entails a locally selected protection policy.
-Encryption additionally requires a matching installed SA; absence of that SA cannot enable plaintext. -/
 theorem outbound_policy_atom_selects_operation (c : Config) (port : Nat) (f : Frame)
     (authenticated : List Nat) {rule : PacketPolicy.Rule} {id : Nat}
     (atom : .outboundPolicy id ∈ rule.atoms)
@@ -321,7 +298,6 @@ theorem outbound_policy_atom_selects_operation (c : Config) (port : Nat) (f : Fr
   obtain ⟨installed, matched⟩ := matched_policy_is_configured selected
   exact ⟨a, installed, same, matched⟩
 
-/-- The local selected-policy list cannot be empty after a matching outbound-policy rule. -/
 lemma outbound_policy_atom_excludes_plain (c : Config) (port : Nat) (f : Frame)
     (authenticated : List Nat) {rule : PacketPolicy.Rule} {id : Nat}
     (atom : .outboundPolicy id ∈ rule.atoms)
@@ -341,7 +317,6 @@ lemma simulation_of_step_map {Abstract : Type} (c : Config)
   subst b
   exact ⟨project next, stepMap a action next step, rfl⟩
 
-/-- Library trace matching preserves action order under a separately proved abstraction. -/
 theorem matched_execution {Abstract : Type} (c : Config)
     (abstractLTS : Cslib.LTS Abstract Action) (project : State → Abstract)
     (stepMap : ∀ a action b, Step c a action b →

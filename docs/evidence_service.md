@@ -2,21 +2,23 @@
 
 The evidence service gives the construction agent one interface for collecting network state, inspecting saved observations, and preparing JSON data for Lean. Device adapters select read commands and interpret their outputs. Lean commands turn the resulting JSON into ordinary definitions that existing proofs can unfold.
 
-The current theory keeps its network models and general proofs. The migration changes how concrete data enter Lean. It borrows lean-batfish's use of Lean commands and typed data conversion. TDN has no dependency on lean-batfish or Batfish.
+The current theory keeps its network models and general proofs. The migration changes how concrete data enter Lean. Lean commands decode the JSON records into typed definitions.
 
 ## Start the server
 
 Install `uv`, then run the launcher from any directory:
 
 ```bash
-/Users/hongyu/Projects/Formal/TDN/scripts/construction/evidence_service/run.sh
+/Users/hongyu/Projects/Formal/TDN/mcp/run.sh
 ```
 
 The default configuration exposes the saved v3 baseline. The launcher installs the exact Python dependencies in `uv.lock` and starts an MCP server over standard input and output. An MCP client starts that same command as a subprocess. The server needs no listening TCP port.
 
-To select your own configured workers, pass an absolute configuration path as the launcher's first argument. Paths inside the configuration file are resolved relative to that file. Live validation uses `scripts/construction/evidence_service/live-validation.json`. Copy that file before adapting the workers or container names.
+To select your own configured workers, pass an absolute configuration path as the launcher's first argument. Paths inside the configuration file are resolved relative to that file. Live validation uses `mcp/live-validation.json`. Copy that file before adapting the workers or container names.
 
 Each device identifies its worker, container, optional declared role, and adapters. One device can combine `linux`, `frr`, `ovs`, and `ipsec` adapters. A BIRD router combines `linux` and `bird`. Collection can span workers because each device carries its own worker address. SSH uses existing keys and requires passwordless `sudo docker exec` on each configured worker.
+
+Saved MCP captures and validation reports live under `mcp/artifacts/`. The configured `store` selects `artifacts/local` for default use and `artifacts/live` for live validation. Git ignores routine outputs and retains the selected BIRD capture that backs the Lean import example. The [capture notes](../mcp/artifacts/README.md) identify that capture and its purpose. Lean-ready JSON stays under `data/evidence/`.
 
 ## Ask for evidence
 
@@ -49,7 +51,7 @@ import TDN.Import.Command
 import TDN.Evidence.Types
 
 tdn_data captured : TDN.Evidence.Snapshot
-  from "../../evidence/lean/v3-baseline.json" ["snapshot"]
+  from "../../data/evidence/v3-baseline.json" ["snapshot"]
 
 example : TDN.Evidence.HasProvenance captured := by
   unfold TDN.Evidence.HasProvenance captured
@@ -62,7 +64,7 @@ Use `tdn_snapshot Bird from "file.json"` for a live observed-route bundle. The c
 
 A JSON import supplies data. Existing `lemma` and `theorem` declarations still establish their conclusions with checked proofs. The import command does not generate proofs or add axioms. Lean's elaborator runs the decoder and constructs the definition; Lean's kernel checks the resulting term. Parser correctness and faithful collection remain implementation assumptions.
 
-Lake tracks the JSON files under `evidence/lean` through its `evidence_data` input-directory target. Changing those files invalidates the library build. Keep files used by project proofs under that directory. The example server configuration publishes prepared files there automatically. An arbitrary JSON file elsewhere can be loaded explicitly, but its location must also be registered as a Lake dependency before relying on incremental builds.
+Lake tracks the JSON files under `data/evidence` through its `evidence_data` input-directory target. Changing those files invalidates the library build. Keep files used by project proofs under that directory. The example server configuration publishes prepared files there automatically. An arbitrary JSON file elsewhere can be loaded explicitly, but its location must also be registered as a Lake dependency before relying on incremental builds.
 
 ## Prepare different kinds of saved evidence
 
@@ -82,7 +84,7 @@ A trusted extension can also call `register_projection(name, version, project)` 
 
 Parsers return dictionaries and lists. They never generate Lean source. Preserve unfamiliar information explicitly or reject the observation as unsupported. Preserve distinctions that affect proofs, including configured versus installed state, route-table order, firewall-rule order, and local IPsec identifiers versus identifiers carried on the wire.
 
-The shared parsers under `evidence_service/parsers` retain TDN's snapshot validation, observed topology validation, runtime identity checks, and ordered packet-filter interpretation. The original script entry points retain compatibility with historical replay tests. Their generation code is outside the new MCP import path. New construction should use MCP and JSON import commands. The v3 tag preserves the original Python-generated Lean files and generation tools.
+The shared parsers under `mcp/tdn_evidence/parsers` retain TDN's snapshot validation, observed topology validation, runtime identity checks, and ordered packet-filter interpretation. The original script entry points retain compatibility with historical replay tests. Their generation code is outside the new MCP import path. New construction should use MCP and JSON import commands. The v3 tag preserves the original Python-generated Lean files and generation tools.
 
 ## Understand the checks and limits
 
@@ -95,20 +97,20 @@ The BIRD validation creates two isolated containers from Twinet's BIRD image def
 Run the automated checks with:
 
 ```bash
-uv run --project scripts/construction/evidence_service python -m unittest discover -s tests/evidence_service -v
+uv run --project mcp python -m unittest discover -s tests/evidence_service -v
 lake build
 ```
 
 Replay the live MCP checks with:
 
 ```bash
-uv run --project scripts/construction/evidence_service python -m scripts.construction.evidence_service.validation.mcp_live
+uv run --project mcp python -m tdn_evidence.validation.mcp_live
 ```
 
-The isolated BIRD deployment procedure is `scripts/construction/evidence_service/validation/deploy_bird.sh`. Build its image from Twinet's `images/bird` directory first. The script reserves the `tdn-evidence-bird-*` container names and the `172.30.231.0/24` Docker network.
+The isolated BIRD deployment procedure is `mcp/tdn_evidence/validation/deploy_bird.sh`. Build its image from Twinet's `images/bird` directory first. The script reserves the `tdn-evidence-bird-*` container names and the `172.30.231.0/24` Docker network.
 
 The historical Python regression suite uses its recorded input manifest:
 
 ```bash
-TDN_INPUT_MANIFEST=artifacts/construction/2026-10-24T014455Z/source_paths_current.json TDN_OUTPUT_DIR=artifacts/construction/2026-10-24T014455Z uv run --project scripts/construction/evidence_service python -m unittest discover -s tests -p 'test_*.py'
+TDN_INPUT_MANIFEST=data/construction/2026-10-24T014455Z/source_paths_current.json TDN_OUTPUT_DIR=data/construction/2026-10-24T014455Z uv run --project mcp python -m unittest discover -s tests -p 'test_*.py'
 ```

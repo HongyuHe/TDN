@@ -2,11 +2,9 @@ import TDN.Semantics.Execution
 
 namespace TDN.Execution
 
-/-- The outermost envelope appears first. The tags describe operations actually performed. -/
 def Frame.tags (frame : Frame) : List Nat :=
   frame.envelopes.map (fun e => e.authentication.tag)
 
-/-- A successful local decryption removes exactly one outermost envelope. -/
 def processingStack (layout : Nat → List Nat) (entry : Nat) (authenticated : List Nat) :
     List Nat :=
   if authenticated = [] then layout entry else (layout entry).tail
@@ -15,7 +13,6 @@ def LocalAuthentication (c : Config) (layout : Nat → List Nat) (entry : Nat) (
   authenticated = [] ∨ ∃ a ∈ c.inbound entry, authenticated = [a.id] ∧
     ∃ rest, layout entry = a.tag :: rest
 
-/-- The retained ingress is set by receive or decrypt, before routing changes the egress. -/
 def ProcessingInvariant (c : Config) (layout : Nat → List Nat) (s : State) : Prop :=
   s.frame.tags = processingStack layout s.frame.enteredPort s.authenticated ∧
   s.frame.packet.ingress = c.interfaceName s.frame.enteredPort ∧
@@ -28,14 +25,10 @@ def AcceptedHook (c : Config) (s : State) : Prop :=
   (s.authenticated = [] ∧ c.payloadOrigin s.frame.enteredPort ∧ accepts (c.outputRules s.port) (c.outputFallback s.port)
     (policyPacket c s.port s.frame []))
 
-/-- A hook is evaluated only after a selected route fixes its ingress and egress. -/
 def RoutedFrame (c : Config) (port : Nat) (frame : Frame) : Prop :=
   ∃ r, SelectedRoute c.routes r frame.packet ∧
     r.ingress = frame.enteredPort ∧ r.egress = port
 
-/-- These conditions concern individual links, installed inbound policies, route choices,
-and accepted local hooks. No condition quantifies over a network execution. Filter conditions
-use only headers, ingress identities, authentication and selected policies, never envelope stacks. -/
 structure LocalStackConditions (c : Config) (layout : Nat → List Nat) : Prop where
   routeOwner : ∀ r ∈ c.routes, c.owner r.egress = c.owner r.ingress
   link : ∀ a b, c.link a b → layout a = layout b
@@ -65,8 +58,6 @@ structure LocalStackConditions (c : Config) (layout : Nat → List Nat) : Prop w
     SelectedRoute c.routes r (encrypt a sa frame).packet → r.ingress = port →
     layout port = layout r.egress
 
-/-- Intermediate phases retain enough local facts to apply the checked hook conditions.
-Only ready and received phases assert the physical port's required stack. -/
 def StackInvariant (c : Config) (layout : Nat → List Nat) (s : State) : Prop :=
   match s.phase with
   | .received => s.frame.tags = layout s.port
@@ -149,8 +140,6 @@ lemma step_preserves_stack_invariant {c : Config} {layout : Nat → List Nat}
   | deliver => exact before
   | drop => trivial
 
-/-- Local hook, routing, association and link checks establish every finite execution's
-physical stack. All equal-priority selected associations are covered by the local conditions. -/
 theorem execution_preserves_stack_invariant (c : Config) (layout : Nat → List Nat)
     (conditions : LocalStackConditions c layout) {a b : State} {actions : List Action}
     (execution : (lts c).MTr a actions b) (initial : StackInvariant c layout a) :
@@ -160,7 +149,6 @@ theorem execution_preserves_stack_invariant (c : Config) (layout : Nat → List 
     exact step_preserves_stack_invariant conditions step before
   exact Cslib.LTS.mtrInv_of_trInv localProof a actions b execution initial
 
-/-- Transmission requires the stack assigned to the transmitting physical port. -/
 theorem transmitted_stack (c : Config) (layout : Nat → List Nat)
     (conditions : LocalStackConditions c layout) {a b : State} {actions : List Action}
     (execution : (lts c).MTr a actions b) (initial : StackInvariant c layout a)

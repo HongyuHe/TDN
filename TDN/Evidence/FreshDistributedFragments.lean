@@ -3,7 +3,6 @@ import TDN.Evidence.FreshNativeLayerOrder
 
 namespace TDN.Imported.FreshSharedExecution
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -21,10 +20,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.FreshSharedExecution
 
-
 namespace TDN.Imported.FreshBaselineExecution
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -42,10 +39,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.FreshBaselineExecution
 
-
 namespace TDN.Imported.Family444
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -63,10 +58,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.Family444
 
-
 namespace TDN.Imported.Family446
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -84,10 +77,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.Family446
 
-
 namespace TDN.Imported.Family464
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -105,10 +96,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.Family464
 
-
 namespace TDN.Imported.Family466
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -126,10 +115,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.Family466
 
-
 namespace TDN.Imported.Family644
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -147,10 +134,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.Family644
 
-
 namespace TDN.Imported.Family646
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -168,10 +153,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.Family646
 
-
 namespace TDN.Imported.Family664
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}
@@ -189,10 +172,8 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
 
 end TDN.Imported.Family664
 
-
 namespace TDN.Imported.Family666
 
-/-- The same checked network conditions cover independently moving fragment pieces. -/
 theorem each_fragment_at_black_retains_protection {Byte : Type}
     (encodedBytes : Execution.Frame → List Byte)
     {start : Execution.State}

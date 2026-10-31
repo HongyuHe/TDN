@@ -4,9 +4,6 @@ import TDN.Evidence.FreshPairingInnerMacsecOuterIpsecReverseVLAN0
 
 namespace TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN0
 
-/-- The retained useful path encapsulates the existing MACsec body, then applies
-Outer ESP to that unchanged carrier. The full useful delivery is already checked
-in positive_mixed_delivery with the actual bridge and IP policy configuration. -/
 theorem actual_carrier_precedes_outer_encryption :
     (∃ carrier, usefulState6.frame.body =
       LayeredFrame.Body.carrier carrier usefulState5.frame.body) ∧

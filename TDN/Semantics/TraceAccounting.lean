@@ -4,8 +4,6 @@ import Lean.Elab.Tactic.Omega
 
 namespace TDN.TraceAccounting
 
-/-- Local resource accounting composes over CSLib traces. Credit and debit are event counts,
-not physical time. The result is independent of the concrete transition system. -/
 theorem trace_balance {State Action : Type} (system : Cslib.LTS State Action)
     (measure : State → Nat) (credit debit : Action → Nat)
     (stepBalance : ∀ before action after, system.Tr before action after →

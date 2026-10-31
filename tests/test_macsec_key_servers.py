@@ -19,7 +19,7 @@ class KeyServerImportTests(unittest.TestCase):
         self.paths = []
         for name in ["eap-tls-forward-v18", "eap-tls-reverse-v18"]:
             target = Path(self.temp.name) / name
-            shutil.copytree(ROOT / "artifacts/snapshots/2026-10-24T014455Z" / name, target)
+            shutil.copytree(ROOT / "data/snapshots/2026-10-24T014455Z" / name, target)
             self.paths.append(target)
 
     def tearDown(self):

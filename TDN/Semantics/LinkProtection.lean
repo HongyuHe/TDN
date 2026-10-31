@@ -1,7 +1,5 @@
 namespace TDN.LinkProtection
 
-/-- A controlled data port can protect and encrypt frames only with an installed transmit SA.
-Control protocols bypassing the controlled data port are outside this operation. -/
 structure Config where
   controlledPortEnabled : Bool
   protectFrames : Bool
@@ -15,8 +13,6 @@ inductive WireFrame (Body : Type) where
   | encrypted (association offset : Nat) (body : Body)
   deriving DecidableEq, Repr
 
-/-- The body of an encrypted constructor is semantic plaintext, hidden on the physical wire
-by the declared cryptographic implementation contract. No byte-level cipher is asserted here. -/
 def transmit {Body : Type} (config : Config) (activeSA : Option Nat) (body : Body) :
     Option (WireFrame Body) :=
   if !config.controlledPortEnabled then none
@@ -31,8 +27,6 @@ def FullyEncrypted {Body : Type} : WireFrame Body → Prop
   | .encrypted _ offset _ => offset = 0
   | _ => False
 
-/-- Protect, encrypt and zero offset imply confidentiality for every emitted data frame,
-including frames sent after the SA becomes unavailable. -/
 theorem every_emitted_frame_is_encrypted {Body : Type} (config : Config)
     (protect : config.protectFrames = true) (encrypt : config.encryptFrames = true)
     (zero : config.confidentialityOffset = 0)

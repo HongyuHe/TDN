@@ -43,13 +43,13 @@ def main():
     parser.add_argument('--run', required=True)
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
-    run = root / 'artifacts/construction' / args.run
+    run = root / 'data/construction' / args.run
     state = json.loads((run / 'session.json').read_text())
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     counts = {}
     for actor, entry in state['workspaces'].items():
         work = Path(entry['path'])
-        source = work / 'artifacts/construction' / args.run
+        source = work / 'data/construction' / args.run
         counts[actor] = copy_tree(source, run / 'agents' / actor,
                                   run / 'record-versions' / actor)
         files = []

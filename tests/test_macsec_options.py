@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_macsec_options import parse_case
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/macsec-options-v4/xpn256-clear-vlan-2"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z/macsec-options-v4/xpn256-clear-vlan-2"
 
 
 class MACsecOptionsTests(unittest.TestCase):

@@ -46,9 +46,6 @@ instance (sender receiver : CarrierPort) : Decidable (CarrierPeers sender receiv
   unfold CarrierPeers
   infer_instance
 
-/-- Finite topology and association checks extend the existing IP local proof.
-The carrier check evaluates only installed carrier endpoint headers, while every
-matching underlay route remains covered. -/
 theorem local_conditions_from_finite_checks (devices : List Execution.DeviceData)
     (ports : List Execution.PortData) (routes : List Execution.Route)
     (links bridges : List (Nat × Nat)) (macPorts : List MACPort) (carriers : List CarrierPort)

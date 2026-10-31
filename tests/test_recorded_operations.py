@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_recorded_operations import issuances, management, parse, power, retained_tests
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z"
 
 
 class RecordedOperationsTests(unittest.TestCase):

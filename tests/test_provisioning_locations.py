@@ -19,7 +19,7 @@ class ProvisioningLocationTests(unittest.TestCase):
         self.paths = []
         for name in ["eap-tls-forward-v18", "eap-tls-reverse-v18"]:
             path = Path(self.temp.name) / name
-            shutil.copytree(ROOT / "artifacts/snapshots/2026-10-24T014455Z" / name, path)
+            shutil.copytree(ROOT / "data/snapshots/2026-10-24T014455Z" / name, path)
             self.paths.append(path)
 
     def tearDown(self):

@@ -4,9 +4,6 @@ import TDN.Targets.MultiProtocolPackets
 namespace TDN.Targets
 open MultiProtocolExecution
 
-/-- Each tracked byte starts on an actual permitted Red origin. The byte value
-and source annotation can be arbitrary; the packet protection proof does not
-inspect either one. Source-level delivery restrictions remain a separate target. -/
 def MixedByteOrigin {Byte : Type} (sources : List Nat)
     (state : MultiProtocolExecution.State) (_ : Byte) : Prop := MixedRedOrigin sources state
 
@@ -21,10 +18,6 @@ theorem mixed_bytes_keep_protection {Byte : Type}
   mixed_byte_execution_preserves_stack c layout (MixedByteOrigin sources) conditions
     (fun _ _ source => mixed_red_initial_invariant c layout sources sourceChecks source) run
 
-/-- Every byte carried onto Black has an individual modeled path containing
-actual Inner encryption before actual Outer encryption. The statement permits
-concurrent packets, splitting, copied byte subsets, interleaving and plaintext
-assembly, including original opaque Ethernet data. -/
 theorem every_mixed_black_byte_has_ordered_encryptions {Byte : Type}
     (c : Config) (layout : Nat → List Nat) (sources blackPorts : List Nat)
     (conditions : LocalConditions c layout)

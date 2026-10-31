@@ -64,7 +64,7 @@ def main():
     parser.add_argument("--apply", action="store_true")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
-    run = root / "artifacts/construction" / args.run
+    run = root / "data/construction" / args.run
     baseline_manifests = sorted((run / "history").glob("*-coordinator/manifest.json"))
     if len(baseline_manifests) != 1:
         raise ValueError("Expected exactly one initial coordinator checkpoint")

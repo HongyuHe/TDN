@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"scripts/construction"))
 from import_red_time_placement import parse
 
-BASE = ROOT/"artifacts/snapshots/2026-10-24T014455Z"
+BASE = ROOT/"data/snapshots/2026-10-24T014455Z"
 CLOCK = BASE/"independent-Red-clocks-v3"
 SETUP = BASE/"freebsd-native-integration-v3"
 

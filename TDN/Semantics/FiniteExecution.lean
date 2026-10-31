@@ -2,7 +2,6 @@ import TDN.Semantics.ExecutionChecks
 
 namespace TDN.Execution
 
-/-- Literal device data are shared by all interfaces of the same device. -/
 structure DeviceData where
   forwardRules : List PacketPolicy.Rule := []
   inputRules : List PacketPolicy.Rule := []
@@ -80,7 +79,6 @@ lemma valid_authentication_in_finite_list (devices : List DeviceData) (ports : L
     change (portAt ports entry).stack = association.tag :: rest at shape
     simp [shape]
 
-/-- Interface and selector checks can be evaluated on the finite literal records. -/
 def RecordRuleCheck (entry output : PortData) (device : DeviceData)
     (authenticated : List Nat) (rule : PacketPolicy.Rule) : Prop :=
   ¬ PortCompatible rule entry.name output.name ∨
@@ -93,8 +91,6 @@ def RecordRuleCheck (entry output : PortData) (device : DeviceData)
 instance (i o : PortData) (d : DeviceData) (a : List Nat) (r : PacketPolicy.Rule) :
     Decidable (RecordRuleCheck i o d a r) := by unfold RecordRuleCheck; infer_instance
 
-/-- A complete finite check includes the default record, so missing numeric identifiers
-cannot turn a quantified local premise into an unchecked case. -/
 def FiniteForwardChecks (devices : List DeviceData) (ports : List PortData) : Prop :=
   ∀ entry ∈ ({} : PortData) :: ports, ∀ output ∈ ({} : PortData) :: ports,
     output.owner = entry.owner →
@@ -135,7 +131,6 @@ theorem finite_forward_checks_sound (devices : List DeviceData) (ports : List Po
     (port_at_member_or_default ports port) owner authenticated
     (valid_authentication_in_finite_list devices ports routes links switches
       frame.enteredPort authenticated valid) rule member allow
-
 
 def FiniteOutputChecks (devices : List DeviceData) (ports : List PortData) : Prop :=
   ∀ entry ∈ ({} : PortData) :: ports, ∀ output ∈ ({} : PortData) :: ports,
@@ -195,7 +190,6 @@ theorem finite_outer_routes_sound (devices : List DeviceData) (ports : List Port
   rw [atPort] at localCheck
   exact localCheck association member head matching.1 matching.2
 
-
 lemma device_at_member_or_default (devices : List DeviceData) (n : Nat) :
     deviceAt devices n ∈ ({} : DeviceData) :: devices := by
   unfold deviceAt
@@ -205,8 +199,6 @@ lemma device_at_member_or_default (devices : List DeviceData) (n : Nat) :
     simp only [Option.getD_some, List.mem_cons]
     exact Or.inr (List.mem_of_getElem? h)
 
-/-- All premises are finite checks on literal imported data. The resulting conditions
-connect those checks to the universally quantified packet-operation theorem. -/
 theorem local_stack_conditions_of_finite_checks
     (devices : List DeviceData) (ports : List PortData)
     (routes : List Route) (links switches : List (Nat × Nat))

@@ -10,13 +10,11 @@ structure Rule (Packet : Type) where
   accepts : Packet → Bool
   verdict : Verdict
 
-/-- Ordered first-match evaluation with an explicit default. -/
 def evaluate {Packet : Type} : List (Rule Packet) → Verdict → Packet → Verdict
   | [], fallback, _ => fallback
   | r :: rest, fallback, p =>
       if r.accepts p then r.verdict else evaluate rest fallback p
 
-/-- A rule-local condition is sufficient despite earlier denying rules and arbitrary order. -/
 lemma allowed_has_matching_allow {Packet : Type} (rules : List (Rule Packet))
     (p : Packet) (h : evaluate rules .deny p = .allow) :
     ∃ r ∈ rules, r.accepts p = true ∧ r.verdict = .allow := by
@@ -37,7 +35,6 @@ theorem default_deny_sound {Packet : Type} (rules : List (Rule Packet))
   obtain ⟨r, hr, hm, ha⟩ := allowed_has_matching_allow rules p accepted
   exact localRule r hr ha p hm
 
-/-- Denial is established for every packet outside the allowed cases. -/
 theorem rejects_outside_allowlist {Packet : Type} (rules : List (Rule Packet))
     (permitted : Packet → Prop)
     (localRule : ∀ r ∈ rules, r.verdict = .allow → ∀ p, r.accepts p = true → permitted p)
@@ -46,12 +43,10 @@ theorem rejects_outside_allowlist {Packet : Type} (rules : List (Rule Packet))
   | deny => rfl
   | allow => exact False.elim (forbidden (default_deny_sound rules permitted localRule p h))
 
-/-- Exact positive traffic is a distinct obligation, never implied by safety. -/
 def HasUsefulTraffic {Packet : Type} (rules : List (Rule Packet))
     (useful : Packet → Prop) : Prop :=
   ∃ p, useful p ∧ evaluate rules .deny p = .allow
 
-/-- A earlierRules that does not match the packet has no effect on ordered evaluation. -/
 lemma evaluate_skips_nonmatching_prefix {Packet : Type} (earlierRules rest : List (Rule Packet))
     (fallback : Verdict) (packet : Packet)
     (misses : ∀ rule ∈ earlierRules, rule.accepts packet = false) :
@@ -63,8 +58,6 @@ lemma evaluate_skips_nonmatching_prefix {Packet : Type} (earlierRules rest : Lis
     simp only [List.cons_append, evaluate, first, Bool.false_eq_true, ↓reduceIte]
     exact ih (fun r member => misses r (List.mem_cons_of_mem _ member))
 
-/-- A specified first matching allow rule establishes positive acceptance.
-A later allow rule alone is insufficient when an earlier denial matches. -/
 theorem accepts_at_first_matching_rule {Packet : Type}
     (earlierRules suffix : List (Rule Packet)) (rule : Rule Packet) (packet : Packet)
     (misses : ∀ earlier ∈ earlierRules, earlier.accepts packet = false)
@@ -73,8 +66,6 @@ theorem accepts_at_first_matching_rule {Packet : Type}
   rw [evaluate_skips_nonmatching_prefix earlierRules (rule :: suffix) .deny packet misses]
   simp [evaluate, matchesRule, allows]
 
-/-- A prefix made only of denials blocks every packet matched by one of its rules.
-The conclusion allows an arbitrary later policy and an arbitrary default. -/
 theorem denying_prefix_blocks {Packet : Type} (earlierRules suffix : List (Rule Packet))
     (fallback : Verdict) (packet : Packet)
     (denials : ∀ rule ∈ earlierRules, rule.verdict = .deny)

@@ -4,7 +4,7 @@ import json
 import os
 from pathlib import Path
 
-RUN = Path(os.environ.get("TDN_OUTPUT_DIR", "artifacts/construction/2026-10-24T014455Z"))
+RUN = Path(os.environ.get("TDN_OUTPUT_DIR", "data/construction/2026-10-24T014455Z"))
 P = "TDN.Targets."
 I = "TDN.Imported."
 ROWS = [

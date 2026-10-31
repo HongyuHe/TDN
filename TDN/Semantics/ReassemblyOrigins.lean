@@ -2,16 +2,11 @@ import TDN.Semantics.Fragmentation
 
 namespace TDN.ReassemblyOrigins
 
-/-- Origin annotations describe where bytes came from. They are proof metadata,
-not additional authenticated fields in an IP fragment header. Packet identities may
-differ between pieces that share the same ordinary reassembly key. -/
 structure ByteOrigin (Byte Domain PacketId : Type) where
   value : Byte
   domain : Domain
   packet : PacketId
 
-/-- Assembly uses only the ordinary header key and offsets. It does not require
-a preselected logical packet or equal ghost packet identities. -/
 def assemble {Header Byte : Type} [DecidableEq Header]
     (header : Header) (pieces : List (Fragmentation.Fragment Header Byte)) :
     Option (Fragmentation.Datagram Header Byte) :=
@@ -38,8 +33,6 @@ lemma flattened_bytes_safe {Header Byte : Type} {safe : Byte → Prop}
   subst bytes
   exact checked piece inPieces byte contains
 
-/-- Header collisions can combine several packets. They cannot introduce bytes
-outside the allowed set when every admitted piece satisfies the local byte guard. -/
 theorem assembled_bytes_inherit_piece_safety {Header Byte : Type}
     [DecidableEq Header] {header : Header}
     {pieces : List (Fragmentation.Fragment Header Byte)}
@@ -56,9 +49,6 @@ inductive Action where
   | receive | discard | clear
   deriving DecidableEq, Repr
 
-/-- The ingress guard can depend on the observed input interface and association.
-Its soundness is an explicit local implementation obligation. A buffer may contain
-pieces from multiple source packets and may discard any subset. -/
 inductive Step {Header Byte Input : Type}
     (acceptsPiece : Input → Fragmentation.Fragment Header Byte → Prop) :
     List (Fragmentation.Fragment Header Byte) → Action →
@@ -90,8 +80,6 @@ lemma admission_preserves_byte_safety {Header Byte Input : Type}
   | discard retained => exact fun piece member => initial piece (retained piece member)
   | clear => simp [BufferSafe]
 
-/-- CSLib lifts the local fragment admission check to every finite buffer history.
-No unique source-packet premise is used by this theorem. -/
 theorem every_reassembly_history_preserves_byte_safety {Header Byte Input : Type}
     [DecidableEq Header]
     (acceptsPiece : Input → Fragmentation.Fragment Header Byte → Prop) (safe : Byte → Prop)

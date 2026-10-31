@@ -1,5 +1,0 @@
-# Evidence evolution
-
-2026-10-17T20:53:41.637784+00:00 — Read workflow and source-derived case records. Expanded 27 source records into 57 representative cases. All six SSH probes succeeded. Selected clnode176 for the first deployment. No deployment changes have occurred. The first attempt to launch the probe had a local shell quotation error; it changed no server state. The corrected read-only probe is preserved in server_inventory.json. The existing MSC IPv4/single-IPsec limitation motivates extensions, and is not a rejection of the remaining cases.
-
-2026-10-17T20:57:14.172407+00:00 — Installed Docker, Linux networking tools, strongSwan, wpa_supplicant, FRR and a workspace-local Go 1.25.0 toolchain on the idle selected server. Preserved all bootstrap output. The first Twinet build failed because the transport archive excluded the source package internal/pki; restored that source-only package and resumed the build. Added a new allowlisted csfc-evidence/v1 collector and a management-free baseline configuration. Issued request-specific responses for ER-001 through ER-011. No source ambiguity has been resolved by implementation choice.

@@ -3,8 +3,6 @@ import TDN.Semantics.SourceResponseGuards
 namespace TDN.GuardedResponseNetwork
 open Execution
 
-/-- These are processing points before a new encryption changes the visible
-header. Errors may occur before FORWARD; local echo processing occurs at INPUT. -/
 def ActivePhase (phase : Phase) : Prop :=
   phase ∈ [.ingress, .routed, .filtered, .localInput, .delivered]
 
@@ -28,9 +26,6 @@ def Data.layout (data : Data) : Nat → List Nat := finiteLayout data.ports
 def sourcePacket (data : Data) (state : Execution.State) : PacketPolicy.Packet :=
   policyPacket data.config state.frame.enteredPort state.frame state.authenticated
 
-/-- Fixed ingress guards remain valid while routing and filtering preserve the
-restored header and authentication metadata. Rechecking them in intermediate
-states records that persistence; it does not add a new physical hook. -/
 def Guarded (data : Data) (state : Execution.State) : Prop :=
   ActivePhase state.phase →
     ∀ guard ∈ data.sourceGuards, data.config.owner state.frame.enteredPort = guard.1 →
@@ -82,9 +77,6 @@ lemma network_preserves_safe (data : Data)
   exact ⟨step_preserves_stack_invariant conditions step.1 initial.1,
     step_preserves_authentication_selectors data.config before action after step.1 initial.2.1, step.2⟩
 
-/-- Copying a prefix preserves the protection of any protected bytes present in
-that prefix. The frame represents those tracked bytes, not the entire ICMP body.
-Its ordinary response header remains independently visible and filterable. -/
 lemma reply_emission_preserves_safe (data : Data)
     (conditions : LocalStackConditions data.config data.layout)
     (pairs : SourceResponseGuards.FiniteReplyChecks data.devices data.ports data.sourceGuards)
@@ -135,10 +127,6 @@ lemma reply_emission_preserves_safe (data : Data)
   · intro impossible
     simp [responseConfig, ActivePhase] at impossible
 
-/-- The same local gate, selector and OUTPUT checks hold across every finite
-execution that includes supported echo/error generation points. Actual quote
-prefix provenance and the kernel hook order are stated implementation contracts.
-Post-encryption local error points require their separate connection. -/
 theorem all_guarded_response_executions_preserve_stack (data : Data)
     (conditions : LocalStackConditions data.config data.layout)
     (pairs : SourceResponseGuards.FiniteReplyChecks data.devices data.ports data.sourceGuards)

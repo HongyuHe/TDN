@@ -156,8 +156,6 @@ theorem local_domain_conditions_of_finite_checks
     rw [atPort] at localCheck
     exact localCheck association member head permitted matching.1 matching.2
 
-
-/-- Stack labels guide proofs and never affect the operational configuration. -/
 def withPortStacks (ports : List PortData) (stackMap : PortData → List Nat) : List PortData :=
   ports.map (fun port => { port with stack := stackMap port })
 

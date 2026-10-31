@@ -3,13 +3,10 @@ import TDN.Semantics.RestrictedExecution
 
 namespace TDN.Execution
 
-/-- Metadata established by receiving a packet. It makes no assertion about its envelopes. -/
 def IngressMetadata (c : Config) (s : State) : Prop :=
   s.frame.packet.ingress = c.interfaceName s.frame.enteredPort ∧
   c.owner s.port = c.owner s.frame.enteredPort
 
-/-- Without a decrypt operation, a traversal retains the boundary layer in its port layout.
-The layout records the checked forwarding constraints, not an assumed tag on the input packet. -/
 def UndecryptedRegion (c : Config) (layout : Nat → List Nat) (tag : Nat) (s : State) : Prop :=
   s.authenticated = [] ∧
   match s.phase with
@@ -95,9 +92,6 @@ lemma undecrypted_step_retains_region {c : Config} {layout : Nat → List Nat} {
   | deliver => exact invariant
   | drop => exact ⟨invariant.1, trivial⟩
 
-/-- An arbitrary arriving packet cannot cross a checked boundary without a local decrypt.
-No initial envelope or authentication claim is assumed. Configured inbound tags identify
-which layer was actually removed at the receiving component. -/
 theorem inbound_crossing_requires_local_decryption
     (c : Config) (layout : Nat → List Nat) (tag component : Nat)
     (conditions : LocalStackConditions c layout)

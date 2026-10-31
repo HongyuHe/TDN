@@ -8,85 +8,85 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 set_option linter.unusedSimpArgs false
 
-tdn_data witnessState0 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState0"]
+tdn_data witnessState0 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState0"]
 
-tdn_data witnessState1 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState1"]
+tdn_data witnessState1 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState1"]
 
-tdn_data witnessState2 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState2"]
+tdn_data witnessState2 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState2"]
 
-tdn_data witnessState3 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState3"]
+tdn_data witnessState3 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState3"]
 
-tdn_data witnessState4 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState4"]
+tdn_data witnessState4 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState4"]
 
-tdn_data witnessState5 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState5"]
+tdn_data witnessState5 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState5"]
 
-tdn_data witnessState6 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState6"]
+tdn_data witnessState6 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState6"]
 
-tdn_data witnessState7 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState7"]
+tdn_data witnessState7 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState7"]
 
-tdn_data witnessState8 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState8"]
+tdn_data witnessState8 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState8"]
 
-tdn_data witnessState9 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState9"]
+tdn_data witnessState9 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState9"]
 
-tdn_data witnessState10 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState10"]
+tdn_data witnessState10 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState10"]
 
-tdn_data witnessState11 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState11"]
+tdn_data witnessState11 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState11"]
 
-tdn_data witnessState12 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState12"]
+tdn_data witnessState12 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState12"]
 
-tdn_data witnessState13 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState13"]
+tdn_data witnessState13 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState13"]
 
-tdn_data witnessState14 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState14"]
+tdn_data witnessState14 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState14"]
 
-tdn_data witnessState15 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState15"]
+tdn_data witnessState15 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState15"]
 
-tdn_data witnessState16 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState16"]
+tdn_data witnessState16 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState16"]
 
-tdn_data witnessState17 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState17"]
+tdn_data witnessState17 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState17"]
 
-tdn_data witnessState18 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState18"]
+tdn_data witnessState18 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState18"]
 
-tdn_data witnessState19 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState19"]
+tdn_data witnessState19 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState19"]
 
-tdn_data witnessState20 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState20"]
+tdn_data witnessState20 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState20"]
 
-tdn_data witnessState21 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState21"]
+tdn_data witnessState21 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState21"]
 
-tdn_data witnessState22 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState22"]
+tdn_data witnessState22 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState22"]
 
-tdn_data witnessState23 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState23"]
+tdn_data witnessState23 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState23"]
 
-tdn_data witnessState24 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState24"]
+tdn_data witnessState24 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState24"]
 
-tdn_data witnessState25 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState25"]
+tdn_data witnessState25 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState25"]
 
-tdn_data witnessState26 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState26"]
+tdn_data witnessState26 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState26"]
 
-tdn_data witnessState27 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState27"]
+tdn_data witnessState27 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState27"]
 
-tdn_data witnessState28 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState28"]
+tdn_data witnessState28 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState28"]
 
-tdn_data witnessState29 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState29"]
+tdn_data witnessState29 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState29"]
 
-tdn_data witnessState30 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState30"]
+tdn_data witnessState30 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState30"]
 
-tdn_data witnessState31 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState31"]
+tdn_data witnessState31 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState31"]
 
-tdn_data witnessState32 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState32"]
+tdn_data witnessState32 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState32"]
 
-tdn_data witnessState33 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState33"]
+tdn_data witnessState33 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState33"]
 
-tdn_data witnessState34 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState34"]
+tdn_data witnessState34 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState34"]
 
-tdn_data witnessState35 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState35"]
+tdn_data witnessState35 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState35"]
 
-tdn_data witnessState36 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState36"]
+tdn_data witnessState36 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState36"]
 
-tdn_data witnessState37 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState37"]
+tdn_data witnessState37 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState37"]
 
-tdn_data witnessState38 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState38"]
+tdn_data witnessState38 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState38"]
 
-tdn_data witnessState39 : Execution.State from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState39"]
+tdn_data witnessState39 : Execution.State from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessState39"]
 
 lemma witness_immediate_header_checks : witnessState8.frame.packet.ipv6NextHeader ∈ [6, 17, 50, 58] ∧ witnessState10.frame.packet.ipv6NextHeader ∈ [6, 17, 50, 58] ∧ witnessState14.frame.packet.ipv6NextHeader ∈ [6, 17, 50, 58] ∧ witnessState26.frame.packet.ipv6NextHeader ∈ [6, 17, 50, 58] ∧ witnessState31.frame.packet.ipv6NextHeader ∈ [6, 17, 50, 58] ∧ True := by decide
 
@@ -207,7 +207,7 @@ lemma witnessStep37 : Execution.Step config witnessState37 .local witnessState38
 lemma witnessStep38 : Execution.Step config witnessState38 .deliver witnessState39 := by
   exact Execution.Step.deliver 1 (by (try simp only [config, finiteConfig, SelectedRoute, Route.matches, accepts, StateBindsPolicy]); all_goals decide) rfl
 
-tdn_data witnessActions : List Action from "../../evidence/lean/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessActions"]
+tdn_data witnessActions : List Action from "../../data/evidence/FreshFamily466Witness.json" ["TDN.Imported.Family466.witnessActions"]
 
 theorem positive_delivery_execution : (lts config).MTr witnessState0 witnessActions witnessState39 := by
   exact Cslib.LTS.MTr.stepL witnessStep0 (Cslib.LTS.MTr.stepL witnessStep1 (Cslib.LTS.MTr.stepL witnessStep2 (Cslib.LTS.MTr.stepL witnessStep3 (Cslib.LTS.MTr.stepL witnessStep4 (Cslib.LTS.MTr.stepL witnessStep5 (Cslib.LTS.MTr.stepL witnessStep6 (Cslib.LTS.MTr.stepL witnessStep7 (Cslib.LTS.MTr.stepL witnessStep8 (Cslib.LTS.MTr.stepL witnessStep9 (Cslib.LTS.MTr.stepL witnessStep10 (Cslib.LTS.MTr.stepL witnessStep11 (Cslib.LTS.MTr.stepL witnessStep12 (Cslib.LTS.MTr.stepL witnessStep13 (Cslib.LTS.MTr.stepL witnessStep14 (Cslib.LTS.MTr.stepL witnessStep15 (Cslib.LTS.MTr.stepL witnessStep16 (Cslib.LTS.MTr.stepL witnessStep17 (Cslib.LTS.MTr.stepL witnessStep18 (Cslib.LTS.MTr.stepL witnessStep19 (Cslib.LTS.MTr.stepL witnessStep20 (Cslib.LTS.MTr.stepL witnessStep21 (Cslib.LTS.MTr.stepL witnessStep22 (Cslib.LTS.MTr.stepL witnessStep23 (Cslib.LTS.MTr.stepL witnessStep24 (Cslib.LTS.MTr.stepL witnessStep25 (Cslib.LTS.MTr.stepL witnessStep26 (Cslib.LTS.MTr.stepL witnessStep27 (Cslib.LTS.MTr.stepL witnessStep28 (Cslib.LTS.MTr.stepL witnessStep29 (Cslib.LTS.MTr.stepL witnessStep30 (Cslib.LTS.MTr.stepL witnessStep31 (Cslib.LTS.MTr.stepL witnessStep32 (Cslib.LTS.MTr.stepL witnessStep33 (Cslib.LTS.MTr.stepL witnessStep34 (Cslib.LTS.MTr.stepL witnessStep35 (Cslib.LTS.MTr.stepL witnessStep36 (Cslib.LTS.MTr.stepL witnessStep37 (Cslib.LTS.MTr.stepL witnessStep38 Cslib.LTS.MTr.refl))))))))))))))))))))))))))))))))))))))

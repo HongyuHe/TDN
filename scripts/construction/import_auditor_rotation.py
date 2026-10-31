@@ -20,7 +20,16 @@ def parse(base, derived):
             "Derivation source changed")
     recorded = json.loads((derived/"rotation.json").read_text())
     actual = derive(base)
-    require(recorded == actual, "Derived rotation differs from raw observations")
+    #* Historical and current paths must identify the same retained manifests.
+    compared = []
+    for record in (recorded, actual):
+        bound = dict(record)
+        bound["input_manifests"] = [
+            {**entry, "path": str(Path(entry["path"]).resolve())}
+            for entry in record["input_manifests"]
+        ]
+        compared.append(bound)
+    require(compared[0] == compared[1], "Derived rotation differs from raw observations")
     session = parse_sessions(base/"role-admin-deploy-v4", base/"role-admin-effective-v3",
                              base/"role-admin-matrix-v3")
     require(session["source_sha256"] == actual["source_sha256"],

@@ -4,7 +4,7 @@ The evidence tools and their helper modules live in this directory. Network spec
 
 ## Deploy and collect a native profile
 
-Use the Twinet construction source described in the [recorded replay guide](../../../artifacts/construction/2026-10-17T205010Z/agents/evidence/outputs/REPLAY.md). That guide also records image versions, software prerequisites and the limits of each experiment. The commands below use the reorganized script paths.
+Use the Twinet construction source described in the [recorded replay guide](../../../data/construction/2026-10-17T205010Z/agents/evidence/outputs/REPLAY.md). That guide also records image versions, software prerequisites and the limits of each experiment. The commands below use the reorganized script paths.
 
 ```sh
 TWINET_ROOT=/absolute/path/to/Twinet \
@@ -42,4 +42,4 @@ Every collection needs a fresh snapshot name. Private deployment state goes unde
 
 The supplemental experiments retain their existing `--root` or `--output` arguments and their documented capability limits. The authentication before/after scripts target the historical Linux profile, while the native replay helper selects the current FRR/OVS profiles. Earlier Python revisions remain available beside the current entry points because some helpers import them and past experiments used them. The four fixed-date shell command sequences are grouped under `historical/` for reference.
 
-The original recorded source remains unchanged under `artifacts/construction/`. New observations record the hashes of the reorganized tools. Historical source hashes continue to refer to the original copies.
+The original recorded source remains unchanged under `data/construction/`. New observations record the hashes of the reorganized tools. Historical source hashes continue to refer to the original copies.

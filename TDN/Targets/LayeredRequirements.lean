@@ -6,9 +6,6 @@ import TDN.Semantics.ExecutionEvents
 
 namespace TDN.Targets
 
-/-- A view reads actual protection layers and network identities from an operational state.
-The view supplies no proofs. Concrete applications must connect each projection to imported
-configuration and actual packet operations, including the meaning of encryption and authentication. -/
 structure PacketExecutionView (State Action : Type) where
   system : Cslib.LTS State Action
   source : State → Prop
@@ -28,9 +25,6 @@ structure ProtectionPair where
   communicatingSites : List String
   infrastructureComponents : Bool
 
-/-- RG007 encompasses data-path protection and configured layer independence.
-Management applicability is recorded in the management targets. Cipher confidentiality and
-integrity use the stated cryptographic implementation contract; layer counts alone do not prove them. -/
 def msc_nested_layer_protection {S A : Type} (view : PacketExecutionView S A)
     (pairs : List ProtectionPair) (independentContexts : String → String → Prop) : Prop :=
   (∀ pair ∈ pairs, pair.infrastructureComponents = true ∧
@@ -46,8 +40,6 @@ def ProtectionRegions {S A : Type} (view : PacketExecutionView S A) (state : S) 
   (view.transmittedBlack state → view.layers state = [.outer, .inner]) ∧
   (view.plaintextDelivered state → view.layers state = [])
 
-/-- An implementation-specific invariant may include routing, filtering and authentication
-facts stronger than the target. Local operation proofs preserve those facts across arbitrary traces. -/
 theorem nested_layers_from_operational_invariant {S A : Type}
     (view : PacketExecutionView S A) (pairs : List ProtectionPair)
     (independentContexts : String → String → Prop) (invariant : S → Prop)
@@ -70,8 +62,6 @@ def ModelDelivers {S A : Type} (view : PacketExecutionView S A) (source destinat
     view.system.MTr start actions finish ∧ view.plaintextDelivered finish ∧
     view.network finish = destination
 
-/-- Dedicated Inner assignments include unclassified Red networks. Required connectivity
-pairs come from the selected intended communication plan, not the set of successful probes. -/
 def msc_security_level_connectivity {S A : Type} (view : PacketExecutionView S A)
     (networks : List RedNetworkIdentity) (authenticatedInnerPairs requiredConnectivity : List (String × String))
     (innerLevel : String → SecurityLevel) : Prop :=
@@ -83,8 +73,6 @@ def msc_security_level_connectivity {S A : Type} (view : PacketExecutionView S A
     (∃ level, NetworkHasLevel networks pair.1 level ∧ NetworkHasLevel networks pair.2 level) ∧
     ModelDelivers view pair.1 pair.2
 
-/-- Network-specific positive executions and universal delivery isolation discharge distinct
-clauses. Authentication remains a separate connection to the loaded trust configuration. -/
 theorem security_connectivity_from_delivery_and_peer_checks {S A : Type}
     (view : PacketExecutionView S A) (networks : List RedNetworkIdentity)
     (authenticatedInnerPairs requiredConnectivity : List (String × String))
@@ -150,8 +138,6 @@ def msc_outer_tunnel_no_bypass {S A : Type} (view : TunnelBoundaryView S A)
     (outboundMACObjective = true → component.outboundMACPolicy = true) ∧
     (inboundMACObjective = true → component.inboundMACPolicy = true)
 
-/-- The concrete IPv4/IPv6 ESP model records real encryption operations. Two envelopes at Black
-from a plaintext Red origin require at least two encryption steps in the execution. -/
 theorem protected_black_execution_has_two_encryptions (c : Execution.Config)
     (sources blackPorts : List Nat) (protection : msc_protected_red_payload_stack c sources blackPorts)
     {start finish : Execution.State} {actions : List Execution.Action}
@@ -166,8 +152,6 @@ theorem protected_black_execution_has_two_encryptions (c : Execution.Config)
   rw [origin.2.2.2.1, List.length_nil, length] at growth
   simpa using growth
 
-/-- Two recorded envelopes cannot disappear through routing, filtering, or switching.
-Plaintext restoration requires two actual decryption operations. -/
 theorem two_layer_plaintext_restoration_has_two_decryptions (c : Execution.Config)
     {start finish : Execution.State} {actions : List Execution.Action}
     (run : (Execution.lts c).MTr start actions finish)

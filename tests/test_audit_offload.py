@@ -18,7 +18,7 @@ class AuditOffloadTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.base = Path(self.temp.name)
         for name in {p.split("/")[0] for p in PINS}:
-            shutil.copytree(ROOT / "artifacts/snapshots/2026-10-24T014455Z" / name, self.base / name)
+            shutil.copytree(ROOT / "data/snapshots/2026-10-24T014455Z" / name, self.base / name)
 
     def tearDown(self):
         self.temp.cleanup()

@@ -34,8 +34,6 @@ lemma named_pair_rule_matches_intended {pairs : List IntendedAddressPair}
   change pair.destination ≤ packet.destination ∧ packet.destination ≤ pair.destination at destination
   exact ⟨pair, member, by omega, by omega⟩
 
-/-- RG-014 includes unique address-level ownership and the intended same-level peer
-restriction from INT-014. Policy inventory completeness is an importer obligation. -/
 def msc_gray_addressing_for_level_filtering
     (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
     (policies : List (List PacketPolicy.Rule)) : Prop :=
@@ -48,7 +46,6 @@ def msc_gray_addressing_for_level_filtering
     Filter.evaluate (rules.map PacketPolicy.Rule.toFilter) .deny packet = .allow →
     IntendedPair pairs packet)
 
-/-- Range separation and literal source/destination atoms imply the universal packet claim. -/
 theorem gray_addressing_of_separated_ranges_and_named_rules
     (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
     (policies : List (List PacketPolicy.Rule))

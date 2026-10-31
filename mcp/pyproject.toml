@@ -1,0 +1,15 @@
+[project]
+name = "tdn-evidence-service"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["mcp>=1.26,<2", "pydantic>=2.11,<3"]
+
+[project.scripts]
+tdn-evidence = "tdn_evidence.server:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["tdn_evidence*"]

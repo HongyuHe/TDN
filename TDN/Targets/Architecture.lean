@@ -3,7 +3,6 @@ import Mathlib.Data.Finset.Basic
 
 namespace TDN
 
-/-- Full declared labels retain classification and every stated control dimension. -/
 structure SecurityLevel where
   classification : String
   compartments : Finset String
@@ -11,7 +10,6 @@ structure SecurityLevel where
   otherControls : Finset String
   deriving DecidableEq
 
-/-- Two Red networks may have the same full security level and distinct Inner assignments. -/
 structure RedNetworkIdentity where
   id : String
   site : String
@@ -19,7 +17,6 @@ structure RedNetworkIdentity where
   innerComponents : Finset String
   deriving DecidableEq
 
-/-- A configured assignment preserves network identity separately from level equality. -/
 def DedicatedInnerAssignments (networks : List RedNetworkIdentity) : Prop :=
   (∀ n ∈ networks, n.innerComponents.Nonempty) ∧
   ∀ a ∈ networks, ∀ b ∈ networks, a.id ≠ b.id →
@@ -44,7 +41,6 @@ inductive Zone where
   | red | gray | black
   deriving DecidableEq
 
-/-- A protected payload state. Control traffic has a separate semantic domain. -/
 structure State where
   zone : Zone
   location : Nat
@@ -52,7 +48,6 @@ structure State where
   seals : List Seal
   deriving DecidableEq
 
-/-- Endpoint security levels are arbitrary full labels, with no fixed site/level count. -/
 structure Network where
   innerLevel : Nat → SecurityLevel
   innerPeer : Nat → Nat → Prop
@@ -60,7 +55,6 @@ structure Network where
   linked : Nat → Nat → Prop
   allowedPair : Mechanism → Mechanism → Prop
 
-/-- Operational protected-payload semantics. Refinement from Linux is a separate obligation. -/
 inductive Step (n : Network) : State → State → Prop
   | innerEncrypt (a b : Nat) (level : SecurityLevel) (m : Mechanism)
       (peer : n.innerPeer a b) (atSource : n.innerLevel a = level) :
@@ -86,7 +80,6 @@ inductive Step (n : Network) : State → State → Prop
       Step n ⟨.gray, i.destination, level, [i]⟩
         ⟨.red, i.destination, level, []⟩
 
-/-- Local stack invariant. It records logical layers, not implementation independence. -/
 def WellLayered (s : State) : Prop :=
   match s.zone with
   | .red => s.seals = []
@@ -116,7 +109,6 @@ lemma step_preserves_level {n : Network} {a b : State}
     (h : Step n a b) : b.level = a.level := by
   cases h <;> rfl
 
-/-- Every finite execution preserves the checked local stack invariant. -/
 theorem execution_preserves_layers {n : Network} {a b : State}
     (h : Relation.ReflTransGen (Step n) a b) (ha : WellLayered a) : WellLayered b := by
   induction h with
@@ -129,7 +121,6 @@ theorem execution_preserves_level {n : Network} {a b : State}
   | refl => rfl
   | tail _ step ih => exact (step_preserves_level step).trans ih
 
-/-- Black payload protection follows for arbitrary finite executions of the model. -/
 theorem black_has_two_layers {n : Network} {a b : State}
     (h : Relation.ReflTransGen (Step n) a b) (ha : WellLayered a)
     (black : b.zone = .black) :
@@ -137,13 +128,11 @@ theorem black_has_two_layers {n : Network} {a b : State}
   have hb := execution_preserves_layers h ha
   simpa [WellLayered, black] using hb
 
-/-- Inner decryption authorizes delivery only to the payloads full security level. -/
 theorem inner_delivery_same_level {n : Network} {a b : State}
     (h : Step n a b) (delivered : b.zone = .red) :
     n.innerLevel b.location = a.level := by
   cases h <;> simp_all
 
-/-- A refinement must cover every concrete step; it is never inferred from probes. -/
 def Refines {Concrete : Type} (concreteStep : Concrete → Concrete → Prop)
     (abstract : Concrete → State) (n : Network) : Prop :=
   ∀ a b, concreteStep a b → Step n (abstract a) (abstract b)
@@ -157,7 +146,6 @@ theorem refinement_lifts_execution {Concrete : Type}
   | refl => exact .refl
   | tail _ step ih => exact ih.tail (refinement _ _ step)
 
-/-- Conditional transfer theorem with the implementation-refinement premise displayed. -/
 theorem concrete_black_protection {Concrete : Type}
     {concreteStep : Concrete → Concrete → Prop} {abstract : Concrete → State}
     {n : Network} (refinement : Refines concreteStep abstract n)

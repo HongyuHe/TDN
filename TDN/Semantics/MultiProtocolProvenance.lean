@@ -4,8 +4,6 @@ import TDN.Semantics.ExecutionProvenance
 namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
-/-- Every IPsec seal in a reachable nested body records an actual configured
-transmit association. MACsec and carriers retain that nested provenance. -/
 def ProducedIPBodies (c : Config) : Body → Prop
   | .datagram _ | .ethernet _ => True
   | .ipsec token body => Execution.ProducedSeal c.ip token ∧ ProducedIPBodies c body
@@ -45,9 +43,6 @@ theorem all_executions_preserve_ip_provenance (c : Config)
     fun _ _ _ step valid => step_preserves_ip_provenance step valid
   exact Cslib.LTS.mtrInv_of_trInv preservation before actions after run initial
 
-/-- The apparent IPsec annotation equality in Step.decryptIPsec adds no wire
-restriction when configured peers agree. Local reqids may differ. The only
-cross-peer input here is the actual wire SPI and endpoint tuple. -/
 theorem wire_matching_ipsec_decryption_is_admitted (c : Config)
     (agreement : Execution.PeerTagAgreement c.ip) (state : State)
     (policy : Execution.Association) (association : Execution.SecurityAssociation)

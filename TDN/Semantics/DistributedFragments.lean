@@ -2,8 +2,6 @@ import TDN.Semantics.Fragmentation
 
 namespace TDN.Fragmentation
 
-/-- Pieces may occupy different logical forwarding states and take different route choices.
-A whole packet is restored only when every piece has reached the same assembly state. -/
 inductive DistributedState (Logical Header Byte : Type) where
   | whole (logical : Logical)
   | pieces (located : List (Logical × Fragment Header Byte))
@@ -32,8 +30,6 @@ def distributed {Logical Header Byte Action : Type}
     Cslib.LTS (DistributedState Logical Header Byte) (Option Action) where
   Tr := DistributedStep system encode
 
-/-- Every piece carries the invariant at its own location and the common projected header.
-Reassembly additionally checks contiguous offsets and exact bytes through ValidPieces. -/
 def DistributedInvariant {Logical Header Byte : Type}
     (encode : Logical → Datagram Header Byte) (invariant : Logical → Prop) :
     DistributedState Logical Header Byte → Prop
@@ -65,7 +61,6 @@ lemma distributed_step_preserves {Logical Header Byte Action : Type}
     obtain ⟨piece, member⟩ := List.exists_mem_of_ne_nil pieces piecesValid.1
     exact (valid (state, piece) (List.mem_map.mpr ⟨piece, member, rfl⟩)).1
 
-/-- CSLib lifts the local proof across arbitrary interleavings of individual fragment moves. -/
 theorem distributed_execution_preserves {Logical Header Byte Action : Type}
     (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte)
     (invariant : Logical → Prop) (preserved : system.TrInv invariant)

@@ -28,12 +28,12 @@ def main():
     parser.add_argument('responses', nargs='+')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
-    relative_run = Path('artifacts/construction') / args.run
+    relative_run = Path('data/construction') / args.run
     run = root / relative_run
     session = json.loads((run / 'session.json').read_text())
     evidence = Path(session['workspaces']['evidence']['path'])
     construction = Path(session['workspaces']['construction']['path'])
-    prefix = 'artifacts/snapshots/' + args.run + '/'
+    prefix = 'data/snapshots/' + args.run + '/'
     records = []
     for name in args.responses:
         if Path(name).name != name:

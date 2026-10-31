@@ -22,12 +22,11 @@ structure PacketSizing where
   outerMtu : Nat
   blackMtu : Nat
   ipv6PmtuConfigured : Bool
-  /-- Complete packet or frame length at the originating external interface. -/
+
   encodedSize : Nat → Nat := fun bytes => bytes + encapsulationOverheadBound
-  /-- Length at the particular Outer interface whose MTU is recorded above.
-  Additional encapsulation can make this length differ from the external length. -/
+
   outerEncodedSize : Nat → Nat := encodedSize
-  /-- Complete transmitted length on the selected Black path. -/
+
   blackEncodedSize : Nat → Nat := outerEncodedSize
 
 def FitsSelectedPath (sizing : PacketSizing) : Prop :=
@@ -37,9 +36,6 @@ def FitsSelectedPath (sizing : PacketSizing) : Prop :=
     sizing.outerEncodedSize bytes ≤ sizing.outerMtu ∧
     (sizing.role = .innerExternal → sizing.blackEncodedSize bytes ≤ sizing.blackMtu)
 
-/-- RG033 separates mandatory SR23 from optional IR2. INT033 includes ordinary Gray
-Firewalls and applicable Gray encryption components; management-only scoping is not assumed. The overhead bound and path MTUs
-must come from the selected encapsulation and retained link configuration. -/
 def msc_packet_size_configuration (interfaces : List PacketSizing) : Prop :=
   ∀ sizing ∈ interfaces,
     sizing.role = .grayFirewallOrEncryptionExternal ∨
@@ -71,8 +67,6 @@ theorem packet_sizes_fit_from_budget (sizing : PacketSizing)
   have bound := black inner
   omega
 
-/-- Exact monotone encodings handle padding alignment without an unnecessarily large
-constant-overhead bound. The maximum is an effective configured or discovered packet limit. -/
 theorem packet_sizes_fit_from_monotone_encoding (sizing : PacketSizing)
     (encoding : Monotone sizing.encodedSize)
     (outerEncoding : Monotone sizing.outerEncodedSize)

@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_macsec_runtime import parse
 
-SOURCE = ROOT / "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v14"
+SOURCE = ROOT / "data/snapshots/2026-10-24T014455Z/eap-tls-forward-v14"
 
 
 class MACsecRuntimeTests(unittest.TestCase):

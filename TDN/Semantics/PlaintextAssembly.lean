@@ -3,10 +3,6 @@ import TDN.Semantics.ExecutionDomains
 
 namespace TDN.Execution
 
-/-- Plaintext pieces can be assembled at the same receiving interface. The
-reassembled header may be arbitrary. Ignoring fragment-key and offset checks is
-a safety overapproximation. This operation never manufactures an authenticated
-envelope from independently selected ciphertext pieces. -/
 def PlaintextAssembly (before after : State) : Prop :=
   before.phase = .received ∧ after.phase = .received ∧ before.port = after.port ∧
   before.frame.tags = [] ∧ after.frame.tags = []

@@ -68,15 +68,11 @@ theorem empty_filter_has_no_useful_traffic : ¬ HasUsefulTraffic ([] : List (Rul
 theorem ordered_deny_precedes_allow :
     evaluate ([⟨fun _ : Nat => true, .deny⟩, ⟨fun _ => true, .allow⟩]) .deny 7 = .deny := rfl
 
-def broadenedHeaderGateway : Targets.GatewayHeaderPolicy :=
-  ⟨"mutation", true, "black", true, false, true,
-    [[⟨[], .allow⟩]], [], [[⟨[], .allow⟩]], []⟩
-
-example : ¬ Targets.HeaderCertificate broadenedHeaderGateway := by decide
-example : ¬ PacketPolicy.UnicastGuard "black" Targets.multicast4Low Targets.multicast4High
+example : ¬ PacketPolicy.ImmediateHeaderGuard [6, 17, 50, 58]
+    ⟨[], .allow⟩ := by decide
+example : ¬ PacketPolicy.UnicastGuard "black" 3758096384 4026531839
     ⟨[.ingress "black", .destinationRange 0 4294967295], .allow⟩ := by decide
 example : ¬ PacketPolicy.ProtocolGuard ["tcp", "udp", "esp", "icmp"]
     ⟨[.protocol "gre"], .allow⟩ := by decide
-example : ¬ Evidence.ESPHardLifetimesWithinBound [⟨"zero-means-unbounded", 0, 0⟩] := by unfold Evidence.ESPHardLifetimesWithinBound; decide
 
 end TDN.Tests

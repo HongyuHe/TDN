@@ -2,7 +2,6 @@ import Cslib.Foundations.Semantics.LTS.Basic
 
 namespace TDN.Admission
 
-/-- A history admits an operation only after its required matching event has been recorded. -/
 inductive Step {Event : Type} (trigger : Event → Prop) (prerequisite : Event → Event → Prop) :
     List Event → Event → List Event → Prop
   | record (history : List Event) (event : Event)
@@ -31,7 +30,6 @@ lemma step_preserves_prerequisites {Event : Type} {trigger : Event → Prop}
     · obtain ⟨witness, member, matched⟩ := valid target prior triggered
       exact ⟨witness, List.mem_cons_of_mem _ member, matched⟩
 
-/-- CSLib lifts a local admission check to every operation in every finite history. -/
 theorem all_admitted_events_have_prerequisites {Event : Type}
     (trigger : Event → Prop) (prerequisite : Event → Event → Prop)
     {events : List Event} {history : List Event}

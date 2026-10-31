@@ -23,8 +23,8 @@ def main():
     args = parser.parse_args()
     if not re.fullmatch(r'[a-z0-9-]+', args.label):
         raise ValueError('Use a simple event label.')
-    current = json.loads((ROOT / 'artifacts/construction/current.json').read_text())
-    run = ROOT / 'artifacts/construction' / current['directory']
+    current = json.loads((ROOT / 'data/construction/current.json').read_text())
+    run = ROOT / 'data/construction' / current['directory']
     state = json.loads((run / 'session.json').read_text())
     evidence = Path(state['workspaces']['evidence']) / 'outputs/snapshots'
     construction = Path(state['workspaces']['construction']) / 'inputs/snapshots'
@@ -56,7 +56,7 @@ def main():
         label = re.sub(r'-20\d{6}T\d{4,6}Z$', '', relative.name)
         if basis == 'assembled_at':
             label += '-assembled'
-        destination = ROOT / 'artifacts/snapshots' / ('msc-' + timestamp + '-' + label)
+        destination = ROOT / 'data/snapshots' / ('msc-' + timestamp + '-' + label)
         for target in [destination, construction / relative]:
             for item in files:
                 saved = target / item

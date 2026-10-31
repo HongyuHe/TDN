@@ -3,9 +3,6 @@ import Mathlib.Data.List.Basic
 
 namespace TDN.KeySources
 
-/-- A public configuration records whether a pre-shared CAK and its name are
-present. No key bytes enter this model. Hostap's pre-shared creation entry point
-requires both fields. Configuration changes start a new instance of the model. -/
 structure Config where
   hasPreSharedCAK : Bool
   hasPreSharedCKN : Bool
@@ -19,9 +16,6 @@ inductive Origin where
   | preSharedConfiguration
   deriving DecidableEq, Repr
 
-/-- Each entry describes the source of one MKA participant's CAK. Multiple EAP
-participants may coexist, including during authentication renewal. The model
-does not assume that an old EAP participant is automatically deleted. -/
 structure Participant where
   identifier : Nat
   origin : Origin
@@ -35,10 +29,6 @@ inductive Action where
   | remove (identifier : Nat)
   | progress
 
-/-- The two creation operations follow the reviewed hostap wrapper entry points.
-Protocol progress changes no CAK origin. Removal may delete any matching entries.
-The C implementation's correspondence to these operations is an explicit trusted
-source-reading assumption, recorded separately from the Lean proof. -/
 inductive Step (config : Config) : State → Action → State → Prop where
   | authenticated (state : State) (identifier : Nat) :
       Step config state (.authenticated identifier)
@@ -74,9 +64,6 @@ lemma creation_preserves_authenticated_sources {config : Config}
     exact checked participant (List.mem_filter.mp member).1
   | progress => exact checked
 
-/-- With no configured pre-shared pair, every participant reachable from a fresh
-process obtains its CAK through an authenticated exchange. The same proof covers
-arbitrarily many creations, renewals, removals, and protocol-progress steps. -/
 theorem executions_have_only_authenticated_sources {config : Config}
     (disabled : config.preSharedEnabled = false) {actions : List Action} {state : State}
     (execution : (system config).MTr [] actions state) : OnlyAuthenticatedSources state := by

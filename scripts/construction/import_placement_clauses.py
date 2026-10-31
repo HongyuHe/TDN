@@ -6,8 +6,8 @@ from pathlib import Path
 from analyze_topology import validated_graph
 from validate_evidence import require
 
-RUN = Path(os.environ.get("TDN_OUTPUT_DIR", "artifacts/construction/2026-10-24T014455Z"))
-BASE = Path("artifacts/snapshots/2026-10-24T014455Z")
+RUN = Path(os.environ.get("TDN_OUTPUT_DIR", "data/construction/2026-10-24T014455Z"))
+BASE = Path("data/snapshots/2026-10-24T014455Z")
 
 
 def path_to_outer(graph, source):

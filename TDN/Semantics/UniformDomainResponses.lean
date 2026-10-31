@@ -4,9 +4,6 @@ import TDN.Semantics.ExecutionDomains
 namespace TDN.UniformDomainResponses
 open Execution
 
-/-- Interfaces on one component retain both the protection stack and the
-permitted plaintext domain. The condition is checked separately for every
-source domain and allows shared encrypted transit interfaces. -/
 def Uniform (c : Execution.Config) (layout : Nat → List Nat)
     (allowed : Nat → Prop) (owner : Nat) : Prop :=
   UniformResponseRegions.Uniform c layout owner ∧
@@ -39,9 +36,6 @@ lemma active_domain_at_port {c : Execution.Config} {layout : Nat → List Nat}
   · exact processing_at_port uniform valid.1
   · exact False.elim (active phase)
 
-/-- Every actual component may generate a response before or after local
-filtering. Strict devices cannot emit externally. Other devices must have a
-uniform protection region and permitted-domain relation across their ports. -/
 def responseConfig (c : Execution.Config) (strict uniformOwners : List Nat) :
     KernelResponses.Config Execution.State where
   generates state := state.phase ≠ .dropped ∧

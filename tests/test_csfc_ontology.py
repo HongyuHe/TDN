@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('csfc_ontology', ROOT / 'scripts/preprocess/preprocess_csfc_ontology.py')
 ONTOLOGY = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(ONTOLOGY)
-OUT = ROOT / 'artifacts/extraction'
+OUT = ROOT / 'data/extraction'
 
 
 class RoleOntologyContract(unittest.TestCase):

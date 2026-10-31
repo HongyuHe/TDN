@@ -2,9 +2,6 @@ import TDN.Semantics.ReassemblyOrigins
 
 namespace TDN.AuthenticatedAssembly
 
-/-- Secret denotes actual cryptographic key identity. It is not an SPI, reqid,
-SCI or local key label. Epoch identifies an observed key-use interval; equality
-of epoch labels alone cannot make two contexts cryptographically compatible. -/
 structure Context (Secret Principal Epoch : Type) where
   secret : Secret
   receiver : Principal
@@ -13,9 +10,6 @@ structure Context (Secret Principal Epoch : Type) where
   epoch : Epoch
   deriving DecidableEq
 
-/-- A concrete backend supplies the complete epoch acceptance relation. Reused
-key material may permit an older epoch, so equality of synthetic generation
-labels is deliberately not an implicit wire authentication condition. -/
 def Compatible {Secret Principal Epoch : Type}
     (epochAccepted : Epoch → Epoch → Prop)
     (sent received : Context Secret Principal Epoch) : Prop :=
@@ -23,8 +17,6 @@ def Compatible {Secret Principal Epoch : Type}
   sent.protocolDomain = received.protocolDomain ∧ sent.direction = received.direction ∧
   epochAccepted sent.epoch received.epoch
 
-/-- An annotated publication records the real producer and semantic provenance.
-Only project annotation is plaintext seen by the cryptographic decoder. -/
 structure Message (Key Producer Wire Annotation : Type) where
   context : Key
   producer : Producer
@@ -32,7 +24,6 @@ structure Message (Key Producer Wire Annotation : Type) where
   annotation : Annotation
   deriving DecidableEq
 
-/-- A decoder returns wire-visible plaintext, never source/domain annotations. -/
 structure Decoded (Key Wire Plain : Type) where
   context : Key
   wire : List Wire
@@ -53,16 +44,6 @@ structure State (Key Producer Header Wire Annotation Plain : Type) where
 inductive Action where
   | publish | receive | discard | clear | accept
 
-/-- This cryptographic contract supplies a prior publication witness for actual
-decoded plaintext. The decoder cannot recover annotations or identify a unique
-producer from indistinguishable plaintext. Safety below covers all matching
-publications, not a conveniently selected witness.
-
-The implementation must include every producer able to authenticate under the
-receiving context, including other domains sharing a key. Completeness of that
-producer scope, correct key/direction/epoch binding and exclusion of successful
-forgeries remain explicit implementation assumptions. A local identifier or
-empty publication set cannot establish the contract. -/
 def AuthenticationSound {Key Producer Wire Annotation Plain : Type}
     (compatible : Key → Key → Prop) (project : Annotation → Plain)
     (authenticates : List (Message Key Producer Wire Annotation) →
@@ -70,10 +51,6 @@ def AuthenticationSound {Key Producer Wire Annotation Plain : Type}
   ∀ published decoded, authenticates published decoded →
     ∃ message ∈ published, Matches compatible project message decoded
 
-/-- The history parameter in authenticates is ghost state for the no-forgery
-contract. A concrete decoder sees only receiving context, ciphertext and
-plaintext. Its implementation correspondence must justify that history relation.
-Receive and ordinary reassembly never inspect proof annotations. -/
 inductive Step {Key Producer Header Wire Annotation Plain : Type} [DecidableEq Header]
     (produces : Message Key Producer Wire Annotation → Prop)
     (authenticates : List (Message Key Producer Wire Annotation) →
@@ -148,9 +125,6 @@ lemma local_publication_preserves
       subst decoded
       exact sound _ _ verified
 
-/-- Every accepted plaintext has a real prior publication witness. All matching
-publication annotations satisfy the source property, even when different
-producers publish identical ciphertext/plaintext under an accepted context. -/
 theorem all_accepted_messages_inherit_publication_property
     {Key Producer Header Wire Annotation Plain : Type} [DecidableEq Header]
     (produces : Message Key Producer Wire Annotation → Prop)
@@ -174,9 +148,6 @@ theorem all_accepted_messages_inherit_publication_property
   exact fun decoded member =>
     ⟨preserved.2 decoded member, fun message present _ => preserved.1 message present⟩
 
-/-- A captured deployment can start with a nonempty prior history. The caller
-must justify all seeded publication properties and the provenance of any seeded
-accepted messages. The theorem does not infer an empty history from a snapshot. -/
 theorem accepted_messages_from_seeded_history
     {Key Producer Header Wire Annotation Plain : Type} [DecidableEq Header]
     (produces : Message Key Producer Wire Annotation → Prop)
@@ -198,8 +169,6 @@ theorem accepted_messages_from_seeded_history
   exact fun decoded member =>
     ⟨preserved.2 decoded member, fun message present _ => preserved.1 message present⟩
 
-/-- Publication records require actual publication steps. Arbitrary fragments and
-successful decodes cannot add a producer to the ledger. -/
 theorem published_messages_were_produced
     {Key Producer Header Wire Annotation Plain : Type} [DecidableEq Header]
     (produces : Message Key Producer Wire Annotation → Prop)

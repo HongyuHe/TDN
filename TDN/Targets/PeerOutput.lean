@@ -10,8 +10,6 @@ instance (peer : Nat) (rule : Rule) : Decidable (PeerOutputGuard peer rule) := b
   unfold PeerOutputGuard
   infer_instance
 
-/-- Exact peer-address allow rules confine every non-loopback accepted local
-output. The guard is checked against the complete ordered chain and DROP default. -/
 theorem accepted_nonloopback_output_has_peer_destination (rules : List Rule) (peer : Nat)
     (checked : ∀ rule ∈ rules, rule.verdict = .allow → PeerOutputGuard peer rule)
     (packet : Packet) (accepted : Accepts rules packet) (external : packet.egress ≠ "lo") :

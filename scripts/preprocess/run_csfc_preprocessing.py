@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/extraction'
+OUT = ROOT / 'data/extraction'
 PDF = OUT / 'source/CSfC_documentation_v1.3.0.pdf'
 
 

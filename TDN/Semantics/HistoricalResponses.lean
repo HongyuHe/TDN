@@ -2,8 +2,6 @@ import TDN.Semantics.KernelResponses
 
 namespace TDN.HistoricalResponses
 
-/-- Retained packet states model the bytes and processing context saved for a
-later error response. Keeping every earlier state overapproximates bounded buffers. -/
 structure State (S : Type) where
   current : S
   retained : List S
@@ -12,8 +10,6 @@ inductive Action (A : Type) where
   | network (action : A)
   | selectRetained
 
-/-- Selecting a saved packet is a modeling step for asynchronous error handling.
-It does not assert that the physical network repeats its earlier execution. -/
 inductive Step {S A : Type} (network : Cslib.LTS S A) :
     State S → Action A → State S → Prop where
   | network {before after : S} {action : A} {retained : List S}
@@ -51,9 +47,6 @@ def responseConfig {S : Type} (config : KernelResponses.Config S) :
   emit state header port :=
     ⟨config.emit state.current header port, state.current :: state.retained⟩
 
-/-- Every previously checked packet context remains usable for a delayed reply.
-The configuration is fixed for the entire history. Reconfiguration needs an
-additional relation between the old and new local emission conditions. -/
 theorem all_historical_responses_preserve_safety {S A : Type}
     (network : Cslib.LTS S A) (config : KernelResponses.Config S) (safe : S → Prop)
     (preserves : network.TrInv safe)

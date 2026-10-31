@@ -4,7 +4,6 @@ import TDN.Semantics.AuthenticationSelectors
 
 namespace TDN.SourceResponseGuards
 
-/-- Once at least one rule matches, the fallback cannot determine the result. -/
 lemma fallback_irrelevant {Packet : Type} (rules : List (Filter.Rule Packet))
     (packet : Packet) (covered : ∃ rule ∈ rules, rule.accepts packet = true)
     (first second : Filter.Verdict) :
@@ -82,10 +81,6 @@ instance (ingress egress : String) (authenticated sourceLayers outputLayers : Li
   unfold PairCheck
   infer_instance
 
-/-- The response destination is the actual source address of the triggering
-packet. Interval conflicts, interface checks and inbound association metadata
-then exclude every accepted rule pair that would emit copied bytes into a
-different protection region. No payload identifier is used in these checks. -/
 lemma checked_pair_preserves_layers
     {source output : PacketPolicy.Rule} {original reply : PacketPolicy.Packet}
     {sourceLayers outputLayers : List Nat}
@@ -115,9 +110,6 @@ lemma checked_pair_preserves_layers
     simp only [PacketPolicy.Atom.holds] at holdsA holdsB
     omega
 
-/-- The original ingress policy may use ACCEPT as its default. A separate
-coverage check establishes that an actual rule matches on the selected input,
-so that the default cannot bypass the checked allowing rules. -/
 theorem ordered_reply_checks_preserve_layers
     (sourceRules outputRules : List PacketPolicy.Rule) (sourceFallback : Filter.Verdict)
     (original reply : PacketPolicy.Packet) (sourceLayers outputLayers : List Nat)
@@ -146,8 +138,6 @@ theorem ordered_reply_checks_preserve_layers
   exact checked_pair_preserves_layers
     (checked sourceRule memberSource sourceAllows outputRule memberOutput outputAllows)
     sourceMatches outputMatches returnsToSource protocol
-
-
 
 def ReplyExcludesSelector (output : PacketPolicy.Rule) (association : Execution.Association) : Prop :=
   ∃ atom ∈ output.atoms, match atom with
@@ -249,9 +239,6 @@ theorem finite_reply_checks_preserve_layers
   · exact False.elim
       (authenticated_reply_cannot_match conflict selectorBound returnsToSource outputMatches)
 
-
-/-- A coverage rule uses only the actual ingress name and a source interval
-containing the whole selected address family. Its verdict may be a denial. -/
 def CoverageRule (rule : PacketPolicy.Rule) (ingress : String) (low high : Nat) : Prop :=
   ∀ atom ∈ rule.atoms, match atom with
     | .ingress name => name = ingress

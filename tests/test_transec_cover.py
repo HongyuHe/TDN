@@ -16,7 +16,7 @@ class CoverImportTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.bundle = Path(self.temp.name) / "bundle"
-        shutil.copytree(ROOT / "artifacts/snapshots/2026-10-24T014455Z/outer-MACsec-cover-v4", self.bundle)
+        shutil.copytree(ROOT / "data/snapshots/2026-10-24T014455Z/outer-MACsec-cover-v4", self.bundle)
 
     def tearDown(self):
         self.temp.cleanup()

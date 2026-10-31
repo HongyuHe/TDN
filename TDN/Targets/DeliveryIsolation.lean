@@ -3,8 +3,6 @@ import TDN.Semantics.FiniteDomains
 
 namespace TDN.Targets
 
-/-- RG008's payload-delivery clause uses the actual source interface's declared domain.
-The packet source address and the frame's caller-supplied originDomain do not determine the result. -/
 def msc_same_domain_plaintext_delivery (c : Execution.Config) (sources : List Nat) : Prop :=
   ∀ start finish actions sourceDomain recipientDomain,
     RedPayloadOrigin c sources start → c.recipientDomain start.port = some sourceDomain →
@@ -28,8 +26,6 @@ lemma red_origin_has_domain_invariant (c : Execution.Config) (layout : Nat → L
   · simpa [entry] using permitted
   · simpa [entry] using admitted
 
-/-- Local rule and SA checks prevent a payload from reaching a wrong-domain plaintext
-recipient. Shared Gray and Black ports may remain allowed for every source domain. -/
 theorem delivered_domain_from_local_checks
     (c : Execution.Config) (layout : Nat → List Nat) (allowed : Nat → Prop)
     (sources : List Nat) (domain : Nat)
@@ -51,8 +47,6 @@ theorem delivered_domain_from_local_checks
   · simp [recipientAtEnd] at absent
   · exact Option.some.inj (same.symm.trans recipientAtEnd)
 
-/-- Full security labels may include classification, compartments, dissemination and other
-controls. Equal imported domain identities preserve every component of their label mapping. -/
 lemma equal_domains_have_equal_full_labels {Label : Type} (fullLabel : Nat → Label)
     {source destination : Nat} (same : source = destination) :
     fullLabel source = fullLabel destination :=

@@ -2,10 +2,6 @@ import TDN.Semantics.Paths
 
 namespace TDN.Targets
 
-/-- RG-034 makes the untrusted-Black condition explicit. External Black connectivity may be
-mediated by a network and an intervening firewall; the source does not require a
-single direct edge in the otherwise branch. Inner Gray connectivity likewise
-permits ordinary intervening switches. -/
 def msc_outer_firewall_placement {Node : Type}
     (untrustedBlack publicInternet grayFirewallRequired : Bool)
     (edge grayConnection : Node → Node → Prop)
@@ -24,8 +20,6 @@ def msc_outer_firewall_placement {Node : Type}
     ∀ o, outer o → ∃ g, grayFirewall g ∧ grayConnection o g
    else ∀ o, outer o → ∃ i, inner i ∧ grayConnection o i)
 
-/-- A locally checked graph separator establishes the mandatory untrusted-transport cut.
-Attachment paths and positive placement facts keep the result non-vacuous. -/
 theorem outer_firewall_placement_from_local_checks {Node Side : Type}
     {untrusted publicInternet grayRequired : Bool}
     {edge grayConnection : Node → Node → Prop}
@@ -52,7 +46,6 @@ theorem outer_firewall_placement_from_local_checks {Node Side : Type}
   exact Paths.no_firewall_free_crossing edge firewall side (edgesChecked applies)
     (outerClear applies o ho) (differentSides applies o b ho hb)
 
-/-- A real connection and the mandatory cut imply an actual firewall exists. -/
 theorem untrusted_outer_connection_has_firewall {Node : Type}
     (untrusted internetSelected grayRequired : Bool)
     (edge grayConnection : Node → Node → Prop)
@@ -77,9 +70,6 @@ theorem untrusted_outer_connection_has_firewall {Node : Type}
     have avoiding := Paths.path_avoids_absent_firewalls edge firewall clear path
     exact conform.2.2.2.1 applies o b present hb avoiding
 
-/-- Rejected-model diagnostic: additionally treating every external Black
-connection as one direct edge contradicts the firewall cut. That strengthening is
-not imposed by the source or by `msc_outer_firewall_placement`. -/
 theorem rejected_direct_edge_strengthening_conflicts {Node : Type}
     (grayFirewallRequired : Bool) (edge grayConnection : Node → Node → Prop)
     (outer firewall black grayFirewall inner : Node → Prop)
@@ -97,8 +87,6 @@ end TDN.Targets
 
 namespace TDN.Targets
 
-/-- The edge relation contains every physical Gray path segment. Security-level labels for
-transit nodes are proof annotations; endpoint labels come from declared Red attachments. -/
 def msc_gray_firewall_path_coverage {Node Label : Type}
     (grayEdge : Node → Node → Prop) (grayFirewall inner management : Node → Prop)
     (level : Node → Label) (highest : Label) (dominates : Label → Label → Prop)
@@ -114,8 +102,6 @@ def msc_gray_firewall_path_coverage {Node Label : Type}
     filtersIntendedSameLevel firewall ∧ physicallyProtected firewall) ∧
   ((∃ a b, inner a ∧ inner b ∧ level a ≠ level b) → ∃ firewall, grayFirewall firewall)
 
-/-- Local label preservation across every non-firewall edge excludes all bypass paths.
-The same proof handles management nodes assigned the highest declared security level. -/
 theorem gray_firewall_paths_from_local_separation {Node Label : Type}
     (grayEdge : Node → Node → Prop) (grayFirewall inner management : Node → Prop)
     (level : Node → Label) (highest : Label) (dominates : Label → Label → Prop)

@@ -11,8 +11,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / 'artifacts/extraction/requirements'
-INDEX = ROOT / 'artifacts/extraction/source/source_index.jsonl'
+OUT = ROOT / 'data/extraction/requirements'
+INDEX = ROOT / 'data/extraction/source/source_index.jsonl'
 SOURCES = [json.loads(line) for line in INDEX.read_text().splitlines()]
 BY_ID = {r['source_id']: r for r in SOURCES}
 DOC = SOURCES[0]['document_id']

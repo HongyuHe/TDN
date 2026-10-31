@@ -6,11 +6,11 @@ namespace TDN.Imported.FreshSharedAddressing
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
-tdn_data ranges : List (Addressing.Range SecurityLevel) from "../../evidence/lean/FreshSharedAddressing.json" ["TDN.Imported.FreshSharedAddressing.ranges"]
+tdn_data ranges : List (Addressing.Range SecurityLevel) from "../../data/evidence/FreshSharedAddressing.json" ["TDN.Imported.FreshSharedAddressing.ranges"]
 
-tdn_data pairs : List Targets.IntendedAddressPair from "../../evidence/lean/FreshSharedAddressing.json" ["TDN.Imported.FreshSharedAddressing.pairs"]
+tdn_data pairs : List Targets.IntendedAddressPair from "../../data/evidence/FreshSharedAddressing.json" ["TDN.Imported.FreshSharedAddressing.pairs"]
 
-tdn_data policies : List (List PacketPolicy.Rule) from "../../evidence/lean/FreshSharedAddressing.json" ["TDN.Imported.FreshSharedAddressing.policies"]
+tdn_data policies : List (List PacketPolicy.Rule) from "../../data/evidence/FreshSharedAddressing.json" ["TDN.Imported.FreshSharedAddressing.policies"]
 
 lemma ranges_valid : ∀ r ∈ ranges, r.low ≤ r.high := by unfold ranges; decide
 lemma ranges_separated : Addressing.Separated ranges := by unfold Addressing.Separated ranges; decide

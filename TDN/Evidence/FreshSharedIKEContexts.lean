@@ -4,9 +4,9 @@ import TDN.Semantics.IKEContexts
 namespace TDN.Imported.FreshSharedIKEContexts
 open IKEContexts
 
-tdn_data endpoints : List Endpoint from "../../evidence/lean/FreshSharedIKEContexts.json" ["TDN.Imported.FreshSharedIKEContexts.endpoints"]
+tdn_data endpoints : List Endpoint from "../../data/evidence/FreshSharedIKEContexts.json" ["TDN.Imported.FreshSharedIKEContexts.endpoints"]
 
-tdn_data pairs : List (Nat × Nat) from "../../evidence/lean/FreshSharedIKEContexts.json" ["TDN.Imported.FreshSharedIKEContexts.pairs"]
+tdn_data pairs : List (Nat × Nat) from "../../data/evidence/FreshSharedIKEContexts.json" ["TDN.Imported.FreshSharedIKEContexts.pairs"]
 
 def endpoint (index : Nat) : Endpoint :=
   endpoints[index]?.getD ⟨0, "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false⟩

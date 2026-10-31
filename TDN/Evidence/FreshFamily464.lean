@@ -10,15 +10,15 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-tdn_data devices : List DeviceData from "../../evidence/lean/FreshFamily464.json" ["TDN.Imported.Family464.devices"]
+tdn_data devices : List DeviceData from "../../data/evidence/FreshFamily464.json" ["TDN.Imported.Family464.devices"]
 
-tdn_data ports : List PortData from "../../evidence/lean/FreshFamily464.json" ["TDN.Imported.Family464.ports"]
+tdn_data ports : List PortData from "../../data/evidence/FreshFamily464.json" ["TDN.Imported.Family464.ports"]
 
-tdn_data routes : List Route from "../../evidence/lean/FreshFamily464.json" ["TDN.Imported.Family464.routes"]
+tdn_data routes : List Route from "../../data/evidence/FreshFamily464.json" ["TDN.Imported.Family464.routes"]
 
-tdn_data links : List (Nat × Nat) from "../../evidence/lean/FreshFamily464.json" ["TDN.Imported.Family464.links"]
+tdn_data links : List (Nat × Nat) from "../../data/evidence/FreshFamily464.json" ["TDN.Imported.Family464.links"]
 
-tdn_data switches : List (Nat × Nat) from "../../evidence/lean/FreshFamily464.json" ["TDN.Imported.Family464.switches"]
+tdn_data switches : List (Nat × Nat) from "../../data/evidence/FreshFamily464.json" ["TDN.Imported.Family464.switches"]
 
 def config : Config := finiteConfig devices ports routes links switches
 def layout : Nat → List Nat := finiteLayout ports
@@ -73,9 +73,9 @@ theorem every_transmission_has_port_stack {start finish : Execution.State} {acti
     (ready : finish.phase = .ready) : finish.frame.tags = layout finish.port :=
   transmitted_stack config layout local_stack_conditions run initial ready
 
-tdn_data redSources : List Nat from "../../evidence/lean/FreshFamily464.json" ["TDN.Imported.Family464.redSources"]
+tdn_data redSources : List Nat from "../../data/evidence/FreshFamily464.json" ["TDN.Imported.Family464.redSources"]
 
-tdn_data blackPorts : List Nat from "../../evidence/lean/FreshFamily464.json" ["TDN.Imported.Family464.blackPorts"]
+tdn_data blackPorts : List Nat from "../../data/evidence/FreshFamily464.json" ["TDN.Imported.Family464.blackPorts"]
 
 lemma sources_checked : ∀ p ∈ redSources, layout p = [] ∧ config.payloadOrigin p := by
   unfold redSources layout config finiteLayout finiteConfig ports; decide

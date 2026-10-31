@@ -16,9 +16,6 @@ def system (c : Execution.Config) (strict uniformOwners : List Nat) :=
     (KernelResponses.lts (Execution.lts c) (UniformDomainResponses.responseConfig c strict uniformOwners))
     (ResponseByteFlows.assembly PlaintextAssembly)
 
-/-- The event names the actual input/output packet states and actual encryption
-step. A copied or reassembled byte may belong to a new packet; its individual
-path, rather than equality of mutable packet identifiers, binds the events. -/
 def EncryptionEvent (c : Execution.Config) (tag : Nat)
     (left : KernelResponses.State Execution.State)
     (action : Option (KernelResponses.Action Execution.Action))

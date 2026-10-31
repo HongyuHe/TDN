@@ -1,5 +1,6 @@
 """Compatibility import for the shared evidence-service parser."""
-from evidence_service.parsers.snapshot import *
+import evidence_package
+from tdn_evidence.parsers.snapshot import *
 
 if __name__ == "__main__":
     main()

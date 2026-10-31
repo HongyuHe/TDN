@@ -9,23 +9,23 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 37
 
-tdn_data edges : List (Node × Node) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.edges"]
+tdn_data edges : List (Node × Node) from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.edges"]
 
-tdn_data grayEdges : List (Node × Node) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.grayEdges"]
+tdn_data grayEdges : List (Node × Node) from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.grayEdges"]
 
-tdn_data insideAttachments : List (Node × Node) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.insideAttachments"]
+tdn_data insideAttachments : List (Node × Node) from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.insideAttachments"]
 
-tdn_data outsideAttachments : List (Node × Node) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.outsideAttachments"]
+tdn_data outsideAttachments : List (Node × Node) from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.outsideAttachments"]
 
-tdn_data outerNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.outerNodes"]
+tdn_data outerNodes : List Node from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.outerNodes"]
 
-tdn_data firewallNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.firewallNodes"]
+tdn_data firewallNodes : List Node from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.firewallNodes"]
 
-tdn_data blackNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.blackNodes"]
+tdn_data blackNodes : List Node from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.blackNodes"]
 
-tdn_data grayFirewallNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.grayFirewallNodes"]
+tdn_data grayFirewallNodes : List Node from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.grayFirewallNodes"]
 
-tdn_data innerNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.innerNodes"]
+tdn_data innerNodes : List Node from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.innerNodes"]
 
 def outerSide (node : Node) : Nat := [0, 3, 3, 3, 3, 3, 6, 3, 3, 3, 22, 22, 22, 22, 22, 15, 22, 22, 22, 3, 3, 3, 22, 22, 22, 3, 26, 22, 28, 3, 22, 3, 3, 3, 22, 22, 22][node.val]!
 
@@ -69,7 +69,7 @@ lemma gray_sides_differ : ∀ a b, a ∈ innerNodes → b ∈ innerNodes → lev
 
 theorem cross_level_gray_paths_cross_firewall (a b : Node) (ha : a ∈ innerNodes) (hb : b ∈ innerNodes) (different : level a ≠ level b) : ¬ Relation.ReflTransGen (Paths.Avoiding grayEdge grayFirewall) a b := Paths.no_firewall_free_crossing grayEdge grayFirewall graySide gray_local_cut (inner_start_clear a ha) (gray_sides_differ a b ha hb different)
 
-tdn_data ipv6Disablement : List (Nat × Nat) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.ipv6Disablement"]
+tdn_data ipv6Disablement : List (Nat × Nat) from "../../data/evidence/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.ipv6Disablement"]
 
 theorem all_recorded_ipv6_interfaces_disabled : ∀ setting ∈ ipv6Disablement, setting.1 = 1 ∧ setting.2 = 0 := by unfold ipv6Disablement; decide
 

@@ -366,8 +366,8 @@ def render_views(out):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pdf', type=Path, default=Path('artifacts/extraction/source/CSfC_documentation_v1.3.0.pdf'))
-    parser.add_argument('--out', type=Path, default=Path('artifacts/extraction'))
+    parser.add_argument('--pdf', type=Path, default=Path('data/extraction/source/CSfC_documentation_v1.3.0.pdf'))
+    parser.add_argument('--out', type=Path, default=Path('data/extraction'))
     args = parser.parse_args()
     result = build(args.pdf, args.out)
     render_views(args.out)

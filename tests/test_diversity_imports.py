@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT / "scripts/construction"))
 from import_physical_partition import parse_worker, generate
 from import_os_diversity import parse
 
-BASE = ROOT / "artifacts/snapshots/2026-10-24T014455Z"
+BASE = ROOT / "data/snapshots/2026-10-24T014455Z"
 
 
 class DiversityImportTests(unittest.TestCase):

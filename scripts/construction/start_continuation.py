@@ -13,17 +13,17 @@ def main():
     parser.add_argument('--run', required=True)
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
-    run = root / 'artifacts/construction' / args.run
+    run = root / 'data/construction' / args.run
     base = Path('/tmp') / ('tdn-continuation-' + args.run)
     base.mkdir(exist_ok=False)
-    old = root / 'artifacts/construction/2026-10-17T205010Z'
+    old = root / 'data/construction/2026-10-17T205010Z'
     source = json.loads((old / 'source_paths.json').read_text())
     models = {'construction': ('gpt-6-astra', 'high'), 'evidence': ('gpt-6.1-sol', 'high')}
     manifest = {'run': args.run, 'started_at': datetime.now(timezone.utc).isoformat(), 'workspaces': {}, 'isolation_checks': []}
     for actor, model in models.items():
         work = base / actor
         work.mkdir()
-        for name in ['TDN', 'TDN.lean', 'scripts/construction', 'tests', 'artifacts/extraction', 'workflows/construction.md', 'lakefile.toml', 'lake-manifest.json', 'lean-toolchain']:
+        for name in ['TDN', 'TDN.lean', 'scripts/construction', 'tests', 'data/extraction', 'workflows/construction.md', 'lakefile.toml', 'lake-manifest.json', 'lean-toolchain']:
             src, dst = root / name, work / name
             dst.parent.mkdir(parents=True, exist_ok=True)
             if src.is_dir():
@@ -42,7 +42,7 @@ def main():
                 shutil.copytree(src, dst, ignore=shutil.ignore_patterns('.git', '__pycache__', 'private', 'secrets'))
             else:
                 shutil.copy2(src, dst)
-        out = work / 'artifacts/construction' / args.run
+        out = work / 'data/construction' / args.run
         out.mkdir(parents=True)
         for name in ['theorem_register.json', 'evidence_requests.json']:
             shutil.copy2(old / 'integration' / name, out / name)

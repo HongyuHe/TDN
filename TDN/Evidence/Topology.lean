@@ -9,23 +9,23 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 23
 
-tdn_data edges : List (Node × Node) from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.edges"]
+tdn_data edges : List (Node × Node) from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.edges"]
 
-tdn_data grayEdges : List (Node × Node) from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.grayEdges"]
+tdn_data grayEdges : List (Node × Node) from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.grayEdges"]
 
-tdn_data insideAttachments : List (Node × Node) from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.insideAttachments"]
+tdn_data insideAttachments : List (Node × Node) from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.insideAttachments"]
 
-tdn_data outsideAttachments : List (Node × Node) from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.outsideAttachments"]
+tdn_data outsideAttachments : List (Node × Node) from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.outsideAttachments"]
 
-tdn_data outerNodes : List Node from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.outerNodes"]
+tdn_data outerNodes : List Node from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.outerNodes"]
 
-tdn_data firewallNodes : List Node from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.firewallNodes"]
+tdn_data firewallNodes : List Node from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.firewallNodes"]
 
-tdn_data blackNodes : List Node from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.blackNodes"]
+tdn_data blackNodes : List Node from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.blackNodes"]
 
-tdn_data grayFirewallNodes : List Node from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.grayFirewallNodes"]
+tdn_data grayFirewallNodes : List Node from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.grayFirewallNodes"]
 
-tdn_data innerNodes : List Node from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.innerNodes"]
+tdn_data innerNodes : List Node from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.innerNodes"]
 
 def outerSide (node : Node) : Nat := [0, 5, 5, 5, 5, 5, 6, 5, 5, 5, 5, 11, 20, 20, 20, 20, 20, 17, 20, 20, 20, 20, 22][node.val]!
 
@@ -69,7 +69,7 @@ lemma gray_sides_differ : ∀ a b, a ∈ innerNodes → b ∈ innerNodes → lev
 
 theorem cross_level_gray_paths_cross_firewall (a b : Node) (ha : a ∈ innerNodes) (hb : b ∈ innerNodes) (different : level a ≠ level b) : ¬ Relation.ReflTransGen (Paths.Avoiding grayEdge grayFirewall) a b := Paths.no_firewall_free_crossing grayEdge grayFirewall graySide gray_local_cut (inner_start_clear a ha) (gray_sides_differ a b ha hb different)
 
-tdn_data ipv6Disablement : List (Nat × Nat) from "../../evidence/lean/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.ipv6Disablement"]
+tdn_data ipv6Disablement : List (Nat × Nat) from "../../data/evidence/Topology.json" ["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.ipv6Disablement"]
 
 theorem all_recorded_ipv6_interfaces_disabled : ∀ setting ∈ ipv6Disablement, setting.1 = 1 ∧ setting.2 = 0 := by unfold ipv6Disablement; decide
 

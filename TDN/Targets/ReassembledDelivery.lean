@@ -3,8 +3,6 @@ import TDN.Semantics.ReassemblyOrigins
 
 namespace TDN.Targets
 
-/-- Reception is checked before local reassembly and INPUT delivery. The original
-source interface determines the domain; ordinary fragment header keys do not. -/
 def msc_same_domain_plaintext_reception (c : Execution.Config) (sources : List Nat) : Prop :=
   ∀ start finish actions sourceDomain recipientDomain,
     RedPayloadOrigin c sources start → c.recipientDomain start.port = some sourceDomain →
@@ -36,10 +34,6 @@ theorem received_domain_from_local_checks
   · simp [recipientAtEnd] at absent
   · exact Option.some.inj (same.symm.trans recipientAtEnd)
 
-/-- A fragment's byte annotations refer to an actual source execution. They are
-not matched by the reassembler. The implementation correspondence must associate
-each admitted piece with its source bytes and its reception path. Different pieces
-may have different packet identities, routes and source states. -/
 structure FragmentArrival where
   start : Execution.State
   finish : Execution.State
@@ -57,8 +51,6 @@ def ArrivedFragment {Header Byte : Type}
     c.recipientDomain arrival.start.port = some byte.domain ∧
     byte.packet = arrival.start.frame.payload
 
-/-- The byte guard follows from the checked network execution. It does not assume
-that the buffer has one source packet or that the desired domain is on the wire. -/
 lemma arrived_fragment_bytes_match_recipient {Header Byte : Type}
     (c : Execution.Config) (sources : List Nat)
     (reception : msc_same_domain_plaintext_reception c sources)
@@ -74,10 +66,6 @@ lemma arrived_fragment_bytes_match_recipient {Header Byte : Type}
   exact reception arrival.start arrival.finish arrival.actions byte.domain recipientDomain
     origin source run received plain (port ▸ recipient)
 
-/-- Actual source-path checks compose with arbitrary finite fragment-buffer
-histories. Ordinary header collisions may mix packet identities. Every resulting
-byte still has the recipient's source-domain label. This theorem does not supply
-the separate implementation mapping from raw fragments to ArrivedFragment. -/
 theorem reassembled_delivery_domain_from_checked_reception {Header Byte : Type}
     [DecidableEq Header]
     (c : Execution.Config) (sources : List Nat)

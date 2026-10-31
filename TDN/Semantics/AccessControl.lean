@@ -14,8 +14,6 @@ structure Request where
   normalizedPath : String
   deriving DecidableEq, Repr
 
-/-- The fingerprint comes from the authenticated transport peer, not a request-supplied role.
-Unmapped peers and absent method/path permissions are denied. -/
 def authorize (roles : String → Option String) (permissions : List Permission) (request : Request) : Bool :=
   match roles request.authenticatedFingerprint with
   | none => false
@@ -42,7 +40,6 @@ theorem unmapped_peer_is_denied (roles : String → Option String)
     authorize roles permissions request = false := by
   simp [authorize, unmapped]
 
-/-- A per-entry permission check excludes a forbidden operation for all authenticated peers. -/
 theorem absent_path_is_denied (roles : String → Option String)
     (permissions : List Permission) (request : Request)
     (excluded : ∀ permission ∈ permissions, permission.path ≠ request.normalizedPath) :
@@ -54,7 +51,6 @@ theorem absent_path_is_denied (roles : String → Option String)
       authorized_request_has_permission roles permissions request decision
     exact False.elim (excluded permission member same)
 
-/-- Local permissions for a role restrict every accepted request for that role. -/
 theorem role_permission_restricts_operations (roles : String → Option String)
     (permissions : List Permission) (request : Request) (role : String)
     (bound : roles request.authenticatedFingerprint = some role)

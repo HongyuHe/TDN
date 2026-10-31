@@ -2,7 +2,6 @@ import Cslib.Foundations.Semantics.LTS.Basic
 
 namespace TDN.TraceEvents
 
-/-- An event occurrence includes the actual states and trace prefix/suffix, not only a label. -/
 def Contains {State Action : Type} (system : Cslib.LTS State Action)
     (before : State) (actions : List Action) (after : State)
     (event : State → Action → State → Prop) : Prop :=
@@ -11,7 +10,6 @@ def Contains {State Action : Type} (system : Cslib.LTS State Action)
     system.MTr before earlier left ∧ system.Tr left action right ∧
     system.MTr right later after ∧ event left action right
 
-/-- A predicate that changes across an execution must change at one of its actual steps. -/
 theorem changing_predicate_has_event {State Action : Type}
     (system : Cslib.LTS State Action) (predicate : State → Prop)
     {before after : State} {actions : List Action}

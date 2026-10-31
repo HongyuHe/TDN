@@ -74,8 +74,8 @@ def main():
     parser.add_argument('--reports-only', action='store_true')
     parser.add_argument('--new-history-only', action='store_true', help='Reuse previously copied immutable checkpoints when their manifests are unchanged.')
     args = parser.parse_args()
-    pointer = json.loads((ROOT / 'artifacts/construction/current.json').read_text())
-    run = ROOT / 'artifacts/construction' / pointer['directory']
+    pointer = json.loads((ROOT / 'data/construction/current.json').read_text())
+    run = ROOT / 'data/construction' / pointer['directory']
     state = json.loads((run / 'session.json').read_text())
     updates = []
     blocked = []

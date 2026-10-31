@@ -109,7 +109,6 @@ lemma guarded_rule_protects {r : Rule} {inside outside : String} {p : Packet}
     cases a <;> simp only at hkind <;> try contradiction
     exact Or.inr ⟨pi, po, _, policyEvidence⟩
 
-/-- Concrete first-match rules imply IPsec policy membership for every accepted packet. -/
 theorem forwarding_policy_protects (rules : List Rule) (inside outside : String)
     (checked : ∀ r ∈ rules, r.verdict = .allow → Guarded r inside outside)
     (p : Packet) (accepted : Filter.evaluate (rules.map Rule.toFilter) .deny p = .allow) :
