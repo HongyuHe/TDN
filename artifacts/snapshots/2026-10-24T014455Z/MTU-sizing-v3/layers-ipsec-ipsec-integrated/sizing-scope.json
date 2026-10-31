@@ -1,0 +1,38 @@
+{
+  "source_clauses": [
+    "MSC-SR-23",
+    "MSC-IR-2"
+  ],
+  "interpretation": "Configure IPv4 external Gray packet MTU or MACsec external frame sizing with actual nested overhead considered. IPv6 PMTU is separately represented by IPv6-PMTU-v4.",
+  "settings": {
+    "Outer_Black_MTU": 1400,
+    "Inner_Gray_carrier_MTU": 1200,
+    "Red_IP_MTU": 1100,
+    "Inner_MACsec_plaintext_MTU": null,
+    "standalone_encapsulator_Gray_MTU": null
+  },
+  "ordinary_controls": "Only assigned-address kernel ping is generated.1072-byte ICMP payload plus28-byte IPv4/ICMP headers fits1100.1073 is locally rejected. Header capture retains actual Outer ESP lengths and fragmentation metadata.",
+  "before_diagnostics": [
+    {
+      "source": "HA",
+      "destination": "10.2.0.2",
+      "payload_bytes": 1300,
+      "returncode": 1,
+      "observation_id": "cmd-0474",
+      "scope": "Ordinary assigned-address before-sizing diagnostic; delivery or failure is retained without a required result."
+    },
+    {
+      "source": "HB",
+      "destination": "10.1.0.2",
+      "payload_bytes": 1300,
+      "returncode": 1,
+      "observation_id": "cmd-0475",
+      "scope": "Ordinary assigned-address before-sizing diagnostic; delivery or failure is retained without a required result."
+    }
+  ],
+  "limitations": [
+    "Finite maximum-size controls and fixed geometry do not prove every possible padding/algorithm/frame format or arbitrary future MTU change.",
+    "Manual static SAs and supplemental namespaces do not establish MKA/IKE authentication, native FRR/OVS or product approval.",
+    "No IPv6, alternate L2TP cookie, arbitrary Ethernet payload or jumbo-frame guarantee is supplied."
+  ]
+}

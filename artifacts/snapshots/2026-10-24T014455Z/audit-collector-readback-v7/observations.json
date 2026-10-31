@@ -1,0 +1,178 @@
+{
+  "at": "2026-10-24T14:42:54.549701+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T14:42:54.038822+00:00",
+      "label": "time",
+      "command": [
+        "date",
+        "-u",
+        "--iso-8601=ns"
+      ],
+      "returncode": 0,
+      "stdout": "2026-10-24T14:42:54,037560100+00:00\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:42:54.041145+00:00",
+      "label": "kernel",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux node-0.twinet-msc2.netsyn-pg0.cloudlab.umass.edu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:42:54.043426+00:00",
+      "label": "boot",
+      "command": [
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "returncode": 0,
+      "stdout": "a6f3a873-b25a-4e59-bcff-2d242b9ebbce\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:42:54.045700+00:00",
+      "label": "hardware",
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_uuid"
+      ],
+      "returncode": 0,
+      "stdout": "4c4c4544-004a-4310-8042-b4c04f563532\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:42:54.047627+00:00",
+      "label": "python",
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "Python 3.12.3\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:42:54.086786+00:00",
+      "label": "TLS",
+      "command": [
+        "python3",
+        "-c",
+        "import ssl;print(ssl.OPENSSL_VERSION)"
+      ],
+      "returncode": 0,
+      "stdout": "OpenSSL 3.0.13 30 Jan 2024\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:42:54.166793+00:00",
+      "label": "public-certificate",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.pem",
+        "-noout",
+        "-fingerprint",
+        "-sha256",
+        "-subject",
+        "-issuer",
+        "-dates"
+      ],
+      "returncode": 0,
+      "stdout": "sha256 Fingerprint=AC:BB:6B:D4:86:67:8F:B8:10:9B:24:C8:3B:EB:39:5F:E7:49:17:13:2E:F2:7D:9E:EB:90:00:7A:55:1F:96:C6\nsubject=CN = audit-collector.msc.test\nissuer=CN = Owned-Audit-CA\nnotBefore=Oct 24 14:29:14 2026 GMT\nnotAfter=Oct 25 14:29:14 2026 GMT\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:42:54.245524+00:00",
+      "label": "listeners",
+      "command": [
+        "ss",
+        "-lntp"
+      ],
+      "returncode": 0,
+      "stdout": "State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess                                                    \nLISTEN 0      4096      127.0.0.54:53         0.0.0.0:*    users:((\"systemd-resolve\",pid=1569,fd=17))                \nLISTEN 0      128          0.0.0.0:16505      0.0.0.0:*    users:((\"pubsubd\",pid=2070,fd=4))                         \nLISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*    users:((\"systemd-resolve\",pid=1569,fd=15))                \nLISTEN 0      4096         0.0.0.0:22         0.0.0.0:*    users:((\"sshd\",pid=1871,fd=3),(\"systemd\",pid=1,fd=95))    \nLISTEN 0      4096         0.0.0.0:111        0.0.0.0:*    users:((\"rpcbind\",pid=1567,fd=4),(\"systemd\",pid=1,fd=136))\nLISTEN 0      4096       127.0.0.1:36353      0.0.0.0:*    users:((\"containerd\",pid=46618,fd=14))                    \nLISTEN 0      5            0.0.0.0:43464      0.0.0.0:*    users:((\"python3\",pid=70087,fd=3))                        \nLISTEN 0      5            0.0.0.0:43463      0.0.0.0:*    users:((\"python3\",pid=70086,fd=3))                        \nLISTEN 0      4096            [::]:22            [::]:*    users:((\"sshd\",pid=1871,fd=4),(\"systemd\",pid=1,fd=96))    \nLISTEN 0      4096            [::]:111           [::]:*    users:((\"rpcbind\",pid=1567,fd=6),(\"systemd\",pid=1,fd=138))\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:42:54.245977+00:00",
+      "label": "server-owned-process",
+      "pid": 70086,
+      "argv": [
+        "python3",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/scripts/audit_collector_v3.py",
+        "--root",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/store",
+        "--ca",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/ca.pem",
+        "--cert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.pem",
+        "--key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.key"
+      ]
+    },
+    {
+      "at": "2026-10-24T14:42:54.246300+00:00",
+      "label": "budget-owned-process",
+      "pid": 70087,
+      "argv": [
+        "python3",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/scripts/audit_collector_v3.py",
+        "--root",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/budget-store",
+        "--ca",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/ca.pem",
+        "--cert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.pem",
+        "--key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.key",
+        "--port",
+        "43464",
+        "--max-bytes",
+        "128"
+      ]
+    },
+    {
+      "at": "2026-10-24T14:42:54.546415+00:00",
+      "label": "budget-test-process-stopped",
+      "pid": 70087,
+      "remaining_state": "absent"
+    },
+    {
+      "at": "2026-10-24T14:42:54.547278+00:00",
+      "label": "store-public-summary",
+      "directory_mode": "0o700",
+      "journal_mode": "0o600",
+      "journal_sha256": "8f4a6574e222c7edd87546967d4e000170c5cde001cd976d02f17e1ff3f9514b",
+      "records": [
+        {
+          "device": "NC-I-A",
+          "offset": 0,
+          "next": 65536,
+          "bytes": 65536,
+          "sha256": "a3aeaeba59c0210f8322c6e22908ff6d5bca1e70b0e84810cda16d7ce7a9d80b",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        }
+      ],
+      "actual_audit_markers": []
+    },
+    {
+      "at": "2026-10-24T14:42:54.549066+00:00",
+      "label": "budget-store-public-summary",
+      "directory_mode": "0o700",
+      "journal_mode": null,
+      "journal_sha256": null,
+      "records": [],
+      "actual_audit_markers": []
+    }
+  ],
+  "error": null,
+  "scope": "Public identity and committed-record metadata only. Raw audit bodies and private credentials remain private. Only the positively identified separate budget test process is stopped; the primary collector remains running."
+}

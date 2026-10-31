@@ -1,0 +1,671 @@
+{
+  "at": "2026-10-24T03:44:52.821540+00:00",
+  "records": [
+    {
+      "id": "diversity-0000",
+      "command": [
+        "ip",
+        "netns",
+        "add",
+        "tcv3-clock-0"
+      ],
+      "started_at": "2026-10-24T03:44:34.260007+00:00",
+      "ended_at": "2026-10-24T03:44:34.263083+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0001",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "nt3h0",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "nt3p0"
+      ],
+      "started_at": "2026-10-24T03:44:34.263096+00:00",
+      "ended_at": "2026-10-24T03:44:34.268354+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0002",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "nt3h0",
+        "master",
+        "nd3b0"
+      ],
+      "started_at": "2026-10-24T03:44:34.268368+00:00",
+      "ended_at": "2026-10-24T03:44:34.270485+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0003",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "nt3h0",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:44:34.270495+00:00",
+      "ended_at": "2026-10-24T03:44:34.272069+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0004",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "nt3p0",
+        "netns",
+        "tcv3-clock-0"
+      ],
+      "started_at": "2026-10-24T03:44:34.272078+00:00",
+      "ended_at": "2026-10-24T03:44:34.295158+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0005",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3-clock-0",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:44:34.295172+00:00",
+      "ended_at": "2026-10-24T03:44:34.298047+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0006",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3-clock-0",
+        "ip",
+        "link",
+        "set",
+        "nt3p0",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:44:34.298057+00:00",
+      "ended_at": "2026-10-24T03:44:34.300960+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0007",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3-clock-0",
+        "ip",
+        "addr",
+        "add",
+        "10.1.1.20/24",
+        "dev",
+        "nt3p0"
+      ],
+      "started_at": "2026-10-24T03:44:34.300970+00:00",
+      "ended_at": "2026-10-24T03:44:34.303647+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0008",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "sysctl kern.timecounter.hardware; uname -a; ntpdate --version"
+      ],
+      "started_at": "2026-10-24T03:44:34.303997+00:00",
+      "ended_at": "2026-10-24T03:44:34.528032+00:00",
+      "returncode": 2,
+      "stdout": "kern.timecounter.hardware: kvmclock\nFreeBSD evidence-freebsd-v2-0 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64\n",
+      "stderr": "ntpdate: unknown option --\nntpdate: encryption delay rsion is unlikely\nusage: ntpdate [-46bBdqsuv] [-a key#] [-e delay] [-k file] [-p samples] [-o version#] [-t timeo] server ...\n"
+    },
+    {
+      "id": "diversity-0009",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ntpdate -q -u 10.1.1.20"
+      ],
+      "started_at": "2026-10-24T03:44:34.528107+00:00",
+      "ended_at": "2026-10-24T03:44:34.866592+00:00",
+      "returncode": 0,
+      "stdout": "server 10.1.1.20, stratum 2, offset +0.015514, delay 0.02612\n24 Oct 03:44:34 ntpdate[36217]: adjust time server 10.1.1.20 offset +0.015514 sec\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0010",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "date -u -f %s $(($(date -u +%s)+2))"
+      ],
+      "started_at": "2026-10-24T03:44:34.866644+00:00",
+      "ended_at": "2026-10-24T03:44:35.117793+00:00",
+      "returncode": 0,
+      "stdout": "Sat Oct 24 03:44:37 UTC 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0011",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ntpdate -q -u 10.1.1.20"
+      ],
+      "started_at": "2026-10-24T03:44:35.117844+00:00",
+      "ended_at": "2026-10-24T03:44:35.476621+00:00",
+      "returncode": 0,
+      "stdout": "server 10.1.1.20, stratum 2, offset -1.885433, delay 0.02594\n24 Oct 03:44:37 ntpdate[36226]: step time server 10.1.1.20 offset -1.885433 sec\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0012",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ntpdate -b -u 10.1.1.20"
+      ],
+      "started_at": "2026-10-24T03:44:35.476684+00:00",
+      "ended_at": "2026-10-24T03:44:41.841735+00:00",
+      "returncode": 0,
+      "stdout": "24 Oct 03:44:41 ntpdate[36230]: step time server 10.1.1.20 offset -1.885447 sec\n",
+      "stderr": "",
+      "probe": "independent-guest-clock-step",
+      "expected_result": "clock-adjusted",
+      "observed_result": "clock-adjusted"
+    },
+    {
+      "id": "diversity-0013",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ntpdate -q -u 10.1.1.20"
+      ],
+      "started_at": "2026-10-24T03:44:41.841827+00:00",
+      "ended_at": "2026-10-24T03:44:42.200694+00:00",
+      "returncode": 0,
+      "stdout": "server 10.1.1.20, stratum 2, offset +0.000026, delay 0.02596\n24 Oct 03:44:42 ntpdate[36234]: adjust time server 10.1.1.20 offset +0.000026 sec\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0014",
+      "command": [
+        "ip",
+        "-j",
+        "-d",
+        "link",
+        "show",
+        "nt3h0"
+      ],
+      "started_at": "2026-10-24T03:44:42.200722+00:00",
+      "ended_at": "2026-10-24T03:44:42.204222+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":53,\"link_index\":52,\"ifname\":\"nt3h0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"nd3b0\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"6a:94:f1:73:64:28\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8003\",\"no\":\"0x3\",\"designated_port\":32771,\"designated_cost\":0,\"bridge_id\":\"8000.52:b4:c:d0:96:e\",\"root_id\":\"8000.52:b4:c:d0:96:e\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":7.09,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0015",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ifconfig vtnet2; netstat -rn"
+      ],
+      "started_at": "2026-10-24T03:44:42.204264+00:00",
+      "ended_at": "2026-10-24T03:44:42.460928+00:00",
+      "returncode": 0,
+      "stdout": "vtnet2: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1320\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:6f:60:3f:1b:b7\n\tinet 10.1.1.1 netmask 0xffffff00 broadcast 10.1.1.255\n\tinet6 fe80::6f:60ff:fe3f:1bb7%vtnet2 prefixlen 64 scopeid 0x4\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nRouting tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        link#4             U            vtnet2\n10.1.1.1           link#3             UHS             lo0\n10.2.1.0/24        10.100.1.1         UGS          vtnet3\n10.100.1.0/24      link#5             U            vtnet3\n10.100.1.2         link#3             UHS             lo0\n10.200.1.2         10.100.1.1         UGHS         vtnet3\n127.0.0.1          link#3             UH              lo0\n172.28.90.1        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:10%lo0       link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:11%lo0       link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::6f:60ff:fe3f:1bb7%lo0       link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:10           link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0016",
+      "command": [
+        "ip",
+        "netns",
+        "add",
+        "tcv3-clock-1"
+      ],
+      "started_at": "2026-10-24T03:44:42.460961+00:00",
+      "ended_at": "2026-10-24T03:44:42.464367+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0017",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "nt3h1",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "nt3p1"
+      ],
+      "started_at": "2026-10-24T03:44:42.464393+00:00",
+      "ended_at": "2026-10-24T03:44:42.472792+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0018",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "nt3h1",
+        "master",
+        "nd3b2"
+      ],
+      "started_at": "2026-10-24T03:44:42.472818+00:00",
+      "ended_at": "2026-10-24T03:44:42.475862+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0019",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "nt3h1",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:44:42.475883+00:00",
+      "ended_at": "2026-10-24T03:44:42.477839+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0020",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "nt3p1",
+        "netns",
+        "tcv3-clock-1"
+      ],
+      "started_at": "2026-10-24T03:44:42.477863+00:00",
+      "ended_at": "2026-10-24T03:44:42.504252+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0021",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3-clock-1",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:44:42.504270+00:00",
+      "ended_at": "2026-10-24T03:44:42.509079+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0022",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3-clock-1",
+        "ip",
+        "link",
+        "set",
+        "nt3p1",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:44:42.509090+00:00",
+      "ended_at": "2026-10-24T03:44:42.512423+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0023",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3-clock-1",
+        "ip",
+        "addr",
+        "add",
+        "10.2.1.20/24",
+        "dev",
+        "nt3p1"
+      ],
+      "started_at": "2026-10-24T03:44:42.512440+00:00",
+      "ended_at": "2026-10-24T03:44:42.515234+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0024",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "sysctl kern.timecounter.hardware; uname -a; ntpdate --version"
+      ],
+      "started_at": "2026-10-24T03:44:42.515537+00:00",
+      "ended_at": "2026-10-24T03:44:42.744213+00:00",
+      "returncode": 2,
+      "stdout": "kern.timecounter.hardware: kvmclock\nFreeBSD evidence-freebsd-v2-1 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64\n",
+      "stderr": "ntpdate: unknown option --\nntpdate: encryption delay rsion is unlikely\nusage: ntpdate [-46bBdqsuv] [-a key#] [-e delay] [-k file] [-p samples] [-o version#] [-t timeo] server ...\n"
+    },
+    {
+      "id": "diversity-0025",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ntpdate -q -u 10.2.1.20"
+      ],
+      "started_at": "2026-10-24T03:44:42.744276+00:00",
+      "ended_at": "2026-10-24T03:44:43.108192+00:00",
+      "returncode": 0,
+      "stdout": "server 10.2.1.20, stratum 2, offset +0.015635, delay 0.02609\n24 Oct 03:44:43 ntpdate[35970]: adjust time server 10.2.1.20 offset +0.015635 sec\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0026",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "date -u -f %s $(($(date -u +%s)+2))"
+      ],
+      "started_at": "2026-10-24T03:44:43.108244+00:00",
+      "ended_at": "2026-10-24T03:44:43.364137+00:00",
+      "returncode": 0,
+      "stdout": "Sat Oct 24 03:44:45 UTC 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0027",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ntpdate -q -u 10.2.1.20"
+      ],
+      "started_at": "2026-10-24T03:44:43.364182+00:00",
+      "ended_at": "2026-10-24T03:44:43.727916+00:00",
+      "returncode": 0,
+      "stdout": "server 10.2.1.20, stratum 2, offset -1.639040, delay 0.02596\n24 Oct 03:44:45 ntpdate[35979]: step time server 10.2.1.20 offset -1.639040 sec\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0028",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ntpdate -b -u 10.2.1.20"
+      ],
+      "started_at": "2026-10-24T03:44:43.727959+00:00",
+      "ended_at": "2026-10-24T03:44:50.098205+00:00",
+      "returncode": 0,
+      "stdout": "24 Oct 03:44:50 ntpdate[35983]: step time server 10.2.1.20 offset -1.639029 sec\n",
+      "stderr": "",
+      "probe": "independent-guest-clock-step",
+      "expected_result": "clock-adjusted",
+      "observed_result": "clock-adjusted"
+    },
+    {
+      "id": "diversity-0029",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ntpdate -q -u 10.2.1.20"
+      ],
+      "started_at": "2026-10-24T03:44:50.098276+00:00",
+      "ended_at": "2026-10-24T03:44:50.461828+00:00",
+      "returncode": 0,
+      "stdout": "server 10.2.1.20, stratum 2, offset +0.000018, delay 0.02589\n24 Oct 03:44:50 ntpdate[35987]: adjust time server 10.2.1.20 offset +0.000018 sec\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0030",
+      "command": [
+        "ip",
+        "-j",
+        "-d",
+        "link",
+        "show",
+        "nt3h1"
+      ],
+      "started_at": "2026-10-24T03:44:50.461853+00:00",
+      "ended_at": "2026-10-24T03:44:50.464492+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":55,\"link_index\":54,\"ifname\":\"nt3h1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"nd3b2\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"82:bd:5a:91:86:f5\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":7,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8003\",\"no\":\"0x3\",\"designated_port\":32771,\"designated_cost\":0,\"bridge_id\":\"8000.e2:66:e7:9c:dd:a8\",\"root_id\":\"8000.e2:66:e7:9c:dd:a8\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":7.04,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0031",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ifconfig vtnet2; netstat -rn"
+      ],
+      "started_at": "2026-10-24T03:44:50.464532+00:00",
+      "ended_at": "2026-10-24T03:44:50.725804+00:00",
+      "returncode": 0,
+      "stdout": "vtnet2: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1320\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:2c:94:19:04:97\n\tinet 10.2.1.1 netmask 0xffffff00 broadcast 10.2.1.255\n\tinet6 fe80::2c:94ff:fe19:497%vtnet2 prefixlen 64 scopeid 0x4\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nRouting tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        10.200.1.1         UGS          vtnet3\n10.2.1.0/24        link#4             U            vtnet2\n10.2.1.1           link#3             UHS             lo0\n10.100.1.2         10.200.1.1         UGHS         vtnet3\n10.200.1.0/24      link#5             U            vtnet3\n10.200.1.2         link#3             UHS             lo0\n127.0.0.1          link#3             UH              lo0\n172.28.90.2        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:1010%lo0     link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:1011%lo0     link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::2c:94ff:fe19:497%lo0        link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:1010         link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0032",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_A1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.1.10"
+      ],
+      "started_at": "2026-10-24T03:44:50.725830+00:00",
+      "ended_at": "2026-10-24T03:44:52.812358+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.1.10 (10.2.1.10) 56(84) bytes of data.\n64 bytes from 10.2.1.10: icmp_seq=1 ttl=62 time=1.25 ms\n64 bytes from 10.2.1.10: icmp_seq=2 ttl=62 time=1.08 ms\n64 bytes from 10.2.1.10: icmp_seq=3 ttl=62 time=0.956 ms\n\n--- 10.2.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2002ms\nrtt min/avg/max/mdev = 0.956/1.095/1.252/0.121 ms\n",
+      "stderr": "",
+      "probe": "protected-data-after-guest-clock-sync",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "diversity-0033",
+      "command": [
+        "ip",
+        "netns",
+        "delete",
+        "tcv3-clock-0"
+      ],
+      "started_at": "2026-10-24T03:44:52.816736+00:00",
+      "ended_at": "2026-10-24T03:44:52.819584+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0034",
+      "command": [
+        "ip",
+        "netns",
+        "delete",
+        "tcv3-clock-1"
+      ],
+      "started_at": "2026-10-24T03:44:52.819598+00:00",
+      "ended_at": "2026-10-24T03:44:52.821507+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "runtime_backend": "native-ND-with-actual-FreeBSD-Inner-kernels-and-supplemental-Red-time-server-namespaces",
+  "scope": [
+    "Two actual FreeBSD Inner guest kernels query and synchronize to explicit local time sources on their own Red segments. Each guest clock is moved forward by two seconds before ntpdate performs a measured correction. Linux host clocks and unrelated workloads are never adjusted.",
+    "Separate guest kernels provide independent system-clock state even though they share physical KVM infrastructure. Kernel clock source, server source/address, time samples and actual adjustment diagnostics are retained.",
+    "Laboratory time sources use the host clock and have no supplied organizational trust or authoritative time-service approval. No Gray Outer synchronization or all-future drift bound is inferred. The temporary supplemental time server namespaces are cleaned after collection."
+  ]
+}

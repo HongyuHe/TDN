@@ -1,0 +1,28 @@
+import hashlib,json
+from datetime import datetime,timezone
+from pathlib import Path
+run=Path('artifacts/construction/2026-10-24T014455Z');base=Path('artifacts/snapshots/2026-10-24T014455Z');out=base/'data-fragment-analysis-v3';out.mkdir()
+p=base/'data-fragments-v5'
+def stats(phase,node):
+    values={}
+    for line in json.loads((p/(phase+'-stats.json')).read_text())[node]['nstat']['stdout'].splitlines():
+        x=line.split()
+        if len(x)>1 and x[1].isdigit():values[x[0]]=int(x[1])
+    return values
+changes=[]
+for phase,prior in [('post-ESP-fragmentation','before'),('plaintext-fragmentation','post-ESP-fragmentation'),('overlapping-plaintext-fragments','plaintext-fragmentation')]:
+    for node in ['HA','IA','R','IB','HB']:
+        a=stats(prior,node);b=stats(phase,node);delta={k:b[k]-a.get(k,0)for k in b if('Reasm'in k or'Frag'in k)and b[k]!=a.get(k,0)}
+        if delta:changes.append({'phase':phase,'node':node,'before_file':prior+'-stats.json','after_file':phase+'-stats.json','counter_deltas':delta})
+facts={'at':datetime.now(timezone.utc).isoformat(),'counter_deltas':changes,'stage_findings':['The 4096-byte UDP payload begins as one 4124-byte IPv4 datagram. IA emits one 4180-byte ESP packet with DF clear. R creates four ESP fragments at offsets 0,1256,2512,3768. IB reassembles one outer packet before ESP processing; HB receives the exact public payload digest.','With a 1200-byte Red MTU, HA emits four plaintext UDP fragments. IA reassembles them before encryption and emits one outer ESP packet. R fragments that packet again. IA and IB each increment ReasmOKs once; the receiver obtains the exact 4096-byte payload. The provisional test plan statement about separately encrypted plaintext fragments was corrected to the observed reassemble-before-encrypt behavior.','The overlapping plaintext fragments cover [0,1600) and [800,2400), with the same ID and a valid complete UDP union. IA increments IpReasmFails and IpExtReasmOverlaps once. No ESP packet leaves IA and no UDP payload arrives. A later valid full-size payload succeeds.','Two valid IPv6 fragments with immediate NH44 pass the original priority -300 raw check after priority -400 netfilter reassembly; the public 1800-byte UDP payload arrives. The repaired priority -450 nftables check drops both fragments before reassembly. Its counter increments by two packets and 1904 bytes. Valid 256-byte IPv6 UDP passes before and after.'],'source_binding':['Linux v6.8 include/uapi/linux/netfilter_ipv6.h defines before-defrag -450, defrag -400 and raw -300. nf_defrag_ipv6_hooks.c registers defragmentation at -400. The observed nftables JSON binds the active -450 gate and literal ip6 nexthdr expression.','nf_defrag_ipv4.c registers IPv4 fragment gathering at the corresponding defrag priority. inet_fragment.c detects overlaps, and ip_fragment.c handles the failed queue. Actual kernel counters and packet records provide the local stage observation.','The actual kernel is an Ubuntu distribution build. uname, /proc/version, installed kernel config, module paths/vermagic/srcversion, XFRM state/policy, conntrack availability and namespace identities remain in raw commands. Upstream v6.8 source is a reviewed implementation-family reference; no byte identity with the distribution build is invented.'],'scope':['One owned manually provisioned Linux IPv4 ESP path, not IKE or native FRR/OVS. Captures retain complete requested IP/ESP header metadata and omit encrypted bodies. Final application reports payload size and SHA-256.','The IPv6 fragment test is an active local gate with valid below-MTU controls. Dynamic ICMPv6 PMTU and external L2TP encapsulator fragmentation remain separate tasks.','Only newly created owned namespaces and their MTUs/filters are changed. They are removed after collection. Existing deployments remain preserved.']}
+(out/'analysis.json').write_text(json.dumps(facts,indent=2)+'\n');(out/'collector.source.py').write_bytes(Path(__file__).read_bytes());(out/'manifest.json').write_text(json.dumps({'collector_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'files':[{'path':f.name,'sha256':hashlib.sha256(f.read_bytes()).hexdigest()}for f in out.iterdir()if f.is_file()]},indent=2)+'\n')
+paths=[base/'data-fragments-v3-startup',base/'data-fragments-v4',base/'data-fragments-v5',out];checks=[]
+for path in paths:
+    m=json.loads((path/'manifest.json').read_text())
+    for f in m['files']:assert hashlib.sha256((path/f['path']).read_bytes()).hexdigest()==f['sha256'],str(path/f['path'])
+    checks.append({'path':str(path),'manifest_sha256':hashlib.sha256((path/'manifest.json').read_bytes()).hexdigest()})
+e=json.loads((p/'evidence.json').read_text());assert not e['error'];assert len(e['probes'])==8;assert all(x['expected_result']==x['observed_result']for x in e['probes'])
+response={'id':'C-FRAGMENT-001','request_id':'C-FRAGMENT-001','at':facts['at'],'status':'finite-local-observations-delivered','groups':['RG-007','RG-029','RG-030','RG-033','RG-038'],'bundle_paths':[str(x)for x in paths],'checks':checks,'reference_paths':[str(run/'references/netfilter-fragment-order')],'scope':facts['stage_findings']+facts['source_binding']+facts['scope'],'successful_final_checks':8,'confirmed_before_counterexample':'Immediate NH44 datagram delivered through raw-only gate after defragmentation. Repaired by literal check at priority -450. Shared family integration is collected separately.'}
+target=run/'responses/C-FRAGMENT-001.json';target.write_text(json.dumps(response,indent=2)+'\n')
+with(run/'requests_responses.jsonl').open('a')as f:f.write(json.dumps({'at':response['at'],'actor':'evidence','event':'response','path':str(target)})+'\n')
+print(json.dumps({'response':str(target),'checks':8,'bundles':len(paths)}))

@@ -1,0 +1,420 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "configuration_id": "bridged-Inner-MACsec-Outer-IPsec",
+  "runtime_backend": "supplemental-linux-netns-static-routes",
+  "started_at": "2026-10-24T14:56:28.591284+00:00",
+  "ended_at": "2026-10-24T14:57:33.878019+00:00",
+  "devices": [
+    {
+      "id": "HA",
+      "role": "host",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3e8-HA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IA",
+      "role": "inner",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3e8-IA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OA",
+      "role": "outer",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3e8-OA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OB",
+      "role": "outer",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3e8-OB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IB",
+      "role": "inner",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3e8-IB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "HB",
+      "role": "host",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3e8-HB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "FA",
+      "role": "outer-firewall",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3e8-FA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "FB",
+      "role": "outer-firewall",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3e8-FB",
+      "physical_independence": "unavailable"
+    }
+  ],
+  "links": [
+    {
+      "endpoints": [
+        "HA:red",
+        "IA:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.1.0.2/24",
+        "10.1.0.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "HB:red",
+        "IB:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.2.0.2/24",
+        "10.2.0.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OA:black",
+        "FA:inside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "192.0.2.1/30",
+        "192.0.2.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OB:black",
+        "FB:inside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "192.0.3.1/30",
+        "192.0.3.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "FA:outside",
+        "FB:outside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "198.51.100.1/30",
+        "198.51.100.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IA:gray",
+        "OA:innerframes"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        null,
+        null
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IB:gray",
+        "OB:innerframes"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        null,
+        null
+      ],
+      "physical_claim_supported": false
+    }
+  ],
+  "tunnels": [
+    {
+      "id": "outer",
+      "mechanism": "IPsec",
+      "layer": "outer",
+      "endpoints": [
+        "OA",
+        "OB"
+      ],
+      "local": "192.0.2.1",
+      "remote": "192.0.3.1",
+      "selectors": [
+        "10.11.0.2/32",
+        "10.21.0.2/32"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    },
+    {
+      "id": "encapsulation",
+      "mechanism": "L2TPv3-over-UDP",
+      "layer": "between-inner-and-outer",
+      "endpoints": [
+        "OA",
+        "OB"
+      ],
+      "local": "10.11.0.2",
+      "remote": "10.21.0.2",
+      "udp_port": 1701
+    },
+    {
+      "id": "inner",
+      "mechanism": "MACsec",
+      "layer": "inner",
+      "endpoints": [
+        "IA",
+        "IB"
+      ],
+      "local": "10.60.0.1/30",
+      "remote": "10.60.0.2/30",
+      "algorithm": "GCM-AES-256",
+      "replay_window": 0,
+      "validate": "strict",
+      "encrypt": true,
+      "protect": true,
+      "authentication": "manual test SAK provisioning; MKA and CAK authentication not established"
+    }
+  ],
+  "probes": [
+    {
+      "id": "legitimate-Red-to-peer-Gray-rejected",
+      "source_device": "HA",
+      "destination": "10.60.0.2",
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0506"
+    },
+    {
+      "id": "legitimate-Red-to-local-Gray-rejected",
+      "source_device": "HA",
+      "destination": "10.60.0.1",
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0507"
+    },
+    {
+      "id": "opaque-0-A-B",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 0,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0839",
+      "application_observation": "opaque-0-A-B.json"
+    },
+    {
+      "id": "opaque-0-B-A",
+      "source_device": "HB",
+      "destination_device": "HA",
+      "protected_vlan_tags": 0,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0843",
+      "application_observation": "opaque-0-B-A.json"
+    },
+    {
+      "id": "opaque-0-Inner-loss",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 0,
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0848",
+      "application_observation": "opaque-0-Inner-loss.json"
+    },
+    {
+      "id": "opaque-0-Inner-restored",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 0,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0853",
+      "application_observation": "opaque-0-Inner-restored.json"
+    },
+    {
+      "id": "opaque-0-Outer-loss",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 0,
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0858",
+      "application_observation": "opaque-0-Outer-loss.json"
+    },
+    {
+      "id": "opaque-0-Outer-restored",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 0,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0868",
+      "application_observation": "opaque-0-Outer-restored.json"
+    },
+    {
+      "id": "opaque-1-A-B",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 1,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0872",
+      "application_observation": "opaque-1-A-B.json"
+    },
+    {
+      "id": "opaque-1-B-A",
+      "source_device": "HB",
+      "destination_device": "HA",
+      "protected_vlan_tags": 1,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0876",
+      "application_observation": "opaque-1-B-A.json"
+    },
+    {
+      "id": "opaque-1-Inner-loss",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 1,
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0881",
+      "application_observation": "opaque-1-Inner-loss.json"
+    },
+    {
+      "id": "opaque-1-Inner-restored",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 1,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0886",
+      "application_observation": "opaque-1-Inner-restored.json"
+    },
+    {
+      "id": "opaque-1-Outer-loss",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 1,
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0891",
+      "application_observation": "opaque-1-Outer-loss.json"
+    },
+    {
+      "id": "opaque-1-Outer-restored",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 1,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0901",
+      "application_observation": "opaque-1-Outer-restored.json"
+    },
+    {
+      "id": "opaque-2-A-B",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 2,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0905",
+      "application_observation": "opaque-2-A-B.json"
+    },
+    {
+      "id": "opaque-2-B-A",
+      "source_device": "HB",
+      "destination_device": "HA",
+      "protected_vlan_tags": 2,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0909",
+      "application_observation": "opaque-2-B-A.json"
+    },
+    {
+      "id": "opaque-2-Inner-loss",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 2,
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0914",
+      "application_observation": "opaque-2-Inner-loss.json"
+    },
+    {
+      "id": "opaque-2-Inner-restored",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 2,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0919",
+      "application_observation": "opaque-2-Inner-restored.json"
+    },
+    {
+      "id": "opaque-2-Outer-loss",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 2,
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0924",
+      "application_observation": "opaque-2-Outer-loss.json"
+    },
+    {
+      "id": "opaque-2-Outer-restored",
+      "source_device": "HA",
+      "destination_device": "HB",
+      "protected_vlan_tags": 2,
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0934",
+      "application_observation": "opaque-2-Outer-restored.json"
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Virtual namespace graph; no physical independence or product approval",
+    "Manually provisioned SAs do not establish IKE/MKA/certificate authentication",
+    "Test keys generated by Python secrets; no NSA KGS approval claim"
+  ]
+}

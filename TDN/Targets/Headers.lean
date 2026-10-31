@@ -23,7 +23,7 @@ def multicast6High : Nat := 340282366920938463463374607431768211455
 
 def HeaderCertificate (g : GatewayHeaderPolicy) : Prop :=
   (g.ipv4Active = true → ∀ rs ∈ g.ipv4Rules, ∀ r ∈ rs, r.verdict = .allow → ProtocolGuard ["tcp","udp","esp","icmp"] r) ∧
-  (g.ipv6Active = true → ∀ rs ∈ g.ipv6Rules, ∀ r ∈ rs, r.verdict = .allow → ProtocolGuard ["tcp","udp","esp","ipv6-icmp"] r) ∧
+  (g.ipv6Active = true → ∀ rs ∈ g.ipv6Rules, ∀ r ∈ rs, r.verdict = .allow → ImmediateHeaderGuard [6,17,50,58] r) ∧
   (g.outer = true →
     (g.ipv4Active = true → ∀ rs ∈ g.ipv4ReceiveRules, ∀ r ∈ rs, r.verdict = .allow → UnicastGuard g.external multicast4Low multicast4High r) ∧
     (g.ipv6Active = true → ∀ rs ∈ g.ipv6ReceiveRules, ∀ r ∈ rs, r.verdict = .allow → UnicastGuard g.external multicast6Low multicast6High r) ∧
@@ -32,7 +32,7 @@ def HeaderCertificate (g : GatewayHeaderPolicy) : Prop :=
 instance (g : GatewayHeaderPolicy) : Decidable (HeaderCertificate g) := by
   unfold HeaderCertificate
   letI (rs : List Rule) : Decidable (∀ r ∈ rs, r.verdict = .allow → ProtocolGuard ["tcp","udp","esp","icmp"] r) := by infer_instance
-  letI (rs : List Rule) : Decidable (∀ r ∈ rs, r.verdict = .allow → ProtocolGuard ["tcp","udp","esp","ipv6-icmp"] r) := by infer_instance
+  letI (rs : List Rule) : Decidable (∀ r ∈ rs, r.verdict = .allow → ImmediateHeaderGuard [6,17,50,58] r) := by infer_instance
   letI (rs : List Rule) : Decidable (∀ r ∈ rs, r.verdict = .allow → UnicastGuard g.external multicast4Low multicast4High r) := by infer_instance
   letI (rs : List Rule) : Decidable (∀ r ∈ rs, r.verdict = .allow → UnicastGuard g.external multicast6Low multicast6High r) := by infer_instance
   letI (rs : List Rule) : Decidable (∀ r ∈ rs, r.verdict = .allow → .ipv4HeaderWords 5 ∈ r.atoms) := by infer_instance
@@ -41,7 +41,7 @@ instance (g : GatewayHeaderPolicy) : Decidable (HeaderCertificate g) := by
 def msc_ip_header_and_multicast_filtering (gateways : List GatewayHeaderPolicy) : Prop :=
   gateways ≠ [] ∧ ∀ g ∈ gateways,
     (g.ipv4Active = true → ∀ rs ∈ g.ipv4Rules, ∀ p, Accepts rs p → p.protocol ∈ ["tcp","udp","esp","icmp"]) ∧
-    (g.ipv6Active = true → ∀ rs ∈ g.ipv6Rules, ∀ p, Accepts rs p → p.protocol ∈ ["tcp","udp","esp","ipv6-icmp"]) ∧
+    (g.ipv6Active = true → ∀ rs ∈ g.ipv6Rules, ∀ p, Accepts rs p → p.ipv6NextHeader ∈ [6,17,50,58]) ∧
     (g.outer = true →
       (g.ipv4Active = true → ∀ rs ∈ g.ipv4ReceiveRules, ∀ p, Accepts rs p → p.ingress = g.external → ¬ (multicast4Low ≤ p.destination ∧ p.destination ≤ multicast4High)) ∧
       (g.ipv6Active = true → ∀ rs ∈ g.ipv6ReceiveRules, ∀ p, Accepts rs p → p.ingress = g.external → ¬ (multicast6Low ≤ p.destination ∧ p.destination ≤ multicast6High)) ∧
@@ -57,7 +57,7 @@ theorem header_certificates_suffice (gateways : List GatewayHeaderPolicy)
   · intro active rs member p accepted
     exact accepted_protocol rs _ (v4 active rs member) p accepted
   · intro active rs member p accepted
-    exact accepted_protocol rs _ (v6 active rs member) p accepted
+    exact accepted_immediate_header rs _ (v6 active rs member) p accepted
   · intro isOuter
     obtain ⟨uni4, uni6, options⟩ := outer isOuter
     refine ⟨?_, ?_, ?_⟩

@@ -1,0 +1,13 @@
+# Bounded IEEE KDF and algorithm-agility review
+
+The visible primary IEEE publication text supports review of Sections 6.2.1, 6.2.2 and 9.3 plus Annex G.1 through G.6. The university URL returns 404 during live retrieval. Search-indexed publication text remains available, and its edition/title/DOI match the official IEEE catalog and official RFC bibliography. No complete PDF, issuer-hosted bytes or cryptographic authenticity is claimed.
+
+Section 6.2.1 specifies the AES-CMAC counter-mode KDF with a one-byte counter, separator, context and two-byte big-endian output bit length. The key length selects AES-CMAC-128 or AES-CMAC-256. Section 6.2.2 selects the first 16 or32 MSK bytes for 128- or 256-bit CAKs, sorted source MACs and the EAP Session-ID for the 16-byte CKN. Section 9.3 identifies 00-80-C2-01 and derives ICK/KEK using CAK and the padded first 16 CKN bytes. Those visible clauses are available source evidence.
+
+Both final EAP wrapper sources request 32 MSK bytes and set the CAK length to 32. Their retrieval functions clamp the copied prefix to that requested length. Both leave the CKN length at 16. The shared derivation functions sort the MAC addresses and use the exact labels and contexts. The shared KAY code uses identifier 00-80-C2-01 despite its older internal constant name. It selects the recorded derivation functions, sets ICK/KEK lengths equal to CAK length and rejects a different incoming agility identifier in its source check.
+
+The harness includes the exact official ieee802_1x_key.c without editing its derivation functions. It compiles the original OpenSSL CMAC function bytes from crypto_openssl.c in the pinned OpenSSL 3.5.5 image. Both final hostapd and wpa_supplicant full source files match those tested official files byte for byte. Final binary hashes and library linkage are separately captured. The harness calls freshly compiled functions; it does not call functions extracted from the already linked runtime ELF.
+
+All 12 published 128/256-bit Annex G KDF, CAK, CKN, KEK, ICK and SAK vectors match. The CAK and CKN calls reverse the supplied MAC order to exercise sorting. G3 uses the complete Session-ID visible on p285. Its indexed repeat on p286 contains an odd-length hexadecimal group. Both captures and the interpretation are retained.
+
+The result supports the specific 256-bit CAK/KEK/ICK choice and its visible derivation clauses. It does not establish full IEEE standard conformance, independent implementation interoperability, all error paths, every MKA lifecycle event, product approval or live-secret correctness. No live MSK, CAK, KEK, ICK or SAK is exported. All test inputs are published noncredential examples.

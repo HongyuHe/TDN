@@ -1,0 +1,508 @@
+{
+  "source_clauses": [
+    "MSC-PF-12"
+  ],
+  "devices": [
+    "IA",
+    "IB",
+    "OA",
+    "OB"
+  ],
+  "field": "Literal immediate IPv6 Next Header",
+  "allowed_values": [
+    6,
+    17,
+    50,
+    58
+  ],
+  "hook_priority": -450,
+  "defragmentation_priority": -400,
+  "raw_priority": -300,
+  "rules": {
+    "IA": {
+      "observation_id": "cmd-0187",
+      "ruleset": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "ip6",
+              "name": "EVA6_BEFORE_DEFRAG",
+              "handle": 3
+            }
+          },
+          {
+            "chain": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "name": "prerouting",
+              "handle": 1,
+              "type": "filter",
+              "hook": "prerouting",
+              "prio": -450,
+              "policy": "accept"
+            }
+          },
+          {
+            "chain": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "name": "output",
+              "handle": 4,
+              "type": "filter",
+              "hook": "output",
+              "prio": -450,
+              "policy": "accept"
+            }
+          },
+          {
+            "rule": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "chain": "prerouting",
+              "handle": 3,
+              "expr": [
+                {
+                  "match": {
+                    "op": "!=",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "nexthdr"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "tcp",
+                        "udp",
+                        "esp",
+                        "ipv6-icmp"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "chain": "output",
+              "handle": 6,
+              "expr": [
+                {
+                  "match": {
+                    "op": "!=",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "nexthdr"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "tcp",
+                        "udp",
+                        "esp",
+                        "ipv6-icmp"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "IB": {
+      "observation_id": "cmd-0194",
+      "ruleset": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "ip6",
+              "name": "EVA6_BEFORE_DEFRAG",
+              "handle": 3
+            }
+          },
+          {
+            "chain": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "name": "prerouting",
+              "handle": 1,
+              "type": "filter",
+              "hook": "prerouting",
+              "prio": -450,
+              "policy": "accept"
+            }
+          },
+          {
+            "chain": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "name": "output",
+              "handle": 4,
+              "type": "filter",
+              "hook": "output",
+              "prio": -450,
+              "policy": "accept"
+            }
+          },
+          {
+            "rule": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "chain": "prerouting",
+              "handle": 3,
+              "expr": [
+                {
+                  "match": {
+                    "op": "!=",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "nexthdr"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "tcp",
+                        "udp",
+                        "esp",
+                        "ipv6-icmp"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "chain": "output",
+              "handle": 6,
+              "expr": [
+                {
+                  "match": {
+                    "op": "!=",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "nexthdr"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "tcp",
+                        "udp",
+                        "esp",
+                        "ipv6-icmp"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "OA": {
+      "observation_id": "cmd-0201",
+      "ruleset": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "ip6",
+              "name": "EVA6_BEFORE_DEFRAG",
+              "handle": 3
+            }
+          },
+          {
+            "chain": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "name": "prerouting",
+              "handle": 1,
+              "type": "filter",
+              "hook": "prerouting",
+              "prio": -450,
+              "policy": "accept"
+            }
+          },
+          {
+            "chain": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "name": "output",
+              "handle": 4,
+              "type": "filter",
+              "hook": "output",
+              "prio": -450,
+              "policy": "accept"
+            }
+          },
+          {
+            "rule": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "chain": "prerouting",
+              "handle": 3,
+              "expr": [
+                {
+                  "match": {
+                    "op": "!=",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "nexthdr"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "tcp",
+                        "udp",
+                        "esp",
+                        "ipv6-icmp"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "chain": "output",
+              "handle": 6,
+              "expr": [
+                {
+                  "match": {
+                    "op": "!=",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "nexthdr"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "tcp",
+                        "udp",
+                        "esp",
+                        "ipv6-icmp"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "OB": {
+      "observation_id": "cmd-0208",
+      "ruleset": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "ip6",
+              "name": "EVA6_BEFORE_DEFRAG",
+              "handle": 3
+            }
+          },
+          {
+            "chain": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "name": "prerouting",
+              "handle": 1,
+              "type": "filter",
+              "hook": "prerouting",
+              "prio": -450,
+              "policy": "accept"
+            }
+          },
+          {
+            "chain": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "name": "output",
+              "handle": 4,
+              "type": "filter",
+              "hook": "output",
+              "prio": -450,
+              "policy": "accept"
+            }
+          },
+          {
+            "rule": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "chain": "prerouting",
+              "handle": 3,
+              "expr": [
+                {
+                  "match": {
+                    "op": "!=",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "nexthdr"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "tcp",
+                        "udp",
+                        "esp",
+                        "ipv6-icmp"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "ip6",
+              "table": "EVA6_BEFORE_DEFRAG",
+              "chain": "output",
+              "handle": 6,
+              "expr": [
+                {
+                  "match": {
+                    "op": "!=",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "nexthdr"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "tcp",
+                        "udp",
+                        "esp",
+                        "ipv6-icmp"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "scope": "Owned namespace IPv6 prerouting and output, before netfilter defragmentation. The original raw check remains present. Priority ordering and kernel behavior are separately source-bound. The gate intentionally excludes immediate Fragment Header 44 rather than accepting its reconstructed upper-layer protocol."
+}

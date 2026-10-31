@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+"""Record IPv4 data-fragment stages on an isolated Linux ESP path."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import select
+import socket
+import struct
+import subprocess
+import time
+from family_execution_v8 import Lab,utc
+
+def digest(b):
+    return hashlib.sha256(b).hexdigest()
+
+def checksum(data):
+    if len(data)%2:data+=b'\0'
+    total=sum(struct.unpack('!%dH'%(len(data)//2),data))
+    while total>>16:total=(total&65535)+(total>>16)
+    return (~total)&65535
+
+def payload(size):
+    return bytes((i*17+31)%256 for i in range(size))
+
+def capture(a):
+    s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW,socket.htons(3));s.bind((a.interface,0));s.setblocking(False)
+    end=time.monotonic()+a.seconds;records=[]
+    while time.monotonic()<end:
+        if not select.select([s],[],[],.1)[0]:continue
+        frame,addr=s.recvfrom(65535)
+        if len(frame)<34:continue
+        typ=struct.unpack('!H',frame[12:14])[0];r={'at':utc(),'frame_length':len(frame),'packet_type':addr[2],'ethertype':typ}
+        if typ==0x800:
+            p=frame[14:];ihl=(p[0]&15)*4
+            if len(p)<ihl:continue
+            src=socket.inet_ntop(socket.AF_INET,p[12:16]);dst=socket.inet_ntop(socket.AF_INET,p[16:20])
+            if src not in ['10.71.1.2','10.71.2.2','192.0.2.1','192.0.2.6']:continue
+            frag=struct.unpack('!H',p[6:8])[0]
+            r.update({'family':4,'source':src,'destination':dst,'protocol':p[9],'ihl':ihl,'total_length':struct.unpack('!H',p[2:4])[0],'identification':struct.unpack('!H',p[4:6])[0],'fragment_offset_bytes':(frag&8191)*8,'MF':bool(frag&8192),'DF':bool(frag&16384),'header_checksum_valid':checksum(p[:ihl])==0})
+            if p[9]==50 and not frag&8191 and len(p)>=ihl+8:r.update({'spi':struct.unpack('!I',p[ihl:ihl+4])[0],'esp_sequence':struct.unpack('!I',p[ihl+4:ihl+8])[0]})
+            if p[9]==17 and not frag&8191 and len(p)>=ihl+8:r.update({'udp_source':struct.unpack('!H',p[ihl:ihl+2])[0],'udp_destination':struct.unpack('!H',p[ihl+2:ihl+4])[0],'udp_length':struct.unpack('!H',p[ihl+4:ihl+6])[0]})
+            if p[9]==1 and len(p)>=ihl+8:r.update({'icmp_type':p[ihl],'icmp_code':p[ihl+1]})
+        elif typ==0x86dd:
+            p=frame[14:]
+            if len(p)<40:continue
+            src=socket.inet_ntop(socket.AF_INET6,p[8:24]);dst=socket.inet_ntop(socket.AF_INET6,p[24:40])
+            if src!='fd71:1::2' and dst!='fd71:1::2':continue
+            r.update({'family':6,'source':src,'destination':dst,'immediate_next_header':p[6],'payload_length':struct.unpack('!H',p[4:6])[0]})
+            if p[6]==44 and len(p)>=48:
+                bits=struct.unpack('!H',p[42:44])[0];r.update({'fragment_next_header':p[40],'fragment_offset_bytes':bits&65528,'M':bool(bits&1),'identification':struct.unpack('!I',p[44:48])[0]})
+        else:continue
+        records.append(r)
+    Path(a.output).write_text(json.dumps({'started_duration_seconds':a.seconds,'interface':a.interface,'namespace':os.readlink('/proc/self/ns/net'),'records':records,'scope':'Header metadata only. No ESP ciphertext or plaintext bytes retained in capture.'},indent=2)+'\n')
+
+def server(a):
+    family=socket.AF_INET6 if ':'in a.address else socket.AF_INET;s=socket.socket(family,socket.SOCK_DGRAM);s.bind((a.address,a.port));s.settimeout(a.seconds);received=[]
+    try:
+        data,peer=s.recvfrom(65535);received.append({'peer':peer,'bytes':len(data),'sha256':digest(data),'matches_public_pattern':data==payload(len(data))})
+    except socket.timeout:pass
+    Path(a.output).write_text(json.dumps({'at':utc(),'address':a.address,'port':a.port,'namespace':os.readlink('/proc/self/ns/net'),'received':received},indent=2)+'\n')
+
+def send(a):
+    family=socket.AF_INET6 if ':'in a.address else socket.AF_INET;s=socket.socket(family,socket.SOCK_DGRAM)
+    if family==socket.AF_INET:s.setsockopt(socket.IPPROTO_IP,10,0)
+    data=payload(a.size);n=s.sendto(data,(a.address,a.port));print(json.dumps({'sent_bytes':n,'sha256':digest(data),'IPv4_PMTU_discovery':'DONT; DF clear'if family==socket.AF_INET else None}))
+
+def inject(a):
+    s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind((a.interface,0));src=bytes.fromhex(Path('/sys/class/net/'+a.interface+'/address').read_text().strip().replace(':',''));dst=bytes.fromhex(a.mac.replace(':',''))
+    size=2392 if a.mode=='overlap4'else 1800;data=payload(size);udp=struct.pack('!HHHH',43010,a.port,len(data)+8,0)+data;frames=[]
+    if a.mode=='overlap4':
+        for off,part,mf in [(0,udp[:1600],True),(800,udp[800:],False)]:
+            h=struct.pack('!BBHHHBBH4s4s',0x45,0,len(part)+20,6303,(off//8)|(8192 if mf else 0),64,17,0,socket.inet_aton('10.71.1.2'),socket.inet_aton('10.71.2.2'));h=h[:10]+struct.pack('!H',checksum(h))+h[12:];frames.append(dst+src+b'\x08\x00'+h+part)
+    else:
+        src6=socket.inet_pton(socket.AF_INET6,'fd71:1::2');dst6=socket.inet_pton(socket.AF_INET6,'fd71:1::1');pseudo=src6+dst6+struct.pack('!I3xB',len(udp),17);cs=checksum(pseudo+udp);udp=udp[:6]+struct.pack('!H',cs)+udp[8:]
+        for off,part,mf in [(0,udp[:1200],True),(1200,udp[1200:],False)]:
+            f=struct.pack('!BBHI',17,0,off|(1 if mf else 0),6304);h=struct.pack('!IHBB16s16s',6<<28,len(part)+8,44,64,src6,dst6);frames.append(dst+src+b'\x86\xdd'+h+f+part)
+    for frame in frames:s.send(frame);time.sleep(.03)
+    print(json.dumps({'mode':a.mode,'frames':len(frames),'udp_bytes':len(udp),'public_payload_bytes':len(data),'public_payload_sha256':digest(data),'overlap_bytes':800 if a.mode=='overlap4'else 0}))
+
+def main(a):
+    lab=Lab(a.output,'data-fragments-v3');lab.prefix='tcv3df3-';script=str(Path(__file__).resolve());lab.code_hashes={'data_fragments_v3.py':digest(Path(__file__).read_bytes()),'family_execution_v8.py':digest(Path(__file__).with_name('family_execution_v8.py').read_bytes()),'gateway_header_policy_v4.py':digest(Path(__file__).with_name('gateway_header_policy_v4.py').read_bytes())};children=[]
+    def start(node,args):
+        cmd=['ip','netns','exec',lab.prefix+node,'python3',script,*args];p=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True);children.append(p);lab.commands.append({'id':'async-%04d'%len(lab.commands),'started_at':utc(),'device_id':node,'command':cmd,'pid':p.pid});return p
+    def wait(p):
+        stdout,stderr=p.communicate(timeout=8);lab.commands.append({'id':'async-end-%04d'%len(lab.commands),'ended_at':utc(),'pid':p.pid,'returncode':p.returncode,'stdout':stdout,'stderr':stderr});assert p.returncode==0,stderr
+    def stats(label):
+        data={}
+        for node in ['HA','IA','R','IB','HB']:
+            data[node]={}
+            for key,cmd in {'nstat':['nstat','-az'],'xfrm_stat':['cat','/proc/net/xfrm_stat'],'defrag_sysctl':['sysctl','net.ipv4.ipfrag_time','net.ipv4.ipfrag_high_thresh','net.ipv4.ipfrag_low_thresh','net.ipv4.ipfrag_max_dist','net.ipv4.ip_no_pmtu_disc'],'conntrack':['conntrack','-L']}.items():
+                r=lab.run(cmd,node,False);data[node][key]={'returncode':r.returncode,'stdout':r.stdout,'stderr':r.stderr,'observation_id':lab.commands[-1]['id']}
+        (lab.root/(label+'-stats.json')).write_text(json.dumps(data,indent=2)+'\n')
+    def cycle(name,size=4096,mode=None,expect=True,v6=False):
+        paths=[];cap=[]
+        for node,iface,stage in [('HA','red','protected-source'),('IA','wire','after-ESP-before-router'),('R','right','Black-after-router'),('IB','red','protected-destination')]:
+            path=lab.root/(name+'-'+stage+'.json');paths.append(path);cap.append(start(node,['--role','capture','--interface',iface,'--seconds','2.8','--output',str(path)]))
+        out=lab.root/(name+'-receiver.json');p=start('IA'if v6 else'HB',['--role','server','--address','fd71:1::1'if v6 else'10.71.2.2','--port','43002'if v6 else'43001','--seconds','2.5','--output',str(out)]);time.sleep(.3)
+        if mode:
+            mac=json.loads(lab.run(['ip','-j','link','show','red'],'IA').stdout)[0]['address'];lab.run(['python3',script,'--role','inject','--interface','red','--mac',mac,'--mode',mode,'--port','43002'if v6 else'43001'],'HA')
+        else:lab.run(['python3',script,'--role','send','--address','fd71:1::1'if v6 else'10.71.2.2','--port','43002'if v6 else'43001','--size',size],'HA')
+        wait(p)
+        for p in cap:wait(p)
+        r=json.loads(out.read_text());received=r['received'];ok=bool(received)and received[0]['matches_public_pattern']and received[0]['bytes']==(1800 if mode=='fragment6'else2392 if mode else size)
+        lab.probes.append({'id':name,'expected_result':'delivered'if expect else'no_payload','observed_result':'delivered'if ok else'no_payload'if not received else'corrupted_payload','receiver_file':out.name,'capture_files':[p.name for p in paths]})
+        stats(name)
+    try:
+        for n,role in [('HA','Red-source'),('IA','Inner-A'),('R','Black-router'),('IB','Inner-B'),('HB','Red-destination')]:lab.node(n,role,n[-1])
+        for aa in [('HA','red','IA','red','10.71.1.2/24','10.71.1.1/24','red'),('IA','wire','R','left','192.0.2.1/30','192.0.2.2/30','Black'),('R','right','IB','wire','192.0.2.5/30','192.0.2.6/30','Black'),('IB','red','HB','red','10.71.2.1/24','10.71.2.2/24','red')]:lab.link(*aa)
+        for n,i in [('HA','red'),('IA','red'),('IA','wire'),('R','left'),('R','right'),('IB','wire'),('IB','red'),('HB','red')]:lab.run(['ip','link','set',i,'mtu',9000],n)
+        for n,i in [('R','right'),('IB','wire')]:lab.run(['ip','link','set',i,'mtu',1280],n)
+        for n,dst,via in [('HA','10.71.2.0/24','10.71.1.1'),('HB','10.71.1.0/24','10.71.2.1'),('IA','10.71.2.0/24','192.0.2.2'),('IA','192.0.2.6/32','192.0.2.2'),('IB','10.71.1.0/24','192.0.2.5'),('IB','192.0.2.1/32','192.0.2.5')]:lab.route(n,dst,via)
+        lab.esp('IA','IB','192.0.2.1','192.0.2.6','10.71.1.0/24','10.71.2.0/24',311,'one-layer-representative')
+        for n in ['IA','IB']:
+            for ipt in ['iptables','ip6tables']:lab.run([ipt,'-P','FORWARD','DROP'],n)
+            for inside,outside,direction in [('red','wire','out'),('wire','red','in')]:lab.run(['iptables','-A','FORWARD','-i',inside,'-o',outside,'-m','policy','--dir',direction,'--pol','ipsec','--reqid',311,'-j','ACCEPT'],n)
+        lab.run(['uname','-a']);lab.run(['cat','/proc/version']);lab.run(['bash','-c','cat /boot/config-$(uname -r)'],check=False);lab.run(['bash','-c','lsmod | head -n 120'],check=False)
+        for module in ['xfrm_user','esp4','xfrm4_tunnel','nf_defrag_ipv4','nf_conntrack']:lab.run(['modinfo',module],check=False)
+        lab.run(['iptables','--version']);lab.run(['ip','-Version']);lab.state('before');stats('before')
+        cycle('post-ESP-fragmentation')
+        for n in ['HA','IA']:lab.run(['ip','link','set','red','mtu',1200],n)
+        cycle('plaintext-fragmentation')
+        for n in ['HA','IA']:lab.run(['ip','link','set','red','mtu',9000],n)
+        cycle('overlapping-plaintext-fragments',mode='overlap4',expect=False)
+        cycle('restored-valid-payload')
+        lab.run(['ip','-6','address','add','fd71:1::2/64','dev','red'],'HA');lab.run(['ip','-6','address','add','fd71:1::1/64','dev','red'],'IA')
+        from gateway_header_policy_v4 import install
+        install(lab,['IA']);time.sleep(2)
+        cycle('IPv6-below-MTU-control',size=256,v6=True)
+        cycle('IPv6-immediate-NH44-rejection',mode='fragment6',expect=False,v6=True)
+        cycle('IPv6-restored-control',size=256,v6=True)
+        lab.state('after')
+        plan={'kernel_binding':'Actual uname, /proc/version, distribution kernel config, module vermagic/srcversion and relevant defrag/XFRM counters are retained. A source review must match those observations.','payload_generator':'byte[i] = (17*i + 31) mod 256','IPv4_post_ESP_stage':'Source and sender wire MTUs 9000; router egress and receiver wire MTUs 1280. UDP socket PMTU DONT yields DF clear. Captures distinguish a large outer ESP packet from its router-created fragments.','IPv4_plaintext_stage':'Source and first Red link MTUs 1200. Sender UDP fragments before gateway processing; captures distinguish inner fragment metadata and separately encrypted ESP packets.','malformed_case':'Two IPv4 fragments have one ID and complete union coverage, but overlap by 800 bytes: [0,1600) with MF, and [800,2400) final. The UDP payload is 2392 public patterned bytes. Receiver outcome and kernel reassembly counters are retained rather than inferred.','IPv6_case':'The active raw gate sees literal immediate Next Header 44 and drops both fragments. A 256-byte valid UDP control passes before and after. The case does not establish dynamic PMTU discovery.','topology_scope':'One manually provisioned IPv4 ESP layer on owned Linux namespaces. It is a backend/stage contract observation, not native FRR/OVS, IKE authentication, a two-layer proof or product approval.','preservation':'Only newly named tcv3df3 namespaces are created. MTUs and filters belong to those namespaces; fixtures are removed at finish. Other deployments remain untouched.'}
+        (lab.root/'implementation-contract.json').write_text(json.dumps(plan,indent=2)+'\n')
+        for name in ['data_fragments_v3.py','family_execution_v8.py','gateway_header_policy_v4.py']:(lab.root/(name+'.source')).write_bytes(Path(__file__).with_name(name).read_bytes())
+        lab.finish()
+    except Exception as exc:
+        for p in children:
+            if p.poll()is None:p.terminate()
+        lab.finish(str(exc))
+p=argparse.ArgumentParser();p.add_argument('--role',choices=['main','capture','server','send','inject'],default='main');p.add_argument('--output');p.add_argument('--interface');p.add_argument('--seconds',type=float,default=2);p.add_argument('--address');p.add_argument('--port',type=int,default=43001);p.add_argument('--size',type=int,default=4096);p.add_argument('--mac');p.add_argument('--mode');a=p.parse_args()
+{'main':main,'capture':capture,'server':server,'send':send,'inject':inject}[a.role](a)

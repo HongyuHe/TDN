@@ -1,0 +1,59 @@
+IEEE Std 802.1X-2020, IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control (https://www.ida.liu.se/~sohsa65/courses/tsn-course-2021/stds/8021X-2020.pdf)
+citeturn251search0 [wordlim: 200] Published: 4.9 years ago; <tr><td>Session-ID</td><td>0d</td></tr> ... The inputs are the CAK (Key), “IEEE8021 KEK” (Label), the first 16 octets of the CKN for the CAK (Context, Keyid), and the KEK Length.The following examples show the KEKs (Output) by the KDF using the 128-bit and 256-bit CAKs and the CKNs derived in the examples above (G.2, G.3). ... <tr><td>Key</td><td>a29efdb6 3d6fba73 c65daab2 295340a8</td></tr>
+IEEE Std 802.1X-2020  
+IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control
+
+For a 256-bit CAK, the first 32 octets of the MSK (Key) are used as the Key.
+
+<table id="e1">
+<tr><td>Key</td><td>3946ec36 f59017f1 267e914a bed2dbf6</td></tr>
+<tr><td></td><td>633f52ae 7e20309d 3eefdda4 073adfad</td></tr>
+<tr><td>Label</td><td>49454545 38303231 20454150 20434b4e</td></tr>
+<tr><td>Session-ID</td><td>0d</td></tr>
+<tr><td></td><td>d075693f 54b2b2eb 01da61f0 af5d429b</td></tr>
+<tr><td></td><td>65b1ebca f536fba3 50777598 571728f6</td></tr>
+<tr><td></td><td>30c5c8da 547489a d47b6e34 89a97372</td></tr>
+<tr><td></td><td>e5a8fd55 0617972c 020d42a3 b13a4eae</td></tr>
+<tr><td>MAC1</td><td>001b6393 fcbc</td></tr>
+<tr><td>MAC2</td><td>00d0b71a 7717</td></tr>
+<tr><td>Length</td><td>0080</td></tr>
+<tr><td>Output</td><td>7888f5d4 8ba8b24e 96bb95bd 8c7304ec</td></tr>
+</table>
+
+G.4 KEK Derivation
+
+The KDF is used to derive a KEK from a CAK (9.3.3). The inputs are the CAK (Key), “IEEE8021 KEK” (Label), the first 16 octets of the CKN for the CAK (Context, Keyid), and the KEK Length. The following examples show the KEKs (Output) by the KDF using the 128-bit and 256-bit CAKs and the CKNs derived in the examples above (G.2, G.3).
+
+<table id="e2">
+<tr><td>Key</td><td>135bd758 b0ee5c11 c55ff6ab 19fdb199</td></tr>
+<tr><td>Label</td><td>49454545 38303231 204b454b</td></tr>
+<tr><td>Context</td><td>96437a93 ccf10d9d fe347846 cce52c7d</td></tr>
+<tr><td>Length</td><td>0080</td></tr>
+<tr><td>Output</td><td>8f5a384c 15d6ae93 02b462e3 63d03ca6</td></tr>
+</table>
+
+<table id="e3">
+<tr><td>Key</td><td>a29efdb6 3d6fba73 c65daab2 295340a8</td></tr>
+<tr><td></td><td>37a8886e 94a905b5 c9c7ef1d 9dbb297e</td></tr>
+<tr><td>Label</td><td>49454545 38303231 204b454b</td></tr>
+<tr><td>Context</td><td>7888f5d4 8ba8b24e 96bb95bd 8c7304ec</td></tr>
+<tr><td>Length</td><td>0100</td></tr>
+<tr><td>Output</td><td>71340e45 4c84a123 2aa7977d 5ed86f78</td></tr>
+<tr><td></td><td>f250f3f9 d53584b9 337ff0c6 dfdc9f96</td></tr>
+</table>
+
+G.5 ICK Derivation
+
+The KDF is used to derive an ICK from a CAK (9.3.3). The inputs are the CAK (Key), “IEEE8021 ICK” (Label), the first 16 octets of the CKN for the CAK (Context), and the KEK Length. The following examples show the KEKs (Output) derived by the KDF using the 128-bit and 256-bit CAKs and the CKNs derived in the examples above (G.2, G.3).
+
+<table id="e4">
+<tr><td>Key</td><td>135bd758 b0ee5c11 c55ff6ab 19fdb199</td></tr>
+<tr><td>Label</td><td>49454545 38303231 2049434b</td></tr>
+<tr><td>Context</td><td>96437a93 ccf10d9d fe347846 cce52c7d</td></tr>
+<tr><td>Length</td><td>0080</td></tr>
+<tr><td>Output</td><td>8f1c5cb1 c8ed2e5f 047906e0 473aad4d</td></tr>
+</table>
+
+286  
+Copyright © 2020 IEEE. All rights reserved.  
+Authorized licensed use limited to: Linkoping University Library. Downloaded on November 28,2021 at 19:55:17 UTC from IEEE Xplore. Restrictions apply.

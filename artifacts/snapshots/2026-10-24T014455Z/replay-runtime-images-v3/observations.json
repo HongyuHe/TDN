@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-24T04:36:08.200048+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T04:36:04.017424+00:00",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "twinet-msc:construction-v2",
+        "--format",
+        "{{json .}}"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Id\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"RepoTags\":[\"twinet-msc:construction-v2\"],\"RepoDigests\":[\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\"],\"Created\":\"2026-10-17T20:58:25.42443148Z\",\"Config\":{\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Labels\":{\"org.opencontainers.image.version\":\"24.04\"}},\"Architecture\":\"amd64\",\"Os\":\"linux\",\"Size\":50718693,\"RootFS\":{\"Type\":\"layers\",\"Layers\":[\"sha256:65e5d715ea720349e6475f91651a0956279fc295a45fd73aa04f1cec046281a1\",\"sha256:e943e5553f2d086dfb7be78e3bc860ce7815465d9da0cbca148bbecaa1f8aafe\",\"sha256:6ef514e4e04d3b6b0be39e6f683434583d312e16bc58e711a62ce7dc6e04787f\"]},\"Metadata\":{\"LastTagTime\":\"2026-10-24T02:41:02.678496369Z\"},\"Descriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:36:04.059126+00:00",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "twinet-msc-router:construction-v2",
+        "--format",
+        "{{json .}}"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Id\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"RepoTags\":[\"twinet-msc-router:construction-v2\"],\"RepoDigests\":[\"twinet-msc-router@sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\"],\"Created\":\"2026-10-17T22:27:27.772732964Z\",\"Config\":{\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"Entrypoint\":[\"/usr/local/bin/twinet-entrypoint\"],\"Cmd\":[\"sleep\",\"infinity\"],\"WorkingDir\":\"/\",\"Labels\":{\"org.opencontainers.image.description\":\"FRR router for the Twinet teaching platform\",\"org.opencontainers.image.source\":\"https://github.com/HongyuHe/Twinet\",\"org.opencontainers.image.title\":\"twinet-msc-router\"}},\"Architecture\":\"amd64\",\"Os\":\"linux\",\"Size\":40954980,\"RootFS\":{\"Type\":\"layers\",\"Layers\":[\"sha256:08bc4e534116aa76b16015484b82eac51f9a593416feae9296c8a2d4bb7aa4a2\",\"sha256:4ff8ceaebf82a4af262ceeca1c8712c4653944bd9975a08af42bd32d4f8d91d4\",\"sha256:4e694c492ffc07feb2a75661693cf3100ea2734ea5b0b99e9c3c79def655c3ca\",\"sha256:6869238fccc933c3bf4b66681b248b3b45c6f2041171986890c921dcd5e65f2a\",\"sha256:bde9d1766a78d4e2920c4ddfb0449e6b481f898877f11ddfe47d5cf3a7c4a120\",\"sha256:383e9f9f95de54f85e90a17036db82734e7056c8685673550f76ff526481489d\",\"sha256:c942bec026c129ee08d2d5c0999c7cec4ef576e9e566fe7682c0a64b68256ca6\",\"sha256:dc2a16336418d3f2e98a36368c6bac94757fabfeac4f66e88d1f93e4530997b7\"]},\"Metadata\":{\"LastTagTime\":\"2026-10-24T02:41:02.679608922Z\"},\"Descriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"size\":2070,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc-router:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:36:04.093452+00:00",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "twinet-msc-switch:construction-v2",
+        "--format",
+        "{{json .}}"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Id\":\"sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5\",\"RepoTags\":[\"twinet-msc-switch:construction-v2\"],\"RepoDigests\":[\"twinet-msc-switch@sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5\"],\"Created\":\"2026-10-17T22:27:46.160347427Z\",\"Config\":{\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"Entrypoint\":[\"/usr/local/bin/twinet-entrypoint\"],\"Cmd\":[\"sleep\",\"infinity\"],\"WorkingDir\":\"/\",\"Labels\":{\"org.opencontainers.image.source\":\"https://github.com/HongyuHe/Twinet\",\"org.opencontainers.image.title\":\"twinet-msc-switch\"}},\"Architecture\":\"amd64\",\"Os\":\"linux\",\"Size\":27705512,\"RootFS\":{\"Type\":\"layers\",\"Layers\":[\"sha256:08bc4e534116aa76b16015484b82eac51f9a593416feae9296c8a2d4bb7aa4a2\",\"sha256:a94c5ae13dd8ed0f575185f50431d38b549a7c31fe0fe543413a91b8e927c221\",\"sha256:547c090085005ad42e2f203c5aed1db7849ce1162cfaa0a490d148283989c1f8\",\"sha256:47c6afc302f1a58a59badcd1f072dbc2a197d8cc6f29d46079c40b7f84f6b1b0\"]},\"Metadata\":{\"LastTagTime\":\"2026-10-24T02:41:02.680965112Z\"},\"Descriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5\",\"size\":1188,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc-switch:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:36:08.199011+00:00",
+      "command": [
+        "docker save selected images",
+        "gzip -1"
+      ],
+      "returncodes": [
+        0,
+        0
+      ],
+      "stderr": ""
+    }
+  ],
+  "error": "[Errno 2] No such file or directory: 'go'",
+  "scope": "Exact currently used generic runtime images, without container writable layers or credential/configuration bind mounts. Docker image inspection preserves actual content IDs and build metadata. Current source Dockerfiles and a dated ImageLock remain separate provenance and are not asserted to equal these builds."
+}

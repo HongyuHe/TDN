@@ -1,0 +1,131 @@
+{
+  "at": "2026-10-24T03:46:42.251752+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:46:41.971991+00:00",
+      "command": [
+        "apparmor_parser",
+        "-r",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/lsm-gateway-v3/apparmor.profile"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:46:41.983927+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-x509",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/ca.key",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/ca.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-subj",
+        "/CN=LSM-v3-Test-CA",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T03:46:41.995027+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/A/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/A.csr",
+        "-sha384",
+        "-subj",
+        "/CN=A.lsm.test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T03:46:42.035199+00:00",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/A.csr",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/ca.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/ca.key",
+        "-CAcreateserial",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/A/x509/cert.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/A.ext"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = A.lsm.test\n"
+    },
+    {
+      "at": "2026-10-24T03:46:42.251686+00:00",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-lsm-a",
+        "--network",
+        "none",
+        "--cap-add",
+        "NET_ADMIN",
+        "--cap-add",
+        "NET_RAW",
+        "--read-only",
+        "--tmpfs",
+        "/run",
+        "--tmpfs",
+        "/tmp",
+        "--security-opt",
+        "apparmor=tdn-lsm-device-v3",
+        "--mount",
+        "type=bind,src=/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v3/A,dst=/etc/swanctl,readonly",
+        "--entrypoint",
+        "sleep",
+        "twinet-msc",
+        "infinity"
+      ],
+      "returncode": 125,
+      "stdout": "",
+      "stderr": "Unable to find image 'twinet-msc:latest' locally\ndocker: Error response from daemon: pull access denied for twinet-msc, repository does not exist or may require 'docker login'\n\nRun 'docker run --help' for more information\n"
+    }
+  ],
+  "error": "Unable to find image 'twinet-msc:latest' locally\ndocker: Error response from daemon: pull access denied for twinet-msc, repository does not exist or may require 'docker login'\n\nRun 'docker run --help' for more information\n",
+  "runtime_backend": "supplemental-Linux-Docker-IKEv2-and-host-enforced-AppArmor",
+  "scope": [
+    "Fresh owned read-only containers run actual IKEv2 gateways under explicit AppArmor profiles. The general device profile denies the private key subtree; immutable charon and swanctl executables transition to the gateway profile that can load the keys. Non-gateway root opens are tested without reading or exporting any key bytes.",
+    "The complete effective policy and executable/profile identities must support the claims. Private credential provisioning and the host root/Docker policy loader remain trusted laboratory controls. No all-interface, host administrator, hardware tamper, approved-product or universal noninterference guarantee follows from this bounded case.",
+    "Mandatory policy is supplemental and is not asserted to be installed on the separate original native profiles or FreeBSD Inners."
+  ]
+}

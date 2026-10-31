@@ -1,0 +1,18 @@
+{
+  "id": "auth-0090",
+  "command": [
+    "docker",
+    "exec",
+    "NF_I_B1",
+    "swanctl",
+    "--list-certs",
+    "--type",
+    "x509_crl",
+    "--pem"
+  ],
+  "started_at": "2026-10-24T02:03:20.034332+00:00",
+  "ended_at": "2026-10-24T02:03:20.125958+00:00",
+  "returncode": 0,
+  "stdout": "-----BEGIN X509 CRL-----\nMIH2MH4CAQEwCgYIKoZIzj0EAwMwHjEcMBoGA1UEAxMTVHdpbmV0IE1TQyBpbm5l\nci1zMRcNMjYxMDE3MjIzNDE2WhcNMjYxMDI0MjIzNTE2WqAvMC0wHwYDVR0jBBgw\nFoAURSN1GULXphNfKGlcjml7Ay25t2wwCgYDVR0UBAMCAQEwCgYIKoZIzj0EAwMD\naAAwZQIxAMqrEjMCcx3tCnNQr4buEm++b/0H01IJFjPIP5pkBTUdj36qejEP2ptJ\ndqhVQBmDRAIwVkLcrmPpoaDsH98lyuXUQNN/P6ZdRToVXOQCifZdGfDUp3ZpSxSv\nIx61uHLksZDJ\n-----END X509 CRL-----\n",
+  "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+}

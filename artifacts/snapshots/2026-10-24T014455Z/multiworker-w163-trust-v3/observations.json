@@ -1,0 +1,445 @@
+{
+  "schema_version": "csfc-multiworker-placement/v1",
+  "started_at": "2026-10-24T02:33:17.406954+00:00",
+  "ended_at": "2026-10-24T02:33:19.512343+00:00",
+  "worker": "w163",
+  "worker_host": "clnode163.clemson.cloudlab.us",
+  "action": "trust-v3",
+  "runtime_backend": "native-FRR-OVS-crossworker-VXLAN",
+  "selected_device_ids": [
+    "MW_O_A1",
+    "MW_O_A2",
+    "MW_O_B1",
+    "MW_O_B2"
+  ],
+  "assignments": {
+    "MW_BLACK": "w176",
+    "MW_GF_A": "w008",
+    "MW_R_A1": "w159",
+    "MW_I_A1": "w159",
+    "MW_G_A1": "w159",
+    "MW_O_A1": "w163",
+    "MW_OF_A1": "w176",
+    "MW_R_A2": "w159",
+    "MW_I_A2": "w159",
+    "MW_G_A2": "w159",
+    "MW_O_A2": "w163",
+    "MW_OF_A2": "w176",
+    "MW_GF_B": "w008",
+    "MW_R_B1": "w159",
+    "MW_I_B1": "w159",
+    "MW_G_B1": "w159",
+    "MW_O_B1": "w163",
+    "MW_OF_B1": "w176",
+    "MW_R_B2": "w159",
+    "MW_I_B2": "w159",
+    "MW_G_B2": "w159",
+    "MW_O_B2": "w163",
+    "MW_OF_B2": "w176"
+  },
+  "records": [
+    {
+      "id": "mw-00000",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "swanctl",
+        "--list-certs",
+        "--type",
+        "x509",
+        "--pem"
+      ],
+      "started_at": "2026-10-24T02:33:17.407004+00:00",
+      "ended_at": "2026-10-24T02:33:17.510855+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAI2i9oN7ud+LbhaiA64A1jAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI2MTEy\nNDAyMTMyN1owGzEZMBcGA1UEAwwQTVdfT19BMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLjnY0tx0BUxTlaQiE8myOLOyy+aVtrUq3UmMb2g3qG25arv\nvJ7ndMGbnv9uJhMTHe6syJRSzxCiNmwFE4EM5/nrohJgWy6tIHTWfYMhHtUA+FWf\nfh1afDbDINYP98rEdKN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAM6VzEMneA78gzQQs7LiD+jE1oMOcxtr/0mriuD4JH1n\nWCHxkW79Hnhdr2hL2Bc2ywIwMG+hDbjRsVUCYjo02BuzZ95YhwK9rM+yS9wTLw0B\nYwnuxlz1AdvgMYo4EFu5/99D\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAJRCX1mJcB1APAJEVWkAUjAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0MVoXDTI2MTEy\nNDAyMTM0MVowGzEZMBcGA1UEAwwQTVdfT19CMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLP13EGHsn0zWnchEH3tN1PMWkh0relzyspN8+hrv1+99JfQ\n7kAev4Nsm9m5KFF84kqbR5MdDcFx0P92AArpk/V/W9GDeKz0YpR/+5ETwWIY3rsk\nFabS1g+iyDjcqCqtZ6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxALnWnqA7M8Ung/QfbUZU962WMPyXAih8NG/BQVewZrGc\nZc6y9cLcIkEBgC6xLlH2MwIwPx40vSaAkLkMZW2D8os4ZqbbsyO9I3+9DldRnYaI\nPNK/Pi5fCyt78VPsMXWwkxL3\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00001",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "find",
+        "/etc/swanctl/x509",
+        "/etc/swanctl/x509ca",
+        "-maxdepth",
+        "1",
+        "-type",
+        "f"
+      ],
+      "started_at": "2026-10-24T02:33:17.510888+00:00",
+      "ended_at": "2026-10-24T02:33:17.591397+00:00",
+      "returncode": 0,
+      "stdout": "/etc/swanctl/x509/cert.pem\n/etc/swanctl/x509ca/ca.pem\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00002",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "cat",
+        "/etc/swanctl/x509/cert.pem"
+      ],
+      "started_at": "2026-10-24T02:33:17.591433+00:00",
+      "ended_at": "2026-10-24T02:33:17.670498+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAI2i9oN7ud+LbhaiA64A1jAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI2MTEy\nNDAyMTMyN1owGzEZMBcGA1UEAwwQTVdfT19BMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLjnY0tx0BUxTlaQiE8myOLOyy+aVtrUq3UmMb2g3qG25arv\nvJ7ndMGbnv9uJhMTHe6syJRSzxCiNmwFE4EM5/nrohJgWy6tIHTWfYMhHtUA+FWf\nfh1afDbDINYP98rEdKN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAM6VzEMneA78gzQQs7LiD+jE1oMOcxtr/0mriuD4JH1n\nWCHxkW79Hnhdr2hL2Bc2ywIwMG+hDbjRsVUCYjo02BuzZ95YhwK9rM+yS9wTLw0B\nYwnuxlz1AdvgMYo4EFu5/99D\n-----END CERTIFICATE-----\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00003",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "cat",
+        "/etc/swanctl/x509ca/ca.pem"
+      ],
+      "started_at": "2026-10-24T02:33:17.670528+00:00",
+      "ended_at": "2026-10-24T02:33:17.748242+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00004",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:33:17.748279+00:00",
+      "ended_at": "2026-10-24T02:33:17.828861+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.11.1\n  remote_addrs = 172.20.21.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = MW_O_A1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = MW_O_B1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.100.1.2/32\n    remote_ts = 10.200.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00005",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:33:17.828892+00:00",
+      "ended_at": "2026-10-24T02:33:17.914172+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {msc {local_addrs=[172.20.11.1] remote_addrs=[172.20.21.1] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO dpd_delay=10 local-1 {id=MW_O_A1.msc.test class=public key groups=[] cert_policy=[] certs=[CN=MW_O_A1.msc.test] cacerts=[]} remote-1 {id=MW_O_B1.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[CN=Twinet MSC outer]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=trap close_action=trap local-ts=[10.100.1.2/32] remote-ts=[10.200.1.2/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00006",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "swanctl",
+        "--list-certs",
+        "--type",
+        "x509",
+        "--pem"
+      ],
+      "started_at": "2026-10-24T02:33:17.914206+00:00",
+      "ended_at": "2026-10-24T02:33:18.006006+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAIqiqW2qsTSf5y0edn4AnTAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMzM1oXDTI2MTEy\nNDAyMTMzM1owGzEZMBcGA1UEAwwQTVdfT19BMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLJjHWHcKi4ZSldn66F/QgiNkWnRSGq8CTH6fNSsnBLPSFYO\n7brg5IdPtuHtetpO6XAMGxgIE9SvTZvur5SKuR1R8y4fPbqa5Sk5lfibjAqjdWY4\nqIidwsrN6fpQIKDpvqN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAPOWWR4HBjnzwHqsGy84m4EzmAcETtakMDjVQGCj5byR\nW4ogJKdjOYzdG8X1AfydiAIwCiQs9XUhhmdcB3cryNIaQw4RwNCFO2Yfld/5/hFK\nufCoD/fr36sGLF1boZTDc73X\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIB7zCCAXSgAwIBAgIQAPgPgxbM3LypuHbUZqZO3TAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0N1oXDTI2MTEy\nNDAyMTM0N1owGzEZMBcGA1UEAwwQTVdfT19CMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABNLMyaEUGfKsHnRNIBWQfXT+W2sihOA+64MxKz4fu3ESgiSJ\ntgw+rP/gr7XJMmvAkuSqkG4yZtRmLCg+Zi9VTsafNqg35NbG8Fy6i2O+NqF9yXkb\nQLpbnkCRoBk3YerYC6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaQAwZgIxAKz10KC/+HkdYh2LSBii0TmQ4Zmi3w6lNucQ4mv9ECHm\nANGygIKR7pWybzv1NkqlxQIxAI1e5+AhvvVLzuUuTD6Zp1lXjoZmCWdjrzY3kIZq\nY5pPGGCHFSNAR6sSHwkBZc5gYg==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00007",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "find",
+        "/etc/swanctl/x509",
+        "/etc/swanctl/x509ca",
+        "-maxdepth",
+        "1",
+        "-type",
+        "f"
+      ],
+      "started_at": "2026-10-24T02:33:18.006031+00:00",
+      "ended_at": "2026-10-24T02:33:18.093949+00:00",
+      "returncode": 0,
+      "stdout": "/etc/swanctl/x509/cert.pem\n/etc/swanctl/x509ca/ca.pem\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00008",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "cat",
+        "/etc/swanctl/x509/cert.pem"
+      ],
+      "started_at": "2026-10-24T02:33:18.093977+00:00",
+      "ended_at": "2026-10-24T02:33:18.199284+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAIqiqW2qsTSf5y0edn4AnTAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMzM1oXDTI2MTEy\nNDAyMTMzM1owGzEZMBcGA1UEAwwQTVdfT19BMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLJjHWHcKi4ZSldn66F/QgiNkWnRSGq8CTH6fNSsnBLPSFYO\n7brg5IdPtuHtetpO6XAMGxgIE9SvTZvur5SKuR1R8y4fPbqa5Sk5lfibjAqjdWY4\nqIidwsrN6fpQIKDpvqN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAPOWWR4HBjnzwHqsGy84m4EzmAcETtakMDjVQGCj5byR\nW4ogJKdjOYzdG8X1AfydiAIwCiQs9XUhhmdcB3cryNIaQw4RwNCFO2Yfld/5/hFK\nufCoD/fr36sGLF1boZTDc73X\n-----END CERTIFICATE-----\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00009",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "cat",
+        "/etc/swanctl/x509ca/ca.pem"
+      ],
+      "started_at": "2026-10-24T02:33:18.199312+00:00",
+      "ended_at": "2026-10-24T02:33:18.275623+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00010",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:33:18.275648+00:00",
+      "ended_at": "2026-10-24T02:33:18.362917+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.12.1\n  remote_addrs = 172.20.22.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = MW_O_A2.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = MW_O_B2.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.100.2.2/32\n    remote_ts = 10.200.2.2/32\n    mode = tunnel\n    reqid = 202\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00011",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:33:18.362935+00:00",
+      "ended_at": "2026-10-24T02:33:18.459659+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {msc {local_addrs=[172.20.12.1] remote_addrs=[172.20.22.1] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO dpd_delay=10 local-1 {id=MW_O_A2.msc.test class=public key groups=[] cert_policy=[] certs=[CN=MW_O_A2.msc.test] cacerts=[]} remote-1 {id=MW_O_B2.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[CN=Twinet MSC outer]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=trap close_action=trap local-ts=[10.100.2.2/32] remote-ts=[10.200.2.2/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00012",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "swanctl",
+        "--list-certs",
+        "--type",
+        "x509",
+        "--pem"
+      ],
+      "started_at": "2026-10-24T02:33:18.459692+00:00",
+      "ended_at": "2026-10-24T02:33:18.559258+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAI2i9oN7ud+LbhaiA64A1jAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI2MTEy\nNDAyMTMyN1owGzEZMBcGA1UEAwwQTVdfT19BMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLjnY0tx0BUxTlaQiE8myOLOyy+aVtrUq3UmMb2g3qG25arv\nvJ7ndMGbnv9uJhMTHe6syJRSzxCiNmwFE4EM5/nrohJgWy6tIHTWfYMhHtUA+FWf\nfh1afDbDINYP98rEdKN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAM6VzEMneA78gzQQs7LiD+jE1oMOcxtr/0mriuD4JH1n\nWCHxkW79Hnhdr2hL2Bc2ywIwMG+hDbjRsVUCYjo02BuzZ95YhwK9rM+yS9wTLw0B\nYwnuxlz1AdvgMYo4EFu5/99D\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAJRCX1mJcB1APAJEVWkAUjAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0MVoXDTI2MTEy\nNDAyMTM0MVowGzEZMBcGA1UEAwwQTVdfT19CMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLP13EGHsn0zWnchEH3tN1PMWkh0relzyspN8+hrv1+99JfQ\n7kAev4Nsm9m5KFF84kqbR5MdDcFx0P92AArpk/V/W9GDeKz0YpR/+5ETwWIY3rsk\nFabS1g+iyDjcqCqtZ6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxALnWnqA7M8Ung/QfbUZU962WMPyXAih8NG/BQVewZrGc\nZc6y9cLcIkEBgC6xLlH2MwIwPx40vSaAkLkMZW2D8os4ZqbbsyO9I3+9DldRnYaI\nPNK/Pi5fCyt78VPsMXWwkxL3\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00013",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "find",
+        "/etc/swanctl/x509",
+        "/etc/swanctl/x509ca",
+        "-maxdepth",
+        "1",
+        "-type",
+        "f"
+      ],
+      "started_at": "2026-10-24T02:33:18.559280+00:00",
+      "ended_at": "2026-10-24T02:33:18.649702+00:00",
+      "returncode": 0,
+      "stdout": "/etc/swanctl/x509/cert.pem\n/etc/swanctl/x509ca/ca.pem\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00014",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "cat",
+        "/etc/swanctl/x509/cert.pem"
+      ],
+      "started_at": "2026-10-24T02:33:18.649736+00:00",
+      "ended_at": "2026-10-24T02:33:18.734018+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAJRCX1mJcB1APAJEVWkAUjAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0MVoXDTI2MTEy\nNDAyMTM0MVowGzEZMBcGA1UEAwwQTVdfT19CMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLP13EGHsn0zWnchEH3tN1PMWkh0relzyspN8+hrv1+99JfQ\n7kAev4Nsm9m5KFF84kqbR5MdDcFx0P92AArpk/V/W9GDeKz0YpR/+5ETwWIY3rsk\nFabS1g+iyDjcqCqtZ6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxALnWnqA7M8Ung/QfbUZU962WMPyXAih8NG/BQVewZrGc\nZc6y9cLcIkEBgC6xLlH2MwIwPx40vSaAkLkMZW2D8os4ZqbbsyO9I3+9DldRnYaI\nPNK/Pi5fCyt78VPsMXWwkxL3\n-----END CERTIFICATE-----\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00015",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "cat",
+        "/etc/swanctl/x509ca/ca.pem"
+      ],
+      "started_at": "2026-10-24T02:33:18.734040+00:00",
+      "ended_at": "2026-10-24T02:33:18.814926+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00016",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:33:18.814942+00:00",
+      "ended_at": "2026-10-24T02:33:18.900653+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.21.1\n  remote_addrs = 172.20.11.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = MW_O_B1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = MW_O_A1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.200.1.2/32\n    remote_ts = 10.100.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00017",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:33:18.900675+00:00",
+      "ended_at": "2026-10-24T02:33:18.994665+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {msc {local_addrs=[172.20.21.1] remote_addrs=[172.20.11.1] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO dpd_delay=10 local-1 {id=MW_O_B1.msc.test class=public key groups=[] cert_policy=[] certs=[CN=MW_O_B1.msc.test] cacerts=[]} remote-1 {id=MW_O_A1.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[CN=Twinet MSC outer]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=trap close_action=trap local-ts=[10.200.1.2/32] remote-ts=[10.100.1.2/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00018",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "swanctl",
+        "--list-certs",
+        "--type",
+        "x509",
+        "--pem"
+      ],
+      "started_at": "2026-10-24T02:33:18.994689+00:00",
+      "ended_at": "2026-10-24T02:33:19.091617+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAIqiqW2qsTSf5y0edn4AnTAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMzM1oXDTI2MTEy\nNDAyMTMzM1owGzEZMBcGA1UEAwwQTVdfT19BMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLJjHWHcKi4ZSldn66F/QgiNkWnRSGq8CTH6fNSsnBLPSFYO\n7brg5IdPtuHtetpO6XAMGxgIE9SvTZvur5SKuR1R8y4fPbqa5Sk5lfibjAqjdWY4\nqIidwsrN6fpQIKDpvqN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAPOWWR4HBjnzwHqsGy84m4EzmAcETtakMDjVQGCj5byR\nW4ogJKdjOYzdG8X1AfydiAIwCiQs9XUhhmdcB3cryNIaQw4RwNCFO2Yfld/5/hFK\nufCoD/fr36sGLF1boZTDc73X\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIB7zCCAXSgAwIBAgIQAPgPgxbM3LypuHbUZqZO3TAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0N1oXDTI2MTEy\nNDAyMTM0N1owGzEZMBcGA1UEAwwQTVdfT19CMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABNLMyaEUGfKsHnRNIBWQfXT+W2sihOA+64MxKz4fu3ESgiSJ\ntgw+rP/gr7XJMmvAkuSqkG4yZtRmLCg+Zi9VTsafNqg35NbG8Fy6i2O+NqF9yXkb\nQLpbnkCRoBk3YerYC6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaQAwZgIxAKz10KC/+HkdYh2LSBii0TmQ4Zmi3w6lNucQ4mv9ECHm\nANGygIKR7pWybzv1NkqlxQIxAI1e5+AhvvVLzuUuTD6Zp1lXjoZmCWdjrzY3kIZq\nY5pPGGCHFSNAR6sSHwkBZc5gYg==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00019",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "find",
+        "/etc/swanctl/x509",
+        "/etc/swanctl/x509ca",
+        "-maxdepth",
+        "1",
+        "-type",
+        "f"
+      ],
+      "started_at": "2026-10-24T02:33:19.091649+00:00",
+      "ended_at": "2026-10-24T02:33:19.188458+00:00",
+      "returncode": 0,
+      "stdout": "/etc/swanctl/x509/cert.pem\n/etc/swanctl/x509ca/ca.pem\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00020",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "cat",
+        "/etc/swanctl/x509/cert.pem"
+      ],
+      "started_at": "2026-10-24T02:33:19.188489+00:00",
+      "ended_at": "2026-10-24T02:33:19.267444+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7zCCAXSgAwIBAgIQAPgPgxbM3LypuHbUZqZO3TAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0N1oXDTI2MTEy\nNDAyMTM0N1owGzEZMBcGA1UEAwwQTVdfT19CMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABNLMyaEUGfKsHnRNIBWQfXT+W2sihOA+64MxKz4fu3ESgiSJ\ntgw+rP/gr7XJMmvAkuSqkG4yZtRmLCg+Zi9VTsafNqg35NbG8Fy6i2O+NqF9yXkb\nQLpbnkCRoBk3YerYC6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaQAwZgIxAKz10KC/+HkdYh2LSBii0TmQ4Zmi3w6lNucQ4mv9ECHm\nANGygIKR7pWybzv1NkqlxQIxAI1e5+AhvvVLzuUuTD6Zp1lXjoZmCWdjrzY3kIZq\nY5pPGGCHFSNAR6sSHwkBZc5gYg==\n-----END CERTIFICATE-----\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00021",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "cat",
+        "/etc/swanctl/x509ca/ca.pem"
+      ],
+      "started_at": "2026-10-24T02:33:19.267482+00:00",
+      "ended_at": "2026-10-24T02:33:19.345405+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00022",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:33:19.345442+00:00",
+      "ended_at": "2026-10-24T02:33:19.425446+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.22.1\n  remote_addrs = 172.20.12.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = MW_O_B2.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = MW_O_A2.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.200.2.2/32\n    remote_ts = 10.100.2.2/32\n    mode = tunnel\n    reqid = 202\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00023",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:33:19.425486+00:00",
+      "ended_at": "2026-10-24T02:33:19.512314+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {msc {local_addrs=[172.20.22.1] remote_addrs=[172.20.12.1] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO dpd_delay=10 local-1 {id=MW_O_B2.msc.test class=public key groups=[] cert_policy=[] certs=[CN=MW_O_B2.msc.test] cacerts=[]} remote-1 {id=MW_O_A2.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[CN=Twinet MSC outer]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=trap close_action=trap local-ts=[10.200.2.2/32] remote-ts=[10.100.2.2/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Logical Site A and Site B roles are colocated by component class; the case establishes separation between role classes, not geographic site separation.",
+    "VXLAN uses the reserved experiment LAN within Clemson and public CloudLab control addresses across campuses; logical wire preservation remains an implementation assumption beyond finite packet observations.",
+    "Distinct worker hardware does not establish independently developed software, product approval or classification handling policy.",
+    "Virtual per-component interfaces share worker physical NICs; physical-NIC-per-Red requirements remain outside this placement claim."
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "cases": [
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/macsec-options-v4/xpn256-clear-vlan-0",
+      "manifest_sha256": "4a6921234cd4e6b7fa199e6d5943485321d4bfb948028ce60f31d1cea782816d",
+      "tags": 0,
+      "bindings": [
+        {
+          "phase": "before",
+          "device": "A",
+          "observation_id": "cmd-0030",
+          "installation_observation": "cmd-0017"
+        },
+        {
+          "phase": "before",
+          "device": "B",
+          "observation_id": "cmd-0038",
+          "installation_observation": "cmd-0020"
+        },
+        {
+          "phase": "after",
+          "device": "A",
+          "observation_id": "cmd-0049",
+          "installation_observation": "cmd-0017"
+        },
+        {
+          "phase": "after",
+          "device": "B",
+          "observation_id": "cmd-0057",
+          "installation_observation": "cmd-0020"
+        }
+      ],
+      "devices": [
+        {
+          "device": "A",
+          "clearVlanEnabled": false,
+          "clearVlanSupported": false,
+          "xpnEnabled": true,
+          "xpnSupported": true
+        },
+        {
+          "device": "B",
+          "clearVlanEnabled": false,
+          "clearVlanSupported": false,
+          "xpnEnabled": true,
+          "xpnSupported": true
+        }
+      ]
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/macsec-options-v4/xpn256-clear-vlan-1",
+      "manifest_sha256": "9d12388da321cdd7b3e2efc5319718dd99dbeb5d86d7e1affc730b9fd5957551",
+      "tags": 1,
+      "bindings": [
+        {
+          "phase": "before",
+          "device": "A",
+          "observation_id": "cmd-0034",
+          "installation_observation": "cmd-0021"
+        },
+        {
+          "phase": "before",
+          "device": "B",
+          "observation_id": "cmd-0042",
+          "installation_observation": "cmd-0024"
+        },
+        {
+          "phase": "after",
+          "device": "A",
+          "observation_id": "cmd-0053",
+          "installation_observation": "cmd-0021"
+        },
+        {
+          "phase": "after",
+          "device": "B",
+          "observation_id": "cmd-0061",
+          "installation_observation": "cmd-0024"
+        }
+      ],
+      "devices": [
+        {
+          "device": "A",
+          "clearVlanEnabled": true,
+          "clearVlanSupported": true,
+          "xpnEnabled": true,
+          "xpnSupported": true
+        },
+        {
+          "device": "B",
+          "clearVlanEnabled": true,
+          "clearVlanSupported": true,
+          "xpnEnabled": true,
+          "xpnSupported": true
+        }
+      ]
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/macsec-options-v4/xpn256-clear-vlan-2",
+      "manifest_sha256": "242db149aa8e185910945a942bdfe223eee68208dbca4b75597b8e2d3c6c96a1",
+      "tags": 2,
+      "bindings": [
+        {
+          "phase": "before",
+          "device": "A",
+          "observation_id": "cmd-0038",
+          "installation_observation": "cmd-0025"
+        },
+        {
+          "phase": "before",
+          "device": "B",
+          "observation_id": "cmd-0046",
+          "installation_observation": "cmd-0028"
+        },
+        {
+          "phase": "after",
+          "device": "A",
+          "observation_id": "cmd-0057",
+          "installation_observation": "cmd-0025"
+        },
+        {
+          "phase": "after",
+          "device": "B",
+          "observation_id": "cmd-0065",
+          "installation_observation": "cmd-0028"
+        }
+      ],
+      "devices": [
+        {
+          "device": "A",
+          "clearVlanEnabled": true,
+          "clearVlanSupported": true,
+          "xpnEnabled": true,
+          "xpnSupported": true
+        },
+        {
+          "device": "B",
+          "clearVlanEnabled": true,
+          "clearVlanSupported": true,
+          "xpnEnabled": true,
+          "xpnSupported": true
+        }
+      ]
+    }
+  ],
+  "scope": [
+    "Six selected software MACsec ports across zero, one and two clear VLAN tag cases.",
+    "Supported means the recorded Linux implementation accepted the selected construction and carried ordinary traffic in both directions. Correct implementation of XPN and VLAN encapsulation remains an explicit implementation contract.",
+    "VLAN placement is derived from actual interface parent chains below MACsec. No packet capture or arbitrary clear-payload visibility theorem is inferred from those records.",
+    "Positive probes are finite observations. They do not establish every packet, packet-number exhaustion, rekey continuity, cipher security or complete MACsec compliance.",
+    "Manual SAK provisioning does not establish PSK/CAK authentication or an approved key generator. Other RG027/028 duties remain separate.",
+    "For the disabled clear-VLAN case, no supported capability is asserted. The optional-feature implication needs no such premise when the feature is disabled."
+  ]
+}

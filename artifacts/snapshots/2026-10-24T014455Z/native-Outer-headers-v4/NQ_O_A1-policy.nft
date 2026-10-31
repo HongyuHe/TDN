@@ -1,0 +1,7 @@
+add table inet tdn_outer_headers_v3
+add chain inet tdn_outer_headers_v3 ingress { type filter hook prerouting priority -450; policy accept; }
+add chain inet tdn_outer_headers_v3 egress { type filter hook output priority -450; policy accept; }
+add rule inet tdn_outer_headers_v3 ingress ip hdrlength > 5 counter drop comment "PF10_IPv4_options_ingress"
+add rule inet tdn_outer_headers_v3 egress ip hdrlength > 5 counter drop comment "PF10_IPv4_options_egress"
+add rule inet tdn_outer_headers_v3 ingress iifname "black" ip daddr 224.0.0.0/4 counter drop comment "PF9_IPv4_multicast"
+add rule inet tdn_outer_headers_v3 ingress iifname "black" ip6 daddr ff00::/8 counter drop comment "PF9_IPv6_multicast"

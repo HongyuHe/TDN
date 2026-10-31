@@ -1,0 +1,85 @@
+{
+  "at": "2026-10-24T14:23:08.042810+00:00",
+  "selected_public_files": [
+    {
+      "path": "hostap-pq-delay-auth/hostapd-2.12/hostapd/hostapd",
+      "sha256": "23a5f3dfbaee5c2b4b54f16229d8274c3de7a760d30613a95db566a1acd78b1d",
+      "bytes": 4024624
+    },
+    {
+      "path": "hostap-pq-delay-auth/hostapd-2.12/hostapd/.config",
+      "sha256": "c130595177b347e596ee92d54b626e1e82583b3a88f836300e0b7ac1d6f2f877",
+      "bytes": 242
+    },
+    {
+      "path": "hostap-pq-delay-auth/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+      "sha256": "aa5af96ee16645430271770a942ceefd2f86d62efbb25f2e76fe3595681d44a6",
+      "bytes": 4278568
+    },
+    {
+      "path": "hostap-pq-delay-auth/wpa_supplicant-2.12/wpa_supplicant/.config",
+      "sha256": "1810254de977e52f5dcef9613688499c22545ac06607c53ce330c55daad48387",
+      "bytes": 208
+    },
+    {
+      "path": "hostap-delay-reproduced/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+      "sha256": "9eb00d90fdf5cf6a5271b15b0de96558a1632a1a831828671f6379f7de7ae578",
+      "bytes": 4241952
+    },
+    {
+      "path": "hostap-delay-reproduced/wpa_supplicant-2.12/wpa_supplicant/.config",
+      "sha256": "dcd6fd392a8fa89a1588ac8d931d5bd796e2c98cc1e36f64452ddd3a1c45b44d",
+      "bytes": 186
+    },
+    {
+      "path": "hostap-delay-fixed/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+      "sha256": "61408d19dc22cb60d6f704f3743c0d7101234af2fc23aa7f9e01c268652daea9",
+      "bytes": 4242176
+    },
+    {
+      "path": "hostap-delay-fixed/wpa_supplicant-2.12/wpa_supplicant/.config",
+      "sha256": "dcd6fd392a8fa89a1588ac8d931d5bd796e2c98cc1e36f64452ddd3a1c45b44d",
+      "bytes": 186
+    },
+    {
+      "path": "hostap/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+      "sha256": "5649fb98b6f91b726887fe0504faadd5f32ddd6d46d1db0a9b6a5a0119e221f9",
+      "bytes": 4238448
+    },
+    {
+      "path": "hostap/wpa_supplicant-2.12/wpa_supplicant/.config",
+      "sha256": "dcd6fd392a8fa89a1588ac8d931d5bd796e2c98cc1e36f64452ddd3a1c45b44d",
+      "bytes": 186
+    },
+    {
+      "path": "hostap-all-mka/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+      "sha256": "1c96f5674bb670c6643a1e0276a2a84be99fe2ac4ce5ed275bbdb722cfd2a80a",
+      "bytes": 4238952
+    },
+    {
+      "path": "hostap-all-mka/wpa_supplicant-2.12/wpa_supplicant/.config",
+      "sha256": "dcd6fd392a8fa89a1588ac8d931d5bd796e2c98cc1e36f64452ddd3a1c45b44d",
+      "bytes": 186
+    }
+  ],
+  "runtime_command": [
+    "docker",
+    "run",
+    "--rm",
+    "-v",
+    "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z:ro",
+    "tdn-hostap-pq:20261024-v3",
+    "sh",
+    "-c",
+    "openssl version -a; ldd /users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/hostapd/hostapd; ldd /users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant"
+  ],
+  "runtime_stdout": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\nbuilt on: Wed Sep 30 18:46:30 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=/usr/src/openssl-3.5.5-1ubuntu3.7 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific JITTER (3060300)\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x00000000000037ab:0x000000009c000400:0x0000000000000000:0x0000000000000000\n\tlinux-vdso.so.1 (0x00007fff5f6c5000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x000071b9c37dc000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x000071b9c37d4000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x000071b9c3738000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x000071b9c3627000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x000071b9c300d000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000071b9c2dea000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x000071b9c2dcc000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x000071b9c2d09000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000071b9c38c0000)\n\tlinux-vdso.so.1 (0x00007ffc12325000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x0000773c4428a000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x0000773c44282000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x0000773c441e6000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x0000773c440d5000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x0000773c43ab9000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x0000773c43898000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x0000773c4387a000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x0000773c437b7000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000773c44399000)\n",
+  "runtime_stderr": "",
+  "runtime_image": "\"sha256:b6bb2db742723c974b511b82c98a4c17238efd6cf5a5b84be37b7f44392a19d5\" [\"tdn-hostap-pq:20261024-v3\"] [\"tdn-hostap-pq@sha256:b6bb2db742723c974b511b82c98a4c17238efd6cf5a5b84be37b7f44392a19d5\"] amd64 linux\n",
+  "archive_sha256": "6a898a01aa90a35f747aeaf327c477097666d6e8d700550a568e9e5d47e2d00a",
+  "scope": [
+    "Only explicit final public ELF binaries and compile-time .config files are archived. No source-tree test keys, deployment configurations, credential files, private logs or guest overlays are included.",
+    "The final EAP v18 binaries include the authenticator callback repair; their hashes must be compared with retained hostap build/runtime observations. Older Docker archives provide linked OpenSSL3.5.5 dependencies but do not contain these later bind-mounted binaries.",
+    "The archive preserves exact tested runtime bytes. Rebuilding still requires official hostap2.12 archives and the immutable full patches/configs in hostap-pq-delay-build-v4, hostap-auth-lowest-pn-v5 and hostap-delay-reproduction-v5. No IEEE conformance is inferred."
+  ]
+}

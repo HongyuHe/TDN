@@ -1,0 +1,635 @@
+[
+  {
+    "id": "cmd-0000",
+    "started_at": "2026-10-24T04:42:44.532909+00:00",
+    "ended_at": "2026-10-24T04:42:44.537802+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tcv3e16-P0"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0001",
+    "started_at": "2026-10-24T04:42:44.537819+00:00",
+    "ended_at": "2026-10-24T04:42:44.548016+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P0",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "P0",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0002",
+    "started_at": "2026-10-24T04:42:44.548033+00:00",
+    "ended_at": "2026-10-24T04:42:44.558048+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P0",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "P0",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0003",
+    "started_at": "2026-10-24T04:42:44.558080+00:00",
+    "ended_at": "2026-10-24T04:42:44.565109+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tcv3e16-P1"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0004",
+    "started_at": "2026-10-24T04:42:44.565142+00:00",
+    "ended_at": "2026-10-24T04:42:44.575681+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0005",
+    "started_at": "2026-10-24T04:42:44.575718+00:00",
+    "ended_at": "2026-10-24T04:42:44.585627+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0006",
+    "started_at": "2026-10-24T04:42:44.585660+00:00",
+    "ended_at": "2026-10-24T04:42:44.591760+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tcv3e16-AS"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0007",
+    "started_at": "2026-10-24T04:42:44.591792+00:00",
+    "ended_at": "2026-10-24T04:42:44.603612+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-AS",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "AS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0008",
+    "started_at": "2026-10-24T04:42:44.603644+00:00",
+    "ended_at": "2026-10-24T04:42:44.614590+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-AS",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "AS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0009",
+    "started_at": "2026-10-24T04:42:44.614632+00:00",
+    "ended_at": "2026-10-24T04:42:44.624282+00:00",
+    "command": [
+      "ip",
+      "link",
+      "add",
+      "tcv3e16x00",
+      "type",
+      "veth",
+      "peer",
+      "name",
+      "tcv3e16y00"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0010",
+    "started_at": "2026-10-24T04:42:44.624316+00:00",
+    "ended_at": "2026-10-24T04:42:44.648401+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "tcv3e16x00",
+      "netns",
+      "tcv3e16-P0"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0011",
+    "started_at": "2026-10-24T04:42:44.648465+00:00",
+    "ended_at": "2026-10-24T04:42:44.675846+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P0",
+      "ip",
+      "link",
+      "set",
+      "tcv3e16x00",
+      "name",
+      "eth0"
+    ],
+    "device_id": "P0",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0012",
+    "started_at": "2026-10-24T04:42:44.675888+00:00",
+    "ended_at": "2026-10-24T04:42:44.685117+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P0",
+      "ip",
+      "link",
+      "set",
+      "eth0",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "P0",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0013",
+    "started_at": "2026-10-24T04:42:44.685134+00:00",
+    "ended_at": "2026-10-24T04:42:44.729904+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "tcv3e16y00",
+      "netns",
+      "tcv3e16-P1"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0014",
+    "started_at": "2026-10-24T04:42:44.729928+00:00",
+    "ended_at": "2026-10-24T04:42:44.762788+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "ip",
+      "link",
+      "set",
+      "tcv3e16y00",
+      "name",
+      "eth0"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0015",
+    "started_at": "2026-10-24T04:42:44.762805+00:00",
+    "ended_at": "2026-10-24T04:42:44.773605+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "ip",
+      "link",
+      "set",
+      "eth0",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0016",
+    "started_at": "2026-10-24T04:42:44.773626+00:00",
+    "ended_at": "2026-10-24T04:42:44.783189+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P0",
+      "ip",
+      "link",
+      "set",
+      "eth0",
+      "allmulticast",
+      "on",
+      "promisc",
+      "on"
+    ],
+    "device_id": "P0",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0017",
+    "started_at": "2026-10-24T04:42:44.783206+00:00",
+    "ended_at": "2026-10-24T04:42:44.793214+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "ip",
+      "link",
+      "set",
+      "eth0",
+      "allmulticast",
+      "on",
+      "promisc",
+      "on"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0018",
+    "started_at": "2026-10-24T04:42:44.793237+00:00",
+    "ended_at": "2026-10-24T04:42:44.803325+00:00",
+    "command": [
+      "ip",
+      "link",
+      "add",
+      "tcv3e16x01",
+      "type",
+      "veth",
+      "peer",
+      "name",
+      "tcv3e16y01"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0019",
+    "started_at": "2026-10-24T04:42:44.803342+00:00",
+    "ended_at": "2026-10-24T04:42:44.827218+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "tcv3e16x01",
+      "netns",
+      "tcv3e16-P1"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0020",
+    "started_at": "2026-10-24T04:42:44.827273+00:00",
+    "ended_at": "2026-10-24T04:42:44.859650+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "ip",
+      "link",
+      "set",
+      "tcv3e16x01",
+      "name",
+      "control"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0021",
+    "started_at": "2026-10-24T04:42:44.859676+00:00",
+    "ended_at": "2026-10-24T04:42:44.869538+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "ip",
+      "link",
+      "set",
+      "control",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0022",
+    "started_at": "2026-10-24T04:42:44.869563+00:00",
+    "ended_at": "2026-10-24T04:42:44.879029+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "ip",
+      "address",
+      "add",
+      "10.88.0.1/30",
+      "dev",
+      "control"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0023",
+    "started_at": "2026-10-24T04:42:44.879062+00:00",
+    "ended_at": "2026-10-24T04:42:44.902700+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "tcv3e16y01",
+      "netns",
+      "tcv3e16-AS"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0024",
+    "started_at": "2026-10-24T04:42:44.902732+00:00",
+    "ended_at": "2026-10-24T04:42:44.930222+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-AS",
+      "ip",
+      "link",
+      "set",
+      "tcv3e16y01",
+      "name",
+      "eth0"
+    ],
+    "device_id": "AS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0025",
+    "started_at": "2026-10-24T04:42:44.930273+00:00",
+    "ended_at": "2026-10-24T04:42:44.940398+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-AS",
+      "ip",
+      "link",
+      "set",
+      "eth0",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "AS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0026",
+    "started_at": "2026-10-24T04:42:44.940431+00:00",
+    "ended_at": "2026-10-24T04:42:44.948995+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-AS",
+      "ip",
+      "address",
+      "add",
+      "10.88.0.2/30",
+      "dev",
+      "eth0"
+    ],
+    "device_id": "AS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0027",
+    "started_at": "2026-10-24T04:42:44.950303+00:00",
+    "ended_at": "2026-10-24T04:42:44.967747+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P1",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=0"
+    ],
+    "device_id": "P1",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0028",
+    "started_at": "2026-10-24T04:42:44.967778+00:00",
+    "ended_at": "2026-10-24T04:42:44.978226+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-P0",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=0"
+    ],
+    "device_id": "P0",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0029",
+    "started_at": "2026-10-24T04:42:44.978258+00:00",
+    "ended_at": "2026-10-24T04:42:44.988726+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3e16-AS",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=0"
+    ],
+    "device_id": "AS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0030",
+    "started_at": "2026-10-24T04:42:44.988824+00:00",
+    "ended_at": "2026-10-24T04:42:44.994332+00:00",
+    "command": [
+      "openssl",
+      "genpkey",
+      "-algorithm",
+      "ML-DSA-87",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-reverse-v16/ca.key"
+    ],
+    "device_id": null,
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Error initializing ML-DSA-87 context\n40A733F2BC750000:error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported:../crypto/evp/evp_fetch.c:386:Global default library context, Algorithm (ML-DSA-87 : 0), Properties (<null>)\n"
+  },
+  {
+    "id": "cmd-0031",
+    "started_at": "2026-10-24T04:42:45.065385+00:00",
+    "ended_at": "2026-10-24T04:42:45.068649+00:00",
+    "command": [
+      "cat",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-reverse-v16/P1-headers.log"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0032",
+    "started_at": "2026-10-24T04:42:45.068713+00:00",
+    "ended_at": "2026-10-24T04:42:45.071695+00:00",
+    "command": [
+      "cat",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-reverse-v16/P0-headers.log"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

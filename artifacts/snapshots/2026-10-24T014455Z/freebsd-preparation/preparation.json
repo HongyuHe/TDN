@@ -1,0 +1,199 @@
+{
+  "records": [
+    {
+      "command": [
+        "xz",
+        "-d",
+        "-k",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz"
+      ],
+      "started_at": "2026-10-24T02:21:03.314152+00:00",
+      "ended_at": "2026-10-24T02:21:55.877492+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "mv",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2"
+      ],
+      "started_at": "2026-10-24T02:21:55.877561+00:00",
+      "ended_at": "2026-10-24T02:21:55.881450+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ssh-keygen",
+        "-q",
+        "-t",
+        "ed25519",
+        "-N",
+        "",
+        "-f",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key"
+      ],
+      "started_at": "2026-10-24T02:21:55.881578+00:00",
+      "ended_at": "2026-10-24T02:21:55.912046+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "qemu-img",
+        "create",
+        "-f",
+        "qcow2",
+        "-F",
+        "qcow2",
+        "-b",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node0.qcow2"
+      ],
+      "started_at": "2026-10-24T02:21:55.912419+00:00",
+      "ended_at": "2026-10-24T02:21:55.955546+00:00",
+      "returncode": 0,
+      "stdout": "Formatting '/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node0.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=6477709312 backing_file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2 backing_fmt=qcow2 lazy_refcounts=off refcount_bits=16\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "genisoimage",
+        "-quiet",
+        "-output",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed0.iso",
+        "-volid",
+        "cidata",
+        "-joliet",
+        "-rock",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed0"
+      ],
+      "started_at": "2026-10-24T02:21:55.955557+00:00",
+      "ended_at": "2026-10-24T02:21:55.971460+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "tcv3-freebsd-0",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node0.qcow2,format=qcow2,if=virtio",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed0.iso,media=cdrom,readonly=on",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22220-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt",
+        "-netdev",
+        "socket,id=gray,listen=127.0.0.1:49401",
+        "-device",
+        "virtio-net-pci,netdev=gray",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/serial0.log",
+        "-monitor",
+        "unix:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/monitor0.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/qemu0.pid",
+        "-daemonize"
+      ],
+      "started_at": "2026-10-24T02:21:55.971608+00:00",
+      "ended_at": "2026-10-24T02:21:56.334741+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "qemu-img",
+        "create",
+        "-f",
+        "qcow2",
+        "-F",
+        "qcow2",
+        "-b",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node1.qcow2"
+      ],
+      "started_at": "2026-10-24T02:21:58.335549+00:00",
+      "ended_at": "2026-10-24T02:21:58.345150+00:00",
+      "returncode": 0,
+      "stdout": "Formatting '/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node1.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=6477709312 backing_file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2 backing_fmt=qcow2 lazy_refcounts=off refcount_bits=16\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "genisoimage",
+        "-quiet",
+        "-output",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed1.iso",
+        "-volid",
+        "cidata",
+        "-joliet",
+        "-rock",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed1"
+      ],
+      "started_at": "2026-10-24T02:21:58.345173+00:00",
+      "ended_at": "2026-10-24T02:21:58.350653+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "tcv3-freebsd-1",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node1.qcow2,format=qcow2,if=virtio",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed1.iso,media=cdrom,readonly=on",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22221-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt",
+        "-netdev",
+        "socket,id=gray,connect=127.0.0.1:49401",
+        "-device",
+        "virtio-net-pci,netdev=gray",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/serial1.log",
+        "-monitor",
+        "unix:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/monitor1.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/qemu1.pid",
+        "-daemonize"
+      ],
+      "started_at": "2026-10-24T02:21:58.350822+00:00",
+      "ended_at": "2026-10-24T02:21:58.420755+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "collector_sha256": "257b338f50728b6c268b18c1b5ecc874fc1753c1b473ab29db2683c4319b2ff5"
+}

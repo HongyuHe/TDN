@@ -1,0 +1,11 @@
+# Authenticated assembly and producer provenance
+
+AuthenticatedAssembly now separates decoded plaintext from publication annotations. The decoder result contains the receiving context, complete wire bytes and plaintext. The Matches relation compares those fields with a prior publication and applies an explicit projection to its annotations. Every matching publication must satisfy the source property. Two producers with identical decoded plaintext remain separate possible provenance witnesses.
+
+The context type distinguishes actual secret-key identity, receiver, protocol domain, direction and epoch. Compatible uses a supplied epoch-acceptance relation. It does not require equal local generation labels or claim that an epoch is authenticated on the wire. Public SPIs and reqids alone cannot instantiate secret identity.
+
+The current theorem starts with empty publication, fragment and acceptance histories. A mid-run deployment needs justified prior publication coverage or a seeded-history extension. Valid replay can satisfy authenticity; freshness is a separate obligation. The implementation contract must cover all actual key-holding producers and successful verifications. It cannot exclude another security domain merely to make a source property pass.
+
+The general proof uses CSLib invariant lifting across arbitrary publish, receive, discard, clear and accept steps. Reassembly uses ordinary fragment keys and contiguous offsets. The regression permits mixed ordinary assembly but rejects an unpublished codeword in an illustrative ideal authentication relation. It also admits two distinct producer/domain annotations for the same plaintext and proves that selecting only the convenient annotation cannot establish universal source safety.
+
+No concrete cryptographic implementation-to-Matches proof is claimed. The retained native shared swanctl observations offer matching IKE SPI pairs, reciprocal CHILD SPIs, identities and selectors. The next importer must bind those observations to the raw SAD/SPD and fixed loaded endpoint configuration. RFC7296 key derivation remains an explicit implementation contract because CHILD nonces and secret keys are not exported. Receiver reachability and restored processing-state invariants must then compose with the existing packet and fragment proofs.

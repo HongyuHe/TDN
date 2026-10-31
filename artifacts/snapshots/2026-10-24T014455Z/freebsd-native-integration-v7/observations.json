@@ -1,0 +1,1493 @@
+{
+  "schema_version": "csfc-native-different-OS/v1",
+  "started_at": "2026-10-24T02:57:32.107593+00:00",
+  "ended_at": "2026-10-24T02:57:47.579287+00:00",
+  "runtime_backend": "native-FRR-OVS-Linux-Outer-with-QEMU-FreeBSD-Inner",
+  "spec": {
+    "version": 2,
+    "name": "native-os-diversity-v3",
+    "image": "twinet-msc:construction-v2",
+    "mtu": 1500,
+    "devices": [
+      {
+        "id": "ND_BLACK",
+        "role": "transport",
+        "interfaces": [
+          {
+            "name": "p11",
+            "address": "172.21.11.2/30",
+            "zone": "black",
+            "mtu": 1500
+          },
+          {
+            "name": "p21",
+            "address": "172.21.21.2/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ]
+      },
+      {
+        "id": "ND_R_A1",
+        "role": "host",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "red",
+            "address": "10.1.1.10/24",
+            "zone": "red",
+            "mtu": 1320
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "0.0.0.0/0",
+            "via": "10.1.1.1"
+          }
+        ]
+      },
+      {
+        "id": "ND_I_A1",
+        "role": "inner",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "red",
+            "address": "10.1.1.1/24",
+            "zone": "red",
+            "mtu": 1320
+          },
+          {
+            "name": "gray",
+            "address": "10.100.1.2/24",
+            "zone": "gray",
+            "mtu": 1400
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "10.2.1.0/24",
+            "via": "10.100.1.1"
+          },
+          {
+            "prefix": "10.200.1.2/32",
+            "via": "10.100.1.1"
+          }
+        ],
+        "tunnel": {
+          "peer": "ND_I_B1",
+          "local": "10.100.1.2",
+          "remote": "10.200.1.2",
+          "local_ts": "10.1.1.0/24",
+          "remote_ts": "10.2.1.0/24",
+          "trust": "inner-s1",
+          "reqid": 101,
+          "inside": "red",
+          "outside": "gray"
+        }
+      },
+      {
+        "id": "ND_G_A1",
+        "role": "switch",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "inner",
+            "zone": "gray",
+            "bridge": true,
+            "mtu": 1400
+          },
+          {
+            "name": "outer",
+            "zone": "gray",
+            "bridge": true,
+            "mtu": 1400
+          }
+        ]
+      },
+      {
+        "id": "ND_O_A1",
+        "role": "outer",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "gray",
+            "address": "10.100.1.1/24",
+            "zone": "gray",
+            "mtu": 1400
+          },
+          {
+            "name": "black",
+            "address": "172.20.11.1/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "10.200.1.2/32",
+            "via": "172.20.11.2"
+          },
+          {
+            "prefix": "172.20.21.1/32",
+            "via": "172.20.11.2"
+          }
+        ],
+        "tunnel": {
+          "peer": "ND_O_B1",
+          "local": "172.20.11.1",
+          "remote": "172.20.21.1",
+          "local_ts": "10.100.1.2/32",
+          "remote_ts": "10.200.1.2/32",
+          "trust": "outer",
+          "reqid": 201,
+          "inside": "gray",
+          "outside": "black"
+        }
+      },
+      {
+        "id": "ND_OF_A1",
+        "role": "firewall",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "inside",
+            "address": "172.20.11.2/30",
+            "zone": "black",
+            "mtu": 1500
+          },
+          {
+            "name": "outside",
+            "address": "172.21.11.1/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ]
+      },
+      {
+        "id": "ND_R_B1",
+        "role": "host",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "red",
+            "address": "10.2.1.10/24",
+            "zone": "red",
+            "mtu": 1320
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "0.0.0.0/0",
+            "via": "10.2.1.1"
+          }
+        ]
+      },
+      {
+        "id": "ND_I_B1",
+        "role": "inner",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "red",
+            "address": "10.2.1.1/24",
+            "zone": "red",
+            "mtu": 1320
+          },
+          {
+            "name": "gray",
+            "address": "10.200.1.2/24",
+            "zone": "gray",
+            "mtu": 1400
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "10.1.1.0/24",
+            "via": "10.200.1.1"
+          },
+          {
+            "prefix": "10.100.1.2/32",
+            "via": "10.200.1.1"
+          }
+        ],
+        "tunnel": {
+          "peer": "ND_I_A1",
+          "local": "10.200.1.2",
+          "remote": "10.100.1.2",
+          "local_ts": "10.2.1.0/24",
+          "remote_ts": "10.1.1.0/24",
+          "trust": "inner-s1",
+          "reqid": 101,
+          "inside": "red",
+          "outside": "gray"
+        }
+      },
+      {
+        "id": "ND_G_B1",
+        "role": "switch",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "inner",
+            "zone": "gray",
+            "bridge": true,
+            "mtu": 1400
+          },
+          {
+            "name": "outer",
+            "zone": "gray",
+            "bridge": true,
+            "mtu": 1400
+          }
+        ]
+      },
+      {
+        "id": "ND_O_B1",
+        "role": "outer",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "gray",
+            "address": "10.200.1.1/24",
+            "zone": "gray",
+            "mtu": 1400
+          },
+          {
+            "name": "black",
+            "address": "172.20.21.1/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "10.100.1.2/32",
+            "via": "172.20.21.2"
+          },
+          {
+            "prefix": "172.20.11.1/32",
+            "via": "172.20.21.2"
+          }
+        ],
+        "tunnel": {
+          "peer": "ND_O_A1",
+          "local": "172.20.21.1",
+          "remote": "172.20.11.1",
+          "local_ts": "10.200.1.2/32",
+          "remote_ts": "10.100.1.2/32",
+          "trust": "outer",
+          "reqid": 201,
+          "inside": "gray",
+          "outside": "black"
+        }
+      },
+      {
+        "id": "ND_OF_B1",
+        "role": "firewall",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "inside",
+            "address": "172.20.21.2/30",
+            "zone": "black",
+            "mtu": 1500
+          },
+          {
+            "name": "outside",
+            "address": "172.21.21.1/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ]
+      }
+    ],
+    "links": [
+      {
+        "a": {
+          "device": "ND_R_A1",
+          "interface": "red"
+        },
+        "b": {
+          "device": "ND_I_A1",
+          "interface": "red"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_I_A1",
+          "interface": "gray"
+        },
+        "b": {
+          "device": "ND_G_A1",
+          "interface": "inner"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_O_A1",
+          "interface": "gray"
+        },
+        "b": {
+          "device": "ND_G_A1",
+          "interface": "outer"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_O_A1",
+          "interface": "black"
+        },
+        "b": {
+          "device": "ND_OF_A1",
+          "interface": "inside"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_OF_A1",
+          "interface": "outside"
+        },
+        "b": {
+          "device": "ND_BLACK",
+          "interface": "p11"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_R_B1",
+          "interface": "red"
+        },
+        "b": {
+          "device": "ND_I_B1",
+          "interface": "red"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_I_B1",
+          "interface": "gray"
+        },
+        "b": {
+          "device": "ND_G_B1",
+          "interface": "inner"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_O_B1",
+          "interface": "gray"
+        },
+        "b": {
+          "device": "ND_G_B1",
+          "interface": "outer"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_O_B1",
+          "interface": "black"
+        },
+        "b": {
+          "device": "ND_OF_B1",
+          "interface": "inside"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_OF_B1",
+          "interface": "outside"
+        },
+        "b": {
+          "device": "ND_BLACK",
+          "interface": "p21"
+        }
+      }
+    ],
+    "router_image": "twinet-msc-router:construction-v2",
+    "switch_image": "twinet-msc-switch:construction-v2"
+  },
+  "records": [
+    {
+      "id": "diversity-0000",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "sysctl net.inet.ipsec.debug=0"
+      ],
+      "started_at": "2026-10-24T02:57:32.107881+00:00",
+      "ended_at": "2026-10-24T02:57:32.359778+00:00",
+      "returncode": 0,
+      "stdout": "net.inet.ipsec.debug: 1 -> 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0001",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "sysctl kern.crypto.allow_soft"
+      ],
+      "started_at": "2026-10-24T02:57:32.359799+00:00",
+      "ended_at": "2026-10-24T02:57:32.610841+00:00",
+      "returncode": 0,
+      "stdout": "kern.crypto.allow_soft: 1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0002",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "kldstat"
+      ],
+      "started_at": "2026-10-24T02:57:32.610879+00:00",
+      "ended_at": "2026-10-24T02:57:32.860744+00:00",
+      "returncode": 0,
+      "stdout": "Id Refs Address                Size Name\n 1    8 0xffffffff80200000  1f44510 kernel\n 2    1 0xffffffff82818000     3220 intpm.ko\n 3    1 0xffffffff8281c000     2178 smbus.ko\n 4    1 0xffffffff8281f000    109a8 ipsec.ko\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0003",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "started_at": "2026-10-24T02:57:32.860806+00:00",
+      "ended_at": "2026-10-24T02:57:33.146902+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0004",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-algs"
+      ],
+      "started_at": "2026-10-24T02:57:33.146945+00:00",
+      "ended_at": "2026-10-24T02:57:33.417019+00:00",
+      "returncode": 0,
+      "stdout": "encryption:\n  AES_ECB[botan]\n  AES_CBC[botan]\n  AES_CFB[botan]\nintegrity:\n  HMAC_SHA1_96[botan]\n  HMAC_SHA1_128[botan]\n  HMAC_SHA1_160[botan]\n  HMAC_SHA2_256_128[botan]\n  HMAC_SHA2_256_256[botan]\n  HMAC_SHA2_384_192[botan]\n  HMAC_SHA2_384_384[botan]\n  HMAC_SHA2_512_256[botan]\n  HMAC_SHA2_512_512[botan]\naead:\n  AES_GCM_16[botan]\n  AES_GCM_12[botan]\n  AES_GCM_8[botan]\n  AES_CCM_16[botan]\n  AES_CCM_12[botan]\n  AES_CCM_8[botan]\n  CHACHA20_POLY1305[botan]\nhasher:\n  HASH_SHA1[botan]\n  HASH_MD5[botan]\n  HASH_SHA2_224[botan]\n  HASH_SHA2_256[botan]\n  HASH_SHA2_384[botan]\n  HASH_SHA2_512[botan]\n  HASH_SHA3_224[botan]\n  HASH_SHA3_256[botan]\n  HASH_SHA3_384[botan]\n  HASH_SHA3_512[botan]\n  HASH_IDENTITY[botan]\nprf:\n  PRF_HMAC_SHA1[botan]\n  PRF_HMAC_SHA2_256[botan]\n  PRF_HMAC_SHA2_384[botan]\n  PRF_HMAC_SHA2_512[botan]\nxof:\nkdf:\n  KDF_PRF[botan]\n  KDF_PRF_PLUS[botan]\ndrbg:\nke:\n  MODP_3072[botan]\n  MODP_4096[botan]\n  MODP_6144[botan]\n  MODP_8192[botan]\n  MODP_2048[botan]\n  MODP_2048_224[botan]\n  MODP_2048_256[botan]\n  MODP_1536[botan]\n  MODP_1024[botan]\n  MODP_1024_160[botan]\n  MODP_768[botan]\n  MODP_CUSTOM[botan]\n  ECP_256[botan]\n  ECP_384[botan]\n  ECP_521[botan]\n  ECP_256_BP[botan]\n  ECP_384_BP[botan]\n  ECP_512_BP[botan]\n  CURVE_25519[botan]\n  ML_KEM_512[botan]\n  ML_KEM_768[botan]\n  ML_KEM_1024[botan]\nrng:\n  RNG_WEAK[botan]\n  RNG_STRONG[random]\n  RNG_TRUE[random]\nnonce-gen:\n  NONCE_GEN[nonce]\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0005",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --stats"
+      ],
+      "started_at": "2026-10-24T02:57:33.417061+00:00",
+      "ended_at": "2026-10-24T02:57:33.684378+00:00",
+      "returncode": 0,
+      "stdout": "uptime: 7 minutes, since Oct 24 02:50:28 2026\nworker threads: 16 total, 11 idle, working: 4/0/1/0\njob queues: 0/0/0/0\njobs scheduled: 3\nIKE_SAs: 1 total, 0 half-open\nloaded plugins: charon random nonce x509 revocation constraints pubkey pkcs1 pem botan pkcs8 kernel-pfkey kernel-pfroute socket-default vici counters\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0006",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "uname -a"
+      ],
+      "started_at": "2026-10-24T02:57:33.684440+00:00",
+      "ended_at": "2026-10-24T02:57:33.935930+00:00",
+      "returncode": 0,
+      "stdout": "FreeBSD evidence-freebsd-v2-0 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0007",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ifconfig -a"
+      ],
+      "started_at": "2026-10-24T02:57:33.935985+00:00",
+      "ended_at": "2026-10-24T02:57:34.191275+00:00",
+      "returncode": 0,
+      "stdout": "vtnet0: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:00:10\n\tinet 10.0.2.15 netmask 0xffffff00 broadcast 10.0.2.255\n\tinet6 fe80::5054:76ff:fe03:10%vtnet0 prefixlen 64 scopeid 0x1\n\tinet6 fec0::5054:76ff:fe03:10 prefixlen 64 autoconf pltime 14400 vltime 86400\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet1: flags=1008802<BROADCAST,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:00:11\n\tinet 172.28.90.1 netmask 0xfffffffc broadcast 172.28.90.3\n\tinet6 fe80::5054:76ff:fe03:11%vtnet1 prefixlen 64 tentative scopeid 0x2\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nlo0: flags=1008049<UP,LOOPBACK,RUNNING,MULTICAST,LOWER_UP> metric 0 mtu 16384\n\toptions=680003<RXCSUM,TXCSUM,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6>\n\tinet 127.0.0.1 netmask 0xff000000\n\tinet6 ::1 prefixlen 128\n\tinet6 fe80::1%lo0 prefixlen 64 scopeid 0x3\n\tgroups: lo\n\tnd6 options=21<PERFORMNUD,AUTO_LINKLOCAL>\nvtnet2: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1320\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:6f:60:3f:1b:b7\n\tinet 10.1.1.1 netmask 0xffffff00 broadcast 10.1.1.255\n\tinet6 fe80::6f:60ff:fe3f:1bb7%vtnet2 prefixlen 64 scopeid 0x4\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet3: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1400\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:a6:fb:a2:21:ca\n\tinet 10.100.1.2 netmask 0xffffff00 broadcast 10.100.1.255\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=29<PERFORMNUD,IFDISABLED,AUTO_LINKLOCAL>\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0008",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T02:57:34.191331+00:00",
+      "ended_at": "2026-10-24T02:57:34.444066+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        link#4             U            vtnet2\n10.1.1.1           link#3             UHS             lo0\n10.2.1.0/24        10.100.1.1         UGS          vtnet3\n10.100.1.0/24      link#5             U            vtnet3\n10.100.1.2         link#3             UHS             lo0\n10.200.1.2         10.100.1.1         UGHS         vtnet3\n127.0.0.1          link#3             UH              lo0\n172.28.90.1        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:10%lo0       link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:11%lo0       link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::6f:60ff:fe3f:1bb7%lo0       link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:10           link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0009",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ldd /usr/local/lib/ipsec/plugins/libstrongswan-botan.so"
+      ],
+      "started_at": "2026-10-24T02:57:34.444123+00:00",
+      "ended_at": "2026-10-24T02:57:34.696728+00:00",
+      "returncode": 0,
+      "stdout": "/usr/local/lib/ipsec/plugins/libstrongswan-botan.so:\n\tlibbotan-3.so.13 => /usr/local/lib/libbotan-3.so.13 (0x596ce00000)\n\tlibthr.so.3 => /lib/libthr.so.3 (0x5969687000)\n\tlibc.so.7 => /lib/libc.so.7 (0x596a937000)\n\tlibbz2.so.4 => /usr/lib/libbz2.so.4 (0x5969868000)\n\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x596a705000)\n\tlibz.so.6 => /lib/libz.so.6 (0x596c454000)\n\tlibc++.so.1 => /lib/libc++.so.1 (0x596d6fb000)\n\tlibcxxrt.so.1 => /lib/libcxxrt.so.1 (0x596e646000)\n\tlibm.so.5 => /lib/libm.so.5 (0x596f40f000)\n\tlibgcc_s.so.1 => /lib/libgcc_s.so.1 (0x596fb61000)\n\tlibmd.so.6 => /lib/libmd.so.6 (0x597046a000)\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0010",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "pkg info botan3"
+      ],
+      "started_at": "2026-10-24T02:57:34.696796+00:00",
+      "ended_at": "2026-10-24T02:57:34.963179+00:00",
+      "returncode": 0,
+      "stdout": "botan3-3.13.0\nName           : botan3\nVersion        : 3.13.0\nInstalled on   : Sat Oct 24 02:45:59 2026 UTC\nOrigin         : security/botan3\nArchitecture   : FreeBSD:14:amd64\nPrefix         : /usr/local\nCategories     : security\nLicenses       : BSD2CLAUSE\nMaintainer     : fluffy@FreeBSD.org\nWWW            : https://botan.randombit.net/\nComment        : Portable, easy to use and efficient C++ crypto library\nOptions        :\n\tDOCS           : on\n\tLLVM_FROM_PORTS: off\n\tMANPAGES       : on\n\tPYTHON         : off\n\tSQLITE3        : off\nShared Libs required:\n\tlibbz2.so.4\n\tlibc++.so.1\n\tlibc.so.7\n\tlibcxxrt.so.1\n\tlibgcc_s.so.1\n\tliblzma.so.5\n\tlibm.so.5\n\tlibthr.so.3\n\tlibz.so.6\nShared Libs provided:\n\tlibbotan-3.so.13\nAnnotations    :\n\tFreeBSD_version: 1404000\n\tbuild_timestamp: 2026-10-15T07:58:34+0000\n\tbuilt_by       : poudriere-git-3.4.8-3-gd92fb7c0\n\tcpe            : cpe:2.3:a:botan_project:botan:3.13.0:::::freebsd14:x64\n\tport_checkout_unclean: no\n\tport_git_hash  : 46cf3d9696491c61d91ecd22db11c7f7c1e62c24\n\tports_top_checkout_unclean: no\n\tports_top_git_hash: e0cbb24c950df638f2783fa49e73aea1112a7654\n\trepo_type      : binary\n\trepository     : FreeBSD\nFlat size      : 66.4MiB\nDescription    :\nBotan is a crypto library written in C++. It provides a variety of\ncryptographic algorithms, including common ones such as AES, MD5, SHA,\nHMAC, RSA, Diffie-Hellman, DSA, and ECDSA, as well as many others that\nare more obscure or specialized. It also offers X.509v3 certificates\nand CRLs, and PKCS #10 certificate requests. A message processing\nsystem that uses a filter/pipeline metaphor allows for many common\ncryptographic tasks to be completed with just a few lines of code.\nAssembly optimizations for common CPUs, including x86, x86-64, and\nPowerPC, offers further speedups for critical tasks such as SHA-1\nhashing and multiple precision integer operations.\n\nBotan is licensed under the same permissive terms as FreeBSD itself.\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0011",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "cat /usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:57:34.963225+00:00",
+      "ended_at": "2026-10-24T02:57:35.213977+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 10.100.1.2\n  remote_addrs = 10.200.1.2\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_I_A1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_I_B1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.1.1.0/24\n    remote_ts = 10.2.1.0/24\n    mode = tunnel\n    reqid = 101\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0012",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "sysctl net.inet.ipsec.debug=0"
+      ],
+      "started_at": "2026-10-24T02:57:35.213999+00:00",
+      "ended_at": "2026-10-24T02:57:35.472450+00:00",
+      "returncode": 0,
+      "stdout": "net.inet.ipsec.debug: 1 -> 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0013",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "sysctl kern.crypto.allow_soft"
+      ],
+      "started_at": "2026-10-24T02:57:35.472500+00:00",
+      "ended_at": "2026-10-24T02:57:35.729259+00:00",
+      "returncode": 0,
+      "stdout": "kern.crypto.allow_soft: 1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0014",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "kldstat"
+      ],
+      "started_at": "2026-10-24T02:57:35.729310+00:00",
+      "ended_at": "2026-10-24T02:57:35.986354+00:00",
+      "returncode": 0,
+      "stdout": "Id Refs Address                Size Name\n 1    8 0xffffffff80200000  1f44510 kernel\n 2    1 0xffffffff82818000     3220 intpm.ko\n 3    1 0xffffffff8281c000     2178 smbus.ko\n 4    1 0xffffffff8281f000    109a8 ipsec.ko\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0015",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "started_at": "2026-10-24T02:57:35.986417+00:00",
+      "ended_at": "2026-10-24T02:57:36.279227+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0016",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-algs"
+      ],
+      "started_at": "2026-10-24T02:57:36.279272+00:00",
+      "ended_at": "2026-10-24T02:57:36.554721+00:00",
+      "returncode": 0,
+      "stdout": "encryption:\n  AES_ECB[botan]\n  AES_CBC[botan]\n  AES_CFB[botan]\nintegrity:\n  HMAC_SHA1_96[botan]\n  HMAC_SHA1_128[botan]\n  HMAC_SHA1_160[botan]\n  HMAC_SHA2_256_128[botan]\n  HMAC_SHA2_256_256[botan]\n  HMAC_SHA2_384_192[botan]\n  HMAC_SHA2_384_384[botan]\n  HMAC_SHA2_512_256[botan]\n  HMAC_SHA2_512_512[botan]\naead:\n  AES_GCM_16[botan]\n  AES_GCM_12[botan]\n  AES_GCM_8[botan]\n  AES_CCM_16[botan]\n  AES_CCM_12[botan]\n  AES_CCM_8[botan]\n  CHACHA20_POLY1305[botan]\nhasher:\n  HASH_SHA1[botan]\n  HASH_MD5[botan]\n  HASH_SHA2_224[botan]\n  HASH_SHA2_256[botan]\n  HASH_SHA2_384[botan]\n  HASH_SHA2_512[botan]\n  HASH_SHA3_224[botan]\n  HASH_SHA3_256[botan]\n  HASH_SHA3_384[botan]\n  HASH_SHA3_512[botan]\n  HASH_IDENTITY[botan]\nprf:\n  PRF_HMAC_SHA1[botan]\n  PRF_HMAC_SHA2_256[botan]\n  PRF_HMAC_SHA2_384[botan]\n  PRF_HMAC_SHA2_512[botan]\nxof:\nkdf:\n  KDF_PRF[botan]\n  KDF_PRF_PLUS[botan]\ndrbg:\nke:\n  MODP_3072[botan]\n  MODP_4096[botan]\n  MODP_6144[botan]\n  MODP_8192[botan]\n  MODP_2048[botan]\n  MODP_2048_224[botan]\n  MODP_2048_256[botan]\n  MODP_1536[botan]\n  MODP_1024[botan]\n  MODP_1024_160[botan]\n  MODP_768[botan]\n  MODP_CUSTOM[botan]\n  ECP_256[botan]\n  ECP_384[botan]\n  ECP_521[botan]\n  ECP_256_BP[botan]\n  ECP_384_BP[botan]\n  ECP_512_BP[botan]\n  CURVE_25519[botan]\n  ML_KEM_512[botan]\n  ML_KEM_768[botan]\n  ML_KEM_1024[botan]\nrng:\n  RNG_WEAK[botan]\n  RNG_STRONG[random]\n  RNG_TRUE[random]\nnonce-gen:\n  NONCE_GEN[nonce]\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0017",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --stats"
+      ],
+      "started_at": "2026-10-24T02:57:36.554787+00:00",
+      "ended_at": "2026-10-24T02:57:36.832073+00:00",
+      "returncode": 0,
+      "stdout": "uptime: 2 minutes, since Oct 24 02:54:41 2026\nworker threads: 16 total, 11 idle, working: 4/0/1/0\njob queues: 0/0/0/0\njobs scheduled: 9\nIKE_SAs: 1 total, 0 half-open\nloaded plugins: charon random nonce x509 revocation constraints pubkey pkcs1 pem botan pkcs8 kernel-pfkey kernel-pfroute socket-default vici counters\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0018",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "uname -a"
+      ],
+      "started_at": "2026-10-24T02:57:36.832115+00:00",
+      "ended_at": "2026-10-24T02:57:37.086855+00:00",
+      "returncode": 0,
+      "stdout": "FreeBSD evidence-freebsd-v2-1 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0019",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ifconfig -a"
+      ],
+      "started_at": "2026-10-24T02:57:37.086898+00:00",
+      "ended_at": "2026-10-24T02:57:37.335989+00:00",
+      "returncode": 0,
+      "stdout": "vtnet0: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:10:10\n\tinet 10.0.2.15 netmask 0xffffff00 broadcast 10.0.2.255\n\tinet6 fe80::5054:76ff:fe03:1010%vtnet0 prefixlen 64 scopeid 0x1\n\tinet6 fec0::5054:76ff:fe03:1010 prefixlen 64 autoconf pltime 14400 vltime 86400\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet1: flags=1008802<BROADCAST,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:10:11\n\tinet 172.28.90.2 netmask 0xfffffffc broadcast 172.28.90.3\n\tinet6 fe80::5054:76ff:fe03:1011%vtnet1 prefixlen 64 tentative scopeid 0x2\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nlo0: flags=1008049<UP,LOOPBACK,RUNNING,MULTICAST,LOWER_UP> metric 0 mtu 16384\n\toptions=680003<RXCSUM,TXCSUM,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6>\n\tinet 127.0.0.1 netmask 0xff000000\n\tinet6 ::1 prefixlen 128\n\tinet6 fe80::1%lo0 prefixlen 64 scopeid 0x3\n\tgroups: lo\n\tnd6 options=21<PERFORMNUD,AUTO_LINKLOCAL>\nvtnet2: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1320\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:2c:94:19:04:97\n\tinet 10.2.1.1 netmask 0xffffff00 broadcast 10.2.1.255\n\tinet6 fe80::2c:94ff:fe19:497%vtnet2 prefixlen 64 scopeid 0x4\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet3: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1400\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:ef:92:ee:03:15\n\tinet 10.200.1.2 netmask 0xffffff00 broadcast 10.200.1.255\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=29<PERFORMNUD,IFDISABLED,AUTO_LINKLOCAL>\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0020",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T02:57:37.336040+00:00",
+      "ended_at": "2026-10-24T02:57:37.594744+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        10.200.1.1         UGS          vtnet3\n10.2.1.0/24        link#4             U            vtnet2\n10.2.1.1           link#3             UHS             lo0\n10.100.1.2         10.200.1.1         UGHS         vtnet3\n10.200.1.0/24      link#5             U            vtnet3\n10.200.1.2         link#3             UHS             lo0\n127.0.0.1          link#3             UH              lo0\n172.28.90.2        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:1010%lo0     link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:1011%lo0     link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::2c:94ff:fe19:497%lo0        link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:1010         link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0021",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ldd /usr/local/lib/ipsec/plugins/libstrongswan-botan.so"
+      ],
+      "started_at": "2026-10-24T02:57:37.594810+00:00",
+      "ended_at": "2026-10-24T02:57:37.853173+00:00",
+      "returncode": 0,
+      "stdout": "/usr/local/lib/ipsec/plugins/libstrongswan-botan.so:\n\tlibbotan-3.so.13 => /usr/local/lib/libbotan-3.so.13 (0x1f6f00e00000)\n\tlibthr.so.3 => /lib/libthr.so.3 (0x1f6efdc77000)\n\tlibc.so.7 => /lib/libc.so.7 (0x1f6efea57000)\n\tlibbz2.so.4 => /usr/lib/libbz2.so.4 (0x1f6eff167000)\n\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x1f6eff89a000)\n\tlibz.so.6 => /lib/libz.so.6 (0x1f6f00416000)\n\tlibc++.so.1 => /lib/libc++.so.1 (0x1f6f02a0a000)\n\tlibcxxrt.so.1 => /lib/libcxxrt.so.1 (0x1f6f0245e000)\n\tlibm.so.5 => /lib/libm.so.5 (0x1f6f043e1000)\n\tlibgcc_s.so.1 => /lib/libgcc_s.so.1 (0x1f6f02bf2000)\n\tlibmd.so.6 => /lib/libmd.so.6 (0x1f6f039c7000)\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0022",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "pkg info botan3"
+      ],
+      "started_at": "2026-10-24T02:57:37.853218+00:00",
+      "ended_at": "2026-10-24T02:57:38.127445+00:00",
+      "returncode": 0,
+      "stdout": "botan3-3.13.0\nName           : botan3\nVersion        : 3.13.0\nInstalled on   : Sat Oct 24 02:45:58 2026 UTC\nOrigin         : security/botan3\nArchitecture   : FreeBSD:14:amd64\nPrefix         : /usr/local\nCategories     : security\nLicenses       : BSD2CLAUSE\nMaintainer     : fluffy@FreeBSD.org\nWWW            : https://botan.randombit.net/\nComment        : Portable, easy to use and efficient C++ crypto library\nOptions        :\n\tDOCS           : on\n\tLLVM_FROM_PORTS: off\n\tMANPAGES       : on\n\tPYTHON         : off\n\tSQLITE3        : off\nShared Libs required:\n\tlibbz2.so.4\n\tlibc++.so.1\n\tlibc.so.7\n\tlibcxxrt.so.1\n\tlibgcc_s.so.1\n\tliblzma.so.5\n\tlibm.so.5\n\tlibthr.so.3\n\tlibz.so.6\nShared Libs provided:\n\tlibbotan-3.so.13\nAnnotations    :\n\tFreeBSD_version: 1404000\n\tbuild_timestamp: 2026-10-15T07:58:34+0000\n\tbuilt_by       : poudriere-git-3.4.8-3-gd92fb7c0\n\tcpe            : cpe:2.3:a:botan_project:botan:3.13.0:::::freebsd14:x64\n\tport_checkout_unclean: no\n\tport_git_hash  : 46cf3d9696491c61d91ecd22db11c7f7c1e62c24\n\tports_top_checkout_unclean: no\n\tports_top_git_hash: e0cbb24c950df638f2783fa49e73aea1112a7654\n\trepo_type      : binary\n\trepository     : FreeBSD\nFlat size      : 66.4MiB\nDescription    :\nBotan is a crypto library written in C++. It provides a variety of\ncryptographic algorithms, including common ones such as AES, MD5, SHA,\nHMAC, RSA, Diffie-Hellman, DSA, and ECDSA, as well as many others that\nare more obscure or specialized. It also offers X.509v3 certificates\nand CRLs, and PKCS #10 certificate requests. A message processing\nsystem that uses a filter/pipeline metaphor allows for many common\ncryptographic tasks to be completed with just a few lines of code.\nAssembly optimizations for common CPUs, including x86, x86-64, and\nPowerPC, offers further speedups for critical tasks such as SHA-1\nhashing and multiple precision integer operations.\n\nBotan is licensed under the same permissive terms as FreeBSD itself.\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0023",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "cat /usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:57:38.127491+00:00",
+      "ended_at": "2026-10-24T02:57:38.383549+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 10.200.1.2\n  remote_addrs = 10.100.1.2\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_I_B1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_I_A1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.2.1.0/24\n    remote_ts = 10.1.1.0/24\n    mode = tunnel\n    reqid = 101\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "phase-before",
+      "command": [
+        "phase",
+        "before"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0025",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T02:57:38.383599+00:00",
+      "ended_at": "2026-10-24T02:57:38.627509+00:00",
+      "returncode": 0,
+      "stdout": "msc: #4, ESTABLISHED, IKEv2, 2c644fb8ae3ba19a_i* 8deb0e75d47b761e_r\n  local  'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  remote 'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 50s ago, reauth in 10380s\n  protected: #5, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 50s ago, rekeying in 2403s, expires in 3550s\n    in  c72ff6d8,    420 bytes,     5 packets,    45s ago\n    out c2821bae,    700 bytes,     5 packets,    45s ago\n    local  10.1.1.0/24\n    remote 10.2.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0026",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -s -p esp"
+      ],
+      "started_at": "2026-10-24T02:57:38.627574+00:00",
+      "ended_at": "2026-10-24T02:57:38.878551+00:00",
+      "returncode": 0,
+      "stdout": "esp:\n\t0 packets shorter than header shows\n\t0 packets dropped; protocol family not supported\n\t0 packets dropped; no TDB\n\t0 packets dropped; bad KCR\n\t0 packets dropped; queue full\n\t0 packets dropped; no transform\n\t0 packets dropped; bad ilen\n\t0 replay counter wraps\n\t0 packets dropped; bad encryption detected\n\t0 packets dropped; bad authentication detected\n\t0 possible replay packets detected\n\t5 packets in\n\t5 packets out\n\t0 packets dropped; invalid TDB\n\t440 bytes in\n\t420 bytes out\n\t0 packets dropped; larger than IP_MAXPACKET\n\t0 packets blocked due to policy\n\t0 crypto processing failures\n\t0 tunnel sanity check failures\n\tESP output histogram:\n\t\taes-gcm-16: 10\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0027",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T02:57:38.878604+00:00",
+      "ended_at": "2026-10-24T02:57:39.131536+00:00",
+      "returncode": 0,
+      "stdout": "10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 02:56:47 2026  lastused: Oct 24 02:56:53 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=3 seq=1 pid=34767 scope=global \n\trefcnt=1\n10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 02:56:47 2026  lastused: Oct 24 02:56:53 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=4 seq=0 pid=34767 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0028",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T02:57:39.131597+00:00",
+      "ended_at": "2026-10-24T02:57:39.384754+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        link#4             U            vtnet2\n10.1.1.1           link#3             UHS             lo0\n10.2.1.0/24        10.100.1.1         UGS          vtnet3\n10.100.1.0/24      link#5             U            vtnet3\n10.100.1.2         link#3             UHS             lo0\n10.200.1.2         10.100.1.1         UGHS         vtnet3\n127.0.0.1          link#3             UH              lo0\n172.28.90.1        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:10%lo0       link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:11%lo0       link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::6f:60ff:fe3f:1bb7%lo0       link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:10           link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0029",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T02:57:39.384819+00:00",
+      "ended_at": "2026-10-24T02:57:39.661153+00:00",
+      "returncode": 0,
+      "stdout": "msc: #4, ESTABLISHED, IKEv2, 2c644fb8ae3ba19a_i 8deb0e75d47b761e_r*\n  local  'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  remote 'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 51s ago, reauth in 10724s\n  protected: #5, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 51s ago, rekeying in 2514s, expires in 3549s\n    in  c2821bae,    420 bytes,     5 packets,    46s ago\n    out c72ff6d8,    700 bytes,     5 packets,    46s ago\n    local  10.2.1.0/24\n    remote 10.1.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0030",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -s -p esp"
+      ],
+      "started_at": "2026-10-24T02:57:39.661213+00:00",
+      "ended_at": "2026-10-24T02:57:39.919107+00:00",
+      "returncode": 0,
+      "stdout": "esp:\n\t0 packets shorter than header shows\n\t0 packets dropped; protocol family not supported\n\t0 packets dropped; no TDB\n\t0 packets dropped; bad KCR\n\t0 packets dropped; queue full\n\t0 packets dropped; no transform\n\t0 packets dropped; bad ilen\n\t0 replay counter wraps\n\t0 packets dropped; bad encryption detected\n\t0 packets dropped; bad authentication detected\n\t0 possible replay packets detected\n\t5 packets in\n\t5 packets out\n\t0 packets dropped; invalid TDB\n\t440 bytes in\n\t420 bytes out\n\t0 packets dropped; larger than IP_MAXPACKET\n\t0 packets blocked due to policy\n\t0 crypto processing failures\n\t0 tunnel sanity check failures\n\tESP output histogram:\n\t\taes-gcm-16: 10\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0031",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T02:57:39.919149+00:00",
+      "ended_at": "2026-10-24T02:57:40.176195+00:00",
+      "returncode": 0,
+      "stdout": "10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 02:56:47 2026  lastused: Oct 24 02:56:53 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=3 seq=1 pid=34775 scope=global \n\trefcnt=1\n10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 02:56:47 2026  lastused: Oct 24 02:56:53 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=4 seq=0 pid=34775 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0032",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T02:57:40.176239+00:00",
+      "ended_at": "2026-10-24T02:57:40.426898+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        10.200.1.1         UGS          vtnet3\n10.2.1.0/24        link#4             U            vtnet2\n10.2.1.1           link#3             UHS             lo0\n10.100.1.2         10.200.1.1         UGHS         vtnet3\n10.200.1.0/24      link#5             U            vtnet3\n10.200.1.2         link#3             UHS             lo0\n127.0.0.1          link#3             UH              lo0\n172.28.90.2        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:1010%lo0     link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:1011%lo0     link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::2c:94ff:fe19:497%lo0        link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:1010         link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0033",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:57:40.426926+00:00",
+      "ended_at": "2026-10-24T02:57:40.506445+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, b925185eeb6fd139_i* e1b2b3c45f1f449b_r\n  local  'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 960s ago, reauth in 9342s\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 960s ago, rekeying in 1839s, expires in 2640s\n    in  cdb66d8f,  10028 bytes,    81 packets,     3s ago\n    out c123837a,  11959 bytes,    75 packets,     3s ago\n    local  10.100.1.2/32\n    remote 10.200.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0034",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:57:40.506468+00:00",
+      "ended_at": "2026-10-24T02:57:40.584418+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc123837a(3240330106) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:57:37\n\tanti-replay context: seq 0x0, oseq 0x4b, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2845(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  11959(bytes), 75(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcdb66d8f(3451284879) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:57:37\n\tanti-replay context: seq 0x51, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2799(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  10028(bytes), 81(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0035",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:57:40.584439+00:00",
+      "ended_at": "2026-10-24T02:57:40.670663+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, b925185eeb6fd139_i e1b2b3c45f1f449b_r*\n  local  'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 960s ago, reauth in 9342s\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 960s ago, rekeying in 1839s, expires in 2640s\n    in  c123837a,  11959 bytes,    75 packets,     3s ago\n    out cdb66d8f,  10028 bytes,    81 packets,     3s ago\n    local  10.200.1.2/32\n    remote 10.100.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0036",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:57:40.670702+00:00",
+      "ended_at": "2026-10-24T02:57:40.742321+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcdb66d8f(3451284879) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:57:37\n\tanti-replay context: seq 0x0, oseq 0x51, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2845(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  10028(bytes), 81(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc123837a(3240330106) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:57:37\n\tanti-replay context: seq 0x4b, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2799(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  11959(bytes), 75(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0037",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_A1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.1.10"
+      ],
+      "started_at": "2026-10-24T02:57:40.742358+00:00",
+      "ended_at": "2026-10-24T02:57:42.813978+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.1.10 (10.2.1.10) 56(84) bytes of data.\n64 bytes from 10.2.1.10: icmp_seq=1 ttl=62 time=1.22 ms\n64 bytes from 10.2.1.10: icmp_seq=2 ttl=62 time=0.996 ms\n64 bytes from 10.2.1.10: icmp_seq=3 ttl=62 time=0.963 ms\n\n--- 10.2.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2002ms\nrtt min/avg/max/mdev = 0.963/1.061/1.224/0.116 ms\n",
+      "stderr": "",
+      "probe": "cross-OS-nested-data",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "diversity-0038",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_B1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.1.1.10"
+      ],
+      "started_at": "2026-10-24T02:57:42.814025+00:00",
+      "ended_at": "2026-10-24T02:57:44.901030+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.1.1.10 (10.1.1.10) 56(84) bytes of data.\n64 bytes from 10.1.1.10: icmp_seq=1 ttl=62 time=1.09 ms\n64 bytes from 10.1.1.10: icmp_seq=2 ttl=62 time=1.06 ms\n64 bytes from 10.1.1.10: icmp_seq=3 ttl=62 time=0.955 ms\n\n--- 10.1.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2002ms\nrtt min/avg/max/mdev = 0.955/1.034/1.094/0.058 ms\n",
+      "stderr": "",
+      "probe": "cross-OS-nested-data",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "phase-after",
+      "command": [
+        "phase",
+        "after"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0040",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T02:57:44.901085+00:00",
+      "ended_at": "2026-10-24T02:57:45.178108+00:00",
+      "returncode": 0,
+      "stdout": "msc: #4, ESTABLISHED, IKEv2, 2c644fb8ae3ba19a_i* 8deb0e75d47b761e_r\n  local  'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  remote 'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 57s ago, reauth in 10373s\n  protected: #5, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 57s ago, rekeying in 2396s, expires in 3543s\n    in  c72ff6d8,    924 bytes,    11 packets,     1s ago\n    out c2821bae,   1540 bytes,    11 packets,     1s ago\n    local  10.1.1.0/24\n    remote 10.2.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0041",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -s -p esp"
+      ],
+      "started_at": "2026-10-24T02:57:45.178177+00:00",
+      "ended_at": "2026-10-24T02:57:45.432405+00:00",
+      "returncode": 0,
+      "stdout": "esp:\n\t0 packets shorter than header shows\n\t0 packets dropped; protocol family not supported\n\t0 packets dropped; no TDB\n\t0 packets dropped; bad KCR\n\t0 packets dropped; queue full\n\t0 packets dropped; no transform\n\t0 packets dropped; bad ilen\n\t0 replay counter wraps\n\t0 packets dropped; bad encryption detected\n\t0 packets dropped; bad authentication detected\n\t0 possible replay packets detected\n\t11 packets in\n\t11 packets out\n\t0 packets dropped; invalid TDB\n\t968 bytes in\n\t924 bytes out\n\t0 packets dropped; larger than IP_MAXPACKET\n\t0 packets blocked due to policy\n\t0 crypto processing failures\n\t0 tunnel sanity check failures\n\tESP output histogram:\n\t\taes-gcm-16: 22\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0042",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T02:57:45.432455+00:00",
+      "ended_at": "2026-10-24T02:57:45.685758+00:00",
+      "returncode": 0,
+      "stdout": "10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 02:56:47 2026  lastused: Oct 24 02:57:44 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=3 seq=1 pid=34790 scope=global \n\trefcnt=1\n10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 02:56:47 2026  lastused: Oct 24 02:57:44 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=4 seq=0 pid=34790 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0043",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T02:57:45.685850+00:00",
+      "ended_at": "2026-10-24T02:57:45.939710+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        link#4             U            vtnet2\n10.1.1.1           link#3             UHS             lo0\n10.2.1.0/24        10.100.1.1         UGS          vtnet3\n10.100.1.0/24      link#5             U            vtnet3\n10.100.1.2         link#3             UHS             lo0\n10.200.1.2         10.100.1.1         UGHS         vtnet3\n127.0.0.1          link#3             UH              lo0\n172.28.90.1        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:10%lo0       link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:11%lo0       link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::6f:60ff:fe3f:1bb7%lo0       link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:10           link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0044",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T02:57:45.939759+00:00",
+      "ended_at": "2026-10-24T02:57:46.218843+00:00",
+      "returncode": 0,
+      "stdout": "msc: #4, ESTABLISHED, IKEv2, 2c644fb8ae3ba19a_i 8deb0e75d47b761e_r*\n  local  'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  remote 'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 58s ago, reauth in 10717s\n  protected: #5, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 58s ago, rekeying in 2507s, expires in 3542s\n    in  c2821bae,    924 bytes,    11 packets,     2s ago\n    out c72ff6d8,   1540 bytes,    11 packets,     2s ago\n    local  10.2.1.0/24\n    remote 10.1.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0045",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -s -p esp"
+      ],
+      "started_at": "2026-10-24T02:57:46.218888+00:00",
+      "ended_at": "2026-10-24T02:57:46.476071+00:00",
+      "returncode": 0,
+      "stdout": "esp:\n\t0 packets shorter than header shows\n\t0 packets dropped; protocol family not supported\n\t0 packets dropped; no TDB\n\t0 packets dropped; bad KCR\n\t0 packets dropped; queue full\n\t0 packets dropped; no transform\n\t0 packets dropped; bad ilen\n\t0 replay counter wraps\n\t0 packets dropped; bad encryption detected\n\t0 packets dropped; bad authentication detected\n\t0 possible replay packets detected\n\t11 packets in\n\t11 packets out\n\t0 packets dropped; invalid TDB\n\t968 bytes in\n\t924 bytes out\n\t0 packets dropped; larger than IP_MAXPACKET\n\t0 packets blocked due to policy\n\t0 crypto processing failures\n\t0 tunnel sanity check failures\n\tESP output histogram:\n\t\taes-gcm-16: 22\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0046",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T02:57:46.476112+00:00",
+      "ended_at": "2026-10-24T02:57:46.732702+00:00",
+      "returncode": 0,
+      "stdout": "10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 02:56:47 2026  lastused: Oct 24 02:57:44 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=3 seq=1 pid=34791 scope=global \n\trefcnt=1\n10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 02:56:47 2026  lastused: Oct 24 02:57:44 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=4 seq=0 pid=34791 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0047",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T02:57:46.732746+00:00",
+      "ended_at": "2026-10-24T02:57:46.991424+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        10.200.1.1         UGS          vtnet3\n10.2.1.0/24        link#4             U            vtnet2\n10.2.1.1           link#3             UHS             lo0\n10.100.1.2         10.200.1.1         UGHS         vtnet3\n10.200.1.0/24      link#5             U            vtnet3\n10.200.1.2         link#3             UHS             lo0\n127.0.0.1          link#3             UH              lo0\n172.28.90.2        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:1010%lo0     link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:1011%lo0     link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::2c:94ff:fe19:497%lo0        link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:1010         link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0048",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:57:46.991451+00:00",
+      "ended_at": "2026-10-24T02:57:47.086399+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, b925185eeb6fd139_i* e1b2b3c45f1f449b_r\n  local  'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 967s ago, reauth in 9335s\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 967s ago, rekeying in 1832s, expires in 2633s\n    in  cdb66d8f,  10868 bytes,    87 packets,     3s ago\n    out c123837a,  12799 bytes,    81 packets,     3s ago\n    local  10.100.1.2/32\n    remote 10.200.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0049",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:57:47.086436+00:00",
+      "ended_at": "2026-10-24T02:57:47.168927+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc123837a(3240330106) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:57:44\n\tanti-replay context: seq 0x0, oseq 0x51, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2845(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  12799(bytes), 81(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcdb66d8f(3451284879) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:57:44\n\tanti-replay context: seq 0x57, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2799(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  10868(bytes), 87(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0050",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:57:47.168962+00:00",
+      "ended_at": "2026-10-24T02:57:47.246752+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, b925185eeb6fd139_i e1b2b3c45f1f449b_r*\n  local  'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 967s ago, reauth in 9335s\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 967s ago, rekeying in 1832s, expires in 2633s\n    in  c123837a,  12799 bytes,    81 packets,     3s ago\n    out cdb66d8f,  10868 bytes,    87 packets,     3s ago\n    local  10.200.1.2/32\n    remote 10.100.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0051",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:57:47.246786+00:00",
+      "ended_at": "2026-10-24T02:57:47.322941+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcdb66d8f(3451284879) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:57:44\n\tanti-replay context: seq 0x0, oseq 0x57, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2845(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  10868(bytes), 87(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc123837a(3240330106) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:57:44\n\tanti-replay context: seq 0x51, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2799(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  12799(bytes), 81(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0052",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --unload-conns"
+      ],
+      "started_at": "2026-10-24T02:57:47.322994+00:00",
+      "ended_at": "2026-10-24T02:57:47.579180+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "swanctl: unrecognized option `--unload-conns'\nstrongSwan 6.0.3 swanctl\nloaded plugins: random nonce x509 revocation constraints pubkey pkcs1 pem botan pkcs8\nusage:\n  swanctl command [options]\ncommands:\n  --counters         (-C)  list or reset IKE event counters\n  --initiate         (-i)  initiate a connection\n  --terminate        (-t)  terminate a connection\n  --rekey            (-R)  rekey an SA\n  --redirect         (-d)  redirect an IKE_SA\n  --uninstall        (-u)  uninstall a trap or shunt policy\n  --install          (-p)  install a trap or shunt policy\n  --list-sas         (-l)  list currently active IKE_SAs\n  --monitor-sa       (-m)  monitor for IKE_SA and CHILD_SA changes\n  --list-pols        (-P)  list currently installed policies\n  --list-authorities (-B)  list loaded authority configurations\n  --list-conns       (-L)  list loaded configurations\n  --list-certs       (-x)  list stored certificates\n  --list-pools       (-A)  list loaded pool configurations\n  --list-algs        (-g)  show loaded algorithms\n  --flush-certs      (-f)  flush cached certificates\n  --load-all         (-q)  load credentials, authorities, pools and connections\n  --load-authorities (-b)  (re-)load authority configuration\n  --load-conns       (-c)  (re-)load connection configuration\n  --load-creds       (-s)  (re-)load credentials\n  --load-pools       (-a)  (re-)load pool configuration\n  --log              (-T)  trace logging output (levels 0 and 1 only)\n  --version          (-v)  show version information\n  --stats            (-S)  show daemon stats information\n  --reload-settings  (-r)  reload daemon strongswan.conf\n  --help             (-h)  show usage information\nerror: invalid operation\n"
+    }
+  ],
+  "error": "{\"id\": \"diversity-0052\", \"command\": [\"ssh\", \"-o\", \"BatchMode=yes\", \"-o\", \"StrictHostKeyChecking=accept-new\", \"-i\", \"/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key\", \"-p\", \"22222\", \"root@127.0.0.1\", \"/usr/local/sbin/swanctl --unload-conns\"], \"started_at\": \"2026-10-24T02:57:47.322994+00:00\", \"ended_at\": \"2026-10-24T02:57:47.579180+00:00\", \"returncode\": 1, \"stdout\": \"\", \"stderr\": \"swanctl: unrecognized option `--unload-conns'\\nstrongSwan 6.0.3 swanctl\\nloaded plugins: random nonce x509 revocation constraints pubkey pkcs1 pem botan pkcs8\\nusage:\\n  swanctl command [options]\\ncommands:\\n  --counters         (-C)  list or reset IKE event counters\\n  --initiate         (-i)  initiate a connection\\n  --terminate        (-t)  terminate a connection\\n  --rekey            (-R)  rekey an SA\\n  --redirect         (-d)  redirect an IKE_SA\\n  --uninstall        (-u)  uninstall a trap or shunt policy\\n  --install          (-p)  install a trap or shunt policy\\n  --list-sas         (-l)  list currently active IKE_SAs\\n  --monitor-sa       (-m)  monitor for IKE_SA and CHILD_SA changes\\n  --list-pols        (-P)  list currently installed policies\\n  --list-authorities (-B)  list loaded authority configurations\\n  --list-conns       (-L)  list loaded configurations\\n  --list-certs       (-x)  list stored certificates\\n  --list-pools       (-A)  list loaded pool configurations\\n  --list-algs        (-g)  show loaded algorithms\\n  --flush-certs      (-f)  flush cached certificates\\n  --load-all         (-q)  load credentials, authorities, pools and connections\\n  --load-authorities (-b)  (re-)load authority configuration\\n  --load-conns       (-c)  (re-)load connection configuration\\n  --load-creds       (-s)  (re-)load credentials\\n  --load-pools       (-a)  (re-)load pool configuration\\n  --log              (-T)  trace logging output (levels 0 and 1 only)\\n  --version          (-v)  show version information\\n  --stats            (-S)  show daemon stats information\\n  --reload-settings  (-r)  reload daemon strongswan.conf\\n  --help             (-h)  show usage information\\nerror: invalid operation\\n\"}",
+  "scope": [
+    "Actual FreeBSD Inner kernels and Botan IKE cryptographic plugin replace only the two owned ND Inner containers. Native Linux Outers, FRR routing and OVS switching remain active.",
+    "Private test credential copying occurs entirely within pc22 and its guests; no private bytes enter these public artifacts.",
+    "Physical hardware remains shared in this case. Four-worker physical-role separation is a separate case.",
+    "Different OS and observed cryptographic implementation do not establish approved products, independent manufacturers/subsidiary relationships, or an NSA independence determination.",
+    "The guest management interface and virtualization host remain explicit trusted control infrastructure. No all-execution MAC confinement or non-bypass claim follows from finite traffic."
+  ]
+}

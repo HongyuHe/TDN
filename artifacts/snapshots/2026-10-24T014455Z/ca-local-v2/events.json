@@ -1,0 +1,1516 @@
+{
+  "schema_version": "csfc-authentication-events/v1",
+  "case_ids": [
+    "NET-023-C01"
+  ],
+  "mode": "local",
+  "started_at": "2026-10-24T02:01:39.905638+00:00",
+  "ended_at": "2026-10-24T02:01:57.011284+00:00",
+  "records": [
+    {
+      "id": "ca-0000",
+      "command": [
+        "openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-384",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/key.pem"
+      ],
+      "started_at": "2026-10-24T02:01:39.905800+00:00",
+      "ended_at": "2026-10-24T02:01:39.914710+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0001",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-x509",
+        "-sha384",
+        "-key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/cert.pem",
+        "-days",
+        "1",
+        "-subj",
+        "/CN=local-inner-a",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE",
+        "-addext",
+        "keyUsage=critical,keyCertSign,cRLSign"
+      ],
+      "started_at": "2026-10-24T02:01:39.914747+00:00",
+      "ended_at": "2026-10-24T02:01:39.926736+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0002",
+      "command": [
+        "openssl",
+        "ca",
+        "-gencrl",
+        "-config",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/openssl.cnf",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/crl.pem"
+      ],
+      "started_at": "2026-10-24T02:01:39.927343+00:00",
+      "ended_at": "2026-10-24T02:01:39.935917+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Using configuration from /users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/openssl.cnf\n"
+    },
+    {
+      "id": "ca-0003",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/cert.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:39.935939+00:00",
+      "ended_at": "2026-10-24T02:01:39.973818+00:00",
+      "returncode": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            1d:41:6c:a1:9a:db:d9:39:21:ba:8a:a1:49:e0:ec:b4:2c:29:43:6f\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-inner-a\n        Validity\n            Not Before: Oct 24 02:01:39 2026 GMT\n            Not After : Oct 25 02:01:39 2026 GMT\n        Subject: CN = local-inner-a\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:93:79:11:b5:77:96:7b:2b:83:e6:67:2b:60:c6:\n                    da:bd:73:f4:0f:43:b9:7c:c5:d4:c2:2b:5d:0e:17:\n                    99:1c:43:8a:87:63:f3:80:f6:66:be:73:00:e0:a4:\n                    68:f9:c8:e9:c8:b2:2a:a5:b2:2c:0d:dd:a3:7c:f5:\n                    5b:49:7d:b2:bf:5f:ff:a9:98:31:81:30:a3:ce:dd:\n                    cb:4f:27:a9:ca:ac:69:70:36:60:4c:f4:ce:27:f4:\n                    4e:33:37:06:d2:37:b9\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Subject Key Identifier: \n                7A:1A:F8:DF:5F:2C:45:4C:B7:0C:A5:E8:3C:88:5B:77:2A:6A:33:56\n            X509v3 Authority Key Identifier: \n                7A:1A:F8:DF:5F:2C:45:4C:B7:0C:A5:E8:3C:88:5B:77:2A:6A:33:56\n            X509v3 Basic Constraints: critical\n                CA:TRUE\n            X509v3 Key Usage: critical\n                Certificate Sign, CRL Sign\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:64:02:30:32:ab:44:c3:eb:68:f2:ef:7c:39:48:ce:82:9f:\n        93:aa:66:59:b3:c1:0d:42:45:8a:18:2e:f3:25:b3:e0:d0:3e:\n        ba:b5:7f:6c:40:cf:90:18:0e:1b:86:04:2f:eb:e9:05:02:30:\n        79:81:68:cd:d5:fc:7c:54:48:ae:af:24:af:94:9a:52:48:18:\n        f5:a2:45:b0:ed:a7:17:00:e4:72:b3:f2:96:0a:f5:9c:c5:15:\n        6e:3d:a4:cd:15:8f:75:b8:d4:9d:33:5e\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0004",
+      "command": [
+        "openssl",
+        "crl",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/crl.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:39.973873+00:00",
+      "ended_at": "2026-10-24T02:01:39.978202+00:00",
+      "returncode": 0,
+      "stdout": "Certificate Revocation List (CRL):\n        Version 2 (0x1)\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-inner-a\n        Last Update: Oct 24 02:01:39 2026 GMT\n        Next Update: Oct 25 02:01:39 2026 GMT\n        CRL extensions:\n            X509v3 Authority Key Identifier: \n                7A:1A:F8:DF:5F:2C:45:4C:B7:0C:A5:E8:3C:88:5B:77:2A:6A:33:56\n            X509v3 CRL Number: \n                4096\nNo Revoked Certificates.\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:66:02:31:00:d3:df:14:27:72:d2:0c:6e:ff:78:af:78:57:\n        76:51:b6:44:98:14:03:33:f5:f3:b8:b4:b7:f7:e3:9d:57:45:\n        cf:91:b1:96:c7:29:de:15:3b:90:d4:a9:9b:dd:e6:ce:e8:02:\n        31:00:be:62:65:dc:06:65:06:3b:3c:75:1e:cb:fb:68:a3:16:\n        69:d6:f7:45:a3:81:05:d3:bc:07:3a:35:ba:f2:6a:cd:a6:e6:\n        07:a0:52:58:6a:a0:22:f6:83:cc:a9:f4:99:1b\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0005",
+      "command": [
+        "openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-384",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/key.pem"
+      ],
+      "started_at": "2026-10-24T02:01:39.978326+00:00",
+      "ended_at": "2026-10-24T02:01:39.986366+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0006",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-x509",
+        "-sha384",
+        "-key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/cert.pem",
+        "-days",
+        "1",
+        "-subj",
+        "/CN=local-inner-b",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE",
+        "-addext",
+        "keyUsage=critical,keyCertSign,cRLSign"
+      ],
+      "started_at": "2026-10-24T02:01:39.986390+00:00",
+      "ended_at": "2026-10-24T02:01:39.996061+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0007",
+      "command": [
+        "openssl",
+        "ca",
+        "-gencrl",
+        "-config",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/openssl.cnf",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/crl.pem"
+      ],
+      "started_at": "2026-10-24T02:01:39.996620+00:00",
+      "ended_at": "2026-10-24T02:01:40.005081+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Using configuration from /users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/openssl.cnf\n"
+    },
+    {
+      "id": "ca-0008",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/cert.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.005102+00:00",
+      "ended_at": "2026-10-24T02:01:40.043821+00:00",
+      "returncode": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            69:55:e0:dc:88:2d:90:eb:55:f6:fc:35:fb:10:1d:b1:53:a7:72:1c\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-inner-b\n        Validity\n            Not Before: Oct 24 02:01:39 2026 GMT\n            Not After : Oct 25 02:01:39 2026 GMT\n        Subject: CN = local-inner-b\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:13:22:fb:0e:6a:b6:29:72:f4:24:16:47:7c:8d:\n                    b3:c7:8f:44:c3:61:b9:1d:dd:db:59:5d:a8:24:42:\n                    9d:f0:ba:23:83:cf:e6:9f:38:57:c1:b4:9b:6d:c1:\n                    e4:ff:2e:2f:7c:c7:2c:c4:cc:fc:08:b2:1a:2d:a7:\n                    ce:a9:37:93:e9:c3:22:79:ed:6a:e1:da:41:92:a4:\n                    2e:ad:98:31:e0:90:c7:52:66:f3:d4:e6:d1:30:fb:\n                    d5:59:fb:a4:6d:41:d0\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Subject Key Identifier: \n                00:D5:78:27:4D:AA:41:46:EC:C1:69:37:73:AA:30:B1:E8:68:48:2E\n            X509v3 Authority Key Identifier: \n                00:D5:78:27:4D:AA:41:46:EC:C1:69:37:73:AA:30:B1:E8:68:48:2E\n            X509v3 Basic Constraints: critical\n                CA:TRUE\n            X509v3 Key Usage: critical\n                Certificate Sign, CRL Sign\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:65:02:30:2c:65:28:00:3c:38:a1:7f:8c:2c:04:dd:c5:b1:\n        b8:61:b6:48:9c:fc:43:ec:f5:24:77:f0:50:1b:62:e0:3d:30:\n        37:b1:40:b2:d0:a9:cf:3c:c6:35:6d:dd:3b:de:38:ed:02:31:\n        00:e5:24:db:17:61:99:05:67:f1:3c:9a:ea:0e:16:1f:48:d1:\n        0e:07:23:19:74:05:d3:d1:10:44:ba:a2:54:1f:b6:f5:56:90:\n        89:4f:88:96:c9:6f:41:86:fe:3f:c8:bd:24\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0009",
+      "command": [
+        "openssl",
+        "crl",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/crl.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.043845+00:00",
+      "ended_at": "2026-10-24T02:01:40.050331+00:00",
+      "returncode": 0,
+      "stdout": "Certificate Revocation List (CRL):\n        Version 2 (0x1)\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-inner-b\n        Last Update: Oct 24 02:01:40 2026 GMT\n        Next Update: Oct 25 02:01:40 2026 GMT\n        CRL extensions:\n            X509v3 Authority Key Identifier: \n                00:D5:78:27:4D:AA:41:46:EC:C1:69:37:73:AA:30:B1:E8:68:48:2E\n            X509v3 CRL Number: \n                4096\nNo Revoked Certificates.\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:64:02:30:1a:e0:b6:9d:56:f2:a5:bd:7c:67:12:ab:08:c3:\n        98:12:cc:bb:59:46:b4:8a:61:01:04:e2:34:4e:52:a1:cf:8f:\n        45:10:61:cb:51:91:e0:3d:55:5d:8b:24:46:56:d7:1e:02:30:\n        15:15:f7:fd:a6:08:94:b1:fb:b9:f4:04:ea:b7:06:42:e4:07:\n        1f:c0:4a:b1:e2:d7:52:3d:1a:03:cc:f0:99:44:eb:34:b2:6f:\n        df:8f:6c:53:05:8e:c9:b9:bb:c0:90:63\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0010",
+      "command": [
+        "openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-384",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/key.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.050529+00:00",
+      "ended_at": "2026-10-24T02:01:40.059056+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0011",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-x509",
+        "-sha384",
+        "-key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/cert.pem",
+        "-days",
+        "1",
+        "-subj",
+        "/CN=local-outer-a",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE",
+        "-addext",
+        "keyUsage=critical,keyCertSign,cRLSign"
+      ],
+      "started_at": "2026-10-24T02:01:40.059127+00:00",
+      "ended_at": "2026-10-24T02:01:40.071354+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0012",
+      "command": [
+        "openssl",
+        "ca",
+        "-gencrl",
+        "-config",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/openssl.cnf",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/crl.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.072416+00:00",
+      "ended_at": "2026-10-24T02:01:40.081436+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Using configuration from /users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/openssl.cnf\n"
+    },
+    {
+      "id": "ca-0013",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/cert.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.081478+00:00",
+      "ended_at": "2026-10-24T02:01:40.121443+00:00",
+      "returncode": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            51:bf:82:c9:e7:f6:73:d5:e8:73:78:87:20:8a:d0:54:fe:06:b3:0b\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-outer-a\n        Validity\n            Not Before: Oct 24 02:01:40 2026 GMT\n            Not After : Oct 25 02:01:40 2026 GMT\n        Subject: CN = local-outer-a\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:fb:b8:0e:a4:ca:82:66:68:7d:55:ef:b1:64:46:\n                    c6:aa:aa:23:e6:d0:df:46:3f:d4:11:1a:f7:76:5a:\n                    f8:c5:8e:e5:73:92:69:23:76:8a:2a:cd:9c:56:17:\n                    4f:41:27:9c:27:e6:3e:b5:83:08:a8:84:40:9a:d7:\n                    ee:fd:29:aa:44:6b:e4:0e:00:56:06:3c:13:03:8d:\n                    3f:72:22:bc:dd:c0:b1:99:b4:ae:e2:3d:3f:0b:3f:\n                    07:0a:4b:8e:28:8c:e8\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Subject Key Identifier: \n                CE:15:83:F3:9F:2D:9C:E0:01:F0:A9:12:D0:6E:CF:66:49:22:53:17\n            X509v3 Authority Key Identifier: \n                CE:15:83:F3:9F:2D:9C:E0:01:F0:A9:12:D0:6E:CF:66:49:22:53:17\n            X509v3 Basic Constraints: critical\n                CA:TRUE\n            X509v3 Key Usage: critical\n                Certificate Sign, CRL Sign\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:64:02:30:26:e3:b4:d8:5c:25:0f:bd:cf:49:a2:d1:0c:10:\n        af:99:ab:81:a0:03:39:03:9b:81:53:d7:9e:58:a1:cf:0f:d7:\n        dd:8f:21:04:63:e0:d7:0a:f8:40:8b:bb:b2:31:fb:3c:02:30:\n        33:a9:c8:97:ad:0f:d5:42:6f:47:52:8c:d4:b6:65:bc:ae:2b:\n        27:c2:3e:d9:1a:79:3c:29:a9:b2:eb:b5:dd:d3:f7:fd:c5:f3:\n        34:fd:eb:1c:d3:8d:89:eb:20:9b:d6:cc\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0014",
+      "command": [
+        "openssl",
+        "crl",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/crl.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.121489+00:00",
+      "ended_at": "2026-10-24T02:01:40.128122+00:00",
+      "returncode": 0,
+      "stdout": "Certificate Revocation List (CRL):\n        Version 2 (0x1)\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-outer-a\n        Last Update: Oct 24 02:01:40 2026 GMT\n        Next Update: Oct 25 02:01:40 2026 GMT\n        CRL extensions:\n            X509v3 Authority Key Identifier: \n                CE:15:83:F3:9F:2D:9C:E0:01:F0:A9:12:D0:6E:CF:66:49:22:53:17\n            X509v3 CRL Number: \n                4096\nNo Revoked Certificates.\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:65:02:30:05:69:9e:a6:13:ff:35:36:db:1c:bb:5c:95:b8:\n        f1:e3:17:ef:fe:9e:8f:db:a7:eb:8a:73:a8:c4:41:fa:1e:28:\n        fd:c7:3c:ab:46:50:f7:f0:01:27:29:b8:6d:0b:d0:66:02:31:\n        00:aa:3e:9d:25:4d:5d:91:1b:b5:fd:18:e1:aa:70:ba:ee:95:\n        41:1a:51:c6:11:73:d7:d3:ff:c0:c8:15:78:56:f4:73:0f:b7:\n        28:6c:a5:ea:9b:83:31:a7:07:db:98:38:c2\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0015",
+      "command": [
+        "openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-384",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/key.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.128352+00:00",
+      "ended_at": "2026-10-24T02:01:40.136700+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0016",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-x509",
+        "-sha384",
+        "-key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/cert.pem",
+        "-days",
+        "1",
+        "-subj",
+        "/CN=local-outer-b",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE",
+        "-addext",
+        "keyUsage=critical,keyCertSign,cRLSign"
+      ],
+      "started_at": "2026-10-24T02:01:40.136748+00:00",
+      "ended_at": "2026-10-24T02:01:40.148527+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0017",
+      "command": [
+        "openssl",
+        "ca",
+        "-gencrl",
+        "-config",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/openssl.cnf",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/crl.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.149571+00:00",
+      "ended_at": "2026-10-24T02:01:40.160895+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Using configuration from /users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/openssl.cnf\n"
+    },
+    {
+      "id": "ca-0018",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/cert.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.160938+00:00",
+      "ended_at": "2026-10-24T02:01:40.197756+00:00",
+      "returncode": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            5a:ab:8c:3c:e3:15:ba:3b:8a:8f:47:5b:54:06:19:bf:13:73:1b\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-outer-b\n        Validity\n            Not Before: Oct 24 02:01:40 2026 GMT\n            Not After : Oct 25 02:01:40 2026 GMT\n        Subject: CN = local-outer-b\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:99:d7:bb:47:c6:5c:16:b2:93:9a:77:89:0a:7c:\n                    a1:31:e0:c1:c8:ea:ee:ae:6e:51:56:b3:47:b5:f9:\n                    89:8d:5f:1a:08:b6:4f:5b:41:55:ee:71:47:e5:7d:\n                    4f:42:30:dd:72:80:4f:7c:b6:9e:ea:fb:c5:dc:1d:\n                    a3:3e:d6:0d:80:11:e3:8e:0a:12:cf:b2:f8:66:e0:\n                    a2:c0:af:58:97:79:ba:9f:77:ff:2d:8a:d6:16:e6:\n                    93:13:41:b3:e7:8e:07\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Subject Key Identifier: \n                37:96:D1:A5:D9:3D:FD:E5:D6:66:25:ED:3B:AE:65:93:65:D3:3C:6C\n            X509v3 Authority Key Identifier: \n                37:96:D1:A5:D9:3D:FD:E5:D6:66:25:ED:3B:AE:65:93:65:D3:3C:6C\n            X509v3 Basic Constraints: critical\n                CA:TRUE\n            X509v3 Key Usage: critical\n                Certificate Sign, CRL Sign\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:66:02:31:00:ff:f3:4f:75:13:b6:b0:1c:92:62:00:56:c1:\n        d3:35:d1:f2:c0:9b:4a:e5:18:fb:36:4c:f5:82:60:7e:1d:e1:\n        4a:e5:07:64:64:40:91:13:dd:d3:2c:6f:5d:4b:f5:5c:71:02:\n        31:00:83:8b:98:1e:b3:ab:10:d9:e0:7b:33:ca:98:ec:19:9d:\n        24:65:72:f1:27:c1:4f:42:68:f1:52:0a:74:04:aa:97:89:b5:\n        27:49:e1:42:5d:c7:ac:7a:a9:79:95:0a:af:cc\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0019",
+      "command": [
+        "openssl",
+        "crl",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/crl.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.197801+00:00",
+      "ended_at": "2026-10-24T02:01:40.203817+00:00",
+      "returncode": 0,
+      "stdout": "Certificate Revocation List (CRL):\n        Version 2 (0x1)\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-outer-b\n        Last Update: Oct 24 02:01:40 2026 GMT\n        Next Update: Oct 25 02:01:40 2026 GMT\n        CRL extensions:\n            X509v3 Authority Key Identifier: \n                37:96:D1:A5:D9:3D:FD:E5:D6:66:25:ED:3B:AE:65:93:65:D3:3C:6C\n            X509v3 CRL Number: \n                4096\nNo Revoked Certificates.\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:66:02:31:00:e7:93:e6:09:70:6c:71:b0:13:8b:06:0d:52:\n        e9:f9:b0:c7:e0:0a:1a:cf:eb:69:5e:cb:e7:2e:f2:d6:e1:0d:\n        bd:b0:6e:ac:32:a8:fb:7b:54:d0:0e:fb:32:fc:1e:0a:60:02:\n        31:00:c0:8e:14:ee:d0:54:c4:af:99:04:b3:24:d8:f6:1e:01:\n        2c:62:43:23:c1:eb:84:00:f4:62:c0:2a:ee:a8:1c:5a:66:3a:\n        a2:24:cc:91:e3:c7:be:80:ed:3d:a4:0d:5b:d3\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0020",
+      "command": [
+        "openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-384",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-a/private/key.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.204441+00:00",
+      "ended_at": "2026-10-24T02:01:40.211525+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0021",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-sha384",
+        "-key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-a/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-a/request.pem",
+        "-subj",
+        "/CN=inner-a.msc.test"
+      ],
+      "started_at": "2026-10-24T02:01:40.211570+00:00",
+      "ended_at": "2026-10-24T02:01:40.222103+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0022",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-sha384",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-a/request.pem",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/cert.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-a/key.pem",
+        "-CAcreateserial",
+        "-days",
+        "1",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-a/extensions",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-a/x509/cert.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.222371+00:00",
+      "ended_at": "2026-10-24T02:01:40.265000+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = inner-a.msc.test\n"
+    },
+    {
+      "id": "ca-0023",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-a/x509/cert.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.266741+00:00",
+      "ended_at": "2026-10-24T02:01:40.305553+00:00",
+      "returncode": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            59:6a:e1:bd:13:d4:5d:57:f1:41:39:41:71:15:81:49:38:68:3f:17\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-inner-a\n        Validity\n            Not Before: Oct 24 02:01:40 2026 GMT\n            Not After : Oct 25 02:01:40 2026 GMT\n        Subject: CN = inner-a.msc.test\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:35:07:34:64:61:1b:37:54:a2:52:53:24:4a:e5:\n                    f2:9d:ad:5b:7d:f9:e1:d4:03:62:0a:4b:36:ba:9f:\n                    9c:5e:1d:86:aa:83:5b:a3:1f:b0:f8:fe:e1:df:41:\n                    02:23:cf:f5:ba:2d:50:41:72:ee:ee:2b:bc:fb:d3:\n                    35:81:d5:70:59:be:2a:60:10:75:76:d4:cb:d2:38:\n                    0b:e9:9e:ba:c9:67:47:a7:3c:da:51:96:2c:6b:36:\n                    b6:8a:92:e1:2f:6d:c8\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Basic Constraints: \n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature\n            X509v3 Extended Key Usage: \n                1.3.6.1.5.5.8.2.2, TLS Web Server Authentication, TLS Web Client Authentication\n            X509v3 Subject Alternative Name: \n                DNS:inner-a.msc.test\n            X509v3 Subject Key Identifier: \n                8D:53:44:2F:A3:8D:3E:FD:75:58:CE:97:0F:6E:6D:66:24:AA:85:13\n            X509v3 Authority Key Identifier: \n                7A:1A:F8:DF:5F:2C:45:4C:B7:0C:A5:E8:3C:88:5B:77:2A:6A:33:56\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:65:02:31:00:b1:df:01:22:02:5c:f7:a7:29:bc:8f:e2:7b:\n        9d:27:6b:87:1d:75:0f:42:f1:1b:df:0b:e7:a7:45:18:c4:48:\n        5d:38:df:1d:34:94:cf:b0:e9:d2:22:e2:d0:6e:96:13:48:02:\n        30:56:ab:8d:61:76:62:ca:f6:df:8a:f7:26:3f:3c:b6:6e:46:\n        ed:ec:df:e6:98:e8:ea:59:38:f2:e6:eb:c7:09:95:5d:a3:46:\n        d3:4a:a5:8c:84:55:00:c5:1b:f7:20:91:87\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0024",
+      "command": [
+        "openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-384",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-b/private/key.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.306178+00:00",
+      "ended_at": "2026-10-24T02:01:40.314233+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0025",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-sha384",
+        "-key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-b/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-b/request.pem",
+        "-subj",
+        "/CN=inner-b.msc.test"
+      ],
+      "started_at": "2026-10-24T02:01:40.314281+00:00",
+      "ended_at": "2026-10-24T02:01:40.323383+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0026",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-sha384",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-b/request.pem",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/cert.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-inner-b/key.pem",
+        "-CAcreateserial",
+        "-days",
+        "1",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-b/extensions",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-b/x509/cert.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.323665+00:00",
+      "ended_at": "2026-10-24T02:01:40.366442+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = inner-b.msc.test\n"
+    },
+    {
+      "id": "ca-0027",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-b/x509/cert.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.367722+00:00",
+      "ended_at": "2026-10-24T02:01:40.406523+00:00",
+      "returncode": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            0d:5d:e3:04:2a:19:d1:53:22:23:3d:50:86:3a:38:cd:dc:21:8e:2a\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-inner-b\n        Validity\n            Not Before: Oct 24 02:01:40 2026 GMT\n            Not After : Oct 25 02:01:40 2026 GMT\n        Subject: CN = inner-b.msc.test\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:e2:e7:fc:82:f6:dd:71:2b:e3:5a:54:97:1f:45:\n                    ac:67:e2:67:d2:62:82:58:4b:09:87:dc:b4:60:4a:\n                    fa:7d:d2:ca:29:14:6e:dd:f4:b3:39:ea:15:77:7c:\n                    8a:fa:6c:54:45:f2:fb:5a:9e:48:17:23:e5:e5:fd:\n                    70:b8:ab:7f:6d:df:0a:50:ae:b5:3b:fe:92:70:6e:\n                    ec:f3:c7:51:b3:c6:d5:1f:e7:2a:91:65:13:8e:b9:\n                    75:00:93:df:cc:8c:0a\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Basic Constraints: \n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature\n            X509v3 Extended Key Usage: \n                1.3.6.1.5.5.8.2.2, TLS Web Server Authentication, TLS Web Client Authentication\n            X509v3 Subject Alternative Name: \n                DNS:inner-b.msc.test\n            X509v3 Subject Key Identifier: \n                C9:86:E0:24:47:DF:7D:0B:6A:31:D9:80:8F:75:A9:E3:CA:B0:F2:EE\n            X509v3 Authority Key Identifier: \n                00:D5:78:27:4D:AA:41:46:EC:C1:69:37:73:AA:30:B1:E8:68:48:2E\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:66:02:31:00:93:77:d1:60:e8:3f:de:ff:52:f3:d4:af:4c:\n        27:f0:8c:fb:22:3a:de:a1:c1:cb:0a:23:e5:ee:9f:b9:11:07:\n        c7:ce:82:a3:aa:ff:3a:28:b2:fa:c3:a6:6c:10:55:47:bc:02:\n        31:00:d1:43:a9:ed:76:55:0e:de:3f:d4:b3:14:c5:2c:8e:0e:\n        34:2d:0d:1b:81:e0:09:7a:39:47:22:21:93:d9:64:2e:e2:4b:\n        81:8a:3e:60:67:8b:b0:0e:55:ee:5e:b1:b9:eb\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0028",
+      "command": [
+        "openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-384",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-a/private/key.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.407176+00:00",
+      "ended_at": "2026-10-24T02:01:40.415455+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0029",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-sha384",
+        "-key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-a/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-a/request.pem",
+        "-subj",
+        "/CN=outer-a.msc.test"
+      ],
+      "started_at": "2026-10-24T02:01:40.415503+00:00",
+      "ended_at": "2026-10-24T02:01:40.424504+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0030",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-sha384",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-a/request.pem",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/cert.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-a/key.pem",
+        "-CAcreateserial",
+        "-days",
+        "1",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-a/extensions",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-a/x509/cert.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.424794+00:00",
+      "ended_at": "2026-10-24T02:01:40.468650+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = outer-a.msc.test\n"
+    },
+    {
+      "id": "ca-0031",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-a/x509/cert.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.470263+00:00",
+      "ended_at": "2026-10-24T02:01:40.508486+00:00",
+      "returncode": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            61:21:9f:1c:8f:be:24:88:65:08:a3:80:ff:dd:bd:8b:b3:25:53:79\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-outer-a\n        Validity\n            Not Before: Oct 24 02:01:40 2026 GMT\n            Not After : Oct 25 02:01:40 2026 GMT\n        Subject: CN = outer-a.msc.test\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:b9:19:bf:37:12:53:70:dc:56:d4:d3:25:f0:0f:\n                    b7:a4:b2:a1:79:be:ae:94:35:27:14:e9:35:66:82:\n                    bf:d0:0e:3c:6c:a7:d5:16:45:d6:67:c1:14:59:2b:\n                    59:5f:e8:27:68:6b:72:39:84:4f:f5:2a:b5:b8:f5:\n                    34:6c:3b:93:fe:a9:e7:47:54:24:c6:48:40:08:5d:\n                    37:d7:04:3a:07:ce:16:f6:f9:1b:5f:30:2c:af:e2:\n                    03:52:cb:22:90:23:9e\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Basic Constraints: \n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature\n            X509v3 Extended Key Usage: \n                1.3.6.1.5.5.8.2.2, TLS Web Server Authentication, TLS Web Client Authentication\n            X509v3 Subject Alternative Name: \n                DNS:outer-a.msc.test\n            X509v3 Subject Key Identifier: \n                44:33:3A:08:A5:CD:48:8D:8E:91:92:1D:C1:39:3A:A6:DD:58:38:8E\n            X509v3 Authority Key Identifier: \n                CE:15:83:F3:9F:2D:9C:E0:01:F0:A9:12:D0:6E:CF:66:49:22:53:17\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:65:02:30:6a:3a:17:d5:c2:5f:23:2e:af:bb:7e:59:90:2a:\n        48:1b:b9:d5:19:98:39:d5:af:53:58:72:64:e1:5c:f6:d0:2a:\n        1d:14:5d:df:a2:97:31:6e:f7:50:31:fc:31:11:b0:68:02:31:\n        00:c1:35:4c:0a:2a:8e:e9:95:d5:26:e2:7b:00:c7:8d:71:d7:\n        f9:08:e0:45:89:37:da:a2:34:f5:81:7a:66:dd:9c:6e:6e:03:\n        cd:70:2c:7a:d4:1f:d6:16:ec:b9:40:57:65\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0032",
+      "command": [
+        "openssl",
+        "genpkey",
+        "-algorithm",
+        "EC",
+        "-pkeyopt",
+        "ec_paramgen_curve:P-384",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-b/private/key.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.508899+00:00",
+      "ended_at": "2026-10-24T02:01:40.516979+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0033",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-sha384",
+        "-key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-b/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-b/request.pem",
+        "-subj",
+        "/CN=outer-b.msc.test"
+      ],
+      "started_at": "2026-10-24T02:01:40.517009+00:00",
+      "ended_at": "2026-10-24T02:01:40.527510+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0034",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-sha384",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-b/request.pem",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/cert.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/authorities/local-outer-b/key.pem",
+        "-CAcreateserial",
+        "-days",
+        "1",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-b/extensions",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-b/x509/cert.pem"
+      ],
+      "started_at": "2026-10-24T02:01:40.527687+00:00",
+      "ended_at": "2026-10-24T02:01:40.573712+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = outer-b.msc.test\n"
+    },
+    {
+      "id": "ca-0035",
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-b/x509/cert.pem",
+        "-noout",
+        "-text"
+      ],
+      "started_at": "2026-10-24T02:01:40.574575+00:00",
+      "ended_at": "2026-10-24T02:01:40.611824+00:00",
+      "returncode": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            12:97:fb:e1:87:52:3c:48:94:b3:e0:0f:24:da:d7:15:f8:96:f9:f9\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = local-outer-b\n        Validity\n            Not Before: Oct 24 02:01:40 2026 GMT\n            Not After : Oct 25 02:01:40 2026 GMT\n        Subject: CN = outer-b.msc.test\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:89:2e:cf:62:92:dd:f9:aa:cd:9f:da:b7:19:e3:\n                    4e:3f:bc:1a:40:e0:b1:69:37:df:86:f3:b8:54:a1:\n                    e0:22:c6:c8:ac:56:d0:5a:a1:fd:0f:ea:72:2d:dc:\n                    ef:96:24:81:3b:e2:c2:3f:2a:1c:67:7d:c8:ac:71:\n                    d8:b8:d3:f3:b5:f7:df:37:b1:98:04:51:26:48:59:\n                    f0:a7:4d:26:f0:de:67:a1:5e:96:35:28:3d:52:8f:\n                    a0:60:db:63:4d:9e:c4\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Basic Constraints: \n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature\n            X509v3 Extended Key Usage: \n                1.3.6.1.5.5.8.2.2, TLS Web Server Authentication, TLS Web Client Authentication\n            X509v3 Subject Alternative Name: \n                DNS:outer-b.msc.test\n            X509v3 Subject Key Identifier: \n                98:C6:C4:09:0B:24:08:91:13:34:E8:88:A6:8D:8A:27:86:4A:B0:92\n            X509v3 Authority Key Identifier: \n                37:96:D1:A5:D9:3D:FD:E5:D6:66:25:ED:3B:AE:65:93:65:D3:3C:6C\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:65:02:31:00:92:80:43:c0:ab:74:7c:70:19:1f:78:95:f1:\n        e2:89:73:2f:e3:ea:2b:c7:62:3f:1b:09:ca:40:9c:bf:49:23:\n        70:0a:00:77:1c:52:de:c4:b8:ae:7b:3b:57:34:ba:0b:09:02:\n        30:29:35:bb:3d:75:25:2a:f7:68:25:90:9b:2d:b3:2b:6c:a6:\n        23:5a:92:8d:17:9a:55:c0:1f:8c:98:42:cb:c6:1f:5f:f8:da:\n        53:3a:26:cb:bc:4a:82:db:ba:91:3c:c1:7b\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0036",
+      "command": [
+        "docker",
+        "network",
+        "create",
+        "--driver",
+        "bridge",
+        "--subnet",
+        "172.29.245.0/24",
+        "tcv3-ca2-local"
+      ],
+      "started_at": "2026-10-24T02:01:40.611877+00:00",
+      "ended_at": "2026-10-24T02:01:40.907311+00:00",
+      "returncode": 0,
+      "stdout": "8e21f2122c759622267446e547249c4cfdf1dbb68d7fc573af67b1864db113cd\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0037",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-ca2-local-inner-a",
+        "--network",
+        "tcv3-ca2-local",
+        "--ip",
+        "172.29.245.10",
+        "--cap-add",
+        "NET_ADMIN",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-a:/etc/swanctl",
+        "twinet-msc:construction-v2"
+      ],
+      "started_at": "2026-10-24T02:01:40.907934+00:00",
+      "ended_at": "2026-10-24T02:01:43.268063+00:00",
+      "returncode": 0,
+      "stdout": "1d26d10d5e03456197fb687a81bf8e31949b497f656275a2d6b383fa83ad9478\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0038",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "ip",
+        "addr",
+        "add",
+        "192.0.2.10/32",
+        "dev",
+        "lo"
+      ],
+      "started_at": "2026-10-24T02:01:43.268088+00:00",
+      "ended_at": "2026-10-24T02:01:43.362993+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0039",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "sh",
+        "-ec",
+        "/usr/lib/ipsec/charon >/tmp/charon.log 2>&1 &"
+      ],
+      "started_at": "2026-10-24T02:01:43.363018+00:00",
+      "ended_at": "2026-10-24T02:01:43.454764+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0040",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "swanctl",
+        "--load-all"
+      ],
+      "started_at": "2026-10-24T02:01:43.754893+00:00",
+      "ended_at": "2026-10-24T02:01:43.868323+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/local-inner-b.pem'\nloaded certificate from '/etc/swanctl/x509ca/local-inner-a.pem'\nloaded certificate from '/etc/swanctl/x509crl/local-inner-b.pem'\nloaded certificate from '/etc/swanctl/x509crl/local-inner-a.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'peer'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "id": "ca-0041",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-ca2-local-inner-b",
+        "--network",
+        "tcv3-ca2-local",
+        "--ip",
+        "172.29.245.11",
+        "--cap-add",
+        "NET_ADMIN",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/inner-b:/etc/swanctl",
+        "twinet-msc:construction-v2"
+      ],
+      "started_at": "2026-10-24T02:01:43.868978+00:00",
+      "ended_at": "2026-10-24T02:01:45.641556+00:00",
+      "returncode": 0,
+      "stdout": "3a9f5290d71bcdd127f5a012d29ca09684f6bebe41a36c125bfe6eb89e5b640a\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0042",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-b",
+        "ip",
+        "addr",
+        "add",
+        "192.0.2.11/32",
+        "dev",
+        "lo"
+      ],
+      "started_at": "2026-10-24T02:01:45.641582+00:00",
+      "ended_at": "2026-10-24T02:01:45.725772+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0043",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-b",
+        "sh",
+        "-ec",
+        "/usr/lib/ipsec/charon >/tmp/charon.log 2>&1 &"
+      ],
+      "started_at": "2026-10-24T02:01:45.725806+00:00",
+      "ended_at": "2026-10-24T02:01:45.807009+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0044",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-b",
+        "swanctl",
+        "--load-all"
+      ],
+      "started_at": "2026-10-24T02:01:46.107116+00:00",
+      "ended_at": "2026-10-24T02:01:46.220435+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/local-inner-b.pem'\nloaded certificate from '/etc/swanctl/x509ca/local-inner-a.pem'\nloaded certificate from '/etc/swanctl/x509crl/local-inner-b.pem'\nloaded certificate from '/etc/swanctl/x509crl/local-inner-a.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'peer'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "id": "ca-0045",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-ca2-local-outer-a",
+        "--network",
+        "tcv3-ca2-local",
+        "--ip",
+        "172.29.245.12",
+        "--cap-add",
+        "NET_ADMIN",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-a:/etc/swanctl",
+        "twinet-msc:construction-v2"
+      ],
+      "started_at": "2026-10-24T02:01:46.220846+00:00",
+      "ended_at": "2026-10-24T02:01:47.638550+00:00",
+      "returncode": 0,
+      "stdout": "847a18bcd0ed319d1eeb46810869be27c3676b413aa22b59fbaa65bf390d6845\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0046",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "ip",
+        "addr",
+        "add",
+        "192.0.2.12/32",
+        "dev",
+        "lo"
+      ],
+      "started_at": "2026-10-24T02:01:47.638583+00:00",
+      "ended_at": "2026-10-24T02:01:47.726794+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0047",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "sh",
+        "-ec",
+        "/usr/lib/ipsec/charon >/tmp/charon.log 2>&1 &"
+      ],
+      "started_at": "2026-10-24T02:01:47.726820+00:00",
+      "ended_at": "2026-10-24T02:01:47.809967+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0048",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "swanctl",
+        "--load-all"
+      ],
+      "started_at": "2026-10-24T02:01:48.110061+00:00",
+      "ended_at": "2026-10-24T02:01:48.231590+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/local-outer-b.pem'\nloaded certificate from '/etc/swanctl/x509ca/local-outer-a.pem'\nloaded certificate from '/etc/swanctl/x509crl/local-outer-b.pem'\nloaded certificate from '/etc/swanctl/x509crl/local-outer-a.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'peer'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "id": "ca-0049",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-ca2-local-outer-b",
+        "--network",
+        "tcv3-ca2-local",
+        "--ip",
+        "172.29.245.13",
+        "--cap-add",
+        "NET_ADMIN",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/ca-local-v2/outer-b:/etc/swanctl",
+        "twinet-msc:construction-v2"
+      ],
+      "started_at": "2026-10-24T02:01:48.232220+00:00",
+      "ended_at": "2026-10-24T02:01:49.879917+00:00",
+      "returncode": 0,
+      "stdout": "f93c845ca546468ae0669fc8dfbe602699e85eeb9d632793b309d4586943e9bb\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0050",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-b",
+        "ip",
+        "addr",
+        "add",
+        "192.0.2.13/32",
+        "dev",
+        "lo"
+      ],
+      "started_at": "2026-10-24T02:01:49.879953+00:00",
+      "ended_at": "2026-10-24T02:01:49.964385+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0051",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-b",
+        "sh",
+        "-ec",
+        "/usr/lib/ipsec/charon >/tmp/charon.log 2>&1 &"
+      ],
+      "started_at": "2026-10-24T02:01:49.964403+00:00",
+      "ended_at": "2026-10-24T02:01:50.055800+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0052",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-b",
+        "swanctl",
+        "--load-all"
+      ],
+      "started_at": "2026-10-24T02:01:50.355884+00:00",
+      "ended_at": "2026-10-24T02:01:50.468690+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/local-outer-b.pem'\nloaded certificate from '/etc/swanctl/x509ca/local-outer-a.pem'\nloaded certificate from '/etc/swanctl/x509crl/local-outer-b.pem'\nloaded certificate from '/etc/swanctl/x509crl/local-outer-a.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'peer'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "id": "ca-0053",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "swanctl",
+        "--initiate",
+        "--child",
+        "protected"
+      ],
+      "started_at": "2026-10-24T02:01:50.468714+00:00",
+      "ended_at": "2026-10-24T02:01:50.606433+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] initiating IKE_SA peer[1] to 172.29.245.11\n[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n[NET] sending packet: from 172.29.245.10[500] to 172.29.245.11[500] (296 bytes)\n[NET] received packet: from 172.29.245.11[500] to 172.29.245.10[500] (349 bytes)\n[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n[IKE] received cert request for \"CN=local-inner-a\"\n[IKE] received cert request for \"CN=local-inner-b\"\n[IKE] sending cert request for \"CN=local-inner-a\"\n[IKE] sending cert request for \"CN=local-inner-b\"\n[IKE] authentication of 'inner-a.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n[IKE] sending end entity cert \"CN=inner-a.msc.test\"\n[IKE] establishing CHILD_SA protected{1}\n[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH SA TSi TSr N(MOBIKE_SUP) N(NO_ADD_ADDR) N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n[NET] sending packet: from 172.29.245.10[4500] to 172.29.245.11[4500] (951 bytes)\n[NET] received packet: from 172.29.245.11[4500] to 172.29.245.10[4500] (850 bytes)\n[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH SA TSi TSr N(MOBIKE_SUP) N(NO_ADD_ADDR) ]\n[IKE] received end entity cert \"CN=inner-b.msc.test\"\n[CFG]   using certificate \"CN=inner-b.msc.test\"\n[CFG]   using trusted ca certificate \"CN=local-inner-b\"\n[CFG]   reached self-signed root ca with a path length of 0\n[CFG] checking certificate status of \"CN=inner-b.msc.test\"\n[CFG]   using trusted certificate \"CN=local-inner-b\"\n[CFG]   crl correctly signed by \"CN=local-inner-b\"\n[CFG]   crl is valid: until Oct 25 02:01:40 2026\n[CFG]   using cached crl\n[CFG] certificate status is good\n[IKE] authentication of 'inner-b.msc.test' with ECDSA_WITH_SHA384_DER successful\n[IKE] peer supports MOBIKE\n[IKE] IKE_SA peer[1] established between 172.29.245.10[inner-a.msc.test]...172.29.245.11[inner-b.msc.test]\n[IKE] scheduling reauthentication in 10453s\n[IKE] maximum IKE_SA lifetime 11533s\n[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n[IKE] CHILD_SA protected{1} established with SPIs c35de9ed_i c08ece09_o and TS 192.0.2.10/32 === 192.0.2.11/32\ninitiate completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0054",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "-I",
+        "192.0.2.10",
+        "192.0.2.11"
+      ],
+      "started_at": "2026-10-24T02:01:50.606474+00:00",
+      "ended_at": "2026-10-24T02:01:52.722378+00:00",
+      "returncode": 0,
+      "stdout": "PING 192.0.2.11 (192.0.2.11) from 192.0.2.10 : 56(84) bytes of data.\n64 bytes from 192.0.2.11: icmp_seq=1 ttl=64 time=0.120 ms\n64 bytes from 192.0.2.11: icmp_seq=2 ttl=64 time=0.113 ms\n64 bytes from 192.0.2.11: icmp_seq=3 ttl=64 time=0.110 ms\n\n--- 192.0.2.11 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2024ms\nrtt min/avg/max/mdev = 0.110/0.114/0.120/0.004 ms\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0055",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "swanctl",
+        "--initiate",
+        "--child",
+        "protected"
+      ],
+      "started_at": "2026-10-24T02:01:52.722412+00:00",
+      "ended_at": "2026-10-24T02:01:52.871435+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] initiating IKE_SA peer[1] to 172.29.245.13\n[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n[NET] sending packet: from 172.29.245.12[500] to 172.29.245.13[500] (296 bytes)\n[NET] received packet: from 172.29.245.13[500] to 172.29.245.12[500] (349 bytes)\n[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n[IKE] received cert request for \"CN=local-outer-a\"\n[IKE] received cert request for \"CN=local-outer-b\"\n[IKE] sending cert request for \"CN=local-outer-a\"\n[IKE] sending cert request for \"CN=local-outer-b\"\n[IKE] authentication of 'outer-a.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n[IKE] sending end entity cert \"CN=outer-a.msc.test\"\n[IKE] establishing CHILD_SA protected{1}\n[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH SA TSi TSr N(MOBIKE_SUP) N(NO_ADD_ADDR) N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n[NET] sending packet: from 172.29.245.12[4500] to 172.29.245.13[4500] (950 bytes)\n[NET] received packet: from 172.29.245.13[4500] to 172.29.245.12[4500] (850 bytes)\n[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH SA TSi TSr N(MOBIKE_SUP) N(NO_ADD_ADDR) ]\n[IKE] received end entity cert \"CN=outer-b.msc.test\"\n[CFG]   using certificate \"CN=outer-b.msc.test\"\n[CFG]   using trusted ca certificate \"CN=local-outer-b\"\n[CFG]   reached self-signed root ca with a path length of 0\n[CFG] checking certificate status of \"CN=outer-b.msc.test\"\n[CFG]   using trusted certificate \"CN=local-outer-b\"\n[CFG]   crl correctly signed by \"CN=local-outer-b\"\n[CFG]   crl is valid: until Oct 25 02:01:40 2026\n[CFG]   using cached crl\n[CFG] certificate status is good\n[IKE] authentication of 'outer-b.msc.test' with ECDSA_WITH_SHA384_DER successful\n[IKE] peer supports MOBIKE\n[IKE] IKE_SA peer[1] established between 172.29.245.12[outer-a.msc.test]...172.29.245.13[outer-b.msc.test]\n[IKE] scheduling reauthentication in 10651s\n[IKE] maximum IKE_SA lifetime 11731s\n[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n[IKE] CHILD_SA protected{1} established with SPIs cc1e24e4_i c2918d0d_o and TS 192.0.2.12/32 === 192.0.2.13/32\ninitiate completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0056",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "-I",
+        "192.0.2.12",
+        "192.0.2.13"
+      ],
+      "started_at": "2026-10-24T02:01:52.871461+00:00",
+      "ended_at": "2026-10-24T02:01:55.026275+00:00",
+      "returncode": 0,
+      "stdout": "PING 192.0.2.13 (192.0.2.13) from 192.0.2.12 : 56(84) bytes of data.\n64 bytes from 192.0.2.13: icmp_seq=1 ttl=64 time=0.116 ms\n64 bytes from 192.0.2.13: icmp_seq=2 ttl=64 time=0.136 ms\n64 bytes from 192.0.2.13: icmp_seq=3 ttl=64 time=0.135 ms\n\n--- 192.0.2.13 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2065ms\nrtt min/avg/max/mdev = 0.116/0.129/0.136/0.009 ms\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0057",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:01:55.026301+00:00",
+      "ended_at": "2026-10-24T02:01:55.125520+00:00",
+      "returncode": 0,
+      "stdout": "peer: #1, ESTABLISHED, IKEv2, 9d8700726ee59b2f_i* 8e8f876769deef47_r\n  local  'inner-a.msc.test' @ 172.29.245.10[4500]\n  remote 'inner-b.msc.test' @ 172.29.245.11[4500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 5s ago, reauth in 10448s\n  protected: #1, reqid 1, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 5s ago, rekeying in 2409s, expires in 3595s\n    in  c35de9ed,    252 bytes,     3 packets,     3s ago\n    out c08ece09,    252 bytes,     3 packets,     3s ago\n    local  192.0.2.10/32\n    remote 192.0.2.11/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0058",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "swanctl",
+        "--list-certs",
+        "--utc"
+      ],
+      "started_at": "2026-10-24T02:01:55.125550+00:00",
+      "ended_at": "2026-10-24T02:01:55.237557+00:00",
+      "returncode": 0,
+      "stdout": "\nList of X.509 End Entity Certificates\n\n  subject:  \"CN=inner-a.msc.test\"\n  issuer:   \"CN=local-inner-a\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    59:6a:e1:bd:13:d4:5d:57:f1:41:39:41:71:15:81:49:38:68:3f:17\n  altNames:  inner-a.msc.test\n  flags:     serverAuth clientAuth ikeIntermediate \n  authkeyId: 7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n  subjkeyId: 8d:53:44:2f:a3:8d:3e:fd:75:58:ce:97:0f:6e:6d:66:24:aa:85:13\n  pubkey:    ECDSA 384 bits, has private key\n  keyid:     92:e0:7a:e4:4b:d1:0d:22:b5:4a:06:6a:4b:af:3e:70:61:09:08:f6\n  subjkey:   8d:53:44:2f:a3:8d:3e:fd:75:58:ce:97:0f:6e:6d:66:24:aa:85:13\n\n  subject:  \"CN=inner-b.msc.test\"\n  issuer:   \"CN=local-inner-b\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    0d:5d:e3:04:2a:19:d1:53:22:23:3d:50:86:3a:38:cd:dc:21:8e:2a\n  altNames:  inner-b.msc.test\n  flags:     serverAuth clientAuth ikeIntermediate \n  authkeyId: 00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n  subjkeyId: c9:86:e0:24:47:df:7d:0b:6a:31:d9:80:8f:75:a9:e3:ca:b0:f2:ee\n  pubkey:    ECDSA 384 bits\n  keyid:     c9:7a:b3:97:4d:9e:93:91:fd:71:f1:1c:10:b2:d8:cf:d3:96:c4:8a\n  subjkey:   c9:86:e0:24:47:df:7d:0b:6a:31:d9:80:8f:75:a9:e3:ca:b0:f2:ee\n\nList of X.509 CA Certificates\n\n  subject:  \"CN=local-inner-b\"\n  issuer:   \"CN=local-inner-b\"\n  validity:  not before Oct 24 02:01:39 UTC 2026, ok\n             not after  Oct 25 02:01:39 UTC 2026, ok (expires in 23 hours)\n  serial:    69:55:e0:dc:88:2d:90:eb:55:f6:fc:35:fb:10:1d:b1:53:a7:72:1c\n  flags:     CA CRLSign self-signed \n  authkeyId: 00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n  subjkeyId: 00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n  pubkey:    ECDSA 384 bits\n  keyid:     ee:8a:9c:38:ae:52:fe:23:6b:05:2c:e9:03:05:08:4e:d4:7c:b6:56\n  subjkey:   00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n\n  subject:  \"CN=local-inner-a\"\n  issuer:   \"CN=local-inner-a\"\n  validity:  not before Oct 24 02:01:39 UTC 2026, ok\n             not after  Oct 25 02:01:39 UTC 2026, ok (expires in 23 hours)\n  serial:    1d:41:6c:a1:9a:db:d9:39:21:ba:8a:a1:49:e0:ec:b4:2c:29:43:6f\n  flags:     CA CRLSign self-signed \n  authkeyId: 7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n  subjkeyId: 7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n  pubkey:    ECDSA 384 bits\n  keyid:     33:28:41:19:29:ea:b2:4c:d4:62:6f:38:ee:88:dc:f0:aa:89:87:4a\n  subjkey:   7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n\nList of X.509 CRLs\n\n  issuer:   \"CN=local-inner-b\"\n  update:    this on Oct 24 02:01:40 UTC 2026, ok\n             next on Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    10:00\n  authKeyId: 00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n  0 revoked certificates\n\n  issuer:   \"CN=local-inner-a\"\n  update:    this on Oct 24 02:01:39 UTC 2026, ok\n             next on Oct 25 02:01:39 UTC 2026, ok (expires in 23 hours)\n  serial:    10:00\n  authKeyId: 7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n  0 revoked certificates\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0059",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:01:55.237583+00:00",
+      "ended_at": "2026-10-24T02:01:55.333906+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {peer {local_addrs=[172.29.245.10] remote_addrs=[172.29.245.11] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO local-1 {id=inner-a.msc.test class=public key groups=[] cert_policy=[] certs=[CN=inner-a.msc.test] cacerts=[]} remote-1 {id=inner-b.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=none close_action=none local-ts=[192.0.2.10/32] remote-ts=[192.0.2.11/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0060",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "cat",
+        "/tmp/charon.log"
+      ],
+      "started_at": "2026-10-24T02:01:55.333930+00:00",
+      "ended_at": "2026-10-24T02:01:55.427381+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0061",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-a",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:01:55.427403+00:00",
+      "ended_at": "2026-10-24T02:01:55.511136+00:00",
+      "returncode": 0,
+      "stdout": "src 172.29.245.10 dst 172.29.245.11\n\tproto esp spi 0xc08ece09(3230584329) reqid 1(0x00000001) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:01:52\n\tanti-replay context: seq 0x0, oseq 0x3, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2414(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  252(bytes), 3(packets)\n\t  add 2026-10-24 02:01:50 use 2026-10-24 02:01:50\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.29.245.11 dst 172.29.245.10\n\tproto esp spi 0xc35de9ed(3277711853) reqid 1(0x00000001) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:01:52\n\tanti-replay context: seq 0x3, oseq 0x0, bitmap 0x00000007\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2487(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  252(bytes), 3(packets)\n\t  add 2026-10-24 02:01:50 use 2026-10-24 02:01:50\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0062",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.Image}}",
+        "tcv3-ca2-local-inner-a"
+      ],
+      "started_at": "2026-10-24T02:01:55.511172+00:00",
+      "ended_at": "2026-10-24T02:01:55.531365+00:00",
+      "returncode": 0,
+      "stdout": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0063",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-b",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:01:55.531395+00:00",
+      "ended_at": "2026-10-24T02:01:55.629674+00:00",
+      "returncode": 0,
+      "stdout": "peer: #1, ESTABLISHED, IKEv2, 9d8700726ee59b2f_i 8e8f876769deef47_r*\n  local  'inner-b.msc.test' @ 172.29.245.11[4500]\n  remote 'inner-a.msc.test' @ 172.29.245.10[4500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 5s ago, reauth in 10533s\n  protected: #1, reqid 1, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 5s ago, rekeying in 2805s, expires in 3595s\n    in  c08ece09,    252 bytes,     3 packets,     3s ago\n    out c35de9ed,    252 bytes,     3 packets,     3s ago\n    local  192.0.2.11/32\n    remote 192.0.2.10/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0064",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-b",
+        "swanctl",
+        "--list-certs",
+        "--utc"
+      ],
+      "started_at": "2026-10-24T02:01:55.629707+00:00",
+      "ended_at": "2026-10-24T02:01:55.739222+00:00",
+      "returncode": 0,
+      "stdout": "\nList of X.509 End Entity Certificates\n\n  subject:  \"CN=inner-a.msc.test\"\n  issuer:   \"CN=local-inner-a\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    59:6a:e1:bd:13:d4:5d:57:f1:41:39:41:71:15:81:49:38:68:3f:17\n  altNames:  inner-a.msc.test\n  flags:     serverAuth clientAuth ikeIntermediate \n  authkeyId: 7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n  subjkeyId: 8d:53:44:2f:a3:8d:3e:fd:75:58:ce:97:0f:6e:6d:66:24:aa:85:13\n  pubkey:    ECDSA 384 bits\n  keyid:     92:e0:7a:e4:4b:d1:0d:22:b5:4a:06:6a:4b:af:3e:70:61:09:08:f6\n  subjkey:   8d:53:44:2f:a3:8d:3e:fd:75:58:ce:97:0f:6e:6d:66:24:aa:85:13\n\n  subject:  \"CN=inner-b.msc.test\"\n  issuer:   \"CN=local-inner-b\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    0d:5d:e3:04:2a:19:d1:53:22:23:3d:50:86:3a:38:cd:dc:21:8e:2a\n  altNames:  inner-b.msc.test\n  flags:     serverAuth clientAuth ikeIntermediate \n  authkeyId: 00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n  subjkeyId: c9:86:e0:24:47:df:7d:0b:6a:31:d9:80:8f:75:a9:e3:ca:b0:f2:ee\n  pubkey:    ECDSA 384 bits, has private key\n  keyid:     c9:7a:b3:97:4d:9e:93:91:fd:71:f1:1c:10:b2:d8:cf:d3:96:c4:8a\n  subjkey:   c9:86:e0:24:47:df:7d:0b:6a:31:d9:80:8f:75:a9:e3:ca:b0:f2:ee\n\nList of X.509 CA Certificates\n\n  subject:  \"CN=local-inner-a\"\n  issuer:   \"CN=local-inner-a\"\n  validity:  not before Oct 24 02:01:39 UTC 2026, ok\n             not after  Oct 25 02:01:39 UTC 2026, ok (expires in 23 hours)\n  serial:    1d:41:6c:a1:9a:db:d9:39:21:ba:8a:a1:49:e0:ec:b4:2c:29:43:6f\n  flags:     CA CRLSign self-signed \n  authkeyId: 7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n  subjkeyId: 7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n  pubkey:    ECDSA 384 bits\n  keyid:     33:28:41:19:29:ea:b2:4c:d4:62:6f:38:ee:88:dc:f0:aa:89:87:4a\n  subjkey:   7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n\n  subject:  \"CN=local-inner-b\"\n  issuer:   \"CN=local-inner-b\"\n  validity:  not before Oct 24 02:01:39 UTC 2026, ok\n             not after  Oct 25 02:01:39 UTC 2026, ok (expires in 23 hours)\n  serial:    69:55:e0:dc:88:2d:90:eb:55:f6:fc:35:fb:10:1d:b1:53:a7:72:1c\n  flags:     CA CRLSign self-signed \n  authkeyId: 00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n  subjkeyId: 00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n  pubkey:    ECDSA 384 bits\n  keyid:     ee:8a:9c:38:ae:52:fe:23:6b:05:2c:e9:03:05:08:4e:d4:7c:b6:56\n  subjkey:   00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n\nList of X.509 CRLs\n\n  issuer:   \"CN=local-inner-a\"\n  update:    this on Oct 24 02:01:39 UTC 2026, ok\n             next on Oct 25 02:01:39 UTC 2026, ok (expires in 23 hours)\n  serial:    10:00\n  authKeyId: 7a:1a:f8:df:5f:2c:45:4c:b7:0c:a5:e8:3c:88:5b:77:2a:6a:33:56\n  0 revoked certificates\n\n  issuer:   \"CN=local-inner-b\"\n  update:    this on Oct 24 02:01:40 UTC 2026, ok\n             next on Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    10:00\n  authKeyId: 00:d5:78:27:4d:aa:41:46:ec:c1:69:37:73:aa:30:b1:e8:68:48:2e\n  0 revoked certificates\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0065",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-b",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:01:55.739245+00:00",
+      "ended_at": "2026-10-24T02:01:55.830605+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {peer {local_addrs=[172.29.245.11] remote_addrs=[172.29.245.10] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO local-1 {id=inner-b.msc.test class=public key groups=[] cert_policy=[] certs=[CN=inner-b.msc.test] cacerts=[]} remote-1 {id=inner-a.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=none close_action=none local-ts=[192.0.2.11/32] remote-ts=[192.0.2.10/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0066",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-b",
+        "cat",
+        "/tmp/charon.log"
+      ],
+      "started_at": "2026-10-24T02:01:55.830630+00:00",
+      "ended_at": "2026-10-24T02:01:55.913235+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0067",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-inner-b",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:01:55.913263+00:00",
+      "ended_at": "2026-10-24T02:01:55.991991+00:00",
+      "returncode": 0,
+      "stdout": "src 172.29.245.11 dst 172.29.245.10\n\tproto esp spi 0xc35de9ed(3277711853) reqid 1(0x00000001) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:01:52\n\tanti-replay context: seq 0x0, oseq 0x3, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2831(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  252(bytes), 3(packets)\n\t  add 2026-10-24 02:01:50 use 2026-10-24 02:01:50\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.29.245.10 dst 172.29.245.11\n\tproto esp spi 0xc08ece09(3230584329) reqid 1(0x00000001) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:01:52\n\tanti-replay context: seq 0x3, oseq 0x0, bitmap 0x00000007\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2810(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  252(bytes), 3(packets)\n\t  add 2026-10-24 02:01:50 use 2026-10-24 02:01:50\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0068",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.Image}}",
+        "tcv3-ca2-local-inner-b"
+      ],
+      "started_at": "2026-10-24T02:01:55.992030+00:00",
+      "ended_at": "2026-10-24T02:01:56.013014+00:00",
+      "returncode": 0,
+      "stdout": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0069",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:01:56.013036+00:00",
+      "ended_at": "2026-10-24T02:01:56.104676+00:00",
+      "returncode": 0,
+      "stdout": "peer: #1, ESTABLISHED, IKEv2, 6fdebe9b0fe955d5_i* 546d494ec4d4b880_r\n  local  'outer-a.msc.test' @ 172.29.245.12[4500]\n  remote 'outer-b.msc.test' @ 172.29.245.13[4500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 3s ago, reauth in 10648s\n  protected: #1, reqid 1, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 3s ago, rekeying in 2614s, expires in 3597s\n    in  cc1e24e4,    252 bytes,     3 packets,     1s ago\n    out c2918d0d,    252 bytes,     3 packets,     1s ago\n    local  192.0.2.12/32\n    remote 192.0.2.13/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0070",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "swanctl",
+        "--list-certs",
+        "--utc"
+      ],
+      "started_at": "2026-10-24T02:01:56.104700+00:00",
+      "ended_at": "2026-10-24T02:01:56.219510+00:00",
+      "returncode": 0,
+      "stdout": "\nList of X.509 End Entity Certificates\n\n  subject:  \"CN=outer-a.msc.test\"\n  issuer:   \"CN=local-outer-a\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    61:21:9f:1c:8f:be:24:88:65:08:a3:80:ff:dd:bd:8b:b3:25:53:79\n  altNames:  outer-a.msc.test\n  flags:     serverAuth clientAuth ikeIntermediate \n  authkeyId: ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n  subjkeyId: 44:33:3a:08:a5:cd:48:8d:8e:91:92:1d:c1:39:3a:a6:dd:58:38:8e\n  pubkey:    ECDSA 384 bits, has private key\n  keyid:     d8:93:1a:f5:93:5c:62:7f:00:0e:1b:b1:df:a9:1c:3c:07:e2:61:42\n  subjkey:   44:33:3a:08:a5:cd:48:8d:8e:91:92:1d:c1:39:3a:a6:dd:58:38:8e\n\n  subject:  \"CN=outer-b.msc.test\"\n  issuer:   \"CN=local-outer-b\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    12:97:fb:e1:87:52:3c:48:94:b3:e0:0f:24:da:d7:15:f8:96:f9:f9\n  altNames:  outer-b.msc.test\n  flags:     serverAuth clientAuth ikeIntermediate \n  authkeyId: 37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n  subjkeyId: 98:c6:c4:09:0b:24:08:91:13:34:e8:88:a6:8d:8a:27:86:4a:b0:92\n  pubkey:    ECDSA 384 bits\n  keyid:     41:74:b3:0b:06:16:2c:56:b2:ab:39:54:0f:9a:44:aa:94:36:13:ab\n  subjkey:   98:c6:c4:09:0b:24:08:91:13:34:e8:88:a6:8d:8a:27:86:4a:b0:92\n\nList of X.509 CA Certificates\n\n  subject:  \"CN=local-outer-b\"\n  issuer:   \"CN=local-outer-b\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    5a:ab:8c:3c:e3:15:ba:3b:8a:8f:47:5b:54:06:19:bf:13:73:1b\n  flags:     CA CRLSign self-signed \n  authkeyId: 37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n  subjkeyId: 37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n  pubkey:    ECDSA 384 bits\n  keyid:     29:1c:00:8e:26:50:e3:19:d3:50:17:c7:9f:b9:bb:e8:7b:d2:33:6c\n  subjkey:   37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n\n  subject:  \"CN=local-outer-a\"\n  issuer:   \"CN=local-outer-a\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    51:bf:82:c9:e7:f6:73:d5:e8:73:78:87:20:8a:d0:54:fe:06:b3:0b\n  flags:     CA CRLSign self-signed \n  authkeyId: ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n  subjkeyId: ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n  pubkey:    ECDSA 384 bits\n  keyid:     dd:be:ea:65:c2:c9:cf:bc:aa:4d:20:97:ee:1c:97:44:36:16:2d:e4\n  subjkey:   ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n\nList of X.509 CRLs\n\n  issuer:   \"CN=local-outer-b\"\n  update:    this on Oct 24 02:01:40 UTC 2026, ok\n             next on Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    10:00\n  authKeyId: 37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n  0 revoked certificates\n\n  issuer:   \"CN=local-outer-a\"\n  update:    this on Oct 24 02:01:40 UTC 2026, ok\n             next on Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    10:00\n  authKeyId: ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n  0 revoked certificates\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0071",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:01:56.219546+00:00",
+      "ended_at": "2026-10-24T02:01:56.308646+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {peer {local_addrs=[172.29.245.12] remote_addrs=[172.29.245.13] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO local-1 {id=outer-a.msc.test class=public key groups=[] cert_policy=[] certs=[CN=outer-a.msc.test] cacerts=[]} remote-1 {id=outer-b.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=none close_action=none local-ts=[192.0.2.12/32] remote-ts=[192.0.2.13/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0072",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "cat",
+        "/tmp/charon.log"
+      ],
+      "started_at": "2026-10-24T02:01:56.308680+00:00",
+      "ended_at": "2026-10-24T02:01:56.384996+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0073",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-a",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:01:56.385013+00:00",
+      "ended_at": "2026-10-24T02:01:56.478206+00:00",
+      "returncode": 0,
+      "stdout": "src 172.29.245.12 dst 172.29.245.13\n\tproto esp spi 0xc2918d0d(3264318733) reqid 1(0x00000001) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:01:55\n\tanti-replay context: seq 0x0, oseq 0x3, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2870(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  252(bytes), 3(packets)\n\t  add 2026-10-24 02:01:52 use 2026-10-24 02:01:52\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.29.245.13 dst 172.29.245.12\n\tproto esp spi 0xcc1e24e4(3424527588) reqid 1(0x00000001) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:01:55\n\tanti-replay context: seq 0x3, oseq 0x0, bitmap 0x00000007\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2617(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  252(bytes), 3(packets)\n\t  add 2026-10-24 02:01:52 use 2026-10-24 02:01:52\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0074",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.Image}}",
+        "tcv3-ca2-local-outer-a"
+      ],
+      "started_at": "2026-10-24T02:01:56.478241+00:00",
+      "ended_at": "2026-10-24T02:01:56.499622+00:00",
+      "returncode": 0,
+      "stdout": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0075",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-b",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:01:56.499661+00:00",
+      "ended_at": "2026-10-24T02:01:56.597917+00:00",
+      "returncode": 0,
+      "stdout": "peer: #1, ESTABLISHED, IKEv2, 6fdebe9b0fe955d5_i 546d494ec4d4b880_r*\n  local  'outer-b.msc.test' @ 172.29.245.13[4500]\n  remote 'outer-a.msc.test' @ 172.29.245.12[4500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 3s ago, reauth in 10601s\n  protected: #1, reqid 1, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 3s ago, rekeying in 2642s, expires in 3597s\n    in  c2918d0d,    252 bytes,     3 packets,     1s ago\n    out cc1e24e4,    252 bytes,     3 packets,     1s ago\n    local  192.0.2.13/32\n    remote 192.0.2.12/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0076",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-b",
+        "swanctl",
+        "--list-certs",
+        "--utc"
+      ],
+      "started_at": "2026-10-24T02:01:56.597949+00:00",
+      "ended_at": "2026-10-24T02:01:56.710031+00:00",
+      "returncode": 0,
+      "stdout": "\nList of X.509 End Entity Certificates\n\n  subject:  \"CN=outer-a.msc.test\"\n  issuer:   \"CN=local-outer-a\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    61:21:9f:1c:8f:be:24:88:65:08:a3:80:ff:dd:bd:8b:b3:25:53:79\n  altNames:  outer-a.msc.test\n  flags:     serverAuth clientAuth ikeIntermediate \n  authkeyId: ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n  subjkeyId: 44:33:3a:08:a5:cd:48:8d:8e:91:92:1d:c1:39:3a:a6:dd:58:38:8e\n  pubkey:    ECDSA 384 bits\n  keyid:     d8:93:1a:f5:93:5c:62:7f:00:0e:1b:b1:df:a9:1c:3c:07:e2:61:42\n  subjkey:   44:33:3a:08:a5:cd:48:8d:8e:91:92:1d:c1:39:3a:a6:dd:58:38:8e\n\n  subject:  \"CN=outer-b.msc.test\"\n  issuer:   \"CN=local-outer-b\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    12:97:fb:e1:87:52:3c:48:94:b3:e0:0f:24:da:d7:15:f8:96:f9:f9\n  altNames:  outer-b.msc.test\n  flags:     serverAuth clientAuth ikeIntermediate \n  authkeyId: 37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n  subjkeyId: 98:c6:c4:09:0b:24:08:91:13:34:e8:88:a6:8d:8a:27:86:4a:b0:92\n  pubkey:    ECDSA 384 bits, has private key\n  keyid:     41:74:b3:0b:06:16:2c:56:b2:ab:39:54:0f:9a:44:aa:94:36:13:ab\n  subjkey:   98:c6:c4:09:0b:24:08:91:13:34:e8:88:a6:8d:8a:27:86:4a:b0:92\n\nList of X.509 CA Certificates\n\n  subject:  \"CN=local-outer-a\"\n  issuer:   \"CN=local-outer-a\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    51:bf:82:c9:e7:f6:73:d5:e8:73:78:87:20:8a:d0:54:fe:06:b3:0b\n  flags:     CA CRLSign self-signed \n  authkeyId: ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n  subjkeyId: ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n  pubkey:    ECDSA 384 bits\n  keyid:     dd:be:ea:65:c2:c9:cf:bc:aa:4d:20:97:ee:1c:97:44:36:16:2d:e4\n  subjkey:   ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n\n  subject:  \"CN=local-outer-b\"\n  issuer:   \"CN=local-outer-b\"\n  validity:  not before Oct 24 02:01:40 UTC 2026, ok\n             not after  Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    5a:ab:8c:3c:e3:15:ba:3b:8a:8f:47:5b:54:06:19:bf:13:73:1b\n  flags:     CA CRLSign self-signed \n  authkeyId: 37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n  subjkeyId: 37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n  pubkey:    ECDSA 384 bits\n  keyid:     29:1c:00:8e:26:50:e3:19:d3:50:17:c7:9f:b9:bb:e8:7b:d2:33:6c\n  subjkey:   37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n\nList of X.509 CRLs\n\n  issuer:   \"CN=local-outer-a\"\n  update:    this on Oct 24 02:01:40 UTC 2026, ok\n             next on Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    10:00\n  authKeyId: ce:15:83:f3:9f:2d:9c:e0:01:f0:a9:12:d0:6e:cf:66:49:22:53:17\n  0 revoked certificates\n\n  issuer:   \"CN=local-outer-b\"\n  update:    this on Oct 24 02:01:40 UTC 2026, ok\n             next on Oct 25 02:01:40 UTC 2026, ok (expires in 23 hours)\n  serial:    10:00\n  authKeyId: 37:96:d1:a5:d9:3d:fd:e5:d6:66:25:ed:3b:ae:65:93:65:d3:3c:6c\n  0 revoked certificates\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0077",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-b",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:01:56.710065+00:00",
+      "ended_at": "2026-10-24T02:01:56.816590+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {peer {local_addrs=[172.29.245.13] remote_addrs=[172.29.245.12] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO local-1 {id=outer-b.msc.test class=public key groups=[] cert_policy=[] certs=[CN=outer-b.msc.test] cacerts=[]} remote-1 {id=outer-a.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=none close_action=none local-ts=[192.0.2.13/32] remote-ts=[192.0.2.12/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "ca-0078",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-b",
+        "cat",
+        "/tmp/charon.log"
+      ],
+      "started_at": "2026-10-24T02:01:56.816618+00:00",
+      "ended_at": "2026-10-24T02:01:56.906560+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0079",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-ca2-local-outer-b",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:01:56.906584+00:00",
+      "ended_at": "2026-10-24T02:01:56.991020+00:00",
+      "returncode": 0,
+      "stdout": "src 172.29.245.13 dst 172.29.245.12\n\tproto esp spi 0xcc1e24e4(3424527588) reqid 1(0x00000001) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:01:55\n\tanti-replay context: seq 0x0, oseq 0x3, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2994(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  252(bytes), 3(packets)\n\t  add 2026-10-24 02:01:52 use 2026-10-24 02:01:52\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.29.245.12 dst 172.29.245.13\n\tproto esp spi 0xc2918d0d(3264318733) reqid 1(0x00000001) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:01:55\n\tanti-replay context: seq 0x3, oseq 0x0, bitmap 0x00000007\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2645(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  252(bytes), 3(packets)\n\t  add 2026-10-24 02:01:52 use 2026-10-24 02:01:52\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "ca-0080",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.Image}}",
+        "tcv3-ca2-local-outer-b"
+      ],
+      "started_at": "2026-10-24T02:01:56.991051+00:00",
+      "ended_at": "2026-10-24T02:01:57.011257+00:00",
+      "returncode": 0,
+      "stdout": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "authorities": [
+    "local-inner-a",
+    "local-inner-b",
+    "local-outer-a",
+    "local-outer-b"
+  ],
+  "peer_issuer_mapping": {
+    "inner-a": {
+      "issuer": "local-inner-a",
+      "root": "local-inner-a"
+    },
+    "inner-b": {
+      "issuer": "local-inner-b",
+      "root": "local-inner-b"
+    },
+    "outer-a": {
+      "issuer": "local-outer-a",
+      "root": "local-outer-a"
+    },
+    "outer-b": {
+      "issuer": "local-outer-b",
+      "root": "local-outer-b"
+    }
+  },
+  "limitations": [
+    "These are separate actual PKI trust configurations and finite IKE authentication checks. Enterprise ownership, administrator authority, approved NPE issuance and physical CA placement cannot be inferred from generated certificates.",
+    "Certificate arrangements are tested on endpoint pairs; full nested data paths are supplied in separate topology evidence."
+  ]
+}

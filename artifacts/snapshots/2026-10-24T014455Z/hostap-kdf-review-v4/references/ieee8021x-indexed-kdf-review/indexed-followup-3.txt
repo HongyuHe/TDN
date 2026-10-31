@@ -1,0 +1,52 @@
+IEEE Std 802.1X-2020, IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control (https://www.ida.liu.se/~sohsa65/courses/tsn-course-2021/stds/8021X-2020.pdf)
+citeturn249search0 [wordlim: 200] Published: 4.9 years ago; <tr><td>Output</td><td>a29efdb6 3d6fba73 c65daab2 295340a8 37a8886e 94a905b5 c9c7ef1d 9dbb297e</td></tr> ... # G.3 CKN Derivation ... The inputs are the initial octets of the MSK (Key), “IEEE8021 EAP CKN” (Label), the EAP Session ID followed by two MAC addresses ordered with the lesser first (Context), and the CKN Length (16 octets).
+IEEE Std 802.1X-2020  
+IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control
+
+# G.2 CAK Key Derivation
+
+The KDF is used to derive a pairwise CAK from an EAP MSK (6.2.2). The inputs are the initial octets of the MSK (Key), “IEEE8021 EAP CAK” (Label), two MAC addresses ordered with the lesser first (Context), and the CAK Length. In the following examples the MAC addresses are 00-D0-B7-1A-77-17 and 00-1B-63-93-FC-BC.
+
+For a 128-bit CAK (Output), the first 16 octets of the MSK (Key) are used.
+
+<table id="e1">
+<tr><td>Key</td><td>e68a1ab9 0313024f da7a04a0 3fea010f</td></tr>
+<tr><td>Label</td><td>49454545 38303231 20454150 2043414b</td></tr>
+<tr><td>Context</td><td>001b6393 fcbc00d0 b71a7717</td></tr>
+<tr><td>Length</td><td>0080</td></tr>
+<tr><td>Output</td><td>135bd758 b0ee5c11 c55ff6ab 19fdb199</td></tr>
+</table>
+
+For a 256-bit CAK (Output), the first 32 octets of the MSK (Key) are used.
+
+<table id="e2">
+<tr><td>Key</td><td>3946ec36 f59017f1 267e914a bed2dbf6 633f52ae 7e20309d 3eefdda4 073adfad</td></tr>
+<tr><td>Label</td><td>49454545 38303231 20454150 2043414b</td></tr>
+<tr><td>Context</td><td>001b6393 fcbc00d0 b71a7717</td></tr>
+<tr><td>Length</td><td>0100</td></tr>
+<tr><td>Output</td><td>a29efdb6 3d6fba73 c65daab2 295340a8 37a8886e 94a905b5 c9c7ef1d 9dbb297e</td></tr>
+</table>
+
+# G.3 CKN Derivation
+
+The KDF is used to derive a CKN (6.2.2) for each pairwise CAK derived from an EAP MSK.
+
+The inputs are the initial octets of the MSK (Key), “IEEE8021 EAP CKN” (Label), the EAP Session ID followed by two MAC addresses ordered with the lesser first (Context), and the CKN Length (16 octets). In the following examples, the Session-ID is an EAP-TLS Session-ID (0x0d followed by two 32-byte random numbers as prescribed in RFC 5216, and the MAC addresses are 00-D0-B7-1A-77-17 and 00-1B-63-93-FC-BC. The CKN is the Output of the KDF.
+
+For a 128-bit CAK, the first 16 octets of the MSK (Key) are used as the Key.
+
+<table id="e3">
+<tr><td>Key</td><td>e68a1ab9 0313024f da7a04a0 3fea010f</td></tr>
+<tr><td>Label</td><td>49454545 38303231 20454150 20434b4e</td></tr>
+<tr><td>Session-ID</td><td>0d d075693f 54b2b2eb 01da61f0 af5d429b 65b1ebca f536fba3 50777598 571728f6 30c5c8da 5475489a d47b6e34 89a97372 e5a8fd55 0617972c 020d42a3 b13a4eae</td></tr>
+<tr><td>MAC1</td><td>001b6393 fcbc</td></tr>
+<tr><td>MAC2</td><td>00d0b71a 7717</td></tr>
+<tr><td>Length</td><td>0080</td></tr>
+<tr><td>Output</td><td>96437a93 ccf10d9d fe347846 cce52c7d</td></tr>
+</table>
+
+285
+
+Copyright © 2020 IEEE. All rights reserved.
+
+Authorized licensed use limited to: Linkoping University Library. Downloaded on November 28,2021 at 19:55:17 UTC from IEEE Xplore. Restrictions apply.

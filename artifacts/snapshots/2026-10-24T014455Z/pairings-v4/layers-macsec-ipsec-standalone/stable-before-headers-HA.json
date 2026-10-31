@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0166",
+  "started_at": "2026-10-24T14:02:53.418754+00:00",
+  "ended_at": "2026-10-24T14:02:57.970038+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-HA",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "HA",
+  "returncode": 0,
+  "stdout": "14:02:53.835214 red   Out ifindex 4241 46:16:dd:50:9f:d5 ethertype ARP (0x0806), length 48: Ethernet (len 6), IPv4 (len 4), Request who-has 10.1.0.1 tell 10.1.0.2, length 28\n14:02:53.835512 red   In  ifindex 4241 76:b1:ad:7e:a6:68 ethertype ARP (0x0806), length 48: Ethernet (len 6), IPv4 (len 4), Reply 10.1.0.1 is-at 76:b1:ad:7e:a6:68, length 28\n14:02:53.835515 red   Out ifindex 4241 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 715, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 50439, seq 1, length 72\n14:02:53.835969 red   In  ifindex 4241 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 52127, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 50439, seq 1, length 72\n14:02:54.835050 red   Out ifindex 4241 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 1630, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 50439, seq 2, length 72\n14:02:54.835319 red   In  ifindex 4241 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 52525, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 50439, seq 2, length 72\n14:02:55.885910 red   Out ifindex 4241 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 2057, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 50439, seq 3, length 72\n14:02:55.886162 red   In  ifindex 4241 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 53240, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 50439, seq 3, length 72\n14:02:55.903467 red   In  ifindex 4241 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 53250, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo request, id 50440, seq 1, length 72\n14:02:55.903483 red   Out ifindex 4241 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 2069, offset 0, flags [none], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo reply, id 50440, seq 1, length 72\n14:02:56.910081 red   In  ifindex 4241 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 53645, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo request, id 50440, seq 2, length 72\n14:02:56.910098 red   Out ifindex 4241 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 2769, offset 0, flags [none], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo reply, id 50440, seq 2, length 72\n14:02:57.935143 red   In  ifindex 4241 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 54382, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo request, id 50440, seq 3, length 72\n14:02:57.935161 red   Out ifindex 4241 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 3540, offset 0, flags [none], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo reply, id 50440, seq 3, length 72\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n14 packets captured\n14 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 1
+}

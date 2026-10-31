@@ -1,0 +1,1094 @@
+[
+  {
+    "id": "cmd-0000",
+    "started_at": "2026-10-24T15:41:33.581422+00:00",
+    "ended_at": "2026-10-24T15:41:33.587578+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "u4fresh-GRAY"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0001",
+    "started_at": "2026-10-24T15:41:33.587611+00:00",
+    "ended_at": "2026-10-24T15:41:33.602999+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0002",
+    "started_at": "2026-10-24T15:41:33.603029+00:00",
+    "ended_at": "2026-10-24T15:41:33.619320+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0003",
+    "started_at": "2026-10-24T15:41:33.619352+00:00",
+    "ended_at": "2026-10-24T15:41:33.623348+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "u4fresh-CDS"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0004",
+    "started_at": "2026-10-24T15:41:33.623393+00:00",
+    "ended_at": "2026-10-24T15:41:33.633239+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0005",
+    "started_at": "2026-10-24T15:41:33.633270+00:00",
+    "ended_at": "2026-10-24T15:41:33.652173+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0006",
+    "started_at": "2026-10-24T15:41:33.652208+00:00",
+    "ended_at": "2026-10-24T15:41:33.657689+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "u4fresh-SIEM"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0007",
+    "started_at": "2026-10-24T15:41:33.657720+00:00",
+    "ended_at": "2026-10-24T15:41:33.668185+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0008",
+    "started_at": "2026-10-24T15:41:33.668216+00:00",
+    "ended_at": "2026-10-24T15:41:33.680496+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0009",
+    "started_at": "2026-10-24T15:41:33.680535+00:00",
+    "ended_at": "2026-10-24T15:41:33.690432+00:00",
+    "command": [
+      "ip",
+      "link",
+      "add",
+      "u4freshx00",
+      "type",
+      "veth",
+      "peer",
+      "name",
+      "u4freshy00"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0010",
+    "started_at": "2026-10-24T15:41:33.690465+00:00",
+    "ended_at": "2026-10-24T15:41:33.714784+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "u4freshx00",
+      "netns",
+      "u4fresh-GRAY"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0011",
+    "started_at": "2026-10-24T15:41:33.714813+00:00",
+    "ended_at": "2026-10-24T15:41:33.741839+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "link",
+      "set",
+      "u4freshx00",
+      "name",
+      "logs"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0012",
+    "started_at": "2026-10-24T15:41:33.741875+00:00",
+    "ended_at": "2026-10-24T15:41:33.752652+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "link",
+      "set",
+      "logs",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0013",
+    "started_at": "2026-10-24T15:41:33.752674+00:00",
+    "ended_at": "2026-10-24T15:41:33.761295+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "address",
+      "add",
+      "10.93.0.1/30",
+      "dev",
+      "logs"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0014",
+    "started_at": "2026-10-24T15:41:33.761327+00:00",
+    "ended_at": "2026-10-24T15:41:33.772472+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "u4freshy00",
+      "netns",
+      "u4fresh-CDS"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0015",
+    "started_at": "2026-10-24T15:41:33.772503+00:00",
+    "ended_at": "2026-10-24T15:41:33.802840+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "link",
+      "set",
+      "u4freshy00",
+      "name",
+      "gray"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0016",
+    "started_at": "2026-10-24T15:41:33.802873+00:00",
+    "ended_at": "2026-10-24T15:41:33.812675+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "link",
+      "set",
+      "gray",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0017",
+    "started_at": "2026-10-24T15:41:33.812696+00:00",
+    "ended_at": "2026-10-24T15:41:33.821934+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "address",
+      "add",
+      "10.93.0.2/30",
+      "dev",
+      "gray"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0018",
+    "started_at": "2026-10-24T15:41:33.821960+00:00",
+    "ended_at": "2026-10-24T15:41:33.831808+00:00",
+    "command": [
+      "ip",
+      "link",
+      "add",
+      "u4freshx01",
+      "type",
+      "veth",
+      "peer",
+      "name",
+      "u4freshy01"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0019",
+    "started_at": "2026-10-24T15:41:33.831825+00:00",
+    "ended_at": "2026-10-24T15:41:33.854767+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "u4freshx01",
+      "netns",
+      "u4fresh-CDS"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0020",
+    "started_at": "2026-10-24T15:41:33.854792+00:00",
+    "ended_at": "2026-10-24T15:41:33.878060+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "link",
+      "set",
+      "u4freshx01",
+      "name",
+      "red"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0021",
+    "started_at": "2026-10-24T15:41:33.878077+00:00",
+    "ended_at": "2026-10-24T15:41:33.888339+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "link",
+      "set",
+      "red",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0022",
+    "started_at": "2026-10-24T15:41:33.888356+00:00",
+    "ended_at": "2026-10-24T15:41:33.897263+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "address",
+      "add",
+      "10.94.0.1/30",
+      "dev",
+      "red"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0023",
+    "started_at": "2026-10-24T15:41:33.897281+00:00",
+    "ended_at": "2026-10-24T15:41:33.925766+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "u4freshy01",
+      "netns",
+      "u4fresh-SIEM"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0024",
+    "started_at": "2026-10-24T15:41:33.925782+00:00",
+    "ended_at": "2026-10-24T15:41:33.951858+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "link",
+      "set",
+      "u4freshy01",
+      "name",
+      "logs"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0025",
+    "started_at": "2026-10-24T15:41:33.951875+00:00",
+    "ended_at": "2026-10-24T15:41:33.961595+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "link",
+      "set",
+      "logs",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0026",
+    "started_at": "2026-10-24T15:41:33.961626+00:00",
+    "ended_at": "2026-10-24T15:41:33.970040+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "address",
+      "add",
+      "10.94.0.2/30",
+      "dev",
+      "logs"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0027",
+    "started_at": "2026-10-24T15:41:33.970077+00:00",
+    "ended_at": "2026-10-24T15:41:33.980484+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=0"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0028",
+    "started_at": "2026-10-24T15:41:34.382631+00:00",
+    "ended_at": "2026-10-24T15:41:34.423497+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "python3",
+      "-c",
+      "import socket,sys;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.sendto(sys.argv[1].encode(),(\"10.93.0.2\",5514))",
+      "{\"device\": \"Outer-A\", \"severity\": \"warning\", \"event\": \"unexpected packet dropped\"}"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0029",
+    "started_at": "2026-10-24T15:41:34.423554+00:00",
+    "ended_at": "2026-10-24T15:41:34.463940+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "python3",
+      "-c",
+      "import socket,sys;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.sendto(sys.argv[1].encode(),(\"10.93.0.2\",5514))",
+      "{\"command\": \"unauthorized-management\"}"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0030",
+    "started_at": "2026-10-24T15:41:34.964065+00:00",
+    "ended_at": "2026-10-24T15:41:34.974343+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "route",
+      "replace",
+      "10.93.0.0/30",
+      "via",
+      "10.94.0.1"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0031",
+    "started_at": "2026-10-24T15:41:34.974380+00:00",
+    "ended_at": "2026-10-24T15:41:38.045600+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ping",
+      "-n",
+      "-c",
+      "3",
+      "-W",
+      "1",
+      "-s",
+      "64",
+      "10.93.0.1"
+    ],
+    "device_id": "SIEM",
+    "returncode": 1,
+    "stdout": "PING 10.93.0.1 (10.93.0.1) 64(92) bytes of data.\n\n--- 10.93.0.1 ping statistics ---\n3 packets transmitted, 0 received, 100% packet loss, time 2057ms\n\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0032",
+    "started_at": "2026-10-24T15:41:38.045663+00:00",
+    "ended_at": "2026-10-24T15:41:38.058732+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "-j",
+      "-d",
+      "address"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4931,\"link_index\":4930,\"ifname\":\"logs\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"b2:ba:c2:d5:c4:c9\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.93.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"logs\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::b0ba:c2ff:fed5:c4c9\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0033",
+    "started_at": "2026-10-24T15:41:38.058782+00:00",
+    "ended_at": "2026-10-24T15:41:38.068501+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "-j",
+      "-4",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.93.0.0/30\",\"dev\":\"logs\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.93.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.93.0.1\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.93.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.93.0.3\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.93.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0034",
+    "started_at": "2026-10-24T15:41:38.068536+00:00",
+    "ended_at": "2026-10-24T15:41:38.078031+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "-j",
+      "-6",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"fe80::/64\",\"dev\":\"logs\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::b0ba:c2ff:fed5:c4c9\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0035",
+    "started_at": "2026-10-24T15:41:38.078066+00:00",
+    "ended_at": "2026-10-24T15:41:38.088765+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "iptables-save"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0036",
+    "started_at": "2026-10-24T15:41:38.088798+00:00",
+    "ended_at": "2026-10-24T15:41:38.098970+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip6tables-save"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0037",
+    "started_at": "2026-10-24T15:41:38.099002+00:00",
+    "ended_at": "2026-10-24T15:41:38.107453+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "xfrm",
+      "policy"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0038",
+    "started_at": "2026-10-24T15:41:38.107485+00:00",
+    "ended_at": "2026-10-24T15:41:38.119714+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "-s",
+      "xfrm",
+      "state",
+      "list",
+      "nokeys"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0039",
+    "started_at": "2026-10-24T15:41:38.119748+00:00",
+    "ended_at": "2026-10-24T15:41:38.128989+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-GRAY",
+      "ip",
+      "-s",
+      "macsec",
+      "show"
+    ],
+    "device_id": "GRAY",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0040",
+    "started_at": "2026-10-24T15:41:38.129048+00:00",
+    "ended_at": "2026-10-24T15:41:38.140148+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "-j",
+      "-d",
+      "address"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4930,\"link_index\":4931,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"46:43:93:00:db:44\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.93.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::4443:93ff:fe00:db44\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":4933,\"link_index\":4932,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"52:93:00:ca:86:1d\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":2,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.94.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"red\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::5093:ff:feca:861d\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0041",
+    "started_at": "2026-10-24T15:41:38.140186+00:00",
+    "ended_at": "2026-10-24T15:41:38.151412+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "-j",
+      "-4",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.93.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.93.0.2\",\"flags\":[]},{\"dst\":\"10.94.0.0/30\",\"dev\":\"red\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.94.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.93.0.2\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.93.0.2\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.93.0.3\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.93.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.94.0.1\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.94.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.94.0.3\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.94.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0042",
+    "started_at": "2026-10-24T15:41:38.151461+00:00",
+    "ended_at": "2026-10-24T15:41:38.162077+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "-j",
+      "-6",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"fe80::/64\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::4443:93ff:fe00:db44\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::5093:ff:feca:861d\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0043",
+    "started_at": "2026-10-24T15:41:38.162112+00:00",
+    "ended_at": "2026-10-24T15:41:38.173259+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "iptables-save"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0044",
+    "started_at": "2026-10-24T15:41:38.173297+00:00",
+    "ended_at": "2026-10-24T15:41:38.182832+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip6tables-save"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0045",
+    "started_at": "2026-10-24T15:41:38.182893+00:00",
+    "ended_at": "2026-10-24T15:41:38.192975+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "xfrm",
+      "policy"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0046",
+    "started_at": "2026-10-24T15:41:38.193008+00:00",
+    "ended_at": "2026-10-24T15:41:38.201502+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "-s",
+      "xfrm",
+      "state",
+      "list",
+      "nokeys"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0047",
+    "started_at": "2026-10-24T15:41:38.201533+00:00",
+    "ended_at": "2026-10-24T15:41:38.211507+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-CDS",
+      "ip",
+      "-s",
+      "macsec",
+      "show"
+    ],
+    "device_id": "CDS",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0048",
+    "started_at": "2026-10-24T15:41:38.211545+00:00",
+    "ended_at": "2026-10-24T15:41:38.220037+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "-j",
+      "-d",
+      "address"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4932,\"link_index\":4933,\"ifname\":\"logs\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ee:6e:e6:64:57:d0\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.94.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"logs\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::ec6e:e6ff:fe64:57d0\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0049",
+    "started_at": "2026-10-24T15:41:38.220070+00:00",
+    "ended_at": "2026-10-24T15:41:38.229774+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "-j",
+      "-4",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.93.0.0/30\",\"gateway\":\"10.94.0.1\",\"dev\":\"logs\",\"flags\":[]},{\"dst\":\"10.94.0.0/30\",\"dev\":\"logs\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.94.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.94.0.2\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.94.0.2\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.94.0.3\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.94.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0050",
+    "started_at": "2026-10-24T15:41:38.229806+00:00",
+    "ended_at": "2026-10-24T15:41:38.238742+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "-j",
+      "-6",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"fe80::/64\",\"dev\":\"logs\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::ec6e:e6ff:fe64:57d0\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"logs\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0051",
+    "started_at": "2026-10-24T15:41:38.238774+00:00",
+    "ended_at": "2026-10-24T15:41:38.248112+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "iptables-save"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0052",
+    "started_at": "2026-10-24T15:41:38.248145+00:00",
+    "ended_at": "2026-10-24T15:41:38.259358+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip6tables-save"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0053",
+    "started_at": "2026-10-24T15:41:38.259394+00:00",
+    "ended_at": "2026-10-24T15:41:38.271576+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "xfrm",
+      "policy"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0054",
+    "started_at": "2026-10-24T15:41:38.271628+00:00",
+    "ended_at": "2026-10-24T15:41:38.280194+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "-s",
+      "xfrm",
+      "state",
+      "list",
+      "nokeys"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0055",
+    "started_at": "2026-10-24T15:41:38.280227+00:00",
+    "ended_at": "2026-10-24T15:41:38.288689+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "u4fresh-SIEM",
+      "ip",
+      "-s",
+      "macsec",
+      "show"
+    ],
+    "device_id": "SIEM",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

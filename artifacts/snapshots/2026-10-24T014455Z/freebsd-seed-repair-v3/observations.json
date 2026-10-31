@@ -1,0 +1,146 @@
+{
+  "at": "2026-10-24T02:37:25.294276+00:00",
+  "cause": "Initial shell-script NoCloud user-data did not apply. Original FreeBSD 14.4 nuageinit source parses user-data as YAML before dispatch. New owned images use explicit YAML and unique NIC MACs, with non-DHCP isolated test link. Initial guests receive ACPI powerdown and original disks/logs remain preserved.",
+  "records": [
+    {
+      "command": [
+        "qemu-img",
+        "create",
+        "-f",
+        "qcow2",
+        "-F",
+        "qcow2",
+        "-b",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node-v2-0.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "Formatting '/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node-v2-0.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=6477709312 backing_file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2 backing_fmt=qcow2 lazy_refcounts=off refcount_bits=16\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "genisoimage",
+        "-quiet",
+        "-output",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed-v2-0.iso",
+        "-volid",
+        "cidata",
+        "-joliet",
+        "-rock",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed-v2-0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "tcv3-freebsd-v2-0",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node-v2-0.qcow2,format=qcow2,if=virtio",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed-v2-0.iso,media=cdrom,readonly=on",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22222-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt,mac=52:54:76:03:00:10",
+        "-netdev",
+        "socket,id=gray,listen=127.0.0.1:49402",
+        "-device",
+        "virtio-net-pci,netdev=gray,mac=52:54:76:03:00:11",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/serial-v2-0.log",
+        "-monitor",
+        "unix:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/monitor-v2-0.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/qemu-v2-0.pid",
+        "-daemonize"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "qemu-img",
+        "create",
+        "-f",
+        "qcow2",
+        "-F",
+        "qcow2",
+        "-b",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node-v2-1.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "Formatting '/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node-v2-1.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=6477709312 backing_file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2 backing_fmt=qcow2 lazy_refcounts=off refcount_bits=16\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "genisoimage",
+        "-quiet",
+        "-output",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed-v2-1.iso",
+        "-volid",
+        "cidata",
+        "-joliet",
+        "-rock",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed-v2-1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "tcv3-freebsd-v2-1",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/node-v2-1.qcow2,format=qcow2,if=virtio",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/seed-v2-1.iso,media=cdrom,readonly=on",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22223-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt,mac=52:54:76:03:10:10",
+        "-netdev",
+        "socket,id=gray,connect=127.0.0.1:49402",
+        "-device",
+        "virtio-net-pci,netdev=gray,mac=52:54:76:03:10:11",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/serial-v2-1.log",
+        "-monitor",
+        "unix:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/monitor-v2-1.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/qemu-v2-1.pid",
+        "-daemonize"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

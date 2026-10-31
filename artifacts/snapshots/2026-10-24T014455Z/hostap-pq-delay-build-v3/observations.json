@@ -1,0 +1,81 @@
+{
+  "at": "2026-10-24T04:39:31.331429+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T04:39:13.294366+00:00",
+      "command": [
+        "patch",
+        "-p1",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/hostap-delay-reproduction-v5/final.patch"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12",
+      "returncode": 0,
+      "stdout": "patching file src/drivers/driver_macsec_linux.c\npatching file src/pae/ieee802_1x_kay.h\npatching file src/pae/ieee802_1x_kay.c\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:39:17.787149+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "clean"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "rm -f core *~ nt_password_hash hlr_auc_gw\nrm -f sae_pk_gen\nrm -f lcov.info\nrm -rf lcov-html\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:39:28.888690+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "-j4"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "  CC  ../src/ap/wpa_auth_glue.c\n  CC  main.c\n  CC  ../src/ap/drv_callbacks.c\n  CC  ../src/ap/utils.c\n  CC  ../src/ap/ap_drv_ops.c\n  CC  config_file.c\n  CC  ../src/ap/hostapd.c\n  CC  ../src/ap/authsrv.c\n  CC  ../src/ap/eap_user_db.c\n  CC  ../src/ap/ieee802_11_auth.c\n  CC  ../src/ap/ap_config.c\n  CC  ../src/ap/ieee802_1x.c\n  CC  ../src/ap/tkip_countermeasures.c\n  CC  ../src/ap/ap_mlme.c\n  CC  ../src/ap/preauth_auth.c\n  CC  ../src/ap/sta_info.c\n  CC  ../src/ap/wpa_auth_ie.c\n  CC  ../src/ap/pmksa_cache_auth.c\n  CC  ../src/ap/ieee802_11_shared.c\n  CC  ../src/ap/bss_load.c\n  CC  ../src/ap/beacon.c\n  CC  ../src/common/ptksa_cache.c\n  CC  ../src/ap/neighbor_db.c\n  CC  ../src/drivers/drivers.c\n  CC  ../src/ap/rrm.c\n  CC  ../src/utils/eloop.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/utils/wpabuf.c\n  CC  ../src/ap/wpa_auth.c\n  CC  ../src/utils/common.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/eapol_auth/eapol_auth_sm.c\n  CC  ../src/eapol_auth/eapol_auth_dump.c\n  CC  ../src/common/wpa_common.c\n  CC  ../src/radius/radius_das.c\n  CC  ../src/radius/radius_client.c\n  CC  ../src/common/ieee802_11_common.c\n  CC  ../src/radius/radius.c\n  CC  ../src/ap/vlan_init.c\n  CC  ../src/ap/accounting.c\n  CC  ../src/ap/vlan_ifconfig.c\n  CC  ../src/ap/vlan.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/drivers/driver_wired.c\n  CC  ../src/drivers/driver_wired_common.c\n  CC  ../src/drivers/driver_none.c\n  CC  ../src/drivers/driver_macsec_linux.c\n  CC  ../src/l2_packet/l2_packet_linux.c\n  CC  ../src/eap_server/eap_server_tls.c\n  CC  ../src/ap/ctrl_iface_ap.c\n  CC  ctrl_iface.c\n  CC  ../src/ap/wpa_auth_kay.c\n  CC  ../src/pae/ieee802_1x_key.c\n  CC  ../src/pae/ieee802_1x_cp.c\n  CC  eap_register.c\n  CC  ../src/pae/ieee802_1x_secy_ops.c\n  CC  ../src/eap_common/eap_common.c\n  CC  ../src/eap_server/eap_server_methods.c\n  CC  ../src/eap_server/eap_server_identity.c\n  CC  ../src/eap_server/eap_server_tls_common.c\n  CC  ../src/eap_server/eap_server.c\n  CC  ../src/crypto/tls_openssl_ocsp.c\n  CC  ../src/crypto/sha1-prf.c\n  CC  ../src/crypto/sha1-tlsprf.c\n  CC  ../src/crypto/sha256-prf.c\n  CC  ../src/crypto/sha256-tlsprf.c\n  CC  ../src/crypto/crypto_openssl.c\n  CC  ../src/pae/ieee802_1x_kay.c\n  CC  ../src/crypto/random.c\n  CC  ../src/drivers/driver_common.c\n  CC  ../src/ap/ieee802_11_ht.c\n  CC  ../src/common/wpa_ctrl.c\n  CC  ../src/crypto/tls_openssl.c\n  CC  ../src/radius/radius_server.c\n  CC  ../src/utils/edit_simple.c\n  CC  ../src/common/cli.c\n  LD  hostapd\n  CC  hostapd_cli.c\n  LD  hostapd_cli\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:39:31.330941+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "./hostapd",
+        "-v"
+      ],
+      "cwd": null,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "hostapd v2.12\nUser space daemon for IEEE 802.11 AP management,\nIEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator\nCopyright (c) 2002-2026, Jouni Malinen <j@w1.fi> and contributors\n"
+    }
+  ],
+  "error": "hostapd v2.12\nUser space daemon for IEEE 802.11 AP management,\nIEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator\nCopyright (c) 2002-2026, Jouni Malinen <j@w1.fi> and contributors\n",
+  "scope": [
+    "Separate owned objective EAP tree combines existing TLS 1.3 MLKEM1024/MLDSA87, 256-bit EAP-derived CAK KDF and L2 repair with final bounded-Hello/PN-history/Linux lowest-PN driver patches. Original v14 binaries remain unchanged.",
+    "Both hostapd and wpa_supplicant have complete final diffs from their exact official 2.12 source archives, active build config, source hashes, binary hashes and runtime library identities. Finite EAP delayed-data behavior remains a separate execution test.",
+    "IEEE normative KDF/agility review and complete standard conformance remain separate from matching locally patched implementations."
+  ]
+}

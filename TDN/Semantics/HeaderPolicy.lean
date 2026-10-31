@@ -37,6 +37,23 @@ theorem accepted_protocol (rules : List Rule) (allowed : List String)
   have equality : packet.protocol = name := matching_atom matched atom
   exact equality ▸ permitted
 
+/-- The immediate IPv6 Next Header is distinct from a parsed upper-layer protocol. -/
+def ImmediateHeaderGuard (allowed : List Nat) (rule : Rule) : Prop :=
+  .ipv6NextHeaders allowed ∈ rule.atoms
+
+instance (allowed : List Nat) (rule : Rule) : Decidable (ImmediateHeaderGuard allowed rule) := by
+  unfold ImmediateHeaderGuard
+  infer_instance
+
+theorem accepted_immediate_header (rules : List Rule) (allowed : List Nat)
+    (checked : ∀ r ∈ rules, r.verdict = .allow → ImmediateHeaderGuard allowed r)
+    (p : Packet) (accepted : Accepts rules p) : p.ipv6NextHeader ∈ allowed := by
+  apply Filter.default_deny_sound (rules.map Rule.toFilter)
+    (fun p => p.ipv6NextHeader ∈ allowed) ?_ p accepted
+  intro target member allow packet matched
+  obtain ⟨r, hr, rfl⟩ := List.mem_map.mp member
+  exact matching_atom matched (checked r hr allow)
+
 theorem accepted_header_words (rules : List Rule) (words : Nat)
     (checked : ∀ r ∈ rules, r.verdict = .allow → .ipv4HeaderWords words ∈ r.atoms)
     (p : Packet) (accepted : Accepts rules p) : p.ipv4HeaderWords = words := by

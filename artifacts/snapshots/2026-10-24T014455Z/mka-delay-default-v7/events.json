@@ -1,0 +1,1002 @@
+{
+  "schema_version": "csfc-authentication-events/v1",
+  "case_ids": [
+    "NET-023-C05"
+  ],
+  "group_ids": [
+    "RG-024",
+    "RG-025",
+    "RG-027",
+    "RG-028"
+  ],
+  "started_at": "2026-10-24T03:58:58.341050+00:00",
+  "ended_at": "2026-10-24T03:59:16.188302+00:00",
+  "authentication": "MKA PSK",
+  "mode": "default",
+  "runtime_backend": "supplemental-Linux-network-namespaces",
+  "scope": [
+    "Compare unchanged hostap 2.12 ordinary two-second Hello against the owned repaired bounded-500-ms build. A tc filter delays only MACsec EtherType data by three seconds while EAPOL/MKA remains prompt. A separate 100-ms case verifies useful traffic. Active timer values and Delay Protect bits are observed in logs; no full standard conformance is inferred.",
+    "No CAK or SAK bytes are exported. This event does not establish every key rollover, IEEE algorithm-agility clause or an approved key generation system."
+  ],
+  "public_settings": {
+    "cak_bits": 256,
+    "ckn_hex": "57013a12b87911060a2db2827d716640dac929add8128a74ad6a1c564805bd59",
+    "ckn_bits": 256,
+    "mka_priorities": [
+      0,
+      1
+    ],
+    "macsec_cipher_requested": "GCM-AES-256",
+    "replay_window": 0,
+    "confidentiality_offset": 0,
+    "fallback_cak_configured": false
+  },
+  "records": [
+    {
+      "id": "mka-000",
+      "command": [
+        "ip",
+        "netns",
+        "add",
+        "tcv3kg-a"
+      ],
+      "started_at": "2026-10-24T03:58:58.341334+00:00",
+      "ended_at": "2026-10-24T03:58:58.347139+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-001",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:58:58.347153+00:00",
+      "ended_at": "2026-10-24T03:58:58.358559+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-002",
+      "command": [
+        "ip",
+        "netns",
+        "add",
+        "tcv3kg-b"
+      ],
+      "started_at": "2026-10-24T03:58:58.358571+00:00",
+      "ended_at": "2026-10-24T03:58:58.364307+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-003",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:58:58.364320+00:00",
+      "ended_at": "2026-10-24T03:58:58.374747+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-004",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "tcv3kga",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "tcv3kgb"
+      ],
+      "started_at": "2026-10-24T03:58:58.374758+00:00",
+      "ended_at": "2026-10-24T03:58:58.384544+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-005",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "tcv3kga",
+        "netns",
+        "tcv3kg-a"
+      ],
+      "started_at": "2026-10-24T03:58:58.384557+00:00",
+      "ended_at": "2026-10-24T03:58:58.407905+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-006",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "link",
+        "set",
+        "tcv3kga",
+        "name",
+        "eth0"
+      ],
+      "started_at": "2026-10-24T03:58:58.407918+00:00",
+      "ended_at": "2026-10-24T03:58:58.444403+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-007",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "link",
+        "set",
+        "eth0",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:58:58.444422+00:00",
+      "ended_at": "2026-10-24T03:58:58.457870+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-008",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+        "-d",
+        "-B",
+        "-D",
+        "macsec_linux",
+        "-i",
+        "eth0",
+        "-c",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf",
+        "-P",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.pid",
+        "-f",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.log"
+      ],
+      "started_at": "2026-10-24T03:58:58.458394+00:00",
+      "ended_at": "2026-10-24T03:58:58.471095+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-009",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "tcv3kgb",
+        "netns",
+        "tcv3kg-b"
+      ],
+      "started_at": "2026-10-24T03:58:58.471262+00:00",
+      "ended_at": "2026-10-24T03:58:58.494784+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-010",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "link",
+        "set",
+        "tcv3kgb",
+        "name",
+        "eth0"
+      ],
+      "started_at": "2026-10-24T03:58:58.494798+00:00",
+      "ended_at": "2026-10-24T03:58:58.512765+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-011",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "link",
+        "set",
+        "eth0",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:58:58.512779+00:00",
+      "ended_at": "2026-10-24T03:58:58.522945+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-012",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+        "-d",
+        "-B",
+        "-D",
+        "macsec_linux",
+        "-i",
+        "eth0",
+        "-c",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf",
+        "-P",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.pid",
+        "-f",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.log"
+      ],
+      "started_at": "2026-10-24T03:58:58.523276+00:00",
+      "ended_at": "2026-10-24T03:58:58.551651+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-013",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "wpa_cli",
+        "-p",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/ctrl0",
+        "-i",
+        "eth0",
+        "status"
+      ],
+      "started_at": "2026-10-24T03:59:05.652414+00:00",
+      "ended_at": "2026-10-24T03:59:05.665009+00:00",
+      "returncode": 0,
+      "stdout": "bssid=01:80:c2:00:00:03\nfreq=0\nssid=\nid=0\nmode=station\npairwise_cipher=NONE\ngroup_cipher=NONE\nkey_mgmt=NONE\nwpa_state=COMPLETED\naddress=9e:76:67:18:53:2c\nPAE KaY status=Active\nAuthenticated=No\nSecured=Yes\nFailed=No\nActor Priority=0\nKey Server Priority=0\nIs Key Server=No\nNumber of Keys Distributed=1\nNumber of Keys Received=0\nMKA Hello Time=2000\nactor_sci=9e:76:67:18:53:2c@1\nkey_server_sci=9e:76:67:18:53:2c@1\nparticipant_idx=0\nckn=57013a12b87911060a2db2827d716640dac929add8128a74ad6a1c564805bd59\nmi=4e6b9f1bdb80ef1193f5e197\nmn=4\nactive=Yes\nparticipant=No\nretain=No\nlive_peers=1\npotential_peers=0\nis_key_server=Yes\nis_elected=Yes\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-014",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:05.665046+00:00",
+      "ended_at": "2026-10-24T03:59:05.676507+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 9e766718532c0001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          11            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0                6                  0                444\n        0: PN 7, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0                6\n    RXSC: 06132232d84c0001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0               444               0             0        6             0          0              0                0              0\n        0: PN 7, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                  6             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-015",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "-j",
+        "-d",
+        "link"
+      ],
+      "started_at": "2026-10-24T03:59:05.676535+00:00",
+      "ended_at": "2026-10-24T03:59:05.685706+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":5,\"link\":\"eth0\",\"ifname\":\"macsec0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1468,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"9e:76:67:18:53:2c\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"macsec\",\"info_data\":{\"sci\":\"9e766718532c0001\",\"protect\":true,\"cipher_suite\":\"GCM-AES-256\",\"icv_len\":16,\"encoding_sa\":0,\"validation\":\"strict\",\"offload\":\"off\",\"encrypt\":true,\"inc_sci\":true,\"es\":false,\"scb\":false,\"replay_protect\":true,\"window\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":3529,\"link_index\":3528,\"ifname\":\"eth0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"9e:76:67:18:53:2c\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":1,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-016",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "addr",
+        "add",
+        "10.91.0.1/30",
+        "dev",
+        "macsec0"
+      ],
+      "started_at": "2026-10-24T03:59:05.685957+00:00",
+      "ended_at": "2026-10-24T03:59:05.695227+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-017",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "link",
+        "set",
+        "macsec0",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:59:05.695251+00:00",
+      "ended_at": "2026-10-24T03:59:05.705084+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-018",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "wpa_cli",
+        "-p",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/ctrl1",
+        "-i",
+        "eth0",
+        "status"
+      ],
+      "started_at": "2026-10-24T03:59:05.705193+00:00",
+      "ended_at": "2026-10-24T03:59:05.714839+00:00",
+      "returncode": 0,
+      "stdout": "bssid=01:80:c2:00:00:03\nfreq=0\nssid=\nid=0\nmode=station\npairwise_cipher=NONE\ngroup_cipher=NONE\nkey_mgmt=NONE\nwpa_state=COMPLETED\naddress=06:13:22:32:d8:4c\nPAE KaY status=Active\nAuthenticated=No\nSecured=Yes\nFailed=No\nActor Priority=1\nKey Server Priority=0\nIs Key Server=No\nNumber of Keys Distributed=0\nNumber of Keys Received=1\nMKA Hello Time=2000\nactor_sci=06:13:22:32:d8:4c@1\nkey_server_sci=9e:76:67:18:53:2c@1\nparticipant_idx=0\nckn=57013a12b87911060a2db2827d716640dac929add8128a74ad6a1c564805bd59\nmi=731210c8b4df9cc3d674720d\nmn=5\nactive=Yes\nparticipant=No\nretain=No\nlive_peers=1\npotential_peers=0\nis_key_server=No\nis_elected=Yes\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-019",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:05.714882+00:00",
+      "ended_at": "2026-10-24T03:59:05.723428+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 06132232d84c0001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          10            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0                6                  0                444\n        0: PN 7, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0                6\n    RXSC: 9e766718532c0001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0               444               0             0        6             0          0              0                0              0\n        0: PN 7, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                  6             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-020",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "-j",
+        "-d",
+        "link"
+      ],
+      "started_at": "2026-10-24T03:59:05.723455+00:00",
+      "ended_at": "2026-10-24T03:59:05.733063+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":5,\"link\":\"eth0\",\"ifname\":\"macsec0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1468,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"06:13:22:32:d8:4c\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"macsec\",\"info_data\":{\"sci\":\"06132232d84c0001\",\"protect\":true,\"cipher_suite\":\"GCM-AES-256\",\"icv_len\":16,\"encoding_sa\":0,\"validation\":\"strict\",\"offload\":\"off\",\"encrypt\":true,\"inc_sci\":true,\"es\":false,\"scb\":false,\"replay_protect\":true,\"window\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":3528,\"link_index\":3529,\"ifname\":\"eth0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"06:13:22:32:d8:4c\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":1,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-021",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "addr",
+        "add",
+        "10.91.0.2/30",
+        "dev",
+        "macsec0"
+      ],
+      "started_at": "2026-10-24T03:59:05.733302+00:00",
+      "ended_at": "2026-10-24T03:59:05.741934+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-022",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "link",
+        "set",
+        "macsec0",
+        "up"
+      ],
+      "started_at": "2026-10-24T03:59:05.741957+00:00",
+      "ended_at": "2026-10-24T03:59:05.750124+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-023",
+      "command": [
+        "sha256sum",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant"
+      ],
+      "started_at": "2026-10-24T03:59:05.750240+00:00",
+      "ended_at": "2026-10-24T03:59:05.769181+00:00",
+      "returncode": 0,
+      "stdout": "5649fb98b6f91b726887fe0504faadd5f32ddd6d46d1db0a9b6a5a0119e221f9  /users/hy/tdn-continuation-2026-10-24T014455Z/hostap/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-024",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.91.0.1"
+      ],
+      "started_at": "2026-10-24T03:59:05.769210+00:00",
+      "ended_at": "2026-10-24T03:59:07.861597+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.91.0.1 (10.91.0.1) 56(84) bytes of data.\n64 bytes from 10.91.0.1: icmp_seq=1 ttl=64 time=0.119 ms\n64 bytes from 10.91.0.1: icmp_seq=2 ttl=64 time=0.067 ms\n64 bytes from 10.91.0.1: icmp_seq=3 ttl=64 time=0.072 ms\n\n--- 10.91.0.1 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2075ms\nrtt min/avg/max/mdev = 0.067/0.086/0.119/0.023 ms\n",
+      "stderr": "",
+      "probe": "MKA-data-before-delay",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "mka-025",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:07.861640+00:00",
+      "ended_at": "2026-10-24T03:59:07.873279+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 9e766718532c0001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          12            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0               10                  0                732\n        0: PN 11, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0               10\n    RXSC: 06132232d84c0001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0               790               0             0       11             0          0              0                0              0\n        0: PN 12, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                 11             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-026",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:07.873309+00:00",
+      "ended_at": "2026-10-24T03:59:07.884281+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 06132232d84c0001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          11            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0               11                  0                790\n        0: PN 12, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0               11\n    RXSC: 9e766718532c0001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0               732               0             0       10             0          0              0                0              0\n        0: PN 11, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                 10             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-027",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "neigh",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:07.884296+00:00",
+      "ended_at": "2026-10-24T03:59:07.894313+00:00",
+      "returncode": 0,
+      "stdout": "10.91.0.1 dev macsec0 lladdr 9e:76:67:18:53:2c REACHABLE \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-028",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "tc",
+        "qdisc",
+        "add",
+        "dev",
+        "eth0",
+        "root",
+        "handle",
+        "1:",
+        "prio",
+        "bands",
+        "3"
+      ],
+      "started_at": "2026-10-24T03:59:07.894326+00:00",
+      "ended_at": "2026-10-24T03:59:08.174186+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-029",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "tc",
+        "filter",
+        "add",
+        "dev",
+        "eth0",
+        "parent",
+        "1:",
+        "protocol",
+        "0x88e5",
+        "prio",
+        "1",
+        "u32",
+        "match",
+        "u32",
+        "0",
+        "0",
+        "flowid",
+        "1:3"
+      ],
+      "started_at": "2026-10-24T03:59:08.174213+00:00",
+      "ended_at": "2026-10-24T03:59:08.227183+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-030",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "tc",
+        "qdisc",
+        "add",
+        "dev",
+        "eth0",
+        "parent",
+        "1:3",
+        "handle",
+        "30:",
+        "netem",
+        "delay",
+        "3000ms"
+      ],
+      "started_at": "2026-10-24T03:59:08.227210+00:00",
+      "ended_at": "2026-10-24T03:59:08.242803+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-031",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "4",
+        "-i",
+        "0.2",
+        "10.91.0.1"
+      ],
+      "started_at": "2026-10-24T03:59:08.242828+00:00",
+      "ended_at": "2026-10-24T03:59:11.669525+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.91.0.1 (10.91.0.1) 56(84) bytes of data.\n64 bytes from 10.91.0.1: icmp_seq=1 ttl=64 time=3000 ms\n64 bytes from 10.91.0.1: icmp_seq=2 ttl=64 time=3000 ms\n64 bytes from 10.91.0.1: icmp_seq=3 ttl=64 time=3000 ms\n\n--- 10.91.0.1 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 412ms\nrtt min/avg/max/mdev = 3000.069/3000.076/3000.085/0.006 ms, pipe 3\n",
+      "stderr": "",
+      "probe": "three-second-data-delay",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "mka-032",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "tc",
+        "-s",
+        "qdisc",
+        "show",
+        "dev",
+        "eth0"
+      ],
+      "started_at": "2026-10-24T03:59:11.669570+00:00",
+      "ended_at": "2026-10-24T03:59:11.681476+00:00",
+      "returncode": 0,
+      "stdout": "qdisc prio 1: root refcnt 57 bands 3 priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1\n Sent 552 bytes 4 pkt (dropped 0, overlimits 0 requeues 0) \n backlog 74b 1p requeues 0\nqdisc netem 30: parent 1:3 limit 1000 delay 3s\n Sent 390 bytes 3 pkt (dropped 0, overlimits 0 requeues 0) \n backlog 74b 1p requeues 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-033",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "tc",
+        "-s",
+        "filter",
+        "show",
+        "dev",
+        "eth0",
+        "parent",
+        "1:"
+      ],
+      "started_at": "2026-10-24T03:59:11.681503+00:00",
+      "ended_at": "2026-10-24T03:59:11.693288+00:00",
+      "returncode": 0,
+      "stdout": "filter protocol [35045] pref 1 u32 chain 0 \nfilter protocol [35045] pref 1 u32 chain 0 fh 800: ht divisor 1 \nfilter protocol [35045] pref 1 u32 chain 0 fh 800::800 order 2048 key ht 800 bkt 0 *flowid 1:3 not_in_hw \n  match 00000000/00000000 at 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-034",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:11.693323+00:00",
+      "ended_at": "2026-10-24T03:59:11.703993+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 9e766718532c0001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          14            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0               15                  0               1078\n        0: PN 16, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0               15\n    RXSC: 06132232d84c0001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0              1048               0             0       14             0          0              0                0              0\n        0: PN 15, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                 14             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-035",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:11.704017+00:00",
+      "ended_at": "2026-10-24T03:59:11.715116+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 06132232d84c0001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          13            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0               15                  0               1078\n        0: PN 16, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0               15\n    RXSC: 9e766718532c0001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0              1078               0             0       15             0          0              0                0              0\n        0: PN 16, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                 15             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-036",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "tc",
+        "qdisc",
+        "replace",
+        "dev",
+        "eth0",
+        "parent",
+        "1:3",
+        "handle",
+        "30:",
+        "netem",
+        "delay",
+        "100ms"
+      ],
+      "started_at": "2026-10-24T03:59:11.715146+00:00",
+      "ended_at": "2026-10-24T03:59:11.725884+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-037",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.91.0.1"
+      ],
+      "started_at": "2026-10-24T03:59:11.725898+00:00",
+      "ended_at": "2026-10-24T03:59:13.841841+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.91.0.1 (10.91.0.1) 56(84) bytes of data.\n64 bytes from 10.91.0.1: icmp_seq=1 ttl=64 time=100 ms\n64 bytes from 10.91.0.1: icmp_seq=2 ttl=64 time=100 ms\n64 bytes from 10.91.0.1: icmp_seq=3 ttl=64 time=100 ms\n\n--- 10.91.0.1 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2002ms\nrtt min/avg/max/mdev = 100.083/100.087/100.093/0.004 ms\n",
+      "stderr": "",
+      "probe": "MKA-data-with-100ms-delay",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "mka-038",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "tc",
+        "qdisc",
+        "del",
+        "dev",
+        "eth0",
+        "root"
+      ],
+      "started_at": "2026-10-24T03:59:13.841909+00:00",
+      "ended_at": "2026-10-24T03:59:13.853541+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-039",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.91.0.1"
+      ],
+      "started_at": "2026-10-24T03:59:13.853566+00:00",
+      "ended_at": "2026-10-24T03:59:15.925557+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.91.0.1 (10.91.0.1) 56(84) bytes of data.\n64 bytes from 10.91.0.1: icmp_seq=1 ttl=64 time=0.039 ms\n64 bytes from 10.91.0.1: icmp_seq=2 ttl=64 time=0.086 ms\n64 bytes from 10.91.0.1: icmp_seq=3 ttl=64 time=0.061 ms\n\n--- 10.91.0.1 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2055ms\nrtt min/avg/max/mdev = 0.039/0.062/0.086/0.019 ms\n",
+      "stderr": "",
+      "probe": "MKA-data-after-delay-removed",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "mka-040",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "wpa_cli",
+        "-p",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/ctrl0",
+        "-i",
+        "eth0",
+        "mib"
+      ],
+      "started_at": "2026-10-24T03:59:15.925700+00:00",
+      "ended_at": "2026-10-24T03:59:15.937051+00:00",
+      "returncode": 0,
+      "stdout": "dot11RSNAOptionImplemented=TRUE\ndot11RSNAPreauthenticationImplemented=TRUE\ndot11RSNAEnabled=FALSE\ndot11RSNAPreauthenticationEnabled=FALSE\ndot11RSNAConfigVersion=1\ndot11RSNAConfigPairwiseKeysSupported=5\ndot11RSNAConfigGroupCipherSize=0\ndot11RSNAConfigPMKLifetime=43200\ndot11RSNAConfigPMKReauthThreshold=70\ndot11RSNAConfigNumberOfPTKSAReplayCounters=1\ndot11RSNAConfigSATimeout=60\ndot11RSNAAuthenticationSuiteSelected=00-00-00-0\ndot11RSNAPairwiseCipherSelected=00-50-f2-0\ndot11RSNAGroupCipherSelected=00-50-f2-0\ndot11RSNAPMKIDUsed=\ndot11RSNAAuthenticationSuiteRequested=00-00-00-0\ndot11RSNAPairwiseCipherRequested=00-50-f2-0\ndot11RSNAGroupCipherRequested=00-50-f2-0\ndot11RSNAConfigNumberOfGTKSAReplayCounters=0\ndot11RSNA4WayHandshakeFailures=0\ndot1xSuppPaeState=9\ndot1xSuppHeldPeriod=60\ndot1xSuppAuthPeriod=30\ndot1xSuppStartPeriod=30\ndot1xSuppMaxStart=3\ndot1xSuppSuppControlledPortStatus=Authorized\ndot1xSuppBackendPaeState=2\ndot1xSuppEapolFramesRx=0\ndot1xSuppEapolFramesTx=0\ndot1xSuppEapolStartFramesTx=0\ndot1xSuppEapolLogoffFramesTx=0\ndot1xSuppEapolRespFramesTx=0\ndot1xSuppEapolReqIdFramesRx=0\ndot1xSuppEapolReqFramesRx=0\ndot1xSuppInvalidEapolFramesRx=0\ndot1xSuppEapLengthErrorFramesRx=0\ndot1xSuppLastEapolFrameVersion=0\ndot1xSuppLastEapolFrameSource=00:00:00:00:00:00\nieee8021XKayMkaPartCKN=57013a12b87911060a2db2827d716640dac929add8128a74ad6a1c564805bd59\nieee8021XKayMkaPartCached=false\nieee8021XKayMkaPartActive=true\nieee8021XKayMkaPartRetain=false\nieee8021XKayMkaPartActivateControl=default\nieee8021XKayMkaPartPrincipal=true\nieee8021XKayMkaPeerListMI=731210c8b4df9cc3d674720d\nieee8021XKayMkaPeerListMN=10\nieee8021XKayMkaPeerListType=1\nieee8021XKayMkaPeerListSCI=06:13:22:32:d8:4c@1\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-041",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-a",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:15.937080+00:00",
+      "ended_at": "2026-10-24T03:59:15.946596+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 9e766718532c0001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          17            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0               22                  0               1624\n        0: PN 23, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0               22\n    RXSC: 06132232d84c0001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0              1652               0             0       22             0          0              0                0              0\n        0: PN 24, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                 22             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-042",
+      "command": [
+        "cat",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.log"
+      ],
+      "started_at": "2026-10-24T03:59:15.946698+00:00",
+      "ended_at": "2026-10-24T03:59:15.950139+00:00",
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nrandom: Trying to read entropy from /dev/random\nSuccessfully initialized wpa_supplicant\nInitializing interface 'eth0' conf '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf' driver 'macsec_linux' ctrl_interface 'N/A' bridge 'N/A'\nConfiguration file '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf' -> '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf'\nReading configuration file '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf'\nctrl_interface='/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/ctrl0'\neapol_version=3\nap_scan=0\nPriority group 0\n   id=0 ssid=''\ndriver_wired_init_common: Added multicast membership with packet socket\nAdd interface eth0 to a new radio N/A\neth0: Own MAC address: 9e:76:67:18:53:2c\neth0: RSN: flushing PMKID list in the driver\neth0: Setting scan request: 0.100000 sec\nPKCS11 provider not present\nEAPOL: SUPP_PAE entering state DISCONNECTED\nEAPOL: Supplicant port status: Unauthorized\nEAPOL: KEY_RX entering state NO_KEY_RECEIVE\nEAPOL: SUPP_BE entering state INITIALIZE\nEAP: EAP entering state DISABLED\nUsing existing control interface directory.\nPR: Driver does not support Proximity Ranging - PR disabled\neth0: Added interface eth0\neth0: State: DISCONNECTED -> DISCONNECTED\nDaemonize..\nrandom: Got 20/20 bytes from /dev/random\nEAPOL: External notification - EAP success=0\nEAPOL: External notification - EAP fail=0\nEAPOL: External notification - portControl=Auto\nKaY: Initialize - ifname=eth0 addr=9e:76:67:18:53:2c port=0 priority=0\nKaY: Generated SCI: 9e:76:67:18:53:2c@1\nmacsec_drv_get_capability\nKaY: state machine created\nmacsec_drv_macsec_init\nmacsec_linux: ifname=eth0 parent_ifi=3529\nKaY: SecY init MACsec done\nCP: state machine created\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_enable_controlled_port -> FALSE\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_drv_set_offload -> 00\nCP: CP entering state INIT\nmacsec_drv_enable_controlled_port -> FALSE\nCP: CP entering state CHANGE\nmacsec_drv_enable_controlled_port -> FALSE\nKaY: principal participant is not found\nKaY: principal participant is not found\neth0: Already associated with a configured network - generating associated event\neth0: Event ASSOC (0) received\neth0: Association info event\neth0: State: DISCONNECTED -> ASSOCIATED\neth0: Associated to a new BSS: BSSID=01:80:c2:00:00:03\neth0: Select network based on association information\neth0: Network configuration found for the current AP\neth0: Failed to get scan results\neth0: WPA: clearing AP WPA IE\neth0: WPA: clearing AP RSN IE\neth0: WPA: clearing AP RSNXE\neth0: RSN: Clearing AP RSNE Override element\neth0: RSN: Clearing AP RSNE Override 2 element\neth0: RSN: Clearing AP RSNXE Override element\neth0: WPA: clearing own WPA/RSN IE\neth0: RSN: clearing own RSNXE\nEAPOL: External notification - EAP success=0\nEAPOL: External notification - EAP fail=0\nEAPOL: External notification - portControl=ForceAuthorized\nKaY: state machine removed\nCP: state machine removed\nmacsec_drv_macsec_deinit\nKaY: Initialize - ifname=eth0 addr=9e:76:67:18:53:2c port=0 priority=0\nKaY: Generated SCI: 9e:76:67:18:53:2c@1\nmacsec_drv_get_capability\nKaY: state machine created\nmacsec_drv_macsec_init\nmacsec_linux: ifname=eth0 parent_ifi=3529\nKaY: SecY init MACsec done\nCP: state machine created\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_enable_controlled_port -> FALSE\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_drv_set_offload -> 00\nCP: CP entering state INIT\nmacsec_drv_enable_controlled_port -> FALSE\nCP: CP entering state CHANGE\nmacsec_drv_enable_controlled_port -> FALSE\nKaY: principal participant is not found\nKaY: principal participant is not found\nKaY: Create MKA (ifname=eth0 mode=PSK authenticator=No)\nKaY: CKN - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: CAK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Selected random MI: 4e6b9f1bdb80ef1193f5e197\nKaY: Create transmit SC - SCI: 9e:76:67:18:53:2c@1\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_set_offload -> 00\nmacsec_linux: eth0: create_transmit_sc -> 9e:76:67:18:53:2c::1 (conf_offset=0)\nmacsec_linux: eth0: create_transmit_sc: ifi=5 ifname=macsec0\nmacsec_linux: macsec0: try_commit controlled_port_enabled=0\nmacsec_linux: macsec0: try_commit protect_frames=1\nmacsec_linux: macsec0: try_commit encrypt=1\nmacsec_linux: macsec0: try_commit replay_protect=1 replay_window=0\nmacsec_linux: macsec0: try_commit offload=0\nKaY: Derived KEK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Derived ICK - hexdump(len=32): [REDACTED_HEXDUMP]\neth0: Associated with 01:80:c2:00:00:03\neth0: WPA: Association event - clear replay counter\neth0: WPA: Clear old PTK\nEAPOL: External notification - portEnabled=0\nEAPOL: External notification - portValid=0\nEAPOL: External notification - portEnabled=1\nEAPOL: SUPP_PAE entering state S_FORCE_AUTH\nEAPOL: Supplicant port status: Authorized\nEAPOL: SUPP_BE entering state IDLE\neth0: Cancelling authentication timeout\neth0: State: ASSOCIATED -> COMPLETED\neth0: CTRL-EVENT-CONNECTED - Connection to 01:80:c2:00:00:03 completed [id=0 id_str=]\neth0: Cancelling scan request\neth0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0\nEAPOL: disable timer tick\nl2_packet_receive: src=06:13:22:32:d8:4c len=84\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=98\nKaY: RX EAPOL-MKA - hexdump(len=98): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=80\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 1\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nKaY: Potential peer created\n\tMI: 731210c8b4df9cc3d674720d  MN: 1  SCI: 00:00:00:00:00:00@0\nKaY: i_in_peerlist=No is_in_live_peer=No\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=100\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 1\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nPotential Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=104\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=118\nKaY: RX EAPOL-MKA - hexdump(len=118): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=100\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 2\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 1\nKaY: My MI - received MN 1, most recently transmitted MN 1\nKaY: i_in_peerlist=Yes is_in_live_peer=No\nKaY: Create receive SC: SCI 06:13:22:32:d8:4c@1\nKaY: Move potential peer to live peer\n\tMI: 731210c8b4df9cc3d674720d  MN: 2  SCI: 06:13:22:32:d8:4c@1\nmacsec_linux: macsec0: create_receive_sc -> 06:13:22:32:d8:4c::1 (conf_offset=0 validation=2)\nKaY: I am elected as key server\nCP: CP entering state SECURED\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_linux: macsec0: try_commit protect_frames=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_linux: macsec0: try_commit encrypt=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_linux: macsec0: try_commit replay_protect=1 replay_window=0\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_set_offload -> 00\nmacsec_linux: macsec0: try_commit offload=0\nKaY: Participant timer (ifname=eth0)\nKaY: generated new SAK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=156\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 2\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 2\nDistributed SAK parameter set\n\tDistributed AN........: 0\n\tConfidentiality Offset: 1\n\tBody Length...........: 52\n\tKey Number............: 1\n\tMACsec Cipher Suite...: - hexdump(len=8): [REDACTED_HEXDUMP]\n\tAES Key Wrap of SAK...: - hexdump(len=40): [REDACTED_HEXDUMP]\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nCP: CP entering state RECEIVE\nKaY: Create receive SA(an: 0 lowest_pn: 1) of SC\nmacsec_linux: macsec0: create_receive_sa -> 0 on 06:13:22:32:d8:4c::1 (enable_receive=0 next_pn=1)\nmacsec_linux: SA keyid - hexdump(len=16): [REDACTED_HEXDUMP]\nmacsec_linux: SA key - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Create transmit SA(an: 0, next_pn: 1) of SC\nmacsec_linux: macsec0: create_transmit_sa -> 0 on 9e:76:67:18:53:2c::1 (enable_transmit=0 next_pn=1)\nmacsec_linux: SA keyid - hexdump(len=16): [REDACTED_HEXDUMP]\nmacsec_linux: SA key - hexdump(len=32): [REDACTED_HEXDUMP]\nmacsec_linux: macsec0: enable_receive_sa -> 0 on 06:13:22:32:d8:4c::1\nCP: CP entering state RECEIVING\nCP: CP entering state TRANSMIT\nmacsec_drv_enable_controlled_port -> TRUE\nmacsec_linux: macsec0: try_commit controlled_port_enabled=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_linux: macsec0: enable_transmit_sa -> 0 on 9e:76:67:18:53:2c::1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_linux: macsec0: try_commit encoding_sa=0\nCP: CP entering state TRANSMITTING\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=200\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 3\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 2\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 1\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: Yes\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nDistributed SAK parameter set\n\tDistributed AN........: 0\n\tConfidentiality Offset: 1\n\tBody Length...........: 52\n\tKey Number............: 1\n\tMACsec Cipher Suite...: - hexdump(len=8): [REDACTED_HEXDUMP]\n\tAES Key Wrap of SAK...: - hexdump(len=40): [REDACTED_HEXDUMP]\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nCP: CP entering state RETIRE\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 3\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 2\nKaY: My MI - received MN 2, most recently transmitted MN 3\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 4\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 2\nKaY: My MI - received MN 2, most recently transmitted MN 3\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: Yes\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 5\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 3\nKaY: My MI - received MN 3, most recently transmitted MN 3\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 1\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 4\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 5\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 4\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nEAPOL: EAP Session-Id not available\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 6\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 4\nKaY: My MI - received MN 4, most recently transmitted MN 4\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 5\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 5\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 6\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 9\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 3\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 7\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 5\nKaY: My MI - received MN 5, most recently transmitted MN 5\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 8\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 6\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 7\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 11\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 8\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 8\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 6\nKaY: My MI - received MN 6, most recently transmitted MN 6\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 11\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 7\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 8\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 12\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 10\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 9\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 7\nKaY: My MI - received MN 7, most recently transmitted MN 7\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 14\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 8\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 9\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 18\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 11\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 10\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 8\nKaY: My MI - received MN 8, most recently transmitted MN 8\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 17\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 9\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 10\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 21\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 17\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nControl interface recv command from: /tmp/wpa_ctrl_1493755-1\\x00\neth0: Control interface command 'MIB'\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-043",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "wpa_cli",
+        "-p",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/ctrl1",
+        "-i",
+        "eth0",
+        "mib"
+      ],
+      "started_at": "2026-10-24T03:59:15.950229+00:00",
+      "ended_at": "2026-10-24T03:59:15.959360+00:00",
+      "returncode": 0,
+      "stdout": "dot11RSNAOptionImplemented=TRUE\ndot11RSNAPreauthenticationImplemented=TRUE\ndot11RSNAEnabled=FALSE\ndot11RSNAPreauthenticationEnabled=FALSE\ndot11RSNAConfigVersion=1\ndot11RSNAConfigPairwiseKeysSupported=5\ndot11RSNAConfigGroupCipherSize=0\ndot11RSNAConfigPMKLifetime=43200\ndot11RSNAConfigPMKReauthThreshold=70\ndot11RSNAConfigNumberOfPTKSAReplayCounters=1\ndot11RSNAConfigSATimeout=60\ndot11RSNAAuthenticationSuiteSelected=00-00-00-0\ndot11RSNAPairwiseCipherSelected=00-50-f2-0\ndot11RSNAGroupCipherSelected=00-50-f2-0\ndot11RSNAPMKIDUsed=\ndot11RSNAAuthenticationSuiteRequested=00-00-00-0\ndot11RSNAPairwiseCipherRequested=00-50-f2-0\ndot11RSNAGroupCipherRequested=00-50-f2-0\ndot11RSNAConfigNumberOfGTKSAReplayCounters=0\ndot11RSNA4WayHandshakeFailures=0\ndot1xSuppPaeState=9\ndot1xSuppHeldPeriod=60\ndot1xSuppAuthPeriod=30\ndot1xSuppStartPeriod=30\ndot1xSuppMaxStart=3\ndot1xSuppSuppControlledPortStatus=Authorized\ndot1xSuppBackendPaeState=2\ndot1xSuppEapolFramesRx=0\ndot1xSuppEapolFramesTx=0\ndot1xSuppEapolStartFramesTx=0\ndot1xSuppEapolLogoffFramesTx=0\ndot1xSuppEapolRespFramesTx=0\ndot1xSuppEapolReqIdFramesRx=0\ndot1xSuppEapolReqFramesRx=0\ndot1xSuppInvalidEapolFramesRx=0\ndot1xSuppEapLengthErrorFramesRx=0\ndot1xSuppLastEapolFrameVersion=0\ndot1xSuppLastEapolFrameSource=00:00:00:00:00:00\nieee8021XKayMkaPartCKN=57013a12b87911060a2db2827d716640dac929add8128a74ad6a1c564805bd59\nieee8021XKayMkaPartCached=false\nieee8021XKayMkaPartActive=true\nieee8021XKayMkaPartRetain=false\nieee8021XKayMkaPartActivateControl=default\nieee8021XKayMkaPartPrincipal=true\nieee8021XKayMkaPeerListMI=4e6b9f1bdb80ef1193f5e197\nieee8021XKayMkaPeerListMN=9\nieee8021XKayMkaPeerListType=1\nieee8021XKayMkaPeerListSCI=9e:76:67:18:53:2c@1\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-044",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3kg-b",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T03:59:15.959386+00:00",
+      "ended_at": "2026-10-24T03:59:15.968322+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 06132232d84c0001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          16            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0               23                  0               1682\n        0: PN 24, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0               23\n    RXSC: 9e766718532c0001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0              1624               0             0       22             0          0              0                0              0\n        0: PN 23, state on, key 4e6b9f1bdb80ef1193f5e19701000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                 22             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-045",
+      "command": [
+        "cat",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.log"
+      ],
+      "started_at": "2026-10-24T03:59:15.968414+00:00",
+      "ended_at": "2026-10-24T03:59:15.972343+00:00",
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nrandom: Trying to read entropy from /dev/random\nSuccessfully initialized wpa_supplicant\nInitializing interface 'eth0' conf '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf' driver 'macsec_linux' ctrl_interface 'N/A' bridge 'N/A'\nConfiguration file '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf' -> '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf'\nReading configuration file '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf'\nctrl_interface='/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/ctrl1'\neapol_version=3\nap_scan=0\nPriority group 0\n   id=0 ssid=''\ndriver_wired_init_common: Added multicast membership with packet socket\nAdd interface eth0 to a new radio N/A\neth0: Own MAC address: 06:13:22:32:d8:4c\neth0: RSN: flushing PMKID list in the driver\neth0: Setting scan request: 0.100000 sec\nPKCS11 provider not present\nEAPOL: SUPP_PAE entering state DISCONNECTED\nEAPOL: Supplicant port status: Unauthorized\nEAPOL: KEY_RX entering state NO_KEY_RECEIVE\nEAPOL: SUPP_BE entering state INITIALIZE\nEAP: EAP entering state DISABLED\nUsing existing control interface directory.\nPR: Driver does not support Proximity Ranging - PR disabled\neth0: Added interface eth0\neth0: State: DISCONNECTED -> DISCONNECTED\nDaemonize..\nrandom: Got 20/20 bytes from /dev/random\nEAPOL: External notification - EAP success=0\nEAPOL: External notification - EAP fail=0\nEAPOL: External notification - portControl=Auto\nKaY: Initialize - ifname=eth0 addr=06:13:22:32:d8:4c port=0 priority=1\nKaY: Generated SCI: 06:13:22:32:d8:4c@1\nmacsec_drv_get_capability\nKaY: state machine created\nmacsec_drv_macsec_init\nmacsec_linux: ifname=eth0 parent_ifi=3528\nKaY: SecY init MACsec done\nCP: state machine created\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_enable_controlled_port -> FALSE\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_drv_set_offload -> 00\nCP: CP entering state INIT\nmacsec_drv_enable_controlled_port -> FALSE\nCP: CP entering state CHANGE\nmacsec_drv_enable_controlled_port -> FALSE\nKaY: principal participant is not found\nKaY: principal participant is not found\neth0: Already associated with a configured network - generating associated event\neth0: Event ASSOC (0) received\neth0: Association info event\neth0: State: DISCONNECTED -> ASSOCIATED\neth0: Associated to a new BSS: BSSID=01:80:c2:00:00:03\neth0: Select network based on association information\neth0: Network configuration found for the current AP\neth0: Failed to get scan results\neth0: WPA: clearing AP WPA IE\neth0: WPA: clearing AP RSN IE\neth0: WPA: clearing AP RSNXE\neth0: RSN: Clearing AP RSNE Override element\neth0: RSN: Clearing AP RSNE Override 2 element\neth0: RSN: Clearing AP RSNXE Override element\neth0: WPA: clearing own WPA/RSN IE\neth0: RSN: clearing own RSNXE\nEAPOL: External notification - EAP success=0\nEAPOL: External notification - EAP fail=0\nEAPOL: External notification - portControl=ForceAuthorized\nKaY: state machine removed\nCP: state machine removed\nmacsec_drv_macsec_deinit\nKaY: Initialize - ifname=eth0 addr=06:13:22:32:d8:4c port=0 priority=1\nKaY: Generated SCI: 06:13:22:32:d8:4c@1\nmacsec_drv_get_capability\nKaY: state machine created\nmacsec_drv_macsec_init\nmacsec_linux: ifname=eth0 parent_ifi=3528\nKaY: SecY init MACsec done\nCP: state machine created\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_enable_controlled_port -> FALSE\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_drv_set_offload -> 00\nCP: CP entering state INIT\nmacsec_drv_enable_controlled_port -> FALSE\nCP: CP entering state CHANGE\nmacsec_drv_enable_controlled_port -> FALSE\nKaY: principal participant is not found\nKaY: principal participant is not found\nKaY: Create MKA (ifname=eth0 mode=PSK authenticator=No)\nKaY: CKN - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: CAK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Selected random MI: 731210c8b4df9cc3d674720d\nKaY: Create transmit SC - SCI: 06:13:22:32:d8:4c@1\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_set_offload -> 00\nmacsec_linux: eth0: create_transmit_sc -> 06:13:22:32:d8:4c::1 (conf_offset=0)\nmacsec_linux: eth0: create_transmit_sc: ifi=5 ifname=macsec0\nmacsec_linux: macsec0: try_commit controlled_port_enabled=0\nmacsec_linux: macsec0: try_commit protect_frames=1\nmacsec_linux: macsec0: try_commit encrypt=1\nmacsec_linux: macsec0: try_commit replay_protect=1 replay_window=0\nmacsec_linux: macsec0: try_commit offload=0\nKaY: Derived KEK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Derived ICK - hexdump(len=32): [REDACTED_HEXDUMP]\neth0: Associated with 01:80:c2:00:00:03\neth0: WPA: Association event - clear replay counter\neth0: WPA: Clear old PTK\nEAPOL: External notification - portEnabled=0\nEAPOL: External notification - portValid=0\nEAPOL: External notification - portEnabled=1\nEAPOL: SUPP_PAE entering state S_FORCE_AUTH\nEAPOL: Supplicant port status: Authorized\nEAPOL: SUPP_BE entering state IDLE\neth0: Cancelling authentication timeout\neth0: State: ASSOCIATED -> COMPLETED\neth0: CTRL-EVENT-CONNECTED - Connection to 01:80:c2:00:00:03 completed [id=0 id_str=]\neth0: Cancelling scan request\neth0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0\nEAPOL: disable timer tick\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=80\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 1\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=104\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=118\nKaY: RX EAPOL-MKA - hexdump(len=118): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=100\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 1\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nKaY: Potential peer created\n\tMI: 4e6b9f1bdb80ef1193f5e197  MN: 1  SCI: 00:00:00:00:00:00@0\nPotential Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 1\nKaY: My MI - received MN 1, most recently transmitted MN 1\nKaY: i_in_peerlist=Yes is_in_live_peer=No\nKaY: Create receive SC: SCI 9e:76:67:18:53:2c@1\nKaY: Move potential peer to live peer\n\tMI: 4e6b9f1bdb80ef1193f5e197  MN: 1  SCI: 9e:76:67:18:53:2c@1\nmacsec_linux: macsec0: create_receive_sc -> 9e:76:67:18:53:2c::1 (conf_offset=0 validation=2)\nKaY: Peer 4e6b9f1bdb80ef1193f5e197 was elected as the key server\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=100\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 2\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=160\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=174\nKaY: RX EAPOL-MKA - hexdump(len=174): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=156\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 2\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 2\nKaY: My MI - received MN 2, most recently transmitted MN 2\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nDistributed SAK parameter set\n\tDistributed AN........: 0\n\tConfidentiality Offset: 1\n\tBody Length...........: 52\n\tKey Number............: 1\n\tMACsec Cipher Suite...: - hexdump(len=8): [REDACTED_HEXDUMP]\n\tAES Key Wrap of SAK...: - hexdump(len=40): [REDACTED_HEXDUMP]\n\tAES Key Unwrap of SAK.: - hexdump(len=32): [REDACTED_HEXDUMP]\nCP: CP entering state SECURED\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_linux: macsec0: try_commit protect_frames=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_linux: macsec0: try_commit encrypt=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_linux: macsec0: try_commit replay_protect=1 replay_window=0\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_set_offload -> 00\nmacsec_linux: macsec0: try_commit offload=0\nCP: CP entering state RECEIVE\nKaY: Create receive SA(an: 0 lowest_pn: 1) of SC\nmacsec_linux: macsec0: create_receive_sa -> 0 on 9e:76:67:18:53:2c::1 (enable_receive=0 next_pn=1)\nmacsec_linux: SA keyid - hexdump(len=16): [REDACTED_HEXDUMP]\nmacsec_linux: SA key - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Create transmit SA(an: 0, next_pn: 1) of SC\nmacsec_linux: macsec0: create_transmit_sa -> 0 on 06:13:22:32:d8:4c::1 (enable_transmit=0 next_pn=1)\nmacsec_linux: SA keyid - hexdump(len=16): [REDACTED_HEXDUMP]\nmacsec_linux: SA key - hexdump(len=32): [REDACTED_HEXDUMP]\nmacsec_linux: macsec0: enable_receive_sa -> 0 on 9e:76:67:18:53:2c::1\nCP: CP entering state RECEIVING\nCP: CP entering state READY\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 3\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 2\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 1\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nCP: CP entering state TRANSMIT\nmacsec_drv_enable_controlled_port -> TRUE\nmacsec_linux: macsec0: try_commit controlled_port_enabled=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_linux: macsec0: enable_transmit_sa -> 0 on 06:13:22:32:d8:4c::1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_linux: macsec0: try_commit encoding_sa=0\nCP: CP entering state TRANSMITTING\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 4\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 2\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 1\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: Yes\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nCP: CP entering state RETIRE\nl2_packet_receive: src=9e:76:67:18:53:2c len=204\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=218\nKaY: RX EAPOL-MKA - hexdump(len=218): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=200\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 3\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 2\nKaY: My MI - received MN 2, most recently transmitted MN 4\nKaY: i_in_peerlist=No is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: Yes\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nDistributed SAK parameter set\n\tDistributed AN........: 0\n\tConfidentiality Offset: 1\n\tBody Length...........: 52\n\tKey Number............: 1\n\tMACsec Cipher Suite...: - hexdump(len=8): [REDACTED_HEXDUMP]\n\tAES Key Wrap of SAK...: - hexdump(len=40): [REDACTED_HEXDUMP]\nKaY: SAK has already been installed - do not set it again\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 5\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 3\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 6\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 4\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 5\nKaY: My MI - received MN 5, most recently transmitted MN 5\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 1\nEAPOL: EAP Session-Id not available\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 6\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 4\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 9\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 5\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 5\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 6\nKaY: My MI - received MN 6, most recently transmitted MN 6\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 3\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 7\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 5\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 12\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 8\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 6\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 7\nKaY: My MI - received MN 7, most recently transmitted MN 7\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 8\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 8\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 6\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 15\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 11\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 7\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 8\nKaY: My MI - received MN 8, most recently transmitted MN 8\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 10\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 9\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 7\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 18\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 14\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 8\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 9\nKaY: My MI - received MN 9, most recently transmitted MN 9\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 11\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 10\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 8\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 21\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 17\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 9\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 10\nKaY: My MI - received MN 10, most recently transmitted MN 10\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 17\nControl interface recv command from: /tmp/wpa_ctrl_1493758-1\\x00\neth0: Control interface command 'MIB'\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-046",
+      "command": [
+        "cat",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.log"
+      ],
+      "started_at": "2026-10-24T03:59:15.972499+00:00",
+      "ended_at": "2026-10-24T03:59:15.976658+00:00",
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nrandom: Trying to read entropy from /dev/random\nSuccessfully initialized wpa_supplicant\nInitializing interface 'eth0' conf '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf' driver 'macsec_linux' ctrl_interface 'N/A' bridge 'N/A'\nConfiguration file '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf' -> '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf'\nReading configuration file '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer0.conf'\nctrl_interface='/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/ctrl0'\neapol_version=3\nap_scan=0\nPriority group 0\n   id=0 ssid=''\ndriver_wired_init_common: Added multicast membership with packet socket\nAdd interface eth0 to a new radio N/A\neth0: Own MAC address: 9e:76:67:18:53:2c\neth0: RSN: flushing PMKID list in the driver\neth0: Setting scan request: 0.100000 sec\nPKCS11 provider not present\nEAPOL: SUPP_PAE entering state DISCONNECTED\nEAPOL: Supplicant port status: Unauthorized\nEAPOL: KEY_RX entering state NO_KEY_RECEIVE\nEAPOL: SUPP_BE entering state INITIALIZE\nEAP: EAP entering state DISABLED\nUsing existing control interface directory.\nPR: Driver does not support Proximity Ranging - PR disabled\neth0: Added interface eth0\neth0: State: DISCONNECTED -> DISCONNECTED\nDaemonize..\nrandom: Got 20/20 bytes from /dev/random\nEAPOL: External notification - EAP success=0\nEAPOL: External notification - EAP fail=0\nEAPOL: External notification - portControl=Auto\nKaY: Initialize - ifname=eth0 addr=9e:76:67:18:53:2c port=0 priority=0\nKaY: Generated SCI: 9e:76:67:18:53:2c@1\nmacsec_drv_get_capability\nKaY: state machine created\nmacsec_drv_macsec_init\nmacsec_linux: ifname=eth0 parent_ifi=3529\nKaY: SecY init MACsec done\nCP: state machine created\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_enable_controlled_port -> FALSE\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_drv_set_offload -> 00\nCP: CP entering state INIT\nmacsec_drv_enable_controlled_port -> FALSE\nCP: CP entering state CHANGE\nmacsec_drv_enable_controlled_port -> FALSE\nKaY: principal participant is not found\nKaY: principal participant is not found\neth0: Already associated with a configured network - generating associated event\neth0: Event ASSOC (0) received\neth0: Association info event\neth0: State: DISCONNECTED -> ASSOCIATED\neth0: Associated to a new BSS: BSSID=01:80:c2:00:00:03\neth0: Select network based on association information\neth0: Network configuration found for the current AP\neth0: Failed to get scan results\neth0: WPA: clearing AP WPA IE\neth0: WPA: clearing AP RSN IE\neth0: WPA: clearing AP RSNXE\neth0: RSN: Clearing AP RSNE Override element\neth0: RSN: Clearing AP RSNE Override 2 element\neth0: RSN: Clearing AP RSNXE Override element\neth0: WPA: clearing own WPA/RSN IE\neth0: RSN: clearing own RSNXE\nEAPOL: External notification - EAP success=0\nEAPOL: External notification - EAP fail=0\nEAPOL: External notification - portControl=ForceAuthorized\nKaY: state machine removed\nCP: state machine removed\nmacsec_drv_macsec_deinit\nKaY: Initialize - ifname=eth0 addr=9e:76:67:18:53:2c port=0 priority=0\nKaY: Generated SCI: 9e:76:67:18:53:2c@1\nmacsec_drv_get_capability\nKaY: state machine created\nmacsec_drv_macsec_init\nmacsec_linux: ifname=eth0 parent_ifi=3529\nKaY: SecY init MACsec done\nCP: state machine created\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_enable_controlled_port -> FALSE\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_drv_set_offload -> 00\nCP: CP entering state INIT\nmacsec_drv_enable_controlled_port -> FALSE\nCP: CP entering state CHANGE\nmacsec_drv_enable_controlled_port -> FALSE\nKaY: principal participant is not found\nKaY: principal participant is not found\nKaY: Create MKA (ifname=eth0 mode=PSK authenticator=No)\nKaY: CKN - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: CAK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Selected random MI: 4e6b9f1bdb80ef1193f5e197\nKaY: Create transmit SC - SCI: 9e:76:67:18:53:2c@1\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_set_offload -> 00\nmacsec_linux: eth0: create_transmit_sc -> 9e:76:67:18:53:2c::1 (conf_offset=0)\nmacsec_linux: eth0: create_transmit_sc: ifi=5 ifname=macsec0\nmacsec_linux: macsec0: try_commit controlled_port_enabled=0\nmacsec_linux: macsec0: try_commit protect_frames=1\nmacsec_linux: macsec0: try_commit encrypt=1\nmacsec_linux: macsec0: try_commit replay_protect=1 replay_window=0\nmacsec_linux: macsec0: try_commit offload=0\nKaY: Derived KEK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Derived ICK - hexdump(len=32): [REDACTED_HEXDUMP]\neth0: Associated with 01:80:c2:00:00:03\neth0: WPA: Association event - clear replay counter\neth0: WPA: Clear old PTK\nEAPOL: External notification - portEnabled=0\nEAPOL: External notification - portValid=0\nEAPOL: External notification - portEnabled=1\nEAPOL: SUPP_PAE entering state S_FORCE_AUTH\nEAPOL: Supplicant port status: Authorized\nEAPOL: SUPP_BE entering state IDLE\neth0: Cancelling authentication timeout\neth0: State: ASSOCIATED -> COMPLETED\neth0: CTRL-EVENT-CONNECTED - Connection to 01:80:c2:00:00:03 completed [id=0 id_str=]\neth0: Cancelling scan request\neth0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0\nEAPOL: disable timer tick\nl2_packet_receive: src=06:13:22:32:d8:4c len=84\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=98\nKaY: RX EAPOL-MKA - hexdump(len=98): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=80\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 1\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nKaY: Potential peer created\n\tMI: 731210c8b4df9cc3d674720d  MN: 1  SCI: 00:00:00:00:00:00@0\nKaY: i_in_peerlist=No is_in_live_peer=No\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=100\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 1\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nPotential Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=104\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=118\nKaY: RX EAPOL-MKA - hexdump(len=118): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=100\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 2\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 1\nKaY: My MI - received MN 1, most recently transmitted MN 1\nKaY: i_in_peerlist=Yes is_in_live_peer=No\nKaY: Create receive SC: SCI 06:13:22:32:d8:4c@1\nKaY: Move potential peer to live peer\n\tMI: 731210c8b4df9cc3d674720d  MN: 2  SCI: 06:13:22:32:d8:4c@1\nmacsec_linux: macsec0: create_receive_sc -> 06:13:22:32:d8:4c::1 (conf_offset=0 validation=2)\nKaY: I am elected as key server\nCP: CP entering state SECURED\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_linux: macsec0: try_commit protect_frames=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_linux: macsec0: try_commit encrypt=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_linux: macsec0: try_commit replay_protect=1 replay_window=0\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_set_offload -> 00\nmacsec_linux: macsec0: try_commit offload=0\nKaY: Participant timer (ifname=eth0)\nKaY: generated new SAK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=156\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 2\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 2\nDistributed SAK parameter set\n\tDistributed AN........: 0\n\tConfidentiality Offset: 1\n\tBody Length...........: 52\n\tKey Number............: 1\n\tMACsec Cipher Suite...: - hexdump(len=8): [REDACTED_HEXDUMP]\n\tAES Key Wrap of SAK...: - hexdump(len=40): [REDACTED_HEXDUMP]\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nCP: CP entering state RECEIVE\nKaY: Create receive SA(an: 0 lowest_pn: 1) of SC\nmacsec_linux: macsec0: create_receive_sa -> 0 on 06:13:22:32:d8:4c::1 (enable_receive=0 next_pn=1)\nmacsec_linux: SA keyid - hexdump(len=16): [REDACTED_HEXDUMP]\nmacsec_linux: SA key - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Create transmit SA(an: 0, next_pn: 1) of SC\nmacsec_linux: macsec0: create_transmit_sa -> 0 on 9e:76:67:18:53:2c::1 (enable_transmit=0 next_pn=1)\nmacsec_linux: SA keyid - hexdump(len=16): [REDACTED_HEXDUMP]\nmacsec_linux: SA key - hexdump(len=32): [REDACTED_HEXDUMP]\nmacsec_linux: macsec0: enable_receive_sa -> 0 on 06:13:22:32:d8:4c::1\nCP: CP entering state RECEIVING\nCP: CP entering state TRANSMIT\nmacsec_drv_enable_controlled_port -> TRUE\nmacsec_linux: macsec0: try_commit controlled_port_enabled=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_linux: macsec0: enable_transmit_sa -> 0 on 9e:76:67:18:53:2c::1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_linux: macsec0: try_commit encoding_sa=0\nCP: CP entering state TRANSMITTING\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=200\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 3\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 2\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 1\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: Yes\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nDistributed SAK parameter set\n\tDistributed AN........: 0\n\tConfidentiality Offset: 1\n\tBody Length...........: 52\n\tKey Number............: 1\n\tMACsec Cipher Suite...: - hexdump(len=8): [REDACTED_HEXDUMP]\n\tAES Key Wrap of SAK...: - hexdump(len=40): [REDACTED_HEXDUMP]\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nCP: CP entering state RETIRE\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 3\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 2\nKaY: My MI - received MN 2, most recently transmitted MN 3\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 4\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 2\nKaY: My MI - received MN 2, most recently transmitted MN 3\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: Yes\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 5\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 3\nKaY: My MI - received MN 3, most recently transmitted MN 3\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 1\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 4\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 5\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 4\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nEAPOL: EAP Session-Id not available\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 6\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 4\nKaY: My MI - received MN 4, most recently transmitted MN 4\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 5\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 5\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 6\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 9\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 3\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 7\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 5\nKaY: My MI - received MN 5, most recently transmitted MN 5\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 8\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 6\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 7\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 11\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 8\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 8\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 6\nKaY: My MI - received MN 6, most recently transmitted MN 6\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 11\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 7\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 8\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 12\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 10\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 9\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 7\nKaY: My MI - received MN 7, most recently transmitted MN 7\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 14\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 8\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 9\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 18\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 11\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=06:13:22:32:d8:4c len=148\neth0: RX EAPOL from 06:13:22:32:d8:4c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=06:13:22:32:d8:4c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 10\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 8\nKaY: My MI - received MN 8, most recently transmitted MN 8\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 17\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 9\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 10\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 21\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 17\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nControl interface recv command from: /tmp/wpa_ctrl_1493755-1\\x00\neth0: Control interface command 'MIB'\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-047",
+      "command": [
+        "cat",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.log"
+      ],
+      "started_at": "2026-10-24T03:59:15.978138+00:00",
+      "ended_at": "2026-10-24T03:59:15.981248+00:00",
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nrandom: Trying to read entropy from /dev/random\nSuccessfully initialized wpa_supplicant\nInitializing interface 'eth0' conf '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf' driver 'macsec_linux' ctrl_interface 'N/A' bridge 'N/A'\nConfiguration file '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf' -> '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf'\nReading configuration file '/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/peer1.conf'\nctrl_interface='/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-delay-v7-default/ctrl1'\neapol_version=3\nap_scan=0\nPriority group 0\n   id=0 ssid=''\ndriver_wired_init_common: Added multicast membership with packet socket\nAdd interface eth0 to a new radio N/A\neth0: Own MAC address: 06:13:22:32:d8:4c\neth0: RSN: flushing PMKID list in the driver\neth0: Setting scan request: 0.100000 sec\nPKCS11 provider not present\nEAPOL: SUPP_PAE entering state DISCONNECTED\nEAPOL: Supplicant port status: Unauthorized\nEAPOL: KEY_RX entering state NO_KEY_RECEIVE\nEAPOL: SUPP_BE entering state INITIALIZE\nEAP: EAP entering state DISABLED\nUsing existing control interface directory.\nPR: Driver does not support Proximity Ranging - PR disabled\neth0: Added interface eth0\neth0: State: DISCONNECTED -> DISCONNECTED\nDaemonize..\nrandom: Got 20/20 bytes from /dev/random\nEAPOL: External notification - EAP success=0\nEAPOL: External notification - EAP fail=0\nEAPOL: External notification - portControl=Auto\nKaY: Initialize - ifname=eth0 addr=06:13:22:32:d8:4c port=0 priority=1\nKaY: Generated SCI: 06:13:22:32:d8:4c@1\nmacsec_drv_get_capability\nKaY: state machine created\nmacsec_drv_macsec_init\nmacsec_linux: ifname=eth0 parent_ifi=3528\nKaY: SecY init MACsec done\nCP: state machine created\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_enable_controlled_port -> FALSE\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_drv_set_offload -> 00\nCP: CP entering state INIT\nmacsec_drv_enable_controlled_port -> FALSE\nCP: CP entering state CHANGE\nmacsec_drv_enable_controlled_port -> FALSE\nKaY: principal participant is not found\nKaY: principal participant is not found\neth0: Already associated with a configured network - generating associated event\neth0: Event ASSOC (0) received\neth0: Association info event\neth0: State: DISCONNECTED -> ASSOCIATED\neth0: Associated to a new BSS: BSSID=01:80:c2:00:00:03\neth0: Select network based on association information\neth0: Network configuration found for the current AP\neth0: Failed to get scan results\neth0: WPA: clearing AP WPA IE\neth0: WPA: clearing AP RSN IE\neth0: WPA: clearing AP RSNXE\neth0: RSN: Clearing AP RSNE Override element\neth0: RSN: Clearing AP RSNE Override 2 element\neth0: RSN: Clearing AP RSNXE Override element\neth0: WPA: clearing own WPA/RSN IE\neth0: RSN: clearing own RSNXE\nEAPOL: External notification - EAP success=0\nEAPOL: External notification - EAP fail=0\nEAPOL: External notification - portControl=ForceAuthorized\nKaY: state machine removed\nCP: state machine removed\nmacsec_drv_macsec_deinit\nKaY: Initialize - ifname=eth0 addr=06:13:22:32:d8:4c port=0 priority=1\nKaY: Generated SCI: 06:13:22:32:d8:4c@1\nmacsec_drv_get_capability\nKaY: state machine created\nmacsec_drv_macsec_init\nmacsec_linux: ifname=eth0 parent_ifi=3528\nKaY: SecY init MACsec done\nCP: state machine created\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_enable_controlled_port -> FALSE\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_drv_set_offload -> 00\nCP: CP entering state INIT\nmacsec_drv_enable_controlled_port -> FALSE\nCP: CP entering state CHANGE\nmacsec_drv_enable_controlled_port -> FALSE\nKaY: principal participant is not found\nKaY: principal participant is not found\nKaY: Create MKA (ifname=eth0 mode=PSK authenticator=No)\nKaY: CKN - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: CAK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Selected random MI: 731210c8b4df9cc3d674720d\nKaY: Create transmit SC - SCI: 06:13:22:32:d8:4c@1\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_drv_set_offload -> 00\nmacsec_linux: eth0: create_transmit_sc -> 06:13:22:32:d8:4c::1 (conf_offset=0)\nmacsec_linux: eth0: create_transmit_sc: ifi=5 ifname=macsec0\nmacsec_linux: macsec0: try_commit controlled_port_enabled=0\nmacsec_linux: macsec0: try_commit protect_frames=1\nmacsec_linux: macsec0: try_commit encrypt=1\nmacsec_linux: macsec0: try_commit replay_protect=1 replay_window=0\nmacsec_linux: macsec0: try_commit offload=0\nKaY: Derived KEK - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Derived ICK - hexdump(len=32): [REDACTED_HEXDUMP]\neth0: Associated with 01:80:c2:00:00:03\neth0: WPA: Association event - clear replay counter\neth0: WPA: Clear old PTK\nEAPOL: External notification - portEnabled=0\nEAPOL: External notification - portValid=0\nEAPOL: External notification - portEnabled=1\nEAPOL: SUPP_PAE entering state S_FORCE_AUTH\nEAPOL: Supplicant port status: Authorized\nEAPOL: SUPP_BE entering state IDLE\neth0: Cancelling authentication timeout\neth0: State: ASSOCIATED -> COMPLETED\neth0: CTRL-EVENT-CONNECTED - Connection to 01:80:c2:00:00:03 completed [id=0 id_str=]\neth0: Cancelling scan request\neth0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0\nEAPOL: disable timer tick\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=80\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 1\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=104\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=118\nKaY: RX EAPOL-MKA - hexdump(len=118): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=100\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 1\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nKaY: Potential peer created\n\tMI: 4e6b9f1bdb80ef1193f5e197  MN: 1  SCI: 00:00:00:00:00:00@0\nPotential Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 1\nKaY: My MI - received MN 1, most recently transmitted MN 1\nKaY: i_in_peerlist=Yes is_in_live_peer=No\nKaY: Create receive SC: SCI 9e:76:67:18:53:2c@1\nKaY: Move potential peer to live peer\n\tMI: 4e6b9f1bdb80ef1193f5e197  MN: 1  SCI: 9e:76:67:18:53:2c@1\nmacsec_linux: macsec0: create_receive_sc -> 9e:76:67:18:53:2c::1 (conf_offset=0 validation=2)\nKaY: Peer 4e6b9f1bdb80ef1193f5e197 was elected as the key server\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=100\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 2\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=160\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=174\nKaY: RX EAPOL-MKA - hexdump(len=174): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=156\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 2\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 2\nKaY: My MI - received MN 2, most recently transmitted MN 2\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nDistributed SAK parameter set\n\tDistributed AN........: 0\n\tConfidentiality Offset: 1\n\tBody Length...........: 52\n\tKey Number............: 1\n\tMACsec Cipher Suite...: - hexdump(len=8): [REDACTED_HEXDUMP]\n\tAES Key Wrap of SAK...: - hexdump(len=40): [REDACTED_HEXDUMP]\n\tAES Key Unwrap of SAK.: - hexdump(len=32): [REDACTED_HEXDUMP]\nCP: CP entering state SECURED\nmacsec_drv_set_current_cipher_suite -> 0080c20001000002\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_enable_protect_frames -> TRUE\nmacsec_linux: macsec0: try_commit protect_frames=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_enable_encrypt -> TRUE\nmacsec_linux: macsec0: try_commit encrypt=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_set_replay_protect -> TRUE, 0\nmacsec_linux: macsec0: try_commit replay_protect=1 replay_window=0\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_drv_set_offload -> 00\nmacsec_linux: macsec0: try_commit offload=0\nCP: CP entering state RECEIVE\nKaY: Create receive SA(an: 0 lowest_pn: 1) of SC\nmacsec_linux: macsec0: create_receive_sa -> 0 on 9e:76:67:18:53:2c::1 (enable_receive=0 next_pn=1)\nmacsec_linux: SA keyid - hexdump(len=16): [REDACTED_HEXDUMP]\nmacsec_linux: SA key - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Create transmit SA(an: 0, next_pn: 1) of SC\nmacsec_linux: macsec0: create_transmit_sa -> 0 on 06:13:22:32:d8:4c::1 (enable_transmit=0 next_pn=1)\nmacsec_linux: SA keyid - hexdump(len=16): [REDACTED_HEXDUMP]\nmacsec_linux: SA key - hexdump(len=32): [REDACTED_HEXDUMP]\nmacsec_linux: macsec0: enable_receive_sa -> 0 on 9e:76:67:18:53:2c::1\nCP: CP entering state RECEIVING\nCP: CP entering state READY\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 3\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 2\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 1\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nCP: CP entering state TRANSMIT\nmacsec_drv_enable_controlled_port -> TRUE\nmacsec_linux: macsec0: try_commit controlled_port_enabled=1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_linux: macsec0: enable_transmit_sa -> 0 on 06:13:22:32:d8:4c::1\nmacsec_linux: macsec0: try_commit offload=0\nmacsec_linux: macsec0: try_commit encoding_sa=0\nCP: CP entering state TRANSMITTING\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 4\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 2\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 1\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: Yes\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nCP: CP entering state RETIRE\nl2_packet_receive: src=9e:76:67:18:53:2c len=204\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=218\nKaY: RX EAPOL-MKA - hexdump(len=218): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=200\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 3\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 2\nKaY: My MI - received MN 2, most recently transmitted MN 4\nKaY: i_in_peerlist=No is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: Yes\n\tLatest Key Rx....: Yes\n\tOld Key AN.......: 0\n\tOld Key Tx.......: No\n\tOld Key Rx.......: No\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 4e6b9f1bdb80ef1193f5e197\n\tKey Number.......: 1\n\tLowest PN........: 1\n\tOld Key Server MI: 000000000000000000000000\n\tOld Key Number...: 0\n\tOld Lowest PN....: 1\nDistributed SAK parameter set\n\tDistributed AN........: 0\n\tConfidentiality Offset: 1\n\tBody Length...........: 52\n\tKey Number............: 1\n\tMACsec Cipher Suite...: - hexdump(len=8): [REDACTED_HEXDUMP]\n\tAES Key Wrap of SAK...: - hexdump(len=40): [REDACTED_HEXDUMP]\nKaY: SAK has already been installed - do not set it again\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 5\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 3\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 6\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 1\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 4\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 5\nKaY: My MI - received MN 5, most recently transmitted MN 5\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 1\nEAPOL: EAP Session-Id not available\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 6\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 4\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 9\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 5\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 5\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 6\nKaY: My MI - received MN 6, most recently transmitted MN 6\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 3\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 7\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 5\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 12\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 8\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 6\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 7\nKaY: My MI - received MN 7, most recently transmitted MN 7\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 8\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 8\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 6\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 15\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 11\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 7\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 8\nKaY: My MI - received MN 8, most recently transmitted MN 8\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 10\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 9\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 7\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 18\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 14\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 8\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 9\nKaY: My MI - received MN 9, most recently transmitted MN 9\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 11\nKaY: Participant timer (ifname=eth0)\nKaY: Encode and send an MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=06:13:22:32:d8:4c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 1\n\tKey Server: 0\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 06:13:22:32:d8:4c@1\n\tActor's Member Identifier: 731210c8b4df9cc3d674720d\n\tActor's Message Number: 10\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 4e6b9f1bdb80ef1193f5e197  Message Number: 8\nmacsec_drv_get_transmit_next_pn\nmacsec_linux: macsec_drv_get_transmit_next_pn: err 0 result 21\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 17\nKaY: ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nl2_packet_receive: src=9e:76:67:18:53:2c len=148\neth0: RX EAPOL from 9e:76:67:18:53:2c (encrypted=-1)\neth0: Ignored received EAPOL frame since no key management is configured\nl2_packet_receive: src=9e:76:67:18:53:2c len=162\nKaY: RX EAPOL-MKA - hexdump(len=162): [REDACTED_HEXDUMP]\nKaY: Decode received MKPDU (ifname=eth0)\nKaY: Ethernet header: DA=01:80:c2:00:00:03 SA=9e:76:67:18:53:2c Ethertype=0x888e\nKaY: Common EAPOL PDU structure: Protocol Version=3 Packet Type=5 Packet Body Length=144\nMKA Basic Parameter Set\n\tMKA Version Identifier: 1\n\tKey Server Priority: 0\n\tKey Server: 1\n\tMACsec Desired: 1\n\tMACsec Capability: 2\n\tParameter set body length: 60\n\tSCI: 9e:76:67:18:53:2c@1\n\tActor's Member Identifier: 4e6b9f1bdb80ef1193f5e197\n\tActor's Message Number: 9\n\tAlgorithm Agility: 0080c201\n\tCAK Name - hexdump(len=32): [REDACTED_HEXDUMP]\nKaY: Received ICV - hexdump(len=16): [REDACTED_HEXDUMP]\nLive Peer List parameter set\n\tBody Length: 16\n\tMember Id: 731210c8b4df9cc3d674720d  Message Number: 10\nKaY: My MI - received MN 10, most recently transmitted MN 10\nKaY: i_in_peerlist=Yes is_in_live_peer=Yes\nMACsec SAK Use parameter set\n\tLatest Key AN....: 0\n\tLatest Key Tx....: No\n\tLatest Key Rx....: No\n\tOld Key AN.......: 0\n\tOld Key Tx.......: Yes\n\tOld Key Rx.......: Yes\n\tPlain Tx.........: No\n\tPlain Rx.........: No\n\tDelay Protect....: No\n\tBody Length......: 40\n\tKey Server MI....: 000000000000000000000000\n\tKey Number.......: 0\n\tLowest PN........: 1\n\tOld Key Server MI: 4e6b9f1bdb80ef1193f5e197\n\tOld Key Number...: 1\n\tOld Lowest PN....: 17\nControl interface recv command from: /tmp/wpa_ctrl_1493758-1\\x00\neth0: Control interface command 'MIB'\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-048",
+      "command": [
+        "ip",
+        "netns",
+        "delete",
+        "tcv3kg-a"
+      ],
+      "started_at": "2026-10-24T03:59:16.182731+00:00",
+      "ended_at": "2026-10-24T03:59:16.185438+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-049",
+      "command": [
+        "ip",
+        "netns",
+        "delete",
+        "tcv3kg-b"
+      ],
+      "started_at": "2026-10-24T03:59:16.185460+00:00",
+      "ended_at": "2026-10-24T03:59:16.188281+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Test CAK generated by Python secrets, with no NSA KGS approval or physically secure provisioning evidence.",
+    "Standalone peer-authentication experiment; nested layering is established in separate layer-pairing runs."
+  ]
+}

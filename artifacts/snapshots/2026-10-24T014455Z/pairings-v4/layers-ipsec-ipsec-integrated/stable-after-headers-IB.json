@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0419",
+  "started_at": "2026-10-24T14:01:46.990599+00:00",
+  "ended_at": "2026-10-24T14:01:52.764536+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-IB",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "IB",
+  "returncode": 0,
+  "stdout": "14:01:50.531998 gray  In  ifindex 4201 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x1), length 128\n14:01:50.531998 gray  In  ifindex 4201 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 63, id 35808, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45755, seq 1, length 72\n14:01:50.532023 red   Out ifindex 4190 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 35808, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45755, seq 1, length 72\n14:01:50.532049 red   In  ifindex 4190 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 7092, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 45755, seq 1, length 72\n14:01:50.532069 gray  Out ifindex 4201 a2:79:62:d9:3e:69 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 30246, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x1), length 128\n14:01:51.566054 gray  In  ifindex 4201 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x2), length 128\n14:01:51.566054 gray  In  ifindex 4201 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 63, id 36061, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45755, seq 2, length 72\n14:01:51.566077 red   Out ifindex 4190 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 36061, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45755, seq 2, length 72\n14:01:51.566100 red   In  ifindex 4190 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 7919, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 45755, seq 2, length 72\n14:01:51.566119 gray  Out ifindex 4201 a2:79:62:d9:3e:69 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 30406, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x2), length 128\n14:01:52.590049 gray  In  ifindex 4201 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x3), length 128\n14:01:52.590049 gray  In  ifindex 4201 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 63, id 36254, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45755, seq 3, length 72\n14:01:52.590072 red   Out ifindex 4190 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 36254, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45755, seq 3, length 72\n14:01:52.590104 red   In  ifindex 4190 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 8363, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 45755, seq 3, length 72\n14:01:52.590120 gray  Out ifindex 4201 a2:79:62:d9:3e:69 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 31263, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x3), length 128\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n15 packets captured\n15 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 2
+}

@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0130",
+  "started_at": "2026-10-24T14:02:35.252070+00:00",
+  "ended_at": "2026-10-24T14:02:39.966609+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-HB",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "HB",
+  "returncode": 0,
+  "stdout": "14:02:35.661630 red   B   ifindex 4231 0e:81:9a:65:3c:ba ethertype ARP (0x0806), length 48: Ethernet (len 6), IPv4 (len 4), Request who-has 10.2.0.2 tell 10.2.0.1, length 28\n14:02:35.661658 red   Out ifindex 4231 fe:fd:e9:83:6d:30 ethertype ARP (0x0806), length 48: Ethernet (len 6), IPv4 (len 4), Reply 10.2.0.2 is-at fe:fd:e9:83:6d:30, length 28\n14:02:35.661662 red   In  ifindex 4231 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 216, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49105, seq 1, length 72\n14:02:35.661692 red   Out ifindex 4231 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 55629, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 49105, seq 1, length 72\n14:02:35.661887 red   Out ifindex 4231 fe:fd:e9:83:6d:30 ethertype IPv6 (0x86dd), length 136: (hlim 1, next-header Options (0) payload length: 76) fe80::fcfd:e9ff:fe83:6d30 > ff02::16: HBH (rtalert: 0x0000) (padn) [icmp6 sum ok] ICMP6, multicast listener report v2, 3 group record(s) [gaddr ff02::1:ff00:0 to_ex, 0 source(s)] [gaddr ff02::1:ff83:6d30 to_ex, 0 source(s)] [gaddr ff02::2 to_ex, 0 source(s)]\n14:02:36.686019 red   In  ifindex 4231 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 244, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49105, seq 2, length 72\n14:02:36.686032 red   Out ifindex 4231 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 55730, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 49105, seq 2, length 72\n14:02:37.710040 red   In  ifindex 4231 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 622, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49105, seq 3, length 72\n14:02:37.710060 red   Out ifindex 4231 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 55800, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 49105, seq 3, length 72\n14:02:37.725807 red   Out ifindex 4231 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 55806, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo request, id 49106, seq 1, length 72\n14:02:37.725915 red   In  ifindex 4231 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 633, offset 0, flags [none], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo reply, id 49106, seq 1, length 72\n14:02:38.733921 red   Out ifindex 4231 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 56593, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo request, id 49106, seq 2, length 72\n14:02:38.734136 red   In  ifindex 4231 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 1269, offset 0, flags [none], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo reply, id 49106, seq 2, length 72\n14:02:39.757924 red   Out ifindex 4231 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 56644, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo request, id 49106, seq 3, length 72\n14:02:39.758117 red   In  ifindex 4231 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 1857, offset 0, flags [none], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo reply, id 49106, seq 3, length 72\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n15 packets captured\n15 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 1
+}

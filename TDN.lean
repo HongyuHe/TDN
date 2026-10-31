@@ -1,10 +1,10 @@
-import TDN.Semantics.Network
+import TDN.Targets.Architecture
 import TDN.Semantics.Filter
 import TDN.Semantics.Paths
 import TDN.Semantics.Temporal
 import TDN.Targets.Protocol
 import TDN.Evidence.Types
-import TDN.Semantics.Boundary
+import TDN.Targets.Boundary
 import TDN.Semantics.PacketPolicy
 import TDN.Evidence.Baseline
 import TDN.Targets.Topology
@@ -73,3 +73,139 @@ import TDN.Evidence.NativeSameLevelHeaders
 import TDN.Evidence.NativeSharedHeaders
 import TDN.Evidence.NativeRedundantHeaders
 import TDN.Evidence.NativeManagementHeaders
+
+import TDN.Semantics.Execution
+import TDN.Semantics.Trust
+import TDN.Targets.AuthenticationIsolation
+import TDN.Semantics.GuardedEvents
+import TDN.Targets.Lifecycle
+import TDN.Targets.Components
+import TDN.Evidence.FreshBaselineTrust
+import TDN.Evidence.FreshSharedTrust
+import TDN.Targets.Cryptography
+import TDN.Targets.Addressing
+import TDN.Evidence.FreshBaselineAddressing
+import TDN.Evidence.FreshSharedAddressing
+import TDN.Semantics.ExecutionInvariant
+import TDN.Semantics.ExecutionChecks
+import TDN.Semantics.FiniteExecution
+import TDN.Evidence.FreshSharedExecution
+import TDN.Evidence.FreshSharedExecutionWitness
+import TDN.Targets.PacketExecution
+import TDN.Targets.DeliveryIsolation
+import TDN.Semantics.ExecutionProvenance
+import TDN.Semantics.ExecutionDomains
+import TDN.Semantics.FiniteDomains
+import TDN.Evidence.FreshSharedIsolation
+import TDN.Evidence.FreshSharedIsolationWitness
+import TDN.Evidence.FreshBaselineExecution
+import TDN.Evidence.FreshBaselineExecutionWitness
+import TDN.Evidence.FreshBaselineIsolation
+import TDN.Evidence.FreshBaselineIsolationWitness
+
+import TDN.Targets.Administration
+import TDN.Targets.Auditing
+import TDN.Targets.PacketSizing
+import TDN.Targets.Incidents
+import TDN.Targets.Testing
+import TDN.Targets.Governance
+import TDN.Targets.Management
+import TDN.Targets.Provisioning
+import TDN.Targets.SIEM
+
+import TDN.Targets.Applicability
+import TDN.Targets.NetworkPolicies
+import TDN.Targets.LayeredRequirements
+import TDN.Targets.Encapsulation
+
+import TDN.Evidence.FreshServiceAuthorization
+import TDN.Evidence.FreshPhysicalPartition
+import TDN.Evidence.FreshOSDiversity
+import TDN.Evidence.FreshFamily444Witness
+import TDN.Evidence.FreshFamily446Witness
+import TDN.Evidence.FreshFamily464Witness
+import TDN.Evidence.FreshFamily466Witness
+import TDN.Evidence.FreshFamily644Witness
+import TDN.Evidence.FreshFamily646Witness
+import TDN.Evidence.FreshFamily664Witness
+import TDN.Evidence.FreshFamily666Witness
+
+import TDN.Evidence.FreshNativeLayerOrder
+import TDN.Evidence.FreshMACsecRuntime
+import TDN.Evidence.FreshFamilyImmediateHeaders
+
+import TDN.Evidence.FreshDNSHardening
+
+import TDN.Evidence.FreshFamilyTunnelBoundaries
+
+import TDN.Evidence.FreshDistributedFragments
+
+import TDN.Evidence.FreshPMTU
+
+import TDN.Evidence.FreshFreeBSDDNS
+
+import TDN.Evidence.FreshPairingStackChecks
+import TDN.Evidence.FreshMixedDeliverySuite
+import TDN.Evidence.FreshNativeResponseGuards
+import TDN.Semantics.ReassemblyOrigins
+import TDN.Evidence.FreshFamily444V13ResponseGuards
+import TDN.Evidence.FreshFamily444V13ResponseExecution
+import TDN.Evidence.FreshBaselineVPNModes
+import TDN.Evidence.FreshSharedVPNModes
+import TDN.Evidence.FinalMACsecRuntime
+import TDN.Evidence.FinalMACsecAlgorithms
+import TDN.Evidence.FreshBaselineTopology
+import TDN.Evidence.FreshSharedTopology
+import TDN.Evidence.FreshMixedTunnelBoundaries
+import TDN.Evidence.FreshAdministratorSessions
+import TDN.Evidence.FreshOptionalScreening
+import TDN.Semantics.SequenceFreshness
+import TDN.Evidence.FreshEncryptedResponseGuards
+import TDN.Evidence.FreshUniformResponses
+import TDN.Evidence.FreshTransecCover
+import TDN.Evidence.FinalMACsecProtection
+import TDN.Evidence.FreshClockCorrections
+import TDN.Evidence.FreshNativeResponseIsolation
+import TDN.Evidence.FreshReassembledDomains
+import TDN.Evidence.FinalMACsecKeyServers
+import TDN.Evidence.FreshByteDomains
+import TDN.Evidence.FinalMACsecKeySources
+import TDN.Evidence.FreshAuditOffload
+import TDN.Evidence.FreshByteResponses
+import TDN.Evidence.FreshProvisioningLocations
+import TDN.Evidence.FreshComponentByteResponses
+import TDN.Evidence.FreshByteLayerOrder
+import TDN.Evidence.FreshEnterpriseGrayFilters
+import TDN.Evidence.FreshFragmentHeaders
+import TDN.Evidence.FreshSoftwareSignatures
+import TDN.Semantics.AuthenticatedAssembly
+import TDN.Evidence.FreshBaselineClassicalIKE
+import TDN.Evidence.FreshSharedClassicalIKE
+import TDN.Evidence.FreshMixedByteProtection
+import TDN.Evidence.FreshNestedSizing
+import TDN.Evidence.FreshMACsecOptions
+import TDN.Semantics.CiphertextTransit
+import TDN.Evidence.FreshSharedIKEContexts
+
+import TDN.Evidence.FreshPositiveClauseBridges
+
+import TDN.Evidence.FreshGrayAddressClauses
+
+import TDN.Evidence.FreshRoutingProcesses
+
+import TDN.Evidence.FreshOuterPeerOutput
+
+import TDN.Evidence.FreshVPNObservedClauses
+
+import TDN.Evidence.FreshUnusedInterfaces
+
+import TDN.Evidence.FreshCarrierClauses
+
+import TDN.Evidence.FreshRedTimePlacement
+
+import TDN.Evidence.FreshRecordedOperations
+import TDN.Evidence.FreshPeerInteroperability
+
+import TDN.Evidence.FreshPlacementClauses
+
+import TDN.Evidence.FreshAuditorRotation

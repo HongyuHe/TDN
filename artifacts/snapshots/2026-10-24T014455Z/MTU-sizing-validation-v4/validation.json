@@ -1,0 +1,97 @@
+{
+  "at": "2026-10-24T15:48:58.829974+00:00",
+  "checks": [
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/MTU-sizing-v3/layers-ipsec-ipsec-integrated",
+      "manifest_sha256": "fd7a55475f156b14ccf6a30e86afa7bbba977996c2cda8228c5dddf8b8fe961e",
+      "controls": 6,
+      "collection_interval": [
+        "2026-10-24T15:39:25.418399+00:00",
+        "2026-10-24T15:40:13.164740+00:00"
+      ],
+      "header_phases": {
+        "1": {
+          "Outer_Black_IP_frames": 0,
+          "IP_lengths": [],
+          "fragmented_frames": 0
+        },
+        "2": {
+          "Outer_Black_IP_frames": 12,
+          "IP_lengths": [
+            1212
+          ],
+          "fragmented_frames": 0
+        },
+        "3": {
+          "Outer_Black_IP_frames": 6,
+          "IP_lengths": [
+            204
+          ],
+          "fragmented_frames": 0
+        }
+      },
+      "settings": {
+        "Outer_Black_MTU": 1400,
+        "Inner_Gray_carrier_MTU": 1200,
+        "Red_IP_MTU": 1100,
+        "Inner_MACsec_plaintext_MTU": null,
+        "standalone_encapsulator_Gray_MTU": null
+      }
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/MTU-sizing-v4/layers-macsec-ipsec-standalone",
+      "manifest_sha256": "dc117560b3b0f1e65a063fdde3562a8d50dfbfc1825542c7eebdf7f8ec7f1036",
+      "controls": 6,
+      "collection_interval": [
+        "2026-10-24T15:43:32.704971+00:00",
+        "2026-10-24T15:44:20.116628+00:00"
+      ],
+      "header_phases": {
+        "1": {
+          "Outer_Black_IP_frames": 18,
+          "IP_lengths": [
+            92,
+            168,
+            1396
+          ],
+          "fragmented_frames": 16
+        },
+        "2": {
+          "Outer_Black_IP_frames": 12,
+          "IP_lengths": [
+            1240
+          ],
+          "fragmented_frames": 0
+        },
+        "3": {
+          "Outer_Black_IP_frames": 8,
+          "IP_lengths": [
+            168,
+            232
+          ],
+          "fragmented_frames": 0
+        }
+      },
+      "settings": {
+        "Outer_Black_MTU": 1400,
+        "Inner_Gray_carrier_MTU": 1200,
+        "Red_IP_MTU": 1100,
+        "Inner_MACsec_plaintext_MTU": 1100,
+        "standalone_encapsulator_Gray_MTU": 1200
+      }
+    }
+  ],
+  "preserved_failure": {
+    "path": "artifacts/snapshots/2026-10-24T014455Z/MTU-sizing-v3/layers-macsec-ipsec-standalone",
+    "manifest_sha256": "46962408f57ec0f1cf9df0a14d5211f919b9bf8f1804bad85d46a13842608a67",
+    "mismatch": "sized-restoration"
+  },
+  "scope": [
+    "Only already-present local outputs are validated and published. No remote command, packet experiment, cleanup or retry is executed by this publication helper.",
+    "MSC-SR-23 concerns configured IPv4 external Gray packet MTU or IPv6 PMTU with Outer path sizing considered. Optional MSC-IR-2 concerns external MACsec frame sizing or IPv6 PMTU. The selected IPv4 cases configure Red IP MTU1100, Inner Gray carrier MTU1200 and Outer Black MTU1400; the MACsec case also sets plaintext macsec0 MTU1100 and standalone encapsulator uplinks1200.",
+    "Both selected paths deliver1072-byte ICMP payloads in both directions. IPv4/ICMP adds28 bytes, reaching the configured1100-byte Red packet.1073-byte payloads are rejected at that configured size boundary. Actual Outer Black ESP headers show no fragmentation during the sized maximum-payload phase and lengths at most1400. Actual captured lengths are retained rather than inferred from a constant overhead alone.",
+    "The IPsec case passes six controls. The original MACsec v3 case passes maximum-size/useful/loss controls but fails restoration because taking macsec0 down removes its dependent route. The v4 helper explicitly restores that route and all six controls match. Original failed bytes/configuration and both before/after collections remain preserved.",
+    "Only ordinary assigned-address kernel pings were generated in these completed experiments. Field-only captures retain public packet headers, lengths and fragment metadata. No payload or ciphertext body is serialized. Manual static SAs, supplemental namespaces and fixed algorithm/frame settings remain explicit.",
+    "The observations support the selected configured-size geometry and finite boundary controls. Every accepted size, alternate padding/algorithm, other L2TP cookie, jumbo frame, arbitrary Ethernet format, future configuration and native backend require their own formal assumptions or evidence. The separate IPv6-PMTU-v4 bundle supplies the active IPv6 transition; this IPv4 sizing response does not replace it."
+  ]
+}

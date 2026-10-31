@@ -1,0 +1,90 @@
+{
+  "at": "2026-10-24T15:20:59.550775+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T15:20:59.358248+00:00",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-lsm-flags-v9",
+        "--network",
+        "none",
+        "--read-only",
+        "--tmpfs",
+        "/run",
+        "--tmpfs",
+        "/tmp",
+        "--entrypoint",
+        "sleep",
+        "twinet-msc:construction-v2",
+        "infinity"
+      ],
+      "returncode": 0,
+      "stdout": "70f901c36631e209002ff20f437cbc909200d6d21f43768d6dc7fbeee58db6b8\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:20:59.376819+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.Id}} {{.Image}} {{json .HostConfig.Tmpfs}} {{.HostConfig.ReadonlyRootfs}}",
+        "tcv3-lsm-flags-v9"
+      ],
+      "returncode": 0,
+      "stdout": "70f901c36631e209002ff20f437cbc909200d6d21f43768d6dc7fbeee58db6b8 sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd {\"/run\":\"\",\"/tmp\":\"\"} true\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:20:59.474229+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-flags-v9",
+        "python3",
+        "-c",
+        "import json;from pathlib import Path;print(json.dumps([line for line in Path('/proc/self/mountinfo').read_text().splitlines()if line.split()[4]in ['/','/run','/tmp','/dev/shm']]))"
+      ],
+      "returncode": 0,
+      "stdout": "[\"3277 2435 0:675 / / ro,relatime - overlay overlay rw,lowerdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/147/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/3/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/2/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/1/fs,upperdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/148/fs,workdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/148/work,nouserxattr\", \"3295 3290 0:903 / /dev/shm rw,nosuid,nodev,noexec,relatime - tmpfs shm rw,size=65536k,inode64\", \"3296 3277 0:904 / /tmp rw,nosuid,nodev,noexec,relatime - tmpfs tmpfs rw,inode64\", \"3297 3277 0:905 / /run rw,nosuid,nodev,noexec,relatime - tmpfs tmpfs rw,mode=755,inode64\"]\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:20:59.476831+00:00",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:20:59.479350+00:00",
+      "command": [
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "returncode": 0,
+      "stdout": "2ac17968-7b75-4775-8656-3123a0606cd9\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:20:59.544878+00:00",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "tcv3-lsm-flags-v9"
+      ],
+      "returncode": 0,
+      "stdout": "tcv3-lsm-flags-v9\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": "A fresh owned fixture without private credentials repeats only the read-only/tmpfs mount options used by the LSM experiment. Effective flags are supplementary observations; they are not represented as contemporaneous flags from the earlier removed containers. No protection bypass or data traffic is attempted."
+}

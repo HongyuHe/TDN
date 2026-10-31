@@ -1,0 +1,238 @@
+{
+  "at": "2026-10-24T04:08:53.988622+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T04:08:51.113593+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22342",
+        "root@127.0.0.1",
+        "kldstat; sysctl kern.crypto.allow_soft"
+      ],
+      "returncode": 0,
+      "stdout": "Id Refs Address                Size Name\n 1    5 0xffffffff80200000  1f44510 kernel\n 2    1 0xffffffff82818000     3220 intpm.ko\n 3    1 0xffffffff8281c000     2178 smbus.ko\nkern.crypto.allow_soft: 1\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:51.372281+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22342",
+        "root@127.0.0.1",
+        "kldstat -n ipsec >/dev/null 2>&1 || kldload ipsec"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:51.728175+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22342",
+        "root@127.0.0.1",
+        "sysctl kern.crypto.allow_soft=1; sysrc kld_list+=ipsec"
+      ],
+      "returncode": 0,
+      "stdout": "kern.crypto.allow_soft: 1 -> 1\nkld_list:  -> ipsec\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:51.982629+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22342",
+        "root@127.0.0.1",
+        "kldstat; sysctl net.inet.ipsec.crypto_support"
+      ],
+      "returncode": 0,
+      "stdout": "Id Refs Address                Size Name\n 1    8 0xffffffff80200000  1f44510 kernel\n 2    1 0xffffffff82818000     3220 intpm.ko\n 3    1 0xffffffff8281c000     2178 smbus.ko\n 4    1 0xffffffff8281f000    109a8 ipsec.ko\nnet.inet.ipsec.crypto_support: 50331648\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:52.270850+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22342",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:52.529436+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22343",
+        "root@127.0.0.1",
+        "kldstat; sysctl kern.crypto.allow_soft"
+      ],
+      "returncode": 0,
+      "stdout": "Id Refs Address                Size Name\n 1    5 0xffffffff80200000  1f44510 kernel\n 2    1 0xffffffff82818000     3220 intpm.ko\n 3    1 0xffffffff8281c000     2178 smbus.ko\nkern.crypto.allow_soft: 1\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:52.788956+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22343",
+        "root@127.0.0.1",
+        "kldstat -n ipsec >/dev/null 2>&1 || kldload ipsec"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:53.144063+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22343",
+        "root@127.0.0.1",
+        "sysctl kern.crypto.allow_soft=1; sysrc kld_list+=ipsec"
+      ],
+      "returncode": 0,
+      "stdout": "kern.crypto.allow_soft: 1 -> 1\nkld_list:  -> ipsec\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:53.398456+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22343",
+        "root@127.0.0.1",
+        "kldstat; sysctl net.inet.ipsec.crypto_support"
+      ],
+      "returncode": 0,
+      "stdout": "Id Refs Address                Size Name\n 1    8 0xffffffff80200000  1f44510 kernel\n 2    1 0xffffffff82818000     3220 intpm.ko\n 3    1 0xffffffff8281c000     2178 smbus.ko\n 4    1 0xffffffff8281f000    109a8 ipsec.ko\nnet.inet.ipsec.crypto_support: 50331648\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:53.689593+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22343",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:08:53.988141+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v5/private/freebsd/management_key",
+        "-p",
+        "22342",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --initiate --child protected"
+      ],
+      "returncode": 0,
+      "stdout": "[IKE] initiating IKE_SA msc[2] to 10.200.1.2\n[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n[IKE] authentication of 'NZ_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n[IKE] sending end entity cert \"CN=NZ_I_A1.msc.test\"\n[IKE] establishing CHILD_SA protected{3}\n[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (883 bytes)\n[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (802 bytes)\n[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH N(ESP_TFC_PAD_N) SA TSi TSr ]\n[IKE] received end entity cert \"CN=NZ_I_B1.msc.test\"\n[CFG]   using certificate \"CN=NZ_I_B1.msc.test\"\n[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n[CFG]   reached self-signed root ca with a path length of 0\n[CFG] checking certificate status of \"CN=NZ_I_B1.msc.test\"\n[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n[CFG]   crl is valid: until Oct 31 03:56:40 2026\n[CFG]   using cached crl\n[CFG] certificate status is good\n[IKE] authentication of 'NZ_I_B1.msc.test' with ECDSA_WITH_SHA384_DER successful\n[IKE] IKE_SA msc[2] established between 10.100.1.2[NZ_I_A1.msc.test]...10.200.1.2[NZ_I_B1.msc.test]\n[IKE] scheduling reauthentication in 10431s\n[IKE] maximum IKE_SA lifetime 11031s\n[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n[IKE] CHILD_SA protected{3} established with SPIs c4ede99b_i c0051bcc_o and TS 10.1.1.0/24 === 10.2.1.0/24\ninitiate completed successfully\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "cause": "Fresh FreeBSD kernels had IPSEC_SUPPORT stubs but no ipsec.ko loaded. PF_KEY SAD installation returned EINVAL. Explicitly load ipsec.ko and persist it in kld_list before gateway startup."
+}

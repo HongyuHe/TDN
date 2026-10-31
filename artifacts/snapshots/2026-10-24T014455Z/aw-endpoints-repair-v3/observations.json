@@ -1,0 +1,520 @@
+{
+  "at": "2026-10-24T03:00:32.693233+00:00",
+  "records": [
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ps",
+        "-eo",
+        "pid,args"
+      ],
+      "at": "2026-10-24T03:00:30.194384+00:00",
+      "returncode": 0,
+      "stdout": "    PID COMMAND\n      1 sleep infinity\n     52 /usr/lib/ipsec/charon\n    264 python3 -u -c import http.server,ssl; s=http.server.HTTPServer((\"172.28.96.2\",443),http.server.SimpleHTTPRequestHandler); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()\n    294 ps -eo pid,args\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:30.270945+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:30.355222+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_A1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.96.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:30.424947+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:30.497700+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:30.563365+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_A1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.96.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:30.636374+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:30.725952+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:30.804125+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_A1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.96.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:30.889453+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "kill",
+        "264"
+      ],
+      "at": "2026-10-24T03:00:30.956998+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:31.021851+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:31.094197+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_A1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.96.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:31.176126+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:31.254940+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:31.325590+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_A1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.96.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:31.408020+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ps",
+        "-eo",
+        "pid,args"
+      ],
+      "at": "2026-10-24T03:00:31.476849+00:00",
+      "returncode": 0,
+      "stdout": "    PID COMMAND\n      1 sleep infinity\n     52 /usr/lib/ipsec/charon\n    247 python3 -u -c import http.server,ssl; s=http.server.HTTPServer((\"172.28.97.2\",443),http.server.SimpleHTTPRequestHandler); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()\n    277 ps -eo pid,args\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:31.550148+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:31.619853+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_B1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.97.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:31.699112+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:31.778329+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:31.856912+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_B1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.97.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:31.929949+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:32.012168+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:32.083832+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_B1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.97.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:32.157712+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "kill",
+        "247"
+      ],
+      "at": "2026-10-24T03:00:32.232723+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:32.303714+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:32.380807+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_B1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.97.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:32.459822+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "mkdir",
+        "-p",
+        "/root/aw-case-v3/public"
+      ],
+      "at": "2026-10-24T03:00:32.534886+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "sh",
+        "-c",
+        "printf %s ready > /root/aw-case-v3/public/status"
+      ],
+      "at": "2026-10-24T03:00:32.614409+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "-w",
+        "/root/aw-case-v3",
+        "ND_O_B1",
+        "python3",
+        "-u",
+        "-c",
+        "import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.97.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()"
+      ],
+      "at": "2026-10-24T03:00:32.693188+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "repair": "Before distributing AW client credentials or running requests, change the test server document root from the private credential directory to its dedicated public subdirectory. TLS private keys remain outside the served tree. No private-key retrieval request was made."
+}

@@ -1,0 +1,23 @@
+{
+  "at": "2026-10-24T15:02:53.642605+00:00",
+  "checks": [
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/hostap-kdf-vectors-v3",
+      "manifest_sha256": "3794d554822bdce8a3c1adc3115b44722d27ac0530558017aa37b2a2e29c7548",
+      "finite_vectors": 12,
+      "records": 14
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/hostap-kdf-bindings-v4",
+      "manifest_sha256": "29b3f792a34fe3d10dd3f31581e49f904b992b85a82d866429fbd01b01c5856b",
+      "finite_vectors": 0,
+      "records": 10
+    }
+  ],
+  "scope": [
+    "Visible IEEE 802.1X-2020 Sections 6.2.1, 6.2.2 and 9.3 plus Annex G.1\u2013G.6 now support bounded source review; the publication hosting/indexing/authenticity caveat remains explicit. Known visible clauses are no longer labeled absent.",
+    "All 12 published 128/256-bit KDF, CAK, CKN, KEK, ICK and SAK vectors match actual unchanged official derivation source and original OpenSSL CMAC function bytes in the pinned OpenSSL 3.5.5 runtime. Exact final authenticator and supplicant source hashes match that tested source.",
+    "Both EAP wrappers use the first 32 MSK bytes for the 32-byte CAK and 16-byte CKN; shared KAY uses agility 00-80-C2-01 and CAK-sized ICK/KEK. Code and line locations are retained, with final binary hashes and linkage.",
+    "This finite source/vector result does not establish full-standard conformance, independent interoperability, all lifecycle/error behavior, product approval or any live secret value. The existing v18 functional and delay results remain separate."
+  ]
+}

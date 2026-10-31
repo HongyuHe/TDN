@@ -14,6 +14,10 @@ structure Packet where
   inboundPolicies : List Nat
   outboundPolicies : List Nat
   connectionState : String
+  ipv6NextHeader : Nat := 0
+  icmpType : Nat := 0
+  icmpCode : Nat := 0
+  hopLimit : Nat := 0
 
 inductive Atom where
   | sourceRange (low high : Nat)
@@ -24,6 +28,10 @@ inductive Atom where
   | sourcePorts (ports : List Nat)
   | destinationPorts (ports : List Nat)
   | ipv4HeaderWords (words : Nat)
+  | ipv6NextHeaders (values : List Nat)
+  | icmpType (value : Nat)
+  | icmpCode (value : Nat)
+  | hopLimit (value : Nat)
   | inboundPolicy (requestId : Nat)
   | outboundPolicy (requestId : Nat)
   | connectionStates (states : List String)
@@ -38,6 +46,10 @@ def Atom.holds : Atom → Packet → Prop
   | .sourcePorts ports, p => p.sourcePort ∈ ports
   | .destinationPorts ports, p => p.destinationPort ∈ ports
   | .ipv4HeaderWords words, p => p.ipv4HeaderWords = words
+  | .ipv6NextHeaders values, p => p.ipv6NextHeader ∈ values
+  | .icmpType value, p => p.icmpType = value
+  | .icmpCode value, p => p.icmpCode = value
+  | .hopLimit value, p => p.hopLimit = value
   | .inboundPolicy id, p => id ∈ p.inboundPolicies
   | .outboundPolicy id, p => id ∈ p.outboundPolicies
   | .connectionStates states, p => p.connectionState ∈ states
@@ -53,7 +65,7 @@ structure Rule where
 def Rule.toFilter (r : Rule) : Filter.Rule Packet :=
   ⟨fun p => r.atoms.all (fun a => decide (a.holds p)), r.verdict⟩
 
-theorem matching_atom {r : Rule} {p : Packet}
+lemma matching_atom {r : Rule} {p : Packet}
     (matched : r.toFilter.accepts p = true) {a : Atom} (member : a ∈ r.atoms) :
     a.holds p := by
   have all := List.all_eq_true.mp matched
@@ -82,7 +94,7 @@ def ProtectedForward (inside outside : String) (p : Packet) : Prop :=
   (p.ingress = inside ∧ p.egress = outside ∧ ∃ id, id ∈ p.outboundPolicies) ∨
   (p.ingress = outside ∧ p.egress = inside ∧ ∃ id, id ∈ p.inboundPolicies)
 
-theorem guarded_rule_protects {r : Rule} {inside outside : String} {p : Packet}
+lemma guarded_rule_protects {r : Rule} {inside outside : String} {p : Packet}
     (guard : Guarded r inside outside) (matched : r.toFilter.accepts p = true) :
     ProtectedForward inside outside p := by
   rcases guard with ⟨hin, hout, a, ha, hkind⟩ | ⟨hin, hout, a, ha, hkind⟩

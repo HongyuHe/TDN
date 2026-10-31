@@ -1,0 +1,92 @@
+{
+  "at": "2026-10-24T05:04:16.625907+00:00",
+  "counter_deltas": [
+    {
+      "phase": "post-ESP-fragmentation",
+      "node": "R",
+      "before_file": "before-stats.json",
+      "after_file": "post-ESP-fragmentation-stats.json",
+      "counter_deltas": {
+        "IpFragOKs": 1,
+        "IpFragCreates": 4
+      }
+    },
+    {
+      "phase": "post-ESP-fragmentation",
+      "node": "IB",
+      "before_file": "before-stats.json",
+      "after_file": "post-ESP-fragmentation-stats.json",
+      "counter_deltas": {
+        "IpReasmReqds": 4,
+        "IpReasmOKs": 1
+      }
+    },
+    {
+      "phase": "plaintext-fragmentation",
+      "node": "HA",
+      "before_file": "post-ESP-fragmentation-stats.json",
+      "after_file": "plaintext-fragmentation-stats.json",
+      "counter_deltas": {
+        "IpFragOKs": 1,
+        "IpFragCreates": 4
+      }
+    },
+    {
+      "phase": "plaintext-fragmentation",
+      "node": "IA",
+      "before_file": "post-ESP-fragmentation-stats.json",
+      "after_file": "plaintext-fragmentation-stats.json",
+      "counter_deltas": {
+        "IpReasmReqds": 4,
+        "IpReasmOKs": 1
+      }
+    },
+    {
+      "phase": "plaintext-fragmentation",
+      "node": "R",
+      "before_file": "post-ESP-fragmentation-stats.json",
+      "after_file": "plaintext-fragmentation-stats.json",
+      "counter_deltas": {
+        "IpFragOKs": 1,
+        "IpFragCreates": 4
+      }
+    },
+    {
+      "phase": "plaintext-fragmentation",
+      "node": "IB",
+      "before_file": "post-ESP-fragmentation-stats.json",
+      "after_file": "plaintext-fragmentation-stats.json",
+      "counter_deltas": {
+        "IpReasmReqds": 4,
+        "IpReasmOKs": 1
+      }
+    },
+    {
+      "phase": "overlapping-plaintext-fragments",
+      "node": "IA",
+      "before_file": "plaintext-fragmentation-stats.json",
+      "after_file": "overlapping-plaintext-fragments-stats.json",
+      "counter_deltas": {
+        "IpReasmReqds": 2,
+        "IpReasmFails": 1,
+        "IpExtReasmOverlaps": 1
+      }
+    }
+  ],
+  "stage_findings": [
+    "The 4096-byte UDP payload begins as one 4124-byte IPv4 datagram. IA emits one 4180-byte ESP packet with DF clear. R creates four ESP fragments at offsets 0,1256,2512,3768. IB reassembles one outer packet before ESP processing; HB receives the exact public payload digest.",
+    "With a 1200-byte Red MTU, HA emits four plaintext UDP fragments. IA reassembles them before encryption and emits one outer ESP packet. R fragments that packet again. IA and IB each increment ReasmOKs once; the receiver obtains the exact 4096-byte payload. The provisional test plan statement about separately encrypted plaintext fragments was corrected to the observed reassemble-before-encrypt behavior.",
+    "The overlapping plaintext fragments cover [0,1600) and [800,2400), with the same ID and a valid complete UDP union. IA increments IpReasmFails and IpExtReasmOverlaps once. No ESP packet leaves IA and no UDP payload arrives. A later valid full-size payload succeeds.",
+    "Two valid IPv6 fragments with immediate NH44 pass the original priority -300 raw check after priority -400 netfilter reassembly; the public 1800-byte UDP payload arrives. The repaired priority -450 nftables check drops both fragments before reassembly. Its counter increments by two packets and 1904 bytes. Valid 256-byte IPv6 UDP passes before and after."
+  ],
+  "source_binding": [
+    "Linux v6.8 include/uapi/linux/netfilter_ipv6.h defines before-defrag -450, defrag -400 and raw -300. nf_defrag_ipv6_hooks.c registers defragmentation at -400. The observed nftables JSON binds the active -450 gate and literal ip6 nexthdr expression.",
+    "nf_defrag_ipv4.c registers IPv4 fragment gathering at the corresponding defrag priority. inet_fragment.c detects overlaps, and ip_fragment.c handles the failed queue. Actual kernel counters and packet records provide the local stage observation.",
+    "The actual kernel is an Ubuntu distribution build. uname, /proc/version, installed kernel config, module paths/vermagic/srcversion, XFRM state/policy, conntrack availability and namespace identities remain in raw commands. Upstream v6.8 source is a reviewed implementation-family reference; no byte identity with the distribution build is invented."
+  ],
+  "scope": [
+    "One owned manually provisioned Linux IPv4 ESP path, not IKE or native FRR/OVS. Captures retain complete requested IP/ESP header metadata and omit encrypted bodies. Final application reports payload size and SHA-256.",
+    "The IPv6 fragment test is an active local gate with valid below-MTU controls. Dynamic ICMPv6 PMTU and external L2TP encapsulator fragmentation remain separate tasks.",
+    "Only newly created owned namespaces and their MTUs/filters are changed. They are removed after collection. Existing deployments remain preserved."
+  ]
+}

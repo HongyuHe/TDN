@@ -1,0 +1,16 @@
+{
+  "id": "auth-0091",
+  "command": [
+    "docker",
+    "exec",
+    "NF_I_B1",
+    "swanctl",
+    "--list-sas",
+    "--raw"
+  ],
+  "started_at": "2026-10-24T02:03:20.126263+00:00",
+  "ended_at": "2026-10-24T02:03:20.224381+00:00",
+  "returncode": 0,
+  "stdout": "list-sa event {msc {uniqueid=52 version=2 state=ESTABLISHED local-host=10.200.1.2 local-port=500 local-id=NF_I_B1.msc.test remote-host=10.100.1.2 remote-port=500 remote-id=NF_I_A1.msc.test initiator-spi=15dc36105bacd2ae responder-spi=d1e86641957969ae encr-alg=AES_GCM_16 encr-keysize=256 prf-alg=PRF_HMAC_SHA2_384 dh-group=ECP_384 established=149 reauth-time=10337 child-sas {protected-282 {name=protected uniqueid=282 reqid=101 state=INSTALLED mode=TUNNEL protocol=ESP spi-in=c729df8b spi-out=c2ebf25f encr-alg=AES_GCM_16 encr-keysize=256 bytes-in=0 packets-in=0 bytes-out=0 packets-out=0 rekey-time=2379 life-time=3451 install-time=149 local-ts=[10.2.1.0/24] remote-ts=[10.1.1.0/24]}}}}\nlist-sas reply {}\n",
+  "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+}

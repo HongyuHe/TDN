@@ -1,0 +1,1141 @@
+{
+  "schema_version": "csfc-native-source-origin-probes/v1",
+  "started_at": "2026-10-24T02:38:41.275977+00:00",
+  "ended_at": "2026-10-24T02:38:53.752636+00:00",
+  "runtime_backend": "native-FRR-OVS",
+  "cases": [
+    {
+      "sequence": 1,
+      "actual_origin_device": "NF_R_A1",
+      "actual_origin_level": 1,
+      "claimed_source_level": 1,
+      "claimed_source": "10.1.1.10",
+      "destination": "10.2.1.10",
+      "expected_delivery": true,
+      "injection_observation_id": "spoof-0010",
+      "injection_returncode": 0,
+      "delivery_observations": [
+        {
+          "destination_device": "NF_R_B1",
+          "source": "10.1.1.10",
+          "destination": "10.2.1.10",
+          "probe_sequence": 1,
+          "packet_type": 0,
+          "marker_matches": true
+        },
+        {
+          "destination_device": "NF_R_B1",
+          "source": "10.1.1.10",
+          "destination": "10.2.1.10",
+          "probe_sequence": 1,
+          "packet_type": 0,
+          "marker_matches": true
+        }
+      ],
+      "observed_delivery": true
+    },
+    {
+      "sequence": 2,
+      "actual_origin_device": "NF_R_A1",
+      "actual_origin_level": 1,
+      "claimed_source_level": 2,
+      "claimed_source": "10.1.2.10",
+      "destination": "10.2.2.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0011",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 3,
+      "actual_origin_device": "NF_R_A1",
+      "actual_origin_level": 1,
+      "claimed_source_level": 3,
+      "claimed_source": "10.1.3.10",
+      "destination": "10.2.3.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0012",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 4,
+      "actual_origin_device": "NF_R_A1",
+      "actual_origin_level": 1,
+      "claimed_source_level": 4,
+      "claimed_source": "10.1.4.10",
+      "destination": "10.2.4.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0013",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 5,
+      "actual_origin_device": "NF_R_A1",
+      "actual_origin_level": 1,
+      "claimed_source_level": null,
+      "claimed_source": "198.51.100.77",
+      "destination": "10.2.1.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0014",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 6,
+      "actual_origin_device": "NF_R_A2",
+      "actual_origin_level": 2,
+      "claimed_source_level": 1,
+      "claimed_source": "10.1.1.10",
+      "destination": "10.2.1.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0017",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 7,
+      "actual_origin_device": "NF_R_A2",
+      "actual_origin_level": 2,
+      "claimed_source_level": 2,
+      "claimed_source": "10.1.2.10",
+      "destination": "10.2.2.10",
+      "expected_delivery": true,
+      "injection_observation_id": "spoof-0018",
+      "injection_returncode": 0,
+      "delivery_observations": [
+        {
+          "destination_device": "NF_R_B2",
+          "source": "10.1.2.10",
+          "destination": "10.2.2.10",
+          "probe_sequence": 7,
+          "packet_type": 0,
+          "marker_matches": true
+        },
+        {
+          "destination_device": "NF_R_B2",
+          "source": "10.1.2.10",
+          "destination": "10.2.2.10",
+          "probe_sequence": 7,
+          "packet_type": 0,
+          "marker_matches": true
+        }
+      ],
+      "observed_delivery": true
+    },
+    {
+      "sequence": 8,
+      "actual_origin_device": "NF_R_A2",
+      "actual_origin_level": 2,
+      "claimed_source_level": 3,
+      "claimed_source": "10.1.3.10",
+      "destination": "10.2.3.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0019",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 9,
+      "actual_origin_device": "NF_R_A2",
+      "actual_origin_level": 2,
+      "claimed_source_level": 4,
+      "claimed_source": "10.1.4.10",
+      "destination": "10.2.4.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0020",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 10,
+      "actual_origin_device": "NF_R_A2",
+      "actual_origin_level": 2,
+      "claimed_source_level": null,
+      "claimed_source": "198.51.100.77",
+      "destination": "10.2.2.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0021",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 11,
+      "actual_origin_device": "NF_R_A3",
+      "actual_origin_level": 3,
+      "claimed_source_level": 1,
+      "claimed_source": "10.1.1.10",
+      "destination": "10.2.1.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0024",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 12,
+      "actual_origin_device": "NF_R_A3",
+      "actual_origin_level": 3,
+      "claimed_source_level": 2,
+      "claimed_source": "10.1.2.10",
+      "destination": "10.2.2.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0025",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 13,
+      "actual_origin_device": "NF_R_A3",
+      "actual_origin_level": 3,
+      "claimed_source_level": 3,
+      "claimed_source": "10.1.3.10",
+      "destination": "10.2.3.10",
+      "expected_delivery": true,
+      "injection_observation_id": "spoof-0026",
+      "injection_returncode": 0,
+      "delivery_observations": [
+        {
+          "destination_device": "NF_R_B3",
+          "source": "10.1.3.10",
+          "destination": "10.2.3.10",
+          "probe_sequence": 13,
+          "packet_type": 0,
+          "marker_matches": true
+        },
+        {
+          "destination_device": "NF_R_B3",
+          "source": "10.1.3.10",
+          "destination": "10.2.3.10",
+          "probe_sequence": 13,
+          "packet_type": 0,
+          "marker_matches": true
+        }
+      ],
+      "observed_delivery": true
+    },
+    {
+      "sequence": 14,
+      "actual_origin_device": "NF_R_A3",
+      "actual_origin_level": 3,
+      "claimed_source_level": 4,
+      "claimed_source": "10.1.4.10",
+      "destination": "10.2.4.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0027",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 15,
+      "actual_origin_device": "NF_R_A3",
+      "actual_origin_level": 3,
+      "claimed_source_level": null,
+      "claimed_source": "198.51.100.77",
+      "destination": "10.2.3.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0028",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 16,
+      "actual_origin_device": "NF_R_A4",
+      "actual_origin_level": 4,
+      "claimed_source_level": 1,
+      "claimed_source": "10.1.1.10",
+      "destination": "10.2.1.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0031",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 17,
+      "actual_origin_device": "NF_R_A4",
+      "actual_origin_level": 4,
+      "claimed_source_level": 2,
+      "claimed_source": "10.1.2.10",
+      "destination": "10.2.2.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0032",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 18,
+      "actual_origin_device": "NF_R_A4",
+      "actual_origin_level": 4,
+      "claimed_source_level": 3,
+      "claimed_source": "10.1.3.10",
+      "destination": "10.2.3.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0033",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    },
+    {
+      "sequence": 19,
+      "actual_origin_device": "NF_R_A4",
+      "actual_origin_level": 4,
+      "claimed_source_level": 4,
+      "claimed_source": "10.1.4.10",
+      "destination": "10.2.4.10",
+      "expected_delivery": true,
+      "injection_observation_id": "spoof-0034",
+      "injection_returncode": 0,
+      "delivery_observations": [
+        {
+          "destination_device": "NF_R_B4",
+          "source": "10.1.4.10",
+          "destination": "10.2.4.10",
+          "probe_sequence": 19,
+          "packet_type": 0,
+          "marker_matches": true
+        },
+        {
+          "destination_device": "NF_R_B4",
+          "source": "10.1.4.10",
+          "destination": "10.2.4.10",
+          "probe_sequence": 19,
+          "packet_type": 0,
+          "marker_matches": true
+        }
+      ],
+      "observed_delivery": true
+    },
+    {
+      "sequence": 20,
+      "actual_origin_device": "NF_R_A4",
+      "actual_origin_level": 4,
+      "claimed_source_level": null,
+      "claimed_source": "198.51.100.77",
+      "destination": "10.2.4.10",
+      "expected_delivery": false,
+      "injection_observation_id": "spoof-0035",
+      "injection_returncode": 0,
+      "delivery_observations": [],
+      "observed_delivery": false
+    }
+  ],
+  "records": [
+    {
+      "id": "spoof-0000",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "NF_R_B1"
+      ],
+      "started_at": "2026-10-24T02:38:41.275999+00:00",
+      "ended_at": "2026-10-24T02:38:41.298437+00:00",
+      "returncode": 0,
+      "stdout": "852935\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0001",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "NF_R_B2"
+      ],
+      "started_at": "2026-10-24T02:38:41.353907+00:00",
+      "ended_at": "2026-10-24T02:38:41.376300+00:00",
+      "returncode": 0,
+      "stdout": "854298\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0002",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "NF_R_B3"
+      ],
+      "started_at": "2026-10-24T02:38:41.420933+00:00",
+      "ended_at": "2026-10-24T02:38:41.442959+00:00",
+      "returncode": 0,
+      "stdout": "856865\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0003",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "NF_R_B4"
+      ],
+      "started_at": "2026-10-24T02:38:41.494928+00:00",
+      "ended_at": "2026-10-24T02:38:41.515006+00:00",
+      "returncode": 0,
+      "stdout": "857898\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0004",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A1",
+        "iptables-save",
+        "-c"
+      ],
+      "started_at": "2026-10-24T02:38:41.568927+00:00",
+      "ended_at": "2026-10-24T02:38:41.653710+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:38:41 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [17:1904]\n[0:0] -A INPUT -i lo -p tcp -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -j ACCEPT\n[58216:5052604] -A INPUT -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[12:1680] -A INPUT -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -p esp -j ACCEPT\n[0:0] -A FORWARD -s 10.1.1.0/24 -d 10.2.1.0/24 -i red -o gray -p tcp -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.1.0/24 -d 10.1.1.0/24 -i gray -o red -p tcp -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.1.0/24 -d 10.2.1.0/24 -i red -o gray -p udp -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.1.0/24 -d 10.1.1.0/24 -i gray -o red -p udp -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.1.0/24 -d 10.2.1.0/24 -i red -o gray -p esp -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.1.0/24 -d 10.1.1.0/24 -i gray -o red -p esp -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[12:1008] -A FORWARD -s 10.1.1.0/24 -d 10.2.1.0/24 -i red -o gray -p icmp -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[12:1008] -A FORWARD -s 10.2.1.0/24 -d 10.1.1.0/24 -i gray -o red -p icmp -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -j ACCEPT\n[58216:5052790] -A OUTPUT -s 10.100.1.2/32 -d 10.200.1.2/32 -o gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[12:1680] -A OUTPUT -s 10.100.1.2/32 -d 10.200.1.2/32 -o gray -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:38:41 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0005",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A2",
+        "iptables-save",
+        "-c"
+      ],
+      "started_at": "2026-10-24T02:38:41.653738+00:00",
+      "ended_at": "2026-10-24T02:38:41.738463+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:38:41 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [16:1792]\n[0:0] -A INPUT -i lo -p tcp -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -j ACCEPT\n[56099:4872655] -A INPUT -s 10.200.2.2/32 -d 10.100.2.2/32 -i gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[12:1680] -A INPUT -s 10.200.2.2/32 -d 10.100.2.2/32 -i gray -p esp -j ACCEPT\n[0:0] -A FORWARD -s 10.1.2.0/24 -d 10.2.2.0/24 -i red -o gray -p tcp -m policy --dir out --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.2.0/24 -d 10.1.2.0/24 -i gray -o red -p tcp -m policy --dir in --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.2.0/24 -d 10.2.2.0/24 -i red -o gray -p udp -m policy --dir out --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.2.0/24 -d 10.1.2.0/24 -i gray -o red -p udp -m policy --dir in --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.2.0/24 -d 10.2.2.0/24 -i red -o gray -p esp -m policy --dir out --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.2.0/24 -d 10.1.2.0/24 -i gray -o red -p esp -m policy --dir in --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[12:1008] -A FORWARD -s 10.1.2.0/24 -d 10.2.2.0/24 -i red -o gray -p icmp -m policy --dir out --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[12:1008] -A FORWARD -s 10.2.2.0/24 -d 10.1.2.0/24 -i gray -o red -p icmp -m policy --dir in --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -j ACCEPT\n[56099:4872847] -A OUTPUT -s 10.100.2.2/32 -d 10.200.2.2/32 -o gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[12:1680] -A OUTPUT -s 10.100.2.2/32 -d 10.200.2.2/32 -o gray -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:38:41 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0006",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A3",
+        "iptables-save",
+        "-c"
+      ],
+      "started_at": "2026-10-24T02:38:41.738485+00:00",
+      "ended_at": "2026-10-24T02:38:41.825320+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:38:41 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [16:1792]\n[0:0] -A INPUT -i lo -p tcp -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -j ACCEPT\n[66635:5768564] -A INPUT -s 10.200.3.2/32 -d 10.100.3.2/32 -i gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[12:1680] -A INPUT -s 10.200.3.2/32 -d 10.100.3.2/32 -i gray -p esp -j ACCEPT\n[0:0] -A FORWARD -s 10.1.3.0/24 -d 10.2.3.0/24 -i red -o gray -p tcp -m policy --dir out --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.3.0/24 -d 10.1.3.0/24 -i gray -o red -p tcp -m policy --dir in --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.3.0/24 -d 10.2.3.0/24 -i red -o gray -p udp -m policy --dir out --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.3.0/24 -d 10.1.3.0/24 -i gray -o red -p udp -m policy --dir in --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.3.0/24 -d 10.2.3.0/24 -i red -o gray -p esp -m policy --dir out --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.3.0/24 -d 10.1.3.0/24 -i gray -o red -p esp -m policy --dir in --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[12:1008] -A FORWARD -s 10.1.3.0/24 -d 10.2.3.0/24 -i red -o gray -p icmp -m policy --dir out --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[12:1008] -A FORWARD -s 10.2.3.0/24 -d 10.1.3.0/24 -i gray -o red -p icmp -m policy --dir in --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -j ACCEPT\n[66635:5768861] -A OUTPUT -s 10.100.3.2/32 -d 10.200.3.2/32 -o gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[12:1680] -A OUTPUT -s 10.100.3.2/32 -d 10.200.3.2/32 -o gray -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:38:41 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0007",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A4",
+        "iptables-save",
+        "-c"
+      ],
+      "started_at": "2026-10-24T02:38:41.825346+00:00",
+      "ended_at": "2026-10-24T02:38:41.910648+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:38:41 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [12:1344]\n[0:0] -A INPUT -i lo -p tcp -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -j ACCEPT\n[65126:5635260] -A INPUT -s 10.200.4.2/32 -d 10.100.4.2/32 -i gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[12:1680] -A INPUT -s 10.200.4.2/32 -d 10.100.4.2/32 -i gray -p esp -j ACCEPT\n[0:0] -A FORWARD -s 10.1.4.0/24 -d 10.2.4.0/24 -i red -o gray -p tcp -m policy --dir out --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.4.0/24 -d 10.1.4.0/24 -i gray -o red -p tcp -m policy --dir in --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.4.0/24 -d 10.2.4.0/24 -i red -o gray -p udp -m policy --dir out --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.4.0/24 -d 10.1.4.0/24 -i gray -o red -p udp -m policy --dir in --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.4.0/24 -d 10.2.4.0/24 -i red -o gray -p esp -m policy --dir out --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.4.0/24 -d 10.1.4.0/24 -i gray -o red -p esp -m policy --dir in --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[12:1008] -A FORWARD -s 10.1.4.0/24 -d 10.2.4.0/24 -i red -o gray -p icmp -m policy --dir out --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[12:1008] -A FORWARD -s 10.2.4.0/24 -d 10.1.4.0/24 -i gray -o red -p icmp -m policy --dir in --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -j ACCEPT\n[65127:5635279] -A OUTPUT -s 10.100.4.2/32 -d 10.200.4.2/32 -o gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[12:1680] -A OUTPUT -s 10.100.4.2/32 -d 10.200.4.2/32 -o gray -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:38:41 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0008",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "NF_R_A1"
+      ],
+      "started_at": "2026-10-24T02:38:41.910680+00:00",
+      "ended_at": "2026-10-24T02:38:41.932057+00:00",
+      "returncode": 0,
+      "stdout": "848697\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0009",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A1",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "red"
+      ],
+      "started_at": "2026-10-24T02:38:41.932076+00:00",
+      "ended_at": "2026-10-24T02:38:42.013881+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":2282,\"link_index\":2283,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1320,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"02:af:a6:4a:e2:bc\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"altnames\":[\"msc-native-nf-0-NF_I_A1\"]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0010",
+      "command": [
+        "nsenter",
+        "-t",
+        "848697",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.1.10",
+        "10.2.1.10",
+        "02:af:a6:4a:e2:bc",
+        "1"
+      ],
+      "started_at": "2026-10-24T02:38:42.013953+00:00",
+      "ended_at": "2026-10-24T02:38:42.122263+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.1.10\", \"destination\": \"10.2.1.10\", \"probe_sequence\": 1, \"source_mac\": \"0204e468e53b\", \"gateway_mac\": \"02:af:a6:4a:e2:bc\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0011",
+      "command": [
+        "nsenter",
+        "-t",
+        "848697",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.2.10",
+        "10.2.2.10",
+        "02:af:a6:4a:e2:bc",
+        "2"
+      ],
+      "started_at": "2026-10-24T02:38:42.122308+00:00",
+      "ended_at": "2026-10-24T02:38:42.215306+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.2.10\", \"destination\": \"10.2.2.10\", \"probe_sequence\": 2, \"source_mac\": \"0204e468e53b\", \"gateway_mac\": \"02:af:a6:4a:e2:bc\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0012",
+      "command": [
+        "nsenter",
+        "-t",
+        "848697",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.3.10",
+        "10.2.3.10",
+        "02:af:a6:4a:e2:bc",
+        "3"
+      ],
+      "started_at": "2026-10-24T02:38:42.215352+00:00",
+      "ended_at": "2026-10-24T02:38:42.305123+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.3.10\", \"destination\": \"10.2.3.10\", \"probe_sequence\": 3, \"source_mac\": \"0204e468e53b\", \"gateway_mac\": \"02:af:a6:4a:e2:bc\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0013",
+      "command": [
+        "nsenter",
+        "-t",
+        "848697",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.4.10",
+        "10.2.4.10",
+        "02:af:a6:4a:e2:bc",
+        "4"
+      ],
+      "started_at": "2026-10-24T02:38:42.305156+00:00",
+      "ended_at": "2026-10-24T02:38:42.403461+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.4.10\", \"destination\": \"10.2.4.10\", \"probe_sequence\": 4, \"source_mac\": \"0204e468e53b\", \"gateway_mac\": \"02:af:a6:4a:e2:bc\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0014",
+      "command": [
+        "nsenter",
+        "-t",
+        "848697",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "198.51.100.77",
+        "10.2.1.10",
+        "02:af:a6:4a:e2:bc",
+        "5"
+      ],
+      "started_at": "2026-10-24T02:38:42.403494+00:00",
+      "ended_at": "2026-10-24T02:38:42.494241+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"198.51.100.77\", \"destination\": \"10.2.1.10\", \"probe_sequence\": 5, \"source_mac\": \"0204e468e53b\", \"gateway_mac\": \"02:af:a6:4a:e2:bc\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0015",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "NF_R_A2"
+      ],
+      "started_at": "2026-10-24T02:38:42.494274+00:00",
+      "ended_at": "2026-10-24T02:38:42.516730+00:00",
+      "returncode": 0,
+      "stdout": "851421\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0016",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A2",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "red"
+      ],
+      "started_at": "2026-10-24T02:38:42.516759+00:00",
+      "ended_at": "2026-10-24T02:38:42.598863+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":2294,\"link_index\":2295,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1320,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"02:bb:33:36:d0:df\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"altnames\":[\"msc-native-nf-6-NF_I_A2\"]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0017",
+      "command": [
+        "nsenter",
+        "-t",
+        "851421",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.1.10",
+        "10.2.1.10",
+        "02:bb:33:36:d0:df",
+        "6"
+      ],
+      "started_at": "2026-10-24T02:38:42.598935+00:00",
+      "ended_at": "2026-10-24T02:38:42.686726+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.1.10\", \"destination\": \"10.2.1.10\", \"probe_sequence\": 6, \"source_mac\": \"020b3ef46142\", \"gateway_mac\": \"02:bb:33:36:d0:df\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0018",
+      "command": [
+        "nsenter",
+        "-t",
+        "851421",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.2.10",
+        "10.2.2.10",
+        "02:bb:33:36:d0:df",
+        "7"
+      ],
+      "started_at": "2026-10-24T02:38:42.686762+00:00",
+      "ended_at": "2026-10-24T02:38:42.778237+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.2.10\", \"destination\": \"10.2.2.10\", \"probe_sequence\": 7, \"source_mac\": \"020b3ef46142\", \"gateway_mac\": \"02:bb:33:36:d0:df\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0019",
+      "command": [
+        "nsenter",
+        "-t",
+        "851421",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.3.10",
+        "10.2.3.10",
+        "02:bb:33:36:d0:df",
+        "8"
+      ],
+      "started_at": "2026-10-24T02:38:42.778273+00:00",
+      "ended_at": "2026-10-24T02:38:42.870379+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.3.10\", \"destination\": \"10.2.3.10\", \"probe_sequence\": 8, \"source_mac\": \"020b3ef46142\", \"gateway_mac\": \"02:bb:33:36:d0:df\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0020",
+      "command": [
+        "nsenter",
+        "-t",
+        "851421",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.4.10",
+        "10.2.4.10",
+        "02:bb:33:36:d0:df",
+        "9"
+      ],
+      "started_at": "2026-10-24T02:38:42.870425+00:00",
+      "ended_at": "2026-10-24T02:38:42.966077+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.4.10\", \"destination\": \"10.2.4.10\", \"probe_sequence\": 9, \"source_mac\": \"020b3ef46142\", \"gateway_mac\": \"02:bb:33:36:d0:df\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0021",
+      "command": [
+        "nsenter",
+        "-t",
+        "851421",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "198.51.100.77",
+        "10.2.2.10",
+        "02:bb:33:36:d0:df",
+        "10"
+      ],
+      "started_at": "2026-10-24T02:38:42.966110+00:00",
+      "ended_at": "2026-10-24T02:38:43.068482+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"198.51.100.77\", \"destination\": \"10.2.2.10\", \"probe_sequence\": 10, \"source_mac\": \"020b3ef46142\", \"gateway_mac\": \"02:bb:33:36:d0:df\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0022",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "NF_R_A3"
+      ],
+      "started_at": "2026-10-24T02:38:43.068514+00:00",
+      "ended_at": "2026-10-24T02:38:43.090768+00:00",
+      "returncode": 0,
+      "stdout": "855596\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0023",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A3",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "red"
+      ],
+      "started_at": "2026-10-24T02:38:43.090795+00:00",
+      "ended_at": "2026-10-24T02:38:43.169601+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":2322,\"link_index\":2323,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1320,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"02:ec:12:c5:97:16\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"altnames\":[\"msc-native-nf-20-NF_I_A3\"]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0024",
+      "command": [
+        "nsenter",
+        "-t",
+        "855596",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.1.10",
+        "10.2.1.10",
+        "02:ec:12:c5:97:16",
+        "11"
+      ],
+      "started_at": "2026-10-24T02:38:43.169679+00:00",
+      "ended_at": "2026-10-24T02:38:43.264283+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.1.10\", \"destination\": \"10.2.1.10\", \"probe_sequence\": 11, \"source_mac\": \"02949e9523c8\", \"gateway_mac\": \"02:ec:12:c5:97:16\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0025",
+      "command": [
+        "nsenter",
+        "-t",
+        "855596",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.2.10",
+        "10.2.2.10",
+        "02:ec:12:c5:97:16",
+        "12"
+      ],
+      "started_at": "2026-10-24T02:38:43.264317+00:00",
+      "ended_at": "2026-10-24T02:38:43.370326+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.2.10\", \"destination\": \"10.2.2.10\", \"probe_sequence\": 12, \"source_mac\": \"02949e9523c8\", \"gateway_mac\": \"02:ec:12:c5:97:16\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0026",
+      "command": [
+        "nsenter",
+        "-t",
+        "855596",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.3.10",
+        "10.2.3.10",
+        "02:ec:12:c5:97:16",
+        "13"
+      ],
+      "started_at": "2026-10-24T02:38:43.370365+00:00",
+      "ended_at": "2026-10-24T02:38:43.469204+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.3.10\", \"destination\": \"10.2.3.10\", \"probe_sequence\": 13, \"source_mac\": \"02949e9523c8\", \"gateway_mac\": \"02:ec:12:c5:97:16\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0027",
+      "command": [
+        "nsenter",
+        "-t",
+        "855596",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.4.10",
+        "10.2.4.10",
+        "02:ec:12:c5:97:16",
+        "14"
+      ],
+      "started_at": "2026-10-24T02:38:43.469238+00:00",
+      "ended_at": "2026-10-24T02:38:43.570623+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.4.10\", \"destination\": \"10.2.4.10\", \"probe_sequence\": 14, \"source_mac\": \"02949e9523c8\", \"gateway_mac\": \"02:ec:12:c5:97:16\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0028",
+      "command": [
+        "nsenter",
+        "-t",
+        "855596",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "198.51.100.77",
+        "10.2.3.10",
+        "02:ec:12:c5:97:16",
+        "15"
+      ],
+      "started_at": "2026-10-24T02:38:43.570669+00:00",
+      "ended_at": "2026-10-24T02:38:43.671320+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"198.51.100.77\", \"destination\": \"10.2.3.10\", \"probe_sequence\": 15, \"source_mac\": \"02949e9523c8\", \"gateway_mac\": \"02:ec:12:c5:97:16\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0029",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "NF_R_A4"
+      ],
+      "started_at": "2026-10-24T02:38:43.671359+00:00",
+      "ended_at": "2026-10-24T02:38:43.694334+00:00",
+      "returncode": 0,
+      "stdout": "857489\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0030",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A4",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "red"
+      ],
+      "started_at": "2026-10-24T02:38:43.694362+00:00",
+      "ended_at": "2026-10-24T02:38:43.780319+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":2338,\"link_index\":2339,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1320,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"02:88:9c:09:81:e3\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"altnames\":[\"msc-native-nf-28-NF_I_A4\"]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0031",
+      "command": [
+        "nsenter",
+        "-t",
+        "857489",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.1.10",
+        "10.2.1.10",
+        "02:88:9c:09:81:e3",
+        "16"
+      ],
+      "started_at": "2026-10-24T02:38:43.780384+00:00",
+      "ended_at": "2026-10-24T02:38:43.885271+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.1.10\", \"destination\": \"10.2.1.10\", \"probe_sequence\": 16, \"source_mac\": \"0252a9df1c4d\", \"gateway_mac\": \"02:88:9c:09:81:e3\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0032",
+      "command": [
+        "nsenter",
+        "-t",
+        "857489",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.2.10",
+        "10.2.2.10",
+        "02:88:9c:09:81:e3",
+        "17"
+      ],
+      "started_at": "2026-10-24T02:38:43.885307+00:00",
+      "ended_at": "2026-10-24T02:38:43.980268+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.2.10\", \"destination\": \"10.2.2.10\", \"probe_sequence\": 17, \"source_mac\": \"0252a9df1c4d\", \"gateway_mac\": \"02:88:9c:09:81:e3\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0033",
+      "command": [
+        "nsenter",
+        "-t",
+        "857489",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.3.10",
+        "10.2.3.10",
+        "02:88:9c:09:81:e3",
+        "18"
+      ],
+      "started_at": "2026-10-24T02:38:43.980302+00:00",
+      "ended_at": "2026-10-24T02:38:44.068155+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.3.10\", \"destination\": \"10.2.3.10\", \"probe_sequence\": 18, \"source_mac\": \"0252a9df1c4d\", \"gateway_mac\": \"02:88:9c:09:81:e3\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0034",
+      "command": [
+        "nsenter",
+        "-t",
+        "857489",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "10.1.4.10",
+        "10.2.4.10",
+        "02:88:9c:09:81:e3",
+        "19"
+      ],
+      "started_at": "2026-10-24T02:38:44.068187+00:00",
+      "ended_at": "2026-10-24T02:38:44.172256+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"10.1.4.10\", \"destination\": \"10.2.4.10\", \"probe_sequence\": 19, \"source_mac\": \"0252a9df1c4d\", \"gateway_mac\": \"02:88:9c:09:81:e3\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0035",
+      "command": [
+        "nsenter",
+        "-t",
+        "857489",
+        "-n",
+        "python3",
+        "-c",
+        "import socket,struct,fcntl,sys,time,json\nsource,dest,dmac,seq=sys.argv[1:];seq=int(seq);s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW);s.bind(('red',0));mac=fcntl.ioctl(s.fileno(),0x8927,struct.pack('256s',b'red'))[18:24]\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n x=sum(struct.unpack('!%dH'%(len(b)//2),b))\n while x>>16:x=(x&65535)+(x>>16)\n return (~x)&65535\nbody=b'TCV3-SPOOF-'+str(seq).encode();icmp=struct.pack('!BBHHH',8,0,0,51966,seq)+body;icmp=icmp[:2]+struct.pack('!H',checksum(icmp))+icmp[4:]\niph=struct.pack('!BBHHHBBH4s4s',0x45,0,20+len(icmp),40000+seq,0,64,1,0,socket.inet_aton(source),socket.inet_aton(dest));iph=iph[:10]+struct.pack('!H',checksum(iph))+iph[12:]\nframe=bytes.fromhex(dmac.replace(':',''))+mac+bytes.fromhex('0800')+iph+icmp\nfor i in range(2):s.send(frame);time.sleep(.02)\nprint(json.dumps({'sent':2,'claimed_source':source,'destination':dest,'probe_sequence':seq,'source_mac':mac.hex(),'gateway_mac':dmac}))\n",
+        "198.51.100.77",
+        "10.2.4.10",
+        "02:88:9c:09:81:e3",
+        "20"
+      ],
+      "started_at": "2026-10-24T02:38:44.172297+00:00",
+      "ended_at": "2026-10-24T02:38:44.268468+00:00",
+      "returncode": 0,
+      "stdout": "{\"sent\": 2, \"claimed_source\": \"198.51.100.77\", \"destination\": \"10.2.4.10\", \"probe_sequence\": 20, \"source_mac\": \"0252a9df1c4d\", \"gateway_mac\": \"02:88:9c:09:81:e3\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0036",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A1",
+        "iptables-save",
+        "-c"
+      ],
+      "started_at": "2026-10-24T02:38:44.268499+00:00",
+      "ended_at": "2026-10-24T02:38:44.357303+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:38:44 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [2:80]\n:OUTPUT DROP [17:1904]\n[0:0] -A INPUT -i lo -p tcp -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -j ACCEPT\n[58216:5052604] -A INPUT -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[14:1872] -A INPUT -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -p esp -j ACCEPT\n[0:0] -A FORWARD -s 10.1.1.0/24 -d 10.2.1.0/24 -i red -o gray -p tcp -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.1.0/24 -d 10.1.1.0/24 -i gray -o red -p tcp -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.1.0/24 -d 10.2.1.0/24 -i red -o gray -p udp -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.1.0/24 -d 10.1.1.0/24 -i gray -o red -p udp -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.1.0/24 -d 10.2.1.0/24 -i red -o gray -p esp -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.1.0/24 -d 10.1.1.0/24 -i gray -o red -p esp -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[14:1088] -A FORWARD -s 10.1.1.0/24 -d 10.2.1.0/24 -i red -o gray -p icmp -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[14:1088] -A FORWARD -s 10.2.1.0/24 -d 10.1.1.0/24 -i gray -o red -p icmp -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -j ACCEPT\n[58216:5052790] -A OUTPUT -s 10.100.1.2/32 -d 10.200.1.2/32 -o gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[14:1872] -A OUTPUT -s 10.100.1.2/32 -d 10.200.1.2/32 -o gray -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:38:44 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0037",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A2",
+        "iptables-save",
+        "-c"
+      ],
+      "started_at": "2026-10-24T02:38:44.357343+00:00",
+      "ended_at": "2026-10-24T02:38:44.456288+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:38:44 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [2:82]\n:OUTPUT DROP [16:1792]\n[0:0] -A INPUT -i lo -p tcp -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -j ACCEPT\n[56099:4872655] -A INPUT -s 10.200.2.2/32 -d 10.100.2.2/32 -i gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[14:1872] -A INPUT -s 10.200.2.2/32 -d 10.100.2.2/32 -i gray -p esp -j ACCEPT\n[0:0] -A FORWARD -s 10.1.2.0/24 -d 10.2.2.0/24 -i red -o gray -p tcp -m policy --dir out --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.2.0/24 -d 10.1.2.0/24 -i gray -o red -p tcp -m policy --dir in --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.2.0/24 -d 10.2.2.0/24 -i red -o gray -p udp -m policy --dir out --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.2.0/24 -d 10.1.2.0/24 -i gray -o red -p udp -m policy --dir in --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.2.0/24 -d 10.2.2.0/24 -i red -o gray -p esp -m policy --dir out --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.2.0/24 -d 10.1.2.0/24 -i gray -o red -p esp -m policy --dir in --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[14:1088] -A FORWARD -s 10.1.2.0/24 -d 10.2.2.0/24 -i red -o gray -p icmp -m policy --dir out --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[14:1088] -A FORWARD -s 10.2.2.0/24 -d 10.1.2.0/24 -i gray -o red -p icmp -m policy --dir in --pol ipsec --reqid 102 --mode tunnel -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -j ACCEPT\n[56099:4872847] -A OUTPUT -s 10.100.2.2/32 -d 10.200.2.2/32 -o gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[14:1872] -A OUTPUT -s 10.100.2.2/32 -d 10.200.2.2/32 -o gray -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:38:44 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0038",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A3",
+        "iptables-save",
+        "-c"
+      ],
+      "started_at": "2026-10-24T02:38:44.456321+00:00",
+      "ended_at": "2026-10-24T02:38:44.550376+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:38:44 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [2:82]\n:OUTPUT DROP [16:1792]\n[0:0] -A INPUT -i lo -p tcp -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -j ACCEPT\n[66635:5768564] -A INPUT -s 10.200.3.2/32 -d 10.100.3.2/32 -i gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[14:1872] -A INPUT -s 10.200.3.2/32 -d 10.100.3.2/32 -i gray -p esp -j ACCEPT\n[0:0] -A FORWARD -s 10.1.3.0/24 -d 10.2.3.0/24 -i red -o gray -p tcp -m policy --dir out --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.3.0/24 -d 10.1.3.0/24 -i gray -o red -p tcp -m policy --dir in --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.3.0/24 -d 10.2.3.0/24 -i red -o gray -p udp -m policy --dir out --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.3.0/24 -d 10.1.3.0/24 -i gray -o red -p udp -m policy --dir in --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.3.0/24 -d 10.2.3.0/24 -i red -o gray -p esp -m policy --dir out --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.3.0/24 -d 10.1.3.0/24 -i gray -o red -p esp -m policy --dir in --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[14:1090] -A FORWARD -s 10.1.3.0/24 -d 10.2.3.0/24 -i red -o gray -p icmp -m policy --dir out --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[14:1090] -A FORWARD -s 10.2.3.0/24 -d 10.1.3.0/24 -i gray -o red -p icmp -m policy --dir in --pol ipsec --reqid 103 --mode tunnel -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -j ACCEPT\n[66635:5768861] -A OUTPUT -s 10.100.3.2/32 -d 10.200.3.2/32 -o gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[14:1872] -A OUTPUT -s 10.100.3.2/32 -d 10.200.3.2/32 -o gray -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:38:44 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "spoof-0039",
+      "command": [
+        "docker",
+        "exec",
+        "NF_I_A4",
+        "iptables-save",
+        "-c"
+      ],
+      "started_at": "2026-10-24T02:38:44.550409+00:00",
+      "ended_at": "2026-10-24T02:38:44.641284+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:38:44 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [2:82]\n:OUTPUT DROP [12:1344]\n[0:0] -A INPUT -i lo -p tcp -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -j ACCEPT\n[65126:5635260] -A INPUT -s 10.200.4.2/32 -d 10.100.4.2/32 -i gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[14:1872] -A INPUT -s 10.200.4.2/32 -d 10.100.4.2/32 -i gray -p esp -j ACCEPT\n[0:0] -A FORWARD -s 10.1.4.0/24 -d 10.2.4.0/24 -i red -o gray -p tcp -m policy --dir out --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.4.0/24 -d 10.1.4.0/24 -i gray -o red -p tcp -m policy --dir in --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.4.0/24 -d 10.2.4.0/24 -i red -o gray -p udp -m policy --dir out --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.4.0/24 -d 10.1.4.0/24 -i gray -o red -p udp -m policy --dir in --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.1.4.0/24 -d 10.2.4.0/24 -i red -o gray -p esp -m policy --dir out --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A FORWARD -s 10.2.4.0/24 -d 10.1.4.0/24 -i gray -o red -p esp -m policy --dir in --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[14:1090] -A FORWARD -s 10.1.4.0/24 -d 10.2.4.0/24 -i red -o gray -p icmp -m policy --dir out --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[14:1090] -A FORWARD -s 10.2.4.0/24 -d 10.1.4.0/24 -i gray -o red -p icmp -m policy --dir in --pol ipsec --reqid 104 --mode tunnel -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -j ACCEPT\n[65127:5635279] -A OUTPUT -s 10.100.4.2/32 -d 10.200.4.2/32 -o gray -p udp -m multiport --dports 500,4500 -j ACCEPT\n[14:1872] -A OUTPUT -s 10.100.4.2/32 -d 10.200.4.2/32 -o gray -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:38:44 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "capture-NF_R_B1",
+      "command": [
+        "nsenter",
+        "-t",
+        "852935",
+        "-n",
+        "python3",
+        "-u",
+        "-c",
+        "import socket,struct,json,time,select\ns=socket.socket(socket.AF_PACKET,socket.SOCK_RAW,socket.htons(0x0800));s.bind(('red',0));print('ready',flush=True);end=time.monotonic()+12\nwhile time.monotonic()<end:\n if not select.select([s],[],[],.2)[0]:continue\n b,addr=s.recvfrom(65535)\n if len(b)<42 or b[23]!=1:continue\n off=14+4*(b[14]&15)\n if b[off]!=8 or b[off+4:off+6]!=struct.pack('!H',51966):continue\n print(json.dumps({'source':socket.inet_ntoa(b[26:30]),'destination':socket.inet_ntoa(b[30:34]),'probe_sequence':struct.unpack('!H',b[off+6:off+8])[0],'packet_type':addr[2],'marker_matches':b[off+8:off+19]==b'TCV3-SPOOF-'}),flush=True)\n"
+      ],
+      "returncode": 0,
+      "stdout": "{\"source\": \"10.1.1.10\", \"destination\": \"10.2.1.10\", \"probe_sequence\": 1, \"packet_type\": 0, \"marker_matches\": true}\n{\"source\": \"10.1.1.10\", \"destination\": \"10.2.1.10\", \"probe_sequence\": 1, \"packet_type\": 0, \"marker_matches\": true}\n",
+      "stderr": ""
+    },
+    {
+      "id": "capture-NF_R_B2",
+      "command": [
+        "nsenter",
+        "-t",
+        "854298",
+        "-n",
+        "python3",
+        "-u",
+        "-c",
+        "import socket,struct,json,time,select\ns=socket.socket(socket.AF_PACKET,socket.SOCK_RAW,socket.htons(0x0800));s.bind(('red',0));print('ready',flush=True);end=time.monotonic()+12\nwhile time.monotonic()<end:\n if not select.select([s],[],[],.2)[0]:continue\n b,addr=s.recvfrom(65535)\n if len(b)<42 or b[23]!=1:continue\n off=14+4*(b[14]&15)\n if b[off]!=8 or b[off+4:off+6]!=struct.pack('!H',51966):continue\n print(json.dumps({'source':socket.inet_ntoa(b[26:30]),'destination':socket.inet_ntoa(b[30:34]),'probe_sequence':struct.unpack('!H',b[off+6:off+8])[0],'packet_type':addr[2],'marker_matches':b[off+8:off+19]==b'TCV3-SPOOF-'}),flush=True)\n"
+      ],
+      "returncode": 0,
+      "stdout": "{\"source\": \"10.1.2.10\", \"destination\": \"10.2.2.10\", \"probe_sequence\": 7, \"packet_type\": 0, \"marker_matches\": true}\n{\"source\": \"10.1.2.10\", \"destination\": \"10.2.2.10\", \"probe_sequence\": 7, \"packet_type\": 0, \"marker_matches\": true}\n",
+      "stderr": ""
+    },
+    {
+      "id": "capture-NF_R_B3",
+      "command": [
+        "nsenter",
+        "-t",
+        "856865",
+        "-n",
+        "python3",
+        "-u",
+        "-c",
+        "import socket,struct,json,time,select\ns=socket.socket(socket.AF_PACKET,socket.SOCK_RAW,socket.htons(0x0800));s.bind(('red',0));print('ready',flush=True);end=time.monotonic()+12\nwhile time.monotonic()<end:\n if not select.select([s],[],[],.2)[0]:continue\n b,addr=s.recvfrom(65535)\n if len(b)<42 or b[23]!=1:continue\n off=14+4*(b[14]&15)\n if b[off]!=8 or b[off+4:off+6]!=struct.pack('!H',51966):continue\n print(json.dumps({'source':socket.inet_ntoa(b[26:30]),'destination':socket.inet_ntoa(b[30:34]),'probe_sequence':struct.unpack('!H',b[off+6:off+8])[0],'packet_type':addr[2],'marker_matches':b[off+8:off+19]==b'TCV3-SPOOF-'}),flush=True)\n"
+      ],
+      "returncode": 0,
+      "stdout": "{\"source\": \"10.1.3.10\", \"destination\": \"10.2.3.10\", \"probe_sequence\": 13, \"packet_type\": 0, \"marker_matches\": true}\n{\"source\": \"10.1.3.10\", \"destination\": \"10.2.3.10\", \"probe_sequence\": 13, \"packet_type\": 0, \"marker_matches\": true}\n",
+      "stderr": ""
+    },
+    {
+      "id": "capture-NF_R_B4",
+      "command": [
+        "nsenter",
+        "-t",
+        "857898",
+        "-n",
+        "python3",
+        "-u",
+        "-c",
+        "import socket,struct,json,time,select\ns=socket.socket(socket.AF_PACKET,socket.SOCK_RAW,socket.htons(0x0800));s.bind(('red',0));print('ready',flush=True);end=time.monotonic()+12\nwhile time.monotonic()<end:\n if not select.select([s],[],[],.2)[0]:continue\n b,addr=s.recvfrom(65535)\n if len(b)<42 or b[23]!=1:continue\n off=14+4*(b[14]&15)\n if b[off]!=8 or b[off+4:off+6]!=struct.pack('!H',51966):continue\n print(json.dumps({'source':socket.inet_ntoa(b[26:30]),'destination':socket.inet_ntoa(b[30:34]),'probe_sequence':struct.unpack('!H',b[off+6:off+8])[0],'packet_type':addr[2],'marker_matches':b[off+8:off+19]==b'TCV3-SPOOF-'}),flush=True)\n"
+      ],
+      "returncode": 0,
+      "stdout": "{\"source\": \"10.1.4.10\", \"destination\": \"10.2.4.10\", \"probe_sequence\": 19, \"packet_type\": 0, \"marker_matches\": true}\n{\"source\": \"10.1.4.10\", \"destination\": \"10.2.4.10\", \"probe_sequence\": 19, \"packet_type\": 0, \"marker_matches\": true}\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": [
+    "Actual source device is identified by its recorded network namespace and Red ingress wire. Claimed IP source is deliberately forged without changing interface addresses.",
+    "Four legitimate-source controls and sixteen forged/unknown-source cases each send two ICMP requests; destination captures detect request arrival directly, without relying on a return route.",
+    "Finite ICMP-origin probes and iptables counters do not prove arbitrary protocols, all possible addresses, authenticated user identity, malicious gateway compromise or all-time exclusion.",
+    "No filter, route, SA or credential configuration is modified."
+  ]
+}

@@ -1,0 +1,296 @@
+{
+  "devices": [
+    {
+      "id": "eap-tls-forward-v18/P0",
+      "controlledPortEnabled": true,
+      "protectFrames": true,
+      "encryptFrames": true,
+      "confidentialityOffset": 0,
+      "sa": 0,
+      "cipher": "GCM-AES-256",
+      "replay_window": 0,
+      "receiveValidation": "strict",
+      "replayProtection": true,
+      "normal_hello_ms": 2000,
+      "active_hello_ms": 500,
+      "lifetime_ms": 6000,
+      "delay_protection_enabled": true,
+      "must_secure": true,
+      "timer_samples": 45,
+      "delay_advertisements": 91
+    },
+    {
+      "id": "eap-tls-forward-v18/P1",
+      "controlledPortEnabled": true,
+      "protectFrames": true,
+      "encryptFrames": true,
+      "confidentialityOffset": 0,
+      "sa": 0,
+      "cipher": "GCM-AES-256",
+      "replay_window": 0,
+      "receiveValidation": "strict",
+      "replayProtection": true,
+      "normal_hello_ms": 2000,
+      "active_hello_ms": 500,
+      "lifetime_ms": 6000,
+      "delay_protection_enabled": true,
+      "must_secure": true,
+      "timer_samples": 46,
+      "delay_advertisements": 91
+    },
+    {
+      "id": "eap-tls-reverse-v18/P0",
+      "controlledPortEnabled": true,
+      "protectFrames": true,
+      "encryptFrames": true,
+      "confidentialityOffset": 0,
+      "sa": 0,
+      "cipher": "GCM-AES-256",
+      "replay_window": 0,
+      "receiveValidation": "strict",
+      "replayProtection": true,
+      "normal_hello_ms": 2000,
+      "active_hello_ms": 500,
+      "lifetime_ms": 6000,
+      "delay_protection_enabled": true,
+      "must_secure": true,
+      "timer_samples": 45,
+      "delay_advertisements": 89
+    },
+    {
+      "id": "eap-tls-reverse-v18/P1",
+      "controlledPortEnabled": true,
+      "protectFrames": true,
+      "encryptFrames": true,
+      "confidentialityOffset": 0,
+      "sa": 0,
+      "cipher": "GCM-AES-256",
+      "replay_window": 0,
+      "receiveValidation": "strict",
+      "replayProtection": true,
+      "normal_hello_ms": 2000,
+      "active_hello_ms": 500,
+      "lifetime_ms": 6000,
+      "delay_protection_enabled": true,
+      "must_secure": true,
+      "timer_samples": 44,
+      "delay_advertisements": 89
+    }
+  ],
+  "observations": [
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "manifest_sha256": "e968795d9c8febf19a63017d5b200925c68956c4a89ebca256939450c9762320",
+      "device": "P0",
+      "log": "cmd-0164",
+      "runtime_observations": [
+        "cmd-0127",
+        "cmd-0137",
+        "cmd-0164",
+        "cmd-0138",
+        "cmd-0148",
+        "cmd-0161",
+        "cmd-0161",
+        "cmd-0163",
+        "cmd-0038",
+        "cmd-0042"
+      ]
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "manifest_sha256": "e968795d9c8febf19a63017d5b200925c68956c4a89ebca256939450c9762320",
+      "device": "P1",
+      "log": "cmd-0161",
+      "runtime_observations": [
+        "cmd-0127",
+        "cmd-0137",
+        "cmd-0164",
+        "cmd-0138",
+        "cmd-0148",
+        "cmd-0161",
+        "cmd-0161",
+        "cmd-0163",
+        "cmd-0038",
+        "cmd-0042"
+      ]
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "manifest_sha256": "70a737f29f95cd11d545637208e9ba4d10acb3c44c516340066666e4081b2bb2",
+      "device": "P0",
+      "log": "cmd-0164",
+      "runtime_observations": [
+        "cmd-0127",
+        "cmd-0137",
+        "cmd-0164",
+        "cmd-0138",
+        "cmd-0148",
+        "cmd-0161",
+        "cmd-0163",
+        "cmd-0164",
+        "cmd-0038",
+        "cmd-0042"
+      ]
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "manifest_sha256": "70a737f29f95cd11d545637208e9ba4d10acb3c44c516340066666e4081b2bb2",
+      "device": "P1",
+      "log": "cmd-0161",
+      "runtime_observations": [
+        "cmd-0127",
+        "cmd-0137",
+        "cmd-0164",
+        "cmd-0138",
+        "cmd-0148",
+        "cmd-0161",
+        "cmd-0163",
+        "cmd-0164",
+        "cmd-0038",
+        "cmd-0042"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "probe": "EAP-derived-MKA-traffic",
+      "observation": "cmd-0071",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "probe": "EAP-derived-three-second-data-delay",
+      "observation": "cmd-0108",
+      "result": "no_reply"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "probe": "EAP-derived-100ms-data-delay",
+      "observation": "cmd-0113",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "probe": "EAP-derived-restored-useful-traffic",
+      "observation": "cmd-0115",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "probe": "EAP-reverse-direction-before-delay",
+      "observation": "cmd-0116",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "probe": "EAP-reverse-direction-three-second-delay",
+      "observation": "cmd-0120",
+      "result": "no_reply"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "probe": "EAP-reverse-direction-100ms-delay",
+      "observation": "cmd-0124",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "probe": "EAP-reverse-direction-restored-useful",
+      "observation": "cmd-0126",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "probe": "EAP-derived-MKA-traffic",
+      "observation": "cmd-0071",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "probe": "EAP-derived-three-second-data-delay",
+      "observation": "cmd-0108",
+      "result": "no_reply"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "probe": "EAP-derived-100ms-data-delay",
+      "observation": "cmd-0113",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "probe": "EAP-derived-restored-useful-traffic",
+      "observation": "cmd-0115",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "probe": "EAP-reverse-direction-before-delay",
+      "observation": "cmd-0116",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "probe": "EAP-reverse-direction-three-second-delay",
+      "observation": "cmd-0120",
+      "result": "no_reply"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "probe": "EAP-reverse-direction-100ms-delay",
+      "observation": "cmd-0124",
+      "result": "delivered"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "probe": "EAP-reverse-direction-restored-useful",
+      "observation": "cmd-0126",
+      "result": "delivered"
+    }
+  ],
+  "source_bindings": {
+    "bundle": "artifacts/snapshots/2026-10-24T014455Z/hostap-kdf-bindings-v4",
+    "manifest_sha256": "29b3f792a34fe3d10dd3f31581e49f904b992b85a82d866429fbd01b01c5856b",
+    "runtime_bundle": "artifacts/snapshots/2026-10-24T014455Z/final-hostap-runtime-v4",
+    "runtime_manifest_sha256": "2476dae11a0f5ea660bb1a4add8768391555dec0f04ad829776f5a6b5503af19",
+    "bindings": [
+      {
+        "role": "authenticator",
+        "source_root": "hostapd-2.12",
+        "binary_path": "hostap-pq-delay-auth/hostapd-2.12/hostapd/hostapd",
+        "binary_sha256": "23a5f3dfbaee5c2b4b54f16229d8274c3de7a760d30613a95db566a1acd78b1d",
+        "observed_at": "2026-10-24T14:59:26.691951+00:00",
+        "cak_bytes": 32,
+        "kek_bytes": 32,
+        "wrap_function": "aes_wrap",
+        "ckn_bytes": 16,
+        "implementation_reading": "Both EAP wrappers request the first32 MSK bytes and CAK32; KAY sets KEK length to CAK length and passes that length to AES wrap."
+      },
+      {
+        "role": "supplicant",
+        "source_root": "wpa_supplicant-2.12",
+        "binary_path": "hostap-pq-delay-auth/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+        "binary_sha256": "aa5af96ee16645430271770a942ceefd2f86d62efbb25f2e76fe3595681d44a6",
+        "observed_at": "2026-10-24T14:59:28.607920+00:00",
+        "cak_bytes": 32,
+        "kek_bytes": 32,
+        "wrap_function": "aes_wrap",
+        "ckn_bytes": 16,
+        "implementation_reading": "Both EAP wrappers request the first32 MSK bytes and CAK32; KAY sets KEK length to CAK length and passes that length to AES wrap."
+      }
+    ]
+  },
+  "callback_bundle": "artifacts/snapshots/2026-10-24T014455Z/hostap-auth-lowest-pn-v5",
+  "callback_manifest_sha256": "94bbdb022a5e542eb714917d23aa3105d2e43a67bfbf210138d6b36f0f46aebe",
+  "callback_patch_sha256": "79bbc0fc48a09603f7a13cfb5769b350f785cb47a5abbc53caa7cecf2e9fa01f",
+  "implementation_contract": [
+    "Delay protection denotes the enabled reviewed timed-PN history, authenticated MKA advertisement and receive-lowest-PN callback path.",
+    "Final binary/source continuity and correct compilation/execution use the same explicit contract as the final algorithm importer.",
+    "With the observed zero replay window, the Linux receive next-PN field represents the enforced lower acceptance threshold.",
+    "The general freshness theorem additionally requires a matching authenticated counter sample, a valid non-wrapping counter space and a stated sample-age bound. Finite delayed probes do not prove an unconditional physical latency bound.",
+    "Normal Hello remains 2000 milliseconds while the selected bounded active interval is 500 milliseconds; lifetime is 6000 milliseconds under INT-028.",
+    "Zero is an observed feasible replay window and is the smallest natural-number window; no smaller feasible value is assumed.",
+    "Required policy, full encryption and strict receive validation give the local must-secure interpretation. Whole-network alternative physical paths remain separately proved."
+  ]
+}

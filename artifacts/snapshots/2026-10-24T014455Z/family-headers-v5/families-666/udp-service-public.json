@@ -1,0 +1,15 @@
+{
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3h5-OA",
+    "python3",
+    "-u",
+    "-c",
+    "import socket; s=socket.socket(socket.AF_INET6,socket.SOCK_DGRAM);s.bind(('fd30:1::1',9999));s.settimeout(25)\nwhile True:\n try:d,a=s.recvfrom(4096);s.sendto(d,a);print('echo',len(d),a,flush=True)\n except TimeoutError:break"
+  ],
+  "stdout": "echo 16 ('fd30:1::2', 9998, 0, 0)\necho 16 ('fd30:1::2', 9998, 0, 0)\necho 16 ('fd30:1::2', 9998, 0, 0)\n",
+  "stderr": "",
+  "scope": "Diagnostic UDP echo only, using legitimate adjacent Black link addresses. No claim that the diagnostic service is a production MSC permitted service."
+}

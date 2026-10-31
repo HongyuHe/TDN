@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0422",
+  "started_at": "2026-10-24T14:01:46.992632+00:00",
+  "ended_at": "2026-10-24T14:01:52.862413+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-FB",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "FB",
+  "returncode": 0,
+  "stdout": "14:01:50.531953 outside In  ifindex 4196 f2:6e:7a:fb:29:f9 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 63, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x7), length 184\n14:01:50.531961 inside Out ifindex 4194 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x7), length 184\n14:01:50.532089 inside In  ifindex 4194 52:02:0f:db:5a:09 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 64, id 48696, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x7), length 184\n14:01:50.532096 outside Out ifindex 4196 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 63, id 48696, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x7), length 184\n14:01:51.566008 outside In  ifindex 4196 f2:6e:7a:fb:29:f9 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 63, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x8), length 184\n14:01:51.566019 inside Out ifindex 4194 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x8), length 184\n14:01:51.566151 inside In  ifindex 4194 52:02:0f:db:5a:09 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 64, id 49245, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x8), length 184\n14:01:51.566155 outside Out ifindex 4196 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 63, id 49245, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x8), length 184\n14:01:52.590004 outside In  ifindex 4196 f2:6e:7a:fb:29:f9 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 63, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x9), length 184\n14:01:52.590014 inside Out ifindex 4194 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x9), length 184\n14:01:52.590136 inside In  ifindex 4194 52:02:0f:db:5a:09 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 64, id 49468, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x9), length 184\n14:01:52.590141 outside Out ifindex 4196 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 63, id 49468, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x9), length 184\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n12 packets captured\n12 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 2
+}

@@ -1,0 +1,67 @@
+{
+  "cases": [
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "manifest_sha256": "e968795d9c8febf19a63017d5b200925c68956c4a89ebca256939450c9762320",
+      "source_sha256": "ecf7a0a1a31640a20c2cf946c208560d27052ee3cc2e37794bc7b59080d03ea9",
+      "peers": [
+        {
+          "device": "P0",
+          "site": "central",
+          "priority": 0,
+          "ckn_bytes": 16,
+          "ckn_value_exported": false,
+          "log_observation": "cmd-0164"
+        },
+        {
+          "device": "P1",
+          "site": "remote",
+          "priority": 1,
+          "ckn_bytes": 16,
+          "ckn_value_exported": false,
+          "log_observation": "cmd-0161"
+        }
+      ],
+      "central_site": "central",
+      "configured_key_server": "P0"
+    },
+    {
+      "bundle": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "manifest_sha256": "70a737f29f95cd11d545637208e9ba4d10acb3c44c516340066666e4081b2bb2",
+      "source_sha256": "ecf7a0a1a31640a20c2cf946c208560d27052ee3cc2e37794bc7b59080d03ea9",
+      "peers": [
+        {
+          "device": "P0",
+          "site": "remote",
+          "priority": 1,
+          "ckn_bytes": 16,
+          "ckn_value_exported": false,
+          "log_observation": "cmd-0164"
+        },
+        {
+          "device": "P1",
+          "site": "central",
+          "priority": 0,
+          "ckn_bytes": 16,
+          "ckn_value_exported": false,
+          "log_observation": "cmd-0161"
+        }
+      ],
+      "central_site": "central",
+      "configured_key_server": "P1"
+    }
+  ],
+  "whole_RG027_established": false,
+  "covered_clauses": [
+    "MD-5 minimum CKN length only",
+    "MD-6 configured0/1 priorities and declared central-site selection"
+  ],
+  "remaining": [
+    "The public logs retain reported CKN lengths and redact the bytes. No equality of actual CKN values or byte-level length measurement is inferred; trustworthy reporting is an implementation assumption.",
+    "NSA-approved KGS provenance for the actual CAK/CKN is not supplied.",
+    "PSK provisioning requires its own complete observations and approved-source evidence.",
+    "The two EAP arrangements do not themselves establish disabled fallback/rollover CAKs. No false default is inserted for MD-15.",
+    "The theorem concerns configured selection under the lower-priority rule. An all-execution distributed-election guarantee requires its own protocol semantics and assumptions.",
+    "Central and remote are source-declared architectural sites in this supplemental experiment, not measurements of physical geography."
+  ]
+}

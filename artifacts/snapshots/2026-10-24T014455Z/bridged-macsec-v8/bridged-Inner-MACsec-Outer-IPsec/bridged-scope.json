@@ -1,0 +1,7 @@
+{
+  "backend": "Supplemental namespace bridge plus actual manual Inner MACsec, L2TPv3 and Outer ESP",
+  "data_plane": "HA/HB and Inner data ports have no IPv4 addresses or main-table routes. Inner IP forwarding is disabled. Exact-source/destination Ethernet forwarding traverses br_red0 red/macsec0 only.",
+  "tags": "Zero, one and two VLAN tags are constructed inside original Red Ethernet frames. MACsec encrypts those tags; the physical Gray carrier exposes SecTAG only. Actual remote Ethernet recovery must match the exact tag stack and public payload digest.",
+  "scope": "Opaque EtherType0x88b5 is an experimental local-use data protocol. Positive finite cases, no MKA/IKE authentication or product approval. Kernel auxiliary VLAN metadata is used to reconstruct offloaded tag headers; no packet or ciphertext bodies are exported.",
+  "controls": "The two initial routed-boundary negatives precede the bridge transformation and remain labeled separately. The eighteen opaque-Ethernet controls apply to the final bridged arrangement."
+}

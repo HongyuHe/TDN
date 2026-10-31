@@ -1,0 +1,285 @@
+{
+  "at": "2026-10-24T03:40:01.206348+00:00",
+  "records": [
+    {
+      "id": "diversity-0000",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:39:58.110056+00:00",
+      "ended_at": "2026-10-24T03:39:58.181100+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.11.1\n  remote_addrs = 172.20.21.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_O_A1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_O_B1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.100.1.2/32\n    remote_ts = 10.200.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0001",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:39:58.181120+00:00",
+      "ended_at": "2026-10-24T03:39:58.279199+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.21.1\n  remote_addrs = 172.20.11.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_O_B1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_O_A1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.200.1.2/32\n    remote_ts = 10.100.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0002",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:39:58.279260+00:00",
+      "ended_at": "2026-10-24T03:39:58.551144+00:00",
+      "returncode": 0,
+      "stdout": "uninstall completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0003",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:39:58.551208+00:00",
+      "ended_at": "2026-10-24T03:39:58.823453+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] deleting IKE_SA msc[16] between 10.100.1.2[ND_I_A1.msc.test]...10.200.1.2[ND_I_B1.msc.test]\n[IKE] sending DELETE for IKE_SA msc[16]\n[ENC] generating INFORMATIONAL request 5 [ D ]\n[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n[ENC] parsed INFORMATIONAL response 5 [ ]\n[IKE] IKE_SA deleted\nterminate completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0004",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:39:58.823512+00:00",
+      "ended_at": "2026-10-24T03:39:59.100202+00:00",
+      "returncode": 0,
+      "stdout": "uninstall completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0005",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:39:59.100248+00:00",
+      "ended_at": "2026-10-24T03:39:59.373131+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "terminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0006",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22222",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-CBC-alternative-v3/inner-0.conf",
+        "root@127.0.0.1:/usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:39:59.373819+00:00",
+      "ended_at": "2026-10-24T03:39:59.630192+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0007",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22223",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-CBC-alternative-v3/inner-1.conf",
+        "root@127.0.0.1:/usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:39:59.630859+00:00",
+      "ended_at": "2026-10-24T03:39:59.892936+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0008",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "python3",
+        "-c",
+        "from pathlib import Path;Path(\"/etc/swanctl/swanctl.conf\").write_text('connections {\\n msc {\\n  version = 2\\n  local_addrs = 172.20.11.1\\n  remote_addrs = 172.20.21.1\\n  proposals = aes256-sha384-prfsha384-ecp384\\n  reauth_time = 3h\\n  rekey_time = 0s\\n  over_time = 10m\\n  dpd_delay = 10s\\n  keyingtries = 0\\n  mobike = no\\n  local {\\n   auth = ecdsa-384-sha384\\n   certs = cert.pem\\n   id = ND_O_A1.msc.test\\n  }\\n  remote {\\n   auth = ecdsa-384-sha384\\n   id = ND_O_B1.msc.test\\n   cacerts = ca.pem\\n   revocation = strict\\n  }\\n  children {\\n   protected {\\n    local_ts = 10.100.1.2/32\\n    remote_ts = 10.200.1.2/32\\n    mode = tunnel\\n    reqid = 201\\n    esp_proposals = aes256-sha384-ecp384\\n    rekey_time = 50m\\n    life_time = 1h\\n    start_action = trap\\n    dpd_action = trap\\n    close_action = trap\\n   }\\n  }\\n }\\n}\\n')"
+      ],
+      "started_at": "2026-10-24T03:39:59.892991+00:00",
+      "ended_at": "2026-10-24T03:40:00.009605+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/usr/lib/python3.12/pathlib.py\", line 1049, in write_text\n    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nOSError: [Errno 30] Read-only file system: '/etc/swanctl/swanctl.conf'\n"
+    },
+    {
+      "id": "diversity-0009",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:40:00.009734+00:00",
+      "ended_at": "2026-10-24T03:40:00.279193+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "uninstall failed: policy 'protected' not found\n"
+    },
+    {
+      "id": "diversity-0010",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:40:00.279247+00:00",
+      "ended_at": "2026-10-24T03:40:00.547237+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "terminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0011",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:40:00.547305+00:00",
+      "ended_at": "2026-10-24T03:40:00.823865+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "uninstall failed: policy 'protected' not found\n"
+    },
+    {
+      "id": "diversity-0012",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:40:00.823911+00:00",
+      "ended_at": "2026-10-24T03:40:01.100081+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "terminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0013",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "python3",
+        "-c",
+        "from pathlib import Path;Path(\"/etc/swanctl/swanctl.conf\").write_text('connections {\\n msc {\\n  version = 2\\n  local_addrs = 172.20.11.1\\n  remote_addrs = 172.20.21.1\\n  proposals = aes256gcm16-prfsha384-ecp384\\n  reauth_time = 3h\\n  rekey_time = 0s\\n  over_time = 10m\\n  dpd_delay = 10s\\n  keyingtries = 0\\n  mobike = no\\n  local {\\n   auth = ecdsa-384-sha384\\n   certs = cert.pem\\n   id = ND_O_A1.msc.test\\n  }\\n  remote {\\n   auth = ecdsa-384-sha384\\n   id = ND_O_B1.msc.test\\n   cacerts = ca.pem\\n   revocation = strict\\n  }\\n  children {\\n   protected {\\n    local_ts = 10.100.1.2/32\\n    remote_ts = 10.200.1.2/32\\n    mode = tunnel\\n    reqid = 201\\n    esp_proposals = aes256gcm16-ecp384\\n    rekey_time = 50m\\n    life_time = 1h\\n    start_action = trap\\n    dpd_action = trap\\n    close_action = trap\\n   }\\n  }\\n }\\n}\\n')"
+      ],
+      "started_at": "2026-10-24T03:40:01.100131+00:00",
+      "ended_at": "2026-10-24T03:40:01.206202+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/usr/lib/python3.12/pathlib.py\", line 1049, in write_text\n    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nOSError: [Errno 30] Read-only file system: '/etc/swanctl/swanctl.conf'\n"
+    }
+  ],
+  "error": "{\"id\": \"diversity-0008\", \"command\": [\"docker\", \"exec\", \"ND_O_A1\", \"python3\", \"-c\", \"from pathlib import Path;Path(\\\"/etc/swanctl/swanctl.conf\\\").write_text('connections {\\\\n msc {\\\\n  version = 2\\\\n  local_addrs = 172.20.11.1\\\\n  remote_addrs = 172.20.21.1\\\\n  proposals = aes256-sha384-prfsha384-ecp384\\\\n  reauth_time = 3h\\\\n  rekey_time = 0s\\\\n  over_time = 10m\\\\n  dpd_delay = 10s\\\\n  keyingtries = 0\\\\n  mobike = no\\\\n  local {\\\\n   auth = ecdsa-384-sha384\\\\n   certs = cert.pem\\\\n   id = ND_O_A1.msc.test\\\\n  }\\\\n  remote {\\\\n   auth = ecdsa-384-sha384\\\\n   id = ND_O_B1.msc.test\\\\n   cacerts = ca.pem\\\\n   revocation = strict\\\\n  }\\\\n  children {\\\\n   protected {\\\\n    local_ts = 10.100.1.2/32\\\\n    remote_ts = 10.200.1.2/32\\\\n    mode = tunnel\\\\n    reqid = 201\\\\n    esp_proposals = aes256-sha384-ecp384\\\\n    rekey_time = 50m\\\\n    life_time = 1h\\\\n    start_action = trap\\\\n    dpd_action = trap\\\\n    close_action = trap\\\\n   }\\\\n  }\\\\n }\\\\n}\\\\n')\"], \"started_at\": \"2026-10-24T03:39:59.892991+00:00\", \"ended_at\": \"2026-10-24T03:40:00.009605+00:00\", \"returncode\": 1, \"stdout\": \"\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 1, in <module>\\n  File \\\"/usr/lib/python3.12/pathlib.py\\\", line 1049, in write_text\\n    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:\\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/usr/lib/python3.12/pathlib.py\\\", line 1015, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nOSError: [Errno 30] Read-only file system: '/etc/swanctl/swanctl.conf'\\n\"}",
+  "scope": [
+    "Fresh owned ND profile temporarily selects AES256-CBC/HMAC-SHA384 for IKE/ESP in both native Linux Outers and actual FreeBSD Inners, with P384 key establishment/certificates. Native FRR/OVS stay active.",
+    "Public loaded configurations, effective negotiated SAs and before/after counters must support the alternative; a configured string alone is insufficient.",
+    "Original GCM configurations and useful traffic are restored at completion. Finite behavior does not establish product approval or every CNSA profile clause."
+  ]
+}

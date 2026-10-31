@@ -1,0 +1,606 @@
+{
+  "schema_version": "csfc-authentication-events/v1",
+  "case_ids": [
+    "NET-023-C05"
+  ],
+  "group_ids": [
+    "RG-024",
+    "RG-025",
+    "RG-027",
+    "RG-028"
+  ],
+  "started_at": "2026-10-24T01:55:24.574832+00:00",
+  "ended_at": "2026-10-24T01:55:34.210004+00:00",
+  "authentication": "MKA PSK",
+  "mode": "matching",
+  "public_settings": {
+    "cak_bits": 256,
+    "ckn_hex": "e1b024a34e5bdf20153733b1d40e7699d48a6d985e125a65a228c9420b4c7ce0",
+    "ckn_bits": 256,
+    "mka_priorities": [
+      0,
+      1
+    ],
+    "macsec_cipher_requested": "GCM-AES-256",
+    "replay_window": 0,
+    "confidentiality_offset": 0,
+    "fallback_cak_configured": false
+  },
+  "records": [
+    {
+      "id": "mka-000",
+      "command": [
+        "ip",
+        "netns",
+        "add",
+        "tcv3k-a"
+      ],
+      "started_at": "2026-10-24T01:55:24.575103+00:00",
+      "ended_at": "2026-10-24T01:55:24.579325+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-001",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "started_at": "2026-10-24T01:55:24.579339+00:00",
+      "ended_at": "2026-10-24T01:55:24.593425+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-002",
+      "command": [
+        "ip",
+        "netns",
+        "add",
+        "tcv3k-b"
+      ],
+      "started_at": "2026-10-24T01:55:24.593438+00:00",
+      "ended_at": "2026-10-24T01:55:24.600765+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-003",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "started_at": "2026-10-24T01:55:24.600789+00:00",
+      "ended_at": "2026-10-24T01:55:24.616244+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-004",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "tcv3ka",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "tcv3kb"
+      ],
+      "started_at": "2026-10-24T01:55:24.616257+00:00",
+      "ended_at": "2026-10-24T01:55:24.625064+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-005",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "tcv3ka",
+        "netns",
+        "tcv3k-a"
+      ],
+      "started_at": "2026-10-24T01:55:24.625082+00:00",
+      "ended_at": "2026-10-24T01:55:24.645589+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-006",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ip",
+        "link",
+        "set",
+        "tcv3ka",
+        "name",
+        "eth0"
+      ],
+      "started_at": "2026-10-24T01:55:24.645606+00:00",
+      "ended_at": "2026-10-24T01:55:24.679393+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-007",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ip",
+        "link",
+        "set",
+        "eth0",
+        "up"
+      ],
+      "started_at": "2026-10-24T01:55:24.679414+00:00",
+      "ended_at": "2026-10-24T01:55:24.693775+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-008",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+        "-B",
+        "-D",
+        "macsec_linux",
+        "-i",
+        "eth0",
+        "-c",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer0.conf",
+        "-P",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer0.pid",
+        "-f",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer0.log"
+      ],
+      "started_at": "2026-10-24T01:55:24.694150+00:00",
+      "ended_at": "2026-10-24T01:55:24.725025+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-009",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "tcv3kb",
+        "netns",
+        "tcv3k-b"
+      ],
+      "started_at": "2026-10-24T01:55:24.725201+00:00",
+      "ended_at": "2026-10-24T01:55:24.747067+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-010",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "ip",
+        "link",
+        "set",
+        "tcv3kb",
+        "name",
+        "eth0"
+      ],
+      "started_at": "2026-10-24T01:55:24.747102+00:00",
+      "ended_at": "2026-10-24T01:55:24.776302+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-011",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "ip",
+        "link",
+        "set",
+        "eth0",
+        "up"
+      ],
+      "started_at": "2026-10-24T01:55:24.776324+00:00",
+      "ended_at": "2026-10-24T01:55:24.788980+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-012",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+        "-B",
+        "-D",
+        "macsec_linux",
+        "-i",
+        "eth0",
+        "-c",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer1.conf",
+        "-P",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer1.pid",
+        "-f",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer1.log"
+      ],
+      "started_at": "2026-10-24T01:55:24.789459+00:00",
+      "ended_at": "2026-10-24T01:55:24.825282+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-013",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "wpa_cli",
+        "-p",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/ctrl0",
+        "-i",
+        "eth0",
+        "status"
+      ],
+      "started_at": "2026-10-24T01:55:31.825669+00:00",
+      "ended_at": "2026-10-24T01:55:31.836210+00:00",
+      "returncode": 0,
+      "stdout": "bssid=01:80:c2:00:00:03\nfreq=0\nssid=\nid=0\nmode=station\npairwise_cipher=NONE\ngroup_cipher=NONE\nkey_mgmt=NONE\nwpa_state=COMPLETED\naddress=52:84:9f:dd:d2:a3\nPAE KaY status=Active\nAuthenticated=No\nSecured=Yes\nFailed=No\nActor Priority=0\nKey Server Priority=0\nIs Key Server=No\nNumber of Keys Distributed=1\nNumber of Keys Received=0\nMKA Hello Time=2000\nactor_sci=52:84:9f:dd:d2:a3@1\nkey_server_sci=52:84:9f:dd:d2:a3@1\nparticipant_idx=0\nckn=e1b024a34e5bdf20153733b1d40e7699d48a6d985e125a65a228c9420b4c7ce0\nmi=2873faf012ce3954caf412a6\nmn=4\nactive=Yes\nparticipant=No\nretain=No\nlive_peers=1\npotential_peers=0\nis_key_server=Yes\nis_elected=Yes\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-014",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T01:55:31.836230+00:00",
+      "ended_at": "2026-10-24T01:55:31.845912+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 52849fddd2a30001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          12            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0                6                  0                444\n        0: PN 7, state on, key 2873faf012ce3954caf412a601000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0                6\n    RXSC: aa560f6697760001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0               444               0             0        6             0          0              0                0              0\n        0: PN 7, state on, key 2873faf012ce3954caf412a601000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                  6             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-015",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ip",
+        "-j",
+        "-d",
+        "link"
+      ],
+      "started_at": "2026-10-24T01:55:31.845932+00:00",
+      "ended_at": "2026-10-24T01:55:31.854920+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":5,\"link\":\"eth0\",\"ifname\":\"macsec0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1468,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"52:84:9f:dd:d2:a3\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"macsec\",\"info_data\":{\"sci\":\"52849fddd2a30001\",\"protect\":true,\"cipher_suite\":\"GCM-AES-256\",\"icv_len\":16,\"encoding_sa\":0,\"validation\":\"strict\",\"offload\":\"off\",\"encrypt\":true,\"inc_sci\":true,\"es\":false,\"scb\":false,\"replay_protect\":true,\"window\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":2795,\"link_index\":2794,\"ifname\":\"eth0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"52:84:9f:dd:d2:a3\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":1,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-016",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ip",
+        "addr",
+        "add",
+        "10.91.0.1/30",
+        "dev",
+        "macsec0"
+      ],
+      "started_at": "2026-10-24T01:55:31.855071+00:00",
+      "ended_at": "2026-10-24T01:55:31.863191+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-017",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ip",
+        "link",
+        "set",
+        "macsec0",
+        "up"
+      ],
+      "started_at": "2026-10-24T01:55:31.863204+00:00",
+      "ended_at": "2026-10-24T01:55:31.873437+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-018",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "wpa_cli",
+        "-p",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/ctrl1",
+        "-i",
+        "eth0",
+        "status"
+      ],
+      "started_at": "2026-10-24T01:55:31.873500+00:00",
+      "ended_at": "2026-10-24T01:55:31.882454+00:00",
+      "returncode": 0,
+      "stdout": "bssid=01:80:c2:00:00:03\nfreq=0\nssid=\nid=0\nmode=station\npairwise_cipher=NONE\ngroup_cipher=NONE\nkey_mgmt=NONE\nwpa_state=COMPLETED\naddress=aa:56:0f:66:97:76\nPAE KaY status=Active\nAuthenticated=No\nSecured=Yes\nFailed=No\nActor Priority=1\nKey Server Priority=0\nIs Key Server=No\nNumber of Keys Distributed=0\nNumber of Keys Received=1\nMKA Hello Time=2000\nactor_sci=aa:56:0f:66:97:76@1\nkey_server_sci=52:84:9f:dd:d2:a3@1\nparticipant_idx=0\nckn=e1b024a34e5bdf20153733b1d40e7699d48a6d985e125a65a228c9420b4c7ce0\nmi=658affe2f27fea2ecf51118b\nmn=6\nactive=Yes\nparticipant=No\nretain=No\nlive_peers=1\npotential_peers=0\nis_key_server=No\nis_elected=Yes\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-019",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T01:55:31.882466+00:00",
+      "ended_at": "2026-10-24T01:55:31.892033+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: aa560f6697760001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0           9            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0                6                  0                444\n        0: PN 7, state on, key 2873faf012ce3954caf412a601000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0                6\n    RXSC: 52849fddd2a30001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0               444               0             0        6             0          0              0                0              0\n        0: PN 7, state on, key 2873faf012ce3954caf412a601000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                  6             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-020",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "ip",
+        "-j",
+        "-d",
+        "link"
+      ],
+      "started_at": "2026-10-24T01:55:31.892063+00:00",
+      "ended_at": "2026-10-24T01:55:31.902017+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":5,\"link\":\"eth0\",\"ifname\":\"macsec0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1468,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"aa:56:0f:66:97:76\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"macsec\",\"info_data\":{\"sci\":\"aa560f6697760001\",\"protect\":true,\"cipher_suite\":\"GCM-AES-256\",\"icv_len\":16,\"encoding_sa\":0,\"validation\":\"strict\",\"offload\":\"off\",\"encrypt\":true,\"inc_sci\":true,\"es\":false,\"scb\":false,\"replay_protect\":true,\"window\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":2794,\"link_index\":2795,\"ifname\":\"eth0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"aa:56:0f:66:97:76\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":1,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-021",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "ip",
+        "addr",
+        "add",
+        "10.91.0.2/30",
+        "dev",
+        "macsec0"
+      ],
+      "started_at": "2026-10-24T01:55:31.902268+00:00",
+      "ended_at": "2026-10-24T01:55:31.911550+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-022",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "ip",
+        "link",
+        "set",
+        "macsec0",
+        "up"
+      ],
+      "started_at": "2026-10-24T01:55:31.911574+00:00",
+      "ended_at": "2026-10-24T01:55:31.920997+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-023",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.91.0.2"
+      ],
+      "started_at": "2026-10-24T01:55:31.921023+00:00",
+      "ended_at": "2026-10-24T01:55:33.973526+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.91.0.2 (10.91.0.2) 56(84) bytes of data.\n64 bytes from 10.91.0.2: icmp_seq=1 ttl=64 time=1.56 ms\n64 bytes from 10.91.0.2: icmp_seq=2 ttl=64 time=0.060 ms\n64 bytes from 10.91.0.2: icmp_seq=3 ttl=64 time=0.073 ms\n\n--- 10.91.0.2 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2037ms\nrtt min/avg/max/mdev = 0.060/0.564/1.561/0.704 ms\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-024",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-a",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T01:55:33.973563+00:00",
+      "ended_at": "2026-10-24T01:55:33.985024+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 52849fddd2a30001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          13            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0               10                  0                732\n        0: PN 11, state on, key 2873faf012ce3954caf412a601000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0               10\n    RXSC: aa560f6697760001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0               732               0             0       10             0          0              0                0              0\n        0: PN 11, state on, key 2873faf012ce3954caf412a601000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                 10             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-025",
+      "command": [
+        "cat",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer0.log"
+      ],
+      "started_at": "2026-10-24T01:55:33.985127+00:00",
+      "ended_at": "2026-10-24T01:55:33.987514+00:00",
+      "returncode": 0,
+      "stdout": "Successfully initialized wpa_supplicant\nPKCS11 provider not present\neth0: Associated with 01:80:c2:00:00:03\neth0: CTRL-EVENT-CONNECTED - Connection to 01:80:c2:00:00:03 completed [id=0 id_str=]\neth0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-026",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "tcv3k-b",
+        "ip",
+        "-s",
+        "macsec",
+        "show"
+      ],
+      "started_at": "2026-10-24T01:55:33.987537+00:00",
+      "ended_at": "2026-10-24T01:55:33.996442+00:00",
+      "returncode": 0,
+      "stdout": "5: macsec0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: aa560f6697760001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0          10            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0               10                  0                732\n        0: PN 11, state on, key 2873faf012ce3954caf412a601000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0               10\n    RXSC: 52849fddd2a30001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0               732               0             0       10             0          0              0                0              0\n        0: PN 11, state on, key 2873faf012ce3954caf412a601000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                 10             0              0                0              0\n    offload: off \n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-027",
+      "command": [
+        "cat",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer1.log"
+      ],
+      "started_at": "2026-10-24T01:55:33.996543+00:00",
+      "ended_at": "2026-10-24T01:55:33.999647+00:00",
+      "returncode": 0,
+      "stdout": "Successfully initialized wpa_supplicant\nPKCS11 provider not present\neth0: Associated with 01:80:c2:00:00:03\neth0: CTRL-EVENT-CONNECTED - Connection to 01:80:c2:00:00:03 completed [id=0 id_str=]\neth0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-028",
+      "command": [
+        "cat",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer0.log"
+      ],
+      "started_at": "2026-10-24T01:55:33.999763+00:00",
+      "ended_at": "2026-10-24T01:55:34.002899+00:00",
+      "returncode": 0,
+      "stdout": "Successfully initialized wpa_supplicant\nPKCS11 provider not present\neth0: Associated with 01:80:c2:00:00:03\neth0: CTRL-EVENT-CONNECTED - Connection to 01:80:c2:00:00:03 completed [id=0 id_str=]\neth0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-029",
+      "command": [
+        "cat",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/mka-v4-matching/peer1.log"
+      ],
+      "started_at": "2026-10-24T01:55:34.003017+00:00",
+      "ended_at": "2026-10-24T01:55:34.005543+00:00",
+      "returncode": 0,
+      "stdout": "Successfully initialized wpa_supplicant\nPKCS11 provider not present\neth0: Associated with 01:80:c2:00:00:03\neth0: CTRL-EVENT-CONNECTED - Connection to 01:80:c2:00:00:03 completed [id=0 id_str=]\neth0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mka-030",
+      "command": [
+        "ip",
+        "netns",
+        "delete",
+        "tcv3k-a"
+      ],
+      "started_at": "2026-10-24T01:55:34.205662+00:00",
+      "ended_at": "2026-10-24T01:55:34.208059+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mka-031",
+      "command": [
+        "ip",
+        "netns",
+        "delete",
+        "tcv3k-b"
+      ],
+      "started_at": "2026-10-24T01:55:34.208074+00:00",
+      "ended_at": "2026-10-24T01:55:34.209989+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Test CAK generated by Python secrets, with no NSA KGS approval or physically secure provisioning evidence.",
+    "Standalone peer-authentication experiment; nested layering is established in separate layer-pairing runs."
+  ]
+}

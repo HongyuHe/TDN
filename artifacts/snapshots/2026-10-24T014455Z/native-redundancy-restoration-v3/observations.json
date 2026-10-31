@@ -1,0 +1,450 @@
+{
+  "at": "2026-10-24T02:51:35.726193+00:00",
+  "records": [
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "ip",
+        "route"
+      ],
+      "started_at": "2026-10-24T02:51:25.067756+00:00",
+      "ended_at": "2026-10-24T02:51:25.154200+00:00",
+      "returncode": 0,
+      "stdout": "10.100.1.2 via 10.110.1.254 dev gray proto static \n10.100.2.2 via 10.110.2.254 dev gray2 proto static \n10.100.3.2 via 10.110.3.254 dev gray3 proto static \n10.100.4.2 via 10.110.4.254 dev gray4 proto static \n10.110.1.0/24 dev gray proto kernel scope link src 10.110.1.1 \n10.110.2.0/24 dev gray2 proto kernel scope link src 10.110.2.1 \n10.110.3.0/24 dev gray3 proto kernel scope link src 10.110.3.1 \n10.110.4.0/24 dev gray4 proto kernel scope link src 10.110.4.1 \n172.20.11.0/30 dev black proto kernel scope link src 172.20.11.1 \n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "ip",
+        "route",
+        "replace",
+        "10.200.0.0/16",
+        "via",
+        "172.20.11.2"
+      ],
+      "started_at": "2026-10-24T02:51:25.154223+00:00",
+      "ended_at": "2026-10-24T02:51:25.235128+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "ip",
+        "route",
+        "replace",
+        "172.20.21.1/32",
+        "via",
+        "172.20.11.2"
+      ],
+      "started_at": "2026-10-24T02:51:25.235152+00:00",
+      "ended_at": "2026-10-24T02:51:25.313066+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "ip",
+        "route",
+        "replace",
+        "10.100.1.2/32",
+        "via",
+        "10.110.1.254"
+      ],
+      "started_at": "2026-10-24T02:51:25.313099+00:00",
+      "ended_at": "2026-10-24T02:51:25.413346+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "ip",
+        "route",
+        "replace",
+        "10.100.2.2/32",
+        "via",
+        "10.110.2.254"
+      ],
+      "started_at": "2026-10-24T02:51:25.413373+00:00",
+      "ended_at": "2026-10-24T02:51:25.503319+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "ip",
+        "route",
+        "replace",
+        "10.100.3.2/32",
+        "via",
+        "10.110.3.254"
+      ],
+      "started_at": "2026-10-24T02:51:25.503352+00:00",
+      "ended_at": "2026-10-24T02:51:25.595114+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "ip",
+        "route",
+        "replace",
+        "10.100.4.2/32",
+        "via",
+        "10.110.4.254"
+      ],
+      "started_at": "2026-10-24T02:51:25.595139+00:00",
+      "ended_at": "2026-10-24T02:51:25.691343+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "ip",
+        "route"
+      ],
+      "started_at": "2026-10-24T02:51:25.691367+00:00",
+      "ended_at": "2026-10-24T02:51:25.778536+00:00",
+      "returncode": 0,
+      "stdout": "10.100.1.2 via 10.110.1.254 dev gray \n10.100.2.2 via 10.110.2.254 dev gray2 \n10.100.3.2 via 10.110.3.254 dev gray3 \n10.100.4.2 via 10.110.4.254 dev gray4 \n10.110.1.0/24 dev gray proto kernel scope link src 10.110.1.1 \n10.110.2.0/24 dev gray2 proto kernel scope link src 10.110.2.1 \n10.110.3.0/24 dev gray3 proto kernel scope link src 10.110.3.1 \n10.110.4.0/24 dev gray4 proto kernel scope link src 10.110.4.1 \n10.200.0.0/16 via 172.20.11.2 dev black \n172.20.11.0/30 dev black proto kernel scope link src 172.20.11.1 \n172.20.21.1 via 172.20.11.2 dev black \n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "ip",
+        "route"
+      ],
+      "started_at": "2026-10-24T02:51:25.778581+00:00",
+      "ended_at": "2026-10-24T02:51:25.861517+00:00",
+      "returncode": 0,
+      "stdout": "10.200.1.2 via 10.210.1.254 dev gray proto static \n10.200.2.2 via 10.210.2.254 dev gray2 proto static \n10.200.3.2 via 10.210.3.254 dev gray3 proto static \n10.200.4.2 via 10.210.4.254 dev gray4 proto static \n10.210.1.0/24 dev gray proto kernel scope link src 10.210.1.1 \n10.210.2.0/24 dev gray2 proto kernel scope link src 10.210.2.1 \n10.210.3.0/24 dev gray3 proto kernel scope link src 10.210.3.1 \n10.210.4.0/24 dev gray4 proto kernel scope link src 10.210.4.1 \n172.20.21.0/30 dev black proto kernel scope link src 172.20.21.1 \n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "ip",
+        "route",
+        "replace",
+        "10.100.0.0/16",
+        "via",
+        "172.20.21.2"
+      ],
+      "started_at": "2026-10-24T02:51:25.861552+00:00",
+      "ended_at": "2026-10-24T02:51:25.953139+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "ip",
+        "route",
+        "replace",
+        "172.20.11.1/32",
+        "via",
+        "172.20.21.2"
+      ],
+      "started_at": "2026-10-24T02:51:25.953161+00:00",
+      "ended_at": "2026-10-24T02:51:26.036357+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "ip",
+        "route",
+        "replace",
+        "10.200.1.2/32",
+        "via",
+        "10.210.1.254"
+      ],
+      "started_at": "2026-10-24T02:51:26.036380+00:00",
+      "ended_at": "2026-10-24T02:51:26.117629+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "ip",
+        "route",
+        "replace",
+        "10.200.2.2/32",
+        "via",
+        "10.210.2.254"
+      ],
+      "started_at": "2026-10-24T02:51:26.117647+00:00",
+      "ended_at": "2026-10-24T02:51:26.200995+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "ip",
+        "route",
+        "replace",
+        "10.200.3.2/32",
+        "via",
+        "10.210.3.254"
+      ],
+      "started_at": "2026-10-24T02:51:26.201012+00:00",
+      "ended_at": "2026-10-24T02:51:26.286794+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "ip",
+        "route",
+        "replace",
+        "10.200.4.2/32",
+        "via",
+        "10.210.4.254"
+      ],
+      "started_at": "2026-10-24T02:51:26.286823+00:00",
+      "ended_at": "2026-10-24T02:51:26.374891+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "ip",
+        "route"
+      ],
+      "started_at": "2026-10-24T02:51:26.374921+00:00",
+      "ended_at": "2026-10-24T02:51:26.463199+00:00",
+      "returncode": 0,
+      "stdout": "10.100.0.0/16 via 172.20.21.2 dev black \n10.200.1.2 via 10.210.1.254 dev gray \n10.200.2.2 via 10.210.2.254 dev gray2 \n10.200.3.2 via 10.210.3.254 dev gray3 \n10.200.4.2 via 10.210.4.254 dev gray4 \n10.210.1.0/24 dev gray proto kernel scope link src 10.210.1.1 \n10.210.2.0/24 dev gray2 proto kernel scope link src 10.210.2.1 \n10.210.3.0/24 dev gray3 proto kernel scope link src 10.210.3.1 \n10.210.4.0/24 dev gray4 proto kernel scope link src 10.210.4.1 \n172.20.11.1 via 172.20.21.2 dev black \n172.20.21.0/30 dev black proto kernel scope link src 172.20.21.1 \n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_R_A1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.1.10"
+      ],
+      "started_at": "2026-10-24T02:51:26.463252+00:00",
+      "ended_at": "2026-10-24T02:51:28.594816+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.1.10 (10.2.1.10) 56(84) bytes of data.\n64 bytes from 10.2.1.10: icmp_seq=1 ttl=62 time=2.31 ms\n64 bytes from 10.2.1.10: icmp_seq=2 ttl=62 time=0.410 ms\n64 bytes from 10.2.1.10: icmp_seq=3 ttl=62 time=0.408 ms\n\n--- 10.2.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2035ms\nrtt min/avg/max/mdev = 0.408/1.044/2.314/0.898 ms\n",
+      "stderr": "",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_R_A2",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.2.10"
+      ],
+      "started_at": "2026-10-24T02:51:28.594875+00:00",
+      "ended_at": "2026-10-24T02:51:30.707230+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.2.10 (10.2.2.10) 56(84) bytes of data.\n64 bytes from 10.2.2.10: icmp_seq=1 ttl=62 time=2.26 ms\n64 bytes from 10.2.2.10: icmp_seq=2 ttl=62 time=0.308 ms\n64 bytes from 10.2.2.10: icmp_seq=3 ttl=62 time=0.364 ms\n\n--- 10.2.2.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2023ms\nrtt min/avg/max/mdev = 0.308/0.976/2.258/0.906 ms\n",
+      "stderr": "",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_R_A3",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.3.10"
+      ],
+      "started_at": "2026-10-24T02:51:30.707280+00:00",
+      "ended_at": "2026-10-24T02:51:32.826226+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.3.10 (10.2.3.10) 56(84) bytes of data.\n64 bytes from 10.2.3.10: icmp_seq=1 ttl=62 time=0.399 ms\n64 bytes from 10.2.3.10: icmp_seq=2 ttl=62 time=0.352 ms\n64 bytes from 10.2.3.10: icmp_seq=3 ttl=62 time=0.375 ms\n\n--- 10.2.3.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2027ms\nrtt min/avg/max/mdev = 0.352/0.375/0.399/0.019 ms\n",
+      "stderr": "",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_R_A4",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.4.10"
+      ],
+      "started_at": "2026-10-24T02:51:32.826288+00:00",
+      "ended_at": "2026-10-24T02:51:34.994816+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.4.10 (10.2.4.10) 56(84) bytes of data.\n64 bytes from 10.2.4.10: icmp_seq=1 ttl=62 time=0.451 ms\n64 bytes from 10.2.4.10: icmp_seq=2 ttl=62 time=0.386 ms\n64 bytes from 10.2.4.10: icmp_seq=3 ttl=62 time=0.306 ms\n\n--- 10.2.4.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2085ms\nrtt min/avg/max/mdev = 0.306/0.381/0.451/0.059 ms\n",
+      "stderr": "",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:51:34.994890+00:00",
+      "ended_at": "2026-10-24T02:51:35.095786+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, 8ed6b244343c1696_i* f6825dc4d0d12ebe_r\n  local  'NX_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'NX_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 167s ago, reauth in 10449s\n  queued:  CHILD_CREATE\n  active:  IKE_DPD\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 167s ago, rekeying in 2293s, expires in 3433s\n    in  cc06f0ed,   7181 bytes,    40 packets,     5s ago\n    out c7693e78,   7348 bytes,    41 packets,     5s ago\n    local  10.100.0.0/16\n    remote 10.200.0.0/16\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_A2",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:51:35.095815+00:00",
+      "ended_at": "2026-10-24T02:51:35.195447+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, 1e9d552269397669_i* b218523d94cac20b_r\n  local  'NX_O_A2.msc.test' @ 172.20.12.1[500]\n  remote 'NX_O_B2.msc.test' @ 172.20.22.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 167s ago, reauth in 10632s\n  protected: #2, reqid 202, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 167s ago, rekeying in 2363s, expires in 3433s\n    in  c23522a4,  12017 bytes,    85 packets,     1s ago\n    out cd44638b,  12102 bytes,    85 packets,     1s ago\n    local  10.100.0.0/16\n    remote 10.200.0.0/16\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:51:35.195472+00:00",
+      "ended_at": "2026-10-24T02:51:35.294083+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, 8ed6b244343c1696_i f6825dc4d0d12ebe_r*\n  local  'NX_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'NX_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 167s ago, reauth in 10449s\n  active:  IKE_DPD\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 167s ago, rekeying in 2293s, expires in 3433s\n    in  c7693e78,   7348 bytes,    41 packets,     5s ago\n    out cc06f0ed,   7181 bytes,    40 packets,     5s ago\n    local  10.200.0.0/16\n    remote 10.100.0.0/16\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_O_B2",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:51:35.294116+00:00",
+      "ended_at": "2026-10-24T02:51:35.394064+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, 1e9d552269397669_i b218523d94cac20b_r*\n  local  'NX_O_B2.msc.test' @ 172.20.22.1[500]\n  remote 'NX_O_A2.msc.test' @ 172.20.12.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 167s ago, reauth in 10449s\n  protected: #2, reqid 202, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 167s ago, rekeying in 2293s, expires in 3433s\n    in  cd44638b,  12102 bytes,    85 packets,     1s ago\n    out c23522a4,  12017 bytes,    85 packets,     1s ago\n    local  10.200.0.0/16\n    remote 10.100.0.0/16\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_GR_A",
+        "vtysh",
+        "-c",
+        "show ip route json"
+      ],
+      "started_at": "2026-10-24T02:51:35.394091+00:00",
+      "ended_at": "2026-10-24T02:51:35.559997+00:00",
+      "returncode": 0,
+      "stdout": "{\"10.100.1.2/32\":[{\"prefix\":\"10.100.1.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":32,\"installedNexthopGroupId\":32,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.120.1.254\",\"afi\":\"ipv4\",\"interfaceIndex\":3419,\"interfaceName\":\"g1\",\"active\":true,\"weight\":1}]}],\"10.100.2.2/32\":[{\"prefix\":\"10.100.2.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":28,\"installedNexthopGroupId\":28,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.120.2.254\",\"afi\":\"ipv4\",\"interfaceIndex\":3421,\"interfaceName\":\"g2\",\"active\":true,\"weight\":1}]}],\"10.100.3.2/32\":[{\"prefix\":\"10.100.3.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":26,\"installedNexthopGroupId\":26,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.120.3.254\",\"afi\":\"ipv4\",\"interfaceIndex\":3423,\"interfaceName\":\"g3\",\"active\":true,\"weight\":1}]}],\"10.100.4.2/32\":[{\"prefix\":\"10.100.4.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":29,\"installedNexthopGroupId\":29,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.120.4.254\",\"afi\":\"ipv4\",\"interfaceIndex\":3441,\"interfaceName\":\"g4\",\"active\":true,\"weight\":1}]}],\"10.110.1.0/24\":[{\"prefix\":\"10.110.1.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":9,\"installedNexthopGroupId\":9,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3350,\"interfaceName\":\"o1\",\"active\":true}]}],\"10.110.1.254/32\":[{\"prefix\":\"10.110.1.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":9,\"installedNexthopGroupId\":9,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3350,\"interfaceName\":\"o1\",\"active\":true}]}],\"10.110.2.0/24\":[{\"prefix\":\"10.110.2.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":10,\"installedNexthopGroupId\":10,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3362,\"interfaceName\":\"o2\",\"active\":true}]}],\"10.110.2.254/32\":[{\"prefix\":\"10.110.2.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":10,\"installedNexthopGroupId\":10,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3362,\"interfaceName\":\"o2\",\"active\":true}]}],\"10.110.3.0/24\":[{\"prefix\":\"10.110.3.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":11,\"installedNexthopGroupId\":11,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3390,\"interfaceName\":\"o3\",\"active\":true}]}],\"10.110.3.254/32\":[{\"prefix\":\"10.110.3.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":11,\"installedNexthopGroupId\":11,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3390,\"interfaceName\":\"o3\",\"active\":true}]}],\"10.110.4.0/24\":[{\"prefix\":\"10.110.4.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":15,\"installedNexthopGroupId\":15,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3438,\"interfaceName\":\"o4\",\"active\":true}]}],\"10.110.4.254/32\":[{\"prefix\":\"10.110.4.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":15,\"installedNexthopGroupId\":15,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3438,\"interfaceName\":\"o4\",\"active\":true}]}],\"10.120.1.0/24\":[{\"prefix\":\"10.120.1.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":12,\"installedNexthopGroupId\":12,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3419,\"interfaceName\":\"g1\",\"active\":true}]}],\"10.120.1.1/32\":[{\"prefix\":\"10.120.1.1/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":12,\"installedNexthopGroupId\":12,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3419,\"interfaceName\":\"g1\",\"active\":true}]}],\"10.120.2.0/24\":[{\"prefix\":\"10.120.2.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":13,\"installedNexthopGroupId\":13,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3421,\"interfaceName\":\"g2\",\"active\":true}]}],\"10.120.2.1/32\":[{\"prefix\":\"10.120.2.1/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":13,\"installedNexthopGroupId\":13,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3421,\"interfaceName\":\"g2\",\"active\":true}]}],\"10.120.3.0/24\":[{\"prefix\":\"10.120.3.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":14,\"installedNexthopGroupId\":14,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3423,\"interfaceName\":\"g3\",\"active\":true}]}],\"10.120.3.1/32\":[{\"prefix\":\"10.120.3.1/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":14,\"installedNexthopGroupId\":14,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3423,\"interfaceName\":\"g3\",\"active\":true}]}],\"10.120.4.0/24\":[{\"prefix\":\"10.120.4.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":16,\"installedNexthopGroupId\":16,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3441,\"interfaceName\":\"g4\",\"active\":true}]}],\"10.120.4.1/32\":[{\"prefix\":\"10.120.4.1/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":16,\"installedNexthopGroupId\":16,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3441,\"interfaceName\":\"g4\",\"active\":true}]}],\"10.200.1.2/32\":[{\"prefix\":\"10.200.1.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":31,\"installedNexthopGroupId\":31,\"uptime\":\"00:01:43\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.110.1.1\",\"afi\":\"ipv4\",\"interfaceIndex\":3350,\"interfaceName\":\"o1\",\"active\":true,\"weight\":1}]}],\"10.200.2.2/32\":[{\"prefix\":\"10.200.2.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":27,\"installedNexthopGroupId\":27,\"uptime\":\"00:01:43\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.110.2.1\",\"afi\":\"ipv4\",\"interfaceIndex\":3362,\"interfaceName\":\"o2\",\"active\":true,\"weight\":1}]}],\"10.200.3.2/32\":[{\"prefix\":\"10.200.3.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":25,\"installedNexthopGroupId\":25,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.110.3.3\",\"afi\":\"ipv4\",\"interfaceIndex\":3390,\"interfaceName\":\"o3\",\"active\":true,\"weight\":1}]}],\"10.200.4.2/32\":[{\"prefix\":\"10.200.4.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":30,\"installedNexthopGroupId\":30,\"uptime\":\"00:03:01\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.110.4.3\",\"afi\":\"ipv4\",\"interfaceIndex\":3438,\"interfaceName\":\"o4\",\"active\":true,\"weight\":1}]}]}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "exec",
+        "NX_GR_B",
+        "vtysh",
+        "-c",
+        "show ip route json"
+      ],
+      "started_at": "2026-10-24T02:51:35.560047+00:00",
+      "ended_at": "2026-10-24T02:51:35.726126+00:00",
+      "returncode": 0,
+      "stdout": "{\"10.100.1.2/32\":[{\"prefix\":\"10.100.1.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":31,\"installedNexthopGroupId\":31,\"uptime\":\"00:01:44\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.210.1.1\",\"afi\":\"ipv4\",\"interfaceIndex\":3370,\"interfaceName\":\"o1\",\"active\":true,\"weight\":1}]}],\"10.100.2.2/32\":[{\"prefix\":\"10.100.2.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":27,\"installedNexthopGroupId\":27,\"uptime\":\"00:01:44\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.210.2.1\",\"afi\":\"ipv4\",\"interfaceIndex\":3382,\"interfaceName\":\"o2\",\"active\":true,\"weight\":1}]}],\"10.100.3.2/32\":[{\"prefix\":\"10.100.3.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":25,\"installedNexthopGroupId\":25,\"uptime\":\"00:02:57\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.210.3.3\",\"afi\":\"ipv4\",\"interfaceIndex\":3398,\"interfaceName\":\"o3\",\"active\":true,\"weight\":1}]}],\"10.100.4.2/32\":[{\"prefix\":\"10.100.4.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":30,\"installedNexthopGroupId\":30,\"uptime\":\"00:02:57\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.210.4.3\",\"afi\":\"ipv4\",\"interfaceIndex\":3450,\"interfaceName\":\"o4\",\"active\":true,\"weight\":1}]}],\"10.200.1.2/32\":[{\"prefix\":\"10.200.1.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":32,\"installedNexthopGroupId\":32,\"uptime\":\"00:02:57\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.220.1.254\",\"afi\":\"ipv4\",\"interfaceIndex\":3425,\"interfaceName\":\"g1\",\"active\":true,\"weight\":1}]}],\"10.200.2.2/32\":[{\"prefix\":\"10.200.2.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":28,\"installedNexthopGroupId\":28,\"uptime\":\"00:02:57\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.220.2.254\",\"afi\":\"ipv4\",\"interfaceIndex\":3427,\"interfaceName\":\"g2\",\"active\":true,\"weight\":1}]}],\"10.200.3.2/32\":[{\"prefix\":\"10.200.3.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":26,\"installedNexthopGroupId\":26,\"uptime\":\"00:02:57\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.220.3.254\",\"afi\":\"ipv4\",\"interfaceIndex\":3429,\"interfaceName\":\"g3\",\"active\":true,\"weight\":1}]}],\"10.200.4.2/32\":[{\"prefix\":\"10.200.4.2/32\",\"prefixLen\":32,\"protocol\":\"static\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":1,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":73,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":29,\"installedNexthopGroupId\":29,\"uptime\":\"00:02:57\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"ip\":\"10.220.4.254\",\"afi\":\"ipv4\",\"interfaceIndex\":3453,\"interfaceName\":\"g4\",\"active\":true,\"weight\":1}]}],\"10.210.1.0/24\":[{\"prefix\":\"10.210.1.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":9,\"installedNexthopGroupId\":9,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3370,\"interfaceName\":\"o1\",\"active\":true}]}],\"10.210.1.254/32\":[{\"prefix\":\"10.210.1.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":9,\"installedNexthopGroupId\":9,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3370,\"interfaceName\":\"o1\",\"active\":true}]}],\"10.210.2.0/24\":[{\"prefix\":\"10.210.2.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":10,\"installedNexthopGroupId\":10,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3382,\"interfaceName\":\"o2\",\"active\":true}]}],\"10.210.2.254/32\":[{\"prefix\":\"10.210.2.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":10,\"installedNexthopGroupId\":10,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3382,\"interfaceName\":\"o2\",\"active\":true}]}],\"10.210.3.0/24\":[{\"prefix\":\"10.210.3.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":11,\"installedNexthopGroupId\":11,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3398,\"interfaceName\":\"o3\",\"active\":true}]}],\"10.210.3.254/32\":[{\"prefix\":\"10.210.3.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":11,\"installedNexthopGroupId\":11,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3398,\"interfaceName\":\"o3\",\"active\":true}]}],\"10.210.4.0/24\":[{\"prefix\":\"10.210.4.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":15,\"installedNexthopGroupId\":15,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3450,\"interfaceName\":\"o4\",\"active\":true}]}],\"10.210.4.254/32\":[{\"prefix\":\"10.210.4.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":15,\"installedNexthopGroupId\":15,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3450,\"interfaceName\":\"o4\",\"active\":true}]}],\"10.220.1.0/24\":[{\"prefix\":\"10.220.1.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":12,\"installedNexthopGroupId\":12,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3425,\"interfaceName\":\"g1\",\"active\":true}]}],\"10.220.1.1/32\":[{\"prefix\":\"10.220.1.1/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":12,\"installedNexthopGroupId\":12,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3425,\"interfaceName\":\"g1\",\"active\":true}]}],\"10.220.2.0/24\":[{\"prefix\":\"10.220.2.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":13,\"installedNexthopGroupId\":13,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3427,\"interfaceName\":\"g2\",\"active\":true}]}],\"10.220.2.1/32\":[{\"prefix\":\"10.220.2.1/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":13,\"installedNexthopGroupId\":13,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3427,\"interfaceName\":\"g2\",\"active\":true}]}],\"10.220.3.0/24\":[{\"prefix\":\"10.220.3.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":14,\"installedNexthopGroupId\":14,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3429,\"interfaceName\":\"g3\",\"active\":true}]}],\"10.220.3.1/32\":[{\"prefix\":\"10.220.3.1/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":14,\"installedNexthopGroupId\":14,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3429,\"interfaceName\":\"g3\",\"active\":true}]}],\"10.220.4.0/24\":[{\"prefix\":\"10.220.4.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":16,\"installedNexthopGroupId\":16,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3453,\"interfaceName\":\"g4\",\"active\":true}]}],\"10.220.4.1/32\":[{\"prefix\":\"10.220.4.1/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":16,\"installedNexthopGroupId\":16,\"uptime\":\"00:02:58\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":3453,\"interfaceName\":\"g4\",\"active\":true}]}]}\n",
+      "stderr": ""
+    }
+  ],
+  "repair": "Administrative link down removed Outer static routes. Restore the exact original owned-profile routes after link up, before probing. First failed restoration and all load/failure/manual-failover probes remain preserved in native-redundancy-events-v3.",
+  "runtime_backend": "native-FRR-OVS",
+  "all_restored": true
+}

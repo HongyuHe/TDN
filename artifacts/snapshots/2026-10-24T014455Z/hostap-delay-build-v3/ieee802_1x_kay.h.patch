@@ -1,0 +1,12 @@
+--- a/src/pae/ieee802_1x_kay.h
++++ b/src/pae/ieee802_1x_kay.h
+@@ -95,6 +95,9 @@
+ struct transmit_sa {
+ 	bool in_use; /* bool inUse (read only) */
+ 	u32 next_pn; /* PN nextPN (read only) */
++	u32 evidence_delay_pn[8];
++	struct os_reltime evidence_delay_time[8];
++	u8 evidence_delay_next;
+ 	struct os_time created_time; /* Time createdTime */
+ 
+ 	bool enable_transmit; /* bool EnableTransmit */

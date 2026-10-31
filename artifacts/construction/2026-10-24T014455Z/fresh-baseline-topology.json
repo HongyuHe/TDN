@@ -1,0 +1,1446 @@
+{
+  "gray_connection_paths": [
+    [
+      5,
+      4,
+      1
+    ],
+    [
+      10,
+      9,
+      1
+    ],
+    [
+      16,
+      15,
+      12
+    ],
+    [
+      21,
+      20,
+      12
+    ]
+  ],
+  "native_runtime": {
+    "frr_associations": [
+      {
+        "device": "NB_BLACK",
+        "forwarding_pid": 789274,
+        "control_pid": 795024,
+        "namespace_identity": "net:[4026561731]",
+        "observation_ids": [
+          "obs-00083",
+          "obs-00084"
+        ]
+      },
+      {
+        "device": "NB_GF_A",
+        "forwarding_pid": 790020,
+        "control_pid": 795319,
+        "namespace_identity": "net:[4026561809]",
+        "observation_ids": [
+          "obs-00102",
+          "obs-00103"
+        ]
+      },
+      {
+        "device": "NB_OF_A1",
+        "forwarding_pid": 790554,
+        "control_pid": 796204,
+        "namespace_identity": "net:[4026562199]",
+        "observation_ids": [
+          "obs-00186",
+          "obs-00187"
+        ]
+      },
+      {
+        "device": "NB_OF_A2",
+        "forwarding_pid": 791865,
+        "control_pid": 797044,
+        "namespace_identity": "net:[4026562589]",
+        "observation_ids": [
+          "obs-00272",
+          "obs-00273"
+        ]
+      },
+      {
+        "device": "NB_GF_B",
+        "forwarding_pid": 791992,
+        "control_pid": 797306,
+        "namespace_identity": "net:[4026562667]",
+        "observation_ids": [
+          "obs-00291",
+          "obs-00292"
+        ]
+      },
+      {
+        "device": "NB_OF_B1",
+        "forwarding_pid": 792349,
+        "control_pid": 798138,
+        "namespace_identity": "net:[4026563057]",
+        "observation_ids": [
+          "obs-00375",
+          "obs-00376"
+        ]
+      },
+      {
+        "device": "NB_OF_B2",
+        "forwarding_pid": 792670,
+        "control_pid": 798975,
+        "namespace_identity": "net:[4026563447]",
+        "observation_ids": [
+          "obs-00461",
+          "obs-00462"
+        ]
+      }
+    ],
+    "ovs_switches": [
+      {
+        "device": "NB_G_A1",
+        "bridges": 1,
+        "ports": 4,
+        "interfaces": 4,
+        "observation_ids": [
+          "obs-00149",
+          "obs-00150",
+          "obs-00151",
+          "obs-00152",
+          "obs-00153",
+          "obs-00154",
+          "obs-00155"
+        ]
+      },
+      {
+        "device": "NB_G_A2",
+        "bridges": 1,
+        "ports": 4,
+        "interfaces": 4,
+        "observation_ids": [
+          "obs-00235",
+          "obs-00236",
+          "obs-00237",
+          "obs-00238",
+          "obs-00239",
+          "obs-00240",
+          "obs-00241"
+        ]
+      },
+      {
+        "device": "NB_G_B1",
+        "bridges": 1,
+        "ports": 4,
+        "interfaces": 4,
+        "observation_ids": [
+          "obs-00338",
+          "obs-00339",
+          "obs-00340",
+          "obs-00341",
+          "obs-00342",
+          "obs-00343",
+          "obs-00344"
+        ]
+      },
+      {
+        "device": "NB_G_B2",
+        "bridges": 1,
+        "ports": 4,
+        "interfaces": 4,
+        "observation_ids": [
+          "obs-00424",
+          "obs-00425",
+          "obs-00426",
+          "obs-00427",
+          "obs-00428",
+          "obs-00429",
+          "obs-00430"
+        ]
+      }
+    ],
+    "ovs_memberships": [
+      {
+        "endpoints": [
+          "NB_G_A1:filter",
+          "NB_G_A1:br0"
+        ],
+        "bridge_uuid": "ebf4c456-931a-448f-aab1-32352c1b2dec",
+        "port_uuid": "5af09021-15d3-4d80-8533-9d3b7280a9b9",
+        "interface_uuid": "e0484731-b264-4605-ae44-1451d9bace8f"
+      },
+      {
+        "endpoints": [
+          "NB_G_A1:outer",
+          "NB_G_A1:br0"
+        ],
+        "bridge_uuid": "ebf4c456-931a-448f-aab1-32352c1b2dec",
+        "port_uuid": "946ad6d2-a29c-47f3-b445-3707a7d0904c",
+        "interface_uuid": "7f9911eb-dbc4-4da2-adff-0f420ce29f69"
+      },
+      {
+        "endpoints": [
+          "NB_G_A1:inner",
+          "NB_G_A1:br0"
+        ],
+        "bridge_uuid": "ebf4c456-931a-448f-aab1-32352c1b2dec",
+        "port_uuid": "a3a00bc6-06ab-4a1c-8179-bdb542569297",
+        "interface_uuid": "95be27d0-d84c-4a85-b430-39c47eb91e21"
+      },
+      {
+        "endpoints": [
+          "NB_G_A2:outer",
+          "NB_G_A2:br0"
+        ],
+        "bridge_uuid": "9a4f3878-2ed0-4e99-8b07-3c939c8df0bd",
+        "port_uuid": "21a8f4a8-6cd5-40b0-b4d0-93121a40d310",
+        "interface_uuid": "1085e4ac-cee2-41fa-8654-0cf62ad0603e"
+      },
+      {
+        "endpoints": [
+          "NB_G_A2:inner",
+          "NB_G_A2:br0"
+        ],
+        "bridge_uuid": "9a4f3878-2ed0-4e99-8b07-3c939c8df0bd",
+        "port_uuid": "7b7d8e17-a3e4-441f-b04f-a9ca85e2e7a3",
+        "interface_uuid": "0325fe26-a4ba-4450-b063-37700d5f2db7"
+      },
+      {
+        "endpoints": [
+          "NB_G_A2:filter",
+          "NB_G_A2:br0"
+        ],
+        "bridge_uuid": "9a4f3878-2ed0-4e99-8b07-3c939c8df0bd",
+        "port_uuid": "c0ff3905-72ea-4b2c-9ba5-32972278ccc7",
+        "interface_uuid": "fa586503-aa77-43d1-bac1-6c596e3f7f0b"
+      },
+      {
+        "endpoints": [
+          "NB_G_B1:filter",
+          "NB_G_B1:br0"
+        ],
+        "bridge_uuid": "1bc8e199-6e67-4b4f-85a6-a289a5a3a78f",
+        "port_uuid": "a730a5a1-ed90-4a26-8af1-7ffefef84776",
+        "interface_uuid": "b36d6a52-4e0d-4db2-a7d2-8d62ce722da7"
+      },
+      {
+        "endpoints": [
+          "NB_G_B1:outer",
+          "NB_G_B1:br0"
+        ],
+        "bridge_uuid": "1bc8e199-6e67-4b4f-85a6-a289a5a3a78f",
+        "port_uuid": "aa4b6c9d-b9ca-444a-bc6e-dde32ebda282",
+        "interface_uuid": "07f17ea8-728c-4c44-ae9f-859a5d8c6c09"
+      },
+      {
+        "endpoints": [
+          "NB_G_B1:inner",
+          "NB_G_B1:br0"
+        ],
+        "bridge_uuid": "1bc8e199-6e67-4b4f-85a6-a289a5a3a78f",
+        "port_uuid": "ec26a16e-82af-4fd9-b016-771ea99279b7",
+        "interface_uuid": "2c07d094-ba64-4f52-93b5-3eda4dfc06ed"
+      },
+      {
+        "endpoints": [
+          "NB_G_B2:filter",
+          "NB_G_B2:br0"
+        ],
+        "bridge_uuid": "2abda320-0b8c-43c3-93d7-4f848be5f05f",
+        "port_uuid": "7e63f4c9-59b8-441d-9ef0-07f548b230d7",
+        "interface_uuid": "02459c60-9a2a-4352-9638-a83e7420494d"
+      },
+      {
+        "endpoints": [
+          "NB_G_B2:outer",
+          "NB_G_B2:br0"
+        ],
+        "bridge_uuid": "2abda320-0b8c-43c3-93d7-4f848be5f05f",
+        "port_uuid": "9442530b-e318-42d4-ae20-e48258eef4cb",
+        "interface_uuid": "50e1a821-615f-4c37-ab38-a1fcc529c04b"
+      },
+      {
+        "endpoints": [
+          "NB_G_B2:inner",
+          "NB_G_B2:br0"
+        ],
+        "bridge_uuid": "2abda320-0b8c-43c3-93d7-4f848be5f05f",
+        "port_uuid": "dab13098-b1cb-446a-a908-a9f6fd769c0b",
+        "interface_uuid": "f987f7a4-f6b3-4c82-9bd0-d3e9a6849e90"
+      }
+    ],
+    "scope": "Native CLI/namespace/UUID correspondence. Graph conservatively contracts all listed switch ports; flow correctness and physical separation are not inferred."
+  },
+  "scenario_declaration_path": "artifacts/construction/2026-10-24T014455Z/current-topology-scenarios-v1.json",
+  "scenario_declaration_sha256": "6ebad230c8af0bd880e906ff9d044f46c5c04d80ef973cc35cedfe5253977d01",
+  "scenario_declaration": {
+    "status": "declared",
+    "configuration_id": "native-ipsec-baseline",
+    "snapshot_id": "native-baseline-20261024T015000Z",
+    "snapshot_manifest_sha256": "264b0dc939c82bea6f5b4b3b2610fe54581f5dc77cba2639a0d24698bb986772",
+    "spec_sha256": "c2d98c6ec02639f6e3f9dc88304a7fa7859e14b30f477ae029728be53cc508d0",
+    "case_ids": [
+      "NET-001-C01",
+      "NET-002-C01",
+      "NET-024-C01"
+    ],
+    "transport_kind": "emulated_public_internet",
+    "untrusted_black": true,
+    "gray_firewall_required": true,
+    "transport_device_ids": [
+      "NB_BLACK"
+    ],
+    "basis": "Construction selects the retained Black transport as the untrusted Public Internet representative branch of CP1.3.0 pages12/23/SR12. The declaration is scenario applicability, not an observation of an external Internet connection."
+  },
+  "snapshot_id": "native-baseline-20261024T015000Z",
+  "manifest_sha256": "264b0dc939c82bea6f5b4b3b2610fe54581f5dc77cba2639a0d24698bb986772",
+  "snapshot_sha256": "f59ffdd93307818f64d80cc330fc58cffb44067a288a28b9d57795b46607cd78",
+  "device_order": [
+    "NB_BLACK",
+    "NB_GF_A",
+    "NB_R_A1",
+    "NB_I_A1",
+    "NB_G_A1",
+    "NB_O_A1",
+    "NB_OF_A1",
+    "NB_R_A2",
+    "NB_I_A2",
+    "NB_G_A2",
+    "NB_O_A2",
+    "NB_OF_A2",
+    "NB_GF_B",
+    "NB_R_B1",
+    "NB_I_B1",
+    "NB_G_B1",
+    "NB_O_B1",
+    "NB_OF_B1",
+    "NB_R_B2",
+    "NB_I_B2",
+    "NB_G_B2",
+    "NB_O_B2",
+    "NB_OF_B2"
+  ],
+  "observed_links": 36,
+  "directed_device_edges": 48,
+  "gray_directed_edges": 24,
+  "inactive_interfaces": [
+    {
+      "interface_id": "NB_BLACK:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00071",
+        "obs-00485"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_BLACK:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00071",
+        "obs-00485"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_BLACK:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00071",
+        "obs-00485"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_GF_A:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00090",
+        "obs-00493"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_GF_A:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00090",
+        "obs-00493"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_GF_A:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00090",
+        "obs-00493"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_A1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00107",
+        "obs-00501"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_A1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00107",
+        "obs-00501"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_A1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00107",
+        "obs-00501"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_A1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00119",
+        "obs-00509"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_A1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00119",
+        "obs-00509"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_A1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00119",
+        "obs-00509"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_A1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00137",
+        "obs-00517"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_A1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00137",
+        "obs-00517"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_A1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00137",
+        "obs-00517"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_A1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00156",
+        "obs-00525"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_A1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00156",
+        "obs-00525"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_A1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00156",
+        "obs-00525"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_A1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00174",
+        "obs-00533"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_A1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00174",
+        "obs-00533"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_A1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00174",
+        "obs-00533"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_A2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00193",
+        "obs-00541"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_A2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00193",
+        "obs-00541"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_A2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00193",
+        "obs-00541"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_A2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00205",
+        "obs-00549"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_A2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00205",
+        "obs-00549"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_A2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00205",
+        "obs-00549"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_A2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00223",
+        "obs-00557"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_A2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00223",
+        "obs-00557"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_A2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00223",
+        "obs-00557"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_A2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00242",
+        "obs-00565"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_A2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00242",
+        "obs-00565"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_A2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00242",
+        "obs-00565"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_A2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00260",
+        "obs-00573"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_A2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00260",
+        "obs-00573"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_A2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00260",
+        "obs-00573"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_GF_B:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00279",
+        "obs-00581"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_GF_B:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00279",
+        "obs-00581"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_GF_B:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00279",
+        "obs-00581"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_B1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00296",
+        "obs-00589"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_B1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00296",
+        "obs-00589"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_B1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00296",
+        "obs-00589"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_B1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00308",
+        "obs-00597"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_B1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00308",
+        "obs-00597"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_B1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00308",
+        "obs-00597"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_B1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00326",
+        "obs-00605"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_B1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00326",
+        "obs-00605"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_B1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00326",
+        "obs-00605"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_B1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00345",
+        "obs-00613"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_B1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00345",
+        "obs-00613"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_B1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00345",
+        "obs-00613"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_B1:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00363",
+        "obs-00621"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_B1:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00363",
+        "obs-00621"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_B1:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00363",
+        "obs-00621"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_B2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00382",
+        "obs-00629"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_B2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00382",
+        "obs-00629"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_R_B2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00382",
+        "obs-00629"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_B2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00394",
+        "obs-00637"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_B2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00394",
+        "obs-00637"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_I_B2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00394",
+        "obs-00637"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_B2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00412",
+        "obs-00645"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_B2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00412",
+        "obs-00645"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_G_B2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00412",
+        "obs-00645"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_B2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00431",
+        "obs-00653"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_B2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00431",
+        "obs-00653"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_O_B2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00431",
+        "obs-00653"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_B2:gre0",
+      "kind": "gre",
+      "observation_ids": [
+        "obs-00449",
+        "obs-00661"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_B2:gretap0",
+      "kind": "gretap",
+      "observation_ids": [
+        "obs-00449",
+        "obs-00661"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    },
+    {
+      "interface_id": "NB_OF_B2:erspan0",
+      "kind": "erspan",
+      "observation_ids": [
+        "obs-00449",
+        "obs-00661"
+      ],
+      "admin_up": false,
+      "addresses": 0,
+      "routes": 0,
+      "attachments": 0,
+      "configured_local_remote": false,
+      "abstraction": "administratively down, unaddressed, unconfigured fallback contributes no live connectivity at collected states"
+    }
+  ],
+  "outer_topology_target": "TDN.Imported.FreshBaselineTopology.snapshot_public_internet_RG034",
+  "gray_path_clause": "TDN.Imported.FreshBaselineTopology.cross_level_gray_paths_cross_firewall",
+  "ipv6_disablement": [
+    {
+      "device": "NB_I_A1",
+      "observation_id": "obs-00129",
+      "values": {
+        "net.ipv6.conf.all.disable_ipv6": 1,
+        "net.ipv6.conf.all.forwarding": 0,
+        "net.ipv6.conf.default.disable_ipv6": 1,
+        "net.ipv6.conf.default.forwarding": 0,
+        "net.ipv6.conf.lo.disable_ipv6": 1,
+        "net.ipv6.conf.lo.forwarding": 0,
+        "net.ipv6.conf.red.disable_ipv6": 1,
+        "net.ipv6.conf.red.forwarding": 0,
+        "net.ipv6.conf.gray.disable_ipv6": 1,
+        "net.ipv6.conf.gray.forwarding": 0
+      },
+      "addresses": 0,
+      "routes": 0
+    },
+    {
+      "device": "NB_O_A1",
+      "observation_id": "obs-00166",
+      "values": {
+        "net.ipv6.conf.all.disable_ipv6": 1,
+        "net.ipv6.conf.all.forwarding": 0,
+        "net.ipv6.conf.default.disable_ipv6": 1,
+        "net.ipv6.conf.default.forwarding": 0,
+        "net.ipv6.conf.lo.disable_ipv6": 1,
+        "net.ipv6.conf.lo.forwarding": 0,
+        "net.ipv6.conf.gray.disable_ipv6": 1,
+        "net.ipv6.conf.gray.forwarding": 0,
+        "net.ipv6.conf.black.disable_ipv6": 1,
+        "net.ipv6.conf.black.forwarding": 0
+      },
+      "addresses": 0,
+      "routes": 0
+    },
+    {
+      "device": "NB_I_A2",
+      "observation_id": "obs-00215",
+      "values": {
+        "net.ipv6.conf.all.disable_ipv6": 1,
+        "net.ipv6.conf.all.forwarding": 0,
+        "net.ipv6.conf.default.disable_ipv6": 1,
+        "net.ipv6.conf.default.forwarding": 0,
+        "net.ipv6.conf.lo.disable_ipv6": 1,
+        "net.ipv6.conf.lo.forwarding": 0,
+        "net.ipv6.conf.red.disable_ipv6": 1,
+        "net.ipv6.conf.red.forwarding": 0,
+        "net.ipv6.conf.gray.disable_ipv6": 1,
+        "net.ipv6.conf.gray.forwarding": 0
+      },
+      "addresses": 0,
+      "routes": 0
+    },
+    {
+      "device": "NB_O_A2",
+      "observation_id": "obs-00252",
+      "values": {
+        "net.ipv6.conf.all.disable_ipv6": 1,
+        "net.ipv6.conf.all.forwarding": 0,
+        "net.ipv6.conf.default.disable_ipv6": 1,
+        "net.ipv6.conf.default.forwarding": 0,
+        "net.ipv6.conf.lo.disable_ipv6": 1,
+        "net.ipv6.conf.lo.forwarding": 0,
+        "net.ipv6.conf.gray.disable_ipv6": 1,
+        "net.ipv6.conf.gray.forwarding": 0,
+        "net.ipv6.conf.black.disable_ipv6": 1,
+        "net.ipv6.conf.black.forwarding": 0
+      },
+      "addresses": 0,
+      "routes": 0
+    },
+    {
+      "device": "NB_I_B1",
+      "observation_id": "obs-00318",
+      "values": {
+        "net.ipv6.conf.all.disable_ipv6": 1,
+        "net.ipv6.conf.all.forwarding": 0,
+        "net.ipv6.conf.default.disable_ipv6": 1,
+        "net.ipv6.conf.default.forwarding": 0,
+        "net.ipv6.conf.lo.disable_ipv6": 1,
+        "net.ipv6.conf.lo.forwarding": 0,
+        "net.ipv6.conf.red.disable_ipv6": 1,
+        "net.ipv6.conf.red.forwarding": 0,
+        "net.ipv6.conf.gray.disable_ipv6": 1,
+        "net.ipv6.conf.gray.forwarding": 0
+      },
+      "addresses": 0,
+      "routes": 0
+    },
+    {
+      "device": "NB_O_B1",
+      "observation_id": "obs-00355",
+      "values": {
+        "net.ipv6.conf.all.disable_ipv6": 1,
+        "net.ipv6.conf.all.forwarding": 0,
+        "net.ipv6.conf.default.disable_ipv6": 1,
+        "net.ipv6.conf.default.forwarding": 0,
+        "net.ipv6.conf.lo.disable_ipv6": 1,
+        "net.ipv6.conf.lo.forwarding": 0,
+        "net.ipv6.conf.gray.disable_ipv6": 1,
+        "net.ipv6.conf.gray.forwarding": 0,
+        "net.ipv6.conf.black.disable_ipv6": 1,
+        "net.ipv6.conf.black.forwarding": 0
+      },
+      "addresses": 0,
+      "routes": 0
+    },
+    {
+      "device": "NB_I_B2",
+      "observation_id": "obs-00404",
+      "values": {
+        "net.ipv6.conf.all.disable_ipv6": 1,
+        "net.ipv6.conf.all.forwarding": 0,
+        "net.ipv6.conf.default.disable_ipv6": 1,
+        "net.ipv6.conf.default.forwarding": 0,
+        "net.ipv6.conf.lo.disable_ipv6": 1,
+        "net.ipv6.conf.lo.forwarding": 0,
+        "net.ipv6.conf.red.disable_ipv6": 1,
+        "net.ipv6.conf.red.forwarding": 0,
+        "net.ipv6.conf.gray.disable_ipv6": 1,
+        "net.ipv6.conf.gray.forwarding": 0
+      },
+      "addresses": 0,
+      "routes": 0
+    },
+    {
+      "device": "NB_O_B2",
+      "observation_id": "obs-00441",
+      "values": {
+        "net.ipv6.conf.all.disable_ipv6": 1,
+        "net.ipv6.conf.all.forwarding": 0,
+        "net.ipv6.conf.default.disable_ipv6": 1,
+        "net.ipv6.conf.default.forwarding": 0,
+        "net.ipv6.conf.lo.disable_ipv6": 1,
+        "net.ipv6.conf.lo.forwarding": 0,
+        "net.ipv6.conf.gray.disable_ipv6": 1,
+        "net.ipv6.conf.gray.forwarding": 0,
+        "net.ipv6.conf.black.disable_ipv6": 1,
+        "net.ipv6.conf.black.forwarding": 0
+      },
+      "addresses": 0,
+      "routes": 0
+    }
+  ],
+  "assumptions": [
+    "Raw observation truth and collector completeness",
+    "Declared device roles, untrusted Public-Internet representative case and required Gray Firewalls; The separately hashed scenario declaration binds the selected current snapshot and source cases",
+    "Device contraction overapproximates internal physical connectivity",
+    "Known GRE-family fallback interfaces contribute no live connectivity only after explicit admin-down, no-address, no-route, no-attachment and unconfigured-endpoint checks; Linux down-interface correspondence is an assumption",
+    "Snapshot interval only; no physical appliance independence or future invariant"
+  ]
+}

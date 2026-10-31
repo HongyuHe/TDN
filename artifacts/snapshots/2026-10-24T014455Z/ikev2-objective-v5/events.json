@@ -1,0 +1,40 @@
+{
+  "schema_version": "csfc-protocol-events/v1",
+  "case_ids": [
+    "NET-010-C01"
+  ],
+  "group_ids": [
+    "RG-019",
+    "RG-020",
+    "RG-021",
+    "RG-023"
+  ],
+  "started_at": "2026-10-24T04:25:39.210413+00:00",
+  "ended_at": "2026-10-24T04:25:39.231200+00:00",
+  "records": [
+    {
+      "id": "pq-000",
+      "command": [
+        "docker",
+        "network",
+        "create",
+        "--driver",
+        "bridge",
+        "--subnet",
+        "172.29.245.0/24",
+        "tcv3-pq5net"
+      ],
+      "started_at": "2026-10-24T04:25:39.210432+00:00",
+      "ended_at": "2026-10-24T04:25:39.231158+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Error response from daemon: invalid pool request: Pool overlaps with other one on this address space\n"
+    }
+  ],
+  "error": "{\"id\": \"pq-000\", \"command\": [\"docker\", \"network\", \"create\", \"--driver\", \"bridge\", \"--subnet\", \"172.29.245.0/24\", \"tcv3-pq5net\"], \"started_at\": \"2026-10-24T04:25:39.210432+00:00\", \"ended_at\": \"2026-10-24T04:25:39.231158+00:00\", \"returncode\": 1, \"stdout\": \"\", \"stderr\": \"Error response from daemon: invalid pool request: Pool overlaps with other one on this address space\\n\"}",
+  "limitations": [
+    "Test CA and certificate validity do not establish approved PKI or NPE personnel authority.",
+    "No revocation response or long-duration reauthentication claim is made.",
+    "Finite protocol exchange does not certify complete RFC conformance."
+  ]
+}

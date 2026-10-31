@@ -1,0 +1,139 @@
+{
+  "at": "2026-10-24T03:32:23.918505+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:28:35.415597+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc16.cloudlab.umass.edu",
+        "qemu-system-x86_64 --version"
+      ],
+      "returncode": 0,
+      "stdout": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)\nCopyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:28:43.871644+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n sha256sum /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "ca504bb1bcb88a69334f2679a3b07965a35854bc3f6848fda0e090a3989ca557  /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:28:52.278668+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc16.cloudlab.umass.edu",
+        "sha256sum /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "ca504bb1bcb88a69334f2679a3b07965a35854bc3f6848fda0e090a3989ca557  /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/base.qcow2\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:28:53.062094+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc16.cloudlab.umass.edu",
+        "mv /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-v3.qcow2 /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-v3.partial-v5.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:32:19.511339+00:00",
+      "command": [
+        "private-worker-to-worker-sparse-disk-and-management-key-copy"
+      ],
+      "returncodes": [
+        0,
+        0
+      ],
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:32:20.754207+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import subprocess,json;run=lambda c:subprocess.run(c,check=True);d=json.loads(subprocess.check_output(['\"'\"'ip'\"'\"','\"'\"'-j'\"'\"','\"'\"'route'\"'\"','\"'\"'get'\"'\"','\"'\"'10.0.1.3'\"'\"']))[0]['\"'\"'dev'\"'\"'];run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'add'\"'\"','\"'\"'aw3vx'\"'\"','\"'\"'type'\"'\"','\"'\"'vxlan'\"'\"','\"'\"'id'\"'\"','\"'\"'327971'\"'\"','\"'\"'local'\"'\"','\"'\"'10.0.1.2'\"'\"','\"'\"'remote'\"'\"','\"'\"'10.0.1.3'\"'\"','\"'\"'dev'\"'\"',d,'\"'\"'dstport'\"'\"','\"'\"'47971'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"','\"'\"'aw3vx'\"'\"','\"'\"'master'\"'\"','\"'\"'aw3b'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"','\"'\"'aw3vx'\"'\"','\"'\"'up'\"'\"']);print(json.dumps({'\"'\"'host'\"'\"':'\"'\"'pc22'\"'\"','\"'\"'underlay'\"'\"':d,'\"'\"'local'\"'\"':'\"'\"'10.0.1.2'\"'\"','\"'\"'remote'\"'\"':'\"'\"'10.0.1.3'\"'\"','\"'\"'VNI'\"'\"':327971,'\"'\"'UDP'\"'\"':47971}));'"
+      ],
+      "returncode": 0,
+      "stdout": "{\"host\": \"pc22\", \"underlay\": \"enp3s0f0np0\", \"local\": \"10.0.1.2\", \"remote\": \"10.0.1.3\", \"VNI\": 327971, \"UDP\": 47971}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:32:22.036482+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc16.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import subprocess,json;run=lambda c:subprocess.run(c,check=True);d=json.loads(subprocess.check_output(['\"'\"'ip'\"'\"','\"'\"'-j'\"'\"','\"'\"'route'\"'\"','\"'\"'get'\"'\"','\"'\"'10.0.1.2'\"'\"']))[0]['\"'\"'dev'\"'\"'];run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'add'\"'\"','\"'\"'aw3b'\"'\"','\"'\"'type'\"'\"','\"'\"'bridge'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"','\"'\"'aw3b'\"'\"','\"'\"'up'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'tuntap'\"'\"','\"'\"'add'\"'\"','\"'\"'dev'\"'\"','\"'\"'aw3t'\"'\"','\"'\"'mode'\"'\"','\"'\"'tap'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"','\"'\"'aw3t'\"'\"','\"'\"'master'\"'\"','\"'\"'aw3b'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"','\"'\"'aw3t'\"'\"','\"'\"'up'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'add'\"'\"','\"'\"'aw3vx'\"'\"','\"'\"'type'\"'\"','\"'\"'vxlan'\"'\"','\"'\"'id'\"'\"','\"'\"'327971'\"'\"','\"'\"'local'\"'\"','\"'\"'10.0.1.3'\"'\"','\"'\"'remote'\"'\"','\"'\"'10.0.1.2'\"'\"','\"'\"'dev'\"'\"',d,'\"'\"'dstport'\"'\"','\"'\"'47971'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"','\"'\"'aw3vx'\"'\"','\"'\"'master'\"'\"','\"'\"'aw3b'\"'\"']);run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"','\"'\"'aw3vx'\"'\"','\"'\"'up'\"'\"']);print(json.dumps({'\"'\"'host'\"'\"':'\"'\"'pc16'\"'\"','\"'\"'underlay'\"'\"':d,'\"'\"'local'\"'\"':'\"'\"'10.0.1.3'\"'\"','\"'\"'remote'\"'\"':'\"'\"'10.0.1.2'\"'\"','\"'\"'VNI'\"'\"':327971,'\"'\"'UDP'\"'\"':47971}));'"
+      ],
+      "returncode": 0,
+      "stdout": "{\"host\": \"pc16\", \"underlay\": \"enp3s0f0np0\", \"local\": \"10.0.1.3\", \"remote\": \"10.0.1.2\", \"VNI\": 327971, \"UDP\": 47971}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:32:23.054679+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc16.cloudlab.umass.edu",
+        "sudo -n qemu-system-x86_64 -name tcv3-virtual-aw-dedicated-host -enable-kvm -cpu host -smp 2 -m 2048 -drive file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-v3.qcow2,format=qcow2,if=virtio -netdev user,id=mgmt,hostfwd=tcp:127.0.0.1:22224-:22 -device virtio-net-pci,netdev=mgmt,mac=52:54:76:03:30:10 -netdev tap,id=aw,ifname=aw3t,script=no,downscript=no -device virtio-net-pci,netdev=aw,mac=52:54:76:03:30:11,host_mtu=1400 -display none -serial file:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-relocated-serial-v3.log -monitor unix:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-monitor-v3.sock,server,nowait -pidfile /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid -daemonize"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:32:23.918429+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n docker exec ND_O_B1 ip link set aw-management mtu 1400"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "reason": "Original AW VM shared pc22 with Inner VMs, violating the RG045 narrative host-dedication condition. Move only the AW guest to dedicated physical AW pc16; original VM disk and failed placement evidence remain preserved. Private credentials stay in remote private directories and encrypted SSH transfer."
+}

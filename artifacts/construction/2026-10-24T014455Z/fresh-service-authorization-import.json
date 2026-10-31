@@ -1,0 +1,191 @@
+{
+  "permissions": {
+    "SecurityAdministrator": {
+      "GET": [
+        "/state",
+        "/audit"
+      ],
+      "POST": [
+        "/filter",
+        "/audit/rotate"
+      ]
+    },
+    "Auditor": {
+      "GET": [
+        "/state",
+        "/audit"
+      ],
+      "POST": [
+        "/audit/rotate"
+      ]
+    }
+  },
+  "roles": {
+    "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02": "SecurityAdministrator",
+    "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138": "Auditor"
+  },
+  "certificates": {
+    "security-admin": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+    "auditor": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+    "unmapped": "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2"
+  },
+  "source_sha256": "e258535abe2a9490be635dd6da45f8f497d01badead319ffa7be88e76f916948",
+  "observed": [
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/state",
+      "allowed": true
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/audit",
+      "allowed": true
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "POST",
+      "path": "/filter",
+      "allowed": true
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "POST",
+      "path": "/audit/rotate",
+      "allowed": true
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/private-key",
+      "allowed": false
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/unknown",
+      "allowed": false
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "HEAD",
+      "path": "/state",
+      "allowed": false
+    },
+    {
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "GET",
+      "path": "/state",
+      "allowed": true
+    },
+    {
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "GET",
+      "path": "/audit",
+      "allowed": true
+    },
+    {
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "POST",
+      "path": "/filter",
+      "allowed": false
+    },
+    {
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "POST",
+      "path": "/audit/rotate",
+      "allowed": true
+    },
+    {
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "GET",
+      "path": "/private-key",
+      "allowed": false
+    },
+    {
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "GET",
+      "path": "/unknown",
+      "allowed": false
+    },
+    {
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "HEAD",
+      "path": "/state",
+      "allowed": false
+    },
+    {
+      "fingerprint": "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2",
+      "method": "GET",
+      "path": "/state",
+      "allowed": false
+    },
+    {
+      "fingerprint": "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2",
+      "method": "GET",
+      "path": "/audit",
+      "allowed": false
+    },
+    {
+      "fingerprint": "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2",
+      "method": "POST",
+      "path": "/filter",
+      "allowed": false
+    },
+    {
+      "fingerprint": "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2",
+      "method": "POST",
+      "path": "/audit/rotate",
+      "allowed": false
+    },
+    {
+      "fingerprint": "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2",
+      "method": "GET",
+      "path": "/private-key",
+      "allowed": false
+    },
+    {
+      "fingerprint": "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2",
+      "method": "GET",
+      "path": "/unknown",
+      "allowed": false
+    },
+    {
+      "fingerprint": "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2",
+      "method": "HEAD",
+      "path": "/state",
+      "allowed": false
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/state",
+      "allowed": true
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "POST",
+      "path": "/filter",
+      "allowed": true
+    },
+    {
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/audit",
+      "allowed": true
+    }
+  ],
+  "bundles": {
+    "deployment": "artifacts/snapshots/2026-10-24T014455Z/role-admin-deploy-v4",
+    "effective": "artifacts/snapshots/2026-10-24T014455Z/role-admin-effective-v3",
+    "matrix": "artifacts/snapshots/2026-10-24T014455Z/role-admin-matrix-v3"
+  },
+  "scope": "Certificate-bound authorization for the exact recorded ND_O_A1 administration HTTP service",
+  "implementation_contract": [
+    "The reviewed, hash-bound Python source implements the modeled permission lookup.",
+    "The authenticated fingerprint is SHA-256 of the actual TLS peer certificate DER; TLS identity validation is trusted.",
+    "URL normalization and HTTP method dispatch follow the captured Python standard-library implementation.",
+    "No claim covers host root, Docker, hypervisor access, other services, human role appointment, or all-product key confinement."
+  ]
+}

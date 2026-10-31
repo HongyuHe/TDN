@@ -1,0 +1,74 @@
+{
+  "collected_at": "2026-10-24T02:30:17.020933+00:00",
+  "repair": "CONFIG_L2_PACKET=y replaces hostapd l2_packet_none.o with l2_packet_linux.o. Dedicated ETH_P_PAE binding restored after unsuccessful ETH_P_ALL experiment. Existing offload-support patch is retained. Outgoing raw packet guard is retained in the owned source.",
+  "ownership": "Owned hostap-all-mka copy; original infrastructure binaries and existing workloads unchanged.",
+  "binaries": [
+    {
+      "binary_path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-all-mka/hostapd-2.12/hostapd/hostapd",
+      "sha256": "66569318fa93a573c49a9607d962649a06b37ba0dcbd5376f4258a3b0e12f46e",
+      "bytes": 3993912
+    },
+    {
+      "binary_path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-all-mka/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+      "sha256": "1c96f5674bb670c6643a1e0276a2a84be99fe2ac4ce5ed275bbdb722cfd2a80a",
+      "bytes": 4238952
+    }
+  ],
+  "records": [
+    {
+      "command": [
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-all-mka/hostapd-2.12/hostapd/hostapd",
+        "-v"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "hostapd v2.12\nUser space daemon for IEEE 802.11 AP management,\nIEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator\nCopyright (c) 2002-2026, Jouni Malinen <j@w1.fi> and contributors\n"
+    },
+    {
+      "command": [
+        "ldd",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-all-mka/hostapd-2.12/hostapd/hostapd"
+      ],
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffccf670000)\n\tlibnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x000076c29e9ed000)\n\tlibnl-genl-3.so.200 => /lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x000076c29e9e5000)\n\tlibnl-route-3.so.200 => /lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x000076c29e956000)\n\tlibssl.so.3 => /lib/x86_64-linux-gnu/libssl.so.3 (0x000076c29e8ac000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x000076c29e200000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000076c29de00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000076c29ead2000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "nm",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-all-mka/hostapd-2.12/hostapd/hostapd"
+      ],
+      "returncode": 0,
+      "stdout": "000000000005eb10 T l2_packet_deinit\n000000000005eb70 T l2_packet_get_ip_addr\n000000000005e530 T l2_packet_get_own_addr\n000000000005e680 T l2_packet_init\n000000000005e900 T l2_packet_init_bridge\n000000000005ecc0 T l2_packet_notify_auth_start\n000000000005e020 t l2_packet_receive\n000000000005e2c0 t l2_packet_receive_br\n000000000005e550 T l2_packet_send\n000000000005ecd0 T l2_packet_set_packet_filter",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-all-mka/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+        "-v"
+      ],
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nCopyright (c) 2003-2026, Jouni Malinen <j@w1.fi> and contributors\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ldd",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-all-mka/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant"
+      ],
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007fff399f3000)\n\tlibnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x000072f98cbed000)\n\tlibnl-genl-3.so.200 => /lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x000072f98cbe5000)\n\tlibnl-route-3.so.200 => /lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x000072f98cb56000)\n\tlibssl.so.3 => /lib/x86_64-linux-gnu/libssl.so.3 (0x000072f98caac000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x000072f98c400000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000072f98c000000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000072f98ccfb000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "nm",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-all-mka/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant"
+      ],
+      "returncode": 0,
+      "stdout": "000000000009aa10 T l2_packet_deinit\n000000000009aa70 T l2_packet_get_ip_addr\n000000000009a430 T l2_packet_get_own_addr\n000000000009a580 T l2_packet_init\n000000000009a800 T l2_packet_init_bridge\n000000000009abc0 T l2_packet_notify_auth_start\n0000000000099f20 t l2_packet_receive\n000000000009a1c0 t l2_packet_receive_br\n000000000009a450 T l2_packet_send\n000000000009abd0 T l2_packet_set_packet_filter",
+      "stderr": ""
+    }
+  ],
+  "limits": "Rebuilt test binaries do not acquire NIAP evaluated-configuration or approved product status."
+}

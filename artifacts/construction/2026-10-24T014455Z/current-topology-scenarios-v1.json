@@ -1,0 +1,45 @@
+{
+  "schema_version": "csfc-topology-scenario/v1",
+  "created_at": "2026-10-24T16:42:39.648197+00:00",
+  "actor": "Construction Agent",
+  "configurations": [
+    {
+      "status": "declared",
+      "configuration_id": "native-ipsec-baseline",
+      "snapshot_id": "native-baseline-20261024T015000Z",
+      "snapshot_manifest_sha256": "264b0dc939c82bea6f5b4b3b2610fe54581f5dc77cba2639a0d24698bb986772",
+      "spec_sha256": "c2d98c6ec02639f6e3f9dc88304a7fa7859e14b30f477ae029728be53cc508d0",
+      "case_ids": [
+        "NET-001-C01",
+        "NET-002-C01",
+        "NET-024-C01"
+      ],
+      "transport_kind": "emulated_public_internet",
+      "untrusted_black": true,
+      "gray_firewall_required": true,
+      "transport_device_ids": [
+        "NB_BLACK"
+      ],
+      "basis": "Construction selects the retained Black transport as the untrusted Public Internet representative branch of CP1.3.0 pages12/23/SR12. The declaration is scenario applicability, not an observation of an external Internet connection."
+    },
+    {
+      "status": "declared",
+      "configuration_id": "native-shared-four-levels",
+      "snapshot_id": "native-shared-four-levels-20261024T015300Z-coverage-v1",
+      "snapshot_manifest_sha256": "e422700a5d71097d57fb7a4a7aa1094e0b75b071d9decf63be4721fa80fb7b0e",
+      "spec_sha256": "69808854ac7fb248d2afebf84342bfbc07745f9e621e8710e538b8bb8df38779",
+      "case_ids": [
+        "NET-006-C01",
+        "NET-013-C01",
+        "NET-020-C03"
+      ],
+      "transport_kind": "emulated_public_internet",
+      "untrusted_black": true,
+      "gray_firewall_required": true,
+      "transport_device_ids": [
+        "NF_BLACK"
+      ],
+      "basis": "Construction selects the retained Black transport as the untrusted Public Internet representative branch of CP1.3.0 pages12/23/SR12. The declaration is scenario applicability, not an observation of an external Internet connection."
+    }
+  ]
+}

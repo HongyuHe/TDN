@@ -1,0 +1,85 @@
+{
+  "at": "2026-10-24T14:32:36.448975+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T14:32:35.545330+00:00",
+      "label": "before-restart",
+      "journal_sha256": "8f4a6574e222c7edd87546967d4e000170c5cde001cd976d02f17e1ff3f9514b",
+      "file_mode": "0o600",
+      "records": [
+        {
+          "device": "NC-I-A",
+          "offset": 0,
+          "next": 65536,
+          "bytes": 65536,
+          "sha256": "a3aeaeba59c0210f8322c6e22908ff6d5bca1e70b0e84810cda16d7ce7a9d80b",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        }
+      ],
+      "actual_audit_markers": []
+    },
+    {
+      "at": "2026-10-24T14:32:36.047405+00:00",
+      "label": "after-restart",
+      "journal_sha256": "8f4a6574e222c7edd87546967d4e000170c5cde001cd976d02f17e1ff3f9514b",
+      "file_mode": "0o600",
+      "records": [
+        {
+          "device": "NC-I-A",
+          "offset": 0,
+          "next": 65536,
+          "bytes": 65536,
+          "sha256": "a3aeaeba59c0210f8322c6e22908ff6d5bca1e70b0e84810cda16d7ce7a9d80b",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        }
+      ],
+      "actual_audit_markers": []
+    },
+    {
+      "at": "2026-10-24T14:32:36.048085+00:00",
+      "operation": "owned-service-restart",
+      "old_pid": 69968,
+      "new_pid": 70086,
+      "command": [
+        "python3",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/scripts/audit_collector_v3.py",
+        "--root",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/store",
+        "--ca",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/ca.pem",
+        "--cert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.pem",
+        "--key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.key"
+      ]
+    },
+    {
+      "at": "2026-10-24T14:32:36.448818+00:00",
+      "operation": "bounded-store-capacity-control-start",
+      "pid": 70087,
+      "command": [
+        "python3",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/scripts/audit_collector_v3.py",
+        "--root",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/budget-store",
+        "--ca",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/ca.pem",
+        "--cert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.pem",
+        "--key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.key",
+        "--port",
+        "43464",
+        "--max-bytes",
+        "128"
+      ],
+      "scope": "Explicit configured128-byte budget exercises application backpressure. It is not a simulated or actual physical-disk ENOSPC claim."
+    }
+  ],
+  "error": null,
+  "scope": "Read-only committed journal summaries plus a positively identified owned collector restart and separately bounded store. No private credential or source audit body bytes are exported."
+}

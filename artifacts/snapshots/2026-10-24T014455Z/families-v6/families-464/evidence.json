@@ -1,0 +1,213 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "configuration_id": "families-464",
+  "runtime_backend": "supplemental-Linux-network-namespaces-static-XFRM",
+  "started_at": "2026-10-24T04:21:24.394488+00:00",
+  "ended_at": "2026-10-24T04:21:27.529188+00:00",
+  "devices": [
+    {
+      "id": "HA",
+      "role": "host",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3f6-HA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IA",
+      "role": "inner",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3f6-IA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OA",
+      "role": "outer",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3f6-OA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "FA",
+      "role": "outer-firewall",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3f6-FA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "FB",
+      "role": "outer-firewall",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3f6-FB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OB",
+      "role": "outer",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3f6-OB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IB",
+      "role": "inner",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3f6-IB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "HB",
+      "role": "host",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3f6-HB",
+      "physical_independence": "unavailable"
+    }
+  ],
+  "links": [
+    {
+      "endpoints": [
+        "HA:red",
+        "IA:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.1.0.2/24",
+        "10.1.0.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IA:gray",
+        "OA:gray"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        "fd20:1::1/64",
+        "fd20:1::2/64"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OA:black",
+        "FA:inside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "192.0.2.1/30",
+        "192.0.2.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "HB:red",
+        "IB:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.2.0.2/24",
+        "10.2.0.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IB:gray",
+        "OB:gray"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        "fd20:2::1/64",
+        "fd20:2::2/64"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OB:black",
+        "FB:inside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "192.0.3.1/30",
+        "192.0.3.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "FA:outside",
+        "FB:outside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "198.51.100.1/30",
+        "198.51.100.2/30"
+      ],
+      "physical_claim_supported": false
+    }
+  ],
+  "tunnels": [
+    {
+      "id": "inner",
+      "mechanism": "IPsec",
+      "layer": "inner",
+      "endpoints": [
+        "IA",
+        "IB"
+      ],
+      "local": "fd20:1::1",
+      "remote": "fd20:2::1",
+      "selectors": [
+        "10.1.0.0/24",
+        "10.2.0.0/24"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    },
+    {
+      "id": "outer",
+      "mechanism": "IPsec",
+      "layer": "outer",
+      "endpoints": [
+        "OA",
+        "OB"
+      ],
+      "local": "192.0.2.1",
+      "remote": "192.0.3.1",
+      "selectors": [
+        "fd20:1::1/128",
+        "fd20:2::1/128"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    }
+  ],
+  "probes": [],
+  "error": "{\"id\": \"cmd-0160\", \"started_at\": \"2026-10-24T04:21:26.514585+00:00\", \"ended_at\": \"2026-10-24T04:21:27.529061+00:00\", \"command\": [\"ip\", \"netns\", \"exec\", \"tcv3f6-IB\", \"ping\", \"-6\", \"-n\", \"-c\", \"1\", \"-W\", \"1\", \"fd20:2::1\"], \"device_id\": \"IB\", \"returncode\": 1, \"stdout\": \"PING fd20:2::1 (fd20:2::1) 56 data bytes\\n\\n--- fd20:2::1 ping statistics ---\\n1 packets transmitted, 0 received, 100% packet loss, time 0ms\\n\\n\", \"stderr\": \"\"}",
+  "limitations": [
+    "Virtual namespace graph; no physical independence or product approval",
+    "Manually provisioned SAs do not establish IKE/MKA/certificate authentication",
+    "Test keys generated by Python secrets; no NSA KGS approval claim"
+  ]
+}

@@ -17,7 +17,7 @@ def evaluate {Packet : Type} : List (Rule Packet) → Verdict → Packet → Ver
       if r.accepts p then r.verdict else evaluate rest fallback p
 
 /-- A rule-local condition is sufficient despite earlier denying rules and arbitrary order. -/
-theorem allowed_has_matching_allow {Packet : Type} (rules : List (Rule Packet))
+lemma allowed_has_matching_allow {Packet : Type} (rules : List (Rule Packet))
     (p : Packet) (h : evaluate rules .deny p = .allow) :
     ∃ r ∈ rules, r.accepts p = true ∧ r.verdict = .allow := by
   induction rules with
@@ -50,5 +50,48 @@ theorem rejects_outside_allowlist {Packet : Type} (rules : List (Rule Packet))
 def HasUsefulTraffic {Packet : Type} (rules : List (Rule Packet))
     (useful : Packet → Prop) : Prop :=
   ∃ p, useful p ∧ evaluate rules .deny p = .allow
+
+/-- A earlierRules that does not match the packet has no effect on ordered evaluation. -/
+lemma evaluate_skips_nonmatching_prefix {Packet : Type} (earlierRules rest : List (Rule Packet))
+    (fallback : Verdict) (packet : Packet)
+    (misses : ∀ rule ∈ earlierRules, rule.accepts packet = false) :
+    evaluate (earlierRules ++ rest) fallback packet = evaluate rest fallback packet := by
+  induction earlierRules with
+  | nil => rfl
+  | cons rule remaining ih =>
+    have first := misses rule (by simp)
+    simp only [List.cons_append, evaluate, first, Bool.false_eq_true, ↓reduceIte]
+    exact ih (fun r member => misses r (List.mem_cons_of_mem _ member))
+
+/-- A specified first matching allow rule establishes positive acceptance.
+A later allow rule alone is insufficient when an earlier denial matches. -/
+theorem accepts_at_first_matching_rule {Packet : Type}
+    (earlierRules suffix : List (Rule Packet)) (rule : Rule Packet) (packet : Packet)
+    (misses : ∀ earlier ∈ earlierRules, earlier.accepts packet = false)
+    (matchesRule : rule.accepts packet = true) (allows : rule.verdict = .allow) :
+    evaluate (earlierRules ++ rule :: suffix) .deny packet = .allow := by
+  rw [evaluate_skips_nonmatching_prefix earlierRules (rule :: suffix) .deny packet misses]
+  simp [evaluate, matchesRule, allows]
+
+/-- A prefix made only of denials blocks every packet matched by one of its rules.
+The conclusion allows an arbitrary later policy and an arbitrary default. -/
+theorem denying_prefix_blocks {Packet : Type} (earlierRules suffix : List (Rule Packet))
+    (fallback : Verdict) (packet : Packet)
+    (denials : ∀ rule ∈ earlierRules, rule.verdict = .deny)
+    (covered : ∃ rule ∈ earlierRules, rule.accepts packet = true) :
+    evaluate (earlierRules ++ suffix) fallback packet = .deny := by
+  induction earlierRules with
+  | nil => simp at covered
+  | cons rule remaining ih =>
+    simp only [List.cons_append, evaluate]
+    split
+    next matched => exact denials rule (by simp)
+    next missed =>
+      apply ih (fun r member => denials r (by simp [member]))
+      obtain ⟨chosen, member, matchesRule⟩ := covered
+      rcases List.mem_cons.mp member with equal | rest
+      · subst chosen
+        exact False.elim (missed matchesRule)
+      · exact ⟨chosen, rest, matchesRule⟩
 
 end TDN.Filter

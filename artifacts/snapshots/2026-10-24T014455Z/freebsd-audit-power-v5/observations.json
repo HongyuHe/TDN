@@ -1,0 +1,161 @@
+{
+  "started_config": {
+    "host": "hy@pc22.cloudlab.umass.edu",
+    "run_root": "/users/hy/tdn-replay-20261024-v6",
+    "device_prefix": "NC",
+    "bridge_prefix": "nc3",
+    "profile_name": "native-replay-v6",
+    "ssh_port_base": 22352,
+    "socket_port": 49532,
+    "mac_prefix": "52:54:76:07",
+    "image_cache": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz"
+  },
+  "ended_at": "2026-10-24T05:26:51.520882+00:00",
+  "records": [
+    {
+      "id": "power-0000",
+      "started_at": "2026-10-24T05:26:51.483459+00:00",
+      "ended_at": "2026-10-24T05:26:51.490994+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "cat /etc/rc.conf"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "kex_exchange_identification: read: Connection reset by peer\nConnection reset by 127.0.0.1 port 22352\n"
+    },
+    {
+      "id": "power-0001",
+      "started_at": "2026-10-24T05:26:51.491012+00:00",
+      "ended_at": "2026-10-24T05:26:51.497602+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "cat /etc/sysctl.conf"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "kex_exchange_identification: read: Connection reset by peer\nConnection reset by 127.0.0.1 port 22352\n"
+    },
+    {
+      "id": "power-0002",
+      "started_at": "2026-10-24T05:26:51.497617+00:00",
+      "ended_at": "2026-10-24T05:26:51.503227+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "kldstat -n ipsec"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "kex_exchange_identification: read: Connection reset by peer\nConnection reset by 127.0.0.1 port 22352\n"
+    },
+    {
+      "id": "power-0003",
+      "started_at": "2026-10-24T05:26:51.503240+00:00",
+      "ended_at": "2026-10-24T05:26:51.508813+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "ifconfig -a"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "kex_exchange_identification: read: Connection reset by peer\nConnection reset by 127.0.0.1 port 22352\n"
+    },
+    {
+      "id": "power-0004",
+      "started_at": "2026-10-24T05:26:51.508827+00:00",
+      "ended_at": "2026-10-24T05:26:51.514320+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "kex_exchange_identification: read: Connection reset by peer\nConnection reset by 127.0.0.1 port 22352\n"
+    },
+    {
+      "id": "power-0005",
+      "started_at": "2026-10-24T05:26:51.514343+00:00",
+      "ended_at": "2026-10-24T05:26:51.520696+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "sysrc sshd_enable=YES"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "kex_exchange_identification: read: Connection reset by peer\nConnection reset by 127.0.0.1 port 22352\n"
+    }
+  ],
+  "error": "kex_exchange_identification: read: Connection reset by peer\nConnection reset by 127.0.0.1 port 22352\n",
+  "runtime_backend": "Native FRR/OVS with actual FreeBSD Inner guests, persistent rc.d startup and owned guest power cycles",
+  "scope": [
+    "Only the two owned guest QEMU processes are power-cycled. Shared Linux hosts and unrelated workloads remain active.",
+    "Persistent kernel module, interface, route, IP forwarding and charon settings are recorded. Readiness and useful nested traffic are checked after reboot.",
+    "An actual syslogd audit record is explicitly fsynced and survives an abrupt owned guest stop and restart. Lifecycle and startup observations demonstrate the selected bounded continuation. No one-year retention, quarter audit, agency adoption, arbitrary power failure or hardware firmware assurance is inferred."
+  ]
+}

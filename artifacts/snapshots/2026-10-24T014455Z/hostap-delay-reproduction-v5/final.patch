@@ -1,0 +1,94 @@
+--- a/src/drivers/driver_macsec_linux.c
++++ b/src/drivers/driver_macsec_linux.c
+@@ -765,7 +765,7 @@
+ 
+ 	wpa_printf(MSG_DEBUG,
+ 		   DRV_PREFIX "%s: set_receive_lowest_pn -> %d: %d",
+-		   drv->ifname, sa->an, sa->next_pn);
++		   drv->ifname, sa->an, sa->lowest_pn);
+ 
+ 	msg = msg_prepare(MACSEC_CMD_UPD_RXSA, ctx, drv->ifi);
+ 	if (!msg)
+@@ -779,7 +779,7 @@
+ 		goto nla_put_failure;
+ 
+ 	NLA_PUT_U8(msg, MACSEC_SA_ATTR_AN, sa->an);
+-	NLA_PUT_U32(msg, MACSEC_SA_ATTR_PN, sa->next_pn);
++	NLA_PUT_U32(msg, MACSEC_SA_ATTR_PN, sa->lowest_pn);
+ 
+ 	nla_nest_end(msg, nest);
+ 
+--- a/src/pae/ieee802_1x_kay.h
++++ b/src/pae/ieee802_1x_kay.h
+@@ -95,6 +95,9 @@
+ struct transmit_sa {
+ 	bool in_use; /* bool inUse (read only) */
+ 	u32 next_pn; /* PN nextPN (read only) */
++	u32 evidence_delay_pn[8];
++	struct os_reltime evidence_delay_time[8];
++	u8 evidence_delay_next;
+ 	struct os_time created_time; /* Time createdTime */
+ 
+ 	bool enable_transmit; /* bool EnableTransmit */
+--- a/src/pae/ieee802_1x_kay.c
++++ b/src/pae/ieee802_1x_kay.c
+@@ -1268,6 +1268,40 @@
+ 			 *
+ 			 * NOTE: This method only works if mka_hello_time is 2s.
+ 			 */
++			if (principal->kay->mka_hello_time <= MKA_BOUNDED_HELLO_TIME) {
++				struct os_reltime now;
++				unsigned int slot, latest, j;
++				long age, best_age = 0x7fffffff;
++				os_get_reltime(&now);
++				secy_get_transmit_next_pn(principal->kay, txsa);
++				slot = txsa->evidence_delay_next;
++				latest = (slot + 7) % 8;
++				age = (now.sec - txsa->evidence_delay_time[latest].sec) *
++					1000000 + now.usec -
++					txsa->evidence_delay_time[latest].usec;
++				if (!txsa->evidence_delay_time[latest].sec || age >= 400000) {
++					txsa->evidence_delay_pn[slot] = txsa->next_pn;
++					txsa->evidence_delay_time[slot] = now;
++					txsa->evidence_delay_next = (slot + 1) % 8;
++				}
++				lpn = 1;
++				for (j = 0; j < 8; j++) {
++					if (!txsa->evidence_delay_time[j].sec)
++						continue;
++					age = (now.sec - txsa->evidence_delay_time[j].sec) *
++						1000000 + now.usec -
++						txsa->evidence_delay_time[j].usec;
++					if (age >= 1000000 && age < best_age) {
++						lpn = txsa->evidence_delay_pn[j];
++						best_age = age;
++					}
++				}
++				wpa_printf(MSG_DEBUG,
++					"EVIDENCE delay LPN=%u normalHello=%u boundedHello=%u lifetime=%u",
++					lpn, MKA_HELLO_TIME, principal->kay->mka_hello_time,
++					MKA_LIFE_TIME);
++				break;
++			}
+ 			lpn = (txsa->next_pn > 0) ? (txsa->next_pn - 1) : 0;
+ 
+ 			/* Now read the current transmit next PN for use next
+@@ -2687,7 +2721,8 @@
+ 		participant->retry_count++;
+ 	}
+ 
+-	eloop_register_timeout(kay->mka_hello_time / 1000, 0,
++	eloop_register_timeout(kay->mka_hello_time / 1000,
++			       (kay->mka_hello_time % 1000) * 1000,
+ 			       ieee802_1x_participant_timer,
+ 			       participant, NULL);
+ 
+@@ -3574,7 +3609,7 @@
+ 		kay->macsec_replay_protect = macsec_replay_protect;
+ 		kay->macsec_replay_window = macsec_replay_window;
+ 		kay->macsec_offload = macsec_offload;
+-		kay->mka_hello_time = MKA_HELLO_TIME;
++		kay->mka_hello_time = MKA_BOUNDED_HELLO_TIME;
+ 	}
+ 
+ 	wpa_printf(MSG_DEBUG, "KaY: state machine created");

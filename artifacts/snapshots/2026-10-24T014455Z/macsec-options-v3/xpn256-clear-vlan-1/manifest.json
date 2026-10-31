@@ -1,0 +1,35 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "started_at": "2026-10-24T02:58:11.343714+00:00",
+  "ended_at": "2026-10-24T02:58:16.640062+00:00",
+  "configuration_id": "xpn256-clear-vlan-1",
+  "runtime_backend": "supplemental-linux-netns-static-routes",
+  "code_sha256": "91f6257bc821ad14ed1ff5c9db0575a4ac11b6f53431a86382d66a523fe062e8",
+  "code_hashes": {
+    "matrix_lab.py": "91f6257bc821ad14ed1ff5c9db0575a4ac11b6f53431a86382d66a523fe062e8",
+    "macsec_options_v3.py": "3e64eeef40411eb6fdcd9b4ba3a33d0187601138ca42952a37289674121c17a9"
+  },
+  "files": [
+    {
+      "path": "after.json",
+      "sha256": "e15e89fb481431c072ca65a7abc598115eece7b8a82db3ab5967cd8185192838",
+      "bytes": 21277
+    },
+    {
+      "path": "before.json",
+      "sha256": "424cb7e5c46c650460998717f04946cea24e13e783d751e16c5ef6ce1d338739",
+      "bytes": 19481
+    },
+    {
+      "path": "commands.json",
+      "sha256": "47221504b62778cd2005e8c9d4fecea88640c326fa3c13f9dffa0b76804af3cb",
+      "bytes": 71438
+    },
+    {
+      "path": "evidence.json",
+      "sha256": "24b2444725c157c5397d0eadcc87207665a5a6618981f4348befd5902b5971aa",
+      "bytes": 2072
+    }
+  ],
+  "error": "{\"id\": \"cmd-0069\", \"started_at\": \"2026-10-24T02:58:16.629123+00:00\", \"ended_at\": \"2026-10-24T02:58:16.637304+00:00\", \"command\": [\"ip\", \"netns\", \"exec\", \"tcv3x1-B\", \"ip\", \"macsec\", \"del\", \"macsec0\", \"rx\", \"port\", \"1\", \"address\", \"ce:c3:88:77:9d:af\", \"sa\", \"0\"], \"device_id\": \"B\", \"returncode\": 2, \"stdout\": \"\", \"stderr\": \"RTNETLINK answers: Device or resource busy\\n\"}"
+}

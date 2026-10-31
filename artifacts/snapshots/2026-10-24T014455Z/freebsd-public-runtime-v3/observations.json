@@ -1,0 +1,28 @@
+{
+  "at": "2026-10-24T14:08:20.734860+00:00",
+  "public_files": [
+    {
+      "path": "artifacts/construction/2026-10-24T014455Z/evidence/runtime/freebsd/runtime-archive-members.json",
+      "sha256": "c59d595b7d58b563e1f5110a7990863a6377283edfd30acb8108fbd2bd6d7a92",
+      "bytes": 2665
+    },
+    {
+      "path": "artifacts/construction/2026-10-24T014455Z/evidence/runtime/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz",
+      "sha256": "d957fe56fb596280428328e78e9e4feae00dd361701caa79a061f9bd289eff67",
+      "bytes": 659880440
+    },
+    {
+      "path": "artifacts/construction/2026-10-24T014455Z/evidence/runtime/freebsd/freebsd-botan-strongswan-runtime.tar.gz",
+      "sha256": "613d11e3f7bc54239809bacf4ef65dd3bb14f77e78f94cf1ee16eb754354ee93",
+      "bytes": 11560960
+    }
+  ],
+  "source_url": "https://download.freebsd.org/releases/VM-IMAGES/14.4-RELEASE/amd64/Latest/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz",
+  "original_public_image_sha256": "d957fe56fb596280428328e78e9e4feae00dd361701caa79a061f9bd289eff67",
+  "runtime_source_guest": "ND actual FreeBSD Inner A on pc22 SSH port22222",
+  "scope": [
+    "The official base image is verified by the earlier recorded checksum and fresh byte hash. Private guest overlays, seeds and credentials are excluded.",
+    "The runtime archive contains installed strongSwan/Botan public libraries/binaries, the official strongSwan6.0.3 source archive and its configure log/status. Guest libc dependencies are supplied by the matching base system; full OS patch/package reproducibility remains separate.",
+    "An unprivileged initial read was denied by the private directory permissions. A sudo operation copied only the hash-verified official image to an explicit public export path. No private directory or guest disk was copied."
+  ]
+}

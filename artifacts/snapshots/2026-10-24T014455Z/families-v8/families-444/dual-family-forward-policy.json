@@ -1,0 +1,17 @@
+{
+  "request_id": "C-FAMILY-FILTER-002",
+  "devices": [
+    "IA",
+    "IB",
+    "OA",
+    "OB"
+  ],
+  "families": [
+    4,
+    6
+  ],
+  "forward_default": "DROP",
+  "permits": "Existing interface- and reqid-bound --pol ipsec permits remain explicit for the required payload family. No second-family cleartext forwarding permit is added.",
+  "crafted_tests": [],
+  "scope": "Before and after raw wrong-family ingress uses arbitrary claimed sources and captures actual plaintext UDP egress. Same-family all-packet claims still require the complete route/filter/XFRM model."
+}

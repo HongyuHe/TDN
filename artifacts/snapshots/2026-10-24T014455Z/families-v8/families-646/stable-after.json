@@ -1,0 +1,538 @@
+{
+  "HA": {
+    "interfaces": {
+      "observation_id": "cmd-0570",
+      "returncode": 0,
+      "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3959,\"link_index\":3958,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"7e:44:78:a4:9f:39\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd10:1::2\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::7c44:78ff:fea4:9f39\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n"
+    },
+    "rules4": {
+      "observation_id": "cmd-0571",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n"
+    },
+    "rules6": {
+      "observation_id": "cmd-0572",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"}]\n"
+    },
+    "namespace": {
+      "observation_id": "cmd-0573",
+      "returncode": 0,
+      "value": "net:[4026580186]\n"
+    },
+    "named_namespaces": {
+      "observation_id": "cmd-0574",
+      "returncode": 0,
+      "value": "[{\"name\":\"tcv3f8-HB\",\"id\":7},{\"name\":\"tcv3f8-IB\",\"id\":6},{\"name\":\"tcv3f8-OB\",\"id\":5},{\"name\":\"tcv3f8-FB\",\"id\":4},{\"name\":\"tcv3f8-FA\",\"id\":3},{\"name\":\"tcv3f8-OA\",\"id\":2},{\"name\":\"tcv3f8-IA\",\"id\":1},{\"name\":\"tcv3f8-HA\"}]\n"
+    },
+    "peer_nsids": {
+      "observation_id": "cmd-0575",
+      "returncode": 0,
+      "value": "[{\"nsid\":0},{\"nsid\":1,\"name\":\"tcv3f8-IA\"},{\"nsid\":2,\"name\":\"tcv3f8-OA\"},{\"nsid\":3,\"name\":\"tcv3f8-FA\"},{\"nsid\":4,\"name\":\"tcv3f8-FB\"},{\"nsid\":5,\"name\":\"tcv3f8-OB\"},{\"nsid\":6,\"name\":\"tcv3f8-IB\"},{\"nsid\":7,\"name\":\"tcv3f8-HB\"}]\n"
+    },
+    "routes4": {
+      "observation_id": "cmd-0576",
+      "returncode": 0,
+      "value": "[{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n"
+    },
+    "routes6": {
+      "observation_id": "cmd-0577",
+      "returncode": 0,
+      "value": "[{\"dst\":\"fd10:1::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd10:2::/64\",\"gateway\":\"fd10:1::1\",\"dev\":\"red\",\"metric\":1024,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd10:1::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd10:1::2\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::7c44:78ff:fea4:9f39\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+    },
+    "filters4": {
+      "observation_id": "cmd-0578",
+      "returncode": 0,
+      "value": ""
+    },
+    "filters6": {
+      "observation_id": "cmd-0579",
+      "returncode": 0,
+      "value": ""
+    },
+    "policies": {
+      "observation_id": "cmd-0580",
+      "returncode": 0,
+      "value": ""
+    },
+    "xfrm": {
+      "observation_id": "cmd-0581",
+      "returncode": 0,
+      "value": ""
+    },
+    "macsec": {
+      "observation_id": "cmd-0582",
+      "returncode": 0,
+      "value": ""
+    }
+  },
+  "IA": {
+    "interfaces": {
+      "observation_id": "cmd-0591",
+      "returncode": 0,
+      "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3958,\"link_index\":3959,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"be:a4:f7:42:66:d8\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd10:1::1\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::bca4:f7ff:fe42:66d8\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3961,\"link_index\":3960,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"c6:c4:37:79:3b:d3\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":2,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.11.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::c4c4:37ff:fe79:3bd3\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n"
+    },
+    "rules4": {
+      "observation_id": "cmd-0592",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n"
+    },
+    "rules6": {
+      "observation_id": "cmd-0593",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"}]\n"
+    },
+    "namespace": {
+      "observation_id": "cmd-0594",
+      "returncode": 0,
+      "value": "net:[4026580621]\n"
+    },
+    "named_namespaces": {
+      "observation_id": "cmd-0595",
+      "returncode": 0,
+      "value": "[{\"name\":\"tcv3f8-HB\",\"id\":7},{\"name\":\"tcv3f8-IB\",\"id\":6},{\"name\":\"tcv3f8-OB\",\"id\":5},{\"name\":\"tcv3f8-FB\",\"id\":4},{\"name\":\"tcv3f8-FA\",\"id\":3},{\"name\":\"tcv3f8-OA\",\"id\":2},{\"name\":\"tcv3f8-IA\"},{\"name\":\"tcv3f8-HA\",\"id\":0}]\n"
+    },
+    "peer_nsids": {
+      "observation_id": "cmd-0596",
+      "returncode": 0,
+      "value": "[{\"nsid\":0,\"name\":\"tcv3f8-HA\"},{\"nsid\":1},{\"nsid\":2,\"name\":\"tcv3f8-OA\"},{\"nsid\":3,\"name\":\"tcv3f8-FA\"},{\"nsid\":4,\"name\":\"tcv3f8-FB\"},{\"nsid\":5,\"name\":\"tcv3f8-OB\"},{\"nsid\":6,\"name\":\"tcv3f8-IB\"},{\"nsid\":7,\"name\":\"tcv3f8-HB\"}]\n"
+    },
+    "routes4": {
+      "observation_id": "cmd-0597",
+      "returncode": 0,
+      "value": "[{\"dst\":\"10.11.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.11.0.1\",\"flags\":[]},{\"dst\":\"10.21.0.1\",\"gateway\":\"10.11.0.2\",\"dev\":\"gray\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.11.0.1\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.11.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.11.0.3\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.11.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n"
+    },
+    "routes6": {
+      "observation_id": "cmd-0598",
+      "returncode": 0,
+      "value": "[{\"dst\":\"fd10:1::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd10:2::/64\",\"dev\":\"gray\",\"metric\":1024,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd10:1::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd10:1::1\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::bca4:f7ff:fe42:66d8\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::c4c4:37ff:fe79:3bd3\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+    },
+    "filters4": {
+      "observation_id": "cmd-0599",
+      "returncode": 0,
+      "value": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:56 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [3:168]\n:OUTPUT ACCEPT [0:0]\nCOMMIT\n# Completed on Sat Oct 24 04:34:56 2026\n"
+    },
+    "filters6": {
+      "observation_id": "cmd-0600",
+      "returncode": 0,
+      "value": "# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:56 2026\n*raw\n:PREROUTING ACCEPT [28:2960]\n:OUTPUT ACCEPT [7:616]\n:EVA6_IMMEDIATE - [0:0]\n-A PREROUTING -j EVA6_IMMEDIATE\n-A OUTPUT -j EVA6_IMMEDIATE\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x6\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x11\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x32\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x3a\" -j RETURN\n-A EVA6_IMMEDIATE -j DROP\nCOMMIT\n# Completed on Sat Oct 24 04:34:56 2026\n# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:56 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n-A FORWARD -i red -o gray -m policy --dir out --pol ipsec --reqid 100 -j ACCEPT\n-A FORWARD -i gray -o red -m policy --dir in --pol ipsec --reqid 100 -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 04:34:56 2026\n"
+    },
+    "policies": {
+      "observation_id": "cmd-0601",
+      "returncode": 0,
+      "value": "src fd10:2::/64 dst fd10:1::/64 \n\tdir fwd priority 0 \n\ttmpl src 10.21.0.1 dst 10.11.0.1\n\t\tproto esp reqid 100 mode tunnel\nsrc fd10:2::/64 dst fd10:1::/64 \n\tdir in priority 0 \n\ttmpl src 10.21.0.1 dst 10.11.0.1\n\t\tproto esp reqid 100 mode tunnel\nsrc fd10:1::/64 dst fd10:2::/64 \n\tdir out priority 0 \n\ttmpl src 10.11.0.1 dst 10.21.0.1\n\t\tproto esp reqid 100 mode tunnel\n"
+    },
+    "xfrm": {
+      "observation_id": "cmd-0602",
+      "returncode": 0,
+      "value": "src 10.21.0.1 dst 10.11.0.1\n\tproto esp spi 0x000003ea(1002) reqid 100(0x00000064) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 04:34:56\n\tanti-replay context: seq 0x3, oseq 0x0, bitmap 0x00000007\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 0(sec), hard 0(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  336(bytes), 3(packets)\n\t  add 2026-10-24 04:34:54 use 2026-10-24 04:34:54\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 10.11.0.1 dst 10.21.0.1\n\tproto esp spi 0x000003e9(1001) reqid 100(0x00000064) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 04:34:56\n\tanti-replay context: seq 0x0, oseq 0x3, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 0(sec), hard 0(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  336(bytes), 3(packets)\n\t  add 2026-10-24 04:34:54 use 2026-10-24 04:34:54\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n"
+    },
+    "macsec": {
+      "observation_id": "cmd-0603",
+      "returncode": 0,
+      "value": ""
+    }
+  },
+  "OA": {
+    "interfaces": {
+      "observation_id": "cmd-0612",
+      "returncode": 0,
+      "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3960,\"link_index\":3961,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"c2:08:b7:61:30:ba\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.11.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::c008:b7ff:fe61:30ba\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3963,\"link_index\":3962,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"52:b8:0d:4e:3f:f7\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":2,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd30:1::1\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::50b8:dff:fe4e:3ff7\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n"
+    },
+    "rules4": {
+      "observation_id": "cmd-0613",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n"
+    },
+    "rules6": {
+      "observation_id": "cmd-0614",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"}]\n"
+    },
+    "namespace": {
+      "observation_id": "cmd-0615",
+      "returncode": 0,
+      "value": "net:[4026580708]\n"
+    },
+    "named_namespaces": {
+      "observation_id": "cmd-0616",
+      "returncode": 0,
+      "value": "[{\"name\":\"tcv3f8-HB\",\"id\":7},{\"name\":\"tcv3f8-IB\",\"id\":6},{\"name\":\"tcv3f8-OB\",\"id\":5},{\"name\":\"tcv3f8-FB\",\"id\":4},{\"name\":\"tcv3f8-FA\",\"id\":2},{\"name\":\"tcv3f8-OA\"},{\"name\":\"tcv3f8-IA\",\"id\":0},{\"name\":\"tcv3f8-HA\",\"id\":3}]\n"
+    },
+    "peer_nsids": {
+      "observation_id": "cmd-0617",
+      "returncode": 0,
+      "value": "[{\"nsid\":0,\"name\":\"tcv3f8-IA\"},{\"nsid\":1},{\"nsid\":2,\"name\":\"tcv3f8-FA\"},{\"nsid\":3,\"name\":\"tcv3f8-HA\"},{\"nsid\":4,\"name\":\"tcv3f8-FB\"},{\"nsid\":5,\"name\":\"tcv3f8-OB\"},{\"nsid\":6,\"name\":\"tcv3f8-IB\"},{\"nsid\":7,\"name\":\"tcv3f8-HB\"}]\n"
+    },
+    "routes4": {
+      "observation_id": "cmd-0618",
+      "returncode": 0,
+      "value": "[{\"dst\":\"10.11.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.11.0.2\",\"flags\":[]},{\"dst\":\"10.21.0.1\",\"dev\":\"black\",\"scope\":\"link\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.11.0.2\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.11.0.2\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.11.0.3\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.11.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n"
+    },
+    "routes6": {
+      "observation_id": "cmd-0619",
+      "returncode": 0,
+      "value": "[{\"dst\":\"fd30:1::/64\",\"dev\":\"black\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd30:2::1\",\"gateway\":\"fd30:1::2\",\"dev\":\"black\",\"metric\":1024,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"black\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd30:1::\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd30:1::1\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::50b8:dff:fe4e:3ff7\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::c008:b7ff:fe61:30ba\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+    },
+    "filters4": {
+      "observation_id": "cmd-0620",
+      "returncode": 0,
+      "value": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:56 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n-A FORWARD -i gray -o black -m policy --dir out --pol ipsec --reqid 200 -j ACCEPT\n-A FORWARD -i black -o gray -m policy --dir in --pol ipsec --reqid 200 -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 04:34:56 2026\n"
+    },
+    "filters6": {
+      "observation_id": "cmd-0621",
+      "returncode": 0,
+      "value": "# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:56 2026\n*raw\n:PREROUTING ACCEPT [25:3596]\n:OUTPUT ACCEPT [16:2812]\n:EVA6_IMMEDIATE - [0:0]\n-A PREROUTING -j EVA6_IMMEDIATE\n-A OUTPUT -j EVA6_IMMEDIATE\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x6\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x11\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x32\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x3a\" -j RETURN\n-A EVA6_IMMEDIATE -j DROP\nCOMMIT\n# Completed on Sat Oct 24 04:34:56 2026\n# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:56 2026\n*filter\n:INPUT ACCEPT [3:732]\n:FORWARD DROP [3:228]\n:OUTPUT ACCEPT [0:0]\n-A INPUT -i black -p ipv6-icmp -m icmp6 --icmpv6-type 128 -j DROP\nCOMMIT\n# Completed on Sat Oct 24 04:34:56 2026\n"
+    },
+    "policies": {
+      "observation_id": "cmd-0622",
+      "returncode": 0,
+      "value": "src 10.21.0.1/32 dst 10.11.0.1/32 \n\tdir fwd priority 0 \n\ttmpl src fd30:2::1 dst fd30:1::1\n\t\tproto esp reqid 200 mode tunnel\nsrc 10.21.0.1/32 dst 10.11.0.1/32 \n\tdir in priority 0 \n\ttmpl src fd30:2::1 dst fd30:1::1\n\t\tproto esp reqid 200 mode tunnel\nsrc 10.11.0.1/32 dst 10.21.0.1/32 \n\tdir out priority 0 \n\ttmpl src fd30:1::1 dst fd30:2::1\n\t\tproto esp reqid 200 mode tunnel\n"
+    },
+    "xfrm": {
+      "observation_id": "cmd-0623",
+      "returncode": 0,
+      "value": "src fd30:2::1 dst fd30:1::1\n\tproto esp spi 0x000007d2(2002) reqid 200(0x000000c8) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 04:34:56\n\tanti-replay context: seq 0x9, oseq 0x0, bitmap 0x000001ff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 0(sec), hard 0(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  1512(bytes), 9(packets)\n\t  add 2026-10-24 04:34:17 use 2026-10-24 04:34:42\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc fd30:1::1 dst fd30:2::1\n\tproto esp spi 0x000007d1(2001) reqid 200(0x000000c8) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 04:34:56\n\tanti-replay context: seq 0x0, oseq 0x9, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 0(sec), hard 0(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  1512(bytes), 9(packets)\n\t  add 2026-10-24 04:34:17 use 2026-10-24 04:34:42\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n"
+    },
+    "macsec": {
+      "observation_id": "cmd-0624",
+      "returncode": 0,
+      "value": ""
+    }
+  },
+  "FA": {
+    "interfaces": {
+      "observation_id": "cmd-0633",
+      "returncode": 0,
+      "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3962,\"link_index\":3963,\"ifname\":\"inside\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"42:b0:39:52:3b:22\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd30:1::2\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::40b0:39ff:fe52:3b22\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3971,\"link_index\":3970,\"ifname\":\"outside\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"2a:3c:8f:5f:83:11\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":2,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd30:3::1\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::283c:8fff:fe5f:8311\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n"
+    },
+    "rules4": {
+      "observation_id": "cmd-0634",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n"
+    },
+    "rules6": {
+      "observation_id": "cmd-0635",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"}]\n"
+    },
+    "namespace": {
+      "observation_id": "cmd-0636",
+      "returncode": 0,
+      "value": "net:[4026580047]\n"
+    },
+    "named_namespaces": {
+      "observation_id": "cmd-0637",
+      "returncode": 0,
+      "value": "[{\"name\":\"tcv3f8-HB\",\"id\":7},{\"name\":\"tcv3f8-IB\",\"id\":6},{\"name\":\"tcv3f8-OB\",\"id\":5},{\"name\":\"tcv3f8-FB\",\"id\":2},{\"name\":\"tcv3f8-FA\"},{\"name\":\"tcv3f8-OA\",\"id\":0},{\"name\":\"tcv3f8-IA\",\"id\":4},{\"name\":\"tcv3f8-HA\",\"id\":3}]\n"
+    },
+    "peer_nsids": {
+      "observation_id": "cmd-0638",
+      "returncode": 0,
+      "value": "[{\"nsid\":0,\"name\":\"tcv3f8-OA\"},{\"nsid\":1},{\"nsid\":2,\"name\":\"tcv3f8-FB\"},{\"nsid\":3,\"name\":\"tcv3f8-HA\"},{\"nsid\":4,\"name\":\"tcv3f8-IA\"},{\"nsid\":5,\"name\":\"tcv3f8-OB\"},{\"nsid\":6,\"name\":\"tcv3f8-IB\"},{\"nsid\":7,\"name\":\"tcv3f8-HB\"}]\n"
+    },
+    "routes4": {
+      "observation_id": "cmd-0639",
+      "returncode": 0,
+      "value": "[{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n"
+    },
+    "routes6": {
+      "observation_id": "cmd-0640",
+      "returncode": 0,
+      "value": "[{\"dst\":\"fd30:1::/64\",\"dev\":\"inside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd30:2::/64\",\"gateway\":\"fd30:3::2\",\"dev\":\"outside\",\"metric\":1024,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd30:3::/64\",\"dev\":\"outside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"inside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"outside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd30:1::\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd30:1::2\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd30:3::\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd30:3::1\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::283c:8fff:fe5f:8311\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::40b0:39ff:fe52:3b22\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+    },
+    "filters4": {
+      "observation_id": "cmd-0641",
+      "returncode": 0,
+      "value": ""
+    },
+    "filters6": {
+      "observation_id": "cmd-0642",
+      "returncode": 0,
+      "value": "# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:57 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n-A FORWARD -s fd30:1::1/128 -d fd30:2::1/128 -p esp -j ACCEPT\n-A FORWARD -s fd30:2::1/128 -d fd30:1::1/128 -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 04:34:57 2026\n"
+    },
+    "policies": {
+      "observation_id": "cmd-0643",
+      "returncode": 0,
+      "value": ""
+    },
+    "xfrm": {
+      "observation_id": "cmd-0644",
+      "returncode": 0,
+      "value": ""
+    },
+    "macsec": {
+      "observation_id": "cmd-0645",
+      "returncode": 0,
+      "value": ""
+    }
+  },
+  "FB": {
+    "interfaces": {
+      "observation_id": "cmd-0654",
+      "returncode": 0,
+      "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3968,\"link_index\":3969,\"ifname\":\"inside\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ce:83:47:9b:9d:36\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd30:2::2\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::cc83:47ff:fe9b:9d36\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3970,\"link_index\":3971,\"ifname\":\"outside\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ee:26:10:34:e2:d4\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd30:3::2\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::ec26:10ff:fe34:e2d4\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n"
+    },
+    "rules4": {
+      "observation_id": "cmd-0655",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n"
+    },
+    "rules6": {
+      "observation_id": "cmd-0656",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"}]\n"
+    },
+    "namespace": {
+      "observation_id": "cmd-0657",
+      "returncode": 0,
+      "value": "net:[4026580856]\n"
+    },
+    "named_namespaces": {
+      "observation_id": "cmd-0658",
+      "returncode": 0,
+      "value": "[{\"name\":\"tcv3f8-HB\",\"id\":6},{\"name\":\"tcv3f8-IB\",\"id\":5},{\"name\":\"tcv3f8-OB\",\"id\":0},{\"name\":\"tcv3f8-FB\"},{\"name\":\"tcv3f8-FA\",\"id\":1},{\"name\":\"tcv3f8-OA\",\"id\":4},{\"name\":\"tcv3f8-IA\",\"id\":3},{\"name\":\"tcv3f8-HA\",\"id\":2}]\n"
+    },
+    "peer_nsids": {
+      "observation_id": "cmd-0659",
+      "returncode": 0,
+      "value": "[{\"nsid\":0,\"name\":\"tcv3f8-OB\"},{\"nsid\":1,\"name\":\"tcv3f8-FA\"},{\"nsid\":2,\"name\":\"tcv3f8-HA\"},{\"nsid\":3,\"name\":\"tcv3f8-IA\"},{\"nsid\":4,\"name\":\"tcv3f8-OA\"},{\"nsid\":5,\"name\":\"tcv3f8-IB\"},{\"nsid\":6,\"name\":\"tcv3f8-HB\"}]\n"
+    },
+    "routes4": {
+      "observation_id": "cmd-0660",
+      "returncode": 0,
+      "value": "[{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n"
+    },
+    "routes6": {
+      "observation_id": "cmd-0661",
+      "returncode": 0,
+      "value": "[{\"dst\":\"fd30:1::/64\",\"gateway\":\"fd30:3::1\",\"dev\":\"outside\",\"metric\":1024,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd30:2::/64\",\"dev\":\"inside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd30:3::/64\",\"dev\":\"outside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"inside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"outside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd30:2::\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd30:2::2\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd30:3::\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd30:3::2\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::cc83:47ff:fe9b:9d36\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::ec26:10ff:fe34:e2d4\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"outside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+    },
+    "filters4": {
+      "observation_id": "cmd-0662",
+      "returncode": 0,
+      "value": ""
+    },
+    "filters6": {
+      "observation_id": "cmd-0663",
+      "returncode": 0,
+      "value": "# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:57 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n-A FORWARD -s fd30:1::1/128 -d fd30:2::1/128 -p esp -j ACCEPT\n-A FORWARD -s fd30:2::1/128 -d fd30:1::1/128 -p esp -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 04:34:57 2026\n"
+    },
+    "policies": {
+      "observation_id": "cmd-0664",
+      "returncode": 0,
+      "value": ""
+    },
+    "xfrm": {
+      "observation_id": "cmd-0665",
+      "returncode": 0,
+      "value": ""
+    },
+    "macsec": {
+      "observation_id": "cmd-0666",
+      "returncode": 0,
+      "value": ""
+    }
+  },
+  "OB": {
+    "interfaces": {
+      "observation_id": "cmd-0675",
+      "returncode": 0,
+      "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3966,\"link_index\":3967,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"c6:87:5b:b2:17:5a\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.21.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::c487:5bff:feb2:175a\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3969,\"link_index\":3968,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ee:df:1f:86:6e:69\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":2,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd30:2::1\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::ecdf:1fff:fe86:6e69\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n"
+    },
+    "rules4": {
+      "observation_id": "cmd-0676",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n"
+    },
+    "rules6": {
+      "observation_id": "cmd-0677",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"}]\n"
+    },
+    "namespace": {
+      "observation_id": "cmd-0678",
+      "returncode": 0,
+      "value": "net:[4026580618]\n"
+    },
+    "named_namespaces": {
+      "observation_id": "cmd-0679",
+      "returncode": 0,
+      "value": "[{\"name\":\"tcv3f8-HB\",\"id\":7},{\"name\":\"tcv3f8-IB\",\"id\":0},{\"name\":\"tcv3f8-OB\"},{\"name\":\"tcv3f8-FB\",\"id\":2},{\"name\":\"tcv3f8-FA\",\"id\":6},{\"name\":\"tcv3f8-OA\",\"id\":5},{\"name\":\"tcv3f8-IA\",\"id\":4},{\"name\":\"tcv3f8-HA\",\"id\":3}]\n"
+    },
+    "peer_nsids": {
+      "observation_id": "cmd-0680",
+      "returncode": 0,
+      "value": "[{\"nsid\":0,\"name\":\"tcv3f8-IB\"},{\"nsid\":1},{\"nsid\":2,\"name\":\"tcv3f8-FB\"},{\"nsid\":3,\"name\":\"tcv3f8-HA\"},{\"nsid\":4,\"name\":\"tcv3f8-IA\"},{\"nsid\":5,\"name\":\"tcv3f8-OA\"},{\"nsid\":6,\"name\":\"tcv3f8-FA\"},{\"nsid\":7,\"name\":\"tcv3f8-HB\"}]\n"
+    },
+    "routes4": {
+      "observation_id": "cmd-0681",
+      "returncode": 0,
+      "value": "[{\"dst\":\"10.11.0.1\",\"dev\":\"black\",\"scope\":\"link\",\"flags\":[]},{\"dst\":\"10.21.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.21.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.21.0.2\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.21.0.2\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.21.0.3\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.21.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n"
+    },
+    "routes6": {
+      "observation_id": "cmd-0682",
+      "returncode": 0,
+      "value": "[{\"dst\":\"fd30:1::1\",\"gateway\":\"fd30:2::2\",\"dev\":\"black\",\"metric\":1024,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd30:2::/64\",\"dev\":\"black\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"black\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd30:2::\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd30:2::1\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::c487:5bff:feb2:175a\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::ecdf:1fff:fe86:6e69\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+    },
+    "filters4": {
+      "observation_id": "cmd-0683",
+      "returncode": 0,
+      "value": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:57 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n-A FORWARD -i gray -o black -m policy --dir out --pol ipsec --reqid 200 -j ACCEPT\n-A FORWARD -i black -o gray -m policy --dir in --pol ipsec --reqid 200 -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 04:34:57 2026\n"
+    },
+    "filters6": {
+      "observation_id": "cmd-0684",
+      "returncode": 0,
+      "value": "# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:57 2026\n*raw\n:PREROUTING ACCEPT [16:2804]\n:OUTPUT ACCEPT [16:2812]\n:EVA6_IMMEDIATE - [0:0]\n-A PREROUTING -j EVA6_IMMEDIATE\n-A OUTPUT -j EVA6_IMMEDIATE\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x6\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x11\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x32\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x3a\" -j RETURN\n-A EVA6_IMMEDIATE -j DROP\nCOMMIT\n# Completed on Sat Oct 24 04:34:57 2026\n# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:57 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\nCOMMIT\n# Completed on Sat Oct 24 04:34:57 2026\n"
+    },
+    "policies": {
+      "observation_id": "cmd-0685",
+      "returncode": 0,
+      "value": "src 10.11.0.1/32 dst 10.21.0.1/32 \n\tdir fwd priority 0 \n\ttmpl src fd30:1::1 dst fd30:2::1\n\t\tproto esp reqid 200 mode tunnel\nsrc 10.11.0.1/32 dst 10.21.0.1/32 \n\tdir in priority 0 \n\ttmpl src fd30:1::1 dst fd30:2::1\n\t\tproto esp reqid 200 mode tunnel\nsrc 10.21.0.1/32 dst 10.11.0.1/32 \n\tdir out priority 0 \n\ttmpl src fd30:2::1 dst fd30:1::1\n\t\tproto esp reqid 200 mode tunnel\n"
+    },
+    "xfrm": {
+      "observation_id": "cmd-0686",
+      "returncode": 0,
+      "value": "src fd30:2::1 dst fd30:1::1\n\tproto esp spi 0x000007d2(2002) reqid 200(0x000000c8) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 04:34:56\n\tanti-replay context: seq 0x0, oseq 0x9, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 0(sec), hard 0(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  1512(bytes), 9(packets)\n\t  add 2026-10-24 04:34:17 use 2026-10-24 04:34:42\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc fd30:1::1 dst fd30:2::1\n\tproto esp spi 0x000007d1(2001) reqid 200(0x000000c8) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 04:34:56\n\tanti-replay context: seq 0x9, oseq 0x0, bitmap 0x000001ff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 0(sec), hard 0(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  1512(bytes), 9(packets)\n\t  add 2026-10-24 04:34:17 use 2026-10-24 04:34:42\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n"
+    },
+    "macsec": {
+      "observation_id": "cmd-0687",
+      "returncode": 0,
+      "value": ""
+    }
+  },
+  "IB": {
+    "interfaces": {
+      "observation_id": "cmd-0696",
+      "returncode": 0,
+      "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3964,\"link_index\":3965,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"8e:6b:d4:d7:3e:47\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd10:2::1\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::8c6b:d4ff:fed7:3e47\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3967,\"link_index\":3966,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"72:bb:b7:2e:76:9d\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":2,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.21.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::70bb:b7ff:fe2e:769d\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n"
+    },
+    "rules4": {
+      "observation_id": "cmd-0697",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n"
+    },
+    "rules6": {
+      "observation_id": "cmd-0698",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"}]\n"
+    },
+    "namespace": {
+      "observation_id": "cmd-0699",
+      "returncode": 0,
+      "value": "net:[4026580998]\n"
+    },
+    "named_namespaces": {
+      "observation_id": "cmd-0700",
+      "returncode": 0,
+      "value": "[{\"name\":\"tcv3f8-HB\",\"id\":0},{\"name\":\"tcv3f8-IB\"},{\"name\":\"tcv3f8-OB\",\"id\":2},{\"name\":\"tcv3f8-FB\",\"id\":7},{\"name\":\"tcv3f8-FA\",\"id\":6},{\"name\":\"tcv3f8-OA\",\"id\":5},{\"name\":\"tcv3f8-IA\",\"id\":4},{\"name\":\"tcv3f8-HA\",\"id\":3}]\n"
+    },
+    "peer_nsids": {
+      "observation_id": "cmd-0701",
+      "returncode": 0,
+      "value": "[{\"nsid\":0,\"name\":\"tcv3f8-HB\"},{\"nsid\":1},{\"nsid\":2,\"name\":\"tcv3f8-OB\"},{\"nsid\":3,\"name\":\"tcv3f8-HA\"},{\"nsid\":4,\"name\":\"tcv3f8-IA\"},{\"nsid\":5,\"name\":\"tcv3f8-OA\"},{\"nsid\":6,\"name\":\"tcv3f8-FA\"},{\"nsid\":7,\"name\":\"tcv3f8-FB\"}]\n"
+    },
+    "routes4": {
+      "observation_id": "cmd-0702",
+      "returncode": 0,
+      "value": "[{\"dst\":\"10.11.0.1\",\"gateway\":\"10.21.0.2\",\"dev\":\"gray\",\"flags\":[]},{\"dst\":\"10.21.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.21.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.21.0.1\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.21.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.21.0.3\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.21.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n"
+    },
+    "routes6": {
+      "observation_id": "cmd-0703",
+      "returncode": 0,
+      "value": "[{\"dst\":\"fd10:1::/64\",\"dev\":\"gray\",\"metric\":1024,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd10:2::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd10:2::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd10:2::1\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::70bb:b7ff:fe2e:769d\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::8c6b:d4ff:fed7:3e47\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+    },
+    "filters4": {
+      "observation_id": "cmd-0704",
+      "returncode": 0,
+      "value": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:57 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\nCOMMIT\n# Completed on Sat Oct 24 04:34:57 2026\n"
+    },
+    "filters6": {
+      "observation_id": "cmd-0705",
+      "returncode": 0,
+      "value": "# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:57 2026\n*raw\n:PREROUTING ACCEPT [25:2624]\n:OUTPUT ACCEPT [8:688]\n:EVA6_IMMEDIATE - [0:0]\n-A PREROUTING -j EVA6_IMMEDIATE\n-A OUTPUT -j EVA6_IMMEDIATE\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x6\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x11\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x32\" -j RETURN\n-A EVA6_IMMEDIATE -m u32 --u32 \"0x4>>0x8&0xff=0x3a\" -j RETURN\n-A EVA6_IMMEDIATE -j DROP\nCOMMIT\n# Completed on Sat Oct 24 04:34:57 2026\n# Generated by ip6tables-save v1.8.10 (nf_tables) on Sat Oct 24 04:34:57 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n-A FORWARD -i red -o gray -m policy --dir out --pol ipsec --reqid 100 -j ACCEPT\n-A FORWARD -i gray -o red -m policy --dir in --pol ipsec --reqid 100 -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 04:34:57 2026\n"
+    },
+    "policies": {
+      "observation_id": "cmd-0706",
+      "returncode": 0,
+      "value": "src fd10:1::/64 dst fd10:2::/64 \n\tdir fwd priority 0 \n\ttmpl src 10.11.0.1 dst 10.21.0.1\n\t\tproto esp reqid 100 mode tunnel\nsrc fd10:1::/64 dst fd10:2::/64 \n\tdir in priority 0 \n\ttmpl src 10.11.0.1 dst 10.21.0.1\n\t\tproto esp reqid 100 mode tunnel\nsrc fd10:2::/64 dst fd10:1::/64 \n\tdir out priority 0 \n\ttmpl src 10.21.0.1 dst 10.11.0.1\n\t\tproto esp reqid 100 mode tunnel\n"
+    },
+    "xfrm": {
+      "observation_id": "cmd-0707",
+      "returncode": 0,
+      "value": "src 10.21.0.1 dst 10.11.0.1\n\tproto esp spi 0x000003ea(1002) reqid 100(0x00000064) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 04:34:56\n\tanti-replay context: seq 0x0, oseq 0x3, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 0(sec), hard 0(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  336(bytes), 3(packets)\n\t  add 2026-10-24 04:34:54 use 2026-10-24 04:34:54\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 10.11.0.1 dst 10.21.0.1\n\tproto esp spi 0x000003e9(1001) reqid 100(0x00000064) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 04:34:56\n\tanti-replay context: seq 0x3, oseq 0x0, bitmap 0x00000007\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 0(sec), hard 0(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  336(bytes), 3(packets)\n\t  add 2026-10-24 04:34:54 use 2026-10-24 04:34:54\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n"
+    },
+    "macsec": {
+      "observation_id": "cmd-0708",
+      "returncode": 0,
+      "value": ""
+    }
+  },
+  "HB": {
+    "interfaces": {
+      "observation_id": "cmd-0717",
+      "returncode": 0,
+      "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3965,\"link_index\":3964,\"ifname\":\"red\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"a2:7c:f7:4d:17:1c\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fd10:2::2\",\"prefixlen\":64,\"scope\":\"global\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::a07c:f7ff:fe4d:171c\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n"
+    },
+    "rules4": {
+      "observation_id": "cmd-0718",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n"
+    },
+    "rules6": {
+      "observation_id": "cmd-0719",
+      "returncode": 0,
+      "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"}]\n"
+    },
+    "namespace": {
+      "observation_id": "cmd-0720",
+      "returncode": 0,
+      "value": "net:[4026581075]\n"
+    },
+    "named_namespaces": {
+      "observation_id": "cmd-0721",
+      "returncode": 0,
+      "value": "[{\"name\":\"tcv3f8-HB\"},{\"name\":\"tcv3f8-IB\",\"id\":1},{\"name\":\"tcv3f8-OB\",\"id\":7},{\"name\":\"tcv3f8-FB\",\"id\":6},{\"name\":\"tcv3f8-FA\",\"id\":5},{\"name\":\"tcv3f8-OA\",\"id\":4},{\"name\":\"tcv3f8-IA\",\"id\":3},{\"name\":\"tcv3f8-HA\",\"id\":2}]\n"
+    },
+    "peer_nsids": {
+      "observation_id": "cmd-0722",
+      "returncode": 0,
+      "value": "[{\"nsid\":0},{\"nsid\":1,\"name\":\"tcv3f8-IB\"},{\"nsid\":2,\"name\":\"tcv3f8-HA\"},{\"nsid\":3,\"name\":\"tcv3f8-IA\"},{\"nsid\":4,\"name\":\"tcv3f8-OA\"},{\"nsid\":5,\"name\":\"tcv3f8-FA\"},{\"nsid\":6,\"name\":\"tcv3f8-FB\"},{\"nsid\":7,\"name\":\"tcv3f8-OB\"}]\n"
+    },
+    "routes4": {
+      "observation_id": "cmd-0723",
+      "returncode": 0,
+      "value": "[{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n"
+    },
+    "routes6": {
+      "observation_id": "cmd-0724",
+      "returncode": 0,
+      "value": "[{\"dst\":\"fd10:1::/64\",\"gateway\":\"fd10:2::1\",\"dev\":\"red\",\"metric\":1024,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fd10:2::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"red\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fd10:2::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fd10:2::2\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"anycast\",\"dst\":\"fe80::\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::a07c:f7ff:fe4d:171c\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"red\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+    },
+    "filters4": {
+      "observation_id": "cmd-0725",
+      "returncode": 0,
+      "value": ""
+    },
+    "filters6": {
+      "observation_id": "cmd-0726",
+      "returncode": 0,
+      "value": ""
+    },
+    "policies": {
+      "observation_id": "cmd-0727",
+      "returncode": 0,
+      "value": ""
+    },
+    "xfrm": {
+      "observation_id": "cmd-0728",
+      "returncode": 0,
+      "value": ""
+    },
+    "macsec": {
+      "observation_id": "cmd-0729",
+      "returncode": 0,
+      "value": ""
+    }
+  }
+}

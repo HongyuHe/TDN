@@ -1,0 +1,104 @@
+{
+  "at": "2026-10-24T14:43:57.512721+00:00",
+  "checks": [
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7",
+      "manifest_sha256": "817ccfd85d592edb80d2b550b278cb3814286b821e216a684a19a2c5eda159d1",
+      "records": 44,
+      "controls": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/freebsd-PF-skip-v13",
+      "manifest_sha256": "eb63c086f62bc6cf658892e17a1f32ddc629141ce7e609fb4173829545ab08e6",
+      "records": 50,
+      "controls": 2,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/freebsd-audit-power-v8",
+      "manifest_sha256": "d27119723a22ba3ae7d1b7e2035fb3d5440b75a715e4f28053838990e338586e",
+      "records": 106,
+      "controls": 8,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/freebsd-automatic-reauth-v3",
+      "manifest_sha256": "f00ff986d7bfcd51ba529793f9101ba843e9aeacd43f68cfc6665e0125a14f4b",
+      "records": 31,
+      "controls": 3,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/freebsd-botan-build-v3",
+      "manifest_sha256": "f9f03c1657f14a88496882c1d99981637f1ec8b03b82217508fc4ea9b20d102b",
+      "records": 2,
+      "controls": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/freebsd-certificate-events-v4",
+      "manifest_sha256": "1eeda410899f27a159e3133bc2cb54db6706a914302a9004b91cd291ec200c33",
+      "records": 49,
+      "controls": 5,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/freebsd-native-integration-v3",
+      "manifest_sha256": "ef40428cdb45e353d168c5457d0e8e6d0ec602f6a5e3794933ad3add9e81e869",
+      "records": 165,
+      "controls": 2,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/freebsd-native-integration-v8",
+      "manifest_sha256": "9481ac7d34b7d64a1fb2e002642743acfafa982eedaab08d6549eaa9c8576fc4",
+      "records": 67,
+      "controls": 6,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/independent-Red-clocks-v3",
+      "manifest_sha256": "0a487ceada72ac81191a9c6036bdc71c9898a5dba76c192eb45b61acb4f86d48",
+      "records": 35,
+      "controls": 3,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/native-CBC-alternative-v4",
+      "manifest_sha256": "b75b9eafe0123b67df10eba0120bbca34d773f991367a8b9a4c72d2219802c8c",
+      "records": 68,
+      "controls": 4,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/native-DNS-hardening-v11",
+      "manifest_sha256": "a48116efa6f5bf52b9168da68181b84b97e3e7474951413ba91cecb83d9eabb1",
+      "records": 242,
+      "controls": 20,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/native-DNS-hardening-v7",
+      "manifest_sha256": "6106e1490a2ad76233160e527fed5e2a843b5f911544452e4eb5ca41167c9a90",
+      "records": 170,
+      "controls": 10,
+      "error": null
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/native-fresh-replay-v7-worker/replay-freebsd-bootstrap-v3",
+      "manifest_sha256": "2c28b167ef05c4ebec21c1a8b51e1655de56452f52d93f777acc1fbcfb1df33e",
+      "records": 10,
+      "controls": 0,
+      "error": null
+    }
+  ],
+  "completed_jobs": 13,
+  "controller_source_sha256": "e674129a76df37192eddc6a16f2e2957223bd50ce3cc5e3209c1b8cde96e123b",
+  "source_binding": "All exact transformed staged sources match the controller source records. Worker source hashes refer to those transformed bytes. Each worker bundle file matches its retained manifest.",
+  "scope": [
+    "Fresh isolated NQ deployment on pc22 with FRR/OVS and actual FreeBSD/Botan Inners. Linux Outers use native Docker components. Existing NC/ND/MW deployments remain separate.",
+    "The13 selected jobs include bootstrap, build, native integration, DNS IPv4/IPv6, CBC, certificate events, scheduled reauthentication, independent Red clocks, abrupt power/startup/audit persistence and PF interface flags. Separate supplemental or Linux Outer VM experiments are not silently included.",
+    "Guest SSH/charon start automatically after the power events. Explicit IKE resets and CHILD initiation in the power driver are preserved. No automatic SA recovery or full76-group compliance follows."
+  ]
+}

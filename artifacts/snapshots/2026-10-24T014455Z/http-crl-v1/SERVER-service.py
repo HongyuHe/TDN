@@ -1,0 +1,1 @@
+import http.server,sys;from functools import partial;http.server.HTTPServer(("0.0.0.0",80),partial(http.server.SimpleHTTPRequestHandler,directory=sys.argv[1])).serve_forever()

@@ -1,0 +1,307 @@
+{
+  "at": "2026-10-24T03:21:44.144569+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:21:06.204477+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc16.cloudlab.umass.edu",
+        "qemu-system-x86_64 --version"
+      ],
+      "returncode": 0,
+      "stdout": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)\nCopyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:07.439569+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import socket;s=socket.socket(socket.AF_UNIX);s.settimeout(3);s.connect('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-monitor-v3.sock'\"'\"');print(s.recv(4096).decode());s.sendall(b'\"'\"'quit\\n'\"'\"');print(s.recv(4096).decode());s.close()'"
+      ],
+      "returncode": 0,
+      "stdout": "QEMU 8.2.2 monitor - type 'help' for more information\n\n(qemu) \n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:08.272118+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:10.131160+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:11.996141+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:13.861987+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:15.730219+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:17.624728+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:19.468655+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:21.352411+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:23.217517+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:25.080510+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:26.993810+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:28.851287+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:30.718514+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:32.558681+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:34.408529+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:36.235728+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:38.099302+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "running\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:21:44.144248+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "Connection timed out during banner exchange\nConnection to 198.22.255.32 port 22 timed out\n"
+    }
+  ],
+  "error": "Connection timed out during banner exchange\nConnection to 198.22.255.32 port 22 timed out\n",
+  "reason": "Original AW VM shared pc22 with Inner VMs, violating the RG045 narrative host-dedication condition. Move only the AW guest to dedicated physical AW pc16; original VM disk and failed placement evidence remain preserved. Private credentials stay in remote private directories and encrypted SSH transfer."
+}

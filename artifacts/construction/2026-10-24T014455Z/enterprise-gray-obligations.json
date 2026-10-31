@@ -1,0 +1,1713 @@
+{
+  "source": "artifacts/construction/2026-10-24T014455Z/references/enterprise-gray.indexed.txt",
+  "source_sha256": "ae7341370e5fa45f6de0edb3727c03bdd54e62172f22c895f61cce3e240315fc",
+  "table_rows": 75,
+  "table_counts": {
+    "8": 23,
+    "9": 5,
+    "10": 21,
+    "11": 23,
+    "12": 2,
+    "13": 1
+  },
+  "linked_groups": [
+    "RG-011",
+    "RG-044",
+    "RG-046"
+  ],
+  "complete_annex_formalization": false,
+  "limitations": [
+    "The index preserves original table text, designations and alternatives together. It does not infer a selected branch from the letters T or O.",
+    "Narrative requirements in sections5\u20139 and delegated annex duties need additional clause-level accounting. The75 rows do not claim exhaustive sentence extraction.",
+    "Three rows relocate requirements to named key-management annexes. They remain tracked without inventing new requirements.",
+    "EG-AR-25 and EG-AR-26 have different meanings in Tables8 and11. Table-scoped keys preserve both."
+  ],
+  "rows": [
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-1",
+      "table": 8,
+      "requirement_id": "EG-FW-1",
+      "capability_section": "general",
+      "first_indexed_line": 790,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L790@P29: EG-FW-1 The Gray Firewall must only accept",
+        "L791@P29: management traffic on the physical ports",
+        "L792@P29: connected to the Gray Management",
+        "L793@P29: Network and/or EG Network.",
+        "L794@P29: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-1 The Gray Firewall must only accept\nmanagement traffic on the physical ports\nconnected to the Gray Management\nNetwork and/or EG Network.\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-2",
+      "table": 8,
+      "requirement_id": "EG-FW-2",
+      "capability_section": "general",
+      "first_indexed_line": 795,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L795@P29: EG-FW-2 The Gray Firewall must only permit",
+        "L796@P29: packets whose source and destination IP",
+        "L797@P29: addresses match the external interfaces of",
+        "L798@P29: the Encryption Components supporting",
+        "L799@P29: the Red Network and EG Network of the",
+        "L800@P29: same classification level and internal",
+        "L801@P29: interface of the Encryption Components",
+        "L802@P29: CSfC Solution.",
+        "L803@P29: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-2 The Gray Firewall must only permit\npackets whose source and destination IP\naddresses match the external interfaces of\nthe Encryption Components supporting\nthe Red Network and EG Network of the\nsame classification level and internal\ninterface of the Encryption Components\nCSfC Solution.\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-3",
+      "table": 8,
+      "requirement_id": "EG-FW-3",
+      "capability_section": "general",
+      "first_indexed_line": 804,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L804@P29: EG-FW-3 The Gray Firewall\u2019s outward interface",
+        "L805@P29: must block all packets whose source",
+        "L806@P29: address does not match a list of addresses",
+        "L807@P29: or address ranges known to be reachable",
+        "L808@P29: from the interface on which the packet",
+        "L809@P29: was received.",
+        "L810@P29: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-3 The Gray Firewall\u2019s outward interface\nmust block all packets whose source\naddress does not match a list of addresses\nor address ranges known to be reachable\nfrom the interface on which the packet\nwas received.\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-4",
+      "table": 8,
+      "requirement_id": "EG-FW-4",
+      "capability_section": "general",
+      "first_indexed_line": 811,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L811@P29: EG-FW-4 The Gray Firewall must deny all traffic on",
+        "L812@P29: the outward interface that is not explicitly",
+        "L813@P29: allowed.",
+        "L814@P29: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-4 The Gray Firewall must deny all traffic on\nthe outward interface that is not explicitly\nallowed.\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-5",
+      "table": 8,
+      "requirement_id": "EG-FW-5",
+      "capability_section": "general",
+      "first_indexed_line": 815,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L815@P29: EG-FW-5 The Gray Firewall must block all traffic",
+        "L816@P29: routed to and between two or more Inner",
+        "L817@P29: VPN Gateways of different classification",
+        "L818@P29: levels.",
+        "L819@P29: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-5 The Gray Firewall must block all traffic\nrouted to and between two or more Inner\nVPN Gateways of different classification\nlevels.\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-6",
+      "table": 8,
+      "requirement_id": "EG-FW-6",
+      "capability_section": "general",
+      "first_indexed_line": 820,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L820@P29: EG-FW-6 Remote administration of the Gray",
+        "L821@P29: Firewall from the Gray Management",
+        "L822@P29: Network and EG Networks must only use",
+        "L823@P29: SSHv2, IPsec, or TLS.",
+        "L824@P29: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-6 Remote administration of the Gray\nFirewall from the Gray Management\nNetwork and EG Networks must only use\nSSHv2, IPsec, or TLS.\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-7",
+      "table": 8,
+      "requirement_id": "EG-FW-7",
+      "capability_section": "general",
+      "first_indexed_line": 825,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L825@P29: EG-FW-7 The Gray Firewall must permit IKE, IPsec,",
+        "L826@P29: or TLS traffic between EUDs and",
+        "L827@P29: Encryption Components.",
+        "L828@P29: T=O MA, WLAN"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-7 The Gray Firewall must permit IKE, IPsec,\nor TLS traffic between EUDs and\nEncryption Components.\nT=O MA, WLAN",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-8",
+      "table": 8,
+      "requirement_id": "EG-FW-8",
+      "capability_section": "general",
+      "first_indexed_line": 829,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L829@P29: EG-FW-8 The Gray Firewall must allow HTTP traffic",
+        "L830@P29: between the Authentication Server and",
+        "L831@P29: the Gray CDP or OCSP Responder.",
+        "L832@P29: T EG-FW-9",
+        "L833@P29: and",
+        "L834@P29: EG-FW-10",
+        "L835@P29: All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-8 The Gray Firewall must allow HTTP traffic\nbetween the Authentication Server and\nthe Gray CDP or OCSP Responder.\nT EG-FW-9\nand\nEG-FW-10\nAll",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-9",
+      "table": 8,
+      "requirement_id": "EG-FW-9",
+      "capability_section": "general",
+      "first_indexed_line": 836,
+      "pdf_pages": [
+        30
+      ],
+      "raw_indexed_lines": [
+        "L836@P29: EG-FW-9 The Gray Firewall/Encryption Component",
+        "L837@P29: must allow HTTP traffic between the",
+        "L838@P29: Authentication Server and the Gray CDP",
+        "L839@P29: or OCSP Responder.",
+        "L840@P29: O EG-FW-8 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-9 The Gray Firewall/Encryption Component\nmust allow HTTP traffic between the\nAuthentication Server and the Gray CDP\nor OCSP Responder.\nO EG-FW-8 All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-10",
+      "table": 8,
+      "requirement_id": "EG-FW-10",
+      "capability_section": "general",
+      "first_indexed_line": 841,
+      "pdf_pages": [
+        30,
+        31
+      ],
+      "raw_indexed_lines": [
+        "L841@P29: EG-FW-10 The Gray Firewall must allow HTTP",
+        "L842@P29: responses from the Gray CDP or OCSP",
+        "L843@P29: Responder to the Authentication Server",
+        "L844@P29: that contains a well-formed CRL per IETF",
+        "L845@P29-30: O EG-FW-8 All25",
+        "L846@P30: Req # Requirement Description Threshold/",
+        "L847@P30: Objective Alternative Capability Package",
+        "L848@P30: RFC 5280 or OCSP Response per RFC 6960",
+        "L849@P30: and block all other HTTP responses."
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-10 The Gray Firewall must allow HTTP\nresponses from the Gray CDP or OCSP\nResponder to the Authentication Server\nthat contains a well-formed CRL per IETF\nO EG-FW-8 All25\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package\nRFC 5280 or OCSP Response per RFC 6960\nand block all other HTTP responses.",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-11",
+      "table": 8,
+      "requirement_id": "EG-FW-11",
+      "capability_section": "general",
+      "first_indexed_line": 850,
+      "pdf_pages": [
+        31
+      ],
+      "raw_indexed_lines": [
+        "L850@P30: EG-FW-11 The Gray Firewall\u2019s inward interface must",
+        "L851@P30: block all packets whose source address",
+        "L852@P30: does not match a list of addresses or",
+        "L853@P30: address ranges known to be reachable",
+        "L854@P30: from the interface on which the packet",
+        "L855@P30: was received.",
+        "L856@P30: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-11 The Gray Firewall\u2019s inward interface must\nblock all packets whose source address\ndoes not match a list of addresses or\naddress ranges known to be reachable\nfrom the interface on which the packet\nwas received.\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-12",
+      "table": 8,
+      "requirement_id": "EG-FW-12",
+      "capability_section": "general",
+      "first_indexed_line": 857,
+      "pdf_pages": [
+        31
+      ],
+      "raw_indexed_lines": [
+        "L857@P30: EG-FW-12 The Gray Firewall\u2019s inward interface must",
+        "L858@P30: deny all traffic that is not explicitly",
+        "L859@P30: allowed.",
+        "L860@P30: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-12 The Gray Firewall\u2019s inward interface must\ndeny all traffic that is not explicitly\nallowed.\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-13",
+      "table": 8,
+      "requirement_id": "EG-FW-13",
+      "capability_section": "general",
+      "first_indexed_line": 861,
+      "pdf_pages": [
+        31
+      ],
+      "raw_indexed_lines": [
+        "L861@P30: EG-FW-13 The Gray Firewall must allow control",
+        "L862@P30: plane traffic between the Outer",
+        "L863@P30: Encryption Component, Gray Firewall,",
+        "L864@P30: Gray Management Network, and EG",
+        "L865@P30: Network (e.g., NTP, Dynamic Host",
+        "L866@P30: Configuration Protocol, and DNS).",
+        "L867@P30: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-13 The Gray Firewall must allow control\nplane traffic between the Outer\nEncryption Component, Gray Firewall,\nGray Management Network, and EG\nNetwork (e.g., NTP, Dynamic Host\nConfiguration Protocol, and DNS).\nT=O All",
+      "next_work": "Define the actual traffic/address/interface condition, preserve explicit control-service exceptions, and bind local rule checks plus required positive traffic."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-14",
+      "table": 8,
+      "requirement_id": "EG-FW-14",
+      "capability_section": "general",
+      "first_indexed_line": 868,
+      "pdf_pages": [
+        31
+      ],
+      "raw_indexed_lines": [
+        "L868@P30: EG-FW-14 A Gray Firewall, Outer Encryption",
+        "L869@P30: Component, and Gray Encryption",
+        "L870@P30: Component must be administered from a",
+        "L871@P30: workstation designated for managing Gray",
+        "L872@P30: Components which resides on the local",
+        "L873@P30: Gray Management or EG Network.",
+        "L874@P30: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-14 A Gray Firewall, Outer Encryption\nComponent, and Gray Encryption\nComponent must be administered from a\nworkstation designated for managing Gray\nComponents which resides on the local\nGray Management or EG Network.\nT=O All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-FW-15",
+      "table": 8,
+      "requirement_id": "EG-FW-15",
+      "capability_section": "general",
+      "first_indexed_line": 875,
+      "pdf_pages": [
+        31
+      ],
+      "raw_indexed_lines": [
+        "L875@P30: EG-FW-15 Remote administration of all Gray",
+        "L876@P30: components must be done using SSHv2,",
+        "L877@P30: IPsec, or TLS with the appropriate CNSA",
+        "L878@P30: suite for the highest classification of the",
+        "L879@P30: solution. Encryption provided by the EG",
+        "L880@P30: Network does not fulfill this requirement.",
+        "L881@P30: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-15 Remote administration of all Gray\ncomponents must be done using SSHv2,\nIPsec, or TLS with the appropriate CNSA\nsuite for the highest classification of the\nsolution. Encryption provided by the EG\nNetwork does not fulfill this requirement.\nT=O All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-AR-1",
+      "table": 8,
+      "requirement_id": "EG-AR-1",
+      "capability_section": "general",
+      "first_indexed_line": 882,
+      "pdf_pages": [
+        31
+      ],
+      "raw_indexed_lines": [
+        "L882@P30: EG-AR-1 All Gray Management Services and",
+        "L883@P30: Enterprise Gray Services must go through",
+        "L884@P30: a firewall to access and communicate with",
+        "L885@P30: the Outer Encryption Component, Gray",
+        "L886@P30: Firewall, and Gray Encryption Component.",
+        "L887@P30: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-1 All Gray Management Services and\nEnterprise Gray Services must go through\na firewall to access and communicate with\nthe Outer Encryption Component, Gray\nFirewall, and Gray Encryption Component.\nT=O All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-AR-2",
+      "table": 8,
+      "requirement_id": "EG-AR-2",
+      "capability_section": "general",
+      "first_indexed_line": 888,
+      "pdf_pages": [
+        31
+      ],
+      "raw_indexed_lines": [
+        "L888@P30: EG-AR-2 The time servers that serve network time",
+        "L889@P30: to Gray Management and Red",
+        "L890@P30: Management must use a secure protocol",
+        "L891@P30: to maintain the authenticity and integrity",
+        "L892@P30: of the network time to clients.",
+        "L893@P30: O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-2 The time servers that serve network time\nto Gray Management and Red\nManagement must use a secure protocol\nto maintain the authenticity and integrity\nof the network time to clients.\nO All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-AR-3",
+      "table": 8,
+      "requirement_id": "EG-AR-3",
+      "capability_section": "general",
+      "first_indexed_line": 894,
+      "pdf_pages": [
+        31,
+        32
+      ],
+      "raw_indexed_lines": [
+        "L894@P30: EG-AR-3 The DNS servers used on the Gray Data,",
+        "L895@P30: Gray Management, and Red Management",
+        "L896@P30: Networks must use DNSSEC to secure and",
+        "L897@P30-31: O All26",
+        "L898@P31: Req # Requirement Description Threshold/",
+        "L899@P31: Objective Alternative Capability Package",
+        "L900@P31: maintain the authenticity and integrity of",
+        "L901@P31: the domain record to clients."
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-3 The DNS servers used on the Gray Data,\nGray Management, and Red Management\nNetworks must use DNSSEC to secure and\nO All26\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package\nmaintain the authenticity and integrity of\nthe domain record to clients.",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-AR-4",
+      "table": 8,
+      "requirement_id": "EG-AR-4",
+      "capability_section": "general",
+      "first_indexed_line": 902,
+      "pdf_pages": [
+        32
+      ],
+      "raw_indexed_lines": [
+        "L902@P31: EG-AR-4 The Outer Encryption Component must be",
+        "L903@P31: configured to not route between the inner",
+        "L904@P31: interfaces if there is more than one.",
+        "L905@P31: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-4 The Outer Encryption Component must be\nconfigured to not route between the inner\ninterfaces if there is more than one.\nT=O All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-AR-5",
+      "table": 8,
+      "requirement_id": "EG-AR-5",
+      "capability_section": "general",
+      "first_indexed_line": 906,
+      "pdf_pages": [
+        32
+      ],
+      "raw_indexed_lines": [
+        "L906@P31: EG-AR-5 The authentication service that",
+        "L907@P31: authenticates EG and/or Gray",
+        "L908@P31: Management administrators must be",
+        "L909@P31: separate from the EUD and Encryption",
+        "L910@P31: Components.",
+        "L911@P31: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-5 The authentication service that\nauthenticates EG and/or Gray\nManagement administrators must be\nseparate from the EUD and Encryption\nComponents.\nT=O All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-PS-1",
+      "table": 8,
+      "requirement_id": "EG-PS-1",
+      "capability_section": "general",
+      "first_indexed_line": 912,
+      "pdf_pages": [
+        32
+      ],
+      "raw_indexed_lines": [
+        "L912@P31: EG-PS-1 The Gray Firewall must be chosen from",
+        "L913@P31: the list of Traffic Filtering Firewalls on the",
+        "L914@P31: CSfC Components List.",
+        "L915@P31: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-PS-1 The Gray Firewall must be chosen from\nthe list of Traffic Filtering Firewalls on the\nCSfC Components List.\nT=O All",
+      "next_work": "Separate product/approval provenance from technical placement or mechanism facts; no approval is inferred from emulation."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-AR-25",
+      "table": 8,
+      "requirement_id": "EG-AR-25",
+      "capability_section": "general",
+      "first_indexed_line": 916,
+      "pdf_pages": [
+        32
+      ],
+      "raw_indexed_lines": [
+        "L916@P31: EG-AR-25 The Gray Management Network must be",
+        "L917@P31: used exclusively for all management of the",
+        "L918@P31: Outer Encryption Component, Gray",
+        "L919@P31: Firewall, Gray Encryption Component, if",
+        "L920@P31: present, and Solution Components within",
+        "L921@P31: the Gray Network.",
+        "L922@P31: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": true,
+      "source_text": "EG-AR-25 The Gray Management Network must be\nused exclusively for all management of the\nOuter Encryption Component, Gray\nFirewall, Gray Encryption Component, if\npresent, and Solution Components within\nthe Gray Network.\nT=O All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T08-EG-AR-26",
+      "table": 8,
+      "requirement_id": "EG-AR-26",
+      "capability_section": "general",
+      "first_indexed_line": 923,
+      "pdf_pages": [
+        32
+      ],
+      "raw_indexed_lines": [
+        "L923@P31: EG-AR-26 All solution components (Firewalls, WLAN",
+        "L924@P31: Access Systems, VPN Gateways,",
+        "L925@P31: Authentication Servers, and EUDs) must",
+        "L926@P31: use software and firmware signing",
+        "L927@P31: algorithms in Table 4.",
+        "L928@P31: O Optional All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": true,
+      "source_text": "EG-AR-26 All solution components (Firewalls, WLAN\nAccess Systems, VPN Gateways,\nAuthentication Servers, and EUDs) must\nuse software and firmware signing\nalgorithms in Table 4.\nO Optional All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T09-EG-AR-6",
+      "table": 9,
+      "requirement_id": "EG-AR-6",
+      "capability_section": "multiple capability packages",
+      "first_indexed_line": 936,
+      "pdf_pages": [
+        32
+      ],
+      "raw_indexed_lines": [
+        "L936@P31: EG-AR-6 Inherit all security requirements of the",
+        "L937@P31: CPs that are being integrated together.",
+        "L938@P31: If the CPs have different requirements",
+        "L939@P31: accept the one with the higher security",
+        "L940@P31: posture.",
+        "L941@P31: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-6 Inherit all security requirements of the\nCPs that are being integrated together.\nIf the CPs have different requirements\naccept the one with the higher security\nposture.\nT=O All",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T09-EG-AR-7",
+      "table": 9,
+      "requirement_id": "EG-AR-7",
+      "capability_section": "multiple capability packages",
+      "first_indexed_line": 942,
+      "pdf_pages": [
+        32,
+        33
+      ],
+      "raw_indexed_lines": [
+        "L942@P31: EG-AR-7 An Outer Firewall is required between",
+        "L943@P31: the Outer Encryption Component and",
+        "L944@P31: the Black Network.",
+        "L945@P31-32: T=O MA/MSC 27",
+        "L946@P32: Req # Requirement Description Threshold/",
+        "L947@P32: Objective Alternative Capability Package"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-7 An Outer Firewall is required between\nthe Outer Encryption Component and\nthe Black Network.\nT=O MA/MSC 27\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T09-EG-AR-8",
+      "table": 9,
+      "requirement_id": "EG-AR-8",
+      "capability_section": "multiple capability packages",
+      "first_indexed_line": 948,
+      "pdf_pages": [
+        33
+      ],
+      "raw_indexed_lines": [
+        "L948@P32: EG-AR-8 The Outer Firewall must not have a",
+        "L949@P32: physical or logical connection to the Gray",
+        "L950@P32: Management Network or EG",
+        "L951@P32: Management Network.",
+        "L952@P32: T=O MA/MSC"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-8 The Outer Firewall must not have a\nphysical or logical connection to the Gray\nManagement Network or EG\nManagement Network.\nT=O MA/MSC",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T09-EG-AR-9",
+      "table": 9,
+      "requirement_id": "EG-AR-9",
+      "capability_section": "multiple capability packages",
+      "first_indexed_line": 953,
+      "pdf_pages": [
+        33
+      ],
+      "raw_indexed_lines": [
+        "L953@P32: EG-AR-9 EUDs provisioned for an MA solution",
+        "L954@P32: must only be used for an MA solution,",
+        "L955@P32: and not used to access any resources",
+        "L956@P32: other than the Red Network it",
+        "L957@P32: communicates with via two layers of",
+        "L958@P32: encryption.",
+        "L959@P32: T=O MA"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-9 EUDs provisioned for an MA solution\nmust only be used for an MA solution,\nand not used to access any resources\nother than the Red Network it\ncommunicates with via two layers of\nencryption.\nT=O MA",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T09-EG-AR-10",
+      "table": 9,
+      "requirement_id": "EG-AR-10",
+      "capability_section": "multiple capability packages",
+      "first_indexed_line": 960,
+      "pdf_pages": [
+        33
+      ],
+      "raw_indexed_lines": [
+        "L960@P32: EG-AR-10 EUDs provisioned for a Campus WLAN",
+        "L961@P32: solution must only be used for a WLAN",
+        "L962@P32: solution and not used to access any",
+        "L963@P32: resources other than the Red Network it",
+        "L964@P32: communicates with via two layers of",
+        "L965@P32: encryption.",
+        "L966@P32: T=O WLAN"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-10 EUDs provisioned for a Campus WLAN\nsolution must only be used for a WLAN\nsolution and not used to access any\nresources other than the Red Network it\ncommunicates with via two layers of\nencryption.\nT=O WLAN",
+      "next_work": "Formalize the source condition individually and identify its complete applicability and concrete evidence."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-16",
+      "table": 10,
+      "requirement_id": "EG-FW-16",
+      "capability_section": "centralized management",
+      "first_indexed_line": 974,
+      "pdf_pages": [
+        33
+      ],
+      "raw_indexed_lines": [
+        "L974@P32: EG-FW-16 The Gray Firewall must be used as the",
+        "L975@P32: Inner Encryption Component for the EG",
+        "L976@P32: Network.",
+        "L977@P32: T EG-FW-17 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-16 The Gray Firewall must be used as the\nInner Encryption Component for the EG\nNetwork.\nT EG-FW-17 All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-17",
+      "table": 10,
+      "requirement_id": "EG-FW-17",
+      "capability_section": "centralized management",
+      "first_indexed_line": 978,
+      "pdf_pages": [
+        33
+      ],
+      "raw_indexed_lines": [
+        "L978@P32: EG-FW-17 If the AO deems it necessary, a separate",
+        "L979@P32: Gray Encryption Component must be used",
+        "L980@P32: to service the EG Network.",
+        "L981@P32: O EG-FW-16 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-17 If the AO deems it necessary, a separate\nGray Encryption Component must be used\nto service the EG Network.\nO EG-FW-16 All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-18",
+      "table": 10,
+      "requirement_id": "EG-FW-18",
+      "capability_section": "centralized management",
+      "first_indexed_line": 982,
+      "pdf_pages": [
+        33,
+        34
+      ],
+      "raw_indexed_lines": [
+        "L982@P32: EG-FW-18 The Gray Encryption Component and",
+        "L983@P32: Outer Encryption Components must",
+        "L984@P32: either: come from different",
+        "L985@P32: manufacturers, where neither",
+        "L986@P32: manufacturer is a subsidiary of the other;",
+        "L987@P32: or be two different products from the",
+        "L988@P32: same manufacturer, where NSA has",
+        "L989@P32: determined that the two products meet",
+        "L990@P32: the CSfC criteria for implementation",
+        "L991@P32: independence.",
+        "L992@P32-33: T=O All28",
+        "L993@P33: Req # Requirement Description Threshold/",
+        "L994@P33: Objective Alternative Capability Package"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-18 The Gray Encryption Component and\nOuter Encryption Components must\neither: come from different\nmanufacturers, where neither\nmanufacturer is a subsidiary of the other;\nor be two different products from the\nsame manufacturer, where NSA has\ndetermined that the two products meet\nthe CSfC criteria for implementation\nindependence.\nT=O All28\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package",
+      "next_work": "Separate product/approval provenance from technical placement or mechanism facts; no approval is inferred from emulation."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-19",
+      "table": 10,
+      "requirement_id": "EG-FW-19",
+      "capability_section": "centralized management",
+      "first_indexed_line": 995,
+      "pdf_pages": [
+        34
+      ],
+      "raw_indexed_lines": [
+        "L995@P33: EG-FW-19 The Gray Firewall/Encryption Component",
+        "L996@P33: at each site provides the inner layer of",
+        "L997@P33: encryption and the Outer Encryption",
+        "L998@P33: Component provides the outer layer of",
+        "L999@P33: encryption to protect Gray Management",
+        "L1000@P33: traffic between sites.",
+        "L1001@P33: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-19 The Gray Firewall/Encryption Component\nat each site provides the inner layer of\nencryption and the Outer Encryption\nComponent provides the outer layer of\nencryption to protect Gray Management\ntraffic between sites.\nT=O All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-20",
+      "table": 10,
+      "requirement_id": "EG-FW-20",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1002,
+      "pdf_pages": [
+        34
+      ],
+      "raw_indexed_lines": [
+        "L1002@P33: EG-FW-20 The Gray Firewall/Encryption Component",
+        "L1003@P33: must not permit split-tunneling.",
+        "L1004@P33: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-20 The Gray Firewall/Encryption Component\nmust not permit split-tunneling.\nT=O All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-21",
+      "table": 10,
+      "requirement_id": "EG-FW-21",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1005,
+      "pdf_pages": [
+        34
+      ],
+      "raw_indexed_lines": [
+        "L1005@P33: EG-FW-21 The Gray Firewall/Encryption Component",
+        "L1006@P33: must use Tunnel mode IPsec or Transport",
+        "L1007@P33: mode IPsec with an associated IP",
+        "L1008@P33: tunneling protocol (i.e. Generic Routing",
+        "L1009@P33: Encapsulation), authorized TLS",
+        "L1010@P33: deployment, or MACsec.",
+        "L1011@P33: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-21 The Gray Firewall/Encryption Component\nmust use Tunnel mode IPsec or Transport\nmode IPsec with an associated IP\ntunneling protocol (i.e. Generic Routing\nEncapsulation), authorized TLS\ndeployment, or MACsec.\nT=O All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-22",
+      "table": 10,
+      "requirement_id": "EG-FW-22",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1012,
+      "pdf_pages": [
+        34
+      ],
+      "raw_indexed_lines": [
+        "L1012@P33: EG-FW-22 The Gray Firewall/Encryption Component",
+        "L1013@P33: must meet all CSfC requirements for an",
+        "L1014@P33: Encryption Component.",
+        "L1015@P33: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-22 The Gray Firewall/Encryption Component\nmust meet all CSfC requirements for an\nEncryption Component.\nT=O All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-23",
+      "table": 10,
+      "requirement_id": "EG-FW-23",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1016,
+      "pdf_pages": [
+        34
+      ],
+      "raw_indexed_lines": [
+        "L1016@P33: EG-FW-23 The Gray Firewall/Encryption Component",
+        "L1017@P33: must form a Gray Management VPN",
+        "L1018@P33: tunnel with other Gray",
+        "L1019@P33: Firewall/Encryption Components that",
+        "L1020@P33: allows routing between their Gray",
+        "L1021@P33: Management Networks forming the EG",
+        "L1022@P33: Network.",
+        "L1023@P33: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-23 The Gray Firewall/Encryption Component\nmust form a Gray Management VPN\ntunnel with other Gray\nFirewall/Encryption Components that\nallows routing between their Gray\nManagement Networks forming the EG\nNetwork.\nT=O All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-24",
+      "table": 10,
+      "requirement_id": "EG-FW-24",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1024,
+      "pdf_pages": [
+        34
+      ],
+      "raw_indexed_lines": [
+        "L1024@P33: EG-FW-24 If the AO deems necessary, then the Gray",
+        "L1025@P33: Firewall/Encryption Component may form",
+        "L1026@P33: a Gray Data VPN tunnel between itself",
+        "L1027@P33: and other Gray Firewall/Encryption",
+        "L1028@P33: Components allowing for routing to",
+        "L1029@P33: happen between Gray Data Networks.",
+        "L1030@P33: O Optional All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-24 If the AO deems necessary, then the Gray\nFirewall/Encryption Component may form\na Gray Data VPN tunnel between itself\nand other Gray Firewall/Encryption\nComponents allowing for routing to\nhappen between Gray Data Networks.\nO Optional All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-25",
+      "table": 10,
+      "requirement_id": "EG-FW-25",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1031,
+      "pdf_pages": [
+        34
+      ],
+      "raw_indexed_lines": [
+        "L1031@P33: EG-FW-25 The packet size for packets leaving the",
+        "L1032@P33: external interface of the Gray",
+        "L1033@P33: Firewall/Encryption Component must be",
+        "L1034@P33: configured to keep the packets from",
+        "L1035@P33: being fragmented and impacting",
+        "L1036@P33: performance. This requires proper",
+        "L1037@P33: configuration of the Maximum",
+        "L1038@P33: Transmission Unit (MTU) for IPv4 or Path",
+        "L1039@P33: MTU (PMTU) for IPv6 and should consider",
+        "L1040@P33: the Outer VPN Gateway MTU/PMTU",
+        "L1041@P33: values for achievement.",
+        "L1042@P33: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-25 The packet size for packets leaving the\nexternal interface of the Gray\nFirewall/Encryption Component must be\nconfigured to keep the packets from\nbeing fragmented and impacting\nperformance. This requires proper\nconfiguration of the Maximum\nTransmission Unit (MTU) for IPv4 or Path\nMTU (PMTU) for IPv6 and should consider\nthe Outer VPN Gateway MTU/PMTU\nvalues for achievement.\nT=O All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-AR-11",
+      "table": 10,
+      "requirement_id": "EG-AR-11",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1043,
+      "pdf_pages": [
+        34,
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1043@P33: EG-AR-11 Two independent layers of CSfC approved",
+        "L1044@P33: encryption must be used when extending",
+        "L1045@P33-34: T=O All29",
+        "L1046@P34: Req # Requirement Description Threshold/",
+        "L1047@P34: Objective Alternative Capability Package",
+        "L1048@P34: Gray Services to other site(s) over an",
+        "L1049@P34: untrusted network."
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-11 Two independent layers of CSfC approved\nencryption must be used when extending\nT=O All29\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package\nGray Services to other site(s) over an\nuntrusted network.",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-AR-12",
+      "table": 10,
+      "requirement_id": "EG-AR-12",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1050,
+      "pdf_pages": [
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1050@P34: EG-AR-12 Requirement has been relocated to the",
+        "L1051@P34: CSfC Key Management Requirements",
+        "L1052@P34: Annex.",
+        "L1053@P34: - - All"
+      ],
+      "construction_status": "delegated_to_named_key_management_annex",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-12 Requirement has been relocated to the\nCSfC Key Management Requirements\nAnnex.\n- - All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-AR-13",
+      "table": 10,
+      "requirement_id": "EG-AR-13",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1054,
+      "pdf_pages": [
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1054@P34: EG-AR-13 Requirement has been relocated to the",
+        "L1055@P34: CSfC Key Management Requirements",
+        "L1056@P34: Annex.",
+        "L1057@P34: - - All"
+      ],
+      "construction_status": "delegated_to_named_key_management_annex",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-13 Requirement has been relocated to the\nCSfC Key Management Requirements\nAnnex.\n- - All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-AR-14",
+      "table": 10,
+      "requirement_id": "EG-AR-14",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1058,
+      "pdf_pages": [
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1058@P34: EG-AR-14 Requirement has been relocated to the",
+        "L1059@P34: CSfC Symmetric Key Management",
+        "L1060@P34: Requirements Annex.",
+        "L1061@P34: - - All"
+      ],
+      "construction_status": "delegated_to_named_key_management_annex",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-14 Requirement has been relocated to the\nCSfC Symmetric Key Management\nRequirements Annex.\n- - All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-AR-15",
+      "table": 10,
+      "requirement_id": "EG-AR-15",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1062,
+      "pdf_pages": [
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1062@P34: EG-AR-15 EUDs provisioned for MA and Campus",
+        "L1063@P34: WLAN solutions must not be used to",
+        "L1064@P34: connect to the Gray Firewall/Encryption",
+        "L1065@P34: Component.",
+        "L1066@P34: T=O MA, WLAN"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-15 EUDs provisioned for MA and Campus\nWLAN solutions must not be used to\nconnect to the Gray Firewall/Encryption\nComponent.\nT=O MA, WLAN",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-PS-2",
+      "table": 10,
+      "requirement_id": "EG-PS-2",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1067,
+      "pdf_pages": [
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1067@P34: EG-PS-2 The Gray Encryption Component must be",
+        "L1068@P34: chosen from the list of IPsec VPN",
+        "L1069@P34: Gateways on the CSfC Components List.",
+        "L1070@P34: T=O EG-PS-3 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-PS-2 The Gray Encryption Component must be\nchosen from the list of IPsec VPN\nGateways on the CSfC Components List.\nT=O EG-PS-3 All",
+      "next_work": "Separate product/approval provenance from technical placement or mechanism facts; no approval is inferred from emulation."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-PS-3",
+      "table": 10,
+      "requirement_id": "EG-PS-3",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1071,
+      "pdf_pages": [
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1071@P34: EG-PS-3 The Gray Encryption Component must be",
+        "L1072@P34: chosen from the list of MACsec Ethernet",
+        "L1073@P34: Encryptions on the CSfC Components List.",
+        "L1074@P34: T=O EG-PS-2 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-PS-3 The Gray Encryption Component must be\nchosen from the list of MACsec Ethernet\nEncryptions on the CSfC Components List.\nT=O EG-PS-2 All",
+      "next_work": "Separate product/approval provenance from technical placement or mechanism facts; no approval is inferred from emulation."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-26",
+      "table": 10,
+      "requirement_id": "EG-FW-26",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1075,
+      "pdf_pages": [
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1075@P34: EG-FW-26 The VPN Components must use protocols",
+        "L1076@P34: and algorithms for creating all VPN",
+        "L1077@P34: tunnels selected from an Algorithm Suite",
+        "L1078@P34: in Table 5.",
+        "L1079@P34: T EG-FW-27,",
+        "L1080@P34: EG-FW-28,",
+        "L1081@P34: and EG-FW\u000229",
+        "L1082@P34: All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-26 The VPN Components must use protocols\nand algorithms for creating all VPN\ntunnels selected from an Algorithm Suite\nin Table 5.\nT EG-FW-27,\nEG-FW-28,\nand EG-FW\u000229\nAll",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-27",
+      "table": 10,
+      "requirement_id": "EG-FW-27",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1083,
+      "pdf_pages": [
+        35
+      ],
+      "raw_indexed_lines": [
+        "L1083@P34: EG-FW-27 All IPsec connections must use IETF",
+        "L1084@P34: standards compliant with IKE",
+        "L1085@P34: implementations as specified in",
+        "L1086@P34: Commercial National Security Algorithm",
+        "L1087@P34: (CNSA) Suite 2.0 Profile for IPsec (draft\u0002guthrie-cnsa2-ipsec-profile) including RFC",
+        "L1088@P34: 9370, RFC 9242 and RFC 7383.",
+        "L1089@P34: O EG-FW-26 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-27 All IPsec connections must use IETF\nstandards compliant with IKE\nimplementations as specified in\nCommercial National Security Algorithm\n(CNSA) Suite 2.0 Profile for IPsec (draft\u0002guthrie-cnsa2-ipsec-profile) including RFC\n9370, RFC 9242 and RFC 7383.\nO EG-FW-26 All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-28",
+      "table": 10,
+      "requirement_id": "EG-FW-28",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1090,
+      "pdf_pages": [
+        35,
+        36
+      ],
+      "raw_indexed_lines": [
+        "L1090@P34: EG-FW-28 All IPsec connections must use multiple",
+        "L1091@P34: key exchanges with an initial IKEv2 SA key",
+        "L1092@P34: exchange and an intermediate IKEv2 key",
+        "L1093@P34: exchange:",
+        "L1094@P34-35: O EG-FW-26 All30",
+        "L1095@P35: Req # Requirement Description Threshold/",
+        "L1096@P35: Objective Alternative Capability Package",
+        "L1097@P35: \u2022 IKE_SA_INIT: The IKEv2 SA key",
+        "L1098@P35: exchange performed in",
+        "L1099@P35: IKE_SA_INIT must use a CNSA 1.0",
+        "L1100@P35: key establishment algorithm (as",
+        "L1101@P35: specified in Table 5)",
+        "L1102@P35: \u2022 IKE_INTERMEDIATE: The IKEv2 SA",
+        "L1103@P35: key establishment performed in",
+        "L1104@P35: the IKE_INTERMEDIATE exchange",
+        "L1105@P35: must use ML-KEM-1024 (as",
+        "L1106@P35: specified in Table 6)"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-28 All IPsec connections must use multiple\nkey exchanges with an initial IKEv2 SA key\nexchange and an intermediate IKEv2 key\nexchange:\nO EG-FW-26 All30\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package\n\u2022 IKE_SA_INIT: The IKEv2 SA key\nexchange performed in\nIKE_SA_INIT must use a CNSA 1.0\nkey establishment algorithm (as\nspecified in Table 5)\n\u2022 IKE_INTERMEDIATE: The IKEv2 SA\nkey establishment performed in\nthe IKE_INTERMEDIATE exchange\nmust use ML-KEM-1024 (as\nspecified in Table 6)",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T10-EG-FW-29",
+      "table": 10,
+      "requirement_id": "EG-FW-29",
+      "capability_section": "centralized management",
+      "first_indexed_line": 1107,
+      "pdf_pages": [
+        36
+      ],
+      "raw_indexed_lines": [
+        "L1107@P35: EG-FW-29 The VPN Components must use",
+        "L1108@P35: algorithms from the algorithm suite in",
+        "L1109@P35: Table 6 for all IPsec VPN tunnels, with the",
+        "L1110@P35: exception of the IKE_SA_INIT exchange.",
+        "L1111@P35: O EG-FW-26 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-FW-29 The VPN Components must use\nalgorithms from the algorithm suite in\nTable 6 for all IPsec VPN tunnels, with the\nexception of the IKE_SA_INIT exchange.\nO EG-FW-26 All",
+      "next_work": "Bind selected Gray encryption arrangement, management/data tunnels, processing order, split-tunnel prevention, MTU and selected algorithm branch; preserve source alternatives."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-1",
+      "table": 11,
+      "requirement_id": "EG-DR-1",
+      "capability_section": "scalability",
+      "first_indexed_line": 1118,
+      "pdf_pages": [
+        36
+      ],
+      "raw_indexed_lines": [
+        "L1118@P35: EG-DR-1 Dynamic routing is only allowed on the",
+        "L1119@P35: Gray Firewall/Encryption Component, no",
+        "L1120@P35: other devices on the network can",
+        "L1121@P35: perform dynamic routing.",
+        "L1122@P35: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-1 Dynamic routing is only allowed on the\nGray Firewall/Encryption Component, no\nother devices on the network can\nperform dynamic routing.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-2",
+      "table": 11,
+      "requirement_id": "EG-DR-2",
+      "capability_section": "scalability",
+      "first_indexed_line": 1123,
+      "pdf_pages": [
+        36
+      ],
+      "raw_indexed_lines": [
+        "L1123@P35: EG-DR-2 If dynamic routing protocols are used,",
+        "L1124@P35: then dynamic routing peer",
+        "L1125@P35: authentication must be performed",
+        "L1126@P35: between the Gray Firewalls/Encryption",
+        "L1127@P35: Components running dynamic routing.",
+        "L1128@P35: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-2 If dynamic routing protocols are used,\nthen dynamic routing peer\nauthentication must be performed\nbetween the Gray Firewalls/Encryption\nComponents running dynamic routing.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-3",
+      "table": 11,
+      "requirement_id": "EG-DR-3",
+      "capability_section": "scalability",
+      "first_indexed_line": 1129,
+      "pdf_pages": [
+        36
+      ],
+      "raw_indexed_lines": [
+        "L1129@P35: EG-DR-3 If dynamic routing protocols are used,",
+        "L1130@P35: dynamic routing peer authentication",
+        "L1131@P35: used by the network devices must use an",
+        "L1132@P35: MD5 hashing algorithm.",
+        "L1133@P35: T EG-DR-4 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-3 If dynamic routing protocols are used,\ndynamic routing peer authentication\nused by the network devices must use an\nMD5 hashing algorithm.\nT EG-DR-4 All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-4",
+      "table": 11,
+      "requirement_id": "EG-DR-4",
+      "capability_section": "scalability",
+      "first_indexed_line": 1134,
+      "pdf_pages": [
+        36,
+        37
+      ],
+      "raw_indexed_lines": [
+        "L1134@P35: EG-DR-4 If dynamic routing protocols are used,",
+        "L1135@P35: dynamic routing peer authentication",
+        "L1136@P35: used by the network devices must use a",
+        "L1137@P35: SHA-256 hashing algorithm or greater.",
+        "L1138@P35-36: O EG-DR-3 All31",
+        "L1139@P36: Req # Requirement Description Threshold/",
+        "L1140@P36: Objective Alternative Capability Package"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-4 If dynamic routing protocols are used,\ndynamic routing peer authentication\nused by the network devices must use a\nSHA-256 hashing algorithm or greater.\nO EG-DR-3 All31\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-5",
+      "table": 11,
+      "requirement_id": "EG-DR-5",
+      "capability_section": "scalability",
+      "first_indexed_line": 1141,
+      "pdf_pages": [
+        37
+      ],
+      "raw_indexed_lines": [
+        "L1141@P36: EG-DR-5 If dynamic routing protocols are used, all",
+        "L1142@P36: network devices participating in dynamic",
+        "L1143@P36: routing message authentication must use",
+        "L1144@P36: a strong PSK with at least 256-bits of",
+        "L1145@P36: entropy for the entire network (Group",
+        "L1146@P36: Keys).",
+        "L1147@P36: T EG-DR-6 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-5 If dynamic routing protocols are used, all\nnetwork devices participating in dynamic\nrouting message authentication must use\na strong PSK with at least 256-bits of\nentropy for the entire network (Group\nKeys).\nT EG-DR-6 All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-6",
+      "table": 11,
+      "requirement_id": "EG-DR-6",
+      "capability_section": "scalability",
+      "first_indexed_line": 1148,
+      "pdf_pages": [
+        37
+      ],
+      "raw_indexed_lines": [
+        "L1148@P36: EG-DR-6 If dynamic routing protocols are used, all",
+        "L1149@P36: network devices participating in dynamic",
+        "L1150@P36: routing message authentication must use",
+        "L1151@P36: a strong PSK with at least 256-bits of",
+        "L1152@P36: entropy for every network device (Point\u0002to-point Pre-Shared Keys).",
+        "L1153@P36: O EG-DR-5 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-6 If dynamic routing protocols are used, all\nnetwork devices participating in dynamic\nrouting message authentication must use\na strong PSK with at least 256-bits of\nentropy for every network device (Point\u0002to-point Pre-Shared Keys).\nO EG-DR-5 All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-7",
+      "table": 11,
+      "requirement_id": "EG-DR-7",
+      "capability_section": "scalability",
+      "first_indexed_line": 1154,
+      "pdf_pages": [
+        37
+      ],
+      "raw_indexed_lines": [
+        "L1154@P36: EG-DR-7 If dynamic routing protocols are used, all",
+        "L1155@P36: network devices participating in dynamic",
+        "L1156@P36: routing must only share necessary",
+        "L1157@P36: routing information about the local Gray",
+        "L1158@P36: Management Network and other Gray",
+        "L1159@P36: Management Networks to devices",
+        "L1160@P36: servicing the Gray Management VPN",
+        "L1161@P36: tunnels.",
+        "L1162@P36: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-7 If dynamic routing protocols are used, all\nnetwork devices participating in dynamic\nrouting must only share necessary\nrouting information about the local Gray\nManagement Network and other Gray\nManagement Networks to devices\nservicing the Gray Management VPN\ntunnels.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-8",
+      "table": 11,
+      "requirement_id": "EG-DR-8",
+      "capability_section": "scalability",
+      "first_indexed_line": 1163,
+      "pdf_pages": [
+        37
+      ],
+      "raw_indexed_lines": [
+        "L1163@P36: EG-DR-8 If dynamic routing protocols are used, all",
+        "L1164@P36: network devices participating in dynamic",
+        "L1165@P36: routing must only share necessary",
+        "L1166@P36: routing information about the local Gray",
+        "L1167@P36: Data Network and other Gray Data",
+        "L1168@P36: Networks to devices servicing the Gray",
+        "L1169@P36: Data VPN tunnels.",
+        "L1170@P36: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-8 If dynamic routing protocols are used, all\nnetwork devices participating in dynamic\nrouting must only share necessary\nrouting information about the local Gray\nData Network and other Gray Data\nNetworks to devices servicing the Gray\nData VPN tunnels.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-9",
+      "table": 11,
+      "requirement_id": "EG-DR-9",
+      "capability_section": "scalability",
+      "first_indexed_line": 1171,
+      "pdf_pages": [
+        37
+      ],
+      "raw_indexed_lines": [
+        "L1171@P36: EG-DR-9 If dynamic routing protocols are used, all",
+        "L1172@P36: network devices performing dynamic",
+        "L1173@P36: routing must use route filtering on both",
+        "L1174@P36: inbound and outbound routes stopping",
+        "L1175@P36: unauthorized routes from being received",
+        "L1176@P36: or shared and by default all routes must",
+        "L1177@P36: be blocked.",
+        "L1178@P36: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-9 If dynamic routing protocols are used, all\nnetwork devices performing dynamic\nrouting must use route filtering on both\ninbound and outbound routes stopping\nunauthorized routes from being received\nor shared and by default all routes must\nbe blocked.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-10",
+      "table": 11,
+      "requirement_id": "EG-DR-10",
+      "capability_section": "scalability",
+      "first_indexed_line": 1179,
+      "pdf_pages": [
+        37
+      ],
+      "raw_indexed_lines": [
+        "L1179@P36: EG-DR-10 If dynamic routing protocols are used,",
+        "L1180@P36: the network devices performing dynamic",
+        "L1181@P36: routing must disable dynamic routing on",
+        "L1182@P36: all interfaces except the interfaces",
+        "L1183@P36: serving the Gray Management VPN",
+        "L1184@P36: tunnel and the Gray Data VPN tunnel.",
+        "L1185@P36: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-10 If dynamic routing protocols are used,\nthe network devices performing dynamic\nrouting must disable dynamic routing on\nall interfaces except the interfaces\nserving the Gray Management VPN\ntunnel and the Gray Data VPN tunnel.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-11",
+      "table": 11,
+      "requirement_id": "EG-DR-11",
+      "capability_section": "scalability",
+      "first_indexed_line": 1186,
+      "pdf_pages": [
+        37,
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1186@P36: EG-DR-11 If dynamic routing protocols are used,",
+        "L1187@P36: routes must not be shared between the",
+        "L1188@P36: Gray Management and Data Tunnels.",
+        "L1189@P36-37: T=O All 32",
+        "L1190@P37: Req # Requirement Description Threshold/",
+        "L1191@P37: Objective Alternative Capability Package"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-11 If dynamic routing protocols are used,\nroutes must not be shared between the\nGray Management and Data Tunnels.\nT=O All 32\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-DR-12",
+      "table": 11,
+      "requirement_id": "EG-DR-12",
+      "capability_section": "scalability",
+      "first_indexed_line": 1192,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1192@P37: EG-DR-12 If dynamic routing protocols are used,",
+        "L1193@P37: routes being shared and filtered must be",
+        "L1194@P37: the most specific routes possible.",
+        "L1195@P37: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-DR-12 If dynamic routing protocols are used,\nroutes being shared and filtered must be\nthe most specific routes possible.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-16",
+      "table": 11,
+      "requirement_id": "EG-AR-16",
+      "capability_section": "scalability",
+      "first_indexed_line": 1196,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1196@P37: EG-AR-16 If dynamic routing protocols are used,",
+        "L1197@P37: then two VRFs must be used to separate",
+        "L1198@P37: Data and Management traffic.",
+        "L1199@P37: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-16 If dynamic routing protocols are used,\nthen two VRFs must be used to separate\nData and Management traffic.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-17",
+      "table": 11,
+      "requirement_id": "EG-AR-17",
+      "capability_section": "scalability",
+      "first_indexed_line": 1200,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1200@P37: EG-AR-17 Two VRFs must be used to separate Data",
+        "L1201@P37: and Management traffic.",
+        "L1202@P37: O Optional All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-17 Two VRFs must be used to separate Data\nand Management traffic.\nO Optional All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-18",
+      "table": 11,
+      "requirement_id": "EG-AR-18",
+      "capability_section": "scalability",
+      "first_indexed_line": 1203,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1203@P37: EG-AR-18 If VRFs are used, the Management VRFs",
+        "L1204@P37: must only contain routing information",
+        "L1205@P37: about the local Gray Management",
+        "L1206@P37: network and remote Gray Management",
+        "L1207@P37: networks.",
+        "L1208@P37: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-18 If VRFs are used, the Management VRFs\nmust only contain routing information\nabout the local Gray Management\nnetwork and remote Gray Management\nnetworks.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-19",
+      "table": 11,
+      "requirement_id": "EG-AR-19",
+      "capability_section": "scalability",
+      "first_indexed_line": 1209,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1209@P37: EG-AR-19 If VRFs are used, the Data VRFs must only",
+        "L1210@P37: contain routing information about the",
+        "L1211@P37: local Gray Data network and remote Gray",
+        "L1212@P37: Data networks.",
+        "L1213@P37: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-19 If VRFs are used, the Data VRFs must only\ncontain routing information about the\nlocal Gray Data network and remote Gray\nData networks.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-20",
+      "table": 11,
+      "requirement_id": "EG-AR-20",
+      "capability_section": "scalability",
+      "first_indexed_line": 1214,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1214@P37: EG-AR-20 If VRFs are used, the routes cannot be",
+        "L1215@P37: exported or imported between the data",
+        "L1216@P37: and management routing instances.",
+        "L1217@P37: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-20 If VRFs are used, the routes cannot be\nexported or imported between the data\nand management routing instances.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-21",
+      "table": 11,
+      "requirement_id": "EG-AR-21",
+      "capability_section": "scalability",
+      "first_indexed_line": 1218,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1218@P37: EG-AR-21 If VRFs are used, they are allowed to",
+        "L1219@P37: import routes from an outside routing",
+        "L1220@P37: instance as long as they do not allow",
+        "L1221@P37: sharing of non-authorized routes.",
+        "L1222@P37: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-21 If VRFs are used, they are allowed to\nimport routes from an outside routing\ninstance as long as they do not allow\nsharing of non-authorized routes.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-22",
+      "table": 11,
+      "requirement_id": "EG-AR-22",
+      "capability_section": "scalability",
+      "first_indexed_line": 1223,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1223@P37: EG-AR-22 If dynamic routing protocols are used,",
+        "L1224@P37: implementers must use one of the",
+        "L1225@P37: following: Routing Information Protocol",
+        "L1226@P37: (RIPv2), OSPF, EIGRP, BGP, or IS-IS.",
+        "L1227@P37: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-22 If dynamic routing protocols are used,\nimplementers must use one of the\nfollowing: Routing Information Protocol\n(RIPv2), OSPF, EIGRP, BGP, or IS-IS.\nT=O All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-25",
+      "table": 11,
+      "requirement_id": "EG-AR-25",
+      "capability_section": "scalability",
+      "first_indexed_line": 1228,
+      "pdf_pages": [
+        38
+      ],
+      "raw_indexed_lines": [
+        "L1228@P37: EG-AR-25 The VPN Components must use protocols",
+        "L1229@P37: and algorithms for creating all VPN",
+        "L1230@P37: tunnels selected from an Algorithm Suite",
+        "L1231@P37: in Table 5 that are approved to protect",
+        "L1232@P37: the highest classification level of the Red",
+        "L1233@P37: Network data.",
+        "L1234@P37: T EG-AR-26,",
+        "L1235@P37: EG-AR-27,",
+        "L1236@P37: and EG-AR\u000228",
+        "L1237@P37: All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": true,
+      "source_text": "EG-AR-25 The VPN Components must use protocols\nand algorithms for creating all VPN\ntunnels selected from an Algorithm Suite\nin Table 5 that are approved to protect\nthe highest classification level of the Red\nNetwork data.\nT EG-AR-26,\nEG-AR-27,\nand EG-AR\u000228\nAll",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-26",
+      "table": 11,
+      "requirement_id": "EG-AR-26",
+      "capability_section": "scalability",
+      "first_indexed_line": 1238,
+      "pdf_pages": [
+        38,
+        39
+      ],
+      "raw_indexed_lines": [
+        "L1238@P37: EG-AR-26 All IPsec connections must use IETF",
+        "L1239@P37: standards compliant with IKE",
+        "L1240@P37: implementations as specified in",
+        "L1241@P37: Commercial National Security Algorithm",
+        "L1242@P37: (CNSA) Suite 2.0 Profile for IPsec (draft\u0002guthrie-cnsa2-ipsec-profile) including RFC",
+        "L1243@P37: 9370, RFC 9242 and RFC 7383.",
+        "L1244@P37-38: O EG-AR-25 All33",
+        "L1245@P38: Req # Requirement Description Threshold/",
+        "L1246@P38: Objective Alternative Capability Package"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": true,
+      "source_text": "EG-AR-26 All IPsec connections must use IETF\nstandards compliant with IKE\nimplementations as specified in\nCommercial National Security Algorithm\n(CNSA) Suite 2.0 Profile for IPsec (draft\u0002guthrie-cnsa2-ipsec-profile) including RFC\n9370, RFC 9242 and RFC 7383.\nO EG-AR-25 All33\nReq # Requirement Description Threshold/\nObjective Alternative Capability Package",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-27",
+      "table": 11,
+      "requirement_id": "EG-AR-27",
+      "capability_section": "scalability",
+      "first_indexed_line": 1247,
+      "pdf_pages": [
+        39
+      ],
+      "raw_indexed_lines": [
+        "L1247@P38: EG-AR-27 All IPsec connections must use multiple",
+        "L1248@P38: key exchanges with an initial IKEv2 SA key",
+        "L1249@P38: exchange and an intermediate IKEv2 key",
+        "L1250@P38: exchange:",
+        "L1251@P38: \u2022 IKE_SA_INIT: The IKEv2 SA key",
+        "L1252@P38: exchange performed in",
+        "L1253@P38: IKE_SA_INIT must use a CNSA 1.0",
+        "L1254@P38: key establishment algorithm (as",
+        "L1255@P38: specified in Table 5)",
+        "L1256@P38: \u2022 IKE_INTERMEDIATE: The IKEv2 SA",
+        "L1257@P38: key establishment performed in",
+        "L1258@P38: the IKE_INTERMEDIATE exchange",
+        "L1259@P38: must use ML-KEM-1024 (as",
+        "L1260@P38: specified in Table 6)",
+        "L1261@P38: O EG-AR-25 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-27 All IPsec connections must use multiple\nkey exchanges with an initial IKEv2 SA key\nexchange and an intermediate IKEv2 key\nexchange:\n\u2022 IKE_SA_INIT: The IKEv2 SA key\nexchange performed in\nIKE_SA_INIT must use a CNSA 1.0\nkey establishment algorithm (as\nspecified in Table 5)\n\u2022 IKE_INTERMEDIATE: The IKEv2 SA\nkey establishment performed in\nthe IKE_INTERMEDIATE exchange\nmust use ML-KEM-1024 (as\nspecified in Table 6)\nO EG-AR-25 All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T11-EG-AR-28",
+      "table": 11,
+      "requirement_id": "EG-AR-28",
+      "capability_section": "scalability",
+      "first_indexed_line": 1262,
+      "pdf_pages": [
+        39
+      ],
+      "raw_indexed_lines": [
+        "L1262@P38: EG-AR-28 The VPN Components must use",
+        "L1263@P38: algorithms from the algorithm suite in",
+        "L1264@P38: Table 6 for all IPsec VPN tunnels, with the",
+        "L1265@P38: exception of the IKE_SA_INIT exchange.",
+        "L1266@P38: O EG-AR-25 All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-28 The VPN Components must use\nalgorithms from the algorithm suite in\nTable 6 for all IPsec VPN tunnels, with the\nexception of the IKE_SA_INIT exchange.\nO EG-AR-25 All",
+      "next_work": "Make dynamic-routing/VRF applicability explicit; check permitted components/interfaces, peer authentication, route separation and most-specific permitted routes against actual route policies."
+    },
+    {
+      "key": "EG-v1.2.0-T12-EG-AR-23",
+      "table": 12,
+      "requirement_id": "EG-AR-23",
+      "capability_section": "site survivability",
+      "first_indexed_line": 1273,
+      "pdf_pages": [
+        39
+      ],
+      "raw_indexed_lines": [
+        "L1273@P38: EG-AR-23 Should a loss of connection occur, a local",
+        "L1274@P38: implementer must use an authorized",
+        "L1275@P38: authentication service to authenticate EUDs",
+        "L1276@P38: and Encryption Components.",
+        "L1277@P38: T=O All"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-23 Should a loss of connection occur, a local\nimplementer must use an authorized\nauthentication service to authenticate EUDs\nand Encryption Components.\nT=O All",
+      "next_work": "Model the selected loss-of-connection case and local authentication/DNS service behavior; finite snapshots alone do not establish every failure schedule."
+    },
+    {
+      "key": "EG-v1.2.0-T12-EG-AR-24",
+      "table": 12,
+      "requirement_id": "EG-AR-24",
+      "capability_section": "site survivability",
+      "first_indexed_line": 1278,
+      "pdf_pages": [
+        39,
+        40
+      ],
+      "raw_indexed_lines": [
+        "L1278@P38: EG-AR-24 If the implementing organization requires",
+        "L1279@P38: site survivability, implementers must use a",
+        "L1280@P38: Gray Data DNS on the remote site(s) that",
+        "L1281@P38: mirrors the DNS on the main site. This",
+        "L1282@P38: allows for EUDs and site-to-site interfaces",
+        "L1283@P38: to connect to the proper Inner Encryption",
+        "L1284@P38: Component.",
+        "L1285@P38-39: T=O All 34"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-AR-24 If the implementing organization requires\nsite survivability, implementers must use a\nGray Data DNS on the remote site(s) that\nmirrors the DNS on the main site. This\nallows for EUDs and site-to-site interfaces\nto connect to the proper Inner Encryption\nComponent.\nT=O All 34",
+      "next_work": "Model the selected loss-of-connection case and local authentication/DNS service behavior; finite snapshots alone do not establish every failure schedule."
+    },
+    {
+      "key": "EG-v1.2.0-T13-EG-TR-0",
+      "table": 13,
+      "requirement_id": "EG-TR-0",
+      "capability_section": "testing",
+      "first_indexed_line": 1290,
+      "pdf_pages": [
+        40,
+        41
+      ],
+      "raw_indexed_lines": [
+        "L1290@P39: EG-TR-0 The organization implementing the annex",
+        "L1291@P39: must perform all tests listed in EG Testing",
+        "L1292@P39: Annex and maintain artifacts of the testing",
+        "L1293@P39: results.",
+        "L1294@P39-40: T=O All35"
+      ],
+      "construction_status": "requires_clause_specific_formalization_and_evidence",
+      "id_reused_in_another_table": false,
+      "source_text": "EG-TR-0 The organization implementing the annex\nmust perform all tests listed in EG Testing\nAnnex and maintain artifacts of the testing\nresults.\nT=O All35",
+      "next_work": "Resolve the referenced EG Testing Annex and enumerate actual required tests and retained results."
+    }
+  ]
+}

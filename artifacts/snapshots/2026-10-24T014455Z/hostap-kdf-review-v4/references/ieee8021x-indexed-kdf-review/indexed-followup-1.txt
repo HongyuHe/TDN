@@ -1,0 +1,42 @@
+IEEE Std 802.1X-2020, IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control (https://www.ida.liu.se/~sohsa65/courses/tsn-course-2021/stds/8021X-2020.pdf)
+citeturn247search0 [wordlim: 200] Published: 4.9 years ago; IEEE Std 802.1X-2020 ... NOTE—The KDF adds a null (0x00) after ‘Label’ as part of the input to the PRF, as specified in 6.2.1, but that null is not part of the input to the KDF.
+IEEE Std 802.1X-2020  
+IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control
+
+# Annex G
+
+(informative)
+
+# Test vectors
+
+This standard specifies a KDF (6.2.1), and key and key name derivations using that KDF. This annex provides examples of correct outputs for specified inputs for 128-bit and 256-bit keys. Input and output parameters are octet strings, shown with spaces added for legibility. Each octet is represented as hexadecimal value with the most significant bits to the left. All conversions to or from integers use network byte order.
+
+## G.1 KDF
+
+The KDF takes as input a Key, a Label, some Context, and the Length (in octets) of the KDF Output.
+
+The following example uses a 128-bit Key and requests a 16-octet (128-bit) result:
+
+<table id="e1">
+<tr><td>Key</td><td>1ab9024f a04a03fe b9024fa0 4a03fe11</td></tr>
+<tr><td>Label</td><td>48492054 48455245</td></tr>
+<tr><td>Context</td><td>01020104</td></tr>
+<tr><td>Length</td><td>0080</td></tr>
+<tr><td>Output</td><td>b57a0b05 f43e9600 c3c4d15c 1e3c26e8</td></tr>
+</table>
+
+NOTE—The KDF adds a null (0x00) after ‘Label’ as part of the input to the PRF, as specified in 6.2.1, but that null is not part of the input to the KDF.
+
+The following example uses a 256-bit Key and requests a 32-octet (256-bit) result:
+
+<table id="e2">
+<tr><td>Key</td><td>3946ec36 f59017f1 267e914a bed2dbf6 633f52ae 7e20309d 3eefdda4 073adfad</td></tr>
+<tr><td>Label</td><td>48492054 48455245</td></tr>
+<tr><td>Context</td><td>01020104</td></tr>
+<tr><td>Length</td><td>0100</td></tr>
+<tr><td>Output</td><td>0efd01e5 b03a0951 a6df9bbf fe419016 ee40fdbf c3335ebf 92ea0380 2214a307</td></tr>
+</table>
+
+284  
+Copyright © 2020 IEEE. All rights reserved.  
+Authorized licensed use limited to: Linköping University Library. Downloaded on November 28,2021 at 19:55:17 UTC from IEEE Xplore. Restrictions apply.

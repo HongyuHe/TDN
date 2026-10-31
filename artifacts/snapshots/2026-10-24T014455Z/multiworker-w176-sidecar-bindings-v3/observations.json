@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-24T03:56:31.234064+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:56:29.674671+00:00",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:29.675814+00:00",
+      "command": [
+        "hostname"
+      ],
+      "returncode": 0,
+      "stdout": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:30.228767+00:00",
+      "command": [
+        "docker",
+        "ps",
+        "--format",
+        "{{.Names}}"
+      ],
+      "returncode": 0,
+      "stdout": "NX_GR_B-frr\nNX_GR_A-frr\nNX_OF_B2-frr\nNX_OF_A2-frr\nNX_OF_B1-frr\nNX_GF_B-frr\nNX_OF_A1-frr\nNX_GF_A-frr\nNX_BLACK-frr\nNX_G_B4\nNX_I_B4\nNX_R_B4\nNX_G_A4\nNX_I_A4\nNX_R_A4\nNX_GR_B\nNX_GR_A\nNX_OF_B2\nNX_O_B2\nNX_OF_A2\nNX_O_A2\nNX_G_B3\nNX_I_B3\nNX_R_B3\nNX_G_A3\nNX_I_A3\nNX_R_A3\nNX_G_B2\nNX_I_B2\nNX_R_B2\nNX_OF_B1\nNX_O_B1\nNX_G_B1\nNX_I_B1\nNX_R_B1\nNX_GF_B\nNX_G_A2\nNX_I_A2\nNX_R_A2\nNX_OF_A1\nNX_O_A1\nNX_G_A1\nNX_I_A1\nNX_R_A1\nNX_GF_A\nNX_BLACK\nMW_OF_B2-frr\nMW_OF_B1-frr\nMW_OF_A2-frr\nMW_OF_A1-frr\nMW_BLACK-frr\nMW_OF_B2\nMW_OF_B1\nMW_OF_A2\nMW_OF_A1\nMW_BLACK\ntcv3-ca2-central-outer-b\ntcv3-ca2-central-outer-a\ntcv3-ca2-central-inner-b\ntcv3-ca2-central-inner-a\ntcv3-ca2-enterprise-outer-b\ntcv3-ca2-enterprise-outer-a\ntcv3-ca2-enterprise-inner-b\ntcv3-ca2-enterprise-inner-a\ntcv3-ca2-local-outer-b\ntcv3-ca2-local-outer-a\ntcv3-ca2-local-inner-b\ntcv3-ca2-local-inner-a\ntcv3-pq4-alice\ntcv3-pq4-bob\nNT_OF_B1-frr\nNT_GF_B-frr\nNT_OF_A1-frr\nNT_GF_A-frr\nNT_BLACK-frr\nNT_G_B2\nNT_I_B2\nNT_R_B2\nNT_OF_B1\nNT_O_B1\nNT_G_B1\nNT_I_B1\nNT_R_B1\nNT_GF_B\nNT_G_A2\nNT_I_A2\nNT_R_A2\nNT_OF_A1\nNT_O_A1\nNT_G_A1\nNT_I_A1\nNT_R_A1\nNT_GF_A\nNT_BLACK\nNM_OF_B2-frr\nNM_OF_B1-frr\nNM_GF_B-frr\nNM_OF_A2-frr\nNM_OF_A1-frr\nNM_GF_A-frr\nNM_BLACK-frr\nNM_AW_B99\nNM_M_B99\nNM_AW_B2\nNM_M_B2\nNM_AW_B1\nNM_M_B1\nNM_OF_B2\nNM_O_B2\nNM_G_B2\nNM_I_B2\nNM_R_B2\nNM_OF_B1\nNM_O_B1\nNM_G_B1\nNM_I_B1\nNM_R_B1\nNM_GF_B\nNM_AW_A99\nNM_M_A99\nNM_AW_A2\nNF_OF_B1-frr\nNM_M_A2\nNM_AW_A1\nNM_M_A1\nNM_OF_A2\nNF_GF_B-frr\nNM_O_A2\nNM_G_A2\nNM_I_A2\nNF_OF_A1-frr\nNM_R_A2\nNM_OF_A1\nNM_O_A1\nNM_G_A1\nNM_I_A1\nNF_GF_A-frr\nNM_R_A1\nNM_GF_A\nNM_BLACK\nNF_BLACK-frr\nNR_GR_B-frr\nNF_G_B4\nNF_I_B4\nNF_R_B4\nNR_GR_A-frr\nNF_G_A4\nNF_I_A4\nNF_R_A4\nNR_OF_B2-frr\nNF_G_B3\nNF_I_B3\nNF_R_B3\nNR_OF_A2-frr\nNF_G_A3\nNF_I_A3\nNF_R_A3\nNF_G_B2\nNF_I_B2\nNF_R_B2\nNF_OF_B1\nNR_OF_B1-frr\nNF_O_B1\nNF_G_B1\nNF_I_B1\nNF_R_B1\nNR_GF_B-frr\nNF_GF_B\nNF_G_A2\nNF_I_A2\nNF_R_A2\nNR_OF_A1-frr\nNF_OF_A1\nNF_O_A1\nNF_G_A1\nNF_I_A1\nNR_GF_A-frr\nNF_R_A1\nNF_GF_A\nNF_BLACK\nNR_BLACK-frr\nNS_OF_B1-frr\nNR_G_B4\nNR_I_B4\nNR_R_B4\nNS_GF_B-frr\nNR_G_A4\nNR_I_A4\nNR_R_A4\nNR_GR_B\nNS_OF_A1-frr\nNR_GR_A\nNR_OF_B2\nNR_O_B2\nNS_GF_A-frr\nNR_OF_A2\nNR_O_A2\nNR_G_B3\nNS_BLACK-frr\nNR_I_B3\nNR_R_B3\nNR_G_A3\nNR_I_A3\nNR_R_A3\nNR_G_B2\nNS_G_B2\nNR_I_B2\nNS_I_B2\nNR_R_B2\nNS_R_B2\nNR_OF_B1\nNS_OF_B1\nNR_O_B1\nNS_O_B1\nNR_G_B1\nNS_G_B1\nNR_I_B1\nNS_I_B1\nNR_R_B1\nNS_R_B1\nNR_GF_B\nNS_GF_B\nNR_G_A2\nNS_G_A2\nNR_I_A2\nNS_I_A2\nNR_R_A2\nNS_R_A2\nNR_OF_A1\nNS_OF_A1\nNR_O_A1\nNS_O_A1\nNR_G_A1\nNS_G_A1\nNR_I_A1\nNS_I_A1\nNR_R_A1\nNS_R_A1\nNR_GF_A\nNS_GF_A\nNR_BLACK\nNS_BLACK\nNB_OF_B2-frr\nNB_OF_B1-frr\nNB_GF_B-frr\nNB_OF_A2-frr\nNB_OF_A1-frr\nNB_GF_A-frr\nNB_BLACK-frr\nNB_OF_B2\nNB_O_B2\nNB_G_B2\nNB_I_B2\nNB_R_B2\nNB_OF_B1\nNB_O_B1\nNB_G_B1\nNB_I_B1\nNB_R_B1\nNB_GF_B\nNB_OF_A2\nNB_O_A2\nNB_G_A2\nNB_I_A2\nNB_R_A2\nNB_OF_A1\nNB_O_A1\nNB_G_A1\nNB_I_A1\nNB_R_A1\nNB_GF_A\nNB_BLACK\ntwinet-redun5-v6-g_b4\ntwinet-redun5-v6-i_b4\ntwinet-redun5-v6-r_b4\ntwinet-redun5-v6-g_a4\ntwinet-redun5-v6-i_a4\ntwinet-redun5-v6-r_a4\ntwinet-redun5-v6-gr_b\ntwinet-redun5-v6-gr_a\ntwinet-redun5-v6-of_b2\ntwinet-redun5-v6-o_b2\ntwinet-redun5-v6-of_a2\ntwinet-redun5-v6-o_a2\ntwinet-redun5-v6-g_b3\ntwinet-redun5-v6-i_b3\ntwinet-redun5-v6-r_b3\ntwinet-redun5-v6-g_a3\ntwinet-redun5-v6-i_a3\ntwinet-redun5-v6-r_a3\ntwinet-redun5-v6-g_b2\ntwinet-redun5-v6-i_b2\ntwinet-redun5-v6-r_b2\ntwinet-redun5-v6-of_b1\ntwinet-redun5-v6-o_b1\ntwinet-redun5-v6-g_b1\ntwinet-redun5-v6-i_b1\ntwinet-redun5-v6-r_b1\ntwinet-redun5-v6-gf_b\ntwinet-redun5-v6-g_a2\ntwinet-redun5-v6-i_a2\ntwinet-redun5-v6-r_a2\ntwinet-redun5-v6-of_a1\ntwinet-redun5-v6-o_a1\ntwinet-redun5-v6-g_a1\ntwinet-redun5-v6-i_a1\ntwinet-redun5-v6-r_a1\ntwinet-redun5-v6-gf_a\ntwinet-redun5-v6-black\ntwinet-shared4-v5-g_b4\ntwinet-shared4-v5-i_b4\ntwinet-shared4-v5-r_b4\ntwinet-shared4-v5-g_a4\ntwinet-shared4-v5-i_a4\ntwinet-shared4-v5-r_a4\ntwinet-shared4-v5-g_b3\ntwinet-shared4-v5-i_b3\ntwinet-shared4-v5-r_b3\ntwinet-shared4-v5-g_a3\ntwinet-shared4-v5-i_a3\ntwinet-shared4-v5-r_a3\ntwinet-shared4-v5-g_b2\ntwinet-shared4-v5-i_b2\ntwinet-shared4-v5-r_b2\ntwinet-shared4-v5-of_b1\ntwinet-shared4-v5-o_b1\ntwinet-shared4-v5-g_b1\ntwinet-shared4-v5-i_b1\ntwinet-shared4-v5-r_b1\ntwinet-shared4-v5-gf_b\ntwinet-shared4-v5-g_a2\ntwinet-shared4-v5-i_a2\ntwinet-shared4-v5-r_a2\ntwinet-shared4-v5-of_a1\ntwinet-shared4-v5-o_a1\ntwinet-shared4-v5-g_a1\ntwinet-shared4-v5-i_a1\ntwinet-shared4-v5-r_a1\ntwinet-shared4-v5-gf_a\ntwinet-shared4-v5-black\ntwinet-shared4-v4-g_b4\ntwinet-shared4-v4-i_b4\ntwinet-shared4-v4-r_b4\ntwinet-shared4-v4-g_a4\ntwinet-shared4-v4-i_a4\ntwinet-shared4-v4-r_a4\ntwinet-shared4-v4-g_b3\ntwinet-shared4-v4-i_b3\ntwinet-shared4-v4-r_b3\ntwinet-shared4-v4-g_a3\ntwinet-shared4-v4-i_a3\ntwinet-shared4-v4-r_a3\ntwinet-shared4-v4-g_b2\ntwinet-shared4-v4-i_b2\ntwinet-shared4-v4-r_b2\ntwinet-shared4-v4-of_b1\ntwinet-shared4-v4-o_b1\ntwinet-shared4-v4-g_b1\ntwinet-shared4-v4-i_b1\ntwinet-shared4-v4-r_b1\ntwinet-shared4-v4-gf_b\ntwinet-shared4-v4-g_a2\ntwinet-shared4-v4-i_a2\ntwinet-shared4-v4-r_a2\ntwinet-shared4-v4-of_a1\ntwinet-shared4-v4-o_a1\ntwinet-shared4-v4-g_a1\ntwinet-shared4-v4-i_a1\ntwinet-shared4-v4-r_a1\ntwinet-shared4-v4-gf_a\ntwinet-shared4-v4-black\ntcv2-ca2-central-outer-b\ntcv2-ca2-central-outer-a\ntcv2-ca2-central-inner-b\ntcv2-ca2-central-inner-a\ntcv2-ca2-enterprise-outer-b\ntcv2-ca2-enterprise-outer-a\ntcv2-ca2-enterprise-inner-b\ntcv2-ca2-enterprise-inner-a\ntcv2-ca2-local-outer-b\ntcv2-ca2-local-outer-a\ntcv2-ca2-local-inner-b\ntcv2-ca2-local-inner-a\ntcv2-ca-central-outer-b\ntcv2-ca-central-outer-a\ntcv2-ca-central-inner-b\ntcv2-ca-central-inner-a\ntcv2-ca-enterprise-outer-b\ntcv2-ca-enterprise-outer-a\ntcv2-ca-enterprise-inner-b\ntcv2-ca-enterprise-inner-a\ntcv2-ca-local-outer-b\ntcv2-ca-local-outer-a\ntcv2-ca-local-inner-b\ntcv2-ca-local-inner-a\ntcv2-pq4-alice\ntcv2-pq4-bob\ntwinet-redun4-v4-gr_b\ntwinet-redun4-v4-gr_a\ntwinet-redun4-v4-of_b2\ntwinet-redun4-v4-o_b2\ntwinet-redun4-v4-of_a2\ntwinet-redun4-v4-o_a2\ntwinet-redun4-v4-g_b3\ntwinet-redun4-v4-i_b3\ntwinet-redun4-v4-r_b3\ntwinet-redun4-v4-g_a3\ntwinet-redun4-v4-i_a3\ntwinet-redun4-v4-r_a3\ntwinet-redun4-v4-g_b2\ntwinet-redun4-v4-i_b2\ntwinet-redun4-v4-r_b2\ntwinet-redun4-v4-of_b1\ntwinet-redun4-v4-o_b1\ntwinet-redun4-v4-g_b1\ntwinet-redun4-v4-i_b1\ntwinet-redun4-v4-r_b1\ntwinet-redun4-v4-gf_b\ntwinet-redun4-v4-g_a2\ntwinet-redun4-v4-i_a2\ntwinet-redun4-v4-r_a2\ntwinet-redun4-v4-of_a1\ntwinet-redun4-v4-o_a1\ntwinet-redun4-v4-g_a1\ntwinet-redun4-v4-i_a1\ntwinet-redun4-v4-r_a1\ntwinet-redun4-v4-gf_a\ntwinet-redun4-v4-black\ntcv2-pq3-alice\ntcv2-pq3-bob\ntwinet-redun3-v3-of_b2\ntwinet-redun3-v3-o_b2\ntwinet-redun3-v3-of_a2\ntwinet-redun3-v3-o_a2\ntwinet-redun3-v3-g_b3\ntwinet-redun3-v3-i_b3\ntwinet-redun3-v3-r_b3\ntwinet-redun3-v3-g_a3\ntwinet-redun3-v3-i_a3\ntwinet-redun3-v3-r_a3\ntwinet-redun3-v3-g_b2\ntwinet-redun3-v3-i_b2\ntwinet-redun3-v3-r_b2\ntwinet-redun3-v3-of_b1\ntwinet-redun3-v3-o_b1\ntwinet-redun3-v3-g_b1\ntwinet-redun3-v3-i_b1\ntwinet-redun3-v3-r_b1\ntwinet-redun3-v3-gf_b\ntwinet-redun3-v3-g_a2\ntwinet-redun3-v3-i_a2\ntwinet-redun3-v3-r_a2\ntwinet-redun3-v3-of_a1\ntwinet-redun3-v3-o_a1\ntwinet-redun3-v3-g_a1\ntwinet-redun3-v3-i_a1\ntwinet-redun3-v3-r_a1\ntwinet-redun3-v3-gf_a\ntwinet-redun3-v3-black\ntwinet-shared3-v3-g_b3\ntwinet-shared3-v3-i_b3\ntwinet-shared3-v3-r_b3\ntwinet-shared3-v3-g_a3\ntwinet-shared3-v3-i_a3\ntwinet-shared3-v3-r_a3\ntwinet-shared3-v3-g_b2\ntwinet-shared3-v3-i_b2\ntwinet-shared3-v3-r_b2\ntcv2-pq2-alice\ntwinet-shared3-v3-of_b1\ntwinet-shared3-v3-o_b1\ntcv2-pq2-bob\ntwinet-shared3-v3-g_b1\ntwinet-shared3-v3-i_b1\ntwinet-shared3-v3-r_b1\ntwinet-shared3-v3-gf_b\ntwinet-shared3-v3-g_a2\ntwinet-shared3-v3-i_a2\ntwinet-shared3-v3-r_a2\ntwinet-shared3-v3-of_a1\ntwinet-shared3-v3-o_a1\ntwinet-shared3-v3-g_a1\ntwinet-shared3-v3-i_a1\ntwinet-shared3-v3-r_a1\ntwinet-shared3-v3-gf_a\ntwinet-shared3-v3-black\ntwinet-mgmtind-v2-aw_b99\ntwinet-mgmtind-v2-m_b99\ntwinet-mgmtind-v2-aw_b2\ntwinet-mgmtind-v2-m_b2\ntwinet-mgmtind-v2-aw_b1\ntwinet-mgmtind-v2-m_b1\ntwinet-mgmtind-v2-of_b2\ntwinet-mgmtind-v2-o_b2\ntwinet-mgmtind-v2-g_b2\ntwinet-mgmtind-v2-i_b2\ntwinet-mgmtind-v2-r_b2\ntwinet-mgmtind-v2-of_b1\ntwinet-mgmtind-v2-o_b1\ntwinet-mgmtind-v2-g_b1\ntwinet-mgmtind-v2-i_b1\ntwinet-mgmtind-v2-r_b1\ntwinet-mgmtind-v2-gf_b\ntwinet-mgmtind-v2-aw_a99\ntwinet-mgmtind-v2-m_a99\ntwinet-mgmtind-v2-aw_a2\ntwinet-mgmtind-v2-m_a2\ntwinet-mgmtind-v2-aw_a1\ntwinet-mgmtind-v2-m_a1\ntwinet-mgmtind-v2-of_a2\ntwinet-mgmtind-v2-o_a2\ntwinet-mgmtind-v2-g_a2\ntwinet-mgmtind-v2-i_a2\ntwinet-mgmtind-v2-r_a2\ntwinet-mgmtind-v2-of_a1\ntwinet-mgmtind-v2-o_a1\ntwinet-mgmtind-v2-g_a1\ntwinet-mgmtind-v2-i_a1\ntwinet-mgmtind-v2-r_a1\ntwinet-mgmtind-v2-gf_a\ntwinet-mgmtind-v2-black\ntcv2-pq-bob\ntwinet-redundant-v2-of_b2\ntwinet-redundant-v2-o_b2\ntwinet-redundant-v2-of_a2\ntwinet-redundant-v2-o_a2\ntwinet-redundant-v2-g_b3\ntwinet-redundant-v2-i_b3\ntwinet-redundant-v2-r_b3\ntwinet-redundant-v2-g_a3\ntwinet-redundant-v2-i_a3\ntwinet-redundant-v2-r_a3\ntwinet-redundant-v2-g_b2\ntwinet-redundant-v2-i_b2\ntwinet-redundant-v2-r_b2\ntwinet-redundant-v2-of_b1\ntwinet-redundant-v2-o_b1\ntwinet-redundant-v2-g_b1\ntwinet-redundant-v2-i_b1\ntwinet-redundant-v2-r_b1\ntwinet-redundant-v2-gf_b\ntwinet-redundant-v2-g_a2\ntwinet-redundant-v2-i_a2\ntwinet-redundant-v2-r_a2\ntwinet-redundant-v2-of_a1\ntwinet-redundant-v2-o_a1\ntwinet-redundant-v2-g_a1\ntwinet-redundant-v2-i_a1\ntwinet-redundant-v2-r_a1\ntwinet-redundant-v2-gf_a\ntwinet-redundant-v2-black\ntwinet-samelevel-v2-g_b2\ntwinet-samelevel-v2-i_b2\ntwinet-samelevel-v2-r_b2\ntwinet-samelevel-v2-of_b1\ntwinet-samelevel-v2-o_b1\ntwinet-samelevel-v2-g_b1\ntwinet-samelevel-v2-i_b1\ntwinet-samelevel-v2-r_b1\ntwinet-samelevel-v2-gf_b\ntwinet-samelevel-v2-g_a2\ntwinet-samelevel-v2-i_a2\ntwinet-samelevel-v2-r_a2\ntwinet-samelevel-v2-of_a1\ntwinet-samelevel-v2-o_a1\ntwinet-samelevel-v2-g_a1\ntwinet-samelevel-v2-i_a1\ntwinet-samelevel-v2-r_a1\ntwinet-samelevel-v2-gf_a\ntwinet-samelevel-v2-black\ntwinet-shared-v2-g_b3\ntwinet-shared-v2-i_b3\ntwinet-shared-v2-r_b3\ntwinet-shared-v2-g_a3\ntwinet-shared-v2-i_a3\ntwinet-shared-v2-r_a3\ntwinet-shared-v2-g_b2\ntwinet-shared-v2-i_b2\ntwinet-shared-v2-r_b2\ntwinet-shared-v2-of_b1\ntwinet-shared-v2-o_b1\ntwinet-shared-v2-g_b1\ntwinet-shared-v2-i_b1\ntwinet-shared-v2-r_b1\ntwinet-shared-v2-gf_b\ntwinet-shared-v2-g_a2\ntwinet-shared-v2-i_a2\ntwinet-shared-v2-r_a2\ntwinet-shared-v2-of_a1\ntwinet-shared-v2-o_a1\ntwinet-shared-v2-g_a1\ntwinet-shared-v2-i_a1\ntwinet-shared-v2-r_a1\ntwinet-shared-v2-gf_a\ntwinet-shared-v2-black\ntwinet-csfc-v2-of_b2\ntwinet-csfc-v2-o_b2\ntwinet-csfc-v2-g_b2\ntwinet-csfc-v2-i_b2\ntwinet-csfc-v2-r_b2\ntwinet-csfc-v2-of_b1\ntwinet-csfc-v2-o_b1\ntwinet-csfc-v2-g_b1\ntwinet-csfc-v2-i_b1\ntwinet-csfc-v2-r_b1\ntwinet-csfc-v2-gf_b\ntwinet-csfc-v2-of_a2\ntwinet-csfc-v2-o_a2\ntwinet-csfc-v2-g_a2\ntwinet-csfc-v2-i_a2\ntwinet-csfc-v2-r_a2\ntwinet-csfc-v2-of_a1\ntwinet-csfc-v2-o_a1\ntwinet-csfc-v2-g_a1\ntwinet-csfc-v2-i_a1\ntwinet-csfc-v2-r_a1\ntwinet-csfc-v2-gf_a\ntwinet-csfc-v2-black\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:30.427425+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "MW_OF_B2-frr",
+        "vtysh",
+        "-c",
+        "show version"
+      ],
+      "returncode": 0,
+      "stdout": "FRRouting 10.0 (mw-of-b2) on Linux(6.8.0-138-generic).\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n    '--prefix=/usr' '--localstatedir=/run/frr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib/frr' '--with-moduledir=/usr/lib/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'CC=gcc' 'CXX=g++' 'PYTHON=python3'\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:30.623366+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "MW_OF_B1-frr",
+        "vtysh",
+        "-c",
+        "show version"
+      ],
+      "returncode": 0,
+      "stdout": "FRRouting 10.0 (mw-of-b1) on Linux(6.8.0-138-generic).\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n    '--prefix=/usr' '--localstatedir=/run/frr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib/frr' '--with-moduledir=/usr/lib/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'CC=gcc' 'CXX=g++' 'PYTHON=python3'\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:30.825037+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "MW_OF_A2-frr",
+        "vtysh",
+        "-c",
+        "show version"
+      ],
+      "returncode": 0,
+      "stdout": "FRRouting 10.0 (mw-of-a2) on Linux(6.8.0-138-generic).\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n    '--prefix=/usr' '--localstatedir=/run/frr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib/frr' '--with-moduledir=/usr/lib/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'CC=gcc' 'CXX=g++' 'PYTHON=python3'\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:31.028774+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "MW_OF_A1-frr",
+        "vtysh",
+        "-c",
+        "show version"
+      ],
+      "returncode": 0,
+      "stdout": "FRRouting 10.0 (mw-of-a1) on Linux(6.8.0-138-generic).\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n    '--prefix=/usr' '--localstatedir=/run/frr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib/frr' '--with-moduledir=/usr/lib/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'CC=gcc' 'CXX=g++' 'PYTHON=python3'\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:31.232294+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "MW_BLACK-frr",
+        "vtysh",
+        "-c",
+        "show version"
+      ],
+      "returncode": 0,
+      "stdout": "FRRouting 10.0 (mw-black) on Linux(6.8.0-138-generic).\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n    '--prefix=/usr' '--localstatedir=/run/frr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib/frr' '--with-moduledir=/usr/lib/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'CC=gcc' 'CXX=g++' 'PYTHON=python3'\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": "Read-only binding of actual MW FRR helpers to parent network namespaces and worker hardware. Other deployments are not changed."
+}

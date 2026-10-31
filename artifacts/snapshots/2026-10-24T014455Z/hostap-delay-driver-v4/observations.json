@@ -1,0 +1,51 @@
+{
+  "at": "2026-10-24T04:04:18.719365+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T04:04:18.690072+00:00",
+      "command": [
+        "make",
+        "-j4"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-fixed/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "  CC  ../src/drivers/driver_macsec_linux.c\n  LD  wpa_supplicant\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:04:18.708334+00:00",
+      "command": [
+        "sha256sum",
+        "./wpa_supplicant"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-fixed/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "61408d19dc22cb60d6f704f3743c0d7101234af2fc23aa7f9e01c268652daea9  ./wpa_supplicant\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:04:18.710486+00:00",
+      "command": [
+        "./wpa_supplicant",
+        "-v"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-fixed/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nCopyright (c) 2003-2026, Jouni Malinen <j@w1.fi> and contributors\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:04:18.719105+00:00",
+      "command": [
+        "ldd",
+        "./wpa_supplicant"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-fixed/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffe84dcd000)\n\tlibnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x0000749b13f79000)\n\tlibnl-genl-3.so.200 => /lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x0000749b13f71000)\n\tlibnl-route-3.so.200 => /lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x0000749b13ee2000)\n\tlibssl.so.3 => /lib/x86_64-linux-gnu/libssl.so.3 (0x0000749b13e38000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x0000749b13800000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000749b13400000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000749b14087000)\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": "Original hostap Linux set_receive_lowest_pn uses the receive_sa next_pn field even though KaY has updated lowest_pn. This owned callback repair sends lowest_pn to the kernel and logs that same value. Prior bounded-Hello and PN-history patches remain in the copied owned tree. The preceding active-bit-only experiment failed to reject three-second data and remains preserved."
+}

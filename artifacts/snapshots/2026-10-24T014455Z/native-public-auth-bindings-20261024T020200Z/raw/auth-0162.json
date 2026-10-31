@@ -1,0 +1,21 @@
+{
+  "id": "auth-0162",
+  "command": [
+    "docker",
+    "exec",
+    "NF_I_B4",
+    "find",
+    "/etc/swanctl/x509",
+    "/etc/swanctl/x509ca",
+    "/etc/swanctl/x509crl",
+    "-maxdepth",
+    "1",
+    "-type",
+    "f"
+  ],
+  "started_at": "2026-10-24T02:03:27.983347+00:00",
+  "ended_at": "2026-10-24T02:03:28.070297+00:00",
+  "returncode": 0,
+  "stdout": "/etc/swanctl/x509/cert.pem\n/etc/swanctl/x509ca/ca.pem\n/etc/swanctl/x509crl/ca.crl.pem\n",
+  "stderr": ""
+}

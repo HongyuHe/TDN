@@ -1,0 +1,50 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "started_at": "2026-10-24T04:42:44.083967+00:00",
+  "ended_at": "2026-10-24T04:42:44.525543+00:00",
+  "configuration_id": "eap-tls-forward-v16",
+  "code_sha256": "ce009fce51928aaa91e66d7ab8649ef77b5faf6b51a1bace9df2d9f51752e2ee",
+  "code_hashes": {
+    "matrix_lab.py": "ce009fce51928aaa91e66d7ab8649ef77b5faf6b51a1bace9df2d9f51752e2ee",
+    "eap_tls_v16.py": "58ca1d02658de6617ffe79e100006beb9da3d45e006ccfe84b1ddd322f4cc9f1"
+  },
+  "files": [
+    {
+      "path": "case.json",
+      "sha256": "e2d636dc60ca34c7c9cea9f7b7844bab5718f3889db553ede9c5af1959baced9",
+      "bytes": 716
+    },
+    {
+      "path": "collector.source.py",
+      "sha256": "58ca1d02658de6617ffe79e100006beb9da3d45e006ccfe84b1ddd322f4cc9f1",
+      "bytes": 10872
+    },
+    {
+      "path": "commands.json",
+      "sha256": "156843f1b5be3e6655a8451eed442632fdbf8df20147561bdb3c8c7926bbc0f9",
+      "bytes": 12692
+    },
+    {
+      "path": "eap_delay_lab_v16.py",
+      "sha256": "ce009fce51928aaa91e66d7ab8649ef77b5faf6b51a1bace9df2d9f51752e2ee",
+      "bytes": 20161
+    },
+    {
+      "path": "evidence.json",
+      "sha256": "719fd7d54b51075601a669f6371fb8b5a75208ce09947c52956d15dce23a74b4",
+      "bytes": 2250
+    },
+    {
+      "path": "openssl.cnf.public",
+      "sha256": "357258ebb2cc28fba1ff5bf36a1bd06bb8003e9cd8607c0d7ff3aaa47bd54493",
+      "bytes": 250
+    }
+  ],
+  "error": "{\"id\": \"cmd-0030\", \"started_at\": \"2026-10-24T04:42:44.507005+00:00\", \"ended_at\": \"2026-10-24T04:42:44.511873+00:00\", \"command\": [\"openssl\", \"genpkey\", \"-algorithm\", \"ML-DSA-87\", \"-out\", \"/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-forward-v16/ca.key\"], \"device_id\": null, \"returncode\": 1, \"stdout\": \"\", \"stderr\": \"Error initializing ML-DSA-87 context\\n40B73DCAF07C0000:error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported:../crypto/evp/evp_fetch.c:386:Global default library context, Algorithm (ML-DSA-87 : 0), Properties (<null>)\\n\"}",
+  "publication": {
+    "sanitizer_sha256": "ef04f16d7770ba47a4efcb9820ae1cb37710c673f90ccc0c9bf7c8a037c6a232",
+    "debug_hexdumps": "redacted in public exports and private debug logs",
+    "private_credential_files": "remain remote-only; never exported",
+    "decoded_scan": "passed"
+  }
+}

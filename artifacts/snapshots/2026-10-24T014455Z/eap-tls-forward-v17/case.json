@@ -1,0 +1,12 @@
+{
+  "source_case_id": "NET-023-C04",
+  "authentication": "EAP-TLS via central RADIUS AS with negotiated MKA",
+  "authenticator": "P0",
+  "supplicant": "P1",
+  "script_sha256": "d04bbda497c0f7746cc6c1cc1a8138b1090fe639c23c74078370f71908391e92",
+  "limitations": [
+    "Experimental objective EAP-TLS: ML-DSA-87 certificates and TLS1.3 MLKEM1024 group pinning. Effective negotiated algorithms must be checked independently of configuration. Both supplicant and authenticator functions are tested in separate arrangements; no simultaneous-operation requirement is invented",
+    "Test CA and RADIUS secret do not establish external PKI approval",
+    "AS has one Gray management attachment and no Red attachment"
+  ]
+}

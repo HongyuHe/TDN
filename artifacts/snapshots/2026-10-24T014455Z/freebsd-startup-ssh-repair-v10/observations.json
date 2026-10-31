@@ -1,0 +1,89 @@
+{
+  "at": "2026-10-24T13:58:19.845021+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T13:57:33.697261+00:00",
+      "ended_at": "2026-10-24T13:57:34.002075+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "wc -c /etc/rc.conf /usr/local/etc/rc.d/tdn_gateway; ifconfig vtnet0"
+      ],
+      "returncode": 0,
+      "stdout": "       0 /etc/rc.conf\n       0 /usr/local/etc/rc.d/tdn_gateway\n       0 total\nvtnet0: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:07:00:10\n\tinet 10.0.2.15 netmask 0xffffff00 broadcast 10.0.2.255\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=29<PERFORMNUD,IFDISABLED,AUTO_LINKLOCAL>\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T13:57:34.002286+00:00",
+      "ended_at": "2026-10-24T13:57:34.274728+00:00",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-P",
+        "22352",
+        "/users/hy/tdn-replay-20261024-v6/exports/freebsd-startup-repair-v9/rc.conf.restored",
+        "root@127.0.0.1:/etc/rc.conf"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T13:57:34.275081+00:00",
+      "ended_at": "2026-10-24T13:57:34.543690+00:00",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-P",
+        "22352",
+        "/users/hy/tdn-replay-20261024-v6/exports/freebsd-startup-repair-v9/tdn_gateway.restored",
+        "root@127.0.0.1:/usr/local/etc/rc.d/tdn_gateway"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T13:57:34.543722+00:00",
+      "ended_at": "2026-10-24T13:57:34.831628+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "chmod 644 /etc/rc.conf; chmod 555 /usr/local/etc/rc.d/tdn_gateway; fsync /etc/rc.conf; fsync /usr/local/etc/rc.d/tdn_gateway; fsync /etc; fsync /usr/local/etc/rc.d; sync; wc -c /etc/rc.conf /usr/local/etc/rc.d/tdn_gateway"
+      ],
+      "returncode": 0,
+      "stdout": "     499 /etc/rc.conf\n     877 /usr/local/etc/rc.d/tdn_gateway\n    1376 total\n",
+      "stderr": ""
+    }
+  ],
+  "error": "Command '['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=5', '-i', '/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key', '-p', '22352', 'root@127.0.0.1', 'service netif start vtnet2 vtnet3; service routing restart; sysctl net.inet.ip.forwarding=1; service tdn_gateway start']' timed out after 45 seconds",
+  "scope": [
+    "Exact public startup bytes are transferred through the existing authorized guest SSH key after the normal sshd onestart console command. No password was guessed or changed.",
+    "The first console restoration sent long base64 lines through a UART and did not restore file bytes. That failed attempt remains separate. SCP transfer plus actual size/hash and explicit file/directory fsync replaces that unreliable path.",
+    "Only the owned NC guest is repaired. Hypervisor, host root and existing SSH provisioning remain trusted laboratory controls."
+  ]
+}

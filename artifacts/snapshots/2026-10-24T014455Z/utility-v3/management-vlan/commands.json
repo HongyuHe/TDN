@@ -1,0 +1,951 @@
+[
+  {
+    "id": "cmd-0000",
+    "started_at": "2026-10-24T02:03:51.899367+00:00",
+    "ended_at": "2026-10-24T02:03:51.904049+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tcv3u-AW"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0001",
+    "started_at": "2026-10-24T02:03:51.904081+00:00",
+    "ended_at": "2026-10-24T02:03:51.915928+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0002",
+    "started_at": "2026-10-24T02:03:51.915958+00:00",
+    "ended_at": "2026-10-24T02:03:51.925475+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0003",
+    "started_at": "2026-10-24T02:03:51.925506+00:00",
+    "ended_at": "2026-10-24T02:03:51.933180+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tcv3u-TARGET"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0004",
+    "started_at": "2026-10-24T02:03:51.933213+00:00",
+    "ended_at": "2026-10-24T02:03:51.950429+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0005",
+    "started_at": "2026-10-24T02:03:51.950461+00:00",
+    "ended_at": "2026-10-24T02:03:51.960695+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0006",
+    "started_at": "2026-10-24T02:03:51.960740+00:00",
+    "ended_at": "2026-10-24T02:03:51.972746+00:00",
+    "command": [
+      "ip",
+      "link",
+      "add",
+      "tcv3ux00",
+      "type",
+      "veth",
+      "peer",
+      "name",
+      "tcv3uy00"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0007",
+    "started_at": "2026-10-24T02:03:51.972777+00:00",
+    "ended_at": "2026-10-24T02:03:51.997806+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "tcv3ux00",
+      "netns",
+      "tcv3u-AW"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0008",
+    "started_at": "2026-10-24T02:03:51.997839+00:00",
+    "ended_at": "2026-10-24T02:03:52.028819+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "link",
+      "set",
+      "tcv3ux00",
+      "name",
+      "eth0"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0009",
+    "started_at": "2026-10-24T02:03:52.028843+00:00",
+    "ended_at": "2026-10-24T02:03:52.039243+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "link",
+      "set",
+      "eth0",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0010",
+    "started_at": "2026-10-24T02:03:52.039271+00:00",
+    "ended_at": "2026-10-24T02:03:52.078966+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "tcv3uy00",
+      "netns",
+      "tcv3u-TARGET"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0011",
+    "started_at": "2026-10-24T02:03:52.078983+00:00",
+    "ended_at": "2026-10-24T02:03:52.107506+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "link",
+      "set",
+      "tcv3uy00",
+      "name",
+      "eth0"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0012",
+    "started_at": "2026-10-24T02:03:52.107526+00:00",
+    "ended_at": "2026-10-24T02:03:52.116108+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "link",
+      "set",
+      "eth0",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0013",
+    "started_at": "2026-10-24T02:03:52.116135+00:00",
+    "ended_at": "2026-10-24T02:03:52.125249+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "link",
+      "add",
+      "link",
+      "eth0",
+      "name",
+      "mgmt100",
+      "type",
+      "vlan",
+      "id",
+      "100"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0014",
+    "started_at": "2026-10-24T02:03:52.125270+00:00",
+    "ended_at": "2026-10-24T02:03:52.133624+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "addr",
+      "add",
+      "10.96.0.1/30",
+      "dev",
+      "mgmt100"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0015",
+    "started_at": "2026-10-24T02:03:52.133642+00:00",
+    "ended_at": "2026-10-24T02:03:52.142148+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "link",
+      "set",
+      "mgmt100",
+      "up"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0016",
+    "started_at": "2026-10-24T02:03:52.142170+00:00",
+    "ended_at": "2026-10-24T02:03:52.155407+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "link",
+      "add",
+      "link",
+      "eth0",
+      "name",
+      "mgmt100",
+      "type",
+      "vlan",
+      "id",
+      "100"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0017",
+    "started_at": "2026-10-24T02:03:52.155430+00:00",
+    "ended_at": "2026-10-24T02:03:52.162991+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "addr",
+      "add",
+      "10.96.0.2/30",
+      "dev",
+      "mgmt100"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0018",
+    "started_at": "2026-10-24T02:03:52.163010+00:00",
+    "ended_at": "2026-10-24T02:03:52.172616+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "link",
+      "set",
+      "mgmt100",
+      "up"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0019",
+    "started_at": "2026-10-24T02:03:52.172815+00:00",
+    "ended_at": "2026-10-24T02:03:52.180638+00:00",
+    "command": [
+      "openssl",
+      "genpkey",
+      "-algorithm",
+      "EC",
+      "-pkeyopt",
+      "ec_paramgen_curve:P-384",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/ca.key"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0020",
+    "started_at": "2026-10-24T02:03:52.180714+00:00",
+    "ended_at": "2026-10-24T02:03:52.191111+00:00",
+    "command": [
+      "openssl",
+      "req",
+      "-new",
+      "-x509",
+      "-sha384",
+      "-key",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/ca.key",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/ca.pem",
+      "-days",
+      "1",
+      "-subj",
+      "/CN=Utility-Test-CA",
+      "-addext",
+      "basicConstraints=critical,CA:TRUE"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0021",
+    "started_at": "2026-10-24T02:03:52.191168+00:00",
+    "ended_at": "2026-10-24T02:03:52.198296+00:00",
+    "command": [
+      "openssl",
+      "genpkey",
+      "-algorithm",
+      "EC",
+      "-pkeyopt",
+      "ec_paramgen_curve:P-384",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/server.key"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0022",
+    "started_at": "2026-10-24T02:03:52.198372+00:00",
+    "ended_at": "2026-10-24T02:03:52.208633+00:00",
+    "command": [
+      "openssl",
+      "req",
+      "-new",
+      "-sha384",
+      "-key",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/server.key",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/server.csr",
+      "-subj",
+      "/CN=server.msc.test"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0023",
+    "started_at": "2026-10-24T02:03:52.208988+00:00",
+    "ended_at": "2026-10-24T02:03:52.253274+00:00",
+    "command": [
+      "openssl",
+      "x509",
+      "-req",
+      "-sha384",
+      "-in",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/server.csr",
+      "-CA",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/ca.pem",
+      "-CAkey",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/ca.key",
+      "-CAcreateserial",
+      "-days",
+      "1",
+      "-extfile",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/server.ext",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/server.pem"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "Certificate request self-signature ok\nsubject=CN = server.msc.test\n"
+  },
+  {
+    "id": "cmd-0024",
+    "started_at": "2026-10-24T02:03:52.253369+00:00",
+    "ended_at": "2026-10-24T02:03:52.291068+00:00",
+    "command": [
+      "openssl",
+      "x509",
+      "-in",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/server.pem",
+      "-noout",
+      "-text"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            15:4f:02:52:f9:b7:48:30:99:4e:8a:dc:0b:fc:cc:05:3e:a2:57:0e\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = Utility-Test-CA\n        Validity\n            Not Before: Oct 24 02:03:52 2026 GMT\n            Not After : Oct 25 02:03:52 2026 GMT\n        Subject: CN = server.msc.test\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:95:76:31:f1:10:90:24:98:f6:c2:d9:52:68:25:\n                    5d:2c:7f:54:f4:6b:42:73:0b:a0:6d:d1:dd:b8:59:\n                    d4:45:2c:4b:fc:a7:62:5a:78:e8:c8:3a:ad:45:e5:\n                    7e:e7:2a:e5:07:6c:e6:bd:21:a9:9f:af:1b:cc:39:\n                    20:75:fa:1c:66:22:b2:4b:d4:ab:0e:93:6c:4c:6d:\n                    d7:c8:74:78:91:6e:1d:f5:9f:64:bf:8e:58:f3:76:\n                    8f:3f:4c:78:1b:af:42\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Basic Constraints: \n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Alternative Name: \n                DNS:server.msc.test\n            X509v3 Subject Key Identifier: \n                4D:D4:E0:B7:56:18:04:F1:E5:12:39:4C:13:63:B2:05:14:9D:6F:00\n            X509v3 Authority Key Identifier: \n                2D:F3:76:83:1D:0B:FE:77:05:E5:A4:02:13:5C:60:AE:F8:AC:90:12\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:65:02:31:00:ae:94:5d:17:3a:2b:7e:1c:e0:40:db:ae:eb:\n        fb:e1:42:17:5b:f9:b9:d3:db:d9:3f:7b:46:71:94:1c:1f:15:\n        af:c7:83:f9:07:af:50:44:6c:54:21:39:d8:03:ed:8c:0e:02:\n        30:7e:db:42:24:11:f1:6c:6b:ca:1a:48:e6:bb:7f:bd:1c:83:\n        f2:09:27:b7:85:24:a4:87:d2:9e:64:4a:30:f4:b3:fc:2e:47:\n        dc:76:76:e4:8c:00:00:2b:34:8c:7d:7d:7d\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0025",
+    "started_at": "2026-10-24T02:03:52.291160+00:00",
+    "ended_at": "2026-10-24T02:03:52.298452+00:00",
+    "command": [
+      "openssl",
+      "genpkey",
+      "-algorithm",
+      "EC",
+      "-pkeyopt",
+      "ec_paramgen_curve:P-384",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/client.key"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0026",
+    "started_at": "2026-10-24T02:03:52.298570+00:00",
+    "ended_at": "2026-10-24T02:03:52.307538+00:00",
+    "command": [
+      "openssl",
+      "req",
+      "-new",
+      "-sha384",
+      "-key",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/client.key",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/client.csr",
+      "-subj",
+      "/CN=client.msc.test"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0027",
+    "started_at": "2026-10-24T02:03:52.307938+00:00",
+    "ended_at": "2026-10-24T02:03:52.351089+00:00",
+    "command": [
+      "openssl",
+      "x509",
+      "-req",
+      "-sha384",
+      "-in",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/client.csr",
+      "-CA",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/ca.pem",
+      "-CAkey",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/ca.key",
+      "-CAcreateserial",
+      "-days",
+      "1",
+      "-extfile",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/client.ext",
+      "-out",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/client.pem"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "Certificate request self-signature ok\nsubject=CN = client.msc.test\n"
+  },
+  {
+    "id": "cmd-0028",
+    "started_at": "2026-10-24T02:03:52.351189+00:00",
+    "ended_at": "2026-10-24T02:03:52.390286+00:00",
+    "command": [
+      "openssl",
+      "x509",
+      "-in",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan/client.pem",
+      "-noout",
+      "-text"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            15:4f:02:52:f9:b7:48:30:99:4e:8a:dc:0b:fc:cc:05:3e:a2:57:0f\n        Signature Algorithm: ecdsa-with-SHA384\n        Issuer: CN = Utility-Test-CA\n        Validity\n            Not Before: Oct 24 02:03:52 2026 GMT\n            Not After : Oct 25 02:03:52 2026 GMT\n        Subject: CN = client.msc.test\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub:\n                    04:a7:5e:18:80:86:bf:f0:42:fd:c4:75:3b:53:9b:\n                    c5:1a:31:05:21:a1:7c:83:d0:ed:8a:57:4b:62:09:\n                    93:d0:ea:5c:ea:fc:be:09:5f:27:24:e8:f2:6b:56:\n                    9d:6a:25:95:45:6f:9a:98:57:f9:c3:e9:c7:5c:a3:\n                    d9:d5:ac:74:d9:da:0d:43:f4:b0:8c:48:f8:fd:f6:\n                    1d:82:60:9c:cb:61:b9:54:6c:f8:ff:40:85:9f:2a:\n                    5c:23:22:00:19:18:7e\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n        X509v3 extensions:\n            X509v3 Basic Constraints: \n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature\n            X509v3 Extended Key Usage: \n                TLS Web Client Authentication\n            X509v3 Subject Alternative Name: \n                DNS:client.msc.test\n            X509v3 Subject Key Identifier: \n                54:6D:A6:88:D2:F7:AC:0C:45:C1:0F:A7:19:01:36:FF:E1:83:21:44\n            X509v3 Authority Key Identifier: \n                2D:F3:76:83:1D:0B:FE:77:05:E5:A4:02:13:5C:60:AE:F8:AC:90:12\n    Signature Algorithm: ecdsa-with-SHA384\n    Signature Value:\n        30:66:02:31:00:f5:19:77:a0:38:3b:cf:ef:eb:4b:f8:c2:a3:\n        e4:19:ef:76:c9:37:d4:0f:52:58:34:b6:d0:b3:bb:97:b7:bb:\n        00:a5:3e:f2:a8:db:c0:f4:6e:87:61:45:fd:d1:4f:ea:7a:02:\n        31:00:87:ba:d9:b0:61:3c:49:b4:2d:fd:d5:b7:d7:f0:b8:0a:\n        cd:97:fc:8c:28:b7:6f:67:63:2a:2b:8e:5d:88:b9:4c:02:bb:\n        90:7b:4c:d7:f7:bb:fc:87:a4:a8:f2:15:f3:0b\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0029",
+    "started_at": "2026-10-24T02:03:52.591254+00:00",
+    "ended_at": "2026-10-24T02:03:52.668898+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "python3",
+      "-c",
+      "import ssl,socket,json,sys\nr={'authenticated_client':sys.argv[3]=='yes'}\ntry:\n c=ssl.create_default_context(cafile=sys.argv[1]+'/ca.pem')\n if r['authenticated_client']:c.load_cert_chain(sys.argv[1]+'/client.pem',sys.argv[1]+'/client.key')\n with socket.create_connection((sys.argv[2],8443),timeout=4) as sock:\n  with c.wrap_socket(sock,server_hostname='server.msc.test') as ss:\n   r.update({'version':ss.version(),'cipher':ss.cipher()});ss.sendall(b'GET / HTTP/1.0\\r\\n\\r\\n');r['response']=ss.recv(1024).decode();r['outcome']='delivered'\nexcept Exception as exc:r.update({'outcome':'rejected','error':type(exc).__name__+': '+str(exc)})\nprint(json.dumps(r))\n",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan",
+      "10.96.0.2",
+      "yes"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "{\"authenticated_client\": true, \"version\": \"TLSv1.3\", \"cipher\": [\"TLS_AES_256_GCM_SHA384\", \"TLSv1.3\", 256], \"response\": \"HTTP/1.0 200 OK\\r\\nServer: SimpleHTTP/0.6 Python/3.12.3\\r\\nDate: Sat, 24 Oct 2026 02:03:52 GMT\\r\\nContent-type: text/html; charset=utf-8\\r\\nContent-Length: 307\\r\\n\\r\\n\", \"outcome\": \"delivered\"}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0030",
+    "started_at": "2026-10-24T02:03:52.668972+00:00",
+    "ended_at": "2026-10-24T02:03:52.737386+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "python3",
+      "-c",
+      "import ssl,socket,json,sys\nr={'authenticated_client':sys.argv[3]=='yes'}\ntry:\n c=ssl.create_default_context(cafile=sys.argv[1]+'/ca.pem')\n if r['authenticated_client']:c.load_cert_chain(sys.argv[1]+'/client.pem',sys.argv[1]+'/client.key')\n with socket.create_connection((sys.argv[2],8443),timeout=4) as sock:\n  with c.wrap_socket(sock,server_hostname='server.msc.test') as ss:\n   r.update({'version':ss.version(),'cipher':ss.cipher()});ss.sendall(b'GET / HTTP/1.0\\r\\n\\r\\n');r['response']=ss.recv(1024).decode();r['outcome']='delivered'\nexcept Exception as exc:r.update({'outcome':'rejected','error':type(exc).__name__+': '+str(exc)})\nprint(json.dumps(r))\n",
+      "/users/hy/tdn-continuation-2026-10-24T014455Z/private/utility-v3-management-vlan",
+      "10.96.0.2",
+      "no"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "{\"authenticated_client\": false, \"version\": \"TLSv1.3\", \"cipher\": [\"TLS_AES_256_GCM_SHA384\", \"TLSv1.3\", 256], \"outcome\": \"rejected\", \"error\": \"SSLError: [SSL: TLSV13_ALERT_CERTIFICATE_REQUIRED] tlsv13 alert certificate required (_ssl.c:2559)\"}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0031",
+    "started_at": "2026-10-24T02:03:52.737458+00:00",
+    "ended_at": "2026-10-24T02:03:52.747344+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "-j",
+      "-d",
+      "address"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":5,\"link\":\"eth0\",\"ifname\":\"mgmt100\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"96:1c:9b:6b:e3:9a\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vlan\",\"info_data\":{\"protocol\":\"802.1Q\",\"id\":100,\"flags\":[\"REORDER_HDR\"]}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.96.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"mgmt100\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::941c:9bff:fe6b:e39a\",\"prefixlen\":64,\"scope\":\"link\",\"tentative\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3150,\"link_index\":3149,\"ifname\":\"eth0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"96:1c:9b:6b:e3:9a\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::941c:9bff:fe6b:e39a\",\"prefixlen\":64,\"scope\":\"link\",\"tentative\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0032",
+    "started_at": "2026-10-24T02:03:52.747376+00:00",
+    "ended_at": "2026-10-24T02:03:52.756333+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "-j",
+      "-4",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.96.0.0/30\",\"dev\":\"mgmt100\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.96.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.96.0.1\",\"dev\":\"mgmt100\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.96.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.96.0.3\",\"dev\":\"mgmt100\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.96.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0033",
+    "started_at": "2026-10-24T02:03:52.756365+00:00",
+    "ended_at": "2026-10-24T02:03:52.766406+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "-j",
+      "-6",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"fe80::/64\",\"dev\":\"eth0\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mgmt100\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mgmt100\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0034",
+    "started_at": "2026-10-24T02:03:52.766437+00:00",
+    "ended_at": "2026-10-24T02:03:52.774279+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "iptables-save"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0035",
+    "started_at": "2026-10-24T02:03:52.774309+00:00",
+    "ended_at": "2026-10-24T02:03:52.783562+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip6tables-save"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0036",
+    "started_at": "2026-10-24T02:03:52.783609+00:00",
+    "ended_at": "2026-10-24T02:03:52.791651+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "xfrm",
+      "policy"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0037",
+    "started_at": "2026-10-24T02:03:52.791685+00:00",
+    "ended_at": "2026-10-24T02:03:52.799714+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "-s",
+      "xfrm",
+      "state",
+      "list",
+      "nokeys"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0038",
+    "started_at": "2026-10-24T02:03:52.799745+00:00",
+    "ended_at": "2026-10-24T02:03:52.808569+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-AW",
+      "ip",
+      "-s",
+      "macsec",
+      "show"
+    ],
+    "device_id": "AW",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0039",
+    "started_at": "2026-10-24T02:03:52.808608+00:00",
+    "ended_at": "2026-10-24T02:03:52.817139+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "-j",
+      "-d",
+      "address"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":5,\"link\":\"eth0\",\"ifname\":\"mgmt100\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"36:ec:c7:51:47:70\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vlan\",\"info_data\":{\"protocol\":\"802.1Q\",\"id\":100,\"flags\":[\"REORDER_HDR\"]}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.96.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"mgmt100\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::34ec:c7ff:fe51:4770\",\"prefixlen\":64,\"scope\":\"link\",\"tentative\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3149,\"link_index\":3150,\"ifname\":\"eth0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"36:ec:c7:51:47:70\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::34ec:c7ff:fe51:4770\",\"prefixlen\":64,\"scope\":\"link\",\"tentative\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0040",
+    "started_at": "2026-10-24T02:03:52.817172+00:00",
+    "ended_at": "2026-10-24T02:03:52.827320+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "-j",
+      "-4",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.96.0.0/30\",\"dev\":\"mgmt100\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.96.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.96.0.2\",\"dev\":\"mgmt100\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.96.0.2\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.96.0.3\",\"dev\":\"mgmt100\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.96.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0041",
+    "started_at": "2026-10-24T02:03:52.827371+00:00",
+    "ended_at": "2026-10-24T02:03:52.837683+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "-j",
+      "-6",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"fe80::/64\",\"dev\":\"eth0\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mgmt100\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mgmt100\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0042",
+    "started_at": "2026-10-24T02:03:52.837718+00:00",
+    "ended_at": "2026-10-24T02:03:52.847601+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "iptables-save"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0043",
+    "started_at": "2026-10-24T02:03:52.847634+00:00",
+    "ended_at": "2026-10-24T02:03:52.857687+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip6tables-save"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0044",
+    "started_at": "2026-10-24T02:03:52.857721+00:00",
+    "ended_at": "2026-10-24T02:03:52.867464+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "xfrm",
+      "policy"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0045",
+    "started_at": "2026-10-24T02:03:52.867497+00:00",
+    "ended_at": "2026-10-24T02:03:52.875039+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "-s",
+      "xfrm",
+      "state",
+      "list",
+      "nokeys"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0046",
+    "started_at": "2026-10-24T02:03:52.875069+00:00",
+    "ended_at": "2026-10-24T02:03:52.882529+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TARGET",
+      "ip",
+      "-s",
+      "macsec",
+      "show"
+    ],
+    "device_id": "TARGET",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

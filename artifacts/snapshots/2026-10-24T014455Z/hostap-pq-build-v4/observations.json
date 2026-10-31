@@ -1,0 +1,179 @@
+{
+  "at": "2026-10-24T03:06:53.335753+00:00",
+  "records": [
+    {
+      "command": [
+        "docker",
+        "build",
+        "-t",
+        "tdn-hostap-pq:20261024-v3",
+        "-f",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/hostap-pq-build-v4/Dockerfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/hostap-pq-build-v4"
+      ],
+      "at": "2026-10-24T03:06:16.320005+00:00",
+      "returncode": 0,
+      "stdout": "Sending build context to Docker daemon  2.048kB\n\nStep 1/2 : FROM twinet-msc:mldsa-construction-v2\n ---> e8c88209d3ce\nStep 2/2 : RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libnl-3-dev libnl-genl-3-dev libnl-route-3-dev && rm -rf /var/lib/apt/lists/*\n ---> Running in 23a527d8dbc7\nGet:1 http://archive.ubuntu.com/ubuntu resolute InRelease [136 kB]\nGet:2 http://security.ubuntu.com/ubuntu resolute-security InRelease [137 kB]\nGet:3 http://archive.ubuntu.com/ubuntu resolute-updates InRelease [137 kB]\nGet:4 http://archive.ubuntu.com/ubuntu resolute-backports InRelease [137 kB]\nGet:5 http://security.ubuntu.com/ubuntu resolute-security/restricted amd64 Packages [609 kB]\nGet:6 http://archive.ubuntu.com/ubuntu resolute/main amd64 Packages [1874 kB]\nGet:7 http://security.ubuntu.com/ubuntu resolute-security/multiverse amd64 Packages [24.6 kB]\nGet:8 http://security.ubuntu.com/ubuntu resolute-security/universe amd64 Packages [257 kB]\nGet:9 http://security.ubuntu.com/ubuntu resolute-security/main amd64 Packages [745 kB]\nGet:10 http://archive.ubuntu.com/ubuntu resolute/multiverse amd64 Packages [352 kB]\nGet:11 http://archive.ubuntu.com/ubuntu resolute/universe amd64 Packages [20.1 MB]\nGet:12 http://archive.ubuntu.com/ubuntu resolute/restricted amd64 Packages [189 kB]\nGet:13 http://archive.ubuntu.com/ubuntu resolute-updates/universe amd64 Packages [424 kB]\nGet:14 http://archive.ubuntu.com/ubuntu resolute-updates/restricted amd64 Packages [625 kB]\nGet:15 http://archive.ubuntu.com/ubuntu resolute-updates/multiverse amd64 Packages [26.1 kB]\nGet:16 http://archive.ubuntu.com/ubuntu resolute-updates/main amd64 Packages [920 kB]\nGet:17 http://archive.ubuntu.com/ubuntu resolute-backports/universe amd64 Packages [3308 B]\nFetched 26.7 MB in 3s (10.7 MB/s)\nReading package lists...\nReading package lists...\nBuilding dependency tree...\nReading state information...\nSolving dependencies...\nThe following additional packages will be installed:\n  libnl-genl-3-200\nThe following NEW packages will be installed:\n  libnl-3-dev libnl-genl-3-200 libnl-genl-3-dev libnl-route-3-dev\n0 upgraded, 4 newly installed, 0 to remove and 8 not upgraded.\nNeed to get 364 kB of archives.\nAfter this operation, 2121 kB of additional disk space will be used.\nGet:1 http://archive.ubuntu.com/ubuntu resolute/main amd64 libnl-3-dev amd64 3.12.0-2 [104 kB]\nGet:2 http://archive.ubuntu.com/ubuntu resolute/main amd64 libnl-genl-3-200 amd64 3.12.0-2 [12.4 kB]\nGet:3 http://archive.ubuntu.com/ubuntu resolute/main amd64 libnl-genl-3-dev amd64 3.12.0-2 [11.7 kB]\nGet:4 http://archive.ubuntu.com/ubuntu resolute/main amd64 libnl-route-3-dev amd64 3.12.0-2 [236 kB]\nFetched 364 kB in 1s (374 kB/s)\nSelecting previously unselected package libnl-3-dev:amd64.\n(Reading database ... \n(Reading database ... 5%\n(Reading database ... 10%\n(Reading database ... 15%\n(Reading database ... 20%\n(Reading database ... 25%\n(Reading database ... 30%\n(Reading database ... 35%\n(Reading database ... 40%\n(Reading database ... 45%\n(Reading database ... 50%\n(Reading database ... 55%\n(Reading database ... 60%\n(Reading database ... 65%\n(Reading database ... 70%\n(Reading database ... 75%\n(Reading database ... 80%\n(Reading database ... 85%\n(Reading database ... 90%\n(Reading database ... 95%\n(Reading database ... 100%\n(Reading database ... 18425 files and directories currently installed.)\nPreparing to unpack .../libnl-3-dev_3.12.0-2_amd64.deb ...\nUnpacking libnl-3-dev:amd64 (3.12.0-2) ...\nSelecting previously unselected package libnl-genl-3-200:amd64.\nPreparing to unpack .../libnl-genl-3-200_3.12.0-2_amd64.deb ...\nUnpacking libnl-genl-3-200:amd64 (3.12.0-2) ...\nSelecting previously unselected package libnl-genl-3-dev:amd64.\nPreparing to unpack .../libnl-genl-3-dev_3.12.0-2_amd64.deb ...\nUnpacking libnl-genl-3-dev:amd64 (3.12.0-2) ...\nSelecting previously unselected package libnl-route-3-dev:amd64.\nPreparing to unpack .../libnl-route-3-dev_3.12.0-2_amd64.deb ...\nUnpacking libnl-route-3-dev:amd64 (3.12.0-2) ...\nSetting up libnl-3-dev:amd64 (3.12.0-2) ...\nSetting up libnl-genl-3-200:amd64 (3.12.0-2) ...\nSetting up libnl-genl-3-dev:amd64 (3.12.0-2) ...\nSetting up libnl-route-3-dev:amd64 (3.12.0-2) ...\nProcessing triggers for libc-bin (2.43-2ubuntu2.4) ...\n ---> Removed intermediate container 23a527d8dbc7\n ---> b6bb2db74272\nSuccessfully built b6bb2db74272\nSuccessfully tagged tdn-hostap-pq:20261024-v3\n",
+      "stderr": "DEPRECATED: The legacy builder is deprecated and will be removed in a future release.\n            Install the buildx component to build images with BuildKit:\n            https://docs.docker.com/go/buildx/\n\n"
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "tdn-hostap-pq:20261024-v3"
+      ],
+      "at": "2026-10-24T03:06:16.371644+00:00",
+      "returncode": 0,
+      "stdout": "[\n    {\n        \"Architecture\": \"amd64\",\n        \"Config\": {\n            \"Cmd\": [\n                \"sleep\",\n                \"infinity\"\n            ],\n            \"Env\": [\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"DEBIAN_FRONTEND=noninteractive\"\n            ],\n            \"Labels\": {\n                \"org.opencontainers.image.created\": \"2026-10-06T21:25:30.040262+00:00\",\n                \"org.opencontainers.image.description\": \"The Ubuntu container image maintained by Canonical\\n\\nUbuntu is a Debian-based Linux operating system that runs from the desktop to the cloud, to all your internet connected things.\\nIt is the world's most popular operating system across public clouds and OpenStack clouds.\\nIt is the number one platform for containers; from Docker to Kubernetes to LXD, Ubuntu can run your containers at scale.\\nFast, secure and simple, Ubuntu powers millions of PCs worldwide.\\n\",\n                \"org.opencontainers.image.revision\": \"eb72966d2211141c73d4f66e4825c406a0811c3e\",\n                \"org.opencontainers.image.title\": \"ubuntu\",\n                \"org.opencontainers.image.version\": \"26.04\"\n            }\n        },\n        \"Created\": \"2026-10-24T03:06:15.045201268Z\",\n        \"Descriptor\": {\n            \"digest\": \"sha256:b6bb2db742723c974b511b82c98a4c17238efd6cf5a5b84be37b7f44392a19d5\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"size\": 2045\n        },\n        \"Id\": \"sha256:b6bb2db742723c974b511b82c98a4c17238efd6cf5a5b84be37b7f44392a19d5\",\n        \"Metadata\": {\n            \"LastTagTime\": \"2026-10-24T03:06:16.254430295Z\"\n        },\n        \"Os\": \"linux\",\n        \"Parent\": \"sha256:e8c88209d3ce0e2e56e016f57a3cd3876a3a2f1017f3e382b14285ba5da02d31\",\n        \"RepoDigests\": [\n            \"tdn-hostap-pq@sha256:b6bb2db742723c974b511b82c98a4c17238efd6cf5a5b84be37b7f44392a19d5\"\n        ],\n        \"RepoTags\": [\n            \"tdn-hostap-pq:20261024-v3\"\n        ],\n        \"RootFS\": {\n            \"Layers\": [\n                \"sha256:edf698db7561f9f53f2b22b9d417f9fde0be95175736b6954c7ef917c7114cb1\",\n                \"sha256:6be3abfee1446ddfb97160837ec6ea1edec87a006b73a02dca2bae5de070302e\",\n                \"sha256:91881e643afa45ef2dae290f11c206f5539fae8ff6bf9bdc2bb24d7f111cca47\",\n                \"sha256:8ccc3aaa6fd6dc076302bbf7c5cb2e1b1a7f47aa0bcb6998583d2322157b9a35\",\n                \"sha256:275ee2a83a88f12231d4066f30ef792dc649708c53308e598323d5738a4a57e6\",\n                \"sha256:4977a22b9140b629352f7060acbd91d0e784902fcb6ac74c6b531018fa542e0d\",\n                \"sha256:d2ec018148e548dc4bb95e11cea6f729c297992a3b45f9dadd6e39f88427c614\"\n            ],\n            \"Type\": \"layers\"\n        },\n        \"Size\": 292369752\n    }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "clean"
+      ],
+      "at": "2026-10-24T03:06:19.242425+00:00",
+      "returncode": 0,
+      "stdout": "rm -f core *~ nt_password_hash hlr_auc_gw\nrm -f sae_pk_gen\nrm -f lcov.info\nrm -rf lcov-html\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "-j4"
+      ],
+      "at": "2026-10-24T03:06:30.046611+00:00",
+      "returncode": 0,
+      "stdout": "  CC  ../src/ap/wpa_auth_glue.c\n  CC  main.c\n  CC  ../src/ap/drv_callbacks.c\n  CC  ../src/ap/utils.c\n  CC  ../src/ap/ap_drv_ops.c\n  CC  config_file.c\n  CC  ../src/ap/hostapd.c\n  CC  ../src/ap/authsrv.c\n  CC  ../src/ap/eap_user_db.c\n  CC  ../src/ap/ieee802_11_auth.c\n  CC  ../src/ap/ap_config.c\n  CC  ../src/ap/ieee802_1x.c\n  CC  ../src/ap/tkip_countermeasures.c\n  CC  ../src/ap/ap_mlme.c\n  CC  ../src/ap/preauth_auth.c\n  CC  ../src/ap/sta_info.c\n  CC  ../src/ap/wpa_auth_ie.c\n  CC  ../src/ap/pmksa_cache_auth.c\n  CC  ../src/ap/ieee802_11_shared.c\n  CC  ../src/ap/bss_load.c\n  CC  ../src/ap/beacon.c\n  CC  ../src/common/ptksa_cache.c\n  CC  ../src/ap/neighbor_db.c\n  CC  ../src/drivers/drivers.c\n  CC  ../src/ap/rrm.c\n  CC  ../src/utils/eloop.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/utils/wpabuf.c\n  CC  ../src/utils/common.c\n  CC  ../src/ap/wpa_auth.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/eapol_auth/eapol_auth_sm.c\n  CC  ../src/eapol_auth/eapol_auth_dump.c\n  CC  ../src/common/wpa_common.c\n  CC  ../src/radius/radius_das.c\n  CC  ../src/radius/radius_client.c\n  CC  ../src/common/ieee802_11_common.c\n  CC  ../src/radius/radius.c\n  CC  ../src/ap/vlan_ifconfig.c\n  CC  ../src/ap/accounting.c\n  CC  ../src/ap/vlan_init.c\n  CC  ../src/ap/vlan.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/drivers/driver_wired.c\n  CC  ../src/drivers/driver_wired_common.c\n  CC  ../src/drivers/driver_none.c\n  CC  ../src/drivers/driver_macsec_linux.c\n  CC  ../src/l2_packet/l2_packet_linux.c\n  CC  ../src/ap/ctrl_iface_ap.c\n  CC  ctrl_iface.c\n  CC  ../src/eap_server/eap_server_tls.c\n  CC  ../src/ap/wpa_auth_kay.c\n  CC  ../src/pae/ieee802_1x_cp.c\n  CC  eap_register.c\n  CC  ../src/pae/ieee802_1x_key.c\n  CC  ../src/eap_common/eap_common.c\n  CC  ../src/pae/ieee802_1x_secy_ops.c\n  CC  ../src/eap_server/eap_server_methods.c\n  CC  ../src/eap_server/eap_server_identity.c\n  CC  ../src/eap_server/eap_server_tls_common.c\n  CC  ../src/eap_server/eap_server.c\n  CC  ../src/crypto/tls_openssl_ocsp.c\n  CC  ../src/crypto/sha1-prf.c\n  CC  ../src/crypto/sha1-tlsprf.c\n  CC  ../src/crypto/sha256-prf.c\n  CC  ../src/pae/ieee802_1x_kay.c\n  CC  ../src/crypto/sha256-tlsprf.c\n  CC  ../src/crypto/crypto_openssl.c\n  CC  ../src/crypto/random.c\n  CC  ../src/ap/ieee802_11_ht.c\n  CC  ../src/drivers/driver_common.c\n  CC  ../src/common/wpa_ctrl.c\n  CC  ../src/radius/radius_server.c\n  CC  ../src/crypto/tls_openssl.c\n  CC  ../src/utils/edit_simple.c\n  CC  ../src/common/cli.c\n  LD  hostapd\n  CC  hostapd_cli.c\n  LD  hostapd_cli\n",
+      "stderr": "../src/ap/hostapd.c: In function 'hostapd_add_iface':\n../src/ap/hostapd.c:3916:21: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 3916 |                 pos = os_strchr(phy_name, ':');\n      |                     ^\n../src/common/ieee802_11_common.c: In function 'hostapd_config_read_int10':\n../src/common/ieee802_11_common.c:1407:13: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 1407 |         pos = os_strchr(value, '.');\n      |             ^\n../src/common/ieee802_11_common.c: In function 'ieee802_11_parse_candidate_list':\n../src/common/ieee802_11_common.c:3209:21: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 3209 |                 tmp = os_strchr(pos, ',');\n      |                     ^\n"
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "./hostapd",
+        "-v"
+      ],
+      "at": "2026-10-24T03:06:32.411986+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "hostapd v2.12\nUser space daemon for IEEE 802.11 AP management,\nIEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator\nCopyright (c) 2002-2026, Jouni Malinen <j@w1.fi> and contributors\n"
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "ldd",
+        "./hostapd"
+      ],
+      "at": "2026-10-24T03:06:34.793657+00:00",
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffd6a1e6000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x00007f29eb860000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x00007f29eb858000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x00007f29eb7bc000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x00007f29eb6ab000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007f29eb091000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f29eae6e000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007f29eae50000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x00007f29ead8d000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f29eb944000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "at": "2026-10-24T03:06:37.125508+00:00",
+      "returncode": 0,
+      "stdout": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\nbuilt on: Wed Sep 30 18:46:30 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=/usr/src/openssl-3.5.5-1ubuntu3.7 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific JITTER (3060300)\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x00000000000037ab:0x000000009c000400:0x0000000000000000:0x0000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "sha256sum",
+        "./hostapd"
+      ],
+      "at": "2026-10-24T03:06:39.441370+00:00",
+      "returncode": 0,
+      "stdout": "4744cd2643376d204003b94f5d7325e9493e786b2ee91ff47f38f68e5aeee70e  ./hostapd\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "clean"
+      ],
+      "at": "2026-10-24T03:06:41.948764+00:00",
+      "returncode": 0,
+      "stdout": "make -C ../src clean\nfor d in ap common crypto drivers eapol_auth eapol_supp eap_common eap_peer eap_server l2_packet p2p pae pasn radius rsn_supp tls utils wps fst; do [ -d $d ] && make -C $d clean; done\nrm -f *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f build.wpa_supplicant build.hostapd\nrm -f *~ *.o *.d\nrm -f *~ *.o *.d\nrm -f *~\nmake -C dbus clean\nrm -f *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f libwpadbus.a\nrm -f core *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f eap_*.so wpa_supplicant.exe wpa_cli.exe wpa_passphrase.exe win_if_list.exe eapol_test preauth_test\nrm -f wpa_priv\nrm -f nfc_pw_token\nrm -f lcov.info\nrm -rf lcov-html\nrm -f libwpa_client.a\nrm -f libpasn.so\nrm -f libwpa_client.so\nrm -f libwpa_test1 libwpa_test2\nrm -f wpa_passphrase\n",
+      "stderr": "Package dbus-1 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `dbus-1.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'dbus-1' not found\nPackage dbus-1 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `dbus-1.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'dbus-1' not found\n"
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "-j4"
+      ],
+      "at": "2026-10-24T03:06:53.335665+00:00",
+      "returncode": 2,
+      "stdout": "  sed systemd/wpa_supplicant.service.arg.in\n  sed systemd/wpa_supplicant.service.in\n  sed systemd/wpa_supplicant-nl80211.service.arg.in\n  sed systemd/wpa_supplicant-wired.service.arg.in\n  sed dbus/fi.w1.wpa_supplicant1.service.in\n  CC  wpa_passphrase.c\n  CC  eap_register.c\n  CC  notify.c\n  CC  ../src/utils/config.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/utils/common.c\n  CC  ../src/utils/wpabuf.c\n  CC  bss.c\n  CC  ../src/utils/bitfield.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/common/ptksa_cache.c\n  CC  twt.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/rsn_supp/pmksa_cache.c\n  CC  ../src/utils/eloop.c\n  CC  config.c\n  CC  ../src/rsn_supp/preauth.c\n  CC  ../src/rsn_supp/wpa_ie.c\n  CC  config_file.c\n  CC  rrm.c\n  CC  op_classes.c\n  CC  ../src/common/wpa_common.c\n  CC  ../src/eap_peer/eap_tls.c\n  CC  wmm_ac.c\n  CC  wpas_kay.c\n  CC  ../src/pae/ieee802_1x_cp.c\n  CC  robust_av.c\n  CC  ../src/rsn_supp/wpa.c\n  CC  ../src/pae/ieee802_1x_key.c\n  CC  ../src/pae/ieee802_1x_secy_ops.c\n  CC  ../src/eap_peer/eap_methods.c\n  CC  ../src/eapol_supp/eapol_supp_sm.c\n  CC  ../src/eap_peer/eap_tls_common.c\n  CC  ../src/eap_peer/eap.c\n  CC  ../src/crypto/tls_openssl_ocsp.c\n  CC  ../src/crypto/aes-encblock.c\n  CC  ../src/crypto/sha256-prf.c\n  CC  ../src/pae/ieee802_1x_kay.c\n  CC  ../src/crypto/sha256-tlsprf.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/crypto/random.c\n  CC  ../src/crypto/crypto_openssl.c\n  CC  ../src/utils/base64.c\n  CC  ../src/crypto/tls_openssl.c\n  CC  ctrl_iface_unix.c\n  CC  ../src/eap_common/eap_common.c\n  CC  ../src/crypto/sha1-prf.c\n  CC  ../src/crypto/sha1-tlsprf.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/drivers/driver_common.c\n  CC  events.c\n  CC  wpa_supplicant.c\n",
+      "stderr": "ctrl_iface.c: In function 'wpas_ctrl_set_relative_band_adjust':\nctrl_iface.c:396:13: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n  396 |         pos = os_strchr(cmd, ':');\n      |             ^\nctrl_iface.c: In function 'wpa_supplicant_ctrl_iface_bss':\nctrl_iface.c:5899:35: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n 5899 |                         if ((ctmp = os_strchr(cmd + 6, '-')) == NULL) {\n      |                                   ^\nctrl_iface.c:5980:19: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n 5980 |         if ((ctmp = os_strstr(cmd, \"MASK=\")) != NULL) {\n      |                   ^\nctrl_iface.c: In function 'wpas_ctrl_iface_send_dscp_resp':\nctrl_iface.c:12521:13: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n12521 |         pos = os_strstr(cmd, \"policy_id=\");\n      |             ^\nctrl_iface.c: In function 'wpas_ctrl_iface_send_dscp_query':\nctrl_iface.c:12580:13: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n12580 |         pos = os_strstr(cmd, \"domain_name=\");\n      |             ^\n../src/common/ieee802_11_common.c: In function 'hostapd_config_read_int10':\n../src/common/ieee802_11_common.c:1407:13: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n 1407 |         pos = os_strchr(value, '.');\n      |             ^\n../src/common/ieee802_11_common.c: In function 'ieee802_11_parse_candidate_list':\n../src/common/ieee802_11_common.c:3209:21: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n 3209 |                 tmp = os_strchr(pos, ',');\n      |                     ^\ncc1: all warnings being treated as errors\nmake: *** [../src/build.rules:86: /users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/build/wpa_supplicant/src/common/ieee802_11_common.o] Error 1\nmake: *** Waiting for unfinished jobs....\ncc1: all warnings being treated as errors\nmake: *** [../src/build.rules:90: /users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/build/wpa_supplicant/ctrl_iface.o] Error 1\n"
+    }
+  ],
+  "error": "or: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n 5899 |                         if ((ctmp = os_strchr(cmd + 6, '-')) == NULL) {\n      |                                   ^\nctrl_iface.c:5980:19: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n 5980 |         if ((ctmp = os_strstr(cmd, \"MASK=\")) != NULL) {\n      |                   ^\nctrl_iface.c: In function 'wpas_ctrl_iface_send_dscp_resp':\nctrl_iface.c:12521:13: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n12521 |         pos = os_strstr(cmd, \"policy_id=\");\n      |             ^\nctrl_iface.c: In function 'wpas_ctrl_iface_send_dscp_query':\nctrl_iface.c:12580:13: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n12580 |         pos = os_strstr(cmd, \"domain_name=\");\n      |             ^\n../src/common/ieee802_11_common.c: In function 'hostapd_config_read_int10':\n../src/common/ieee802_11_common.c:1407:13: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n 1407 |         pos = os_strchr(value, '.');\n      |             ^\n../src/common/ieee802_11_common.c: In function 'ieee802_11_parse_candidate_list':\n../src/common/ieee802_11_common.c:3209:21: error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]\n 3209 |                 tmp = os_strchr(pos, ',');\n      |                     ^\ncc1: all warnings being treated as errors\nmake: *** [../src/build.rules:86: /users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/build/wpa_supplicant/src/common/ieee802_11_common.o] Error 1\nmake: *** Waiting for unfinished jobs....\ncc1: all warnings being treated as errors\nmake: *** [../src/build.rules:90: /users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/build/wpa_supplicant/ctrl_iface.o] Error 1\n",
+  "scope": "Owned hostap2.12 source copied from retained CNSA/L2 repair tree, rebuilt against OpenSSL3.5.5 in the existing objective-IKE image. No original workload binary is changed."
+}

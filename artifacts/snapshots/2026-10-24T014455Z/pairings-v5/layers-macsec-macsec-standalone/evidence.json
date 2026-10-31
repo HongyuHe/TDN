@@ -1,0 +1,275 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "configuration_id": "layers-macsec-macsec-standalone",
+  "runtime_backend": "supplemental-linux-netns-static-routes",
+  "started_at": "2026-10-24T14:07:54.655909+00:00",
+  "ended_at": "2026-10-24T14:08:17.149188+00:00",
+  "devices": [
+    {
+      "id": "HA",
+      "role": "host",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-HA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IA",
+      "role": "inner",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-IA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OA",
+      "role": "outer",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-OA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OB",
+      "role": "outer",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-OB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IB",
+      "role": "inner",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-IB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "HB",
+      "role": "host",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-HB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "BF",
+      "role": "outer-ethernet-firewall",
+      "site": "",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-BF",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "EA",
+      "role": "encapsulator",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-EA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "EB",
+      "role": "encapsulator",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3p5-EB",
+      "physical_independence": "unavailable"
+    }
+  ],
+  "links": [
+    {
+      "endpoints": [
+        "HA:red",
+        "IA:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.1.0.2/24",
+        "10.1.0.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "HB:red",
+        "IB:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.2.0.2/24",
+        "10.2.0.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OA:black",
+        "BF:p1"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        null,
+        null
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OB:black",
+        "BF:p2"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        null,
+        null
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "EA:uplink",
+        "OA:gray"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        "10.11.0.1/30",
+        "10.11.0.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "EB:uplink",
+        "OB:gray"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        "10.21.0.1/30",
+        "10.21.0.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IA:gray",
+        "EA:innerframes"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        null,
+        null
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IB:gray",
+        "EB:innerframes"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        null,
+        null
+      ],
+      "physical_claim_supported": false
+    }
+  ],
+  "tunnels": [
+    {
+      "id": "outer",
+      "mechanism": "MACsec",
+      "layer": "outer",
+      "endpoints": [
+        "OA",
+        "OB"
+      ],
+      "local": "10.90.0.1/30",
+      "remote": "10.90.0.2/30",
+      "algorithm": "GCM-AES-256",
+      "replay_window": 0,
+      "validate": "strict",
+      "encrypt": true,
+      "protect": true,
+      "authentication": "manual test SAK provisioning; MKA and CAK authentication not established"
+    },
+    {
+      "id": "encapsulation",
+      "mechanism": "L2TPv3-over-UDP",
+      "layer": "between-inner-and-outer",
+      "endpoints": [
+        "EA",
+        "EB"
+      ],
+      "local": "10.11.0.1",
+      "remote": "10.21.0.1",
+      "udp_port": 1701
+    },
+    {
+      "id": "inner",
+      "mechanism": "MACsec",
+      "layer": "inner",
+      "endpoints": [
+        "IA",
+        "IB"
+      ],
+      "local": "10.60.0.1/30",
+      "remote": "10.60.0.2/30",
+      "algorithm": "GCM-AES-256",
+      "replay_window": 0,
+      "validate": "strict",
+      "encrypt": true,
+      "protect": true,
+      "authentication": "manual test SAK provisioning; MKA and CAK authentication not established"
+    }
+  ],
+  "probes": [
+    {
+      "id": "same-level-A-B",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0151"
+    },
+    {
+      "id": "same-level-B-A",
+      "source_device": "HB",
+      "destination": "10.1.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0152"
+    },
+    {
+      "id": "inner-layer-loss-fail-closed",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0478"
+    },
+    {
+      "id": "restored-useful-traffic",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0481"
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Virtual namespace graph; no physical independence or product approval",
+    "Manually provisioned SAs do not establish IKE/MKA/certificate authentication",
+    "Test keys generated by Python secrets; no NSA KGS approval claim"
+  ]
+}

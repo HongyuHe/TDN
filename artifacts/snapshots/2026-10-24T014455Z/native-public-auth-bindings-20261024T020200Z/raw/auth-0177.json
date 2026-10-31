@@ -1,0 +1,19 @@
+{
+  "id": "auth-0177",
+  "command": [
+    "openssl",
+    "verify",
+    "-no-CApath",
+    "-no-CAstore",
+    "-purpose",
+    "any",
+    "-CAfile",
+    "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/native-public-auth-bindings-20261024T020200Z/public/NB_I_B1-effective-configured-roots.pem",
+    "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/native-public-auth-bindings-20261024T020200Z/public/NB_I_A2-b278e8a66c15f2ee.pem"
+  ],
+  "started_at": "2026-10-24T02:03:28.707737+00:00",
+  "ended_at": "2026-10-24T02:03:28.712722+00:00",
+  "returncode": 2,
+  "stdout": "",
+  "stderr": "CN = NB_I_A2.msc.test\nerror 20 at 0 depth lookup: unable to get local issuer certificate\nerror /users/hy/tdn-continuation-2026-10-24T014455Z/exports/native-public-auth-bindings-20261024T020200Z/public/NB_I_A2-b278e8a66c15f2ee.pem: verification failed\n"
+}

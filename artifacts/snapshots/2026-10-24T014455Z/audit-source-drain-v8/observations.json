@@ -1,0 +1,92 @@
+{
+  "at": "2026-10-24T14:45:56.744141+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T14:45:55.663954+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "stat -f %z /var/db/tdn-audit-exporter/actual-audit-source.log; cat /var/db/tdn-audit-exporter/cursor.json"
+      ],
+      "returncode": 0,
+      "stdout": "136535\n{\"offset\":65536}",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:45:55.956860+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "/var/db/tdn-audit-exporter/audit-export-client --url https://198.22.255.18:43463/v1/audit --log /var/db/tdn-audit-exporter/actual-audit-source.log --ca /var/db/tdn-audit-exporter/tls/ca.pem --cert /var/db/tdn-audit-exporter/tls/client.pem --key /var/db/tdn-audit-exporter/tls/client.key --cursor /var/db/tdn-audit-exporter/cursor.json"
+      ],
+      "returncode": 0,
+      "stdout": "acknowledged offset=65536 next=131072 bytes=65536 sha256=5785bd26a669ca533d04d4ca1b78be7ee384d6ff308e2fe6a96f04270a30a208 duplicate=false TLS=1.3\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:45:56.241535+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "/var/db/tdn-audit-exporter/audit-export-client --url https://198.22.255.18:43463/v1/audit --log /var/db/tdn-audit-exporter/actual-audit-source.log --ca /var/db/tdn-audit-exporter/tls/ca.pem --cert /var/db/tdn-audit-exporter/tls/client.pem --key /var/db/tdn-audit-exporter/tls/client.key --cursor /var/db/tdn-audit-exporter/cursor.json"
+      ],
+      "returncode": 0,
+      "stdout": "acknowledged offset=131072 next=136535 bytes=5463 sha256=408a2eaba7985e4501f6eb0763d9c8071dd95899d3332078faef61fd1a903465 duplicate=false TLS=1.3\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:45:56.489542+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "/var/db/tdn-audit-exporter/audit-export-client --url https://198.22.255.18:43463/v1/audit --log /var/db/tdn-audit-exporter/actual-audit-source.log --ca /var/db/tdn-audit-exporter/tls/ca.pem --cert /var/db/tdn-audit-exporter/tls/client.pem --key /var/db/tdn-audit-exporter/tls/client.key --cursor /var/db/tdn-audit-exporter/cursor.json"
+      ],
+      "returncode": 0,
+      "stdout": "no new audit bytes\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:45:56.743616+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "cat /var/db/tdn-audit-exporter/cursor.json; stat -f %z /var/db/tdn-audit-exporter/actual-audit-source.log; sha256 /var/db/tdn-audit-exporter/actual-audit-source.log"
+      ],
+      "returncode": 0,
+      "stdout": "{\"offset\":136535}136535\nSHA256 (/var/db/tdn-audit-exporter/actual-audit-source.log) = fcc23fcb5b29655ce527561dba53038b8da73a66ea1fefa2f073bd4d206d4a6f\n",
+      "stderr": ""
+    }
+  ],
+  "error": "Extra data: line 1 column 18 (char 17)",
+  "scope": "Drain the exact stable source copy retained by v5, including its final actual audit marker. Only size, hashes, cursor and protocol acknowledgement metadata are exported."
+}

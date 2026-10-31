@@ -1,0 +1,66 @@
+{
+  "at": "2026-10-24T03:56:30.090342+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:56:29.718542+00:00",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux node-0.twinet-msc2.netsyn-pg0.cloudlab.umass.edu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:29.719595+00:00",
+      "command": [
+        "hostname"
+      ],
+      "returncode": 0,
+      "stdout": "node-0.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:29.749383+00:00",
+      "command": [
+        "docker",
+        "ps",
+        "--format",
+        "{{.Names}}"
+      ],
+      "returncode": 0,
+      "stdout": "MW_GF_B-frr\nMW_GF_A-frr\nMW_GF_B\nMW_GF_A\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:29.915511+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B-frr",
+        "vtysh",
+        "-c",
+        "show version"
+      ],
+      "returncode": 0,
+      "stdout": "FRRouting 10.0 (mw-gf-b) on Linux(6.8.0-138-generic).\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n    '--prefix=/usr' '--localstatedir=/run/frr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib/frr' '--with-moduledir=/usr/lib/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'CC=gcc' 'CXX=g++' 'PYTHON=python3'\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:56:30.089162+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A-frr",
+        "vtysh",
+        "-c",
+        "show version"
+      ],
+      "returncode": 0,
+      "stdout": "FRRouting 10.0 (mw-gf-a) on Linux(6.8.0-138-generic).\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n    '--prefix=/usr' '--localstatedir=/run/frr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib/frr' '--with-moduledir=/usr/lib/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'CC=gcc' 'CXX=g++' 'PYTHON=python3'\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": "Read-only binding of actual MW FRR helpers to parent network namespaces and worker hardware. Other deployments are not changed."
+}

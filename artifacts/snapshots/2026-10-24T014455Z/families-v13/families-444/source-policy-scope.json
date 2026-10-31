@@ -1,0 +1,2529 @@
+{
+  "request": "C-GENERATED-RESPONSE-008",
+  "phase": "Defensive configuration only. Copied-response hypothesis is unconfirmed and was not exercised.",
+  "priority": -460,
+  "ordering": "Before the existing IPv6 immediate-header gate at-450 and documented implementation-family defragmentation at-400; before route lookup and INPUT/FORWARD.",
+  "sources": "Red ingress accepts its attached Red subnet. Other ingress accepts assigned adjacent or remote SA peer addresses. Decapsulated remote payload source prefixes additionally require incoming XFRM reqid100/200.",
+  "NDP": "Only NS/NA link-local source with hop limit255, or DAD unspecified-source NS to solicited-node multicast, precedes the other-source IP drop.",
+  "identity_limit": "Source-prefix validation is a routing boundary rule, not independent host authentication. The incoming IPsec requirement binds decapsulated source ranges to an actual security path.",
+  "quote_limit": "No quoted-body parser is introduced. Source validation constrains pre-route errors; local output rules constrain exact response egress. Construction must separately establish protection provenance for a modeled quoted body.",
+  "backend": "Actual nftables expressions and effective rules captured on Ubuntu6.8.0-138-generic worker. Upstream6.8 is an implementation-family reference, not asserted identical vendor source.",
+  "rules": {
+    "IA": {
+      "observation_id": "cmd-0718",
+      "ruleset": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "inet",
+              "name": "EVA_SOURCE_V13",
+              "handle": 7
+            }
+          },
+          {
+            "chain": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "name": "ingress",
+              "handle": 1,
+              "type": "filter",
+              "hook": "prerouting",
+              "prio": -460,
+              "policy": "accept"
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 2,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "red"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "10.1.0.0",
+                        "len": 24
+                      }
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 4,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "red"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "fe80::",
+                        "len": 10
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "nd-neighbor-solicit",
+                        "nd-neighbor-advert"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 5,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "red"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "::"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "daddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "ff02::1:ff00:0",
+                        "len": 104
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": "nd-neighbor-solicit"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 7,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "red"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "nfproto"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "ipv4",
+                        "ipv6"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 8,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "10.11.0.2"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 9,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "10.21.0.1"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 10,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "10.2.0.0",
+                        "len": 24
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "ipsec": {
+                        "key": "reqid",
+                        "dir": "in",
+                        "spnum": 0
+                      }
+                    },
+                    "right": 100
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 12,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "fe80::",
+                        "len": 10
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "nd-neighbor-solicit",
+                        "nd-neighbor-advert"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 13,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "::"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "daddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "ff02::1:ff00:0",
+                        "len": 104
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": "nd-neighbor-solicit"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 15,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "nfproto"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "ipv4",
+                        "ipv6"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "IB": {
+      "observation_id": "cmd-0720",
+      "ruleset": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "inet",
+              "name": "EVA_SOURCE_V13",
+              "handle": 5
+            }
+          },
+          {
+            "chain": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "name": "ingress",
+              "handle": 1,
+              "type": "filter",
+              "hook": "prerouting",
+              "prio": -460,
+              "policy": "accept"
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 2,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "red"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "10.2.0.0",
+                        "len": 24
+                      }
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 4,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "red"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "fe80::",
+                        "len": 10
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "nd-neighbor-solicit",
+                        "nd-neighbor-advert"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 5,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "red"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "::"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "daddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "ff02::1:ff00:0",
+                        "len": 104
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": "nd-neighbor-solicit"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 7,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "red"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "nfproto"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "ipv4",
+                        "ipv6"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 8,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "10.21.0.2"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 9,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "10.11.0.1"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 10,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "10.1.0.0",
+                        "len": 24
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "ipsec": {
+                        "key": "reqid",
+                        "dir": "in",
+                        "spnum": 0
+                      }
+                    },
+                    "right": 100
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 12,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "fe80::",
+                        "len": 10
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "nd-neighbor-solicit",
+                        "nd-neighbor-advert"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 13,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "::"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "daddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "ff02::1:ff00:0",
+                        "len": 104
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": "nd-neighbor-solicit"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 15,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "nfproto"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "ipv4",
+                        "ipv6"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "OA": {
+      "observation_id": "cmd-0722",
+      "ruleset": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "inet",
+              "name": "EVA_SOURCE_V13",
+              "handle": 5
+            }
+          },
+          {
+            "chain": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "name": "ingress",
+              "handle": 1,
+              "type": "filter",
+              "hook": "prerouting",
+              "prio": -460,
+              "policy": "accept"
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 2,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "10.11.0.1"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 4,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "fe80::",
+                        "len": 10
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "nd-neighbor-solicit",
+                        "nd-neighbor-advert"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 5,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "::"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "daddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "ff02::1:ff00:0",
+                        "len": 104
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": "nd-neighbor-solicit"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 7,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "nfproto"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "ipv4",
+                        "ipv6"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 8,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "192.0.2.2"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 9,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "192.0.3.1"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 10,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "10.21.0.1"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "ipsec": {
+                        "key": "reqid",
+                        "dir": "in",
+                        "spnum": 0
+                      }
+                    },
+                    "right": 200
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 12,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "fe80::",
+                        "len": 10
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "nd-neighbor-solicit",
+                        "nd-neighbor-advert"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 13,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "::"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "daddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "ff02::1:ff00:0",
+                        "len": 104
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": "nd-neighbor-solicit"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 15,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "nfproto"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "ipv4",
+                        "ipv6"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "OB": {
+      "observation_id": "cmd-0724",
+      "ruleset": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "inet",
+              "name": "EVA_SOURCE_V13",
+              "handle": 5
+            }
+          },
+          {
+            "chain": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "name": "ingress",
+              "handle": 1,
+              "type": "filter",
+              "hook": "prerouting",
+              "prio": -460,
+              "policy": "accept"
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 2,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "10.21.0.1"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 4,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "fe80::",
+                        "len": 10
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "nd-neighbor-solicit",
+                        "nd-neighbor-advert"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 5,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "::"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "daddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "ff02::1:ff00:0",
+                        "len": 104
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": "nd-neighbor-solicit"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 7,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "gray"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "nfproto"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "ipv4",
+                        "ipv6"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 8,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "192.0.3.2"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 9,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "192.0.2.1"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 10,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "10.11.0.1"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "ipsec": {
+                        "key": "reqid",
+                        "dir": "in",
+                        "spnum": 0
+                      }
+                    },
+                    "right": 200
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 12,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "fe80::",
+                        "len": 10
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "nd-neighbor-solicit",
+                        "nd-neighbor-advert"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 13,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "saddr"
+                      }
+                    },
+                    "right": "::"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "daddr"
+                      }
+                    },
+                    "right": {
+                      "prefix": {
+                        "addr": "ff02::1:ff00:0",
+                        "len": 104
+                      }
+                    }
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ip6",
+                        "field": "hoplimit"
+                      }
+                    },
+                    "right": 255
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "icmpv6",
+                        "field": "type"
+                      }
+                    },
+                    "right": "nd-neighbor-solicit"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "inet",
+              "table": "EVA_SOURCE_V13",
+              "chain": "ingress",
+              "handle": 15,
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "iifname"
+                      }
+                    },
+                    "right": "black"
+                  }
+                },
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "meta": {
+                        "key": "nfproto"
+                      }
+                    },
+                    "right": {
+                      "set": [
+                        "ipv4",
+                        "ipv6"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

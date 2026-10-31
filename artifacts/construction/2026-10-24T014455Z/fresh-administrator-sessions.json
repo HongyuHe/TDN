@@ -1,0 +1,138 @@
+{
+  "bundles": {
+    "deployment": {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/role-admin-deploy-v4",
+      "manifest_sha256": "8d54c6d3bf043ea6b67f16df2e5cf718243e1b9e04b78501207273dcc8650617"
+    },
+    "effective": {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/role-admin-effective-v3",
+      "manifest_sha256": "4fa8fee341822fb4f50059d11d8c07ca87e3974aef82c93c312e06b46c4fc536"
+    },
+    "matrix": {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/role-admin-matrix-v3",
+      "manifest_sha256": "6aef56bc827d6e12598cb6b05bf2bd22a2a18432c2ca08e712e7f700d18021ef"
+    }
+  },
+  "service": "ND_O_A1 certificate-authenticated administration HTTP service",
+  "source_sha256": "e258535abe2a9490be635dd6da45f8f497d01badead319ffa7be88e76f916948",
+  "listener_process": {
+    "address": "172.28.96.2:8443",
+    "pid": 641,
+    "source_path": "/root/role-admin-v4/service.py"
+  },
+  "principals": [
+    {
+      "id": 0,
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "role": "Auditor"
+    },
+    {
+      "id": 1,
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "role": "SecurityAdministrator"
+    }
+  ],
+  "audit_files": [
+    "audit-0001.jsonl",
+    "audit-0002.jsonl",
+    "audit.jsonl"
+  ],
+  "audit_outcomes": 24,
+  "accepted": [
+    {
+      "at": "2026-10-24T03:39:18.851684+00:00",
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/state",
+      "role": "SecurityAdministrator",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:18.885116+00:00",
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/audit",
+      "role": "SecurityAdministrator",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:18.937392+00:00",
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "POST",
+      "path": "/filter",
+      "role": "SecurityAdministrator",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:18.971197+00:00",
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "POST",
+      "path": "/audit/rotate",
+      "role": "SecurityAdministrator",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:19.102362+00:00",
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "GET",
+      "path": "/state",
+      "role": "Auditor",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:19.135185+00:00",
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "GET",
+      "path": "/audit",
+      "role": "Auditor",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:19.201019+00:00",
+      "fingerprint": "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138",
+      "method": "POST",
+      "path": "/audit/rotate",
+      "role": "Auditor",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:19.579375+00:00",
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/state",
+      "role": "SecurityAdministrator",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:19.626161+00:00",
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "POST",
+      "path": "/filter",
+      "role": "SecurityAdministrator",
+      "status": 200
+    },
+    {
+      "at": "2026-10-24T03:39:19.659524+00:00",
+      "fingerprint": "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02",
+      "method": "GET",
+      "path": "/audit",
+      "role": "SecurityAdministrator",
+      "status": 200
+    }
+  ],
+  "rejected_outcomes": 14,
+  "authentication_witness_basis": [
+    "The pinned service source requires a client certificate at the TLS handshake before HTTP handling.",
+    "Each handler reads the TLS peer certificate fingerprint and checks its role before executing an allowed operation.",
+    "Each modeled request receives a distinct logical session name. The names and two causal phase numbers are generated proof witnesses, not exported TLS session identifiers or measured authentication timestamps.",
+    "The operation token is the peer fingerprint used directly by this service. The source has no separately supplied bearer token.",
+    "Accounts represent the two installed certificate identities. The numeric person field identifies those credentials; correspondence to individual humans is unprovided."
+  ],
+  "scope_limits": [
+    "The application covers the retained successful requests and their matching server audit outcomes.",
+    "TLS/OpenSSL, Python dispatch, unchanged loaded source and truth of collector records remain implementation assumptions.",
+    "The per-request authentication witnesses describe each handler's local authorization interval. They do not assert completeness of external credential-revocation events or export an independent TLS connection history.",
+    "No AW account roster is represented, and no CNSA-certificate or NIST objective is selected in this service-only application.",
+    "Human ownership, other administration services, failed partially executed operations and all future executions remain separate obligations. Whole RG047 compliance is unproved."
+  ]
+}

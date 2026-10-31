@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-10-24T18:45:32.766723+00:00",
+  "verifier": "OpenSSL3.5.0",
+  "command": [
+    "/opt/homebrew/opt/openssl@3/bin/openssl",
+    "pkeyutl",
+    "-verify",
+    "-rawin",
+    "-pubin",
+    "-inkey",
+    "artifacts/snapshots/2026-10-24T014455Z/software-signing-v3/publisher.pub",
+    "-in",
+    "artifacts/snapshots/2026-10-24T014455Z/software-signing-v3/software-manifest.json",
+    "-sigfile",
+    "artifacts/snapshots/2026-10-24T014455Z/software-signing-v3/software-manifest.sig"
+  ],
+  "result": "Signature Verified Successfully",
+  "attempt": "artifacts/construction/2026-10-24T014455Z/experiments/20261024T184532.485870Z-e83ab0feb56c4b7e97fb0631e5133482-coordinator-saved-software-manifest-signature-verification.attempt.json",
+  "log_sha256": "0fd23954193f64e60f5b4b5f381cd1ea9d580aece00a6bbbc98e664302ce6b79",
+  "input_sha256": {
+    "publisher.pub": "b1d2c683ef40d70bfcce6ad74ea5873d2c83000441d1d54a089706f1482a68f5",
+    "software-manifest.json": "9027dc02b16dd273a8568ab22d85a00014ceedd6a019d3f400271ddb761865d3",
+    "software-manifest.sig": "9bd63ae48ccf0fa12a70c06476b732a5949099c6034395f4da1bd3d2fecaa71b"
+  },
+  "scope": "Independent read-only verification of saved manifest signature. No loader or executable was run; all-device software coverage remains unestablished."
+}

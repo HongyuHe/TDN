@@ -1,0 +1,47 @@
+IEEE Std 802.1X-2020, IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control (https://www.ida.liu.se/~sohsa65/courses/tsn-course-2021/stds/8021X-2020.pdf)
+citeturn244search12 [wordlim: 200] Published: 4.9 years ago; IEEE Std 802.1X-2020 ... - Key = MSK[0-15] for a 128 bit CAK, MSK[0-31] for a 256 bit CAK ... For historical reasons MAC addresses, and the 24-bit OUIs assigned so that the assignee could derive a number of MAC addresses, were defined as bit-strings. mac1 and mac2 above are sequences of 6 octets, with the value of first octet derived from the first 8 bits of the 48-bit MAC address string, the second octet from the second set of eight bits and so on, each set of 8 bits being taken to represent a binary number with its first bit being the least significant.
+IEEE Std 802.1X-2020  
+IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control
+
+## 6.2.2 Using EAP for CAK key derivation
+
+A pairwise CAK is derived directly from the EAP MSK using the following transform:
+
+CAK = KDF(Key, Label, mac1 | mac2, CAKlength)
+
+where
+
+- Key = MSK[0-15] for a 128 bit CAK, MSK[0-31] for a 256 bit CAK
+- Label = "IEEE8021 EAP CAK"
+- mac1 = the lesser of the two source MAC addresses used in the EAPOL-EAP exchange (11.1.2)
+- mac2 = the greater of the two source MAC addresses used in the EAPOL-EAP exchange
+- CAKlength = two octets representing an integer value (128 for a 128 bit CAK, 256 for a 256 bit CAK) with the most significant octet first
+
+NOTE 1—MSK[0-15] refers to the first 16 octets of the MSK, MSK[0-31] to the first 32. IETF RFC 3748 [B14] requires EAP methods that produce an MSK to create an MSK of 64 bytes, so there will be sufficient keying material for the KDF.
+
+NOTE 2—The source MAC addresses, mac1 and mac2, are those that supported the EAPOL-EAP exchange. While including these addresses in the derivation ensures that the CAK and CKN differ if the MSK[0-15] chance to be the same for authentication instances using different ports, they do not define or restrict the scope of the CAK and CKN, and do not identify the PAEs that anticipated in the authentication exchange. The scope of the CAK and CKN is identified by the KMD (see 6.2.3, 6.3.5).
+
+A 16 octet CKN is derived from the EAP session ID using the following transform:
+
+CKN = KDF(Key, Label, ID | mac1|mac2, CKNlength)
+
+where
+
+- Key = MSK[0-15] for a CKN naming a 128 bit CAK, MSK[0-31] for naming a 256 bit CAK
+- ID = EAP-Session-ID
+- Label = "IEEE8021 EAP CKN"
+- mac1 = the lesser of the two source MAC addresses used in the EAPOL-EAP exchange (11.1.2)
+- mac2 = the greater of the two source MAC addresses used in the EAPOL-EAP exchange
+- CKNlength = two octets representing an integer value (128) with the most significant octet first
+
+NOTE 3—EAP-Session-IDs are defined by IETF RFC 5247. Each Session-ID comprises a number of concatenated fields: octets corresponding to fields earlier in the concatenation (shown to the left in text) are encoded earlier in PDUs and multi-octet fields that represent numbers or can be numerically compared are encoded as specified by this standard (in network byte order).
+
+In each case the Label is a UTF-8 string, without a null or other termination, exactly 16 bytes in length (the quotes shown above are not part of the string) and exactly one space (a single octet with the value 0x20) separates ‘8021’ and ‘EAP ‘, and one space separates ‘EAP’ and ‘CAK’, and ‘EAP’ and ‘CKN’. The Label’s length is chosen to make the concatenated inputs to the PRF within the KDF for the CAK exactly 32 octets.
+
+For historical reasons MAC addresses, and the 24-bit OUIs assigned so that the assignee could derive a number of MAC addresses, were defined as bit-strings. mac1 and mac2 above are sequences of 6 octets, with the value of first octet derived from the first 8 bits of the 48-bit MAC address string, the second octet from the second set of eight bits and so on, each set of 8 bits being taken to represent a binary number with its first bit being the least significant. The value of each octet in the sequence corresponds to that naturally associated with the Hexadecimal Representation of the LAN MAC Address as specified in IEEE Std 802, and the order of the octets corresponds to the left to right order in that representation. The first bit of the address string is the Individual/Group address, and the bit order of the address is that originally used for transmission on IEEE 802.3 media. The octet sequence defined to represent the MAC address is used in a
+
+41
+
+Copyright © 2020 IEEE. All rights reserved.
+
+Authorized licensed use limited to: Linkoping University Library. Downloaded on November 28,2021 at 19:55:17 UTC from IEEE Xplore. Restrictions apply.

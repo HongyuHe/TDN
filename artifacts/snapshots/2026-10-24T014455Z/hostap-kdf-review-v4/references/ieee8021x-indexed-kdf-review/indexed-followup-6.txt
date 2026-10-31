@@ -1,0 +1,76 @@
+IEEE Std 802.1X-2020, IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control (https://www.ida.liu.se/~sohsa65/courses/tsn-course-2021/stds/8021X-2020.pdf)
+citeturn252search0 [wordlim: 200] Published: 4.9 years ago; IEEE Std 802.1X-2020 ... G.6 SAK Derivation ... The following examples show SAKs (Output) derived by the KDF using the 128-bit and 256-bit CAKs derived in the examples above (G.2).
+IEEE Std 802.1X-2020  
+IEEE Standard for Local and Metropolitan Area Networks—Port-Based Network Access Control
+
+Key  
+a29efdb6 3d6fba73 c65daab2 295340a8  
+37a8886e 94a905b5 c9c7ef1d 9dbb297e
+
+Label  
+49454545 38303231 2049434b
+
+Context  
+7888f5d4 8ba8b24e 96bb95bd 8c7304ec
+
+Length  
+0100
+
+Output  
+98b8544d 7390a41e 50ef72e2 5b4a0365  
+23c919e8 12918871 949b4812 3eab526e
+
+G.6 SAK Derivation
+
+The KDF may be used to derive SAKs using a CAK and other randomly generated values (9.8.1). The inputs are the CAK (Key), “IEEE8021 SAK” (Label), a Key Server generated nonce followed by the MKA MI-value list and the Key Number (KN) (Context), and the SAK Length. The following examples show SAKs (Output) derived by the KDF using the 128-bit and 256-bit CAKs derived in the examples above (G.2).
+
+Key  
+135bd758 b0ee5c11 c55ff6ab 19fdb199
+
+Label  
+49454545 38303231 2053414b
+
+KS-nonce  
+01020304 05060708 090a0b0c 0d0e0f10
+
+MI-value-list  
+cd421cf8 6ba45793 8657675b 01020304  
+05060708 0d1f36cf
+
+KN  
+00000001
+
+Length  
+0080
+
+Output  
+04520592 5831ae59 c14550ed 59cc003d
+
+Key  
+a29efdb6 3d6fba73 c65daab2 295340a8  
+37a8886e 94a905b5 c9c7ef1d 9dbb297e
+
+Label  
+49454545 38303231 2053414b
+
+KS-nonce  
+01020304 05060708 090a0b0c 0d0e0f10  
+11121314 15161718 191a1b1c 1d1e1f00
+
+MI-value-list  
+cd421cf8 6ba45793 8657675b 01020304  
+05060708 0d1f36cf
+
+KN  
+00000001
+
+Length  
+0100
+
+Output  
+bb692568 b287484a 5f3f4793 b0973227  
+0d13dd81 8373c15b 3f2793fd c1948a37
+
+287  
+Copyright © 2020 IEEE. All rights reserved.  
+Authorized licensed use limited to: Linkoping University Library. Downloaded on November 28,2021 at 19:55:17 UTC from IEEE Xplore. Restrictions apply.

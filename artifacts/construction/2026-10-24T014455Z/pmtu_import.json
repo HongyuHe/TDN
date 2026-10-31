@@ -1,0 +1,20 @@
+{
+  "manifest_sha256": "0d5d4008fa2fe19a71e2e6cf3d5af207e4cda93ab00edd676998f254837cd3c2",
+  "bundle": "artifacts/snapshots/2026-10-24T014455Z/IPv6-PMTU-v4",
+  "initial_mtu": 1500,
+  "effective_ip_limit": 1326,
+  "black_mtu": 1400,
+  "successful_udp_payload": 1200,
+  "encoding": {
+    "alignment": 4,
+    "trailer_bytes": 2,
+    "fixed_bytes": 72
+  },
+  "scope": [
+    "One observed IPv6 ESP path, not an invented Outer device or Gray-management path.",
+    "Sizes supplied to the budget are complete inner IP datagrams. UDP payload adds 40 IPv6 and 8 UDP bytes.",
+    "Encoding uses the declared minimal ESP padding contract, 40-byte IPv6 outer header, 8-byte ESP header, 8-byte explicit IV, 16-byte ICV and 2-byte trailer. No UDP encapsulation or TFC padding is selected.",
+    "Direct sender/receiver/capture JSON files are raw collector observations, authenticated by their manifest hashes. The collector and kernel behavior remain explicit implementation assumptions.",
+    "This is a finite observed PMTU transition and a universal numerical budget under that fixed limit, not every future PMTU condition or the whole RG033 interface inventory."
+  ]
+}

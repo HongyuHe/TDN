@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-24T03:26:42.909290+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:23:41.214818+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc16.cloudlab.umass.edu",
+        "qemu-system-x86_64 --version"
+      ],
+      "returncode": 0,
+      "stdout": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)\nCopyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:23:42.060609+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os,signal;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');pid=int(p.read_text());cmd=Path('\"'\"'/proc/'\"'\"'+str(pid)+'\"'\"'/cmdline'\"'\"').read_bytes().split(bytes([0]));assert b'\"'\"'tcv3-virtual-aw'\"'\"' in cmd;print('\"'\"'Stopping only owned AW emulator PID'\"'\"',pid);os.kill(pid,signal.SIGTERM)'"
+      ],
+      "returncode": 0,
+      "stdout": "Stopping only owned AW emulator PID 56779\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:23:42.901138+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "hy@pc22.cloudlab.umass.edu",
+        "sudo -n python3 -c 'import os;from pathlib import Path;p=Path('\"'\"'/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid'\"'\"');print('\"'\"'stopped'\"'\"' if not p.exists() or not Path('\"'\"'/proc/'\"'\"'+p.read_text().strip()).exists() else '\"'\"'running'\"'\"')'"
+      ],
+      "returncode": 0,
+      "stdout": "stopped\n",
+      "stderr": ""
+    }
+  ],
+  "error": "Command '['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=5', 'hy@pc16.cloudlab.umass.edu', 'umask 077; mkdir -p /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd; tar -xzf - -C /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd']' timed out after 180 seconds",
+  "reason": "Original AW VM shared pc22 with Inner VMs, violating the RG045 narrative host-dedication condition. Move only the AW guest to dedicated physical AW pc16; original VM disk and failed placement evidence remain preserved. Private credentials stay in remote private directories and encrypted SSH transfer."
+}

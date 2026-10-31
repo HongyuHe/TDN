@@ -1,0 +1,70 @@
+{
+  "request": "C-GENERATED-RESPONSE-008",
+  "status": "Defensive policy hardening; proposed copied-response behavior was not tested or confirmed.",
+  "defaults": "Both IP families INPUT/OUTPUT/FORWARD DROP on all four VPN gateways.",
+  "permits": [
+    {
+      "device": "IA",
+      "interface": "red",
+      "local": "10.1.0.1/24",
+      "adjacent_peer": "10.1.0.2/24",
+      "icmp": "Exact assigned adjacent-peer pair and interface; explicit echo and error types. NDP only on IPv6 attachment, hop limit255 and scoped source/destination ranges."
+    },
+    {
+      "device": "IA",
+      "interface": "gray",
+      "local": "10.11.0.1/30",
+      "adjacent_peer": "10.11.0.2/30",
+      "icmp": "Exact assigned adjacent-peer pair and interface; explicit echo and error types. NDP only on IPv6 attachment, hop limit255 and scoped source/destination ranges."
+    },
+    {
+      "device": "IB",
+      "interface": "red",
+      "local": "10.2.0.1/24",
+      "adjacent_peer": "10.2.0.2/24",
+      "icmp": "Exact assigned adjacent-peer pair and interface; explicit echo and error types. NDP only on IPv6 attachment, hop limit255 and scoped source/destination ranges."
+    },
+    {
+      "device": "IB",
+      "interface": "gray",
+      "local": "10.21.0.1/30",
+      "adjacent_peer": "10.21.0.2/30",
+      "icmp": "Exact assigned adjacent-peer pair and interface; explicit echo and error types. NDP only on IPv6 attachment, hop limit255 and scoped source/destination ranges."
+    },
+    {
+      "device": "OA",
+      "interface": "gray",
+      "local": "10.11.0.2/30",
+      "adjacent_peer": "10.11.0.1/30",
+      "icmp": "Exact assigned adjacent-peer pair and interface; explicit echo and error types. NDP only on IPv6 attachment, hop limit255 and scoped source/destination ranges."
+    },
+    {
+      "device": "OA",
+      "interface": "black",
+      "local": "192.0.2.1/30",
+      "adjacent_peer": "192.0.2.2/30",
+      "icmp": "Exact assigned adjacent-peer pair and interface; explicit echo and error types. NDP only on IPv6 attachment, hop limit255 and scoped source/destination ranges."
+    },
+    {
+      "device": "OB",
+      "interface": "gray",
+      "local": "10.21.0.2/30",
+      "adjacent_peer": "10.21.0.1/30",
+      "icmp": "Exact assigned adjacent-peer pair and interface; explicit echo and error types. NDP only on IPv6 attachment, hop limit255 and scoped source/destination ranges."
+    },
+    {
+      "device": "OB",
+      "interface": "black",
+      "local": "192.0.3.1/30",
+      "adjacent_peer": "192.0.3.2/30",
+      "icmp": "Exact assigned adjacent-peer pair and interface; explicit echo and error types. NDP only on IPv6 attachment, hop limit255 and scoped source/destination ranges."
+    }
+  ],
+  "ESP": "Local ESP only on actual outside interface with exact local and remote SA endpoints.",
+  "forwarding": "Existing reqid100/200, interface-bound IPsec forwarding permits retained; other-family forwarding has no permit.",
+  "exceptions": "No arbitrary Red-source echo, UDP500, ICMP-error or protocol-only permit. Error delivery is restricted to the exact assigned adjacent peer and attachment.",
+  "PMTU_scope": "Explicit local ICMP error types include IPv6 packet-too-big and IPv4 destination-unreachable, with exact adjacent endpoints and interface. The new collection does not claim an active PMTU transition. A routed authority beyond the adjacent peer is not enabled by these finite rules.",
+  "NDP_scope": "NDP is limited to configured IPv6 attachment prefixes or link-local sources, interface, NS/NA types, hop limit255 and local/peer/link-local/multicast destination scopes. DAD source:: may send NS to solicited-node multicast.",
+  "control_scope": "Ordinary assigned-address adjacent pings and bidirectional protected Red connectivity are checked after neighbor-cache flush. No forged or crafted packet experiment runs.",
+  "hypothesis": "Linux weak-host copied-response escape remains unconfirmed. Formal checks must inspect complete effective local hooks and response provenance rather than infer universal safety from finite pings."
+}

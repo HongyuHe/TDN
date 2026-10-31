@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/users/hy/tdn-replay-20261024-v6/scripts/linux_outer_integration_v4.py", line 4, in <module>
+    p=argparse.ArgumentParser();p.add_argument('--config',required=True);a=p.parse_args();config=json.loads(Path(a.config).read_text());root=Path(config['run_root']);out=root/'exports/linux-outer-integration-v4';out.mkdir();private=root/'private/linux-outer-creds';private.mkdir(mode=0o700);records=[];error=None;prefix=config['device_prefix'];spec=json.loads((root/'scripts/profiles'/(config['profile_name']+'.json')).read_text())
+                                                                                                                                                                                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1313, in mkdir
+    os.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/users/hy/tdn-replay-20261024-v6/private/linux-outer-creds'

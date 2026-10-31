@@ -1,0 +1,1247 @@
+{
+  "at": "2026-10-24T03:41:21.106406+00:00",
+  "records": [
+    {
+      "id": "diversity-0000",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:41:01.456011+00:00",
+      "ended_at": "2026-10-24T03:41:01.529220+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.11.1\n  remote_addrs = 172.20.21.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_O_A1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_O_B1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.100.1.2/32\n    remote_ts = 10.200.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0001",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:41:01.529241+00:00",
+      "ended_at": "2026-10-24T03:41:01.613363+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.21.1\n  remote_addrs = 172.20.11.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_O_B1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_O_A1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.200.1.2/32\n    remote_ts = 10.100.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0002",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:41:01.613430+00:00",
+      "ended_at": "2026-10-24T03:41:01.881021+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "uninstall failed: policy 'protected' not found\n"
+    },
+    {
+      "id": "diversity-0003",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:41:01.881085+00:00",
+      "ended_at": "2026-10-24T03:41:02.151736+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "terminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0004",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:41:02.151821+00:00",
+      "ended_at": "2026-10-24T03:41:02.430981+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "uninstall failed: policy 'protected' not found\n"
+    },
+    {
+      "id": "diversity-0005",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:41:02.431037+00:00",
+      "ended_at": "2026-10-24T03:41:02.704884+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "terminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0006",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22222",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-CBC-alternative-v4/inner-0.conf",
+        "root@127.0.0.1:/usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:41:02.705572+00:00",
+      "ended_at": "2026-10-24T03:41:02.963991+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0007",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22223",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-CBC-alternative-v4/inner-1.conf",
+        "root@127.0.0.1:/usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:41:02.964610+00:00",
+      "ended_at": "2026-10-24T03:41:03.226508+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0008",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .Mounts}}",
+        "ND_O_A1"
+      ],
+      "started_at": "2026-10-24T03:41:03.226547+00:00",
+      "ended_at": "2026-10-24T03:41:03.247811+00:00",
+      "returncode": 0,
+      "stdout": "[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_A1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "write-owned-public-configuration",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_A1/swanctl/swanctl.conf"
+      ],
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.11.1\n  remote_addrs = 172.20.21.1\n  proposals = aes256-sha384-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_O_A1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_O_B1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.100.1.2/32\n    remote_ts = 10.200.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256-sha384-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0010",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .Mounts}}",
+        "ND_O_B1"
+      ],
+      "started_at": "2026-10-24T03:41:03.248393+00:00",
+      "ended_at": "2026-10-24T03:41:03.269160+00:00",
+      "returncode": 0,
+      "stdout": "[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_B1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "write-owned-public-configuration",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_B1/swanctl/swanctl.conf"
+      ],
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.21.1\n  remote_addrs = 172.20.11.1\n  proposals = aes256-sha384-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_O_B1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_O_A1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.200.1.2/32\n    remote_ts = 10.100.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256-sha384-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0012",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--uninstall",
+        "--child",
+        "protected"
+      ],
+      "started_at": "2026-10-24T03:41:03.269576+00:00",
+      "ended_at": "2026-10-24T03:41:03.346188+00:00",
+      "returncode": 0,
+      "stdout": "uninstall completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0013",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--terminate",
+        "--ike",
+        "msc"
+      ],
+      "started_at": "2026-10-24T03:41:03.346218+00:00",
+      "ended_at": "2026-10-24T03:41:03.433063+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] deleting IKE_SA msc[1] between 172.20.11.1[ND_O_A1.msc.test]...172.20.21.1[ND_O_B1.msc.test]\n[IKE] sending DELETE for IKE_SA msc[1]\n[ENC] generating INFORMATIONAL request 7 [ D ]\n[NET] sending packet: from 172.20.11.1[500] to 172.20.21.1[500] (65 bytes)\n[NET] received packet: from 172.20.21.1[500] to 172.20.11.1[500] (57 bytes)\n[ENC] parsed INFORMATIONAL response 7 [ ]\n[IKE] IKE_SA deleted\nterminate completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0014",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--load-all"
+      ],
+      "started_at": "2026-10-24T03:41:03.433087+00:00",
+      "ended_at": "2026-10-24T03:41:03.533066+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "id": "diversity-0015",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--uninstall",
+        "--child",
+        "protected"
+      ],
+      "started_at": "2026-10-24T03:41:03.533103+00:00",
+      "ended_at": "2026-10-24T03:41:03.608545+00:00",
+      "returncode": 0,
+      "stdout": "uninstall completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0016",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--terminate",
+        "--ike",
+        "msc"
+      ],
+      "started_at": "2026-10-24T03:41:03.608566+00:00",
+      "ended_at": "2026-10-24T03:41:03.688323+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nterminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0017",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--load-all"
+      ],
+      "started_at": "2026-10-24T03:41:03.688351+00:00",
+      "ended_at": "2026-10-24T03:41:03.791720+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "id": "diversity-0018",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--initiate",
+        "--child",
+        "protected"
+      ],
+      "started_at": "2026-10-24T03:41:03.791756+00:00",
+      "ended_at": "2026-10-24T03:41:03.942359+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] initiating IKE_SA msc[2] to 172.20.21.1\n[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n[NET] sending packet: from 172.20.11.1[500] to 172.20.21.1[500] (298 bytes)\n[NET] received packet: from 172.20.21.1[500] to 172.20.11.1[500] (337 bytes)\n[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n[CFG] selected proposal: IKE:AES_CBC_256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n[IKE] received cert request for \"CN=Twinet MSC outer\"\n[IKE] sending cert request for \"CN=Twinet MSC outer\"\n[IKE] authentication of 'ND_O_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n[IKE] sending end entity cert \"CN=ND_O_A1.msc.test\"\n[IKE] establishing CHILD_SA protected{5}\n[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n[NET] sending packet: from 172.20.11.1[500] to 172.20.21.1[500] (904 bytes)\n[NET] received packet: from 172.20.21.1[500] to 172.20.11.1[500] (824 bytes)\n[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH SA TSi TSr ]\n[IKE] received end entity cert \"CN=ND_O_B1.msc.test\"\n[CFG]   using certificate \"CN=ND_O_B1.msc.test\"\n[CFG]   using trusted ca certificate \"CN=Twinet MSC outer\"\n[CFG]   reached self-signed root ca with a path length of 0\n[CFG] checking certificate status of \"CN=ND_O_B1.msc.test\"\n[CFG]   using trusted certificate \"CN=Twinet MSC outer\"\n[CFG]   crl correctly signed by \"CN=Twinet MSC outer\"\n[CFG]   crl is valid: until Oct 31 02:41:14 2026\n[CFG]   using cached crl\n[CFG] certificate status is good\n[IKE] authentication of 'ND_O_B1.msc.test' with ECDSA_WITH_SHA384_DER successful\n[IKE] IKE_SA msc[2] established between 172.20.11.1[ND_O_A1.msc.test]...172.20.21.1[ND_O_B1.msc.test]\n[IKE] scheduling reauthentication in 10461s\n[IKE] maximum IKE_SA lifetime 11061s\n[CFG] selected proposal: ESP:AES_CBC_256/HMAC_SHA2_384_192/NO_EXT_SEQ\n[IKE] CHILD_SA protected{5} established with SPIs cc3c90f9_i c1a2674a_o and TS 10.100.1.2/32 === 10.200.1.2/32\ninitiate completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0019",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "started_at": "2026-10-24T03:41:03.942423+00:00",
+      "ended_at": "2026-10-24T03:41:04.221840+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0020",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "started_at": "2026-10-24T03:41:04.221906+00:00",
+      "ended_at": "2026-10-24T03:41:04.507218+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0021",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --initiate --child protected"
+      ],
+      "started_at": "2026-10-24T03:41:04.507263+00:00",
+      "ended_at": "2026-10-24T03:41:04.795943+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] initiating IKE_SA msc[17] to 10.200.1.2\n[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (298 bytes)\n[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (337 bytes)\n[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n[CFG] selected proposal: IKE:AES_CBC_256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n[IKE] authentication of 'ND_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n[IKE] sending end entity cert \"CN=ND_I_A1.msc.test\"\n[IKE] establishing CHILD_SA protected{21}\n[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (920 bytes)\n[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (840 bytes)\n[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH N(ESP_TFC_PAD_N) SA TSi TSr ]\n[IKE] received end entity cert \"CN=ND_I_B1.msc.test\"\n[CFG]   using certificate \"CN=ND_I_B1.msc.test\"\n[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n[CFG]   reached self-signed root ca with a path length of 0\n[CFG] checking certificate status of \"CN=ND_I_B1.msc.test\"\n[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n[CFG]   crl is valid: until Oct 31 02:41:14 2026\n[CFG]   using cached crl\n[CFG] certificate status is good\n[IKE] authentication of 'ND_I_B1.msc.test' with ECDSA_WITH_SHA384_DER successful\n[IKE] IKE_SA msc[17] established between 10.100.1.2[ND_I_A1.msc.test]...10.200.1.2[ND_I_B1.msc.test]\n[IKE] scheduling reauthentication in 10408s\n[IKE] maximum IKE_SA lifetime 11008s\n[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n[CFG] selected proposal: ESP:AES_CBC_256/HMAC_SHA2_384_192/NO_EXT_SEQ\n[IKE] CHILD_SA protected{21} established with SPIs c1486ebf_i c52fd8e7_o and TS 10.1.1.0/24 === 10.2.1.0/24\ninitiate completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "phase",
+        "before"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0023",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:41:04.796021+00:00",
+      "ended_at": "2026-10-24T03:41:05.065677+00:00",
+      "returncode": 0,
+      "stdout": "msc: #17, ESTABLISHED, IKEv2, 32ea525dc50deb25_i* a176d4755493a9e1_r\n  local  'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  remote 'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  AES_CBC-256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n  established 1s ago, reauth in 10407s\n  protected: #21, reqid 101, INSTALLED, TUNNEL, ESP:AES_CBC-256/HMAC_SHA2_384_192\n    installed 1s ago, rekeying in 2742s, expires in 3599s\n    in  c1486ebf,      0 bytes,     0 packets\n    out c52fd8e7,      0 bytes,     0 packets\n    local  10.1.1.0/24\n    remote 10.2.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0024",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T03:41:05.065743+00:00",
+      "ended_at": "2026-10-24T03:41:05.313579+00:00",
+      "returncode": 0,
+      "stdout": "10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 03:41:04 2026  lastused: Oct 24 03:41:04 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=21 seq=1 pid=36158 scope=global \n\trefcnt=1\n10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 03:41:04 2026  lastused: Oct 24 03:41:04 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=22 seq=0 pid=36158 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0025",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:41:05.313601+00:00",
+      "ended_at": "2026-10-24T03:41:05.589636+00:00",
+      "returncode": 0,
+      "stdout": "msc: #17, ESTABLISHED, IKEv2, 32ea525dc50deb25_i a176d4755493a9e1_r*\n  local  'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  remote 'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  AES_CBC-256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n  established 0s ago, reauth in 10570s\n  protected: #38, reqid 101, INSTALLED, TUNNEL, ESP:AES_CBC-256/HMAC_SHA2_384_192\n    installed 0s ago, rekeying in 2411s, expires in 3600s\n    in  c52fd8e7,      0 bytes,     0 packets\n    out c1486ebf,      0 bytes,     0 packets\n    local  10.2.1.0/24\n    remote 10.1.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0026",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T03:41:05.589700+00:00",
+      "ended_at": "2026-10-24T03:41:05.843091+00:00",
+      "returncode": 0,
+      "stdout": "10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 03:41:04 2026  lastused: Oct 24 03:41:04 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=57 seq=1 pid=35913 scope=global \n\trefcnt=1\n10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 03:41:04 2026  lastused: Oct 24 03:41:04 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=58 seq=0 pid=35913 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0027",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T03:41:05.843119+00:00",
+      "ended_at": "2026-10-24T03:41:05.922907+00:00",
+      "returncode": 0,
+      "stdout": "msc: #2, ESTABLISHED, IKEv2, cb831d4b0347bf42_i* c161236f9ba0ed93_r\n  local  'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_CBC-256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n  established 2s ago, reauth in 10459s\n  protected: #5, reqid 201, INSTALLED, TUNNEL, ESP:AES_CBC-256/HMAC_SHA2_384_192\n    installed 2s ago, rekeying in 2496s, expires in 3598s\n    in  cc3c90f9,   1233 bytes,     2 packets,     1s ago\n    out c1a2674a,   1274 bytes,     2 packets,     1s ago\n    local  10.100.1.2/32\n    remote 10.200.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0028",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T03:41:05.922939+00:00",
+      "ended_at": "2026-10-24T03:41:05.999110+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc1a2674a(3248645962) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\tauth-trunc hmac(sha384) <<Keys hidden>> 192\n\tenc cbc(aes) <<Keys hidden>>\n\tlastused 2026-10-24 03:41:04\n\tanti-replay context: seq 0x0, oseq 0x2, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2498(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  1274(bytes), 2(packets)\n\t  add 2026-10-24 03:41:03 use 2026-10-24 03:41:04\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcc3c90f9(3426521337) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\tauth-trunc hmac(sha384) <<Keys hidden>> 192\n\tenc cbc(aes) <<Keys hidden>>\n\tlastused 2026-10-24 03:41:04\n\tanti-replay context: seq 0x2, oseq 0x0, bitmap 0x00000003\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2522(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  1233(bytes), 2(packets)\n\t  add 2026-10-24 03:41:03 use 2026-10-24 03:41:04\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0029",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T03:41:05.999138+00:00",
+      "ended_at": "2026-10-24T03:41:06.074336+00:00",
+      "returncode": 0,
+      "stdout": "msc: #2, ESTABLISHED, IKEv2, cb831d4b0347bf42_i c161236f9ba0ed93_r*\n  local  'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_CBC-256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n  established 3s ago, reauth in 10458s\n  protected: #6, reqid 201, INSTALLED, TUNNEL, ESP:AES_CBC-256/HMAC_SHA2_384_192\n    installed 3s ago, rekeying in 2495s, expires in 3597s\n    in  c1a2674a,   1274 bytes,     2 packets,     2s ago\n    out cc3c90f9,   1233 bytes,     2 packets,     2s ago\n    local  10.200.1.2/32\n    remote 10.100.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0030",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T03:41:06.074370+00:00",
+      "ended_at": "2026-10-24T03:41:06.146323+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcc3c90f9(3426521337) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\tauth-trunc hmac(sha384) <<Keys hidden>> 192\n\tenc cbc(aes) <<Keys hidden>>\n\tlastused 2026-10-24 03:41:04\n\tanti-replay context: seq 0x0, oseq 0x2, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2498(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  1233(bytes), 2(packets)\n\t  add 2026-10-24 03:41:03 use 2026-10-24 03:41:04\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc1a2674a(3248645962) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\tauth-trunc hmac(sha384) <<Keys hidden>> 192\n\tenc cbc(aes) <<Keys hidden>>\n\tlastused 2026-10-24 03:41:04\n\tanti-replay context: seq 0x2, oseq 0x0, bitmap 0x00000003\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2522(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  1274(bytes), 2(packets)\n\t  add 2026-10-24 03:41:03 use 2026-10-24 03:41:04\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0031",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_A1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.1.10"
+      ],
+      "started_at": "2026-10-24T03:41:06.146346+00:00",
+      "ended_at": "2026-10-24T03:41:08.226552+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.1.10 (10.2.1.10) 56(84) bytes of data.\n64 bytes from 10.2.1.10: icmp_seq=1 ttl=62 time=1.61 ms\n64 bytes from 10.2.1.10: icmp_seq=2 ttl=62 time=1.04 ms\n64 bytes from 10.2.1.10: icmp_seq=3 ttl=62 time=1.05 ms\n\n--- 10.2.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2002ms\nrtt min/avg/max/mdev = 1.040/1.230/1.605/0.265 ms\n",
+      "stderr": "",
+      "probe": "two-layer-CBC-AES256-SHA384",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "diversity-0032",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_B1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.1.1.10"
+      ],
+      "started_at": "2026-10-24T03:41:08.226598+00:00",
+      "ended_at": "2026-10-24T03:41:10.329667+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.1.1.10 (10.1.1.10) 56(84) bytes of data.\n64 bytes from 10.1.1.10: icmp_seq=1 ttl=62 time=1.29 ms\n64 bytes from 10.1.1.10: icmp_seq=2 ttl=62 time=0.950 ms\n64 bytes from 10.1.1.10: icmp_seq=3 ttl=62 time=1.04 ms\n\n--- 10.1.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2002ms\nrtt min/avg/max/mdev = 0.950/1.092/1.288/0.142 ms\n",
+      "stderr": "",
+      "probe": "two-layer-CBC-AES256-SHA384",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "command": [
+        "phase",
+        "after"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0034",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:41:10.329747+00:00",
+      "ended_at": "2026-10-24T03:41:10.600585+00:00",
+      "returncode": 0,
+      "stdout": "msc: #17, ESTABLISHED, IKEv2, 32ea525dc50deb25_i* a176d4755493a9e1_r\n  local  'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  remote 'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  AES_CBC-256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n  established 6s ago, reauth in 10402s\n  protected: #21, reqid 101, INSTALLED, TUNNEL, ESP:AES_CBC-256/HMAC_SHA2_384_192\n    installed 6s ago, rekeying in 2737s, expires in 3594s\n    in  c1486ebf,    504 bytes,     6 packets,     0s ago\n    out c52fd8e7,    984 bytes,     6 packets,     0s ago\n    local  10.1.1.0/24\n    remote 10.2.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0035",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T03:41:10.600646+00:00",
+      "ended_at": "2026-10-24T03:41:10.848890+00:00",
+      "returncode": 0,
+      "stdout": "10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 03:41:04 2026  lastused: Oct 24 03:41:10 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=21 seq=1 pid=36166 scope=global \n\trefcnt=1\n10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 03:41:04 2026  lastused: Oct 24 03:41:10 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=22 seq=0 pid=36166 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0036",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:41:10.848941+00:00",
+      "ended_at": "2026-10-24T03:41:11.115683+00:00",
+      "returncode": 0,
+      "stdout": "msc: #17, ESTABLISHED, IKEv2, 32ea525dc50deb25_i a176d4755493a9e1_r*\n  local  'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  remote 'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  AES_CBC-256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n  established 6s ago, reauth in 10564s\n  protected: #38, reqid 101, INSTALLED, TUNNEL, ESP:AES_CBC-256/HMAC_SHA2_384_192\n    installed 6s ago, rekeying in 2405s, expires in 3594s\n    in  c52fd8e7,    504 bytes,     6 packets,     1s ago\n    out c1486ebf,    984 bytes,     6 packets,     1s ago\n    local  10.2.1.0/24\n    remote 10.1.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0037",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T03:41:11.115746+00:00",
+      "ended_at": "2026-10-24T03:41:11.366846+00:00",
+      "returncode": 0,
+      "stdout": "10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 03:41:04 2026  lastused: Oct 24 03:41:10 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=57 seq=1 pid=35921 scope=global \n\trefcnt=1\n10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 03:41:04 2026  lastused: Oct 24 03:41:10 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=58 seq=0 pid=35921 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0038",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T03:41:11.366878+00:00",
+      "ended_at": "2026-10-24T03:41:11.444402+00:00",
+      "returncode": 0,
+      "stdout": "msc: #2, ESTABLISHED, IKEv2, cb831d4b0347bf42_i* c161236f9ba0ed93_r\n  local  'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_CBC-256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n  established 8s ago, reauth in 10453s\n  protected: #5, reqid 201, INSTALLED, TUNNEL, ESP:AES_CBC-256/HMAC_SHA2_384_192\n    installed 8s ago, rekeying in 2490s, expires in 3592s\n    in  cc3c90f9,   2217 bytes,     8 packets,     1s ago\n    out c1a2674a,   2258 bytes,     8 packets,     1s ago\n    local  10.100.1.2/32\n    remote 10.200.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0039",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T03:41:11.444424+00:00",
+      "ended_at": "2026-10-24T03:41:11.518196+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc1a2674a(3248645962) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\tauth-trunc hmac(sha384) <<Keys hidden>> 192\n\tenc cbc(aes) <<Keys hidden>>\n\tlastused 2026-10-24 03:41:10\n\tanti-replay context: seq 0x0, oseq 0x8, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2498(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  2258(bytes), 8(packets)\n\t  add 2026-10-24 03:41:03 use 2026-10-24 03:41:04\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcc3c90f9(3426521337) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\tauth-trunc hmac(sha384) <<Keys hidden>> 192\n\tenc cbc(aes) <<Keys hidden>>\n\tlastused 2026-10-24 03:41:10\n\tanti-replay context: seq 0x8, oseq 0x0, bitmap 0x000000ff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2522(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  2217(bytes), 8(packets)\n\t  add 2026-10-24 03:41:03 use 2026-10-24 03:41:04\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0040",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T03:41:11.518218+00:00",
+      "ended_at": "2026-10-24T03:41:11.596758+00:00",
+      "returncode": 0,
+      "stdout": "msc: #2, ESTABLISHED, IKEv2, cb831d4b0347bf42_i c161236f9ba0ed93_r*\n  local  'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_CBC-256/HMAC_SHA2_384_192/PRF_HMAC_SHA2_384/ECP_384\n  established 8s ago, reauth in 10453s\n  protected: #6, reqid 201, INSTALLED, TUNNEL, ESP:AES_CBC-256/HMAC_SHA2_384_192\n    installed 8s ago, rekeying in 2490s, expires in 3592s\n    in  c1a2674a,   2258 bytes,     8 packets,     1s ago\n    out cc3c90f9,   2217 bytes,     8 packets,     1s ago\n    local  10.200.1.2/32\n    remote 10.100.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0041",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T03:41:11.596794+00:00",
+      "ended_at": "2026-10-24T03:41:11.670168+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcc3c90f9(3426521337) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\tauth-trunc hmac(sha384) <<Keys hidden>> 192\n\tenc cbc(aes) <<Keys hidden>>\n\tlastused 2026-10-24 03:41:10\n\tanti-replay context: seq 0x0, oseq 0x8, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2498(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  2217(bytes), 8(packets)\n\t  add 2026-10-24 03:41:03 use 2026-10-24 03:41:04\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc1a2674a(3248645962) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\tauth-trunc hmac(sha384) <<Keys hidden>> 192\n\tenc cbc(aes) <<Keys hidden>>\n\tlastused 2026-10-24 03:41:10\n\tanti-replay context: seq 0x8, oseq 0x0, bitmap 0x000000ff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2522(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  2258(bytes), 8(packets)\n\t  add 2026-10-24 03:41:03 use 2026-10-24 03:41:04\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0042",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:41:11.670216+00:00",
+      "ended_at": "2026-10-24T03:41:11.936885+00:00",
+      "returncode": 0,
+      "stdout": "uninstall completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0043",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:41:11.936943+00:00",
+      "ended_at": "2026-10-24T03:41:12.209602+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] deleting IKE_SA msc[17] between 10.100.1.2[ND_I_A1.msc.test]...10.200.1.2[ND_I_B1.msc.test]\n[IKE] sending DELETE for IKE_SA msc[17]\n[ENC] generating INFORMATIONAL request 2 [ D ]\n[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (88 bytes)\n[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (88 bytes)\n[ENC] parsed INFORMATIONAL response 2 [ ]\n[IKE] IKE_SA deleted\nterminate completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0044",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:41:12.209659+00:00",
+      "ended_at": "2026-10-24T03:41:12.482972+00:00",
+      "returncode": 0,
+      "stdout": "uninstall completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0045",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:41:12.483033+00:00",
+      "ended_at": "2026-10-24T03:41:12.757635+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "terminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0046",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_A1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.1.10"
+      ],
+      "started_at": "2026-10-24T03:41:12.757669+00:00",
+      "ended_at": "2026-10-24T03:41:15.898087+00:00",
+      "returncode": 1,
+      "stdout": "PING 10.2.1.10 (10.2.1.10) 56(84) bytes of data.\n\n--- 10.2.1.10 ping statistics ---\n3 packets transmitted, 0 received, 100% packet loss, time 2057ms\n\n",
+      "stderr": "",
+      "probe": "CBC-Inner-SA-loss",
+      "expected_result": "no_reply",
+      "observed_result": "no_reply"
+    },
+    {
+      "id": "diversity-0047",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:41:15.898145+00:00",
+      "ended_at": "2026-10-24T03:41:16.165225+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "uninstall failed: policy 'protected' not found\n"
+    },
+    {
+      "id": "diversity-0048",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:41:16.165271+00:00",
+      "ended_at": "2026-10-24T03:41:16.433426+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "terminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0049",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --uninstall --child protected"
+      ],
+      "started_at": "2026-10-24T03:41:16.433473+00:00",
+      "ended_at": "2026-10-24T03:41:16.704209+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "uninstall failed: policy 'protected' not found\n"
+    },
+    {
+      "id": "diversity-0050",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --terminate --ike msc"
+      ],
+      "started_at": "2026-10-24T03:41:16.704265+00:00",
+      "ended_at": "2026-10-24T03:41:16.978498+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "terminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0051",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .Mounts}}",
+        "ND_O_A1"
+      ],
+      "started_at": "2026-10-24T03:41:16.978537+00:00",
+      "ended_at": "2026-10-24T03:41:17.000811+00:00",
+      "returncode": 0,
+      "stdout": "[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_A1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "write-owned-public-configuration",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_A1/swanctl/swanctl.conf"
+      ],
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.11.1\n  remote_addrs = 172.20.21.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_O_A1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_O_B1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.100.1.2/32\n    remote_ts = 10.200.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0053",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .Mounts}}",
+        "ND_O_B1"
+      ],
+      "started_at": "2026-10-24T03:41:17.001223+00:00",
+      "ended_at": "2026-10-24T03:41:17.021633+00:00",
+      "returncode": 0,
+      "stdout": "[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_B1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "write-owned-public-configuration",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_B1/swanctl/swanctl.conf"
+      ],
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.21.1\n  remote_addrs = 172.20.11.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_O_B1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_O_A1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.200.1.2/32\n    remote_ts = 10.100.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0055",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--uninstall",
+        "--child",
+        "protected"
+      ],
+      "started_at": "2026-10-24T03:41:17.021849+00:00",
+      "ended_at": "2026-10-24T03:41:17.111257+00:00",
+      "returncode": 0,
+      "stdout": "uninstall completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0056",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--terminate",
+        "--ike",
+        "msc"
+      ],
+      "started_at": "2026-10-24T03:41:17.111275+00:00",
+      "ended_at": "2026-10-24T03:41:17.185732+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] deleting IKE_SA msc[2] between 172.20.11.1[ND_O_A1.msc.test]...172.20.21.1[ND_O_B1.msc.test]\n[IKE] sending DELETE for IKE_SA msc[2]\n[ENC] generating INFORMATIONAL request 2 [ D ]\n[NET] sending packet: from 172.20.11.1[500] to 172.20.21.1[500] (88 bytes)\n[NET] received packet: from 172.20.21.1[500] to 172.20.11.1[500] (88 bytes)\n[ENC] parsed INFORMATIONAL response 2 [ ]\n[IKE] IKE_SA deleted\nterminate completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0057",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--load-all"
+      ],
+      "started_at": "2026-10-24T03:41:17.185789+00:00",
+      "ended_at": "2026-10-24T03:41:17.278074+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "id": "diversity-0058",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--uninstall",
+        "--child",
+        "protected"
+      ],
+      "started_at": "2026-10-24T03:41:17.278094+00:00",
+      "ended_at": "2026-10-24T03:41:17.364891+00:00",
+      "returncode": 0,
+      "stdout": "uninstall completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0059",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--terminate",
+        "--ike",
+        "msc"
+      ],
+      "started_at": "2026-10-24T03:41:17.364925+00:00",
+      "ended_at": "2026-10-24T03:41:17.443726+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nterminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "id": "diversity-0060",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--load-all"
+      ],
+      "started_at": "2026-10-24T03:41:17.443751+00:00",
+      "ended_at": "2026-10-24T03:41:17.540972+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "id": "diversity-0061",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--initiate",
+        "--child",
+        "protected"
+      ],
+      "started_at": "2026-10-24T03:41:17.541000+00:00",
+      "ended_at": "2026-10-24T03:41:17.651910+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] initiating IKE_SA msc[3] to 172.20.21.1\n[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n[NET] sending packet: from 172.20.11.1[500] to 172.20.21.1[500] (290 bytes)\n[NET] received packet: from 172.20.21.1[500] to 172.20.11.1[500] (329 bytes)\n[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n[IKE] received cert request for \"CN=Twinet MSC outer\"\n[IKE] sending cert request for \"CN=Twinet MSC outer\"\n[IKE] authentication of 'ND_O_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n[IKE] sending end entity cert \"CN=ND_O_A1.msc.test\"\n[IKE] establishing CHILD_SA protected{7}\n[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n[NET] sending packet: from 172.20.11.1[500] to 172.20.21.1[500] (872 bytes)\n[NET] received packet: from 172.20.21.1[500] to 172.20.11.1[500] (791 bytes)\n[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH SA TSi TSr ]\n[IKE] received end entity cert \"CN=ND_O_B1.msc.test\"\n[CFG]   using certificate \"CN=ND_O_B1.msc.test\"\n[CFG]   using trusted ca certificate \"CN=Twinet MSC outer\"\n[CFG]   reached self-signed root ca with a path length of 0\n[CFG] checking certificate status of \"CN=ND_O_B1.msc.test\"\n[CFG]   using trusted certificate \"CN=Twinet MSC outer\"\n[CFG]   crl correctly signed by \"CN=Twinet MSC outer\"\n[CFG]   crl is valid: until Oct 31 02:41:14 2026\n[CFG]   using cached crl\n[CFG] certificate status is good\n[IKE] authentication of 'ND_O_B1.msc.test' with ECDSA_WITH_SHA384_DER successful\n[IKE] IKE_SA msc[3] established between 172.20.11.1[ND_O_A1.msc.test]...172.20.21.1[ND_O_B1.msc.test]\n[IKE] scheduling reauthentication in 10311s\n[IKE] maximum IKE_SA lifetime 10911s\n[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n[IKE] CHILD_SA protected{7} established with SPIs cd1d00be_i cd2dbaa0_o and TS 10.100.1.2/32 === 10.200.1.2/32\ninitiate completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0062",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22222",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd-native-creds/A/swanctl/swanctl.conf",
+        "root@127.0.0.1:/usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:41:17.651968+00:00",
+      "ended_at": "2026-10-24T03:41:17.910050+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0063",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "started_at": "2026-10-24T03:41:17.910098+00:00",
+      "ended_at": "2026-10-24T03:41:18.194030+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0064",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22223",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd-native-creds/B/swanctl/swanctl.conf",
+        "root@127.0.0.1:/usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:41:18.194092+00:00",
+      "ended_at": "2026-10-24T03:41:18.442444+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0065",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "started_at": "2026-10-24T03:41:18.442508+00:00",
+      "ended_at": "2026-10-24T03:41:18.729346+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0066",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --initiate --child protected"
+      ],
+      "started_at": "2026-10-24T03:41:18.729416+00:00",
+      "ended_at": "2026-10-24T03:41:19.012404+00:00",
+      "returncode": 0,
+      "stdout": "[IKE] initiating IKE_SA msc[18] to 10.200.1.2\n[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n[IKE] authentication of 'ND_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n[IKE] sending end entity cert \"CN=ND_I_A1.msc.test\"\n[IKE] establishing CHILD_SA protected{23}\n[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (884 bytes)\n[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (802 bytes)\n[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH N(ESP_TFC_PAD_N) SA TSi TSr ]\n[IKE] received end entity cert \"CN=ND_I_B1.msc.test\"\n[CFG]   using certificate \"CN=ND_I_B1.msc.test\"\n[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n[CFG]   reached self-signed root ca with a path length of 0\n[CFG] checking certificate status of \"CN=ND_I_B1.msc.test\"\n[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n[CFG]   crl is valid: until Oct 31 02:41:14 2026\n[CFG]   using cached crl\n[CFG] certificate status is good\n[IKE] authentication of 'ND_I_B1.msc.test' with ECDSA_WITH_SHA384_DER successful\n[IKE] IKE_SA msc[18] established between 10.100.1.2[ND_I_A1.msc.test]...10.200.1.2[ND_I_B1.msc.test]\n[IKE] scheduling reauthentication in 10290s\n[IKE] maximum IKE_SA lifetime 10890s\n[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n[IKE] CHILD_SA protected{23} established with SPIs c32676e9_i c63a52cd_o and TS 10.1.1.0/24 === 10.2.1.0/24\ninitiate completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0067",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_A1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.1.10"
+      ],
+      "started_at": "2026-10-24T03:41:19.012433+00:00",
+      "ended_at": "2026-10-24T03:41:21.106336+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.1.10 (10.2.1.10) 56(84) bytes of data.\n64 bytes from 10.2.1.10: icmp_seq=1 ttl=62 time=1.04 ms\n64 bytes from 10.2.1.10: icmp_seq=2 ttl=62 time=0.946 ms\n64 bytes from 10.2.1.10: icmp_seq=3 ttl=62 time=1.04 ms\n\n--- 10.2.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2021ms\nrtt min/avg/max/mdev = 0.946/1.007/1.041/0.043 ms\n",
+      "stderr": "",
+      "probe": "original-GCM-profile-restored",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    }
+  ],
+  "error": null,
+  "scope": [
+    "Fresh owned ND profile temporarily selects AES256-CBC/HMAC-SHA384 for IKE/ESP in both native Linux Outers and actual FreeBSD Inners, with P384 key establishment/certificates. Native FRR/OVS stay active.",
+    "Public loaded configurations, effective negotiated SAs and before/after counters must support the alternative; a configured string alone is insufficient.",
+    "Original GCM configurations and useful traffic are restored at completion. Finite behavior does not establish product approval or every CNSA profile clause."
+  ]
+}

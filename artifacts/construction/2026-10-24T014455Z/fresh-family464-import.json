@@ -1,0 +1,4035 @@
+{
+  "snapshot": "artifacts/snapshots/2026-10-24T014455Z/families-v9/families-464",
+  "model_snapshot": {
+    "devices": [
+      {
+        "id": "FA",
+        "role": "outer-firewall",
+        "site": "A",
+        "security_level_id": "L1",
+        "namespace": "tcv3f9-FA",
+        "physical_independence": "unavailable"
+      },
+      {
+        "id": "FB",
+        "role": "outer-firewall",
+        "site": "B",
+        "security_level_id": "L1",
+        "namespace": "tcv3f9-FB",
+        "physical_independence": "unavailable"
+      },
+      {
+        "id": "HA",
+        "role": "host",
+        "site": "A",
+        "security_level_id": "L1",
+        "namespace": "tcv3f9-HA",
+        "physical_independence": "unavailable"
+      },
+      {
+        "id": "HB",
+        "role": "host",
+        "site": "B",
+        "security_level_id": "L1",
+        "namespace": "tcv3f9-HB",
+        "physical_independence": "unavailable"
+      },
+      {
+        "id": "IA",
+        "role": "inner",
+        "site": "A",
+        "security_level_id": "L1",
+        "namespace": "tcv3f9-IA",
+        "physical_independence": "unavailable"
+      },
+      {
+        "id": "IB",
+        "role": "inner",
+        "site": "B",
+        "security_level_id": "L1",
+        "namespace": "tcv3f9-IB",
+        "physical_independence": "unavailable"
+      },
+      {
+        "id": "OA",
+        "role": "outer",
+        "site": "A",
+        "security_level_id": "L1",
+        "namespace": "tcv3f9-OA",
+        "physical_independence": "unavailable"
+      },
+      {
+        "id": "OB",
+        "role": "outer",
+        "site": "B",
+        "security_level_id": "L1",
+        "namespace": "tcv3f9-OB",
+        "physical_independence": "unavailable"
+      }
+    ],
+    "interfaces": [
+      {
+        "id": "FA:inside",
+        "device_id": "FA",
+        "name": "inside",
+        "zone": "black",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "192.0.2.2",
+            "prefixlen": 30,
+            "scope": "global",
+            "label": "inside",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::a096:6fff:fe74:9b7f",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "FA:lo",
+        "device_id": "FA",
+        "name": "lo",
+        "zone": "black",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "FA:outside",
+        "device_id": "FA",
+        "name": "outside",
+        "zone": "black",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "198.51.100.1",
+            "prefixlen": 30,
+            "scope": "global",
+            "label": "outside",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::6097:7aff:fec8:a452",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "FB:inside",
+        "device_id": "FB",
+        "name": "inside",
+        "zone": "black",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "192.0.3.2",
+            "prefixlen": 30,
+            "scope": "global",
+            "label": "inside",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::e418:9ff:fe08:f665",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "FB:lo",
+        "device_id": "FB",
+        "name": "lo",
+        "zone": "black",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "FB:outside",
+        "device_id": "FB",
+        "name": "outside",
+        "zone": "black",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "198.51.100.2",
+            "prefixlen": 30,
+            "scope": "global",
+            "label": "outside",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::4a7:97ff:fe49:908b",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "HA:lo",
+        "device_id": "HA",
+        "name": "lo",
+        "zone": "red",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "HA:red",
+        "device_id": "HA",
+        "name": "red",
+        "zone": "red",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "10.1.0.2",
+            "prefixlen": 24,
+            "scope": "global",
+            "label": "red",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::d87f:85ff:feb0:7c7d",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "HB:lo",
+        "device_id": "HB",
+        "name": "lo",
+        "zone": "red",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "HB:red",
+        "device_id": "HB",
+        "name": "red",
+        "zone": "red",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "10.2.0.2",
+            "prefixlen": 24,
+            "scope": "global",
+            "label": "red",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::3897:7eff:feec:daac",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "IA:gray",
+        "device_id": "IA",
+        "name": "gray",
+        "zone": "gray",
+        "addresses": [
+          {
+            "family": "inet6",
+            "local": "fd20:1::1",
+            "prefixlen": 64,
+            "scope": "global",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::cc58:10ff:fe76:c0af",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "IA:lo",
+        "device_id": "IA",
+        "name": "lo",
+        "zone": "red",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "IA:red",
+        "device_id": "IA",
+        "name": "red",
+        "zone": "red",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "10.1.0.1",
+            "prefixlen": 24,
+            "scope": "global",
+            "label": "red",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::b0b9:ffff:fe22:1b41",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "IB:gray",
+        "device_id": "IB",
+        "name": "gray",
+        "zone": "gray",
+        "addresses": [
+          {
+            "family": "inet6",
+            "local": "fd20:2::1",
+            "prefixlen": 64,
+            "scope": "global",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::bd:47ff:fe98:981",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "IB:lo",
+        "device_id": "IB",
+        "name": "lo",
+        "zone": "red",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "IB:red",
+        "device_id": "IB",
+        "name": "red",
+        "zone": "red",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "10.2.0.1",
+            "prefixlen": 24,
+            "scope": "global",
+            "label": "red",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::ac41:c2ff:fe5d:4c50",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "OA:black",
+        "device_id": "OA",
+        "name": "black",
+        "zone": "black",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "192.0.2.1",
+            "prefixlen": 30,
+            "scope": "global",
+            "label": "black",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::bc9f:16ff:fef8:979f",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "OA:gray",
+        "device_id": "OA",
+        "name": "gray",
+        "zone": "gray",
+        "addresses": [
+          {
+            "family": "inet6",
+            "local": "fd20:1::2",
+            "prefixlen": 64,
+            "scope": "global",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::6401:6eff:fe51:f645",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "OA:lo",
+        "device_id": "OA",
+        "name": "lo",
+        "zone": "gray",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "OB:black",
+        "device_id": "OB",
+        "name": "black",
+        "zone": "black",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "192.0.3.1",
+            "prefixlen": 30,
+            "scope": "global",
+            "label": "black",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::c09e:dbff:fec1:78b5",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "OB:gray",
+        "device_id": "OB",
+        "name": "gray",
+        "zone": "gray",
+        "addresses": [
+          {
+            "family": "inet6",
+            "local": "fd20:2::2",
+            "prefixlen": 64,
+            "scope": "global",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::cc45:71ff:fe26:9b1f",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "id": "OB:lo",
+        "device_id": "OB",
+        "name": "lo",
+        "zone": "gray",
+        "addresses": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      }
+    ],
+    "filters": [
+      {
+        "device_id": "FA",
+        "chain": "INPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "FA",
+        "chain": "FORWARD",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "sourceRange",
+                "low": 3221225985,
+                "high": 3221225985,
+                "family": 4
+              },
+              {
+                "kind": "destinationRange",
+                "low": 3221226241,
+                "high": 3221226241,
+                "family": 4
+              },
+              {
+                "kind": "protocol",
+                "value": "esp"
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 0,
+            "raw_text": "-A FORWARD -s 192.0.2.1/32 -d 192.0.3.1/32 -p esp -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "sourceRange",
+                "low": 3221226241,
+                "high": 3221226241,
+                "family": 4
+              },
+              {
+                "kind": "destinationRange",
+                "low": 3221225985,
+                "high": 3221225985,
+                "family": 4
+              },
+              {
+                "kind": "protocol",
+                "value": "esp"
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 1,
+            "raw_text": "-A FORWARD -s 192.0.3.1/32 -d 192.0.2.1/32 -p esp -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "deny"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "FA",
+        "chain": "OUTPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "FB",
+        "chain": "INPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "FB",
+        "chain": "FORWARD",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "sourceRange",
+                "low": 3221225985,
+                "high": 3221225985,
+                "family": 4
+              },
+              {
+                "kind": "destinationRange",
+                "low": 3221226241,
+                "high": 3221226241,
+                "family": 4
+              },
+              {
+                "kind": "protocol",
+                "value": "esp"
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 0,
+            "raw_text": "-A FORWARD -s 192.0.2.1/32 -d 192.0.3.1/32 -p esp -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "sourceRange",
+                "low": 3221226241,
+                "high": 3221226241,
+                "family": 4
+              },
+              {
+                "kind": "destinationRange",
+                "low": 3221225985,
+                "high": 3221225985,
+                "family": 4
+              },
+              {
+                "kind": "protocol",
+                "value": "esp"
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 1,
+            "raw_text": "-A FORWARD -s 192.0.3.1/32 -d 192.0.2.1/32 -p esp -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "deny"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "FB",
+        "chain": "OUTPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "HA",
+        "chain": "INPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "HA",
+        "chain": "FORWARD",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "HA",
+        "chain": "OUTPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "HB",
+        "chain": "INPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "HB",
+        "chain": "FORWARD",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "HB",
+        "chain": "OUTPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "IA",
+        "chain": "INPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "IA",
+        "chain": "FORWARD",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "ingress",
+                "value": "red"
+              },
+              {
+                "kind": "egress",
+                "value": "gray"
+              },
+              {
+                "kind": "outboundPolicy",
+                "value": 100
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 0,
+            "raw_text": "-A FORWARD -i red -o gray -m policy --dir out --pol ipsec --reqid 100 -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "ingress",
+                "value": "gray"
+              },
+              {
+                "kind": "egress",
+                "value": "red"
+              },
+              {
+                "kind": "inboundPolicy",
+                "value": 100
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 1,
+            "raw_text": "-A FORWARD -i gray -o red -m policy --dir in --pol ipsec --reqid 100 -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "deny"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "deny"
+          }
+        ]
+      },
+      {
+        "device_id": "IA",
+        "chain": "OUTPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "IB",
+        "chain": "INPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "IB",
+        "chain": "FORWARD",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "ingress",
+                "value": "red"
+              },
+              {
+                "kind": "egress",
+                "value": "gray"
+              },
+              {
+                "kind": "outboundPolicy",
+                "value": 100
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 0,
+            "raw_text": "-A FORWARD -i red -o gray -m policy --dir out --pol ipsec --reqid 100 -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "ingress",
+                "value": "gray"
+              },
+              {
+                "kind": "egress",
+                "value": "red"
+              },
+              {
+                "kind": "inboundPolicy",
+                "value": 100
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 1,
+            "raw_text": "-A FORWARD -i gray -o red -m policy --dir in --pol ipsec --reqid 100 -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "deny"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "deny"
+          }
+        ]
+      },
+      {
+        "device_id": "IB",
+        "chain": "OUTPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "OA",
+        "chain": "INPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "OA",
+        "chain": "FORWARD",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "deny"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "ingress",
+                "value": "gray"
+              },
+              {
+                "kind": "egress",
+                "value": "black"
+              },
+              {
+                "kind": "outboundPolicy",
+                "value": 200
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 0,
+            "raw_text": "-A FORWARD -i gray -o black -m policy --dir out --pol ipsec --reqid 200 -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "ingress",
+                "value": "black"
+              },
+              {
+                "kind": "egress",
+                "value": "gray"
+              },
+              {
+                "kind": "inboundPolicy",
+                "value": 200
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 1,
+            "raw_text": "-A FORWARD -i black -o gray -m policy --dir in --pol ipsec --reqid 200 -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "deny"
+          }
+        ]
+      },
+      {
+        "device_id": "OA",
+        "chain": "OUTPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "OB",
+        "chain": "INPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      },
+      {
+        "device_id": "OB",
+        "chain": "FORWARD",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "deny"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "ingress",
+                "value": "gray"
+              },
+              {
+                "kind": "egress",
+                "value": "black"
+              },
+              {
+                "kind": "outboundPolicy",
+                "value": 200
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 0,
+            "raw_text": "-A FORWARD -i gray -o black -m policy --dir out --pol ipsec --reqid 200 -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "ingress",
+                "value": "black"
+              },
+              {
+                "kind": "egress",
+                "value": "gray"
+              },
+              {
+                "kind": "inboundPolicy",
+                "value": 200
+              }
+            ],
+            "verdict": "allow",
+            "ordinal": 1,
+            "raw_text": "-A FORWARD -i black -o gray -m policy --dir in --pol ipsec --reqid 200 -j ACCEPT"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "deny"
+          }
+        ]
+      },
+      {
+        "device_id": "OB",
+        "chain": "OUTPUT",
+        "family": 0,
+        "policy": "drop",
+        "parsed_rules": [
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 0,
+                "high": 4294967295
+              },
+              {
+                "kind": "destinationRange",
+                "low": 0,
+                "high": 4294967295
+              }
+            ],
+            "verdict": "allow"
+          },
+          {
+            "atoms": [
+              {
+                "kind": "sourceRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              },
+              {
+                "kind": "destinationRange",
+                "low": 340282366920938463463374607431768211456,
+                "high": 680564733841876926926749214863536422911
+              }
+            ],
+            "verdict": "allow"
+          }
+        ]
+      }
+    ]
+  },
+  "device_ids": {
+    "FA": 1,
+    "FB": 2,
+    "HA": 3,
+    "HB": 4,
+    "IA": 5,
+    "IB": 6,
+    "OA": 7,
+    "OB": 8
+  },
+  "port_ids": {
+    "FA:inside": 0,
+    "FA:lo": 1,
+    "FA:outside": 2,
+    "FB:inside": 3,
+    "FB:lo": 4,
+    "FB:outside": 5,
+    "HA:lo": 6,
+    "HA:red": 7,
+    "HB:lo": 8,
+    "HB:red": 9,
+    "IA:gray": 10,
+    "IA:lo": 11,
+    "IA:red": 12,
+    "IB:gray": 13,
+    "IB:lo": 14,
+    "IB:red": 15,
+    "OA:black": 16,
+    "OA:gray": 17,
+    "OA:lo": 18,
+    "OB:black": 19,
+    "OB:gray": 20,
+    "OB:lo": 21
+  },
+  "levels": {
+    "L1": 1
+  },
+  "early_header_gates": {
+    "IA": {
+      "hooks": {
+        "prerouting": [
+          6,
+          17,
+          50,
+          58
+        ],
+        "output": [
+          6,
+          17,
+          50,
+          58
+        ]
+      },
+      "priority": -450,
+      "observation_id": "cmd-0187",
+      "nft_version": "1.0.9",
+      "observed_at": "2026-10-24T05:03:11.657555+00:00",
+      "defragmentation_priority_contract": -400
+    },
+    "OA": {
+      "hooks": {
+        "prerouting": [
+          6,
+          17,
+          50,
+          58
+        ],
+        "output": [
+          6,
+          17,
+          50,
+          58
+        ]
+      },
+      "priority": -450,
+      "observation_id": "cmd-0201",
+      "nft_version": "1.0.9",
+      "observed_at": "2026-10-24T05:03:11.814156+00:00",
+      "defragmentation_priority_contract": -400
+    },
+    "OB": {
+      "hooks": {
+        "prerouting": [
+          6,
+          17,
+          50,
+          58
+        ],
+        "output": [
+          6,
+          17,
+          50,
+          58
+        ]
+      },
+      "priority": -450,
+      "observation_id": "cmd-0208",
+      "nft_version": "1.0.9",
+      "observed_at": "2026-10-24T05:03:11.890607+00:00",
+      "defragmentation_priority_contract": -400
+    },
+    "IB": {
+      "hooks": {
+        "prerouting": [
+          6,
+          17,
+          50,
+          58
+        ],
+        "output": [
+          6,
+          17,
+          50,
+          58
+        ]
+      },
+      "priority": -450,
+      "observation_id": "cmd-0194",
+      "nft_version": "1.0.9",
+      "observed_at": "2026-10-24T05:03:11.737834+00:00",
+      "defragmentation_priority_contract": -400
+    }
+  },
+  "immediate_header_gates": {
+    "FA": null,
+    "FB": null,
+    "HA": null,
+    "HB": null,
+    "IA": [
+      6,
+      17,
+      50,
+      58
+    ],
+    "IB": [
+      6,
+      17,
+      50,
+      58
+    ],
+    "OA": [
+      6,
+      17,
+      50,
+      58
+    ],
+    "OB": [
+      6,
+      17,
+      50,
+      58
+    ]
+  },
+  "red_family": 4,
+  "families": [
+    4,
+    6,
+    4
+  ],
+  "routes": [
+    [
+      0,
+      0,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      1,
+      0,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      2,
+      0,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      0,
+      2,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      1,
+      2,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      2,
+      2,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      0,
+      2,
+      3325256704,
+      3325256707,
+      30,
+      0,
+      32766
+    ],
+    [
+      1,
+      2,
+      3325256704,
+      3325256707,
+      30,
+      0,
+      32766
+    ],
+    [
+      2,
+      2,
+      3325256704,
+      3325256707,
+      30,
+      0,
+      32766
+    ],
+    [
+      0,
+      0,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      1,
+      0,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      2,
+      0,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      0,
+      2,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      1,
+      2,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      2,
+      2,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      0,
+      0,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      1,
+      0,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      2,
+      0,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      0,
+      2,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      1,
+      2,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      2,
+      2,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      3,
+      5,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      4,
+      5,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      5,
+      5,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      3,
+      3,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      4,
+      3,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      5,
+      3,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      3,
+      5,
+      3325256704,
+      3325256707,
+      30,
+      0,
+      32766
+    ],
+    [
+      4,
+      5,
+      3325256704,
+      3325256707,
+      30,
+      0,
+      32766
+    ],
+    [
+      5,
+      5,
+      3325256704,
+      3325256707,
+      30,
+      0,
+      32766
+    ],
+    [
+      3,
+      3,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      4,
+      3,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      5,
+      3,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      3,
+      5,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      4,
+      5,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      5,
+      5,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      3,
+      3,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      4,
+      3,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      5,
+      3,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      3,
+      5,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      4,
+      5,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      5,
+      5,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      6,
+      7,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      7,
+      7,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      6,
+      7,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      7,
+      7,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      6,
+      7,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      7,
+      7,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      6,
+      7,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      7,
+      7,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      8,
+      9,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      9,
+      9,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      8,
+      9,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      9,
+      9,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      8,
+      9,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      9,
+      9,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      8,
+      9,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      9,
+      9,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      10,
+      12,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      11,
+      12,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      12,
+      12,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      10,
+      10,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      11,
+      10,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      12,
+      10,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      10,
+      10,
+      676743203433223456306415107158774382592,
+      676743203433223456324861851232483934207,
+      64,
+      256,
+      32766
+    ],
+    [
+      11,
+      10,
+      676743203433223456306415107158774382592,
+      676743203433223456324861851232483934207,
+      64,
+      256,
+      32766
+    ],
+    [
+      12,
+      10,
+      676743203433223456306415107158774382592,
+      676743203433223456324861851232483934207,
+      64,
+      256,
+      32766
+    ],
+    [
+      10,
+      10,
+      676743203512451618820679444752318332929,
+      676743203512451618820679444752318332929,
+      128,
+      1024,
+      32766
+    ],
+    [
+      11,
+      10,
+      676743203512451618820679444752318332929,
+      676743203512451618820679444752318332929,
+      128,
+      1024,
+      32766
+    ],
+    [
+      12,
+      10,
+      676743203512451618820679444752318332929,
+      676743203512451618820679444752318332929,
+      128,
+      1024,
+      32766
+    ],
+    [
+      10,
+      12,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      11,
+      12,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      12,
+      12,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      10,
+      10,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      11,
+      10,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      12,
+      10,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      10,
+      12,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      11,
+      12,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      12,
+      12,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      10,
+      10,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      11,
+      10,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      12,
+      10,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      13,
+      13,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      14,
+      13,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      15,
+      13,
+      167837696,
+      167837951,
+      24,
+      0,
+      32766
+    ],
+    [
+      13,
+      15,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      14,
+      15,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      15,
+      15,
+      167903232,
+      167903487,
+      24,
+      0,
+      32766
+    ],
+    [
+      13,
+      13,
+      676743203433223456306415107158774382593,
+      676743203433223456306415107158774382593,
+      128,
+      1024,
+      32766
+    ],
+    [
+      14,
+      13,
+      676743203433223456306415107158774382593,
+      676743203433223456306415107158774382593,
+      128,
+      1024,
+      32766
+    ],
+    [
+      15,
+      13,
+      676743203433223456306415107158774382593,
+      676743203433223456306415107158774382593,
+      128,
+      1024,
+      32766
+    ],
+    [
+      13,
+      13,
+      676743203512451618820679444752318332928,
+      676743203512451618839126188826027884543,
+      64,
+      256,
+      32766
+    ],
+    [
+      14,
+      13,
+      676743203512451618820679444752318332928,
+      676743203512451618839126188826027884543,
+      64,
+      256,
+      32766
+    ],
+    [
+      15,
+      13,
+      676743203512451618820679444752318332928,
+      676743203512451618839126188826027884543,
+      64,
+      256,
+      32766
+    ],
+    [
+      13,
+      15,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      14,
+      15,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      15,
+      15,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      13,
+      13,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      14,
+      13,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      15,
+      13,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      13,
+      15,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      14,
+      15,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      15,
+      15,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      13,
+      13,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      14,
+      13,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      15,
+      13,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      16,
+      16,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      17,
+      16,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      18,
+      16,
+      3221225984,
+      3221225987,
+      30,
+      0,
+      32766
+    ],
+    [
+      16,
+      16,
+      3221226241,
+      3221226241,
+      32,
+      0,
+      32766
+    ],
+    [
+      17,
+      16,
+      3221226241,
+      3221226241,
+      32,
+      0,
+      32766
+    ],
+    [
+      18,
+      16,
+      3221226241,
+      3221226241,
+      32,
+      0,
+      32766
+    ],
+    [
+      16,
+      17,
+      676743203433223456306415107158774382592,
+      676743203433223456324861851232483934207,
+      64,
+      256,
+      32766
+    ],
+    [
+      17,
+      17,
+      676743203433223456306415107158774382592,
+      676743203433223456324861851232483934207,
+      64,
+      256,
+      32766
+    ],
+    [
+      18,
+      17,
+      676743203433223456306415107158774382592,
+      676743203433223456324861851232483934207,
+      64,
+      256,
+      32766
+    ],
+    [
+      16,
+      16,
+      676743203512451618820679444752318332929,
+      676743203512451618820679444752318332929,
+      128,
+      1024,
+      32766
+    ],
+    [
+      17,
+      16,
+      676743203512451618820679444752318332929,
+      676743203512451618820679444752318332929,
+      128,
+      1024,
+      32766
+    ],
+    [
+      18,
+      16,
+      676743203512451618820679444752318332929,
+      676743203512451618820679444752318332929,
+      128,
+      1024,
+      32766
+    ],
+    [
+      16,
+      17,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      17,
+      17,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      18,
+      17,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      16,
+      16,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      17,
+      16,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      18,
+      16,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      16,
+      17,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      17,
+      17,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      18,
+      17,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      16,
+      16,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      17,
+      16,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      18,
+      16,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      19,
+      19,
+      3221225985,
+      3221225985,
+      32,
+      0,
+      32766
+    ],
+    [
+      20,
+      19,
+      3221225985,
+      3221225985,
+      32,
+      0,
+      32766
+    ],
+    [
+      21,
+      19,
+      3221225985,
+      3221225985,
+      32,
+      0,
+      32766
+    ],
+    [
+      19,
+      19,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      20,
+      19,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      21,
+      19,
+      3221226240,
+      3221226243,
+      30,
+      0,
+      32766
+    ],
+    [
+      19,
+      19,
+      676743203433223456306415107158774382593,
+      676743203433223456306415107158774382593,
+      128,
+      1024,
+      32766
+    ],
+    [
+      20,
+      19,
+      676743203433223456306415107158774382593,
+      676743203433223456306415107158774382593,
+      128,
+      1024,
+      32766
+    ],
+    [
+      21,
+      19,
+      676743203433223456306415107158774382593,
+      676743203433223456306415107158774382593,
+      128,
+      1024,
+      32766
+    ],
+    [
+      19,
+      20,
+      676743203512451618820679444752318332928,
+      676743203512451618839126188826027884543,
+      64,
+      256,
+      32766
+    ],
+    [
+      20,
+      20,
+      676743203512451618820679444752318332928,
+      676743203512451618839126188826027884543,
+      64,
+      256,
+      32766
+    ],
+    [
+      21,
+      20,
+      676743203512451618820679444752318332928,
+      676743203512451618839126188826027884543,
+      64,
+      256,
+      32766
+    ],
+    [
+      19,
+      20,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      20,
+      20,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      21,
+      20,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      19,
+      19,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      20,
+      19,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      21,
+      19,
+      678570891848199553117393504273115906048,
+      678570891848199553135840248346825457663,
+      64,
+      256,
+      32766
+    ],
+    [
+      19,
+      20,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      20,
+      20,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      21,
+      20,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      19,
+      19,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      20,
+      19,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ],
+    [
+      21,
+      19,
+      679235505846092011053845407803256078336,
+      680564733841876926926749214863536422911,
+      8,
+      256,
+      0
+    ]
+  ],
+  "route_gateways": [
+    null,
+    null,
+    null,
+    3325256706,
+    3325256706,
+    3325256706,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    3325256705,
+    3325256705,
+    3325256705,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    167837697,
+    167837697,
+    null,
+    null,
+    null,
+    null,
+    167903233,
+    167903233,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    676743203433223456306415107158774382594,
+    676743203433223456306415107158774382594,
+    676743203433223456306415107158774382594,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    676743203512451618820679444752318332930,
+    676743203512451618820679444752318332930,
+    676743203512451618820679444752318332930,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    3221225986,
+    3221225986,
+    3221225986,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    3221226242,
+    3221226242,
+    3221226242,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "links": [
+    [
+      7,
+      12
+    ],
+    [
+      12,
+      7
+    ],
+    [
+      10,
+      17
+    ],
+    [
+      17,
+      10
+    ],
+    [
+      16,
+      0
+    ],
+    [
+      0,
+      16
+    ],
+    [
+      9,
+      15
+    ],
+    [
+      15,
+      9
+    ],
+    [
+      13,
+      20
+    ],
+    [
+      20,
+      13
+    ],
+    [
+      19,
+      3
+    ],
+    [
+      3,
+      19
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      5,
+      2
+    ]
+  ],
+  "switches": [],
+  "policies": {
+    "FA": {
+      "in": [],
+      "out": [],
+      "fwd": [],
+      "socket": []
+    },
+    "FB": {
+      "in": [],
+      "out": [],
+      "fwd": [],
+      "socket": []
+    },
+    "HA": {
+      "in": [],
+      "out": [],
+      "fwd": [],
+      "socket": []
+    },
+    "HB": {
+      "in": [],
+      "out": [],
+      "fwd": [],
+      "socket": []
+    },
+    "IA": {
+      "in": [
+        [
+          100,
+          1,
+          676743203512451618820679444752318332929,
+          676743203433223456306415107158774382593,
+          167903232,
+          167903487,
+          167837696,
+          167837951,
+          0,
+          null
+        ]
+      ],
+      "out": [
+        [
+          100,
+          1,
+          676743203433223456306415107158774382593,
+          676743203512451618820679444752318332929,
+          167837696,
+          167837951,
+          167903232,
+          167903487,
+          0,
+          null
+        ]
+      ],
+      "fwd": [
+        [
+          100,
+          1,
+          676743203512451618820679444752318332929,
+          676743203433223456306415107158774382593,
+          167903232,
+          167903487,
+          167837696,
+          167837951,
+          0,
+          null
+        ]
+      ],
+      "socket": []
+    },
+    "IB": {
+      "in": [
+        [
+          100,
+          1,
+          676743203433223456306415107158774382593,
+          676743203512451618820679444752318332929,
+          167837696,
+          167837951,
+          167903232,
+          167903487,
+          0,
+          null
+        ]
+      ],
+      "out": [
+        [
+          100,
+          1,
+          676743203512451618820679444752318332929,
+          676743203433223456306415107158774382593,
+          167903232,
+          167903487,
+          167837696,
+          167837951,
+          0,
+          null
+        ]
+      ],
+      "fwd": [
+        [
+          100,
+          1,
+          676743203433223456306415107158774382593,
+          676743203512451618820679444752318332929,
+          167837696,
+          167837951,
+          167903232,
+          167903487,
+          0,
+          null
+        ]
+      ],
+      "socket": []
+    },
+    "OA": {
+      "in": [
+        [
+          200,
+          2,
+          3221226241,
+          3221225985,
+          676743203512451618820679444752318332929,
+          676743203512451618820679444752318332929,
+          676743203433223456306415107158774382593,
+          676743203433223456306415107158774382593,
+          0,
+          null
+        ]
+      ],
+      "out": [
+        [
+          200,
+          2,
+          3221225985,
+          3221226241,
+          676743203433223456306415107158774382593,
+          676743203433223456306415107158774382593,
+          676743203512451618820679444752318332929,
+          676743203512451618820679444752318332929,
+          0,
+          null
+        ]
+      ],
+      "fwd": [
+        [
+          200,
+          2,
+          3221226241,
+          3221225985,
+          676743203512451618820679444752318332929,
+          676743203512451618820679444752318332929,
+          676743203433223456306415107158774382593,
+          676743203433223456306415107158774382593,
+          0,
+          null
+        ]
+      ],
+      "socket": []
+    },
+    "OB": {
+      "in": [
+        [
+          200,
+          2,
+          3221225985,
+          3221226241,
+          676743203433223456306415107158774382593,
+          676743203433223456306415107158774382593,
+          676743203512451618820679444752318332929,
+          676743203512451618820679444752318332929,
+          0,
+          null
+        ]
+      ],
+      "out": [
+        [
+          200,
+          2,
+          3221226241,
+          3221225985,
+          676743203512451618820679444752318332929,
+          676743203512451618820679444752318332929,
+          676743203433223456306415107158774382593,
+          676743203433223456306415107158774382593,
+          0,
+          null
+        ]
+      ],
+      "fwd": [
+        [
+          200,
+          2,
+          3221225985,
+          3221226241,
+          676743203433223456306415107158774382593,
+          676743203433223456306415107158774382593,
+          676743203512451618820679444752318332929,
+          676743203512451618820679444752318332929,
+          0,
+          null
+        ]
+      ],
+      "socket": []
+    }
+  },
+  "states": {
+    "FA": [],
+    "FB": [],
+    "HA": [],
+    "HB": [],
+    "IA": [
+      [
+        100,
+        1002,
+        676743203512451618820679444752318332929,
+        676743203433223456306415107158774382593
+      ],
+      [
+        100,
+        1001,
+        676743203433223456306415107158774382593,
+        676743203512451618820679444752318332929
+      ]
+    ],
+    "IB": [
+      [
+        100,
+        1002,
+        676743203512451618820679444752318332929,
+        676743203433223456306415107158774382593
+      ],
+      [
+        100,
+        1001,
+        676743203433223456306415107158774382593,
+        676743203512451618820679444752318332929
+      ]
+    ],
+    "OA": [
+      [
+        200,
+        2002,
+        3221226241,
+        3221225985
+      ],
+      [
+        200,
+        2001,
+        3221225985,
+        3221226241
+      ]
+    ],
+    "OB": [
+      [
+        200,
+        2002,
+        3221226241,
+        3221225985
+      ],
+      [
+        200,
+        2001,
+        3221225985,
+        3221226241
+      ]
+    ]
+  },
+  "observations_used": [
+    "cmd-0482",
+    "cmd-0483",
+    "cmd-0484",
+    "cmd-0485",
+    "cmd-0486",
+    "cmd-0487",
+    "cmd-0488",
+    "cmd-0489",
+    "cmd-0490",
+    "cmd-0491",
+    "cmd-0492",
+    "cmd-0493",
+    "cmd-0494",
+    "cmd-0503",
+    "cmd-0504",
+    "cmd-0505",
+    "cmd-0506",
+    "cmd-0507",
+    "cmd-0508",
+    "cmd-0509",
+    "cmd-0510",
+    "cmd-0511",
+    "cmd-0512",
+    "cmd-0513",
+    "cmd-0514",
+    "cmd-0515",
+    "cmd-0419",
+    "cmd-0420",
+    "cmd-0421",
+    "cmd-0422",
+    "cmd-0423",
+    "cmd-0424",
+    "cmd-0425",
+    "cmd-0426",
+    "cmd-0427",
+    "cmd-0428",
+    "cmd-0429",
+    "cmd-0430",
+    "cmd-0431",
+    "cmd-0566",
+    "cmd-0567",
+    "cmd-0568",
+    "cmd-0569",
+    "cmd-0570",
+    "cmd-0571",
+    "cmd-0572",
+    "cmd-0573",
+    "cmd-0574",
+    "cmd-0575",
+    "cmd-0576",
+    "cmd-0577",
+    "cmd-0578",
+    "cmd-0440",
+    "cmd-0441",
+    "cmd-0442",
+    "cmd-0443",
+    "cmd-0444",
+    "cmd-0445",
+    "cmd-0446",
+    "cmd-0447",
+    "cmd-0448",
+    "cmd-0449",
+    "cmd-0450",
+    "cmd-0451",
+    "cmd-0452",
+    "cmd-0545",
+    "cmd-0546",
+    "cmd-0547",
+    "cmd-0548",
+    "cmd-0549",
+    "cmd-0550",
+    "cmd-0551",
+    "cmd-0552",
+    "cmd-0553",
+    "cmd-0554",
+    "cmd-0555",
+    "cmd-0556",
+    "cmd-0557",
+    "cmd-0461",
+    "cmd-0462",
+    "cmd-0463",
+    "cmd-0464",
+    "cmd-0465",
+    "cmd-0466",
+    "cmd-0467",
+    "cmd-0468",
+    "cmd-0469",
+    "cmd-0470",
+    "cmd-0471",
+    "cmd-0472",
+    "cmd-0473",
+    "cmd-0524",
+    "cmd-0525",
+    "cmd-0526",
+    "cmd-0527",
+    "cmd-0528",
+    "cmd-0529",
+    "cmd-0530",
+    "cmd-0531",
+    "cmd-0532",
+    "cmd-0533",
+    "cmd-0534",
+    "cmd-0535",
+    "cmd-0536"
+  ],
+  "manifest_sha256": "6bfb6482dbecd62fd2db534c014e9a403fe1083a67f3ea2c2ff6d4730e9e9133",
+  "scope": "The model uses the before-collection rules exactly. The after capture may insert INPUT DROP rules, which only remove local acceptance. No atomic interval claim is made. Supplemental static namespace IPsec case with family-tagged address keys; logical datagrams with a separately stated fragmentation/reassembly contract. The raw hook gate is post-defragmentation; any validated nft early_header_gates run at priority -450, before the contracted defragmentation priority -400. These exact header gates are retained separately; the packet safety model omits this additional drop-only gate. Positive traces must separately check their received/output header values. No multicast or IPv4-options claim follows."
+}

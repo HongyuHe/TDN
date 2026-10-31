@@ -46,7 +46,7 @@ def generate(bundle,output,report_path,chain_module="LoadedBaseline",namespace="
         outer=device["role"]=="outer"
         definitions.append("⟨"+", ".join([quoted(device["id"]),str(outer).lower(),quoted("black" if outer else "gray"),"true","false",str(outer).lower(),all_chains,"[]",receive,"[]"])+"⟩")
     lines.append("def gateways : List Targets.GatewayHeaderPolicy := "+lean_list(definitions))
-    lines.append("theorem all_header_certificates : ∀ g ∈ gateways, Targets.HeaderCertificate g := by unfold gateways; decide")
+    lines.append("lemma all_header_certificates : ∀ g ∈ gateways, Targets.HeaderCertificate g := by unfold gateways; decide")
     lines.append("theorem snapshot_RG038 : Targets.msc_ip_header_and_multicast_filtering gateways := Targets.header_certificates_suffice gateways (by unfold gateways; decide) all_header_certificates")
     lines.append("end TDN.Imported."+namespace)
     output.write_text("\n\n".join(lines)+"\n")

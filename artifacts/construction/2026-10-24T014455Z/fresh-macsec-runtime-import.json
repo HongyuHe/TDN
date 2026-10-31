@@ -1,0 +1,101 @@
+{
+  "cases": [
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v14",
+      "manifest_sha256": "b29622b92b6adeab9f89202335f93cf34cec9c347b4bb92237b85b9fa52f41db",
+      "ports": [
+        {
+          "id": "eap-tls-forward-v14/P0",
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0,
+          "sa": 0,
+          "cipher": "GCM-AES-256",
+          "replay_window": 0
+        },
+        {
+          "id": "eap-tls-forward-v14/P1",
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0,
+          "sa": 0,
+          "cipher": "GCM-AES-256",
+          "replay_window": 0
+        }
+      ],
+      "observations": [
+        "cmd-0077",
+        "cmd-0084",
+        "cmd-0105",
+        "cmd-0085",
+        "cmd-0092",
+        "cmd-0102",
+        "cmd-0102",
+        "cmd-0104",
+        "cmd-0035",
+        "cmd-0039"
+      ],
+      "negotiated_suite": [
+        256,
+        true,
+        "mldsa87",
+        "mlkem1024",
+        "sha384"
+      ]
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v14",
+      "manifest_sha256": "fc48eb6b84c4191e32c4ca3a7966b1b2b10d14fa86298d5f275f241d9c9de08a",
+      "ports": [
+        {
+          "id": "eap-tls-reverse-v14/P0",
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0,
+          "sa": 0,
+          "cipher": "GCM-AES-256",
+          "replay_window": 0
+        },
+        {
+          "id": "eap-tls-reverse-v14/P1",
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0,
+          "sa": 0,
+          "cipher": "GCM-AES-256",
+          "replay_window": 0
+        }
+      ],
+      "observations": [
+        "cmd-0075",
+        "cmd-0082",
+        "cmd-0103",
+        "cmd-0083",
+        "cmd-0090",
+        "cmd-0100",
+        "cmd-0102",
+        "cmd-0103",
+        "cmd-0035",
+        "cmd-0039"
+      ],
+      "negotiated_suite": [
+        256,
+        true,
+        "mldsa87",
+        "mlkem1024",
+        "sha384"
+      ]
+    }
+  ],
+  "scope": [
+    "Universal local controlled-data-port emission and absent-SA properties under the Linux software MACsec/cryptographic implementation contract.",
+    "The body in an encrypted constructor is semantic plaintext; confidentiality of ciphertext relies on the declared AES-GCM implementation assumption.",
+    "Raw complete MACsec interfaces, settings, SCI, installed TXSA and peer logs are bound; data injected on a different unprotected physical interface is outside this local operation.",
+    "Negotiated EAP TLS suite and certificate algorithms are observed; complete offered-suite policy, approved authorities/products, normative profile conformance and whole layered-network composition remain separate.",
+    "Forward and reverse arrangements are distinct runtime cases and do not establish simultaneous dual-role use by one runtime instance."
+  ]
+}

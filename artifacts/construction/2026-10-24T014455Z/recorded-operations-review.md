@@ -1,0 +1,19 @@
+# Selected administrative and operational clauses
+
+The coordinator independently reviewed RG-044–076 and implemented seven evidence-backed partial results. No full-group specification was weakened. The concrete declarations are in `TDN/Evidence/FreshRecordedOperations.lean`; their general proofs are in `TDN/Targets/RecordedOperations.lean`.
+
+| RG | Original clause subset | Checked application | Remaining scope |
+| --- | --- | --- | --- |
+| RG-044 | DM-17: the same AW must not manage both Inner and Outer components | `assigned_workstations_do_not_cross_layers` uses 10 actual configured assignments and successful authenticated management attempts | All possible access paths, physical protection and other administrative requirements |
+| RG-045 | DM-27: AW powered off when unused | `recorded_use_finishes_powered_off` and `final_guest_is_off` apply the general power-state invariant to four recorded states | Use is declared by the experiment; exact guest process exit is checked by the hash-bound collector. No future idle detector, host shutdown, or every-idle-interval claim |
+| RG-046 | p012:u007 and p030:u007: permitted management transport | `observed_management_uses_allowed_protocol` checks 14 actual TLS1.3 management sessions | All possible traffic, Black two-layer protection, approved remote solutions |
+| RG-048 | Section6.1: CA processes CSR, signed certificate and chain installed | `loaded_credentials_follow_signed_requests` checks four actual CSR/sign/mount/load chains | Worker-side generation fails the component-owned generation duty. Correct OpenSSL/strongSwan execution and unchanged path contents are explicit implementation assumptions; uniqueness of signed bytes and human authorization are not established |
+| RG-058 | GD-26: configuration available to Auditor | `auditor_obtained_configuration` covers one saved diagnostic-filter configuration fragment obtained through the actual certificate-bound Auditor role | All-component baseline maintenance and actual appointment of people |
+| RG-068 | Section12: Security Administrator monitors security functions | `administrator_obtained_configuration` covers one actual administrator readback of the diagnostic filter | Complete duties, all-product functionality and ongoing monitoring |
+| RG-072 | Section13.1 and TR-1: preserve test results | `selected_network_test_results_are_retained` covers all 12 selected native management-profile network probes and raw artifact paths | Equality with the Testing Annex test inventory, physical products and AO delivery |
+
+The imported raw records are hash-checked. Management assignments are derived from actual configured `admin` addresses, observed AW interface addresses, declared component roles and successful TLS records. The partition is generated from the assignments; Lean independently verifies that each assignment agrees with one fixed partition value for its workstation. A witness inconsistency fails the import and local check.
+
+The power model was reviewed against Mathlib `Relation.ReflTransGen`. Its existing induction principle directly lifts the local preservation lemma to a finite sequence; no new reachability library is introduced. The model deliberately uses independent `inUse` and `poweredOn` fields, so an unused-but-powered-on state fails its invariant. The importer pins the collector which verifies the named QEMU process has disappeared, rather than interpreting an SSH timeout alone as proof of shutdown.
+
+Eight importer tests include altered CSR input, wrong mounted credential, missing loaded chain, failed process exit, reordered use windows, a responsive supposedly-off guest and modified retained result bytes. Separate Lean regressions reject an unused/on reachable state, unsupported TLS, a missing result and wrong-role configuration access. No remote action occurred in this addition.

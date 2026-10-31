@@ -1,0 +1,100 @@
+import TDN.Semantics.ByteFlows
+import TDN.Semantics.KernelResponses
+
+namespace TDN.ResponseByteFlows
+
+def source {S B : Type} (origin : S → B → Prop) :
+    KernelResponses.State S → B → Prop
+  | .network state, byte => origin state byte
+  | _, _ => False
+
+def assembly {S : Type} (canAssemble : S → S → Prop) :
+    KernelResponses.State S → KernelResponses.State S → Prop
+  | .network before, .network after => canAssemble before after
+  | _, _ => False
+
+def system {S B A : Type} (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
+    (origin : S → B → Prop) (canAssemble : S → S → Prop) :=
+  ByteFlows.lts (KernelResponses.lts network responses) (source origin) (assembly canAssemble)
+
+lemma assembled_response_state_preserves {S B : Type} (responses : KernelResponses.Config S)
+    (canAssemble : S → S → Prop) (property : B → S → Prop)
+    (preserved : ∀ before after byte, canAssemble before after →
+      property byte before → property byte after)
+    {before after : KernelResponses.State S} (byte : B)
+    (compatible : assembly canAssemble before after)
+    (safe : KernelResponses.Invariant responses (property byte) before) :
+    KernelResponses.Invariant responses (property byte) after := by
+  cases before <;> cases after <;> simp only [assembly] at compatible <;> try contradiction
+  exact preserved _ _ byte compatible safe
+
+/-- A single model permits simultaneous byte-carrying packets, splitting,
+assembly, and arbitrary enabled kernel response generation. Strict local OUTPUT
+guards prevent response emissions from introducing a new external packet. -/
+theorem all_fragment_and_response_histories_preserve_bytes {S B A : Type}
+    (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
+    (origin : S → B → Prop) (canAssemble : S → S → Prop)
+    (property : B → S → Prop)
+    (injection : ∀ state byte, origin state byte → property byte state)
+    (forwarding : ∀ byte, network.TrInv (property byte))
+    (reassembly : ∀ before after byte, canAssemble before after →
+      property byte before → property byte after)
+    (guards : ∀ state, responses.generates state → ∀ port,
+      responses.outputFallback state port = .deny ∧
+      ∀ rule ∈ responses.outputRules state port,
+        rule.verdict = .allow → KernelResponses.SafeResponseRule rule)
+    {after : List (ByteFlows.Carrier (KernelResponses.State S) B)}
+    {actions : List (ByteFlows.Action (KernelResponses.Action A))}
+    (run : (system network responses origin canAssemble).MTr [] actions after) :
+    ByteFlows.Safe (fun byte => KernelResponses.Invariant responses (property byte)) after := by
+  refine ByteFlows.all_executions_preserve_byte_properties
+    (KernelResponses.lts network responses) (source origin) (assembly canAssemble)
+    (fun byte => KernelResponses.Invariant responses (property byte)) ?_ ?_ ?_ run ?_
+  · intro state byte starts
+    cases state <;> simp only [source] at starts <;> try contradiction
+    exact injection _ byte starts
+  · intro byte
+    exact KernelResponses.response_output_guards_preserve_network_invariant
+      network responses (property byte) (forwarding byte) guards
+  · intro before after byte compatible safe
+    exact assembled_response_state_preserves responses canAssemble property reassembly
+      byte compatible safe
+  · simp [ByteFlows.Safe]
+
+/-- Local reply checks also permit safe responses. Pending packets retain the
+source-byte property until a permitted emission. The same machine allows
+splitting, arbitrary permutations and assembly between response steps. -/
+theorem all_fragment_and_permitted_response_histories_preserve_bytes {S B A : Type}
+    (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
+    (origin : S → B → Prop) (canAssemble : S → S → Prop)
+    (property : B → S → Prop)
+    (injection : ∀ state byte, origin state byte → property byte state)
+    (forwarding : ∀ byte, network.TrInv (property byte))
+    (reassembly : ∀ before after byte, canAssemble before after →
+      property byte before → property byte after)
+    (reply : ∀ byte state header port,
+      property byte state → responses.generates state →
+      KernelResponses.ResponseProtocol header.protocol →
+      responses.selectedRoute state header port →
+      Filter.evaluate ((responses.outputRules state port).map PacketPolicy.Rule.toFilter)
+        (responses.outputFallback state port) (KernelResponses.outputPacket responses header port) = .allow →
+      responses.interfaceName port ≠ "lo" → property byte (responses.emit state header port))
+    {after : List (ByteFlows.Carrier (KernelResponses.State S) B)}
+    {actions : List (ByteFlows.Action (KernelResponses.Action A))}
+    (run : (system network responses origin canAssemble).MTr [] actions after) :
+    ByteFlows.Safe (fun byte => KernelResponses.ProvenanceInvariant responses (property byte)) after := by
+  refine ByteFlows.all_executions_preserve_byte_properties
+    (KernelResponses.lts network responses) (source origin) (assembly canAssemble)
+    (fun byte => KernelResponses.ProvenanceInvariant responses (property byte)) ?_ ?_ ?_ run ?_
+  · intro state byte starts
+    cases state <;> simp only [source] at starts <;> try contradiction
+    exact injection _ byte starts
+  · intro byte
+    exact KernelResponses.local_reply_checks_preserve_network_safety
+      network responses (property byte) (forwarding byte) (reply byte)
+  · intro before after byte compatible safe
+    cases before <;> cases after <;> simp only [assembly] at compatible <;> try contradiction
+    exact reassembly _ _ byte compatible safe
+  · simp [ByteFlows.Safe]
+
+end TDN.ResponseByteFlows

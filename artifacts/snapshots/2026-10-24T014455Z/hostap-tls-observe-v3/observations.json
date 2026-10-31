@@ -1,0 +1,152 @@
+{
+  "error": null,
+  "records": [
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "-j4"
+      ],
+      "at": "2026-10-24T03:11:57.505389+00:00",
+      "returncode": 0,
+      "stdout": "  CC  ../src/crypto/tls_openssl.c\n  LD  hostapd\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "sha256sum",
+        "./hostapd"
+      ],
+      "at": "2026-10-24T03:11:59.745761+00:00",
+      "returncode": 0,
+      "stdout": "34677e7bc0437b138d4a682244648e4801d8015ffaf625322d2b206738b8200c  ./hostapd\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "ldd",
+        "./hostapd"
+      ],
+      "at": "2026-10-24T03:12:02.020126+00:00",
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007fff72d75000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x00007575e152d000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x00007575e1525000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x00007575e1489000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x00007575e1378000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007575e0d5e000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007575e0b3b000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007575e0b1d000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x00007575e0a5a000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007575e1611000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "at": "2026-10-24T03:12:04.368301+00:00",
+      "returncode": 0,
+      "stdout": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\nbuilt on: Wed Sep 30 18:46:30 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=/usr/src/openssl-3.5.5-1ubuntu3.7 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific JITTER (3060300)\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x00000000000037ab:0x000000009c000400:0x0000000000000000:0x0000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "-j4"
+      ],
+      "at": "2026-10-24T03:12:08.558639+00:00",
+      "returncode": 0,
+      "stdout": "  CC  ../src/crypto/tls_openssl.c\n  LD  wpa_supplicant\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "sha256sum",
+        "./wpa_supplicant"
+      ],
+      "at": "2026-10-24T03:12:10.789735+00:00",
+      "returncode": 0,
+      "stdout": "68b7a67142b1a0e93c0878749c11b965bc28e01d1c900f46922ca5e781974022  ./wpa_supplicant\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "ldd",
+        "./wpa_supplicant"
+      ],
+      "at": "2026-10-24T03:12:13.139792+00:00",
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffc925aa000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x00007053922d0000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x00007053922c8000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x000070539222c000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x000070539211b000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x0000705391b01000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007053918de000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007053918c0000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x00007053917fd000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007053923df000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "at": "2026-10-24T03:12:15.545590+00:00",
+      "returncode": 0,
+      "stdout": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\nbuilt on: Wed Sep 30 18:46:30 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=/usr/src/openssl-3.5.5-1ubuntu3.7 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific JITTER (3060300)\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x00000000000037ab:0x000000009c000400:0x0000000000000000:0x0000000000000000\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Add public negotiated TLS version/cipher/group logging after OpenSSL reports a finished handshake. No key bytes or credential bodies are logged. All functional hostap code and prior experimental CAK patch remain as recorded."
+}

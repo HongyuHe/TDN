@@ -1,0 +1,26 @@
+{
+  "SecurityAdministrator": {
+    "GET": [
+      "/state",
+      "/audit"
+    ],
+    "POST": [
+      "/filter",
+      "/audit/rotate"
+    ]
+  },
+  "Auditor": {
+    "GET": [
+      "/state",
+      "/audit"
+    ],
+    "POST": [
+      "/audit/rotate"
+    ]
+  },
+  "all_roles": {
+    "private-key": "denied",
+    "unmapped-certificate": "denied",
+    "unknown-operation": "denied"
+  }
+}

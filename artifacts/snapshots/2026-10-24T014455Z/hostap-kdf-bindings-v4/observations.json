@@ -1,0 +1,97 @@
+{
+  "at": "2026-10-24T14:59:28.608357+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T14:59:24.341207+00:00",
+      "path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/src/pae/ieee802_1x_key.c",
+      "sha256": "0d0c125a8b343e2aa404413706dea31df5a3a2ed8ce3db3e855865be7f6ab6d5",
+      "copied_public_source": "hostapd-2.12/src/pae/ieee802_1x_key.c",
+      "matches_tested_official_source": true
+    },
+    {
+      "at": "2026-10-24T14:59:24.342153+00:00",
+      "path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/src/crypto/crypto_openssl.c",
+      "sha256": "f30a502f853efa08e1da15bb9ca6c4456dc95f5d0de966db1e45a0acc5b16fb1",
+      "copied_public_source": "hostapd-2.12/src/crypto/crypto_openssl.c",
+      "matches_tested_official_source": true
+    },
+    {
+      "at": "2026-10-24T14:59:24.344109+00:00",
+      "path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/src/pae/ieee802_1x_kay.c",
+      "sha256": "0ae4075f42ccf9b522dc73e2ee256552bdc0214780b3a730b7b18c28188dbbb5",
+      "copied_public_source": "hostapd-2.12/src/pae/ieee802_1x_kay.c"
+    },
+    {
+      "at": "2026-10-24T14:59:24.344820+00:00",
+      "path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/src/ap/wpa_auth_kay.c",
+      "sha256": "39275037fb1e3b5bec3c2a970a4a62a215fb78272c2a7c07e9ed7b0ae26e2ebe",
+      "copied_public_source": "hostapd-2.12/src/ap/wpa_auth_kay.c"
+    },
+    {
+      "at": "2026-10-24T14:59:26.691951+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/hostapd/hostapd:/runtime/program:ro",
+        "tdn-hostap-pq:20261024-v3",
+        "sh",
+        "-c",
+        "sha256sum /runtime/program; ldd /runtime/program; openssl version"
+      ],
+      "returncode": 0,
+      "stdout": "23a5f3dfbaee5c2b4b54f16229d8274c3de7a760d30613a95db566a1acd78b1d  /runtime/program\n\tlinux-vdso.so.1 (0x00007ffe833f1000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x0000783fb057f000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x0000783fb0577000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x0000783fb04db000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x0000783fb03ca000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x0000783fafdb0000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x0000783fafb8d000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x0000783fafb6f000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x0000783fafaac000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000783fb0663000)\nOpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:59:26.692460+00:00",
+      "path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/wpa_supplicant-2.12/src/pae/ieee802_1x_key.c",
+      "sha256": "0d0c125a8b343e2aa404413706dea31df5a3a2ed8ce3db3e855865be7f6ab6d5",
+      "copied_public_source": "wpa_supplicant-2.12/src/pae/ieee802_1x_key.c",
+      "matches_tested_official_source": true
+    },
+    {
+      "at": "2026-10-24T14:59:26.693209+00:00",
+      "path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/wpa_supplicant-2.12/src/crypto/crypto_openssl.c",
+      "sha256": "f30a502f853efa08e1da15bb9ca6c4456dc95f5d0de966db1e45a0acc5b16fb1",
+      "copied_public_source": "wpa_supplicant-2.12/src/crypto/crypto_openssl.c",
+      "matches_tested_official_source": true
+    },
+    {
+      "at": "2026-10-24T14:59:26.695120+00:00",
+      "path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/wpa_supplicant-2.12/src/pae/ieee802_1x_kay.c",
+      "sha256": "0ae4075f42ccf9b522dc73e2ee256552bdc0214780b3a730b7b18c28188dbbb5",
+      "copied_public_source": "wpa_supplicant-2.12/src/pae/ieee802_1x_kay.c"
+    },
+    {
+      "at": "2026-10-24T14:59:26.695826+00:00",
+      "path": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/wpa_supplicant-2.12/wpa_supplicant/wpas_kay.c",
+      "sha256": "3d7d2d37a81a1d38007f193ee714f6e967487eda4f4fa2388fe79707e9486520",
+      "copied_public_source": "wpa_supplicant-2.12/wpa_supplicant/wpas_kay.c"
+    },
+    {
+      "at": "2026-10-24T14:59:28.607920+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant:/runtime/program:ro",
+        "tdn-hostap-pq:20261024-v3",
+        "sh",
+        "-c",
+        "sha256sum /runtime/program; ldd /runtime/program; openssl version"
+      ],
+      "returncode": 0,
+      "stdout": "aa5af96ee16645430271770a942ceefd2f86d62efbb25f2e76fe3595681d44a6  /runtime/program\n\tlinux-vdso.so.1 (0x00007ffc13770000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x00007c2a9d9ac000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x00007c2a9d9a4000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x00007c2a9d908000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x00007c2a9d7f7000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007c2a9d1dd000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007c2a9cfba000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007c2a9cf9c000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x00007c2a9ced9000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007c2a9dabb000)\nOpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": "Read-only public final authenticator and supplicant source/binary bindings. Both exact derivation and OpenSSL CMAC source files must match the official bytes used by the separate12-vector harness. No live credential material is read."
+}

@@ -1,0 +1,944 @@
+{
+  "schema_version": "csfc-multiworker-placement/v1",
+  "started_at": "2026-10-24T02:19:34.428732+00:00",
+  "ended_at": "2026-10-24T02:19:35.750754+00:00",
+  "worker": "w008",
+  "worker_host": "pc08.cloudlab.umass.edu",
+  "action": "wire-v3",
+  "runtime_backend": "native-FRR-OVS-crossworker-VXLAN",
+  "selected_device_ids": [
+    "MW_GF_A",
+    "MW_GF_B"
+  ],
+  "assignments": {
+    "MW_BLACK": "w176",
+    "MW_GF_A": "w008",
+    "MW_R_A1": "w159",
+    "MW_I_A1": "w159",
+    "MW_G_A1": "w159",
+    "MW_O_A1": "w163",
+    "MW_OF_A1": "w176",
+    "MW_R_A2": "w159",
+    "MW_I_A2": "w159",
+    "MW_G_A2": "w159",
+    "MW_O_A2": "w163",
+    "MW_OF_A2": "w176",
+    "MW_GF_B": "w008",
+    "MW_R_B1": "w159",
+    "MW_I_B1": "w159",
+    "MW_G_B1": "w159",
+    "MW_O_B1": "w163",
+    "MW_OF_B1": "w176",
+    "MW_R_B2": "w159",
+    "MW_I_B2": "w159",
+    "MW_G_B2": "w159",
+    "MW_O_B2": "w163",
+    "MW_OF_B2": "w176"
+  },
+  "records": [
+    {
+      "id": "mw-00000",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_GF_A"
+      ],
+      "started_at": "2026-10-24T02:19:34.429950+00:00",
+      "ended_at": "2026-10-24T02:19:34.449838+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3\",\"Created\":\"2026-10-24T02:13:20.201659318Z\",\"Path\":\"/usr/local/bin/twinet-entrypoint\",\"Args\":[\"sleep\",\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":47686,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:20.2376806Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"ResolvConfPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/hostname\",\"HostsPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/hosts\",\"LogPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3-json.log\",\"Name\":\"/MW_GF_A\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":null,\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/etc:/etc/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/run:/run/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/2a609ca2bc0cd63b/etc-twinet:/etc/twinet\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_DAC_OVERRIDE\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":true,\"SecurityOpt\":[\"no-new-privileges\",\"apparmor=docker-default\"],\"Tmpfs\":{\"/run\":\"rw,nosuid,nodev,size=64m\",\"/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\",\"/var/log\":\"rw,nosuid,nodev,size=64m\",\"/var/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\"},\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":512,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/firmware\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"],\"Init\":true},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/etc\",\"Destination\":\"/etc/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/run\",\"Destination\":\"/run/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/2a609ca2bc0cd63b/etc-twinet\",\"Destination\":\"/etc/twinet\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw-gf-a\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc-router:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"/\",\"Entrypoint\":[\"/usr/local/bin/twinet-entrypoint\"],\"Labels\":{\"org.opencontainers.image.description\":\"FRR router for the Twinet teaching platform\",\"org.opencontainers.image.source\":\"https://github.com/HongyuHe/Twinet\",\"org.opencontainers.image.title\":\"twinet-msc-router\",\"twinet.device\":\"MW_GF_A\",\"twinet.device-id\":\"MW_GF_A\",\"twinet.kind\":\"router\",\"twinet.lab\":\"native-multiworker-v3\",\"twinet.managed\":\"true\",\"twinet.msc.device\":\"MW_GF_A\",\"twinet.msc.image\":\"twinet-msc-router@sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\",\"twinet.node\":\"\",\"twinet.request.cpu\":\"0.04\",\"twinet.request.ephemeral-storage\":\"256Mi\",\"twinet.request.file-descriptors\":\"1024\",\"twinet.request.memory\":\"128Mi\",\"twinet.request.netdevs\":\"8\",\"twinet.request.pids\":\"64\",\"twinet.runtime-spec-contract\":\"runtime-spec-v1\",\"twinet.spec-hash\":\"c6423bbda17ac77092b1086d\",\"twinet.topology-hash\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\"}},\"NetworkSettings\":{\"SandboxID\":\"e722f48099ae13f4c9bbd6a2f43ed9a31a591dbd78516e947d3fde78f84d57a7\",\"SandboxKey\":\"/var/run/docker/netns/e722f48099ae\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"7207ecfa7d6808cf9e7d9b030c8145a51f376d98ac5898bfeac634484d37ad14\",\"EndpointID\":\"e47cd32806836ee9e1f7e8852d8c807ecc6d42c69f961f5b22af1153b99af442\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"size\":2070,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc-router:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00001",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "link",
+        "show",
+        "s1"
+      ],
+      "started_at": "2026-10-24T02:19:34.449955+00:00",
+      "ended_at": "2026-10-24T02:19:34.519660+00:00",
+      "returncode": 0,
+      "stdout": "61: s1@if62: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:e0:29:78:f2:2c brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00002",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "s1"
+      ],
+      "started_at": "2026-10-24T02:19:34.519683+00:00",
+      "ended_at": "2026-10-24T02:19:34.591952+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":61,\"link_index\":62,\"ifname\":\"s1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:e0:29:78:f2:2c\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00003",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h03"
+      ],
+      "started_at": "2026-10-24T02:19:34.592014+00:00",
+      "ended_at": "2026-10-24T02:19:34.594251+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":62,\"link_index\":61,\"ifname\":\"mw3h03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b03\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"56:9b:c4:61:0c:10\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":4}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00004",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "address",
+        "replace",
+        "10.100.1.254/24",
+        "dev",
+        "s1"
+      ],
+      "started_at": "2026-10-24T02:19:34.594291+00:00",
+      "ended_at": "2026-10-24T02:19:34.662079+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00005",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_GF_A"
+      ],
+      "started_at": "2026-10-24T02:19:34.662145+00:00",
+      "ended_at": "2026-10-24T02:19:34.681727+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3\",\"Created\":\"2026-10-24T02:13:20.201659318Z\",\"Path\":\"/usr/local/bin/twinet-entrypoint\",\"Args\":[\"sleep\",\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":47686,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:20.2376806Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"ResolvConfPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/hostname\",\"HostsPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/hosts\",\"LogPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3-json.log\",\"Name\":\"/MW_GF_A\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":null,\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/etc:/etc/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/run:/run/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/2a609ca2bc0cd63b/etc-twinet:/etc/twinet\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_DAC_OVERRIDE\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":true,\"SecurityOpt\":[\"no-new-privileges\",\"apparmor=docker-default\"],\"Tmpfs\":{\"/run\":\"rw,nosuid,nodev,size=64m\",\"/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\",\"/var/log\":\"rw,nosuid,nodev,size=64m\",\"/var/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\"},\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":512,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/firmware\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"],\"Init\":true},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/etc\",\"Destination\":\"/etc/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/run\",\"Destination\":\"/run/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/2a609ca2bc0cd63b/etc-twinet\",\"Destination\":\"/etc/twinet\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw-gf-a\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc-router:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"/\",\"Entrypoint\":[\"/usr/local/bin/twinet-entrypoint\"],\"Labels\":{\"org.opencontainers.image.description\":\"FRR router for the Twinet teaching platform\",\"org.opencontainers.image.source\":\"https://github.com/HongyuHe/Twinet\",\"org.opencontainers.image.title\":\"twinet-msc-router\",\"twinet.device\":\"MW_GF_A\",\"twinet.device-id\":\"MW_GF_A\",\"twinet.kind\":\"router\",\"twinet.lab\":\"native-multiworker-v3\",\"twinet.managed\":\"true\",\"twinet.msc.device\":\"MW_GF_A\",\"twinet.msc.image\":\"twinet-msc-router@sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\",\"twinet.node\":\"\",\"twinet.request.cpu\":\"0.04\",\"twinet.request.ephemeral-storage\":\"256Mi\",\"twinet.request.file-descriptors\":\"1024\",\"twinet.request.memory\":\"128Mi\",\"twinet.request.netdevs\":\"8\",\"twinet.request.pids\":\"64\",\"twinet.runtime-spec-contract\":\"runtime-spec-v1\",\"twinet.spec-hash\":\"c6423bbda17ac77092b1086d\",\"twinet.topology-hash\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\"}},\"NetworkSettings\":{\"SandboxID\":\"e722f48099ae13f4c9bbd6a2f43ed9a31a591dbd78516e947d3fde78f84d57a7\",\"SandboxKey\":\"/var/run/docker/netns/e722f48099ae\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"7207ecfa7d6808cf9e7d9b030c8145a51f376d98ac5898bfeac634484d37ad14\",\"EndpointID\":\"e47cd32806836ee9e1f7e8852d8c807ecc6d42c69f961f5b22af1153b99af442\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"size\":2070,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc-router:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00006",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "link",
+        "show",
+        "s2"
+      ],
+      "started_at": "2026-10-24T02:19:34.681889+00:00",
+      "ended_at": "2026-10-24T02:19:34.751662+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Device \"s2\" does not exist.\n"
+    },
+    {
+      "id": "mw-00007",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3b09",
+        "type",
+        "bridge",
+        "stp_state",
+        "0",
+        "mcast_snooping",
+        "0"
+      ],
+      "started_at": "2026-10-24T02:19:34.751698+00:00",
+      "ended_at": "2026-10-24T02:19:34.754110+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00008",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3b09",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:34.754133+00:00",
+      "ended_at": "2026-10-24T02:19:34.756821+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00009",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3x09",
+        "type",
+        "vxlan",
+        "id",
+        "310009",
+        "local",
+        "198.22.255.18",
+        "remote",
+        "130.127.133.168",
+        "dev",
+        "eno1",
+        "dstport",
+        "47930",
+        "nolearning"
+      ],
+      "started_at": "2026-10-24T02:19:34.756843+00:00",
+      "ended_at": "2026-10-24T02:19:34.758782+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00010",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3x09",
+        "master",
+        "mw3b09"
+      ],
+      "started_at": "2026-10-24T02:19:34.758806+00:00",
+      "ended_at": "2026-10-24T02:19:34.760909+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00011",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3x09",
+        "mtu",
+        "1450",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:34.760924+00:00",
+      "ended_at": "2026-10-24T02:19:34.763141+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00012",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3h09",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "mw3p09"
+      ],
+      "started_at": "2026-10-24T02:19:34.763156+00:00",
+      "ended_at": "2026-10-24T02:19:34.767384+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00013",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3h09",
+        "master",
+        "mw3b09"
+      ],
+      "started_at": "2026-10-24T02:19:34.767408+00:00",
+      "ended_at": "2026-10-24T02:19:34.769574+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00014",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3h09",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:34.769605+00:00",
+      "ended_at": "2026-10-24T02:19:34.771419+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00015",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3p09",
+        "netns",
+        "47686"
+      ],
+      "started_at": "2026-10-24T02:19:34.771434+00:00",
+      "ended_at": "2026-10-24T02:19:34.790130+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00016",
+      "command": [
+        "nsenter",
+        "-t",
+        "47686",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "mw3p09",
+        "name",
+        "s2"
+      ],
+      "started_at": "2026-10-24T02:19:34.790144+00:00",
+      "ended_at": "2026-10-24T02:19:34.810001+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00017",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "link",
+        "set",
+        "s2",
+        "address",
+        "02:cb:71:cb:25:27"
+      ],
+      "started_at": "2026-10-24T02:19:34.810035+00:00",
+      "ended_at": "2026-10-24T02:19:34.886215+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00018",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "link",
+        "set",
+        "s2",
+        "mtu",
+        "1400",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:34.886247+00:00",
+      "ended_at": "2026-10-24T02:19:34.953654+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00019",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "address",
+        "replace",
+        "10.100.2.254/24",
+        "dev",
+        "s2"
+      ],
+      "started_at": "2026-10-24T02:19:34.953693+00:00",
+      "ended_at": "2026-10-24T02:19:35.028410+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00020",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_GF_B"
+      ],
+      "started_at": "2026-10-24T02:19:35.028474+00:00",
+      "ended_at": "2026-10-24T02:19:35.046389+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664\",\"Created\":\"2026-10-24T02:13:21.68551167Z\",\"Path\":\"/usr/local/bin/twinet-entrypoint\",\"Args\":[\"sleep\",\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":48233,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:21.710046159Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"ResolvConfPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/hostname\",\"HostsPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/hosts\",\"LogPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664-json.log\",\"Name\":\"/MW_GF_B\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":null,\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/etc:/etc/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/run:/run/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/696af90a03b82c4f/etc-twinet:/etc/twinet\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_DAC_OVERRIDE\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":true,\"SecurityOpt\":[\"no-new-privileges\",\"apparmor=docker-default\"],\"Tmpfs\":{\"/run\":\"rw,nosuid,nodev,size=64m\",\"/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\",\"/var/log\":\"rw,nosuid,nodev,size=64m\",\"/var/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\"},\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":512,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/firmware\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"],\"Init\":true},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/etc\",\"Destination\":\"/etc/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/run\",\"Destination\":\"/run/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/696af90a03b82c4f/etc-twinet\",\"Destination\":\"/etc/twinet\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw-gf-b\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc-router:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"/\",\"Entrypoint\":[\"/usr/local/bin/twinet-entrypoint\"],\"Labels\":{\"org.opencontainers.image.description\":\"FRR router for the Twinet teaching platform\",\"org.opencontainers.image.source\":\"https://github.com/HongyuHe/Twinet\",\"org.opencontainers.image.title\":\"twinet-msc-router\",\"twinet.device\":\"MW_GF_B\",\"twinet.device-id\":\"MW_GF_B\",\"twinet.kind\":\"router\",\"twinet.lab\":\"native-multiworker-v3\",\"twinet.managed\":\"true\",\"twinet.msc.device\":\"MW_GF_B\",\"twinet.msc.image\":\"twinet-msc-router@sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\",\"twinet.node\":\"\",\"twinet.request.cpu\":\"0.04\",\"twinet.request.ephemeral-storage\":\"256Mi\",\"twinet.request.file-descriptors\":\"1024\",\"twinet.request.memory\":\"128Mi\",\"twinet.request.netdevs\":\"8\",\"twinet.request.pids\":\"64\",\"twinet.runtime-spec-contract\":\"runtime-spec-v1\",\"twinet.spec-hash\":\"b224714294e99cb4e9bb45e4\",\"twinet.topology-hash\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\"}},\"NetworkSettings\":{\"SandboxID\":\"a826de713253f8381c82454da3d766a06e119d74579f877dd26598e27fdd93f1\",\"SandboxKey\":\"/var/run/docker/netns/a826de713253\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"7207ecfa7d6808cf9e7d9b030c8145a51f376d98ac5898bfeac634484d37ad14\",\"EndpointID\":\"d2091f5491e97f5a06c4cf905df87b9eb2ff121409b329f7ae3921737bda31db\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"size\":2070,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc-router:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00021",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "link",
+        "show",
+        "s1"
+      ],
+      "started_at": "2026-10-24T02:19:35.046577+00:00",
+      "ended_at": "2026-10-24T02:19:35.123013+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Device \"s1\" does not exist.\n"
+    },
+    {
+      "id": "mw-00022",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3b15",
+        "type",
+        "bridge",
+        "stp_state",
+        "0",
+        "mcast_snooping",
+        "0"
+      ],
+      "started_at": "2026-10-24T02:19:35.123053+00:00",
+      "ended_at": "2026-10-24T02:19:35.125637+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00023",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3b15",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:35.125658+00:00",
+      "ended_at": "2026-10-24T02:19:35.127535+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00024",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3x15",
+        "type",
+        "vxlan",
+        "id",
+        "310015",
+        "local",
+        "198.22.255.18",
+        "remote",
+        "130.127.133.168",
+        "dev",
+        "eno1",
+        "dstport",
+        "47930",
+        "nolearning"
+      ],
+      "started_at": "2026-10-24T02:19:35.127561+00:00",
+      "ended_at": "2026-10-24T02:19:35.129706+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00025",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3x15",
+        "master",
+        "mw3b15"
+      ],
+      "started_at": "2026-10-24T02:19:35.129726+00:00",
+      "ended_at": "2026-10-24T02:19:35.131789+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00026",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3x15",
+        "mtu",
+        "1450",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:35.131808+00:00",
+      "ended_at": "2026-10-24T02:19:35.134041+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00027",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3h15",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "mw3p15"
+      ],
+      "started_at": "2026-10-24T02:19:35.134061+00:00",
+      "ended_at": "2026-10-24T02:19:35.139116+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00028",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3h15",
+        "master",
+        "mw3b15"
+      ],
+      "started_at": "2026-10-24T02:19:35.139145+00:00",
+      "ended_at": "2026-10-24T02:19:35.141271+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00029",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3h15",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:35.141300+00:00",
+      "ended_at": "2026-10-24T02:19:35.143262+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00030",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3p15",
+        "netns",
+        "48233"
+      ],
+      "started_at": "2026-10-24T02:19:35.143293+00:00",
+      "ended_at": "2026-10-24T02:19:35.164088+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00031",
+      "command": [
+        "nsenter",
+        "-t",
+        "48233",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "mw3p15",
+        "name",
+        "s1"
+      ],
+      "started_at": "2026-10-24T02:19:35.164108+00:00",
+      "ended_at": "2026-10-24T02:19:35.183975+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00032",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "link",
+        "set",
+        "s1",
+        "address",
+        "02:6a:62:ff:c4:3f"
+      ],
+      "started_at": "2026-10-24T02:19:35.183995+00:00",
+      "ended_at": "2026-10-24T02:19:35.245900+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00033",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "link",
+        "set",
+        "s1",
+        "mtu",
+        "1400",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:35.245918+00:00",
+      "ended_at": "2026-10-24T02:19:35.316027+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00034",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "address",
+        "replace",
+        "10.200.1.254/24",
+        "dev",
+        "s1"
+      ],
+      "started_at": "2026-10-24T02:19:35.316056+00:00",
+      "ended_at": "2026-10-24T02:19:35.403567+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00035",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_GF_B"
+      ],
+      "started_at": "2026-10-24T02:19:35.403676+00:00",
+      "ended_at": "2026-10-24T02:19:35.423114+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664\",\"Created\":\"2026-10-24T02:13:21.68551167Z\",\"Path\":\"/usr/local/bin/twinet-entrypoint\",\"Args\":[\"sleep\",\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":48233,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:21.710046159Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"ResolvConfPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/hostname\",\"HostsPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/hosts\",\"LogPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664-json.log\",\"Name\":\"/MW_GF_B\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":null,\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/etc:/etc/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/run:/run/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/696af90a03b82c4f/etc-twinet:/etc/twinet\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_DAC_OVERRIDE\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":true,\"SecurityOpt\":[\"no-new-privileges\",\"apparmor=docker-default\"],\"Tmpfs\":{\"/run\":\"rw,nosuid,nodev,size=64m\",\"/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\",\"/var/log\":\"rw,nosuid,nodev,size=64m\",\"/var/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\"},\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":512,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/firmware\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"],\"Init\":true},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/696af90a03b82c4f/etc-twinet\",\"Destination\":\"/etc/twinet\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/etc\",\"Destination\":\"/etc/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/run\",\"Destination\":\"/run/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw-gf-b\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc-router:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"/\",\"Entrypoint\":[\"/usr/local/bin/twinet-entrypoint\"],\"Labels\":{\"org.opencontainers.image.description\":\"FRR router for the Twinet teaching platform\",\"org.opencontainers.image.source\":\"https://github.com/HongyuHe/Twinet\",\"org.opencontainers.image.title\":\"twinet-msc-router\",\"twinet.device\":\"MW_GF_B\",\"twinet.device-id\":\"MW_GF_B\",\"twinet.kind\":\"router\",\"twinet.lab\":\"native-multiworker-v3\",\"twinet.managed\":\"true\",\"twinet.msc.device\":\"MW_GF_B\",\"twinet.msc.image\":\"twinet-msc-router@sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\",\"twinet.node\":\"\",\"twinet.request.cpu\":\"0.04\",\"twinet.request.ephemeral-storage\":\"256Mi\",\"twinet.request.file-descriptors\":\"1024\",\"twinet.request.memory\":\"128Mi\",\"twinet.request.netdevs\":\"8\",\"twinet.request.pids\":\"64\",\"twinet.runtime-spec-contract\":\"runtime-spec-v1\",\"twinet.spec-hash\":\"b224714294e99cb4e9bb45e4\",\"twinet.topology-hash\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\"}},\"NetworkSettings\":{\"SandboxID\":\"a826de713253f8381c82454da3d766a06e119d74579f877dd26598e27fdd93f1\",\"SandboxKey\":\"/var/run/docker/netns/a826de713253\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"7207ecfa7d6808cf9e7d9b030c8145a51f376d98ac5898bfeac634484d37ad14\",\"EndpointID\":\"d2091f5491e97f5a06c4cf905df87b9eb2ff121409b329f7ae3921737bda31db\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"size\":2070,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc-router:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00036",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "link",
+        "show",
+        "s2"
+      ],
+      "started_at": "2026-10-24T02:19:35.423366+00:00",
+      "ended_at": "2026-10-24T02:19:35.494934+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Device \"s2\" does not exist.\n"
+    },
+    {
+      "id": "mw-00037",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3b21",
+        "type",
+        "bridge",
+        "stp_state",
+        "0",
+        "mcast_snooping",
+        "0"
+      ],
+      "started_at": "2026-10-24T02:19:35.494959+00:00",
+      "ended_at": "2026-10-24T02:19:35.497926+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00038",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3b21",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:35.497943+00:00",
+      "ended_at": "2026-10-24T02:19:35.499985+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00039",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3x21",
+        "type",
+        "vxlan",
+        "id",
+        "310021",
+        "local",
+        "198.22.255.18",
+        "remote",
+        "130.127.133.168",
+        "dev",
+        "eno1",
+        "dstport",
+        "47930",
+        "nolearning"
+      ],
+      "started_at": "2026-10-24T02:19:35.500002+00:00",
+      "ended_at": "2026-10-24T02:19:35.502640+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00040",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3x21",
+        "master",
+        "mw3b21"
+      ],
+      "started_at": "2026-10-24T02:19:35.502653+00:00",
+      "ended_at": "2026-10-24T02:19:35.504501+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00041",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3x21",
+        "mtu",
+        "1450",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:35.504513+00:00",
+      "ended_at": "2026-10-24T02:19:35.506410+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00042",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "mw3h21",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "mw3p21"
+      ],
+      "started_at": "2026-10-24T02:19:35.506422+00:00",
+      "ended_at": "2026-10-24T02:19:35.510708+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00043",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3h21",
+        "master",
+        "mw3b21"
+      ],
+      "started_at": "2026-10-24T02:19:35.510738+00:00",
+      "ended_at": "2026-10-24T02:19:35.512966+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00044",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3h21",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:35.513000+00:00",
+      "ended_at": "2026-10-24T02:19:35.515086+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00045",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "mw3p21",
+        "netns",
+        "48233"
+      ],
+      "started_at": "2026-10-24T02:19:35.515099+00:00",
+      "ended_at": "2026-10-24T02:19:35.531812+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00046",
+      "command": [
+        "nsenter",
+        "-t",
+        "48233",
+        "-n",
+        "ip",
+        "link",
+        "set",
+        "mw3p21",
+        "name",
+        "s2"
+      ],
+      "started_at": "2026-10-24T02:19:35.531834+00:00",
+      "ended_at": "2026-10-24T02:19:35.548983+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00047",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "link",
+        "set",
+        "s2",
+        "address",
+        "02:da:3d:e9:ac:aa"
+      ],
+      "started_at": "2026-10-24T02:19:35.549002+00:00",
+      "ended_at": "2026-10-24T02:19:35.618069+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00048",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "link",
+        "set",
+        "s2",
+        "mtu",
+        "1400",
+        "up"
+      ],
+      "started_at": "2026-10-24T02:19:35.618097+00:00",
+      "ended_at": "2026-10-24T02:19:35.687263+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00049",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "address",
+        "replace",
+        "10.200.2.254/24",
+        "dev",
+        "s2"
+      ],
+      "started_at": "2026-10-24T02:19:35.687297+00:00",
+      "ended_at": "2026-10-24T02:19:35.750717+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Logical Site A and Site B roles are colocated by component class; the case establishes separation between role classes, not geographic site separation.",
+    "VXLAN uses the reserved experiment LAN within Clemson and public CloudLab control addresses across campuses; logical wire preservation remains an implementation assumption beyond finite packet observations.",
+    "Distinct worker hardware does not establish independently developed software, product approval or classification handling policy.",
+    "Virtual per-component interfaces share worker physical NICs; physical-NIC-per-Red requirements remain outside this placement claim."
+  ]
+}

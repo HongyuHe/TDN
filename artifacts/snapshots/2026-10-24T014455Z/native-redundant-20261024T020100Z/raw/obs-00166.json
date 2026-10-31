@@ -1,0 +1,4 @@
+{
+  "stdout": "src 10.1.1.0/24 dst 10.2.1.0/24 \n\tdir out priority 375423 \n\ttmpl src 10.100.1.2 dst 10.200.1.2\n\t\tproto esp spi 0xcbe657c2 reqid 101 mode tunnel\nsrc 10.2.1.0/24 dst 10.1.1.0/24 \n\tdir fwd priority 375423 \n\ttmpl src 10.200.1.2 dst 10.100.1.2\n\t\tproto esp reqid 101 mode tunnel\nsrc 10.2.1.0/24 dst 10.1.1.0/24 \n\tdir in priority 375423 \n\ttmpl src 10.200.1.2 dst 10.100.1.2\n\t\tproto esp reqid 101 mode tunnel\nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \n",
+  "stderr": ""
+}

@@ -1,0 +1,1623 @@
+{
+  "schema_version": "csfc-native-different-OS/v1",
+  "started_at": "2026-10-24T03:04:39.434950+00:00",
+  "ended_at": "2026-10-24T03:05:00.311354+00:00",
+  "runtime_backend": "native-FRR-OVS-Linux-Outer-with-QEMU-FreeBSD-Inner",
+  "spec": {
+    "version": 2,
+    "name": "native-os-diversity-v3",
+    "image": "twinet-msc:construction-v2",
+    "mtu": 1500,
+    "devices": [
+      {
+        "id": "ND_BLACK",
+        "role": "transport",
+        "interfaces": [
+          {
+            "name": "p11",
+            "address": "172.21.11.2/30",
+            "zone": "black",
+            "mtu": 1500
+          },
+          {
+            "name": "p21",
+            "address": "172.21.21.2/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ]
+      },
+      {
+        "id": "ND_R_A1",
+        "role": "host",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "red",
+            "address": "10.1.1.10/24",
+            "zone": "red",
+            "mtu": 1320
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "0.0.0.0/0",
+            "via": "10.1.1.1"
+          }
+        ]
+      },
+      {
+        "id": "ND_I_A1",
+        "role": "inner",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "red",
+            "address": "10.1.1.1/24",
+            "zone": "red",
+            "mtu": 1320
+          },
+          {
+            "name": "gray",
+            "address": "10.100.1.2/24",
+            "zone": "gray",
+            "mtu": 1400
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "10.2.1.0/24",
+            "via": "10.100.1.1"
+          },
+          {
+            "prefix": "10.200.1.2/32",
+            "via": "10.100.1.1"
+          }
+        ],
+        "tunnel": {
+          "peer": "ND_I_B1",
+          "local": "10.100.1.2",
+          "remote": "10.200.1.2",
+          "local_ts": "10.1.1.0/24",
+          "remote_ts": "10.2.1.0/24",
+          "trust": "inner-s1",
+          "reqid": 101,
+          "inside": "red",
+          "outside": "gray"
+        }
+      },
+      {
+        "id": "ND_G_A1",
+        "role": "switch",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "inner",
+            "zone": "gray",
+            "bridge": true,
+            "mtu": 1400
+          },
+          {
+            "name": "outer",
+            "zone": "gray",
+            "bridge": true,
+            "mtu": 1400
+          }
+        ]
+      },
+      {
+        "id": "ND_O_A1",
+        "role": "outer",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "gray",
+            "address": "10.100.1.1/24",
+            "zone": "gray",
+            "mtu": 1400
+          },
+          {
+            "name": "black",
+            "address": "172.20.11.1/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "10.200.1.2/32",
+            "via": "172.20.11.2"
+          },
+          {
+            "prefix": "172.20.21.1/32",
+            "via": "172.20.11.2"
+          }
+        ],
+        "tunnel": {
+          "peer": "ND_O_B1",
+          "local": "172.20.11.1",
+          "remote": "172.20.21.1",
+          "local_ts": "10.100.1.2/32",
+          "remote_ts": "10.200.1.2/32",
+          "trust": "outer",
+          "reqid": 201,
+          "inside": "gray",
+          "outside": "black"
+        }
+      },
+      {
+        "id": "ND_OF_A1",
+        "role": "firewall",
+        "site": "A",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "inside",
+            "address": "172.20.11.2/30",
+            "zone": "black",
+            "mtu": 1500
+          },
+          {
+            "name": "outside",
+            "address": "172.21.11.1/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ]
+      },
+      {
+        "id": "ND_R_B1",
+        "role": "host",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "red",
+            "address": "10.2.1.10/24",
+            "zone": "red",
+            "mtu": 1320
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "0.0.0.0/0",
+            "via": "10.2.1.1"
+          }
+        ]
+      },
+      {
+        "id": "ND_I_B1",
+        "role": "inner",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "red",
+            "address": "10.2.1.1/24",
+            "zone": "red",
+            "mtu": 1320
+          },
+          {
+            "name": "gray",
+            "address": "10.200.1.2/24",
+            "zone": "gray",
+            "mtu": 1400
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "10.1.1.0/24",
+            "via": "10.200.1.1"
+          },
+          {
+            "prefix": "10.100.1.2/32",
+            "via": "10.200.1.1"
+          }
+        ],
+        "tunnel": {
+          "peer": "ND_I_A1",
+          "local": "10.200.1.2",
+          "remote": "10.100.1.2",
+          "local_ts": "10.2.1.0/24",
+          "remote_ts": "10.1.1.0/24",
+          "trust": "inner-s1",
+          "reqid": 101,
+          "inside": "red",
+          "outside": "gray"
+        }
+      },
+      {
+        "id": "ND_G_B1",
+        "role": "switch",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "inner",
+            "zone": "gray",
+            "bridge": true,
+            "mtu": 1400
+          },
+          {
+            "name": "outer",
+            "zone": "gray",
+            "bridge": true,
+            "mtu": 1400
+          }
+        ]
+      },
+      {
+        "id": "ND_O_B1",
+        "role": "outer",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "gray",
+            "address": "10.200.1.1/24",
+            "zone": "gray",
+            "mtu": 1400
+          },
+          {
+            "name": "black",
+            "address": "172.20.21.1/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ],
+        "routes": [
+          {
+            "prefix": "10.100.1.2/32",
+            "via": "172.20.21.2"
+          },
+          {
+            "prefix": "172.20.11.1/32",
+            "via": "172.20.21.2"
+          }
+        ],
+        "tunnel": {
+          "peer": "ND_O_A1",
+          "local": "172.20.21.1",
+          "remote": "172.20.11.1",
+          "local_ts": "10.200.1.2/32",
+          "remote_ts": "10.100.1.2/32",
+          "trust": "outer",
+          "reqid": 201,
+          "inside": "gray",
+          "outside": "black"
+        }
+      },
+      {
+        "id": "ND_OF_B1",
+        "role": "firewall",
+        "site": "B",
+        "level": "S1",
+        "interfaces": [
+          {
+            "name": "inside",
+            "address": "172.20.21.2/30",
+            "zone": "black",
+            "mtu": 1500
+          },
+          {
+            "name": "outside",
+            "address": "172.21.21.1/30",
+            "zone": "black",
+            "mtu": 1500
+          }
+        ]
+      }
+    ],
+    "links": [
+      {
+        "a": {
+          "device": "ND_R_A1",
+          "interface": "red"
+        },
+        "b": {
+          "device": "ND_I_A1",
+          "interface": "red"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_I_A1",
+          "interface": "gray"
+        },
+        "b": {
+          "device": "ND_G_A1",
+          "interface": "inner"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_O_A1",
+          "interface": "gray"
+        },
+        "b": {
+          "device": "ND_G_A1",
+          "interface": "outer"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_O_A1",
+          "interface": "black"
+        },
+        "b": {
+          "device": "ND_OF_A1",
+          "interface": "inside"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_OF_A1",
+          "interface": "outside"
+        },
+        "b": {
+          "device": "ND_BLACK",
+          "interface": "p11"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_R_B1",
+          "interface": "red"
+        },
+        "b": {
+          "device": "ND_I_B1",
+          "interface": "red"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_I_B1",
+          "interface": "gray"
+        },
+        "b": {
+          "device": "ND_G_B1",
+          "interface": "inner"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_O_B1",
+          "interface": "gray"
+        },
+        "b": {
+          "device": "ND_G_B1",
+          "interface": "outer"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_O_B1",
+          "interface": "black"
+        },
+        "b": {
+          "device": "ND_OF_B1",
+          "interface": "inside"
+        }
+      },
+      {
+        "a": {
+          "device": "ND_OF_B1",
+          "interface": "outside"
+        },
+        "b": {
+          "device": "ND_BLACK",
+          "interface": "p21"
+        }
+      }
+    ],
+    "router_image": "twinet-msc-router:construction-v2",
+    "switch_image": "twinet-msc-switch:construction-v2"
+  },
+  "records": [
+    {
+      "id": "diversity-0000",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "sysctl net.inet.ipsec.debug=0"
+      ],
+      "started_at": "2026-10-24T03:04:39.435221+00:00",
+      "ended_at": "2026-10-24T03:04:39.691957+00:00",
+      "returncode": 0,
+      "stdout": "net.inet.ipsec.debug: 0 -> 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0001",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "sysctl kern.crypto.allow_soft"
+      ],
+      "started_at": "2026-10-24T03:04:39.691995+00:00",
+      "ended_at": "2026-10-24T03:04:39.942923+00:00",
+      "returncode": 0,
+      "stdout": "kern.crypto.allow_soft: 1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0002",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "kldstat"
+      ],
+      "started_at": "2026-10-24T03:04:39.942963+00:00",
+      "ended_at": "2026-10-24T03:04:40.195200+00:00",
+      "returncode": 0,
+      "stdout": "Id Refs Address                Size Name\n 1    8 0xffffffff80200000  1f44510 kernel\n 2    1 0xffffffff82818000     3220 intpm.ko\n 3    1 0xffffffff8281c000     2178 smbus.ko\n 4    1 0xffffffff8281f000    109a8 ipsec.ko\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0003",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "started_at": "2026-10-24T03:04:40.195256+00:00",
+      "ended_at": "2026-10-24T03:04:40.485127+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0004",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-algs"
+      ],
+      "started_at": "2026-10-24T03:04:40.485189+00:00",
+      "ended_at": "2026-10-24T03:04:40.758333+00:00",
+      "returncode": 0,
+      "stdout": "encryption:\n  AES_ECB[botan]\n  AES_CBC[botan]\n  AES_CFB[botan]\nintegrity:\n  HMAC_SHA1_96[botan]\n  HMAC_SHA1_128[botan]\n  HMAC_SHA1_160[botan]\n  HMAC_SHA2_256_128[botan]\n  HMAC_SHA2_256_256[botan]\n  HMAC_SHA2_384_192[botan]\n  HMAC_SHA2_384_384[botan]\n  HMAC_SHA2_512_256[botan]\n  HMAC_SHA2_512_512[botan]\naead:\n  AES_GCM_16[botan]\n  AES_GCM_12[botan]\n  AES_GCM_8[botan]\n  AES_CCM_16[botan]\n  AES_CCM_12[botan]\n  AES_CCM_8[botan]\n  CHACHA20_POLY1305[botan]\nhasher:\n  HASH_SHA1[botan]\n  HASH_MD5[botan]\n  HASH_SHA2_224[botan]\n  HASH_SHA2_256[botan]\n  HASH_SHA2_384[botan]\n  HASH_SHA2_512[botan]\n  HASH_SHA3_224[botan]\n  HASH_SHA3_256[botan]\n  HASH_SHA3_384[botan]\n  HASH_SHA3_512[botan]\n  HASH_IDENTITY[botan]\nprf:\n  PRF_HMAC_SHA1[botan]\n  PRF_HMAC_SHA2_256[botan]\n  PRF_HMAC_SHA2_384[botan]\n  PRF_HMAC_SHA2_512[botan]\nxof:\nkdf:\n  KDF_PRF[botan]\n  KDF_PRF_PLUS[botan]\ndrbg:\nke:\n  MODP_3072[botan]\n  MODP_4096[botan]\n  MODP_6144[botan]\n  MODP_8192[botan]\n  MODP_2048[botan]\n  MODP_2048_224[botan]\n  MODP_2048_256[botan]\n  MODP_1536[botan]\n  MODP_1024[botan]\n  MODP_1024_160[botan]\n  MODP_768[botan]\n  MODP_CUSTOM[botan]\n  ECP_256[botan]\n  ECP_384[botan]\n  ECP_521[botan]\n  ECP_256_BP[botan]\n  ECP_384_BP[botan]\n  ECP_512_BP[botan]\n  CURVE_25519[botan]\n  ML_KEM_512[botan]\n  ML_KEM_768[botan]\n  ML_KEM_1024[botan]\nrng:\n  RNG_WEAK[botan]\n  RNG_STRONG[random]\n  RNG_TRUE[random]\nnonce-gen:\n  NONCE_GEN[nonce]\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0005",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --stats"
+      ],
+      "started_at": "2026-10-24T03:04:40.758413+00:00",
+      "ended_at": "2026-10-24T03:04:41.034841+00:00",
+      "returncode": 0,
+      "stdout": "uptime: 14 minutes, since Oct 24 02:50:28 2026\nworker threads: 16 total, 11 idle, working: 4/0/1/0\njob queues: 0/0/0/0\njobs scheduled: 5\nIKE_SAs: 1 total, 0 half-open\nloaded plugins: charon random nonce x509 revocation constraints pubkey pkcs1 pem botan pkcs8 kernel-pfkey kernel-pfroute socket-default vici counters\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0006",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "uname -a"
+      ],
+      "started_at": "2026-10-24T03:04:41.034900+00:00",
+      "ended_at": "2026-10-24T03:04:41.284886+00:00",
+      "returncode": 0,
+      "stdout": "FreeBSD evidence-freebsd-v2-0 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0007",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ifconfig -a"
+      ],
+      "started_at": "2026-10-24T03:04:41.284943+00:00",
+      "ended_at": "2026-10-24T03:04:41.541624+00:00",
+      "returncode": 0,
+      "stdout": "vtnet0: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:00:10\n\tinet 10.0.2.15 netmask 0xffffff00 broadcast 10.0.2.255\n\tinet6 fe80::5054:76ff:fe03:10%vtnet0 prefixlen 64 scopeid 0x1\n\tinet6 fec0::5054:76ff:fe03:10 prefixlen 64 autoconf pltime 14400 vltime 86400\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet1: flags=1008802<BROADCAST,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:00:11\n\tinet 172.28.90.1 netmask 0xfffffffc broadcast 172.28.90.3\n\tinet6 fe80::5054:76ff:fe03:11%vtnet1 prefixlen 64 tentative scopeid 0x2\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nlo0: flags=1008049<UP,LOOPBACK,RUNNING,MULTICAST,LOWER_UP> metric 0 mtu 16384\n\toptions=680003<RXCSUM,TXCSUM,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6>\n\tinet 127.0.0.1 netmask 0xff000000\n\tinet6 ::1 prefixlen 128\n\tinet6 fe80::1%lo0 prefixlen 64 scopeid 0x3\n\tgroups: lo\n\tnd6 options=21<PERFORMNUD,AUTO_LINKLOCAL>\nvtnet2: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1320\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:6f:60:3f:1b:b7\n\tinet 10.1.1.1 netmask 0xffffff00 broadcast 10.1.1.255\n\tinet6 fe80::6f:60ff:fe3f:1bb7%vtnet2 prefixlen 64 scopeid 0x4\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet3: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1400\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:a6:fb:a2:21:ca\n\tinet 10.100.1.2 netmask 0xffffff00 broadcast 10.100.1.255\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=29<PERFORMNUD,IFDISABLED,AUTO_LINKLOCAL>\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0008",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T03:04:41.541686+00:00",
+      "ended_at": "2026-10-24T03:04:41.791973+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        link#4             U            vtnet2\n10.1.1.1           link#3             UHS             lo0\n10.2.1.0/24        10.100.1.1         UGS          vtnet3\n10.100.1.0/24      link#5             U            vtnet3\n10.100.1.2         link#3             UHS             lo0\n10.200.1.2         10.100.1.1         UGHS         vtnet3\n127.0.0.1          link#3             UH              lo0\n172.28.90.1        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:10%lo0       link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:11%lo0       link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::6f:60ff:fe3f:1bb7%lo0       link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:10           link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0009",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "ldd /usr/local/lib/ipsec/plugins/libstrongswan-botan.so"
+      ],
+      "started_at": "2026-10-24T03:04:41.792029+00:00",
+      "ended_at": "2026-10-24T03:04:42.041457+00:00",
+      "returncode": 0,
+      "stdout": "/usr/local/lib/ipsec/plugins/libstrongswan-botan.so:\n\tlibbotan-3.so.13 => /usr/local/lib/libbotan-3.so.13 (0x2deb63c00000)\n\tlibthr.so.3 => /lib/libthr.so.3 (0x2deb603d2000)\n\tlibc.so.7 => /lib/libc.so.7 (0x2deb5f3c0000)\n\tlibbz2.so.4 => /usr/lib/libbz2.so.4 (0x2deb62157000)\n\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x2deb6301c000)\n\tlibz.so.6 => /lib/libz.so.6 (0x2deb65624000)\n\tlibc++.so.1 => /lib/libc++.so.1 (0x2deb64e44000)\n\tlibcxxrt.so.1 => /lib/libcxxrt.so.1 (0x2deb665d5000)\n\tlibm.so.5 => /lib/libm.so.5 (0x2deb676a4000)\n\tlibgcc_s.so.1 => /lib/libgcc_s.so.1 (0x2deb6753f000)\n\tlibmd.so.6 => /lib/libmd.so.6 (0x2deb68193000)\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0010",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "pkg info botan3"
+      ],
+      "started_at": "2026-10-24T03:04:42.041525+00:00",
+      "ended_at": "2026-10-24T03:04:42.312165+00:00",
+      "returncode": 0,
+      "stdout": "botan3-3.13.0\nName           : botan3\nVersion        : 3.13.0\nInstalled on   : Sat Oct 24 02:45:59 2026 UTC\nOrigin         : security/botan3\nArchitecture   : FreeBSD:14:amd64\nPrefix         : /usr/local\nCategories     : security\nLicenses       : BSD2CLAUSE\nMaintainer     : fluffy@FreeBSD.org\nWWW            : https://botan.randombit.net/\nComment        : Portable, easy to use and efficient C++ crypto library\nOptions        :\n\tDOCS           : on\n\tLLVM_FROM_PORTS: off\n\tMANPAGES       : on\n\tPYTHON         : off\n\tSQLITE3        : off\nShared Libs required:\n\tlibbz2.so.4\n\tlibc++.so.1\n\tlibc.so.7\n\tlibcxxrt.so.1\n\tlibgcc_s.so.1\n\tliblzma.so.5\n\tlibm.so.5\n\tlibthr.so.3\n\tlibz.so.6\nShared Libs provided:\n\tlibbotan-3.so.13\nAnnotations    :\n\tFreeBSD_version: 1404000\n\tbuild_timestamp: 2026-10-15T07:58:34+0000\n\tbuilt_by       : poudriere-git-3.4.8-3-gd92fb7c0\n\tcpe            : cpe:2.3:a:botan_project:botan:3.13.0:::::freebsd14:x64\n\tport_checkout_unclean: no\n\tport_git_hash  : 46cf3d9696491c61d91ecd22db11c7f7c1e62c24\n\tports_top_checkout_unclean: no\n\tports_top_git_hash: e0cbb24c950df638f2783fa49e73aea1112a7654\n\trepo_type      : binary\n\trepository     : FreeBSD\nFlat size      : 66.4MiB\nDescription    :\nBotan is a crypto library written in C++. It provides a variety of\ncryptographic algorithms, including common ones such as AES, MD5, SHA,\nHMAC, RSA, Diffie-Hellman, DSA, and ECDSA, as well as many others that\nare more obscure or specialized. It also offers X.509v3 certificates\nand CRLs, and PKCS #10 certificate requests. A message processing\nsystem that uses a filter/pipeline metaphor allows for many common\ncryptographic tasks to be completed with just a few lines of code.\nAssembly optimizations for common CPUs, including x86, x86-64, and\nPowerPC, offers further speedups for critical tasks such as SHA-1\nhashing and multiple precision integer operations.\n\nBotan is licensed under the same permissive terms as FreeBSD itself.\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0011",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "cat /usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:04:42.312229+00:00",
+      "ended_at": "2026-10-24T03:04:42.561283+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 10.100.1.2\n  remote_addrs = 10.200.1.2\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_I_A1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_I_B1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.1.1.0/24\n    remote_ts = 10.2.1.0/24\n    mode = tunnel\n    reqid = 101\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0012",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "sysctl net.inet.ipsec.debug=0"
+      ],
+      "started_at": "2026-10-24T03:04:42.561342+00:00",
+      "ended_at": "2026-10-24T03:04:42.817382+00:00",
+      "returncode": 0,
+      "stdout": "net.inet.ipsec.debug: 0 -> 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0013",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "sysctl kern.crypto.allow_soft"
+      ],
+      "started_at": "2026-10-24T03:04:42.817444+00:00",
+      "ended_at": "2026-10-24T03:04:43.073351+00:00",
+      "returncode": 0,
+      "stdout": "kern.crypto.allow_soft: 1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0014",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "kldstat"
+      ],
+      "started_at": "2026-10-24T03:04:43.073410+00:00",
+      "ended_at": "2026-10-24T03:04:43.328499+00:00",
+      "returncode": 0,
+      "stdout": "Id Refs Address                Size Name\n 1    8 0xffffffff80200000  1f44510 kernel\n 2    1 0xffffffff82818000     3220 intpm.ko\n 3    1 0xffffffff8281c000     2178 smbus.ko\n 4    1 0xffffffff8281f000    109a8 ipsec.ko\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0015",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --load-all"
+      ],
+      "started_at": "2026-10-24T03:04:43.328558+00:00",
+      "ended_at": "2026-10-24T03:04:43.619827+00:00",
+      "returncode": 0,
+      "stdout": "loaded certificate from '/usr/local/etc/swanctl/x509/cert.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509ca/ca.pem'\nloaded certificate from '/usr/local/etc/swanctl/x509crl/ca.crl.pem'\nloaded ECDSA key from '/usr/local/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0016",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-algs"
+      ],
+      "started_at": "2026-10-24T03:04:43.619889+00:00",
+      "ended_at": "2026-10-24T03:04:43.894799+00:00",
+      "returncode": 0,
+      "stdout": "encryption:\n  AES_ECB[botan]\n  AES_CBC[botan]\n  AES_CFB[botan]\nintegrity:\n  HMAC_SHA1_96[botan]\n  HMAC_SHA1_128[botan]\n  HMAC_SHA1_160[botan]\n  HMAC_SHA2_256_128[botan]\n  HMAC_SHA2_256_256[botan]\n  HMAC_SHA2_384_192[botan]\n  HMAC_SHA2_384_384[botan]\n  HMAC_SHA2_512_256[botan]\n  HMAC_SHA2_512_512[botan]\naead:\n  AES_GCM_16[botan]\n  AES_GCM_12[botan]\n  AES_GCM_8[botan]\n  AES_CCM_16[botan]\n  AES_CCM_12[botan]\n  AES_CCM_8[botan]\n  CHACHA20_POLY1305[botan]\nhasher:\n  HASH_SHA1[botan]\n  HASH_MD5[botan]\n  HASH_SHA2_224[botan]\n  HASH_SHA2_256[botan]\n  HASH_SHA2_384[botan]\n  HASH_SHA2_512[botan]\n  HASH_SHA3_224[botan]\n  HASH_SHA3_256[botan]\n  HASH_SHA3_384[botan]\n  HASH_SHA3_512[botan]\n  HASH_IDENTITY[botan]\nprf:\n  PRF_HMAC_SHA1[botan]\n  PRF_HMAC_SHA2_256[botan]\n  PRF_HMAC_SHA2_384[botan]\n  PRF_HMAC_SHA2_512[botan]\nxof:\nkdf:\n  KDF_PRF[botan]\n  KDF_PRF_PLUS[botan]\ndrbg:\nke:\n  MODP_3072[botan]\n  MODP_4096[botan]\n  MODP_6144[botan]\n  MODP_8192[botan]\n  MODP_2048[botan]\n  MODP_2048_224[botan]\n  MODP_2048_256[botan]\n  MODP_1536[botan]\n  MODP_1024[botan]\n  MODP_1024_160[botan]\n  MODP_768[botan]\n  MODP_CUSTOM[botan]\n  ECP_256[botan]\n  ECP_384[botan]\n  ECP_521[botan]\n  ECP_256_BP[botan]\n  ECP_384_BP[botan]\n  ECP_512_BP[botan]\n  CURVE_25519[botan]\n  ML_KEM_512[botan]\n  ML_KEM_768[botan]\n  ML_KEM_1024[botan]\nrng:\n  RNG_WEAK[botan]\n  RNG_STRONG[random]\n  RNG_TRUE[random]\nnonce-gen:\n  NONCE_GEN[nonce]\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0017",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --stats"
+      ],
+      "started_at": "2026-10-24T03:04:43.894865+00:00",
+      "ended_at": "2026-10-24T03:04:44.171951+00:00",
+      "returncode": 0,
+      "stdout": "uptime: 10 minutes, since Oct 24 02:54:42 2026\nworker threads: 16 total, 11 idle, working: 4/0/1/0\njob queues: 0/0/0/0\njobs scheduled: 12\nIKE_SAs: 1 total, 0 half-open\nloaded plugins: charon random nonce x509 revocation constraints pubkey pkcs1 pem botan pkcs8 kernel-pfkey kernel-pfroute socket-default vici counters\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0018",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "uname -a"
+      ],
+      "started_at": "2026-10-24T03:04:44.172015+00:00",
+      "ended_at": "2026-10-24T03:04:44.427674+00:00",
+      "returncode": 0,
+      "stdout": "FreeBSD evidence-freebsd-v2-1 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0019",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ifconfig -a"
+      ],
+      "started_at": "2026-10-24T03:04:44.427733+00:00",
+      "ended_at": "2026-10-24T03:04:44.687231+00:00",
+      "returncode": 0,
+      "stdout": "vtnet0: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:10:10\n\tinet 10.0.2.15 netmask 0xffffff00 broadcast 10.0.2.255\n\tinet6 fe80::5054:76ff:fe03:1010%vtnet0 prefixlen 64 scopeid 0x1\n\tinet6 fec0::5054:76ff:fe03:1010 prefixlen 64 autoconf pltime 14400 vltime 86400\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet1: flags=1008802<BROADCAST,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:10:11\n\tinet 172.28.90.2 netmask 0xfffffffc broadcast 172.28.90.3\n\tinet6 fe80::5054:76ff:fe03:1011%vtnet1 prefixlen 64 tentative scopeid 0x2\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nlo0: flags=1008049<UP,LOOPBACK,RUNNING,MULTICAST,LOWER_UP> metric 0 mtu 16384\n\toptions=680003<RXCSUM,TXCSUM,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6>\n\tinet 127.0.0.1 netmask 0xff000000\n\tinet6 ::1 prefixlen 128\n\tinet6 fe80::1%lo0 prefixlen 64 scopeid 0x3\n\tgroups: lo\n\tnd6 options=21<PERFORMNUD,AUTO_LINKLOCAL>\nvtnet2: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1320\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:2c:94:19:04:97\n\tinet 10.2.1.1 netmask 0xffffff00 broadcast 10.2.1.255\n\tinet6 fe80::2c:94ff:fe19:497%vtnet2 prefixlen 64 scopeid 0x4\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet3: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1400\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 02:ef:92:ee:03:15\n\tinet 10.200.1.2 netmask 0xffffff00 broadcast 10.200.1.255\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=29<PERFORMNUD,IFDISABLED,AUTO_LINKLOCAL>\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0020",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T03:04:44.687291+00:00",
+      "ended_at": "2026-10-24T03:04:44.947191+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        10.200.1.1         UGS          vtnet3\n10.2.1.0/24        link#4             U            vtnet2\n10.2.1.1           link#3             UHS             lo0\n10.100.1.2         10.200.1.1         UGHS         vtnet3\n10.200.1.0/24      link#5             U            vtnet3\n10.200.1.2         link#3             UHS             lo0\n127.0.0.1          link#3             UH              lo0\n172.28.90.2        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:1010%lo0     link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:1011%lo0     link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::2c:94ff:fe19:497%lo0        link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:1010         link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0021",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "ldd /usr/local/lib/ipsec/plugins/libstrongswan-botan.so"
+      ],
+      "started_at": "2026-10-24T03:04:44.947258+00:00",
+      "ended_at": "2026-10-24T03:04:45.209397+00:00",
+      "returncode": 0,
+      "stdout": "/usr/local/lib/ipsec/plugins/libstrongswan-botan.so:\n\tlibbotan-3.so.13 => /usr/local/lib/libbotan-3.so.13 (0x2c275d000000)\n\tlibthr.so.3 => /lib/libthr.so.3 (0x2c275a719000)\n\tlibc.so.7 => /lib/libc.so.7 (0x2c275941c000)\n\tlibbz2.so.4 => /usr/lib/libbz2.so.4 (0x2c275b83c000)\n\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x2c275c7aa000)\n\tlibz.so.6 => /lib/libz.so.6 (0x2c275efed000)\n\tlibc++.so.1 => /lib/libc++.so.1 (0x2c275e875000)\n\tlibcxxrt.so.1 => /lib/libcxxrt.so.1 (0x2c276044b000)\n\tlibm.so.5 => /lib/libm.so.5 (0x2c275f975000)\n\tlibgcc_s.so.1 => /lib/libgcc_s.so.1 (0x2c27610c9000)\n\tlibmd.so.6 => /lib/libmd.so.6 (0x2c2761c14000)\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0022",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "pkg info botan3"
+      ],
+      "started_at": "2026-10-24T03:04:45.209456+00:00",
+      "ended_at": "2026-10-24T03:04:45.482308+00:00",
+      "returncode": 0,
+      "stdout": "botan3-3.13.0\nName           : botan3\nVersion        : 3.13.0\nInstalled on   : Sat Oct 24 02:45:58 2026 UTC\nOrigin         : security/botan3\nArchitecture   : FreeBSD:14:amd64\nPrefix         : /usr/local\nCategories     : security\nLicenses       : BSD2CLAUSE\nMaintainer     : fluffy@FreeBSD.org\nWWW            : https://botan.randombit.net/\nComment        : Portable, easy to use and efficient C++ crypto library\nOptions        :\n\tDOCS           : on\n\tLLVM_FROM_PORTS: off\n\tMANPAGES       : on\n\tPYTHON         : off\n\tSQLITE3        : off\nShared Libs required:\n\tlibbz2.so.4\n\tlibc++.so.1\n\tlibc.so.7\n\tlibcxxrt.so.1\n\tlibgcc_s.so.1\n\tliblzma.so.5\n\tlibm.so.5\n\tlibthr.so.3\n\tlibz.so.6\nShared Libs provided:\n\tlibbotan-3.so.13\nAnnotations    :\n\tFreeBSD_version: 1404000\n\tbuild_timestamp: 2026-10-15T07:58:34+0000\n\tbuilt_by       : poudriere-git-3.4.8-3-gd92fb7c0\n\tcpe            : cpe:2.3:a:botan_project:botan:3.13.0:::::freebsd14:x64\n\tport_checkout_unclean: no\n\tport_git_hash  : 46cf3d9696491c61d91ecd22db11c7f7c1e62c24\n\tports_top_checkout_unclean: no\n\tports_top_git_hash: e0cbb24c950df638f2783fa49e73aea1112a7654\n\trepo_type      : binary\n\trepository     : FreeBSD\nFlat size      : 66.4MiB\nDescription    :\nBotan is a crypto library written in C++. It provides a variety of\ncryptographic algorithms, including common ones such as AES, MD5, SHA,\nHMAC, RSA, Diffie-Hellman, DSA, and ECDSA, as well as many others that\nare more obscure or specialized. It also offers X.509v3 certificates\nand CRLs, and PKCS #10 certificate requests. A message processing\nsystem that uses a filter/pipeline metaphor allows for many common\ncryptographic tasks to be completed with just a few lines of code.\nAssembly optimizations for common CPUs, including x86, x86-64, and\nPowerPC, offers further speedups for critical tasks such as SHA-1\nhashing and multiple precision integer operations.\n\nBotan is licensed under the same permissive terms as FreeBSD itself.\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0023",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "cat /usr/local/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T03:04:45.482376+00:00",
+      "ended_at": "2026-10-24T03:04:45.740287+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 10.200.1.2\n  remote_addrs = 10.100.1.2\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = ND_I_B1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = ND_I_A1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.2.1.0/24\n    remote_ts = 10.1.1.0/24\n    mode = tunnel\n    reqid = 101\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "phase-before",
+      "command": [
+        "phase",
+        "before"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0025",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:45.740340+00:00",
+      "ended_at": "2026-10-24T03:04:45.997213+00:00",
+      "returncode": 0,
+      "stdout": "msc: #5, ESTABLISHED, IKEv2, 86dc1355175fc99a_i* 4ae8a5e85ee6d2dd_r\n  local  'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  remote 'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 343s ago, reauth in 10417s\n  protected: #6, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 343s ago, rekeying in 2350s, expires in 3257s\n    in  c2ebb2d6,    504 bytes,     6 packets,   339s ago\n    out c6e70ace,    840 bytes,     6 packets,   339s ago\n    local  10.1.1.0/24\n    remote 10.2.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0026",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -s -p esp"
+      ],
+      "started_at": "2026-10-24T03:04:45.997277+00:00",
+      "ended_at": "2026-10-24T03:04:46.249020+00:00",
+      "returncode": 0,
+      "stdout": "esp:\n\t0 packets shorter than header shows\n\t0 packets dropped; protocol family not supported\n\t0 packets dropped; no TDB\n\t0 packets dropped; bad KCR\n\t0 packets dropped; queue full\n\t0 packets dropped; no transform\n\t0 packets dropped; bad ilen\n\t0 replay counter wraps\n\t0 packets dropped; bad encryption detected\n\t0 packets dropped; bad authentication detected\n\t0 possible replay packets detected\n\t23 packets in\n\t23 packets out\n\t0 packets dropped; invalid TDB\n\t2024 bytes in\n\t1932 bytes out\n\t0 packets dropped; larger than IP_MAXPACKET\n\t0 packets blocked due to policy\n\t0 crypto processing failures\n\t0 tunnel sanity check failures\n\tESP output histogram:\n\t\taes-gcm-16: 46\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0027",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T03:04:46.249089+00:00",
+      "ended_at": "2026-10-24T03:04:46.502910+00:00",
+      "returncode": 0,
+      "stdout": "10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 02:59:03 2026  lastused: Oct 24 02:59:07 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=5 seq=1 pid=35364 scope=global \n\trefcnt=1\n10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 02:59:03 2026  lastused: Oct 24 02:59:07 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=6 seq=0 pid=35364 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0028",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T03:04:46.502970+00:00",
+      "ended_at": "2026-10-24T03:04:46.751469+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        link#4             U            vtnet2\n10.1.1.1           link#3             UHS             lo0\n10.2.1.0/24        10.100.1.1         UGS          vtnet3\n10.100.1.0/24      link#5             U            vtnet3\n10.100.1.2         link#3             UHS             lo0\n10.200.1.2         10.100.1.1         UGHS         vtnet3\n127.0.0.1          link#3             UH              lo0\n172.28.90.1        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:10%lo0       link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:11%lo0       link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::6f:60ff:fe3f:1bb7%lo0       link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:10           link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0029",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:46.751533+00:00",
+      "ended_at": "2026-10-24T03:04:47.017215+00:00",
+      "returncode": 0,
+      "stdout": "msc: #5, ESTABLISHED, IKEv2, 86dc1355175fc99a_i 4ae8a5e85ee6d2dd_r*\n  local  'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  remote 'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 344s ago, reauth in 9913s\n  protected: #7, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 344s ago, rekeying in 2309s, expires in 3256s\n    in  c6e70ace,    504 bytes,     6 packets,   339s ago\n    out c2ebb2d6,    840 bytes,     6 packets,   339s ago\n    local  10.2.1.0/24\n    remote 10.1.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0030",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -s -p esp"
+      ],
+      "started_at": "2026-10-24T03:04:47.017294+00:00",
+      "ended_at": "2026-10-24T03:04:47.274736+00:00",
+      "returncode": 0,
+      "stdout": "esp:\n\t0 packets shorter than header shows\n\t0 packets dropped; protocol family not supported\n\t0 packets dropped; no TDB\n\t0 packets dropped; bad KCR\n\t0 packets dropped; queue full\n\t0 packets dropped; no transform\n\t0 packets dropped; bad ilen\n\t0 replay counter wraps\n\t0 packets dropped; bad encryption detected\n\t0 packets dropped; bad authentication detected\n\t0 possible replay packets detected\n\t23 packets in\n\t23 packets out\n\t0 packets dropped; invalid TDB\n\t2024 bytes in\n\t1932 bytes out\n\t0 packets dropped; larger than IP_MAXPACKET\n\t0 packets blocked due to policy\n\t0 crypto processing failures\n\t0 tunnel sanity check failures\n\tESP output histogram:\n\t\taes-gcm-16: 46\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0031",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T03:04:47.274819+00:00",
+      "ended_at": "2026-10-24T03:04:47.525350+00:00",
+      "returncode": 0,
+      "stdout": "10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 02:59:03 2026  lastused: Oct 24 02:59:07 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=7 seq=1 pid=35350 scope=global \n\trefcnt=1\n10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 02:59:03 2026  lastused: Oct 24 02:59:07 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=8 seq=0 pid=35350 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0032",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T03:04:47.525413+00:00",
+      "ended_at": "2026-10-24T03:04:47.783604+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        10.200.1.1         UGS          vtnet3\n10.2.1.0/24        link#4             U            vtnet2\n10.2.1.1           link#3             UHS             lo0\n10.100.1.2         10.200.1.1         UGHS         vtnet3\n10.200.1.0/24      link#5             U            vtnet3\n10.200.1.2         link#3             UHS             lo0\n127.0.0.1          link#3             UH              lo0\n172.28.90.2        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:1010%lo0     link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:1011%lo0     link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::2c:94ff:fe19:497%lo0        link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:1010         link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0033",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:47.783639+00:00",
+      "ended_at": "2026-10-24T03:04:47.868926+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, b925185eeb6fd139_i* e1b2b3c45f1f449b_r\n  local  'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 1387s ago, reauth in 8915s\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 1387s ago, rekeying in 1412s, expires in 2213s\n    in  cdb66d8f,  17305 bytes,   143 packets,     4s ago\n    out c123837a,  19286 bytes,   137 packets,     4s ago\n    local  10.100.1.2/32\n    remote 10.200.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0034",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T03:04:47.868956+00:00",
+      "ended_at": "2026-10-24T03:04:47.962294+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc123837a(3240330106) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 03:04:43\n\tanti-replay context: seq 0x0, oseq 0x89, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2845(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  19286(bytes), 137(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcdb66d8f(3451284879) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 03:04:43\n\tanti-replay context: seq 0x8f, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2799(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  17305(bytes), 143(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0035",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:47.962333+00:00",
+      "ended_at": "2026-10-24T03:04:48.046810+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, b925185eeb6fd139_i e1b2b3c45f1f449b_r*\n  local  'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 1388s ago, reauth in 8914s\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 1388s ago, rekeying in 1411s, expires in 2212s\n    in  c123837a,  19286 bytes,   137 packets,     5s ago\n    out cdb66d8f,  17305 bytes,   143 packets,     5s ago\n    local  10.200.1.2/32\n    remote 10.100.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0036",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T03:04:48.046848+00:00",
+      "ended_at": "2026-10-24T03:04:48.127411+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcdb66d8f(3451284879) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 03:04:43\n\tanti-replay context: seq 0x0, oseq 0x8f, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2845(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  17305(bytes), 143(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc123837a(3240330106) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 03:04:43\n\tanti-replay context: seq 0x89, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2799(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  19286(bytes), 137(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0037",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_A1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.1.10"
+      ],
+      "started_at": "2026-10-24T03:04:48.127452+00:00",
+      "ended_at": "2026-10-24T03:04:50.218140+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.1.10 (10.2.1.10) 56(84) bytes of data.\n64 bytes from 10.2.1.10: icmp_seq=1 ttl=62 time=1.90 ms\n64 bytes from 10.2.1.10: icmp_seq=2 ttl=62 time=0.959 ms\n64 bytes from 10.2.1.10: icmp_seq=3 ttl=62 time=1.11 ms\n\n--- 10.2.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2003ms\nrtt min/avg/max/mdev = 0.959/1.323/1.903/0.414 ms\n",
+      "stderr": "",
+      "probe": "cross-OS-nested-data",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "diversity-0038",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_B1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.1.1.10"
+      ],
+      "started_at": "2026-10-24T03:04:50.218189+00:00",
+      "ended_at": "2026-10-24T03:04:52.349044+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.1.1.10 (10.1.1.10) 56(84) bytes of data.\n64 bytes from 10.1.1.10: icmp_seq=1 ttl=62 time=0.960 ms\n64 bytes from 10.1.1.10: icmp_seq=2 ttl=62 time=1.44 ms\n64 bytes from 10.1.1.10: icmp_seq=3 ttl=62 time=1.12 ms\n\n--- 10.1.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2056ms\nrtt min/avg/max/mdev = 0.960/1.175/1.444/0.201 ms\n",
+      "stderr": "",
+      "probe": "cross-OS-nested-data",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "phase-after",
+      "command": [
+        "phase",
+        "after"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0040",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:52.349126+00:00",
+      "ended_at": "2026-10-24T03:04:52.643130+00:00",
+      "returncode": 0,
+      "stdout": "msc: #5, ESTABLISHED, IKEv2, 86dc1355175fc99a_i* 4ae8a5e85ee6d2dd_r\n  local  'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  remote 'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 349s ago, reauth in 10411s\n  protected: #6, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 349s ago, rekeying in 2344s, expires in 3251s\n    in  c2ebb2d6,   1008 bytes,    12 packets,     0s ago\n    out c6e70ace,   1680 bytes,    12 packets,     0s ago\n    local  10.1.1.0/24\n    remote 10.2.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0041",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -s -p esp"
+      ],
+      "started_at": "2026-10-24T03:04:52.643208+00:00",
+      "ended_at": "2026-10-24T03:04:52.891076+00:00",
+      "returncode": 0,
+      "stdout": "esp:\n\t0 packets shorter than header shows\n\t0 packets dropped; protocol family not supported\n\t0 packets dropped; no TDB\n\t0 packets dropped; bad KCR\n\t0 packets dropped; queue full\n\t0 packets dropped; no transform\n\t0 packets dropped; bad ilen\n\t0 replay counter wraps\n\t0 packets dropped; bad encryption detected\n\t0 packets dropped; bad authentication detected\n\t0 possible replay packets detected\n\t29 packets in\n\t29 packets out\n\t0 packets dropped; invalid TDB\n\t2552 bytes in\n\t2436 bytes out\n\t0 packets dropped; larger than IP_MAXPACKET\n\t0 packets blocked due to policy\n\t0 crypto processing failures\n\t0 tunnel sanity check failures\n\tESP output histogram:\n\t\taes-gcm-16: 58\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0042",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T03:04:52.891127+00:00",
+      "ended_at": "2026-10-24T03:04:53.138953+00:00",
+      "returncode": 0,
+      "stdout": "10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 02:59:03 2026  lastused: Oct 24 03:04:52 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=5 seq=1 pid=35380 scope=global \n\trefcnt=1\n10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 02:59:03 2026  lastused: Oct 24 03:04:52 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=6 seq=0 pid=35380 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0043",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T03:04:53.139022+00:00",
+      "ended_at": "2026-10-24T03:04:53.393875+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        link#4             U            vtnet2\n10.1.1.1           link#3             UHS             lo0\n10.2.1.0/24        10.100.1.1         UGS          vtnet3\n10.100.1.0/24      link#5             U            vtnet3\n10.100.1.2         link#3             UHS             lo0\n10.200.1.2         10.100.1.1         UGHS         vtnet3\n127.0.0.1          link#3             UH              lo0\n172.28.90.1        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:10%lo0       link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:11%lo0       link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::6f:60ff:fe3f:1bb7%lo0       link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:10           link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0044",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:53.393933+00:00",
+      "ended_at": "2026-10-24T03:04:53.672432+00:00",
+      "returncode": 0,
+      "stdout": "msc: #5, ESTABLISHED, IKEv2, 86dc1355175fc99a_i 4ae8a5e85ee6d2dd_r*\n  local  'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  remote 'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 350s ago, reauth in 9907s\n  protected: #7, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 350s ago, rekeying in 2303s, expires in 3250s\n    in  c6e70ace,   1008 bytes,    12 packets,     1s ago\n    out c2ebb2d6,   1680 bytes,    12 packets,     1s ago\n    local  10.2.1.0/24\n    remote 10.1.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0045",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -s -p esp"
+      ],
+      "started_at": "2026-10-24T03:04:53.672494+00:00",
+      "ended_at": "2026-10-24T03:04:53.927185+00:00",
+      "returncode": 0,
+      "stdout": "esp:\n\t0 packets shorter than header shows\n\t0 packets dropped; protocol family not supported\n\t0 packets dropped; no TDB\n\t0 packets dropped; bad KCR\n\t0 packets dropped; queue full\n\t0 packets dropped; no transform\n\t0 packets dropped; bad ilen\n\t0 replay counter wraps\n\t0 packets dropped; bad encryption detected\n\t0 packets dropped; bad authentication detected\n\t0 possible replay packets detected\n\t29 packets in\n\t29 packets out\n\t0 packets dropped; invalid TDB\n\t2552 bytes in\n\t2436 bytes out\n\t0 packets dropped; larger than IP_MAXPACKET\n\t0 packets blocked due to policy\n\t0 crypto processing failures\n\t0 tunnel sanity check failures\n\tESP output histogram:\n\t\taes-gcm-16: 58\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0046",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "setkey -DP"
+      ],
+      "started_at": "2026-10-24T03:04:53.927246+00:00",
+      "ended_at": "2026-10-24T03:04:54.185708+00:00",
+      "returncode": 0,
+      "stdout": "10.1.1.0/24[any] 10.2.1.0/24[any] any\n\tin ipsec\n\tesp/tunnel/10.100.1.2-10.200.1.2/unique:101\n\tcreated: Oct 24 02:59:03 2026  lastused: Oct 24 03:04:52 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=7 seq=1 pid=35366 scope=global \n\trefcnt=1\n10.2.1.0/24[any] 10.1.1.0/24[any] any\n\tout ipsec\n\tesp/tunnel/10.200.1.2-10.100.1.2/unique:101\n\tcreated: Oct 24 02:59:03 2026  lastused: Oct 24 03:04:52 2026\n\tlifetime: 9223372036854775807(s) validtime: 0(s)\n\tspid=8 seq=0 pid=35366 scope=global \n\trefcnt=1\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0047",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "netstat -rn"
+      ],
+      "started_at": "2026-10-24T03:04:54.185790+00:00",
+      "ended_at": "2026-10-24T03:04:54.448452+00:00",
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n10.1.1.0/24        10.200.1.1         UGS          vtnet3\n10.2.1.0/24        link#4             U            vtnet2\n10.2.1.1           link#3             UHS             lo0\n10.100.1.2         10.200.1.1         UGHS         vtnet3\n10.200.1.0/24      link#5             U            vtnet3\n10.200.1.2         link#3             UHS             lo0\n127.0.0.1          link#3             UH              lo0\n172.28.90.2        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:1010%lo0     link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:1011%lo0     link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfe80::%vtnet2/64                  link#4                        U            vtnet2\nfe80::2c:94ff:fe19:497%lo0        link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:1010         link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0048",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:54.448486+00:00",
+      "ended_at": "2026-10-24T03:04:54.533111+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, b925185eeb6fd139_i* e1b2b3c45f1f449b_r\n  local  'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 1394s ago, reauth in 8908s\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 1394s ago, rekeying in 1405s, expires in 2206s\n    in  cdb66d8f,  18230 bytes,   150 packets,     1s ago\n    out c123837a,  20211 bytes,   144 packets,     1s ago\n    local  10.100.1.2/32\n    remote 10.200.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0049",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T03:04:54.533138+00:00",
+      "ended_at": "2026-10-24T03:04:54.600701+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc123837a(3240330106) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 03:04:53\n\tanti-replay context: seq 0x0, oseq 0x90, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2845(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  20211(bytes), 144(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcdb66d8f(3451284879) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 03:04:53\n\tanti-replay context: seq 0x96, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2799(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  18230(bytes), 150(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0050",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:54.600724+00:00",
+      "ended_at": "2026-10-24T03:04:54.687775+00:00",
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, b925185eeb6fd139_i e1b2b3c45f1f449b_r*\n  local  'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 1394s ago, reauth in 8908s\n  protected: #2, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 1394s ago, rekeying in 1405s, expires in 2206s\n    in  c123837a,  20211 bytes,   144 packets,     1s ago\n    out cdb66d8f,  18230 bytes,   150 packets,     1s ago\n    local  10.200.1.2/32\n    remote 10.100.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "diversity-0051",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T03:04:54.687812+00:00",
+      "ended_at": "2026-10-24T03:04:54.757165+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcdb66d8f(3451284879) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 03:04:53\n\tanti-replay context: seq 0x0, oseq 0x96, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2845(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  18230(bytes), 150(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc123837a(3240330106) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 03:04:53\n\tanti-replay context: seq 0x90, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2799(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  20211(bytes), 144(packets)\n\t  add 2026-10-24 02:41:40 use 2026-10-24 02:41:41\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0052",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --rekey --ike msc --reauth"
+      ],
+      "started_at": "2026-10-24T03:04:54.757234+00:00",
+      "ended_at": "2026-10-24T03:04:55.019432+00:00",
+      "returncode": 0,
+      "stdout": "rekey completed successfully\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0053",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_A1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.2.1.10"
+      ],
+      "started_at": "2026-10-24T03:04:55.019492+00:00",
+      "ended_at": "2026-10-24T03:04:57.112391+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.2.1.10 (10.2.1.10) 56(84) bytes of data.\n64 bytes from 10.2.1.10: icmp_seq=1 ttl=62 time=1.24 ms\n64 bytes from 10.2.1.10: icmp_seq=2 ttl=62 time=1.15 ms\n64 bytes from 10.2.1.10: icmp_seq=3 ttl=62 time=1.04 ms\n\n--- 10.2.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2003ms\nrtt min/avg/max/mdev = 1.044/1.141/1.235/0.078 ms\n",
+      "stderr": "",
+      "probe": "FreeBSD-after-reauth",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "diversity-0054",
+      "command": [
+        "docker",
+        "exec",
+        "ND_R_B1",
+        "ping",
+        "-n",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.1.1.10"
+      ],
+      "started_at": "2026-10-24T03:04:57.112441+00:00",
+      "ended_at": "2026-10-24T03:04:59.218534+00:00",
+      "returncode": 0,
+      "stdout": "PING 10.1.1.10 (10.1.1.10) 56(84) bytes of data.\n64 bytes from 10.1.1.10: icmp_seq=1 ttl=62 time=1.18 ms\n64 bytes from 10.1.1.10: icmp_seq=2 ttl=62 time=0.952 ms\n64 bytes from 10.1.1.10: icmp_seq=3 ttl=62 time=0.951 ms\n\n--- 10.1.1.10 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2024ms\nrtt min/avg/max/mdev = 0.951/1.028/1.181/0.108 ms\n",
+      "stderr": "",
+      "probe": "FreeBSD-after-reauth",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "id": "diversity-0055",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:59.218599+00:00",
+      "ended_at": "2026-10-24T03:04:59.491654+00:00",
+      "returncode": 0,
+      "stdout": "msc: #6, ESTABLISHED, IKEv2, 44315f671694ec8b_i* 914afea117cefc92_r\n  local  'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  remote 'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 4s ago, reauth in 10315s\n  protected: #7, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 4s ago, rekeying in 2816s, expires in 3596s\n    in  cad96e47,    504 bytes,     6 packets,     0s ago\n    out cc60fb29,    840 bytes,     6 packets,     0s ago\n    local  10.1.1.0/24\n    remote 10.2.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0056",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "/usr/local/sbin/swanctl --list-sas"
+      ],
+      "started_at": "2026-10-24T03:04:59.491744+00:00",
+      "ended_at": "2026-10-24T03:04:59.772549+00:00",
+      "returncode": 0,
+      "stdout": "msc: #6, ESTABLISHED, IKEv2, 44315f671694ec8b_i 914afea117cefc92_r*\n  local  'ND_I_B1.msc.test' @ 10.200.1.2[500]\n  remote 'ND_I_A1.msc.test' @ 10.100.1.2[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 5s ago, reauth in 10242s\n  protected: #8, reqid 101, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 5s ago, rekeying in 2506s, expires in 3595s\n    in  cc60fb29,    504 bytes,     6 packets,     0s ago\n    out cad96e47,    840 bytes,     6 packets,     0s ago\n    local  10.2.1.0/24\n    remote 10.1.1.0/24\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0057",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "cat /root/tdn-freebsd-v3/charon-runtime.log"
+      ],
+      "started_at": "2026-10-24T03:04:59.772594+00:00",
+      "ended_at": "2026-10-24T03:05:00.026215+00:00",
+      "returncode": 0,
+      "stdout": "00[DMN] Starting IKE charon daemon (strongSwan 6.0.3, FreeBSD 14.4-RELEASE-p11, amd64)\n00[KNL] unable to set IPSEC_POLICY on socket: Protocol not available\n00[NET] installing IKE bypass policy failed\n00[KNL] unable to set IPSEC_POLICY on socket: Protocol not available\n00[NET] installing IKE bypass policy failed\n00[KNL] unable to set UDP_ENCAP: Protocol not available\n00[NET] enabling UDP decapsulation for IPv4 on port 4500 failed\n00[KNL] unable to set IPSEC_POLICY on socket: Protocol not available\n00[NET] installing IKE bypass policy failed\n00[KNL] unable to set IPSEC_POLICY on socket: Protocol not available\n00[NET] installing IKE bypass policy failed\n00[KNL] unable to set UDP_ENCAP: Invalid argument\n00[NET] enabling UDP decapsulation for IPv6 on port 4500 failed\n00[LIB] loaded plugins: charon random nonce x509 revocation constraints pubkey pkcs1 pem botan pkcs8 kernel-pfkey kernel-pfroute socket-default vici counters\n00[JOB] spawning 16 worker threads\n12[CFG] loaded certificate 'CN=ND_I_A1.msc.test'\n02[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n14[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n02[CFG] loaded ECDSA private key\n14[CFG] added vici connection: msc\n14[CFG] vici installing 'protected'\n11[CFG] vici initiate CHILD_SA 'protected'\n05[IKE] initiating IKE_SA msc[1] to 10.200.1.2\n05[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n05[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n10[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n10[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n10[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n10[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n10[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n10[IKE] authentication of 'ND_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n10[IKE] sending end entity cert \"CN=ND_I_A1.msc.test\"\n10[IKE] establishing CHILD_SA protected{2}\n10[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n10[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (882 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (65 bytes)\n08[ENC] parsed IKE_AUTH response 1 [ N(NO_PROP) ]\n08[IKE] IDr payload missing\n08[ENC] generating INFORMATIONAL request 2 [ N(AUTH_FAILED) ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n11[CFG] loaded certificate 'CN=ND_I_A1.msc.test'\n11[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n11[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n11[LIB]   crl #01 is not newer - existing crl #01 retained\n11[CFG] loaded ECDSA private key\n06[CFG] updated vici connection: msc\n12[CFG] vici initiate CHILD_SA 'protected'\n02[IKE] initiating IKE_SA msc[2] to 10.200.1.2\n02[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n02[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n02[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n02[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n02[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n02[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n02[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n02[IKE] authentication of 'ND_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n02[IKE] sending end entity cert \"CN=ND_I_A1.msc.test\"\n02[IKE] establishing CHILD_SA protected{3}\n02[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n02[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (883 bytes)\n05[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (65 bytes)\n05[ENC] parsed IKE_AUTH response 1 [ N(NO_PROP) ]\n05[IKE] IDr payload missing\n05[ENC] generating INFORMATIONAL request 2 [ N(AUTH_FAILED) ]\n05[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n12[CFG] loaded certificate 'CN=ND_I_A1.msc.test'\n12[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n09[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n09[LIB]   crl #01 is not newer - existing crl #01 retained\n09[CFG] loaded ECDSA private key\n10[CFG] updated vici connection: msc\n10[CFG] vici initiate CHILD_SA 'protected'\n07[IKE] initiating IKE_SA msc[3] to 10.200.1.2\n07[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n07[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n06[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n06[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n06[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n06[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n06[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n06[IKE] authentication of 'ND_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n06[IKE] sending end entity cert \"CN=ND_I_A1.msc.test\"\n06[IKE] establishing CHILD_SA protected{4}\n06[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n06[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (882 bytes)\n06[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (65 bytes)\n06[ENC] parsed IKE_AUTH response 1 [ N(NO_PROP) ]\n06[IKE] IDr payload missing\n06[ENC] generating INFORMATIONAL request 2 [ N(AUTH_FAILED) ]\n06[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n11[KNL] creating acquire job for policy with reqid {101}\n14[IKE] initiating IKE_SA msc[4] to 10.200.1.2\n14[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n14[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n14[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n14[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n14[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n14[IKE] authentication of 'ND_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n14[IKE] sending end entity cert \"CN=ND_I_A1.msc.test\"\n14[IKE] establishing CHILD_SA protected{5}\n14[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (883 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (803 bytes)\n14[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH N(ESP_TFC_PAD_N) SA TSi TSr ]\n14[IKE] received end entity cert \"CN=ND_I_B1.msc.test\"\n14[CFG]   using certificate \"CN=ND_I_B1.msc.test\"\n14[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n14[CFG]   reached self-signed root ca with a path length of 0\n14[CFG] checking certificate status of \"CN=ND_I_B1.msc.test\"\n14[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n14[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n14[CFG]   crl is valid: until Oct 31 02:41:14 2026\n14[CFG]   using cached crl\n14[CFG] certificate status is good\n14[IKE] authentication of 'ND_I_B1.msc.test' with ECDSA_WITH_SHA384_DER successful\n14[IKE] IKE_SA msc[4] established between 10.100.1.2[ND_I_A1.msc.test]...10.200.1.2[ND_I_B1.msc.test]\n14[IKE] scheduling reauthentication in 10430s\n14[IKE] maximum IKE_SA lifetime 11030s\n14[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n14[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n14[IKE] CHILD_SA protected{5} established with SPIs c72ff6d8_i c2821bae_o and TS 10.1.1.0/24 === 10.2.1.0/24\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 0 [ ]\n14[ENC] generating INFORMATIONAL response 0 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 1 [ ]\n14[ENC] generating INFORMATIONAL response 1 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 2 [ ]\n14[ENC] generating INFORMATIONAL response 2 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 3 [ ]\n14[ENC] generating INFORMATIONAL response 3 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n13[CFG] loaded certificate 'CN=ND_I_A1.msc.test'\n13[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n13[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n13[LIB]   crl #01 is not newer - existing crl #01 retained\n12[CFG] loaded ECDSA private key\n12[CFG] updated vici connection: msc\n05[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[ENC] parsed INFORMATIONAL request 4 [ ]\n05[ENC] generating INFORMATIONAL response 4 [ ]\n05[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n09[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n09[ENC] parsed INFORMATIONAL request 5 [ ]\n09[ENC] generating INFORMATIONAL response 5 [ ]\n09[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n09[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n09[ENC] parsed INFORMATIONAL request 6 [ ]\n09[ENC] generating INFORMATIONAL response 6 [ ]\n09[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n09[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n09[ENC] parsed INFORMATIONAL request 7 [ ]\n09[ENC] generating INFORMATIONAL response 7 [ ]\n09[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n09[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n09[ENC] parsed INFORMATIONAL request 8 [ ]\n09[ENC] generating INFORMATIONAL response 8 [ ]\n09[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n09[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n09[ENC] parsed INFORMATIONAL request 9 [ ]\n09[ENC] generating INFORMATIONAL response 9 [ ]\n09[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n09[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n09[ENC] parsed INFORMATIONAL request 10 [ ]\n09[ENC] generating INFORMATIONAL response 10 [ ]\n09[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[CFG] loaded certificate 'CN=ND_I_A1.msc.test'\n08[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n02[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n02[LIB]   crl #01 is not newer - existing crl #01 retained\n02[CFG] loaded ECDSA private key\n02[CFG] updated vici connection: msc\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 11 [ ]\n14[ENC] generating INFORMATIONAL response 11 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n06[CFG] vici uninstall 'protected'\n12[CFG] vici terminate IKE_SA 'msc'\n13[IKE] deleting IKE_SA msc[4] between 10.100.1.2[ND_I_A1.msc.test]...10.200.1.2[ND_I_B1.msc.test]\n13[IKE] sending DELETE for IKE_SA msc[4]\n13[ENC] generating INFORMATIONAL request 2 [ D ]\n13[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n13[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n13[ENC] parsed INFORMATIONAL response 2 [ ]\n13[IKE] IKE_SA deleted\n05[CFG] loaded certificate 'CN=ND_I_A1.msc.test'\n05[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n07[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n07[LIB]   crl #01 is not newer - existing crl #01 retained\n05[CFG] loaded ECDSA private key\n07[CFG] updated vici connection: msc\n08[CFG] vici initiate CHILD_SA 'protected'\n07[IKE] initiating IKE_SA msc[5] to 10.200.1.2\n07[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n07[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n07[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n07[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n07[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n07[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n07[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n07[IKE] authentication of 'ND_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n07[IKE] sending end entity cert \"CN=ND_I_A1.msc.test\"\n07[IKE] establishing CHILD_SA protected{6}\n07[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n07[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (883 bytes)\n07[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (802 bytes)\n07[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH N(ESP_TFC_PAD_N) SA TSi TSr ]\n07[IKE] received end entity cert \"CN=ND_I_B1.msc.test\"\n07[CFG]   using certificate \"CN=ND_I_B1.msc.test\"\n07[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n07[CFG]   reached self-signed root ca with a path length of 0\n07[CFG] checking certificate status of \"CN=ND_I_B1.msc.test\"\n07[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n07[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n07[CFG]   crl is valid: until Oct 31 02:41:14 2026\n07[CFG]   using cached crl\n07[CFG] certificate status is good\n07[IKE] authentication of 'ND_I_B1.msc.test' with ECDSA_WITH_SHA384_DER successful\n07[IKE] IKE_SA msc[5] established between 10.100.1.2[ND_I_A1.msc.test]...10.200.1.2[ND_I_B1.msc.test]\n07[IKE] scheduling reauthentication in 10760s\n07[IKE] maximum IKE_SA lifetime 11360s\n07[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n07[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n07[IKE] CHILD_SA protected{6} established with SPIs c2ebb2d6_i c6e70ace_o and TS 10.1.1.0/24 === 10.2.1.0/24\n10[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n10[ENC] parsed INFORMATIONAL request 0 [ ]\n10[ENC] generating INFORMATIONAL response 0 [ ]\n10[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n10[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n10[ENC] parsed INFORMATIONAL request 1 [ ]\n10[ENC] generating INFORMATIONAL response 1 [ ]\n10[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n10[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n10[ENC] parsed INFORMATIONAL request 2 [ ]\n10[ENC] generating INFORMATIONAL response 2 [ ]\n10[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n08[ENC] parsed INFORMATIONAL request 3 [ ]\n08[ENC] generating INFORMATIONAL response 3 [ ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n08[ENC] parsed INFORMATIONAL request 4 [ ]\n08[ENC] generating INFORMATIONAL response 4 [ ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n08[ENC] parsed INFORMATIONAL request 5 [ ]\n08[ENC] generating INFORMATIONAL response 5 [ ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n08[ENC] parsed INFORMATIONAL request 6 [ ]\n08[ENC] generating INFORMATIONAL response 6 [ ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n08[ENC] parsed INFORMATIONAL request 7 [ ]\n08[ENC] generating INFORMATIONAL response 7 [ ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n08[ENC] parsed INFORMATIONAL request 8 [ ]\n08[ENC] generating INFORMATIONAL response 8 [ ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n08[ENC] parsed INFORMATIONAL request 9 [ ]\n08[ENC] generating INFORMATIONAL response 9 [ ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n08[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n08[ENC] parsed INFORMATIONAL request 10 [ ]\n08[ENC] generating INFORMATIONAL response 10 [ ]\n08[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 11 [ ]\n14[ENC] generating INFORMATIONAL response 11 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 12 [ ]\n14[ENC] generating INFORMATIONAL response 12 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 13 [ ]\n14[ENC] generating INFORMATIONAL response 13 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 14 [ ]\n14[ENC] generating INFORMATIONAL response 14 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 15 [ ]\n14[ENC] generating INFORMATIONAL response 15 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 16 [ ]\n14[ENC] generating INFORMATIONAL response 16 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 17 [ ]\n14[ENC] generating INFORMATIONAL response 17 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL request 18 [ ]\n14[ENC] generating INFORMATIONAL response 18 [ ]\n14[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 19 [ ]\n12[ENC] generating INFORMATIONAL response 19 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 20 [ ]\n12[ENC] generating INFORMATIONAL response 20 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 21 [ ]\n12[ENC] generating INFORMATIONAL response 21 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 22 [ ]\n12[ENC] generating INFORMATIONAL response 22 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 23 [ ]\n12[ENC] generating INFORMATIONAL response 23 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n13[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n13[ENC] parsed INFORMATIONAL request 24 [ ]\n13[ENC] generating INFORMATIONAL response 24 [ ]\n13[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n13[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n13[ENC] parsed INFORMATIONAL request 25 [ ]\n13[ENC] generating INFORMATIONAL response 25 [ ]\n13[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n13[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n13[ENC] parsed INFORMATIONAL request 26 [ ]\n13[ENC] generating INFORMATIONAL response 26 [ ]\n13[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 27 [ ]\n12[ENC] generating INFORMATIONAL response 27 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 28 [ ]\n12[ENC] generating INFORMATIONAL response 28 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 29 [ ]\n12[ENC] generating INFORMATIONAL response 29 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 30 [ ]\n12[ENC] generating INFORMATIONAL response 30 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n05[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[ENC] parsed INFORMATIONAL request 31 [ ]\n05[ENC] generating INFORMATIONAL response 31 [ ]\n05[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL request 32 [ ]\n12[ENC] generating INFORMATIONAL response 32 [ ]\n12[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n09[CFG] loaded certificate 'CN=ND_I_A1.msc.test'\n09[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n09[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n09[LIB]   crl #01 is not newer - existing crl #01 retained\n12[CFG] loaded ECDSA private key\n02[CFG] updated vici connection: msc\n11[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n11[ENC] parsed INFORMATIONAL request 33 [ ]\n11[ENC] generating INFORMATIONAL response 33 [ ]\n11[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n11[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n11[ENC] parsed INFORMATIONAL request 34 [ ]\n11[ENC] generating INFORMATIONAL response 34 [ ]\n11[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n07[CFG] vici rekey IKE_SA 'msc'\n07[IKE] reauthenticating IKE_SA msc[5]\n07[IKE] initiating IKE_SA msc[6] to 10.200.1.2\n07[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n07[NET] sending packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n07[NET] received packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n07[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n07[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n07[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n07[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n07[IKE] authentication of 'ND_I_A1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n07[IKE] sending end entity cert \"CN=ND_I_A1.msc.test\"\n07[IKE] establishing CHILD_SA protected{7}\n",
+      "stderr": ""
+    },
+    {
+      "id": "diversity-0058",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "cat /root/tdn-freebsd-v3/charon-runtime.log"
+      ],
+      "started_at": "2026-10-24T03:05:00.026274+00:00",
+      "ended_at": "2026-10-24T03:05:00.311319+00:00",
+      "returncode": 0,
+      "stdout": "00[DMN] Starting IKE charon daemon (strongSwan 6.0.3, FreeBSD 14.4-RELEASE-p11, amd64)\n00[KNL] unable to set IPSEC_POLICY on socket: Protocol not available\n00[NET] installing IKE bypass policy failed\n00[KNL] unable to set IPSEC_POLICY on socket: Protocol not available\n00[NET] installing IKE bypass policy failed\n00[KNL] unable to set UDP_ENCAP: Protocol not available\n00[NET] enabling UDP decapsulation for IPv4 on port 4500 failed\n00[KNL] unable to set IPSEC_POLICY on socket: Protocol not available\n00[NET] installing IKE bypass policy failed\n00[KNL] unable to set IPSEC_POLICY on socket: Protocol not available\n00[NET] installing IKE bypass policy failed\n00[KNL] unable to set UDP_ENCAP: Invalid argument\n00[NET] enabling UDP decapsulation for IPv6 on port 4500 failed\n00[LIB] loaded plugins: charon random nonce x509 revocation constraints pubkey pkcs1 pem botan pkcs8 kernel-pfkey kernel-pfroute socket-default vici counters\n00[JOB] spawning 16 worker threads\n14[CFG] loaded certificate 'CN=ND_I_B1.msc.test'\n02[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n02[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n15[CFG] loaded ECDSA private key\n13[CFG] added vici connection: msc\n13[CFG] vici installing 'protected'\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n11[ENC] parsed IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n11[IKE] 10.100.1.2 is initiating an IKE_SA\n11[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n11[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n11[ENC] generating IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (882 bytes)\n11[ENC] parsed IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n11[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n11[IKE] received end entity cert \"CN=ND_I_A1.msc.test\"\n11[CFG] looking for peer configs matching 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n11[CFG] selected peer config 'msc'\n11[CFG]   using certificate \"CN=ND_I_A1.msc.test\"\n11[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n11[CFG]   reached self-signed root ca with a path length of 0\n11[CFG] checking certificate status of \"CN=ND_I_A1.msc.test\"\n11[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n11[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n11[CFG]   crl is valid: until Oct 31 02:41:14 2026\n11[CFG]   using cached crl\n11[CFG] certificate status is good\n11[IKE] authentication of 'ND_I_A1.msc.test' with ECDSA_WITH_SHA384_DER successful\n11[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n11[IKE] authentication of 'ND_I_B1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n11[IKE] sending end entity cert \"CN=ND_I_B1.msc.test\"\n11[IKE] IKE_SA msc[1] established between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n11[IKE] scheduling reauthentication in 10226s\n11[IKE] maximum IKE_SA lifetime 10826s\n11[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n11[KNL] unable to add SAD entry with SPI c92df4bb: Invalid argument (22)\n11[KNL] unable to add SAD entry with SPI c45cda3d: Invalid argument (22)\n11[IKE] unable to install inbound and outbound IPsec SA (SAD) in kernel\n11[IKE] failed to establish CHILD_SA, keeping IKE_SA\n11[KNL] unable to delete SAD entry with SPI c92df4bb: No such process (3)\n11[ENC] generating IKE_AUTH response 1 [ N(NO_PROP) ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (65 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n11[ENC] parsed INFORMATIONAL request 2 [ N(AUTH_FAILED) ]\n11[IKE] received DELETE for IKE_SA msc[1]\n11[IKE] deleting IKE_SA msc[1] between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n11[IKE] IKE_SA deleted\n11[ENC] generating INFORMATIONAL response 2 [ ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[CFG] loaded certificate 'CN=ND_I_B1.msc.test'\n13[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n09[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n09[LIB]   crl #01 is not newer - existing crl #01 retained\n09[CFG] loaded ECDSA private key\n09[CFG] updated vici connection: msc\n09[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n09[ENC] parsed IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n09[IKE] 10.100.1.2 is initiating an IKE_SA\n09[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n09[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n09[ENC] generating IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n09[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n09[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (883 bytes)\n09[ENC] parsed IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n09[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n09[IKE] received end entity cert \"CN=ND_I_A1.msc.test\"\n09[CFG] looking for peer configs matching 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n09[CFG] selected peer config 'msc'\n09[CFG]   using certificate \"CN=ND_I_A1.msc.test\"\n09[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n09[CFG]   reached self-signed root ca with a path length of 0\n09[CFG] checking certificate status of \"CN=ND_I_A1.msc.test\"\n09[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n09[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n09[CFG]   crl is valid: until Oct 31 02:41:14 2026\n09[CFG]   using cached crl\n09[CFG] certificate status is good\n09[IKE] authentication of 'ND_I_A1.msc.test' with ECDSA_WITH_SHA384_DER successful\n09[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n09[IKE] authentication of 'ND_I_B1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n09[IKE] sending end entity cert \"CN=ND_I_B1.msc.test\"\n09[IKE] IKE_SA msc[2] established between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n09[IKE] scheduling reauthentication in 10695s\n09[IKE] maximum IKE_SA lifetime 11295s\n09[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n09[KNL] unable to add SAD entry with SPI ca6ae9f8: Invalid argument (22)\n09[KNL] unable to add SAD entry with SPI c1bb912b: Invalid argument (22)\n09[IKE] unable to install inbound and outbound IPsec SA (SAD) in kernel\n09[IKE] failed to establish CHILD_SA, keeping IKE_SA\n09[KNL] unable to delete SAD entry with SPI ca6ae9f8: No such process (3)\n09[ENC] generating IKE_AUTH response 1 [ N(NO_PROP) ]\n09[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (65 bytes)\n07[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n07[ENC] parsed INFORMATIONAL request 2 [ N(AUTH_FAILED) ]\n07[IKE] received DELETE for IKE_SA msc[2]\n07[IKE] deleting IKE_SA msc[2] between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n07[IKE] IKE_SA deleted\n07[ENC] generating INFORMATIONAL response 2 [ ]\n07[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n06[CFG] loaded certificate 'CN=ND_I_B1.msc.test'\n07[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n07[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n07[LIB]   crl #01 is not newer - existing crl #01 retained\n12[CFG] loaded ECDSA private key\n07[CFG] updated vici connection: msc\n12[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n12[ENC] parsed IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n12[IKE] 10.100.1.2 is initiating an IKE_SA\n12[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n12[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n12[ENC] generating IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n12[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n14[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (882 bytes)\n14[ENC] parsed IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n14[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n14[IKE] received end entity cert \"CN=ND_I_A1.msc.test\"\n14[CFG] looking for peer configs matching 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n14[CFG] selected peer config 'msc'\n14[CFG]   using certificate \"CN=ND_I_A1.msc.test\"\n14[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n14[CFG]   reached self-signed root ca with a path length of 0\n14[CFG] checking certificate status of \"CN=ND_I_A1.msc.test\"\n14[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n14[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n14[CFG]   crl is valid: until Oct 31 02:41:14 2026\n14[CFG]   using cached crl\n14[CFG] certificate status is good\n14[IKE] authentication of 'ND_I_A1.msc.test' with ECDSA_WITH_SHA384_DER successful\n14[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n14[IKE] authentication of 'ND_I_B1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n14[IKE] sending end entity cert \"CN=ND_I_B1.msc.test\"\n14[IKE] IKE_SA msc[3] established between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n14[IKE] scheduling reauthentication in 10743s\n14[IKE] maximum IKE_SA lifetime 11343s\n14[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n14[KNL] unable to add SAD entry with SPI cd20e1be: Invalid argument (22)\n14[KNL] unable to add SAD entry with SPI c58940a6: Invalid argument (22)\n14[IKE] unable to install inbound and outbound IPsec SA (SAD) in kernel\n14[IKE] failed to establish CHILD_SA, keeping IKE_SA\n14[KNL] unable to delete SAD entry with SPI cd20e1be: No such process (3)\n14[ENC] generating IKE_AUTH response 1 [ N(NO_PROP) ]\n14[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (65 bytes)\n14[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n14[ENC] parsed INFORMATIONAL request 2 [ N(AUTH_FAILED) ]\n14[IKE] received DELETE for IKE_SA msc[3]\n14[IKE] deleting IKE_SA msc[3] between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n14[IKE] IKE_SA deleted\n14[ENC] generating INFORMATIONAL response 2 [ ]\n14[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n14[ENC] parsed IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n14[IKE] 10.100.1.2 is initiating an IKE_SA\n14[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n14[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n14[ENC] generating IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n14[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (883 bytes)\n15[ENC] parsed IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n15[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n15[IKE] received end entity cert \"CN=ND_I_A1.msc.test\"\n15[CFG] looking for peer configs matching 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n15[CFG] selected peer config 'msc'\n15[CFG]   using certificate \"CN=ND_I_A1.msc.test\"\n15[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n15[CFG]   reached self-signed root ca with a path length of 0\n15[CFG] checking certificate status of \"CN=ND_I_A1.msc.test\"\n15[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n15[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n15[CFG]   crl is valid: until Oct 31 02:41:14 2026\n15[CFG]   using cached crl\n15[CFG] certificate status is good\n15[IKE] authentication of 'ND_I_A1.msc.test' with ECDSA_WITH_SHA384_DER successful\n15[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n15[IKE] authentication of 'ND_I_B1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n15[IKE] sending end entity cert \"CN=ND_I_B1.msc.test\"\n15[IKE] IKE_SA msc[4] established between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n15[IKE] scheduling reauthentication in 10775s\n15[IKE] maximum IKE_SA lifetime 11375s\n15[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n15[IKE] CHILD_SA protected{5} established with SPIs c2821bae_i c72ff6d8_o and TS 10.2.1.0/24 === 10.1.1.0/24\n15[ENC] generating IKE_AUTH response 1 [ IDr CERT AUTH N(ESP_TFC_PAD_N) SA TSi TSr ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (803 bytes)\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 0 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 0 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 1 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 1 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 2 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 2 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 3 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 3 [ ]\n10[CFG] loaded certificate 'CN=ND_I_B1.msc.test'\n10[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n05[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n05[LIB]   crl #01 is not newer - existing crl #01 retained\n05[CFG] loaded ECDSA private key\n10[CFG] updated vici connection: msc\n09[IKE] sending DPD request\n09[ENC] generating INFORMATIONAL request 4 [ ]\n09[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n09[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n09[ENC] parsed INFORMATIONAL response 4 [ ]\n10[IKE] sending DPD request\n10[ENC] generating INFORMATIONAL request 5 [ ]\n10[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n10[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n10[ENC] parsed INFORMATIONAL response 5 [ ]\n10[IKE] sending DPD request\n10[ENC] generating INFORMATIONAL request 6 [ ]\n10[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n10[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n10[ENC] parsed INFORMATIONAL response 6 [ ]\n10[IKE] sending DPD request\n10[ENC] generating INFORMATIONAL request 7 [ ]\n10[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n02[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n02[ENC] parsed INFORMATIONAL response 7 [ ]\n02[IKE] sending DPD request\n02[ENC] generating INFORMATIONAL request 8 [ ]\n02[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n02[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n02[ENC] parsed INFORMATIONAL response 8 [ ]\n02[IKE] sending DPD request\n02[ENC] generating INFORMATIONAL request 9 [ ]\n02[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n02[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n02[ENC] parsed INFORMATIONAL response 9 [ ]\n02[IKE] sending DPD request\n02[ENC] generating INFORMATIONAL request 10 [ ]\n02[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n02[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n02[ENC] parsed INFORMATIONAL response 10 [ ]\n07[CFG] loaded certificate 'CN=ND_I_B1.msc.test'\n12[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n12[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n12[LIB]   crl #01 is not newer - existing crl #01 retained\n14[CFG] loaded ECDSA private key\n11[CFG] updated vici connection: msc\n13[IKE] sending DPD request\n13[ENC] generating INFORMATIONAL request 11 [ ]\n13[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n13[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n13[ENC] parsed INFORMATIONAL response 11 [ ]\n13[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (65 bytes)\n13[ENC] parsed INFORMATIONAL request 2 [ D ]\n13[IKE] received DELETE for IKE_SA msc[4]\n13[IKE] deleting IKE_SA msc[4] between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n13[CFG] updating already routed CHILD_SA 'protected'\n13[IKE] IKE_SA deleted\n13[ENC] generating INFORMATIONAL response 2 [ ]\n13[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n13[CFG] vici uninstall 'protected'\n13[CFG] vici terminate IKE_SA 'msc'\n13[CFG] loaded certificate 'CN=ND_I_B1.msc.test'\n11[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n06[CFG] loaded certificate 'CN=Twinet MSC inner-s1'\n06[LIB]   crl #01 is not newer - existing crl #01 retained\n11[CFG] loaded ECDSA private key\n11[CFG] updated vici connection: msc\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (290 bytes)\n11[ENC] parsed IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n11[IKE] 10.100.1.2 is initiating an IKE_SA\n11[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n11[IKE] sending cert request for \"CN=Twinet MSC inner-s1\"\n11[ENC] generating IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (329 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (883 bytes)\n11[ENC] parsed IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH N(ESP_TFC_PAD_N) SA TSi TSr N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n11[IKE] received cert request for \"CN=Twinet MSC inner-s1\"\n11[IKE] received end entity cert \"CN=ND_I_A1.msc.test\"\n11[CFG] looking for peer configs matching 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n11[CFG] selected peer config 'msc'\n11[CFG]   using certificate \"CN=ND_I_A1.msc.test\"\n11[CFG]   using trusted ca certificate \"CN=Twinet MSC inner-s1\"\n11[CFG]   reached self-signed root ca with a path length of 0\n11[CFG] checking certificate status of \"CN=ND_I_A1.msc.test\"\n11[CFG]   using trusted certificate \"CN=Twinet MSC inner-s1\"\n11[CFG]   crl correctly signed by \"CN=Twinet MSC inner-s1\"\n11[CFG]   crl is valid: until Oct 31 02:41:14 2026\n11[CFG]   using cached crl\n11[CFG] certificate status is good\n11[IKE] authentication of 'ND_I_A1.msc.test' with ECDSA_WITH_SHA384_DER successful\n11[IKE] received ESP_TFC_PADDING_NOT_SUPPORTED, not using ESPv3 TFC padding\n11[IKE] authentication of 'ND_I_B1.msc.test' (myself) with ECDSA_WITH_SHA384_DER successful\n11[IKE] sending end entity cert \"CN=ND_I_B1.msc.test\"\n11[IKE] IKE_SA msc[5] established between 10.200.1.2[ND_I_B1.msc.test]...10.100.1.2[ND_I_A1.msc.test]\n11[IKE] scheduling reauthentication in 10257s\n11[IKE] maximum IKE_SA lifetime 10857s\n11[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n11[IKE] CHILD_SA protected{7} established with SPIs c6e70ace_i c2ebb2d6_o and TS 10.2.1.0/24 === 10.1.1.0/24\n11[ENC] generating IKE_AUTH response 1 [ IDr CERT AUTH N(ESP_TFC_PAD_N) SA TSi TSr ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (802 bytes)\n07[IKE] sending DPD request\n07[ENC] generating INFORMATIONAL request 0 [ ]\n07[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n07[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n07[ENC] parsed INFORMATIONAL response 0 [ ]\n07[IKE] sending DPD request\n07[ENC] generating INFORMATIONAL request 1 [ ]\n07[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n07[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n07[ENC] parsed INFORMATIONAL response 1 [ ]\n07[IKE] sending DPD request\n07[ENC] generating INFORMATIONAL request 2 [ ]\n07[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n07[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n07[ENC] parsed INFORMATIONAL response 2 [ ]\n07[IKE] sending DPD request\n07[ENC] generating INFORMATIONAL request 3 [ ]\n07[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n07[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n07[ENC] parsed INFORMATIONAL response 3 [ ]\n07[IKE] sending DPD request\n07[ENC] generating INFORMATIONAL request 4 [ ]\n07[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n07[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n07[ENC] parsed INFORMATIONAL response 4 [ ]\n12[IKE] sending DPD request\n12[ENC] generating INFORMATIONAL request 5 [ ]\n12[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL response 5 [ ]\n12[IKE] sending DPD request\n12[ENC] generating INFORMATIONAL request 6 [ ]\n12[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL response 6 [ ]\n12[IKE] sending DPD request\n12[ENC] generating INFORMATIONAL request 7 [ ]\n12[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL response 7 [ ]\n12[IKE] sending DPD request\n12[ENC] generating INFORMATIONAL request 8 [ ]\n12[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL response 8 [ ]\n12[IKE] sending DPD request\n12[ENC] generating INFORMATIONAL request 9 [ ]\n12[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n12[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n12[ENC] parsed INFORMATIONAL response 9 [ ]\n12[IKE] sending DPD request\n12[ENC] generating INFORMATIONAL request 10 [ ]\n12[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n11[ENC] parsed INFORMATIONAL response 10 [ ]\n11[IKE] sending DPD request\n11[ENC] generating INFORMATIONAL request 11 [ ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n11[ENC] parsed INFORMATIONAL response 11 [ ]\n11[IKE] sending DPD request\n11[ENC] generating INFORMATIONAL request 12 [ ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n11[ENC] parsed INFORMATIONAL response 12 [ ]\n11[IKE] sending DPD request\n11[ENC] generating INFORMATIONAL request 13 [ ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n11[ENC] parsed INFORMATIONAL response 13 [ ]\n11[IKE] sending DPD request\n11[ENC] generating INFORMATIONAL request 14 [ ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n11[ENC] parsed INFORMATIONAL response 14 [ ]\n11[IKE] sending DPD request\n11[ENC] generating INFORMATIONAL request 15 [ ]\n11[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n11[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n11[ENC] parsed INFORMATIONAL response 15 [ ]\n14[IKE] sending DPD request\n14[ENC] generating INFORMATIONAL request 16 [ ]\n14[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL response 16 [ ]\n14[IKE] sending DPD request\n14[ENC] generating INFORMATIONAL request 17 [ ]\n14[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL response 17 [ ]\n14[IKE] sending DPD request\n14[ENC] generating INFORMATIONAL request 18 [ ]\n14[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL response 18 [ ]\n14[IKE] sending DPD request\n14[ENC] generating INFORMATIONAL request 19 [ ]\n14[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL response 19 [ ]\n14[IKE] sending DPD request\n14[ENC] generating INFORMATIONAL request 20 [ ]\n14[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n14[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n14[ENC] parsed INFORMATIONAL response 20 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 21 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 21 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 22 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 22 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 23 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 23 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 24 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 24 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 25 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n15[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n15[ENC] parsed INFORMATIONAL response 25 [ ]\n15[IKE] sending DPD request\n15[ENC] generating INFORMATIONAL request 26 [ ]\n15[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n05[ENC] parsed INFORMATIONAL response 26 [ ]\n05[IKE] sending DPD request\n05[ENC] generating INFORMATIONAL request 27 [ ]\n05[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n05[ENC] parsed INFORMATIONAL response 27 [ ]\n05[IKE] sending DPD request\n05[ENC] generating INFORMATIONAL request 28 [ ]\n05[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n05[ENC] parsed INFORMATIONAL response 28 [ ]\n05[IKE] sending DPD request\n05[ENC] generating INFORMATIONAL request 29 [ ]\n05[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n05[ENC] parsed INFORMATIONAL response 29 [ ]\n05[IKE] sending DPD request\n05[ENC] generating INFORMATIONAL request 30 [ ]\n05[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n05[ENC] parsed INFORMATIONAL response 30 [ ]\n05[IKE] sending DPD request\n05[ENC] generating INFORMATIONAL request 31 [ ]\n05[NET] sending packet: from 10.200.1.2[500] to 10.100.1.2[500] (57 bytes)\n05[NET] received packet: from 10.100.1.2[500] to 10.200.1.2[500] (57 bytes)\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": [
+    "Actual FreeBSD Inner kernels and Botan IKE cryptographic plugin replace only the two owned ND Inner containers. Native Linux Outers, FRR routing and OVS switching remain active.",
+    "Private test credential copying occurs entirely within pc22 and its guests; no private bytes enter these public artifacts.",
+    "Physical hardware remains shared in this case. Four-worker physical-role separation is a separate case.",
+    "Different OS and observed cryptographic implementation do not establish approved products, independent manufacturers/subsidiary relationships, or an NSA independence determination.",
+    "The guest management interface and virtualization host remain explicit trusted control infrastructure. No all-execution MAC confinement or non-bypass claim follows from finite traffic."
+  ]
+}

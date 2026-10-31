@@ -1,0 +1,1220 @@
+{
+  "started_at": "2026-10-24T14:41:39.997144+00:00",
+  "ended_at": "2026-10-24T14:41:51.225892+00:00",
+  "frames": [
+    {
+      "at_ns": 1792852906479010347,
+      "monotonic_ns": 596029825163162,
+      "interface": "gray",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "be:66:e9:7c:a6:23",
+        "source_mac": "d2:e2:66:c5:c8:c0",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.11.0.1",
+          "destination": "10.21.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 58956,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 200,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "46:eb:99:0b:65:3b",
+          "source_mac": "0a:cf:27:6e:5a:44",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 13,
+            "sci": "0acf276e5a440001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852906479164303,
+      "monotonic_ns": 596029825315805,
+      "interface": "black",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "32:96:c4:cf:38:55",
+        "source_mac": "8a:0b:45:41:e4:ff",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.2.1",
+          "destination": "192.0.3.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 25902,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "esp": {
+          "spi": 2001,
+          "sequence": 34
+        }
+      }
+    },
+    {
+      "at_ns": 1792852906479258749,
+      "monotonic_ns": 596029825410056,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.3.1",
+          "destination": "192.0.2.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 57425,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "esp": {
+          "spi": 2002,
+          "sequence": 36
+        }
+      }
+    },
+    {
+      "at_ns": 1792852906479303583,
+      "monotonic_ns": 596029825454657,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40383,
+          "fragment_field": 0,
+          "ttl": 63
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 13,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852906479386562,
+      "monotonic_ns": 596029825537759,
+      "interface": "gray",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "d2:e2:66:c5:c8:c0",
+        "source_mac": "be:66:e9:7c:a6:23",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40383,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 13,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852907534044804,
+      "monotonic_ns": 596030880196927,
+      "interface": "gray",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "be:66:e9:7c:a6:23",
+        "source_mac": "d2:e2:66:c5:c8:c0",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.11.0.1",
+          "destination": "10.21.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 58957,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 200,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "46:eb:99:0b:65:3b",
+          "source_mac": "0a:cf:27:6e:5a:44",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 14,
+            "sci": "0acf276e5a440001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852907534169101,
+      "monotonic_ns": 596030880320323,
+      "interface": "black",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "32:96:c4:cf:38:55",
+        "source_mac": "8a:0b:45:41:e4:ff",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.2.1",
+          "destination": "192.0.3.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 26944,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "esp": {
+          "spi": 2001,
+          "sequence": 35
+        }
+      }
+    },
+    {
+      "at_ns": 1792852907534294352,
+      "monotonic_ns": 596030880445673,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.3.1",
+          "destination": "192.0.2.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 57805,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "esp": {
+          "spi": 2002,
+          "sequence": 37
+        }
+      }
+    },
+    {
+      "at_ns": 1792852907534336787,
+      "monotonic_ns": 596030880487760,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40384,
+          "fragment_field": 0,
+          "ttl": 63
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 14,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852907534403271,
+      "monotonic_ns": 596030880554278,
+      "interface": "gray",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "d2:e2:66:c5:c8:c0",
+        "source_mac": "be:66:e9:7c:a6:23",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40384,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 14,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908558050242,
+      "monotonic_ns": 596031904202355,
+      "interface": "gray",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "be:66:e9:7c:a6:23",
+        "source_mac": "d2:e2:66:c5:c8:c0",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.11.0.1",
+          "destination": "10.21.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 58958,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 200,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "46:eb:99:0b:65:3b",
+          "source_mac": "0a:cf:27:6e:5a:44",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 15,
+            "sci": "0acf276e5a440001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908558169739,
+      "monotonic_ns": 596031904321123,
+      "interface": "black",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "32:96:c4:cf:38:55",
+        "source_mac": "8a:0b:45:41:e4:ff",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.2.1",
+          "destination": "192.0.3.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 27801,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "esp": {
+          "spi": 2001,
+          "sequence": 36
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908558252818,
+      "monotonic_ns": 596031904404256,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.3.1",
+          "destination": "192.0.2.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 58585,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "esp": {
+          "spi": 2002,
+          "sequence": 38
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908558346177,
+      "monotonic_ns": 596031904497642,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40385,
+          "fragment_field": 0,
+          "ttl": 63
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 15,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908558429791,
+      "monotonic_ns": 596031904580975,
+      "interface": "gray",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "d2:e2:66:c5:c8:c0",
+        "source_mac": "be:66:e9:7c:a6:23",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40385,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 15,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908576244517,
+      "monotonic_ns": 596031922395878,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.3.1",
+          "destination": "192.0.2.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 58590,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "esp": {
+          "spi": 2002,
+          "sequence": 39
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908576292294,
+      "monotonic_ns": 596031922443531,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40386,
+          "fragment_field": 0,
+          "ttl": 63
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 16,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908576390535,
+      "monotonic_ns": 596031922541743,
+      "interface": "gray",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "d2:e2:66:c5:c8:c0",
+        "source_mac": "be:66:e9:7c:a6:23",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40386,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 16,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908576484292,
+      "monotonic_ns": 596031922635590,
+      "interface": "gray",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "be:66:e9:7c:a6:23",
+        "source_mac": "d2:e2:66:c5:c8:c0",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.11.0.1",
+          "destination": "10.21.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 58959,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 200,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "46:eb:99:0b:65:3b",
+          "source_mac": "0a:cf:27:6e:5a:44",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 16,
+            "sci": "0acf276e5a440001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852908576603191,
+      "monotonic_ns": 596031922754459,
+      "interface": "black",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "32:96:c4:cf:38:55",
+        "source_mac": "8a:0b:45:41:e4:ff",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.2.1",
+          "destination": "192.0.3.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 27807,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "esp": {
+          "spi": 2001,
+          "sequence": 37
+        }
+      }
+    },
+    {
+      "at_ns": 1792852909582121506,
+      "monotonic_ns": 596032928273442,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.3.1",
+          "destination": "192.0.2.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 58873,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "esp": {
+          "spi": 2002,
+          "sequence": 40
+        }
+      }
+    },
+    {
+      "at_ns": 1792852909582210703,
+      "monotonic_ns": 596032928361897,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40387,
+          "fragment_field": 0,
+          "ttl": 63
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 17,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852909582280898,
+      "monotonic_ns": 596032928431882,
+      "interface": "gray",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "d2:e2:66:c5:c8:c0",
+        "source_mac": "be:66:e9:7c:a6:23",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40387,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 17,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852909582335639,
+      "monotonic_ns": 596032928486666,
+      "interface": "gray",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "be:66:e9:7c:a6:23",
+        "source_mac": "d2:e2:66:c5:c8:c0",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.11.0.1",
+          "destination": "10.21.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 58960,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 200,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "46:eb:99:0b:65:3b",
+          "source_mac": "0a:cf:27:6e:5a:44",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 17,
+            "sci": "0acf276e5a440001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852909582392256,
+      "monotonic_ns": 596032928543264,
+      "interface": "black",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "32:96:c4:cf:38:55",
+        "source_mac": "8a:0b:45:41:e4:ff",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.2.1",
+          "destination": "192.0.3.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 28237,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "esp": {
+          "spi": 2001,
+          "sequence": 38
+        }
+      }
+    },
+    {
+      "at_ns": 1792852910606081386,
+      "monotonic_ns": 596033952233816,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.3.1",
+          "destination": "192.0.2.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 59247,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "esp": {
+          "spi": 2002,
+          "sequence": 41
+        }
+      }
+    },
+    {
+      "at_ns": 1792852910606154659,
+      "monotonic_ns": 596033952305843,
+      "interface": "black",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "8a:0b:45:41:e4:ff",
+        "source_mac": "32:96:c4:cf:38:55",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40388,
+          "fragment_field": 0,
+          "ttl": 63
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 18,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852910606228076,
+      "monotonic_ns": 596033952379270,
+      "interface": "gray",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "d2:e2:66:c5:c8:c0",
+        "source_mac": "be:66:e9:7c:a6:23",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.21.0.1",
+          "destination": "10.11.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 40388,
+          "fragment_field": 0,
+          "ttl": 62
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 100,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "0a:cf:27:6e:5a:44",
+          "source_mac": "46:eb:99:0b:65:3b",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 18,
+            "sci": "46eb990b653b0001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852910606308532,
+      "monotonic_ns": 596033952459616,
+      "interface": "gray",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "be:66:e9:7c:a6:23",
+        "source_mac": "d2:e2:66:c5:c8:c0",
+        "ethertype": "0x0800",
+        "frame_length": 192,
+        "ipv4": {
+          "source": "10.11.0.1",
+          "destination": "10.21.0.1",
+          "protocol": 17,
+          "ihl": 20,
+          "total_length": 178,
+          "identification": 58961,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "udp": {
+          "source_port": 1701,
+          "destination_port": 1701,
+          "length": 158
+        },
+        "l2tpv3": {
+          "flags_version": 3,
+          "version": 3,
+          "reserved": 0,
+          "session_id": 200,
+          "default_l2specific_sublayer": 0
+        },
+        "encapsulated_ethernet": {
+          "destination_mac": "46:eb:99:0b:65:3b",
+          "source_mac": "0a:cf:27:6e:5a:44",
+          "ethertype": "0x88e5",
+          "frame_length": 138,
+          "macsec": {
+            "tci_an": 44,
+            "association_number": 0,
+            "sci_present": true,
+            "encrypted": true,
+            "changed_text": true,
+            "short_length": 0,
+            "packet_number": 18,
+            "sci": "0acf276e5a440001"
+          }
+        }
+      }
+    },
+    {
+      "at_ns": 1792852910606360836,
+      "monotonic_ns": 596033952511894,
+      "interface": "black",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "32:96:c4:cf:38:55",
+        "source_mac": "8a:0b:45:41:e4:ff",
+        "ethertype": "0x0800",
+        "frame_length": 246,
+        "ipv4": {
+          "source": "192.0.2.1",
+          "destination": "192.0.3.1",
+          "protocol": 50,
+          "ihl": 20,
+          "total_length": 232,
+          "identification": 28996,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "esp": {
+          "spi": 2001,
+          "sequence": 39
+        }
+      }
+    }
+  ],
+  "parse_or_capacity_errors": 0,
+  "scope": "Only parsed public Ethernet, IPv4/IPv6, UDP, ICMP, ESP SPI/sequence, MACsec SecTAG and L2TPv3 data headers are emitted. Packet payload and ciphertext bytes are never serialized. MACsec encrypted content is never parsed. IPv4 transport headers require a valid complete IHL/total length and zero fragment offset. The selected L2TPv3 contract is UDP, no cookie and a four-byte default L2-specific sublayer, corroborated by actual tunnel/session state. VLAN tags and other L2TP cookie/sublayer arrangements are unsupported and remain undecoded."
+}

@@ -1,0 +1,15 @@
+# Classical IKE algorithm checks
+
+The selected baseline has four Inner gateways and the shared network has eight. The importer checks the complete loaded gateway/connection inventories before selecting those Inner endpoints. Every selected endpoint has a public certificate whose actual key is P-384 and whose certificate signature uses SHA384. The exact configured authentication constraint is ecdsa-384-sha384 for both peers.
+
+The public certificate is present in the captured daemon PEM output. Its public-key bytes match the SHA1 key identifier printed in the original snapshot. SHA1 serves as the observed identifier in that comparison. The required authentication hash remains SHA384. The later certificate capture contains the same configuration bytes as the earlier exact-file load observation. Agreement at the two collection times does not establish continuous stability between them.
+
+The importer checks every comma-separated proposal and every combination of transform alternatives. It currently supports the observed AES256-GCM branch, SHA384/SHA512 PRFs and the approved classical exchange choices. Unknown tokens, defaults and incomplete offers are rejected. The general proof checks all recorded offers and reuses the existing theorem that a negotiated selection inherits a property of every offer.
+
+Both concrete Lean modules compile with the same general proof. Twelve importer tests pass. The checks cover missing or inconsistent endpoint records, altered namespaces and configurations, public-key identities, weak algorithms and additional offered alternatives. Initial Python syntax, OpenSSL text-spacing and raw-observation schema errors are preserved in the attempt records with their repairs.
+
+The application concerns the captured fixed Inner credentials and IKE offers. The public binding bundle does not include Outer credentials. ESP-specific algorithm clauses, post-quantum objective exchanges, referenced profile duties, future alternative credentials and all other cryptographic purposes remain open. No whole RG018 or RG019 claim is made. Correct OpenSSL and strongSwan behavior and truthful collection remain explicit assumptions.
+
+The latest official strongSwan proposal documentation is preserved under references/classical-ike. The attempted5.9 URL failed retrieval. The latest page supplies syntax context and does not identify the deployed version. The proof reuses existing list membership and negotiated_suite_inherits_profile; no additional execution framework is introduced.
+
+Independent Construction review retains an explicit cross-capture assumption: matching SHA1 SPKI identifiers and configured names do not mathematically prove byte identity. The selected application assumes no identifier collision, no credential replacement and unchanged identifier-to-credential association between the captures. SHA1 is an observational identifier, not the required authentication hash. The importer inspects the retained P-384 public key and SHA384 certificate signature independently. No runtime cipher or loader execution is performed.

@@ -1,0 +1,10 @@
+{
+  "kernel_binding": "Actual uname, /proc/version, distribution kernel config, module vermagic/srcversion and relevant defrag/XFRM counters are retained. A source review must match those observations.",
+  "payload_generator": "byte[i] = (17*i + 31) mod 256",
+  "IPv4_post_ESP_stage": "Source and sender wire MTUs 9000; router egress and receiver wire MTUs 1280. UDP socket PMTU DONT yields DF clear. Captures distinguish a large outer ESP packet from its router-created fragments.",
+  "IPv4_plaintext_stage": "Source and first Red link MTUs 1200. Sender UDP fragments before gateway processing; captures show inner fragments, their gateway reassembly into one ESP packet, and subsequent router fragmentation of that ESP packet.",
+  "malformed_case": "Two IPv4 fragments have one ID and complete union coverage, but overlap by 800 bytes: [0,1600) with MF, and [800,2400) final. The UDP payload is 2392 public patterned bytes. Receiver outcome and kernel reassembly counters are retained rather than inferred.",
+  "IPv6_case": "The raw-only gate accepts the reconstructed datagram because netfilter defragmentation precedes priority -300. A new priority -450 check rejects both immediate-NH44 fragments before priority -400 defragmentation. A 256-byte valid UDP control passes before and after. The case does not establish dynamic PMTU discovery.",
+  "topology_scope": "One manually provisioned IPv4 ESP layer on owned Linux namespaces. It is a backend/stage contract observation, not native FRR/OVS, IKE authentication, a two-layer proof or product approval.",
+  "preservation": "Only newly named tcv3df3 namespaces are created. MTUs and filters belong to those namespaces; fixtures are removed at finish. Other deployments remain untouched."
+}

@@ -1,0 +1,112 @@
+{
+  "configuration": "native-ipsec-baseline",
+  "snapshot_manifest_sha256": "264b0dc939c82bea6f5b4b3b2610fe54581f5dc77cba2639a0d24698bb986772",
+  "public_manifest_sha256": "c1271ab0da259eaf731520550452209339c530308f9613c80afb4cdf0ded1db5",
+  "offers": [
+    {
+      "device": "NB_I_A1",
+      "connection": "msc",
+      "suites": [
+        {
+          "aesBits": 256,
+          "gcm": true,
+          "signature": "ecdsaP384sha384",
+          "establishment": "ecdhP384",
+          "integrity": "sha384"
+        }
+      ]
+    },
+    {
+      "device": "NB_I_A2",
+      "connection": "msc",
+      "suites": [
+        {
+          "aesBits": 256,
+          "gcm": true,
+          "signature": "ecdsaP384sha384",
+          "establishment": "ecdhP384",
+          "integrity": "sha384"
+        }
+      ]
+    },
+    {
+      "device": "NB_I_B1",
+      "connection": "msc",
+      "suites": [
+        {
+          "aesBits": 256,
+          "gcm": true,
+          "signature": "ecdsaP384sha384",
+          "establishment": "ecdhP384",
+          "integrity": "sha384"
+        }
+      ]
+    },
+    {
+      "device": "NB_I_B2",
+      "connection": "msc",
+      "suites": [
+        {
+          "aesBits": 256,
+          "gcm": true,
+          "signature": "ecdsaP384sha384",
+          "establishment": "ecdhP384",
+          "integrity": "sha384"
+        }
+      ]
+    }
+  ],
+  "credential_keys": {
+    "NB_I_A1": {
+      "certificate_sha256": "9ed393d3af5fb8ae29e3450399283954a875eb8cfcf35517538b4925df114f7c",
+      "parameters": {
+        "curve": "secp384r1",
+        "certificate_signature": "ecdsa-with-SHA384",
+        "fingerprint_sha256": "9E:D3:93:D3:AF:5F:B8:AE:29:E3:45:03:99:28:39:54:A8:75:EB:8C:FC:F3:55:17:53:8B:49:25:DF:11:4F:7C"
+      },
+      "local_id": "NB_I_A1.msc.test",
+      "remote_id": "NB_I_B1.msc.test"
+    },
+    "NB_I_A2": {
+      "certificate_sha256": "d4716404a96fb85658d9253cad90dce03d462ced8f3764b37ab72f8dbd9dfd83",
+      "parameters": {
+        "curve": "secp384r1",
+        "certificate_signature": "ecdsa-with-SHA384",
+        "fingerprint_sha256": "D4:71:64:04:A9:6F:B8:56:58:D9:25:3C:AD:90:DC:E0:3D:46:2C:ED:8F:37:64:B3:7A:B7:2F:8D:BD:9D:FD:83"
+      },
+      "local_id": "NB_I_A2.msc.test",
+      "remote_id": "NB_I_B2.msc.test"
+    },
+    "NB_I_B1": {
+      "certificate_sha256": "c0172091c0f2f16dbe8377f84d4ad6a253c26d55536e88779ccd9cdbdc3fcda9",
+      "parameters": {
+        "curve": "secp384r1",
+        "certificate_signature": "ecdsa-with-SHA384",
+        "fingerprint_sha256": "C0:17:20:91:C0:F2:F1:6D:BE:83:77:F8:4D:4A:D6:A2:53:C2:6D:55:53:6E:88:77:9C:CD:9C:DB:DC:3F:CD:A9"
+      },
+      "local_id": "NB_I_B1.msc.test",
+      "remote_id": "NB_I_A1.msc.test"
+    },
+    "NB_I_B2": {
+      "certificate_sha256": "e9d29e0ef0c7dbdb6aa24b94f651533556ad12b8e95c4dae7ee94eb47a4cf2ba",
+      "parameters": {
+        "curve": "secp384r1",
+        "certificate_signature": "ecdsa-with-SHA384",
+        "fingerprint_sha256": "E9:D2:9E:0E:F0:C7:DB:DB:6A:A2:4B:94:F6:51:53:35:56:AD:12:B8:E9:5C:4D:AE:7E:E9:4E:B4:7A:4C:F2:BA"
+      },
+      "local_id": "NB_I_B2.msc.test",
+      "remote_id": "NB_I_A2.msc.test"
+    }
+  },
+  "complete_gateway_inventory": 8,
+  "checked_inner_inventory": 4,
+  "whole_RG018_established": false,
+  "whole_RG019_established": false,
+  "scope": [
+    "Complete loaded IKE offers for the selected Inner gateways, with both intended peer certificates bound to saved public keys and exact configured identities.",
+    "P-384 and certificate SHA384 parameters are read from public certificate bytes with OpenSSL. The snapshot's SHA1 public-key identifier is used only as a recorded identity binding, not as the required authentication hash.",
+    "ECDSA-with-SHA384 is an explicit loaded authentication constraint. The proof concerns these captured fixed endpoint credentials and does not assert a general curve restriction for future alternative certificates.",
+    "Outer public certificate bindings, ESP algorithm duties, post-quantum objective exchange/profile duties and all other cryptographic purposes remain separate.",
+    "Negotiation must select from the complete recorded offer list. Correct strongSwan/OpenSSL behavior, collector truth and unchanged configuration during the modeled use remain assumptions. Matching observations at two times do not prove uninterrupted configuration stability."
+  ]
+}

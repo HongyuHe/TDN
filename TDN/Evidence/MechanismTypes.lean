@@ -1,4 +1,4 @@
-import TDN.Semantics.Network
+import TDN.Targets.Architecture
 
 namespace TDN.Evidence
 

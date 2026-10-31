@@ -1,0 +1,1636 @@
+{
+  "at": "2026-10-24T04:33:46.040373+00:00",
+  "configuration": {
+    "host": "hy@pc22.cloudlab.umass.edu",
+    "run_root": "/users/hy/tdn-replay-20261024-v6",
+    "device_prefix": "NC",
+    "bridge_prefix": "nc3",
+    "profile_name": "native-replay-v6",
+    "ssh_port_base": 22352,
+    "socket_port": 49532,
+    "mac_prefix": "52:54:76:07",
+    "image_cache": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz"
+  },
+  "initial_public_identities": {
+    "NC_G_A1": {
+      "pid": 93279,
+      "interfaces": [
+        {
+          "ifindex": 1,
+          "ifname": "lo",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 65536,
+          "qdisc": "noqueue",
+          "operstate": "UNKNOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "loopback",
+          "address": "00:00:00:00:00:00",
+          "broadcast": "00:00:00:00:00:00",
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 0,
+          "max_mtu": 0,
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "127.0.0.1",
+              "prefixlen": 8,
+              "scope": "host",
+              "label": "lo",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 2,
+          "ifname": "ovs-system",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST"
+          ],
+          "mtu": 1500,
+          "qdisc": "noop",
+          "operstate": "DOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "ether",
+          "address": "c2:a1:96:ef:94:12",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "promiscuity": 1,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "openvswitch"
+          },
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 65536,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": []
+        },
+        {
+          "ifindex": 3,
+          "ifname": "br0",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1400,
+          "qdisc": "noqueue",
+          "operstate": "UNKNOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "ether",
+          "address": "fa:3d:76:2d:ec:48",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "promiscuity": 1,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "openvswitch"
+          },
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 65536,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": []
+        },
+        {
+          "ifindex": 102,
+          "link_index": 103,
+          "ifname": "outer",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1400,
+          "qdisc": "noqueue",
+          "master": "ovs-system",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:7c:ed:7d:51:27",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 1,
+          "promiscuity": 1,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth",
+            "info_slave_kind": "openvswitch"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-2-NC_G_A1"
+          ],
+          "addr_info": []
+        },
+        {
+          "ifindex": 124,
+          "link_index": 125,
+          "ifname": "inner",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1400,
+          "qdisc": "noqueue",
+          "master": "ovs-system",
+          "operstate": "UP",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "ether",
+          "address": "02:04:cc:c1:0f:2c",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 0,
+          "promiscuity": 1,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth",
+            "info_slave_kind": "openvswitch"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": []
+        }
+      ]
+    },
+    "NC_O_A1": {
+      "pid": 93337,
+      "interfaces": [
+        {
+          "ifindex": 1,
+          "ifname": "lo",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 65536,
+          "qdisc": "noqueue",
+          "operstate": "UNKNOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "loopback",
+          "address": "00:00:00:00:00:00",
+          "broadcast": "00:00:00:00:00:00",
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 0,
+          "max_mtu": 0,
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "127.0.0.1",
+              "prefixlen": 8,
+              "scope": "host",
+              "label": "lo",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 103,
+          "link_index": 102,
+          "ifname": "gray",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1400,
+          "qdisc": "noqueue",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:48:30:37:64:a3",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 1,
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-2-NC_O_A1"
+          ],
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "10.100.1.1",
+              "prefixlen": 24,
+              "broadcast": "10.100.1.255",
+              "scope": "global",
+              "label": "gray",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 105,
+          "link_index": 104,
+          "ifname": "black",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1500,
+          "qdisc": "noqueue",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:5f:78:0a:c3:5c",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 2,
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-3-NC_O_A1"
+          ],
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "172.20.11.1",
+              "prefixlen": 30,
+              "broadcast": "172.20.11.3",
+              "scope": "global",
+              "label": "black",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        }
+      ]
+    },
+    "NC_OF_A1": {
+      "pid": 93386,
+      "interfaces": [
+        {
+          "ifindex": 1,
+          "ifname": "lo",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 65536,
+          "qdisc": "noqueue",
+          "operstate": "UNKNOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "loopback",
+          "address": "00:00:00:00:00:00",
+          "broadcast": "00:00:00:00:00:00",
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 0,
+          "max_mtu": 0,
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "127.0.0.1",
+              "prefixlen": 8,
+              "scope": "host",
+              "label": "lo",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 104,
+          "link_index": 105,
+          "ifname": "inside",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1500,
+          "qdisc": "noqueue",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:36:b1:df:bf:46",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 0,
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-3-NC_OF_A1"
+          ],
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "172.20.11.2",
+              "prefixlen": 30,
+              "broadcast": "172.20.11.3",
+              "scope": "global",
+              "label": "inside",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 107,
+          "link_index": 106,
+          "ifname": "outside",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1500,
+          "qdisc": "noqueue",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:f2:52:c9:96:bb",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 2,
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-4-NC_OF_A1"
+          ],
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "172.21.11.1",
+              "prefixlen": 30,
+              "broadcast": "172.21.11.3",
+              "scope": "global",
+              "label": "outside",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        }
+      ]
+    },
+    "NC_G_B1": {
+      "pid": 93532,
+      "interfaces": [
+        {
+          "ifindex": 1,
+          "ifname": "lo",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 65536,
+          "qdisc": "noqueue",
+          "operstate": "UNKNOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "loopback",
+          "address": "00:00:00:00:00:00",
+          "broadcast": "00:00:00:00:00:00",
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 0,
+          "max_mtu": 0,
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "127.0.0.1",
+              "prefixlen": 8,
+              "scope": "host",
+              "label": "lo",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 2,
+          "ifname": "ovs-system",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST"
+          ],
+          "mtu": 1500,
+          "qdisc": "noop",
+          "operstate": "DOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "ether",
+          "address": "3a:71:bf:3d:08:ab",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "promiscuity": 1,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "openvswitch"
+          },
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 65536,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": []
+        },
+        {
+          "ifindex": 3,
+          "ifname": "br0",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1400,
+          "qdisc": "noqueue",
+          "operstate": "UNKNOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "ether",
+          "address": "d2:2c:44:73:d2:41",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "promiscuity": 1,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "openvswitch"
+          },
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 65536,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": []
+        },
+        {
+          "ifindex": 112,
+          "link_index": 113,
+          "ifname": "outer",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1400,
+          "qdisc": "noqueue",
+          "master": "ovs-system",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:dd:f6:a3:d6:8b",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 1,
+          "promiscuity": 1,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth",
+            "info_slave_kind": "openvswitch"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-7-NC_G_B1"
+          ],
+          "addr_info": []
+        },
+        {
+          "ifindex": 132,
+          "link_index": 133,
+          "ifname": "inner",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1400,
+          "qdisc": "noqueue",
+          "master": "ovs-system",
+          "operstate": "UP",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "ether",
+          "address": "02:4e:39:a8:30:96",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 0,
+          "promiscuity": 1,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth",
+            "info_slave_kind": "openvswitch"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": []
+        }
+      ]
+    },
+    "NC_O_B1": {
+      "pid": 93590,
+      "interfaces": [
+        {
+          "ifindex": 1,
+          "ifname": "lo",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 65536,
+          "qdisc": "noqueue",
+          "operstate": "UNKNOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "loopback",
+          "address": "00:00:00:00:00:00",
+          "broadcast": "00:00:00:00:00:00",
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 0,
+          "max_mtu": 0,
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "127.0.0.1",
+              "prefixlen": 8,
+              "scope": "host",
+              "label": "lo",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 113,
+          "link_index": 112,
+          "ifname": "gray",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1400,
+          "qdisc": "noqueue",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:cb:bd:b1:4c:03",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 1,
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-7-NC_O_B1"
+          ],
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "10.200.1.1",
+              "prefixlen": 24,
+              "broadcast": "10.200.1.255",
+              "scope": "global",
+              "label": "gray",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 115,
+          "link_index": 114,
+          "ifname": "black",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1500,
+          "qdisc": "noqueue",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:1a:2a:d5:d7:cb",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 2,
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-8-NC_O_B1"
+          ],
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "172.20.21.1",
+              "prefixlen": 30,
+              "broadcast": "172.20.21.3",
+              "scope": "global",
+              "label": "black",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        }
+      ]
+    },
+    "NC_OF_B1": {
+      "pid": 93636,
+      "interfaces": [
+        {
+          "ifindex": 1,
+          "ifname": "lo",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 65536,
+          "qdisc": "noqueue",
+          "operstate": "UNKNOWN",
+          "group": "default",
+          "txqlen": 1000,
+          "link_type": "loopback",
+          "address": "00:00:00:00:00:00",
+          "broadcast": "00:00:00:00:00:00",
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 0,
+          "max_mtu": 0,
+          "num_tx_queues": 1,
+          "num_rx_queues": 1,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "127.0.0.1",
+              "prefixlen": 8,
+              "scope": "host",
+              "label": "lo",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 114,
+          "link_index": 115,
+          "ifname": "inside",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1500,
+          "qdisc": "noqueue",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:bf:b6:e3:34:9a",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 0,
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-8-NC_OF_B1"
+          ],
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "172.20.21.2",
+              "prefixlen": 30,
+              "broadcast": "172.20.21.3",
+              "scope": "global",
+              "label": "inside",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        },
+        {
+          "ifindex": 117,
+          "link_index": 116,
+          "ifname": "outside",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "mtu": 1500,
+          "qdisc": "noqueue",
+          "operstate": "UP",
+          "group": "default",
+          "link_type": "ether",
+          "address": "02:ef:7b:07:95:37",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "link_netnsid": 2,
+          "promiscuity": 0,
+          "allmulti": 0,
+          "min_mtu": 68,
+          "max_mtu": 65535,
+          "linkinfo": {
+            "info_kind": "veth"
+          },
+          "num_tx_queues": 40,
+          "num_rx_queues": 40,
+          "gso_max_size": 65536,
+          "gso_max_segs": 65535,
+          "tso_max_size": 524280,
+          "tso_max_segs": 65535,
+          "gro_max_size": 65536,
+          "gso_ipv4_max_size": 65536,
+          "gro_ipv4_max_size": 65536,
+          "altnames": [
+            "msc-native-replay-v6-9-NC_OF_B1"
+          ],
+          "addr_info": [
+            {
+              "family": "inet",
+              "local": "172.21.21.1",
+              "prefixlen": 30,
+              "broadcast": "172.21.21.3",
+              "scope": "global",
+              "label": "outside",
+              "valid_life_time": 4294967295,
+              "preferred_life_time": 4294967295
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "records": [
+    {
+      "id": "linux-0000",
+      "at": "2026-10-24T04:32:50.950351+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "test -f /root/tdn-linux-outer-ready && test -x /usr/lib/ipsec/charon"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0001",
+      "at": "2026-10-24T04:32:51.255494+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux nc-linux-outer-0 6.1.0-54-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.190-1 (2026-10-16) x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0002",
+      "at": "2026-10-24T04:32:51.573743+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "cat /etc/os-release"
+      ],
+      "returncode": 0,
+      "stdout": "PRETTY_NAME=\"Debian GNU/Linux 12 (bookworm)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"12\"\nVERSION=\"12 (bookworm)\"\nVERSION_CODENAME=bookworm\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0003",
+      "at": "2026-10-24T04:32:51.874239+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "cat /proc/sys/kernel/random/boot_id"
+      ],
+      "returncode": 0,
+      "stdout": "8411b10b-4f0d-43bd-ae70-320969f92ab5\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0004",
+      "at": "2026-10-24T04:32:52.219369+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "swanctl --version"
+      ],
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nconnecting to 'unix:///var/run/charon.vici' failed: No such file or directory\nError: connecting to 'default' URI failed: No such file or directory\nstrongSwan 5.9.8 swanctl\nusage:\n  swanctl --version [--raw|--pretty]\n           --help            (-h)  show usage information\n           --daemon          (-d)  query daemon version\n           --raw             (-r)  dump raw response message\n           --pretty          (-P)  dump raw response message in pretty print\n           --debug           (-v)  set debug level, default: 1\n           --options         (-+)  read command line options from file\n           --uri             (-u)  service URI to connect to\n"
+    },
+    {
+      "id": "linux-0005",
+      "at": "2026-10-24T04:32:52.538788+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "openssl version"
+      ],
+      "returncode": 0,
+      "stdout": "OpenSSL 3.0.22 25 Aug 2026 (Library: OpenSSL 3.0.22 25 Aug 2026)\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0006",
+      "at": "2026-10-24T04:32:52.852025+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip -j -d address"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"noprefixroute\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"ifname\":\"ens3\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"fq_codel\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"52:54:76:08:00:10\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"virtio\",\"parentdev\":\"virtio0\",\"altnames\":[\"enp0s3\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.0.2.15\",\"prefixlen\":24,\"metric\":100,\"broadcast\":\"10.0.2.255\",\"scope\":\"global\",\"dynamic\":true,\"label\":\"ens3\",\"valid_life_time\":86381,\"preferred_life_time\":86381},{\"family\":\"inet6\",\"local\":\"fec0::5054:76ff:fe08:10\",\"prefixlen\":64,\"scope\":\"site\",\"dynamic\":true,\"mngtmpaddr\":true,\"noprefixroute\":true,\"valid_life_time\":86383,\"preferred_life_time\":14383},{\"family\":\"inet6\",\"local\":\"fe80::5054:76ff:fe08:10\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3,\"ifname\":\"ens5\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:48:30:37:64:a3\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"virtio\",\"parentdev\":\"virtio2\",\"altnames\":[\"enp0s5\"],\"addr_info\":[]},{\"ifindex\":4,\"ifname\":\"ens6\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:5f:78:0a:c3:5c\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"virtio\",\"parentdev\":\"virtio3\",\"altnames\":[\"enp0s6\"],\"addr_info\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0007",
+      "at": "2026-10-24T04:32:53.322031+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22453",
+        "root@127.0.0.1",
+        "test -f /root/tdn-linux-outer-ready && test -x /usr/lib/ipsec/charon"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0008",
+      "at": "2026-10-24T04:32:53.609920+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22453",
+        "root@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux nc-linux-outer-1 6.1.0-54-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.190-1 (2026-10-16) x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0009",
+      "at": "2026-10-24T04:32:53.901630+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22453",
+        "root@127.0.0.1",
+        "cat /etc/os-release"
+      ],
+      "returncode": 0,
+      "stdout": "PRETTY_NAME=\"Debian GNU/Linux 12 (bookworm)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"12\"\nVERSION=\"12 (bookworm)\"\nVERSION_CODENAME=bookworm\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0010",
+      "at": "2026-10-24T04:32:54.198363+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22453",
+        "root@127.0.0.1",
+        "cat /proc/sys/kernel/random/boot_id"
+      ],
+      "returncode": 0,
+      "stdout": "a440bfd1-7436-4f36-a5f8-bbcf488a73e6\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0011",
+      "at": "2026-10-24T04:32:54.513470+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22453",
+        "root@127.0.0.1",
+        "swanctl --version"
+      ],
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nconnecting to 'unix:///var/run/charon.vici' failed: No such file or directory\nError: connecting to 'default' URI failed: No such file or directory\nstrongSwan 5.9.8 swanctl\nusage:\n  swanctl --version [--raw|--pretty]\n           --help            (-h)  show usage information\n           --daemon          (-d)  query daemon version\n           --raw             (-r)  dump raw response message\n           --pretty          (-P)  dump raw response message in pretty print\n           --debug           (-v)  set debug level, default: 1\n           --options         (-+)  read command line options from file\n           --uri             (-u)  service URI to connect to\n"
+    },
+    {
+      "id": "linux-0012",
+      "at": "2026-10-24T04:32:54.810873+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22453",
+        "root@127.0.0.1",
+        "openssl version"
+      ],
+      "returncode": 0,
+      "stdout": "OpenSSL 3.0.22 25 Aug 2026 (Library: OpenSSL 3.0.22 25 Aug 2026)\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0013",
+      "at": "2026-10-24T04:32:55.103980+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22453",
+        "root@127.0.0.1",
+        "ip -j -d address"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"noprefixroute\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"ifname\":\"ens3\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"fq_codel\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"52:54:76:08:10:10\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"virtio\",\"parentdev\":\"virtio0\",\"altnames\":[\"enp0s3\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.0.2.15\",\"prefixlen\":24,\"metric\":100,\"broadcast\":\"10.0.2.255\",\"scope\":\"global\",\"dynamic\":true,\"label\":\"ens3\",\"valid_life_time\":86095,\"preferred_life_time\":86095},{\"family\":\"inet6\",\"local\":\"fec0::5054:76ff:fe08:1010\",\"prefixlen\":64,\"scope\":\"site\",\"dynamic\":true,\"mngtmpaddr\":true,\"noprefixroute\":true,\"valid_life_time\":86097,\"preferred_life_time\":14097},{\"family\":\"inet6\",\"local\":\"fe80::5054:76ff:fe08:1010\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0014",
+      "at": "2026-10-24T04:32:55.419533+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "mkdir -p /etc/swanctl"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0015",
+      "at": "2026-10-24T04:32:55.730421+00:00",
+      "command": [
+        "scp",
+        "-qr",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-P",
+        "22452",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer-creds/A/swanctl",
+        "root@127.0.0.1:/etc/"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0016",
+      "at": "2026-10-24T04:32:55.751157+00:00",
+      "command": [
+        "docker",
+        "stop",
+        "-t",
+        "3",
+        "NC_O_A1"
+      ],
+      "returncode": 0,
+      "stdout": "NC_O_A1\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0017",
+      "at": "2026-10-24T04:32:56.645672+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "python3 -c 'import json,subprocess;v=json.loads(subprocess.check_output(['\"'\"'ip'\"'\"','\"'\"'-j'\"'\"','\"'\"'link'\"'\"']));n=next(x['\"'\"'ifname'\"'\"']for x in v if x.get('\"'\"'address'\"'\"')=='\"'\"'02:48:30:37:64:a3'\"'\"');subprocess.run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"',n,'\"'\"'name'\"'\"','\"'\"'gray'\"'\"'],check=True)'"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0018",
+      "at": "2026-10-24T04:32:56.932465+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip link set gray mtu 1400 up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0019",
+      "at": "2026-10-24T04:32:57.226553+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip address replace 10.100.1.1/24 dev gray"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0020",
+      "at": "2026-10-24T04:32:58.116190+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "python3 -c 'import json,subprocess;v=json.loads(subprocess.check_output(['\"'\"'ip'\"'\"','\"'\"'-j'\"'\"','\"'\"'link'\"'\"']));n=next(x['\"'\"'ifname'\"'\"']for x in v if x.get('\"'\"'address'\"'\"')=='\"'\"'02:5f:78:0a:c3:5c'\"'\"');subprocess.run(['\"'\"'ip'\"'\"','\"'\"'link'\"'\"','\"'\"'set'\"'\"',n,'\"'\"'name'\"'\"','\"'\"'black'\"'\"'],check=True)'"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0021",
+      "at": "2026-10-24T04:32:58.414429+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip link set black mtu 1500 up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0022",
+      "at": "2026-10-24T04:32:58.715486+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip address replace 172.20.11.1/30 dev black"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0023",
+      "at": "2026-10-24T04:32:59.017122+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "sysctl -w net.ipv4.ip_forward=1 net.ipv4.conf.all.rp_filter=0 net.ipv4.conf.default.rp_filter=0"
+      ],
+      "returncode": 0,
+      "stdout": "net.ipv4.ip_forward = 1\nnet.ipv4.conf.all.rp_filter = 0\nnet.ipv4.conf.default.rp_filter = 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0024",
+      "at": "2026-10-24T04:32:59.317059+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip route del default"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0025",
+      "at": "2026-10-24T04:32:59.618961+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip route replace 10.200.1.2/32 via 172.20.11.2"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0026",
+      "at": "2026-10-24T04:32:59.924522+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip route replace 172.20.21.1/32 via 172.20.11.2"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0027",
+      "at": "2026-10-24T04:33:00.239943+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "ip -j route get 10.0.2.2"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"10.0.2.2\",\"dev\":\"ens3\",\"prefsrc\":\"10.0.2.15\",\"flags\":[],\"uid\":0,\"cache\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "linux-0028",
+      "at": "2026-10-24T04:33:45.592605+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22452",
+        "root@127.0.0.1",
+        "tail -n 150 /var/log/tdn-outer-charon.log"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "tail: cannot open '/var/log/tdn-outer-charon.log' for reading: No such file or directory\n"
+    },
+    {
+      "id": "linux-0029",
+      "at": "2026-10-24T04:33:46.039886+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22453",
+        "root@127.0.0.1",
+        "tail -n 150 /var/log/tdn-outer-charon.log"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "tail: cannot open '/var/log/tdn-outer-charon.log' for reading: No such file or directory\n"
+    }
+  ],
+  "error": "Command '['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=5', '-o', 'StrictHostKeyChecking=accept-new', '-i', '/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key', '-p', '22452', 'root@127.0.0.1', 'printf %s \\'# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 04:29:11 2026\\n*filter\\n:INPUT DROP [6:1968]\\n:FORWARD DROP [0:0]\\n:OUTPUT DROP [0:0]\\n-A INPUT -i lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A INPUT -i lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A INPUT -i lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A INPUT -i lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A INPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -i black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A INPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -i black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i gray -o black -p esp -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i black -o gray -p esp -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i gray -o black -p udp -m multiport --dports 500,4500 -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i black -o gray -p udp -m multiport --dports 500,4500 -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A OUTPUT -p tcp -m tcp --dport 53 -j REJECT --reject-with icmp-port-unreachable\\n-A OUTPUT -p udp -m udp --dport 53 -j REJECT --reject-with icmp-port-unreachable\\n-A OUTPUT -o lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A OUTPUT -o lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A OUTPUT -o lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A OUTPUT -o lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A OUTPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -o black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A OUTPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -o black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\\n-A INPUT -s 10.0.2.2/32 -i ens3 -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT\\n-A OUTPUT -d 10.0.2.2/32 -o ens3 -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT\\nCOMMIT\\n# Completed on Sat Oct 24 04:29:11 2026\\n\\' | iptables-restore']' timed out after 45 seconds",
+  "runtime_backend": "Native FRR/OVS with actual FreeBSD Inner and Debian Linux Outer kernels",
+  "scope": [
+    "Only the fresh replay NC Outers are replaced. Native FRR and OVS neighboring devices retain their assigned MAC and interface identities. Original ND and other deployments are preserved.",
+    "The two actual Linux kernels permit independent Gray clock experiments without changing the host clock. Clock correction is a separate next collection.",
+    "Private credentials move only within the authorized worker and owned guests; public exports contain no credential bytes. Hardware remains shared and product approval is not claimed."
+  ]
+}

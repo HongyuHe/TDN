@@ -1,0 +1,65 @@
+{
+  "at": "2026-10-24T14:47:17.082456+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T14:47:16.579543+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "stat -f %z /var/db/tdn-audit-exporter/actual-audit-source.log; cat /var/db/tdn-audit-exporter/cursor.json"
+      ],
+      "returncode": 0,
+      "stdout": "136535\n{\"offset\":136535}",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:47:16.826617+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "/var/db/tdn-audit-exporter/audit-export-client --url https://198.22.255.18:43463/v1/audit --log /var/db/tdn-audit-exporter/actual-audit-source.log --ca /var/db/tdn-audit-exporter/tls/ca.pem --cert /var/db/tdn-audit-exporter/tls/client.pem --key /var/db/tdn-audit-exporter/tls/client.key --cursor /var/db/tdn-audit-exporter/cursor.json"
+      ],
+      "returncode": 0,
+      "stdout": "no new audit bytes\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:47:17.081959+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-i",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key",
+        "-p",
+        "22352",
+        "root@127.0.0.1",
+        "cat /var/db/tdn-audit-exporter/cursor.json; stat -f %z /var/db/tdn-audit-exporter/actual-audit-source.log; sha256 /var/db/tdn-audit-exporter/actual-audit-source.log"
+      ],
+      "returncode": 0,
+      "stdout": "{\"offset\":136535}136535\nSHA256 (/var/db/tdn-audit-exporter/actual-audit-source.log) = fcc23fcb5b29655ce527561dba53038b8da73a66ea1fefa2f073bd4d206d4a6f\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:47:17.082048+00:00",
+      "probe": "complete-recorded-audit-source-acknowledged",
+      "expected_result": "accepted",
+      "observed_result": "accepted",
+      "bytes": 136535
+    }
+  ],
+  "error": null,
+  "scope": "Drain the exact stable source copy retained by v5, including its final actual audit marker. Only size, hashes, cursor and protocol acknowledgement metadata are exported."
+}

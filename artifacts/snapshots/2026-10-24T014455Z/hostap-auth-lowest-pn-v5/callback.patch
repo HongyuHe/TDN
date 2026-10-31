@@ -1,0 +1,27 @@
+--- a/src/ap/wpa_auth_kay.c
++++ b/src/ap/wpa_auth_kay.c
+@@ -119,6 +119,16 @@
+ 	if (!hapd->driver->get_receive_lowest_pn)
+ 		return -1;
+ 	return hapd->driver->get_receive_lowest_pn(hapd->drv_priv, sa);
++}
++
++
++static int hapd_set_receive_lowest_pn(void *priv, struct receive_sa *sa)
++{
++ struct hostapd_data *hapd = priv;
++
++ if (!hapd->driver->set_receive_lowest_pn)
++  return -1;
++ return hapd->driver->set_receive_lowest_pn(hapd->drv_priv, sa);
+ }
+ 
+ 
+@@ -319,6 +329,7 @@
+ 	kay_ctx->set_current_cipher_suite = hapd_set_current_cipher_suite;
+ 	kay_ctx->enable_controlled_port = hapd_enable_controlled_port;
+ 	kay_ctx->get_receive_lowest_pn = hapd_get_receive_lowest_pn;
++	kay_ctx->set_receive_lowest_pn = hapd_set_receive_lowest_pn;
+ 	kay_ctx->get_transmit_next_pn = hapd_get_transmit_next_pn;
+ 	kay_ctx->set_transmit_next_pn = hapd_set_transmit_next_pn;
+ 	kay_ctx->create_receive_sc = hapd_create_receive_sc;

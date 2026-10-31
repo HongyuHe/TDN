@@ -1,0 +1,76 @@
+{
+  "identities": {
+    "ND_I_A1": {
+      "role": "inner",
+      "osFamily": "FreeBSD",
+      "ikeCryptoProvider": "Botan",
+      "kernel": "FreeBSD evidence-freebsd-v2-0 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64",
+      "guest_ssh_port": "22222",
+      "observations": [
+        "diversity-0006",
+        "diversity-0007",
+        "diversity-0005",
+        "diversity-0004",
+        "diversity-0009"
+      ]
+    },
+    "ND_I_B1": {
+      "role": "inner",
+      "osFamily": "FreeBSD",
+      "ikeCryptoProvider": "Botan",
+      "kernel": "FreeBSD evidence-freebsd-v2-1 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64",
+      "guest_ssh_port": "22223",
+      "observations": [
+        "diversity-0018",
+        "diversity-0019",
+        "diversity-0017",
+        "diversity-0016",
+        "diversity-0021"
+      ]
+    },
+    "ND_O_A1": {
+      "role": "outer",
+      "osFamily": "Linux",
+      "ikeCryptoProvider": "OpenSSL",
+      "kernel": "Linux nd_o_a1 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux",
+      "container_id": "7f9a00872a382a661596db5edd0c502720321decdc9f5ba2d79ec9049fe965c4",
+      "pid": 47758,
+      "observations": [
+        "2026-10-24T03:55:01.964210+00:00",
+        "2026-10-24T03:55:02.042359+00:00",
+        "2026-10-24T03:55:02.212946+00:00",
+        "2026-10-24T03:55:02.284542+00:00",
+        "2026-10-24T03:55:02.436690+00:00",
+        "2026-10-24T03:55:02.674132+00:00"
+      ]
+    },
+    "ND_O_B1": {
+      "role": "outer",
+      "osFamily": "Linux",
+      "ikeCryptoProvider": "OpenSSL",
+      "kernel": "Linux nd_o_b1 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux",
+      "container_id": "58627904c8463ee04d1d7f6fcc10da6aa8e2009e0cb487890915b25e834c8289",
+      "pid": 48002,
+      "observations": [
+        "2026-10-24T03:55:02.693811+00:00",
+        "2026-10-24T03:55:02.768166+00:00",
+        "2026-10-24T03:55:02.949862+00:00",
+        "2026-10-24T03:55:03.031831+00:00",
+        "2026-10-24T03:55:03.194876+00:00",
+        "2026-10-24T03:55:03.445633+00:00"
+      ]
+    }
+  },
+  "input_manifests": {
+    "artifacts/snapshots/2026-10-24T014455Z/freebsd-native-integration-v8": "d852ddca17eef6c4e697be2f6706c615c66662d84b8c79a6134f23535bc76d6c",
+    "artifacts/snapshots/2026-10-24T014455Z/native-Outer-OS-bindings-v3": "e04069de6b2f2ee7a69007ffe9d2e9e939b54e8c242e85ebc46c4928a6c8abf3"
+  },
+  "scope": "Independent OS-family clause and observed IKE-provider difference for the selected ND case.",
+  "assumptions": [
+    "Collector truth and OS-family interpretation of actual uname results",
+    "Inner and Outer observations are from distinct recorded intervals; no atomic combined snapshot is asserted",
+    "Guest interface addresses and Outer IKE identities bind the declared component inventory",
+    "Product, manufacturer/subsidiary, NIAP configuration and NSA independence approval are not established",
+    "Shared physical host is explicit; this case does not establish RG005 physical separation"
+  ]
+}

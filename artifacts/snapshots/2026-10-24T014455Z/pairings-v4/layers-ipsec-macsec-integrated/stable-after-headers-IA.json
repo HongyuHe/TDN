@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0362",
+  "started_at": "2026-10-24T14:02:05.581056+00:00",
+  "ended_at": "2026-10-24T14:02:11.275560+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-IA",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "IA",
+  "returncode": 0,
+  "stdout": "14:02:05.992298 red   In  ifindex 4202 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 20091, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46953, seq 1, length 72\n14:02:07.053935 red   In  ifindex 4202 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 20500, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46953, seq 2, length 72\n14:02:08.077906 red   In  ifindex 4202 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 20944, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46953, seq 3, length 72\n14:02:09.151609 red   In  ifindex 4202 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 21880, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46961, seq 1, length 72\n14:02:09.151639 gray  Out ifindex 4211 f2:6e:7a:fb:29:f9 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x1), length 128\n14:02:09.151759 gray  In  ifindex 4211 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 56480, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x1), length 128\n14:02:09.151759 gray  In  ifindex 4211 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 63, id 40708, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46961, seq 1, length 72\n14:02:09.151773 red   Out ifindex 4202 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 40708, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46961, seq 1, length 72\n14:02:10.189918 red   In  ifindex 4202 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 22449, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46961, seq 2, length 72\n14:02:10.189963 gray  Out ifindex 4211 f2:6e:7a:fb:29:f9 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x2), length 128\n14:02:10.190127 gray  In  ifindex 4211 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 57269, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x2), length 128\n14:02:10.190127 gray  In  ifindex 4211 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 63, id 41035, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46961, seq 2, length 72\n14:02:10.190141 red   Out ifindex 4202 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 41035, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46961, seq 2, length 72\n14:02:11.213913 red   In  ifindex 4202 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 23079, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46961, seq 3, length 72\n14:02:11.213955 gray  Out ifindex 4211 f2:6e:7a:fb:29:f9 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x3), length 128\n14:02:11.214112 gray  In  ifindex 4211 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 58129, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x3), length 128\n14:02:11.214112 gray  In  ifindex 4211 aa:b3:5b:78:e0:cc ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 63, id 41733, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46961, seq 3, length 72\n14:02:11.214129 red   Out ifindex 4202 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 41733, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46961, seq 3, length 72\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n18 packets captured\n18 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 2
+}

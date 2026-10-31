@@ -1,0 +1,204 @@
+{
+  "at": "2026-10-24T04:27:39.187550+00:00",
+  "configuration": {
+    "host": "hy@pc22.cloudlab.umass.edu",
+    "run_root": "/users/hy/tdn-replay-20261024-v6",
+    "device_prefix": "NC",
+    "bridge_prefix": "nc3",
+    "profile_name": "native-replay-v6",
+    "ssh_port_base": 22352,
+    "socket_port": 49532,
+    "mac_prefix": "52:54:76:07",
+    "image_cache": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz"
+  },
+  "records": [
+    {
+      "at": "2026-10-24T04:27:25.109415+00:00",
+      "command": [
+        "curl",
+        "-fL",
+        "--retry",
+        "2",
+        "-o",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/SHA512SUMS",
+        "https://cloud.debian.org/images/cloud/bookworm/latest/SHA512SUMS"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100  6416  100  6416    0     0   9462      0 --:--:-- --:--:-- --:--:--  9477\n"
+    },
+    {
+      "at": "2026-10-24T04:27:38.088545+00:00",
+      "command": [
+        "curl",
+        "-fL",
+        "--retry",
+        "2",
+        "-o",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/debian-12-genericcloud-amd64.qcow2",
+        "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100   398  100   398    0     0   1088      0 --:--:-- --:--:-- --:--:--  1087\n\n  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0\n  0  331M    0  781k    0     0   343k      0  0:16:28  0:00:02  0:16:26  925k\n  7  331M    7 26.4M    0     0  8286k      0  0:00:40  0:00:03  0:00:37 14.3M\n 17  331M   17 57.9M    0     0  13.5M      0  0:00:24  0:00:04  0:00:20 20.3M\n 26  331M   26 89.4M    0     0  16.9M      0  0:00:19  0:00:05  0:00:14 23.2M\n 36  331M   36  120M    0     0  19.2M      0  0:00:17  0:00:06  0:00:11 24.9M\n 45  331M   45  152M    0     0  20.9M      0  0:00:15  0:00:07  0:00:08 30.3M\n 55  331M   55  183M    0     0  22.2M      0  0:00:14  0:00:08  0:00:06 31.4M\n 64  331M   64  215M    0     0  23.2M      0  0:00:14  0:00:09  0:00:05 31.4M\n 74  331M   74  246M    0     0  24.0M      0  0:00:13  0:00:10  0:00:03 31.4M\n 83  331M   83  278M    0     0  24.6M      0  0:00:13  0:00:11  0:00:02 31.4M\n 93  331M   93  309M    0     0  25.2M      0  0:00:13  0:00:12  0:00:01 31.4M\n100  331M  100  331M    0     0  25.5M      0  0:00:12  0:00:12 --:--:-- 31.4M\n"
+    },
+    {
+      "at": "2026-10-24T04:27:38.951028+00:00",
+      "command": [
+        "ssh-keygen",
+        "-y",
+        "-f",
+        "/users/hy/tdn-replay-20261024-v6/private/freebsd/management_key"
+      ],
+      "returncode": 0,
+      "stdout": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTFnbdQDVI0n5ix4ZWBaVwVpi/b0F+QeS4VJWSrVzzg root@node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:27:39.028431+00:00",
+      "command": [
+        "qemu-img",
+        "create",
+        "-f",
+        "qcow2",
+        "-F",
+        "qcow2",
+        "-b",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/debian-12-genericcloud-amd64.qcow2",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/outer-0.qcow2",
+        "12G"
+      ],
+      "returncode": 0,
+      "stdout": "Formatting '/users/hy/tdn-replay-20261024-v6/private/linux-outer/outer-0.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=12884901888 backing_file=/users/hy/tdn-replay-20261024-v6/private/linux-outer/debian-12-genericcloud-amd64.qcow2 backing_fmt=qcow2 lazy_refcounts=off refcount_bits=16\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:27:39.035312+00:00",
+      "command": [
+        "genisoimage",
+        "-quiet",
+        "-output",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-0.iso",
+        "-volid",
+        "cidata",
+        "-joliet",
+        "-rock",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-0/user-data",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-0/meta-data",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-0/network-config"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:27:39.104274+00:00",
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "nc-linux-outer-v3-0",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-replay-20261024-v6/private/linux-outer/outer-0.qcow2,format=qcow2,if=virtio",
+        "-drive",
+        "file=/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-0.iso,media=cdrom,readonly=on",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22452-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt,mac=52:54:76:08:00:10",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-replay-20261024-v6/private/linux-outer/serial-0.log",
+        "-monitor",
+        "unix:/users/hy/tdn-replay-20261024-v6/private/linux-outer/monitor-0.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/qemu-0.pid",
+        "-daemonize"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:27:39.113928+00:00",
+      "command": [
+        "qemu-img",
+        "create",
+        "-f",
+        "qcow2",
+        "-F",
+        "qcow2",
+        "-b",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/debian-12-genericcloud-amd64.qcow2",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/outer-1.qcow2",
+        "12G"
+      ],
+      "returncode": 0,
+      "stdout": "Formatting '/users/hy/tdn-replay-20261024-v6/private/linux-outer/outer-1.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=12884901888 backing_file=/users/hy/tdn-replay-20261024-v6/private/linux-outer/debian-12-genericcloud-amd64.qcow2 backing_fmt=qcow2 lazy_refcounts=off refcount_bits=16\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:27:39.120554+00:00",
+      "command": [
+        "genisoimage",
+        "-quiet",
+        "-output",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-1.iso",
+        "-volid",
+        "cidata",
+        "-joliet",
+        "-rock",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-1/user-data",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-1/meta-data",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-1/network-config"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:27:39.187175+00:00",
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "nc-linux-outer-v3-1",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-replay-20261024-v6/private/linux-outer/outer-1.qcow2,format=qcow2,if=virtio",
+        "-drive",
+        "file=/users/hy/tdn-replay-20261024-v6/private/linux-outer/seed-1.iso,media=cdrom,readonly=on",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22453-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt,mac=52:54:76:08:10:10",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-replay-20261024-v6/private/linux-outer/serial-1.log",
+        "-monitor",
+        "unix:/users/hy/tdn-replay-20261024-v6/private/linux-outer/monitor-1.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-replay-20261024-v6/private/linux-outer/qemu-1.pid",
+        "-daemonize"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": "Preparation of two fresh actual Linux Outer kernels. Original native Outers have not been stopped or replaced during preparation. Private NoCloud credentials remain remote only; the exported public key identifies the authorized laboratory control."
+}

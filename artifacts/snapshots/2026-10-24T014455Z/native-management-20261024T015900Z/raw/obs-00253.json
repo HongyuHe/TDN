@@ -1,0 +1,4 @@
+{
+  "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 10.100.2.2\n  remote_addrs = 10.200.2.2\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = NM_I_A2.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = NM_I_B2.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.1.2.0/24\n    remote_ts = 10.2.2.0/24\n    mode = tunnel\n    reqid = 102\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+  "stderr": ""
+}

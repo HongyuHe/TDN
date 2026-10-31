@@ -1,0 +1,20 @@
+{
+  "source_clauses": [
+    "MSC-PF-12"
+  ],
+  "devices": [
+    "IA"
+  ],
+  "hooks": [
+    "raw/PREROUTING",
+    "raw/OUTPUT"
+  ],
+  "field": "Immediate IPv6 Next Header at byte 6 of IPv6 header",
+  "allowed_values": [
+    6,
+    17,
+    50,
+    58
+  ],
+  "scope": "Every VPN gateway in the supplemental family fixture, including gateways with no configured global IPv6 address. The profile supports allowed TCP, UDP, ESP and ICMPv6 immediate values. No arbitrary upper-layer match is substituted. Source multicast and IPv4 options clauses are separate controls."
+}

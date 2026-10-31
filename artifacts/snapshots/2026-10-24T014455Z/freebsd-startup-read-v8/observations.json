@@ -1,0 +1,21 @@
+{
+  "records": [
+    {
+      "at": "2026-10-24T05:23:50.202758+00:00",
+      "sent": "\n",
+      "received": "\r\nroot@nc-freebsd-0:~ # "
+    },
+    {
+      "at": "2026-10-24T05:23:53.273300+00:00",
+      "sent": "wc -c /etc/rc.conf /etc/rc.conf.bak /usr/local/etc/rc.d/tdn_gateway; ls -l /etc/rc.conf /etc/rc.conf.bak /usr/local/etc/rc.d/tdn_gateway; cat /etc/rc.conf.bak\n",
+      "received": "wc -c /etc/rc.conf /etc/rc.conf.bak /usr/local/etc/rc.d/td \bn_gateway; ls -l /etc/rc.conf /etc/rc.conf.bak /usr/local/etc/rc.d/tdn_gateway;  \bcat /etc/rc.conf.bak\r\n       0 /etc/rc.conf\r\nwc: /etc/rc.conf.bak: open: No such file or directory\r\n       0 /usr/local/etc/rc.d/tdn_gateway\r\n       0 total\r\nls: /etc/rc.conf.bak: No such file or directory\r\n-rw-r--r--  1 root wheel 0 Oct 24 05:15 /etc/rc.conf\r\n-r-xr-xr-x  1 root wheel 0 Oct 24 05:15 /usr/local/etc/rc.d/tdn_gateway\r\ncat: /etc/rc.conf.bak: No such file or directory\r\nroot@nc-freebsd-0:~ # "
+    },
+    {
+      "at": "2026-10-24T05:23:56.374790+00:00",
+      "sent": "grep -F synthetic-durable-marker-0 /var/log/auth.log; service sshd status; sockstat -46l\n",
+      "received": "grep -F synthetic-durable-marker-0 /var/log/auth.log; serv \bice sshd status; sockstat -46l\r\nOct 24 05:15:57 nc-freebsd-0 tdn-audit[1750]: synthetic-durable-marker-0-20261024T051557Z\r\nsshd is not running.\r\nUSER     COMMAND    PID   FD  PROTO     LOCAL ADDRESS         FOREIGN ADDRESS      \r\nroot     syslogd      989 6   udp6      *:514                 *:*\r\nroot     syslogd      989 7   udp4      *:514                 *:*\r\nroot@nc-freebsd-0:~ # "
+    }
+  ],
+  "error": null,
+  "scope": "Only the owned replay VM console is controlled. Host/hypervisor administration is an explicit trusted laboratory control. Commands and exact responses are preserved."
+}

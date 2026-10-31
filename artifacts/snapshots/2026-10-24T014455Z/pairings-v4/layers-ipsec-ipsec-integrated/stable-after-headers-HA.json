@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0415",
+  "started_at": "2026-10-24T14:01:46.988501+00:00",
+  "ended_at": "2026-10-24T14:01:52.640205+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-HA",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "HA",
+  "returncode": 0,
+  "stdout": "14:01:47.401961 red   Out ifindex 4189 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 34770, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45747, seq 1, length 72\n14:01:48.429899 red   Out ifindex 4189 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 35332, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45747, seq 2, length 72\n14:01:49.453921 red   Out ifindex 4189 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 35386, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45747, seq 3, length 72\n14:01:50.531878 red   Out ifindex 4189 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 35808, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45755, seq 1, length 72\n14:01:50.532144 red   In  ifindex 4189 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 7092, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 45755, seq 1, length 72\n14:01:51.565912 red   Out ifindex 4189 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 36061, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 45755, seq 2, length 72\n14:01:51.566187 red   In  ifindex 4189 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 7919, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 45755, seq 2, length 72\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n7 packets captured\n9 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 2
+}

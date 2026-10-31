@@ -1,0 +1,254 @@
+{
+  "at": "2026-10-24T04:41:26.013133+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T04:40:41.160626+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "clean"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "rm -f core *~ nt_password_hash hlr_auc_gw\nrm -f sae_pk_gen\nrm -f lcov.info\nrm -rf lcov-html\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:40:52.072059+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "-j4"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "  CC  ../src/ap/wpa_auth_glue.c\n  CC  main.c\n  CC  ../src/ap/drv_callbacks.c\n  CC  ../src/ap/utils.c\n  CC  ../src/ap/ap_drv_ops.c\n  CC  config_file.c\n  CC  ../src/ap/hostapd.c\n  CC  ../src/ap/authsrv.c\n  CC  ../src/ap/eap_user_db.c\n  CC  ../src/ap/ieee802_11_auth.c\n  CC  ../src/ap/ap_config.c\n  CC  ../src/ap/ieee802_1x.c\n  CC  ../src/ap/tkip_countermeasures.c\n  CC  ../src/ap/ap_mlme.c\n  CC  ../src/ap/preauth_auth.c\n  CC  ../src/ap/sta_info.c\n  CC  ../src/ap/wpa_auth_ie.c\n  CC  ../src/ap/pmksa_cache_auth.c\n  CC  ../src/ap/ieee802_11_shared.c\n  CC  ../src/ap/bss_load.c\n  CC  ../src/ap/beacon.c\n  CC  ../src/common/ptksa_cache.c\n  CC  ../src/ap/neighbor_db.c\n  CC  ../src/drivers/drivers.c\n  CC  ../src/ap/rrm.c\n  CC  ../src/utils/eloop.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/ap/wpa_auth.c\n  CC  ../src/utils/wpabuf.c\n  CC  ../src/utils/common.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/eapol_auth/eapol_auth_sm.c\n  CC  ../src/eapol_auth/eapol_auth_dump.c\n  CC  ../src/common/wpa_common.c\n  CC  ../src/radius/radius_das.c\n  CC  ../src/radius/radius_client.c\n  CC  ../src/common/ieee802_11_common.c\n  CC  ../src/radius/radius.c\n  CC  ../src/ap/vlan_ifconfig.c\n  CC  ../src/ap/vlan_init.c\n  CC  ../src/ap/accounting.c\n  CC  ../src/ap/vlan.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/drivers/driver_wired.c\n  CC  ../src/drivers/driver_wired_common.c\n  CC  ../src/drivers/driver_none.c\n  CC  ../src/l2_packet/l2_packet_linux.c\n  CC  ../src/drivers/driver_macsec_linux.c\n  CC  ../src/ap/ctrl_iface_ap.c\n  CC  ../src/eap_server/eap_server_tls.c\n  CC  ../src/ap/wpa_auth_kay.c\n  CC  ../src/pae/ieee802_1x_cp.c\n  CC  ctrl_iface.c\n  CC  ../src/pae/ieee802_1x_key.c\n  CC  eap_register.c\n  CC  ../src/pae/ieee802_1x_secy_ops.c\n  CC  ../src/eap_common/eap_common.c\n  CC  ../src/eap_server/eap_server_methods.c\n  CC  ../src/eap_server/eap_server_identity.c\n  CC  ../src/eap_server/eap_server_tls_common.c\n  CC  ../src/eap_server/eap_server.c\n  CC  ../src/crypto/tls_openssl_ocsp.c\n  CC  ../src/crypto/sha1-prf.c\n  CC  ../src/crypto/sha1-tlsprf.c\n  CC  ../src/crypto/sha256-prf.c\n  CC  ../src/crypto/sha256-tlsprf.c\n  CC  ../src/crypto/crypto_openssl.c\n  CC  ../src/pae/ieee802_1x_kay.c\n  CC  ../src/crypto/random.c\n  CC  ../src/ap/ieee802_11_ht.c\n  CC  ../src/drivers/driver_common.c\n  CC  ../src/common/wpa_ctrl.c\n  CC  ../src/crypto/tls_openssl.c\n  CC  ../src/radius/radius_server.c\n  CC  ../src/utils/edit_simple.c\n  CC  ../src/common/cli.c\n  LD  hostapd\n  CC  hostapd_cli.c\n  LD  hostapd_cli\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:40:54.287816+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "./hostapd",
+        "-v"
+      ],
+      "cwd": null,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "hostapd v2.12\nUser space daemon for IEEE 802.11 AP management,\nIEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator\nCopyright (c) 2002-2026, Jouni Malinen <j@w1.fi> and contributors\n"
+    },
+    {
+      "at": "2026-10-24T04:40:56.553231+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "ldd",
+        "./hostapd"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffd9e352000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x000078927c7a3000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x000078927c79b000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x000078927c6ff000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x000078927c5ee000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x000078927bfd4000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000078927bdb1000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x000078927bd93000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x000078927bcd0000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000078927c887000)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:40:58.778437+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\nbuilt on: Wed Sep 30 18:46:30 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=/usr/src/openssl-3.5.5-1ubuntu3.7 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific JITTER (3060300)\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x00000000000037ab:0x000000009c000400:0x0000000000000000:0x0000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:41:01.060408+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "sha256sum",
+        "./hostapd"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "00f209fa16df3d9f95ef239c8a29bd7b72bdacff0d6e0a1f1e715a809223e968  ./hostapd\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:41:01.413796+00:00",
+      "command": [
+        "patch",
+        "-p1",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/hostap-delay-reproduction-v5/final.patch"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/wpa_supplicant-2.12",
+      "returncode": 0,
+      "stdout": "patching file src/drivers/driver_macsec_linux.c\npatching file src/pae/ieee802_1x_kay.h\npatching file src/pae/ieee802_1x_kay.c\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:41:03.950219+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "clean"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "make -C ../src clean\nfor d in ap common crypto drivers eapol_auth eapol_supp eap_common eap_peer eap_server l2_packet p2p pae pasn radius rsn_supp tls utils wps fst; do [ -d $d ] && make -C $d clean; done\nrm -f *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f build.wpa_supplicant build.hostapd\nrm -f *~ *.o *.d\nrm -f *~ *.o *.d\nrm -f *~\nmake -C dbus clean\nrm -f *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f libwpadbus.a\nrm -f core *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f eap_*.so wpa_supplicant.exe wpa_cli.exe wpa_passphrase.exe win_if_list.exe eapol_test preauth_test\nrm -f wpa_priv\nrm -f nfc_pw_token\nrm -f lcov.info\nrm -rf lcov-html\nrm -f libwpa_client.a\nrm -f libpasn.so\nrm -f libwpa_client.so\nrm -f libwpa_test1 libwpa_test2\nrm -f wpa_passphrase\n",
+      "stderr": "Package dbus-1 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `dbus-1.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'dbus-1' not found\nPackage dbus-1 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `dbus-1.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'dbus-1' not found\n"
+    },
+    {
+      "at": "2026-10-24T04:41:16.360609+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "-j4"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "  sed systemd/wpa_supplicant.service.in\n  sed systemd/wpa_supplicant-nl80211.service.arg.in\n  sed systemd/wpa_supplicant.service.arg.in\n  sed systemd/wpa_supplicant-wired.service.arg.in\n  sed dbus/fi.w1.wpa_supplicant1.service.in\n  CC  wpa_passphrase.c\n  CC  eap_register.c\n  CC  notify.c\n  CC  ../src/utils/config.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/utils/common.c\n  CC  bss.c\n  CC  ../src/utils/wpabuf.c\n  CC  ../src/utils/bitfield.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/common/ptksa_cache.c\n  CC  twt.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/rsn_supp/pmksa_cache.c\n  CC  ../src/utils/eloop.c\n  CC  config.c\n  CC  ../src/rsn_supp/wpa_ie.c\n  CC  ../src/rsn_supp/preauth.c\n  CC  config_file.c\n  CC  rrm.c\n  CC  op_classes.c\n  CC  ../src/common/wpa_common.c\n  CC  ../src/eap_peer/eap_tls.c\n  CC  wmm_ac.c\n  CC  wpas_kay.c\n  CC  ../src/pae/ieee802_1x_cp.c\n  CC  robust_av.c\n  CC  ../src/pae/ieee802_1x_key.c\n  CC  ../src/rsn_supp/wpa.c\n  CC  ../src/pae/ieee802_1x_secy_ops.c\n  CC  ../src/eap_peer/eap_methods.c\n  CC  ../src/eapol_supp/eapol_supp_sm.c\n  CC  ../src/eap_peer/eap_tls_common.c\n  CC  ../src/eap_peer/eap.c\n  CC  ../src/crypto/tls_openssl_ocsp.c\n  CC  ../src/crypto/aes-encblock.c\n  CC  ../src/pae/ieee802_1x_kay.c\n  CC  ../src/crypto/sha256-prf.c\n  CC  ../src/crypto/sha256-tlsprf.c\n  CC  ../src/crypto/random.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/crypto/crypto_openssl.c\n  CC  ../src/utils/base64.c\n  CC  ctrl_iface_unix.c\n  CC  ../src/crypto/tls_openssl.c\n  CC  ../src/eap_common/eap_common.c\n  CC  ../src/crypto/sha1-prf.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/crypto/sha1-tlsprf.c\n  CC  ../src/drivers/driver_common.c\n  CC  ../src/common/ieee802_11_common.c\n  CC  bssid_ignore.c\n  CC  wpas_glue.c\n  CC  ctrl_iface.c\n  CC  main.c\n  CC  events.c\n  CC  ../src/drivers/driver_macsec_linux.c\n  CC  scan.c\n  CC  ../src/drivers/drivers.c\n  CC  ../src/drivers/driver_wired_common.c\n  CC  ../src/l2_packet/l2_packet_linux.c\n  CC  ../src/common/wpa_ctrl.c\n  CC  ../src/utils/edit_simple.c\n  CC  ../src/common/cli.c\n  CC  wpa_supplicant.c\n  LD  wpa_passphrase\n  LD  wpa_supplicant\n  CC  wpa_cli.c\n  LD  wpa_cli\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:41:18.659683+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "./wpa_supplicant",
+        "-v"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nCopyright (c) 2003-2026, Jouni Malinen <j@w1.fi> and contributors\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:41:21.050988+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "ldd",
+        "./wpa_supplicant"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffea9357000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x0000738968f46000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x0000738968f3e000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x0000738968ea2000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x0000738968d91000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x0000738968777000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x0000738968554000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x0000738968536000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x0000738968473000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000738969055000)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:41:23.324201+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\nbuilt on: Wed Sep 30 18:46:30 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-ivqAiB/openssl-3.5.5=/usr/src/openssl-3.5.5-1ubuntu3.7 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific JITTER (3060300)\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x00000000000037ab:0x000000009c000400:0x0000000000000000:0x0000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:41:25.588173+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay/wpa_supplicant-2.12/wpa_supplicant",
+        "tdn-hostap-pq:20261024-v3",
+        "sha256sum",
+        "./wpa_supplicant"
+      ],
+      "cwd": null,
+      "returncode": 0,
+      "stdout": "aa5af96ee16645430271770a942ceefd2f86d62efbb25f2e76fe3595681d44a6  ./wpa_supplicant\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": [
+    "Separate owned objective EAP tree combines existing TLS 1.3 MLKEM1024/MLDSA87, 256-bit EAP-derived CAK KDF and L2 repair with final bounded-Hello/PN-history/Linux lowest-PN driver patches. Original v14 binaries remain unchanged.",
+    "Both hostapd and wpa_supplicant have complete final diffs from their exact official 2.12 source archives, active build config, source hashes, binary hashes and runtime library identities. Finite EAP delayed-data behavior remains a separate execution test.",
+    "IEEE normative KDF/agility review and complete standard conformance remain separate from matching locally patched implementations."
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "at": "2026-10-24T14:46:00.047682+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T14:45:59.542668+00:00",
+      "label": "before-restart",
+      "journal_sha256": "fb5eee6361cc3a3ea8946c3dec9aad4f217d123130e5c780c46ac6a011dfadc2",
+      "file_mode": "0o600",
+      "records": [
+        {
+          "device": "NC-I-A",
+          "offset": 0,
+          "next": 65536,
+          "bytes": 65536,
+          "sha256": "a3aeaeba59c0210f8322c6e22908ff6d5bca1e70b0e84810cda16d7ce7a9d80b",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        },
+        {
+          "device": "NC-I-A",
+          "offset": 65536,
+          "next": 131072,
+          "bytes": 65536,
+          "sha256": "5785bd26a669ca533d04d4ca1b78be7ee384d6ff308e2fe6a96f04270a30a208",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        },
+        {
+          "device": "NC-I-A",
+          "offset": 131072,
+          "next": 136535,
+          "bytes": 5463,
+          "sha256": "408a2eaba7985e4501f6eb0763d9c8071dd95899d3332078faef61fd1a903465",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        }
+      ],
+      "actual_audit_markers": [
+        "Oct 24 14:30:47 nc-freebsd-0 tdn-audit[1250]: owned-protected-offload-20261024T143047Z"
+      ]
+    },
+    {
+      "at": "2026-10-24T14:46:00.045985+00:00",
+      "label": "after-restart",
+      "journal_sha256": "fb5eee6361cc3a3ea8946c3dec9aad4f217d123130e5c780c46ac6a011dfadc2",
+      "file_mode": "0o600",
+      "records": [
+        {
+          "device": "NC-I-A",
+          "offset": 0,
+          "next": 65536,
+          "bytes": 65536,
+          "sha256": "a3aeaeba59c0210f8322c6e22908ff6d5bca1e70b0e84810cda16d7ce7a9d80b",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        },
+        {
+          "device": "NC-I-A",
+          "offset": 65536,
+          "next": 131072,
+          "bytes": 65536,
+          "sha256": "5785bd26a669ca533d04d4ca1b78be7ee384d6ff308e2fe6a96f04270a30a208",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        },
+        {
+          "device": "NC-I-A",
+          "offset": 131072,
+          "next": 136535,
+          "bytes": 5463,
+          "sha256": "408a2eaba7985e4501f6eb0763d9c8071dd95899d3332078faef61fd1a903465",
+          "peer_cn": "NC-I-A",
+          "tls_version": "TLSv1.3",
+          "tls_cipher": "TLS_AES_256_GCM_SHA384"
+        }
+      ],
+      "actual_audit_markers": [
+        "Oct 24 14:30:47 nc-freebsd-0 tdn-audit[1250]: owned-protected-offload-20261024T143047Z"
+      ]
+    },
+    {
+      "at": "2026-10-24T14:46:00.047506+00:00",
+      "operation": "owned-service-restart",
+      "old_pid": 70086,
+      "new_pid": 70586,
+      "command": [
+        "python3",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/scripts/audit_collector_v3.py",
+        "--root",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/store",
+        "--ca",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/ca.pem",
+        "--cert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.pem",
+        "--key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v5/private/server.key"
+      ]
+    }
+  ],
+  "error": null,
+  "scope": "Read-only committed journal summaries plus a positively identified owned collector restart and separately bounded store. No private credential or source audit body bytes are exported."
+}

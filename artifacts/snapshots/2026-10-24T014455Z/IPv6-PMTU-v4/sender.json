@@ -1,0 +1,63 @@
+{
+  "at": "2026-10-24T05:10:34.602601+00:00",
+  "initial_path_mtu": 1500,
+  "final_path_mtu": 1326,
+  "events": [
+    {
+      "attempt": 0,
+      "send_bytes": 1400
+    },
+    {
+      "attempt": 0,
+      "socket_path_mtu": 1500
+    },
+    {
+      "attempt": 1,
+      "send_bytes": 1400
+    },
+    {
+      "attempt": 1,
+      "error_queue": [
+        {
+          "errno": 90,
+          "origin": 3,
+          "type": 2,
+          "code": 0,
+          "info": 1326,
+          "data": 0
+        }
+      ],
+      "quoted_payload_bytes": 1184
+    },
+    {
+      "attempt": 1,
+      "socket_path_mtu": 1326
+    },
+    {
+      "attempt": 2,
+      "send_error": 90,
+      "error": "[Errno 90] Message too long"
+    },
+    {
+      "attempt": 2,
+      "error_queue": [
+        {
+          "errno": 90,
+          "origin": 1,
+          "type": 0,
+          "code": 0,
+          "info": 1326,
+          "data": 0
+        }
+      ],
+      "quoted_payload_bytes": 0
+    },
+    {
+      "attempt": 2,
+      "socket_path_mtu": 1326
+    }
+  ],
+  "valid_send_bytes": 1200,
+  "valid_sha256": "5b536a2b58293725af0503347395bd8d753cd2fb6749b1473c439393623d6428",
+  "ack": "owned-pmtu-ack"
+}

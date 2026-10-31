@@ -1,0 +1,27 @@
+{
+  "clock_bundle": "artifacts/snapshots/2026-10-24T014455Z/independent-Red-clocks-v3",
+  "setup_bundle": "artifacts/snapshots/2026-10-24T014455Z/freebsd-native-integration-v3",
+  "retained_setup_failure": "Command '['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=accept-new', '-i', '/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key', '-p', '22222', 'root@127.0.0.1', 'daemon -o /root/tdn-freebsd-v3/charon-runtime.log -p /root/tdn-freebsd-v3/charon.pid /usr/local/libexec/ipsec/charon']' timed out after 45 seconds",
+  "client": "ND_I_A1",
+  "source": "10.1.1.20",
+  "inside_bridge": "nd3b0",
+  "source_bridge": "nd3b0",
+  "clock_observations": [
+    "diversity-0001",
+    "diversity-0002",
+    "diversity-0004",
+    "diversity-0007",
+    "diversity-0014",
+    "diversity-0015",
+    "diversity-0012"
+  ],
+  "setup_observations": [
+    "diversity-0027",
+    "diversity-0029",
+    "diversity-0030",
+    "hmp-0040",
+    "hmp-0041"
+  ],
+  "scope": "SR1 and SR3 location subclauses for one actual Red time source and Inner client; no source trust, long-term synchronization or Gray Management placement claim.",
+  "contract": "Collector truth; declared Red-interface zoning; unchanged VM tap-to-bridge attachment between setup and clock capture, corroborated by the same current guest MAC/address and current source-veth master. Prefix equality alone is not the binding."
+}

@@ -1,0 +1,20 @@
+--- a/src/drivers/driver_macsec_linux.c
++++ b/src/drivers/driver_macsec_linux.c
+@@ -765,7 +765,7 @@
+ 
+ 	wpa_printf(MSG_DEBUG,
+ 		   DRV_PREFIX "%s: set_receive_lowest_pn -> %d: %d",
+-		   drv->ifname, sa->an, sa->next_pn);
++		   drv->ifname, sa->an, sa->lowest_pn);
+ 
+ 	msg = msg_prepare(MACSEC_CMD_UPD_RXSA, ctx, drv->ifi);
+ 	if (!msg)
+@@ -779,7 +779,7 @@
+ 		goto nla_put_failure;
+ 
+ 	NLA_PUT_U8(msg, MACSEC_SA_ATTR_AN, sa->an);
+-	NLA_PUT_U32(msg, MACSEC_SA_ATTR_PN, sa->next_pn);
++	NLA_PUT_U32(msg, MACSEC_SA_ATTR_PN, sa->lowest_pn);
+ 
+ 	nla_nest_end(msg, nest);
+ 

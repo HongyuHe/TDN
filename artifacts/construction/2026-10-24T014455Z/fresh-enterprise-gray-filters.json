@@ -1,0 +1,68 @@
+{
+  "manifest_sha256": "93feb7483bc2afba6a01e391176383aeacd8976f569f45d1df90b57c1e535fe5",
+  "configuration": "central-gray-management-v3",
+  "runtime_backend": "supplemental-linux-netns-static-routes",
+  "records": [
+    {
+      "device": "IA",
+      "phase": "before-management-layer-loss.json",
+      "observation_id": "cmd-0303",
+      "namespace": "tcv3cg-IA",
+      "forward_rules": [
+        "\u27e8[.ingress \"red\", .egress \"gray\", .outboundPolicy 100], .allow\u27e9",
+        "\u27e8[.ingress \"gray\", .egress \"red\", .inboundPolicy 100], .allow\u27e9"
+      ],
+      "input_default": "allow",
+      "input_rules": [],
+      "forward_default": "deny"
+    },
+    {
+      "device": "IB",
+      "phase": "before-management-layer-loss.json",
+      "observation_id": "cmd-0343",
+      "namespace": "tcv3cg-IB",
+      "forward_rules": [
+        "\u27e8[.ingress \"red\", .egress \"gray\", .outboundPolicy 100], .allow\u27e9",
+        "\u27e8[.ingress \"gray\", .egress \"red\", .inboundPolicy 100], .allow\u27e9"
+      ],
+      "input_default": "allow",
+      "input_rules": [],
+      "forward_default": "deny"
+    },
+    {
+      "device": "IA",
+      "phase": "stable-after.json",
+      "observation_id": "cmd-0417",
+      "namespace": "tcv3cg-IA",
+      "forward_rules": [
+        "\u27e8[.ingress \"red\", .egress \"gray\", .outboundPolicy 100], .allow\u27e9",
+        "\u27e8[.ingress \"gray\", .egress \"red\", .inboundPolicy 100], .allow\u27e9"
+      ],
+      "input_default": "allow",
+      "input_rules": [],
+      "forward_default": "deny"
+    },
+    {
+      "device": "IB",
+      "phase": "stable-after.json",
+      "observation_id": "cmd-0457",
+      "namespace": "tcv3cg-IB",
+      "forward_rules": [
+        "\u27e8[.ingress \"red\", .egress \"gray\", .outboundPolicy 100], .allow\u27e9",
+        "\u27e8[.ingress \"gray\", .egress \"red\", .inboundPolicy 100], .allow\u27e9"
+      ],
+      "input_default": "allow",
+      "input_rules": [],
+      "forward_default": "deny"
+    }
+  ],
+  "whole_annex_established": false,
+  "scope": [
+    "Four raw-bound IPv4 observations cover both Gray firewall/encryptors before and after the recorded management-layer-loss experiment.",
+    "The selected policy guards name direction and request ID100 without a mode constraint. The imported policy-identity atoms do not infer tunnel mode.",
+    "The modeled FORWARD chain defaults to denial and requires an explicitly matching allow rule. INPUT and OUTPUT are empty with acceptance defaults.",
+    "The saved local INPUT chain cannot establish the annex's all-traffic default-denial requirement. Earlier hooks, IPsec selectors, IPv6 processing and actual packet arrival require separate analysis; no live counterexample is claimed.",
+    "The FORWARD rules lack explicit source-range atoms. That absence fails the sufficient interface/range certificate, but does not alone prove real source filtering absent: IPsec selectors may impose additional restrictions.",
+    "Repair and new evidence remain pending. No remote experiment or deployment change was made for this assessment."
+  ]
+}

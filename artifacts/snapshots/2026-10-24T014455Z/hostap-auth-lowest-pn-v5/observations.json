@@ -1,0 +1,101 @@
+{
+  "at": "2026-10-24T04:53:11.563631+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T04:52:53.491697+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "clean"
+      ],
+      "returncode": 0,
+      "stdout": "rm -f core *~ nt_password_hash hlr_auc_gw\nrm -f sae_pk_gen\nrm -f lcov.info\nrm -rf lcov-html\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:53:04.345157+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "make",
+        "-j4"
+      ],
+      "returncode": 0,
+      "stdout": "  CC  ../src/ap/wpa_auth_glue.c\n  CC  main.c\n  CC  ../src/ap/drv_callbacks.c\n  CC  ../src/ap/utils.c\n  CC  ../src/ap/ap_drv_ops.c\n  CC  config_file.c\n  CC  ../src/ap/hostapd.c\n  CC  ../src/ap/authsrv.c\n  CC  ../src/ap/eap_user_db.c\n  CC  ../src/ap/ieee802_11_auth.c\n  CC  ../src/ap/ap_config.c\n  CC  ../src/ap/ieee802_1x.c\n  CC  ../src/ap/tkip_countermeasures.c\n  CC  ../src/ap/ap_mlme.c\n  CC  ../src/ap/preauth_auth.c\n  CC  ../src/ap/sta_info.c\n  CC  ../src/ap/wpa_auth_ie.c\n  CC  ../src/ap/pmksa_cache_auth.c\n  CC  ../src/ap/ieee802_11_shared.c\n  CC  ../src/ap/beacon.c\n  CC  ../src/ap/bss_load.c\n  CC  ../src/common/ptksa_cache.c\n  CC  ../src/ap/neighbor_db.c\n  CC  ../src/drivers/drivers.c\n  CC  ../src/ap/rrm.c\n  CC  ../src/utils/eloop.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/utils/wpabuf.c\n  CC  ../src/utils/common.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/ap/wpa_auth.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/eapol_auth/eapol_auth_sm.c\n  CC  ../src/eapol_auth/eapol_auth_dump.c\n  CC  ../src/common/wpa_common.c\n  CC  ../src/radius/radius_das.c\n  CC  ../src/radius/radius_client.c\n  CC  ../src/common/ieee802_11_common.c\n  CC  ../src/radius/radius.c\n  CC  ../src/ap/accounting.c\n  CC  ../src/ap/vlan_ifconfig.c\n  CC  ../src/ap/vlan_init.c\n  CC  ../src/ap/vlan.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/drivers/driver_wired.c\n  CC  ../src/drivers/driver_wired_common.c\n  CC  ../src/drivers/driver_none.c\n  CC  ../src/l2_packet/l2_packet_linux.c\n  CC  ../src/drivers/driver_macsec_linux.c\n  CC  ../src/eap_server/eap_server_tls.c\n  CC  ../src/ap/ctrl_iface_ap.c\n  CC  ctrl_iface.c\n  CC  ../src/ap/wpa_auth_kay.c\n  CC  ../src/pae/ieee802_1x_key.c\n  CC  ../src/pae/ieee802_1x_cp.c\n  CC  eap_register.c\n  CC  ../src/pae/ieee802_1x_secy_ops.c\n  CC  ../src/eap_common/eap_common.c\n  CC  ../src/eap_server/eap_server_methods.c\n  CC  ../src/eap_server/eap_server_identity.c\n  CC  ../src/eap_server/eap_server_tls_common.c\n  CC  ../src/eap_server/eap_server.c\n  CC  ../src/crypto/tls_openssl_ocsp.c\n  CC  ../src/crypto/sha1-prf.c\n  CC  ../src/crypto/sha1-tlsprf.c\n  CC  ../src/crypto/sha256-prf.c\n  CC  ../src/crypto/sha256-tlsprf.c\n  CC  ../src/pae/ieee802_1x_kay.c\n  CC  ../src/crypto/crypto_openssl.c\n  CC  ../src/crypto/random.c\n  CC  ../src/drivers/driver_common.c\n  CC  ../src/ap/ieee802_11_ht.c\n  CC  ../src/common/wpa_ctrl.c\n  CC  ../src/crypto/tls_openssl.c\n  CC  ../src/radius/radius_server.c\n  CC  ../src/utils/edit_simple.c\n  CC  ../src/common/cli.c\n  LD  hostapd\n  CC  hostapd_cli.c\n  LD  hostapd_cli\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:53:06.526109+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "./hostapd",
+        "-v"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "hostapd v2.12\nUser space daemon for IEEE 802.11 AP management,\nIEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator\nCopyright (c) 2002-2026, Jouni Malinen <j@w1.fi> and contributors\n"
+    },
+    {
+      "at": "2026-10-24T04:53:08.916683+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "ldd",
+        "./hostapd"
+      ],
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffd69bea000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x000075c6ec1eb000)\n\tlibnl-genl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x000075c6ec1e3000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x000075c6ec147000)\n\tlibssl.so.3 => /usr/lib/x86_64-linux-gnu/libssl.so.3 (0x000075c6ec036000)\n\tlibcrypto.so.3 => /usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x000075c6eba1c000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000075c6eb7f9000)\n\tlibz.so.1 => /usr/lib/x86_64-linux-gnu/libz.so.1 (0x000075c6eb7db000)\n\tlibzstd.so.1 => /usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x000075c6eb718000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000075c6ec2cf000)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:53:11.217061+00:00",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq-delay-auth/hostapd-2.12/hostapd",
+        "tdn-hostap-pq:20261024-v3",
+        "sha256sum",
+        "./hostapd"
+      ],
+      "returncode": 0,
+      "stdout": "23a5f3dfbaee5c2b4b54f16229d8274c3de7a760d30613a95db566a1acd78b1d  ./hostapd\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": [
+    "The official hostapd 2.12 authenticator KAY setup wires the receive-PN getter but omits the setter callback. Reverse EAP v17 logs explicitly report the missing secy operation and accept delayed data.",
+    "The owned repair forwards the existing secy set_receive_lowest_pn callback to the existing driver API using hapd->drv_priv and the same receive_sa. It adds no new packet-number interpretation; the already justified zero-window Linux setter receives the KAY-computed value.",
+    "Original v17 binaries and failed observations remain unchanged. Full standard conformance, nonzero windows and replacement-SA overlap remain separate."
+  ]
+}

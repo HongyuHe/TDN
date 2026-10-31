@@ -1,134 +1,63 @@
 # Theory-defined Networking (TDN)
 
-Theory-defined Networking (TDN) explores **networks that carry and maintain their own correctness arguments**. Network intent is spread across documentation, configurations, and changing runtime state. TDN aims to turn those artifacts into a coherent formal theory, making network changes easier to explain, debug, and trust.
+Theory-defined Networking (TDN) explores **networks that carry and maintain their own correctness arguments**. Network requirements are spread across specifications, configurations, and changing runtime state. TDN connects those sources through formal models and reusable proofs, making network behavior easier to explain, debug, and trust.
 
-TDN combines **top-down concept discovery with bottom-up theory construction**. Desired properties guide the abstractions and lemmas to develop; configurations and observations supply the concrete facts. The theory follows the network's hierarchy and modular structure, connecting facts to reusable theorems through an explicit dependency graph. As the network changes, that graph should identify which assumptions and proofs need revisiting.
+**AI agents construct the models and proofs; Lean checks the proofs.** The research goal is to put difficult reasoning into proof construction and reuse. When a network changes, the existing proofs should identify which facts and assumptions need to be checked again. The [research proposal](https://www.notion.so/hongyuhe/Theory-defined-Networking-TDN-3d98ffe4d93e80eba19acafd29acb301) describes the broader motivation.
 
-**AI agents construct the theory and proofs; Lean checks the proofs.** The aim is to shift expensive reasoning toward construction and reuse, with independently checkable results. Proofs establish claims about the formal model, so accurate semantics, justified assumptions, and reliable evidence remain essential.
+## Approach
 
-The current prototype models the deployed node-1 MSC network in Lean. Automated theory construction and continuous proof maintenance remain research goals. Research proposal [here](https://www.notion.so/hongyuhe/Theory-defined-Networking-TDN-3d98ffe4d93e80eba19acafd29acb301) for the broader motivation and design questions.
+TDN combines **top-down proof obligation discovery and construction with bottom-up evidence provisioning**. A proof obligation is a condition that must be established to prove a requirement. The process begins by extracting source sentences and table rows, grouping requirements, and identifying example networks, configuration choices, and device roles. Each extraction retains references to the original document.
 
-## Run Lean
+Two independent agents then work through the [construction workflow](workflows/construction.md):
 
-The project pins **Lean 4.34.1** in `lean-toolchain`.
-Lake ships with Lean.
-The model uses only Lean's bundled libraries and has no Mathlib dependency.
+- **The Construction Agent works top down.** It translates each requirement group into a Lean specification, identifies the conditions needed to establish it, and develops general theorems supported by smaller lemmas. Those conditions guide requests for evidence.
+- **The Evidence Agent works bottom up.** It builds representative networks with Twinet and exports configurations, topology, routes, filtering rules, cryptographic state, and relevant observations. Python importers validate the supported records and translate them into Lean data.
 
-On the configured Mac, run:
+The two directions meet at **checked conditions that connect network evidence to general proofs**. For example, Lean can check every imported edge and establish that each edge avoiding a firewall preserves a label. A reusable induction proof extends that condition to paths of any finite length. Different snapshots supply different edges and checks while using the same general proof.
+
+Proof construction and evidence provision refine one another. A failed proof can reveal an incorrect model, missing observations, or a deployment flaw. The Construction Agent first checks its own reasoning, then requests additional evidence or a justified network repair. The workflow records interpretation decisions, evidence requests, deployment changes, proof revisions, and remaining limitations.
+
+## Current prototype
+
+The current case study formalizes the CSfC Multi-Site Connectivity specification against Twinet emulations. The models cover topology, packet filtering and routing, IPsec and MACsec layers, authentication, generated replies, and fragmentation. The theory separates reusable networking arguments from CSfC requirements and concrete evidence checks.
+
+The [latest recorded construction run](artifacts/construction/current.json) assessed all **76 requirement groups**. It produced meaningful partial proofs for **53 groups**, each connecting a reusable general result to checked evidence. The other **23 groups** have no supported positive clause under the recorded setup. The [coverage assessment](artifacts/construction/2026-10-24T014455Z/practical-provability.md) states the exact claims and reasons; the [completion assessment](artifacts/construction/2026-10-24T014455Z/completion_assessment.md) retains the work needed for stronger results. Full CSfC compliance remains unproved.
+
+Each proof establishes a claim about its stated model and assumptions. Applying the claim to a deployment requires faithful collection, correct translation, and a justified connection between actual processing and the modeled operations. Continuous proof maintenance remains a research goal.
+
+## Repository guide
+
+| Location | Purpose |
+| --- | --- |
+| [TDN/Semantics](TDN/Semantics/) | Reusable network models and proofs. The [library guide](docs/semantics.md) explains every module, its assumptions, and its declarations. |
+| [TDN/Targets](TDN/Targets/) | CSfC specifications and general proofs of requirements or individual clauses. |
+| [TDN/Evidence](TDN/Evidence/) | Imported data, local checks, and applications of general theorems to concrete networks. |
+| [scripts/preprocess](scripts/preprocess/README.md) | Specification extraction, validation, and device-role ontology generation. |
+| [scripts/construction](scripts/construction/README.md) | Importers, proof validation, evidence collection, and iteration recording. |
+| [artifacts/extraction](artifacts/extraction/README.md) | Source-linked requirements, examples, and device roles. |
+| [artifacts/snapshots](artifacts/snapshots/) | Timestamped network observations and manifests. |
+| [artifacts/construction](artifacts/construction/) | Versioned agent exchanges, proof attempts, interpretations, and assessments. |
+
+The [Lean entry point](TDN.lean) imports the active theory. The earlier development remains under `archive/v1/`, outside the active build and the construction agents' permitted inputs.
+
+## Build and validate
+
+The project pins Lean 4.34.1 and compatible Mathlib and CSLib revisions. Install [elan](https://lean-lang.org/install/manual/), then run from the repository root:
 
 ```sh
 source "$HOME/.elan/env"
-cd ~/Projects/Formal/TDN
 lake build
-lake exe msc_demo
-lake env lean Playground.lean
+python3 scripts/construction/run_lean_tests.py
 ```
 
-`lake build` checks the library proofs and builds the executable.
-`lake exe msc_demo` prints the pinned deployment identity and evaluates same-level delivery, cross-level rejection, missing SAs/policies, failed authentication, transport failure, and imported firewall rules.
-The examples assume fixed readiness; they do not run live probes.
-`lake env lean Playground.lean` checks the scratch file and prints its `#eval` results.
+`lake build` checks the active library and evidence modules. The test runner also checks the standalone Lean examples and regression tests, including deliberately unsafe cases and an axiom audit. The first build downloads the pinned dependencies and may take longer than subsequent builds.
 
-Run the complete focused validation with:
+The Python validation suite uses the saved observations selected by the current input manifest:
 
 ```sh
-bash scripts/check_msc_model.sh
+export TDN_INPUT_MANIFEST=artifacts/construction/2026-10-24T014455Z/source_paths_current.json
+export TDN_OUTPUT_DIR=artifacts/construction/2026-10-24T014455Z
+python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-You can also check or execute a single file directly:
-
-```sh
-lake env lean TDN/MSC.lean
-lake env lean --run Main.lean
-```
-
-Run the commands from the project root.
-`lake env` supplies the import paths for the compiled project.
-Run `lake build` again after editing imported modules.
-
-## Understand the model
-
-The model is pinned to the node-1 default topology: two sites, two security levels, 35 devices, 44 cables, and four bidirectional IPsec tunnel relationships.
-Detailed Lean comments explain each abstraction, proof technique, and trust boundary.
-Read the files in the following order:
-
-| File | Purpose |
-|---|---|
-| [Types.lean](TDN/MSC/Types.lean) | Device, interface, tunnel, IPv4 filtering, and observation vocabulary |
-| [Deployment.lean](TDN/MSC/Deployment.lean) | Generated declarations from the pinned, hashed export |
-| [Topology.lean](TDN/MSC/Topology.lean) | Inventory checks, unbounded Gray-path cuts, management cable separation, and peer/trust facts |
-| [Policy.lean](TDN/MSC/Policy.lean) | Supported observed FORWARD-rule semantics and universal missing-policy rejection |
-| [Flow.lean](TDN/MSC/Flow.lean) | Authorized host pairs, symbolic nested encryption/decryption, failure handling, and conditional delivery |
-| [MSC.lean](TDN/MSC.lean) | Public entry point importing the model |
-
-The model proves theorems about its declarations and semantics.
-Linux refinement, cryptographic security, timing, physical separation, and institutional approval remain outside those theorems.
-Encryption wrappers are readable symbolic data.
-`healthy` is an explicit example assumption, and observed success is kept separate.
-
-## Refresh the pinned deployment data
-
-The current input is [artifacts/snapshots/msc-2026-10-03T070453Z/snapshot](artifacts/snapshots/msc-2026-10-03T070453Z/snapshot/manifest.json), with its separately collected [273-check report](artifacts/snapshots/msc-2026-10-03T070453Z/check.json).
-Snapshot directory names use the export-start timestamp in UTC; `Z` denotes UTC.
-Git tracks only the pinned proof snapshot. Other snapshots remain local and ignored under `artifacts/snapshots/`.
-Historical Lean diagnostics require a separately retained September 27 snapshot.
-The offline importer verifies all export hashes, checks declared/deployed identities, and requires supported intended and observed forwarding rules to agree.
-Unsupported rules and mismatched evidence produce errors.
-
-```sh
-python3 scripts/import_msc_snapshot.py --check
-```
-
-To use a new export, retain it in a new directory under `artifacts/snapshots/` and regenerate:
-
-```sh
-python3 scripts/import_msc_snapshot.py \
-  --snapshot artifacts/snapshots/new-run/snapshot \
-  --checks artifacts/snapshots/new-run/check.json
-lake build
-```
-
-The importer emits data, not axioms or proofs.
-A changed topology or policy can invalidate a theorem.
-Update the model and its documented scope deliberately; do not alter generated facts to force a proof to pass.
-The importer currently supports the two-level IPv4 profile and an explicit subset of FORWARD syntax.
-Changing input locations also requires updating the validation script's pinned paths before adopting the new run as the project baseline.
-
-## Install on another machine
-
-Install elan using the [official Lean installation instructions](https://lean-lang.org/install/manual/):
-
-```sh
-curl -fsSL https://elan.lean-lang.org/elan-init.sh -o /tmp/elan-init.sh
-sh /tmp/elan-init.sh -y --default-toolchain none
-source "$HOME/.elan/env"
-```
-
-Run `lake build` from the project root.
-Elan downloads the exact toolchain listed in `lean-toolchain`.
-
-The generated `.lake/` directory is ignored by Git.
-Keep `lean-toolchain`, `lakefile.toml`, and `lake-manifest.json` under version control to reproduce the project setup.
-
-## Run the MSC emulator
-
-The Twinet `tdn` branch extends `dev` with a configurable MSC lab.
-The native FRR/OVS deployment runs on node-1.
-The default has 35 devices and 44 links, plus seven private FRR control containers.
-Node-0 retains the earlier deployment.
-
-```sh
-ssh hy@clnode146.clemson.cloudlab.us
-cd ~/Twinet
-sudo bin/twinet msc console BLACK
-sudo bin/twinet msc console G_A1
-sudo bin/twinet msc check > /tmp/msc-check.json
-sudo bin/twinet msc export --output /tmp/msc-snapshot-001
-```
-
-The [Twinet operator guide](https://github.com/HongyuHe/Twinet/blob/tdn/docs/13_msc.md) explains native CLI access, shared Outer Firewalls and Gray networks, layout configuration, exports, faults, and recovery.
-Small JSON files under `examples/msc/layouts/` select firewall counts and Gray sharing.
-Export bundles separate declared configurations from sampled live facts and include timestamps, image identities, and file hashes for later theory construction.
-The [model's pinned snapshot](artifacts/snapshots/msc-2026-10-03T070453Z/snapshot/manifest.json) is available under `artifacts/snapshots/msc-2026-10-03T070453Z/snapshot/`.
-Its `spec.json` and `facts.json` are ready to inspect.
-Other collected snapshots remain in `artifacts/snapshots/`. Moving a snapshot does not change the model's selected evidence or refresh its observations.
+The [construction tools guide](scripts/construction/README.md) provides commands for regenerating evidence modules and recording new validation runs. The [emulation guide](scripts/construction/evidence/README.md) covers deployment and collection. New observations require new timestamped snapshots; changes to a live network do not alter previously saved evidence.

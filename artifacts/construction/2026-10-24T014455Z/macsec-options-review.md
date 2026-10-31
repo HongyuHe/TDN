@@ -1,0 +1,11 @@
+# Optional MACsec feature applications
+
+RG016 permits clear VLAN tags and XPN when the MACsec device supports those features. The relevant source sentences are page 20, units u003.s007 and u004.s004 in the retained CP index. The neighboring discussion explains the possible benefits of clear tags and the risk of exhausting packet numbers. The source does not require a throughput benchmark as a condition for enabling XPN.
+
+The new importer covers both peers in each of the three retained `macsec-options-v4` cases. The cases place zero, one or two VLAN interfaces below the MACsec interface. Every peer uses the recorded XPN cipher suite. The importer binds the complete peer inventories and before/after interface observations to actual commands and namespaces. It follows the interface parent chain to the recorded wire, checks the VLAN IDs and protocols, checks successful installation and binds successful ordinary traffic probes in both directions.
+
+The `supported` fields mean operational support in the recorded Linux implementation. Successful installation and traffic supply the observation; the interpretation of Linux's selected cipher and VLAN behavior remains an implementation assumption. The records do not independently prove the correctness of the XPN algorithm. The importer does not infer secret equality, approved key generation or authenticated MKA from manually provisioned SAs. The zero-tag case makes no claim that clear tags were tested there.
+
+`FreshMACsecOptions.selected_options_use_supported_features` applies the existing `macsec_options_of_supported_enablement` theorem to six imported ports. The theorem checks the optional-feature implications. Other required MACsec protection clauses remain separate. No new generic proof infrastructure is introduced. The application does not establish packet-number exhaustion behavior, rekey continuity, arbitrary frame confidentiality or all devices in the other network cases.
+
+Eight mutation tests cover altered raw output, a missing VLAN layer, a cyclic parent chain, a non-XPN cipher, disabled encryption, a failed installation and a probe from the wrong namespace. The dedicated Lean module compiles. Exact input manifests, source versions and validation logs are retained in the current run.

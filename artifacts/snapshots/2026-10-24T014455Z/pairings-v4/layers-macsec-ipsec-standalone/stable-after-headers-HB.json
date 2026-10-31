@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0545",
+  "started_at": "2026-10-24T14:03:02.128988+00:00",
+  "ended_at": "2026-10-24T14:03:06.908751+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-HB",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "HB",
+  "returncode": 0,
+  "stdout": "14:03:04.629236 red   In  ifindex 4243 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 6851, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 51026, seq 1, length 72\n14:03:04.629251 red   Out ifindex 4243 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 56746, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 51026, seq 1, length 72\n14:03:05.678072 red   In  ifindex 4243 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 6890, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 51026, seq 2, length 72\n14:03:05.678092 red   Out ifindex 4243 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 57694, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 51026, seq 2, length 72\n14:03:06.702064 red   In  ifindex 4243 0e:81:9a:65:3c:ba ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 7078, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 51026, seq 3, length 72\n14:03:06.702083 red   Out ifindex 4243 fe:fd:e9:83:6d:30 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 58143, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 51026, seq 3, length 72\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n6 packets captured\n6 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 2
+}

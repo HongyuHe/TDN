@@ -1,0 +1,246 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "configuration_id": "layers-ipsec-ipsec-integrated",
+  "runtime_backend": "supplemental-linux-netns-static-routes",
+  "started_at": "2026-10-24T14:01:36.730475+00:00",
+  "ended_at": "2026-10-24T14:01:55.726231+00:00",
+  "devices": [
+    {
+      "id": "HA",
+      "role": "host",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3p4-HA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IA",
+      "role": "inner",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3p4-IA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OA",
+      "role": "outer",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3p4-OA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OB",
+      "role": "outer",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3p4-OB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IB",
+      "role": "inner",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3p4-IB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "HB",
+      "role": "host",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3p4-HB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "FA",
+      "role": "outer-firewall",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3p4-FA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "FB",
+      "role": "outer-firewall",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3p4-FB",
+      "physical_independence": "unavailable"
+    }
+  ],
+  "links": [
+    {
+      "endpoints": [
+        "HA:red",
+        "IA:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.1.0.2/24",
+        "10.1.0.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "HB:red",
+        "IB:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.2.0.2/24",
+        "10.2.0.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OA:black",
+        "FA:inside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "192.0.2.1/30",
+        "192.0.2.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OB:black",
+        "FB:inside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "192.0.3.1/30",
+        "192.0.3.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "FA:outside",
+        "FB:outside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "198.51.100.1/30",
+        "198.51.100.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IA:gray",
+        "OA:gray"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        "10.11.0.1/30",
+        "10.11.0.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IB:gray",
+        "OB:gray"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        "10.21.0.1/30",
+        "10.21.0.2/30"
+      ],
+      "physical_claim_supported": false
+    }
+  ],
+  "tunnels": [
+    {
+      "id": "inner",
+      "mechanism": "IPsec",
+      "layer": "inner",
+      "endpoints": [
+        "IA",
+        "IB"
+      ],
+      "local": "10.11.0.1",
+      "remote": "10.21.0.1",
+      "selectors": [
+        "10.1.0.0/24",
+        "10.2.0.0/24"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    },
+    {
+      "id": "outer",
+      "mechanism": "IPsec",
+      "layer": "outer",
+      "endpoints": [
+        "OA",
+        "OB"
+      ],
+      "local": "192.0.2.1",
+      "remote": "192.0.3.1",
+      "selectors": [
+        "10.11.0.1/32",
+        "10.21.0.1/32"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    }
+  ],
+  "probes": [
+    {
+      "id": "same-level-A-B",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0123"
+    },
+    {
+      "id": "same-level-B-A",
+      "source_device": "HB",
+      "destination": "10.1.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0124"
+    },
+    {
+      "id": "inner-layer-loss-fail-closed",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0407"
+    },
+    {
+      "id": "restored-useful-traffic",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0414"
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Virtual namespace graph; no physical independence or product approval",
+    "Manually provisioned SAs do not establish IKE/MKA/certificate authentication",
+    "Test keys generated by Python secrets; no NSA KGS approval claim"
+  ]
+}

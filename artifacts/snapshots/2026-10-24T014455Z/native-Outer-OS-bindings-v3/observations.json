@@ -1,0 +1,270 @@
+{
+  "at": "2026-10-24T03:55:03.445684+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:55:01.964210+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "ND_O_A1"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Id\":\"7f9a00872a382a661596db5edd0c502720321decdc9f5ba2d79ec9049fe965c4\",\"Created\":\"2026-10-24T02:41:14.444794049Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":47758,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:41:14.461074715Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/7f9a00872a382a661596db5edd0c502720321decdc9f5ba2d79ec9049fe965c4/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/7f9a00872a382a661596db5edd0c502720321decdc9f5ba2d79ec9049fe965c4/hostname\",\"HostsPath\":\"/var/lib/docker/containers/7f9a00872a382a661596db5edd0c502720321decdc9f5ba2d79ec9049fe965c4/hosts\",\"LogPath\":\"/var/lib/docker/containers/7f9a00872a382a661596db5edd0c502720321decdc9f5ba2d79ec9049fe965c4/7f9a00872a382a661596db5edd0c502720321decdc9f5ba2d79ec9049fe965c4-json.log\",\"Name\":\"/ND_O_A1\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"78f7ebe1980a1a46accec7e7fb459ee6bf82ff8c044c40728bc5f4a89b7fd6ed\",\"5fc37f70dd232b465b524eec39875f3d0db9281f7c0b072f40c97f5e2ee527ed\",\"0a9ca2f7be6f8eec19a851af7351b5dc06aa86f950daf779574f25e4d535cc84\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_A1/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_A1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"nd_o_a1\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"ND_O_A1\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-os-diversity-v3\",\"twinet.msc.spec\":\"c1c31a79d80c9ff52aa66f191bf61c130d4adbe42aef82a089cdd991dc19a188\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"dc767b432b002b71b5be8bf830a956bffc3bc47a1d3ccc7062991cc066f36784\",\"SandboxKey\":\"/var/run/docker/netns/dc767b432b00\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"a326c760416b0405e9d50ea49f150ddf14e06a05cb3314898176c45ef7c58b1d\",\"EndpointID\":\"9cdb94f9ded0f8458cbf9faa790c4f95a81ff31cb4c672d5ba36eeab1121fdd9\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.042359+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux nd_o_a1 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.125547+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "cat",
+        "/etc/os-release"
+      ],
+      "returncode": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.212946+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--stats"
+      ],
+      "returncode": 0,
+      "stdout": "uptime: 73 minutes, since Oct 24 02:41:31 2026\nworker threads: 16 total, 11 idle, working: 4/0/1/0\njob queues: 0/0/0/0\njobs scheduled: 7\nIKE_SAs: 1 total, 0 half-open\nmallinfo: sbrk 2875392, mmap 0, used 1218576, free 1656816\nloaded plugins: charon random nonce x509 revocation constraints pubkey pem pkcs1 pkcs8 openssl gmp hmac sha2 kdf kernel-netlink socket-default vici\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:55:02.284542+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--list-algs"
+      ],
+      "returncode": 0,
+      "stdout": "encryption:\n  AES_CBC[openssl]\n  AES_CTR[openssl]\n  AES_ECB[openssl]\n  AES_CFB[openssl]\n  CAMELLIA_CBC[openssl]\n  CAMELLIA_CTR[openssl]\n  CAST_CBC[openssl]\n  BLOWFISH_CBC[openssl]\n  3DES_CBC[openssl]\n  DES_CBC[openssl]\n  DES_ECB[openssl]\n  NULL[openssl]\nintegrity:\n  HMAC_MD5_96[openssl]\n  HMAC_MD5_128[openssl]\n  HMAC_SHA1_96[openssl]\n  HMAC_SHA1_128[openssl]\n  HMAC_SHA1_160[openssl]\n  HMAC_SHA2_256_128[openssl]\n  HMAC_SHA2_256_256[openssl]\n  HMAC_SHA2_384_192[openssl]\n  HMAC_SHA2_384_384[openssl]\n  HMAC_SHA2_512_256[openssl]\n  HMAC_SHA2_512_512[openssl]\naead:\n  AES_GCM_16[openssl]\n  AES_GCM_12[openssl]\n  AES_GCM_8[openssl]\n  AES_CCM_16[openssl]\n  AES_CCM_12[openssl]\n  AES_CCM_8[openssl]\n  CHACHA20_POLY1305[openssl]\nhasher:\n  HASH_SHA1[openssl]\n  HASH_MD5[openssl]\n  HASH_MD4[openssl]\n  HASH_SHA2_224[openssl]\n  HASH_SHA2_256[openssl]\n  HASH_SHA2_384[openssl]\n  HASH_SHA2_512[openssl]\n  HASH_SHA3_224[openssl]\n  HASH_SHA3_256[openssl]\n  HASH_SHA3_384[openssl]\n  HASH_SHA3_512[openssl]\n  HASH_IDENTITY[openssl]\nprf:\n  PRF_KEYED_SHA1[openssl]\n  PRF_HMAC_MD5[openssl]\n  PRF_HMAC_SHA1[openssl]\n  PRF_HMAC_SHA2_256[openssl]\n  PRF_HMAC_SHA2_384[openssl]\n  PRF_HMAC_SHA2_512[openssl]\nxof:\n  XOF_SHAKE128[openssl]\n  XOF_SHAKE256[openssl]\nkdf:\n  KDF_PRF[openssl]\n  KDF_PRF_PLUS[openssl]\ndrbg:\ndh:\n  MODP_3072[openssl]\n  MODP_4096[openssl]\n  MODP_6144[openssl]\n  MODP_8192[openssl]\n  MODP_2048[openssl]\n  MODP_2048_224[openssl]\n  MODP_2048_256[openssl]\n  MODP_1536[openssl]\n  MODP_1024[openssl]\n  MODP_1024_160[openssl]\n  MODP_768[openssl]\n  MODP_CUSTOM[openssl]\n  ECP_256[openssl]\n  ECP_384[openssl]\n  ECP_521[openssl]\n  ECP_224[openssl]\n  ECP_192[openssl]\n  ECP_256_BP[openssl]\n  ECP_384_BP[openssl]\n  ECP_512_BP[openssl]\n  ECP_224_BP[openssl]\n  CURVE_25519[openssl]\n  CURVE_448[openssl]\nrng:\n  RNG_WEAK[openssl]\n  RNG_STRONG[random]\n  RNG_TRUE[random]\nnonce-gen:\n  NONCE_GEN[nonce]\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:55:02.363824+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)\nbuilt on: Wed Sep 16 18:47:02 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -DOPENSSL_TLS_SECURITY_LEVEL=2 -Wa,--noexecstack -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-yMWwKu/openssl-3.0.13=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-yMWwKu/openssl-3.0.13=/usr/src/openssl-3.0.13-0ubuntu3.16 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x37ab\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.436690+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ldd",
+        "/usr/lib/ipsec/plugins/libstrongswan-openssl.so"
+      ],
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffc6bdc9000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x000072956a324000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000072956a111000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000072956a85d000)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.511114+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "sha256sum",
+        "/usr/lib/ipsec/plugins/libstrongswan-openssl.so"
+      ],
+      "returncode": 0,
+      "stdout": "a8cf2cbf4143d7eb82ae9c779ce063af3f4245ae1d441951ab248c553d3b11ba  /usr/lib/ipsec/plugins/libstrongswan-openssl.so\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.590682+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ps",
+        "-eo",
+        "pid,comm,args"
+      ],
+      "returncode": 0,
+      "stdout": "    PID COMMAND         COMMAND\n      1 sleep           sleep infinity\n     52 charon          /usr/lib/ipsec/charon\n    372 python3         python3 -u -c import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.96.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()\n    641 python3         python3 -u /root/role-admin-v4/service.py /root/role-admin-v4\n    939 ps              ps -eo pid,comm,args\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.674132+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "returncode": 0,
+      "stdout": "msc: #3, ESTABLISHED, IKEv2, 260564146b5fc3b1_i* 04bdf644447e57e3_r\n  local  'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 825s ago, reauth in 9486s\n  protected: #7, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 825s ago, rekeying in 1843s, expires in 2775s\n    in  cd1d00be,   9252 bytes,    93 packets,     3s ago\n    out cd2dbaa0,   9295 bytes,    93 packets,     3s ago\n    local  10.100.1.2/32\n    remote 10.200.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:55:02.693811+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "ND_O_B1"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Id\":\"58627904c8463ee04d1d7f6fcc10da6aa8e2009e0cb487890915b25e834c8289\",\"Created\":\"2026-10-24T02:41:15.093459288Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":48002,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:41:15.115282734Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/58627904c8463ee04d1d7f6fcc10da6aa8e2009e0cb487890915b25e834c8289/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/58627904c8463ee04d1d7f6fcc10da6aa8e2009e0cb487890915b25e834c8289/hostname\",\"HostsPath\":\"/var/lib/docker/containers/58627904c8463ee04d1d7f6fcc10da6aa8e2009e0cb487890915b25e834c8289/hosts\",\"LogPath\":\"/var/lib/docker/containers/58627904c8463ee04d1d7f6fcc10da6aa8e2009e0cb487890915b25e834c8289/58627904c8463ee04d1d7f6fcc10da6aa8e2009e0cb487890915b25e834c8289-json.log\",\"Name\":\"/ND_O_B1\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"bdfcc8f28df4b369637974233d26f1a5a0e0e911ec114ebeef6174f14d698c5c\",\"ba9596cc20fd3386c312e1fff4ba61d0b2e3444d80197cfa71ee44e93d532aac\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_B1/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3/devices/ND_O_B1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"nd_o_b1\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"ND_O_B1\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-os-diversity-v3\",\"twinet.msc.spec\":\"c1c31a79d80c9ff52aa66f191bf61c130d4adbe42aef82a089cdd991dc19a188\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-os-diversity-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"b37e18733308bc5d808bef55815f1436196493942d5092c6422d684534a710e2\",\"SandboxKey\":\"/var/run/docker/netns/b37e18733308\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"a326c760416b0405e9d50ea49f150ddf14e06a05cb3314898176c45ef7c58b1d\",\"EndpointID\":\"9d93ba4d2c3c167885e9d1fd0e314a56172dd129fd7f2a258c7c717c71b4acfc\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.768166+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux nd_o_b1 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.843210+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "cat",
+        "/etc/os-release"
+      ],
+      "returncode": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:02.949862+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--stats"
+      ],
+      "returncode": 0,
+      "stdout": "uptime: 73 minutes, since Oct 24 02:41:31 2026\nworker threads: 16 total, 11 idle, working: 4/0/1/0\njob queues: 0/0/0/0\njobs scheduled: 7\nIKE_SAs: 1 total, 0 half-open\nmallinfo: sbrk 2818048, mmap 0, used 1240768, free 1577280\nloaded plugins: charon random nonce x509 revocation constraints pubkey pem pkcs1 pkcs8 openssl gmp hmac sha2 kdf kernel-netlink socket-default vici\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:55:03.031831+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--list-algs"
+      ],
+      "returncode": 0,
+      "stdout": "encryption:\n  AES_CBC[openssl]\n  AES_CTR[openssl]\n  AES_ECB[openssl]\n  AES_CFB[openssl]\n  CAMELLIA_CBC[openssl]\n  CAMELLIA_CTR[openssl]\n  CAST_CBC[openssl]\n  BLOWFISH_CBC[openssl]\n  3DES_CBC[openssl]\n  DES_CBC[openssl]\n  DES_ECB[openssl]\n  NULL[openssl]\nintegrity:\n  HMAC_MD5_96[openssl]\n  HMAC_MD5_128[openssl]\n  HMAC_SHA1_96[openssl]\n  HMAC_SHA1_128[openssl]\n  HMAC_SHA1_160[openssl]\n  HMAC_SHA2_256_128[openssl]\n  HMAC_SHA2_256_256[openssl]\n  HMAC_SHA2_384_192[openssl]\n  HMAC_SHA2_384_384[openssl]\n  HMAC_SHA2_512_256[openssl]\n  HMAC_SHA2_512_512[openssl]\naead:\n  AES_GCM_16[openssl]\n  AES_GCM_12[openssl]\n  AES_GCM_8[openssl]\n  AES_CCM_16[openssl]\n  AES_CCM_12[openssl]\n  AES_CCM_8[openssl]\n  CHACHA20_POLY1305[openssl]\nhasher:\n  HASH_SHA1[openssl]\n  HASH_MD5[openssl]\n  HASH_MD4[openssl]\n  HASH_SHA2_224[openssl]\n  HASH_SHA2_256[openssl]\n  HASH_SHA2_384[openssl]\n  HASH_SHA2_512[openssl]\n  HASH_SHA3_224[openssl]\n  HASH_SHA3_256[openssl]\n  HASH_SHA3_384[openssl]\n  HASH_SHA3_512[openssl]\n  HASH_IDENTITY[openssl]\nprf:\n  PRF_KEYED_SHA1[openssl]\n  PRF_HMAC_MD5[openssl]\n  PRF_HMAC_SHA1[openssl]\n  PRF_HMAC_SHA2_256[openssl]\n  PRF_HMAC_SHA2_384[openssl]\n  PRF_HMAC_SHA2_512[openssl]\nxof:\n  XOF_SHAKE128[openssl]\n  XOF_SHAKE256[openssl]\nkdf:\n  KDF_PRF[openssl]\n  KDF_PRF_PLUS[openssl]\ndrbg:\ndh:\n  MODP_3072[openssl]\n  MODP_4096[openssl]\n  MODP_6144[openssl]\n  MODP_8192[openssl]\n  MODP_2048[openssl]\n  MODP_2048_224[openssl]\n  MODP_2048_256[openssl]\n  MODP_1536[openssl]\n  MODP_1024[openssl]\n  MODP_1024_160[openssl]\n  MODP_768[openssl]\n  MODP_CUSTOM[openssl]\n  ECP_256[openssl]\n  ECP_384[openssl]\n  ECP_521[openssl]\n  ECP_224[openssl]\n  ECP_192[openssl]\n  ECP_256_BP[openssl]\n  ECP_384_BP[openssl]\n  ECP_512_BP[openssl]\n  ECP_224_BP[openssl]\n  CURVE_25519[openssl]\n  CURVE_448[openssl]\nrng:\n  RNG_WEAK[openssl]\n  RNG_STRONG[random]\n  RNG_TRUE[random]\nnonce-gen:\n  NONCE_GEN[nonce]\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:55:03.103366+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)\nbuilt on: Wed Sep 16 18:47:02 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -DOPENSSL_TLS_SECURITY_LEVEL=2 -Wa,--noexecstack -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-yMWwKu/openssl-3.0.13=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-yMWwKu/openssl-3.0.13=/usr/src/openssl-3.0.13-0ubuntu3.16 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x37ab\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:03.194876+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ldd",
+        "/usr/lib/ipsec/plugins/libstrongswan-openssl.so"
+      ],
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffe8fbfd000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007cb469f09000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007cb469cf6000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007cb46a442000)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:03.275502+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "sha256sum",
+        "/usr/lib/ipsec/plugins/libstrongswan-openssl.so"
+      ],
+      "returncode": 0,
+      "stdout": "a8cf2cbf4143d7eb82ae9c779ce063af3f4245ae1d441951ab248c553d3b11ba  /usr/lib/ipsec/plugins/libstrongswan-openssl.so\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:03.364070+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ps",
+        "-eo",
+        "pid,comm,args"
+      ],
+      "returncode": 0,
+      "stdout": "    PID COMMAND         COMMAND\n      1 sleep           sleep infinity\n     52 charon          /usr/lib/ipsec/charon\n    355 python3         python3 -u -c import http.server,ssl,functools; s=http.server.HTTPServer((\"172.28.97.2\",443),functools.partial(http.server.SimpleHTTPRequestHandler,directory=\"/root/aw-case-v3/public\")); c=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); c.minimum_version=ssl.TLSVersion.TLSv1_2;c.maximum_version=ssl.TLSVersion.TLSv1_2;c.set_ciphers(\"ECDHE-ECDSA-AES256-GCM-SHA384\");c.load_cert_chain(\"/root/aw-case-v3/managed.pem\",\"/root/aw-case-v3/managed.key\");c.load_verify_locations(\"/root/aw-case-v3/ca.pem\");c.verify_mode=ssl.CERT_REQUIRED;s.socket=c.wrap_socket(s.socket,server_side=True);s.serve_forever()\n    704 ps              ps -eo pid,comm,args\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:55:03.445633+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "returncode": 0,
+      "stdout": "msc: #3, ESTABLISHED, IKEv2, 260564146b5fc3b1_i 04bdf644447e57e3_r*\n  local  'ND_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'ND_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 826s ago, reauth in 9485s\n  protected: #9, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 826s ago, rekeying in 1842s, expires in 2774s\n    in  cd2dbaa0,   9295 bytes,    93 packets,     4s ago\n    out cd1d00be,   9252 bytes,    93 packets,     4s ago\n    local  10.200.1.2/32\n    remote 10.100.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    }
+  ],
+  "error": null
+}

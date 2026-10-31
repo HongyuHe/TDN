@@ -1,4 +1,5 @@
-import TDN.Semantics.Network
+import TDN.Targets.Architecture
+import TDN.Semantics.PacketPolicy
 
 namespace TDN.Targets
 
@@ -87,5 +88,27 @@ def msc_encryption_component_routing_limits {C I : Type} (m : RoutingDutyModel C
       (m.outerFirewall f ∨ m.grayFirewall f) ∧ m.suppliesDynamicRoutingTo f c)) ∧
   (∀ c ∈ m.components, m.inner c → ∀ other ∈ m.components,
     other ≠ c → m.encryptionComponent other → ¬ m.switchesOrRoutesFor c other)
+
+/-- Conventional DNS traffic has a TCP or UDP destination port of 53. The predicate
+does not classify application protocols that tunnel DNS over a different service. -/
+def ConventionalDNS (packet : PacketPolicy.Packet) : Prop :=
+  packet.destinationPort = 53 ∧ (packet.protocol = "tcp" ∨ packet.protocol = "udp")
+
+/-- A checked deny prefix establishes the transport part of disabled DNS lookup.
+Complete service and resolver inventories remain separate RG-043 obligations. -/
+theorem dns_egress_disabled_of_deny_prefix
+    (guards : List PacketPolicy.Rule)
+    (denials : ∀ rule ∈ guards, rule.verdict = .deny)
+    (coverage : ∀ packet, ConventionalDNS packet →
+      ∃ rule ∈ guards, rule.toFilter.accepts packet = true)
+    (suffix : List (Filter.Rule PacketPolicy.Packet)) (fallback : Filter.Verdict)
+    (packet : PacketPolicy.Packet) (dns : ConventionalDNS packet) :
+    Filter.evaluate (guards.map PacketPolicy.Rule.toFilter ++ suffix) fallback packet = .deny := by
+  apply Filter.denying_prefix_blocks
+  · intro rule member
+    obtain ⟨original, present, rfl⟩ := List.mem_map.mp member
+    exact denials original present
+  · obtain ⟨rule, member, matchesRule⟩ := coverage packet dns
+    exact ⟨rule.toFilter, List.mem_map.mpr ⟨rule, member, rfl⟩, matchesRule⟩
 
 end TDN.Targets

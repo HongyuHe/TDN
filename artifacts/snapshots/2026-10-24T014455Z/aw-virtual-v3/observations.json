@@ -1,0 +1,526 @@
+{
+  "at": "2026-10-24T03:08:57.268911+00:00",
+  "runtime_backend": "actual-QEMU-FreeBSD-workstation-to-native-managed-Outer",
+  "records": [
+    {
+      "at": "2026-10-24T03:08:52.025041+00:00",
+      "command": [
+        "hostname"
+      ],
+      "returncode": 0,
+      "stdout": "node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:52.027841+00:00",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:52.030248+00:00",
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_uuid"
+      ],
+      "returncode": 0,
+      "stdout": "4c4c4544-0052-4d10-8038-b2c04f563532\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:52.032166+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "-d",
+        "link",
+        "show",
+        "aw3b"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":45,\"ifname\":\"aw3b\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"9e:00:4d:f6:0f:07\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.9e:0:4d:f6:f:7\",\"root_id\":\"8000.9e:0:4d:f6:f:7\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":40.55,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":1,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:52.033974+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "-d",
+        "link",
+        "show",
+        "aw3t"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":46,\"ifname\":\"aw3t\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"fq_codel\",\"master\":\"aw3b\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"0a:40:33:16:25:8a\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65521,\"linkinfo\":{\"info_kind\":\"tun\",\"info_data\":{\"type\":\"tap\",\"pi\":false,\"vnet_hdr\":true,\"multi_queue\":false,\"persist\":true},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.9e:0:4d:f6:f:7\",\"root_id\":\"8000.9e:0:4d:f6:f:7\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:52.096302+00:00",
+      "command": [
+        "ps",
+        "-p",
+        "56779",
+        "-o",
+        "pid,lstart,args"
+      ],
+      "returncode": 0,
+      "stdout": "    PID                  STARTED COMMAND\n  56779 Fri Oct 23 20:59:09 2026 qemu-system-x86_64 -name tcv3-virtual-aw -enable-kvm -cpu host -smp 2 -m 2048 -drive file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-v3.qcow2,format=qcow2,if=virtio -drive file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-seed-v3.iso,media=cdrom,readonly=on -netdev user,id=mgmt,hostfwd=tcp:127.0.0.1:22224-:22 -device virtio-net-pci,netdev=mgmt,mac=52:54:76:03:30:10 -netdev tap,id=aw,ifname=aw3t,script=no,downscript=no -device virtio-net-pci,netdev=aw,mac=52:54:76:03:30:11 -display none -serial file:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-serial-v3.log -monitor unix:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-monitor-v3.sock,server,nowait -pidfile /users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid -daemonize\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:52.351530+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "mkdir -m700 /home/freebsd/aw-case-v3"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:52.614474+00:00",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22224",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-endpoints-v3/ca.pem",
+        "freebsd@127.0.0.1:/home/freebsd/aw-case-v3/ca.pem"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:52.874253+00:00",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22224",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-endpoints-v3/virtual-aw.pem",
+        "freebsd@127.0.0.1:/home/freebsd/aw-case-v3/virtual-aw.pem"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:53.137128+00:00",
+      "command": [
+        "scp",
+        "-q",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-P",
+        "22224",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-endpoints-v3/virtual-aw.key",
+        "freebsd@127.0.0.1:/home/freebsd/aw-case-v3/virtual-aw.key"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:53.391743+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "chmod 600 /home/freebsd/aw-case-v3/virtual-aw.key"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:53.646890+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 0,
+      "stdout": "FreeBSD evidence-virtual-aw-v3 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:53.902138+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "id"
+      ],
+      "returncode": 0,
+      "stdout": "uid=1001(freebsd) gid=1001(freebsd) groups=1001(freebsd),0(wheel)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:54.160808+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "ifconfig -a"
+      ],
+      "returncode": 0,
+      "stdout": "vtnet0: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:30:10\n\tinet 10.0.2.15 netmask 0xffffff00 broadcast 10.0.2.255\n\tinet6 fe80::5054:76ff:fe03:3010%vtnet0 prefixlen 64 scopeid 0x1\n\tinet6 fec0::5054:76ff:fe03:3010 prefixlen 64 autoconf pltime 14400 vltime 86400\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet1: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=ec07bb<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 52:54:76:03:30:11\n\tinet 172.28.97.1 netmask 0xfffffffc broadcast 172.28.97.3\n\tinet6 fe80::5054:76ff:fe03:3011%vtnet1 prefixlen 64 scopeid 0x2\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nlo0: flags=1008049<UP,LOOPBACK,RUNNING,MULTICAST,LOWER_UP> metric 0 mtu 16384\n\toptions=680003<RXCSUM,TXCSUM,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6>\n\tinet 127.0.0.1 netmask 0xff000000\n\tinet6 ::1 prefixlen 128\n\tinet6 fe80::1%lo0 prefixlen 64 scopeid 0x3\n\tgroups: lo\n\tnd6 options=21<PERFORMNUD,AUTO_LINKLOCAL>\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:54.418545+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "netstat -rn"
+      ],
+      "returncode": 0,
+      "stdout": "Routing tables\n\nInternet:\nDestination        Gateway            Flags         Netif Expire\ndefault            10.0.2.2           UGS          vtnet0\n10.0.2.0/24        link#1             U            vtnet0\n10.0.2.15          link#3             UHS             lo0\n127.0.0.1          link#3             UH              lo0\n172.28.97.0/30     link#2             U            vtnet1\n172.28.97.1        link#3             UHS             lo0\n\nInternet6:\nDestination                       Gateway                       Flags         Netif Expire\n::/96                             link#3                        URS             lo0\ndefault                           fe80::2%vtnet0                UG           vtnet0\n::1                               link#3                        UHS             lo0\n::ffff:0.0.0.0/96                 link#3                        URS             lo0\nfe80::%lo0/10                     link#3                        URS             lo0\nfe80::%vtnet0/64                  link#1                        U            vtnet0\nfe80::5054:76ff:fe03:3010%lo0     link#3                        UHS             lo0\nfe80::%vtnet1/64                  link#2                        U            vtnet1\nfe80::5054:76ff:fe03:3011%lo0     link#3                        UHS             lo0\nfe80::%lo0/64                     link#3                        U               lo0\nfe80::1%lo0                       link#3                        UHS             lo0\nfec0::/64                         link#1                        U            vtnet0\nfec0::5054:76ff:fe03:3010         link#3                        UHS             lo0\nff02::/16                         link#3                        URS             lo0\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:54.671583+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "ps -axo pid,comm,args"
+      ],
+      "returncode": 0,
+      "stdout": "PID COMMAND       COMMAND\n  0 kernel        [kernel]\n  1 init          /sbin/init\n  2 clock         [clock]\n  3 crypto        [crypto]\n  4 cam           [cam]\n  5 busdma        [busdma]\n  6 rand_harvestq [rand_harvestq]\n  7 pagedaemon    [pagedaemon]\n  8 vmdaemon      [vmdaemon]\n  9 bufdaemon     [bufdaemon]\n 10 audit         [audit]\n 11 idle          [idle]\n 12 intr          [intr]\n 13 geom          [geom]\n 14 sequencer 00  [sequencer 00]\n 15 vnlru         [vnlru]\n 16 syncer        [syncer]\n508 dhclient      dhclient: system.syslog (dhclient)\n511 dhclient      dhclient: vtnet0 [priv] (dhclient)\n571 dhclient      dhclient: vtnet0 (dhclient)\n581 devd          /sbin/devd\n787 syslogd       /usr/sbin/syslogd -s\n877 sshd          sshd: /usr/sbin/sshd [listener] 0 of 10-100 startups (sshd)\n892 cron          /usr/sbin/cron -s\n964 sshd-session  sshd-session: freebsd [priv] (sshd-session)\n966 sshd-session  sshd-session: freebsd@notty (sshd-session)\n967 ps            ps -axo pid,comm,args\n915 getty         /usr/libexec/getty 3wire ttyu0\n907 getty         /usr/libexec/getty Pc ttyv0\n908 getty         /usr/libexec/getty Pc ttyv1\n909 getty         /usr/libexec/getty Pc ttyv2\n910 getty         /usr/libexec/getty Pc ttyv3\n911 getty         /usr/libexec/getty Pc ttyv4\n912 getty         /usr/libexec/getty Pc ttyv5\n913 getty         /usr/libexec/getty Pc ttyv6\n914 getty         /usr/libexec/getty Pc ttyv7\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:54.944872+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "sockstat -46l"
+      ],
+      "returncode": 0,
+      "stdout": "USER     COMMAND    PID   FD  PROTO     LOCAL ADDRESS         FOREIGN ADDRESS      \nroot     sshd         877 6   tcp6      *:22                  *:*\nroot     sshd         877 7   tcp4      *:22                  *:*\nroot     syslogd      787 6   udp6      *:514                 *:*\nroot     syslogd      787 7   udp4      *:514                 *:*\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:55.208849+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "openssl version -a"
+      ],
+      "returncode": 0,
+      "stdout": "OpenSSL 3.0.20 7 Apr 2026 (Library: OpenSSL 3.0.20 7 Apr 2026)\nbuilt on: reproducible build, date unspecified\nplatform: FreeBSD-amd64\noptions:  bn(64,64)\ncompiler: clang\nOPENSSLDIR: \"/etc/ssl\"\nENGINESDIR: \"/usr/lib/engines-3\"\nMODULESDIR: \"/usr/lib/ossl-modules\"\nSeeding source: os-specific\nCPUINFO: OPENSSL_ia32cap=0xfffab2234f8bffff:0x4000007ab\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:55.521957+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "printf 'GET /status HTTP/1.0\r\nHost: managed.nd.test\r\n\r\n' | openssl s_client -quiet -verify_return_error -verify_hostname managed.nd.test -connect 172.28.97.2:443 -CAfile /home/freebsd/aw-case-v3/ca.pem -tls1_2 -cipher ECDHE-ECDSA-AES256-GCM-SHA384 -cert /home/freebsd/aw-case-v3/virtual-aw.pem -key /home/freebsd/aw-case-v3/virtual-aw.key"
+      ],
+      "returncode": 1,
+      "stdout": "HTTP/1.0 200 OK\nServer: SimpleHTTP/0.6 Python/3.12.3\nDate: Sat, 24 Oct 2026 03:08:55 GMT\nContent-type: application/octet-stream\nContent-Length: 5\nLast-Modified: Sat, 24 Oct 2026 03:00:32 GMT\n\nready",
+      "stderr": "Can't use SSL_get_servername\ndepth=1 CN = Evidence AW test CA\nverify return:1\ndepth=0 CN = managed.nd.test\nverify return:1\n101065CF3E410000:error:0A000126:SSL routines:ssl3_read_n:unexpected eof while reading:/usr/src/crypto/openssl/ssl/record/rec_layer_s3.c:319:\n",
+      "probe": "virtual-AW-authenticated-management",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "at": "2026-10-24T03:08:55.803890+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "printf 'GET /status HTTP/1.0\r\nHost: managed.nd.test\r\n\r\n' | openssl s_client -quiet -verify_return_error -verify_hostname managed.nd.test -connect 172.28.97.2:443 -CAfile /home/freebsd/aw-case-v3/ca.pem -tls1_2 -cipher ECDHE-ECDSA-AES256-GCM-SHA384"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Can't use SSL_get_servername\ndepth=1 CN = Evidence AW test CA\nverify return:1\ndepth=0 CN = managed.nd.test\nverify return:1\n101045D4ED280000:error:0A000410:SSL routines:ssl3_read_bytes:sslv3 alert handshake failure:/usr/src/crypto/openssl/ssl/record/rec_layer_s3.c:1601:SSL alert number 40\n",
+      "probe": "no-client-cert",
+      "expected_result": "rejected",
+      "observed_result": "rejected"
+    },
+    {
+      "at": "2026-10-24T03:08:56.102205+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "printf 'HEAD /managed.key HTTP/1.0\r\nHost: managed.nd.test\r\n\r\n' | openssl s_client -quiet -verify_return_error -verify_hostname managed.nd.test -connect 172.28.97.2:443 -CAfile /home/freebsd/aw-case-v3/ca.pem -tls1_2 -cipher ECDHE-ECDSA-AES256-GCM-SHA384 -cert /home/freebsd/aw-case-v3/virtual-aw.pem -key /home/freebsd/aw-case-v3/virtual-aw.key"
+      ],
+      "returncode": 1,
+      "stdout": "HTTP/1.0 404 File not found\nServer: SimpleHTTP/0.6 Python/3.12.3\nDate: Sat, 24 Oct 2026 03:08:56 GMT\nConnection: close\nContent-Type: text/html;charset=utf-8\nContent-Length: 335\n\n",
+      "stderr": "Can't use SSL_get_servername\ndepth=1 CN = Evidence AW test CA\nverify return:1\ndepth=0 CN = managed.nd.test\nverify return:1\n101085219B410000:error:0A000126:SSL routines:ssl3_read_n:unexpected eof while reading:/usr/src/crypto/openssl/ssl/record/rec_layer_s3.c:319:\n",
+      "probe": "private-key-path-inaccessible",
+      "expected_result": "404",
+      "observed_result": "404"
+    },
+    {
+      "at": "2026-10-24T03:08:56.366230+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "openssl x509 -in /home/freebsd/aw-case-v3/ca.pem -noout -subject -issuer -fingerprint -sha256"
+      ],
+      "returncode": 0,
+      "stdout": "subject=CN = Evidence AW test CA\nissuer=CN = Evidence AW test CA\nsha256 Fingerprint=DD:4D:E7:0E:A2:A2:EB:1E:72:55:5A:33:FA:84:11:21:25:1D:4D:99:DD:6B:A8:DC:F9:FF:22:3D:C5:7E:7E:4C\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:56.630130+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "openssl x509 -in /home/freebsd/aw-case-v3/virtual-aw.pem -noout -subject -issuer -fingerprint -sha256"
+      ],
+      "returncode": 0,
+      "stdout": "subject=CN = virtual-aw.nd.test\nissuer=CN = Evidence AW test CA\nsha256 Fingerprint=6B:2E:61:AB:AF:87:9E:3F:D7:F6:E4:BE:20:E6:F9:4E:37:53:0E:86:1E:E5:50:2E:E4:A6:4D:8E:7A:8D:6E:0A\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:56.716224+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ip",
+        "-j",
+        "-d",
+        "address"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":14,\"link_index\":13,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"02:c7:5f:b2:f0:34\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"altnames\":[\"msc-native-os-diversity-v3-2-ND_O_A1\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.100.1.1\",\"prefixlen\":24,\"broadcast\":\"10.100.1.255\",\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":16,\"link_index\":15,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"02:56:97:6e:a7:3f\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":2,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"altnames\":[\"msc-native-os-diversity-v3-3-ND_O_A1\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.20.11.1\",\"prefixlen\":30,\"broadcast\":\"172.20.11.3\",\"scope\":\"global\",\"label\":\"black\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":47,\"link_index\":48,\"ifname\":\"aw-management\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"6a:9e:ee:53:26:a6\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.28.96.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"aw-management\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:56.783935+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ip",
+        "route"
+      ],
+      "returncode": 0,
+      "stdout": "10.0.1.3 via 172.28.96.1 dev aw-management \n10.100.1.0/24 dev gray proto kernel scope link src 10.100.1.1 \n10.200.1.2 via 172.20.11.2 dev black proto static \n172.20.11.0/30 dev black proto kernel scope link src 172.20.11.1 \n172.20.21.1 via 172.20.11.2 dev black proto static \n172.28.96.0/30 dev aw-management proto kernel scope link src 172.28.96.2 \n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:56.859390+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "iptables-save",
+        "-c"
+      ],
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 03:08:56 2026\n*filter\n:INPUT DROP [17:5576]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [24:1440]\n[36:5546] -A INPUT -s 10.0.1.3/32 -d 172.28.96.2/32 -i aw-management -p tcp -m tcp --dport 443 -j ACCEPT\n[0:0] -A INPUT -i lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[53:5511] -A INPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -i black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[192:36980] -A INPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -i black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[38:5320] -A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i gray -o black -p esp -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[38:5320] -A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i black -o gray -p esp -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[148:23216] -A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i gray -o black -p udp -m multiport --dports 500,4500 -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[154:21058] -A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i black -o gray -p udp -m multiport --dports 500,4500 -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[20:5594] -A OUTPUT -s 172.28.96.2/32 -d 10.0.1.3/32 -o aw-management -p tcp -m tcp --sport 443 -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[53:5554] -A OUTPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -o black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[186:38808] -A OUTPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -o black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 03:08:56 2026\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:56.952682+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_A1",
+        "ss",
+        "-lntp"
+      ],
+      "returncode": 0,
+      "stdout": "State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess\nLISTEN 0      5        172.28.96.2:443       0.0.0.0:*    users:((\"python3\",pid=372,fd=3))\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:57.024106+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ip",
+        "-j",
+        "-d",
+        "address"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":24,\"link_index\":23,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"02:e9:8f:e9:68:3b\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"altnames\":[\"msc-native-os-diversity-v3-7-ND_O_B1\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.200.1.1\",\"prefixlen\":24,\"broadcast\":\"10.200.1.255\",\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":26,\"link_index\":25,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"02:04:db:a8:7a:4e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":2,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"altnames\":[\"msc-native-os-diversity-v3-8-ND_O_B1\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.20.21.1\",\"prefixlen\":30,\"broadcast\":\"172.20.21.3\",\"scope\":\"global\",\"label\":\"black\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":49,\"link_index\":50,\"ifname\":\"aw-management\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"56:65:70:b3:34:ca\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.28.97.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"aw-management\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:57.092780+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ip",
+        "route"
+      ],
+      "returncode": 0,
+      "stdout": "10.100.1.2 via 172.20.21.2 dev black proto static \n10.200.1.0/24 dev gray proto kernel scope link src 10.200.1.1 \n172.20.11.1 via 172.20.21.2 dev black proto static \n172.20.21.0/30 dev black proto kernel scope link src 172.20.21.1 \n172.28.97.0/30 dev aw-management proto kernel scope link src 172.28.97.2 \n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:57.168802+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "iptables-save",
+        "-c"
+      ],
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 03:08:57 2026\n*filter\n:INPUT DROP [17:5576]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[21:4297] -A INPUT -s 172.28.97.1/32 -d 172.28.97.2/32 -i aw-management -p tcp -m tcp --dport 443 -j ACCEPT\n[0:0] -A INPUT -i lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A INPUT -i lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A INPUT -i lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A INPUT -i lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[53:5554] -A INPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -i black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[186:38808] -A INPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -i black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[38:5320] -A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -o black -p esp -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[38:5320] -A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i black -o gray -p esp -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[154:21058] -A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -o black -p udp -m multiport --dports 500,4500 -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[148:23216] -A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i black -o gray -p udp -m multiport --dports 500,4500 -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[22:7026] -A OUTPUT -s 172.28.97.2/32 -d 172.28.97.1/32 -o aw-management -p tcp -m tcp --sport 443 -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[0:0] -A OUTPUT -o lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A OUTPUT -o lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A OUTPUT -o lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[0:0] -A OUTPUT -o lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[53:5511] -A OUTPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -o black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n[192:36980] -A OUTPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -o black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 03:08:57 2026\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:08:57.268863+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "ND_O_B1",
+        "ss",
+        "-lntp"
+      ],
+      "returncode": 0,
+      "stdout": "State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess\nLISTEN 0      5        172.28.97.2:443       0.0.0.0:*    users:((\"python3\",pid=355,fd=3))\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": [
+    "An actual separate FreeBSD14.4 VM runs a non-root workstation user and reaches a dedicated Outer management interface through its own virtual NIC/tap/bridge. Two existing FreeBSD Inner guests are separate VMs.",
+    "Exact QEMU process, guest OS, addresses, physical placement, client public fingerprints, server trust and bounded positive/negative responses are retained.",
+    "The initial root SSH attempt was rejected; the supported cloud user freebsd owns the workstation session. No unobserved sudo or administrator role is asserted.",
+    "Facility approval, personnel clearance, production trust/role authorization, product approval and complete layer-specific administrative functionality remain external or separate implementation tasks. A shared physical virtualization host does not establish hardware independence."
+  ]
+}

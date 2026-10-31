@@ -1,0 +1,216 @@
+{
+  "at": "2026-10-24T14:16:22.380647+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T14:15:24.832315+00:00",
+      "command": [
+        "cp",
+        "--reflink=auto",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:20.221931+00:00",
+      "command": [
+        "xz",
+        "-d",
+        "-k",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:20.225358+00:00",
+      "command": [
+        "mv",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/base.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:20.231452+00:00",
+      "command": [
+        "ssh-keygen",
+        "-q",
+        "-t",
+        "ed25519",
+        "-N",
+        "",
+        "-f",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/management_key"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:22.215487+00:00",
+      "command": [
+        "qemu-img",
+        "create",
+        "-f",
+        "qcow2",
+        "-F",
+        "qcow2",
+        "-b",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/base.qcow2",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/node-v2-0.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "Formatting '/users/hy/tdn-replay-20261024-v7/private/freebsd/node-v2-0.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=6477709312 backing_file=/users/hy/tdn-replay-20261024-v7/private/freebsd/base.qcow2 backing_fmt=qcow2 lazy_refcounts=off refcount_bits=16\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:22.221280+00:00",
+      "command": [
+        "genisoimage",
+        "-quiet",
+        "-output",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/seed-v2-0.iso",
+        "-volid",
+        "cidata",
+        "-joliet",
+        "-rock",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/seed-v2-0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:22.295232+00:00",
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "nq-freebsd-0",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-replay-20261024-v7/private/freebsd/node-v2-0.qcow2,format=qcow2,if=virtio",
+        "-drive",
+        "file=/users/hy/tdn-replay-20261024-v7/private/freebsd/seed-v2-0.iso,media=cdrom,readonly=on",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22392-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt,mac=52:54:76:09:00:10",
+        "-netdev",
+        "socket,id=gray,listen=127.0.0.1:49572",
+        "-device",
+        "virtio-net-pci,netdev=gray,mac=52:54:76:09:00:11",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-replay-20261024-v7/private/freebsd/serial-v2-0.log",
+        "-monitor",
+        "unix:/users/hy/tdn-replay-20261024-v7/private/freebsd/monitor-v2-0.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/qemu-v2-0.pid",
+        "-daemonize"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:22.305654+00:00",
+      "command": [
+        "qemu-img",
+        "create",
+        "-f",
+        "qcow2",
+        "-F",
+        "qcow2",
+        "-b",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/base.qcow2",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/node-v2-1.qcow2"
+      ],
+      "returncode": 0,
+      "stdout": "Formatting '/users/hy/tdn-replay-20261024-v7/private/freebsd/node-v2-1.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=6477709312 backing_file=/users/hy/tdn-replay-20261024-v7/private/freebsd/base.qcow2 backing_fmt=qcow2 lazy_refcounts=off refcount_bits=16\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:22.310680+00:00",
+      "command": [
+        "genisoimage",
+        "-quiet",
+        "-output",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/seed-v2-1.iso",
+        "-volid",
+        "cidata",
+        "-joliet",
+        "-rock",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/seed-v2-1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T14:16:22.380582+00:00",
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "nq-freebsd-1",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-replay-20261024-v7/private/freebsd/node-v2-1.qcow2,format=qcow2,if=virtio",
+        "-drive",
+        "file=/users/hy/tdn-replay-20261024-v7/private/freebsd/seed-v2-1.iso,media=cdrom,readonly=on",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22393-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt,mac=52:54:76:09:10:10",
+        "-netdev",
+        "socket,id=gray,connect=127.0.0.1:49572",
+        "-device",
+        "virtio-net-pci,netdev=gray,mac=52:54:76:09:10:11",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-replay-20261024-v7/private/freebsd/serial-v2-1.log",
+        "-monitor",
+        "unix:/users/hy/tdn-replay-20261024-v7/private/freebsd/monitor-v2-1.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-replay-20261024-v7/private/freebsd/qemu-v2-1.pid",
+        "-daemonize"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "image_url": "https://download.freebsd.org/releases/VM-IMAGES/14.4-RELEASE/amd64/Latest/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz",
+  "expected_image_sha256": "d957fe56fb596280428328e78e9e4feae00dd361701caa79a061f9bd289eff67",
+  "configuration": {
+    "host": "hy@pc22.cloudlab.umass.edu",
+    "run_root": "/users/hy/tdn-replay-20261024-v7",
+    "device_prefix": "NQ",
+    "bridge_prefix": "nq3",
+    "profile_name": "native-replay-v7",
+    "ssh_port_base": 22392,
+    "socket_port": 49572,
+    "mac_prefix": "52:54:76:09",
+    "image_cache": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/FreeBSD-14.4-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2.xz"
+  }
+}

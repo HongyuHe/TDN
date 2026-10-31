@@ -53,9 +53,9 @@ def audit(bundle,output,report_path):
         lines.append("theorem bypass_crosses_distinct_levels : ("+str(path[0])+" : Node) ∈ innerNodes ∧ ("+str(path[-1])+" : Node) ∈ innerNodes ∧ level "+str(path[0])+" ≠ level "+str(path[-1])+" ∧ ¬ firewall "+str(path[0])+" := by unfold innerNodes level firewall firewallNodes; decide")
     elif applicable_pairs>0:
         lines += [
-            "theorem local_cut : ∀ a b, edge a b → ¬ firewall a → ¬ firewall b → side a = side b := by unfold edge edges firewall firewallNodes side; decide",
-            "theorem start_clear : ∀ a, a ∈ innerNodes → ¬ firewall a := by unfold innerNodes firewall firewallNodes; decide",
-            "theorem sides_differ : ∀ a b, a ∈ innerNodes → b ∈ innerNodes → level a ≠ level b → side a ≠ side b := by unfold innerNodes level side; decide",
+            "lemma local_cut : ∀ a b, edge a b → ¬ firewall a → ¬ firewall b → side a = side b := by unfold edge edges firewall firewallNodes side; decide",
+            "lemma start_clear : ∀ a, a ∈ innerNodes → ¬ firewall a := by unfold innerNodes firewall firewallNodes; decide",
+            "lemma sides_differ : ∀ a b, a ∈ innerNodes → b ∈ innerNodes → level a ≠ level b → side a ≠ side b := by unfold innerNodes level side; decide",
             "theorem all_cross_level_paths_cross_firewall (a b : Node) (ha : a ∈ innerNodes) (hb : b ∈ innerNodes) (different : level a ≠ level b) : ¬ Relation.ReflTransGen (Paths.Avoiding edge firewall) a b := Paths.no_firewall_free_crossing edge firewall side local_cut (start_clear a ha) (sides_differ a b ha hb different)"
         ]
     lines.append("end TDN.Imported."+ns)

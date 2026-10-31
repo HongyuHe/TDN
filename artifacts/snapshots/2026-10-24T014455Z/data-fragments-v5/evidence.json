@@ -1,0 +1,228 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "configuration_id": "data-fragments-v5",
+  "runtime_backend": "supplemental-Linux-network-namespaces-static-XFRM",
+  "started_at": "2026-10-24T05:01:46.102825+00:00",
+  "ended_at": "2026-10-24T05:02:19.599552+00:00",
+  "devices": [
+    {
+      "id": "HA",
+      "role": "Red-source",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3df5-HA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IA",
+      "role": "Inner-A",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3df5-IA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "R",
+      "role": "Black-router",
+      "site": "R",
+      "security_level_id": "L1",
+      "namespace": "tcv3df5-R",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IB",
+      "role": "Inner-B",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3df5-IB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "HB",
+      "role": "Red-destination",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3df5-HB",
+      "physical_independence": "unavailable"
+    }
+  ],
+  "links": [
+    {
+      "endpoints": [
+        "HA:red",
+        "IA:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.71.1.2/24",
+        "10.71.1.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IA:wire",
+        "R:left"
+      ],
+      "relation": "veth",
+      "zone": "Black",
+      "addresses": [
+        "192.0.2.1/30",
+        "192.0.2.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "R:right",
+        "IB:wire"
+      ],
+      "relation": "veth",
+      "zone": "Black",
+      "addresses": [
+        "192.0.2.5/30",
+        "192.0.2.6/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IB:red",
+        "HB:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.71.2.1/24",
+        "10.71.2.2/24"
+      ],
+      "physical_claim_supported": false
+    }
+  ],
+  "tunnels": [
+    {
+      "id": "one-layer-representative",
+      "mechanism": "IPsec",
+      "layer": "one-layer-representative",
+      "endpoints": [
+        "IA",
+        "IB"
+      ],
+      "local": "192.0.2.1",
+      "remote": "192.0.2.6",
+      "selectors": [
+        "10.71.1.0/24",
+        "10.71.2.0/24"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    }
+  ],
+  "probes": [
+    {
+      "id": "post-ESP-fragmentation",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "receiver_file": "post-ESP-fragmentation-receiver.json",
+      "capture_files": [
+        "post-ESP-fragmentation-protected-source.json",
+        "post-ESP-fragmentation-after-ESP-before-router.json",
+        "post-ESP-fragmentation-Black-after-router.json",
+        "post-ESP-fragmentation-protected-destination.json"
+      ]
+    },
+    {
+      "id": "plaintext-fragmentation",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "receiver_file": "plaintext-fragmentation-receiver.json",
+      "capture_files": [
+        "plaintext-fragmentation-protected-source.json",
+        "plaintext-fragmentation-after-ESP-before-router.json",
+        "plaintext-fragmentation-Black-after-router.json",
+        "plaintext-fragmentation-protected-destination.json"
+      ]
+    },
+    {
+      "id": "overlapping-plaintext-fragments",
+      "expected_result": "no_payload",
+      "observed_result": "no_payload",
+      "receiver_file": "overlapping-plaintext-fragments-receiver.json",
+      "capture_files": [
+        "overlapping-plaintext-fragments-protected-source.json",
+        "overlapping-plaintext-fragments-after-ESP-before-router.json",
+        "overlapping-plaintext-fragments-Black-after-router.json",
+        "overlapping-plaintext-fragments-protected-destination.json"
+      ]
+    },
+    {
+      "id": "restored-valid-payload",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "receiver_file": "restored-valid-payload-receiver.json",
+      "capture_files": [
+        "restored-valid-payload-protected-source.json",
+        "restored-valid-payload-after-ESP-before-router.json",
+        "restored-valid-payload-Black-after-router.json",
+        "restored-valid-payload-protected-destination.json"
+      ]
+    },
+    {
+      "id": "IPv6-below-MTU-control",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "receiver_file": "IPv6-below-MTU-control-receiver.json",
+      "capture_files": [
+        "IPv6-below-MTU-control-protected-source.json",
+        "IPv6-below-MTU-control-after-ESP-before-router.json",
+        "IPv6-below-MTU-control-Black-after-router.json",
+        "IPv6-below-MTU-control-protected-destination.json"
+      ]
+    },
+    {
+      "id": "IPv6-raw-only-NH44-before",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "receiver_file": "IPv6-raw-only-NH44-before-receiver.json",
+      "capture_files": [
+        "IPv6-raw-only-NH44-before-protected-source.json",
+        "IPv6-raw-only-NH44-before-after-ESP-before-router.json",
+        "IPv6-raw-only-NH44-before-Black-after-router.json",
+        "IPv6-raw-only-NH44-before-protected-destination.json"
+      ]
+    },
+    {
+      "id": "IPv6-early-NH44-rejection",
+      "expected_result": "no_payload",
+      "observed_result": "no_payload",
+      "receiver_file": "IPv6-early-NH44-rejection-receiver.json",
+      "capture_files": [
+        "IPv6-early-NH44-rejection-protected-source.json",
+        "IPv6-early-NH44-rejection-after-ESP-before-router.json",
+        "IPv6-early-NH44-rejection-Black-after-router.json",
+        "IPv6-early-NH44-rejection-protected-destination.json"
+      ]
+    },
+    {
+      "id": "IPv6-restored-control",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "receiver_file": "IPv6-restored-control-receiver.json",
+      "capture_files": [
+        "IPv6-restored-control-protected-source.json",
+        "IPv6-restored-control-after-ESP-before-router.json",
+        "IPv6-restored-control-Black-after-router.json",
+        "IPv6-restored-control-protected-destination.json"
+      ]
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Virtual namespace graph; no physical independence or product approval",
+    "Manually provisioned SAs do not establish IKE/MKA/certificate authentication",
+    "Test keys generated by Python secrets; no NSA KGS approval claim"
+  ]
+}

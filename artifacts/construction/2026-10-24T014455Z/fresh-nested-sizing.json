@@ -1,0 +1,131 @@
+{
+  "bundle": "artifacts/snapshots/2026-10-24T014455Z/MTU-sizing-v3/layers-ipsec-ipsec-integrated",
+  "manifest_sha256": "fd7a55475f156b14ccf6a30e86afa7bbba977996c2cda8228c5dddf8b8fe961e",
+  "interfaces": [
+    {
+      "device": "FA",
+      "port": "inside",
+      "stage": "black",
+      "mtu": 1500
+    },
+    {
+      "device": "FA",
+      "port": "outside",
+      "stage": "black",
+      "mtu": 1500
+    },
+    {
+      "device": "FB",
+      "port": "inside",
+      "stage": "black",
+      "mtu": 1500
+    },
+    {
+      "device": "FB",
+      "port": "outside",
+      "stage": "black",
+      "mtu": 1500
+    },
+    {
+      "device": "HA",
+      "port": "red",
+      "stage": "red",
+      "mtu": 1100
+    },
+    {
+      "device": "HB",
+      "port": "red",
+      "stage": "red",
+      "mtu": 1100
+    },
+    {
+      "device": "IA",
+      "port": "red",
+      "stage": "red",
+      "mtu": 1100
+    },
+    {
+      "device": "IA",
+      "port": "gray",
+      "stage": "gray",
+      "mtu": 1200
+    },
+    {
+      "device": "IB",
+      "port": "red",
+      "stage": "red",
+      "mtu": 1100
+    },
+    {
+      "device": "IB",
+      "port": "gray",
+      "stage": "gray",
+      "mtu": 1200
+    },
+    {
+      "device": "OA",
+      "port": "gray",
+      "stage": "gray",
+      "mtu": 1500
+    },
+    {
+      "device": "OA",
+      "port": "black",
+      "stage": "black",
+      "mtu": 1400
+    },
+    {
+      "device": "OB",
+      "port": "gray",
+      "stage": "gray",
+      "mtu": 1500
+    },
+    {
+      "device": "OB",
+      "port": "black",
+      "stage": "black",
+      "mtu": 1400
+    }
+  ],
+  "maximum": 1100,
+  "maximum_lengths": {
+    "red": 1100,
+    "gray": 1156,
+    "black": 1212
+  },
+  "observations": [
+    "cmd-0989",
+    "cmd-1022",
+    "cmd-0791",
+    "cmd-0956",
+    "cmd-0824",
+    "cmd-0837",
+    "cmd-0923",
+    "cmd-0936",
+    "cmd-0857",
+    "cmd-0870",
+    "cmd-0890",
+    "cmd-0903",
+    "cmd-1279",
+    "cmd-1312",
+    "cmd-1081",
+    "cmd-1246",
+    "cmd-1114",
+    "cmd-1127",
+    "cmd-1213",
+    "cmd-1226",
+    "cmd-1147",
+    "cmd-1160",
+    "cmd-1180",
+    "cmd-1193"
+  ],
+  "whole_RG033_established": false,
+  "scope": [
+    "Selected fixed two-IPsec-layer IPv4 geometry, with every declared data-path port represented in both directions.",
+    "Each ESP encoding uses a20-byte outer IPv4 header,8-byte ESP header,8-byte explicit IV,16-byte ICV,2-byte trailer and minimal4-byte padding. No UDP encapsulation or TFC padding is recorded.",
+    "The theorem assumes the modeled path and encodings, unchanged interface limits and enforcement of the initial Red IP limit. It does not infer all possible routes, arbitrary source sizes or fragmentation absence from an MTU value alone.",
+    "Interface labels are selected from this case's recorded architecture. Complete packet-path correspondence and additional Gray encryption components require their own applications.",
+    "Raw observations and manifest hashes bind the imported facts. Collector truth, Linux implementation behavior, minimal padding and no extra outer IPv4 options remain implementation assumptions.",
+    "MACsec, other padding/frame variants, native FRR/OVS cases, future changes and all other applicable interfaces remain separate obligations."
+  ]
+}

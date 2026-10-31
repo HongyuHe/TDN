@@ -1,0 +1,81 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "started_at": "2026-10-24T05:09:04.586440+00:00",
+  "ended_at": "2026-10-24T05:09:22.174751+00:00",
+  "configuration_id": "IPv6-PMTU-v3",
+  "code_sha256": "54b7e279bd9b6445b1af6a6a705a4f2cfe14fb8a387d6d5692c02410f00d0e29",
+  "code_hashes": {
+    "ipv6_pmtu_v3.py": "3185c66b3e91f6a3227f12020dbc2e4dc035a65b408eebb60776973a3e0efce7",
+    "family_execution_v9.py": "54b7e279bd9b6445b1af6a6a705a4f2cfe14fb8a387d6d5692c02410f00d0e29",
+    "gateway_header_policy_v4.py": "f0c5ba1d322871f20300e651f95c230d54fd7d71d4bf288f449e82b6a3b8b1da",
+    "gateway_header_policy_v5.py": "4469452948de65427a2ccc18e43d654b378c818166807735ad225167751ccb31"
+  },
+  "files": [
+    {
+      "path": "Red-destination.json",
+      "sha256": "bba4ec6062e5cfba6f9520695e30aebe1e88942a679f938aff20a07e7a131de7",
+      "bytes": 77
+    },
+    {
+      "path": "Red-source.json",
+      "sha256": "1b7b5f774df3ebb55fc8452587b3527304f31e4ff3a497866694775dc1dc25d9",
+      "bytes": 685
+    },
+    {
+      "path": "before.json",
+      "sha256": "087c55b85f8fa2c6d7a5db5900743e8106c9557c263afb382b24137c34eef21d",
+      "bytes": 48251
+    },
+    {
+      "path": "collector.source.py",
+      "sha256": "54b7e279bd9b6445b1af6a6a705a4f2cfe14fb8a387d6d5692c02410f00d0e29",
+      "bytes": 20934
+    },
+    {
+      "path": "commands.json",
+      "sha256": "fab989076fbac9f6c546d6a9583ab8083028510ff3536098b100c0bd6290295b",
+      "bytes": 133678
+    },
+    {
+      "path": "early-header-policy.json",
+      "sha256": "4b37fba77e0251c87d6cb0cd0969aee6ad38eeb56db128779ad5701181c3d6e9",
+      "bytes": 6891
+    },
+    {
+      "path": "evidence.json",
+      "sha256": "5557fb30faa52db8a6094a2e46c9013fced7077d17b6f6959bb63e2f288a1671",
+      "bytes": 4495
+    },
+    {
+      "path": "gateway_header_policy_v4.py",
+      "sha256": "f0c5ba1d322871f20300e651f95c230d54fd7d71d4bf288f449e82b6a3b8b1da",
+      "bytes": 1839
+    },
+    {
+      "path": "gateway_header_policy_v5.py",
+      "sha256": "4469452948de65427a2ccc18e43d654b378c818166807735ad225167751ccb31",
+      "bytes": 1661
+    },
+    {
+      "path": "header-policy.json",
+      "sha256": "93720a703045dcb2843da1a79ebb193dd1873e732f993855950d9f7b88ca5989",
+      "bytes": 576
+    },
+    {
+      "path": "receiver.json",
+      "sha256": "8457a0b22e3e0aa89e0eeb601eeb504cdc28b565172e07b7ae209b0dd95a91aa",
+      "bytes": 65
+    },
+    {
+      "path": "router-egress.json",
+      "sha256": "b33d56dbd2bc16a546149a471dd499d20d084d04f97ebc5b44caae20b59f0916",
+      "bytes": 688
+    },
+    {
+      "path": "sender-Black.json",
+      "sha256": "aaaba0d384950315de3537011058de1dc4db0d6c4c16aef1036400fd1f049036",
+      "bytes": 1099
+    }
+  ],
+  "error": "Traceback (most recent call last):\n  File \"/users/hy/tdn-continuation-2026-10-24T014455Z/scripts/ipv6_pmtu_v3.py\", line 78, in <module>\n    p=argparse.ArgumentParser();p.add_argument('--role',default='main',choices=['main','capture','server','sender']);p.add_argument('--output',required=True);p.add_argument('--interface');a=p.parse_args();{'main':main,'capture':capture,'server':server,'sender':sender}[a.role](a)\n                                                                                                                                                                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/users/hy/tdn-continuation-2026-10-24T014455Z/scripts/ipv6_pmtu_v3.py\", line 37, in sender\n    b,control,flags,address=s.recvmsg(65535,2048,socket.MSG_ERRQUEUE|socket.MSG_DONTWAIT);decoded=[]\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTimeoutError: timed out\n"
+}

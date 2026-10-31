@@ -1,0 +1,53 @@
+{
+  "records": [
+    {
+      "guest": 0,
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-o",
+        "ConnectTimeout=5",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22222",
+        "root@127.0.0.1",
+        "sh -s"
+      ],
+      "started_at": "2026-10-24T02:45:42.011531+00:00",
+      "ended_at": "2026-10-24T02:47:07.141695+00:00",
+      "status": "failed",
+      "returncode": 2,
+      "log": "guest0.log"
+    },
+    {
+      "guest": 1,
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-o",
+        "ConnectTimeout=5",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22223",
+        "root@127.0.0.1",
+        "sh -s"
+      ],
+      "started_at": "2026-10-24T02:45:42.012089+00:00",
+      "ended_at": "2026-10-24T02:47:11.636141+00:00",
+      "status": "failed",
+      "returncode": 2,
+      "log": "guest1.log"
+    }
+  ],
+  "source_url": "https://download.strongswan.org/strongswan-6.0.3.tar.bz2",
+  "backend": "QEMU KVM FreeBSD 14.4 guest; Botan plugin build with default plugins disabled",
+  "scope": "Build is a prerequisite. Effective loaded plugin identity and useful protected traffic remain separate checks."
+}

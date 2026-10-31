@@ -1,0 +1,277 @@
+{
+  "cases": [
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-forward-v18",
+      "manifest_sha256": "e968795d9c8febf19a63017d5b200925c68956c4a89ebca256939450c9762320",
+      "ports": [
+        {
+          "id": "eap-tls-forward-v18/P0",
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0,
+          "sa": 0,
+          "cipher": "GCM-AES-256",
+          "replay_window": 0
+        },
+        {
+          "id": "eap-tls-forward-v18/P1",
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0,
+          "sa": 0,
+          "cipher": "GCM-AES-256",
+          "replay_window": 0
+        }
+      ],
+      "observations": [
+        "cmd-0127",
+        "cmd-0137",
+        "cmd-0164",
+        "cmd-0138",
+        "cmd-0148",
+        "cmd-0161",
+        "cmd-0161",
+        "cmd-0163",
+        "cmd-0038",
+        "cmd-0042"
+      ],
+      "negotiated_suite": [
+        256,
+        true,
+        "mldsa87",
+        "mlkem1024",
+        "sha384"
+      ],
+      "roles": {
+        "P0": "authenticator",
+        "P1": "supplicant"
+      }
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/eap-tls-reverse-v18",
+      "manifest_sha256": "70a737f29f95cd11d545637208e9ba4d10acb3c44c516340066666e4081b2bb2",
+      "ports": [
+        {
+          "id": "eap-tls-reverse-v18/P0",
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0,
+          "sa": 0,
+          "cipher": "GCM-AES-256",
+          "replay_window": 0
+        },
+        {
+          "id": "eap-tls-reverse-v18/P1",
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0,
+          "sa": 0,
+          "cipher": "GCM-AES-256",
+          "replay_window": 0
+        }
+      ],
+      "observations": [
+        "cmd-0127",
+        "cmd-0137",
+        "cmd-0164",
+        "cmd-0138",
+        "cmd-0148",
+        "cmd-0161",
+        "cmd-0163",
+        "cmd-0164",
+        "cmd-0038",
+        "cmd-0042"
+      ],
+      "negotiated_suite": [
+        256,
+        true,
+        "mldsa87",
+        "mlkem1024",
+        "sha384"
+      ],
+      "roles": {
+        "P1": "authenticator",
+        "P0": "supplicant"
+      }
+    }
+  ],
+  "devices": [
+    {
+      "device": "eap-tls-forward-v18/P0",
+      "role": "authenticator",
+      "key_wrap_algorithm": "AES Key Wrap",
+      "key_wrap_bits": 256,
+      "protection_algorithm": "AES GCM",
+      "protection_bits": 256
+    },
+    {
+      "device": "eap-tls-forward-v18/P1",
+      "role": "supplicant",
+      "key_wrap_algorithm": "AES Key Wrap",
+      "key_wrap_bits": 256,
+      "protection_algorithm": "AES GCM",
+      "protection_bits": 256
+    },
+    {
+      "device": "eap-tls-reverse-v18/P0",
+      "role": "supplicant",
+      "key_wrap_algorithm": "AES Key Wrap",
+      "key_wrap_bits": 256,
+      "protection_algorithm": "AES GCM",
+      "protection_bits": 256
+    },
+    {
+      "device": "eap-tls-reverse-v18/P1",
+      "role": "authenticator",
+      "key_wrap_algorithm": "AES Key Wrap",
+      "key_wrap_bits": 256,
+      "protection_algorithm": "AES GCM",
+      "protection_bits": 256
+    }
+  ],
+  "source_bindings": {
+    "bundle": "artifacts/snapshots/2026-10-24T014455Z/hostap-kdf-bindings-v4",
+    "manifest_sha256": "29b3f792a34fe3d10dd3f31581e49f904b992b85a82d866429fbd01b01c5856b",
+    "runtime_bundle": "artifacts/snapshots/2026-10-24T014455Z/final-hostap-runtime-v4",
+    "runtime_manifest_sha256": "2476dae11a0f5ea660bb1a4add8768391555dec0f04ad829776f5a6b5503af19",
+    "bindings": [
+      {
+        "role": "authenticator",
+        "source_root": "hostapd-2.12",
+        "binary_path": "hostap-pq-delay-auth/hostapd-2.12/hostapd/hostapd",
+        "binary_sha256": "23a5f3dfbaee5c2b4b54f16229d8274c3de7a760d30613a95db566a1acd78b1d",
+        "observed_at": "2026-10-24T14:59:26.691951+00:00",
+        "cak_bytes": 32,
+        "kek_bytes": 32,
+        "wrap_function": "aes_wrap",
+        "ckn_bytes": 16,
+        "implementation_reading": "Both EAP wrappers request the first32 MSK bytes and CAK32; KAY sets KEK length to CAK length and passes that length to AES wrap."
+      },
+      {
+        "role": "supplicant",
+        "source_root": "wpa_supplicant-2.12",
+        "binary_path": "hostap-pq-delay-auth/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+        "binary_sha256": "aa5af96ee16645430271770a942ceefd2f86d62efbb25f2e76fe3595681d44a6",
+        "observed_at": "2026-10-24T14:59:28.607920+00:00",
+        "cak_bytes": 32,
+        "kek_bytes": 32,
+        "wrap_function": "aes_wrap",
+        "ckn_bytes": 16,
+        "implementation_reading": "Both EAP wrappers request the first32 MSK bytes and CAK32; KAY sets KEK length to CAK length and passes that length to AES wrap."
+      }
+    ]
+  },
+  "finite_vectors": {
+    "bundle": "artifacts/snapshots/2026-10-24T014455Z/hostap-kdf-vectors-v3",
+    "manifest_sha256": "3794d554822bdce8a3c1adc3115b44722d27ac0530558017aa37b2a2e29c7548",
+    "results": [
+      {
+        "name": "G1-128",
+        "kind": "KDF",
+        "bytes": 16,
+        "expected": "b57a0b05f43e9600c3c4d15c1e3c26e8",
+        "observed": "b57a0b05f43e9600c3c4d15c1e3c26e8",
+        "at": "2026-10-24T14:57:50.108305+00:00"
+      },
+      {
+        "name": "G1-256",
+        "kind": "KDF",
+        "bytes": 32,
+        "expected": "0efd01e5b03a0951a6df9bbffe419016ee40fdbfc3335ebf92ea03802214a307",
+        "observed": "0efd01e5b03a0951a6df9bbffe419016ee40fdbfc3335ebf92ea03802214a307",
+        "at": "2026-10-24T14:57:51.982101+00:00"
+      },
+      {
+        "name": "G2-128",
+        "kind": "CAK",
+        "bytes": 16,
+        "expected": "135bd758b0ee5c11c55ff6ab19fdb199",
+        "observed": "135bd758b0ee5c11c55ff6ab19fdb199",
+        "at": "2026-10-24T14:57:53.879658+00:00"
+      },
+      {
+        "name": "G2-256",
+        "kind": "CAK",
+        "bytes": 32,
+        "expected": "a29efdb63d6fba73c65daab2295340a837a8886e94a905b5c9c7ef1d9dbb297e",
+        "observed": "a29efdb63d6fba73c65daab2295340a837a8886e94a905b5c9c7ef1d9dbb297e",
+        "at": "2026-10-24T14:57:55.704742+00:00"
+      },
+      {
+        "name": "G3-128",
+        "kind": "CKN",
+        "bytes": 16,
+        "expected": "96437a93ccf10d9dfe347846cce52c7d",
+        "observed": "96437a93ccf10d9dfe347846cce52c7d",
+        "at": "2026-10-24T14:57:57.655098+00:00"
+      },
+      {
+        "name": "G3-256",
+        "kind": "CKN",
+        "bytes": 16,
+        "expected": "7888f5d48ba8b24e96bb95bd8c7304ec",
+        "observed": "7888f5d48ba8b24e96bb95bd8c7304ec",
+        "at": "2026-10-24T14:57:59.446133+00:00"
+      },
+      {
+        "name": "G4-128",
+        "kind": "KEK",
+        "bytes": 16,
+        "expected": "8f5a384c15d6ae9302b462e363d03ca6",
+        "observed": "8f5a384c15d6ae9302b462e363d03ca6",
+        "at": "2026-10-24T14:58:01.319165+00:00"
+      },
+      {
+        "name": "G4-256",
+        "kind": "KEK",
+        "bytes": 32,
+        "expected": "71340e454c84a1232aa7977d5ed86f78f250f3f9d53584b9337ff0c6dfdc9f96",
+        "observed": "71340e454c84a1232aa7977d5ed86f78f250f3f9d53584b9337ff0c6dfdc9f96",
+        "at": "2026-10-24T14:58:03.242662+00:00"
+      },
+      {
+        "name": "G5-128",
+        "kind": "ICK",
+        "bytes": 16,
+        "expected": "8f1c5cb1c8ed2e5f047906e0473aad4d",
+        "observed": "8f1c5cb1c8ed2e5f047906e0473aad4d",
+        "at": "2026-10-24T14:58:05.009306+00:00"
+      },
+      {
+        "name": "G5-256",
+        "kind": "ICK",
+        "bytes": 32,
+        "expected": "98b8544d7390a41e50ef72e25b4a036523c919e812918871949b48123eab526e",
+        "observed": "98b8544d7390a41e50ef72e25b4a036523c919e812918871949b48123eab526e",
+        "at": "2026-10-24T14:58:06.891156+00:00"
+      },
+      {
+        "name": "G6-128",
+        "kind": "SAK",
+        "bytes": 16,
+        "expected": "045205925831ae59c14550ed59cc003d",
+        "observed": "045205925831ae59c14550ed59cc003d",
+        "at": "2026-10-24T14:58:08.790089+00:00"
+      },
+      {
+        "name": "G6-256",
+        "kind": "SAK",
+        "bytes": 32,
+        "expected": "bb692568b287484a5f3f4793b09732270d13dd818373c15b3f2793fdc1948a37",
+        "observed": "bb692568b287484a5f3f4793b09732270d13dd818373c15b3f2793fdc1948a37",
+        "at": "2026-10-24T14:58:10.681809+00:00"
+      }
+    ]
+  },
+  "implementation_contract": [
+    "Reviewed exact hostap EAP wrappers derive a32-byte CAK; shared KAY derives a CAK-sized KEK and calls AES wrap with that length. Standard AES/OpenSSL primitive semantics and correct compilation/execution are trusted.",
+    "The retained collector launches the named binaries; later public source/binary collection binds their identities. The observation interval assumes those named build outputs were unchanged between execution and identity collection. There is no contemporaneous process-memory measurement.",
+    "Every selected software MACsec data port has a raw-bound GCM-AES-256 interface. Hardware offload is excluded.",
+    "The twelve public AnnexG vectors support only their finite inputs. Primary indexed IEEE excerpts have explicit incomplete-download provenance; full-standard conformance is not claimed.",
+    "No source, binary or configuration pins represent secret values. The imported vector inputs are published public test data."
+  ]
+}

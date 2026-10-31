@@ -1,0 +1,749 @@
+{
+  "schema_version": "csfc-multiworker-placement/v1",
+  "started_at": "2026-10-24T02:19:49.838985+00:00",
+  "ended_at": "2026-10-24T02:19:53.206720+00:00",
+  "worker": "w159",
+  "worker_host": "clnode159.clemson.cloudlab.us",
+  "action": "restore",
+  "runtime_backend": "native-FRR-OVS-crossworker-VXLAN",
+  "selected_device_ids": [
+    "MW_R_A1",
+    "MW_I_A1",
+    "MW_G_A1",
+    "MW_R_A2",
+    "MW_I_A2",
+    "MW_G_A2",
+    "MW_R_B1",
+    "MW_I_B1",
+    "MW_G_B1",
+    "MW_R_B2",
+    "MW_I_B2",
+    "MW_G_B2"
+  ],
+  "assignments": {
+    "MW_BLACK": "w176",
+    "MW_GF_A": "w008",
+    "MW_R_A1": "w159",
+    "MW_I_A1": "w159",
+    "MW_G_A1": "w159",
+    "MW_O_A1": "w163",
+    "MW_OF_A1": "w176",
+    "MW_R_A2": "w159",
+    "MW_I_A2": "w159",
+    "MW_G_A2": "w159",
+    "MW_O_A2": "w163",
+    "MW_OF_A2": "w176",
+    "MW_GF_B": "w008",
+    "MW_R_B1": "w159",
+    "MW_I_B1": "w159",
+    "MW_G_B1": "w159",
+    "MW_O_B1": "w163",
+    "MW_OF_B1": "w176",
+    "MW_R_B2": "w159",
+    "MW_I_B2": "w159",
+    "MW_G_B2": "w159",
+    "MW_O_B2": "w163",
+    "MW_OF_B2": "w176"
+  },
+  "records": [
+    {
+      "id": "mw-00000",
+      "command": [
+        "docker",
+        "exec",
+        "MW_R_A1",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:49.839034+00:00",
+      "ended_at": "2026-10-24T02:19:49.937727+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00001",
+      "command": [
+        "docker",
+        "exec",
+        "MW_R_A1",
+        "ip",
+        "route",
+        "replace",
+        "0.0.0.0/0",
+        "via",
+        "10.1.1.1"
+      ],
+      "started_at": "2026-10-24T02:19:49.937747+00:00",
+      "ended_at": "2026-10-24T02:19:50.017200+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00002",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A1",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:50.017235+00:00",
+      "ended_at": "2026-10-24T02:19:50.103071+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00003",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A1",
+        "ip",
+        "route",
+        "replace",
+        "10.2.1.0/24",
+        "via",
+        "10.100.1.1"
+      ],
+      "started_at": "2026-10-24T02:19:50.103097+00:00",
+      "ended_at": "2026-10-24T02:19:50.177738+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00004",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A1",
+        "ip",
+        "route",
+        "replace",
+        "10.200.1.2/32",
+        "via",
+        "10.100.1.1"
+      ],
+      "started_at": "2026-10-24T02:19:50.177761+00:00",
+      "ended_at": "2026-10-24T02:19:50.257219+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00005",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A1",
+        "ip",
+        "route",
+        "replace",
+        "10.100.2.0/24",
+        "via",
+        "10.100.1.254"
+      ],
+      "started_at": "2026-10-24T02:19:50.257250+00:00",
+      "ended_at": "2026-10-24T02:19:50.351380+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00006",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:19:50.351410+00:00",
+      "ended_at": "2026-10-24T02:19:50.438126+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00007",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_A1",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:50.438157+00:00",
+      "ended_at": "2026-10-24T02:19:50.515470+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00008",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_A1",
+        "ovs-vsctl",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:19:50.515508+00:00",
+      "ended_at": "2026-10-24T02:19:50.598417+00:00",
+      "returncode": 0,
+      "stdout": "e612a2e9-1ec8-479c-accc-1350c26b1793\n    Bridge br0\n        fail_mode: secure\n        Port br0\n            Interface br0\n                type: internal\n        Port filter\n            Interface filter\n        Port outer\n            Interface outer\n        Port inner\n            Interface inner\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00009",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_A1",
+        "ovs-ofctl",
+        "dump-flows",
+        "br0"
+      ],
+      "started_at": "2026-10-24T02:19:50.598451+00:00",
+      "ended_at": "2026-10-24T02:19:50.691635+00:00",
+      "returncode": 0,
+      "stdout": "NXST_FLOW reply (xid=0x4):\n cookie=0x0, duration=344.909s, table=0, n_packets=128, n_bytes=11496, idle_age=13, priority=0 actions=NORMAL\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00010",
+      "command": [
+        "docker",
+        "exec",
+        "MW_R_A2",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:50.691662+00:00",
+      "ended_at": "2026-10-24T02:19:50.778015+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00011",
+      "command": [
+        "docker",
+        "exec",
+        "MW_R_A2",
+        "ip",
+        "route",
+        "replace",
+        "0.0.0.0/0",
+        "via",
+        "10.1.2.1"
+      ],
+      "started_at": "2026-10-24T02:19:50.778055+00:00",
+      "ended_at": "2026-10-24T02:19:50.853160+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00012",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A2",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:50.853184+00:00",
+      "ended_at": "2026-10-24T02:19:50.936198+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00013",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A2",
+        "ip",
+        "route",
+        "replace",
+        "10.2.2.0/24",
+        "via",
+        "10.100.2.1"
+      ],
+      "started_at": "2026-10-24T02:19:50.936227+00:00",
+      "ended_at": "2026-10-24T02:19:51.017418+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00014",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A2",
+        "ip",
+        "route",
+        "replace",
+        "10.200.2.2/32",
+        "via",
+        "10.100.2.1"
+      ],
+      "started_at": "2026-10-24T02:19:51.017450+00:00",
+      "ended_at": "2026-10-24T02:19:51.094192+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00015",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A2",
+        "ip",
+        "route",
+        "replace",
+        "10.100.1.0/24",
+        "via",
+        "10.100.2.254"
+      ],
+      "started_at": "2026-10-24T02:19:51.094231+00:00",
+      "ended_at": "2026-10-24T02:19:51.184567+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00016",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_A2",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:19:51.184595+00:00",
+      "ended_at": "2026-10-24T02:19:51.282285+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00017",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_A2",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:51.282326+00:00",
+      "ended_at": "2026-10-24T02:19:51.372293+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00018",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_A2",
+        "ovs-vsctl",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:19:51.372321+00:00",
+      "ended_at": "2026-10-24T02:19:51.458996+00:00",
+      "returncode": 0,
+      "stdout": "02e86934-f90d-4575-994c-9dd782443281\n    Bridge br0\n        fail_mode: secure\n        Port filter\n            Interface filter\n        Port br0\n            Interface br0\n                type: internal\n        Port inner\n            Interface inner\n        Port outer\n            Interface outer\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00019",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_A2",
+        "ovs-ofctl",
+        "dump-flows",
+        "br0"
+      ],
+      "started_at": "2026-10-24T02:19:51.459022+00:00",
+      "ended_at": "2026-10-24T02:19:51.532293+00:00",
+      "returncode": 0,
+      "stdout": "NXST_FLOW reply (xid=0x4):\n cookie=0x0, duration=339.956s, table=0, n_packets=118, n_bytes=11237, idle_age=2, priority=0 actions=NORMAL\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00020",
+      "command": [
+        "docker",
+        "exec",
+        "MW_R_B1",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:51.532320+00:00",
+      "ended_at": "2026-10-24T02:19:51.609382+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00021",
+      "command": [
+        "docker",
+        "exec",
+        "MW_R_B1",
+        "ip",
+        "route",
+        "replace",
+        "0.0.0.0/0",
+        "via",
+        "10.2.1.1"
+      ],
+      "started_at": "2026-10-24T02:19:51.609413+00:00",
+      "ended_at": "2026-10-24T02:19:51.695210+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00022",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B1",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:51.695244+00:00",
+      "ended_at": "2026-10-24T02:19:51.784468+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00023",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B1",
+        "ip",
+        "route",
+        "replace",
+        "10.1.1.0/24",
+        "via",
+        "10.200.1.1"
+      ],
+      "started_at": "2026-10-24T02:19:51.784499+00:00",
+      "ended_at": "2026-10-24T02:19:51.870039+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00024",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B1",
+        "ip",
+        "route",
+        "replace",
+        "10.100.1.2/32",
+        "via",
+        "10.200.1.1"
+      ],
+      "started_at": "2026-10-24T02:19:51.870080+00:00",
+      "ended_at": "2026-10-24T02:19:51.949369+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00025",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B1",
+        "ip",
+        "route",
+        "replace",
+        "10.200.2.0/24",
+        "via",
+        "10.200.1.254"
+      ],
+      "started_at": "2026-10-24T02:19:51.949393+00:00",
+      "ended_at": "2026-10-24T02:19:52.028473+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00026",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:19:52.028496+00:00",
+      "ended_at": "2026-10-24T02:19:52.123494+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00027",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_B1",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:52.123531+00:00",
+      "ended_at": "2026-10-24T02:19:52.198972+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00028",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_B1",
+        "ovs-vsctl",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:19:52.199001+00:00",
+      "ended_at": "2026-10-24T02:19:52.282138+00:00",
+      "returncode": 0,
+      "stdout": "63009ed9-d84a-464a-906c-f8b46891c6e2\n    Bridge br0\n        fail_mode: secure\n        Port inner\n            Interface inner\n        Port outer\n            Interface outer\n        Port filter\n            Interface filter\n        Port br0\n            Interface br0\n                type: internal\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00029",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_B1",
+        "ovs-ofctl",
+        "dump-flows",
+        "br0"
+      ],
+      "started_at": "2026-10-24T02:19:52.282162+00:00",
+      "ended_at": "2026-10-24T02:19:52.356820+00:00",
+      "returncode": 0,
+      "stdout": "NXST_FLOW reply (xid=0x4):\n cookie=0x0, duration=330.829s, table=0, n_packets=119, n_bytes=11417, idle_age=2, priority=0 actions=NORMAL\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00030",
+      "command": [
+        "docker",
+        "exec",
+        "MW_R_B2",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:52.356861+00:00",
+      "ended_at": "2026-10-24T02:19:52.444262+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00031",
+      "command": [
+        "docker",
+        "exec",
+        "MW_R_B2",
+        "ip",
+        "route",
+        "replace",
+        "0.0.0.0/0",
+        "via",
+        "10.2.2.1"
+      ],
+      "started_at": "2026-10-24T02:19:52.444297+00:00",
+      "ended_at": "2026-10-24T02:19:52.524830+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00032",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B2",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:52.524858+00:00",
+      "ended_at": "2026-10-24T02:19:52.603492+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00033",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B2",
+        "ip",
+        "route",
+        "replace",
+        "10.1.2.0/24",
+        "via",
+        "10.200.2.1"
+      ],
+      "started_at": "2026-10-24T02:19:52.603523+00:00",
+      "ended_at": "2026-10-24T02:19:52.692317+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00034",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B2",
+        "ip",
+        "route",
+        "replace",
+        "10.100.2.2/32",
+        "via",
+        "10.200.2.1"
+      ],
+      "started_at": "2026-10-24T02:19:52.692358+00:00",
+      "ended_at": "2026-10-24T02:19:52.772799+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00035",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B2",
+        "ip",
+        "route",
+        "replace",
+        "10.200.1.0/24",
+        "via",
+        "10.200.2.254"
+      ],
+      "started_at": "2026-10-24T02:19:52.772823+00:00",
+      "ended_at": "2026-10-24T02:19:52.864613+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00036",
+      "command": [
+        "docker",
+        "exec",
+        "MW_I_B2",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:19:52.864644+00:00",
+      "ended_at": "2026-10-24T02:19:52.966419+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00037",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_B2",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:52.966443+00:00",
+      "ended_at": "2026-10-24T02:19:53.041514+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00038",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_B2",
+        "ovs-vsctl",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:19:53.041544+00:00",
+      "ended_at": "2026-10-24T02:19:53.128629+00:00",
+      "returncode": 0,
+      "stdout": "8ea6eaae-0f88-401b-9854-84b09b672436\n    Bridge br0\n        fail_mode: secure\n        Port outer\n            Interface outer\n        Port filter\n            Interface filter\n        Port br0\n            Interface br0\n                type: internal\n        Port inner\n            Interface inner\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00039",
+      "command": [
+        "docker",
+        "exec",
+        "MW_G_B2",
+        "ovs-ofctl",
+        "dump-flows",
+        "br0"
+      ],
+      "started_at": "2026-10-24T02:19:53.128667+00:00",
+      "ended_at": "2026-10-24T02:19:53.206698+00:00",
+      "returncode": 0,
+      "stdout": "NXST_FLOW reply (xid=0x4):\n cookie=0x0, duration=325.734s, table=0, n_packets=123, n_bytes=11679, idle_age=2, priority=0 actions=NORMAL\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Logical Site A and Site B roles are colocated by component class; the case establishes separation between role classes, not geographic site separation.",
+    "VXLAN uses the reserved experiment LAN within Clemson and public CloudLab control addresses across campuses; logical wire preservation remains an implementation assumption beyond finite packet observations.",
+    "Distinct worker hardware does not establish independently developed software, product approval or classification handling policy.",
+    "Virtual per-component interfaces share worker physical NICs; physical-NIC-per-Red requirements remain outside this placement claim."
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-24T14:48:02.091697+00:00",
+  "checks": [
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-protected-offload-v3",
+      "manifest_sha256": "f294e68ff3a5bd7f1901312c484af31820128ec43e05a5fa387acc07eed6788d",
+      "error": "{\"id\": \"offload-0014\", \"started_at\": \"2026-10-24T14:27:59.021659+00:00\", \"ended_at\": \"2026-10-24T14:27:59.161717+00:00\", \"command\": [\"ssh\", \"-o\", \"BatchMode=yes\", \"hy@pc08.cloudlab.umass.edu\", \"mkdir -p /users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v3/scripts; sudo mkdir -p /users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v3/private; sudo chmod 700 /users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v3/private\"], \"returncode\": 255, \"stdout\": \"\", \"stderr\": \"Host key verification failed.\\n\", \"input_scope\": \"No private input bytes recorded.\"}",
+      "records": 15,
+      "controls": 0
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-protected-offload-v4",
+      "manifest_sha256": "dc31bca771a8e1b629062d731266c3b7d3fee6f0fe2f98f95311b0cf2ee2b55d",
+      "error": "{\"id\": \"offload-0014\", \"started_at\": \"2026-10-24T14:29:14.870742+00:00\", \"ended_at\": \"2026-10-24T14:29:15.140377+00:00\", \"command\": [\"ssh\", \"-o\", \"BatchMode=yes\", \"-o\", \"UserKnownHostsFile=/users/hy/tdn-continuation-2026-10-24T014455Z/private/audit-offload-v4/known_hosts\", \"hy@pc08.cloudlab.umass.edu\", \"mkdir -p /users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v4/scripts; sudo mkdir -p /users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v4/private; sudo chmod 700 /users/hy/tdn-continuation-2026-10-24T014455Z/audit-offload-v4/private\"], \"returncode\": 255, \"stdout\": \"\", \"stderr\": \"hy@pc08.cloudlab.umass.edu: Permission denied (publickey).\\n\", \"input_scope\": \"No private input bytes recorded. The authorized SSH session forwards its agent only while configuring the owned collector; the server public host key is pinned from an already authenticated controller connection.\"}",
+      "records": 15,
+      "controls": 0
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-protected-offload-v5",
+      "manifest_sha256": "42d59799bc7b21e4d45e668e951e6ee740867ba42f80ca5da45b057dda95e21d",
+      "error": null,
+      "records": 20,
+      "controls": 6
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-protected-offload-v6",
+      "manifest_sha256": "8cfbf6ebdba96940bba6c82f576843261ce5728624e5fadf247ba5ccaaffd92d",
+      "error": null,
+      "records": 9,
+      "controls": 6
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-collector-reliability-v6",
+      "manifest_sha256": "4ece198bd1238581a6c8e8da987013aab7c7f2c3986caa271ae68287c3e6be00",
+      "error": null,
+      "records": 4,
+      "controls": 0
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-collector-readback-v7",
+      "manifest_sha256": "b16e059a46a27c30542a593ff5be4d2cbaa12d9619f0eaf8e7a969736e2d696c",
+      "error": null,
+      "records": 13,
+      "controls": 0
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-source-drain-v8",
+      "manifest_sha256": "668953753711151e55e728eb37a46919ee09fba1fc626e5791c4f3a38a177cf3",
+      "error": "Extra data: line 1 column 18 (char 17)",
+      "records": 5,
+      "controls": 0
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-source-drain-v9",
+      "manifest_sha256": "e4785f33218b250e62f63bb388def2e415f0179e72dd391eebce770c5aff3943",
+      "error": "Syntax error before remote execution; no guest or collector mutation occurred.",
+      "records": 1,
+      "controls": 0
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-source-drain-v10",
+      "manifest_sha256": "d9be8552c9db3abedf14480576ca0a120ad12ac54f9c07b520950a1b2c6208cf",
+      "error": null,
+      "records": 4,
+      "controls": 1
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/audit-collector-reliability-v8",
+      "manifest_sha256": "c05cdab54e06a456b515757237dd8d39ab6088750e338909afd3c7735cbca2cc",
+      "error": null,
+      "records": 3,
+      "controls": 0
+    }
+  ],
+  "scope": [
+    "Actual NC FreeBSD Inner A supplies a real syslogd auth.notice event. A static FreeBSD Go1.25.0 client transfers a bounded source-file copy over TLS1.3 with mutual certificate validation to a distinct pc08 collector. The collector requires the exact client-CN/device mapping and contiguous offset plus SHA256; source bodies and private credentials stay private.",
+    "The collector fsyncs its0600 journal and0700 parent directory before acknowledgement. The client verifies the acknowledged next offset/hash before fsync, atomic rename and parent fsync of its cursor. These source/API steps and finite restart persistence are recorded; storage firmware guarantees and all crash interleavings remain separate.",
+    "The first transfer commits only the first65,536 bytes; the new audit marker lies beyond that prefix. A later bounded drain reaches the exact source EOF and the collector then retains the actual marker across a second restart. The v8 drain finishes transfer but its final readback parser fails on concatenated command output; v9 fails syntax checking before execution; v10 verifies the complete acknowledged cursor. Six initial controls, six restart/capacity/conflict/key controls and the complete-source drain control pass. An identical prefix retry after the first collector restart is accepted without changing committed journal bytes. The drained full journal, including the actual marker, has an unchanged hash across the second restart. A configured128-byte test budget returns507 before source cursor creation. A conflicting committed offset returns409. An untrusted certificate and wrong device are denied. The guest nobody principal cannot read the one tested exporter key.",
+    "The first two attempts fail at host-to-host SSH authentication. The successful controller uses two separately authenticated SSH connections to distribute private issuance bytes directly without retaining them locally. User private SSH keys are never copied. Full public issuance certificates, executable, source, configuration arguments and collector readback remain.",
+    "The primary collector remains running. Only the positively identified separate capacity-test collector is stopped. Protected useful native data traffic remains available. Host root, guest root, Docker, hypervisor and provisioning remain trusted laboratory controls.",
+    "The experiment is explicitly invoked finite-batch offload. Automatic exporter startup, source rotation and long-term retention policies remain actionable. No one-year retention, approved SIEM product, all administrator/debug interface confinement or organizational adoption is claimed."
+  ],
+  "committed_journal_sha256": "fb5eee6361cc3a3ea8946c3dec9aad4f217d123130e5c780c46ac6a011dfadc2"
+}

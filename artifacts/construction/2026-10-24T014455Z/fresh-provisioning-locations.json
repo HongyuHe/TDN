@@ -1,0 +1,51 @@
+{
+  "records": [
+    {
+      "component_id": 0,
+      "component": "eap-tls-forward-v18/P1",
+      "executor": "worker",
+      "orders": [
+        39,
+        40,
+        41
+      ],
+      "commands": [
+        "cmd-0039",
+        "cmd-0040",
+        "cmd-0041"
+      ],
+      "key_path": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-forward-v18/peer.key",
+      "csr_path": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-forward-v18/peer.csr",
+      "certificate_path": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-forward-v18/peer.pem",
+      "manifest_sha256": "e968795d9c8febf19a63017d5b200925c68956c4a89ebca256939450c9762320"
+    },
+    {
+      "component_id": 1,
+      "component": "eap-tls-reverse-v18/P0",
+      "executor": "worker",
+      "orders": [
+        39,
+        40,
+        41
+      ],
+      "commands": [
+        "cmd-0039",
+        "cmd-0040",
+        "cmd-0041"
+      ],
+      "key_path": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-reverse-v18/peer.key",
+      "csr_path": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-reverse-v18/peer.csr",
+      "certificate_path": "/users/hy/tdn-continuation-2026-10-24T014455Z/private/eap-tls-reverse-v18/peer.pem",
+      "manifest_sha256": "70a737f29f95cd11d545637208e9ba4d10acb3c44c516340066666e4081b2bb2"
+    }
+  ],
+  "whole_RG048_established": false,
+  "finding": "COORD-047",
+  "scope": [
+    "The two retained supplicant cases have successful worker-level generation, CSR and signing commands in order, with matching file paths and later configuration references.",
+    "The collector explicitly records device_id=null and runs these commands outside the peer network namespace. The intended certificate subject does not change that execution location.",
+    "The public records do not export generated-key or CSR contents. No per-stage public-key fingerprint is invented. Matching paths are an observed command dependency, subject to correct OpenSSL execution and unchanged files.",
+    "Component-local key/CSR generation required by CP6.1 is not established for these cases. A deployment repair would generate the private key and CSR within the component boundary and export only the CSR for signing.",
+    "Security Administrator appointment, secured physical area, authorized CA/chain, and complete pre-use configuration remain independent requirements."
+  ]
+}

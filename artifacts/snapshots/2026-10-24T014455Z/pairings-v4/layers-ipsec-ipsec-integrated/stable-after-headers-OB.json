@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0418",
+  "started_at": "2026-10-24T14:01:46.990040+00:00",
+  "ended_at": "2026-10-24T14:01:52.737563+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-OB",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "OB",
+  "returncode": 0,
+  "stdout": "14:01:50.531963 black In  ifindex 4195 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x7), length 184\n14:01:50.531963 black In  ifindex 4195 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 63, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x1), length 128\n14:01:50.531996 gray  Out ifindex 4200 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x1), length 128\n14:01:50.532071 gray  In  ifindex 4200 a2:79:62:d9:3e:69 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 30246, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x1), length 128\n14:01:50.532087 black Out ifindex 4195 52:02:0f:db:5a:09 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 64, id 48696, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x7), length 184\n14:01:51.566021 black In  ifindex 4195 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x8), length 184\n14:01:51.566021 black In  ifindex 4195 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 63, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x2), length 128\n14:01:51.566051 gray  Out ifindex 4200 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x2), length 128\n14:01:51.566121 gray  In  ifindex 4200 a2:79:62:d9:3e:69 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 30406, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x2), length 128\n14:01:51.566150 black Out ifindex 4195 52:02:0f:db:5a:09 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 64, id 49245, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x8), length 184\n14:01:52.590015 black In  ifindex 4195 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 204)\n    192.0.2.1 > 192.0.3.1: ESP(spi=0x000007d1,seq=0x9), length 184\n14:01:52.590015 black In  ifindex 4195 3a:1f:ce:30:8e:f7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 63, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x3), length 128\n14:01:52.590046 gray  Out ifindex 4200 1a:ab:24:76:3a:d7 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 62, id 0, offset 0, flags [DF], proto ESP (50), length 148)\n    10.11.0.1 > 10.21.0.1: ESP(spi=0x000003e9,seq=0x3), length 128\n14:01:52.590121 gray  In  ifindex 4200 a2:79:62:d9:3e:69 ethertype IPv4 (0x0800), length 168: (tos 0x0, ttl 64, id 31263, offset 0, flags [none], proto ESP (50), length 148)\n    10.21.0.1 > 10.11.0.1: ESP(spi=0x000003ea,seq=0x3), length 128\n14:01:52.590134 black Out ifindex 4195 52:02:0f:db:5a:09 ethertype IPv4 (0x0800), length 224: (tos 0x0, ttl 64, id 49468, offset 0, flags [none], proto ESP (50), length 204)\n    192.0.3.1 > 192.0.2.1: ESP(spi=0x000007d2,seq=0x9), length 184\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n15 packets captured\n15 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 2
+}

@@ -1,0 +1,22 @@
+#cloud-config
+hostname: nq-freebsd-1
+ssh_pwauth: false
+ssh_authorized_keys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM93LD9GwPn4t/iCrRlYey0f0znFNLCMRPmIl6oxQioQ root@node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu
+network:
+  version: 2
+  ethernets:
+    vtnet0:
+      dhcp4: true
+    vtnet1:
+      dhcp4: false
+      addresses: [172.28.90.2/30]
+runcmd:
+  - "mkdir -p /root/.ssh"
+  - "chmod 700 /root/.ssh"
+  - "printf \"%s\\n\" 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM93LD9GwPn4t/iCrRlYey0f0znFNLCMRPmIl6oxQioQ root@node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu' > /root/.ssh/authorized_keys"
+  - "chmod 600 /root/.ssh/authorized_keys"
+  - "sysrc sshd_enable=YES"
+  - "echo \"PermitRootLogin prohibit-password\" >> /etc/ssh/sshd_config"
+  - "echo \"PasswordAuthentication no\" >> /etc/ssh/sshd_config"
+  - "service sshd restart"

@@ -1,0 +1,238 @@
+{
+  "at": "2026-10-24T03:03:38.814589+00:00",
+  "runtime_backend": "physical-workstation-host-to-native-managed-Outer",
+  "records": [
+    {
+      "command": [
+        "hostname"
+      ],
+      "at": "2026-10-24T03:03:38.571811+00:00",
+      "returncode": 0,
+      "stdout": "node-2.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "at": "2026-10-24T03:03:38.574655+00:00",
+      "returncode": 0,
+      "stdout": "Linux node-2.twinet-msc2.netsyn-pg0.cloudlab.umass.edu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_uuid"
+      ],
+      "at": "2026-10-24T03:03:38.577028+00:00",
+      "returncode": 0,
+      "stdout": "4c4c4544-004a-4b10-8042-b5c04f393432\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ip",
+        "-j",
+        "-d",
+        "address"
+      ],
+      "at": "2026-10-24T03:03:38.579017+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"noprefixroute\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"ifname\":\"eno1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:d5:08:80\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.0\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f0\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"198.22.255.26\",\"prefixlen\":24,\"metric\":1024,\"broadcast\":\"198.22.255.255\",\"scope\":\"global\",\"label\":\"eno1\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::eef4:bbff:fed5:880\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3,\"ifname\":\"enp3s0f0np0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:0f:53:49:4e:50\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":64,\"num_rx_queues\":64,\"gso_max_size\":65536,\"gso_max_segs\":100,\"tso_max_size\":65536,\"tso_max_segs\":100,\"gro_max_size\":65536,\"phys_port_name\":\"p0\",\"phys_port_id\":\"000f53494e50\",\"parentbus\":\"pci\",\"parentdev\":\"0000:03:00.0\",\"vfinfo_list\":[],\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.0.1.3\",\"prefixlen\":24,\"broadcast\":\"10.0.1.255\",\"scope\":\"global\",\"label\":\"enp3s0f0np0\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::20f:53ff:fe49:4e50\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":4,\"ifname\":\"eno2\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:d5:08:81\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.1\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f1\"],\"addr_info\":[]},{\"ifindex\":5,\"ifname\":\"enp3s0f1np1\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:0f:53:49:4e:51\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":64,\"num_rx_queues\":64,\"gso_max_size\":65536,\"gso_max_segs\":100,\"tso_max_size\":65536,\"tso_max_segs\":100,\"gro_max_size\":65536,\"phys_port_name\":\"p1\",\"phys_port_id\":\"000f53494e51\",\"parentbus\":\"pci\",\"parentdev\":\"0000:03:00.1\",\"vfinfo_list\":[],\"addr_info\":[]},{\"ifindex\":6,\"ifname\":\"eno3\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:d5:08:82\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.2\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f2\"],\"addr_info\":[]},{\"ifindex\":7,\"ifname\":\"eno4\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:d5:08:83\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.3\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f3\"],\"addr_info\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ip",
+        "-j",
+        "route"
+      ],
+      "at": "2026-10-24T03:03:38.580746+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"default\",\"gateway\":\"198.22.255.1\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"prefsrc\":\"198.22.255.26\",\"metric\":1024,\"flags\":[]},{\"dst\":\"10.0.1.0/24\",\"dev\":\"enp3s0f0np0\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.0.1.3\",\"flags\":[]},{\"dst\":\"172.28.96.0/30\",\"gateway\":\"10.0.1.2\",\"dev\":\"enp3s0f0np0\",\"flags\":[]},{\"dst\":\"198.22.255.0/24\",\"dev\":\"eno1\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"198.22.255.26\",\"metric\":1024,\"flags\":[]},{\"dst\":\"198.22.255.1\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"scope\":\"link\",\"prefsrc\":\"198.22.255.26\",\"metric\":1024,\"flags\":[]},{\"dst\":\"198.22.255.3\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"scope\":\"link\",\"prefsrc\":\"198.22.255.26\",\"metric\":1024,\"flags\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ps",
+        "-eo",
+        "pid,comm,args"
+      ],
+      "at": "2026-10-24T03:03:38.603855+00:00",
+      "returncode": 0,
+      "stdout": "    PID COMMAND         COMMAND\n      1 systemd         /sbin/init\n      2 kthreadd        [kthreadd]\n      3 pool_workqueue_ [pool_workqueue_release]\n      4 kworker/R-rcu_g [kworker/R-rcu_g]\n      5 kworker/R-rcu_p [kworker/R-rcu_p]\n      6 kworker/R-slub_ [kworker/R-slub_]\n      7 kworker/R-netns [kworker/R-netns]\n     10 kworker/0:0H-ev [kworker/0:0H-events_highpri]\n     12 kworker/R-mm_pe [kworker/R-mm_pe]\n     13 rcu_tasks_kthre [rcu_tasks_kthread]\n     14 rcu_tasks_rude_ [rcu_tasks_rude_kthread]\n     15 rcu_tasks_trace [rcu_tasks_trace_kthread]\n     16 ksoftirqd/0     [ksoftirqd/0]\n     17 rcu_preempt     [rcu_preempt]\n     18 migration/0     [migration/0]\n     19 idle_inject/0   [idle_inject/0]\n     20 cpuhp/0         [cpuhp/0]\n     21 cpuhp/1         [cpuhp/1]\n     22 idle_inject/1   [idle_inject/1]\n     23 migration/1     [migration/1]\n     24 ksoftirqd/1     [ksoftirqd/1]\n     26 kworker/1:0H-ev [kworker/1:0H-events_highpri]\n     27 cpuhp/2         [cpuhp/2]\n     28 idle_inject/2   [idle_inject/2]\n     29 migration/2     [migration/2]\n     30 ksoftirqd/2     [ksoftirqd/2]\n     32 kworker/2:0H-ev [kworker/2:0H-events_highpri]\n     33 cpuhp/3         [cpuhp/3]\n     34 idle_inject/3   [idle_inject/3]\n     35 migration/3     [migration/3]\n     36 ksoftirqd/3     [ksoftirqd/3]\n     38 kworker/3:0H-ev [kworker/3:0H-events_highpri]\n     39 cpuhp/4         [cpuhp/4]\n     40 idle_inject/4   [idle_inject/4]\n     41 migration/4     [migration/4]\n     42 ksoftirqd/4     [ksoftirqd/4]\n     44 kworker/4:0H-ev [kworker/4:0H-events_highpri]\n     45 cpuhp/5         [cpuhp/5]\n     46 idle_inject/5   [idle_inject/5]\n     47 migration/5     [migration/5]\n     48 ksoftirqd/5     [ksoftirqd/5]\n     50 kworker/5:0H-ev [kworker/5:0H-events_highpri]\n     51 cpuhp/6         [cpuhp/6]\n     52 idle_inject/6   [idle_inject/6]\n     53 migration/6     [migration/6]\n     54 ksoftirqd/6     [ksoftirqd/6]\n     56 kworker/6:0H-ev [kworker/6:0H-events_highpri]\n     57 cpuhp/7         [cpuhp/7]\n     58 idle_inject/7   [idle_inject/7]\n     59 migration/7     [migration/7]\n     60 ksoftirqd/7     [ksoftirqd/7]\n     62 kworker/7:0H-ev [kworker/7:0H-events_highpri]\n     63 cpuhp/8         [cpuhp/8]\n     64 idle_inject/8   [idle_inject/8]\n     65 migration/8     [migration/8]\n     66 ksoftirqd/8     [ksoftirqd/8]\n     68 kworker/8:0H-ev [kworker/8:0H-events_highpri]\n     69 cpuhp/9         [cpuhp/9]\n     70 idle_inject/9   [idle_inject/9]\n     71 migration/9     [migration/9]\n     72 ksoftirqd/9     [ksoftirqd/9]\n     74 kworker/9:0H-ev [kworker/9:0H-events_highpri]\n     75 cpuhp/10        [cpuhp/10]\n     76 idle_inject/10  [idle_inject/10]\n     77 migration/10    [migration/10]\n     78 ksoftirqd/10    [ksoftirqd/10]\n     80 kworker/10:0H-e [kworker/10:0H-events_highpri]\n     81 cpuhp/11        [cpuhp/11]\n     82 idle_inject/11  [idle_inject/11]\n     83 migration/11    [migration/11]\n     84 ksoftirqd/11    [ksoftirqd/11]\n     86 kworker/11:0H-e [kworker/11:0H-events_highpri]\n     87 cpuhp/12        [cpuhp/12]\n     88 idle_inject/12  [idle_inject/12]\n     89 migration/12    [migration/12]\n     90 ksoftirqd/12    [ksoftirqd/12]\n     92 kworker/12:0H-e [kworker/12:0H-events_highpri]\n     93 cpuhp/13        [cpuhp/13]\n     94 idle_inject/13  [idle_inject/13]\n     95 migration/13    [migration/13]\n     96 ksoftirqd/13    [ksoftirqd/13]\n     98 kworker/13:0H-e [kworker/13:0H-events_highpri]\n     99 cpuhp/14        [cpuhp/14]\n    100 idle_inject/14  [idle_inject/14]\n    101 migration/14    [migration/14]\n    102 ksoftirqd/14    [ksoftirqd/14]\n    104 kworker/14:0H-e [kworker/14:0H-events_highpri]\n    105 cpuhp/15        [cpuhp/15]\n    106 idle_inject/15  [idle_inject/15]\n    107 migration/15    [migration/15]\n    108 ksoftirqd/15    [ksoftirqd/15]\n    109 kworker/15:0-ev [kworker/15:0-events]\n    110 kworker/15:0H-e [kworker/15:0H-events_highpri]\n    111 cpuhp/16        [cpuhp/16]\n    112 idle_inject/16  [idle_inject/16]\n    113 migration/16    [migration/16]\n    114 ksoftirqd/16    [ksoftirqd/16]\n    116 kworker/16:0H-e [kworker/16:0H-events_highpri]\n    117 cpuhp/17        [cpuhp/17]\n    118 idle_inject/17  [idle_inject/17]\n    119 migration/17    [migration/17]\n    120 ksoftirqd/17    [ksoftirqd/17]\n    122 kworker/17:0H-e [kworker/17:0H-events_highpri]\n    123 cpuhp/18        [cpuhp/18]\n    124 idle_inject/18  [idle_inject/18]\n    125 migration/18    [migration/18]\n    126 ksoftirqd/18    [ksoftirqd/18]\n    128 kworker/18:0H-e [kworker/18:0H-events_highpri]\n    129 cpuhp/19        [cpuhp/19]\n    130 idle_inject/19  [idle_inject/19]\n    131 migration/19    [migration/19]\n    132 ksoftirqd/19    [ksoftirqd/19]\n    134 kworker/19:0H-e [kworker/19:0H-events_highpri]\n    135 cpuhp/20        [cpuhp/20]\n    136 idle_inject/20  [idle_inject/20]\n    137 migration/20    [migration/20]\n    138 ksoftirqd/20    [ksoftirqd/20]\n    140 kworker/20:0H-e [kworker/20:0H-events_highpri]\n    141 cpuhp/21        [cpuhp/21]\n    142 idle_inject/21  [idle_inject/21]\n    143 migration/21    [migration/21]\n    144 ksoftirqd/21    [ksoftirqd/21]\n    146 kworker/21:0H-e [kworker/21:0H-events_highpri]\n    147 cpuhp/22        [cpuhp/22]\n    148 idle_inject/22  [idle_inject/22]\n    149 migration/22    [migration/22]\n    150 ksoftirqd/22    [ksoftirqd/22]\n    152 kworker/22:0H-e [kworker/22:0H-events_highpri]\n    153 cpuhp/23        [cpuhp/23]\n    154 idle_inject/23  [idle_inject/23]\n    155 migration/23    [migration/23]\n    156 ksoftirqd/23    [ksoftirqd/23]\n    158 kworker/23:0H-e [kworker/23:0H-events_highpri]\n    159 cpuhp/24        [cpuhp/24]\n    160 idle_inject/24  [idle_inject/24]\n    161 migration/24    [migration/24]\n    162 ksoftirqd/24    [ksoftirqd/24]\n    164 kworker/24:0H-e [kworker/24:0H-events_highpri]\n    165 cpuhp/25        [cpuhp/25]\n    166 idle_inject/25  [idle_inject/25]\n    167 migration/25    [migration/25]\n    168 ksoftirqd/25    [ksoftirqd/25]\n    170 kworker/25:0H-e [kworker/25:0H-events_highpri]\n    171 cpuhp/26        [cpuhp/26]\n    172 idle_inject/26  [idle_inject/26]\n    173 migration/26    [migration/26]\n    174 ksoftirqd/26    [ksoftirqd/26]\n    176 kworker/26:0H-e [kworker/26:0H-events_highpri]\n    177 cpuhp/27        [cpuhp/27]\n    178 idle_inject/27  [idle_inject/27]\n    179 migration/27    [migration/27]\n    180 ksoftirqd/27    [ksoftirqd/27]\n    182 kworker/27:0H-e [kworker/27:0H-events_highpri]\n    183 cpuhp/28        [cpuhp/28]\n    184 idle_inject/28  [idle_inject/28]\n    185 migration/28    [migration/28]\n    186 ksoftirqd/28    [ksoftirqd/28]\n    188 kworker/28:0H-e [kworker/28:0H-events_highpri]\n    189 cpuhp/29        [cpuhp/29]\n    190 idle_inject/29  [idle_inject/29]\n    191 migration/29    [migration/29]\n    192 ksoftirqd/29    [ksoftirqd/29]\n    194 kworker/29:0H-e [kworker/29:0H-events_highpri]\n    195 cpuhp/30        [cpuhp/30]\n    196 idle_inject/30  [idle_inject/30]\n    197 migration/30    [migration/30]\n    198 ksoftirqd/30    [ksoftirqd/30]\n    200 kworker/30:0H-e [kworker/30:0H-events_highpri]\n    201 cpuhp/31        [cpuhp/31]\n    202 idle_inject/31  [idle_inject/31]\n    203 migration/31    [migration/31]\n    204 ksoftirqd/31    [ksoftirqd/31]\n    205 kworker/31:0-ev [kworker/31:0-events]\n    206 kworker/31:0H-e [kworker/31:0H-events_highpri]\n    207 cpuhp/32        [cpuhp/32]\n    208 idle_inject/32  [idle_inject/32]\n    209 migration/32    [migration/32]\n    210 ksoftirqd/32    [ksoftirqd/32]\n    212 kworker/32:0H-e [kworker/32:0H-events_highpri]\n    213 cpuhp/33        [cpuhp/33]\n    214 idle_inject/33  [idle_inject/33]\n    215 migration/33    [migration/33]\n    216 ksoftirqd/33    [ksoftirqd/33]\n    218 kworker/33:0H-e [kworker/33:0H-events_highpri]\n    219 cpuhp/34        [cpuhp/34]\n    220 idle_inject/34  [idle_inject/34]\n    221 migration/34    [migration/34]\n    222 ksoftirqd/34    [ksoftirqd/34]\n    224 kworker/34:0H-k [kworker/34:0H-kblockd]\n    225 cpuhp/35        [cpuhp/35]\n    226 idle_inject/35  [idle_inject/35]\n    227 migration/35    [migration/35]\n    228 ksoftirqd/35    [ksoftirqd/35]\n    230 kworker/35:0H-e [kworker/35:0H-events_highpri]\n    231 cpuhp/36        [cpuhp/36]\n    232 idle_inject/36  [idle_inject/36]\n    233 migration/36    [migration/36]\n    234 ksoftirqd/36    [ksoftirqd/36]\n    236 kworker/36:0H-e [kworker/36:0H-events_highpri]\n    237 cpuhp/37        [cpuhp/37]\n    238 idle_inject/37  [idle_inject/37]\n    239 migration/37    [migration/37]\n    240 ksoftirqd/37    [ksoftirqd/37]\n    242 kworker/37:0H-e [kworker/37:0H-events_highpri]\n    243 cpuhp/38        [cpuhp/38]\n    244 idle_inject/38  [idle_inject/38]\n    245 migration/38    [migration/38]\n    246 ksoftirqd/38    [ksoftirqd/38]\n    248 kworker/38:0H-e [kworker/38:0H-events_highpri]\n    249 cpuhp/39        [cpuhp/39]\n    250 idle_inject/39  [idle_inject/39]\n    251 migration/39    [migration/39]\n    252 ksoftirqd/39    [ksoftirqd/39]\n    254 kworker/39:0H-e [kworker/39:0H-events_highpri]\n    257 kdevtmpfs       [kdevtmpfs]\n    258 kworker/R-inet_ [kworker/R-inet_]\n    259 kauditd         [kauditd]\n    263 khungtaskd      [khungtaskd]\n    265 oom_reaper      [oom_reaper]\n    267 kworker/R-write [kworker/R-write]\n    268 kcompactd0      [kcompactd0]\n    269 kcompactd1      [kcompactd1]\n    270 ksmd            [ksmd]\n    273 khugepaged      [khugepaged]\n    274 kworker/R-kinte [kworker/R-kinte]\n    275 kworker/R-kbloc [kworker/R-kbloc]\n    276 kworker/R-blkcg [kworker/R-blkcg]\n    277 irq/9-acpi      [irq/9-acpi]\n    281 kworker/R-tpm_d [kworker/R-tpm_d]\n    282 kworker/R-ata_s [kworker/R-ata_s]\n    283 kworker/R-md    [kworker/R-md]\n    284 kworker/R-md_bi [kworker/R-md_bi]\n    285 kworker/R-edac- [kworker/R-edac-]\n    286 kworker/R-devfr [kworker/R-devfr]\n    287 watchdogd       [watchdogd]\n    289 kworker/R-quota [kworker/R-quota]\n    290 kworker/22:1H-k [kworker/22:1H-kblockd]\n    291 kswapd0         [kswapd0]\n    292 kswapd1         [kswapd1]\n    293 ecryptfs-kthrea [ecryptfs-kthread]\n    294 kworker/R-kthro [kworker/R-kthro]\n    295 irq/25-aerdrv   [irq/25-aerdrv]\n    296 irq/26-aerdrv   [irq/26-aerdrv]\n    297 irq/27-aerdrv   [irq/27-aerdrv]\n    298 irq/28-aerdrv   [irq/28-aerdrv]\n    299 irq/30-aerdrv   [irq/30-aerdrv]\n    300 kworker/1:1-eve [kworker/1:1-events]\n    301 irq/32-aerdrv   [irq/32-aerdrv]\n    302 irq/33-aerdrv   [irq/33-aerdrv]\n    303 kworker/R-acpi_ [kworker/R-acpi_]\n    311 kworker/16:1-mm [kworker/16:1-mm_percpu_wq]\n    320 kworker/R-mld   [kworker/R-mld]\n    321 kworker/38:1H-k [kworker/38:1H-kblockd]\n    322 kworker/R-ipv6_ [kworker/R-ipv6_]\n    330 kworker/R-kstrp [kworker/R-kstrp]\n    334 kworker/27:1-mm [kworker/27:1-mm_percpu_wq]\n    338 kworker/25:1-mm [kworker/25:1-mm_percpu_wq]\n    339 kworker/33:1-mm [kworker/33:1-mm_percpu_wq]\n    342 kworker/u83:0   [kworker/u83:0]\n    343 kworker/u84:0   [kworker/u84:0]\n    344 kworker/u85:0   [kworker/u85:0]\n    350 kworker/R-crypt [kworker/R-crypt]\n    352 kworker/3:3-rcu [kworker/3:3-rcu_par_gp]\n    361 kworker/7:1-mm_ [kworker/7:1-mm_percpu_wq]\n    364 kworker/19:1-ev [kworker/19:1-events]\n    365 kworker/23:1-ev [kworker/23:1-events]\n    372 kworker/35:1-ev [kworker/35:1-events]\n    373 kworker/39:1-cg [kworker/39:1-cgroup_release]\n    374 kworker/R-charg [kworker/R-charg]\n    399 kworker/16:1H-k [kworker/16:1H-kblockd]\n    403 kworker/1:1H-kb [kworker/1:1H-kblockd]\n    404 kworker/12:1H-k [kworker/12:1H-kblockd]\n    415 kworker/14:1H-k [kworker/14:1H-kblockd]\n    416 kworker/10:1H-k [kworker/10:1H-kblockd]\n    417 kworker/11:1H-k [kworker/11:1H-kblockd]\n    418 kworker/3:1H-kb [kworker/3:1H-kblockd]\n    419 kworker/5:1H-kb [kworker/5:1H-kblockd]\n    420 kworker/9:1H-kb [kworker/9:1H-kblockd]\n    463 kworker/7:1H-kb [kworker/7:1H-kblockd]\n    464 kworker/15:1H-k [kworker/15:1H-kblockd]\n    465 kworker/13:1H-k [kworker/13:1H-kblockd]\n    466 kworker/17:1H-k [kworker/17:1H-kblockd]\n    467 kworker/19:1H-k [kworker/19:1H-kblockd]\n    468 kworker/23:1H-k [kworker/23:1H-kblockd]\n    469 kworker/39:1H-k [kworker/39:1H-kblockd]\n    470 kworker/25:1H-k [kworker/25:1H-kblockd]\n    471 kworker/29:1H-k [kworker/29:1H-kblockd]\n    472 kworker/27:1H-k [kworker/27:1H-kblockd]\n    473 kworker/37:1H-k [kworker/37:1H-kblockd]\n    474 kworker/35:1H-k [kworker/35:1H-kblockd]\n    475 kworker/21:1H-k [kworker/21:1H-kblockd]\n    476 kworker/31:1H-k [kworker/31:1H-kblockd]\n    477 kworker/33:1H-k [kworker/33:1H-kblockd]\n    482 scsi_eh_0       [scsi_eh_0]\n    483 kworker/R-scsi_ [kworker/R-scsi_]\n    485 kworker/8:1H-kb [kworker/8:1H-kblockd]\n    501 kworker/6:1H-kb [kworker/6:1H-kblockd]\n    507 kworker/30:1H-k [kworker/30:1H-kblockd]\n    514 kworker/2:1H-kb [kworker/2:1H-kblockd]\n    515 kworker/0:1H-kb [kworker/0:1H-kblockd]\n    516 kworker/18:1H-k [kworker/18:1H-kblockd]\n    517 kworker/R-sfc_r [kworker/R-sfc_r]\n    519 scsi_eh_1       [scsi_eh_1]\n    520 kworker/R-sfc00 [kworker/R-sfc00]\n    521 kworker/R-scsi_ [kworker/R-scsi_]\n    522 scsi_eh_2       [scsi_eh_2]\n    523 kworker/R-scsi_ [kworker/R-scsi_]\n    524 scsi_eh_3       [scsi_eh_3]\n    525 kworker/R-scsi_ [kworker/R-scsi_]\n    526 scsi_eh_4       [scsi_eh_4]\n    527 kworker/R-scsi_ [kworker/R-scsi_]\n    530 kworker/R-sfc_p [kworker/R-sfc_p]\n    532 kworker/R-sfc_p [kworker/R-sfc_p]\n    538 scsi_eh_5       [scsi_eh_5]\n    540 kworker/R-scsi_ [kworker/R-scsi_]\n    541 scsi_eh_6       [scsi_eh_6]\n    543 kworker/R-scsi_ [kworker/R-scsi_]\n    545 scsi_eh_7       [scsi_eh_7]\n    546 kworker/R-scsi_ [kworker/R-scsi_]\n    548 scsi_eh_8       [scsi_eh_8]\n    549 kworker/R-scsi_ [kworker/R-scsi_]\n    551 scsi_eh_9       [scsi_eh_9]\n    552 kworker/R-scsi_ [kworker/R-scsi_]\n    553 kworker/R-poll_ [kworker/R-poll_]\n    554 scsi_eh_10      [scsi_eh_10]\n    555 kworker/R-scsi_ [kworker/R-scsi_]\n    565 kworker/32:1H-k [kworker/32:1H-kblockd]\n    566 kworker/R-sfc00 [kworker/R-sfc00]\n    567 kworker/R-sfc_p [kworker/R-sfc_p]\n    569 kworker/26:1H-k [kworker/26:1H-kblockd]\n    570 kworker/24:1H-k [kworker/24:1H-kblockd]\n    574 kworker/28:1H-k [kworker/28:1H-kblockd]\n    628 kworker/R-raid5 [kworker/R-raid5]\n    648 kworker/4:1H-kb [kworker/4:1H-kblockd]\n    666 kworker/20:1H-k [kworker/20:1H-kblockd]\n    672 jbd2/sda3-8     [jbd2/sda3-8]\n    673 kworker/R-ext4- [kworker/R-ext4-]\n    674 kworker/34:1H-k [kworker/34:1H-kblockd]\n    695 kworker/36:1H-k [kworker/36:1H-kblockd]\n    860 systemd-journal /usr/lib/systemd/systemd-journald\n    885 kworker/R-kmpat [kworker/R-kmpat]\n    886 kworker/R-kmpat [kworker/R-kmpat]\n    913 multipathd      /sbin/multipathd -d -s\n    925 kworker/9:2-eve [kworker/9:2-events]\n    938 systemd-udevd   /usr/lib/systemd/systemd-udevd\n    940 kworker/29:3-mm [kworker/29:3-mm_percpu_wq]\n    941 psimon          [psimon]\n   1028 kworker/R-ipmi- [kworker/R-ipmi-]\n   1386 kworker/37:2-ev [kworker/37:2-events]\n   1539 rpcbind         /sbin/rpcbind -f -w\n   1553 kworker/5:2-eve [kworker/5:2-events]\n   1554 systemd-resolve /usr/lib/systemd/systemd-resolved\n   1555 kworker/R-rpcio [kworker/R-rpcio]\n   1556 kworker/R-xprti [kworker/R-xprti]\n   1571 dbus-daemon     @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only\n   1576 networkd-dispat /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers\n   1579 smartd          /usr/sbin/smartd -n\n   1585 systemd-logind  /usr/lib/systemd/systemd-logind\n   1589 udisksd         /usr/libexec/udisks2/udisksd\n   1591 rsyslogd        /usr/sbin/rsyslogd -n -iNONE\n   1612 kworker/R-cfg80 [kworker/R-cfg80]\n   1621 unattended-upgr /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal\n   1642 polkitd         /usr/lib/polkit-1/polkitd --no-debug\n   1814 cron            /usr/sbin/cron -f -P\n   1827 agetty          /sbin/agetty -o -p -- \\u --keep-baud 115200,57600,38400,9600 - vt220\n   1834 agetty          /sbin/agetty -o -p -- \\u --noclear - linux\n   1842 systemd-network /usr/lib/systemd/systemd-networkd\n   1864 sshd            sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups\n   1917 chronyd         /usr/sbin/chronyd -F 1\n   1953 chronyd         /usr/sbin/chronyd -F 1\n   1955 slothd          /usr/libexec/emulab/slothd -s boss.cloudlab.umass.edu -i 300 -g 5 -l 1 -c 5 -n 1000\n   1967 watchdog        /usr/bin/perl -w /usr/libexec/emulab/watchdog start\n   2030 pubsubd         /usr/libexec/pubsubd -e /var/run/pubsubd.pid -c event-server -F /etc/pubsubd.expr\n   2158 kworker/R-nfsio [kworker/R-nfsio]\n   2599 kworker/u80:2-p [kworker/u80:2-poll_megasas0_status]\n   2635 rc.progagent    /usr/bin/perl -w /usr/libexec/emulab/rc/rc.progagent boot\n   2636 program-agent   /usr/libexec/emulab/program-agent -e netsyn-PG0/twinet-msc2 -s localhost -l /var/emulab/logs/progagent.debug -v node-2 -t /var/tmp/progagent-token.2635 -d -i /var/run/progagent.pid -k /var/emulab/boot/eventkey -c /var/emulab/boot/progagents\n   2674 linktest        linktest -e netsyn-PG0/twinet-msc2 -s localhost -l /var/emulab/logs/linktest.debug -i /var/run/linktest.pid -k /var/emulab/boot/eventkey -u geniuser\n   2918 kworker/13:3-ev [kworker/13:3-events]\n   3047 kworker/R-tls-s [kworker/R-tls-s]\n   3072 fwupd           /usr/libexec/fwupd/fwupd\n   3080 upowerd         /usr/libexec/upowerd\n   3256 kworker/3:0-eve [kworker/3:0-events]\n   3534 kworker/11:2-cg [kworker/11:2-cgroup_release]\n   3540 kworker/u80:1-i [kworker/u80:1-ipv6_addrconf]\n   4822 kworker/21:0-ev [kworker/21:0-events]\n   4830 kworker/17:2-ev [kworker/17:2-events]\n   7600 kworker/20:3-cg [kworker/20:3-cgroup_release]\n   7851 kworker/17:0    [kworker/17:0]\n   8606 kworker/32:1-ev [kworker/32:1-events]\n   9098 kworker/25:3    [kworker/25:3]\n  10584 kworker/1:0-rcu [kworker/1:0-rcu_par_gp]\n  11120 kworker/23:3    [kworker/23:3]\n  11874 kworker/4:2-cgr [kworker/4:2-cgroup_free]\n  12816 kworker/22:1-mm [kworker/22:1-mm_percpu_wq]\n  12880 kworker/37:1-cg [kworker/37:1-cgwb_release]\n  17746 kworker/28:1-cg [kworker/28:1-cgroup_release]\n  19674 kworker/15:1    [kworker/15:1]\n  20890 kworker/35:0    [kworker/35:0]\n  22392 kworker/39:3-cg [kworker/39:3-cgroup_release]\n  23242 kworker/18:2-ev [kworker/18:2-events]\n  24207 kworker/26:3-rc [kworker/26:3-rcu_par_gp]\n  28608 kworker/38:2-mm [kworker/38:2-mm_percpu_wq]\n  31917 kworker/8:0-eve [kworker/8:0-events]\n  32001 kworker/22:0    [kworker/22:0]\n  32003 kworker/7:2-cgr [kworker/7:2-cgroup_free]\n  32476 kworker/31:1    [kworker/31:1]\n  32840 kworker/9:0     [kworker/9:0]\n  35218 kworker/20:1    [kworker/20:1]\n  36110 kworker/36:1-ev [kworker/36:1-events]\n  36115 kworker/0:0-eve [kworker/0:0-events]\n  37011 kworker/2:0-rcu [kworker/2:0-rcu_par_gp]\n  37685 kworker/13:0-rc [kworker/13:0-rcu_par_gp]\n  37850 kworker/30:0-ev [kworker/30:0-events]\n  37855 kworker/18:0    [kworker/18:0]\n  38337 kworker/19:2    [kworker/19:2]\n  38879 kworker/10:2-ev [kworker/10:2-events]\n  40803 kworker/2:2-eve [kworker/2:2-events]\n  41401 kworker/38:1-rc [kworker/38:1-rcu_par_gp]\n  41404 kworker/26:0-ev [kworker/26:0-events]\n  41636 kworker/8:1     [kworker/8:1]\n  42789 kworker/36:2-rc [kworker/36:2-rcu_par_gp]\n  42944 kworker/14:3-mm [kworker/14:3-mm_percpu_wq]\n  43040 kworker/21:2-cg [kworker/21:2-cgroup_free]\n  43122 kworker/4:0-cgr [kworker/4:0-cgroup_free]\n  43206 kworker/27:2    [kworker/27:2]\n  43644 kworker/29:0-cg [kworker/29:0-cgroup_free]\n  43794 kworker/33:0-cg [kworker/33:0-cgroup_free]\n  44336 kworker/34:2-mm [kworker/34:2-mm_percpu_wq]\n  44448 kworker/12:0-ev [kworker/12:0-events]\n  44558 kworker/5:0-rcu [kworker/5:0-rcu_par_gp]\n  45061 kworker/14:1-rc [kworker/14:1-rcu_par_gp]\n  45168 kworker/34:0-rc [kworker/34:0-rcu_par_gp]\n  45176 kworker/6:2-cgr [kworker/6:2-cgroup_release]\n  45374 kworker/u82:3-f [kworker/u82:3-flush-8:0]\n  45419 kworker/32:0-cg [kworker/32:0-cgroup_release]\n  45426 kworker/16:2    [kworker/16:2]\n  45505 kworker/11:0-cg [kworker/11:0-cgroup_release]\n  45600 kworker/12:2    [kworker/12:2]\n  45681 kworker/30:2-rc [kworker/30:2-rcu_par_gp]\n  45727 kworker/24:1-cg [kworker/24:1-cgroup_free]\n  45728 kworker/24:2-mm [kworker/24:2-mm_percpu_wq]\n  45865 kworker/u81:4-e [kworker/u81:4-events_power_efficient]\n  45867 kworker/6:1-eve [kworker/6:1-events]\n  45872 kworker/0:1-cgr [kworker/0:1-cgroup_free]\n  45875 kworker/10:1-rc [kworker/10:1-rcu_par_gp]\n  45897 kworker/u82:1-f [kworker/u82:1-flush-8:0]\n  45960 kworker/u82:2-f [kworker/u82:2-flush-8:0]\n  45975 kworker/28:2-cg [kworker/28:2-cgroup_free]\n  46077 kworker/u81:1-e [kworker/u81:1-events_power_efficient]\n  46091 kworker/u81:2-e [kworker/u81:2-events_unbound]\n  46107 kworker/30:1-cg [kworker/30:1-cgroup_free]\n  46115 kworker/4:1-eve [kworker/4:1-events]\n  46129 kworker/28:0-cg [kworker/28:0-cgroup_release]\n  46130 kworker/28:3-ev [kworker/28:3-events]\n  46347 kworker/29:1-ev [kworker/29:1-events]\n  46354 kworker/u82:0-f [kworker/u82:0-flush-8:0]\n  46362 kworker/u82:4-f [kworker/u82:4-flush-8:0]\n  46364 kworker/20:0-ev [kworker/20:0-events]\n  46371 kworker/14:0    [kworker/14:0]\n  46373 kworker/32:2-cg [kworker/32:2-cgroup_free]\n  46382 kworker/39:0-mm [kworker/39:0-mm_percpu_wq]\n  46453 kworker/u81:0   [kworker/u81:0]\n  46454 kworker/4:3     [kworker/4:3]\n  46457 kworker/10:0    [kworker/10:0]\n  46459 kworker/6:0-cgr [kworker/6:0-cgroup_free]\n  46463 psimon          [psimon]\n  46465 systemd         /usr/lib/systemd/systemd --user\n  46466 kworker/11:1-ev [kworker/11:1-events]\n  46467 (sd-pam)        (sd-pam)\n  46538 sshd            sshd: hy [priv]\n  46589 sshd            sshd: hy@notty\n  46590 sudo            sudo -n python3 /users/hy/tdn-continuation-2026-10-24T014455Z/aw_physical_v4.py\n  46591 python3         python3 /users/hy/tdn-continuation-2026-10-24T014455Z/aw_physical_v4.py\n  46597 ps              ps -eo pid,comm,args\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ss",
+        "-lntup"
+      ],
+      "at": "2026-10-24T03:03:38.638274+00:00",
+      "returncode": 0,
+      "stdout": "Netid State  Recv-Q Send-Q      Local Address:Port  Peer Address:PortProcess                                                   \nudp   UNCONN 0      0              127.0.0.54:53         0.0.0.0:*    users:((\"systemd-resolve\",pid=1554,fd=16))               \nudp   UNCONN 0      0           127.0.0.53%lo:53         0.0.0.0:*    users:((\"systemd-resolve\",pid=1554,fd=14))               \nudp   UNCONN 0      0      198.22.255.26%eno1:68         0.0.0.0:*    users:((\"systemd-network\",pid=1842,fd=23))               \nudp   UNCONN 0      0                 0.0.0.0:111        0.0.0.0:*    users:((\"rpcbind\",pid=1539,fd=5),(\"systemd\",pid=1,fd=41))\nudp   UNCONN 0      0               127.0.0.1:323        0.0.0.0:*    users:((\"chronyd\",pid=1917,fd=5))                        \nudp   UNCONN 0      0                 0.0.0.0:33014      0.0.0.0:*    users:((\"rsyslogd\",pid=1591,fd=11))                      \nudp   UNCONN 0      0                    [::]:111           [::]:*    users:((\"rpcbind\",pid=1539,fd=7),(\"systemd\",pid=1,fd=43))\nudp   UNCONN 0      0                   [::1]:323           [::]:*    users:((\"chronyd\",pid=1917,fd=6))                        \ntcp   LISTEN 0      4096           127.0.0.54:53         0.0.0.0:*    users:((\"systemd-resolve\",pid=1554,fd=17))               \ntcp   LISTEN 0      4096              0.0.0.0:111        0.0.0.0:*    users:((\"rpcbind\",pid=1539,fd=4),(\"systemd\",pid=1,fd=40))\ntcp   LISTEN 0      4096              0.0.0.0:22         0.0.0.0:*    users:((\"sshd\",pid=1864,fd=3),(\"systemd\",pid=1,fd=109))  \ntcp   LISTEN 0      128               0.0.0.0:16505      0.0.0.0:*    users:((\"pubsubd\",pid=2030,fd=4))                        \ntcp   LISTEN 0      4096        127.0.0.53%lo:53         0.0.0.0:*    users:((\"systemd-resolve\",pid=1554,fd=15))               \ntcp   LISTEN 0      4096                 [::]:111           [::]:*    users:((\"rpcbind\",pid=1539,fd=6),(\"systemd\",pid=1,fd=42))\ntcp   LISTEN 0      4096                 [::]:22            [::]:*    users:((\"sshd\",pid=1864,fd=4),(\"systemd\",pid=1,fd=110))  \n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "curl",
+        "--version"
+      ],
+      "at": "2026-10-24T03:03:38.648322+00:00",
+      "returncode": 0,
+      "stdout": "curl 8.5.0 (x86_64-pc-linux-gnu) libcurl/8.5.0 OpenSSL/3.0.13 zlib/1.3 brotli/1.1.0 zstd/1.5.5 libidn2/2.3.7 libpsl/0.21.2 (+libidn2/2.3.7) libssh/0.10.6/openssl/zlib nghttp2/1.59.0 librtmp/2.3 OpenLDAP/2.6.10\nRelease-Date: 2023-12-06, security patched: 8.5.0-2ubuntu10.12\nProtocols: dict file ftp ftps gopher gophers http https imap imaps ldap ldaps mqtt pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp\nFeatures: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz NTLM PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ip",
+        "route",
+        "replace",
+        "172.28.96.0/30",
+        "via",
+        "10.0.1.2"
+      ],
+      "at": "2026-10-24T03:03:38.649509+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--max-time",
+        "5",
+        "--tlsv1.2",
+        "--tls-max",
+        "1.2",
+        "--cacert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/ca.pem",
+        "--resolve",
+        "managed.nd.test:443:172.28.96.2",
+        "--cert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/physical-aw.pem",
+        "--key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/physical-aw.key",
+        "--fail",
+        "https://managed.nd.test/status"
+      ],
+      "at": "2026-10-24T03:03:38.692063+00:00",
+      "returncode": 0,
+      "stdout": "ready",
+      "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100     5  100     5    0     0    143      0 --:--:-- --:--:-- --:--:--   147\n",
+      "probe": "physical-AW-authenticated-management",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--max-time",
+        "5",
+        "--tlsv1.2",
+        "--tls-max",
+        "1.2",
+        "--cacert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/ca.pem",
+        "--resolve",
+        "managed.nd.test:443:172.28.96.2",
+        "https://managed.nd.test/status"
+      ],
+      "at": "2026-10-24T03:03:38.712166+00:00",
+      "returncode": 35,
+      "stdout": "",
+      "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\ncurl: (35) OpenSSL/3.0.13: error:0A000410:SSL routines::sslv3 alert handshake failure\n",
+      "probe": "no-client-cert",
+      "expected_result": "rejected",
+      "observed_result": "rejected"
+    },
+    {
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--max-time",
+        "5",
+        "--tlsv1.2",
+        "--tls-max",
+        "1.2",
+        "--cacert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/ca.pem",
+        "--resolve",
+        "managed.nd.test:443:172.28.96.2",
+        "--cert",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/physical-aw.pem",
+        "--key",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/physical-aw.key",
+        "--head",
+        "https://managed.nd.test/managed.key"
+      ],
+      "at": "2026-10-24T03:03:38.744561+00:00",
+      "returncode": 0,
+      "stdout": "HTTP/1.0 404 File not found\nServer: SimpleHTTP/0.6 Python/3.12.3\nDate: Sat, 24 Oct 2026 03:03:38 GMT\nConnection: close\nContent-Type: text/html;charset=utf-8\nContent-Length: 335\n\n",
+      "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0   335    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n",
+      "probe": "private-key-path-inaccessible",
+      "expected_result": "404",
+      "observed_result": "404"
+    },
+    {
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/ca.pem",
+        "-noout",
+        "-subject",
+        "-issuer",
+        "-fingerprint",
+        "-sha256"
+      ],
+      "at": "2026-10-24T03:03:38.778548+00:00",
+      "returncode": 0,
+      "stdout": "subject=CN = Evidence AW test CA\nissuer=CN = Evidence AW test CA\nsha256 Fingerprint=DD:4D:E7:0E:A2:A2:EB:1E:72:55:5A:33:FA:84:11:21:25:1D:4D:99:DD:6B:A8:DC:F9:FF:22:3D:C5:7E:7E:4C\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "openssl",
+        "x509",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-physical-v3/physical-aw.pem",
+        "-noout",
+        "-subject",
+        "-issuer",
+        "-fingerprint",
+        "-sha256"
+      ],
+      "at": "2026-10-24T03:03:38.812745+00:00",
+      "returncode": 0,
+      "stdout": "subject=CN = physical-aw.nd.test\nissuer=CN = Evidence AW test CA\nsha256 Fingerprint=E2:14:50:49:C0:5C:0E:5F:FB:D7:D2:1B:D7:ED:56:C4:12:3D:E0:5A:10:7E:D7:C0:53:82:D5:13:C1:D2:9C:F7\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ip",
+        "route",
+        "get",
+        "172.28.96.2"
+      ],
+      "at": "2026-10-24T03:03:38.814552+00:00",
+      "returncode": 0,
+      "stdout": "172.28.96.2 via 10.0.1.2 dev enp3s0f0np0 src 10.0.1.3 uid 0 \n    cache \n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": [
+    "The dedicated authorized pc16 physical host acts as the AW; it is distinct from the pc22 managed component host. Actual host OS, hardwareUUID, running processes, source route and authenticated management response are collected.",
+    "Finite mutual TLS transport and interface source filtering do not establish security clearance, organizational administrator role, approved product, secure facility, dedicated purpose across all time or complete management requirements.",
+    "The CloudLab experimentLAN transports these bounded local management requests. No remote cross-Black unencrypted management allowance is inferred.",
+    "Publicly reachable test HTTP document root contains only status. Private key paths return404 to an authenticated AW; the test never requests a key body."
+  ]
+}

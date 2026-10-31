@@ -1,0 +1,224 @@
+{
+  "ports": [
+    {
+      "device": "eap-tls-forward-v18/P0",
+      "role": "authenticator",
+      "settings": {
+        "has_pre_shared_cak": false,
+        "has_pre_shared_ckn": false,
+        "field_names": [
+          "auth_server_addr",
+          "auth_server_port",
+          "auth_server_shared_secret",
+          "driver",
+          "eap_server",
+          "ieee8021x",
+          "interface",
+          "logger_stdout",
+          "logger_stdout_level",
+          "macsec_csindex",
+          "macsec_integ_only",
+          "macsec_policy",
+          "macsec_replay_protect",
+          "macsec_replay_window",
+          "mka_priority",
+          "nas_identifier",
+          "own_ip_addr",
+          "ssid",
+          "use_pae_group_addr"
+        ],
+        "network_blocks": 0
+      },
+      "config_sha256": "bc9489caa6cdecd1be1d998a217b91834a27ce18be05398ff59ee131f307166b",
+      "creation_log_id": "cmd-0164",
+      "observed_creations": 1,
+      "manifest_sha256": "e968795d9c8febf19a63017d5b200925c68956c4a89ebca256939450c9762320"
+    },
+    {
+      "device": "eap-tls-forward-v18/P1",
+      "role": "supplicant",
+      "settings": {
+        "has_pre_shared_cak": false,
+        "has_pre_shared_ckn": false,
+        "field_names": [
+          "ap_scan",
+          "ca_cert",
+          "client_cert",
+          "domain_match",
+          "eap",
+          "eapol_flags",
+          "eapol_version",
+          "identity",
+          "key_mgmt",
+          "macsec_csindex",
+          "macsec_policy",
+          "macsec_replay_protect",
+          "macsec_replay_window",
+          "mka_priority",
+          "openssl_ciphers",
+          "phase1",
+          "private_key"
+        ],
+        "network_blocks": 1
+      },
+      "config_sha256": "9ab8d8b159df81755f023965deb7e8e821ce1e5edf42bcf47833ff563a46e50a",
+      "creation_log_id": "cmd-0161",
+      "observed_creations": 1,
+      "manifest_sha256": "e968795d9c8febf19a63017d5b200925c68956c4a89ebca256939450c9762320"
+    },
+    {
+      "device": "eap-tls-reverse-v18/P0",
+      "role": "supplicant",
+      "settings": {
+        "has_pre_shared_cak": false,
+        "has_pre_shared_ckn": false,
+        "field_names": [
+          "ap_scan",
+          "ca_cert",
+          "client_cert",
+          "domain_match",
+          "eap",
+          "eapol_flags",
+          "eapol_version",
+          "identity",
+          "key_mgmt",
+          "macsec_csindex",
+          "macsec_policy",
+          "macsec_replay_protect",
+          "macsec_replay_window",
+          "mka_priority",
+          "openssl_ciphers",
+          "phase1",
+          "private_key"
+        ],
+        "network_blocks": 1
+      },
+      "config_sha256": "836fdbdff2b4e858401ab238580b82f7e6005c6e5e582a4bb349ccb69b08bc18",
+      "creation_log_id": "cmd-0164",
+      "observed_creations": 1,
+      "manifest_sha256": "70a737f29f95cd11d545637208e9ba4d10acb3c44c516340066666e4081b2bb2"
+    },
+    {
+      "device": "eap-tls-reverse-v18/P1",
+      "role": "authenticator",
+      "settings": {
+        "has_pre_shared_cak": false,
+        "has_pre_shared_ckn": false,
+        "field_names": [
+          "auth_server_addr",
+          "auth_server_port",
+          "auth_server_shared_secret",
+          "driver",
+          "eap_server",
+          "ieee8021x",
+          "interface",
+          "logger_stdout",
+          "logger_stdout_level",
+          "macsec_csindex",
+          "macsec_integ_only",
+          "macsec_policy",
+          "macsec_replay_protect",
+          "macsec_replay_window",
+          "mka_priority",
+          "nas_identifier",
+          "own_ip_addr",
+          "ssid",
+          "use_pae_group_addr"
+        ],
+        "network_blocks": 0
+      },
+      "config_sha256": "553609ea543258470502aca2473d1f47d8a7822ca8cf9ea7785d278c9f5cde06",
+      "creation_log_id": "cmd-0161",
+      "observed_creations": 1,
+      "manifest_sha256": "70a737f29f95cd11d545637208e9ba4d10acb3c44c516340066666e4081b2bb2"
+    }
+  ],
+  "source_bindings": {
+    "bundle": "artifacts/snapshots/2026-10-24T014455Z/hostap-kdf-bindings-v4",
+    "manifest_sha256": "29b3f792a34fe3d10dd3f31581e49f904b992b85a82d866429fbd01b01c5856b",
+    "runtime_bundle": "artifacts/snapshots/2026-10-24T014455Z/final-hostap-runtime-v4",
+    "runtime_manifest_sha256": "2476dae11a0f5ea660bb1a4add8768391555dec0f04ad829776f5a6b5503af19",
+    "bindings": [
+      {
+        "role": "authenticator",
+        "source_root": "hostapd-2.12",
+        "binary_path": "hostap-pq-delay-auth/hostapd-2.12/hostapd/hostapd",
+        "binary_sha256": "23a5f3dfbaee5c2b4b54f16229d8274c3de7a760d30613a95db566a1acd78b1d",
+        "observed_at": "2026-10-24T14:59:26.691951+00:00",
+        "cak_bytes": 32,
+        "kek_bytes": 32,
+        "wrap_function": "aes_wrap",
+        "ckn_bytes": 16,
+        "implementation_reading": "Both EAP wrappers request the first32 MSK bytes and CAK32; KAY sets KEK length to CAK length and passes that length to AES wrap."
+      },
+      {
+        "role": "supplicant",
+        "source_root": "wpa_supplicant-2.12",
+        "binary_path": "hostap-pq-delay-auth/wpa_supplicant-2.12/wpa_supplicant/wpa_supplicant",
+        "binary_sha256": "aa5af96ee16645430271770a942ceefd2f86d62efbb25f2e76fe3595681d44a6",
+        "observed_at": "2026-10-24T14:59:28.607920+00:00",
+        "cak_bytes": 32,
+        "kek_bytes": 32,
+        "wrap_function": "aes_wrap",
+        "ckn_bytes": 16,
+        "implementation_reading": "Both EAP wrappers request the first32 MSK bytes and CAK32; KAY sets KEK length to CAK length and passes that length to AES wrap."
+      }
+    ]
+  },
+  "upstream_sources": [
+    {
+      "path": "artifacts/construction/2026-10-24T014455Z/evidence/runtime/hostap-source/hostapd-2.12.tar.gz",
+      "sha256": "f43502561c28ba47ab77e18e1a973d07361c68cc8b14178e619bd5796b70eabd",
+      "creation_mentions": [
+        {
+          "path": "hostapd-2.12/src/ap/wpa_auth_kay.c",
+          "line": 442
+        },
+        {
+          "path": "hostapd-2.12/src/ap/wpa_auth_kay.c",
+          "line": 484
+        },
+        {
+          "path": "hostapd-2.12/src/pae/ieee802_1x_kay.c",
+          "line": 3666
+        }
+      ]
+    },
+    {
+      "path": "artifacts/construction/2026-10-24T014455Z/evidence/runtime/hostap-source/wpa_supplicant-2.12.tar.gz",
+      "sha256": "08e23937e16d0155e55cab2b51f51fbe10d80a1aa91c4e15442645059b737ef6",
+      "creation_mentions": [
+        {
+          "path": "wpa_supplicant-2.12/wpa_supplicant/wpas_kay.c",
+          "line": 359
+        },
+        {
+          "path": "wpa_supplicant-2.12/wpa_supplicant/wpas_kay.c",
+          "line": 407
+        },
+        {
+          "path": "wpa_supplicant-2.12/src/ap/wpa_auth_kay.c",
+          "line": 442
+        },
+        {
+          "path": "wpa_supplicant-2.12/src/ap/wpa_auth_kay.c",
+          "line": 484
+        },
+        {
+          "path": "wpa_supplicant-2.12/src/pae/ieee802_1x_kay.c",
+          "line": 3666
+        }
+      ]
+    }
+  ],
+  "interpretation": "INT-MD15-20261024",
+  "whole_RG027_established": false,
+  "implementation_assumptions": [
+    "The pinned launch code copies the actual initial configuration before launching a fresh daemon. No later configuration/control-interface mutation or external memory/key injection is modeled.",
+    "The retained exact wrappers/core and upstream configuration parser reading describe the compiled binaries. Correct compilation/execution and unchanged source outside retained patches are trusted, not proved by Lean or a reproducible build.",
+    "A fresh configuration initializes mka_psk_set to zero. Only mka_cak/mka_ckn configuration enables the pre-shared creation guard; neither field is present in the checked complete EAP configurations.",
+    "The two reviewed creation entry points map to authenticated EAP creation and guarded pre-shared creation. Other protocol operations preserve CAK origin or remove participants.",
+    "Normal EAP reauthentication may create additional freshly derived CAKs. MD15 is interpreted as disabling configured fallback/preceding/rollover credentials, not all normal cryptographic renewal.",
+    "NSA-approved KGS provenance, PSK-case configuration, and other RG027 clauses require their own evidence."
+  ]
+}

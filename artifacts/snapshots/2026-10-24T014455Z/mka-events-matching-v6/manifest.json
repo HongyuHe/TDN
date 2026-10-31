@@ -1,0 +1,16 @@
+{
+  "schema_version": "csfc-authentication-events/v1",
+  "code_sha256": "b59258b0b66d8cf20f3424bafe10244fe205faf6f6ec62b98bf51e8886118359",
+  "files": [
+    {
+      "path": "events.json",
+      "sha256": "290c030f4a22076028c8b392e44a032102f4bf01647128da47949b479b4e42da",
+      "bytes": 255314
+    }
+  ],
+  "sanitization_correction": {
+    "reason": "Debug hostapd output included derived EAP test-session material despite missing private-key exports. Every hexdump is now redacted before public export.",
+    "redaction": "All hexdump bytes, retaining diagnostic prefixes and lengths.",
+    "secret_originals_retained": false
+  }
+}

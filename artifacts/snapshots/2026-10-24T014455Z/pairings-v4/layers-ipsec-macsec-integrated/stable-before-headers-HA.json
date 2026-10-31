@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0112",
+  "started_at": "2026-10-24T14:01:58.305805+00:00",
+  "ended_at": "2026-10-24T14:02:02.865826+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-HA",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "HA",
+  "returncode": 0,
+  "stdout": "14:01:58.605875 red   Out ifindex 4203 46:16:dd:50:9f:d5 ethertype IPv6 (0x86dd), length 96: (hlim 1, next-header Options (0) payload length: 36) fe80::4416:ddff:fe50:9fd5 > ff02::16: HBH (rtalert: 0x0000) (padn) [icmp6 sum ok] ICMP6, multicast listener report v2, 1 group record(s) [gaddr ff02::1:ff00:0 to_ex, 0 source(s)]\n14:01:58.719327 red   Out ifindex 4203 46:16:dd:50:9f:d5 ethertype ARP (0x0806), length 48: Ethernet (len 6), IPv4 (len 4), Request who-has 10.1.0.1 tell 10.1.0.2, length 28\n14:01:58.719369 red   In  ifindex 4203 76:b1:ad:7e:a6:68 ethertype ARP (0x0806), length 48: Ethernet (len 6), IPv4 (len 4), Reply 10.1.0.1 is-at 76:b1:ad:7e:a6:68, length 28\n14:01:58.719372 red   Out ifindex 4203 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 16622, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46565, seq 1, length 72\n14:01:58.719751 red   In  ifindex 4203 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 36009, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46565, seq 1, length 72\n14:01:59.758895 red   Out ifindex 4203 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 17137, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46565, seq 2, length 72\n14:01:59.759129 red   In  ifindex 4203 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 36139, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46565, seq 2, length 72\n14:02:00.781918 red   Out ifindex 4203 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 17200, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 46565, seq 3, length 72\n14:02:00.782166 red   In  ifindex 4203 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 37152, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 46565, seq 3, length 72\n14:02:00.798747 red   In  ifindex 4203 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 37167, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo request, id 46566, seq 1, length 72\n14:02:00.798757 red   Out ifindex 4203 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 17202, offset 0, flags [none], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo reply, id 46566, seq 1, length 72\n14:02:01.806088 red   In  ifindex 4203 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 37196, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo request, id 46566, seq 2, length 72\n14:02:01.806100 red   Out ifindex 4203 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 17944, offset 0, flags [none], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo reply, id 46566, seq 2, length 72\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n13 packets captured\n15 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 1
+}

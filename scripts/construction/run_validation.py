@@ -8,6 +8,8 @@ from source_paths import source_path
 
 parser=argparse.ArgumentParser()
 parser.add_argument("--label",required=True)
+parser.add_argument("--refresh-legacy-register", action="store_true", help="Explicitly regenerate old register dispositions; continuation runs preserve reviewed progress by default")
+parser.add_argument("--legacy-reports", action="store_true", help="Run historical-format report generator after validation")
 parser.add_argument("--input-manifest",default=os.environ.get("TDN_INPUT_MANIFEST","inputs/source_paths.json"))
 parser.add_argument("--output-dir",default=os.environ.get("TDN_OUTPUT_DIR","outputs"))
 parser.add_argument("--history-dir",default="history")
@@ -81,6 +83,8 @@ native_commands.append(["python3","scripts/construction/import_mka_audit.py","--
 index=commands.index(["lake","build"])
 commands[index:index]=native_commands
 commands.append(["python3","scripts/construction/review_coverage.py"])
+if not args.refresh_legacy_register:
+    commands = [command for command in commands if command != ["python3","scripts/construction/update_register.py"]]
 commands=[[str(Path(args.output_dir)/part.removeprefix("outputs/")) if part.startswith("outputs/") else part for part in command] for command in commands]
 results=[]
 for index,command in enumerate(commands):
@@ -95,5 +99,6 @@ for index,command in enumerate(commands):
 Path(args.output_dir,args.label+"-validation.json").write_text(json.dumps(results,indent=2)+"\n")
 if all(r["returncode"]==0 for r in results):
     subprocess.run(["python3","scripts/construction/finalize_validation.py",str(Path(args.output_dir,args.label+"-validation.json"))],check=True)
-    subprocess.run(["python3","scripts/construction/write_reports.py"],check=True)
+    if args.legacy_reports:
+        subprocess.run(["python3","scripts/construction/write_reports.py"],check=True)
 raise SystemExit(0 if all(r["returncode"]==0 for r in results) else 1)

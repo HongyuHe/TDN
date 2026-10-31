@@ -1,0 +1,357 @@
+{
+  "host": "pc08.cloudlab.umass.edu",
+  "at": "2026-10-24T04:20:22.554034+00:00",
+  "returncode": 0,
+  "records": [
+    {
+      "at": "2026-10-24T04:20:22.454495+00:00",
+      "command": [
+        "hostname"
+      ],
+      "returncode": 0,
+      "stdout": "node-0.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.456765+00:00",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "returncode": 0,
+      "stdout": "Linux node-0.twinet-msc2.netsyn-pg0.cloudlab.umass.edu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.459082+00:00",
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_uuid"
+      ],
+      "returncode": 0,
+      "stdout": "4c4c4544-004a-4310-8042-b4c04f563532\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.486567+00:00",
+      "command": [
+        "lspci",
+        "-Dnn"
+      ],
+      "returncode": 0,
+      "stdout": "0000:00:00.0 Host bridge [0600]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DMI2 [8086:2f00] (rev 02)\n0000:00:01.0 PCI bridge [0604]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 1 [8086:2f02] (rev 02)\n0000:00:02.0 PCI bridge [0604]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 2 [8086:2f04] (rev 02)\n0000:00:03.0 PCI bridge [0604]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 3 [8086:2f08] (rev 02)\n0000:00:03.2 PCI bridge [0604]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 3 [8086:2f0a] (rev 02)\n0000:00:05.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Address Map, VTd_Misc, System Management [8086:2f28] (rev 02)\n0000:00:05.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Hot Plug [8086:2f29] (rev 02)\n0000:00:05.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 RAS, Control Status and Global Errors [8086:2f2a] (rev 02)\n0000:00:05.4 PIC [0800]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 I/O APIC [8086:2f2c] (rev 02)\n0000:00:11.0 Unassigned class [ff00]: Intel Corporation C610/X99 series chipset SPSR [8086:8d7c] (rev 05)\n0000:00:11.4 SATA controller [0106]: Intel Corporation C610/X99 series chipset sSATA Controller [AHCI mode] [8086:8d62] (rev 05)\n0000:00:16.0 Communication controller [0780]: Intel Corporation C610/X99 series chipset MEI Controller #1 [8086:8d3a] (rev 05)\n0000:00:16.1 Communication controller [0780]: Intel Corporation C610/X99 series chipset MEI Controller #2 [8086:8d3b] (rev 05)\n0000:00:1a.0 USB controller [0c03]: Intel Corporation C610/X99 series chipset USB Enhanced Host Controller #2 [8086:8d2d] (rev 05)\n0000:00:1c.0 PCI bridge [0604]: Intel Corporation C610/X99 series chipset PCI Express Root Port #1 [8086:8d10] (rev d5)\n0000:00:1c.7 PCI bridge [0604]: Intel Corporation C610/X99 series chipset PCI Express Root Port #8 [8086:8d1e] (rev d5)\n0000:00:1d.0 USB controller [0c03]: Intel Corporation C610/X99 series chipset USB Enhanced Host Controller #1 [8086:8d26] (rev 05)\n0000:00:1f.0 ISA bridge [0601]: Intel Corporation C610/X99 series chipset LPC Controller [8086:8d44] (rev 05)\n0000:00:1f.2 SATA controller [0106]: Intel Corporation C610/X99 series chipset 6-Port SATA Controller [AHCI mode] [8086:8d02] (rev 05)\n0000:01:00.0 Ethernet controller [0200]: Intel Corporation I350 Gigabit Network Connection [8086:1521] (rev 01)\n0000:01:00.1 Ethernet controller [0200]: Intel Corporation I350 Gigabit Network Connection [8086:1521] (rev 01)\n0000:01:00.2 Ethernet controller [0200]: Intel Corporation I350 Gigabit Network Connection [8086:1521] (rev 01)\n0000:01:00.3 Ethernet controller [0200]: Intel Corporation I350 Gigabit Network Connection [8086:1521] (rev 01)\n0000:02:00.0 RAID bus controller [0104]: Broadcom / LSI MegaRAID SAS-3 3108 [Invader] [1000:005d] (rev 02)\n0000:03:00.0 Ethernet controller [0200]: AMD Solarflare SFC9120 10G Ethernet Controller [1924:0903] (rev 01)\n0000:03:00.1 Ethernet controller [0200]: AMD Solarflare SFC9120 10G Ethernet Controller [1924:0903] (rev 01)\n0000:06:00.0 PCI bridge [0604]: Renesas Electronics Corp. SH7758 PCIe Switch [PS] [1912:001d]\n0000:07:00.0 PCI bridge [0604]: Renesas Electronics Corp. SH7758 PCIe Switch [PS] [1912:001d]\n0000:08:00.0 PCI bridge [0604]: Renesas Electronics Corp. SH7758 PCIe-PCI Bridge [PPB] [1912:001a]\n0000:09:00.0 VGA compatible controller [0300]: Matrox Electronics Systems Ltd. G200eR2 [102b:0534] (rev 01)\n0000:7f:08.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 0 [8086:2f80] (rev 02)\n0000:7f:08.2 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 0 [8086:2f32] (rev 02)\n0000:7f:08.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 0 [8086:2f83] (rev 02)\n0000:7f:09.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 1 [8086:2f90] (rev 02)\n0000:7f:09.2 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 1 [8086:2f33] (rev 02)\n0000:7f:09.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 1 [8086:2f93] (rev 02)\n0000:7f:0b.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring [8086:2f81] (rev 02)\n0000:7f:0b.1 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring [8086:2f36] (rev 02)\n0000:7f:0b.2 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring [8086:2f37] (rev 02)\n0000:7f:0c.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe0] (rev 02)\n0000:7f:0c.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe1] (rev 02)\n0000:7f:0c.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe2] (rev 02)\n0000:7f:0c.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe3] (rev 02)\n0000:7f:0c.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe4] (rev 02)\n0000:7f:0c.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe5] (rev 02)\n0000:7f:0c.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe6] (rev 02)\n0000:7f:0c.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe7] (rev 02)\n0000:7f:0d.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe8] (rev 02)\n0000:7f:0d.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe9] (rev 02)\n0000:7f:0f.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent [8086:2ff8] (rev 02)\n0000:7f:0f.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent [8086:2ff9] (rev 02)\n0000:7f:0f.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent [8086:2ffa] (rev 02)\n0000:7f:0f.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent [8086:2ffb] (rev 02)\n0000:7f:0f.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers [8086:2ffc] (rev 02)\n0000:7f:0f.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers [8086:2ffd] (rev 02)\n0000:7f:0f.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers [8086:2ffe] (rev 02)\n0000:7f:10.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCIe Ring Interface [8086:2f1d] (rev 02)\n0000:7f:10.1 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCIe Ring Interface [8086:2f34] (rev 02)\n0000:7f:10.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers [8086:2f1e] (rev 02)\n0000:7f:10.6 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers [8086:2f7d] (rev 02)\n0000:7f:10.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers [8086:2f1f] (rev 02)\n0000:7f:12.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 0 [8086:2fa0] (rev 02)\n0000:7f:12.1 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 0 [8086:2f30] (rev 02)\n0000:7f:12.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 0 Debug [8086:2f70] (rev 02)\n0000:7f:12.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 1 [8086:2f60] (rev 02)\n0000:7f:12.5 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 1 [8086:2f38] (rev 02)\n0000:7f:12.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 1 Debug [8086:2f78] (rev 02)\n0000:7f:13.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Target Address, Thermal & RAS Registers [8086:2fa8] (rev 02)\n0000:7f:13.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Target Address, Thermal & RAS Registers [8086:2f71] (rev 02)\n0000:7f:13.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel Target Address Decoder [8086:2faa] (rev 02)\n0000:7f:13.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel Target Address Decoder [8086:2fab] (rev 02)\n0000:7f:13.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Channel 0/1 Broadcast [8086:2fae] (rev 02)\n0000:7f:13.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Global Broadcast [8086:2faf] (rev 02)\n0000:7f:14.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 0 Thermal Control [8086:2fb0] (rev 02)\n0000:7f:14.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 1 Thermal Control [8086:2fb1] (rev 02)\n0000:7f:14.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 0 ERROR Registers [8086:2fb2] (rev 02)\n0000:7f:14.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 1 ERROR Registers [8086:2fb3] (rev 02)\n0000:7f:14.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1 [8086:2fbc] (rev 02)\n0000:7f:14.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1 [8086:2fbd] (rev 02)\n0000:7f:14.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1 [8086:2fbe] (rev 02)\n0000:7f:14.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1 [8086:2fbf] (rev 02)\n0000:7f:16.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Target Address, Thermal & RAS Registers [8086:2f68] (rev 02)\n0000:7f:16.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Target Address, Thermal & RAS Registers [8086:2f79] (rev 02)\n0000:7f:16.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel Target Address Decoder [8086:2f6a] (rev 02)\n0000:7f:16.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel Target Address Decoder [8086:2f6b] (rev 02)\n0000:7f:16.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Channel 2/3 Broadcast [8086:2f6e] (rev 02)\n0000:7f:16.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Global Broadcast [8086:2f6f] (rev 02)\n0000:7f:17.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 0 Thermal Control [8086:2fd0] (rev 02)\n0000:7f:17.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 1 Thermal Control [8086:2fd1] (rev 02)\n0000:7f:17.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 0 ERROR Registers [8086:2fd2] (rev 02)\n0000:7f:17.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 1 ERROR Registers [8086:2fd3] (rev 02)\n0000:7f:17.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3 [8086:2fb8] (rev 02)\n0000:7f:17.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3 [8086:2fb9] (rev 02)\n0000:7f:17.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3 [8086:2fba] (rev 02)\n0000:7f:17.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3 [8086:2fbb] (rev 02)\n0000:7f:1e.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2f98] (rev 02)\n0000:7f:1e.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2f99] (rev 02)\n0000:7f:1e.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2f9a] (rev 02)\n0000:7f:1e.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2fc0] (rev 02)\n0000:7f:1e.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2f9c] (rev 02)\n0000:7f:1f.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 VCU [8086:2f88] (rev 02)\n0000:7f:1f.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 VCU [8086:2f8a] (rev 02)\n0000:80:01.0 PCI bridge [0604]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 1 [8086:2f02] (rev 02)\n0000:80:03.0 PCI bridge [0604]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCI Express Root Port 3 [8086:2f08] (rev 02)\n0000:80:05.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Address Map, VTd_Misc, System Management [8086:2f28] (rev 02)\n0000:80:05.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Hot Plug [8086:2f29] (rev 02)\n0000:80:05.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 RAS, Control Status and Global Errors [8086:2f2a] (rev 02)\n0000:80:05.4 PIC [0800]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 I/O APIC [8086:2f2c] (rev 02)\n0000:ff:08.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 0 [8086:2f80] (rev 02)\n0000:ff:08.2 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 0 [8086:2f32] (rev 02)\n0000:ff:08.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 0 [8086:2f83] (rev 02)\n0000:ff:09.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 1 [8086:2f90] (rev 02)\n0000:ff:09.2 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 1 [8086:2f33] (rev 02)\n0000:ff:09.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 QPI Link 1 [8086:2f93] (rev 02)\n0000:ff:0b.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring [8086:2f81] (rev 02)\n0000:ff:0b.1 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring [8086:2f36] (rev 02)\n0000:ff:0b.2 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 R3 QPI Link 0 & 1 Monitoring [8086:2f37] (rev 02)\n0000:ff:0c.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe0] (rev 02)\n0000:ff:0c.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe1] (rev 02)\n0000:ff:0c.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe2] (rev 02)\n0000:ff:0c.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe3] (rev 02)\n0000:ff:0c.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe4] (rev 02)\n0000:ff:0c.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe5] (rev 02)\n0000:ff:0c.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe6] (rev 02)\n0000:ff:0c.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe7] (rev 02)\n0000:ff:0d.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe8] (rev 02)\n0000:ff:0d.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Unicast Registers [8086:2fe9] (rev 02)\n0000:ff:0f.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent [8086:2ff8] (rev 02)\n0000:ff:0f.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent [8086:2ff9] (rev 02)\n0000:ff:0f.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent [8086:2ffa] (rev 02)\n0000:ff:0f.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Buffered Ring Agent [8086:2ffb] (rev 02)\n0000:ff:0f.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers [8086:2ffc] (rev 02)\n0000:ff:0f.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers [8086:2ffd] (rev 02)\n0000:ff:0f.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers [8086:2ffe] (rev 02)\n0000:ff:10.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCIe Ring Interface [8086:2f1d] (rev 02)\n0000:ff:10.1 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 PCIe Ring Interface [8086:2f34] (rev 02)\n0000:ff:10.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers [8086:2f1e] (rev 02)\n0000:ff:10.6 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers [8086:2f7d] (rev 02)\n0000:ff:10.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Scratchpad & Semaphore Registers [8086:2f1f] (rev 02)\n0000:ff:12.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 0 [8086:2fa0] (rev 02)\n0000:ff:12.1 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 0 [8086:2f30] (rev 02)\n0000:ff:12.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 0 Debug [8086:2f70] (rev 02)\n0000:ff:12.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 1 [8086:2f60] (rev 02)\n0000:ff:12.5 Performance counters [1101]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 1 [8086:2f38] (rev 02)\n0000:ff:12.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Home Agent 1 Debug [8086:2f78] (rev 02)\n0000:ff:13.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Target Address, Thermal & RAS Registers [8086:2fa8] (rev 02)\n0000:ff:13.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Target Address, Thermal & RAS Registers [8086:2f71] (rev 02)\n0000:ff:13.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel Target Address Decoder [8086:2faa] (rev 02)\n0000:ff:13.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel Target Address Decoder [8086:2fab] (rev 02)\n0000:ff:13.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Channel 0/1 Broadcast [8086:2fae] (rev 02)\n0000:ff:13.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Global Broadcast [8086:2faf] (rev 02)\n0000:ff:14.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 0 Thermal Control [8086:2fb0] (rev 02)\n0000:ff:14.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 1 Thermal Control [8086:2fb1] (rev 02)\n0000:ff:14.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 0 ERROR Registers [8086:2fb2] (rev 02)\n0000:ff:14.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 0 Channel 1 ERROR Registers [8086:2fb3] (rev 02)\n0000:ff:14.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1 [8086:2fbc] (rev 02)\n0000:ff:14.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1 [8086:2fbd] (rev 02)\n0000:ff:14.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1 [8086:2fbe] (rev 02)\n0000:ff:14.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 0 & 1 [8086:2fbf] (rev 02)\n0000:ff:16.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Target Address, Thermal & RAS Registers [8086:2f68] (rev 02)\n0000:ff:16.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Target Address, Thermal & RAS Registers [8086:2f79] (rev 02)\n0000:ff:16.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel Target Address Decoder [8086:2f6a] (rev 02)\n0000:ff:16.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel Target Address Decoder [8086:2f6b] (rev 02)\n0000:ff:16.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Channel 2/3 Broadcast [8086:2f6e] (rev 02)\n0000:ff:16.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO Global Broadcast [8086:2f6f] (rev 02)\n0000:ff:17.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 0 Thermal Control [8086:2fd0] (rev 02)\n0000:ff:17.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 1 Thermal Control [8086:2fd1] (rev 02)\n0000:ff:17.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 0 ERROR Registers [8086:2fd2] (rev 02)\n0000:ff:17.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Integrated Memory Controller 1 Channel 1 ERROR Registers [8086:2fd3] (rev 02)\n0000:ff:17.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3 [8086:2fb8] (rev 02)\n0000:ff:17.5 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3 [8086:2fb9] (rev 02)\n0000:ff:17.6 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3 [8086:2fba] (rev 02)\n0000:ff:17.7 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 DDRIO (VMSE) 2 & 3 [8086:2fbb] (rev 02)\n0000:ff:1e.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2f98] (rev 02)\n0000:ff:1e.1 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2f99] (rev 02)\n0000:ff:1e.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2f9a] (rev 02)\n0000:ff:1e.3 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2fc0] (rev 02)\n0000:ff:1e.4 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 Power Control Unit [8086:2f9c] (rev 02)\n0000:ff:1f.0 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 VCU [8086:2f88] (rev 02)\n0000:ff:1f.2 System peripheral [0880]: Intel Corporation Xeon E7 v3/Xeon E5 v3/Core i7 VCU [8086:2f8a] (rev 02)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.490015+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "-d",
+        "link",
+        "show"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":2,\"ifname\":\"eno1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e4\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.0\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f0\"]},{\"ifindex\":3,\"ifname\":\"enp3s0f0np0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:0f:53:2a:8b:f8\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":64,\"num_rx_queues\":64,\"gso_max_size\":65536,\"gso_max_segs\":100,\"tso_max_size\":65536,\"tso_max_segs\":100,\"gro_max_size\":65536,\"phys_port_name\":\"p0\",\"phys_port_id\":\"000f532a8bf8\",\"parentbus\":\"pci\",\"parentdev\":\"0000:03:00.0\",\"vfinfo_list\":[]},{\"ifindex\":4,\"ifname\":\"eno2\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e5\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.1\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f1\"]},{\"ifindex\":5,\"ifname\":\"eno3\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e6\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.2\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f2\"]},{\"ifindex\":6,\"ifname\":\"eno4\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e7\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.3\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f3\"]},{\"ifindex\":7,\"ifname\":\"enp3s0f1np1\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:0f:53:2a:8b:f9\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":64,\"num_rx_queues\":64,\"gso_max_size\":65536,\"gso_max_segs\":100,\"tso_max_size\":65536,\"tso_max_segs\":100,\"gro_max_size\":65536,\"phys_port_name\":\"p1\",\"phys_port_id\":\"000f532a8bf9\",\"parentbus\":\"pci\",\"parentdev\":\"0000:03:00.1\",\"vfinfo_list\":[]},{\"ifindex\":8,\"ifname\":\"docker0\",\"flags\":[\"NO-CARRIER\",\"BROADCAST\",\"MULTICAST\",\"UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"DOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"be:bb:92:42:9d:e4\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.be:bb:92:42:9d:e4\",\"root_id\":\"8000.be:bb:92:42:9d:e4\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":139.86,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":1,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":59,\"ifname\":\"mw3b03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"6a:34:62:34:81:77\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.6a:34:62:34:81:77\",\"root_id\":\"8000.6a:34:62:34:81:77\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":205.40,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":60,\"ifname\":\"mw3x03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b03\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"f6:c5:12:5f:eb:54\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310003,\"remote\":\"130.127.133.168\",\"local\":\"198.22.255.18\",\"link\":\"eno1\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":5,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.6a:34:62:34:81:77\",\"root_id\":\"8000.6a:34:62:34:81:77\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":62,\"link_index\":61,\"ifname\":\"mw3h03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b03\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"56:9b:c4:61:0c:10\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":4,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.6a:34:62:34:81:77\",\"root_id\":\"8000.6a:34:62:34:81:77\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":63,\"ifname\":\"mw3b09\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"06:09:38:a8:12:40\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.6:9:38:a8:12:40\",\"root_id\":\"8000.6:9:38:a8:12:40\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":74.33,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":64,\"ifname\":\"mw3x09\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b09\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"b2:10:b3:e1:fc:59\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310009,\"remote\":\"130.127.133.168\",\"local\":\"198.22.255.18\",\"link\":\"eno1\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":5,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.6:9:38:a8:12:40\",\"root_id\":\"8000.6:9:38:a8:12:40\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":66,\"link_index\":65,\"ifname\":\"mw3h09\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b09\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"b2:dd:ee:8c:f6:3e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":4,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.6:9:38:a8:12:40\",\"root_id\":\"8000.6:9:38:a8:12:40\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":67,\"ifname\":\"mw3b15\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"8e:77:87:62:63:14\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.8e:77:87:62:63:14\",\"root_id\":\"8000.8e:77:87:62:63:14\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":41.56,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":68,\"ifname\":\"mw3x15\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b15\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ee:40:35:12:c6:30\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310015,\"remote\":\"130.127.133.168\",\"local\":\"198.22.255.18\",\"link\":\"eno1\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":5,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.8e:77:87:62:63:14\",\"root_id\":\"8000.8e:77:87:62:63:14\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":70,\"link_index\":69,\"ifname\":\"mw3h15\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b15\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"42:b1:b9:90:65:16\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":16,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.8e:77:87:62:63:14\",\"root_id\":\"8000.8e:77:87:62:63:14\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":71,\"ifname\":\"mw3b21\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ee:10:69:0e:a4:53\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.ee:10:69:e:a4:53\",\"root_id\":\"8000.ee:10:69:e:a4:53\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":107.09,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":72,\"ifname\":\"mw3x21\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b21\",\"operstate\":\"UNKNOWN\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"c6:29:bf:9a:30:72\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310021,\"remote\":\"130.127.133.168\",\"local\":\"198.22.255.18\",\"link\":\"eno1\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":5,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.ee:10:69:e:a4:53\",\"root_id\":\"8000.ee:10:69:e:a4:53\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536},{\"ifindex\":74,\"link_index\":73,\"ifname\":\"mw3h21\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b21\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"62:c4:0a:48:06:e7\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":16,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.ee:10:69:e:a4:53\",\"root_id\":\"8000.ee:10:69:e:a4:53\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"inet6_addr_gen_mode\":\"eui64\",\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536}]\n",
+      "stderr": "info: Using default fan map value (33)\n"
+    },
+    {
+      "at": "2026-10-24T04:20:22.494951+00:00",
+      "command": [
+        "lsblk",
+        "-J",
+        "-o",
+        "NAME,TYPE,RO,FSTYPE"
+      ],
+      "returncode": 0,
+      "stdout": "{\n   \"blockdevices\": [\n      {\n         \"name\": \"sda\",\n         \"type\": \"disk\",\n         \"ro\": false,\n         \"fstype\": null,\n         \"children\": [\n            {\n               \"name\": \"sda1\",\n               \"type\": \"part\",\n               \"ro\": false,\n               \"fstype\": \"vfat\"\n            },{\n               \"name\": \"sda2\",\n               \"type\": \"part\",\n               \"ro\": false,\n               \"fstype\": null\n            },{\n               \"name\": \"sda3\",\n               \"type\": \"part\",\n               \"ro\": false,\n               \"fstype\": \"ext3\"\n            },{\n               \"name\": \"sda99\",\n               \"type\": \"part\",\n               \"ro\": false,\n               \"fstype\": \"swap\"\n            }\n         ]\n      }\n   ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.496634+00:00",
+      "command": [
+        "mokutil",
+        "--sb-state"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "EFI variables are not supported on this system\n"
+    },
+    {
+      "command": [
+        "bootctl",
+        "status",
+        "--no-pager"
+      ],
+      "error": "[Errno 2] No such file or directory: 'bootctl'"
+    },
+    {
+      "at": "2026-10-24T04:20:22.499155+00:00",
+      "command": [
+        "cat",
+        "/proc/cmdline"
+      ],
+      "returncode": 0,
+      "stdout": "BOOT_IMAGE=/boot/vmlinuz-6.8.0-138-generic root=UUID=ccb0832d-c80e-430f-b248-d117889f1992 emulabcnet=ec:f4:bb:df:f8:e4 ro console=ttyS1,115200\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.511861+00:00",
+      "command": [
+        "dpkg-query",
+        "-W",
+        "linux-image-*",
+        "shim-signed",
+        "grub-efi-amd64-signed"
+      ],
+      "returncode": 0,
+      "stdout": "grub-efi-amd64-signed\t1.202.5+2.12-1ubuntu7.3\nlinux-image-6.8.0-138-generic\t6.8.0-138.138\nlinux-image-generic\t6.8.0-138.138\nlinux-image-unsigned-6.8.0-138-generic\t\nshim-signed\t1.58+15.8-0ubuntu1\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.513158+00:00",
+      "command": [
+        "ethtool",
+        "-i",
+        "eno4"
+      ],
+      "returncode": 0,
+      "stdout": "driver: igb\nversion: 6.8.0-138-generic\nfirmware-version: 1.67, 0x80000faa, 19.0.12\nexpansion-rom-version: \nbus-info: 0000:01:00.3\nsupports-statistics: yes\nsupports-test: yes\nsupports-eeprom-access: yes\nsupports-register-dump: yes\nsupports-priv-flags: yes\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.515208+00:00",
+      "command": [
+        "ethtool",
+        "eno4"
+      ],
+      "returncode": 0,
+      "stdout": "Settings for eno4:\n\tSupported ports: [ TP ]\n\tSupported link modes:   10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tSupported pause frame use: Symmetric\n\tSupports auto-negotiation: Yes\n\tSupported FEC modes: Not reported\n\tAdvertised link modes:  10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tAdvertised pause frame use: Symmetric\n\tAdvertised auto-negotiation: Yes\n\tAdvertised FEC modes: Not reported\n\tSpeed: Unknown!\n\tDuplex: Unknown! (255)\n\tAuto-negotiation: on\n\tPort: Twisted Pair\n\tPHYAD: 1\n\tTransceiver: internal\n\tMDI-X: off (auto)\n\tSupports Wake-on: pumbg\n\tWake-on: d\n        Current message level: 0x00000007 (7)\n                               drv probe link\n\tLink detected: no\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.516818+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "addr",
+        "show",
+        "eno4"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":6,\"ifname\":\"eno4\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e7\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"altnames\":[\"enp1s0f3\"],\"addr_info\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "interface": "eno4",
+      "pci_device": "/sys/devices/pci0000:00/0000:00:03.0/0000:01:00.3",
+      "driver": "/sys/bus/pci/drivers/igb",
+      "physical_port_name": "unavailable: [Errno 95] Operation not supported"
+    },
+    {
+      "at": "2026-10-24T04:20:22.518334+00:00",
+      "command": [
+        "ethtool",
+        "-i",
+        "eno2"
+      ],
+      "returncode": 0,
+      "stdout": "driver: igb\nversion: 6.8.0-138-generic\nfirmware-version: 1.67, 0x80000faa, 19.0.12\nexpansion-rom-version: \nbus-info: 0000:01:00.1\nsupports-statistics: yes\nsupports-test: yes\nsupports-eeprom-access: yes\nsupports-register-dump: yes\nsupports-priv-flags: yes\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.519593+00:00",
+      "command": [
+        "ethtool",
+        "eno2"
+      ],
+      "returncode": 0,
+      "stdout": "Settings for eno2:\n\tSupported ports: [ TP ]\n\tSupported link modes:   10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tSupported pause frame use: Symmetric\n\tSupports auto-negotiation: Yes\n\tSupported FEC modes: Not reported\n\tAdvertised link modes:  10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tAdvertised pause frame use: Symmetric\n\tAdvertised auto-negotiation: Yes\n\tAdvertised FEC modes: Not reported\n\tSpeed: Unknown!\n\tDuplex: Unknown! (255)\n\tAuto-negotiation: on\n\tPort: Twisted Pair\n\tPHYAD: 1\n\tTransceiver: internal\n\tMDI-X: off (auto)\n\tSupports Wake-on: pumbg\n\tWake-on: d\n        Current message level: 0x00000007 (7)\n                               drv probe link\n\tLink detected: no\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.521225+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "addr",
+        "show",
+        "eno2"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":4,\"ifname\":\"eno2\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e5\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"altnames\":[\"enp1s0f1\"],\"addr_info\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "interface": "eno2",
+      "pci_device": "/sys/devices/pci0000:00/0000:00:03.0/0000:01:00.1",
+      "driver": "/sys/bus/pci/drivers/igb",
+      "physical_port_name": "unavailable: [Errno 95] Operation not supported"
+    },
+    {
+      "at": "2026-10-24T04:20:22.522960+00:00",
+      "command": [
+        "ethtool",
+        "-i",
+        "eno3"
+      ],
+      "returncode": 0,
+      "stdout": "driver: igb\nversion: 6.8.0-138-generic\nfirmware-version: 1.67, 0x80000faa, 19.0.12\nexpansion-rom-version: \nbus-info: 0000:01:00.2\nsupports-statistics: yes\nsupports-test: yes\nsupports-eeprom-access: yes\nsupports-register-dump: yes\nsupports-priv-flags: yes\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.524092+00:00",
+      "command": [
+        "ethtool",
+        "eno3"
+      ],
+      "returncode": 0,
+      "stdout": "Settings for eno3:\n\tSupported ports: [ TP ]\n\tSupported link modes:   10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tSupported pause frame use: Symmetric\n\tSupports auto-negotiation: Yes\n\tSupported FEC modes: Not reported\n\tAdvertised link modes:  10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tAdvertised pause frame use: Symmetric\n\tAdvertised auto-negotiation: Yes\n\tAdvertised FEC modes: Not reported\n\tSpeed: Unknown!\n\tDuplex: Unknown! (255)\n\tAuto-negotiation: on\n\tPort: Twisted Pair\n\tPHYAD: 1\n\tTransceiver: internal\n\tMDI-X: off (auto)\n\tSupports Wake-on: pumbg\n\tWake-on: d\n        Current message level: 0x00000007 (7)\n                               drv probe link\n\tLink detected: no\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.525731+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "addr",
+        "show",
+        "eno3"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":5,\"ifname\":\"eno3\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e6\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"altnames\":[\"enp1s0f2\"],\"addr_info\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "interface": "eno3",
+      "pci_device": "/sys/devices/pci0000:00/0000:00:03.0/0000:01:00.2",
+      "driver": "/sys/bus/pci/drivers/igb",
+      "physical_port_name": "unavailable: [Errno 95] Operation not supported"
+    },
+    {
+      "at": "2026-10-24T04:20:22.527301+00:00",
+      "command": [
+        "ethtool",
+        "-i",
+        "enp3s0f0np0"
+      ],
+      "returncode": 0,
+      "stdout": "driver: sfc\nversion: 6.8.0-138-generic\nfirmware-version: 4.2.2.1003 rx1 tx1\nexpansion-rom-version: \nbus-info: 0000:03:00.0\nsupports-statistics: yes\nsupports-test: yes\nsupports-eeprom-access: no\nsupports-register-dump: yes\nsupports-priv-flags: no\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.528704+00:00",
+      "command": [
+        "ethtool",
+        "enp3s0f0np0"
+      ],
+      "returncode": 0,
+      "stdout": "Settings for enp3s0f0np0:\n\tSupported ports: [ FIBRE ]\n\tSupported link modes:   1000baseT/Full\n\t                        1000baseX/Full\n\t                        10000baseCR/Full\n\t                        10000baseSR/Full\n\t                        10000baseLR/Full\n\tSupported pause frame use: Symmetric Receive-only\n\tSupports auto-negotiation: No\n\tSupported FEC modes: Not reported\n\tAdvertised link modes:  Not reported\n\tAdvertised pause frame use: No\n\tAdvertised auto-negotiation: No\n\tAdvertised FEC modes: Not reported\n\tLink partner advertised link modes:  Not reported\n\tLink partner advertised pause frame use: No\n\tLink partner advertised auto-negotiation: No\n\tLink partner advertised FEC modes: Not reported\n\tSpeed: 10000Mb/s\n\tDuplex: Full\n\tAuto-negotiation: off\n\tPort: FIBRE\n\tPHYAD: 255\n\tTransceiver: internal\n\tSupports Wake-on: d\n\tWake-on: d\n        Current message level: 0x000020f7 (8439)\n                               drv probe link ifdown ifup rx_err tx_err hw\n\tLink detected: yes\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.530167+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "addr",
+        "show",
+        "enp3s0f0np0"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":3,\"ifname\":\"enp3s0f0np0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:0f:53:2a:8b:f8\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.0.1.1\",\"prefixlen\":24,\"broadcast\":\"10.0.1.255\",\"scope\":\"global\",\"label\":\"enp3s0f0np0\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::20f:53ff:fe2a:8bf8\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "interface": "enp3s0f0np0",
+      "pci_device": "/sys/devices/pci0000:00/0000:00:02.0/0000:03:00.0",
+      "driver": "/sys/bus/pci/drivers/sfc",
+      "physical_port_name": "p0"
+    },
+    {
+      "at": "2026-10-24T04:20:22.532212+00:00",
+      "command": [
+        "ethtool",
+        "-i",
+        "eno1"
+      ],
+      "returncode": 0,
+      "stdout": "driver: igb\nversion: 6.8.0-138-generic\nfirmware-version: 1.67, 0x80000faa, 19.0.12\nexpansion-rom-version: \nbus-info: 0000:01:00.0\nsupports-statistics: yes\nsupports-test: yes\nsupports-eeprom-access: yes\nsupports-register-dump: yes\nsupports-priv-flags: yes\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.533334+00:00",
+      "command": [
+        "ethtool",
+        "eno1"
+      ],
+      "returncode": 0,
+      "stdout": "Settings for eno1:\n\tSupported ports: [ TP ]\n\tSupported link modes:   10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tSupported pause frame use: Symmetric\n\tSupports auto-negotiation: Yes\n\tSupported FEC modes: Not reported\n\tAdvertised link modes:  10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tAdvertised pause frame use: Symmetric\n\tAdvertised auto-negotiation: Yes\n\tAdvertised FEC modes: Not reported\n\tSpeed: 1000Mb/s\n\tDuplex: Full\n\tAuto-negotiation: on\n\tPort: Twisted Pair\n\tPHYAD: 1\n\tTransceiver: internal\n\tMDI-X: on (auto)\n\tSupports Wake-on: pumbg\n\tWake-on: d\n        Current message level: 0x00000007 (7)\n                               drv probe link\n\tLink detected: yes\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.535127+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "addr",
+        "show",
+        "eno1"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":2,\"ifname\":\"eno1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e4\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"altnames\":[\"enp1s0f0\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"198.22.255.18\",\"prefixlen\":24,\"metric\":1024,\"broadcast\":\"198.22.255.255\",\"scope\":\"global\",\"label\":\"eno1\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::eef4:bbff:fedf:f8e4\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "interface": "eno1",
+      "pci_device": "/sys/devices/pci0000:00/0000:00:03.0/0000:01:00.0",
+      "driver": "/sys/bus/pci/drivers/igb",
+      "physical_port_name": "unavailable: [Errno 95] Operation not supported"
+    },
+    {
+      "at": "2026-10-24T04:20:22.537259+00:00",
+      "command": [
+        "ethtool",
+        "-i",
+        "enp3s0f1np1"
+      ],
+      "returncode": 0,
+      "stdout": "driver: sfc\nversion: 6.8.0-138-generic\nfirmware-version: 4.2.2.1003 rx1 tx1\nexpansion-rom-version: \nbus-info: 0000:03:00.1\nsupports-statistics: yes\nsupports-test: yes\nsupports-eeprom-access: no\nsupports-register-dump: yes\nsupports-priv-flags: no\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.539308+00:00",
+      "command": [
+        "ethtool",
+        "enp3s0f1np1"
+      ],
+      "returncode": 0,
+      "stdout": "Settings for enp3s0f1np1:\n\tSupported ports: [ FIBRE ]\n\tSupported link modes:   1000baseT/Full\n\t                        1000baseX/Full\n\t                        10000baseCR/Full\n\t                        10000baseSR/Full\n\t                        10000baseLR/Full\n\tSupported pause frame use: Symmetric Receive-only\n\tSupports auto-negotiation: No\n\tSupported FEC modes: Not reported\n\tAdvertised link modes:  Not reported\n\tAdvertised pause frame use: No\n\tAdvertised auto-negotiation: No\n\tAdvertised FEC modes: Not reported\n\tLink partner advertised link modes:  Not reported\n\tLink partner advertised pause frame use: No\n\tLink partner advertised auto-negotiation: No\n\tLink partner advertised FEC modes: Not reported\n\tSpeed: 10000Mb/s\n\tDuplex: Full\n\tAuto-negotiation: off\n\tPort: FIBRE\n\tPHYAD: 255\n\tTransceiver: internal\n\tSupports Wake-on: d\n\tWake-on: d\n        Current message level: 0x000020f7 (8439)\n                               drv probe link ifdown ifup rx_err tx_err hw\n\tLink detected: no\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:20:22.540734+00:00",
+      "command": [
+        "ip",
+        "-j",
+        "addr",
+        "show",
+        "enp3s0f1np1"
+      ],
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":7,\"ifname\":\"enp3s0f1np1\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:0f:53:2a:8b:f9\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"addr_info\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "interface": "enp3s0f1np1",
+      "pci_device": "/sys/devices/pci0000:00/0000:00:02.0/0000:03:00.1",
+      "driver": "/sys/bus/pci/drivers/sfc",
+      "physical_port_name": "p1"
+    },
+    {
+      "efi_present": false,
+      "scope": "Read-only inventory. No NIC, route, boot or existing workload configuration changes."
+    }
+  ],
+  "stderr": ""
+}

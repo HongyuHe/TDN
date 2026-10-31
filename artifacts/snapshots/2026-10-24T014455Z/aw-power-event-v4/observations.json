@@ -1,0 +1,326 @@
+{
+  "at": "2026-10-24T04:40:24.882231+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T04:39:52.606854+00:00",
+      "command": [
+        "hostname"
+      ],
+      "returncode": 0,
+      "stdout": "node-2.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:39:52.609081+00:00",
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_uuid"
+      ],
+      "returncode": 0,
+      "stdout": "4c4c4544-004a-4b10-8042-b5c04f393432\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:39:52.874626+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "cat /etc/start_if.vtnet1; ifconfig vtnet1; mount"
+      ],
+      "returncode": 0,
+      "stdout": "vtnet1: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=ec079b<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 52:54:76:03:30:11\n\tinet 172.28.97.1 netmask 0xfffffffc broadcast 172.28.97.3\n\tinet6 fe80::5054:76ff:fe03:3011%vtnet1 prefixlen 64 scopeid 0x2\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\n/dev/gpt/rootfs on / (ufs, local, soft-updates)\ndevfs on /dev (devfs)\n/dev/gpt/efiesp on /boot/efi (msdosfs, local)\n",
+      "stderr": "cat: /etc/start_if.vtnet1: No such file or directory\n"
+    },
+    {
+      "at": "2026-10-24T04:39:53.181909+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "printf 'GET /status HTTP/1.0\\r\\nHost: managed.nd.test\\r\\n\\r\\n' | openssl s_client -quiet -verify_return_error -verify_hostname managed.nd.test -connect 172.28.97.2:443 -CAfile /home/freebsd/aw-case-v3/ca.pem -cert /home/freebsd/aw-case-v3/virtual-aw.pem -key /home/freebsd/aw-case-v3/virtual-aw.key -tls1_2 -cipher ECDHE-ECDSA-AES256-GCM-SHA384"
+      ],
+      "returncode": 1,
+      "stdout": "HTTP/1.0 200 OK\nServer: SimpleHTTP/0.6 Python/3.12.3\nDate: Sat, 24 Oct 2026 04:39:53 GMT\nContent-type: application/octet-stream\nContent-Length: 5\nLast-Modified: Sat, 24 Oct 2026 03:00:32 GMT\n\nready",
+      "stderr": "Can't use SSL_get_servername\ndepth=1 CN = Evidence AW test CA\nverify return:1\ndepth=0 CN = managed.nd.test\nverify return:1\n1010852AEF450000:error:0A000126:SSL routines:ssl3_read_n:unexpected eof while reading:/usr/src/crypto/openssl/ssl/record/rec_layer_s3.c:319:\n",
+      "probe": "AW-authenticated-management-before-power",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "at": "2026-10-24T04:39:53.444378+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "printf %s synthetic-aw-durable-marker-2026-10-24T04:39:53.181960+00:00 > /home/freebsd/aw-case-v3/power-marker; sync; sha256 /home/freebsd/aw-case-v3/power-marker"
+      ],
+      "returncode": 0,
+      "stdout": "SHA256 (/home/freebsd/aw-case-v3/power-marker) = e3705609ed9800f35f1462a4fded79439234726dede78c0df02a3652077dba01\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:39:53.951900+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "true"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "ssh: connect to host 127.0.0.1 port 22224: Connection refused\n",
+      "probe": "AW-unavailable-while-powered-off",
+      "expected_result": "powered-off",
+      "observed_result": "powered-off"
+    },
+    {
+      "at": "2026-10-24T04:39:54.023133+00:00",
+      "command": [
+        "qemu-system-x86_64",
+        "-name",
+        "tcv3-virtual-aw-dedicated-host",
+        "-enable-kvm",
+        "-cpu",
+        "host",
+        "-smp",
+        "2",
+        "-m",
+        "2048",
+        "-drive",
+        "file=/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-v3.qcow2,format=qcow2,if=virtio",
+        "-netdev",
+        "user,id=mgmt,hostfwd=tcp:127.0.0.1:22224-:22",
+        "-device",
+        "virtio-net-pci,netdev=mgmt,mac=52:54:76:03:30:10",
+        "-netdev",
+        "tap,id=aw,ifname=aw3t,script=no,downscript=no",
+        "-device",
+        "virtio-net-pci,netdev=aw,mac=52:54:76:03:30:11,host_mtu=1400",
+        "-display",
+        "none",
+        "-serial",
+        "file:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-relocated-serial-v3.log",
+        "-monitor",
+        "unix:/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-monitor-v3.sock,server,nowait",
+        "-pidfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/aw-qemu-v3.pid",
+        "-daemonize"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:39:57.033479+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "Connection timed out during banner exchange\nConnection to 127.0.0.1 port 22224 timed out\n"
+    },
+    {
+      "at": "2026-10-24T04:40:03.044394+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "Connection timed out during banner exchange\nConnection to 127.0.0.1 port 22224 timed out\n"
+    },
+    {
+      "at": "2026-10-24T04:40:09.055293+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "Connection timed out during banner exchange\nConnection to 127.0.0.1 port 22224 timed out\n"
+    },
+    {
+      "at": "2026-10-24T04:40:15.065509+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "Connection timed out during banner exchange\nConnection to 127.0.0.1 port 22224 timed out\n"
+    },
+    {
+      "at": "2026-10-24T04:40:21.076409+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 255,
+      "stdout": "",
+      "stderr": "Connection timed out during banner exchange\nConnection to 127.0.0.1 port 22224 timed out\n"
+    },
+    {
+      "at": "2026-10-24T04:40:24.340611+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "uname -a"
+      ],
+      "returncode": 0,
+      "stdout": "FreeBSD evidence-virtual-aw-v3 14.4-RELEASE-p11 FreeBSD 14.4-RELEASE-p11 releng/14.4-n273789-5dd0f224606b GENERIC amd64\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:40:24.616083+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "ifconfig -a"
+      ],
+      "returncode": 0,
+      "stdout": "vtnet0: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=880028<VLAN_MTU,JUMBO_MTU,LINKSTATE,HWSTATS>\n\tether 52:54:76:03:30:10\n\tinet 10.0.2.15 netmask 0xffffff00 broadcast 10.0.2.255\n\tinet6 fe80::5054:76ff:fe03:3010%vtnet0 prefixlen 64 scopeid 0x1\n\tinet6 fec0::5054:76ff:fe03:3010 prefixlen 64 autoconf pltime 14400 vltime 86400\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nvtnet1: flags=1008843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST,LOWER_UP> metric 0 mtu 1500\n\toptions=ec079b<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,VLAN_HWCSUM,TSO4,TSO6,LRO,VLAN_HWTSO,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6,HWSTATS>\n\tether 52:54:76:03:30:11\n\tinet 172.28.97.1 netmask 0xfffffffc broadcast 172.28.97.3\n\tinet6 fe80::5054:76ff:fe03:3011%vtnet1 prefixlen 64 scopeid 0x2\n\tmedia: Ethernet autoselect (10Gbase-T <full-duplex>)\n\tstatus: active\n\tnd6 options=23<PERFORMNUD,ACCEPT_RTADV,AUTO_LINKLOCAL>\nlo0: flags=1008049<UP,LOOPBACK,RUNNING,MULTICAST,LOWER_UP> metric 0 mtu 16384\n\toptions=680003<RXCSUM,TXCSUM,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6>\n\tinet 127.0.0.1 netmask 0xff000000\n\tinet6 ::1 prefixlen 128\n\tinet6 fe80::1%lo0 prefixlen 64 scopeid 0x3\n\tgroups: lo\n\tnd6 options=21<PERFORMNUD,AUTO_LINKLOCAL>\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:40:24.881753+00:00",
+      "command": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=3",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/freebsd/management_key",
+        "-p",
+        "22224",
+        "freebsd@127.0.0.1",
+        "sha256 /home/freebsd/aw-case-v3/power-marker"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "sha256: /home/freebsd/aw-case-v3/power-marker: No such file or directory\n"
+    }
+  ],
+  "error": "sha256: /home/freebsd/aw-case-v3/power-marker: No such file or directory\n",
+  "runtime_backend": "Actual FreeBSD virtual AW on dedicated pc16 workstation hardware",
+  "scope": [
+    "The owned AW QEMU process is positively identified by PID and exact configured name before power-off. Its recorded original argv restarts the same owned disk and interfaces. The physical AW host remains running.",
+    "A synthetic marked file is synced before an abrupt host-controlled guest power-off. Its hash and mutual-TLS management are checked after restart. The unused guest is left powered off.",
+    "The guest freebsd user is used as observed; no unsupported guest administrator privilege is asserted. Host root remains the explicit trusted laboratory power control. Actual personnel policy and long-term audit history remain external."
+  ]
+}

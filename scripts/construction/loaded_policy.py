@@ -1,7 +1,7 @@
 import hashlib
 import json
 import re
-from validate_evidence import EvidenceError
+from validate_evidence import EvidenceError, require
 
 
 def parse_configuration(text):
@@ -83,6 +83,12 @@ def immediate_sections(text):
 
 
 def loaded_policies(bundle,snapshot):
+    manifest=json.loads((bundle/"manifest.json").read_text())
+    require(all(manifest["inventory_complete"][kind]["complete"] is True
+                for kind in ["devices","tunnels"]), "complete device/tunnel inventory required")
+    devices={d["id"]:d for d in snapshot["devices"]}
+    require(set(devices)==set(snapshot["scope"]["expected_device_ids"]),
+            "complete expected device inventory required")
     observations={o["id"]:o for o in snapshot["observations"]}
     records=[]
     evidence=[]
@@ -90,6 +96,13 @@ def loaded_policies(bundle,snapshot):
     for tunnel in snapshot["tunnels"]:
         if tunnel["mechanism"]!="IPsec":continue
         device=tunnel["device_id"]
+        require(tunnel["status"]=="observed" and devices[device]["status"]=="observed",
+                "observed gateway and tunnel required")
+        namespace=devices[device]["namespace"]
+        prefixes=[["docker","exec",namespace],["ip","netns","exec",namespace]]
+        def successful_local(observation):
+            return (observation is not None and observation["device_id"]==device and
+                    observation["returncode"]==0 and observation["parse_status"]=="parsed")
         if device in seen_devices:raise EvidenceError("multiple endpoint records need explicit connection binding")
         seen_devices.add(device)
         config=tunnel.get("loaded_public_configuration")
@@ -99,16 +112,20 @@ def loaded_policies(bundle,snapshot):
         if digest!=tunnel["loaded_configuration_sha256"] or digest!=confirmation["loaded_file_sha256"]:
             raise EvidenceError("loaded configuration hash mismatch")
         load=observations.get(confirmation["observation_id"])
-        if load is None or load["device_id"]!=device or load["returncode"]!=0 or confirmation["returncode"]!=0:
+        if not successful_local(load) or confirmation["returncode"]!=0:
             raise EvidenceError("successful per-device load confirmation missing")
         load_raw=json.loads((bundle/load["raw_path"]).read_text())
         if load_raw["stdout"]!=confirmation["output"] or "--file" not in load["command"] or "--load-conns" not in load["command"]:
             raise EvidenceError("load confirmation not bound to exact-file command")
         path=load["command"][load["command"].index("--file")+1]
+        matching_prefixes=[prefix for prefix in prefixes if load["command"]==
+                           prefix+["swanctl","--load-conns","--file",path]]
+        require(len(matching_prefixes)==1, "load command target or operation mismatch")
+        prefix=matching_prefixes[0]
         supplied=[observations[oid] for oid in tunnel["observation_ids"]]
-        reads=[o for o in supplied if o["command"][-2:]==["cat",path] and json.loads((bundle/o["raw_path"]).read_text())["stdout"]==config and o["ended_at"]<=load["started_at"]]
+        reads=[o for o in supplied if successful_local(o) and o["command"]==prefix+["cat",path] and json.loads((bundle/o["raw_path"]).read_text())["stdout"]==config and o["ended_at"]<=load["started_at"]]
         runtime=tunnel["all_runtime_connections"]
-        queries=[o for o in supplied if o["command"][-2:]==["--list-conns","--raw"] and json.loads((bundle/o["raw_path"]).read_text())["stdout"]==runtime and load["ended_at"]<=o["started_at"]]
+        queries=[o for o in supplied if successful_local(o) and o["command"]==prefix+["swanctl","--list-conns","--raw"] and json.loads((bundle/o["raw_path"]).read_text())["stdout"]==runtime and load["ended_at"]<=o["started_at"]]
         if len(reads)!=1 or len(queries)!=1:
             raise EvidenceError("configuration-read/load/runtime ordering or content association missing")
         connections=parse_configuration(config)

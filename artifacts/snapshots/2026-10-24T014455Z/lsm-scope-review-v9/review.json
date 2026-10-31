@@ -1,0 +1,180 @@
+{
+  "at": "2026-10-24T15:32:03.476541+00:00",
+  "checks": [
+    {
+      "bundle_path": "artifacts/snapshots/2026-10-24T014455Z/lsm-gateway-v7",
+      "manifest_sha256": "47d15b12eaf1a6d100e2bf3aeb5001c1c8aa4db91cdd42ffaf193a346a5f8e1d",
+      "error": "Error response from daemon: container rootfs is marked read-only\n",
+      "probes": [
+        {
+          "probe": "gateway-executable-immutable",
+          "expected_result": "read-only",
+          "observed_result": "read-only"
+        },
+        {
+          "probe": "nongateway-direct-profile-change",
+          "expected_result": "denied",
+          "observed_result": "denied"
+        },
+        {
+          "probe": "root-nongateway-key-open",
+          "expected_result": "denied",
+          "observed_result": "denied"
+        },
+        {
+          "probe": "gateway-executable-immutable",
+          "expected_result": "read-only",
+          "observed_result": "read-only"
+        },
+        {
+          "probe": "nongateway-direct-profile-change",
+          "expected_result": "denied",
+          "observed_result": "denied"
+        },
+        {
+          "probe": "root-nongateway-key-open",
+          "expected_result": "denied",
+          "observed_result": "denied"
+        }
+      ],
+      "cleanup": [
+        {
+          "command": [
+            "docker",
+            "rm",
+            "-f",
+            "tcv3-lsm7-a"
+          ],
+          "returncode": 0
+        },
+        {
+          "command": [
+            "docker",
+            "rm",
+            "-f",
+            "tcv3-lsm7-b"
+          ],
+          "returncode": 0
+        }
+      ]
+    },
+    {
+      "bundle_path": "artifacts/snapshots/2026-10-24T014455Z/lsm-gateway-v8",
+      "manifest_sha256": "7217c7fa905e99a0fa15062201ba7c7193216f003ac330b1443378aab53a197a",
+      "error": null,
+      "probes": [
+        {
+          "probe": "gateway-executable-immutable",
+          "expected_result": "read-only",
+          "observed_result": "read-only"
+        },
+        {
+          "probe": "nongateway-direct-profile-change",
+          "expected_result": "denied",
+          "observed_result": "denied"
+        },
+        {
+          "probe": "root-nongateway-key-open",
+          "expected_result": "denied",
+          "observed_result": "denied"
+        },
+        {
+          "probe": "gateway-executable-immutable",
+          "expected_result": "read-only",
+          "observed_result": "read-only"
+        },
+        {
+          "probe": "nongateway-direct-profile-change",
+          "expected_result": "denied",
+          "observed_result": "denied"
+        },
+        {
+          "probe": "root-nongateway-key-open",
+          "expected_result": "denied",
+          "observed_result": "denied"
+        },
+        {
+          "probe": "before-nongateway-preload-test-key-open",
+          "expected_result": "opened-counterexample",
+          "observed_result": "not-demonstrated"
+        },
+        {
+          "probe": "before-nongateway-preload-test-key-open",
+          "expected_result": "opened-counterexample",
+          "observed_result": "not-demonstrated"
+        },
+        {
+          "probe": "after-nongateway-preload-test-key-open",
+          "expected_result": "blocked-and-gateway-available",
+          "observed_result": "blocked-and-gateway-available"
+        },
+        {
+          "probe": "after-nongateway-preload-test-key-open",
+          "expected_result": "blocked-and-gateway-available",
+          "observed_result": "blocked-and-gateway-available"
+        },
+        {
+          "probe": "confined-gateway-IPsec-data",
+          "expected_result": "delivered",
+          "observed_result": "delivered"
+        },
+        {
+          "probe": "confined-gateway-IPsec-data",
+          "expected_result": "delivered",
+          "observed_result": "delivered"
+        },
+        {
+          "probe": "LSM-case-SA-loss",
+          "expected_result": "no_reply",
+          "observed_result": "no_reply"
+        }
+      ],
+      "cleanup": [
+        {
+          "command": [
+            "docker",
+            "rm",
+            "-f",
+            "tcv3-lsm8-a"
+          ],
+          "returncode": 0
+        },
+        {
+          "command": [
+            "docker",
+            "rm",
+            "-f",
+            "tcv3-lsm8-b"
+          ],
+          "returncode": 0
+        }
+      ]
+    },
+    {
+      "bundle_path": "artifacts/snapshots/2026-10-24T014455Z/lsm-mount-flags-v9",
+      "manifest_sha256": "ddfb4509da5e85a326c003078374e5af1e3fc9af413e96a4d66da42454825bca",
+      "error": null,
+      "probes": [],
+      "cleanup": [
+        {
+          "command": [
+            "docker",
+            "rm",
+            "-f",
+            "tcv3-lsm-flags-v9"
+          ],
+          "returncode": 0
+        }
+      ]
+    }
+  ],
+  "scope": [
+    "Historical artifacts are preserved and summarized without rerunning their experiments. The automated cybersecurity risk check stopped the previous turn; no operation-specific rejection was visible. The coordinator subsequently prohibited retrying crafted/forged response packets and loader-injection probes or equivalent methods.",
+    "The v7 attempt ended when docker cp rejected a read-only container filesystem. Six direct immutable-executable, profile-transition and non-gateway key-open checks matched. Its collector bytes are attached now only after matching the original manifest hash; that attachment is a later source-recovery supplement.",
+    "The v8 before-policy loader hypothesis was not demonstrated on either peer. Both attempts failed to map the shared object. They are two mismatches against an exploratory expected counterexample, not confirmed vulnerabilities. No private key contents were read or exported.",
+    "The v8 hardened profile used environment-scrubbing Px transitions and constrained executable mappings. Both gateway status checks, both useful IKEv2/IPsec directions, SA-loss denial and six original boundary controls matched. Those observations do not demonstrate that the profile change caused the earlier mapping failures.",
+    "The v9 mount supplement used a separate fresh fixture and found read-only root with noexec tmpfs at /run,/tmp,/dev/shm. The supplement is not a contemporaneous readback of the removed v8 containers.",
+    "All owned disposable containers have successful recorded docker rm cleanup. Full historical policies, public test configurations and source hashes remain. These supplemental AppArmor observations do not establish native ND or FreeBSD mandatory confinement, universal interface access controls, host-root isolation, hardware tamper resistance or approved-product status.",
+    "The historical helpers containing prohibited probe steps are not a current replay entry point. Future allowed work is read-only effective policy collection, defensive policy review and ordinary assigned-address interoperability. No blocked action is retried."
+  ]
+}

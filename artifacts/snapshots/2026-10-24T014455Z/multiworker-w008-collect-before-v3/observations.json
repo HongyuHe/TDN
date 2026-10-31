@@ -1,0 +1,599 @@
+{
+  "schema_version": "csfc-multiworker-placement/v1",
+  "started_at": "2026-10-24T02:25:36.586158+00:00",
+  "ended_at": "2026-10-24T02:25:38.643135+00:00",
+  "worker": "w008",
+  "worker_host": "pc08.cloudlab.umass.edu",
+  "action": "collect-before-v3",
+  "runtime_backend": "native-FRR-OVS-crossworker-VXLAN",
+  "selected_device_ids": [
+    "MW_GF_A",
+    "MW_GF_B"
+  ],
+  "assignments": {
+    "MW_BLACK": "w176",
+    "MW_GF_A": "w008",
+    "MW_R_A1": "w159",
+    "MW_I_A1": "w159",
+    "MW_G_A1": "w159",
+    "MW_O_A1": "w163",
+    "MW_OF_A1": "w176",
+    "MW_R_A2": "w159",
+    "MW_I_A2": "w159",
+    "MW_G_A2": "w159",
+    "MW_O_A2": "w163",
+    "MW_OF_A2": "w176",
+    "MW_GF_B": "w008",
+    "MW_R_B1": "w159",
+    "MW_I_B1": "w159",
+    "MW_G_B1": "w159",
+    "MW_O_B1": "w163",
+    "MW_OF_B1": "w176",
+    "MW_R_B2": "w159",
+    "MW_I_B2": "w159",
+    "MW_G_B2": "w159",
+    "MW_O_B2": "w163",
+    "MW_OF_B2": "w176"
+  },
+  "records": [
+    {
+      "id": "mw-00000",
+      "command": [
+        "hostname"
+      ],
+      "started_at": "2026-10-24T02:25:36.586201+00:00",
+      "ended_at": "2026-10-24T02:25:36.587160+00:00",
+      "returncode": 0,
+      "stdout": "node-0.twinet-msc2.netsyn-pg0.cloudlab.umass.edu\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00001",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "started_at": "2026-10-24T02:25:36.587170+00:00",
+      "ended_at": "2026-10-24T02:25:36.589982+00:00",
+      "returncode": 0,
+      "stdout": "Linux node-0.twinet-msc2.netsyn-pg0.cloudlab.umass.edu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00002",
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_uuid"
+      ],
+      "started_at": "2026-10-24T02:25:36.589992+00:00",
+      "ended_at": "2026-10-24T02:25:36.592173+00:00",
+      "returncode": 0,
+      "stdout": "4c4c4544-004a-4310-8042-b4c04f563532\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00003",
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_name"
+      ],
+      "started_at": "2026-10-24T02:25:36.592182+00:00",
+      "ended_at": "2026-10-24T02:25:36.594348+00:00",
+      "returncode": 0,
+      "stdout": "PowerEdge R630\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00004",
+      "command": [
+        "ip",
+        "-j",
+        "-d",
+        "address",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:25:36.594375+00:00",
+      "ended_at": "2026-10-24T02:25:36.597072+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"noprefixroute\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"ifname\":\"eno1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e4\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.0\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f0\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"198.22.255.18\",\"prefixlen\":24,\"metric\":1024,\"broadcast\":\"198.22.255.255\",\"scope\":\"global\",\"label\":\"eno1\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::eef4:bbff:fedf:f8e4\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3,\"ifname\":\"enp3s0f0np0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:0f:53:2a:8b:f8\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":64,\"num_rx_queues\":64,\"gso_max_size\":65536,\"gso_max_segs\":100,\"tso_max_size\":65536,\"tso_max_segs\":100,\"gro_max_size\":65536,\"phys_port_name\":\"p0\",\"phys_port_id\":\"000f532a8bf8\",\"parentbus\":\"pci\",\"parentdev\":\"0000:03:00.0\",\"vfinfo_list\":[],\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.0.1.1\",\"prefixlen\":24,\"broadcast\":\"10.0.1.255\",\"scope\":\"global\",\"label\":\"enp3s0f0np0\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::20f:53ff:fe2a:8bf8\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":4,\"ifname\":\"eno2\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e5\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.1\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f1\"],\"addr_info\":[]},{\"ifindex\":5,\"ifname\":\"eno3\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e6\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.2\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f2\"],\"addr_info\":[]},{\"ifindex\":6,\"ifname\":\"eno4\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ec:f4:bb:df:f8:e7\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":8,\"num_rx_queues\":8,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:01:00.3\",\"vfinfo_list\":[],\"altnames\":[\"enp1s0f3\"],\"addr_info\":[]},{\"ifindex\":7,\"ifname\":\"enp3s0f1np1\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1500,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:0f:53:2a:8b:f9\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9216,\"num_tx_queues\":64,\"num_rx_queues\":64,\"gso_max_size\":65536,\"gso_max_segs\":100,\"tso_max_size\":65536,\"tso_max_segs\":100,\"gro_max_size\":65536,\"phys_port_name\":\"p1\",\"phys_port_id\":\"000f532a8bf9\",\"parentbus\":\"pci\",\"parentdev\":\"0000:03:00.1\",\"vfinfo_list\":[],\"addr_info\":[]},{\"ifindex\":8,\"ifname\":\"docker0\",\"flags\":[\"NO-CARRIER\",\"BROADCAST\",\"MULTICAST\",\"UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"DOWN\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"be:bb:92:42:9d:e4\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.be:bb:92:42:9d:e4\",\"root_id\":\"8000.be:bb:92:42:9d:e4\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":144.47,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":1,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.17.0.1\",\"prefixlen\":16,\"broadcast\":\"172.17.255.255\",\"scope\":\"global\",\"label\":\"docker0\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":59,\"ifname\":\"mw3b03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"6a:34:62:34:81:77\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.6a:34:62:34:81:77\",\"root_id\":\"8000.6a:34:62:34:81:77\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":97.44,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::6834:62ff:fe34:8177\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":60,\"ifname\":\"mw3x03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b03\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"f6:c5:12:5f:eb:54\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310003,\"remote\":\"130.127.133.168\",\"local\":\"198.22.255.18\",\"link\":\"eno1\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":5,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.6a:34:62:34:81:77\",\"root_id\":\"8000.6a:34:62:34:81:77\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::f4c5:12ff:fe5f:eb54\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":62,\"link_index\":61,\"ifname\":\"mw3h03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b03\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"56:9b:c4:61:0c:10\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":4,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.6a:34:62:34:81:77\",\"root_id\":\"8000.6a:34:62:34:81:77\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::549b:c4ff:fe61:c10\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":63,\"ifname\":\"mw3b09\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"06:09:38:a8:12:40\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.6:9:38:a8:12:40\",\"root_id\":\"8000.6:9:38:a8:12:40\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":4.13,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::409:38ff:fea8:1240\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":64,\"ifname\":\"mw3x09\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b09\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"b2:10:b3:e1:fc:59\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310009,\"remote\":\"130.127.133.168\",\"local\":\"198.22.255.18\",\"link\":\"eno1\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":5,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.6:9:38:a8:12:40\",\"root_id\":\"8000.6:9:38:a8:12:40\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::b010:b3ff:fee1:fc59\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":66,\"link_index\":65,\"ifname\":\"mw3h09\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b09\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"b2:dd:ee:8c:f6:3e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":4,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.6:9:38:a8:12:40\",\"root_id\":\"8000.6:9:38:a8:12:40\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::b0dd:eeff:fe8c:f63e\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":67,\"ifname\":\"mw3b15\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"8e:77:87:62:63:14\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.8e:77:87:62:63:14\",\"root_id\":\"8000.8e:77:87:62:63:14\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":0.00,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::8c77:87ff:fe62:6314\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":68,\"ifname\":\"mw3x15\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b15\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ee:40:35:12:c6:30\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310015,\"remote\":\"130.127.133.168\",\"local\":\"198.22.255.18\",\"link\":\"eno1\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":5,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.8e:77:87:62:63:14\",\"root_id\":\"8000.8e:77:87:62:63:14\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::ec40:35ff:fe12:c630\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":70,\"link_index\":69,\"ifname\":\"mw3h15\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b15\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"42:b1:b9:90:65:16\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":16,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.8e:77:87:62:63:14\",\"root_id\":\"8000.8e:77:87:62:63:14\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::40b1:b9ff:fe90:6516\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":71,\"ifname\":\"mw3b21\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ee:10:69:0e:a4:53\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.ee:10:69:e:a4:53\",\"root_id\":\"8000.ee:10:69:e:a4:53\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":8.13,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::ec10:69ff:fe0e:a453\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":72,\"ifname\":\"mw3x21\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b21\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"c6:29:bf:9a:30:72\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310021,\"remote\":\"130.127.133.168\",\"local\":\"198.22.255.18\",\"link\":\"eno1\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":5,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.ee:10:69:e:a4:53\",\"root_id\":\"8000.ee:10:69:e:a4:53\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::c429:bfff:fe9a:3072\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":74,\"link_index\":73,\"ifname\":\"mw3h21\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b21\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"62:c4:0a:48:06:e7\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":16,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.ee:10:69:e:a4:53\",\"root_id\":\"8000.ee:10:69:e:a4:53\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::60c4:aff:fe48:6e7\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": "info: Using default fan map value (33)\n"
+    },
+    {
+      "id": "mw-00005",
+      "command": [
+        "ip",
+        "-j",
+        "route",
+        "show",
+        "table",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:25:36.597081+00:00",
+      "ended_at": "2026-10-24T02:25:36.599573+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"default\",\"gateway\":\"198.22.255.1\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"prefsrc\":\"198.22.255.18\",\"metric\":1024,\"flags\":[]},{\"dst\":\"10.0.1.0/24\",\"dev\":\"enp3s0f0np0\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.0.1.1\",\"flags\":[]},{\"dst\":\"172.17.0.0/16\",\"dev\":\"docker0\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.17.0.1\",\"flags\":[\"linkdown\"]},{\"dst\":\"198.22.255.0/24\",\"dev\":\"eno1\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"198.22.255.18\",\"metric\":1024,\"flags\":[]},{\"dst\":\"198.22.255.1\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"scope\":\"link\",\"prefsrc\":\"198.22.255.18\",\"metric\":1024,\"flags\":[]},{\"dst\":\"198.22.255.3\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"scope\":\"link\",\"prefsrc\":\"198.22.255.18\",\"metric\":1024,\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.0.1.1\",\"dev\":\"enp3s0f0np0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.0.1.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.0.1.255\",\"dev\":\"enp3s0f0np0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.0.1.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.17.0.1\",\"dev\":\"docker0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.17.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.17.255.255\",\"dev\":\"docker0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.17.0.1\",\"flags\":[\"linkdown\"]},{\"type\":\"local\",\"dst\":\"198.22.255.18\",\"dev\":\"eno1\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"198.22.255.18\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"198.22.255.255\",\"dev\":\"eno1\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"198.22.255.18\",\"flags\":[]},{\"dst\":\"fe80::/64\",\"dev\":\"eno1\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"enp3s0f0np0\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x03\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b03\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h03\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x09\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b09\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h09\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x15\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b15\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h15\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x21\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b21\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h21\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::20f:53ff:fe2a:8bf8\",\"dev\":\"enp3s0f0np0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::409:38ff:fea8:1240\",\"dev\":\"mw3b09\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::40b1:b9ff:fe90:6516\",\"dev\":\"mw3h15\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::549b:c4ff:fe61:c10\",\"dev\":\"mw3h03\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::60c4:aff:fe48:6e7\",\"dev\":\"mw3h21\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::6834:62ff:fe34:8177\",\"dev\":\"mw3b03\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::8c77:87ff:fe62:6314\",\"dev\":\"mw3b15\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::b010:b3ff:fee1:fc59\",\"dev\":\"mw3x09\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::b0dd:eeff:fe8c:f63e\",\"dev\":\"mw3h09\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::c429:bfff:fe9a:3072\",\"dev\":\"mw3x21\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::ec10:69ff:fe0e:a453\",\"dev\":\"mw3b21\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::ec40:35ff:fe12:c630\",\"dev\":\"mw3x15\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::eef4:bbff:fedf:f8e4\",\"dev\":\"eno1\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::f4c5:12ff:fe5f:eb54\",\"dev\":\"mw3x03\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"eno1\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"enp3s0f0np0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x03\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b03\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h03\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x09\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b09\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h09\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x15\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b15\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h15\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x21\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b21\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h21\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00006",
+      "command": [
+        "bridge",
+        "-j",
+        "link"
+      ],
+      "started_at": "2026-10-24T02:25:36.599589+00:00",
+      "ended_at": "2026-10-24T02:25:36.601106+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":60,\"ifname\":\"mw3x03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b03\",\"state\":\"forwarding\",\"priority\":32,\"cost\":5},{\"ifindex\":62,\"link\":\"if61\",\"ifname\":\"mw3h03\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b03\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":64,\"ifname\":\"mw3x09\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b09\",\"state\":\"forwarding\",\"priority\":32,\"cost\":5},{\"ifindex\":66,\"link\":\"if65\",\"ifname\":\"mw3h09\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b09\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":68,\"ifname\":\"mw3x15\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b15\",\"state\":\"forwarding\",\"priority\":32,\"cost\":5},{\"ifindex\":70,\"link\":\"if69\",\"ifname\":\"mw3h15\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b15\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":72,\"ifname\":\"mw3x21\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b21\",\"state\":\"forwarding\",\"priority\":32,\"cost\":5},{\"ifindex\":74,\"link\":\"if73\",\"ifname\":\"mw3h21\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b21\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00007",
+      "command": [
+        "bridge",
+        "fdb",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:25:36.601115+00:00",
+      "ended_at": "2026-10-24T02:25:36.602788+00:00",
+      "returncode": 0,
+      "stdout": "33:33:00:00:00:01 dev eno1 self permanent\n01:00:5e:00:00:01 dev eno1 self permanent\n33:33:ff:df:f8:e4 dev eno1 self permanent\n01:80:c2:00:00:00 dev eno1 self permanent\n01:80:c2:00:00:03 dev eno1 self permanent\n01:80:c2:00:00:0e dev eno1 self permanent\n33:33:00:00:00:01 dev enp3s0f0np0 self permanent\n01:00:5e:00:00:01 dev enp3s0f0np0 self permanent\n33:33:ff:2a:8b:f8 dev enp3s0f0np0 self permanent\n33:33:00:00:00:01 dev eno2 self permanent\n33:33:00:00:00:01 dev eno3 self permanent\n33:33:00:00:00:01 dev eno4 self permanent\n33:33:00:00:00:01 dev enp3s0f1np1 self permanent\n33:33:00:00:00:01 dev docker0 self permanent\n01:00:5e:00:00:6a dev docker0 self permanent\n33:33:00:00:00:6a dev docker0 self permanent\n01:00:5e:00:00:01 dev docker0 self permanent\nbe:bb:92:42:9d:e4 dev docker0 vlan 1 master docker0 permanent\nbe:bb:92:42:9d:e4 dev docker0 master docker0 permanent\n33:33:00:00:00:01 dev mw3b03 self permanent\n01:00:5e:00:00:01 dev mw3b03 self permanent\n33:33:ff:34:81:77 dev mw3b03 self permanent\n6a:34:62:34:81:77 dev mw3b03 vlan 1 master mw3b03 permanent\n6a:34:62:34:81:77 dev mw3b03 master mw3b03 permanent\n56:f9:51:38:ba:1d dev mw3x03 master mw3b03 \n46:26:08:45:e6:8e dev mw3x03 master mw3b03 \n72:b7:60:7b:2c:17 dev mw3x03 master mw3b03 \nca:9b:94:e7:67:df dev mw3x03 master mw3b03 \n1a:c1:53:be:80:23 dev mw3x03 master mw3b03 \nb6:c4:9b:5d:10:15 dev mw3x03 master mw3b03 \nf6:c5:12:5f:eb:54 dev mw3x03 vlan 1 master mw3b03 permanent\nf6:c5:12:5f:eb:54 dev mw3x03 master mw3b03 permanent\n00:00:00:00:00:00 dev mw3x03 dst 130.127.133.168 via eno1 self permanent\n56:9b:c4:61:0c:10 dev mw3h03 vlan 1 master mw3b03 permanent\n56:9b:c4:61:0c:10 dev mw3h03 master mw3b03 permanent\n33:33:00:00:00:01 dev mw3h03 self permanent\n01:00:5e:00:00:01 dev mw3h03 self permanent\n33:33:ff:61:0c:10 dev mw3h03 self permanent\n33:33:00:00:00:01 dev mw3b09 self permanent\n01:00:5e:00:00:01 dev mw3b09 self permanent\n33:33:ff:a8:12:40 dev mw3b09 self permanent\n06:09:38:a8:12:40 dev mw3b09 vlan 1 master mw3b09 permanent\n06:09:38:a8:12:40 dev mw3b09 master mw3b09 permanent\n02:ad:9b:be:c9:07 dev mw3x09 master mw3b09 \n8a:5c:96:d8:c4:8a dev mw3x09 master mw3b09 \n42:83:2f:6d:0b:b7 dev mw3x09 master mw3b09 \nee:2b:55:76:5f:f3 dev mw3x09 master mw3b09 \n02:1d:37:cb:e2:d6 dev mw3x09 master mw3b09 \nd2:1a:c2:b2:02:66 dev mw3x09 master mw3b09 \n0e:3f:19:eb:89:b5 dev mw3x09 master mw3b09 \nb2:10:b3:e1:fc:59 dev mw3x09 vlan 1 master mw3b09 permanent\nb2:10:b3:e1:fc:59 dev mw3x09 master mw3b09 permanent\n00:00:00:00:00:00 dev mw3x09 dst 130.127.133.168 via eno1 self permanent\nb2:dd:ee:8c:f6:3e dev mw3h09 vlan 1 master mw3b09 permanent\nb2:dd:ee:8c:f6:3e dev mw3h09 master mw3b09 permanent\n33:33:00:00:00:01 dev mw3h09 self permanent\n01:00:5e:00:00:01 dev mw3h09 self permanent\n33:33:ff:8c:f6:3e dev mw3h09 self permanent\n33:33:00:00:00:01 dev mw3b15 self permanent\n01:00:5e:00:00:01 dev mw3b15 self permanent\n33:33:ff:62:63:14 dev mw3b15 self permanent\n8e:77:87:62:63:14 dev mw3b15 vlan 1 master mw3b15 permanent\n8e:77:87:62:63:14 dev mw3b15 master mw3b15 permanent\n52:b1:90:40:8d:7d dev mw3x15 master mw3b15 \n3e:83:cc:a4:ad:c4 dev mw3x15 master mw3b15 \n02:e3:97:2a:86:14 dev mw3x15 master mw3b15 stale\n6e:cb:a5:2a:c2:9e dev mw3x15 master mw3b15 \n82:c0:17:bf:a8:af dev mw3x15 master mw3b15 \nd2:43:0e:dc:3d:69 dev mw3x15 master mw3b15 \nb6:74:0a:74:35:7e dev mw3x15 master mw3b15 \nee:40:35:12:c6:30 dev mw3x15 vlan 1 master mw3b15 permanent\nee:40:35:12:c6:30 dev mw3x15 master mw3b15 permanent\n00:00:00:00:00:00 dev mw3x15 dst 130.127.133.168 via eno1 self permanent\n42:b1:b9:90:65:16 dev mw3h15 vlan 1 master mw3b15 permanent\n42:b1:b9:90:65:16 dev mw3h15 master mw3b15 permanent\n33:33:00:00:00:01 dev mw3h15 self permanent\n01:00:5e:00:00:01 dev mw3h15 self permanent\n33:33:ff:90:65:16 dev mw3h15 self permanent\n33:33:00:00:00:01 dev mw3b21 self permanent\n01:00:5e:00:00:01 dev mw3b21 self permanent\n33:33:ff:0e:a4:53 dev mw3b21 self permanent\nee:10:69:0e:a4:53 dev mw3b21 vlan 1 master mw3b21 permanent\nee:10:69:0e:a4:53 dev mw3b21 master mw3b21 permanent\n02:b0:2b:61:32:8e dev mw3x21 master mw3b21 \nda:5a:36:60:02:6c dev mw3x21 master mw3b21 \nfe:1f:46:3d:65:ce dev mw3x21 master mw3b21 \n3a:01:a1:46:e6:97 dev mw3x21 master mw3b21 \nea:d3:cd:fb:d5:e0 dev mw3x21 master mw3b21 \n0a:d5:5b:aa:94:7c dev mw3x21 master mw3b21 \n06:46:08:fc:0e:b9 dev mw3x21 master mw3b21 \nc6:29:bf:9a:30:72 dev mw3x21 vlan 1 master mw3b21 permanent\nc6:29:bf:9a:30:72 dev mw3x21 master mw3b21 permanent\n00:00:00:00:00:00 dev mw3x21 dst 130.127.133.168 via eno1 self permanent\n62:c4:0a:48:06:e7 dev mw3h21 vlan 1 master mw3b21 permanent\n62:c4:0a:48:06:e7 dev mw3h21 master mw3b21 permanent\n33:33:00:00:00:01 dev mw3h21 self permanent\n01:00:5e:00:00:01 dev mw3h21 self permanent\n33:33:ff:48:06:e7 dev mw3h21 self permanent\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00008",
+      "command": [
+        "docker",
+        "ps",
+        "--format",
+        "{{.Names}} {{.Image}} {{.Status}}"
+      ],
+      "started_at": "2026-10-24T02:25:36.602797+00:00",
+      "ended_at": "2026-10-24T02:25:36.633675+00:00",
+      "returncode": 0,
+      "stdout": "MW_GF_B-frr twinet-msc-router:construction-v2 Up 11 minutes\nMW_GF_A-frr twinet-msc-router:construction-v2 Up 12 minutes\nMW_GF_B twinet-msc-router:construction-v2 Up 12 minutes\nMW_GF_A twinet-msc-router:construction-v2 Up 12 minutes\n",
+      "stderr": ""
+    },
+    {
+      "id": "phase-before",
+      "command": [
+        "phase",
+        "before"
+      ],
+      "started_at": "2026-10-24T02:25:36.633696+00:00",
+      "ended_at": "2026-10-24T02:25:36.633699+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00010",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_GF_A"
+      ],
+      "started_at": "2026-10-24T02:25:36.633705+00:00",
+      "ended_at": "2026-10-24T02:25:36.652160+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3\",\"Created\":\"2026-10-24T02:13:20.201659318Z\",\"Path\":\"/usr/local/bin/twinet-entrypoint\",\"Args\":[\"sleep\",\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":47686,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:20.2376806Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"ResolvConfPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/hostname\",\"HostsPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/hosts\",\"LogPath\":\"/var/lib/docker/containers/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3/8bb276802006010e1fc9b54eaefafe53ad3f68dbe3a2c7348f5586496c5899d3-json.log\",\"Name\":\"/MW_GF_A\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":null,\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/etc:/etc/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/run:/run/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/2a609ca2bc0cd63b/etc-twinet:/etc/twinet\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_DAC_OVERRIDE\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":true,\"SecurityOpt\":[\"no-new-privileges\",\"apparmor=docker-default\"],\"Tmpfs\":{\"/run\":\"rw,nosuid,nodev,size=64m\",\"/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\",\"/var/log\":\"rw,nosuid,nodev,size=64m\",\"/var/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\"},\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":512,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/firmware\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"],\"Init\":true},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/etc\",\"Destination\":\"/etc/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/2a609ca2bc0cd63b/run\",\"Destination\":\"/run/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/2a609ca2bc0cd63b/etc-twinet\",\"Destination\":\"/etc/twinet\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw-gf-a\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc-router:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"/\",\"Entrypoint\":[\"/usr/local/bin/twinet-entrypoint\"],\"Labels\":{\"org.opencontainers.image.description\":\"FRR router for the Twinet teaching platform\",\"org.opencontainers.image.source\":\"https://github.com/HongyuHe/Twinet\",\"org.opencontainers.image.title\":\"twinet-msc-router\",\"twinet.device\":\"MW_GF_A\",\"twinet.device-id\":\"MW_GF_A\",\"twinet.kind\":\"router\",\"twinet.lab\":\"native-multiworker-v3\",\"twinet.managed\":\"true\",\"twinet.msc.device\":\"MW_GF_A\",\"twinet.msc.image\":\"twinet-msc-router@sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\",\"twinet.node\":\"\",\"twinet.request.cpu\":\"0.04\",\"twinet.request.ephemeral-storage\":\"256Mi\",\"twinet.request.file-descriptors\":\"1024\",\"twinet.request.memory\":\"128Mi\",\"twinet.request.netdevs\":\"8\",\"twinet.request.pids\":\"64\",\"twinet.runtime-spec-contract\":\"runtime-spec-v1\",\"twinet.spec-hash\":\"c6423bbda17ac77092b1086d\",\"twinet.topology-hash\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\"}},\"NetworkSettings\":{\"SandboxID\":\"e722f48099ae13f4c9bbd6a2f43ed9a31a591dbd78516e947d3fde78f84d57a7\",\"SandboxKey\":\"/var/run/docker/netns/e722f48099ae\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"7207ecfa7d6808cf9e7d9b030c8145a51f376d98ac5898bfeac634484d37ad14\",\"EndpointID\":\"e47cd32806836ee9e1f7e8852d8c807ecc6d42c69f961f5b22af1153b99af442\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"size\":2070,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc-router:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00011",
+      "command": [
+        "readlink",
+        "/proc/47686/ns/net"
+      ],
+      "started_at": "2026-10-24T02:25:36.652288+00:00",
+      "ended_at": "2026-10-24T02:25:36.654576+00:00",
+      "returncode": 0,
+      "stdout": "net:[4026533389]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00012",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "-j",
+        "-d",
+        "address",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:25:36.654597+00:00",
+      "ended_at": "2026-10-24T02:25:36.718713+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"gso_ipv4_max_size\":65536,\"gro_ipv4_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":61,\"link_index\":62,\"ifname\":\"s1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:e0:29:78:f2:2c\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"gso_ipv4_max_size\":65536,\"gro_ipv4_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.100.1.254\",\"prefixlen\":24,\"broadcast\":\"10.100.1.255\",\"scope\":\"global\",\"label\":\"s1\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":65,\"link_index\":66,\"ifname\":\"s2\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:cb:71:cb:25:27\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"gso_ipv4_max_size\":65536,\"gro_ipv4_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.100.2.254\",\"prefixlen\":24,\"broadcast\":\"10.100.2.255\",\"scope\":\"global\",\"label\":\"s2\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00013",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "-j",
+        "route",
+        "show",
+        "table",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:25:36.718740+00:00",
+      "ended_at": "2026-10-24T02:25:36.789317+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"10.100.1.0/24\",\"dev\":\"s1\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.100.1.254\",\"flags\":[]},{\"dst\":\"10.100.2.0/24\",\"dev\":\"s2\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.100.2.254\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.100.1.254\",\"dev\":\"s1\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.100.1.254\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.100.1.255\",\"dev\":\"s1\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.100.1.254\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.100.2.254\",\"dev\":\"s2\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.100.2.254\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.100.2.255\",\"dev\":\"s2\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.100.2.254\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00014",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "-j",
+        "rule",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:25:36.789339+00:00",
+      "ended_at": "2026-10-24T02:25:36.853637+00:00",
+      "returncode": 0,
+      "stdout": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00015",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "iptables-save"
+      ],
+      "started_at": "2026-10-24T02:25:36.853668+00:00",
+      "ended_at": "2026-10-24T02:25:36.929437+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:25:36 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n-A INPUT -i lo -j ACCEPT\n-A OUTPUT -o lo -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:25:36 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00016",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip6tables-save"
+      ],
+      "started_at": "2026-10-24T02:25:36.929472+00:00",
+      "ended_at": "2026-10-24T02:25:37.002986+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00017",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "-d",
+        "xfrm",
+        "policy",
+        "list"
+      ],
+      "started_at": "2026-10-24T02:25:37.003021+00:00",
+      "ended_at": "2026-10-24T02:25:37.079931+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00018",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "-d",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:25:37.079956+00:00",
+      "ended_at": "2026-10-24T02:25:37.146569+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00019",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "sysctl",
+        "net.ipv4.ip_forward",
+        "net.ipv6.conf.all.forwarding"
+      ],
+      "started_at": "2026-10-24T02:25:37.146611+00:00",
+      "ended_at": "2026-10-24T02:25:37.216285+00:00",
+      "returncode": 0,
+      "stdout": "net.ipv4.ip_forward = 1\nnet.ipv6.conf.all.forwarding = 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00020",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "vtysh",
+        "-c",
+        "show running-config"
+      ],
+      "started_at": "2026-10-24T02:25:37.216319+00:00",
+      "ended_at": "2026-10-24T02:25:37.352798+00:00",
+      "returncode": 0,
+      "stdout": "Building configuration...\n\nCurrent configuration:\n!\nfrr version 10.0\nfrr defaults traditional\nhostname mw-gf-a\nno ipv6 forwarding\nservice integrated-vtysh-config\n!\ninterface s1\n ip address 10.100.1.254/24\nexit\n!\ninterface s2\n ip address 10.100.2.254/24\nexit\n!\nend\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00021",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "vtysh",
+        "-c",
+        "show ip route json"
+      ],
+      "started_at": "2026-10-24T02:25:37.352839+00:00",
+      "ended_at": "2026-10-24T02:25:37.483271+00:00",
+      "returncode": 0,
+      "stdout": "{\"10.100.1.0/24\":[{\"prefix\":\"10.100.1.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":6,\"installedNexthopGroupId\":6,\"uptime\":\"00:07:11\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":61,\"interfaceName\":\"s1\",\"active\":true}]}],\"10.100.1.254/32\":[{\"prefix\":\"10.100.1.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":6,\"installedNexthopGroupId\":6,\"uptime\":\"00:07:11\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":61,\"interfaceName\":\"s1\",\"active\":true}]}],\"10.100.2.0/24\":[{\"prefix\":\"10.100.2.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":8,\"installedNexthopGroupId\":8,\"uptime\":\"00:06:03\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":65,\"interfaceName\":\"s2\",\"active\":true}]}],\"10.100.2.254/32\":[{\"prefix\":\"10.100.2.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":8,\"installedNexthopGroupId\":8,\"uptime\":\"00:06:03\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":65,\"interfaceName\":\"s2\",\"active\":true}]}]}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00022",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "vtysh",
+        "-c",
+        "show ip ospf neighbor json"
+      ],
+      "started_at": "2026-10-24T02:25:37.483310+00:00",
+      "ended_at": "2026-10-24T02:25:37.611350+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "ospfd is not running\n"
+    },
+    {
+      "id": "mw-00023",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_GF_B"
+      ],
+      "started_at": "2026-10-24T02:25:37.611379+00:00",
+      "ended_at": "2026-10-24T02:25:37.632878+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664\",\"Created\":\"2026-10-24T02:13:21.68551167Z\",\"Path\":\"/usr/local/bin/twinet-entrypoint\",\"Args\":[\"sleep\",\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":48233,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:21.710046159Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"ResolvConfPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/hostname\",\"HostsPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/hosts\",\"LogPath\":\"/var/lib/docker/containers/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664/f269618294db412fc95e8706f8083761349d0b8f550f78bd9ccf7f7ef0faf664-json.log\",\"Name\":\"/MW_GF_B\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":null,\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/etc:/etc/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/run:/run/frr\",\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/696af90a03b82c4f/etc-twinet:/etc/twinet\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_DAC_OVERRIDE\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":true,\"SecurityOpt\":[\"no-new-privileges\",\"apparmor=docker-default\"],\"Tmpfs\":{\"/run\":\"rw,nosuid,nodev,size=64m\",\"/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\",\"/var/log\":\"rw,nosuid,nodev,size=64m\",\"/var/tmp\":\"rw,nosuid,nodev,noexec,mode=1777,size=64m\"},\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":512,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/firmware\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"],\"Init\":true},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/etc\",\"Destination\":\"/etc/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/frr/native-multiworker-v3/696af90a03b82c4f/run\",\"Destination\":\"/run/frr\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"},{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/native/writable/native-multiworker-v3/696af90a03b82c4f/etc-twinet\",\"Destination\":\"/etc/twinet\",\"Mode\":\"\",\"RW\":true,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw-gf-b\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc-router:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"/\",\"Entrypoint\":[\"/usr/local/bin/twinet-entrypoint\"],\"Labels\":{\"org.opencontainers.image.description\":\"FRR router for the Twinet teaching platform\",\"org.opencontainers.image.source\":\"https://github.com/HongyuHe/Twinet\",\"org.opencontainers.image.title\":\"twinet-msc-router\",\"twinet.device\":\"MW_GF_B\",\"twinet.device-id\":\"MW_GF_B\",\"twinet.kind\":\"router\",\"twinet.lab\":\"native-multiworker-v3\",\"twinet.managed\":\"true\",\"twinet.msc.device\":\"MW_GF_B\",\"twinet.msc.image\":\"twinet-msc-router@sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\",\"twinet.node\":\"\",\"twinet.request.cpu\":\"0.04\",\"twinet.request.ephemeral-storage\":\"256Mi\",\"twinet.request.file-descriptors\":\"1024\",\"twinet.request.memory\":\"128Mi\",\"twinet.request.netdevs\":\"8\",\"twinet.request.pids\":\"64\",\"twinet.runtime-spec-contract\":\"runtime-spec-v1\",\"twinet.spec-hash\":\"b224714294e99cb4e9bb45e4\",\"twinet.topology-hash\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\"}},\"NetworkSettings\":{\"SandboxID\":\"a826de713253f8381c82454da3d766a06e119d74579f877dd26598e27fdd93f1\",\"SandboxKey\":\"/var/run/docker/netns/a826de713253\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"7207ecfa7d6808cf9e7d9b030c8145a51f376d98ac5898bfeac634484d37ad14\",\"EndpointID\":\"d2091f5491e97f5a06c4cf905df87b9eb2ff121409b329f7ae3921737bda31db\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\",\"size\":2070,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc-router:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00024",
+      "command": [
+        "readlink",
+        "/proc/48233/ns/net"
+      ],
+      "started_at": "2026-10-24T02:25:37.633016+00:00",
+      "ended_at": "2026-10-24T02:25:37.635446+00:00",
+      "returncode": 0,
+      "stdout": "net:[4026534203]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00025",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "-j",
+        "-d",
+        "address",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:25:37.635474+00:00",
+      "ended_at": "2026-10-24T02:25:37.722548+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"gso_ipv4_max_size\":65536,\"gro_ipv4_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":69,\"link_index\":70,\"ifname\":\"s1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:6a:62:ff:c4:3f\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"gso_ipv4_max_size\":65536,\"gro_ipv4_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.200.1.254\",\"prefixlen\":24,\"broadcast\":\"10.200.1.255\",\"scope\":\"global\",\"label\":\"s1\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":73,\"link_index\":74,\"ifname\":\"s2\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:da:3d:e9:ac:aa\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":40,\"num_rx_queues\":40,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"gso_ipv4_max_size\":65536,\"gro_ipv4_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.200.2.254\",\"prefixlen\":24,\"broadcast\":\"10.200.2.255\",\"scope\":\"global\",\"label\":\"s2\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00026",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "-j",
+        "route",
+        "show",
+        "table",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:25:37.722574+00:00",
+      "ended_at": "2026-10-24T02:25:37.798436+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"10.200.1.0/24\",\"dev\":\"s1\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.200.1.254\",\"flags\":[]},{\"dst\":\"10.200.2.0/24\",\"dev\":\"s2\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.200.2.254\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.200.1.254\",\"dev\":\"s1\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.200.1.254\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.200.1.255\",\"dev\":\"s1\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.200.1.254\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.200.2.254\",\"dev\":\"s2\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.200.2.254\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.200.2.255\",\"dev\":\"s2\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.200.2.254\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00027",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "-j",
+        "rule",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:25:37.798476+00:00",
+      "ended_at": "2026-10-24T02:25:37.888423+00:00",
+      "returncode": 0,
+      "stdout": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00028",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "iptables-save"
+      ],
+      "started_at": "2026-10-24T02:25:37.888454+00:00",
+      "ended_at": "2026-10-24T02:25:37.960994+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:25:37 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n-A INPUT -i lo -j ACCEPT\n-A OUTPUT -o lo -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:25:37 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00029",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip6tables-save"
+      ],
+      "started_at": "2026-10-24T02:25:37.961016+00:00",
+      "ended_at": "2026-10-24T02:25:38.029241+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00030",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "-d",
+        "xfrm",
+        "policy",
+        "list"
+      ],
+      "started_at": "2026-10-24T02:25:38.029279+00:00",
+      "ended_at": "2026-10-24T02:25:38.102048+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00031",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "-d",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:25:38.102071+00:00",
+      "ended_at": "2026-10-24T02:25:38.176971+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00032",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "sysctl",
+        "net.ipv4.ip_forward",
+        "net.ipv6.conf.all.forwarding"
+      ],
+      "started_at": "2026-10-24T02:25:38.176996+00:00",
+      "ended_at": "2026-10-24T02:25:38.250960+00:00",
+      "returncode": 0,
+      "stdout": "net.ipv4.ip_forward = 1\nnet.ipv6.conf.all.forwarding = 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00033",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "vtysh",
+        "-c",
+        "show running-config"
+      ],
+      "started_at": "2026-10-24T02:25:38.251009+00:00",
+      "ended_at": "2026-10-24T02:25:38.383373+00:00",
+      "returncode": 0,
+      "stdout": "Building configuration...\n\nCurrent configuration:\n!\nfrr version 10.0\nfrr defaults traditional\nhostname mw-gf-b\nno ipv6 forwarding\nservice integrated-vtysh-config\n!\ninterface s1\n ip address 10.200.1.254/24\nexit\n!\ninterface s2\n ip address 10.200.2.254/24\nexit\n!\nend\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00034",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "vtysh",
+        "-c",
+        "show ip route json"
+      ],
+      "started_at": "2026-10-24T02:25:38.383410+00:00",
+      "ended_at": "2026-10-24T02:25:38.516805+00:00",
+      "returncode": 0,
+      "stdout": "{\"10.200.1.0/24\":[{\"prefix\":\"10.200.1.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":6,\"installedNexthopGroupId\":6,\"uptime\":\"00:06:03\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":69,\"interfaceName\":\"s1\",\"active\":true}]}],\"10.200.1.254/32\":[{\"prefix\":\"10.200.1.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":6,\"installedNexthopGroupId\":6,\"uptime\":\"00:06:03\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":69,\"interfaceName\":\"s1\",\"active\":true}]}],\"10.200.2.0/24\":[{\"prefix\":\"10.200.2.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":8,\"installedNexthopGroupId\":8,\"uptime\":\"00:06:03\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":73,\"interfaceName\":\"s2\",\"active\":true}]}],\"10.200.2.254/32\":[{\"prefix\":\"10.200.2.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":8,\"installedNexthopGroupId\":8,\"uptime\":\"00:06:03\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":73,\"interfaceName\":\"s2\",\"active\":true}]}]}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00035",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "vtysh",
+        "-c",
+        "show ip ospf neighbor json"
+      ],
+      "started_at": "2026-10-24T02:25:38.516830+00:00",
+      "ended_at": "2026-10-24T02:25:38.643103+00:00",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "ospfd is not running\n"
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Logical Site A and Site B roles are colocated by component class; the case establishes separation between role classes, not geographic site separation.",
+    "VXLAN uses the reserved experiment LAN within Clemson and public CloudLab control addresses across campuses; logical wire preservation remains an implementation assumption beyond finite packet observations.",
+    "Distinct worker hardware does not establish independently developed software, product approval or classification handling policy.",
+    "Virtual per-component interfaces share worker physical NICs; physical-NIC-per-Red requirements remain outside this placement claim."
+  ]
+}

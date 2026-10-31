@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-24T03:05:25.022583+00:00",
+  "records": [
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "twinet-msc:mldsa-construction-v2",
+        "make",
+        "clean"
+      ],
+      "at": "2026-10-24T03:05:16.707287+00:00",
+      "returncode": 0,
+      "stdout": "rm -f core *~ nt_password_hash hlr_auc_gw\nrm -f sae_pk_gen\nrm -f lcov.info\nrm -rf lcov-html\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z:/users/hy/tdn-continuation-2026-10-24T014455Z",
+        "-w",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/hostapd",
+        "twinet-msc:mldsa-construction-v2",
+        "make",
+        "-j4"
+      ],
+      "at": "2026-10-24T03:05:25.022498+00:00",
+      "returncode": 2,
+      "stdout": "  CC  ../src/ap/wpa_auth_glue.c\n  CC  main.c\n  CC  ../src/ap/drv_callbacks.c\n  CC  ../src/ap/utils.c\n  CC  ../src/ap/ap_drv_ops.c\n  CC  config_file.c\n  CC  ../src/ap/hostapd.c\n  CC  ../src/ap/authsrv.c\n  CC  ../src/ap/eap_user_db.c\n  CC  ../src/ap/ieee802_11_auth.c\n  CC  ../src/ap/ap_config.c\n  CC  ../src/ap/ieee802_1x.c\n  CC  ../src/ap/tkip_countermeasures.c\n  CC  ../src/ap/ap_mlme.c\n  CC  ../src/ap/sta_info.c\n  CC  ../src/ap/preauth_auth.c\n  CC  ../src/ap/wpa_auth_ie.c\n  CC  ../src/ap/pmksa_cache_auth.c\n  CC  ../src/ap/ieee802_11_shared.c\n  CC  ../src/ap/beacon.c\n  CC  ../src/ap/bss_load.c\n  CC  ../src/common/ptksa_cache.c\n  CC  ../src/ap/neighbor_db.c\n  CC  ../src/drivers/drivers.c\n  CC  ../src/ap/rrm.c\n  CC  ../src/utils/eloop.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/utils/wpabuf.c\n  CC  ../src/ap/wpa_auth.c\n  CC  ../src/utils/common.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/eapol_auth/eapol_auth_sm.c\n  CC  ../src/eapol_auth/eapol_auth_dump.c\n  CC  ../src/common/wpa_common.c\n  CC  ../src/radius/radius_das.c\n  CC  ../src/radius/radius_client.c\n  CC  ../src/common/ieee802_11_common.c\n  CC  ../src/radius/radius.c\n  CC  ../src/ap/accounting.c\n  CC  ../src/ap/vlan_ifconfig.c\n  CC  ../src/ap/vlan_init.c\n  CC  ../src/ap/vlan.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/drivers/driver_wired.c\n  CC  ../src/ap/ctrl_iface_ap.c\n  CC  ctrl_iface.c\n",
+      "stderr": "../src/ap/hostapd.c: In function 'hostapd_add_iface':\n../src/ap/hostapd.c:3916:21: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 3916 |                 pos = os_strchr(phy_name, ':');\n      |                     ^\n../src/common/ieee802_11_common.c: In function 'hostapd_config_read_int10':\n../src/common/ieee802_11_common.c:1407:13: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 1407 |         pos = os_strchr(value, '.');\n      |             ^\n../src/common/ieee802_11_common.c: In function 'ieee802_11_parse_candidate_list':\n../src/common/ieee802_11_common.c:3209:21: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 3209 |                 tmp = os_strchr(pos, ',');\n      |                     ^\n../src/drivers/driver_macsec_linux.c:16:10: fatal error: netlink/netlink.h: No such file or directory\n   16 | #include <netlink/netlink.h>\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\nmake: *** [../src/build.rules:87: /users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/build/hostapd/src/drivers/driver_macsec_linux.o] Error 1\nmake: *** Waiting for unfinished jobs....\n"
+    }
+  ],
+  "error": "../src/ap/hostapd.c: In function 'hostapd_add_iface':\n../src/ap/hostapd.c:3916:21: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 3916 |                 pos = os_strchr(phy_name, ':');\n      |                     ^\n../src/common/ieee802_11_common.c: In function 'hostapd_config_read_int10':\n../src/common/ieee802_11_common.c:1407:13: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 1407 |         pos = os_strchr(value, '.');\n      |             ^\n../src/common/ieee802_11_common.c: In function 'ieee802_11_parse_candidate_list':\n../src/common/ieee802_11_common.c:3209:21: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]\n 3209 |                 tmp = os_strchr(pos, ',');\n      |                     ^\n../src/drivers/driver_macsec_linux.c:16:10: fatal error: netlink/netlink.h: No such file or directory\n   16 | #include <netlink/netlink.h>\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\nmake: *** [../src/build.rules:87: /users/hy/tdn-continuation-2026-10-24T014455Z/hostap-pq/hostapd-2.12/build/hostapd/src/drivers/driver_macsec_linux.o] Error 1\nmake: *** Waiting for unfinished jobs....\n",
+  "scope": "Owned hostap2.12 source copied from retained CNSA/L2 repair tree, rebuilt against OpenSSL3.5.5 in the existing objective-IKE image. No original workload binary is changed."
+}

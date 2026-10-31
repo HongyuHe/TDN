@@ -1,0 +1,145 @@
+{
+  "schema_version": "csfc-multiworker-placement/v1",
+  "started_at": "2026-10-24T02:19:49.911628+00:00",
+  "ended_at": "2026-10-24T02:19:50.600241+00:00",
+  "worker": "w008",
+  "worker_host": "pc08.cloudlab.umass.edu",
+  "action": "restore",
+  "runtime_backend": "native-FRR-OVS-crossworker-VXLAN",
+  "selected_device_ids": [
+    "MW_GF_A",
+    "MW_GF_B"
+  ],
+  "assignments": {
+    "MW_BLACK": "w176",
+    "MW_GF_A": "w008",
+    "MW_R_A1": "w159",
+    "MW_I_A1": "w159",
+    "MW_G_A1": "w159",
+    "MW_O_A1": "w163",
+    "MW_OF_A1": "w176",
+    "MW_R_A2": "w159",
+    "MW_I_A2": "w159",
+    "MW_G_A2": "w159",
+    "MW_O_A2": "w163",
+    "MW_OF_A2": "w176",
+    "MW_GF_B": "w008",
+    "MW_R_B1": "w159",
+    "MW_I_B1": "w159",
+    "MW_G_B1": "w159",
+    "MW_O_B1": "w163",
+    "MW_OF_B1": "w176",
+    "MW_R_B2": "w159",
+    "MW_I_B2": "w159",
+    "MW_G_B2": "w159",
+    "MW_O_B2": "w163",
+    "MW_OF_B2": "w176"
+  },
+  "records": [
+    {
+      "id": "mw-00000",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:49.911673+00:00",
+      "ended_at": "2026-10-24T02:19:49.985089+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00001",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "vtysh",
+        "-c",
+        "show running-config"
+      ],
+      "started_at": "2026-10-24T02:19:49.985129+00:00",
+      "ended_at": "2026-10-24T02:19:50.110217+00:00",
+      "returncode": 0,
+      "stdout": "Building configuration...\n\nCurrent configuration:\n!\nfrr version 10.0\nfrr defaults traditional\nhostname mw-gf-a\nno ipv6 forwarding\nservice integrated-vtysh-config\n!\ninterface s1\n ip address 10.100.1.254/24\nexit\n!\ninterface s2\n ip address 10.100.2.254/24\nexit\n!\nend\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00002",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_A",
+        "vtysh",
+        "-c",
+        "show ip route json"
+      ],
+      "started_at": "2026-10-24T02:19:50.110257+00:00",
+      "ended_at": "2026-10-24T02:19:50.267800+00:00",
+      "returncode": 0,
+      "stdout": "{\"10.100.1.0/24\":[{\"prefix\":\"10.100.1.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":6,\"installedNexthopGroupId\":6,\"uptime\":\"00:01:24\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":61,\"interfaceName\":\"s1\",\"active\":true}]}],\"10.100.1.254/32\":[{\"prefix\":\"10.100.1.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":6,\"installedNexthopGroupId\":6,\"uptime\":\"00:01:24\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":61,\"interfaceName\":\"s1\",\"active\":true}]}],\"10.100.2.0/24\":[{\"prefix\":\"10.100.2.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":8,\"installedNexthopGroupId\":8,\"uptime\":\"00:00:16\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":65,\"interfaceName\":\"s2\",\"active\":true}]}],\"10.100.2.254/32\":[{\"prefix\":\"10.100.2.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":8,\"installedNexthopGroupId\":8,\"uptime\":\"00:00:16\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":65,\"interfaceName\":\"s2\",\"active\":true}]}]}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00003",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "ip",
+        "neigh",
+        "flush",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:19:50.267837+00:00",
+      "ended_at": "2026-10-24T02:19:50.343160+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00004",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "vtysh",
+        "-c",
+        "show running-config"
+      ],
+      "started_at": "2026-10-24T02:19:50.343191+00:00",
+      "ended_at": "2026-10-24T02:19:50.467702+00:00",
+      "returncode": 0,
+      "stdout": "Building configuration...\n\nCurrent configuration:\n!\nfrr version 10.0\nfrr defaults traditional\nhostname mw-gf-b\nno ipv6 forwarding\nservice integrated-vtysh-config\n!\ninterface s1\n ip address 10.200.1.254/24\nexit\n!\ninterface s2\n ip address 10.200.2.254/24\nexit\n!\nend\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00005",
+      "command": [
+        "docker",
+        "exec",
+        "MW_GF_B",
+        "vtysh",
+        "-c",
+        "show ip route json"
+      ],
+      "started_at": "2026-10-24T02:19:50.467741+00:00",
+      "ended_at": "2026-10-24T02:19:50.600208+00:00",
+      "returncode": 0,
+      "stdout": "{\"10.200.1.0/24\":[{\"prefix\":\"10.200.1.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":6,\"installedNexthopGroupId\":6,\"uptime\":\"00:00:15\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":69,\"interfaceName\":\"s1\",\"active\":true}]}],\"10.200.1.254/32\":[{\"prefix\":\"10.200.1.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":6,\"installedNexthopGroupId\":6,\"uptime\":\"00:00:15\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":69,\"interfaceName\":\"s1\",\"active\":true}]}],\"10.200.2.0/24\":[{\"prefix\":\"10.200.2.0/24\",\"prefixLen\":24,\"protocol\":\"connected\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":8,\"installedNexthopGroupId\":8,\"uptime\":\"00:00:15\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":73,\"interfaceName\":\"s2\",\"active\":true}]}],\"10.200.2.254/32\":[{\"prefix\":\"10.200.2.254/32\",\"prefixLen\":32,\"protocol\":\"local\",\"vrfId\":0,\"vrfName\":\"default\",\"selected\":true,\"destSelected\":true,\"distance\":0,\"metric\":0,\"installed\":true,\"table\":254,\"internalStatus\":16,\"internalFlags\":8,\"internalNextHopNum\":1,\"internalNextHopActiveNum\":1,\"nexthopGroupId\":8,\"installedNexthopGroupId\":8,\"uptime\":\"00:00:15\",\"nexthops\":[{\"flags\":3,\"fib\":true,\"directlyConnected\":true,\"interfaceIndex\":73,\"interfaceName\":\"s2\",\"active\":true}]}]}\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Logical Site A and Site B roles are colocated by component class; the case establishes separation between role classes, not geographic site separation.",
+    "VXLAN uses the reserved experiment LAN within Clemson and public CloudLab control addresses across campuses; logical wire preservation remains an implementation assumption beyond finite packet observations.",
+    "Distinct worker hardware does not establish independently developed software, product approval or classification handling policy.",
+    "Virtual per-component interfaces share worker physical NICs; physical-NIC-per-Red requirements remain outside this placement claim."
+  ]
+}

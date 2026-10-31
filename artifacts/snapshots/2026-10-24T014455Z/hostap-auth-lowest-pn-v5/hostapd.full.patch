@@ -1,0 +1,193 @@
+--- a/src/ap/wpa_auth_kay.c
++++ b/src/ap/wpa_auth_kay.c
+@@ -83,6 +83,15 @@
+ }
+ 
+ 
++static int hapd_set_offload(void *priv, u8 offload)
++{
++    struct hostapd_data *hapd = priv;
++    if (!hapd->driver->set_offload)
++        return -1;
++    return hapd->driver->set_offload(hapd->drv_priv, offload);
++}
++
++
+ static int hapd_set_current_cipher_suite(void *priv, u64 cs)
+ {
+ 	struct hostapd_data *hapd = priv;
+@@ -110,6 +119,16 @@
+ 	if (!hapd->driver->get_receive_lowest_pn)
+ 		return -1;
+ 	return hapd->driver->get_receive_lowest_pn(hapd->drv_priv, sa);
++}
++
++
++static int hapd_set_receive_lowest_pn(void *priv, struct receive_sa *sa)
++{
++ struct hostapd_data *hapd = priv;
++
++ if (!hapd->driver->set_receive_lowest_pn)
++  return -1;
++ return hapd->driver->set_receive_lowest_pn(hapd->drv_priv, sa);
+ }
+ 
+ 
+@@ -306,9 +325,11 @@
+ 	kay_ctx->enable_protect_frames = hapd_enable_protect_frames;
+ 	kay_ctx->enable_encrypt = hapd_enable_encrypt;
+ 	kay_ctx->set_replay_protect = hapd_set_replay_protect;
++	kay_ctx->set_offload = hapd_set_offload;
+ 	kay_ctx->set_current_cipher_suite = hapd_set_current_cipher_suite;
+ 	kay_ctx->enable_controlled_port = hapd_enable_controlled_port;
+ 	kay_ctx->get_receive_lowest_pn = hapd_get_receive_lowest_pn;
++	kay_ctx->set_receive_lowest_pn = hapd_set_receive_lowest_pn;
+ 	kay_ctx->get_transmit_next_pn = hapd_get_transmit_next_pn;
+ 	kay_ctx->set_transmit_next_pn = hapd_set_transmit_next_pn;
+ 	kay_ctx->create_receive_sc = hapd_create_receive_sc;
+@@ -405,7 +426,7 @@
+ 	if (!msk || !ckn || !cak)
+ 		goto fail;
+ 
+-	msk->len = DEFAULT_KEY_LEN;
++	msk->len = 32;
+ 	if (ieee802_1x_auth_get_msk(hapd, sta, msk->key, &msk->len)) {
+ 		wpa_printf(MSG_ERROR, "IEEE 802.1X: Could not get MSK");
+ 		goto fail;
+@@ -422,7 +443,7 @@
+ 	wpa_hexdump(MSG_DEBUG, "sta_addr", sta->addr, ETH_ALEN);
+ 
+ 	/* Derive CAK from MSK */
+-	cak->len = DEFAULT_KEY_LEN;
++	cak->len = 32;
+ 	if (ieee802_1x_cak_aes_cmac(msk->key, msk->len, hapd->own_addr,
+ 				    sta->addr, cak->key, cak->len)) {
+ 		wpa_printf(MSG_ERROR, "IEEE 802.1X: Deriving CAK failed");
+--- a/src/crypto/tls_openssl.c
++++ b/src/crypto/tls_openssl.c
+@@ -5040,6 +5040,9 @@
+ 	}
+ 
+ 	if (SSL_is_init_finished(conn->ssl)) {
++		wpa_printf(MSG_DEBUG, "EVIDENCE effective TLS version=%s cipher=%s group=%s",
++			SSL_get_version(conn->ssl), SSL_get_cipher(conn->ssl),
++			SSL_get0_group_name(conn->ssl));
+ 		wpa_printf(MSG_DEBUG,
+ 			   "OpenSSL: Handshake finished - resumed=%d",
+ 			   tls_connection_resumed(conn->ssl_ctx, conn));
+--- a/src/drivers/driver_macsec_linux.c
++++ b/src/drivers/driver_macsec_linux.c
+@@ -765,7 +765,7 @@
+ 
+ 	wpa_printf(MSG_DEBUG,
+ 		   DRV_PREFIX "%s: set_receive_lowest_pn -> %d: %d",
+-		   drv->ifname, sa->an, sa->next_pn);
++		   drv->ifname, sa->an, sa->lowest_pn);
+ 
+ 	msg = msg_prepare(MACSEC_CMD_UPD_RXSA, ctx, drv->ifi);
+ 	if (!msg)
+@@ -779,7 +779,7 @@
+ 		goto nla_put_failure;
+ 
+ 	NLA_PUT_U8(msg, MACSEC_SA_ATTR_AN, sa->an);
+-	NLA_PUT_U32(msg, MACSEC_SA_ATTR_PN, sa->next_pn);
++	NLA_PUT_U32(msg, MACSEC_SA_ATTR_PN, sa->lowest_pn);
+ 
+ 	nla_nest_end(msg, nest);
+ 
+--- a/src/l2_packet/l2_packet_linux.c
++++ b/src/l2_packet/l2_packet_linux.c
+@@ -211,6 +211,9 @@
+ 
+ 	l2->last_from_br = 0;
+ #endif /* CONFIG_NO_LINUX_PACKET_SOCKET_WAR */
++	if (l2->l2_hdr && ll.sll_pkttype == PACKET_OUTGOING)
++		return;
++
+ 	l2->rx_callback(l2->rx_callback_ctx, ll.sll_addr, buf, res);
+ }
+ 
+@@ -263,6 +266,9 @@
+ 	l2->last_from_br_prev = l2->last_from_br;
+ 	l2->last_from_br = 1;
+ 	os_memcpy(l2->last_hash, hash, SHA1_MAC_LEN);
++	if (l2->l2_hdr && ll.sll_pkttype == PACKET_OUTGOING)
++		return;
++
+ 	l2->rx_callback(l2->rx_callback_ctx, ll.sll_addr, buf, res);
+ }
+ #endif /* CONFIG_NO_LINUX_PACKET_SOCKET_WAR */
+--- a/src/pae/ieee802_1x_kay.c
++++ b/src/pae/ieee802_1x_kay.c
+@@ -1268,6 +1268,40 @@
+ 			 *
+ 			 * NOTE: This method only works if mka_hello_time is 2s.
+ 			 */
++			if (principal->kay->mka_hello_time <= MKA_BOUNDED_HELLO_TIME) {
++				struct os_reltime now;
++				unsigned int slot, latest, j;
++				long age, best_age = 0x7fffffff;
++				os_get_reltime(&now);
++				secy_get_transmit_next_pn(principal->kay, txsa);
++				slot = txsa->evidence_delay_next;
++				latest = (slot + 7) % 8;
++				age = (now.sec - txsa->evidence_delay_time[latest].sec) *
++					1000000 + now.usec -
++					txsa->evidence_delay_time[latest].usec;
++				if (!txsa->evidence_delay_time[latest].sec || age >= 400000) {
++					txsa->evidence_delay_pn[slot] = txsa->next_pn;
++					txsa->evidence_delay_time[slot] = now;
++					txsa->evidence_delay_next = (slot + 1) % 8;
++				}
++				lpn = 1;
++				for (j = 0; j < 8; j++) {
++					if (!txsa->evidence_delay_time[j].sec)
++						continue;
++					age = (now.sec - txsa->evidence_delay_time[j].sec) *
++						1000000 + now.usec -
++						txsa->evidence_delay_time[j].usec;
++					if (age >= 1000000 && age < best_age) {
++						lpn = txsa->evidence_delay_pn[j];
++						best_age = age;
++					}
++				}
++				wpa_printf(MSG_DEBUG,
++					"EVIDENCE delay LPN=%u normalHello=%u boundedHello=%u lifetime=%u",
++					lpn, MKA_HELLO_TIME, principal->kay->mka_hello_time,
++					MKA_LIFE_TIME);
++				break;
++			}
+ 			lpn = (txsa->next_pn > 0) ? (txsa->next_pn - 1) : 0;
+ 
+ 			/* Now read the current transmit next PN for use next
+@@ -2687,7 +2721,8 @@
+ 		participant->retry_count++;
+ 	}
+ 
+-	eloop_register_timeout(kay->mka_hello_time / 1000, 0,
++	eloop_register_timeout(kay->mka_hello_time / 1000,
++			       (kay->mka_hello_time % 1000) * 1000,
+ 			       ieee802_1x_participant_timer,
+ 			       participant, NULL);
+ 
+@@ -3574,7 +3609,7 @@
+ 		kay->macsec_replay_protect = macsec_replay_protect;
+ 		kay->macsec_replay_window = macsec_replay_window;
+ 		kay->macsec_offload = macsec_offload;
+-		kay->mka_hello_time = MKA_HELLO_TIME;
++		kay->mka_hello_time = MKA_BOUNDED_HELLO_TIME;
+ 	}
+ 
+ 	wpa_printf(MSG_DEBUG, "KaY: state machine created");
+--- a/src/pae/ieee802_1x_kay.h
++++ b/src/pae/ieee802_1x_kay.h
+@@ -95,6 +95,9 @@
+ struct transmit_sa {
+ 	bool in_use; /* bool inUse (read only) */
+ 	u32 next_pn; /* PN nextPN (read only) */
++	u32 evidence_delay_pn[8];
++	struct os_reltime evidence_delay_time[8];
++	u8 evidence_delay_next;
+ 	struct os_time created_time; /* Time createdTime */
+ 
+ 	bool enable_transmit; /* bool EnableTransmit */

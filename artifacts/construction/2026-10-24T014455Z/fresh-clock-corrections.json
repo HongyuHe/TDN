@@ -1,0 +1,109 @@
+{
+  "cases": [
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/independent-Red-clocks-v3",
+      "manifest_sha256": "11a988807d9fc672079b3f80bf7def252c26989c08e13adbcb28bad2ad6b3ef2",
+      "corrections": [
+        {
+          "client": "Red-FreeBSD-guest:22222",
+          "source": "10.1.1.20",
+          "client_address": "10.1.1.1",
+          "before_order": 11,
+          "adjustment_order": 12,
+          "after_order": 13,
+          "before_offset_us": -1885433,
+          "applied_offset_us": -1885447,
+          "after_offset_us": 26,
+          "observations": [
+            "diversity-0011",
+            "diversity-0012",
+            "diversity-0013"
+          ],
+          "bundle": "artifacts/snapshots/2026-10-24T014455Z/independent-Red-clocks-v3",
+          "runtime_backend": "native-ND-with-actual-FreeBSD-Inner-kernels-and-supplemental-Red-time-server-namespaces"
+        },
+        {
+          "client": "Red-FreeBSD-guest:22223",
+          "source": "10.2.1.20",
+          "client_address": "10.2.1.1",
+          "before_order": 27,
+          "adjustment_order": 28,
+          "after_order": 29,
+          "before_offset_us": -1639040,
+          "applied_offset_us": -1639029,
+          "after_offset_us": 18,
+          "observations": [
+            "diversity-0027",
+            "diversity-0028",
+            "diversity-0029"
+          ],
+          "bundle": "artifacts/snapshots/2026-10-24T014455Z/independent-Red-clocks-v3",
+          "runtime_backend": "native-ND-with-actual-FreeBSD-Inner-kernels-and-supplemental-Red-time-server-namespaces"
+        }
+      ],
+      "positive_control": "diversity-0032",
+      "boot_ids": []
+    },
+    {
+      "path": "artifacts/snapshots/2026-10-24T014455Z/independent-Gray-clocks-v3",
+      "manifest_sha256": "29457dd2b3b697a0941e7404f895e01599d0ab07d4f8e45abc97c73dc34dd0a9",
+      "corrections": [
+        {
+          "client": "Gray-Linux-guest:22452",
+          "source": "10.100.1.20",
+          "client_address": "10.100.1.1",
+          "before_order": 18,
+          "adjustment_order": 19,
+          "after_order": 20,
+          "before_offset_us": -1892951,
+          "applied_offset_us": -1892956,
+          "after_offset_us": -16,
+          "observations": [
+            "gray-time-0018",
+            "gray-time-0019",
+            "gray-time-0020"
+          ],
+          "bundle": "artifacts/snapshots/2026-10-24T014455Z/independent-Gray-clocks-v3",
+          "runtime_backend": "Native FRR/OVS with actual Debian Linux Outer and FreeBSD Inner kernels"
+        },
+        {
+          "client": "Gray-Linux-guest:22453",
+          "source": "10.200.1.20",
+          "client_address": "10.200.1.1",
+          "before_order": 40,
+          "adjustment_order": 41,
+          "after_order": 42,
+          "before_offset_us": -1138502,
+          "applied_offset_us": -1138509,
+          "after_offset_us": 3,
+          "observations": [
+            "gray-time-0040",
+            "gray-time-0041",
+            "gray-time-0042"
+          ],
+          "bundle": "artifacts/snapshots/2026-10-24T014455Z/independent-Gray-clocks-v3",
+          "runtime_backend": "Native FRR/OVS with actual Debian Linux Outer and FreeBSD Inner kernels"
+        }
+      ],
+      "positive_control": "gray-time-0044",
+      "boot_ids": [
+        "d767a2e6-6a5b-4222-8840-c73cff11f1c2",
+        "a440bfd1-7436-4f36-a5f8-bbcf488a73e6"
+      ]
+    }
+  ],
+  "server_source_sha256": "46dec72a6f07f993e41ea83fb9ccb3b6e4cf3d93c37dd1613e43a4f690f5e1bc",
+  "gray_collector_sha256": "101a95264a4f2c3a1753595a655a197fcce3fe6134321b01a5c459b88e972be2",
+  "sample_tolerance_microseconds": 1000,
+  "whole_RG042_established": false,
+  "limits": [
+    "Only actual successful -b adjustments count. Query-only ntpdate output sometimes says step time and cannot substitute for an adjustment command.",
+    "Offsets are NTP-reported estimates; collector truth and client implementation remain assumptions.",
+    "Red records have start/end times. The pinned Gray collector records one timestamp after each synchronous command returns. These are collector completion times, unaffected by guest clock steps.",
+    "The source servers derive time from their worker clocks and have no supplied organizational trust record or authenticated-time guarantee.",
+    "The Gray experiment uses a Gray data interface. Compliance with the requirement's Gray Management Network placement has not been established.",
+    "The temporary servers were removed after collection. No persistent service or future drift bound is established.",
+    "The Red and Gray observations concern different named experimental deployments and collection intervals.",
+    "The expected two-client inventory is complete for each selected correction experiment, not for every component to which SR-3/SR-4 apply."
+  ]
+}

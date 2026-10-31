@@ -1,0 +1,55 @@
+{
+  "at": "2026-10-24T04:46:39.809220+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T04:46:26.953974+00:00",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "twinet-msc:mldsa-construction-v2",
+        "--format",
+        "{{json .}}"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Id\":\"sha256:e8c88209d3ce0e2e56e016f57a3cd3876a3a2f1017f3e382b14285ba5da02d31\",\"RepoTags\":[\"twinet-msc:mldsa-construction-v2\"],\"RepoDigests\":[\"twinet-msc@sha256:e8c88209d3ce0e2e56e016f57a3cd3876a3a2f1017f3e382b14285ba5da02d31\"],\"Created\":\"2026-10-17T21:17:49.04683429Z\",\"Config\":{\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Labels\":{\"org.opencontainers.image.created\":\"2026-10-06T21:25:30.040262+00:00\",\"org.opencontainers.image.description\":\"The Ubuntu container image maintained by Canonical\\n\\nUbuntu is a Debian-based Linux operating system that runs from the desktop to the cloud, to all your internet connected things.\\nIt is the world's most popular operating system across public clouds and OpenStack clouds.\\nIt is the number one platform for containers; from Docker to Kubernetes to LXD, Ubuntu can run your containers at scale.\\nFast, secure and simple, Ubuntu powers millions of PCs worldwide.\\n\",\"org.opencontainers.image.revision\":\"eb72966d2211141c73d4f66e4825c406a0811c3e\",\"org.opencontainers.image.title\":\"ubuntu\",\"org.opencontainers.image.version\":\"26.04\"}},\"Architecture\":\"amd64\",\"Os\":\"linux\",\"Size\":291743355,\"RootFS\":{\"Type\":\"layers\",\"Layers\":[\"sha256:edf698db7561f9f53f2b22b9d417f9fde0be95175736b6954c7ef917c7114cb1\",\"sha256:6be3abfee1446ddfb97160837ec6ea1edec87a006b73a02dca2bae5de070302e\",\"sha256:91881e643afa45ef2dae290f11c206f5539fae8ff6bf9bdc2bb24d7f111cca47\",\"sha256:8ccc3aaa6fd6dc076302bbf7c5cb2e1b1a7f47aa0bcb6998583d2322157b9a35\",\"sha256:275ee2a83a88f12231d4066f30ef792dc649708c53308e598323d5738a4a57e6\",\"sha256:4977a22b9140b629352f7060acbd91d0e784902fcb6ac74c6b531018fa542e0d\"]},\"Metadata\":{\"LastTagTime\":\"2026-10-17T21:17:50.699045088Z\"},\"Descriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:e8c88209d3ce0e2e56e016f57a3cd3876a3a2f1017f3e382b14285ba5da02d31\",\"size\":1828}}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:46:27.006015+00:00",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "tdn-hostap-pq:20261024-v3",
+        "--format",
+        "{{json .}}"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Id\":\"sha256:b6bb2db742723c974b511b82c98a4c17238efd6cf5a5b84be37b7f44392a19d5\",\"RepoTags\":[\"tdn-hostap-pq:20261024-v3\"],\"RepoDigests\":[\"tdn-hostap-pq@sha256:b6bb2db742723c974b511b82c98a4c17238efd6cf5a5b84be37b7f44392a19d5\"],\"Created\":\"2026-10-24T03:06:15.045201268Z\",\"Config\":{\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Labels\":{\"org.opencontainers.image.created\":\"2026-10-06T21:25:30.040262+00:00\",\"org.opencontainers.image.description\":\"The Ubuntu container image maintained by Canonical\\n\\nUbuntu is a Debian-based Linux operating system that runs from the desktop to the cloud, to all your internet connected things.\\nIt is the world's most popular operating system across public clouds and OpenStack clouds.\\nIt is the number one platform for containers; from Docker to Kubernetes to LXD, Ubuntu can run your containers at scale.\\nFast, secure and simple, Ubuntu powers millions of PCs worldwide.\\n\",\"org.opencontainers.image.revision\":\"eb72966d2211141c73d4f66e4825c406a0811c3e\",\"org.opencontainers.image.title\":\"ubuntu\",\"org.opencontainers.image.version\":\"26.04\"}},\"Architecture\":\"amd64\",\"Os\":\"linux\",\"Size\":292369752,\"RootFS\":{\"Type\":\"layers\",\"Layers\":[\"sha256:edf698db7561f9f53f2b22b9d417f9fde0be95175736b6954c7ef917c7114cb1\",\"sha256:6be3abfee1446ddfb97160837ec6ea1edec87a006b73a02dca2bae5de070302e\",\"sha256:91881e643afa45ef2dae290f11c206f5539fae8ff6bf9bdc2bb24d7f111cca47\",\"sha256:8ccc3aaa6fd6dc076302bbf7c5cb2e1b1a7f47aa0bcb6998583d2322157b9a35\",\"sha256:275ee2a83a88f12231d4066f30ef792dc649708c53308e598323d5738a4a57e6\",\"sha256:4977a22b9140b629352f7060acbd91d0e784902fcb6ac74c6b531018fa542e0d\",\"sha256:d2ec018148e548dc4bb95e11cea6f729c297992a3b45f9dadd6e39f88427c614\"]},\"Metadata\":{\"LastTagTime\":\"2026-10-24T03:06:16.254430295Z\"},\"Descriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:b6bb2db742723c974b511b82c98a4c17238efd6cf5a5b84be37b7f44392a19d5\",\"size\":2045}}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:46:39.808605+00:00",
+      "command": [
+        "docker save selected images",
+        "gzip -1"
+      ],
+      "returncodes": [
+        0,
+        0
+      ],
+      "stderr": ""
+    },
+    {
+      "command": [
+        "go",
+        "version",
+        "-m"
+      ],
+      "status": "Go tool unavailable on this worker; exact binary build information is captured separately with the local Go tool."
+    }
+  ],
+  "error": null,
+  "scope": "Exact currently used generic runtime images, without container writable layers or credential/configuration bind mounts. Docker image inspection preserves actual content IDs and build metadata. Current source Dockerfiles and a dated ImageLock remain separate provenance and are not asserted to equal these builds."
+}

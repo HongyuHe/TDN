@@ -1,0 +1,1070 @@
+{
+  "at": "2026-10-24T03:49:42.538659+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:49:29.909406+00:00",
+      "command": [
+        "apparmor_parser",
+        "-r",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/lsm-gateway-v5/apparmor.profile"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:29.920419+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-x509",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/ca.key",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/ca.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-subj",
+        "/CN=LSM-v3-Test-CA",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T03:49:29.931087+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/A/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/A.csr",
+        "-sha384",
+        "-subj",
+        "/CN=A.lsm.test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T03:49:29.969731+00:00",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/A.csr",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/ca.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/ca.key",
+        "-CAcreateserial",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/A/x509/cert.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/A.ext"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = A.lsm.test\n"
+    },
+    {
+      "at": "2026-10-24T03:49:30.123954+00:00",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-lsm-a",
+        "--network",
+        "none",
+        "--cap-add",
+        "NET_ADMIN",
+        "--cap-add",
+        "NET_RAW",
+        "--read-only",
+        "--tmpfs",
+        "/run",
+        "--tmpfs",
+        "/tmp",
+        "--security-opt",
+        "apparmor=tdn-lsm-device-v3",
+        "--mount",
+        "type=bind,src=/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/A,dst=/etc/swanctl,readonly",
+        "--entrypoint",
+        "sleep",
+        "twinet-msc:construction-v2",
+        "infinity"
+      ],
+      "returncode": 0,
+      "stdout": "13b1302f8f8094ff7b5d67a69a58cd529da609c08dae6567c6ac491f3dd0db06\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.144841+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "tcv3-lsm-a"
+      ],
+      "returncode": 0,
+      "stdout": "78257\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.149206+00:00",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "ls30",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "lp30"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.173269+00:00",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "ls30",
+        "netns",
+        "78257"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.273348+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ip",
+        "link",
+        "set",
+        "ls30",
+        "name",
+        "eth0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.349007+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ip",
+        "link",
+        "set",
+        "eth0",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.424146+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.496201+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ip",
+        "addr",
+        "add",
+        "10.254.31.1/30",
+        "dev",
+        "eth0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.576027+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ip",
+        "addr",
+        "add",
+        "10.251.1.1/32",
+        "dev",
+        "lo"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.650410+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ip",
+        "route",
+        "add",
+        "10.251.2.1/32",
+        "via",
+        "10.254.31.2"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.732603+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "iptables",
+        "-A",
+        "OUTPUT",
+        "-s",
+        "10.251.1.1/32",
+        "-d",
+        "10.251.2.1/32",
+        "-m",
+        "policy",
+        "--dir",
+        "out",
+        "--pol",
+        "ipsec",
+        "-j",
+        "ACCEPT"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.813510+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "iptables",
+        "-A",
+        "OUTPUT",
+        "-s",
+        "10.251.1.1/32",
+        "-d",
+        "10.251.2.1/32",
+        "-j",
+        "REJECT"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.910937+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "iptables-save",
+        "-c"
+      ],
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 03:49:30 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD ACCEPT [0:0]\n:OUTPUT ACCEPT [0:0]\n[0:0] -A OUTPUT -s 10.251.1.1/32 -d 10.251.2.1/32 -m policy --dir out --pol ipsec -j ACCEPT\n[0:0] -A OUTPUT -s 10.251.1.1/32 -d 10.251.2.1/32 -j REJECT --reject-with icmp-port-unreachable\nCOMMIT\n# Completed on Sat Oct 24 03:49:30 2026\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:30.982245+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "tcv3-lsm-a",
+        "sh",
+        "-c",
+        "exec /usr/lib/ipsec/charon > /tmp/charon.log 2>&1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:31.582573+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "sh",
+        "-c",
+        "exec swanctl --load-all"
+      ],
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/ca.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/x509crl' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "at": "2026-10-24T03:49:31.667547+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "cat",
+        "/proc/self/attr/current"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-device-v3 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:31.742208+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ps",
+        "-eo",
+        "pid,comm,args"
+      ],
+      "returncode": 0,
+      "stdout": "    PID COMMAND         COMMAND\n      1 sleep           sleep infinity\n     61 charon          /usr/lib/ipsec/charon\n     99 ps              ps -eo pid,comm,args\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:31.820606+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "stat",
+        "-c",
+        "%a %U %n",
+        "/etc/swanctl/private/key.pem"
+      ],
+      "returncode": 0,
+      "stdout": "600 root /etc/swanctl/private/key.pem\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:31.922059+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "python3",
+        "-c",
+        "import os,json;result='unexpected-open';\ntry:\n fd=os.open('/etc/swanctl/private/key.pem',os.O_RDONLY);os.close(fd)\nexcept PermissionError:result='denied'\nprint(json.dumps({'root_key_open':result}))"
+      ],
+      "returncode": 0,
+      "stdout": "{\"root_key_open\": \"denied\"}\n",
+      "stderr": "",
+      "probe": "root-nongateway-key-open",
+      "expected_result": "denied",
+      "observed_result": "denied"
+    },
+    {
+      "at": "2026-10-24T03:49:31.934944+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/B/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/B.csr",
+        "-sha384",
+        "-subj",
+        "/CN=B.lsm.test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T03:49:31.974879+00:00",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/B.csr",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/ca.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/ca.key",
+        "-CAcreateserial",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/B/x509/cert.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/B.ext"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = B.lsm.test\n"
+    },
+    {
+      "at": "2026-10-24T03:49:32.122740+00:00",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-lsm-b",
+        "--network",
+        "none",
+        "--cap-add",
+        "NET_ADMIN",
+        "--cap-add",
+        "NET_RAW",
+        "--read-only",
+        "--tmpfs",
+        "/run",
+        "--tmpfs",
+        "/tmp",
+        "--security-opt",
+        "apparmor=tdn-lsm-device-v3",
+        "--mount",
+        "type=bind,src=/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v5/B,dst=/etc/swanctl,readonly",
+        "--entrypoint",
+        "sleep",
+        "twinet-msc:construction-v2",
+        "infinity"
+      ],
+      "returncode": 0,
+      "stdout": "bb56c800bab911905827df50ce58a0fc080f9e0a98f7d763369d90496f3d5198\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.142919+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "tcv3-lsm-b"
+      ],
+      "returncode": 0,
+      "stdout": "78897\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.159467+00:00",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "lp30",
+        "netns",
+        "78897"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.263019+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ip",
+        "link",
+        "set",
+        "lp30",
+        "name",
+        "eth0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.346903+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ip",
+        "link",
+        "set",
+        "eth0",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.427902+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.503104+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ip",
+        "addr",
+        "add",
+        "10.254.31.2/30",
+        "dev",
+        "eth0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.583755+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ip",
+        "addr",
+        "add",
+        "10.251.2.1/32",
+        "dev",
+        "lo"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.655349+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ip",
+        "route",
+        "add",
+        "10.251.1.1/32",
+        "via",
+        "10.254.31.1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.727167+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "iptables",
+        "-A",
+        "OUTPUT",
+        "-s",
+        "10.251.2.1/32",
+        "-d",
+        "10.251.1.1/32",
+        "-m",
+        "policy",
+        "--dir",
+        "out",
+        "--pol",
+        "ipsec",
+        "-j",
+        "ACCEPT"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.799544+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "iptables",
+        "-A",
+        "OUTPUT",
+        "-s",
+        "10.251.2.1/32",
+        "-d",
+        "10.251.1.1/32",
+        "-j",
+        "REJECT"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.873506+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "iptables-save",
+        "-c"
+      ],
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 03:49:32 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD ACCEPT [0:0]\n:OUTPUT ACCEPT [0:0]\n[0:0] -A OUTPUT -s 10.251.2.1/32 -d 10.251.1.1/32 -m policy --dir out --pol ipsec -j ACCEPT\n[0:0] -A OUTPUT -s 10.251.2.1/32 -d 10.251.1.1/32 -j REJECT --reject-with icmp-port-unreachable\nCOMMIT\n# Completed on Sat Oct 24 03:49:32 2026\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:32.947263+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "tcv3-lsm-b",
+        "sh",
+        "-c",
+        "exec /usr/lib/ipsec/charon > /tmp/charon.log 2>&1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:33.539356+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "sh",
+        "-c",
+        "exec swanctl --load-all"
+      ],
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/ca.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/x509crl' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "at": "2026-10-24T03:49:33.636993+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "cat",
+        "/proc/self/attr/current"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-device-v3 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:33.718596+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ps",
+        "-eo",
+        "pid,comm,args"
+      ],
+      "returncode": 0,
+      "stdout": "    PID COMMAND         COMMAND\n      1 sleep           sleep infinity\n     62 charon          /usr/lib/ipsec/charon\n    100 ps              ps -eo pid,comm,args\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:33.803511+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "stat",
+        "-c",
+        "%a %U %n",
+        "/etc/swanctl/private/key.pem"
+      ],
+      "returncode": 0,
+      "stdout": "600 root /etc/swanctl/private/key.pem\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:33.910784+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "python3",
+        "-c",
+        "import os,json;result='unexpected-open';\ntry:\n fd=os.open('/etc/swanctl/private/key.pem',os.O_RDONLY);os.close(fd)\nexcept PermissionError:result='denied'\nprint(json.dumps({'root_key_open':result}))"
+      ],
+      "returncode": 0,
+      "stdout": "{\"root_key_open\": \"denied\"}\n",
+      "stderr": "",
+      "probe": "root-nongateway-key-open",
+      "expected_result": "denied",
+      "observed_result": "denied"
+    },
+    {
+      "at": "2026-10-24T03:49:34.043450+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "sh",
+        "-c",
+        "exec swanctl --initiate --child protected"
+      ],
+      "returncode": 0,
+      "stdout": "[IKE] initiating IKE_SA msc[1] to 10.254.31.2\n[ENC] generating IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) N(FRAG_SUP) N(HASH_ALG) N(REDIR_SUP) ]\n[NET] sending packet: from 10.254.31.1[500] to 10.254.31.2[500] (296 bytes)\n[NET] received packet: from 10.254.31.2[500] to 10.254.31.1[500] (329 bytes)\n[ENC] parsed IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) CERTREQ N(FRAG_SUP) N(HASH_ALG) N(CHDLESS_SUP) N(MULT_AUTH) ]\n[CFG] selected proposal: IKE:AES_GCM_16_256/PRF_HMAC_SHA2_384/ECP_384\n[IKE] received cert request for \"CN=LSM-v3-Test-CA\"\n[IKE] sending cert request for \"CN=LSM-v3-Test-CA\"\n[IKE] authentication of 'A.lsm.test' (myself) with ECDSA_WITH_SHA384_DER successful\n[IKE] sending end entity cert \"CN=A.lsm.test\"\n[IKE] establishing CHILD_SA protected{1}\n[ENC] generating IKE_AUTH request 1 [ IDi CERT N(INIT_CONTACT) CERTREQ IDr AUTH SA TSi TSr N(MOBIKE_SUP) N(NO_ADD_ADDR) N(MULT_AUTH) N(EAP_ONLY) N(MSG_ID_SYN_SUP) ]\n[NET] sending packet: from 10.254.31.1[4500] to 10.254.31.2[4500] (867 bytes)\n[NET] received packet: from 10.254.31.2[4500] to 10.254.31.1[4500] (792 bytes)\n[ENC] parsed IKE_AUTH response 1 [ IDr CERT AUTH SA TSi TSr N(MOBIKE_SUP) N(NO_ADD_ADDR) ]\n[IKE] received end entity cert \"CN=B.lsm.test\"\n[CFG]   using certificate \"CN=B.lsm.test\"\n[CFG]   using trusted ca certificate \"CN=LSM-v3-Test-CA\"\n[CFG]   reached self-signed root ca with a path length of 0\n[CFG] checking certificate status of \"CN=B.lsm.test\"\n[CFG] certificate status is not available\n[IKE] authentication of 'B.lsm.test' with ECDSA_WITH_SHA384_DER successful\n[IKE] peer supports MOBIKE\n[IKE] IKE_SA msc[1] established between 10.254.31.1[A.lsm.test]...10.254.31.2[B.lsm.test]\n[IKE] scheduling reauthentication in 9906s\n[IKE] maximum IKE_SA lifetime 10986s\n[CFG] selected proposal: ESP:AES_GCM_16_256/NO_EXT_SEQ\n[IKE] CHILD_SA protected{1} established with SPIs c8524b5f_i ce037b51_o and TS 10.251.1.1/32 === 10.251.2.1/32\ninitiate completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:49:34.125180+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "sh",
+        "-c",
+        "exec swanctl --list-sas"
+      ],
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, 5cae5cfaa91dee68_i* a57f14b36037a645_r\n  local  'A.lsm.test' @ 10.254.31.1[4500]\n  remote 'B.lsm.test' @ 10.254.31.2[4500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 0s ago, reauth in 9906s\n  protected: #1, reqid 1, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 0s ago, rekeying in 3398s, expires in 3960s\n    in  c8524b5f,      0 bytes,     0 packets\n    out ce037b51,      0 bytes,     0 packets\n    local  10.251.1.1/32\n    remote 10.251.2.1/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:49:34.201266+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "returncode": 0,
+      "stdout": "src 10.254.31.1 dst 10.254.31.2\n\tproto esp spi 0xce037b51(3456334673) reqid 1(0x00000001) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 3398(sec), hard 3960(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  0(bytes), 0(packets)\n\t  add 2026-10-24 03:49:34 use -\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 10.254.31.2 dst 10.254.31.1\n\tproto esp spi 0xc8524b5f(3360836447) reqid 1(0x00000001) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 3445(sec), hard 3960(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  0(bytes), 0(packets)\n\t  add 2026-10-24 03:49:34 use -\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:34.289616+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "sh",
+        "-c",
+        "for p in /proc/[0-9]*/comm; do if test \"$(cat \"$p\" 2>/dev/null)\" = charon; then cat \"${p%/comm}/attr/current\"; fi; done"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-gateway-v3 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:34.382974+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "sh",
+        "-c",
+        "exec swanctl --list-sas"
+      ],
+      "returncode": 0,
+      "stdout": "msc: #1, ESTABLISHED, IKEv2, 5cae5cfaa91dee68_i a57f14b36037a645_r*\n  local  'B.lsm.test' @ 10.254.31.2[4500]\n  remote 'A.lsm.test' @ 10.254.31.1[4500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 0s ago, reauth in 10072s\n  protected: #1, reqid 1, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 0s ago, rekeying in 3277s, expires in 3960s\n    in  ce037b51,      0 bytes,     0 packets\n    out c8524b5f,      0 bytes,     0 packets\n    local  10.251.2.1/32\n    remote 10.251.1.1/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:49:34.458343+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ip",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "returncode": 0,
+      "stdout": "src 10.254.31.2 dst 10.254.31.1\n\tproto esp spi 0xc8524b5f(3360836447) reqid 1(0x00000001) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 3286(sec), hard 3960(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  0(bytes), 0(packets)\n\t  add 2026-10-24 03:49:34 use -\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 10.254.31.1 dst 10.254.31.2\n\tproto esp spi 0xce037b51(3456334673) reqid 1(0x00000001) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 3277(sec), hard 3960(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  0(bytes), 0(packets)\n\t  add 2026-10-24 03:49:34 use -\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:34.539406+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "sh",
+        "-c",
+        "for p in /proc/[0-9]*/comm; do if test \"$(cat \"$p\" 2>/dev/null)\" = charon; then cat \"${p%/comm}/attr/current\"; fi; done"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-gateway-v3 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:36.657876+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ping",
+        "-n",
+        "-I",
+        "10.251.1.1",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.251.2.1"
+      ],
+      "returncode": 0,
+      "stdout": "PING 10.251.2.1 (10.251.2.1) from 10.251.1.1 : 56(84) bytes of data.\n64 bytes from 10.251.2.1: icmp_seq=1 ttl=64 time=0.101 ms\n64 bytes from 10.251.2.1: icmp_seq=2 ttl=64 time=0.082 ms\n64 bytes from 10.251.2.1: icmp_seq=3 ttl=64 time=0.077 ms\n\n--- 10.251.2.1 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2044ms\nrtt min/avg/max/mdev = 0.077/0.086/0.101/0.010 ms\n",
+      "stderr": "",
+      "probe": "confined-gateway-IPsec-data",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "at": "2026-10-24T03:49:38.769699+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "ping",
+        "-n",
+        "-I",
+        "10.251.2.1",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.251.1.1"
+      ],
+      "returncode": 0,
+      "stdout": "PING 10.251.1.1 (10.251.1.1) from 10.251.2.1 : 56(84) bytes of data.\n64 bytes from 10.251.1.1: icmp_seq=1 ttl=64 time=0.110 ms\n64 bytes from 10.251.1.1: icmp_seq=2 ttl=64 time=0.076 ms\n64 bytes from 10.251.1.1: icmp_seq=3 ttl=64 time=0.072 ms\n\n--- 10.251.1.1 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2035ms\nrtt min/avg/max/mdev = 0.072/0.086/0.110/0.017 ms\n",
+      "stderr": "",
+      "probe": "confined-gateway-IPsec-data",
+      "expected_result": "delivered",
+      "observed_result": "delivered"
+    },
+    {
+      "at": "2026-10-24T03:49:38.855182+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "sh",
+        "-c",
+        "exec swanctl --terminate --ike msc"
+      ],
+      "returncode": 0,
+      "stdout": "[IKE] deleting IKE_SA msc[1] between 10.254.31.1[A.lsm.test]...10.254.31.2[B.lsm.test]\n[IKE] sending DELETE for IKE_SA msc[1]\n[ENC] generating INFORMATIONAL request 2 [ D ]\n[NET] sending packet: from 10.254.31.1[4500] to 10.254.31.2[4500] (65 bytes)\n[NET] received packet: from 10.254.31.2[4500] to 10.254.31.1[4500] (57 bytes)\n[ENC] parsed INFORMATIONAL response 2 [ ]\n[IKE] IKE_SA deleted\nterminate completed successfully\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "at": "2026-10-24T03:49:38.939406+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "sh",
+        "-c",
+        "exec swanctl --terminate --ike msc"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nterminate failed: no matching SAs to terminate found\n"
+    },
+    {
+      "at": "2026-10-24T03:49:42.073951+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "ping",
+        "-n",
+        "-I",
+        "10.251.1.1",
+        "-c",
+        "3",
+        "-W",
+        "1",
+        "10.251.2.1"
+      ],
+      "returncode": 1,
+      "stdout": "PING 10.251.2.1 (10.251.2.1) from 10.251.1.1 : 56(84) bytes of data.\nFrom 10.251.1.1 icmp_seq=1 Destination Port Unreachable\nFrom 10.251.1.1 icmp_seq=2 Destination Port Unreachable\nFrom 10.251.1.1 icmp_seq=3 Destination Port Unreachable\n\n--- 10.251.2.1 ping statistics ---\n3 packets transmitted, 0 received, +3 errors, 100% packet loss, time 2060ms\n\n",
+      "stderr": "ping: sendmsg: Operation not permitted\nping: sendmsg: Operation not permitted\nping: sendmsg: Operation not permitted\n",
+      "probe": "LSM-case-SA-loss",
+      "expected_result": "no_reply",
+      "observed_result": "no_reply"
+    },
+    {
+      "at": "2026-10-24T03:49:42.080018+00:00",
+      "command": [
+        "journalctl",
+        "-k",
+        "--since",
+        "5 minutes ago",
+        "--grep",
+        "tdn-lsm",
+        "--no-pager"
+      ],
+      "returncode": 0,
+      "stdout": "Oct 23 21:46:41 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813601.970:124): apparmor=\"STATUS\" operation=\"profile_load\" profile=\"unconfined\" name=\"tdn-lsm-device-v3\" pid=76221 comm=\"apparmor_parser\"\nOct 23 21:46:41 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813601.970:125): apparmor=\"STATUS\" operation=\"profile_load\" profile=\"unconfined\" name=\"tdn-lsm-gateway-v3\" pid=76221 comm=\"apparmor_parser\"\nOct 23 21:47:17 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813637.573:126): apparmor=\"STATUS\" operation=\"profile_replace\" info=\"same as current profile, skipping\" profile=\"unconfined\" name=\"tdn-lsm-device-v3\" pid=76450 comm=\"apparmor_parser\"\nOct 23 21:47:17 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813637.573:127): apparmor=\"STATUS\" operation=\"profile_replace\" info=\"same as current profile, skipping\" profile=\"unconfined\" name=\"tdn-lsm-gateway-v3\" pid=76450 comm=\"apparmor_parser\"\nOct 23 21:47:19 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813639.521:128): apparmor=\"DENIED\" operation=\"open\" class=\"file\" profile=\"tdn-lsm-device-v3\" name=\"/\" pid=77108 comm=\"python3\" requested_mask=\"r\" denied_mask=\"r\" fsuid=0 ouid=0\nOct 23 21:47:21 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813641.505:129): apparmor=\"DENIED\" operation=\"open\" class=\"file\" profile=\"tdn-lsm-device-v3\" name=\"/\" pid=77656 comm=\"python3\" requested_mask=\"r\" denied_mask=\"r\" fsuid=0 ouid=0\nOct 23 21:49:29 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813769.907:130): apparmor=\"STATUS\" operation=\"profile_replace\" profile=\"unconfined\" name=\"tdn-lsm-device-v3\" pid=78212 comm=\"apparmor_parser\"\nOct 23 21:49:29 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813769.908:131): apparmor=\"STATUS\" operation=\"profile_replace\" info=\"same as current profile, skipping\" profile=\"unconfined\" name=\"tdn-lsm-gateway-v3\" pid=78212 comm=\"apparmor_parser\"\nOct 23 21:49:31 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813771.914:132): apparmor=\"DENIED\" operation=\"open\" class=\"file\" profile=\"tdn-lsm-device-v3\" name=\"/etc/swanctl/private/key.pem\" pid=78846 comm=\"python3\" requested_mask=\"r\" denied_mask=\"r\" fsuid=0 ouid=0\nOct 23 21:49:33 node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu kernel: audit: type=1400 audit(1792813773.903:133): apparmor=\"DENIED\" operation=\"open\" class=\"file\" profile=\"tdn-lsm-device-v3\" name=\"/etc/swanctl/private/key.pem\" pid=79386 comm=\"python3\" requested_mask=\"r\" denied_mask=\"r\" fsuid=0 ouid=0\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:42.153657+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "cat",
+        "/tmp/charon.log"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:42.229788+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-a",
+        "sh",
+        "-c",
+        "for p in /proc/[0-9]*/comm; do if test \"$(cat \"$p\" 2>/dev/null)\" = charon; then cat \"${p%/comm}/attr/current\"; fi; done"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-gateway-v3 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:42.324029+00:00",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "tcv3-lsm-a"
+      ],
+      "returncode": 0,
+      "stdout": "tcv3-lsm-a\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:42.395944+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "cat",
+        "/tmp/charon.log"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:42.474880+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm-b",
+        "sh",
+        "-c",
+        "for p in /proc/[0-9]*/comm; do if test \"$(cat \"$p\" 2>/dev/null)\" = charon; then cat \"${p%/comm}/attr/current\"; fi; done"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-gateway-v3 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:49:42.538592+00:00",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "tcv3-lsm-b"
+      ],
+      "returncode": 0,
+      "stdout": "tcv3-lsm-b\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "runtime_backend": "supplemental-Linux-Docker-IKEv2-and-host-enforced-AppArmor",
+  "scope": [
+    "Fresh owned read-only containers run actual IKEv2 gateways under explicit AppArmor profiles. The general device profile denies the private key subtree; immutable charon and swanctl executables transition to the gateway profile that can load the keys. Non-gateway root opens are tested without reading or exporting any key bytes.",
+    "The complete effective policy and executable/profile identities must support the claims. Private credential provisioning and the host root/Docker policy loader remain trusted laboratory controls. No all-interface, host administrator, hardware tamper, approved-product or universal noninterference guarantee follows from this bounded case.",
+    "Mandatory policy is supplemental and is not asserted to be installed on the separate original native profiles or FreeBSD Inners."
+  ]
+}

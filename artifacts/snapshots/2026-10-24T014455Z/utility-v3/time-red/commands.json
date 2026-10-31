@@ -1,0 +1,656 @@
+[
+  {
+    "id": "cmd-0000",
+    "started_at": "2026-10-24T02:03:57.623173+00:00",
+    "ended_at": "2026-10-24T02:03:57.628111+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tcv3u-CLIENT"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0001",
+    "started_at": "2026-10-24T02:03:57.628173+00:00",
+    "ended_at": "2026-10-24T02:03:57.640104+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0002",
+    "started_at": "2026-10-24T02:03:57.640137+00:00",
+    "ended_at": "2026-10-24T02:03:57.656430+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0003",
+    "started_at": "2026-10-24T02:03:57.656477+00:00",
+    "ended_at": "2026-10-24T02:03:57.662410+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tcv3u-TIME"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0004",
+    "started_at": "2026-10-24T02:03:57.662441+00:00",
+    "ended_at": "2026-10-24T02:03:57.675806+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0005",
+    "started_at": "2026-10-24T02:03:57.675837+00:00",
+    "ended_at": "2026-10-24T02:03:57.685743+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "sysctl",
+      "-qw",
+      "net.ipv4.ip_forward=1",
+      "net.ipv6.conf.all.forwarding=1",
+      "net.ipv4.conf.all.rp_filter=0",
+      "net.ipv4.conf.default.rp_filter=0"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0006",
+    "started_at": "2026-10-24T02:03:57.685781+00:00",
+    "ended_at": "2026-10-24T02:03:57.695539+00:00",
+    "command": [
+      "ip",
+      "link",
+      "add",
+      "tcv3ux00",
+      "type",
+      "veth",
+      "peer",
+      "name",
+      "tcv3uy00"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0007",
+    "started_at": "2026-10-24T02:03:57.695573+00:00",
+    "ended_at": "2026-10-24T02:03:57.741776+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "tcv3ux00",
+      "netns",
+      "tcv3u-CLIENT"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0008",
+    "started_at": "2026-10-24T02:03:57.741800+00:00",
+    "ended_at": "2026-10-24T02:03:57.774410+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "link",
+      "set",
+      "tcv3ux00",
+      "name",
+      "inside"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0009",
+    "started_at": "2026-10-24T02:03:57.774432+00:00",
+    "ended_at": "2026-10-24T02:03:57.784511+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "link",
+      "set",
+      "inside",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0010",
+    "started_at": "2026-10-24T02:03:57.784528+00:00",
+    "ended_at": "2026-10-24T02:03:57.793823+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "address",
+      "add",
+      "10.95.0.1/30",
+      "dev",
+      "inside"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0011",
+    "started_at": "2026-10-24T02:03:57.793841+00:00",
+    "ended_at": "2026-10-24T02:03:57.814897+00:00",
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "tcv3uy00",
+      "netns",
+      "tcv3u-TIME"
+    ],
+    "device_id": null,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0012",
+    "started_at": "2026-10-24T02:03:57.814929+00:00",
+    "ended_at": "2026-10-24T02:03:57.837833+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "link",
+      "set",
+      "tcv3uy00",
+      "name",
+      "time"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0013",
+    "started_at": "2026-10-24T02:03:57.837889+00:00",
+    "ended_at": "2026-10-24T02:03:57.847248+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "link",
+      "set",
+      "time",
+      "mtu",
+      "1500",
+      "up"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0014",
+    "started_at": "2026-10-24T02:03:57.847279+00:00",
+    "ended_at": "2026-10-24T02:03:57.856234+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "address",
+      "add",
+      "10.95.0.2/30",
+      "dev",
+      "time"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0015",
+    "started_at": "2026-10-24T02:03:58.057219+00:00",
+    "ended_at": "2026-10-24T02:03:58.108424+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "python3",
+      "-c",
+      "import socket,struct,time,json;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(3);t=time.time();v=t+2208988800;q=bytearray(48);q[0]=35;q[40:48]=struct.pack('!II',int(v),int((v%1)*2**32));s.sendto(q,('10.95.0.2',123));r,addr=s.recvfrom(1024);end=time.time();x,y=struct.unpack('!II',r[40:48]);print(json.dumps({'server':addr,'mode':r[0]&7,'stratum':r[1],'origin_matches':r[24:32]==q[40:48],'round_trip_seconds':end-t,'estimated_offset_seconds':x+y/2**32-2208988800-(t+end)/2,'system_clock_adjusted':False}))"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "{\"server\": [\"10.95.0.2\", 123], \"mode\": 4, \"stratum\": 2, \"origin_matches\": true, \"round_trip_seconds\": 0.0014433860778808594, \"estimated_offset_seconds\": 0.0006015300750732422, \"system_clock_adjusted\": false}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0016",
+    "started_at": "2026-10-24T02:03:58.108467+00:00",
+    "ended_at": "2026-10-24T02:03:58.155486+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "python3",
+      "-c",
+      "import socket,struct,time,json;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(3);t=time.time();v=t+2208988800;q=bytearray(48);q[0]=35;q[40:48]=struct.pack('!II',int(v),int((v%1)*2**32));s.sendto(q,('10.95.0.2',123));r,addr=s.recvfrom(1024);end=time.time();x,y=struct.unpack('!II',r[40:48]);print(json.dumps({'server':addr,'mode':r[0]&7,'stratum':r[1],'origin_matches':r[24:32]==q[40:48],'round_trip_seconds':end-t,'estimated_offset_seconds':x+y/2**32-2208988800-(t+end)/2,'system_clock_adjusted':False}))"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "{\"server\": [\"10.95.0.2\", 123], \"mode\": 4, \"stratum\": 2, \"origin_matches\": true, \"round_trip_seconds\": 0.000171661376953125, \"estimated_offset_seconds\": 9.059906005859375e-06, \"system_clock_adjusted\": false}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0017",
+    "started_at": "2026-10-24T02:03:58.155520+00:00",
+    "ended_at": "2026-10-24T02:03:58.201502+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "python3",
+      "-c",
+      "import socket,struct,time,json;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.settimeout(3);t=time.time();v=t+2208988800;q=bytearray(48);q[0]=35;q[40:48]=struct.pack('!II',int(v),int((v%1)*2**32));s.sendto(q,('10.95.0.2',123));r,addr=s.recvfrom(1024);end=time.time();x,y=struct.unpack('!II',r[40:48]);print(json.dumps({'server':addr,'mode':r[0]&7,'stratum':r[1],'origin_matches':r[24:32]==q[40:48],'round_trip_seconds':end-t,'estimated_offset_seconds':x+y/2**32-2208988800-(t+end)/2,'system_clock_adjusted':False}))"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "{\"server\": [\"10.95.0.2\", 123], \"mode\": 4, \"stratum\": 2, \"origin_matches\": true, \"round_trip_seconds\": 0.00015687942504882812, \"estimated_offset_seconds\": 6.4373016357421875e-06, \"system_clock_adjusted\": false}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0018",
+    "started_at": "2026-10-24T02:03:58.201528+00:00",
+    "ended_at": "2026-10-24T02:03:58.211108+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "-j",
+      "-d",
+      "address"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3156,\"link_index\":3155,\"ifname\":\"inside\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"96:1c:9b:6b:e3:9a\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.95.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"inside\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::941c:9bff:fe6b:e39a\",\"prefixlen\":64,\"scope\":\"link\",\"tentative\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0019",
+    "started_at": "2026-10-24T02:03:58.211126+00:00",
+    "ended_at": "2026-10-24T02:03:58.221919+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "-j",
+      "-4",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.95.0.0/30\",\"dev\":\"inside\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.95.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.95.0.1\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.95.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.95.0.3\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.95.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0020",
+    "started_at": "2026-10-24T02:03:58.221960+00:00",
+    "ended_at": "2026-10-24T02:03:58.230974+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "-j",
+      "-6",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"fe80::/64\",\"dev\":\"inside\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"inside\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0021",
+    "started_at": "2026-10-24T02:03:58.230993+00:00",
+    "ended_at": "2026-10-24T02:03:58.240997+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "iptables-save"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0022",
+    "started_at": "2026-10-24T02:03:58.241015+00:00",
+    "ended_at": "2026-10-24T02:03:58.249362+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip6tables-save"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0023",
+    "started_at": "2026-10-24T02:03:58.249380+00:00",
+    "ended_at": "2026-10-24T02:03:58.258552+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "xfrm",
+      "policy"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0024",
+    "started_at": "2026-10-24T02:03:58.258570+00:00",
+    "ended_at": "2026-10-24T02:03:58.266949+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "-s",
+      "xfrm",
+      "state",
+      "list",
+      "nokeys"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0025",
+    "started_at": "2026-10-24T02:03:58.266966+00:00",
+    "ended_at": "2026-10-24T02:03:58.276005+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-CLIENT",
+      "ip",
+      "-s",
+      "macsec",
+      "show"
+    ],
+    "device_id": "CLIENT",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0026",
+    "started_at": "2026-10-24T02:03:58.276026+00:00",
+    "ended_at": "2026-10-24T02:03:58.286077+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "-j",
+      "-d",
+      "address"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3155,\"link_index\":3156,\"ifname\":\"time\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"36:ec:c7:51:47:70\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.95.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"time\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::34ec:c7ff:fe51:4770\",\"prefixlen\":64,\"scope\":\"link\",\"tentative\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0027",
+    "started_at": "2026-10-24T02:03:58.286114+00:00",
+    "ended_at": "2026-10-24T02:03:58.294006+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "-j",
+      "-4",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.95.0.0/30\",\"dev\":\"time\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.95.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.95.0.2\",\"dev\":\"time\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.95.0.2\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.95.0.3\",\"dev\":\"time\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.95.0.2\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0028",
+    "started_at": "2026-10-24T02:03:58.294039+00:00",
+    "ended_at": "2026-10-24T02:03:58.303329+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "-j",
+      "-6",
+      "route",
+      "show",
+      "table",
+      "all"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"fe80::/64\",\"dev\":\"time\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"time\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0029",
+    "started_at": "2026-10-24T02:03:58.303376+00:00",
+    "ended_at": "2026-10-24T02:03:58.313628+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "iptables-save"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0030",
+    "started_at": "2026-10-24T02:03:58.313659+00:00",
+    "ended_at": "2026-10-24T02:03:58.323097+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip6tables-save"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0031",
+    "started_at": "2026-10-24T02:03:58.323130+00:00",
+    "ended_at": "2026-10-24T02:03:58.331669+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "xfrm",
+      "policy"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0032",
+    "started_at": "2026-10-24T02:03:58.331702+00:00",
+    "ended_at": "2026-10-24T02:03:58.343187+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "-s",
+      "xfrm",
+      "state",
+      "list",
+      "nokeys"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0033",
+    "started_at": "2026-10-24T02:03:58.343221+00:00",
+    "ended_at": "2026-10-24T02:03:58.351994+00:00",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tcv3u-TIME",
+      "ip",
+      "-s",
+      "macsec",
+      "show"
+    ],
+    "device_id": "TIME",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

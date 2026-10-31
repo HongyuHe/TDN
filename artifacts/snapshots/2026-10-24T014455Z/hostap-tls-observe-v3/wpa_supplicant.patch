@@ -1,0 +1,12 @@
+--- a/src/crypto/tls_openssl.c
++++ b/src/crypto/tls_openssl.c
+@@ -5040,6 +5040,9 @@
+ 	}
+ 
+ 	if (SSL_is_init_finished(conn->ssl)) {
++		wpa_printf(MSG_DEBUG, "EVIDENCE effective TLS version=%s cipher=%s group=%s",
++			SSL_get_version(conn->ssl), SSL_get_cipher(conn->ssl),
++			SSL_get0_group_name(conn->ssl));
+ 		wpa_printf(MSG_DEBUG,
+ 			   "OpenSSL: Handshake finished - resumed=%d",
+ 			   tls_connection_resumed(conn->ssl_ctx, conn));

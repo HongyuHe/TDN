@@ -1,0 +1,33 @@
+#!/bin/sh
+# PROVIDE: tdn_gateway
+# REQUIRE: NETWORKING
+# KEYWORD: shutdown
+. /etc/rc.subr
+name=tdn_gateway
+rcvar=tdn_gateway_enable
+start_cmd=tdn_gateway_start
+stop_cmd=tdn_gateway_stop
+tdn_gateway_start()
+{
+ /sbin/kldstat -n ipsec >/dev/null 2>&1 || /sbin/kldload ipsec
+ /sbin/sysctl kern.crypto.allow_soft=1
+ /sbin/route delete default >/dev/null 2>&1 || true
+ /usr/bin/printf 'gateway-start %s\n' "$(/bin/date -u +%FT%TZ)" >> /var/log/tdn-lifecycle.log
+ /usr/sbin/daemon -o /var/log/tdn-charon.log -p /var/run/tdn-charon.pid /usr/local/libexec/ipsec/charon
+ n=0
+ while test "$n" -lt 20; do
+  /usr/local/sbin/swanctl --load-all && return 0
+  n=$((n+1))
+  /bin/sleep 1
+ done
+ return 1
+}
+tdn_gateway_stop()
+{
+ if test -s /var/run/tdn-charon.pid; then
+  /bin/kill "$(cat /var/run/tdn-charon.pid)" || true
+ fi
+}
+load_rc_config "$name"
+: "$tdn_gateway_enable"
+run_rc_command "$1"

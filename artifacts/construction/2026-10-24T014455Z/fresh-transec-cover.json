@@ -1,0 +1,73 @@
+{
+  "bundle": "artifacts/snapshots/2026-10-24T014455Z/outer-MACsec-cover-v4",
+  "manifest_sha256": "04ce5140239626572a4fbb646c0110d456c310e3f6b712b89bc519b05702e68d",
+  "source_sha256": "0e431d829b3dadc643d04786e5c986b8a53fa3c8a1c69b381e616c1ecd2e0a27",
+  "kernel_family_source_sha256": "b773475493c33e70e68e66092c7d778db309465f85cc0cebfcf20277e1ae190c",
+  "confidentiality_offset_bytes": 0,
+  "offset_basis": "Reviewed Linux v6.8 macsec_encrypt software path encrypts all bytes after macsec_hdr_len; observed offload=off, encrypt=true. Deployed-kernel correspondence is an explicit implementation assumption.",
+  "endpoints": [
+    {
+      "device": "OA",
+      "body_bytes": 512,
+      "header_bytes": 24,
+      "interval_ns": 20000000,
+      "queue_limit": 64,
+      "stats": {
+        "tun_received": 15,
+        "tun_delivered": 12,
+        "data_frames_sent": 12,
+        "dummy_frames_sent": 1244,
+        "oversize_drops": 0,
+        "queue_full_drops": 0,
+        "invalid_records": 0,
+        "max_queue_depth": 1,
+        "send_errors": 155,
+        "receive_link_errors": 1,
+        "shutdown_queued_packets": 0
+      },
+      "max_observed_lag_ns": 142957,
+      "attempt_count": 1411
+    },
+    {
+      "device": "OB",
+      "body_bytes": 512,
+      "header_bytes": 24,
+      "interval_ns": 20000000,
+      "queue_limit": 64,
+      "stats": {
+        "tun_received": 12,
+        "tun_delivered": 12,
+        "data_frames_sent": 12,
+        "dummy_frames_sent": 1404,
+        "oversize_drops": 0,
+        "queue_full_drops": 0,
+        "invalid_records": 0,
+        "max_queue_depth": 1,
+        "send_errors": 0,
+        "receive_link_errors": 0,
+        "shutdown_queued_packets": 0
+      },
+      "max_observed_lag_ns": 201497,
+      "attempt_count": 1416
+    }
+  ],
+  "controls": [
+    "protected-A-B-through-cover-and-MACsec",
+    "protected-B-A-through-cover-and-MACsec",
+    "Inner-SA-loss-fails-closed",
+    "restored-protected-data",
+    "Outer-MACsec-loss-fails-closed",
+    "Outer-MACsec-restored-data"
+  ],
+  "scope": [
+    "Two Outer endpoints in a supplemental namespace experiment with the OR-9 objective selected.",
+    "The Black bridge is not the Public Internet; publicInternet=false is the declared lab scope.",
+    "The review binds retained source bytes to the successful invocation path; the collector's executed-source correspondence remains trusted.",
+    "Both captured phases bind complete veth inventories, namespace peer IDs, reciprocal interface indices and BF bridge membership. The architectural roles remain declared source meanings.",
+    "Zero confidentiality offset is derived from the reviewed software path and the observed offload=off configuration; it is not a directly exported offset field or a byte-identical deployed-kernel verification.",
+    "A send event records an attempt, including errors. Per-attempt success is not exported. Failed attempts consume a queued payload.",
+    "Record length and queue safety hold for every modeled execution, under reviewed sender semantics and encodable sequence numbers.",
+    "Only equal supplied schedules/outcomes imply equal size observations. No hard real-time or traffic-independent OS schedule is assumed.",
+    "MACsec confidentiality, runtime persistence, peer authenticity, physical TRANSEC controls and organizational approval remain external to the size/queue theorem."
+  ]
+}

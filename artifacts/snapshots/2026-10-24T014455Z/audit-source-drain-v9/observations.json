@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-24T14:47:14.414793+00:00",
+  "error": "Syntax error before remote execution; no guest or collector mutation occurred.",
+  "records": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "py_compile",
+        "scripts/construction/evidence/audit_source_drain_v9.py"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "  File \"scripts/construction/evidence/audit_source_drain_v9.py\", line 15\n    r=guest('cat /var/db/tdn-audit-exporter/cursor.json; printf '\\\\n'; stat -f %z /var/db/tdn-audit-exporter/actual-audit-source.log; sha256 /var/db/tdn-audit-exporter/actual-audit-source.log');lines=r.stdout.splitlines();cursor=json.loads(lines[0]);assert cursor['offset']==int(lines[1])==size\n                                                                  ^\nSyntaxError: unexpected character after line continuation character\n"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "run": "2026-10-24T014455Z",
+  "started_at": "2026-10-24T01:46:10.983604+00:00",
+  "workspaces": {
+    "construction": {
+      "path": "/tmp/tdn-continuation-2026-10-24T014455Z/construction",
+      "wrapper": "/tmp/tdn-continuation-2026-10-24T014455Z/construction-exec",
+      "profile": "/tmp/tdn-continuation-2026-10-24T014455Z/construction.sb",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high"
+    },
+    "evidence": {
+      "path": "/tmp/tdn-continuation-2026-10-24T014455Z/evidence",
+      "wrapper": "/tmp/tdn-continuation-2026-10-24T014455Z/evidence-exec",
+      "profile": "/tmp/tdn-continuation-2026-10-24T014455Z/evidence.sb",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high"
+    }
+  },
+  "isolation_checks": [
+    {
+      "actor": "construction",
+      "archive_read_denied": true,
+      "current_development_readable": true
+    },
+    {
+      "actor": "evidence",
+      "archive_read_denied": true,
+      "current_development_readable": true
+    }
+  ],
+  "workflow_sha256": "66aa8b4d880a71961dfe9de001a54d45594a0426979fdd27d11efdf5477b624b",
+  "agents": {
+    "construction": "/root/construction_v3",
+    "evidence": "/root/evidence_v3"
+  },
+  "status": "active"
+}

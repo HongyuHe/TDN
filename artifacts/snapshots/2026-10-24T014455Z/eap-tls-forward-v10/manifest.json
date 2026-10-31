@@ -1,0 +1,54 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "started_at": "2026-10-24T02:23:26.695210+00:00",
+  "ended_at": "2026-10-24T02:23:35.238434+00:00",
+  "configuration_id": "eap-tls-forward-v10",
+  "runtime_backend": "supplemental-linux-netns-static-routes",
+  "code_sha256": "0192d006020ec9480e517621cd65da121d43012dfb2e8dc8d24ff6c1c391cd29",
+  "code_hashes": {
+    "matrix_lab.py": "0192d006020ec9480e517621cd65da121d43012dfb2e8dc8d24ff6c1c391cd29"
+  },
+  "files": [
+    {
+      "path": "AS.conf.public",
+      "sha256": "8e9bd38f0cee3bb975c64a1d7d609d0d20debc55dcc86a6eae19d6d0c5c0b9cd",
+      "bytes": 593
+    },
+    {
+      "path": "P0.conf.public",
+      "sha256": "bc9489caa6cdecd1be1d998a217b91834a27ce18be05398ff59ee131f307166b",
+      "bytes": 389
+    },
+    {
+      "path": "P1.conf.public",
+      "sha256": "bb3336b4182f4952333336e63062a0834a8664f4164515f54c7a6e0f2cd76679",
+      "bytes": 524
+    },
+    {
+      "path": "case.json",
+      "sha256": "07c84995b7e136cd63568500315fd643b7b4bac3463775c9eee06a81075926b1",
+      "bytes": 514
+    },
+    {
+      "path": "commands.json",
+      "sha256": "71da21919e0ec76d8f12fd9dfa15806e5a62753e163d84b30a92375ca169907f",
+      "bytes": 301533
+    },
+    {
+      "path": "evidence.json",
+      "sha256": "ebb7d7463792e5c7d0800c0254b87081ac40bfeea6972480707d689f87461206",
+      "bytes": 1927
+    },
+    {
+      "path": "stable-after.json",
+      "sha256": "f3b5d9bbc692ba37b1f4c136c3d80555fc78a83db93f90f54c04dbf5cb7395e8",
+      "bytes": 26616
+    }
+  ],
+  "error": null,
+  "sanitization_correction": {
+    "reason": "Debug hostapd output included derived EAP test-session material despite missing private-key exports. Every hexdump is now redacted before public export.",
+    "redaction": "All hexdump bytes, retaining diagnostic prefixes and lengths.",
+    "secret_originals_retained": false
+  }
+}

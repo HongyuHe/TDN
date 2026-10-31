@@ -1,0 +1,721 @@
+{
+  "schema_version": "csfc-multiworker-placement/v1",
+  "started_at": "2026-10-24T02:19:34.480551+00:00",
+  "ended_at": "2026-10-24T02:19:36.689207+00:00",
+  "worker": "w163",
+  "worker_host": "clnode163.clemson.cloudlab.us",
+  "action": "wire-v3",
+  "runtime_backend": "native-FRR-OVS-crossworker-VXLAN",
+  "selected_device_ids": [
+    "MW_O_A1",
+    "MW_O_A2",
+    "MW_O_B1",
+    "MW_O_B2"
+  ],
+  "assignments": {
+    "MW_BLACK": "w176",
+    "MW_GF_A": "w008",
+    "MW_R_A1": "w159",
+    "MW_I_A1": "w159",
+    "MW_G_A1": "w159",
+    "MW_O_A1": "w163",
+    "MW_OF_A1": "w176",
+    "MW_R_A2": "w159",
+    "MW_I_A2": "w159",
+    "MW_G_A2": "w159",
+    "MW_O_A2": "w163",
+    "MW_OF_A2": "w176",
+    "MW_GF_B": "w008",
+    "MW_R_B1": "w159",
+    "MW_I_B1": "w159",
+    "MW_G_B1": "w159",
+    "MW_O_B1": "w163",
+    "MW_OF_B1": "w176",
+    "MW_R_B2": "w159",
+    "MW_I_B2": "w159",
+    "MW_G_B2": "w159",
+    "MW_O_B2": "w163",
+    "MW_OF_B2": "w176"
+  },
+  "records": [
+    {
+      "id": "mw-00000",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_A1"
+      ],
+      "started_at": "2026-10-24T02:19:34.482042+00:00",
+      "ended_at": "2026-10-24T02:19:34.502714+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589\",\"Created\":\"2026-10-24T02:13:27.499209525Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112381,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:28.472583553Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/hostname\",\"HostsPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/hosts\",\"LogPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589-json.log\",\"Name\":\"/MW_O_A1\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"74e557734065c64431e7c49cf1ea6149b0bf1bb403835102d5d0c2290c009505\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A1/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_a1\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_A1\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"a811797bce062176843ba09ef2bf7ebfc13f79f78fc799fefe87bf17f49da0a6\",\"SandboxKey\":\"/var/run/docker/netns/a811797bce06\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"60a8d79df7b3a534e8cdd13ef00aca071e8294beb6c089bb971c97c11c6032de\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00001",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "link",
+        "show",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:34.502877+00:00",
+      "ended_at": "2026-10-24T02:19:34.585056+00:00",
+      "returncode": 0,
+      "stdout": "105: gray@if106: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:f7:1a:c4:43:d9 brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00002",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:34.585090+00:00",
+      "ended_at": "2026-10-24T02:19:34.671685+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":105,\"link_index\":106,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:f7:1a:c4:43:d9\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00003",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h02"
+      ],
+      "started_at": "2026-10-24T02:19:34.671742+00:00",
+      "ended_at": "2026-10-24T02:19:34.674453+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":106,\"link_index\":105,\"ifname\":\"mw3h02\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b02\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"66:7f:0b:cd:69:a0\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":26}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00004",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "address",
+        "replace",
+        "10.100.1.1/24",
+        "dev",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:34.674494+00:00",
+      "ended_at": "2026-10-24T02:19:34.762867+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00005",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_A1"
+      ],
+      "started_at": "2026-10-24T02:19:34.762922+00:00",
+      "ended_at": "2026-10-24T02:19:34.783041+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589\",\"Created\":\"2026-10-24T02:13:27.499209525Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112381,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:28.472583553Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/hostname\",\"HostsPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/hosts\",\"LogPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589-json.log\",\"Name\":\"/MW_O_A1\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"74e557734065c64431e7c49cf1ea6149b0bf1bb403835102d5d0c2290c009505\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A1/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_a1\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_A1\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"a811797bce062176843ba09ef2bf7ebfc13f79f78fc799fefe87bf17f49da0a6\",\"SandboxKey\":\"/var/run/docker/netns/a811797bce06\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"60a8d79df7b3a534e8cdd13ef00aca071e8294beb6c089bb971c97c11c6032de\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00006",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "link",
+        "show",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:34.783282+00:00",
+      "ended_at": "2026-10-24T02:19:34.857119+00:00",
+      "returncode": 0,
+      "stdout": "109: black@if110: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:ab:19:cf:31:5e brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00007",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:34.857156+00:00",
+      "ended_at": "2026-10-24T02:19:34.938461+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":109,\"link_index\":110,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:ab:19:cf:31:5e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00008",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h04"
+      ],
+      "started_at": "2026-10-24T02:19:34.938514+00:00",
+      "ended_at": "2026-10-24T02:19:34.940979+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":110,\"link_index\":109,\"ifname\":\"mw3h04\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b04\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"da:f1:be:cb:41:5e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":26}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00009",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "address",
+        "replace",
+        "172.20.11.1/30",
+        "dev",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:34.941024+00:00",
+      "ended_at": "2026-10-24T02:19:35.014901+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00010",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_A2"
+      ],
+      "started_at": "2026-10-24T02:19:35.014960+00:00",
+      "ended_at": "2026-10-24T02:19:35.034185+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4\",\"Created\":\"2026-10-24T02:13:33.988585518Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112635,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:34.861000326Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/hostname\",\"HostsPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/hosts\",\"LogPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4-json.log\",\"Name\":\"/MW_O_A2\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"5411f4ac1c99e5f1a56bbc2e3a315890f47e0592875fadfe13d3488e06d506de\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A2/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A2/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_a2\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_A2\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"10ebefc5801ddc2055d072a4d38aa682eddf3c64c4b59d948dfe4192bae65dcf\",\"SandboxKey\":\"/var/run/docker/netns/10ebefc5801d\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"d93aca85cd27da0e6e0df6ee66e5f7a319d7bd0def14bb71b7115099617dd195\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00011",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "link",
+        "show",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:35.034354+00:00",
+      "ended_at": "2026-10-24T02:19:35.112792+00:00",
+      "returncode": 0,
+      "stdout": "113: gray@if114: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:bd:f9:d9:8c:aa brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00012",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:35.112833+00:00",
+      "ended_at": "2026-10-24T02:19:35.209635+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":113,\"link_index\":114,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:bd:f9:d9:8c:aa\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00013",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h08"
+      ],
+      "started_at": "2026-10-24T02:19:35.209708+00:00",
+      "ended_at": "2026-10-24T02:19:35.212846+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":114,\"link_index\":113,\"ifname\":\"mw3h08\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b08\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"3a:0f:1b:d9:c8:bf\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":33}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00014",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "address",
+        "replace",
+        "10.100.2.1/24",
+        "dev",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:35.212908+00:00",
+      "ended_at": "2026-10-24T02:19:35.301166+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00015",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_A2"
+      ],
+      "started_at": "2026-10-24T02:19:35.301223+00:00",
+      "ended_at": "2026-10-24T02:19:35.321690+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4\",\"Created\":\"2026-10-24T02:13:33.988585518Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112635,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:34.861000326Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/hostname\",\"HostsPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/hosts\",\"LogPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4-json.log\",\"Name\":\"/MW_O_A2\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"5411f4ac1c99e5f1a56bbc2e3a315890f47e0592875fadfe13d3488e06d506de\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A2/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A2/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_a2\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_A2\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"10ebefc5801ddc2055d072a4d38aa682eddf3c64c4b59d948dfe4192bae65dcf\",\"SandboxKey\":\"/var/run/docker/netns/10ebefc5801d\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"d93aca85cd27da0e6e0df6ee66e5f7a319d7bd0def14bb71b7115099617dd195\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00016",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "link",
+        "show",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:35.321825+00:00",
+      "ended_at": "2026-10-24T02:19:35.406060+00:00",
+      "returncode": 0,
+      "stdout": "117: black@if118: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:d8:e5:f4:f3:f6 brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00017",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:35.406125+00:00",
+      "ended_at": "2026-10-24T02:19:35.488315+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":117,\"link_index\":118,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:d8:e5:f4:f3:f6\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00018",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h10"
+      ],
+      "started_at": "2026-10-24T02:19:35.488395+00:00",
+      "ended_at": "2026-10-24T02:19:35.491411+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":118,\"link_index\":117,\"ifname\":\"mw3h10\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b10\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"66:71:a8:0b:8c:fe\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":33}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00019",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "address",
+        "replace",
+        "172.20.12.1/30",
+        "dev",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:35.491474+00:00",
+      "ended_at": "2026-10-24T02:19:35.579740+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00020",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_B1"
+      ],
+      "started_at": "2026-10-24T02:19:35.579791+00:00",
+      "ended_at": "2026-10-24T02:19:35.600830+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7\",\"Created\":\"2026-10-24T02:13:41.288239963Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112928,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:42.115798584Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/hostname\",\"HostsPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/hosts\",\"LogPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7-json.log\",\"Name\":\"/MW_O_B1\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"ec2c761636dd06f95cfb8d2da35ed07c79b9d2b2c9caf4f19a9adf0a7c6c9132\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B1/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_b1\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_B1\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"52b62a706b0c698fe3f3995d4fa7a938b289fdc495a3412d9942cdf6abd5fd47\",\"SandboxKey\":\"/var/run/docker/netns/52b62a706b0c\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"79fe1ec0457b2b9c82f781576800af33c8f6e0274ba199bbfe18437878e9c777\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00021",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "link",
+        "show",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:35.600986+00:00",
+      "ended_at": "2026-10-24T02:19:35.692271+00:00",
+      "returncode": 0,
+      "stdout": "121: gray@if122: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:e3:97:2a:86:14 brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00022",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:35.692306+00:00",
+      "ended_at": "2026-10-24T02:19:35.774266+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":121,\"link_index\":122,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:e3:97:2a:86:14\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00023",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h14"
+      ],
+      "started_at": "2026-10-24T02:19:35.774346+00:00",
+      "ended_at": "2026-10-24T02:19:35.776816+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":122,\"link_index\":121,\"ifname\":\"mw3h14\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b14\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"7a:bf:5b:1a:14:dd\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":38}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00024",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "address",
+        "replace",
+        "10.200.1.1/24",
+        "dev",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:35.776877+00:00",
+      "ended_at": "2026-10-24T02:19:35.867461+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00025",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_B1"
+      ],
+      "started_at": "2026-10-24T02:19:35.867503+00:00",
+      "ended_at": "2026-10-24T02:19:35.888069+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7\",\"Created\":\"2026-10-24T02:13:41.288239963Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112928,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:42.115798584Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/hostname\",\"HostsPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/hosts\",\"LogPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7-json.log\",\"Name\":\"/MW_O_B1\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"ec2c761636dd06f95cfb8d2da35ed07c79b9d2b2c9caf4f19a9adf0a7c6c9132\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B1/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_b1\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_B1\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"52b62a706b0c698fe3f3995d4fa7a938b289fdc495a3412d9942cdf6abd5fd47\",\"SandboxKey\":\"/var/run/docker/netns/52b62a706b0c\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"79fe1ec0457b2b9c82f781576800af33c8f6e0274ba199bbfe18437878e9c777\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00026",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "link",
+        "show",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:35.888324+00:00",
+      "ended_at": "2026-10-24T02:19:35.972591+00:00",
+      "returncode": 0,
+      "stdout": "125: black@if126: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:ca:70:5b:63:ea brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00027",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:35.972625+00:00",
+      "ended_at": "2026-10-24T02:19:36.063152+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":125,\"link_index\":126,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:ca:70:5b:63:ea\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00028",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h16"
+      ],
+      "started_at": "2026-10-24T02:19:36.063213+00:00",
+      "ended_at": "2026-10-24T02:19:36.065574+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":126,\"link_index\":125,\"ifname\":\"mw3h16\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b16\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"1e:8f:9b:e2:00:7b\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":38}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00029",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "address",
+        "replace",
+        "172.20.21.1/30",
+        "dev",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:36.065619+00:00",
+      "ended_at": "2026-10-24T02:19:36.148336+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00030",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_B2"
+      ],
+      "started_at": "2026-10-24T02:19:36.148385+00:00",
+      "ended_at": "2026-10-24T02:19:36.169291+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856\",\"Created\":\"2026-10-24T02:13:47.37068755Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":113167,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:48.246045886Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/hostname\",\"HostsPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/hosts\",\"LogPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856-json.log\",\"Name\":\"/MW_O_B2\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"eea34f70ddbf6b9d156305dc4e09a8208d868a300b4111cf687794a3cf04032d\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B2/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B2/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_b2\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_B2\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"c035a5b5e912945cc3975579e261dc5430ca94e0e20fbe1fd3d9aaf62af22e80\",\"SandboxKey\":\"/var/run/docker/netns/c035a5b5e912\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"0094ab3920efafe258e2117c08e2475a414f003a9872bfa4ac86afac67981bc2\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00031",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "link",
+        "show",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:36.169421+00:00",
+      "ended_at": "2026-10-24T02:19:36.243843+00:00",
+      "returncode": 0,
+      "stdout": "129: gray@if130: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:b0:2b:61:32:8e brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00032",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:36.243874+00:00",
+      "ended_at": "2026-10-24T02:19:36.324026+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":129,\"link_index\":130,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:b0:2b:61:32:8e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00033",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h20"
+      ],
+      "started_at": "2026-10-24T02:19:36.324133+00:00",
+      "ended_at": "2026-10-24T02:19:36.326577+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":130,\"link_index\":129,\"ifname\":\"mw3h20\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b20\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"1e:c0:65:07:12:f3\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":44}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00034",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "address",
+        "replace",
+        "10.200.2.1/24",
+        "dev",
+        "gray"
+      ],
+      "started_at": "2026-10-24T02:19:36.326640+00:00",
+      "ended_at": "2026-10-24T02:19:36.415148+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00035",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_B2"
+      ],
+      "started_at": "2026-10-24T02:19:36.415189+00:00",
+      "ended_at": "2026-10-24T02:19:36.435207+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856\",\"Created\":\"2026-10-24T02:13:47.37068755Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":113167,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:48.246045886Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/hostname\",\"HostsPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/hosts\",\"LogPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856-json.log\",\"Name\":\"/MW_O_B2\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"eea34f70ddbf6b9d156305dc4e09a8208d868a300b4111cf687794a3cf04032d\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B2/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B2/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_b2\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_B2\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"c035a5b5e912945cc3975579e261dc5430ca94e0e20fbe1fd3d9aaf62af22e80\",\"SandboxKey\":\"/var/run/docker/netns/c035a5b5e912\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"0094ab3920efafe258e2117c08e2475a414f003a9872bfa4ac86afac67981bc2\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00036",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "link",
+        "show",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:36.435372+00:00",
+      "ended_at": "2026-10-24T02:19:36.521917+00:00",
+      "returncode": 0,
+      "stdout": "133: black@if134: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP mode DEFAULT group default qlen 1000\n    link/ether 02:c5:05:0e:47:9e brd ff:ff:ff:ff:ff:ff link-netnsid 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00037",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:36.521950+00:00",
+      "ended_at": "2026-10-24T02:19:36.604279+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":133,\"link_index\":134,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:c5:05:0e:47:9e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00038",
+      "command": [
+        "ip",
+        "-j",
+        "link",
+        "show",
+        "mw3h22"
+      ],
+      "started_at": "2026-10-24T02:19:36.604351+00:00",
+      "ended_at": "2026-10-24T02:19:36.606891+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":134,\"link_index\":133,\"ifname\":\"mw3h22\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b22\",\"operstate\":\"UP\",\"linkmode\":\"DEFAULT\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"06:fd:06:95:46:0b\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":44}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00039",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "address",
+        "replace",
+        "172.20.22.1/30",
+        "dev",
+        "black"
+      ],
+      "started_at": "2026-10-24T02:19:36.606952+00:00",
+      "ended_at": "2026-10-24T02:19:36.689168+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Logical Site A and Site B roles are colocated by component class; the case establishes separation between role classes, not geographic site separation.",
+    "VXLAN uses the reserved experiment LAN within Clemson and public CloudLab control addresses across campuses; logical wire preservation remains an implementation assumption beyond finite packet observations.",
+    "Distinct worker hardware does not establish independently developed software, product approval or classification handling policy.",
+    "Virtual per-component interfaces share worker physical NICs; physical-NIC-per-Red requirements remain outside this placement claim."
+  ]
+}

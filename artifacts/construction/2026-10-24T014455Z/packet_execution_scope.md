@@ -1,0 +1,104 @@
+# Packet execution proof scope
+
+The checked IPv4/ESP applications now connect raw configuration to every finite execution of the packet model. The shared case has 31 devices and four full security levels. The baseline case has 23 devices and two levels. Their topology and sharing arrangements differ, and both use the same general proofs and importers.
+
+A packet starts at a declared Red host interface in local-output processing with no generated encryption envelopes. The initial source and destination addresses may be arbitrary. The isolation proof identifies its source security level through the declared interface attachment. It does not trust the packet source address or the frame's originDomain field. The recipient conclusion applies to plaintext delivery to a Red recipient. Gray and Black ciphertext transit remains permitted at shared infrastructure.
+
+The model includes policy-table priority, longest-prefix and metric selection, FORWARD/INPUT/OUTPUT filtering, locally derived policy matches, installed SAs, changed ESP wire headers, restoration of encapsulated headers, an outer route after encryption, wire transfer, switching and local delivery. Connection-tracking classification is chosen independently when a packet is received or decrypted. Required SPD entries remain distinct from installed SAs, so an absent SA cannot enable plaintext fallback. Every equal-priority selected policy remains possible and is covered by the local checks.
+
+The importer checks normalized rules against complete raw chains, ordering and defaults. It compares route inventories and processing-table order, binds interface inventories to raw addresses, validates reciprocal veth indices and namespace identities, and reuses the native OVS/FRR UUID and CLI checks. Undeclared active mechanisms, Linux bridges, extra netfilter tables, nontrivial policy-routing selectors, unsupported SPD/SAD forms and active fallback tunnels require an explicit extension. These checks are translation obligations, not proof that the collector or kernel was uncompromised.
+
+Layer and security-level tags are proof annotations. They are not transmitted ESP authentication fields. A separate finite check proves agreement for every matching sender/receiver wire-SA tuple, including independently bound local reqids and explicit policy-template SPI constraints. The generic provenance proof shows that every reachable envelope came from a configured encryption operation. The wire-match theorem then derives annotation equality from wire identity and the checked peer agreement. Annotation comparison therefore does not silently discard a real matching decryption in the retained configuration.
+
+OVS NORMAL switching is conservatively represented by every transfer between validated physical members of the same bridge. The model admits more destinations than learning and filtering may actually select. Local-route distinctions and several drop-only checks, including the outer ESP INPUT check before decryption and replay rejection, are also overapproximated. The safety result does not claim exact acceptance equivalence. The concrete positive trace is checked against all modeled operations and uses route gateways to select bridge exits. Live probes supply separate operational evidence.
+
+Socket policies remain in the retained raw records. The payload execution starts only at declared Red hosts and does not re-originate payloads through an IKE socket on an encryption component. The captured global SPD excludes per-socket bypass entries for this forwarded-payload model. Official Linux v6.8 xfrm_policy.c selects the per-socket policy through sk->sk_policy; official strongSwan 6.0.3 add_socket_bypass installs IP_XFRM_POLICY/IPV6_XFRM_POLICY using setsockopt on the socket descriptor. The exact deployed vendor patch/version correspondence and implementation fidelity remain explicit external assumptions. No general claim about arbitrary local applications follows.
+
+The shared application uses its retained selected raw SPD/SAD observations and exact consistency evidence. The baseline application retains the failed exact SPI consistency comparison and imports a conservative union of explicitly timestamped SPD/SAD observations. Its report records every epoch's observation identifier, timestamps, hash and parsed policies or SAs. Selectors, endpoints, reqids, policy priorities, routes and filters are checked stable across the retained observations. The union permits combinations from different observations. The baseline positive trace establishes model satisfiability; it is not labeled an observed simultaneous mixed-epoch execution. Neither application covers unrecorded configuration changes or all future rekeys.
+
+The shared positive trace has 60 microsteps, with Inner and Outer encryption at steps 7 and 21 and reverse decryption at steps 39 and 52. The baseline trace has 50 microsteps, with encryption at steps 7 and 16 and decryption at steps 34 and 42. Separate positive traces are generated for the level-annotated isolation model. Every transition, configured wire SA and final delivery is checked by Lean.
+
+The applications establish scoped packet clauses of RG007 and RG008 and support RG029/RG030. They do not establish product independence, physical protection, organizational approval, future event behavior or whole-document compliance. IPv6 and mixed MACsec/L2TP packet operations now have separate checked applications described below. Practical kernel-generated responses that copy Red payload bytes remain actionable. Trusted fixed applications and recorded enabled services require explicit scope; arbitrary future applications do not define the completion criterion. The register must not treat missing extensions as a reason to stop.
+
+## IPv6 fragmentation counterexample, 2026-10-24 05:02 UTC
+
+C-FRAGMENT-001 data-fragments-v4 observes IPv6 NH44 input fragments reassembled before raw PREROUTING. The resulting UDP datagram passes the immediate-header raw gate. The retained v4/raw-only configuration does not establish rejection of NH44 on the original wire. The later v9 family application binds actual nftables hooks at priority -450, before defragmentation at -400. FreshFamilyImmediateHeaders now proves the literal immediate-header gate for those repaired captures. The earlier counterexample remains preserved. The fragmented packet stack theorem and this header-filter requirement have different obligations. Ordinary fragment/reassembly and malformed-overlap evidence are being incorporated through the separate fragmentation contract.
+
+
+## Mixed mechanisms and opaque Ethernet, 2026-10-24 15:24 UTC
+
+MultiProtocolExecution adds MACsec controlled ports, actual SCI/AN matching, Ethernet bridges and L2TPv3 carrier wrapping to the same route/filter/SPD/SAD reasoning. The original body may be IP or opaque Ethernet with protected VLAN fields. A carrier changes the visible routable header and adds no encryption layer. MACsec hides the protected IP header. MACsec role labels and local key-generation identifiers do not gate reception. The conservative receive relation compares SCI/AN; a checked provenance condition establishes role agreement for all configured matching transmitters. The collector's matching-key provisioning and cryptographic implementation behavior are explicit contracts.
+
+Six repaired pairings v7 and bridged v8 use unchanged finite local checks and the same global layer/order proofs. Eighteen actual modeled delivery traces compile. Their positive bridge transfers are checked against raw-bound ordered ebtables rules, using the preserved original Ethernet addresses for bridged data and recorded MACsec endpoint addresses for routed data. The source VLAN tag stack is protected inside MACsec. Clear tags outside the MACsec envelope remain a distinct wire-layout option. The current useful opaque data case uses experimental EtherType 0x88b5 and zero/one/two protected VLAN tags. Manual associations do not establish IKE/MKA authentication.
+
+The model treats bridge filtering and additional drop-only mechanisms as safety overapproximations. It therefore proves protection for every path in a superset of actual accepted data paths. The positive traces additionally check each actual bridge permission; live probes establish actual bounded payload recovery. The bridged importer retains one link-local address/route addition across capture epochs. The route union preserves all selected alternatives because the added overlapping routes have equal rank. Those epochs are not asserted simultaneous.
+
+The network-wide order theorem identifies actual Inner and Outer encryption events on the same immutable payload, with the Inner event in the prefix before the Outer event. Boundary-removal theorems similarly identify an actual decrypt of the specified layer and payload. Arbitrary-inbound no-bypass applications remain distinct from an execution whose initial body already contains a valid layer.
+
+## Copied-payload kernel responses, 2026-10-24 15:24 UTC
+
+C-GENERATED-RESPONSE-008 identifies a concrete family444 candidate: spoofed Red-ingress echo requests may cause an Inner to send a new echo response containing copied Red bytes toward peer Gray, where only the Outer selector applies. The existing single-packet preservation theorem does not follow that derived response. The response model and raw hook checks must account for echo payloads and ICMP error quotes. Native strict INPUT/OUTPUT policies and repaired family policies require separate checks. A successful theorem about the original forwarded packet does not close this remaining source clause. The permitted fixed-program/cryptographic/collector assumptions remain explicit; no blanket arbitrary-future-application requirement is introduced.
+
+### Current response and fragment boundary, 2026-10-24 15:55 UTC
+
+FreshNativeResponseGuards checks actual complete OUTPUT defaults and allow rules for the shared and baseline Inner/Outer gateways. Every modeled echo/error response may arise before INPUT or FORWARD. The general extension proves those gateway responses cannot emit copied payload outside loopback. The source contract follows retained Linux v6.8 ICMP copying and local-output hooks; exact Ubuntu binary equivalence is not asserted. That result does not cover FreeBSD, hosts, Black routers or the broader family local-response allowances.
+
+A fragment key contains ordinary header fields, not a trustworthy unique payload identifier. ReassemblyOrigins.assemble therefore permits pieces from different original packets, including different domains when no admission guard excludes them. Its byte-origin theorem needs a checked local guard for every admitted piece. The backend connection must distinguish plaintext mixing within one admitted domain from protected fragments whose assembled ciphertext must pass authentication. Early IPv6 fragment rejection can remove selected input cases, but it does not establish a universal IPv4 or all-backend reconstruction contract.
+
+### Family444 v13 reply checks
+
+The early source table is bound to its exact raw table command and both complete stable nft observations. Its first incoming reqid match is represented by membership in the model authentication list. That translation is an explicit safety overapproximation for longer paths and coincides on the modeled one-entry local authentication histories. The actual spnum0 value is retained and other indices are rejected. The ordinary stack proof omits the additional drop-only early gate; the separate useful path checks evaluate the gate at every selected ingress.
+
+AuthenticationSelectors proves that local authentication metadata before subsequent encryption retains an actual receiving-policy match on the restored source and destination. SourceResponseGuards checks all source/output rule pairs and derives that an accepted reply returning to the actual triggering source stays in the same protection region. The theorem checks source-rule coverage despite the nft chain default ACCEPT. Body-prefix provenance and the transition from those local conditions to the full copied-response execution extension remain unfinished. ND type/hop-limit fields are explicit and are not treated as arbitrary copied data.
+
+## 2026-10-24: mixed inward no-bypass application
+
+FreshMixedTunnelBoundaries checks all four encryption components in each of seven retained configurations. The inward entry permits an arbitrary body and requires empty initial local authentication metadata. Every component-local path to the protected-side output includes a real receiving IPsec or MACsec operation on the same tracked payload. Carrier INPUT rules cannot remove the boundary without that receiving operation. The proof uses receiver association tags, not an untrusted incoming role annotation.
+
+The outward claim starts from the surrounding protected-payload invariant. Copied response paths, fragmentation/reassembly contracts, mixed full-security-level delivery and additional FreeBSD packet-backend bindings remain active work. The component result does not close all of RG029 or RG030.
+
+## 2026-10-24 17:17 UTC: local encrypted error quotes
+
+EncryptedResponseGuards now connects every configured sender endpoint to the actual OUTPUT rules. An ICMP error for a locally encrypted frame returns to that frame's visible sender address. The finite check excludes an external accepted response to that address, or restricts the rule to loopback/non-response protocols. The proof does not assume the desired output stack.
+
+The combined response system permits both the earlier pre-encryption processing points and locally encrypted frames before or after outer routing. Family444-v13 discharges the finite conditions and retains its checked 39-step useful delivery. Prefix-copy provenance, kernel hook correspondence, supported error return-to-source semantics and fixed captured configuration remain explicit implementation contracts. Host/Black-router responses, reassembly-byte composition and other backend applications remain active.
+
+The two existing Black screening routers now have a selected RG075 application. Nine importer mutations pass, including an omitted administratively down attachment. Permissive source passages and extraction fragments are context; the Black/outside-boundary condition is the proved obligation. The added filtering bridge remains a separately qualified case. All76 completion remains open.
+
+## 2026-10-24 17:52 UTC: byte and response scope
+Native strict gateway OUTPUT now transfers full-label isolation through arbitrary echo/error generation. The general projection produces an ordinary network execution for every external network result, so quote contents do not create an additional premise.
+
+Plaintext reception is checked before endpoint reassembly. The fragment buffer may combine different packet identities sharing ordinary keys. Its byte-domain guard follows from source-port and path checks. The current ArrivedFragment relation still requires a correspondence for each piece's prior path. Intermediate reassembly followed by further network processing and encrypted assembly integrity remain active model/backend composition work.
+
+## Combined native byte flows at 2026-10-24 18:13 UTC
+FreshByteDomains covers arbitrary simultaneous source packets, arbitrary repeated partitions and intermediate plaintext assembly followed by continued packet processing. Assembly can combine different packet identities and choose any header at the same receiving interface. No domain or packet-identity equality is used as a reassembly guard. FreshByteResponses combines that behavior with the checked strict native gateway OUTPUT treatment. Both shared and baseline applications prove per-byte full-label delivery and both Black protection layers.
+
+The tracked bytes describe protected plaintext provenance. They are not a claim that every physical ciphertext octet has a unique plaintext origin. Ciphertext pieces cannot enter PlaintextAssembly. A successful authenticated encrypted assembly must map to an actual encoded envelope/body under a declared integrity and kernel-processing correspondence. Ordinary IP fragment-key equality cannot supply that connection. The existing same-packet distributed-fragment theorem remains a separate scoped result.
+
+Host and Black-transport responses are covered in the family444-v13 stack model but are not yet combined with the native byte-domain model. Mixed MACsec/carrier byte-domain applications, ordered encryption events for assembled bytes, the FreeBSD packet contract, and those encrypted assembly connections remain actionable.
+
+## Interleaved fragments
+ByteFlows now permits arbitrary List.Perm reordering. Reassembly can select pieces that were interleaved with unrelated packets in the modeled list. Membership preservation proves that permutation keeps every byte's property. The positive regression explicitly moves an unrelated packet aside before selecting two fragments.
+
+Each split carrier retains a logical complete-header state. A physical noninitial fragment does not contain every transport field. Backend correspondence must justify where fragments are reassembled before transport-policy evaluation, or account for the actual fragment-specific rule behavior. The complete-header abstraction alone does not establish that correspondence.
+
+## Component responses and retained prefixes
+FreshComponentByteResponses checks every port-owner record, including hosts, transport routers, switches and firewalls, for shared and baseline snapshots. A complete inventory check puts each owner in either the strict OUTPUT case or a uniform-interface case. For every source domain, the latter case checks no inbound decryption policies, equal interface protection stacks and preservation of the permitted-port relation. Actual selected routes stay within the owner. The general proof derives safe emitted replies from those local checks.
+
+ByteFlows.copy can retain any subset of a packet's source bytes while the original packet proceeds. A copied prefix can remain pending and generate a response later. The subset relation overapproximates ordinary prefix quotes; it does not require a complete original packet in the response. The discard step now uses List.Sublist so its name accurately describes removal. Explicit copying carries the duplication behavior.
+
+The checked positive regression generates, routes and emits an ordinary host echo reply using the actual shared snapshot route and OUTPUT rules. A Black-router quote keeps the existing two-layer byte provenance. Protected provenance describes bytes inside the quote, not the ICMP outer protocol. Fragment parsing, authenticated encrypted reassembly and mixed-backend byte applications remain separate outstanding connections. No new live observation is claimed.
+
+## Individual byte operation order
+ByteLineage constructs an individual source-to-current path for every byte after copying, splitting, interleaving, plaintext assembly and packet processing. An assembly edge follows each byte's own input piece. ByteProtectionEvents proves that a newly present protection tag on such a path requires an actual Execution.Step encrypt operation. ByteLayerOrder then uses the checked interface layout after the Outer operation to establish that the same byte's path already contains an Inner encryption.
+
+Both native snapshots instantiate the unchanged theorem. Packet identifiers and headers may change at plaintext assembly. The order result therefore binds the operations to the byte's constructed path, rather than requiring equality of those mutable packet records. Actual crypto, fragment parsing and backend correspondence remain explicit implementation assumptions and connection work.
+
+
+## Native partial headers and complete hook inventories
+
+The native shared and baseline applications now check every observed nft base hook and preserve all default policies. The partial-header theorem covers every completion of unavailable transport fields for the checked ACCEPT-only explicit chains. See fragment-header-nft-review.md for the raw correspondence, implementation-family sources and remaining encrypted-reassembly connection. A noninitial fragment carries no independently readable TCP/UDP header.
+
+## Mixed simultaneous byte flows
+
+Seven accepted mixed configurations now apply the same byte-protection and actual encryption-order proof. Eighteen useful executions carry nonempty byte lists through IPsec/MACsec/carrier paths, including opaque Ethernet and zero, one or two protected VLAN tags. Arbitrary simultaneous packets, copying, partitioning, permutation and plaintext assembly preserve the required Black stack. The proof does not yet compose mixed local responses or authenticated encrypted assembly. Source-level delivery exclusion remains a separate target.

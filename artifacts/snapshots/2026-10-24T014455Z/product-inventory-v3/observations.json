@@ -1,0 +1,325 @@
+{
+  "schema_version": "csfc-public-product-inventory/v1",
+  "records": [
+    {
+      "id": "product-000",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "started_at": "2026-10-24T02:27:40.794630+00:00",
+      "ended_at": "2026-10-24T02:27:40.797577+00:00",
+      "returncode": 0,
+      "stdout": "Linux node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-001",
+      "command": [
+        "docker",
+        "exec",
+        "NB_I_A1",
+        "swanctl",
+        "--version"
+      ],
+      "started_at": "2026-10-24T02:27:40.797598+00:00",
+      "ended_at": "2026-10-24T02:27:40.889418+00:00",
+      "returncode": 0,
+      "stdout": "strongSwan swanctl 5.9.13\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "product-002",
+      "command": [
+        "docker",
+        "exec",
+        "NB_I_A1",
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "started_at": "2026-10-24T02:27:40.889449+00:00",
+      "ended_at": "2026-10-24T02:27:40.970299+00:00",
+      "returncode": 0,
+      "stdout": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)\nbuilt on: Wed Sep 16 18:47:02 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -DOPENSSL_TLS_SECURITY_LEVEL=2 -Wa,--noexecstack -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/openssl-yMWwKu/openssl-3.0.13=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/openssl-yMWwKu/openssl-3.0.13=/usr/src/openssl-3.0.13-0ubuntu3.16 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=3\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific\nCPUINFO: OPENSSL_ia32cap=0x7ffef3ffffebffff:0x37ab\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-003",
+      "command": [
+        "docker",
+        "exec",
+        "NB_I_A1",
+        "cat",
+        "/etc/os-release"
+      ],
+      "started_at": "2026-10-24T02:27:40.970328+00:00",
+      "ended_at": "2026-10-24T02:27:41.053509+00:00",
+      "returncode": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-004",
+      "command": [
+        "docker",
+        "exec",
+        "NB_I_A1",
+        "sh",
+        "-c",
+        "command -v charon-systemd; command -v charon; command -v swanctl"
+      ],
+      "started_at": "2026-10-24T02:27:41.053534+00:00",
+      "ended_at": "2026-10-24T02:27:41.128338+00:00",
+      "returncode": 0,
+      "stdout": "/usr/sbin/swanctl\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-005",
+      "command": [
+        "docker",
+        "exec",
+        "NB_O_A1",
+        "swanctl",
+        "--version"
+      ],
+      "started_at": "2026-10-24T02:27:41.128358+00:00",
+      "ended_at": "2026-10-24T02:27:41.222499+00:00",
+      "returncode": 0,
+      "stdout": "strongSwan swanctl 5.9.13\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "product-006",
+      "command": [
+        "docker",
+        "exec",
+        "NB_GF_A",
+        "vtysh",
+        "-c",
+        "show version"
+      ],
+      "started_at": "2026-10-24T02:27:41.222531+00:00",
+      "ended_at": "2026-10-24T02:27:41.373932+00:00",
+      "returncode": 0,
+      "stdout": "FRRouting 10.0 (nb-gf-a) on Linux(6.8.0-138-generic).\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n    '--prefix=/usr' '--localstatedir=/run/frr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib/frr' '--with-moduledir=/usr/lib/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'CC=gcc' 'CXX=g++' 'PYTHON=python3'\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-007",
+      "command": [
+        "docker",
+        "exec",
+        "NB_G_A1",
+        "ovs-vswitchd",
+        "--version"
+      ],
+      "started_at": "2026-10-24T02:27:41.373965+00:00",
+      "ended_at": "2026-10-24T02:27:41.460796+00:00",
+      "returncode": 0,
+      "stdout": "ovs-vswitchd (Open vSwitch) 2.17.9\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-008",
+      "command": [
+        "docker",
+        "exec",
+        "NB_GF_A",
+        "iptables",
+        "--version"
+      ],
+      "started_at": "2026-10-24T02:27:41.460815+00:00",
+      "ended_at": "2026-10-24T02:27:41.546735+00:00",
+      "returncode": 0,
+      "stdout": "iptables v1.8.10 (nf_tables)\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-009",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .Config.Image}} {{json .Image}} {{json .AppArmorProfile}} {{json .HostConfig.Privileged}}",
+        "NB_I_A1"
+      ],
+      "started_at": "2026-10-24T02:27:41.546757+00:00",
+      "ended_at": "2026-10-24T02:27:41.566623+00:00",
+      "returncode": 0,
+      "stdout": "\"twinet-msc:construction-v2\" \"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\" \"docker-default\" false\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-010",
+      "command": [
+        "docker",
+        "exec",
+        "NB_I_A1",
+        "sh",
+        "-c",
+        "stat -c \"%a %U %G %n\" /etc/swanctl/private/* 2>/dev/null || true"
+      ],
+      "started_at": "2026-10-24T02:27:41.566639+00:00",
+      "ended_at": "2026-10-24T02:27:41.653258+00:00",
+      "returncode": 0,
+      "stdout": "600 root root /etc/swanctl/private/key.pem\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-011",
+      "command": [
+        "docker",
+        "exec",
+        "NB_I_A1",
+        "cat",
+        "/proc/1/attr/current"
+      ],
+      "started_at": "2026-10-24T02:27:41.653296+00:00",
+      "ended_at": "2026-10-24T02:27:41.731200+00:00",
+      "returncode": 0,
+      "stdout": "docker-default (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-012",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .Config.Image}} {{json .Image}} {{json .AppArmorProfile}} {{json .HostConfig.Privileged}}",
+        "NB_O_A1"
+      ],
+      "started_at": "2026-10-24T02:27:41.731216+00:00",
+      "ended_at": "2026-10-24T02:27:41.751592+00:00",
+      "returncode": 0,
+      "stdout": "\"twinet-msc:construction-v2\" \"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\" \"docker-default\" false\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-013",
+      "command": [
+        "docker",
+        "exec",
+        "NB_O_A1",
+        "sh",
+        "-c",
+        "stat -c \"%a %U %G %n\" /etc/swanctl/private/* 2>/dev/null || true"
+      ],
+      "started_at": "2026-10-24T02:27:41.751603+00:00",
+      "ended_at": "2026-10-24T02:27:41.838491+00:00",
+      "returncode": 0,
+      "stdout": "600 root root /etc/swanctl/private/key.pem\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-014",
+      "command": [
+        "docker",
+        "exec",
+        "NB_O_A1",
+        "cat",
+        "/proc/1/attr/current"
+      ],
+      "started_at": "2026-10-24T02:27:41.838520+00:00",
+      "ended_at": "2026-10-24T02:27:41.917226+00:00",
+      "returncode": 0,
+      "stdout": "docker-default (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-015",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .Config.Image}} {{json .Image}} {{json .AppArmorProfile}} {{json .HostConfig.Privileged}}",
+        "NB_GF_A"
+      ],
+      "started_at": "2026-10-24T02:27:41.917242+00:00",
+      "ended_at": "2026-10-24T02:27:41.939381+00:00",
+      "returncode": 0,
+      "stdout": "\"twinet-msc-router:construction-v2\" \"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\" \"docker-default\" false\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-016",
+      "command": [
+        "docker",
+        "exec",
+        "NB_GF_A",
+        "sh",
+        "-c",
+        "stat -c \"%a %U %G %n\" /etc/swanctl/private/* 2>/dev/null || true"
+      ],
+      "started_at": "2026-10-24T02:27:41.939400+00:00",
+      "ended_at": "2026-10-24T02:27:42.033648+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "product-017",
+      "command": [
+        "docker",
+        "exec",
+        "NB_GF_A",
+        "cat",
+        "/proc/1/attr/current"
+      ],
+      "started_at": "2026-10-24T02:27:42.033687+00:00",
+      "ended_at": "2026-10-24T02:27:42.120495+00:00",
+      "returncode": 0,
+      "stdout": "docker-default (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-018",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .Config.Image}} {{json .Image}} {{json .AppArmorProfile}} {{json .HostConfig.Privileged}}",
+        "NB_OF_A1"
+      ],
+      "started_at": "2026-10-24T02:27:42.120534+00:00",
+      "ended_at": "2026-10-24T02:27:42.141770+00:00",
+      "returncode": 0,
+      "stdout": "\"twinet-msc-router:construction-v2\" \"sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d\" \"docker-default\" false\n",
+      "stderr": ""
+    },
+    {
+      "id": "product-019",
+      "command": [
+        "docker",
+        "exec",
+        "NB_OF_A1",
+        "sh",
+        "-c",
+        "stat -c \"%a %U %G %n\" /etc/swanctl/private/* 2>/dev/null || true"
+      ],
+      "started_at": "2026-10-24T02:27:42.141792+00:00",
+      "ended_at": "2026-10-24T02:27:42.231573+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "product-020",
+      "command": [
+        "docker",
+        "exec",
+        "NB_OF_A1",
+        "cat",
+        "/proc/1/attr/current"
+      ],
+      "started_at": "2026-10-24T02:27:42.231592+00:00",
+      "ended_at": "2026-10-24T02:27:42.313690+00:00",
+      "returncode": 0,
+      "stdout": "docker-default (enforce)\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Exact software identity and public security posture; no private-key bytes or password hashes exported. Product identity must be compared with the captured list, not inferred from protocol functionality."
+}

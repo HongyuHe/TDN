@@ -25,4 +25,13 @@ theorem no_firewall_free_crossing {Node Side : Type}
   intro path
   exact different (avoidance_preserves_side edge firewall side localRule path start).2
 
+/-- A nonempty connection cannot satisfy a mandatory cut merely because its graph is empty. -/
+lemma path_avoids_absent_firewalls {Node : Type} (edge : Node → Node → Prop)
+    (firewall : Node → Prop) (clear : ∀ node, ¬ firewall node) {a b : Node}
+    (path : Relation.ReflTransGen edge a b) :
+    Relation.ReflTransGen (Avoiding edge firewall) a b := by
+  induction path with
+  | refl => exact .refl
+  | tail _ step ih => exact ih.tail ⟨step, clear _⟩
+
 end TDN.Paths

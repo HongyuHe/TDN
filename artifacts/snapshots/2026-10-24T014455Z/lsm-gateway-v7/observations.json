@@ -1,0 +1,1011 @@
+{
+  "at": "2026-10-24T15:17:11.318989+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T15:17:05.375938+00:00",
+      "command": [
+        "apparmor_parser",
+        "-r",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/lsm-gateway-v7/apparmor.profile"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:05.397067+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-x509",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/ca.key",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/ca.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-subj",
+        "/CN=LSM-v3-Test-CA",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T15:17:05.407686+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/A/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/A.csr",
+        "-sha384",
+        "-subj",
+        "/CN=A.lsm.test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T15:17:05.448421+00:00",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/A.csr",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/ca.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/ca.key",
+        "-CAcreateserial",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/A/x509/cert.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/A.ext"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = A.lsm.test\n"
+    },
+    {
+      "at": "2026-10-24T15:17:05.611021+00:00",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-lsm7-a",
+        "--network",
+        "none",
+        "--cap-add",
+        "NET_ADMIN",
+        "--cap-add",
+        "NET_RAW",
+        "--read-only",
+        "--tmpfs",
+        "/run",
+        "--tmpfs",
+        "/tmp",
+        "--security-opt",
+        "apparmor=tdn-lsm-device-v7",
+        "--mount",
+        "type=bind,src=/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/A,dst=/etc/swanctl,readonly",
+        "--entrypoint",
+        "sleep",
+        "twinet-msc:construction-v2",
+        "infinity"
+      ],
+      "returncode": 0,
+      "stdout": "48e897a6c91febc843e9755bb3b43d2e97944ed005ea3d6c989199052c796218\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:05.630630+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .HostConfig}}",
+        "tcv3-lsm7-a"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Binds\":null,\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_NET_ADMIN\",\"CAP_NET_RAW\"],\"CapDrop\":null,\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":[],\"DnsSearch\":[],\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":true,\"SecurityOpt\":[\"apparmor=tdn-lsm-device-v7\"],\"Tmpfs\":{\"/run\":\"\",\"/tmp\":\"\"},\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":0,\"NanoCpus\":0,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":[],\"BlkioDeviceReadBps\":[],\"BlkioDeviceWriteBps\":[],\"BlkioDeviceReadIOps\":[],\"BlkioDeviceWriteIOps\":[],\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":[],\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":0,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":null,\"Ulimits\":[],\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/A\",\"Target\":\"/etc/swanctl\",\"ReadOnly\":true}],\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:05.716006+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "cat",
+        "/proc/self/status"
+      ],
+      "returncode": 0,
+      "stdout": "Name:\tcat\nUmask:\t0022\nState:\tR (running)\nTgid:\t7\nNgid:\t0\nPid:\t7\nPPid:\t0\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t0 \nNStgid:\t7\nNSpid:\t7\nNSpgid:\t7\nNSsid:\t7\nKthread:\t0\nVmPeak:\t    2844 kB\nVmSize:\t    2844 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t    1496 kB\nVmRSS:\t    1496 kB\nRssAnon:\t     104 kB\nRssFile:\t    1392 kB\nRssShmem:\t       0 kB\nVmData:\t     360 kB\nVmStk:\t     132 kB\nVmExe:\t      20 kB\nVmLib:\t    1752 kB\nVmPTE:\t      48 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t1\nSigQ:\t1/1031011\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t00000000a80435fb\nCapEff:\t00000000a80435fb\nCapBnd:\t00000000a80435fb\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tconditional enabled\nCpus_allowed:\tff,ffffffff\nCpus_allowed_list:\t0-39\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000003\nMems_allowed_list:\t0-1\nvoluntary_ctxt_switches:\t14\nnonvoluntary_ctxt_switches:\t2\nx86_Thread_features:\t\nx86_Thread_features_locked:\t\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:05.811158+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "python3",
+        "-c",
+        "import os,json;result='unexpected-open';\ntry:\n fd=os.open('/usr/sbin/swanctl',os.O_WRONLY);os.close(fd)\nexcept OSError as e:result='read-only' if e.errno==30 else 'denied'\nprint(json.dumps({'gateway_executable_write':result}))"
+      ],
+      "returncode": 0,
+      "stdout": "{\"gateway_executable_write\": \"read-only\"}\n",
+      "stderr": "",
+      "probe": "gateway-executable-immutable",
+      "expected_result": "read-only",
+      "observed_result": "read-only"
+    },
+    {
+      "at": "2026-10-24T15:17:05.922302+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "python3",
+        "-c",
+        "from pathlib import Path;import json;result='unexpected-profile-change';\ntry:Path('/proc/self/attr/current').write_text('changeprofile tdn-lsm-gateway-v7')\nexcept PermissionError:result='denied'\nprint(json.dumps({'direct_profile_change':result}))"
+      ],
+      "returncode": 0,
+      "stdout": "{\"direct_profile_change\": \"denied\"}\n",
+      "stderr": "",
+      "probe": "nongateway-direct-profile-change",
+      "expected_result": "denied",
+      "observed_result": "denied"
+    },
+    {
+      "at": "2026-10-24T15:17:05.943355+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "tcv3-lsm7-a"
+      ],
+      "returncode": 0,
+      "stdout": "204169\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:05.948792+00:00",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "ls70",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "lp70"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:05.974280+00:00",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "ls70",
+        "netns",
+        "204169"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.071201+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "ip",
+        "link",
+        "set",
+        "ls70",
+        "name",
+        "eth0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.150781+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "ip",
+        "link",
+        "set",
+        "eth0",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.224259+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.310924+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "ip",
+        "addr",
+        "add",
+        "10.254.31.1/30",
+        "dev",
+        "eth0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.388959+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "ip",
+        "addr",
+        "add",
+        "10.251.1.1/32",
+        "dev",
+        "lo"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.478443+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "ip",
+        "route",
+        "add",
+        "10.251.2.1/32",
+        "via",
+        "10.254.31.2"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.556365+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "iptables",
+        "-A",
+        "OUTPUT",
+        "-s",
+        "10.251.1.1/32",
+        "-d",
+        "10.251.2.1/32",
+        "-m",
+        "policy",
+        "--dir",
+        "out",
+        "--pol",
+        "ipsec",
+        "-j",
+        "ACCEPT"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.629897+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "iptables",
+        "-A",
+        "OUTPUT",
+        "-s",
+        "10.251.1.1/32",
+        "-d",
+        "10.251.2.1/32",
+        "-j",
+        "REJECT"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.703344+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "iptables-save",
+        "-c"
+      ],
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 15:17:06 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD ACCEPT [0:0]\n:OUTPUT ACCEPT [0:0]\n[0:0] -A OUTPUT -s 10.251.1.1/32 -d 10.251.2.1/32 -m policy --dir out --pol ipsec -j ACCEPT\n[0:0] -A OUTPUT -s 10.251.1.1/32 -d 10.251.2.1/32 -j REJECT --reject-with icmp-port-unreachable\nCOMMIT\n# Completed on Sat Oct 24 15:17:06 2026\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:06.782688+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "tcv3-lsm7-a",
+        "sh",
+        "-c",
+        "exec /usr/lib/ipsec/charon > /tmp/charon.log 2>&1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:07.379472+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "sh",
+        "-c",
+        "exec swanctl --load-all"
+      ],
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/ca.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/x509crl' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "at": "2026-10-24T15:17:07.468100+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "cat",
+        "/proc/self/attr/current"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-device-v7 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:07.552567+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "ps",
+        "-eo",
+        "pid,comm,args"
+      ],
+      "returncode": 0,
+      "stdout": "    PID COMMAND         COMMAND\n      1 sleep           sleep infinity\n     79 charon          /usr/lib/ipsec/charon\n    117 ps              ps -eo pid,comm,args\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:07.633530+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "stat",
+        "-c",
+        "%a %U %n",
+        "/etc/swanctl/private/key.pem"
+      ],
+      "returncode": 0,
+      "stdout": "600 root /etc/swanctl/private/key.pem\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:07.729656+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "python3",
+        "-c",
+        "import os,json;result='unexpected-open';\ntry:\n fd=os.open('/etc/swanctl/private/key.pem',os.O_RDONLY);os.close(fd)\nexcept PermissionError:result='denied'\nprint(json.dumps({'root_key_open':result}))"
+      ],
+      "returncode": 0,
+      "stdout": "{\"root_key_open\": \"denied\"}\n",
+      "stderr": "",
+      "probe": "root-nongateway-key-open",
+      "expected_result": "denied",
+      "observed_result": "denied"
+    },
+    {
+      "at": "2026-10-24T15:17:07.741342+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/B/private/key.pem",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/B.csr",
+        "-sha384",
+        "-subj",
+        "/CN=B.lsm.test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T15:17:07.781527+00:00",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/B.csr",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/ca.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/ca.key",
+        "-CAcreateserial",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/B/x509/cert.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/B.ext"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = B.lsm.test\n"
+    },
+    {
+      "at": "2026-10-24T15:17:07.959080+00:00",
+      "command": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "tcv3-lsm7-b",
+        "--network",
+        "none",
+        "--cap-add",
+        "NET_ADMIN",
+        "--cap-add",
+        "NET_RAW",
+        "--read-only",
+        "--tmpfs",
+        "/run",
+        "--tmpfs",
+        "/tmp",
+        "--security-opt",
+        "apparmor=tdn-lsm-device-v7",
+        "--mount",
+        "type=bind,src=/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/B,dst=/etc/swanctl,readonly",
+        "--entrypoint",
+        "sleep",
+        "twinet-msc:construction-v2",
+        "infinity"
+      ],
+      "returncode": 0,
+      "stdout": "992dc2e9a8c6f64756c910b003299c66dc1dd949e0fb20213266db96a2c06956\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:07.979029+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .HostConfig}}",
+        "tcv3-lsm7-b"
+      ],
+      "returncode": 0,
+      "stdout": "{\"Binds\":null,\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_NET_ADMIN\",\"CAP_NET_RAW\"],\"CapDrop\":null,\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":[],\"DnsSearch\":[],\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":true,\"SecurityOpt\":[\"apparmor=tdn-lsm-device-v7\"],\"Tmpfs\":{\"/run\":\"\",\"/tmp\":\"\"},\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":0,\"NanoCpus\":0,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":[],\"BlkioDeviceReadBps\":[],\"BlkioDeviceWriteBps\":[],\"BlkioDeviceReadIOps\":[],\"BlkioDeviceWriteIOps\":[],\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":[],\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":0,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":null,\"Ulimits\":[],\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/lsm-gateway-v7/B\",\"Target\":\"/etc/swanctl\",\"ReadOnly\":true}],\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]}\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.051831+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "cat",
+        "/proc/self/status"
+      ],
+      "returncode": 0,
+      "stdout": "Name:\tcat\nUmask:\t0022\nState:\tR (running)\nTgid:\t7\nNgid:\t0\nPid:\t7\nPPid:\t0\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t0 \nNStgid:\t7\nNSpid:\t7\nNSpgid:\t7\nNSsid:\t7\nKthread:\t0\nVmPeak:\t    2844 kB\nVmSize:\t    2844 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t    1472 kB\nVmRSS:\t    1472 kB\nRssAnon:\t     100 kB\nRssFile:\t    1372 kB\nRssShmem:\t       0 kB\nVmData:\t     360 kB\nVmStk:\t     132 kB\nVmExe:\t      20 kB\nVmLib:\t    1752 kB\nVmPTE:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t1\nSigQ:\t4/1031011\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t00000000a80435fb\nCapEff:\t00000000a80435fb\nCapBnd:\t00000000a80435fb\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tconditional enabled\nCpus_allowed:\tff,ffffffff\nCpus_allowed_list:\t0-39\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000003\nMems_allowed_list:\t0-1\nvoluntary_ctxt_switches:\t13\nnonvoluntary_ctxt_switches:\t1\nx86_Thread_features:\t\nx86_Thread_features_locked:\t\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.154697+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "python3",
+        "-c",
+        "import os,json;result='unexpected-open';\ntry:\n fd=os.open('/usr/sbin/swanctl',os.O_WRONLY);os.close(fd)\nexcept OSError as e:result='read-only' if e.errno==30 else 'denied'\nprint(json.dumps({'gateway_executable_write':result}))"
+      ],
+      "returncode": 0,
+      "stdout": "{\"gateway_executable_write\": \"read-only\"}\n",
+      "stderr": "",
+      "probe": "gateway-executable-immutable",
+      "expected_result": "read-only",
+      "observed_result": "read-only"
+    },
+    {
+      "at": "2026-10-24T15:17:08.259087+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "python3",
+        "-c",
+        "from pathlib import Path;import json;result='unexpected-profile-change';\ntry:Path('/proc/self/attr/current').write_text('changeprofile tdn-lsm-gateway-v7')\nexcept PermissionError:result='denied'\nprint(json.dumps({'direct_profile_change':result}))"
+      ],
+      "returncode": 0,
+      "stdout": "{\"direct_profile_change\": \"denied\"}\n",
+      "stderr": "",
+      "probe": "nongateway-direct-profile-change",
+      "expected_result": "denied",
+      "observed_result": "denied"
+    },
+    {
+      "at": "2026-10-24T15:17:08.279751+00:00",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Pid}}",
+        "tcv3-lsm7-b"
+      ],
+      "returncode": 0,
+      "stdout": "204919\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.293579+00:00",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "lp70",
+        "netns",
+        "204919"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.387480+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "ip",
+        "link",
+        "set",
+        "lp70",
+        "name",
+        "eth0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.473220+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "ip",
+        "link",
+        "set",
+        "eth0",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.547461+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.621751+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "ip",
+        "addr",
+        "add",
+        "10.254.31.2/30",
+        "dev",
+        "eth0"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.699817+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "ip",
+        "addr",
+        "add",
+        "10.251.2.1/32",
+        "dev",
+        "lo"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.774171+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "ip",
+        "route",
+        "add",
+        "10.251.1.1/32",
+        "via",
+        "10.254.31.1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.843949+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "iptables",
+        "-A",
+        "OUTPUT",
+        "-s",
+        "10.251.2.1/32",
+        "-d",
+        "10.251.1.1/32",
+        "-m",
+        "policy",
+        "--dir",
+        "out",
+        "--pol",
+        "ipsec",
+        "-j",
+        "ACCEPT"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.922109+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "iptables",
+        "-A",
+        "OUTPUT",
+        "-s",
+        "10.251.2.1/32",
+        "-d",
+        "10.251.1.1/32",
+        "-j",
+        "REJECT"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:08.998430+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "iptables-save",
+        "-c"
+      ],
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 15:17:08 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD ACCEPT [0:0]\n:OUTPUT ACCEPT [0:0]\n[0:0] -A OUTPUT -s 10.251.2.1/32 -d 10.251.1.1/32 -m policy --dir out --pol ipsec -j ACCEPT\n[0:0] -A OUTPUT -s 10.251.2.1/32 -d 10.251.1.1/32 -j REJECT --reject-with icmp-port-unreachable\nCOMMIT\n# Completed on Sat Oct 24 15:17:08 2026\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:09.074449+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "-d",
+        "tcv3-lsm7-b",
+        "sh",
+        "-c",
+        "exec /usr/lib/ipsec/charon > /tmp/charon.log 2>&1"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:09.677352+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "sh",
+        "-c",
+        "exec swanctl --load-all"
+      ],
+      "returncode": 0,
+      "stdout": "loaded certificate from '/etc/swanctl/x509/cert.pem'\nloaded certificate from '/etc/swanctl/x509ca/ca.pem'\nloaded ECDSA key from '/etc/swanctl/private/key.pem'\nno authorities found, 0 unloaded\nno pools found, 0 unloaded\nloaded connection 'msc'\nsuccessfully loaded 1 connections, 0 unloaded\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\nopening directory '/etc/swanctl/x509ocsp' failed: No such file or directory\nopening directory '/etc/swanctl/x509aa' failed: No such file or directory\nopening directory '/etc/swanctl/x509ac' failed: No such file or directory\nopening directory '/etc/swanctl/x509crl' failed: No such file or directory\nopening directory '/etc/swanctl/pubkey' failed: No such file or directory\nopening directory '/etc/swanctl/rsa' failed: No such file or directory\nopening directory '/etc/swanctl/ecdsa' failed: No such file or directory\nopening directory '/etc/swanctl/bliss' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs8' failed: No such file or directory\nopening directory '/etc/swanctl/pkcs12' failed: No such file or directory\n"
+    },
+    {
+      "at": "2026-10-24T15:17:09.755871+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "cat",
+        "/proc/self/attr/current"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-device-v7 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:09.824445+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "ps",
+        "-eo",
+        "pid,comm,args"
+      ],
+      "returncode": 0,
+      "stdout": "    PID COMMAND         COMMAND\n      1 sleep           sleep infinity\n     79 charon          /usr/lib/ipsec/charon\n    117 ps              ps -eo pid,comm,args\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:09.896625+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "stat",
+        "-c",
+        "%a %U %n",
+        "/etc/swanctl/private/key.pem"
+      ],
+      "returncode": 0,
+      "stdout": "600 root /etc/swanctl/private/key.pem\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:09.991421+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "python3",
+        "-c",
+        "import os,json;result='unexpected-open';\ntry:\n fd=os.open('/etc/swanctl/private/key.pem',os.O_RDONLY);os.close(fd)\nexcept PermissionError:result='denied'\nprint(json.dumps({'root_key_open':result}))"
+      ],
+      "returncode": 0,
+      "stdout": "{\"root_key_open\": \"denied\"}\n",
+      "stderr": "",
+      "probe": "root-nongateway-key-open",
+      "expected_result": "denied",
+      "observed_result": "denied"
+    },
+    {
+      "at": "2026-10-24T15:17:10.051632+00:00",
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:10.821891+00:00",
+      "command": [
+        "cc",
+        "-shared",
+        "-fPIC",
+        "-O2",
+        "-o",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/lsm-gateway-v7/key-open-constructor.so",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/lsm-gateway-v7/key-open-constructor.c"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:10.848848+00:00",
+      "command": [
+        "docker",
+        "cp",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/lsm-gateway-v7/key-open-constructor.so",
+        "tcv3-lsm7-a:/tmp/key-open-constructor.so"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Error response from daemon: container rootfs is marked read-only\n"
+    },
+    {
+      "at": "2026-10-24T15:17:10.926137+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "cat",
+        "/tmp/charon.log"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:11.009597+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-a",
+        "sh",
+        "-c",
+        "for p in /proc/[0-9]*/comm; do if test \"$(cat \"$p\" 2>/dev/null)\" = charon; then cat \"${p%/comm}/attr/current\"; fi; done"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-gateway-v7 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:11.083117+00:00",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "tcv3-lsm7-a"
+      ],
+      "returncode": 0,
+      "stdout": "tcv3-lsm7-a\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:11.158025+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "cat",
+        "/tmp/charon.log"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:11.250197+00:00",
+      "command": [
+        "docker",
+        "exec",
+        "tcv3-lsm7-b",
+        "sh",
+        "-c",
+        "for p in /proc/[0-9]*/comm; do if test \"$(cat \"$p\" 2>/dev/null)\" = charon; then cat \"${p%/comm}/attr/current\"; fi; done"
+      ],
+      "returncode": 0,
+      "stdout": "tdn-lsm-gateway-v7 (enforce)\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T15:17:11.318948+00:00",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "tcv3-lsm7-b"
+      ],
+      "returncode": 0,
+      "stdout": "tcv3-lsm7-b\n",
+      "stderr": ""
+    }
+  ],
+  "error": "Error response from daemon: container rootfs is marked read-only\n",
+  "runtime_backend": "supplemental-Linux-Docker-IKEv2-and-host-enforced-AppArmor",
+  "scope": [
+    "Fresh owned read-only containers run actual IKEv2 gateways under explicit AppArmor profiles. The general device profile denies the private key subtree; immutable charon and swanctl executables transition to the gateway profile that can load the keys. Non-gateway root opens are tested without reading or exporting any key bytes.",
+    "The complete effective policy and executable/profile identities must support the claims. Private credential provisioning and the host root/Docker policy loader remain trusted laboratory controls. No all-interface, host administrator, hardware tamper, approved-product or universal noninterference guarantee follows from this bounded case.",
+    "Mandatory policy is supplemental and is not asserted to be installed on the separate original native profiles or FreeBSD Inners."
+  ]
+}

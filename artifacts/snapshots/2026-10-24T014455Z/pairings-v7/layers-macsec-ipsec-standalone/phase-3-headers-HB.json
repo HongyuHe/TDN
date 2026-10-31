@@ -1,0 +1,164 @@
+{
+  "started_at": "2026-10-24T14:41:56.592525+00:00",
+  "ended_at": "2026-10-24T14:42:03.274883+00:00",
+  "frames": [
+    {
+      "at_ns": 1792852920031567090,
+      "monotonic_ns": 596043377719952,
+      "interface": "red",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "9a:aa:4b:0a:4a:05",
+        "source_mac": "3e:61:f3:9b:56:b5",
+        "ethertype": "0x0800",
+        "frame_length": 106,
+        "ipv4": {
+          "source": "10.1.0.2",
+          "destination": "10.2.0.2",
+          "protocol": 1,
+          "ihl": 20,
+          "total_length": 92,
+          "identification": 57343,
+          "fragment_field": 16384,
+          "ttl": 62
+        },
+        "icmp": {
+          "type": 8,
+          "code": 0
+        }
+      }
+    },
+    {
+      "at_ns": 1792852920031660586,
+      "monotonic_ns": 596043377812035,
+      "interface": "red",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "3e:61:f3:9b:56:b5",
+        "source_mac": "9a:aa:4b:0a:4a:05",
+        "ethertype": "0x0800",
+        "frame_length": 106,
+        "ipv4": {
+          "source": "10.2.0.2",
+          "destination": "10.1.0.2",
+          "protocol": 1,
+          "ihl": 20,
+          "total_length": 92,
+          "identification": 47144,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "icmp": {
+          "type": 0,
+          "code": 0
+        }
+      }
+    },
+    {
+      "at_ns": 1792852921032026584,
+      "monotonic_ns": 596044378178797,
+      "interface": "red",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "9a:aa:4b:0a:4a:05",
+        "source_mac": "3e:61:f3:9b:56:b5",
+        "ethertype": "0x0800",
+        "frame_length": 106,
+        "ipv4": {
+          "source": "10.1.0.2",
+          "destination": "10.2.0.2",
+          "protocol": 1,
+          "ihl": 20,
+          "total_length": 92,
+          "identification": 58153,
+          "fragment_field": 16384,
+          "ttl": 62
+        },
+        "icmp": {
+          "type": 8,
+          "code": 0
+        }
+      }
+    },
+    {
+      "at_ns": 1792852921032111086,
+      "monotonic_ns": 596044378262227,
+      "interface": "red",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "3e:61:f3:9b:56:b5",
+        "source_mac": "9a:aa:4b:0a:4a:05",
+        "ethertype": "0x0800",
+        "frame_length": 106,
+        "ipv4": {
+          "source": "10.2.0.2",
+          "destination": "10.1.0.2",
+          "protocol": 1,
+          "ihl": 20,
+          "total_length": 92,
+          "identification": 48074,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "icmp": {
+          "type": 0,
+          "code": 0
+        }
+      }
+    },
+    {
+      "at_ns": 1792852922063264727,
+      "monotonic_ns": 596045409416999,
+      "interface": "red",
+      "packet_type": 0,
+      "headers": {
+        "destination_mac": "9a:aa:4b:0a:4a:05",
+        "source_mac": "3e:61:f3:9b:56:b5",
+        "ethertype": "0x0800",
+        "frame_length": 106,
+        "ipv4": {
+          "source": "10.1.0.2",
+          "destination": "10.2.0.2",
+          "protocol": 1,
+          "ihl": 20,
+          "total_length": 92,
+          "identification": 58450,
+          "fragment_field": 16384,
+          "ttl": 62
+        },
+        "icmp": {
+          "type": 8,
+          "code": 0
+        }
+      }
+    },
+    {
+      "at_ns": 1792852922063362660,
+      "monotonic_ns": 596045409513908,
+      "interface": "red",
+      "packet_type": 4,
+      "headers": {
+        "destination_mac": "3e:61:f3:9b:56:b5",
+        "source_mac": "9a:aa:4b:0a:4a:05",
+        "ethertype": "0x0800",
+        "frame_length": 106,
+        "ipv4": {
+          "source": "10.2.0.2",
+          "destination": "10.1.0.2",
+          "protocol": 1,
+          "ihl": 20,
+          "total_length": 92,
+          "identification": 48130,
+          "fragment_field": 0,
+          "ttl": 64
+        },
+        "icmp": {
+          "type": 0,
+          "code": 0
+        }
+      }
+    }
+  ],
+  "parse_or_capacity_errors": 0,
+  "scope": "Only parsed public Ethernet, IPv4/IPv6, UDP, ICMP, ESP SPI/sequence, MACsec SecTAG and L2TPv3 data headers are emitted. Packet payload and ciphertext bytes are never serialized. MACsec encrypted content is never parsed. IPv4 transport headers require a valid complete IHL/total length and zero fragment offset. The selected L2TPv3 contract is UDP, no cookie and a four-byte default L2-specific sublayer, corroborated by actual tunnel/session state. VLAN tags and other L2TP cookie/sublayer arrangements are unsupported and remain undecoded."
+}

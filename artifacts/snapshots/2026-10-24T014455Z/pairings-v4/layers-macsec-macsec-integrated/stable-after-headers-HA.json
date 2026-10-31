@@ -1,0 +1,26 @@
+{
+  "id": "cmd-0370",
+  "started_at": "2026-10-24T14:02:42.546346+00:00",
+  "ended_at": "2026-10-24T14:02:47.152847+00:00",
+  "command": [
+    "ip",
+    "netns",
+    "exec",
+    "tcv3p4-HA",
+    "tcpdump",
+    "-i",
+    "any",
+    "-nn",
+    "-e",
+    "-v",
+    "-l",
+    "-s",
+    "192"
+  ],
+  "device_id": "HA",
+  "returncode": 0,
+  "stdout": "14:02:42.959053 red   Out ifindex 4229 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 2557, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49509, seq 1, length 72\n14:02:42.959081 red   In  ifindex 4229 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 140: (tos 0xc0, ttl 64, id 16948, offset 0, flags [none], proto ICMP (1), length 120)\n    10.1.0.1 > 10.1.0.2: ICMP net 10.2.0.2 unreachable, length 100\n\t(tos 0x0, ttl 64, id 2557, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49509, seq 1, length 72\n14:02:43.981930 red   Out ifindex 4229 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 2828, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49509, seq 2, length 72\n14:02:43.981966 red   In  ifindex 4229 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 140: (tos 0xc0, ttl 64, id 17167, offset 0, flags [none], proto ICMP (1), length 120)\n    10.1.0.1 > 10.1.0.2: ICMP net 10.2.0.2 unreachable, length 100\n\t(tos 0x0, ttl 64, id 2828, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49509, seq 2, length 72\n14:02:45.005909 red   Out ifindex 4229 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 3302, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49509, seq 3, length 72\n14:02:45.005953 red   In  ifindex 4229 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 140: (tos 0xc0, ttl 64, id 17700, offset 0, flags [none], proto ICMP (1), length 120)\n    10.1.0.1 > 10.1.0.2: ICMP net 10.2.0.2 unreachable, length 100\n\t(tos 0x0, ttl 64, id 3302, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49509, seq 3, length 72\n14:02:45.041203 red   Out ifindex 4229 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 3307, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49512, seq 1, length 72\n14:02:45.041435 red   In  ifindex 4229 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 57738, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 49512, seq 1, length 72\n14:02:46.093894 red   Out ifindex 4229 46:16:dd:50:9f:d5 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 64, id 3616, offset 0, flags [DF], proto ICMP (1), length 92)\n    10.1.0.2 > 10.2.0.2: ICMP echo request, id 49512, seq 2, length 72\n14:02:46.094109 red   In  ifindex 4229 76:b1:ad:7e:a6:68 ethertype IPv4 (0x0800), length 112: (tos 0x0, ttl 62, id 58258, offset 0, flags [none], proto ICMP (1), length 92)\n    10.2.0.2 > 10.1.0.2: ICMP echo reply, id 49512, seq 2, length 72\n\n",
+  "stderr": "libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'.\ntcpdump: data link type LINUX_SLL2\ntcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 192 bytes\n10 packets captured\n12 packets received by filter\n0 packets dropped by kernel\n",
+  "scope": "Public tcpdump decoded header summaries only. No hex payload output or packet file is retained.",
+  "capture_phase": 2
+}

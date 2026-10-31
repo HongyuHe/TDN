@@ -1,0 +1,66 @@
+{
+  "at": "2026-10-24T03:58:21.139179+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:58:12.295966+00:00",
+      "command": [
+        "make",
+        "clean"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "make -C ../src clean\nfor d in ap common crypto drivers eapol_auth eapol_supp eap_common eap_peer eap_server l2_packet p2p pae pasn radius rsn_supp tls utils wps fst; do [ -d $d ] && make -C $d clean; done\nrm -f *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f build.wpa_supplicant build.hostapd\nrm -f *~ *.o *.d\nrm -f *~ *.o *.d\nrm -f *~\nmake -C dbus clean\nrm -f *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f libwpadbus.a\nrm -f core *~ *.o *.d *.gcno *.gcda *.gcov\nrm -f eap_*.so wpa_supplicant.exe wpa_cli.exe wpa_passphrase.exe win_if_list.exe eapol_test preauth_test\nrm -f wpa_priv\nrm -f nfc_pw_token\nrm -f lcov.info\nrm -rf lcov-html\nrm -f libwpa_client.a\nrm -f libpasn.so\nrm -f libwpa_client.so\nrm -f libwpa_test1 libwpa_test2\nrm -f wpa_passphrase\n",
+      "stderr": "Package dbus-1 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `dbus-1.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'dbus-1', required by 'virtual:world', not found\nPackage dbus-1 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `dbus-1.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'dbus-1', required by 'virtual:world', not found\n"
+    },
+    {
+      "at": "2026-10-24T03:58:21.110565+00:00",
+      "command": [
+        "make",
+        "-j4"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "  sed systemd/wpa_supplicant.service.arg.in\n  sed systemd/wpa_supplicant.service.in\n  sed systemd/wpa_supplicant-wired.service.arg.in\n  sed systemd/wpa_supplicant-nl80211.service.arg.in\n  sed dbus/fi.w1.wpa_supplicant1.service.in\n  CC  wpa_passphrase.c\n  CC  eap_register.c\n  CC  notify.c\n  CC  ../src/utils/config.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/utils/common.c\n  CC  ../src/utils/bitfield.c\n  CC  ../src/utils/wpabuf.c\n  CC  bss.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/common/ptksa_cache.c\n  CC  twt.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/rsn_supp/pmksa_cache.c\n  CC  ../src/utils/eloop.c\n  CC  config.c\n  CC  ../src/rsn_supp/preauth.c\n  CC  ../src/rsn_supp/wpa_ie.c\n  CC  config_file.c\n  CC  rrm.c\n  CC  ../src/common/wpa_common.c\n  CC  op_classes.c\n  CC  ../src/eap_peer/eap_tls.c\n  CC  wmm_ac.c\n  CC  wpas_kay.c\n  CC  ../src/pae/ieee802_1x_cp.c\n  CC  robust_av.c\n  CC  ../src/pae/ieee802_1x_key.c\n  CC  ../src/rsn_supp/wpa.c\n  CC  ../src/pae/ieee802_1x_secy_ops.c\n  CC  ../src/eap_peer/eap_methods.c\n  CC  ../src/eapol_supp/eapol_supp_sm.c\n  CC  ../src/eap_peer/eap_tls_common.c\n  CC  ../src/eap_peer/eap.c\n  CC  ../src/crypto/tls_openssl_ocsp.c\n  CC  ../src/crypto/aes-encblock.c\n  CC  ../src/crypto/sha256-prf.c\n  CC  ../src/pae/ieee802_1x_kay.c\n  CC  ../src/crypto/sha256-tlsprf.c\n  CC  ../src/crypto/random.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/crypto/crypto_openssl.c\n  CC  ../src/utils/base64.c\n  CC  ctrl_iface_unix.c\n  CC  ../src/crypto/tls_openssl.c\n  CC  ../src/eap_common/eap_common.c\n  CC  ../src/crypto/sha1-prf.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/crypto/sha1-tlsprf.c\n  CC  ../src/drivers/driver_common.c\n  CC  ../src/common/ieee802_11_common.c\n  CC  bssid_ignore.c\n  CC  wpas_glue.c\n  CC  ctrl_iface.c\n  CC  main.c\n  CC  events.c\n  CC  scan.c\n  CC  ../src/drivers/driver_wired_common.c\n  CC  ../src/drivers/drivers.c\n  CC  ../src/l2_packet/l2_packet_linux.c\n  CC  ../src/drivers/driver_macsec_linux.c\n  CC  ../src/common/wpa_ctrl.c\n  CC  ../src/common/cli.c\n  CC  wpa_supplicant.c\n  LD  wpa_passphrase\n  CC  ../src/utils/edit_simple.c\n  LD  wpa_supplicant\n  CC  wpa_cli.c\n  LD  wpa_cli\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:58:21.127368+00:00",
+      "command": [
+        "sha256sum",
+        "./wpa_supplicant"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "48fd9bc8246b33fe6a1ee868b7cee78efd38986db83f6177bd0a0cc15883452e  ./wpa_supplicant\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:58:21.129456+00:00",
+      "command": [
+        "./wpa_supplicant",
+        "-v"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nCopyright (c) 2003-2026, Jouni Malinen <j@w1.fi> and contributors\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T03:58:21.138726+00:00",
+      "command": [
+        "ldd",
+        "./wpa_supplicant"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay/wpa_supplicant-2.12/wpa_supplicant",
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffc38147000)\n\tlibnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x00007a993cba2000)\n\tlibnl-genl-3.so.200 => /lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x00007a993cb9a000)\n\tlibnl-route-3.so.200 => /lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x00007a993cb0b000)\n\tlibssl.so.3 => /lib/x86_64-linux-gnu/libssl.so.3 (0x00007a993ca61000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007a993c400000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007a993c000000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007a993ccb0000)\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "scope": [
+    "Owned experimental hostap 2.12 build enables 500 ms bounded MKA transmission while retaining normal Hello 2000 ms and lifetime 6000 ms constants. The timer preserves subsecond units.",
+    "A bounded one-second PN sample history replaces the old get_lpn method that explicitly assumed a two-second transmit interval. The advertised lower bound uses next PN so idle transmission does not preserve an old frame indefinitely.",
+    "The history and finite delayed-frame tests are experimental implementation work. Full IEEE 802.1X normative conformance and every key rollover/control-delay case remain separate. The original hostap receive-delay code already programs Linux receive lowest PN."
+  ]
+}

@@ -1,0 +1,16 @@
+#cloud-config
+hostname: evidence-virtual-aw-v3
+ssh_pwauth: false
+ssh_authorized_keys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICrYhpfR3wIhmv6w9I4YfR79MViCp+W6GZwnI+XGOcs9 root@node-1.twinet-msc2.netsyn-pg0.cloudlab.umass.edu
+network:
+  version: 2
+  ethernets:
+    vtnet0:
+      dhcp4: true
+    vtnet1:
+      dhcp4: false
+      addresses: [172.28.97.1/30]
+runcmd:
+  - sysrc sshd_enable=YES
+  - service sshd restart

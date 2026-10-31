@@ -1,0 +1,19 @@
+# Enterprise Gray filtering and obligation review
+
+The Enterprise Gray v1.2.0 annex has 75 requirement-table rows across Tables 8–13. Three rows relocate duties to key-management annexes. Sections 5–9 contain additional narrative duties. The new table catalogue preserves each row and records remaining work without claiming that the 75 rows exhaust the annex.
+
+EG-AR-25 and EG-AR-26 each occur twice with different meanings. The catalogue therefore uses table numbers in its identifiers. The original identifier remains visible. Five catalogue tests reject missing or extra rows, preserve relocated duties and distinguish alternative references from actual new rows.
+
+`EnterpriseGrayFiltering.lean` proves a source/interface condition for arbitrary ordered rules. Each accepting rule must constrain the packet's input interface and source address to a permitted pair. Matching that rule establishes the pair. The existing first-match filter theorem then establishes the condition for every accepted packet. A packet outside all permitted pairs is denied. The proof supports EG-FW-3 and EG-FW-11 under the selected chain and known-range assumptions. The required range list must still be justified by routes and the deployment's interface meaning. EG-FW-1 has a separate general input-port restriction proof.
+
+The Lean regression checks an address arriving through its permitted interface, the same address arriving through another interface, an omitted interface constraint, an overbroad range, and an earlier denying rule. These examples are synthetic regressions. They do not claim deployment compliance.
+
+The retained central-gray-management-v3 bundle supplies four raw-bound IPv4 filter observations. Both Gray firewall/encryptors have a FORWARD chain with a DROP default and two explicit IPsec-policy allow rules. Their INPUT and OUTPUT chains are empty and default to ACCEPT. The generated Lean data proves first-match explicit allowance for the selected FORWARD chains and acceptance by the selected INPUT chains. The second result records a missing enforcement premise. It does not claim a live counterexample through the rest of the kernel.
+
+The FORWARD guards select IPsec direction and request ID 100 without specifying tunnel mode. The importer preserves that meaning. The general native importer rejects these rules because its selected syntax requires a tunnel-mode constraint; the new narrow importer accepts only the exact observed syntax and does not manufacture a mode constraint.
+
+The selected rules have no explicit source-address ranges. Their failure to meet the sufficient source/interface check is not itself a proof that real source filtering is absent. Installed IPsec selectors can impose additional restrictions. Proving the full source-filter condition requires connecting those selectors and earlier hooks to the selected filter chains. The optional-management proofs remain separate from management-free data-path proofs.
+
+The current local INPUT chains cannot supply a complete all-traffic default-denial premise for EG-FW-4/12. A repair must classify required local control and management traffic, install explicit allowances and default-denial policies, and collect complete hook/IPv4/IPv6 evidence. Remote work remains restricted. No new deployment action or packet experiment was performed during this review.
+
+Eight importer mutation tests check device identity, namespace command, failed observations, extra tables, changed local rules, missing policy guards and incomplete device inventories. The general module, concrete evidence module and Lean regression compile. Whole-annex compliance remains open. EG-FW-2's interaction with explicit control/service allowances needs a documented original-source interpretation before any full allowance theorem is claimed.

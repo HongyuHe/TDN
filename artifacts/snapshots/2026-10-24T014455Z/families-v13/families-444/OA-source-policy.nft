@@ -1,0 +1,12 @@
+add table inet EVA_SOURCE_V13
+add chain inet EVA_SOURCE_V13 ingress { type filter hook prerouting priority -460; policy accept; }
+add rule inet EVA_SOURCE_V13 ingress iifname "gray" ip saddr 10.11.0.1 counter accept
+add rule inet EVA_SOURCE_V13 ingress iifname "gray" ip6 saddr fe80::/10 ip6 hoplimit 255 icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert } counter accept
+add rule inet EVA_SOURCE_V13 ingress iifname "gray" ip6 saddr ::/128 ip6 daddr ff02::1:ff00:0/104 ip6 hoplimit 255 icmpv6 type nd-neighbor-solicit counter accept
+add rule inet EVA_SOURCE_V13 ingress iifname "gray" meta nfproto { ipv4, ipv6 } counter drop
+add rule inet EVA_SOURCE_V13 ingress iifname "black" ip saddr 192.0.2.2 counter accept
+add rule inet EVA_SOURCE_V13 ingress iifname "black" ip saddr 192.0.3.1 counter accept
+add rule inet EVA_SOURCE_V13 ingress iifname "black" ip saddr 10.21.0.1 ipsec in reqid 200 counter accept
+add rule inet EVA_SOURCE_V13 ingress iifname "black" ip6 saddr fe80::/10 ip6 hoplimit 255 icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert } counter accept
+add rule inet EVA_SOURCE_V13 ingress iifname "black" ip6 saddr ::/128 ip6 daddr ff02::1:ff00:0/104 ip6 hoplimit 255 icmpv6 type nd-neighbor-solicit counter accept
+add rule inet EVA_SOURCE_V13 ingress iifname "black" meta nfproto { ipv4, ipv6 } counter drop

@@ -1,0 +1,1087 @@
+{
+  "schema_version": "csfc-multiworker-placement/v1",
+  "started_at": "2026-10-24T02:26:41.631947+00:00",
+  "ended_at": "2026-10-24T02:26:45.924827+00:00",
+  "worker": "w163",
+  "worker_host": "clnode163.clemson.cloudlab.us",
+  "action": "collect-after-v3",
+  "runtime_backend": "native-FRR-OVS-crossworker-VXLAN",
+  "selected_device_ids": [
+    "MW_O_A1",
+    "MW_O_A2",
+    "MW_O_B1",
+    "MW_O_B2"
+  ],
+  "assignments": {
+    "MW_BLACK": "w176",
+    "MW_GF_A": "w008",
+    "MW_R_A1": "w159",
+    "MW_I_A1": "w159",
+    "MW_G_A1": "w159",
+    "MW_O_A1": "w163",
+    "MW_OF_A1": "w176",
+    "MW_R_A2": "w159",
+    "MW_I_A2": "w159",
+    "MW_G_A2": "w159",
+    "MW_O_A2": "w163",
+    "MW_OF_A2": "w176",
+    "MW_GF_B": "w008",
+    "MW_R_B1": "w159",
+    "MW_I_B1": "w159",
+    "MW_G_B1": "w159",
+    "MW_O_B1": "w163",
+    "MW_OF_B1": "w176",
+    "MW_R_B2": "w159",
+    "MW_I_B2": "w159",
+    "MW_G_B2": "w159",
+    "MW_O_B2": "w163",
+    "MW_OF_B2": "w176"
+  },
+  "records": [
+    {
+      "id": "mw-00000",
+      "command": [
+        "hostname"
+      ],
+      "started_at": "2026-10-24T02:26:41.631995+00:00",
+      "ended_at": "2026-10-24T02:26:41.633541+00:00",
+      "returncode": 0,
+      "stdout": "node-2.twinet-msc.netsyn-pg0.clemson.cloudlab.us\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00001",
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "started_at": "2026-10-24T02:26:41.633553+00:00",
+      "ended_at": "2026-10-24T02:26:41.636161+00:00",
+      "returncode": 0,
+      "stdout": "Linux node-2.twinet-msc.netsyn-pg0.clemson.cloudlab.us 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00002",
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_uuid"
+      ],
+      "started_at": "2026-10-24T02:26:41.636183+00:00",
+      "ended_at": "2026-10-24T02:26:41.638596+00:00",
+      "returncode": 0,
+      "stdout": "4c4c4544-0036-3110-8036-b6c04f333832\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00003",
+      "command": [
+        "cat",
+        "/sys/class/dmi/id/product_name"
+      ],
+      "started_at": "2026-10-24T02:26:41.638616+00:00",
+      "ended_at": "2026-10-24T02:26:41.641127+00:00",
+      "returncode": 0,
+      "stdout": "PowerEdge C6320\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00004",
+      "command": [
+        "ip",
+        "-j",
+        "-d",
+        "address",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:41.641146+00:00",
+      "ended_at": "2026-10-24T02:26:41.645268+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"noprefixroute\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"ifname\":\"eno1\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:8c:fa:f7:36:40\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9710,\"num_tx_queues\":64,\"num_rx_queues\":64,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:81:00.0\",\"vfinfo_list\":[],\"altnames\":[\"enp129s0f0\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"130.127.133.172\",\"prefixlen\":22,\"metric\":1024,\"broadcast\":\"130.127.135.255\",\"scope\":\"global\",\"dynamic\":true,\"label\":\"eno1\",\"valid_life_time\":27114,\"preferred_life_time\":27114},{\"family\":\"inet6\",\"local\":\"fe80::28c:faff:fef7:3640\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3,\"ifname\":\"eno2\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"mq\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:8c:fa:f7:36:42\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":9710,\"num_tx_queues\":64,\"num_rx_queues\":64,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"parentbus\":\"pci\",\"parentdev\":\"0000:81:00.1\",\"vfinfo_list\":[],\"altnames\":[\"enp129s0f1\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.0.1.3\",\"prefixlen\":24,\"broadcast\":\"10.0.1.255\",\"scope\":\"global\",\"label\":\"eno2\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::28c:faff:fef7:3642\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":4,\"ifname\":\"docker0\",\"flags\":[\"NO-CARRIER\",\"BROADCAST\",\"MULTICAST\",\"UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"DOWN\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"76:51:da:f8:8d:7d\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.76:51:da:f8:8d:7d\",\"root_id\":\"8000.76:51:da:f8:8d:7d\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":231.80,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":1,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.17.0.1\",\"prefixlen\":16,\"broadcast\":\"172.17.255.255\",\"scope\":\"global\",\"label\":\"docker0\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":103,\"ifname\":\"mw3b02\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"46:26:08:45:e6:8e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.46:26:8:45:e6:8e\",\"root_id\":\"8000.46:26:8:45:e6:8e\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":32.37,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::4426:8ff:fe45:e68e\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":104,\"ifname\":\"mw3x02\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b02\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ca:9b:94:e7:67:df\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310002,\"remote\":\"10.0.1.2\",\"local\":\"10.0.1.3\",\"link\":\"eno2\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.46:26:8:45:e6:8e\",\"root_id\":\"8000.46:26:8:45:e6:8e\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::c89b:94ff:fee7:67df\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":106,\"link_index\":105,\"ifname\":\"mw3h02\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b02\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"66:7f:0b:cd:69:a0\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":26,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.46:26:8:45:e6:8e\",\"root_id\":\"8000.46:26:8:45:e6:8e\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::647f:bff:fecd:69a0\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":107,\"ifname\":\"mw3b04\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"b6:d4:a8:16:05:01\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.b6:d4:a8:16:5:1\",\"root_id\":\"8000.b6:d4:a8:16:5:1\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":75.90,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::b4d4:a8ff:fe16:501\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":108,\"ifname\":\"mw3x04\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b04\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"1a:21:d0:99:01:24\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310004,\"remote\":\"10.0.1.1\",\"local\":\"10.0.1.3\",\"link\":\"eno2\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.b6:d4:a8:16:5:1\",\"root_id\":\"8000.b6:d4:a8:16:5:1\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::1821:d0ff:fe99:124\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":110,\"link_index\":109,\"ifname\":\"mw3h04\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b04\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"da:f1:be:cb:41:5e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":26,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.b6:d4:a8:16:5:1\",\"root_id\":\"8000.b6:d4:a8:16:5:1\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::d8f1:beff:fecb:415e\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":111,\"ifname\":\"mw3b08\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ee:2b:55:76:5f:f3\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.ee:2b:55:76:5f:f3\",\"root_id\":\"8000.ee:2b:55:76:5f:f3\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":13.91,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::ec2b:55ff:fe76:5ff3\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":112,\"ifname\":\"mw3x08\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b08\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"0e:3f:19:eb:89:b5\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310008,\"remote\":\"10.0.1.2\",\"local\":\"10.0.1.3\",\"link\":\"eno2\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.ee:2b:55:76:5f:f3\",\"root_id\":\"8000.ee:2b:55:76:5f:f3\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::c3f:19ff:feeb:89b5\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":114,\"link_index\":113,\"ifname\":\"mw3h08\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b08\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"3a:0f:1b:d9:c8:bf\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":33,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.ee:2b:55:76:5f:f3\",\"root_id\":\"8000.ee:2b:55:76:5f:f3\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::380f:1bff:fed9:c8bf\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":115,\"ifname\":\"mw3b10\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"9a:2b:52:65:da:99\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.9a:2b:52:65:da:99\",\"root_id\":\"8000.9a:2b:52:65:da:99\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":10.37,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::982b:52ff:fe65:da99\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":116,\"ifname\":\"mw3x10\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b10\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"7e:e6:b6:e1:0b:40\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310010,\"remote\":\"10.0.1.1\",\"local\":\"10.0.1.3\",\"link\":\"eno2\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.9a:2b:52:65:da:99\",\"root_id\":\"8000.9a:2b:52:65:da:99\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::7ce6:b6ff:fee1:b40\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":118,\"link_index\":117,\"ifname\":\"mw3h10\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b10\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"66:71:a8:0b:8c:fe\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":33,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.9a:2b:52:65:da:99\",\"root_id\":\"8000.9a:2b:52:65:da:99\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::6471:a8ff:fe0b:8cfe\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":119,\"ifname\":\"mw3b14\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"d2:43:0e:dc:3d:69\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.d2:43:e:dc:3d:69\",\"root_id\":\"8000.d2:43:e:dc:3d:69\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":48.76,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::d043:eff:fedc:3d69\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":120,\"ifname\":\"mw3x14\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b14\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"82:c0:17:bf:a8:af\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310014,\"remote\":\"10.0.1.2\",\"local\":\"10.0.1.3\",\"link\":\"eno2\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.d2:43:e:dc:3d:69\",\"root_id\":\"8000.d2:43:e:dc:3d:69\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::80c0:17ff:febf:a8af\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":122,\"link_index\":121,\"ifname\":\"mw3h14\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b14\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"7a:bf:5b:1a:14:dd\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":38,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.d2:43:e:dc:3d:69\",\"root_id\":\"8000.d2:43:e:dc:3d:69\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::78bf:5bff:fe1a:14dd\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":123,\"ifname\":\"mw3b16\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ea:bb:fb:3a:2d:bf\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.ea:bb:fb:3a:2d:bf\",\"root_id\":\"8000.ea:bb:fb:3a:2d:bf\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":10.37,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::e8bb:fbff:fe3a:2dbf\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":124,\"ifname\":\"mw3x16\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b16\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"5a:85:53:26:77:56\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310016,\"remote\":\"10.0.1.1\",\"local\":\"10.0.1.3\",\"link\":\"eno2\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.ea:bb:fb:3a:2d:bf\",\"root_id\":\"8000.ea:bb:fb:3a:2d:bf\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::5885:53ff:fe26:7756\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":126,\"link_index\":125,\"ifname\":\"mw3h16\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b16\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"1e:8f:9b:e2:00:7b\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":38,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.ea:bb:fb:3a:2d:bf\",\"root_id\":\"8000.ea:bb:fb:3a:2d:bf\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::1c8f:9bff:fee2:7b\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":127,\"ifname\":\"mw3b20\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"06:46:08:fc:0e:b9\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.6:46:8:fc:e:b9\",\"root_id\":\"8000.6:46:8:fc:e:b9\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":13.91,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::446:8ff:fefc:eb9\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":128,\"ifname\":\"mw3x20\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b20\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ea:d3:cd:fb:d5:e0\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310020,\"remote\":\"10.0.1.2\",\"local\":\"10.0.1.3\",\"link\":\"eno2\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.6:46:8:fc:e:b9\",\"root_id\":\"8000.6:46:8:fc:e:b9\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::e8d3:cdff:fefb:d5e0\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":130,\"link_index\":129,\"ifname\":\"mw3h20\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b20\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"1e:c0:65:07:12:f3\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":44,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.6:46:8:fc:e:b9\",\"root_id\":\"8000.6:46:8:fc:e:b9\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::1cc0:65ff:fe07:12f3\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":131,\"ifname\":\"mw3b22\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"ae:74:71:56:e5:7a\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"bridge\",\"info_data\":{\"forward_delay\":1500,\"hello_time\":200,\"max_age\":2000,\"ageing_time\":30000,\"stp_state\":0,\"priority\":32768,\"vlan_filtering\":0,\"vlan_protocol\":\"802.1Q\",\"bridge_id\":\"8000.ae:74:71:56:e5:7a\",\"root_id\":\"8000.ae:74:71:56:e5:7a\",\"root_port\":0,\"root_path_cost\":0,\"topology_change\":0,\"topology_change_detected\":0,\"hello_timer\":0.00,\"tcn_timer\":0.00,\"topology_change_timer\":0.00,\"gc_timer\":6.27,\"vlan_default_pvid\":1,\"vlan_stats_enabled\":0,\"vlan_stats_per_port\":0,\"group_fwd_mask\":\"0\",\"group_addr\":\"01:80:c2:00:00:00\",\"mcast_snooping\":0,\"no_linklocal_learn\":0,\"mcast_vlan_snooping\":0,\"mcast_router\":1,\"mcast_query_use_ifaddr\":0,\"mcast_querier\":0,\"mcast_hash_elasticity\":16,\"mcast_hash_max\":4096,\"mcast_last_member_cnt\":2,\"mcast_startup_query_cnt\":2,\"mcast_last_member_intvl\":100,\"mcast_membership_intvl\":26000,\"mcast_querier_intvl\":25500,\"mcast_query_intvl\":12500,\"mcast_query_response_intvl\":1000,\"mcast_startup_query_intvl\":3125,\"mcast_stats_enabled\":0,\"mcast_igmp_version\":2,\"mcast_mld_version\":1,\"nf_call_iptables\":0,\"nf_call_ip6tables\":0,\"nf_call_arptables\":0}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::5c62:80ff:fee8:e27\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":132,\"ifname\":\"mw3x22\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"master\":\"mw3b22\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"3a:4c:60:c2:dc:a7\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"vxlan\",\"info_data\":{\"id\":310022,\"remote\":\"10.0.1.1\",\"local\":\"10.0.1.3\",\"link\":\"eno2\",\"port_range\":{\"low\":0,\"high\":0},\"port\":47930,\"learning\":false,\"ttl\":0,\"df\":\"unset\",\"ageing\":300,\"udp_csum\":true,\"udp_zero_csum6_tx\":false,\"udp_zero_csum6_rx\":false},\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8001\",\"no\":\"0x1\",\"designated_port\":32769,\"designated_cost\":0,\"bridge_id\":\"8000.ae:74:71:56:e5:7a\",\"root_id\":\"8000.ae:74:71:56:e5:7a\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::384c:60ff:fec2:dca7\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":134,\"link_index\":133,\"ifname\":\"mw3h22\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"master\":\"mw3b22\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"06:fd:06:95:46:0b\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":44,\"promiscuity\":1,\"allmulti\":1,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\",\"info_slave_kind\":\"bridge\",\"info_slave_data\":{\"state\":\"forwarding\",\"priority\":32,\"cost\":2,\"hairpin\":false,\"guard\":false,\"root_block\":false,\"fastleave\":false,\"learning\":true,\"flood\":true,\"id\":\"0x8002\",\"no\":\"0x2\",\"designated_port\":32770,\"designated_cost\":0,\"bridge_id\":\"8000.ae:74:71:56:e5:7a\",\"root_id\":\"8000.ae:74:71:56:e5:7a\",\"hold_timer\":0.00,\"message_age_timer\":0.00,\"forward_delay_timer\":0.00,\"topology_change_ack\":0,\"config_pending\":0,\"proxy_arp\":false,\"proxy_arp_wifi\":false,\"multicast_router\":1,\"mcast_flood\":true,\"bcast_flood\":true,\"mcast_to_unicast\":false,\"neigh_suppress\":false,\"group_fwd_mask\":\"0\",\"group_fwd_mask_str\":\"0x0\",\"vlan_tunnel\":false,\"isolated\":false,\"locked\":false}},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet6\",\"local\":\"fe80::4fd:6ff:fe95:460b\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": "info: Using default fan map value (33)\n"
+    },
+    {
+      "id": "mw-00005",
+      "command": [
+        "ip",
+        "-j",
+        "route",
+        "show",
+        "table",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:26:41.645279+00:00",
+      "ended_at": "2026-10-24T02:26:41.648575+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"default\",\"gateway\":\"130.127.132.1\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"prefsrc\":\"130.127.133.172\",\"metric\":1024,\"flags\":[]},{\"dst\":\"10.0.1.0/24\",\"dev\":\"eno2\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.0.1.3\",\"flags\":[]},{\"dst\":\"130.127.132.0/22\",\"dev\":\"eno1\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"130.127.133.172\",\"metric\":1024,\"flags\":[]},{\"dst\":\"130.127.132.1\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"scope\":\"link\",\"prefsrc\":\"130.127.133.172\",\"metric\":1024,\"flags\":[]},{\"dst\":\"130.127.132.51\",\"dev\":\"eno1\",\"protocol\":\"dhcp\",\"scope\":\"link\",\"prefsrc\":\"130.127.133.172\",\"metric\":1024,\"flags\":[]},{\"dst\":\"172.17.0.0/16\",\"dev\":\"docker0\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.17.0.1\",\"flags\":[\"linkdown\"]},{\"type\":\"local\",\"dst\":\"10.0.1.3\",\"dev\":\"eno2\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.0.1.3\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.0.1.255\",\"dev\":\"eno2\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.0.1.3\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"130.127.133.172\",\"dev\":\"eno1\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"130.127.133.172\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"130.127.135.255\",\"dev\":\"eno1\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"130.127.133.172\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.17.0.1\",\"dev\":\"docker0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.17.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.17.255.255\",\"dev\":\"docker0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.17.0.1\",\"flags\":[\"linkdown\"]},{\"dst\":\"fe80::/64\",\"dev\":\"eno1\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"eno2\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x02\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b02\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h02\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x04\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b04\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h04\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x08\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b08\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h08\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x10\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b10\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h10\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x14\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b14\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h14\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x16\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b16\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h16\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x20\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b20\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h20\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3b22\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3x22\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"dst\":\"fe80::/64\",\"dev\":\"mw3h22\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::28c:faff:fef7:3640\",\"dev\":\"eno1\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::28c:faff:fef7:3642\",\"dev\":\"eno2\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::446:8ff:fefc:eb9\",\"dev\":\"mw3b20\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::4fd:6ff:fe95:460b\",\"dev\":\"mw3h22\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::c3f:19ff:feeb:89b5\",\"dev\":\"mw3x08\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::1821:d0ff:fe99:124\",\"dev\":\"mw3x04\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::1c8f:9bff:fee2:7b\",\"dev\":\"mw3h16\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::1cc0:65ff:fe07:12f3\",\"dev\":\"mw3h20\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::380f:1bff:fed9:c8bf\",\"dev\":\"mw3h08\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::384c:60ff:fec2:dca7\",\"dev\":\"mw3x22\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::4426:8ff:fe45:e68e\",\"dev\":\"mw3b02\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::5885:53ff:fe26:7756\",\"dev\":\"mw3x16\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::5c62:80ff:fee8:e27\",\"dev\":\"mw3b22\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::6471:a8ff:fe0b:8cfe\",\"dev\":\"mw3h10\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::647f:bff:fecd:69a0\",\"dev\":\"mw3h02\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::78bf:5bff:fe1a:14dd\",\"dev\":\"mw3h14\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::7ce6:b6ff:fee1:b40\",\"dev\":\"mw3x10\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::80c0:17ff:febf:a8af\",\"dev\":\"mw3x14\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::982b:52ff:fe65:da99\",\"dev\":\"mw3b10\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::b4d4:a8ff:fe16:501\",\"dev\":\"mw3b04\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::c89b:94ff:fee7:67df\",\"dev\":\"mw3x02\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::d043:eff:fedc:3d69\",\"dev\":\"mw3b14\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::d8f1:beff:fecb:415e\",\"dev\":\"mw3h04\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::e8bb:fbff:fe3a:2dbf\",\"dev\":\"mw3b16\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::e8d3:cdff:fefb:d5e0\",\"dev\":\"mw3x20\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::ec2b:55ff:fe76:5ff3\",\"dev\":\"mw3b08\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"eno1\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"eno2\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x02\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b02\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h02\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x04\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b04\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h04\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x08\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b08\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h08\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x10\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b10\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h10\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x14\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b14\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h14\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x16\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b16\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h16\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x20\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b20\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h20\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3b22\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3x22\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"mw3h22\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00006",
+      "command": [
+        "bridge",
+        "-j",
+        "link"
+      ],
+      "started_at": "2026-10-24T02:26:41.648586+00:00",
+      "ended_at": "2026-10-24T02:26:41.650587+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":104,\"ifname\":\"mw3x02\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b02\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":106,\"link\":\"if105\",\"ifname\":\"mw3h02\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b02\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":108,\"ifname\":\"mw3x04\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b04\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":110,\"link\":\"if109\",\"ifname\":\"mw3h04\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b04\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":112,\"ifname\":\"mw3x08\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b08\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":114,\"link\":\"if113\",\"ifname\":\"mw3h08\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b08\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":116,\"ifname\":\"mw3x10\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b10\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":118,\"link\":\"if117\",\"ifname\":\"mw3h10\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b10\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":120,\"ifname\":\"mw3x14\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b14\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":122,\"link\":\"if121\",\"ifname\":\"mw3h14\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b14\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":124,\"ifname\":\"mw3x16\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b16\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":126,\"link\":\"if125\",\"ifname\":\"mw3h16\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b16\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":128,\"ifname\":\"mw3x20\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b20\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":130,\"link\":\"if129\",\"ifname\":\"mw3h20\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b20\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":132,\"ifname\":\"mw3x22\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"master\":\"mw3b22\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2},{\"ifindex\":134,\"link\":\"if133\",\"ifname\":\"mw3h22\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"master\":\"mw3b22\",\"state\":\"forwarding\",\"priority\":32,\"cost\":2}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00007",
+      "command": [
+        "bridge",
+        "fdb",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:41.650598+00:00",
+      "ended_at": "2026-10-24T02:26:41.652765+00:00",
+      "returncode": 0,
+      "stdout": "33:33:00:00:00:01 dev eno1 self permanent\n01:00:5e:00:00:01 dev eno1 self permanent\n33:33:ff:f7:36:40 dev eno1 self permanent\n01:80:c2:00:00:00 dev eno1 self permanent\n01:80:c2:00:00:03 dev eno1 self permanent\n01:80:c2:00:00:0e dev eno1 self permanent\n33:33:00:00:00:01 dev eno2 self permanent\n01:00:5e:00:00:01 dev eno2 self permanent\n33:33:ff:f7:36:42 dev eno2 self permanent\n33:33:00:00:00:01 dev docker0 self permanent\n01:00:5e:00:00:6a dev docker0 self permanent\n33:33:00:00:00:6a dev docker0 self permanent\n01:00:5e:00:00:01 dev docker0 self permanent\n76:51:da:f8:8d:7d dev docker0 vlan 1 master docker0 permanent\n76:51:da:f8:8d:7d dev docker0 master docker0 permanent\n33:33:00:00:00:01 dev mw3b02 self permanent\n01:00:5e:00:00:01 dev mw3b02 self permanent\n33:33:ff:45:e6:8e dev mw3b02 self permanent\n46:26:08:45:e6:8e dev mw3b02 vlan 1 master mw3b02 permanent\n46:26:08:45:e6:8e dev mw3b02 master mw3b02 permanent\n02:ca:93:9c:ee:77 dev mw3x02 master mw3b02 \n6a:34:62:34:81:77 dev mw3x02 master mw3b02 \nf6:c5:12:5f:eb:54 dev mw3x02 master mw3b02 \n72:b7:60:7b:2c:17 dev mw3x02 master mw3b02 \nb6:c4:9b:5d:10:15 dev mw3x02 master mw3b02 \nb2:bf:aa:00:59:a5 dev mw3x02 master mw3b02 \n5a:67:de:c1:91:74 dev mw3x02 master mw3b02 \nca:9b:94:e7:67:df dev mw3x02 vlan 1 master mw3b02 permanent\nca:9b:94:e7:67:df dev mw3x02 master mw3b02 permanent\n00:00:00:00:00:00 dev mw3x02 dst 10.0.1.2 via eno2 self permanent\n02:f7:1a:c4:43:d9 dev mw3h02 master mw3b02 \n66:7f:0b:cd:69:a0 dev mw3h02 vlan 1 master mw3b02 permanent\n66:7f:0b:cd:69:a0 dev mw3h02 master mw3b02 permanent\n33:33:00:00:00:01 dev mw3h02 self permanent\n01:00:5e:00:00:01 dev mw3h02 self permanent\n33:33:ff:cd:69:a0 dev mw3h02 self permanent\n33:33:00:00:00:01 dev mw3b04 self permanent\n01:00:5e:00:00:01 dev mw3b04 self permanent\n33:33:ff:16:05:01 dev mw3b04 self permanent\nb6:d4:a8:16:05:01 dev mw3b04 vlan 1 master mw3b04 permanent\nb6:d4:a8:16:05:01 dev mw3b04 master mw3b04 permanent\n02:47:30:bb:55:e8 dev mw3x04 master mw3b04 \n16:81:18:2f:2d:ce dev mw3x04 master mw3b04 \n06:63:47:23:e1:1f dev mw3x04 master mw3b04 \n1a:21:d0:99:01:24 dev mw3x04 vlan 1 master mw3b04 permanent\n1a:21:d0:99:01:24 dev mw3x04 master mw3b04 permanent\n00:00:00:00:00:00 dev mw3x04 dst 10.0.1.1 via eno2 self permanent\n02:ab:19:cf:31:5e dev mw3h04 master mw3b04 \nda:f1:be:cb:41:5e dev mw3h04 vlan 1 master mw3b04 permanent\nda:f1:be:cb:41:5e dev mw3h04 master mw3b04 permanent\n33:33:00:00:00:01 dev mw3h04 self permanent\n01:00:5e:00:00:01 dev mw3h04 self permanent\n33:33:ff:cb:41:5e dev mw3h04 self permanent\n33:33:00:00:00:01 dev mw3b08 self permanent\n01:00:5e:00:00:01 dev mw3b08 self permanent\n33:33:ff:76:5f:f3 dev mw3b08 self permanent\nee:2b:55:76:5f:f3 dev mw3b08 vlan 1 master mw3b08 permanent\nee:2b:55:76:5f:f3 dev mw3b08 master mw3b08 permanent\n02:ad:9b:be:c9:07 dev mw3x08 master mw3b08 \nb2:10:b3:e1:fc:59 dev mw3x08 master mw3b08 \n06:09:38:a8:12:40 dev mw3x08 master mw3b08 \n8a:5c:96:d8:c4:8a dev mw3x08 master mw3b08 \nd2:1a:c2:b2:02:66 dev mw3x08 master mw3b08 \n82:72:bd:9d:4c:df dev mw3x08 master mw3b08 \n32:b7:1a:3d:f0:1d dev mw3x08 master mw3b08 \n0e:3f:19:eb:89:b5 dev mw3x08 vlan 1 master mw3b08 permanent\n0e:3f:19:eb:89:b5 dev mw3x08 master mw3b08 permanent\n00:00:00:00:00:00 dev mw3x08 dst 10.0.1.2 via eno2 self permanent\n02:bd:f9:d9:8c:aa dev mw3h08 master mw3b08 \n3a:0f:1b:d9:c8:bf dev mw3h08 vlan 1 master mw3b08 permanent\n3a:0f:1b:d9:c8:bf dev mw3h08 master mw3b08 permanent\n33:33:00:00:00:01 dev mw3h08 self permanent\n01:00:5e:00:00:01 dev mw3h08 self permanent\n33:33:ff:d9:c8:bf dev mw3h08 self permanent\n33:33:00:00:00:01 dev mw3b10 self permanent\n01:00:5e:00:00:01 dev mw3b10 self permanent\n33:33:ff:65:da:99 dev mw3b10 self permanent\n9a:2b:52:65:da:99 dev mw3b10 vlan 1 master mw3b10 permanent\n9a:2b:52:65:da:99 dev mw3b10 master mw3b10 permanent\n02:33:0f:90:65:33 dev mw3x10 master mw3b10 \n32:e4:5e:11:5a:97 dev mw3x10 master mw3b10 \n86:2f:33:f1:5c:c7 dev mw3x10 master mw3b10 \n7e:e6:b6:e1:0b:40 dev mw3x10 vlan 1 master mw3b10 permanent\n7e:e6:b6:e1:0b:40 dev mw3x10 master mw3b10 permanent\n00:00:00:00:00:00 dev mw3x10 dst 10.0.1.1 via eno2 self permanent\n02:d8:e5:f4:f3:f6 dev mw3h10 master mw3b10 \n66:71:a8:0b:8c:fe dev mw3h10 vlan 1 master mw3b10 permanent\n66:71:a8:0b:8c:fe dev mw3h10 master mw3b10 permanent\n33:33:00:00:00:01 dev mw3h10 self permanent\n01:00:5e:00:00:01 dev mw3h10 self permanent\n33:33:ff:0b:8c:fe dev mw3h10 self permanent\n33:33:00:00:00:01 dev mw3b14 self permanent\n01:00:5e:00:00:01 dev mw3b14 self permanent\n33:33:ff:dc:3d:69 dev mw3b14 self permanent\nd2:43:0e:dc:3d:69 dev mw3b14 vlan 1 master mw3b14 permanent\nd2:43:0e:dc:3d:69 dev mw3b14 master mw3b14 permanent\n02:d9:43:72:e7:8d dev mw3x14 master mw3b14 \nee:40:35:12:c6:30 dev mw3x14 master mw3b14 \n8e:77:87:62:63:14 dev mw3x14 master mw3b14 \n3e:83:cc:a4:ad:c4 dev mw3x14 master mw3b14 \n3a:81:2a:46:05:9f dev mw3x14 master mw3b14 \n52:b1:90:40:8d:7d dev mw3x14 master mw3b14 \n76:fa:24:a4:d1:45 dev mw3x14 master mw3b14 \n82:c0:17:bf:a8:af dev mw3x14 vlan 1 master mw3b14 permanent\n82:c0:17:bf:a8:af dev mw3x14 master mw3b14 permanent\n00:00:00:00:00:00 dev mw3x14 dst 10.0.1.2 via eno2 self permanent\n02:e3:97:2a:86:14 dev mw3h14 master mw3b14 \n7a:bf:5b:1a:14:dd dev mw3h14 vlan 1 master mw3b14 permanent\n7a:bf:5b:1a:14:dd dev mw3h14 master mw3b14 permanent\n33:33:00:00:00:01 dev mw3h14 self permanent\n01:00:5e:00:00:01 dev mw3h14 self permanent\n33:33:ff:1a:14:dd dev mw3h14 self permanent\n33:33:00:00:00:01 dev mw3b16 self permanent\n01:00:5e:00:00:01 dev mw3b16 self permanent\n33:33:ff:3a:2d:bf dev mw3b16 self permanent\nea:bb:fb:3a:2d:bf dev mw3b16 vlan 1 master mw3b16 permanent\nea:bb:fb:3a:2d:bf dev mw3b16 master mw3b16 permanent\n02:d5:25:d4:21:5b dev mw3x16 master mw3b16 \nea:b9:82:f5:ae:52 dev mw3x16 master mw3b16 \nba:2c:c0:8b:be:fa dev mw3x16 master mw3b16 \n5a:85:53:26:77:56 dev mw3x16 vlan 1 master mw3b16 permanent\n5a:85:53:26:77:56 dev mw3x16 master mw3b16 permanent\n00:00:00:00:00:00 dev mw3x16 dst 10.0.1.1 via eno2 self permanent\n02:ca:70:5b:63:ea dev mw3h16 master mw3b16 \n1e:8f:9b:e2:00:7b dev mw3h16 vlan 1 master mw3b16 permanent\n1e:8f:9b:e2:00:7b dev mw3h16 master mw3b16 permanent\n33:33:00:00:00:01 dev mw3h16 self permanent\n01:00:5e:00:00:01 dev mw3h16 self permanent\n33:33:ff:e2:00:7b dev mw3h16 self permanent\n33:33:00:00:00:01 dev mw3b20 self permanent\n01:00:5e:00:00:01 dev mw3b20 self permanent\n33:33:ff:fc:0e:b9 dev mw3b20 self permanent\n06:46:08:fc:0e:b9 dev mw3b20 vlan 1 master mw3b20 permanent\n06:46:08:fc:0e:b9 dev mw3b20 master mw3b20 permanent\n02:a8:50:ec:ea:74 dev mw3x20 master mw3b20 \nc6:29:bf:9a:30:72 dev mw3x20 master mw3b20 \nee:10:69:0e:a4:53 dev mw3x20 master mw3b20 \n3a:01:a1:46:e6:97 dev mw3x20 master mw3b20 \n0a:d5:5b:aa:94:7c dev mw3x20 master mw3b20 \nee:ec:d7:e9:82:e8 dev mw3x20 master mw3b20 \nb2:49:b7:80:92:26 dev mw3x20 master mw3b20 \nea:d3:cd:fb:d5:e0 dev mw3x20 vlan 1 master mw3b20 permanent\nea:d3:cd:fb:d5:e0 dev mw3x20 master mw3b20 permanent\n00:00:00:00:00:00 dev mw3x20 dst 10.0.1.2 via eno2 self permanent\n02:b0:2b:61:32:8e dev mw3h20 master mw3b20 \n1e:c0:65:07:12:f3 dev mw3h20 vlan 1 master mw3b20 permanent\n1e:c0:65:07:12:f3 dev mw3h20 master mw3b20 permanent\n33:33:00:00:00:01 dev mw3h20 self permanent\n01:00:5e:00:00:01 dev mw3h20 self permanent\n33:33:ff:07:12:f3 dev mw3h20 self permanent\n33:33:00:00:00:01 dev mw3b22 self permanent\n01:00:5e:00:00:01 dev mw3b22 self permanent\n33:33:ff:e8:0e:27 dev mw3b22 self permanent\nae:74:71:56:e5:7a dev mw3b22 vlan 1 master mw3b22 permanent\nae:74:71:56:e5:7a dev mw3b22 master mw3b22 permanent\n02:30:ca:75:76:d4 dev mw3x22 master mw3b22 \nfa:e8:e8:4f:42:bb dev mw3x22 master mw3b22 \n2a:22:63:f0:4c:1b dev mw3x22 master mw3b22 \n3a:4c:60:c2:dc:a7 dev mw3x22 vlan 1 master mw3b22 permanent\n3a:4c:60:c2:dc:a7 dev mw3x22 master mw3b22 permanent\n00:00:00:00:00:00 dev mw3x22 dst 10.0.1.1 via eno2 self permanent\n02:c5:05:0e:47:9e dev mw3h22 master mw3b22 \n06:fd:06:95:46:0b dev mw3h22 vlan 1 master mw3b22 permanent\n06:fd:06:95:46:0b dev mw3h22 master mw3b22 permanent\n33:33:00:00:00:01 dev mw3h22 self permanent\n01:00:5e:00:00:01 dev mw3h22 self permanent\n33:33:ff:95:46:0b dev mw3h22 self permanent\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00008",
+      "command": [
+        "docker",
+        "ps",
+        "--format",
+        "{{.Names}} {{.Image}} {{.Status}}"
+      ],
+      "started_at": "2026-10-24T02:26:41.652776+00:00",
+      "ended_at": "2026-10-24T02:26:41.722026+00:00",
+      "returncode": 0,
+      "stdout": "MW_O_B2 twinet-msc:construction-v2 Up 12 minutes\nMW_O_B1 twinet-msc:construction-v2 Up 12 minutes\nMW_O_A2 twinet-msc:construction-v2 Up 13 minutes\nMW_O_A1 twinet-msc:construction-v2 Up 13 minutes\nNB_OF_B2-frr twinet-msc-router:construction-v2 Up 6 days\nNB_OF_B1-frr twinet-msc-router:construction-v2 Up 6 days\nNB_GF_B-frr twinet-msc-router:construction-v2 Up 6 days\nNB_OF_A2-frr twinet-msc-router:construction-v2 Up 6 days\nNB_OF_A1-frr twinet-msc-router:construction-v2 Up 6 days\nNB_GF_A-frr twinet-msc-router:construction-v2 Up 6 days\nNB_BLACK-frr twinet-msc-router:construction-v2 Up 6 days\nNB_OF_B2 twinet-msc-router:construction-v2 Up 6 days\nNB_O_B2 twinet-msc:construction-v2 Up 6 days\nNB_G_B2 twinet-msc-switch:construction-v2 Up 6 days\nNB_I_B2 twinet-msc:construction-v2 Up 6 days\nNB_R_B2 twinet-msc:construction-v2 Up 6 days\nNB_OF_B1 twinet-msc-router:construction-v2 Up 6 days\nNB_O_B1 twinet-msc:construction-v2 Up 6 days\nNB_G_B1 twinet-msc-switch:construction-v2 Up 6 days\nNB_I_B1 twinet-msc:construction-v2 Up 6 days\nNB_R_B1 twinet-msc:construction-v2 Up 6 days\nNB_GF_B twinet-msc-router:construction-v2 Up 6 days\nNB_OF_A2 twinet-msc-router:construction-v2 Up 6 days\nNB_O_A2 twinet-msc:construction-v2 Up 6 days\nNB_G_A2 twinet-msc-switch:construction-v2 Up 6 days\nNB_I_A2 twinet-msc:construction-v2 Up 6 days\nNB_R_A2 twinet-msc:construction-v2 Up 6 days\nNB_OF_A1 twinet-msc-router:construction-v2 Up 6 days\nNB_O_A1 twinet-msc:construction-v2 Up 6 days\nNB_G_A1 twinet-msc-switch:construction-v2 Up 6 days\nNB_I_A1 twinet-msc:construction-v2 Up 6 days\nNB_R_A1 twinet-msc:construction-v2 Up 6 days\nNB_GF_A twinet-msc-router:construction-v2 Up 6 days\nNB_BLACK twinet-msc-router:construction-v2 Up 6 days\n",
+      "stderr": ""
+    },
+    {
+      "id": "phase-after",
+      "command": [
+        "phase",
+        "after"
+      ],
+      "started_at": "2026-10-24T02:26:41.722054+00:00",
+      "ended_at": "2026-10-24T02:26:41.722057+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00010",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_A1"
+      ],
+      "started_at": "2026-10-24T02:26:41.722065+00:00",
+      "ended_at": "2026-10-24T02:26:41.743564+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589\",\"Created\":\"2026-10-24T02:13:27.499209525Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112381,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:28.472583553Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/hostname\",\"HostsPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/hosts\",\"LogPath\":\"/var/lib/docker/containers/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589/94cf3df3767eb56d4767cf48c91e232776c862e2cc5ffcc28925a3491cc5f589-json.log\",\"Name\":\"/MW_O_A1\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"74e557734065c64431e7c49cf1ea6149b0bf1bb403835102d5d0c2290c009505\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A1/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_a1\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_A1\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"a811797bce062176843ba09ef2bf7ebfc13f79f78fc799fefe87bf17f49da0a6\",\"SandboxKey\":\"/var/run/docker/netns/a811797bce06\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"60a8d79df7b3a534e8cdd13ef00aca071e8294beb6c089bb971c97c11c6032de\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00011",
+      "command": [
+        "readlink",
+        "/proc/112381/ns/net"
+      ],
+      "started_at": "2026-10-24T02:26:41.743803+00:00",
+      "ended_at": "2026-10-24T02:26:41.746942+00:00",
+      "returncode": 0,
+      "stdout": "net:[4026535904]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00012",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "-j",
+        "-d",
+        "address",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:41.746970+00:00",
+      "ended_at": "2026-10-24T02:26:41.822248+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":105,\"link_index\":106,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:f7:1a:c4:43:d9\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.100.1.1\",\"prefixlen\":24,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":109,\"link_index\":110,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:ab:19:cf:31:5e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.20.11.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"black\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00013",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "-j",
+        "route",
+        "show",
+        "table",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:26:41.822289+00:00",
+      "ended_at": "2026-10-24T02:26:41.917120+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"10.100.1.0/24\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.100.1.1\",\"flags\":[]},{\"dst\":\"10.200.1.2\",\"gateway\":\"172.20.11.2\",\"dev\":\"black\",\"flags\":[]},{\"dst\":\"172.20.11.0/30\",\"dev\":\"black\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.20.11.1\",\"flags\":[]},{\"dst\":\"172.20.21.1\",\"gateway\":\"172.20.11.2\",\"dev\":\"black\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.100.1.1\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.100.1.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.100.1.255\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.100.1.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.20.11.1\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.20.11.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.20.11.3\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.20.11.1\",\"flags\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00014",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "-j",
+        "rule",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:41.917173+00:00",
+      "ended_at": "2026-10-24T02:26:42.001715+00:00",
+      "returncode": 0,
+      "stdout": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":220,\"src\":\"all\",\"table\":\"220\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00015",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "iptables-save"
+      ],
+      "started_at": "2026-10-24T02:26:42.001748+00:00",
+      "ended_at": "2026-10-24T02:26:42.078884+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:26:42 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n-A INPUT -i lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -i black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -i black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i gray -o black -p esp -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i black -o gray -p esp -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i gray -o black -p udp -m multiport --dports 500,4500 -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i black -o gray -p udp -m multiport --dports 500,4500 -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -o black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -o black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:26:42 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00016",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip6tables-save"
+      ],
+      "started_at": "2026-10-24T02:26:42.078922+00:00",
+      "ended_at": "2026-10-24T02:26:42.159276+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00017",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "-d",
+        "xfrm",
+        "policy",
+        "list"
+      ],
+      "started_at": "2026-10-24T02:26:42.159305+00:00",
+      "ended_at": "2026-10-24T02:26:42.254117+00:00",
+      "returncode": 0,
+      "stdout": "src 10.100.1.2/32 dst 10.200.1.2/32 \n\tdir out priority 367231 \n\ttmpl src 172.20.11.1 dst 172.20.21.1\n\t\tproto esp spi 0xce8404fc reqid 201 mode tunnel\nsrc 10.200.1.2/32 dst 10.100.1.2/32 \n\tdir fwd priority 367231 \n\ttmpl src 172.20.21.1 dst 172.20.11.1\n\t\tproto esp reqid 201 mode tunnel\nsrc 10.200.1.2/32 dst 10.100.1.2/32 \n\tdir in priority 367231 \n\ttmpl src 172.20.21.1 dst 172.20.11.1\n\t\tproto esp reqid 201 mode tunnel\nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00018",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "ip",
+        "-d",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:26:42.254153+00:00",
+      "ended_at": "2026-10-24T02:26:42.339345+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xce8404fc(3464758524) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:26:41\n\tanti-replay context: seq 0x0, oseq 0x33, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2878(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  8879(bytes), 51(packets)\n\t  add 2026-10-24 02:20:32 use 2026-10-24 02:20:36\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcb7950ef(3413725423) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:26:41\n\tanti-replay context: seq 0x31, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2746(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  8525(bytes), 49(packets)\n\t  add 2026-10-24 02:20:32 use 2026-10-24 02:20:36\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00019",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "sysctl",
+        "net.ipv4.ip_forward",
+        "net.ipv6.conf.all.forwarding"
+      ],
+      "started_at": "2026-10-24T02:26:42.339374+00:00",
+      "ended_at": "2026-10-24T02:26:42.427846+00:00",
+      "returncode": 0,
+      "stdout": "net.ipv4.ip_forward = 1\nnet.ipv6.conf.all.forwarding = 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00020",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:26:42.427894+00:00",
+      "ended_at": "2026-10-24T02:26:42.514496+00:00",
+      "returncode": 0,
+      "stdout": "msc: #2, ESTABLISHED, IKEv2, a68faac3b2b37432_i* 9ae9294f84a0d6f5_r\n  local  'MW_O_A1.msc.test' @ 172.20.11.1[500]\n  remote 'MW_O_B1.msc.test' @ 172.20.21.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 370s ago, reauth in 9868s\n  protected: #4, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 370s ago, rekeying in 2376s, expires in 3230s\n    in  cb7950ef,   8525 bytes,    49 packets,     1s ago\n    out ce8404fc,   8879 bytes,    51 packets,     1s ago\n    local  10.100.1.2/32\n    remote 10.200.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00021",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:26:42.514536+00:00",
+      "ended_at": "2026-10-24T02:26:42.602444+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {msc {local_addrs=[172.20.11.1] remote_addrs=[172.20.21.1] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO dpd_delay=10 local-1 {id=MW_O_A1.msc.test class=public key groups=[] cert_policy=[] certs=[CN=MW_O_A1.msc.test] cacerts=[]} remote-1 {id=MW_O_B1.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[CN=Twinet MSC outer]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=trap close_action=trap local-ts=[10.100.1.2/32] remote-ts=[10.200.1.2/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00022",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "swanctl",
+        "--list-certs",
+        "--type",
+        "x509",
+        "--pem"
+      ],
+      "started_at": "2026-10-24T02:26:42.602475+00:00",
+      "ended_at": "2026-10-24T02:26:42.704435+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAI2i9oN7ud+LbhaiA64A1jAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI2MTEy\nNDAyMTMyN1owGzEZMBcGA1UEAwwQTVdfT19BMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLjnY0tx0BUxTlaQiE8myOLOyy+aVtrUq3UmMb2g3qG25arv\nvJ7ndMGbnv9uJhMTHe6syJRSzxCiNmwFE4EM5/nrohJgWy6tIHTWfYMhHtUA+FWf\nfh1afDbDINYP98rEdKN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAM6VzEMneA78gzQQs7LiD+jE1oMOcxtr/0mriuD4JH1n\nWCHxkW79Hnhdr2hL2Bc2ywIwMG+hDbjRsVUCYjo02BuzZ95YhwK9rM+yS9wTLw0B\nYwnuxlz1AdvgMYo4EFu5/99D\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAJRCX1mJcB1APAJEVWkAUjAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0MVoXDTI2MTEy\nNDAyMTM0MVowGzEZMBcGA1UEAwwQTVdfT19CMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLP13EGHsn0zWnchEH3tN1PMWkh0relzyspN8+hrv1+99JfQ\n7kAev4Nsm9m5KFF84kqbR5MdDcFx0P92AArpk/V/W9GDeKz0YpR/+5ETwWIY3rsk\nFabS1g+iyDjcqCqtZ6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxALnWnqA7M8Ung/QfbUZU962WMPyXAih8NG/BQVewZrGc\nZc6y9cLcIkEBgC6xLlH2MwIwPx40vSaAkLkMZW2D8os4ZqbbsyO9I3+9DldRnYaI\nPNK/Pi5fCyt78VPsMXWwkxL3\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00023",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A1",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:26:42.704460+00:00",
+      "ended_at": "2026-10-24T02:26:42.784272+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.11.1\n  remote_addrs = 172.20.21.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = MW_O_A1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = MW_O_B1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.100.1.2/32\n    remote_ts = 10.200.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00024",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_A2"
+      ],
+      "started_at": "2026-10-24T02:26:42.784315+00:00",
+      "ended_at": "2026-10-24T02:26:42.805245+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4\",\"Created\":\"2026-10-24T02:13:33.988585518Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112635,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:34.861000326Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/hostname\",\"HostsPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/hosts\",\"LogPath\":\"/var/lib/docker/containers/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4/ac0c4bd888072aa757e4905682ab154856270798458777c2ef91d364d80e20d4-json.log\",\"Name\":\"/MW_O_A2\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"5411f4ac1c99e5f1a56bbc2e3a315890f47e0592875fadfe13d3488e06d506de\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A2/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_A2/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_a2\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_A2\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"10ebefc5801ddc2055d072a4d38aa682eddf3c64c4b59d948dfe4192bae65dcf\",\"SandboxKey\":\"/var/run/docker/netns/10ebefc5801d\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"d93aca85cd27da0e6e0df6ee66e5f7a319d7bd0def14bb71b7115099617dd195\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00025",
+      "command": [
+        "readlink",
+        "/proc/112635/ns/net"
+      ],
+      "started_at": "2026-10-24T02:26:42.805455+00:00",
+      "ended_at": "2026-10-24T02:26:42.808334+00:00",
+      "returncode": 0,
+      "stdout": "net:[4026536274]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00026",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "-j",
+        "-d",
+        "address",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:42.808355+00:00",
+      "ended_at": "2026-10-24T02:26:42.887971+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":113,\"link_index\":114,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:bd:f9:d9:8c:aa\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.100.2.1\",\"prefixlen\":24,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":117,\"link_index\":118,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:d8:e5:f4:f3:f6\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.20.12.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"black\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00027",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "-j",
+        "route",
+        "show",
+        "table",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:26:42.888001+00:00",
+      "ended_at": "2026-10-24T02:26:42.967601+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"10.100.2.0/24\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.100.2.1\",\"flags\":[]},{\"dst\":\"10.200.2.2\",\"gateway\":\"172.20.12.2\",\"dev\":\"black\",\"flags\":[]},{\"dst\":\"172.20.12.0/30\",\"dev\":\"black\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.20.12.1\",\"flags\":[]},{\"dst\":\"172.20.22.1\",\"gateway\":\"172.20.12.2\",\"dev\":\"black\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.100.2.1\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.100.2.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.100.2.255\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.100.2.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.20.12.1\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.20.12.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.20.12.3\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.20.12.1\",\"flags\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00028",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "-j",
+        "rule",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:42.967622+00:00",
+      "ended_at": "2026-10-24T02:26:43.045589+00:00",
+      "returncode": 0,
+      "stdout": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":220,\"src\":\"all\",\"table\":\"220\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00029",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "iptables-save"
+      ],
+      "started_at": "2026-10-24T02:26:43.045617+00:00",
+      "ended_at": "2026-10-24T02:26:43.133027+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:26:43 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n-A INPUT -i lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -s 172.20.22.1/32 -d 172.20.12.1/32 -i black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -s 172.20.22.1/32 -d 172.20.12.1/32 -i black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.100.2.2/32 -d 10.200.2.2/32 -i gray -o black -p esp -m policy --dir out --pol ipsec --reqid 202 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.200.2.2/32 -d 10.100.2.2/32 -i black -o gray -p esp -m policy --dir in --pol ipsec --reqid 202 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.100.2.2/32 -d 10.200.2.2/32 -i gray -o black -p udp -m multiport --dports 500,4500 -m policy --dir out --pol ipsec --reqid 202 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.200.2.2/32 -d 10.100.2.2/32 -i black -o gray -p udp -m multiport --dports 500,4500 -m policy --dir in --pol ipsec --reqid 202 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -s 172.20.12.1/32 -d 172.20.22.1/32 -o black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -s 172.20.12.1/32 -d 172.20.22.1/32 -o black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:26:43 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00030",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip6tables-save"
+      ],
+      "started_at": "2026-10-24T02:26:43.133065+00:00",
+      "ended_at": "2026-10-24T02:26:43.220612+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00031",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "-d",
+        "xfrm",
+        "policy",
+        "list"
+      ],
+      "started_at": "2026-10-24T02:26:43.220638+00:00",
+      "ended_at": "2026-10-24T02:26:43.298228+00:00",
+      "returncode": 0,
+      "stdout": "src 10.100.2.2/32 dst 10.200.2.2/32 \n\tdir out priority 367231 \n\ttmpl src 172.20.12.1 dst 172.20.22.1\n\t\tproto esp spi 0xc718273b reqid 202 mode tunnel\nsrc 10.200.2.2/32 dst 10.100.2.2/32 \n\tdir fwd priority 367231 \n\ttmpl src 172.20.22.1 dst 172.20.12.1\n\t\tproto esp reqid 202 mode tunnel\nsrc 10.200.2.2/32 dst 10.100.2.2/32 \n\tdir in priority 367231 \n\ttmpl src 172.20.22.1 dst 172.20.12.1\n\t\tproto esp reqid 202 mode tunnel\nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00032",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "ip",
+        "-d",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:26:43.298264+00:00",
+      "ended_at": "2026-10-24T02:26:43.375273+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc718273b(3340248891) reqid 202(0x000000ca) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:26:33\n\tanti-replay context: seq 0x0, oseq 0x31, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2999(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  8600(bytes), 49(packets)\n\t  add 2026-10-24 02:20:40 use 2026-10-24 02:20:44\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xc1168622(3239478818) reqid 202(0x000000ca) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:26:33\n\tanti-replay context: seq 0x31, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2827(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  8525(bytes), 49(packets)\n\t  add 2026-10-24 02:20:40 use 2026-10-24 02:20:44\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00033",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "sysctl",
+        "net.ipv4.ip_forward",
+        "net.ipv6.conf.all.forwarding"
+      ],
+      "started_at": "2026-10-24T02:26:43.375303+00:00",
+      "ended_at": "2026-10-24T02:26:43.469416+00:00",
+      "returncode": 0,
+      "stdout": "net.ipv4.ip_forward = 1\nnet.ipv6.conf.all.forwarding = 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00034",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:26:43.469452+00:00",
+      "ended_at": "2026-10-24T02:26:43.553755+00:00",
+      "returncode": 0,
+      "stdout": "msc: #2, ESTABLISHED, IKEv2, f6bfe98a98ea9b79_i* aac3e1026425f0f2_r\n  local  'MW_O_A2.msc.test' @ 172.20.12.1[500]\n  remote 'MW_O_B2.msc.test' @ 172.20.22.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 362s ago, reauth in 9844s\n  protected: #4, reqid 202, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 362s ago, rekeying in 2465s, expires in 3238s\n    in  c1168622,   8525 bytes,    49 packets,    10s ago\n    out c718273b,   8600 bytes,    49 packets,    10s ago\n    local  10.100.2.2/32\n    remote 10.200.2.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00035",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:26:43.553789+00:00",
+      "ended_at": "2026-10-24T02:26:43.649371+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {msc {local_addrs=[172.20.12.1] remote_addrs=[172.20.22.1] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO dpd_delay=10 local-1 {id=MW_O_A2.msc.test class=public key groups=[] cert_policy=[] certs=[CN=MW_O_A2.msc.test] cacerts=[]} remote-1 {id=MW_O_B2.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[CN=Twinet MSC outer]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=trap close_action=trap local-ts=[10.100.2.2/32] remote-ts=[10.200.2.2/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00036",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "swanctl",
+        "--list-certs",
+        "--type",
+        "x509",
+        "--pem"
+      ],
+      "started_at": "2026-10-24T02:26:43.649405+00:00",
+      "ended_at": "2026-10-24T02:26:43.746469+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAIqiqW2qsTSf5y0edn4AnTAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMzM1oXDTI2MTEy\nNDAyMTMzM1owGzEZMBcGA1UEAwwQTVdfT19BMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLJjHWHcKi4ZSldn66F/QgiNkWnRSGq8CTH6fNSsnBLPSFYO\n7brg5IdPtuHtetpO6XAMGxgIE9SvTZvur5SKuR1R8y4fPbqa5Sk5lfibjAqjdWY4\nqIidwsrN6fpQIKDpvqN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAPOWWR4HBjnzwHqsGy84m4EzmAcETtakMDjVQGCj5byR\nW4ogJKdjOYzdG8X1AfydiAIwCiQs9XUhhmdcB3cryNIaQw4RwNCFO2Yfld/5/hFK\nufCoD/fr36sGLF1boZTDc73X\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIB7zCCAXSgAwIBAgIQAPgPgxbM3LypuHbUZqZO3TAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0N1oXDTI2MTEy\nNDAyMTM0N1owGzEZMBcGA1UEAwwQTVdfT19CMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABNLMyaEUGfKsHnRNIBWQfXT+W2sihOA+64MxKz4fu3ESgiSJ\ntgw+rP/gr7XJMmvAkuSqkG4yZtRmLCg+Zi9VTsafNqg35NbG8Fy6i2O+NqF9yXkb\nQLpbnkCRoBk3YerYC6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaQAwZgIxAKz10KC/+HkdYh2LSBii0TmQ4Zmi3w6lNucQ4mv9ECHm\nANGygIKR7pWybzv1NkqlxQIxAI1e5+AhvvVLzuUuTD6Zp1lXjoZmCWdjrzY3kIZq\nY5pPGGCHFSNAR6sSHwkBZc5gYg==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00037",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_A2",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:26:43.746494+00:00",
+      "ended_at": "2026-10-24T02:26:43.831070+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.12.1\n  remote_addrs = 172.20.22.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = MW_O_A2.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = MW_O_B2.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.100.2.2/32\n    remote_ts = 10.200.2.2/32\n    mode = tunnel\n    reqid = 202\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00038",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_B1"
+      ],
+      "started_at": "2026-10-24T02:26:43.831109+00:00",
+      "ended_at": "2026-10-24T02:26:43.851123+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7\",\"Created\":\"2026-10-24T02:13:41.288239963Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":112928,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:42.115798584Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/hostname\",\"HostsPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/hosts\",\"LogPath\":\"/var/lib/docker/containers/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7/161a7f4c65657db4cb7e78f730fa94eb6c54d2898ca4da9bb6d69f91dd0431d7-json.log\",\"Name\":\"/MW_O_B1\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"ec2c761636dd06f95cfb8d2da35ed07c79b9d2b2c9caf4f19a9adf0a7c6c9132\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B1/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B1/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_b1\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_B1\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"52b62a706b0c698fe3f3995d4fa7a938b289fdc495a3412d9942cdf6abd5fd47\",\"SandboxKey\":\"/var/run/docker/netns/52b62a706b0c\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"79fe1ec0457b2b9c82f781576800af33c8f6e0274ba199bbfe18437878e9c777\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00039",
+      "command": [
+        "readlink",
+        "/proc/112928/ns/net"
+      ],
+      "started_at": "2026-10-24T02:26:43.851409+00:00",
+      "ended_at": "2026-10-24T02:26:43.853896+00:00",
+      "returncode": 0,
+      "stdout": "net:[4026536718]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00040",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "-j",
+        "-d",
+        "address",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:43.853926+00:00",
+      "ended_at": "2026-10-24T02:26:43.936104+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":121,\"link_index\":122,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:e3:97:2a:86:14\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.200.1.1\",\"prefixlen\":24,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":125,\"link_index\":126,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:ca:70:5b:63:ea\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.20.21.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"black\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00041",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "-j",
+        "route",
+        "show",
+        "table",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:26:43.936138+00:00",
+      "ended_at": "2026-10-24T02:26:44.021839+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"10.100.1.2\",\"gateway\":\"172.20.21.2\",\"dev\":\"black\",\"flags\":[]},{\"dst\":\"10.200.1.0/24\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.200.1.1\",\"flags\":[]},{\"dst\":\"172.20.11.1\",\"gateway\":\"172.20.21.2\",\"dev\":\"black\",\"flags\":[]},{\"dst\":\"172.20.21.0/30\",\"dev\":\"black\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.20.21.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.200.1.1\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.200.1.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.200.1.255\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.200.1.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.20.21.1\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.20.21.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.20.21.3\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.20.21.1\",\"flags\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00042",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "-j",
+        "rule",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:44.021870+00:00",
+      "ended_at": "2026-10-24T02:26:44.121789+00:00",
+      "returncode": 0,
+      "stdout": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":220,\"src\":\"all\",\"table\":\"220\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00043",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "iptables-save"
+      ],
+      "started_at": "2026-10-24T02:26:44.121819+00:00",
+      "ended_at": "2026-10-24T02:26:44.201068+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:26:44 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n-A INPUT -i lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -i black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -s 172.20.11.1/32 -d 172.20.21.1/32 -i black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -o black -p esp -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i black -o gray -p esp -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -o black -p udp -m multiport --dports 500,4500 -m policy --dir out --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.100.1.2/32 -d 10.200.1.2/32 -i black -o gray -p udp -m multiport --dports 500,4500 -m policy --dir in --pol ipsec --reqid 201 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -o black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -s 172.20.21.1/32 -d 172.20.11.1/32 -o black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:26:44 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00044",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip6tables-save"
+      ],
+      "started_at": "2026-10-24T02:26:44.201112+00:00",
+      "ended_at": "2026-10-24T02:26:44.281618+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00045",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "-d",
+        "xfrm",
+        "policy",
+        "list"
+      ],
+      "started_at": "2026-10-24T02:26:44.281649+00:00",
+      "ended_at": "2026-10-24T02:26:44.368032+00:00",
+      "returncode": 0,
+      "stdout": "src 10.200.1.2/32 dst 10.100.1.2/32 \n\tdir out priority 367231 \n\ttmpl src 172.20.21.1 dst 172.20.11.1\n\t\tproto esp spi 0xcb7950ef reqid 201 mode tunnel\nsrc 10.100.1.2/32 dst 10.200.1.2/32 \n\tdir fwd priority 367231 \n\ttmpl src 172.20.11.1 dst 172.20.21.1\n\t\tproto esp reqid 201 mode tunnel\nsrc 10.100.1.2/32 dst 10.200.1.2/32 \n\tdir in priority 367231 \n\ttmpl src 172.20.11.1 dst 172.20.21.1\n\t\tproto esp reqid 201 mode tunnel\nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00046",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "ip",
+        "-d",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:26:44.368063+00:00",
+      "ended_at": "2026-10-24T02:26:44.449374+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcb7950ef(3413725423) reqid 201(0x000000c9) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:26:41\n\tanti-replay context: seq 0x0, oseq 0x31, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2878(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  8525(bytes), 49(packets)\n\t  add 2026-10-24 02:20:32 use 2026-10-24 02:20:36\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xce8404fc(3464758524) reqid 201(0x000000c9) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:26:41\n\tanti-replay context: seq 0x33, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2746(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  8879(bytes), 51(packets)\n\t  add 2026-10-24 02:20:32 use 2026-10-24 02:20:36\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00047",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "sysctl",
+        "net.ipv4.ip_forward",
+        "net.ipv6.conf.all.forwarding"
+      ],
+      "started_at": "2026-10-24T02:26:44.449394+00:00",
+      "ended_at": "2026-10-24T02:26:44.529849+00:00",
+      "returncode": 0,
+      "stdout": "net.ipv4.ip_forward = 1\nnet.ipv6.conf.all.forwarding = 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00048",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:26:44.529874+00:00",
+      "ended_at": "2026-10-24T02:26:44.619108+00:00",
+      "returncode": 0,
+      "stdout": "msc: #2, ESTABLISHED, IKEv2, a68faac3b2b37432_i 9ae9294f84a0d6f5_r*\n  local  'MW_O_B1.msc.test' @ 172.20.21.1[500]\n  remote 'MW_O_A1.msc.test' @ 172.20.11.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 372s ago, reauth in 9866s\n  protected: #4, reqid 201, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 372s ago, rekeying in 2374s, expires in 3228s\n    in  ce8404fc,   8879 bytes,    51 packets,     3s ago\n    out cb7950ef,   8525 bytes,    49 packets,     3s ago\n    local  10.200.1.2/32\n    remote 10.100.1.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00049",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:26:44.619143+00:00",
+      "ended_at": "2026-10-24T02:26:44.712998+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {msc {local_addrs=[172.20.21.1] remote_addrs=[172.20.11.1] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO dpd_delay=10 local-1 {id=MW_O_B1.msc.test class=public key groups=[] cert_policy=[] certs=[CN=MW_O_B1.msc.test] cacerts=[]} remote-1 {id=MW_O_A1.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[CN=Twinet MSC outer]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=trap close_action=trap local-ts=[10.200.1.2/32] remote-ts=[10.100.1.2/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00050",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "swanctl",
+        "--list-certs",
+        "--type",
+        "x509",
+        "--pem"
+      ],
+      "started_at": "2026-10-24T02:26:44.713031+00:00",
+      "ended_at": "2026-10-24T02:26:44.812127+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAI2i9oN7ud+LbhaiA64A1jAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI2MTEy\nNDAyMTMyN1owGzEZMBcGA1UEAwwQTVdfT19BMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLjnY0tx0BUxTlaQiE8myOLOyy+aVtrUq3UmMb2g3qG25arv\nvJ7ndMGbnv9uJhMTHe6syJRSzxCiNmwFE4EM5/nrohJgWy6tIHTWfYMhHtUA+FWf\nfh1afDbDINYP98rEdKN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAM6VzEMneA78gzQQs7LiD+jE1oMOcxtr/0mriuD4JH1n\nWCHxkW79Hnhdr2hL2Bc2ywIwMG+hDbjRsVUCYjo02BuzZ95YhwK9rM+yS9wTLw0B\nYwnuxlz1AdvgMYo4EFu5/99D\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAJRCX1mJcB1APAJEVWkAUjAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0MVoXDTI2MTEy\nNDAyMTM0MVowGzEZMBcGA1UEAwwQTVdfT19CMS5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLP13EGHsn0zWnchEH3tN1PMWkh0relzyspN8+hrv1+99JfQ\n7kAev4Nsm9m5KFF84kqbR5MdDcFx0P92AArpk/V/W9GDeKz0YpR/+5ETwWIY3rsk\nFabS1g+iyDjcqCqtZ6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjEubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxALnWnqA7M8Ung/QfbUZU962WMPyXAih8NG/BQVewZrGc\nZc6y9cLcIkEBgC6xLlH2MwIwPx40vSaAkLkMZW2D8os4ZqbbsyO9I3+9DldRnYaI\nPNK/Pi5fCyt78VPsMXWwkxL3\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00051",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B1",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:26:44.812147+00:00",
+      "ended_at": "2026-10-24T02:26:44.904660+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.21.1\n  remote_addrs = 172.20.11.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = MW_O_B1.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = MW_O_A1.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.200.1.2/32\n    remote_ts = 10.100.1.2/32\n    mode = tunnel\n    reqid = 201\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00052",
+      "command": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "MW_O_B2"
+      ],
+      "started_at": "2026-10-24T02:26:44.904690+00:00",
+      "ended_at": "2026-10-24T02:26:44.924356+00:00",
+      "returncode": 0,
+      "stdout": "{\"Id\":\"dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856\",\"Created\":\"2026-10-24T02:13:47.37068755Z\",\"Path\":\"sleep\",\"Args\":[\"infinity\"],\"State\":{\"Status\":\"running\",\"Running\":true,\"Paused\":false,\"Restarting\":false,\"OOMKilled\":false,\"Dead\":false,\"Pid\":113167,\"ExitCode\":0,\"Error\":\"\",\"StartedAt\":\"2026-10-24T02:13:48.246045886Z\",\"FinishedAt\":\"0001-01-01T00:00:00Z\"},\"Image\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"ResolvConfPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/resolv.conf\",\"HostnamePath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/hostname\",\"HostsPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/hosts\",\"LogPath\":\"/var/lib/docker/containers/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856/dda6e937d7c4beca9b5b3ba4c4f8e0ca216271ba45e0aab0f31d403c9a4dc856-json.log\",\"Name\":\"/MW_O_B2\",\"RestartCount\":0,\"Driver\":\"overlayfs\",\"Platform\":\"linux\",\"MountLabel\":\"\",\"ProcessLabel\":\"\",\"AppArmorProfile\":\"docker-default\",\"ExecIDs\":[\"eea34f70ddbf6b9d156305dc4e09a8208d868a300b4111cf687794a3cf04032d\"],\"HostConfig\":{\"Binds\":[\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B2/swanctl:/etc/swanctl:ro\"],\"ContainerIDFile\":\"\",\"LogConfig\":{\"Type\":\"json-file\",\"Config\":{}},\"NetworkMode\":\"none\",\"PortBindings\":{},\"RestartPolicy\":{\"Name\":\"no\",\"MaximumRetryCount\":0},\"AutoRemove\":false,\"VolumeDriver\":\"\",\"VolumesFrom\":null,\"ConsoleSize\":[0,0],\"CapAdd\":[\"CAP_CHOWN\",\"CAP_NET_ADMIN\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_RAW\",\"CAP_SETGID\",\"CAP_SETUID\"],\"CapDrop\":[\"ALL\"],\"CgroupnsMode\":\"private\",\"Dns\":null,\"DnsOptions\":null,\"DnsSearch\":null,\"ExtraHosts\":null,\"GroupAdd\":null,\"IpcMode\":\"private\",\"Cgroup\":\"\",\"Links\":null,\"OomScoreAdj\":0,\"PidMode\":\"\",\"Privileged\":false,\"PublishAllPorts\":false,\"ReadonlyRootfs\":false,\"SecurityOpt\":null,\"UTSMode\":\"\",\"UsernsMode\":\"\",\"ShmSize\":67108864,\"Sysctls\":{\"net.ipv4.conf.all.rp_filter\":\"0\",\"net.ipv4.conf.all.send_redirects\":\"0\",\"net.ipv4.conf.default.rp_filter\":\"0\",\"net.ipv4.conf.default.send_redirects\":\"0\",\"net.ipv4.ip_forward\":\"0\",\"net.ipv6.conf.all.disable_ipv6\":\"1\"},\"Runtime\":\"runc\",\"Isolation\":\"\",\"CpuShares\":0,\"Memory\":268435456,\"NanoCpus\":2000000000,\"CgroupParent\":\"\",\"BlkioWeight\":0,\"BlkioWeightDevice\":null,\"BlkioDeviceReadBps\":null,\"BlkioDeviceWriteBps\":null,\"BlkioDeviceReadIOps\":null,\"BlkioDeviceWriteIOps\":null,\"CpuPeriod\":0,\"CpuQuota\":0,\"CpuRealtimePeriod\":0,\"CpuRealtimeRuntime\":0,\"CpusetCpus\":\"\",\"CpusetMems\":\"\",\"Devices\":null,\"DeviceCgroupRules\":null,\"DeviceRequests\":null,\"MemoryReservation\":0,\"MemorySwap\":536870912,\"MemorySwappiness\":null,\"OomKillDisable\":null,\"PidsLimit\":128,\"Ulimits\":null,\"CpuCount\":0,\"CpuPercent\":0,\"IOMaximumIOps\":0,\"IOMaximumBandwidth\":0,\"MaskedPaths\":[\"/proc/acpi\",\"/proc/asound\",\"/proc/interrupts\",\"/proc/kcore\",\"/proc/keys\",\"/proc/latency_stats\",\"/proc/sched_debug\",\"/proc/scsi\",\"/proc/timer_list\",\"/proc/timer_stats\",\"/sys/devices/virtual/powercap\",\"/sys/firmware\",\"/sys/devices/system/cpu/cpu0/thermal_throttle\",\"/sys/devices/system/cpu/cpu1/thermal_throttle\",\"/sys/devices/system/cpu/cpu2/thermal_throttle\",\"/sys/devices/system/cpu/cpu3/thermal_throttle\",\"/sys/devices/system/cpu/cpu4/thermal_throttle\",\"/sys/devices/system/cpu/cpu5/thermal_throttle\",\"/sys/devices/system/cpu/cpu6/thermal_throttle\",\"/sys/devices/system/cpu/cpu7/thermal_throttle\",\"/sys/devices/system/cpu/cpu8/thermal_throttle\",\"/sys/devices/system/cpu/cpu9/thermal_throttle\",\"/sys/devices/system/cpu/cpu10/thermal_throttle\",\"/sys/devices/system/cpu/cpu11/thermal_throttle\",\"/sys/devices/system/cpu/cpu12/thermal_throttle\",\"/sys/devices/system/cpu/cpu13/thermal_throttle\",\"/sys/devices/system/cpu/cpu14/thermal_throttle\",\"/sys/devices/system/cpu/cpu15/thermal_throttle\",\"/sys/devices/system/cpu/cpu16/thermal_throttle\",\"/sys/devices/system/cpu/cpu17/thermal_throttle\",\"/sys/devices/system/cpu/cpu18/thermal_throttle\",\"/sys/devices/system/cpu/cpu19/thermal_throttle\",\"/sys/devices/system/cpu/cpu20/thermal_throttle\",\"/sys/devices/system/cpu/cpu21/thermal_throttle\",\"/sys/devices/system/cpu/cpu22/thermal_throttle\",\"/sys/devices/system/cpu/cpu23/thermal_throttle\",\"/sys/devices/system/cpu/cpu24/thermal_throttle\",\"/sys/devices/system/cpu/cpu25/thermal_throttle\",\"/sys/devices/system/cpu/cpu26/thermal_throttle\",\"/sys/devices/system/cpu/cpu27/thermal_throttle\",\"/sys/devices/system/cpu/cpu28/thermal_throttle\",\"/sys/devices/system/cpu/cpu29/thermal_throttle\",\"/sys/devices/system/cpu/cpu30/thermal_throttle\",\"/sys/devices/system/cpu/cpu31/thermal_throttle\",\"/sys/devices/system/cpu/cpu32/thermal_throttle\",\"/sys/devices/system/cpu/cpu33/thermal_throttle\",\"/sys/devices/system/cpu/cpu34/thermal_throttle\",\"/sys/devices/system/cpu/cpu35/thermal_throttle\",\"/sys/devices/system/cpu/cpu36/thermal_throttle\",\"/sys/devices/system/cpu/cpu37/thermal_throttle\",\"/sys/devices/system/cpu/cpu38/thermal_throttle\",\"/sys/devices/system/cpu/cpu39/thermal_throttle\",\"/sys/devices/system/cpu/cpu40/thermal_throttle\",\"/sys/devices/system/cpu/cpu41/thermal_throttle\",\"/sys/devices/system/cpu/cpu42/thermal_throttle\",\"/sys/devices/system/cpu/cpu43/thermal_throttle\",\"/sys/devices/system/cpu/cpu44/thermal_throttle\",\"/sys/devices/system/cpu/cpu45/thermal_throttle\",\"/sys/devices/system/cpu/cpu46/thermal_throttle\",\"/sys/devices/system/cpu/cpu47/thermal_throttle\",\"/sys/devices/system/cpu/cpu48/thermal_throttle\",\"/sys/devices/system/cpu/cpu49/thermal_throttle\",\"/sys/devices/system/cpu/cpu50/thermal_throttle\",\"/sys/devices/system/cpu/cpu51/thermal_throttle\",\"/sys/devices/system/cpu/cpu52/thermal_throttle\",\"/sys/devices/system/cpu/cpu53/thermal_throttle\",\"/sys/devices/system/cpu/cpu54/thermal_throttle\",\"/sys/devices/system/cpu/cpu55/thermal_throttle\"],\"ReadonlyPaths\":[\"/proc/bus\",\"/proc/fs\",\"/proc/irq\",\"/proc/sys\",\"/proc/sysrq-trigger\"]},\"Storage\":{\"RootFS\":{\"Snapshot\":{\"Name\":\"overlayfs\"}}},\"Mounts\":[{\"Type\":\"bind\",\"Source\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3/devices/MW_O_B2/swanctl\",\"Destination\":\"/etc/swanctl\",\"Mode\":\"ro\",\"RW\":false,\"Propagation\":\"rprivate\"}],\"Config\":{\"Hostname\":\"mw_o_b2\",\"Domainname\":\"\",\"User\":\"\",\"AttachStdin\":false,\"AttachStdout\":false,\"AttachStderr\":false,\"Tty\":false,\"OpenStdin\":false,\"StdinOnce\":false,\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\"DEBIAN_FRONTEND=noninteractive\"],\"Cmd\":[\"sleep\",\"infinity\"],\"Image\":\"twinet-msc:construction-v2\",\"Volumes\":null,\"WorkingDir\":\"\",\"Entrypoint\":null,\"Labels\":{\"org.opencontainers.image.version\":\"24.04\",\"twinet.msc.device\":\"MW_O_B2\",\"twinet.msc.image\":\"twinet-msc@sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"twinet.msc.lab\":\"native-multiworker-v3\",\"twinet.msc.spec\":\"0d62fa94a8e76221ca8d7e7939a8dd42386075c999d1c5a98df8571727cadccc\",\"twinet.msc.state\":\"/users/hy/tdn-continuation-2026-10-24T014455Z/private/native-multiworker-v3\"}},\"NetworkSettings\":{\"SandboxID\":\"c035a5b5e912945cc3975579e261dc5430ca94e0e20fbe1fd3d9aaf62af22e80\",\"SandboxKey\":\"/var/run/docker/netns/c035a5b5e912\",\"Ports\":{},\"Networks\":{\"none\":{\"IPAMConfig\":null,\"Links\":null,\"Aliases\":null,\"DriverOpts\":null,\"GwPriority\":0,\"NetworkID\":\"41f53c4dce7592df7ecc44d08bf98a6581cffa96096a553fdc1b6b20236cbe84\",\"EndpointID\":\"0094ab3920efafe258e2117c08e2475a414f003a9872bfa4ac86afac67981bc2\",\"Gateway\":\"\",\"IPAddress\":\"\",\"MacAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"DNSNames\":null}}},\"ImageManifestDescriptor\":{\"mediaType\":\"application/vnd.oci.image.manifest.v1+json\",\"digest\":\"sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd\",\"size\":965,\"annotations\":{\"io.containerd.image.name\":\"docker.io/library/twinet-msc:construction-v2\",\"org.opencontainers.image.ref.name\":\"construction-v2\"},\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"}}}\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00053",
+      "command": [
+        "readlink",
+        "/proc/113167/ns/net"
+      ],
+      "started_at": "2026-10-24T02:26:44.924579+00:00",
+      "ended_at": "2026-10-24T02:26:44.927166+00:00",
+      "returncode": 0,
+      "stdout": "net:[4026537088]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00054",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "-j",
+        "-d",
+        "address",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:44.927187+00:00",
+      "ended_at": "2026-10-24T02:26:45.005181+00:00",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":129,\"link_index\":130,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1400,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:b0:2b:61:32:8e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.200.2.1\",\"prefixlen\":24,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":133,\"link_index\":134,\"ifname\":\"black\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1450,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"02:c5:05:0e:47:9e\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.20.22.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"black\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00055",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "-j",
+        "route",
+        "show",
+        "table",
+        "all"
+      ],
+      "started_at": "2026-10-24T02:26:45.005213+00:00",
+      "ended_at": "2026-10-24T02:26:45.085933+00:00",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"10.100.2.2\",\"gateway\":\"172.20.22.2\",\"dev\":\"black\",\"flags\":[]},{\"dst\":\"10.200.2.0/24\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.200.2.1\",\"flags\":[]},{\"dst\":\"172.20.12.1\",\"gateway\":\"172.20.22.2\",\"dev\":\"black\",\"flags\":[]},{\"dst\":\"172.20.22.0/30\",\"dev\":\"black\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.20.22.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.200.2.1\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.200.2.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.200.2.255\",\"dev\":\"gray\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.200.2.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.20.22.1\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.20.22.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.20.22.3\",\"dev\":\"black\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.20.22.1\",\"flags\":[]}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00056",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "-j",
+        "rule",
+        "show"
+      ],
+      "started_at": "2026-10-24T02:26:45.085962+00:00",
+      "ended_at": "2026-10-24T02:26:45.161820+00:00",
+      "returncode": 0,
+      "stdout": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":220,\"src\":\"all\",\"table\":\"220\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00057",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "iptables-save"
+      ],
+      "started_at": "2026-10-24T02:26:45.161850+00:00",
+      "ended_at": "2026-10-24T02:26:45.245300+00:00",
+      "returncode": 0,
+      "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sat Oct 24 02:26:45 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n-A INPUT -i lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -i lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -s 172.20.12.1/32 -d 172.20.22.1/32 -i black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A INPUT -s 172.20.12.1/32 -d 172.20.22.1/32 -i black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.200.2.2/32 -d 10.100.2.2/32 -i gray -o black -p esp -m policy --dir out --pol ipsec --reqid 202 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.100.2.2/32 -d 10.200.2.2/32 -i black -o gray -p esp -m policy --dir in --pol ipsec --reqid 202 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.200.2.2/32 -d 10.100.2.2/32 -i gray -o black -p udp -m multiport --dports 500,4500 -m policy --dir out --pol ipsec --reqid 202 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A FORWARD -s 10.100.2.2/32 -d 10.200.2.2/32 -i black -o gray -p udp -m multiport --dports 500,4500 -m policy --dir in --pol ipsec --reqid 202 --mode tunnel -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p tcp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p udp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -o lo -p icmp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -s 172.20.22.1/32 -d 172.20.12.1/32 -o black -p udp -m multiport --dports 500,4500 -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\n-A OUTPUT -s 172.20.22.1/32 -d 172.20.12.1/32 -o black -p esp -m u32 --u32 \"0x0>>0x18&0xf=0x5\" -j ACCEPT\nCOMMIT\n# Completed on Sat Oct 24 02:26:45 2026\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00058",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip6tables-save"
+      ],
+      "started_at": "2026-10-24T02:26:45.245337+00:00",
+      "ended_at": "2026-10-24T02:26:45.324789+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00059",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "-d",
+        "xfrm",
+        "policy",
+        "list"
+      ],
+      "started_at": "2026-10-24T02:26:45.324822+00:00",
+      "ended_at": "2026-10-24T02:26:45.406277+00:00",
+      "returncode": 0,
+      "stdout": "src 10.200.2.2/32 dst 10.100.2.2/32 \n\tdir out priority 367231 \n\ttmpl src 172.20.22.1 dst 172.20.12.1\n\t\tproto esp spi 0xc1168622 reqid 202 mode tunnel\nsrc 10.100.2.2/32 dst 10.200.2.2/32 \n\tdir fwd priority 367231 \n\ttmpl src 172.20.12.1 dst 172.20.22.1\n\t\tproto esp reqid 202 mode tunnel\nsrc 10.100.2.2/32 dst 10.200.2.2/32 \n\tdir in priority 367231 \n\ttmpl src 172.20.12.1 dst 172.20.22.1\n\t\tproto esp reqid 202 mode tunnel\nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket in priority 0 \nsrc 0.0.0.0/0 dst 0.0.0.0/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \nsrc ::/0 dst ::/0 \n\tsocket in priority 0 \nsrc ::/0 dst ::/0 \n\tsocket out priority 0 \n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00060",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "ip",
+        "-d",
+        "-s",
+        "xfrm",
+        "state",
+        "list",
+        "nokeys"
+      ],
+      "started_at": "2026-10-24T02:26:45.406309+00:00",
+      "ended_at": "2026-10-24T02:26:45.499144+00:00",
+      "returncode": 0,
+      "stdout": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xc1168622(3239478818) reqid 202(0x000000ca) mode tunnel\n\treplay-window 0 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:26:43\n\tanti-replay context: seq 0x0, oseq 0x32, bitmap 0x00000000\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2999(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  8610(bytes), 50(packets)\n\t  add 2026-10-24 02:20:40 use 2026-10-24 02:20:44\n\tstats:\n\t  replay-window 0 replay 0 failed 0\nsrc 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc718273b(3340248891) reqid 202(0x000000ca) mode tunnel\n\treplay-window 32 seq 0x00000000 flag af-unspec (0x00100000)\n\taead rfc4106(gcm(aes)) <<Keys hidden>> 128\n\tlastused 2026-10-24 02:26:43\n\tanti-replay context: seq 0x32, oseq 0x0, bitmap 0xffffffff\n\tlifetime config:\n\t  limit: soft (INF)(bytes), hard (INF)(bytes)\n\t  limit: soft (INF)(packets), hard (INF)(packets)\n\t  expire add: soft 2827(sec), hard 3600(sec)\n\t  expire use: soft 0(sec), hard 0(sec)\n\tlifetime current:\n\t  8685(bytes), 50(packets)\n\t  add 2026-10-24 02:20:40 use 2026-10-24 02:20:44\n\tstats:\n\t  replay-window 0 replay 0 failed 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00061",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "sysctl",
+        "net.ipv4.ip_forward",
+        "net.ipv6.conf.all.forwarding"
+      ],
+      "started_at": "2026-10-24T02:26:45.499175+00:00",
+      "ended_at": "2026-10-24T02:26:45.578484+00:00",
+      "returncode": 0,
+      "stdout": "net.ipv4.ip_forward = 1\nnet.ipv6.conf.all.forwarding = 0\n",
+      "stderr": ""
+    },
+    {
+      "id": "mw-00062",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "swanctl",
+        "--list-sas"
+      ],
+      "started_at": "2026-10-24T02:26:45.578541+00:00",
+      "ended_at": "2026-10-24T02:26:45.668209+00:00",
+      "returncode": 0,
+      "stdout": "msc: #2, ESTABLISHED, IKEv2, f6bfe98a98ea9b79_i aac3e1026425f0f2_r*\n  local  'MW_O_B2.msc.test' @ 172.20.22.1[500]\n  remote 'MW_O_A2.msc.test' @ 172.20.12.1[500]\n  AES_GCM_16-256/PRF_HMAC_SHA2_384/ECP_384\n  established 364s ago, reauth in 9842s\n  protected: #4, reqid 202, INSTALLED, TUNNEL, ESP:AES_GCM_16-256\n    installed 364s ago, rekeying in 2463s, expires in 3236s\n    in  c718273b,   8685 bytes,    50 packets,     2s ago\n    out c1168622,   8610 bytes,    50 packets,     2s ago\n    local  10.200.2.2/32\n    remote 10.100.2.2/32\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00063",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "swanctl",
+        "--list-conns",
+        "--raw"
+      ],
+      "started_at": "2026-10-24T02:26:45.668241+00:00",
+      "ended_at": "2026-10-24T02:26:45.759930+00:00",
+      "returncode": 0,
+      "stdout": "list-conn event {msc {local_addrs=[172.20.22.1] remote_addrs=[172.20.12.1] version=IKEv2 reauth_time=10800 rekey_time=0 unique=UNIQUE_NO dpd_delay=10 local-1 {id=MW_O_B2.msc.test class=public key groups=[] cert_policy=[] certs=[CN=MW_O_B2.msc.test] cacerts=[]} remote-1 {id=MW_O_A2.msc.test class=public key revocation=GOOD groups=[] cert_policy=[] certs=[] cacerts=[CN=Twinet MSC outer]} children {protected {mode=TUNNEL rekey_time=3000 rekey_bytes=0 rekey_packets=0 dpd_action=trap close_action=trap local-ts=[10.200.2.2/32] remote-ts=[10.100.2.2/32]}}}}\nlist-conns reply {}\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00064",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "swanctl",
+        "--list-certs",
+        "--type",
+        "x509",
+        "--pem"
+      ],
+      "started_at": "2026-10-24T02:26:45.759959+00:00",
+      "ended_at": "2026-10-24T02:26:45.850535+00:00",
+      "returncode": 0,
+      "stdout": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQAIqiqW2qsTSf5y0edn4AnTAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMzM1oXDTI2MTEy\nNDAyMTMzM1owGzEZMBcGA1UEAwwQTVdfT19BMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABLJjHWHcKi4ZSldn66F/QgiNkWnRSGq8CTH6fNSsnBLPSFYO\n7brg5IdPtuHtetpO6XAMGxgIE9SvTZvur5SKuR1R8y4fPbqa5Sk5lfibjAqjdWY4\nqIidwsrN6fpQIKDpvqN9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQTIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaAAwZQIxAPOWWR4HBjnzwHqsGy84m4EzmAcETtakMDjVQGCj5byR\nW4ogJKdjOYzdG8X1AfydiAIwCiQs9XUhhmdcB3cryNIaQw4RwNCFO2Yfld/5/hFK\nufCoD/fr36sGLF1boZTDc73X\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIB7zCCAXSgAwIBAgIQAPgPgxbM3LypuHbUZqZO3TAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTM0N1oXDTI2MTEy\nNDAyMTM0N1owGzEZMBcGA1UEAwwQTVdfT19CMi5tc2MudGVzdDB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABNLMyaEUGfKsHnRNIBWQfXT+W2sihOA+64MxKz4fu3ESgiSJ\ntgw+rP/gr7XJMmvAkuSqkG4yZtRmLCg+Zi9VTsafNqg35NbG8Fy6i2O+NqF9yXkb\nQLpbnkCRoBk3YerYC6N9MHswDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG\nAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFFhEFusi\npoJ8KJZHSFPN1ENwAGbYMBsGA1UdEQQUMBKCEE1XX09fQjIubXNjLnRlc3QwCgYI\nKoZIzj0EAwMDaQAwZgIxAKz10KC/+HkdYh2LSBii0TmQ4Zmi3w6lNucQ4mv9ECHm\nANGygIKR7pWybzv1NkqlxQIxAI1e5+AhvvVLzuUuTD6Zp1lXjoZmCWdjrzY3kIZq\nY5pPGGCHFSNAR6sSHwkBZc5gYg==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIBszCCATmgAwIBAgIQANzZ572b0NS12qQ6463/PDAKBggqhkjOPQQDAzAbMRkw\nFwYDVQQDExBUd2luZXQgTVNDIG91dGVyMB4XDTI2MTAyNDAxMTMyN1oXDTI3MTAy\nNDAyMTMyN1owGzEZMBcGA1UEAxMQVHdpbmV0IE1TQyBvdXRlcjB2MBAGByqGSM49\nAgEGBSuBBAAiA2IABKz8gg7scp/3d6zn9UUgvuC0p2P4ZpyPGIzhiJjP5D32ijq4\nWAN6Vwn/bsV6zkE2bGuC6HvSpH0sylcedB0KexMADW5Mt6yBDnhHLyV/lwskdTUV\net4m2wgvqt0jMvalp6NCMEAwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMB\nAf8wHQYDVR0OBBYEFFhEFusipoJ8KJZHSFPN1ENwAGbYMAoGCCqGSM49BAMDA2gA\nMGUCMQDQSMK80LoOLf2uW9jW87Bc9FlRuwD/T3J03IYfSS9in//GBDRoXBQ2AYLl\nPeDG4CYCMCyYryT9qGv+RJQ2Y6raiknYsyM4z/lISd982a1LHRfIuFbS7WVQjs7R\nwgVE5USC+Q==\n-----END CERTIFICATE-----\n",
+      "stderr": "plugin 'test-vectors': failed to load - test_vectors_plugin_create not found and no plugin file available\nplugin 'ldap': failed to load - ldap_plugin_create not found and no plugin file available\nplugin 'pkcs11': failed to load - pkcs11_plugin_create not found and no plugin file available\nplugin 'rdrand': failed to load - rdrand_plugin_create not found and no plugin file available\nplugin 'gcrypt': failed to load - gcrypt_plugin_create not found and no plugin file available\nplugin 'af-alg': failed to load - af_alg_plugin_create not found and no plugin file available\nplugin 'curve25519': failed to load - curve25519_plugin_create not found and no plugin file available\nagent plugin requires CAP_DAC_OVERRIDE capability\nplugin 'agent': failed to load - agent_plugin_create returned NULL\nplugin 'chapoly': failed to load - chapoly_plugin_create not found and no plugin file available\nplugin 'cmac': failed to load - cmac_plugin_create not found and no plugin file available\nplugin 'ctr': failed to load - ctr_plugin_create not found and no plugin file available\nplugin 'ccm': failed to load - ccm_plugin_create not found and no plugin file available\nplugin 'ntru': failed to load - ntru_plugin_create not found and no plugin file available\nplugin 'curl': failed to load - curl_plugin_create not found and no plugin file available\n"
+    },
+    {
+      "id": "mw-00065",
+      "command": [
+        "docker",
+        "exec",
+        "MW_O_B2",
+        "cat",
+        "/etc/swanctl/swanctl.conf"
+      ],
+      "started_at": "2026-10-24T02:26:45.850559+00:00",
+      "ended_at": "2026-10-24T02:26:45.924798+00:00",
+      "returncode": 0,
+      "stdout": "connections {\n msc {\n  version = 2\n  local_addrs = 172.20.22.1\n  remote_addrs = 172.20.12.1\n  proposals = aes256gcm16-prfsha384-ecp384\n  reauth_time = 3h\n  rekey_time = 0s\n  over_time = 10m\n  dpd_delay = 10s\n  keyingtries = 0\n  mobike = no\n  local {\n   auth = ecdsa-384-sha384\n   certs = cert.pem\n   id = MW_O_B2.msc.test\n  }\n  remote {\n   auth = ecdsa-384-sha384\n   id = MW_O_A2.msc.test\n   cacerts = ca.pem\n   revocation = strict\n  }\n  children {\n   protected {\n    local_ts = 10.200.2.2/32\n    remote_ts = 10.100.2.2/32\n    mode = tunnel\n    reqid = 202\n    esp_proposals = aes256gcm16-ecp384\n    rekey_time = 50m\n    life_time = 1h\n    start_action = trap\n    dpd_action = trap\n    close_action = trap\n   }\n  }\n }\n}\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Logical Site A and Site B roles are colocated by component class; the case establishes separation between role classes, not geographic site separation.",
+    "VXLAN uses the reserved experiment LAN within Clemson and public CloudLab control addresses across campuses; logical wire preservation remains an implementation assumption beyond finite packet observations.",
+    "Distinct worker hardware does not establish independently developed software, product approval or classification handling policy.",
+    "Virtual per-component interfaces share worker physical NICs; physical-NIC-per-Red requirements remain outside this placement claim."
+  ]
+}

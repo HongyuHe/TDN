@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import shutil
 import os
+import uuid
 
 
 def main():
@@ -24,7 +25,8 @@ def main():
     history.relative_to(root)
     history.mkdir(parents=True, exist_ok=True)
     instant = datetime.now(timezone.utc)
-    stamp = instant.strftime('%Y%m%dT%H%M%S.%fZ')
+    #* Parallel commands can receive the same clock reading. Keep records distinct.
+    stamp = instant.strftime('%Y%m%dT%H%M%S.%fZ') + '-' + uuid.uuid4().hex
     entry = {'at': instant.isoformat(), 'actor': args.actor, 'kind': args.kind,
              'label': args.label, 'reason': args.reason,
              'details': json.loads(args.details)}

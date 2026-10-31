@@ -1,0 +1,25 @@
+{
+  "algorithm": "ML-DSA-87",
+  "category": 5,
+  "parameter": 87,
+  "artifact": "twinet-linux",
+  "artifact_sha256": "555098b40130410a5827e2010316a3bc00e77c90eb2cfba1f4a150a32a9ce5dd",
+  "artifact_bytes": 38992699,
+  "public_key_sha256": "b1d2c683ef40d70bfcce6ad74ea5873d2c83000441d1d54a089706f1482a68f5",
+  "manifest_sha256": "33e5bdeeb8913d2146b714c2c157609908db816f16fd7546f122e2b04a9e3261",
+  "image": "sha256:e8c88209d3ce0e2e56e016f57a3cd3876a3a2f1017f3e382b14285ba5da02d31",
+  "recorded_outcomes": [
+    "executed",
+    "hash_rejected",
+    "signature_rejected"
+  ],
+  "whole_RG073_established": false,
+  "scope": [
+    "The saved SPKI algorithm identifier and command-bound public-key dump agree on ML-DSA-87. CP Table2 supplies category5/parameter87.",
+    "The retained collector records one successful signed executable launch and two rejected controls. No loader or executable was rerun during import.",
+    "The importer checks retained source, command, key-identity and output bindings. It does not independently execute the ML-DSA verification algorithm on the retained signature.",
+    "The proof applies to the recorded executable algorithm choice. The artifact is a deployment utility, not a complete inventory of solution-device software or firmware.",
+    "The recorded manifest identifies payload bytes by hash and length; the executable itself is outside this bundle. Correct OpenSSL execution, trusted publisher-key provisioning, stable files, operating system and collector remain assumptions.",
+    "Same-file-descriptor execution does not establish that file contents cannot change concurrently. No claim about adversarial concurrent mutation, dependencies, firmware, boot verification or all loading paths is made."
+  ]
+}

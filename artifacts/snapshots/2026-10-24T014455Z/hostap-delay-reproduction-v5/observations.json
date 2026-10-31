@@ -1,0 +1,105 @@
+{
+  "at": "2026-10-24T04:17:52.269279+00:00",
+  "official_archive": {
+    "url": "https://w1.fi/releases/wpa_supplicant-2.12.tar.gz",
+    "sha256": "08e23937e16d0155e55cab2b51f51fbe10d80a1aa91c4e15442645059b737ef6"
+  },
+  "changed_sources": [
+    {
+      "path": "src/drivers/driver_macsec_linux.c",
+      "official_sha256": "846dc9146c03d1d9594b567dd71cde52addce960d85403e0b3a520924c158a8e",
+      "final_sha256": "adc67d446aeae70db72f438e6430412cb40d5a0c84b97485936f65cc9a2fb7dc"
+    },
+    {
+      "path": "src/pae/ieee802_1x_kay.h",
+      "official_sha256": "ebb7f04f26797fde54b8d4f70ae9cad8a501401cff5330f472af5e43a194cada",
+      "final_sha256": "9996943a79d0be092d8ca0cdff5f22dd33a1b272a697de877f84140ae703417c"
+    },
+    {
+      "path": "src/pae/ieee802_1x_kay.c",
+      "official_sha256": "20dedf6104901cedb035d4956e47ce3cfe722890c7c028f8a599746ee0a81a76",
+      "final_sha256": "0ae4075f42ccf9b522dc73e2ee256552bdc0214780b3a730b7b18c28188dbbb5"
+    }
+  ],
+  "records": [
+    {
+      "at": "2026-10-24T04:17:43.332279+00:00",
+      "command": [
+        "patch",
+        "-p1",
+        "-i",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/hostap-delay-reproduction-v5/final.patch"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12",
+      "returncode": 0,
+      "stdout": "patching file src/drivers/driver_macsec_linux.c\npatching file src/pae/ieee802_1x_kay.h\npatching file src/pae/ieee802_1x_kay.c\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:17:43.335837+00:00",
+      "command": [
+        "cp",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/exports/hostap-delay-reproduction-v5/wpa_supplicant.config",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12/wpa_supplicant/.config"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:17:52.236470+00:00",
+      "command": [
+        "make",
+        "-C",
+        "wpa_supplicant",
+        "-j4"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12",
+      "returncode": 0,
+      "stdout": "make: Entering directory '/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12/wpa_supplicant'\n  sed systemd/wpa_supplicant.service.arg.in\n  sed systemd/wpa_supplicant.service.in\n  sed systemd/wpa_supplicant-nl80211.service.arg.in\n  sed systemd/wpa_supplicant-wired.service.arg.in\n  sed dbus/fi.w1.wpa_supplicant1.service.in\n  CC  wpa_passphrase.c\n  CC  eap_register.c\n  CC  notify.c\n  CC  ../src/utils/config.c\n  CC  ../src/utils/wpa_debug.c\n  CC  ../src/utils/common.c\n  CC  ../src/utils/bitfield.c\n  CC  bss.c\n  CC  ../src/utils/wpabuf.c\n  CC  ../src/utils/ip_addr.c\n  CC  ../src/utils/crc32.c\n  CC  ../src/common/ptksa_cache.c\n  CC  twt.c\n  CC  ../src/utils/os_unix.c\n  CC  ../src/rsn_supp/pmksa_cache.c\n  CC  ../src/utils/eloop.c\n  CC  config.c\n  CC  ../src/rsn_supp/preauth.c\n  CC  ../src/rsn_supp/wpa_ie.c\n  CC  config_file.c\n  CC  rrm.c\n  CC  ../src/common/wpa_common.c\n  CC  op_classes.c\n  CC  ../src/eap_peer/eap_tls.c\n  CC  wmm_ac.c\n  CC  wpas_kay.c\n  CC  ../src/pae/ieee802_1x_cp.c\n  CC  robust_av.c\n  CC  ../src/pae/ieee802_1x_key.c\n  CC  ../src/rsn_supp/wpa.c\n  CC  ../src/pae/ieee802_1x_secy_ops.c\n  CC  ../src/eap_peer/eap_methods.c\n  CC  ../src/eapol_supp/eapol_supp_sm.c\n  CC  ../src/eap_peer/eap_tls_common.c\n  CC  ../src/eap_peer/eap.c\n  CC  ../src/crypto/tls_openssl_ocsp.c\n  CC  ../src/crypto/aes-encblock.c\n  CC  ../src/pae/ieee802_1x_kay.c\n  CC  ../src/crypto/sha256-prf.c\n  CC  ../src/crypto/sha256-tlsprf.c\n  CC  ../src/crypto/random.c\n  CC  ../src/common/ctrl_iface_common.c\n  CC  ../src/crypto/crypto_openssl.c\n  CC  ../src/utils/base64.c\n  CC  ctrl_iface_unix.c\n  CC  ../src/crypto/tls_openssl.c\n  CC  ../src/eap_common/eap_common.c\n  CC  ../src/crypto/sha1-prf.c\n  CC  ../src/crypto/sha1-tlsprf.c\n  CC  ../src/common/hw_features_common.c\n  CC  ../src/drivers/driver_common.c\n  CC  ../src/common/ieee802_11_common.c\n  CC  bssid_ignore.c\n  CC  wpas_glue.c\n  CC  ctrl_iface.c\n  CC  main.c\n  CC  events.c\n  CC  ../src/drivers/driver_wired_common.c\n  CC  ../src/drivers/drivers.c\n  CC  scan.c\n  CC  ../src/l2_packet/l2_packet_linux.c\n  CC  ../src/drivers/driver_macsec_linux.c\n  CC  wpa_supplicant.c\n  CC  ../src/utils/edit_simple.c\n  CC  ../src/common/cli.c\n  CC  ../src/common/wpa_ctrl.c\n  LD  wpa_passphrase\n  LD  wpa_supplicant\n  CC  wpa_cli.c\n  LD  wpa_cli\nmake: Leaving directory '/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12/wpa_supplicant'\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:17:52.239933+00:00",
+      "command": [
+        "wpa_supplicant/wpa_supplicant",
+        "-v"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12",
+      "returncode": 0,
+      "stdout": "wpa_supplicant v2.12\nCopyright (c) 2003-2026, Jouni Malinen <j@w1.fi> and contributors\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:17:52.258605+00:00",
+      "command": [
+        "sha256sum",
+        "wpa_supplicant/wpa_supplicant"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12",
+      "returncode": 0,
+      "stdout": "9eb00d90fdf5cf6a5271b15b0de96558a1632a1a831828671f6379f7de7ae578  wpa_supplicant/wpa_supplicant\n",
+      "stderr": ""
+    },
+    {
+      "at": "2026-10-24T04:17:52.267434+00:00",
+      "command": [
+        "ldd",
+        "wpa_supplicant/wpa_supplicant"
+      ],
+      "cwd": "/users/hy/tdn-continuation-2026-10-24T014455Z/hostap-delay-reproduced/wpa_supplicant-2.12",
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007ffe05fba000)\n\tlibnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x00007940e149d000)\n\tlibnl-genl-3.so.200 => /lib/x86_64-linux-gnu/libnl-genl-3.so.200 (0x00007940e1495000)\n\tlibnl-route-3.so.200 => /lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x00007940e1406000)\n\tlibssl.so.3 => /lib/x86_64-linux-gnu/libssl.so.3 (0x00007940e135c000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007940e0e00000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007940e0a00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007940e15ab000)\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "prerequisites": [
+    "Linux compiler and make",
+    "OpenSSL development headers",
+    "libnl-3 and libnl-genl-3 development headers",
+    "curl, patch, tar and sha256sum"
+  ],
+  "scope": "Complete difference from official release source plus active config. The clean source tree is rebuilt and all changed source hashes are checked against the executed final tree. Different build paths or toolchains can change binary hashes."
+}
