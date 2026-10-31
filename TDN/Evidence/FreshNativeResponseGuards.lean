@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.KernelResponses
 import TDN.Evidence.FreshSharedExecution
 import TDN.Evidence.FreshBaselineExecution
@@ -6,7 +7,8 @@ namespace TDN.Imported.FreshSharedExecution
 open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
-def responseGateways : List Nat := [12, 13, 14, 15, 16, 17, 18, 19, 22, 23]
+tdn_data responseGateways : List Nat from "../../evidence/lean/FreshNativeResponseGuards.json" ["TDN.Imported.FreshSharedExecution.responseGateways"]
+
 lemma finite_gateway_response_guards : ∀ device ∈ responseGateways,
     (deviceAt devices device).outputFallback = .deny ∧
     ∀ rule ∈ (deviceAt devices device).outputRules, rule.verdict = .allow →
@@ -29,7 +31,8 @@ namespace TDN.Imported.FreshBaselineExecution
 open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
-def responseGateways : List Nat := [8, 9, 10, 11, 16, 17, 18, 19]
+tdn_data responseGateways : List Nat from "../../evidence/lean/FreshNativeResponseGuards.json" ["TDN.Imported.FreshBaselineExecution.responseGateways"]
+
 lemma finite_gateway_response_guards : ∀ device ∈ responseGateways,
     (deviceAt devices device).outputFallback = .deny ∧
     ∀ rule ∈ (deviceAt devices device).outputRules, rule.verdict = .allow →

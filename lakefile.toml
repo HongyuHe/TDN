@@ -7,6 +7,7 @@ autoImplicit = false
 
 [[lean_lib]]
 name = "TDN"
+needs = ["evidence_data"]
 
 [[require]]
 name = "mathlib"
@@ -17,3 +18,9 @@ rev = "d13f23b723b8a846827a245b89c10fc7d3f11612"
 name = "cslib"
 git = "https://github.com/leanprover/cslib.git"
 rev = "990e65a685bed413f43b139db900a36ad5322a10"
+
+[[input_dir]]
+name = "evidence_data"
+path = "evidence/lean"
+text = true
+filter = { extension = ["json"] }

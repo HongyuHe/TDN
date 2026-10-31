@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.Operations
 
 namespace TDN.Imported.FreshDNSHardening
@@ -9,21 +10,7 @@ structure DNSDevice where
   earlierRules : List Rule
   guards : List Rule
 
-def devices : List DNSDevice := [
-  { name := "ND_BLACK/IPv4", family := 4, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_BLACK/IPv6", family := 6, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_G_A1/IPv4", family := 4, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_G_A1/IPv6", family := 6, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_G_B1/IPv4", family := 4, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_G_B1/IPv6", family := 6, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_OF_A1/IPv4", family := 4, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_OF_A1/IPv6", family := 6, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_OF_B1/IPv4", family := 4, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_OF_B1/IPv6", family := 6, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_O_A1/IPv4", family := 4, earlierRules := [⟨[.sourceRange 2887540738 2887540738, .destinationRange 167772419 167772419, .egress "aw-management", .protocol "tcp", .sourcePorts [8443], .connectionStates ["ESTABLISHED"]], .allow⟩], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_O_A1/IPv6", family := 6, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_O_B1/IPv4", family := 4, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] },
-  { name := "ND_O_B1/IPv6", family := 6, earlierRules := [], guards := [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, { atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }] }]
+tdn_data devices : List DNSDevice from "../../evidence/lean/FreshDNSHardening.json" ["TDN.Imported.FreshDNSHardening.devices"]
 
 lemma all_prefixes : ∀ device ∈ devices, device.guards =
     [{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny },

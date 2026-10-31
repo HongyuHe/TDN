@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.Topology
 
 namespace TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology
@@ -8,23 +9,23 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 37
 
-def edges : List (Node × Node) := [(0, 6), (0, 15), (0, 26), (0, 28), (1, 3), (1, 8), (1, 20), (1, 29), (1, 32), (2, 3), (3, 1), (3, 2), (4, 5), (4, 25), (4, 29), (5, 4), (5, 6), (5, 9), (5, 21), (5, 33), (6, 0), (6, 5), (7, 8), (8, 1), (8, 7), (9, 5), (9, 25), (9, 29), (10, 12), (10, 17), (10, 23), (10, 30), (10, 35), (11, 12), (12, 10), (12, 11), (13, 14), (13, 27), (13, 30), (14, 13), (14, 15), (14, 18), (14, 24), (14, 36), (15, 0), (15, 14), (16, 17), (17, 10), (17, 16), (18, 14), (18, 27), (18, 30), (19, 20), (20, 1), (20, 19), (21, 5), (21, 25), (21, 29), (22, 23), (23, 10), (23, 22), (24, 14), (24, 27), (24, 30), (25, 4), (25, 9), (25, 21), (25, 26), (25, 33), (26, 0), (26, 25), (27, 13), (27, 18), (27, 24), (27, 28), (27, 36), (28, 0), (28, 27), (29, 1), (29, 4), (29, 9), (29, 21), (29, 33), (30, 10), (30, 13), (30, 18), (30, 24), (30, 36), (31, 32), (32, 1), (32, 31), (33, 5), (33, 25), (33, 29), (34, 35), (35, 10), (35, 34), (36, 14), (36, 27), (36, 30)]
+tdn_data edges : List (Node × Node) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.edges"]
 
-def grayEdges : List (Node × Node) := [(1, 3), (1, 8), (1, 20), (1, 29), (1, 32), (3, 1), (4, 5), (4, 25), (4, 29), (5, 4), (5, 9), (5, 21), (5, 33), (8, 1), (9, 5), (9, 25), (9, 29), (10, 12), (10, 17), (10, 23), (10, 30), (10, 35), (12, 10), (13, 14), (13, 27), (13, 30), (14, 13), (14, 18), (14, 24), (14, 36), (17, 10), (18, 14), (18, 27), (18, 30), (20, 1), (21, 5), (21, 25), (21, 29), (23, 10), (24, 14), (24, 27), (24, 30), (25, 4), (25, 9), (25, 21), (25, 33), (27, 13), (27, 18), (27, 24), (27, 36), (29, 1), (29, 4), (29, 9), (29, 21), (29, 33), (30, 10), (30, 13), (30, 18), (30, 24), (30, 36), (32, 1), (33, 5), (33, 25), (33, 29), (35, 10), (36, 14), (36, 27), (36, 30)]
+tdn_data grayEdges : List (Node × Node) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.grayEdges"]
 
-def insideAttachments : List (Node × Node) := [(5, 6), (14, 15), (25, 26), (27, 28)]
+tdn_data insideAttachments : List (Node × Node) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.insideAttachments"]
 
-def outsideAttachments : List (Node × Node) := [(6, 0), (15, 0), (26, 0), (28, 0)]
+tdn_data outsideAttachments : List (Node × Node) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.outsideAttachments"]
 
-def outerNodes : List Node := [5, 14, 25, 27]
+tdn_data outerNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.outerNodes"]
 
-def firewallNodes : List Node := [6, 15, 26, 28]
+tdn_data firewallNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.firewallNodes"]
 
-def blackNodes : List Node := [0]
+tdn_data blackNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.blackNodes"]
 
-def grayFirewallNodes : List Node := [1, 10]
+tdn_data grayFirewallNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.grayFirewallNodes"]
 
-def innerNodes : List Node := [3, 8, 12, 17, 20, 23, 32, 35]
+tdn_data innerNodes : List Node from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.innerNodes"]
 
 def outerSide (node : Node) : Nat := [0, 3, 3, 3, 3, 3, 6, 3, 3, 3, 22, 22, 22, 22, 22, 15, 22, 22, 22, 3, 3, 3, 22, 22, 22, 3, 26, 22, 28, 3, 22, 3, 3, 3, 22, 22, 22][node.val]!
 
@@ -68,7 +69,7 @@ lemma gray_sides_differ : ∀ a b, a ∈ innerNodes → b ∈ innerNodes → lev
 
 theorem cross_level_gray_paths_cross_firewall (a b : Node) (ha : a ∈ innerNodes) (hb : b ∈ innerNodes) (different : level a ≠ level b) : ¬ Relation.ReflTransGen (Paths.Avoiding grayEdge grayFirewall) a b := Paths.no_firewall_free_crossing grayEdge grayFirewall graySide gray_local_cut (inner_start_clear a ha) (gray_sides_differ a b ha hb different)
 
-def ipv6Disablement : List (Nat × Nat) := [(1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0)]
+tdn_data ipv6Disablement : List (Nat × Nat) from "../../evidence/lean/NativeRedundantTopology.json" ["TDN.Imported.native_redundant_four_levels_20261017T2240Z_scope_v2_topology.ipv6Disablement"]
 
 theorem all_recorded_ipv6_interfaces_disabled : ∀ setting ∈ ipv6Disablement, setting.1 = 1 ∧ setting.2 = 0 := by unfold ipv6Disablement; decide
 

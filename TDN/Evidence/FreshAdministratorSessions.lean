@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.Administration
 
 namespace TDN.Imported.FreshAdministratorSessions
@@ -6,33 +7,55 @@ set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
 /-- Credential identities are modeled here. Human appointments and AW accounts remain external. -/
-def accounts : List AdministrativeAccount := [⟨0, 0, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", false, false, 0⟩, ⟨1, 0, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, 0⟩]
+tdn_data accounts : List AdministrativeAccount from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.accounts"]
 
-def authentication0 : AdminEvent := ⟨.authentication, 1, 0, 1, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-0"⟩
-def operation0 : AdminEvent := ⟨.operation, 1, 0, 2, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-0"⟩
-def authentication1 : AdminEvent := ⟨.authentication, 1, 0, 3, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-1"⟩
-def operation1 : AdminEvent := ⟨.operation, 1, 0, 4, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-1"⟩
-def authentication2 : AdminEvent := ⟨.authentication, 1, 0, 5, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-2"⟩
-def operation2 : AdminEvent := ⟨.operation, 1, 0, 6, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-2"⟩
-def authentication3 : AdminEvent := ⟨.authentication, 1, 0, 7, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-3"⟩
-def operation3 : AdminEvent := ⟨.operation, 1, 0, 8, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-3"⟩
-def authentication4 : AdminEvent := ⟨.authentication, 0, 0, 9, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", false, false, "audit-request-4"⟩
-def operation4 : AdminEvent := ⟨.operation, 0, 0, 10, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", false, false, "audit-request-4"⟩
-def authentication5 : AdminEvent := ⟨.authentication, 0, 0, 11, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", false, false, "audit-request-5"⟩
-def operation5 : AdminEvent := ⟨.operation, 0, 0, 12, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", false, false, "audit-request-5"⟩
-def authentication6 : AdminEvent := ⟨.authentication, 0, 0, 13, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", false, false, "audit-request-6"⟩
-def operation6 : AdminEvent := ⟨.operation, 0, 0, 14, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", false, false, "audit-request-6"⟩
-def authentication7 : AdminEvent := ⟨.authentication, 1, 0, 15, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-7"⟩
-def operation7 : AdminEvent := ⟨.operation, 1, 0, 16, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-7"⟩
-def authentication8 : AdminEvent := ⟨.authentication, 1, 0, 17, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-8"⟩
-def operation8 : AdminEvent := ⟨.operation, 1, 0, 18, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-8"⟩
-def authentication9 : AdminEvent := ⟨.authentication, 1, 0, 19, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-9"⟩
-def operation9 : AdminEvent := ⟨.operation, 1, 0, 20, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", false, false, "audit-request-9"⟩
+tdn_data authentication0 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication0"]
+
+tdn_data operation0 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation0"]
+
+tdn_data authentication1 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication1"]
+
+tdn_data operation1 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation1"]
+
+tdn_data authentication2 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication2"]
+
+tdn_data operation2 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation2"]
+
+tdn_data authentication3 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication3"]
+
+tdn_data operation3 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation3"]
+
+tdn_data authentication4 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication4"]
+
+tdn_data operation4 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation4"]
+
+tdn_data authentication5 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication5"]
+
+tdn_data operation5 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation5"]
+
+tdn_data authentication6 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication6"]
+
+tdn_data operation6 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation6"]
+
+tdn_data authentication7 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication7"]
+
+tdn_data operation7 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation7"]
+
+tdn_data authentication8 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication8"]
+
+tdn_data operation8 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation8"]
+
+tdn_data authentication9 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.authentication9"]
+
+tdn_data operation9 : AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.operation9"]
 
 /-- Session names and causal orders are witnesses derived from the reviewed handler sequence. -/
-def sessions : List AdministrativeSession := [⟨"audit-request-0", 1, 0, 1, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02"⟩, ⟨"audit-request-1", 1, 0, 3, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02"⟩, ⟨"audit-request-2", 1, 0, 5, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02"⟩, ⟨"audit-request-3", 1, 0, 7, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02"⟩, ⟨"audit-request-4", 0, 0, 9, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138"⟩, ⟨"audit-request-5", 0, 0, 11, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138"⟩, ⟨"audit-request-6", 0, 0, 13, "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138"⟩, ⟨"audit-request-7", 1, 0, 15, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02"⟩, ⟨"audit-request-8", 1, 0, 17, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02"⟩, ⟨"audit-request-9", 1, 0, 19, "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02"⟩]
-def events : List AdminEvent := [operation9, authentication9, operation8, authentication8, operation7, authentication7, operation6, authentication6, operation5, authentication5, operation4, authentication4, operation3, authentication3, operation2, authentication2, operation1, authentication1, operation0, authentication0]
-def actions : List AdminEvent := [authentication0, operation0, authentication1, operation1, authentication2, operation2, authentication3, operation3, authentication4, operation4, authentication5, operation5, authentication6, operation6, authentication7, operation7, authentication8, operation8, authentication9, operation9]
+tdn_data sessions : List AdministrativeSession from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.sessions"]
+
+tdn_data events : List AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.events"]
+
+tdn_data actions : List AdminEvent from "../../evidence/lean/FreshAdministratorSessions.json" ["TDN.Imported.FreshAdministratorSessions.actions"]
+
 def needsAuthentication (event : AdminEvent) : Prop := event.kind = .operation
 def prerequisite := MatchingAdministratorAuthentication false false events accounts sessions
 

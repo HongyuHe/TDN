@@ -1,0 +1,74 @@
+BIRD 2.15.1 ready.
+Access restricted
+Name       Proto      Table      State  Since         Info
+device1    Device     ---        up     16:47:38.009  
+
+direct1    Direct     ---        up     16:47:38.009  
+  Channel ipv4
+    State:          UP
+    Table:          master4
+    Preference:     240
+    Input filter:   ACCEPT
+    Output filter:  REJECT
+    Routes:         1 imported, 0 exported, 1 preferred
+    Route change stats:     received   rejected   filtered    ignored   accepted
+      Import updates:              1          0          0          0          1
+      Import withdraws:            0          0        ---          0          0
+      Export updates:              0          0          0        ---          0
+      Export withdraws:            0        ---        ---        ---          0
+
+kernel1    Kernel     master4    up     16:47:38.009  
+  Channel ipv4
+    State:          UP
+    Table:          master4
+    Preference:     10
+    Input filter:   REJECT
+    Output filter:  (unnamed)
+    Routes:         0 imported, 1 exported, 0 preferred
+    Route change stats:     received   rejected   filtered    ignored   accepted
+      Import updates:              0          0          0          0          0
+      Import withdraws:            0          0        ---          0          0
+      Export updates:              3          0          2        ---          1
+      Export withdraws:            0        ---        ---        ---          0
+
+peer       BGP        ---        up     16:47:41.315  Established   
+  BGP state:          Established
+    Neighbor address: 172.30.231.11
+    Neighbor AS:      65001
+    Local AS:         65002
+    Neighbor ID:      10.77.1.1
+    Local capabilities
+      Multiprotocol
+        AF announced: ipv4
+      Route refresh
+      Graceful restart
+      4-octet AS numbers
+      Enhanced refresh
+      Long-lived graceful restart
+    Neighbor capabilities
+      Multiprotocol
+        AF announced: ipv4
+      Route refresh
+      Graceful restart
+      4-octet AS numbers
+      Enhanced refresh
+      Long-lived graceful restart
+    Session:          external AS4
+    Source address:   172.30.231.12
+    Hold timer:       167.378/240
+    Keepalive timer:  25.937/80
+    Send hold timer:  422.714/480
+  Channel ipv4
+    State:          UP
+    Table:          master4
+    Preference:     100
+    Input filter:   ACCEPT
+    Output filter:  (unnamed)
+    Routes:         1 imported, 1 exported, 1 preferred
+    Route change stats:     received   rejected   filtered    ignored   accepted
+      Import updates:              1          0          0          0          1
+      Import withdraws:            0          0        ---          0          0
+      Export updates:              2          1          0        ---          1
+      Export withdraws:            0        ---        ---        ---          0
+    BGP Next hop:   172.30.231.12
+

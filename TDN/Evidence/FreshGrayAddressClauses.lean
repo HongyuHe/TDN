@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.GrayAddressClauses
 import TDN.Evidence.FreshSharedAddressing
 import TDN.Evidence.FreshSharedExecution
@@ -18,7 +19,7 @@ theorem outer_accepted_addresses_share_full_level (rules : List PacketPolicy.Rul
 
 /-- Indices 2 and 3 are the complete observed Gray Firewall role inventory in
 shared-execution-nft-import.json. The rules reuse the raw-validated execution facts. -/
-def grayFirewallDevices : List Nat := [2, 3]
+tdn_data grayFirewallDevices : List Nat from "../../evidence/lean/FreshGrayAddressClauses.json" ["TDN.Imported.FreshSharedAddressing.grayFirewallDevices"]
 
 def grayFirewallRules (device : Nat) : List PacketPolicy.Rule :=
   (Execution.deviceAt FreshSharedExecution.devices device).forwardRules

@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.SoftwareSignatures
 
 namespace TDN.Imported.FreshSoftwareSignatures
@@ -5,8 +6,7 @@ open TDN.Targets
 
 /-- The sole consumer is a laboratory deployment utility. It is not a replacement
 for the complete CSfC solution-component inventory. -/
-def recordedUses : List SoftwareSignatureUse :=
-  [⟨"deployment-utility", "twinet-linux", .mldsa 5 87⟩]
+tdn_data recordedUses : List SoftwareSignatureUse from "../../evidence/lean/FreshSoftwareSignatures.json" ["TDN.Imported.FreshSoftwareSignatures.recordedUses"]
 
 lemma recorded_algorithm_is_approved : ∀ record ∈ recordedUses,
     ApprovedFirmwareSignature (fun _ => False) record.signature := by

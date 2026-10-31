@@ -1,12 +1,13 @@
+import TDN.Import.Command
 import TDN.Targets.Protocol
 
 namespace TDN.Imported.MKASource
 
-def helloMs : Nat := 2000
+tdn_data helloMs : Nat from "../../evidence/lean/MKASource.json" ["TDN.Imported.MKASource.helloMs"]
 
-def lifetimeMs : Nat := 6000
+tdn_data lifetimeMs : Nat from "../../evidence/lean/MKASource.json" ["TDN.Imported.MKASource.lifetimeMs"]
 
-def boundedHelloMs : Nat := 500
+tdn_data boundedHelloMs : Nat from "../../evidence/lean/MKASource.json" ["TDN.Imported.MKASource.boundedHelloMs"]
 
 def sourceDelayFlag (hello : Nat) : Bool := decide (hello ≤ boundedHelloMs)
 
@@ -14,7 +15,7 @@ theorem source_timer_constants : helloMs = 2000 ∧ lifetimeMs = 6000 := by deci
 
 theorem required_hello_disables_source_delay_flag : sourceDelayFlag 2000 = false := by decide
 
-def declaredTestCakBits : Nat := 256
+tdn_data declaredTestCakBits : Nat from "../../evidence/lean/MKASource.json" ["TDN.Imported.MKASource.declaredTestCakBits"]
 
 def sourceDerivedKekBits := declaredTestCakBits
 

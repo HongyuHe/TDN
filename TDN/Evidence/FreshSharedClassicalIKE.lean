@@ -1,9 +1,10 @@
+import TDN.Import.Command
 import TDN.Targets.ClassicalIKE
 
 namespace TDN.Imported.FreshSharedClassicalIKE
 open TDN.Targets
 
-def offered : List AlgorithmSuite := [⟨256, true, .ecdsaP384sha384, .ecdhP384, .sha384⟩, ⟨256, true, .ecdsaP384sha384, .ecdhP384, .sha384⟩, ⟨256, true, .ecdsaP384sha384, .ecdhP384, .sha384⟩, ⟨256, true, .ecdsaP384sha384, .ecdhP384, .sha384⟩, ⟨256, true, .ecdsaP384sha384, .ecdhP384, .sha384⟩, ⟨256, true, .ecdsaP384sha384, .ecdhP384, .sha384⟩, ⟨256, true, .ecdsaP384sha384, .ecdhP384, .sha384⟩, ⟨256, true, .ecdsaP384sha384, .ecdhP384, .sha384⟩]
+tdn_data offered : List AlgorithmSuite from "../../evidence/lean/FreshSharedClassicalIKE.json" ["TDN.Imported.FreshSharedClassicalIKE.offered"]
 
 lemma recorded_offer_inventory_nonempty : offered ≠ [] := by decide
 

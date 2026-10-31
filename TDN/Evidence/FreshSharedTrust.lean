@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.AuthenticationIsolation
 
 namespace TDN.Imported.FreshSharedTrust
@@ -11,15 +12,7 @@ def authorityLevel (key : String) : SecurityLevel :=
   if key = "f2070d2573de2ce24cc4447f5634ff623c62b6083614e83f32a7f55fa883424c" then ⟨"SECRET", {}, {"COALITION"}, {}⟩ else
   ⟨"UNASSIGNED", {}, {}, {}⟩
 
-def peers : List Targets.InnerAuthentication := [
-  ⟨"NF_I_A1", ⟨"TOP_SECRET", {}, {}, {}⟩, .certificate "1ff3833cf6d196f1e1a1375caa7ca50703aa8bf11b2ea15d629440ca129edc08" ["1ff3833cf6d196f1e1a1375caa7ca50703aa8bf11b2ea15d629440ca129edc08"], {}⟩,
-  ⟨"NF_I_A2", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, .certificate "5318c93f1e495edd4c13212034ef6b2a711b86c9e2b3a3993e0c12a71c02fea8" ["5318c93f1e495edd4c13212034ef6b2a711b86c9e2b3a3993e0c12a71c02fea8"], {}⟩,
-  ⟨"NF_I_B1", ⟨"TOP_SECRET", {}, {}, {}⟩, .certificate "1ff3833cf6d196f1e1a1375caa7ca50703aa8bf11b2ea15d629440ca129edc08" ["1ff3833cf6d196f1e1a1375caa7ca50703aa8bf11b2ea15d629440ca129edc08"], {}⟩,
-  ⟨"NF_I_B2", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, .certificate "5318c93f1e495edd4c13212034ef6b2a711b86c9e2b3a3993e0c12a71c02fea8" ["5318c93f1e495edd4c13212034ef6b2a711b86c9e2b3a3993e0c12a71c02fea8"], {}⟩,
-  ⟨"NF_I_A3", ⟨"SECRET", {}, {"COALITION"}, {}⟩, .certificate "f2070d2573de2ce24cc4447f5634ff623c62b6083614e83f32a7f55fa883424c" ["f2070d2573de2ce24cc4447f5634ff623c62b6083614e83f32a7f55fa883424c"], {}⟩,
-  ⟨"NF_I_B3", ⟨"SECRET", {}, {"COALITION"}, {}⟩, .certificate "f2070d2573de2ce24cc4447f5634ff623c62b6083614e83f32a7f55fa883424c" ["f2070d2573de2ce24cc4447f5634ff623c62b6083614e83f32a7f55fa883424c"], {}⟩,
-  ⟨"NF_I_A4", ⟨"UNCLASSIFIED", {}, {}, {}⟩, .certificate "e132c8956082ed2db0e6c527d2a2241f334f8d2cf872348b23b586b817b56c5e" ["e132c8956082ed2db0e6c527d2a2241f334f8d2cf872348b23b586b817b56c5e"], {}⟩,
-  ⟨"NF_I_B4", ⟨"UNCLASSIFIED", {}, {}, {}⟩, .certificate "e132c8956082ed2db0e6c527d2a2241f334f8d2cf872348b23b586b817b56c5e" ["e132c8956082ed2db0e6c527d2a2241f334f8d2cf872348b23b586b817b56c5e"], {}⟩]
+tdn_data peers : List Targets.InnerAuthentication from "../../evidence/lean/FreshSharedTrust.json" ["TDN.Imported.FreshSharedTrust.peers"]
 
 /-- Management is explicitly unselected in this data-path configuration. -/
 lemma credential_scopes : ∀ peer ∈ peers, Targets.CredentialScoped authorityLevel authorityLevel peer := by

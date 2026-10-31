@@ -61,3 +61,6 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
 The [construction tools guide](scripts/construction/README.md) provides commands for regenerating evidence modules and recording new validation runs. The [emulation guide](scripts/construction/evidence/README.md) covers deployment and collection. New observations require new timestamped snapshots; changes to a live network do not alter previously saved evidence.
+
+
+Network evidence is available through a [local MCP server](docs/evidence_service.md). The server collects observations from configured workers and exports structured JSON. Lean imports those records with `tdn_data` and `tdn_snapshot`, then checks the network-specific conditions used by the reusable proofs.

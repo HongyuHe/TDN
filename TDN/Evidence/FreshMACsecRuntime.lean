@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.Cryptography
 import TDN.Semantics.LinkProtection
 
@@ -5,7 +6,8 @@ namespace TDN.Imported.FreshMACsecRuntime
 open LinkProtection
 
 def ports : List (String × Config) := [("eap-tls-forward-v14/P0", { controlledPortEnabled := true, protectFrames := true, encryptFrames := true, confidentialityOffset := 0 }), ("eap-tls-forward-v14/P1", { controlledPortEnabled := true, protectFrames := true, encryptFrames := true, confidentialityOffset := 0 }), ("eap-tls-reverse-v14/P0", { controlledPortEnabled := true, protectFrames := true, encryptFrames := true, confidentialityOffset := 0 }), ("eap-tls-reverse-v14/P1", { controlledPortEnabled := true, protectFrames := true, encryptFrames := true, confidentialityOffset := 0 })]
-def installedAssociations : List (String × Nat) := [("eap-tls-forward-v14/P0", 0), ("eap-tls-forward-v14/P1", 0), ("eap-tls-reverse-v14/P0", 0), ("eap-tls-reverse-v14/P1", 0)]
+tdn_data installedAssociations : List (String × Nat) from "../../evidence/lean/FreshMACsecRuntime.json" ["TDN.Imported.FreshMACsecRuntime.installedAssociations"]
+
 lemma installed_association_coverage : ∀ port ∈ ports,
     ∃ binding ∈ installedAssociations, binding.1 = port.1 := by
   unfold ports installedAssociations
@@ -45,7 +47,8 @@ theorem observed_sa_allows_data (port : String × Config) (member : port ∈ por
   exact ⟨binding, installed, identity,
     runtime_ports_permit_encrypted_emission port member binding.2 body⟩
 
-def negotiatedSuite : Targets.AlgorithmSuite := ⟨256, true, .mldsa87, .mlkem1024, .sha384⟩
+tdn_data negotiatedSuite : Targets.AlgorithmSuite from "../../evidence/lean/FreshMACsecRuntime.json" ["TDN.Imported.FreshMACsecRuntime.negotiatedSuite"]
+
 lemma negotiated_suite_cnsa2 : Targets.CNSA2 negotiatedSuite := by
   unfold Targets.CNSA2 Targets.ApprovedIntegrity negotiatedSuite
   decide

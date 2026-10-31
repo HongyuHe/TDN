@@ -1,9 +1,11 @@
+import TDN.Import.Command
 import TDN.Targets.Components
 
 namespace TDN.Imported.FreshOptionalScreening
 open Targets
 
-def controls : List AdditionalControl := [⟨true, true, false⟩, ⟨true, true, false⟩]
+tdn_data controls : List AdditionalControl from "../../evidence/lean/FreshOptionalScreening.json" ["TDN.Imported.FreshOptionalScreening.controls"]
+
 lemma black_placement : ∀ c ∈ controls, c.screeningRouter = true → c.locatedOnBlack = true := by decide
 lemma boundary_placement : ∀ c ∈ controls, c.screeningRouter = true → c.insideSolutionBoundary = false := by decide
 

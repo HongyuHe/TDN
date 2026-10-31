@@ -1,9 +1,10 @@
+import TDN.Import.Command
 import TDN.Targets.RoutingProcesses
 
 namespace TDN.Imported.FreshRoutingProcesses
 open Targets
 
-def outerDevices : List String := ["NB_O_A1", "NB_O_A2", "NB_O_B1", "NB_O_B2", "NF_O_A1", "NF_O_B1"]
+tdn_data outerDevices : List String from "../../evidence/lean/FreshRoutingProcesses.json" ["TDN.Imported.FreshRoutingProcesses.outerDevices"]
 
 def inventory (device : String) : List (ProcessServices.Process ObservedNetworkService) :=
   if device = "NB_O_A1" then [⟨790481, [.waiting]⟩, ⟨799203, [.ike]⟩] else

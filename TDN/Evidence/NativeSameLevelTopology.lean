@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.Topology
 
 namespace TDN.Imported.native_samelevel_20261017T2242Z_topology
@@ -8,23 +9,23 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 19
 
-def edges : List (Node × Node) := [(0, 6), (0, 15), (1, 4), (1, 9), (2, 3), (3, 2), (3, 4), (4, 1), (4, 3), (4, 5), (5, 4), (5, 6), (5, 9), (6, 0), (6, 5), (7, 8), (8, 7), (8, 9), (9, 1), (9, 5), (9, 8), (10, 13), (10, 18), (11, 12), (12, 11), (12, 13), (13, 10), (13, 12), (13, 14), (14, 13), (14, 15), (14, 18), (15, 0), (15, 14), (16, 17), (17, 16), (17, 18), (18, 10), (18, 14), (18, 17)]
+tdn_data edges : List (Node × Node) from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.edges"]
 
-def grayEdges : List (Node × Node) := [(1, 4), (1, 9), (3, 4), (4, 1), (4, 3), (4, 5), (5, 4), (5, 9), (8, 9), (9, 1), (9, 5), (9, 8), (10, 13), (10, 18), (12, 13), (13, 10), (13, 12), (13, 14), (14, 13), (14, 18), (17, 18), (18, 10), (18, 14), (18, 17)]
+tdn_data grayEdges : List (Node × Node) from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.grayEdges"]
 
-def insideAttachments : List (Node × Node) := [(5, 6), (14, 15)]
+tdn_data insideAttachments : List (Node × Node) from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.insideAttachments"]
 
-def outsideAttachments : List (Node × Node) := [(6, 0), (15, 0)]
+tdn_data outsideAttachments : List (Node × Node) from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.outsideAttachments"]
 
-def outerNodes : List Node := [5, 14]
+tdn_data outerNodes : List Node from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.outerNodes"]
 
-def firewallNodes : List Node := [6, 15]
+tdn_data firewallNodes : List Node from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.firewallNodes"]
 
-def blackNodes : List Node := [0]
+tdn_data blackNodes : List Node from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.blackNodes"]
 
-def grayFirewallNodes : List Node := [1, 10]
+tdn_data grayFirewallNodes : List Node from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.grayFirewallNodes"]
 
-def innerNodes : List Node := [3, 8, 12, 17]
+tdn_data innerNodes : List Node from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.innerNodes"]
 
 def outerSide (node : Node) : Nat := [0, 1, 1, 1, 1, 1, 6, 1, 1, 1, 14, 14, 14, 14, 14, 15, 14, 14, 14][node.val]!
 
@@ -66,7 +67,7 @@ lemma gray_sides_differ : ∀ a b, a ∈ innerNodes → b ∈ innerNodes → lev
 
 theorem cross_level_gray_paths_cross_firewall (a b : Node) (ha : a ∈ innerNodes) (hb : b ∈ innerNodes) (different : level a ≠ level b) : ¬ Relation.ReflTransGen (Paths.Avoiding grayEdge grayFirewall) a b := Paths.no_firewall_free_crossing grayEdge grayFirewall graySide gray_local_cut (inner_start_clear a ha) (gray_sides_differ a b ha hb different)
 
-def ipv6Disablement : List (Nat × Nat) := [(1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0)]
+tdn_data ipv6Disablement : List (Nat × Nat) from "../../evidence/lean/NativeSameLevelTopology.json" ["TDN.Imported.native_samelevel_20261017T2242Z_topology.ipv6Disablement"]
 
 theorem all_recorded_ipv6_interfaces_disabled : ∀ setting ∈ ipv6Disablement, setting.1 = 1 ∧ setting.2 = 0 := by unfold ipv6Disablement; decide
 

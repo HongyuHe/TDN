@@ -1,14 +1,12 @@
+import TDN.Import.Command
 import TDN.Targets.EnterpriseGrayFiltering
 
 namespace TDN.Imported.FreshEnterpriseGrayFilters
 open TDN.PacketPolicy
 
-def forwardChains : List (List Rule) := [[⟨[.ingress "red", .egress "gray", .outboundPolicy 100], .allow⟩, ⟨[.ingress "gray", .egress "red", .inboundPolicy 100], .allow⟩],
-  [⟨[.ingress "red", .egress "gray", .outboundPolicy 100], .allow⟩, ⟨[.ingress "gray", .egress "red", .inboundPolicy 100], .allow⟩],
-  [⟨[.ingress "red", .egress "gray", .outboundPolicy 100], .allow⟩, ⟨[.ingress "gray", .egress "red", .inboundPolicy 100], .allow⟩],
-  [⟨[.ingress "red", .egress "gray", .outboundPolicy 100], .allow⟩, ⟨[.ingress "gray", .egress "red", .inboundPolicy 100], .allow⟩]]
-def inputChains : List (List Rule × TDN.Filter.Verdict) :=
-  [([], .allow), ([], .allow), ([], .allow), ([], .allow)]
+tdn_data forwardChains : List (List Rule) from "../../evidence/lean/FreshEnterpriseGrayFilters.json" ["TDN.Imported.FreshEnterpriseGrayFilters.forwardChains"]
+
+tdn_data inputChains : List (List Rule × TDN.Filter.Verdict) from "../../evidence/lean/FreshEnterpriseGrayFilters.json" ["TDN.Imported.FreshEnterpriseGrayFilters.inputChains"]
 
 /-- The four saved FORWARD chains require a matching explicit allow rule.
 The conclusion covers first-match filter evaluation, with its saved DROP default. -/

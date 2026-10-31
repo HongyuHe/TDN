@@ -15,7 +15,7 @@ def main():
     register = json.loads(path.read_text())
     declarations = {}
     for source in Path("TDN/Targets").glob("*.lean"):
-        for match in re.finditer(r"^(def|theorem|lemma)\s+([A-Za-z0-9_]+)", source.read_text(), re.M):
+        for match in re.finditer(r"^(def|theorem|lemma|tdn_data)\s+([A-Za-z0-9_]+)", source.read_text(), re.M):
             declarations[match[2]] = {"kind": match[1], "module": str(source), "name": "TDN.Targets." + match[2]}
     for group in register["groups"]:
         name = group["top_level_target"]

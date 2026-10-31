@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Evidence.FreshBridgedMACsecChecks
 
 namespace TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2
@@ -6,37 +7,67 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 set_option linter.unusedSimpArgs false
 
-def usefulState0 : MultiProtocolExecution.State := { port := 8, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }) }, enteredPort := 8, authenticated := [], tracking := "NEW" }
-def usefulState1 : MultiProtocolExecution.State := { port := 15, phase := .received, frame := { payload := 1, originDomain := 1, body := (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }) }, enteredPort := 8, authenticated := [], tracking := "NEW" }
-def usefulState2 : MultiProtocolExecution.State := { port := 14, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }) }, enteredPort := 8, authenticated := [], tracking := "NEW" }
-def usefulState3 : MultiProtocolExecution.State := { port := 12, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })) }, enteredPort := 8, authenticated := [], tracking := "NEW" }
-def usefulState4 : MultiProtocolExecution.State := { port := 23, phase := .received, frame := { payload := 1, originDomain := 1, body := (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })) }, enteredPort := 8, authenticated := [], tracking := "NEW" }
-def usefulState5 : MultiProtocolExecution.State := { port := 24, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })) }, enteredPort := 8, authenticated := [], tracking := "NEW" }
-def usefulState6 : MultiProtocolExecution.State := { port := 25, phase := .localOutput, frame := { payload := 1, originDomain := 1, body := (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }))) }, enteredPort := 25, authenticated := [], tracking := "NEW" }
-def usefulState7 : MultiProtocolExecution.State := { port := 21, phase := .outputRouted, frame := { payload := 1, originDomain := 1, body := (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }))) }, enteredPort := 25, authenticated := [], tracking := "NEW" }
-def usefulState8 : MultiProtocolExecution.State := { port := 21, phase := .filtered, frame := { payload := 1, originDomain := 1, body := (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }))) }, enteredPort := 25, authenticated := [], tracking := "NEW" }
-def usefulState9 : MultiProtocolExecution.State := { port := 21, phase := .encapsulated, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 25, authenticated := [], tracking := "NEW" }
-def usefulState10 : MultiProtocolExecution.State := { port := 21, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 25, authenticated := [], tracking := "NEW" }
-def usefulState11 : MultiProtocolExecution.State := { port := 1, phase := .received, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 25, authenticated := [], tracking := "NEW" }
-def usefulState12 : MultiProtocolExecution.State := { port := 1, phase := .ingress, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 1, authenticated := [], tracking := "NEW" }
-def usefulState13 : MultiProtocolExecution.State := { port := 3, phase := .routed, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 1, authenticated := [], tracking := "NEW" }
-def usefulState14 : MultiProtocolExecution.State := { port := 3, phase := .filtered, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 1, authenticated := [], tracking := "NEW" }
-def usefulState15 : MultiProtocolExecution.State := { port := 3, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 1, authenticated := [], tracking := "NEW" }
-def usefulState16 : MultiProtocolExecution.State := { port := 6, phase := .received, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 1, authenticated := [], tracking := "NEW" }
-def usefulState17 : MultiProtocolExecution.State := { port := 6, phase := .ingress, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 6, authenticated := [], tracking := "NEW" }
-def usefulState18 : MultiProtocolExecution.State := { port := 4, phase := .routed, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 6, authenticated := [], tracking := "NEW" }
-def usefulState19 : MultiProtocolExecution.State := { port := 4, phase := .filtered, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 6, authenticated := [], tracking := "NEW" }
-def usefulState20 : MultiProtocolExecution.State := { port := 4, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 6, authenticated := [], tracking := "NEW" }
-def usefulState21 : MultiProtocolExecution.State := { port := 26, phase := .received, frame := { payload := 1, originDomain := 1, body := (.ipsec ⟨2, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })))) }, enteredPort := 6, authenticated := [], tracking := "NEW" }
-def usefulState22 : MultiProtocolExecution.State := { port := 26, phase := .ingress, frame := { payload := 1, originDomain := 1, body := (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }))) }, enteredPort := 26, authenticated := [200], tracking := "NEW" }
-def usefulState23 : MultiProtocolExecution.State := { port := 26, phase := .localInput, frame := { payload := 1, originDomain := 1, body := (.carrier ⟨168493058, 169148418, 1701, 1701, 200⟩ (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }))) }, enteredPort := 26, authenticated := [200], tracking := "NEW" }
-def usefulState24 : MultiProtocolExecution.State := { port := 29, phase := .received, frame := { payload := 1, originDomain := 1, body := (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })) }, enteredPort := 26, authenticated := [], tracking := "NEW" }
-def usefulState25 : MultiProtocolExecution.State := { port := 28, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })) }, enteredPort := 26, authenticated := [], tracking := "NEW" }
-def usefulState26 : MultiProtocolExecution.State := { port := 17, phase := .received, frame := { payload := 1, originDomain := 1, body := (.macsec ⟨1, 17445716389506514945, 0, 0⟩ (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] })) }, enteredPort := 26, authenticated := [], tracking := "NEW" }
-def usefulState27 : MultiProtocolExecution.State := { port := 19, phase := .received, frame := { payload := 1, originDomain := 1, body := (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }) }, enteredPort := 26, authenticated := [], tracking := "NEW" }
-def usefulState28 : MultiProtocolExecution.State := { port := 20, phase := .ready, frame := { payload := 1, originDomain := 1, body := (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }) }, enteredPort := 26, authenticated := [], tracking := "NEW" }
-def usefulState29 : MultiProtocolExecution.State := { port := 10, phase := .received, frame := { payload := 1, originDomain := 1, body := (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }) }, enteredPort := 26, authenticated := [], tracking := "NEW" }
-def usefulState30 : MultiProtocolExecution.State := { port := 10, phase := .delivered, frame := { payload := 1, originDomain := 1, body := (.ethernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] }) }, enteredPort := 26, authenticated := [], tracking := "NEW" }
+tdn_data usefulState0 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState0"]
+
+tdn_data usefulState1 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState1"]
+
+tdn_data usefulState2 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState2"]
+
+tdn_data usefulState3 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState3"]
+
+tdn_data usefulState4 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState4"]
+
+tdn_data usefulState5 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState5"]
+
+tdn_data usefulState6 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState6"]
+
+tdn_data usefulState7 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState7"]
+
+tdn_data usefulState8 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState8"]
+
+tdn_data usefulState9 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState9"]
+
+tdn_data usefulState10 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState10"]
+
+tdn_data usefulState11 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState11"]
+
+tdn_data usefulState12 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState12"]
+
+tdn_data usefulState13 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState13"]
+
+tdn_data usefulState14 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState14"]
+
+tdn_data usefulState15 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState15"]
+
+tdn_data usefulState16 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState16"]
+
+tdn_data usefulState17 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState17"]
+
+tdn_data usefulState18 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState18"]
+
+tdn_data usefulState19 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState19"]
+
+tdn_data usefulState20 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState20"]
+
+tdn_data usefulState21 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState21"]
+
+tdn_data usefulState22 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState22"]
+
+tdn_data usefulState23 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState23"]
+
+tdn_data usefulState24 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState24"]
+
+tdn_data usefulState25 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState25"]
+
+tdn_data usefulState26 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState26"]
+
+tdn_data usefulState27 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState27"]
+
+tdn_data usefulState28 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState28"]
+
+tdn_data usefulState29 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState29"]
+
+tdn_data usefulState30 : MultiProtocolExecution.State from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulState30"]
 
 lemma usefulStep0 : MultiProtocolExecution.Step config usefulState0 .wire usefulState1 := by
   exact MultiProtocolExecution.Step.wire 15 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
@@ -128,27 +159,35 @@ lemma usefulStep28 : MultiProtocolExecution.Step config usefulState28 .wire usef
 lemma usefulStep29 : MultiProtocolExecution.Step config usefulState29 .deliver usefulState30 := by
   exact MultiProtocolExecution.Step.deliverEthernet { source := 63900710818968, destination := 165031735772873, etherType := 34997, vlanTags := [2292711524, 2164260965] } 1 rfl rfl rfl
 
-def bridgeRules1 : List PacketPolicy.Rule := [⟨[.protocol "34997", .sourceRange 63900710818968 63900710818968, .destinationRange 165031735772873 165031735772873, .ingress "red", .egress "macsec0"], .allow⟩, ⟨[.protocol "33024", .sourceRange 63900710818968 63900710818968, .destinationRange 165031735772873 165031735772873, .ingress "red", .egress "macsec0"], .allow⟩, ⟨[.protocol "34984", .sourceRange 63900710818968 63900710818968, .destinationRange 165031735772873 165031735772873, .ingress "red", .egress "macsec0"], .allow⟩, ⟨[.protocol "34997", .sourceRange 165031735772873 165031735772873, .destinationRange 63900710818968 63900710818968, .ingress "macsec0", .egress "red"], .allow⟩, ⟨[.protocol "33024", .sourceRange 165031735772873 165031735772873, .destinationRange 63900710818968 63900710818968, .ingress "macsec0", .egress "red"], .allow⟩, ⟨[.protocol "34984", .sourceRange 165031735772873 165031735772873, .destinationRange 63900710818968 63900710818968, .ingress "macsec0", .egress "red"], .allow⟩, ⟨[], .deny⟩]
-def bridgePacket1 : PacketPolicy.Packet := { source := 63900710818968, destination := 165031735772873, protocol := "34984", ingress := "red", egress := "macsec0", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 0, ipv6NextHeader := 17, inboundPolicies := [], outboundPolicies := [], connectionState := "" }
+tdn_data bridgeRules1 : List PacketPolicy.Rule from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.bridgeRules1"]
+
+tdn_data bridgePacket1 : PacketPolicy.Packet from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.bridgePacket1"]
+
 lemma positive_bridge_filter1 : Execution.accepts bridgeRules1 .deny bridgePacket1 := by
   unfold Execution.accepts bridgeRules1 bridgePacket1; decide
 
-def bridgeRules4 : List PacketPolicy.Rule := [⟨[.protocol "35045", .sourceRange 63900710818968 63900710818968, .ingress "innerframes", .egress "l2tpeth0"], .allow⟩, ⟨[.protocol "35045", .sourceRange 165031735772873 165031735772873, .ingress "l2tpeth0", .egress "innerframes"], .allow⟩, ⟨[], .deny⟩]
-def bridgePacket4 : PacketPolicy.Packet := { source := 63900710818968, destination := 165031735772873, protocol := "35045", ingress := "innerframes", egress := "l2tpeth0", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 0, ipv6NextHeader := 17, inboundPolicies := [], outboundPolicies := [], connectionState := "" }
+tdn_data bridgeRules4 : List PacketPolicy.Rule from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.bridgeRules4"]
+
+tdn_data bridgePacket4 : PacketPolicy.Packet from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.bridgePacket4"]
+
 lemma positive_bridge_filter4 : Execution.accepts bridgeRules4 .deny bridgePacket4 := by
   unfold Execution.accepts bridgeRules4 bridgePacket4; decide
 
-def bridgeRules24 : List PacketPolicy.Rule := [⟨[.protocol "35045", .sourceRange 165031735772873 165031735772873, .ingress "innerframes", .egress "l2tpeth0"], .allow⟩, ⟨[.protocol "35045", .sourceRange 63900710818968 63900710818968, .ingress "l2tpeth0", .egress "innerframes"], .allow⟩, ⟨[], .deny⟩]
-def bridgePacket24 : PacketPolicy.Packet := { source := 63900710818968, destination := 165031735772873, protocol := "35045", ingress := "l2tpeth0", egress := "innerframes", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 0, ipv6NextHeader := 17, inboundPolicies := [], outboundPolicies := [], connectionState := "" }
+tdn_data bridgeRules24 : List PacketPolicy.Rule from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.bridgeRules24"]
+
+tdn_data bridgePacket24 : PacketPolicy.Packet from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.bridgePacket24"]
+
 lemma positive_bridge_filter24 : Execution.accepts bridgeRules24 .deny bridgePacket24 := by
   unfold Execution.accepts bridgeRules24 bridgePacket24; decide
 
-def bridgeRules27 : List PacketPolicy.Rule := [⟨[.protocol "34997", .sourceRange 165031735772873 165031735772873, .destinationRange 63900710818968 63900710818968, .ingress "red", .egress "macsec0"], .allow⟩, ⟨[.protocol "33024", .sourceRange 165031735772873 165031735772873, .destinationRange 63900710818968 63900710818968, .ingress "red", .egress "macsec0"], .allow⟩, ⟨[.protocol "34984", .sourceRange 165031735772873 165031735772873, .destinationRange 63900710818968 63900710818968, .ingress "red", .egress "macsec0"], .allow⟩, ⟨[.protocol "34997", .sourceRange 63900710818968 63900710818968, .destinationRange 165031735772873 165031735772873, .ingress "macsec0", .egress "red"], .allow⟩, ⟨[.protocol "33024", .sourceRange 63900710818968 63900710818968, .destinationRange 165031735772873 165031735772873, .ingress "macsec0", .egress "red"], .allow⟩, ⟨[.protocol "34984", .sourceRange 63900710818968 63900710818968, .destinationRange 165031735772873 165031735772873, .ingress "macsec0", .egress "red"], .allow⟩, ⟨[], .deny⟩]
-def bridgePacket27 : PacketPolicy.Packet := { source := 63900710818968, destination := 165031735772873, protocol := "34984", ingress := "macsec0", egress := "red", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 0, ipv6NextHeader := 17, inboundPolicies := [], outboundPolicies := [], connectionState := "" }
+tdn_data bridgeRules27 : List PacketPolicy.Rule from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.bridgeRules27"]
+
+tdn_data bridgePacket27 : PacketPolicy.Packet from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.bridgePacket27"]
+
 lemma positive_bridge_filter27 : Execution.accepts bridgeRules27 .deny bridgePacket27 := by
   unfold Execution.accepts bridgeRules27 bridgePacket27; decide
 
-def usefulActions : List MultiProtocolExecution.Action := [.wire, .bridge, .encryptMACsec, .wire, .bridge, .encapsulate, .route, .outputFilter, .encryptIPsec, .route, .wire, .receive, .route, .forwardFilter, .plain, .wire, .receive, .route, .forwardFilter, .plain, .wire, .decryptIPsec, .inputFilter, .decapsulate, .bridge, .wire, .decryptMACsec, .bridge, .wire, .deliver]
+tdn_data usefulActions : List MultiProtocolExecution.Action from "../../evidence/lean/FreshPairingInnerMacsecOuterIpsecForwardVLAN2.json" ["TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN2.usefulActions"]
 
 theorem positive_mixed_delivery : (lts config).MTr usefulState0 usefulActions usefulState30 := by
   exact Cslib.LTS.MTr.stepL usefulStep0 (Cslib.LTS.MTr.stepL usefulStep1 (Cslib.LTS.MTr.stepL usefulStep2 (Cslib.LTS.MTr.stepL usefulStep3 (Cslib.LTS.MTr.stepL usefulStep4 (Cslib.LTS.MTr.stepL usefulStep5 (Cslib.LTS.MTr.stepL usefulStep6 (Cslib.LTS.MTr.stepL usefulStep7 (Cslib.LTS.MTr.stepL usefulStep8 (Cslib.LTS.MTr.stepL usefulStep9 (Cslib.LTS.MTr.stepL usefulStep10 (Cslib.LTS.MTr.stepL usefulStep11 (Cslib.LTS.MTr.stepL usefulStep12 (Cslib.LTS.MTr.stepL usefulStep13 (Cslib.LTS.MTr.stepL usefulStep14 (Cslib.LTS.MTr.stepL usefulStep15 (Cslib.LTS.MTr.stepL usefulStep16 (Cslib.LTS.MTr.stepL usefulStep17 (Cslib.LTS.MTr.stepL usefulStep18 (Cslib.LTS.MTr.stepL usefulStep19 (Cslib.LTS.MTr.stepL usefulStep20 (Cslib.LTS.MTr.stepL usefulStep21 (Cslib.LTS.MTr.stepL usefulStep22 (Cslib.LTS.MTr.stepL usefulStep23 (Cslib.LTS.MTr.stepL usefulStep24 (Cslib.LTS.MTr.stepL usefulStep25 (Cslib.LTS.MTr.stepL usefulStep26 (Cslib.LTS.MTr.stepL usefulStep27 (Cslib.LTS.MTr.stepL usefulStep28 (Cslib.LTS.MTr.stepL usefulStep29 (Cslib.LTS.MTr.refl))))))))))))))))))))))))))))))

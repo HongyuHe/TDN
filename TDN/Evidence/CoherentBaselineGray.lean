@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Semantics.Paths
 
 namespace TDN.Imported.baseline_coherent_20261017T2149Z_gray
@@ -8,11 +9,11 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 23
 
-def edges : List (Node × Node) := [(1, 4), (1, 9), (3, 4), (4, 1), (4, 3), (4, 5), (5, 4), (8, 9), (9, 1), (9, 8), (9, 10), (10, 9), (12, 15), (12, 20), (14, 15), (15, 12), (15, 14), (15, 16), (16, 15), (19, 20), (20, 12), (20, 19), (20, 21), (21, 20)]
+tdn_data edges : List (Node × Node) from "../../evidence/lean/CoherentBaselineGray.json" ["TDN.Imported.baseline_coherent_20261017T2149Z_gray.edges"]
 
-def innerNodes : List Node := [3, 8, 14, 19]
+tdn_data innerNodes : List Node from "../../evidence/lean/CoherentBaselineGray.json" ["TDN.Imported.baseline_coherent_20261017T2149Z_gray.innerNodes"]
 
-def firewallNodes : List Node := [1, 12]
+tdn_data firewallNodes : List Node from "../../evidence/lean/CoherentBaselineGray.json" ["TDN.Imported.baseline_coherent_20261017T2149Z_gray.firewallNodes"]
 
 def edge (a b : Node) : Prop := (a,b) ∈ edges
 

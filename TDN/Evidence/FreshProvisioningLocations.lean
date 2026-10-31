@@ -1,10 +1,11 @@
+import TDN.Import.Command
 import TDN.Targets.Provisioning
 
 namespace TDN.Imported.FreshProvisioningLocations
 open Targets
 
 def observedExecutors : List (Nat × ProvisioningExecutor) := [(0, ProvisioningExecutor.worker "experiment-worker"), (1, ProvisioningExecutor.worker "experiment-worker")]
-def observedOrder : List (Nat × Nat × Nat) := [(39, 40, 41), (39, 40, 41)]
+tdn_data observedOrder : List (Nat × Nat × Nat) from "../../evidence/lean/FreshProvisioningLocations.json" ["TDN.Imported.FreshProvisioningLocations.observedOrder"]
 
 lemma generation_request_signing_order : ∀ row ∈ observedOrder,
     row.1 < row.2.1 ∧ row.2.1 < row.2.2 := by decide

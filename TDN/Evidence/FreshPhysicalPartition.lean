@@ -1,22 +1,9 @@
+import TDN.Import.Command
 import TDN.Targets.Components
 
 namespace TDN.Imported.FreshPhysicalPartition
 
-def components : List Targets.Component := [
-  { identity := "MW_GF_A", product := ⟨"", "", "", .other⟩, role := .grayFirewall, physicalDevice := "4c4c4544-004a-4310-8042-b4c04f563532", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_GF_B", product := ⟨"", "", "", .other⟩, role := .grayFirewall, physicalDevice := "4c4c4544-004a-4310-8042-b4c04f563532", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_I_A1", product := ⟨"", "", "", .other⟩, role := .inner, physicalDevice := "4c4c4544-0036-3110-8042-b6c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_I_A2", product := ⟨"", "", "", .other⟩, role := .inner, physicalDevice := "4c4c4544-0036-3110-8042-b6c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_I_B1", product := ⟨"", "", "", .other⟩, role := .inner, physicalDevice := "4c4c4544-0036-3110-8042-b6c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_I_B2", product := ⟨"", "", "", .other⟩, role := .inner, physicalDevice := "4c4c4544-0036-3110-8042-b6c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_OF_A1", product := ⟨"", "", "", .other⟩, role := .outerFirewall, physicalDevice := "4c4c4544-0059-3110-8037-c3c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_OF_A2", product := ⟨"", "", "", .other⟩, role := .outerFirewall, physicalDevice := "4c4c4544-0059-3110-8037-c3c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_OF_B1", product := ⟨"", "", "", .other⟩, role := .outerFirewall, physicalDevice := "4c4c4544-0059-3110-8037-c3c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_OF_B2", product := ⟨"", "", "", .other⟩, role := .outerFirewall, physicalDevice := "4c4c4544-0059-3110-8037-c3c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_O_A1", product := ⟨"", "", "", .other⟩, role := .outer, physicalDevice := "4c4c4544-0036-3110-8036-b6c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_O_A2", product := ⟨"", "", "", .other⟩, role := .outer, physicalDevice := "4c4c4544-0036-3110-8036-b6c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_O_B1", product := ⟨"", "", "", .other⟩, role := .outer, physicalDevice := "4c4c4544-0036-3110-8036-b6c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "MW_O_B2", product := ⟨"", "", "", .other⟩, role := .outer, physicalDevice := "4c4c4544-0036-3110-8036-b6c04f333832", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] }]
+tdn_data components : List Targets.Component from "../../evidence/lean/FreshPhysicalPartition.json" ["TDN.Imported.FreshPhysicalPartition.components"]
 
 def hardwareForRole : Targets.ComponentRole → List String
   | .grayFirewall => ["4c4c4544-004a-4310-8042-b4c04f563532"]

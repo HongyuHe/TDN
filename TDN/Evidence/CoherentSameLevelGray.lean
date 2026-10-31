@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Semantics.Paths
 
 namespace TDN.Imported.same_level_coherent_20261017T2149Z_gray
@@ -8,11 +9,11 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 19
 
-def edges : List (Node × Node) := [(1, 4), (1, 9), (3, 4), (4, 1), (4, 3), (4, 5), (5, 4), (5, 9), (8, 9), (9, 1), (9, 5), (9, 8), (10, 13), (10, 18), (12, 13), (13, 10), (13, 12), (13, 14), (14, 13), (14, 18), (17, 18), (18, 10), (18, 14), (18, 17)]
+tdn_data edges : List (Node × Node) from "../../evidence/lean/CoherentSameLevelGray.json" ["TDN.Imported.same_level_coherent_20261017T2149Z_gray.edges"]
 
-def innerNodes : List Node := [3, 8, 12, 17]
+tdn_data innerNodes : List Node from "../../evidence/lean/CoherentSameLevelGray.json" ["TDN.Imported.same_level_coherent_20261017T2149Z_gray.innerNodes"]
 
-def firewallNodes : List Node := [1, 10]
+tdn_data firewallNodes : List Node from "../../evidence/lean/CoherentSameLevelGray.json" ["TDN.Imported.same_level_coherent_20261017T2149Z_gray.firewallNodes"]
 
 def edge (a b : Node) : Prop := (a,b) ∈ edges
 

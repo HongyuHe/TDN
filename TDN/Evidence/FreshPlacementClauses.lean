@@ -1,10 +1,11 @@
+import TDN.Import.Command
 import TDN.Targets.PlacementClauses
 import TDN.Evidence.FreshSharedTopology
 
 namespace TDN.Imported.FreshSharedTopology
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
-def independentBranches : List (Node × Node × List Node) := [(3, 5, [1, 4, 5]), (8, 5, [1, 4, 5]), (12, 14, [10, 13, 14]), (17, 14, [10, 13, 14]), (20, 5, [1, 4, 5]), (23, 14, [10, 13, 14]), (26, 5, [1, 4, 5]), (29, 14, [10, 13, 14])]
+tdn_data independentBranches : List (Node × Node × List Node) from "../../evidence/lean/FreshPlacementClauses.json" ["TDN.Imported.FreshSharedTopology.independentBranches"]
 
 lemma branch_checks : ∀ branch ∈ independentBranches,
     inner branch.1 ∧ outer branch.2.1 ∧
@@ -27,7 +28,8 @@ theorem every_inner_has_an_independent_outer_branch (node : Node) (member : node
   rw [← same]
   exact Targets.independent_inner_branch_from_chain grayEdge inner branch.2.2 chain last
 
-def redNodes : List Node := [2, 7, 11, 16, 19, 22, 25, 28]
+tdn_data redNodes : List Node from "../../evidence/lean/FreshPlacementClauses.json" ["TDN.Imported.FreshSharedTopology.redNodes"]
+
 def isRed (node : Node) : Bool := node ∈ redNodes
 lemma red_attachment_cut : ∀ a b, edge a b → ¬ inner a → ¬ inner b → isRed a = isRed b := by
   unfold edge edges inner innerNodes isRed redNodes
@@ -52,10 +54,14 @@ namespace TDN.Imported.FreshRedundantPlacement
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 abbrev Node := Fin 37
-def edges : List (Node × Node) := [(0, 6), (0, 15), (0, 26), (0, 28), (1, 3), (1, 8), (1, 20), (1, 29), (1, 32), (2, 3), (3, 1), (3, 2), (4, 5), (4, 25), (4, 29), (5, 4), (5, 6), (5, 9), (5, 21), (5, 33), (6, 0), (6, 5), (7, 8), (8, 1), (8, 7), (9, 5), (9, 25), (9, 29), (10, 12), (10, 17), (10, 23), (10, 30), (10, 35), (11, 12), (12, 10), (12, 11), (13, 14), (13, 27), (13, 30), (14, 13), (14, 15), (14, 18), (14, 24), (14, 36), (15, 0), (15, 14), (16, 17), (17, 10), (17, 16), (18, 14), (18, 27), (18, 30), (19, 20), (20, 1), (20, 19), (21, 5), (21, 25), (21, 29), (22, 23), (23, 10), (23, 22), (24, 14), (24, 27), (24, 30), (25, 4), (25, 9), (25, 21), (25, 26), (25, 33), (26, 0), (26, 25), (27, 13), (27, 18), (27, 24), (27, 28), (27, 36), (28, 0), (28, 27), (29, 1), (29, 4), (29, 9), (29, 21), (29, 33), (30, 10), (30, 13), (30, 18), (30, 24), (30, 36), (31, 32), (32, 1), (32, 31), (33, 5), (33, 25), (33, 29), (34, 35), (35, 10), (35, 34), (36, 14), (36, 27), (36, 30)]
-def outerNodes : List Node := [5, 14, 25, 27]
-def firewallNodes : List Node := [6, 15, 26, 28]
-def blackNodes : List Node := [0]
+tdn_data edges : List (Node × Node) from "../../evidence/lean/FreshPlacementClauses.json" ["TDN.Imported.FreshRedundantPlacement.edges"]
+
+tdn_data outerNodes : List Node from "../../evidence/lean/FreshPlacementClauses.json" ["TDN.Imported.FreshRedundantPlacement.outerNodes"]
+
+tdn_data firewallNodes : List Node from "../../evidence/lean/FreshPlacementClauses.json" ["TDN.Imported.FreshRedundantPlacement.firewallNodes"]
+
+tdn_data blackNodes : List Node from "../../evidence/lean/FreshPlacementClauses.json" ["TDN.Imported.FreshRedundantPlacement.blackNodes"]
+
 def side (node : Node) : Nat := [0, 3, 3, 3, 3, 3, 6, 3, 3, 3, 22, 22, 22, 22, 22, 15, 22, 22, 22, 3, 3, 3, 22, 22, 22, 3, 26, 22, 28, 3, 22, 3, 3, 3, 22, 22, 22][node.val]!
 def edge (a b : Node) : Prop := (a,b) ∈ edges
 def firewall (node : Node) : Prop := node ∈ firewallNodes

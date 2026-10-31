@@ -423,10 +423,10 @@ def main():
                 namespaces.append(opened[1])
             if re.match(r"^end(?:\s|$)", text) and namespaces:
                 namespaces.pop()
-            match = re.match(r"^(def|theorem|lemma)\s+([A-Za-z0-9_]+)", text)
+            match = re.match(r"^(def|theorem|lemma|tdn_data)\s+([A-Za-z0-9_]+)", text)
             if match:
                 declarations.setdefault(match[2], []).append({
-                    "kind": match[1], "path": str(path), "line": line,
+                    "kind": "def" if match[1] == "tdn_data" else match[1], "path": str(path), "line": line,
                     "qualified_name": ".".join(namespaces + [match[2]]),
                     "source_sha256": hashlib.sha256(content.encode()).hexdigest()})
     practical_mappings = RUN / "practical-new-declaration-mappings.json"

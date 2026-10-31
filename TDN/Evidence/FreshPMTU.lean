@@ -1,11 +1,15 @@
+import TDN.Import.Command
 import TDN.Targets.PacketSizing
 
 namespace TDN.Imported.FreshPMTU
 
-def initialIPLimit : Nat := 1500
-def effectiveIPLimit : Nat := 1326
-def blackMtu : Nat := 1400
-def successfulUDPPayload : Nat := 1200
+tdn_data initialIPLimit : Nat from "../../evidence/lean/FreshPMTU.json" ["TDN.Imported.FreshPMTU.initialIPLimit"]
+
+tdn_data effectiveIPLimit : Nat from "../../evidence/lean/FreshPMTU.json" ["TDN.Imported.FreshPMTU.effectiveIPLimit"]
+
+tdn_data blackMtu : Nat from "../../evidence/lean/FreshPMTU.json" ["TDN.Imported.FreshPMTU.blackMtu"]
+
+tdn_data successfulUDPPayload : Nat from "../../evidence/lean/FreshPMTU.json" ["TDN.Imported.FreshPMTU.successfulUDPPayload"]
 
 /-- Complete inner IP length maps to outer IPv6 ESP length under minimal padding. -/
 def encodedLength := PacketLength.alignedWireLength 4 2 72

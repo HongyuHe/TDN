@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Semantics.Paths
 
 namespace TDN.Imported.shared_three_level_20261017T2117Z_gray
@@ -8,11 +9,11 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 25
 
-def edges : List (Node × Node) := [(1, 4), (1, 9), (1, 21), (3, 4), (4, 1), (4, 3), (4, 5), (5, 4), (5, 9), (5, 21), (8, 9), (9, 1), (9, 5), (9, 8), (10, 13), (10, 18), (10, 24), (12, 13), (13, 10), (13, 12), (13, 14), (14, 13), (14, 18), (14, 24), (17, 18), (18, 10), (18, 14), (18, 17), (20, 21), (21, 1), (21, 5), (21, 20), (23, 24), (24, 10), (24, 14), (24, 23)]
+tdn_data edges : List (Node × Node) from "../../evidence/lean/SharedBefore.json" ["TDN.Imported.shared_three_level_20261017T2117Z_gray.edges"]
 
-def innerNodes : List Node := [3, 8, 12, 17, 20, 23]
+tdn_data innerNodes : List Node from "../../evidence/lean/SharedBefore.json" ["TDN.Imported.shared_three_level_20261017T2117Z_gray.innerNodes"]
 
-def firewallNodes : List Node := [1, 10]
+tdn_data firewallNodes : List Node from "../../evidence/lean/SharedBefore.json" ["TDN.Imported.shared_three_level_20261017T2117Z_gray.firewallNodes"]
 
 def edge (a b : Node) : Prop := (a,b) ∈ edges
 

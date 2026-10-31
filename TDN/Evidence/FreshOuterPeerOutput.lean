@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.PeerOutput
 import TDN.Evidence.FreshSharedExecution
 
@@ -5,7 +6,7 @@ namespace TDN.Imported.FreshOuterPeerOutput
 
 /-- Complete Outer inventory and the corresponding raw SAD/configured peer
 endpoint addresses from the shared native execution import. -/
-def outerPeers : List (Nat × Nat) := [(22, 2886997249), (23, 2886994689)]
+tdn_data outerPeers : List (Nat × Nat) from "../../evidence/lean/FreshOuterPeerOutput.json" ["TDN.Imported.FreshOuterPeerOutput.outerPeers"]
 
 def rules (device : Nat) : List PacketPolicy.Rule :=
   (Execution.deviceAt FreshSharedExecution.devices device).outputRules

@@ -1,3 +1,4 @@
+import TDN.Import
 import TDN.Targets.Architecture
 import TDN.Semantics.Filter
 import TDN.Semantics.Paths

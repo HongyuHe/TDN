@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.Topology
 
 namespace TDN.Imported.FreshSharedTopology
@@ -8,23 +9,23 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 31
 
-def edges : List (Node × Node) := [(0, 6), (0, 15), (1, 3), (1, 4), (1, 8), (1, 9), (1, 20), (1, 21), (1, 26), (1, 27), (2, 3), (3, 1), (3, 2), (4, 1), (4, 5), (5, 4), (5, 6), (5, 9), (5, 21), (5, 27), (6, 0), (6, 5), (7, 8), (8, 1), (8, 7), (9, 1), (9, 5), (10, 12), (10, 13), (10, 17), (10, 18), (10, 23), (10, 24), (10, 29), (10, 30), (11, 12), (12, 10), (12, 11), (13, 10), (13, 14), (14, 13), (14, 15), (14, 18), (14, 24), (14, 30), (15, 0), (15, 14), (16, 17), (17, 10), (17, 16), (18, 10), (18, 14), (19, 20), (20, 1), (20, 19), (21, 1), (21, 5), (22, 23), (23, 10), (23, 22), (24, 10), (24, 14), (25, 26), (26, 1), (26, 25), (27, 1), (27, 5), (28, 29), (29, 10), (29, 28), (30, 10), (30, 14)]
+tdn_data edges : List (Node × Node) from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.edges"]
 
-def grayEdges : List (Node × Node) := [(1, 3), (1, 4), (1, 8), (1, 9), (1, 20), (1, 21), (1, 26), (1, 27), (3, 1), (4, 1), (4, 5), (5, 4), (5, 9), (5, 21), (5, 27), (8, 1), (9, 1), (9, 5), (10, 12), (10, 13), (10, 17), (10, 18), (10, 23), (10, 24), (10, 29), (10, 30), (12, 10), (13, 10), (13, 14), (14, 13), (14, 18), (14, 24), (14, 30), (17, 10), (18, 10), (18, 14), (20, 1), (21, 1), (21, 5), (23, 10), (24, 10), (24, 14), (26, 1), (27, 1), (27, 5), (29, 10), (30, 10), (30, 14)]
+tdn_data grayEdges : List (Node × Node) from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.grayEdges"]
 
-def insideAttachments : List (Node × Node) := [(5, 6), (14, 15)]
+tdn_data insideAttachments : List (Node × Node) from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.insideAttachments"]
 
-def outsideAttachments : List (Node × Node) := [(6, 0), (15, 0)]
+tdn_data outsideAttachments : List (Node × Node) from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.outsideAttachments"]
 
-def outerNodes : List Node := [5, 14]
+tdn_data outerNodes : List Node from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.outerNodes"]
 
-def firewallNodes : List Node := [6, 15]
+tdn_data firewallNodes : List Node from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.firewallNodes"]
 
-def blackNodes : List Node := [0]
+tdn_data blackNodes : List Node from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.blackNodes"]
 
-def grayFirewallNodes : List Node := [1, 10]
+tdn_data grayFirewallNodes : List Node from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.grayFirewallNodes"]
 
-def innerNodes : List Node := [3, 8, 12, 17, 20, 23, 26, 29]
+tdn_data innerNodes : List Node from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.innerNodes"]
 
 def outerSide (node : Node) : Nat := [0, 25, 25, 25, 25, 25, 6, 25, 25, 25, 29, 29, 29, 29, 29, 15, 29, 29, 29, 25, 25, 25, 29, 29, 29, 25, 25, 25, 29, 29, 29][node.val]!
 
@@ -90,7 +91,7 @@ lemma gray_sides_differ : ∀ a b, a ∈ innerNodes → b ∈ innerNodes → lev
 
 theorem cross_level_gray_paths_cross_firewall (a b : Node) (ha : a ∈ innerNodes) (hb : b ∈ innerNodes) (different : level a ≠ level b) : ¬ Relation.ReflTransGen (Paths.Avoiding grayEdge grayFirewall) a b := Paths.no_firewall_free_crossing grayEdge grayFirewall graySide gray_local_cut (inner_start_clear a ha) (gray_sides_differ a b ha hb different)
 
-def ipv6Disablement : List (Nat × Nat) := [(1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0)]
+tdn_data ipv6Disablement : List (Nat × Nat) from "../../evidence/lean/FreshSharedTopology.json" ["TDN.Imported.FreshSharedTopology.ipv6Disablement"]
 
 theorem all_recorded_ipv6_interfaces_disabled : ∀ setting ∈ ipv6Disablement, setting.1 = 1 ∧ setting.2 = 0 := by unfold ipv6Disablement; decide
 

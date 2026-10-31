@@ -1,0 +1,149 @@
+{"TDN.Imported.FreshDNSHardening.devices":
+ [{"name": "ND_BLACK/IPv4",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 4,
+   "earlierRules": []},
+  {"name": "ND_BLACK/IPv6",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 6,
+   "earlierRules": []},
+  {"name": "ND_G_A1/IPv4",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 4,
+   "earlierRules": []},
+  {"name": "ND_G_A1/IPv6",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 6,
+   "earlierRules": []},
+  {"name": "ND_G_B1/IPv4",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 4,
+   "earlierRules": []},
+  {"name": "ND_G_B1/IPv6",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 6,
+   "earlierRules": []},
+  {"name": "ND_OF_A1/IPv4",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 4,
+   "earlierRules": []},
+  {"name": "ND_OF_A1/IPv6",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 6,
+   "earlierRules": []},
+  {"name": "ND_OF_B1/IPv4",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 4,
+   "earlierRules": []},
+  {"name": "ND_OF_B1/IPv6",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 6,
+   "earlierRules": []},
+  {"name": "ND_O_A1/IPv4",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 4,
+   "earlierRules":
+   [{"verdict": "allow",
+     "atoms":
+     [{"sourceRange": {"low": 2887540738, "high": 2887540738}},
+      {"destinationRange": {"low": 167772419, "high": 167772419}},
+      {"egress": {"name": "aw-management"}},
+      {"protocol": {"name": "tcp"}},
+      {"sourcePorts": {"ports": [8443]}},
+      {"connectionStates": {"states": ["ESTABLISHED"]}}]}]},
+  {"name": "ND_O_A1/IPv6",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 6,
+   "earlierRules": []},
+  {"name": "ND_O_B1/IPv4",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 4,
+   "earlierRules": []},
+  {"name": "ND_O_B1/IPv6",
+   "guards":
+   [{"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "tcp"}}, {"destinationPorts": {"ports": [53]}}]},
+    {"verdict": "deny",
+     "atoms":
+     [{"protocol": {"name": "udp"}}, {"destinationPorts": {"ports": [53]}}]}],
+   "family": 6,
+   "earlierRules": []}]}

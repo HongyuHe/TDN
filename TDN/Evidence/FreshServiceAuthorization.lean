@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Semantics.AccessControl
 
 namespace TDN.Imported.FreshServiceAuthorization
@@ -7,13 +8,13 @@ def roles (fingerprint : String) : Option String :=
   if fingerprint = "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02" then some "SecurityAdministrator" else
   none
 
-def permissions : List AccessControl.Permission := [⟨"SecurityAdministrator", "GET", "/state"⟩, ⟨"SecurityAdministrator", "GET", "/audit"⟩, ⟨"SecurityAdministrator", "POST", "/filter"⟩, ⟨"SecurityAdministrator", "POST", "/audit/rotate"⟩, ⟨"Auditor", "GET", "/state"⟩, ⟨"Auditor", "GET", "/audit"⟩, ⟨"Auditor", "POST", "/audit/rotate"⟩]
+tdn_data permissions : List AccessControl.Permission from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.permissions"]
 
-def security_admin : String := "f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02"
+tdn_data security_admin : String from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.security_admin"]
 
-def auditor : String := "d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138"
+tdn_data auditor : String from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.auditor"]
 
-def unmapped : String := "2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2"
+tdn_data unmapped : String from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.unmapped"]
 
 theorem all_private_key_paths_denied (fingerprint method : String) :
     AccessControl.authorize roles permissions ⟨fingerprint, method, "/private-key"⟩ = false := by
@@ -43,31 +44,7 @@ theorem auditor_filter_change_denied :
 theorem administrator_filter_change_permitted :
     AccessControl.authorize roles permissions ⟨security_admin, "POST", "/filter"⟩ = true := by decide
 
-def observed : List (AccessControl.Request × Bool) := [
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "GET", "/state"⟩, true),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "GET", "/audit"⟩, true),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "POST", "/filter"⟩, true),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "POST", "/audit/rotate"⟩, true),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "GET", "/private-key"⟩, false),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "GET", "/unknown"⟩, false),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "HEAD", "/state"⟩, false),
-  (⟨"d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "GET", "/state"⟩, true),
-  (⟨"d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "GET", "/audit"⟩, true),
-  (⟨"d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "POST", "/filter"⟩, false),
-  (⟨"d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "POST", "/audit/rotate"⟩, true),
-  (⟨"d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "GET", "/private-key"⟩, false),
-  (⟨"d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "GET", "/unknown"⟩, false),
-  (⟨"d243f5b8d35b58ef429754284737dbefd01e9e3c6e68040045e7a5d7ed42d138", "HEAD", "/state"⟩, false),
-  (⟨"2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2", "GET", "/state"⟩, false),
-  (⟨"2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2", "GET", "/audit"⟩, false),
-  (⟨"2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2", "POST", "/filter"⟩, false),
-  (⟨"2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2", "POST", "/audit/rotate"⟩, false),
-  (⟨"2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2", "GET", "/private-key"⟩, false),
-  (⟨"2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2", "GET", "/unknown"⟩, false),
-  (⟨"2480aea56119150415b78a77a6a59ec61287385c7c5c1b0ab29c176c5fc00ac2", "HEAD", "/state"⟩, false),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "GET", "/state"⟩, true),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "POST", "/filter"⟩, true),
-  (⟨"f59c6e8d8e00309ee63c86dd54833eeced859d7575436a69533c5817b3fc7d02", "GET", "/audit"⟩, true)]
+tdn_data observed : List (AccessControl.Request × Bool) from "../../evidence/lean/FreshServiceAuthorization.json" ["TDN.Imported.FreshServiceAuthorization.observed"]
 
 theorem retained_http_results_match_model : ∀ pair ∈ observed,
     AccessControl.authorize roles permissions pair.1 = pair.2 := by decide

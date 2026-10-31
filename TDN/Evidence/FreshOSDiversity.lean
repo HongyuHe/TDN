@@ -1,12 +1,9 @@
+import TDN.Import.Command
 import TDN.Targets.Components
 
 namespace TDN.Imported.FreshOSDiversity
 
-def components : List Targets.Component := [
-  { identity := "ND_I_A1", product := ⟨"", "", "", .vpn⟩, role := .inner, physicalDevice := "SHARED-LAB-HOST", osFamily := "FreeBSD", cryptoManufacturer := "", cryptoLibrary := "Botan", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "ND_I_B1", product := ⟨"", "", "", .vpn⟩, role := .inner, physicalDevice := "SHARED-LAB-HOST", osFamily := "FreeBSD", cryptoManufacturer := "", cryptoLibrary := "Botan", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "ND_O_A1", product := ⟨"", "", "", .vpn⟩, role := .outer, physicalDevice := "SHARED-LAB-HOST", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "OpenSSL", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] },
-  { identity := "ND_O_B1", product := ⟨"", "", "", .vpn⟩, role := .outer, physicalDevice := "SHARED-LAB-HOST", osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "OpenSSL", evaluatedConfiguration := "", installedConfiguration := "", modifications := [] }]
+tdn_data components : List Targets.Component from "../../evidence/lean/FreshOSDiversity.json" ["TDN.Imported.FreshOSDiversity.components"]
 
 /-- This is the OS-family clause for the captured selected Inner/Outer inventory. -/
 theorem captured_OS_families_differ : ∀ inner ∈ components, ∀ outer ∈ components,

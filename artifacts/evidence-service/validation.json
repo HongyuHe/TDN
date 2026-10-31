@@ -1,0 +1,487 @@
+{
+  "tools": [
+    "list_networks",
+    "describe_capabilities",
+    "collect_evidence",
+    "collection_status",
+    "cancel_collection",
+    "query_evidence",
+    "prepare_lean_bundle"
+  ],
+  "capabilities": {
+    "linux": {
+      "parser_version": "linux-iproute2-v1",
+      "capabilities": {
+        "interfaces": {
+          "meaning": "Observed links and interface identities",
+          "rechecked": true
+        },
+        "addresses": {
+          "meaning": "Observed addresses",
+          "rechecked": false
+        },
+        "fib4": {
+          "meaning": "Installed IPv4 forwarding entries",
+          "rechecked": true
+        },
+        "fib6": {
+          "meaning": "Installed IPv6 forwarding entries",
+          "rechecked": true
+        },
+        "rules4": {
+          "meaning": "Ordered IPv4 policy routing rules",
+          "rechecked": true
+        },
+        "rules6": {
+          "meaning": "Ordered IPv6 policy routing rules",
+          "rechecked": true
+        },
+        "firewall4": {
+          "meaning": "Ordered IPv4 firewall text; proof interpretation requires the packet-policy parser",
+          "rechecked": true
+        },
+        "firewall6": {
+          "meaning": "Ordered IPv6 firewall text",
+          "rechecked": true
+        },
+        "version": {
+          "meaning": "Worker kernel version",
+          "rechecked": false
+        }
+      }
+    },
+    "bird": {
+      "parser_version": "bird2-v1",
+      "capabilities": {
+        "routes": {
+          "meaning": "BIRD candidate routes with selected-route markers; kernel FIB is collected separately",
+          "rechecked": false
+        },
+        "protocols": {
+          "meaning": "BIRD protocol state",
+          "rechecked": false
+        },
+        "config": {
+          "meaning": "BIRD configured behavior",
+          "rechecked": true
+        },
+        "version": {
+          "meaning": "BIRD version",
+          "rechecked": false
+        }
+      }
+    }
+  },
+  "bird-validation": {
+    "id": "20261031T171129Z-8bfe75266de8",
+    "status": "complete",
+    "network": "bird-validation",
+    "consistency": "stable-during-recheck",
+    "manifest_uri": "evidence://20261031T171129Z-8bfe75266de8/manifest",
+    "query": {
+      "collection": "20261031T171129Z-8bfe75266de8",
+      "consistency": "stable-during-recheck",
+      "records": [
+        {
+          "observation": "bird-a.linux.interfaces",
+          "device": "bird-a",
+          "status": "observed",
+          "source_sha256": "1775fab654aa6b38317138b16cac320d11715e00c940731bdb60e998fc217ac2",
+          "source_uri": "evidence://20261031T171129Z-8bfe75266de8/raw/bird-a.linux.interfaces",
+          "started": "2026-10-31T17:11:29.402718+00:00",
+          "finished": "2026-10-31T17:11:29.685042+00:00",
+          "record": {
+            "address": "00:00:00:00:00:00",
+            "allmulti": 0,
+            "broadcast": "00:00:00:00:00:00",
+            "flags": [
+              "LOOPBACK",
+              "UP",
+              "LOWER_UP"
+            ],
+            "gro_ipv4_max_size": 65536,
+            "gro_max_size": 65536,
+            "group": "default",
+            "gso_ipv4_max_size": 65536,
+            "gso_max_segs": 65535,
+            "gso_max_size": 65536,
+            "ifindex": 1,
+            "ifname": "lo",
+            "inet6_addr_gen_mode": "eui64",
+            "link_type": "loopback",
+            "linkmode": "DEFAULT",
+            "max_mtu": 0,
+            "min_mtu": 0,
+            "mtu": 65536,
+            "num_rx_queues": 1,
+            "num_tx_queues": 1,
+            "operstate": "UNKNOWN",
+            "promiscuity": 0,
+            "qdisc": "noqueue",
+            "tso_max_segs": 65535,
+            "tso_max_size": 524280,
+            "txqlen": 1000
+          }
+        }
+      ],
+      "total": 60,
+      "next_offset": 1,
+      "coverage": [
+        {
+          "observation": "bird-a.linux.interfaces",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.linux.fib4",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.linux.fib6",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.linux.rules4",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.bird.routes",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.bird.protocols",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.bird.config",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.bird.version",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.linux.interfaces",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.linux.fib4",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.linux.fib6",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.linux.rules4",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.bird.routes",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.bird.protocols",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.bird.config",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.bird.version",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.linux.interfaces.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.linux.fib4.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.linux.fib6.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.linux.rules4.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-a.bird.config.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.linux.interfaces.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.linux.fib4.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.linux.fib6.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.linux.rules4.recheck",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.bird.config.recheck",
+          "status": "observed",
+          "diagnostics": []
+        }
+      ],
+      "requested_capability_collected": true,
+      "devices_without_observation": []
+    },
+    "resource_read": true,
+    "bird_routes": {
+      "collection": "20261031T171129Z-8bfe75266de8",
+      "consistency": "stable-during-recheck",
+      "records": [
+        {
+          "observation": "bird-a.bird.routes",
+          "device": "bird-a",
+          "status": "observed",
+          "source_sha256": "90d7729f7313b1f4d37f8a8b49c777e1f7b19e7e5ba49b640245708ac3aa5e3a",
+          "source_uri": "evidence://20261031T171129Z-8bfe75266de8/raw/bird-a.bird.routes",
+          "started": "2026-10-31T17:11:30.387836+00:00",
+          "finished": "2026-10-31T17:11:30.732642+00:00",
+          "record": {
+            "attributes": [
+              "Type: device univ"
+            ],
+            "destination": "10.77.1.0/24",
+            "kind": "unicast",
+            "next_hops": [
+              {
+                "gateway": null,
+                "interface": "lo",
+                "weight": 1
+              }
+            ],
+            "preference": "240",
+            "protocol": "direct1",
+            "selected": true,
+            "table": "master4"
+          }
+        },
+        {
+          "observation": "bird-a.bird.routes",
+          "device": "bird-a",
+          "status": "observed",
+          "source_sha256": "90d7729f7313b1f4d37f8a8b49c777e1f7b19e7e5ba49b640245708ac3aa5e3a",
+          "source_uri": "evidence://20261031T171129Z-8bfe75266de8/raw/bird-a.bird.routes",
+          "started": "2026-10-31T17:11:30.387836+00:00",
+          "finished": "2026-10-31T17:11:30.732642+00:00",
+          "record": {
+            "attributes": [
+              "Type: BGP univ",
+              "BGP.origin: IGP",
+              "BGP.as_path: 65002",
+              "BGP.next_hop: 172.30.231.12",
+              "BGP.local_pref: 100"
+            ],
+            "destination": "10.77.2.0/24",
+            "kind": "unicast",
+            "next_hops": [
+              {
+                "gateway": "172.30.231.12",
+                "interface": "eth0",
+                "weight": 1
+              }
+            ],
+            "preference": "100",
+            "protocol": "peer",
+            "selected": true,
+            "table": "master4"
+          }
+        },
+        {
+          "observation": "bird-b.bird.routes",
+          "device": "bird-b",
+          "status": "observed",
+          "source_sha256": "43d149fc2d6e1172bb1da17ba1bfaf414ae21dd102f85f3eb018250b34d30061",
+          "source_uri": "evidence://20261031T171129Z-8bfe75266de8/raw/bird-b.bird.routes",
+          "started": "2026-10-31T17:11:32.070863+00:00",
+          "finished": "2026-10-31T17:11:32.231439+00:00",
+          "record": {
+            "attributes": [
+              "Type: BGP univ",
+              "BGP.origin: IGP",
+              "BGP.as_path: 65001",
+              "BGP.next_hop: 172.30.231.11",
+              "BGP.local_pref: 100"
+            ],
+            "destination": "10.77.1.0/24",
+            "kind": "unicast",
+            "next_hops": [
+              {
+                "gateway": "172.30.231.11",
+                "interface": "eth0",
+                "weight": 1
+              }
+            ],
+            "preference": "100",
+            "protocol": "peer",
+            "selected": true,
+            "table": "master4"
+          }
+        },
+        {
+          "observation": "bird-b.bird.routes",
+          "device": "bird-b",
+          "status": "observed",
+          "source_sha256": "43d149fc2d6e1172bb1da17ba1bfaf414ae21dd102f85f3eb018250b34d30061",
+          "source_uri": "evidence://20261031T171129Z-8bfe75266de8/raw/bird-b.bird.routes",
+          "started": "2026-10-31T17:11:32.070863+00:00",
+          "finished": "2026-10-31T17:11:32.231439+00:00",
+          "record": {
+            "attributes": [
+              "Type: device univ"
+            ],
+            "destination": "10.77.2.0/24",
+            "kind": "unicast",
+            "next_hops": [
+              {
+                "gateway": null,
+                "interface": "lo",
+                "weight": 1
+              }
+            ],
+            "preference": "240",
+            "protocol": "direct1",
+            "selected": true,
+            "table": "master4"
+          }
+        }
+      ],
+      "total": 4,
+      "next_offset": null,
+      "coverage": [
+        {
+          "observation": "bird-a.bird.routes",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "bird-b.bird.routes",
+          "status": "observed",
+          "diagnostics": []
+        }
+      ],
+      "requested_capability_collected": true,
+      "devices_without_observation": []
+    },
+    "lean_bundle": {
+      "collection": "20261031T171129Z-8bfe75266de8",
+      "path": "evidence/lean/20261031T171129Z-8bfe75266de8.json",
+      "sha256": "33bceccfbc1c4aa07c3a5d77c83621a461fdde1524adfd667024eb9b6277fe4b",
+      "schema_version": 1,
+      "routes": 24,
+      "scope": "Observed routes and evidence coverage; forwarding execution requires additional local conditions"
+    }
+  },
+  "msc-multiworker": {
+    "id": "20261031T171134Z-486864f0ac6f",
+    "status": "complete",
+    "network": "msc-multiworker",
+    "consistency": "not-checked",
+    "manifest_uri": "evidence://20261031T171134Z-486864f0ac6f/manifest",
+    "query": {
+      "collection": "20261031T171134Z-486864f0ac6f",
+      "consistency": "not-checked",
+      "records": [
+        {
+          "observation": "MY_BLACK.linux.addresses",
+          "device": "MY_BLACK",
+          "status": "observed",
+          "source_sha256": "e7bad5cde3612557fc40f608601d61627aa48852bea79b9fb5891db403b56aae",
+          "source_uri": "evidence://20261031T171134Z-486864f0ac6f/raw/MY_BLACK.linux.addresses",
+          "started": "2026-10-31T17:11:34.461340+00:00",
+          "finished": "2026-10-31T17:11:34.630148+00:00",
+          "record": {
+            "addr_info": [
+              {
+                "family": "inet",
+                "label": "lo",
+                "local": "127.0.0.1",
+                "preferred_life_time": 4294967295,
+                "prefixlen": 8,
+                "scope": "host",
+                "valid_life_time": 4294967295
+              }
+            ],
+            "address": "00:00:00:00:00:00",
+            "broadcast": "00:00:00:00:00:00",
+            "flags": [
+              "LOOPBACK",
+              "UP",
+              "LOWER_UP"
+            ],
+            "group": "default",
+            "ifindex": 1,
+            "ifname": "lo",
+            "link_type": "loopback",
+            "mtu": 65536,
+            "operstate": "UNKNOWN",
+            "qdisc": "noqueue",
+            "txqlen": 1000
+          }
+        }
+      ],
+      "total": 11,
+      "next_offset": 1,
+      "coverage": [
+        {
+          "observation": "MY_BLACK.linux.addresses",
+          "status": "observed",
+          "diagnostics": []
+        },
+        {
+          "observation": "MY_I_B2.linux.addresses",
+          "status": "observed",
+          "diagnostics": []
+        }
+      ],
+      "requested_capability_collected": true,
+      "devices_without_observation": []
+    },
+    "resource_read": true
+  },
+  "multiworker_validation": {
+    "workers": [
+      "hy@clnode176.clemson.cloudlab.us",
+      "hy@clnode159.clemson.cloudlab.us"
+    ],
+    "all_observations_successful": true,
+    "atomic_capture_claimed": false
+  }
+}

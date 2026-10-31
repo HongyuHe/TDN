@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Semantics.Paths
 
 namespace TDN.Imported.native_management_20261017T2241Z_gray
@@ -8,11 +9,11 @@ set_option maxHeartbeats 0
 
 abbrev Node := Fin 35
 
-def edges : List (Node × Node) := [(1, 4), (1, 9), (3, 4), (4, 1), (4, 3), (4, 5), (5, 4), (8, 9), (9, 1), (9, 8), (9, 10), (10, 9), (18, 21), (18, 26), (20, 21), (21, 18), (21, 20), (21, 22), (22, 21), (25, 26), (26, 18), (26, 25), (26, 27), (27, 26)]
+tdn_data edges : List (Node × Node) from "../../evidence/lean/NativeManagementGray.json" ["TDN.Imported.native_management_20261017T2241Z_gray.edges"]
 
-def innerNodes : List Node := [3, 8, 20, 25]
+tdn_data innerNodes : List Node from "../../evidence/lean/NativeManagementGray.json" ["TDN.Imported.native_management_20261017T2241Z_gray.innerNodes"]
 
-def firewallNodes : List Node := [1, 18]
+tdn_data firewallNodes : List Node from "../../evidence/lean/NativeManagementGray.json" ["TDN.Imported.native_management_20261017T2241Z_gray.firewallNodes"]
 
 def edge (a b : Node) : Prop := (a,b) ∈ edges
 

@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Evidence.DomainTypes
 
 namespace TDN.Imported.Domains
@@ -8,9 +9,9 @@ set_option maxHeartbeats 0
 
 namespace shared_same_level
 
-def levels : List SecurityLevel := [⟨"SECRET", {}, {"US_ONLY"}, {}⟩]
+tdn_data levels : List SecurityLevel from "../../evidence/lean/Domains.json" ["TDN.Imported.Domains.shared_same_level.levels"]
 
-def networks : List Evidence.DeclaredRedNetwork := [⟨⟨"RED-A-NETWORK-1", "A", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, {"I_A1"}⟩, "NETWORK-1", "inner-s1", ["NET-005-C01"]⟩, ⟨⟨"RED-A-NETWORK-2", "A", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, {"I_A2"}⟩, "NETWORK-2", "inner-s2", ["NET-005-C01"]⟩, ⟨⟨"RED-B-NETWORK-1", "B", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, {"I_B1"}⟩, "NETWORK-1", "inner-s1", ["NET-005-C01"]⟩, ⟨⟨"RED-B-NETWORK-2", "B", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, {"I_B2"}⟩, "NETWORK-2", "inner-s2", ["NET-005-C01"]⟩]
+tdn_data networks : List Evidence.DeclaredRedNetwork from "../../evidence/lean/Domains.json" ["TDN.Imported.Domains.shared_same_level.networks"]
 
 theorem declared_dedicated_inner_assignments : DedicatedInnerAssignments (networks.map Evidence.DeclaredRedNetwork.identity) := by unfold DedicatedInnerAssignments networks; decide
 
@@ -20,9 +21,9 @@ end shared_same_level
 
 namespace shared_four_levels
 
-def levels : List SecurityLevel := [⟨"TOP_SECRET", {}, {}, {}⟩, ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, ⟨"SECRET", {}, {"COALITION"}, {}⟩, ⟨"UNCLASSIFIED", {}, {}, {}⟩]
+tdn_data levels : List SecurityLevel from "../../evidence/lean/Domains.json" ["TDN.Imported.Domains.shared_four_levels.levels"]
 
-def networks : List Evidence.DeclaredRedNetwork := [⟨⟨"RED-A-NETWORK-1", "A", ⟨"TOP_SECRET", {}, {}, {}⟩, {"I_A1"}⟩, "NETWORK-1", "inner-s1", ["NET-006-C01"]⟩, ⟨⟨"RED-A-NETWORK-2", "A", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, {"I_A2"}⟩, "NETWORK-2", "inner-s2", ["NET-006-C01"]⟩, ⟨⟨"RED-B-NETWORK-1", "B", ⟨"TOP_SECRET", {}, {}, {}⟩, {"I_B1"}⟩, "NETWORK-1", "inner-s1", ["NET-006-C01"]⟩, ⟨⟨"RED-B-NETWORK-2", "B", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, {"I_B2"}⟩, "NETWORK-2", "inner-s2", ["NET-006-C01"]⟩, ⟨⟨"RED-A-NETWORK-3", "A", ⟨"SECRET", {}, {"COALITION"}, {}⟩, {"I_A3"}⟩, "NETWORK-3", "inner-secret-coalition", ["NET-006-C01"]⟩, ⟨⟨"RED-B-NETWORK-3", "B", ⟨"SECRET", {}, {"COALITION"}, {}⟩, {"I_B3"}⟩, "NETWORK-3", "inner-secret-coalition", ["NET-006-C01"]⟩, ⟨⟨"RED-A-NETWORK-4", "A", ⟨"UNCLASSIFIED", {}, {}, {}⟩, {"I_A4"}⟩, "NETWORK-4", "inner-unclassified", ["NET-013-C01"]⟩, ⟨⟨"RED-B-NETWORK-4", "B", ⟨"UNCLASSIFIED", {}, {}, {}⟩, {"I_B4"}⟩, "NETWORK-4", "inner-unclassified", ["NET-013-C01"]⟩]
+tdn_data networks : List Evidence.DeclaredRedNetwork from "../../evidence/lean/Domains.json" ["TDN.Imported.Domains.shared_four_levels.networks"]
 
 theorem declared_dedicated_inner_assignments : DedicatedInnerAssignments (networks.map Evidence.DeclaredRedNetwork.identity) := by unfold DedicatedInnerAssignments networks; decide
 
@@ -34,9 +35,9 @@ end shared_four_levels
 
 namespace redundant_four_levels
 
-def levels : List SecurityLevel := [⟨"TOP_SECRET", {}, {}, {}⟩, ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, ⟨"SECRET", {}, {"COALITION"}, {}⟩, ⟨"UNCLASSIFIED", {}, {}, {}⟩]
+tdn_data levels : List SecurityLevel from "../../evidence/lean/Domains.json" ["TDN.Imported.Domains.redundant_four_levels.levels"]
 
-def networks : List Evidence.DeclaredRedNetwork := [⟨⟨"RED-A-NETWORK-1", "A", ⟨"TOP_SECRET", {}, {}, {}⟩, {"I_A1"}⟩, "NETWORK-1", "inner-s1", ["NET-006-C01", "NET-009-C01", "NET-020-C01", "NET-020-C02"]⟩, ⟨⟨"RED-A-NETWORK-2", "A", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, {"I_A2"}⟩, "NETWORK-2", "inner-s2", ["NET-006-C01", "NET-009-C01", "NET-020-C01", "NET-020-C02"]⟩, ⟨⟨"RED-B-NETWORK-1", "B", ⟨"TOP_SECRET", {}, {}, {}⟩, {"I_B1"}⟩, "NETWORK-1", "inner-s1", ["NET-006-C01", "NET-009-C01", "NET-020-C01", "NET-020-C02"]⟩, ⟨⟨"RED-B-NETWORK-2", "B", ⟨"SECRET", {}, {"US_ONLY"}, {}⟩, {"I_B2"}⟩, "NETWORK-2", "inner-s2", ["NET-006-C01", "NET-009-C01", "NET-020-C01", "NET-020-C02"]⟩, ⟨⟨"RED-A-NETWORK-3", "A", ⟨"SECRET", {}, {"COALITION"}, {}⟩, {"I_A3"}⟩, "NETWORK-3", "inner-secret-coalition", ["NET-006-C01", "NET-009-C01", "NET-020-C01", "NET-020-C02"]⟩, ⟨⟨"RED-B-NETWORK-3", "B", ⟨"SECRET", {}, {"COALITION"}, {}⟩, {"I_B3"}⟩, "NETWORK-3", "inner-secret-coalition", ["NET-006-C01", "NET-009-C01", "NET-020-C01", "NET-020-C02"]⟩, ⟨⟨"RED-A-NETWORK-4", "A", ⟨"UNCLASSIFIED", {}, {}, {}⟩, {"I_A4"}⟩, "NETWORK-4", "inner-unclassified", ["NET-013-C01", "NET-009-C01", "NET-020-C01", "NET-020-C02"]⟩, ⟨⟨"RED-B-NETWORK-4", "B", ⟨"UNCLASSIFIED", {}, {}, {}⟩, {"I_B4"}⟩, "NETWORK-4", "inner-unclassified", ["NET-013-C01", "NET-009-C01", "NET-020-C01", "NET-020-C02"]⟩]
+tdn_data networks : List Evidence.DeclaredRedNetwork from "../../evidence/lean/Domains.json" ["TDN.Imported.Domains.redundant_four_levels.networks"]
 
 theorem declared_dedicated_inner_assignments : DedicatedInnerAssignments (networks.map Evidence.DeclaredRedNetwork.identity) := by unfold DedicatedInnerAssignments networks; decide
 

@@ -1,8 +1,9 @@
+import TDN.Import.Command
 import TDN.Targets.Protocol
 
 namespace TDN.Imported.FreshBaselineVPNModes
 
-def policies : List Targets.VPNModePolicy := [⟨"NB_I_A1/msc", [2], [.gcm], [⟨.gcm, false⟩]⟩, ⟨"NB_O_A1/msc", [2], [.gcm], [⟨.gcm, false⟩]⟩, ⟨"NB_I_A2/msc", [2], [.gcm], [⟨.gcm, false⟩]⟩, ⟨"NB_O_A2/msc", [2], [.gcm], [⟨.gcm, false⟩]⟩, ⟨"NB_I_B1/msc", [2], [.gcm], [⟨.gcm, false⟩]⟩, ⟨"NB_O_B1/msc", [2], [.gcm], [⟨.gcm, false⟩]⟩, ⟨"NB_I_B2/msc", [2], [.gcm], [⟨.gcm, false⟩]⟩, ⟨"NB_O_B2/msc", [2], [.gcm], [⟨.gcm, false⟩]⟩]
+tdn_data policies : List Targets.VPNModePolicy from "../../evidence/lean/FreshBaselineVPNModes.json" ["TDN.Imported.FreshBaselineVPNModes.policies"]
 
 lemma nonempty_gateway_inventory : policies ≠ [] := by decide
 

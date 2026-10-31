@@ -1,18 +1,19 @@
+import TDN.Import.Command
 import TDN.Evidence.SupplementalTypes
 
 namespace TDN.Imported.Authentication
 
 set_option maxRecDepth 100000
 
-def credentials : List (String × String × String × String) := [("I_A1", "secp384r1", "ecdsa-384-sha384", "ecdsa-384-sha384"), ("I_A2", "secp384r1", "ecdsa-384-sha384", "ecdsa-384-sha384"), ("I_B1", "secp384r1", "ecdsa-384-sha384", "ecdsa-384-sha384"), ("I_B2", "secp384r1", "ecdsa-384-sha384", "ecdsa-384-sha384"), ("O_A1", "secp384r1", "ecdsa-384-sha384", "ecdsa-384-sha384"), ("O_A2", "secp384r1", "ecdsa-384-sha384", "ecdsa-384-sha384"), ("O_B1", "secp384r1", "ecdsa-384-sha384", "ecdsa-384-sha384"), ("O_B2", "secp384r1", "ecdsa-384-sha384", "ecdsa-384-sha384")]
+tdn_data credentials : List (String × String × String × String) from "../../evidence/lean/Authentication.json" ["TDN.Imported.Authentication.credentials"]
 
 theorem observed_credentials_and_configured_hash_constraints : credentials ≠ [] ∧ ∀ c ∈ credentials, c.2.1 = "secp384r1" ∧ c.2.2.1 = "ecdsa-384-sha384" ∧ c.2.2.2 = "ecdsa-384-sha384" := by unfold credentials; decide
 
-def selectedSignatures : List (String × String) := [("ECDSA_WITH_SHA384_DER", "ECDSA_WITH_SHA384_DER"), ("ECDSA_WITH_SHA384_DER", "ECDSA_WITH_SHA384_DER"), ("ECDSA_WITH_SHA384_DER", "ECDSA_WITH_SHA384_DER"), ("ECDSA_WITH_SHA384_DER", "ECDSA_WITH_SHA384_DER")]
+tdn_data selectedSignatures : List (String × String) from "../../evidence/lean/Authentication.json" ["TDN.Imported.Authentication.selectedSignatures"]
 
 theorem selected_authentication_uses_sha384 : selectedSignatures ≠ [] ∧ ∀ s ∈ selectedSignatures, s.1 = "ECDSA_WITH_SHA384_DER" ∧ s.2 = "ECDSA_WITH_SHA384_DER" := by unfold selectedSignatures; decide
 
-def advertisedCapabilities : List (Bool × List Nat) := [(false, [3]), (true, [2, 3, 4, 5]), (false, [3]), (true, [2, 3, 4, 5]), (false, [3]), (true, [2, 3, 4, 5]), (false, [3]), (true, [2, 3, 4, 5]), (false, [3]), (true, [2, 3, 4, 5]), (true, [2, 3, 4, 5]), (false, [3]), (true, [2, 3, 4, 5]), (true, [2, 3, 4, 5]), (false, [3]), (true, [2, 3, 4, 5]), (false, [3]), (false, [3]), (true, [2, 3, 4, 5]), (false, [3])]
+tdn_data advertisedCapabilities : List (Bool × List Nat) from "../../evidence/lean/Authentication.json" ["TDN.Imported.Authentication.advertisedCapabilities"]
 
 theorem observed_capabilities_distinguish_request_and_response : advertisedCapabilities ≠ [] ∧ ∀ a ∈ advertisedCapabilities, a.2 = (if a.1 then [2,3,4,5] else [3]) := by unfold advertisedCapabilities; decide
 

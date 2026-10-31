@@ -1,0 +1,5 @@
+router id 10.77.1.1;
+protocol device {}
+protocol direct { ipv4; interface "lo"; }
+protocol kernel { ipv4 { import none; export filter { if net = 10.77.2.0/24 then accept; reject; }; }; }
+protocol bgp peer { local as 65001; neighbor 172.30.231.12 as 65002; ipv4 { import all; export filter { if net = 10.77.1.0/24 then accept; reject; }; }; }

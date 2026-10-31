@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Semantics.UniformResponseRegions
 import TDN.Semantics.HistoricalResponses
 import TDN.Evidence.FreshEncryptedResponseGuards
@@ -6,7 +7,7 @@ namespace TDN.Imported.Family444V13
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
-def uniformResponseOwners : List Nat := [1, 2, 3, 4]
+tdn_data uniformResponseOwners : List Nat from "../../evidence/lean/FreshUniformResponses.json" ["TDN.Imported.Family444V13.uniformResponseOwners"]
 
 lemma uniform_response_regions_checked :
     UniformResponseRegions.FiniteUniform devices ports uniformResponseOwners := by

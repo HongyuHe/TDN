@@ -1,10 +1,11 @@
+import TDN.Import.Command
 import TDN.Targets.MACsecKeyServer
 
 namespace TDN.Imported.FinalMACsecKeyServers
 open Targets
 
 /-- The two entries retain the forward and reverse EAP role arrangements. -/
-def settings : List MACsecKeyServerSettings := [⟨"central", "remote", 0, 1, some "central", 16⟩, ⟨"remote", "central", 1, 0, some "central", 16⟩]
+tdn_data settings : List MACsecKeyServerSettings from "../../evidence/lean/FinalMACsecKeyServers.json" ["TDN.Imported.FinalMACsecKeyServers.settings"]
 
 lemma local_settings : ∀ s ∈ settings, s.Checked := by decide
 

@@ -229,3 +229,12 @@ The final report must explain what the new development establishes and what rema
 - Reuse validation showing unchanged general proofs applied to materially different supported configurations, plus reasons for any model or proof extensions.
 - An interaction history showing how proof construction changed evidence collection or repaired emulations.
 - Validation results and a clear account of assumptions, unresolved obligations, and rejected requests.
+
+
+### Collect and import evidence through MCP
+
+Use the TDN evidence MCP server for new evidence requests. Start with `list_networks` and `describe_capabilities`. Use `collect_evidence` and `collection_status` for live state, or `query_evidence` for an existing collection. Every request must name the collection and retain its coverage, source references, and collection interval. Treat failed, missing, and unsupported observations as evidence requests that need resolution.
+
+Use `prepare_lean_bundle` to export structured JSON under `evidence/lean`. Import those values with `tdn_data` or `tdn_snapshot`. Keep general proofs in Lean and write snapshot checks as ordinary Lean declarations. Do not generate Lean data literals or proof bodies with Python strings. Historical generation scripts remain available for replay of pre-migration work; agents should use the MCP interface for new construction.
+
+Add a parser or device adapter when a required interpretation is missing. Preserve the original output and explicitly reject unsupported features. A successful parse establishes that the input fits the parser's supported form. The construction agent must still establish the relevant local conditions and apply the general theorem. Refer to `docs/evidence_service.md` for setup, supported views, extension points, and the current interpretation limits.

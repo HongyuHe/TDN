@@ -1,0 +1,394 @@
+{
+  "consistency": "not-checked",
+  "devices": [
+    {
+      "adapters": [
+        "linux"
+      ],
+      "container": "MY_BLACK",
+      "declared_role": null,
+      "id": "MY_BLACK",
+      "worker": "hy@clnode176.clemson.cloudlab.us"
+    },
+    {
+      "adapters": [
+        "linux"
+      ],
+      "container": "MY_I_B2",
+      "declared_role": null,
+      "id": "MY_I_B2",
+      "worker": "hy@clnode159.clemson.cloudlab.us"
+    }
+  ],
+  "finished": "2026-10-31T17:11:36.411521+00:00",
+  "id": "20261031T171134Z-486864f0ac6f",
+  "network": "msc-multiworker",
+  "observations": [
+    {
+      "adapter": "linux",
+      "argv": [
+        "ip",
+        "-j",
+        "addr",
+        "show"
+      ],
+      "capability": "addresses",
+      "device": "MY_BLACK",
+      "diagnostics": [],
+      "exit_code": 0,
+      "finished": "2026-10-31T17:11:34.630148+00:00",
+      "id": "MY_BLACK.linux.addresses",
+      "parser_version": "linux-iproute2-v1",
+      "path": "raw/MY_BLACK.linux.addresses.stdout",
+      "records": [
+        {
+          "addr_info": [
+            {
+              "family": "inet",
+              "label": "lo",
+              "local": "127.0.0.1",
+              "preferred_life_time": 4294967295,
+              "prefixlen": 8,
+              "scope": "host",
+              "valid_life_time": 4294967295
+            }
+          ],
+          "address": "00:00:00:00:00:00",
+          "broadcast": "00:00:00:00:00:00",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "group": "default",
+          "ifindex": 1,
+          "ifname": "lo",
+          "link_type": "loopback",
+          "mtu": 65536,
+          "operstate": "UNKNOWN",
+          "qdisc": "noqueue",
+          "txqlen": 1000
+        },
+        {
+          "addr_info": [],
+          "address": "0.0.0.0",
+          "broadcast": "0.0.0.0",
+          "flags": [
+            "NOARP"
+          ],
+          "group": "default",
+          "ifindex": 2,
+          "ifname": "gre0",
+          "link": null,
+          "link_type": "gre",
+          "mtu": 1476,
+          "operstate": "DOWN",
+          "qdisc": "noop",
+          "txqlen": 1000
+        },
+        {
+          "addr_info": [],
+          "address": "00:00:00:00:00:00",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST"
+          ],
+          "group": "default",
+          "ifindex": 3,
+          "ifname": "gretap0",
+          "link": null,
+          "link_type": "ether",
+          "mtu": 1462,
+          "operstate": "DOWN",
+          "qdisc": "noop",
+          "txqlen": 1000
+        },
+        {
+          "addr_info": [],
+          "address": "00:00:00:00:00:00",
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST"
+          ],
+          "group": "default",
+          "ifindex": 4,
+          "ifname": "erspan0",
+          "link": null,
+          "link_type": "ether",
+          "mtu": 1450,
+          "operstate": "DOWN",
+          "qdisc": "noop",
+          "txqlen": 1000
+        },
+        {
+          "addr_info": [
+            {
+              "broadcast": "172.21.11.3",
+              "family": "inet",
+              "label": "p11",
+              "local": "172.21.11.2",
+              "preferred_life_time": 4294967295,
+              "prefixlen": 30,
+              "scope": "global",
+              "valid_life_time": 4294967295
+            }
+          ],
+          "address": "02:3d:49:a2:55:a5",
+          "altnames": [
+            "msc-native-mw-v6-5-MY_BLACK"
+          ],
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "group": "default",
+          "ifindex": 5004,
+          "ifname": "p11",
+          "link_index": 5005,
+          "link_netnsid": 0,
+          "link_type": "ether",
+          "mtu": 1500,
+          "operstate": "UP",
+          "qdisc": "noqueue"
+        },
+        {
+          "addr_info": [
+            {
+              "broadcast": "172.21.12.3",
+              "family": "inet",
+              "label": "p12",
+              "local": "172.21.12.2",
+              "preferred_life_time": 4294967295,
+              "prefixlen": 30,
+              "scope": "global",
+              "valid_life_time": 4294967295
+            }
+          ],
+          "address": "02:48:d1:e5:4a:5f",
+          "altnames": [
+            "msc-native-mw-v6-11-MY_BLACK"
+          ],
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "group": "default",
+          "ifindex": 5016,
+          "ifname": "p12",
+          "link_index": 5017,
+          "link_netnsid": 1,
+          "link_type": "ether",
+          "mtu": 1500,
+          "operstate": "UP",
+          "qdisc": "noqueue"
+        },
+        {
+          "addr_info": [
+            {
+              "broadcast": "172.21.21.3",
+              "family": "inet",
+              "label": "p21",
+              "local": "172.21.21.2",
+              "preferred_life_time": 4294967295,
+              "prefixlen": 30,
+              "scope": "global",
+              "valid_life_time": 4294967295
+            }
+          ],
+          "address": "02:45:1d:73:80:dd",
+          "altnames": [
+            "msc-native-mw-v6-17-MY_BLACK"
+          ],
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "group": "default",
+          "ifindex": 5028,
+          "ifname": "p21",
+          "link_index": 5029,
+          "link_netnsid": 2,
+          "link_type": "ether",
+          "mtu": 1500,
+          "operstate": "UP",
+          "qdisc": "noqueue"
+        },
+        {
+          "addr_info": [
+            {
+              "broadcast": "172.21.22.3",
+              "family": "inet",
+              "label": "p22",
+              "local": "172.21.22.2",
+              "preferred_life_time": 4294967295,
+              "prefixlen": 30,
+              "scope": "global",
+              "valid_life_time": 4294967295
+            }
+          ],
+          "address": "02:d8:97:15:04:11",
+          "altnames": [
+            "msc-native-mw-v6-23-MY_BLACK"
+          ],
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "group": "default",
+          "ifindex": 5040,
+          "ifname": "p22",
+          "link_index": 5041,
+          "link_netnsid": 3,
+          "link_type": "ether",
+          "mtu": 1500,
+          "operstate": "UP",
+          "qdisc": "noqueue"
+        }
+      ],
+      "sha256": "e7bad5cde3612557fc40f608601d61627aa48852bea79b9fb5891db403b56aae",
+      "started": "2026-10-31T17:11:34.461340+00:00",
+      "status": "observed",
+      "stderr_path": "raw/MY_BLACK.linux.addresses.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "worker": "hy@clnode176.clemson.cloudlab.us"
+    },
+    {
+      "adapter": "linux",
+      "argv": [
+        "ip",
+        "-j",
+        "addr",
+        "show"
+      ],
+      "capability": "addresses",
+      "device": "MY_I_B2",
+      "diagnostics": [],
+      "exit_code": 0,
+      "finished": "2026-10-31T17:11:36.410864+00:00",
+      "id": "MY_I_B2.linux.addresses",
+      "parser_version": "linux-iproute2-v1",
+      "path": "raw/MY_I_B2.linux.addresses.stdout",
+      "records": [
+        {
+          "addr_info": [
+            {
+              "family": "inet",
+              "label": "lo",
+              "local": "127.0.0.1",
+              "preferred_life_time": 4294967295,
+              "prefixlen": 8,
+              "scope": "host",
+              "valid_life_time": 4294967295
+            }
+          ],
+          "address": "00:00:00:00:00:00",
+          "broadcast": "00:00:00:00:00:00",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "group": "default",
+          "ifindex": 1,
+          "ifname": "lo",
+          "link_type": "loopback",
+          "mtu": 65536,
+          "operstate": "UNKNOWN",
+          "qdisc": "noqueue",
+          "txqlen": 1000
+        },
+        {
+          "addr_info": [
+            {
+              "broadcast": "10.2.2.255",
+              "family": "inet",
+              "label": "red",
+              "local": "10.2.2.1",
+              "preferred_life_time": 4294967295,
+              "prefixlen": 24,
+              "scope": "global",
+              "valid_life_time": 4294967295
+            }
+          ],
+          "address": "02:7f:b3:e1:9f:99",
+          "altnames": [
+            "msc-native-mw-v6-18-MY_I_B2"
+          ],
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "group": "default",
+          "ifindex": 123,
+          "ifname": "red",
+          "link_index": 124,
+          "link_netnsid": 0,
+          "link_type": "ether",
+          "mtu": 1320,
+          "operstate": "UP",
+          "qdisc": "noqueue"
+        },
+        {
+          "addr_info": [
+            {
+              "broadcast": "10.200.2.255",
+              "family": "inet",
+              "label": "gray",
+              "local": "10.200.2.2",
+              "preferred_life_time": 4294967295,
+              "prefixlen": 24,
+              "scope": "global",
+              "valid_life_time": 4294967295
+            }
+          ],
+          "address": "02:f7:ac:10:5b:e5",
+          "altnames": [
+            "msc-native-mw-v6-19-MY_I_B2"
+          ],
+          "broadcast": "ff:ff:ff:ff:ff:ff",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "group": "default",
+          "ifindex": 126,
+          "ifname": "gray",
+          "link_index": 125,
+          "link_netnsid": 2,
+          "link_type": "ether",
+          "mtu": 1400,
+          "operstate": "UP",
+          "qdisc": "noqueue"
+        }
+      ],
+      "sha256": "cef1ba732621403c776b540bca66a9a13082d12ea03fb5864af2ae46449d1cd1",
+      "started": "2026-10-31T17:11:34.635272+00:00",
+      "status": "observed",
+      "stderr_path": "raw/MY_I_B2.linux.addresses.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "worker": "hy@clnode159.clemson.cloudlab.us"
+    }
+  ],
+  "schema_version": 1,
+  "source_kind": "live",
+  "started": "2026-10-31T17:11:34.461328+00:00"
+}

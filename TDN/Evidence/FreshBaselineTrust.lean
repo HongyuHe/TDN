@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.AuthenticationIsolation
 
 namespace TDN.Imported.FreshBaselineTrust
@@ -9,11 +10,7 @@ def authorityLevel (key : String) : SecurityLevel :=
   if key = "677c321dd2d46d8191844c3d072d06ed4f36686b7f4b813ecf24091385bb39f7" then ⟨"TOP_SECRET", {}, {}, {}⟩ else
   ⟨"UNASSIGNED", {}, {}, {}⟩
 
-def peers : List Targets.InnerAuthentication := [
-  ⟨"NB_I_A1", ⟨"SECRET", {}, {}, {}⟩, .certificate "4c585fb8185f71481267d10335458eaa4b233ccff56b090d2eb803242748e361" ["4c585fb8185f71481267d10335458eaa4b233ccff56b090d2eb803242748e361"], {}⟩,
-  ⟨"NB_I_A2", ⟨"TOP_SECRET", {}, {}, {}⟩, .certificate "677c321dd2d46d8191844c3d072d06ed4f36686b7f4b813ecf24091385bb39f7" ["677c321dd2d46d8191844c3d072d06ed4f36686b7f4b813ecf24091385bb39f7"], {}⟩,
-  ⟨"NB_I_B1", ⟨"SECRET", {}, {}, {}⟩, .certificate "4c585fb8185f71481267d10335458eaa4b233ccff56b090d2eb803242748e361" ["4c585fb8185f71481267d10335458eaa4b233ccff56b090d2eb803242748e361"], {}⟩,
-  ⟨"NB_I_B2", ⟨"TOP_SECRET", {}, {}, {}⟩, .certificate "677c321dd2d46d8191844c3d072d06ed4f36686b7f4b813ecf24091385bb39f7" ["677c321dd2d46d8191844c3d072d06ed4f36686b7f4b813ecf24091385bb39f7"], {}⟩]
+tdn_data peers : List Targets.InnerAuthentication from "../../evidence/lean/FreshBaselineTrust.json" ["TDN.Imported.FreshBaselineTrust.peers"]
 
 /-- Management is explicitly unselected in this data-path configuration. -/
 lemma credential_scopes : ∀ peer ∈ peers, Targets.CredentialScoped authorityLevel authorityLevel peer := by

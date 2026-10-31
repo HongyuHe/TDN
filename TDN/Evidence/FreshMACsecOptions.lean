@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Targets.Components
 
 namespace TDN.Imported.FreshMACsecOptions
@@ -5,7 +6,7 @@ open TDN.Targets
 
 /-- Capability facts describe observed operational support under the recorded
 Linux implementation contract, with all other protection duties kept separate. -/
-def options : List MACsecOptions := [⟨false, false, true, true⟩, ⟨false, false, true, true⟩, ⟨true, true, true, true⟩, ⟨true, true, true, true⟩, ⟨true, true, true, true⟩, ⟨true, true, true, true⟩]
+tdn_data options : List MACsecOptions from "../../evidence/lean/FreshMACsecOptions.json" ["TDN.Imported.FreshMACsecOptions.options"]
 
 lemma all_selected_ports_present : options.length = 6 := by decide
 

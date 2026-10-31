@@ -1,3 +1,4 @@
+import TDN.Import.Command
 import TDN.Semantics.GuardedResponseNetwork
 import TDN.Evidence.FreshFamily444V13ResponseGuards
 
@@ -6,8 +7,7 @@ open Execution
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
-def responseData : GuardedResponseNetwork.Data :=
-  ⟨devices, ports, routes, links, switches, responseSourceGuards⟩
+tdn_data responseData : GuardedResponseNetwork.Data from "../../evidence/lean/FreshFamily444V13ResponseExecution.json" ["TDN.Imported.Family444V13.responseData"]
 
 lemma response_default_checks : ∀ guard ∈ responseSourceGuards,
     (deviceAt devices guard.1).outputFallback = .deny := by decide
