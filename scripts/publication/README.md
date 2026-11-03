@@ -22,9 +22,11 @@ python3 scripts/publication/export_pages.py --check
 
 Use `--render-only` after interface-only changes with unchanged hierarchy data. Changes to Lean declarations require the complete build. Changes to the ontology's Lean mappings require reviewing the pinned source hashes in `data/extraction/roles/ontology_theory.json` before rebuilding.
 
-Commit the changed source files and `public/`, then push TDN's `main` branch. The website's Pages workflow checks for a changed publication every 15 minutes. It also runs on website pushes and manual dispatch. Scheduled checks with unchanged publication files skip the Jekyll build and deployment. GitHub can delay scheduled runs; the website workflow can be run manually for an immediate deployment request. See [GitHub's schedule documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+Commit the changed source files and `public/`, then push TDN's `main` branch. TDN's **Check and publish explorers** workflow validates the publication and updates the two pages in the website repository. That commit triggers the website's normal Pages build. An unchanged publication makes no website commit.
 
-The website checks out one exact TDN commit and validates the page and source hashes before installing either page. It replaces the revision placeholder in each GitHub link with that commit's full ID. The pages therefore link to the same code revision used to generate their line numbers. A failed validation leaves the previously deployed site in place.
+The workflow uses a dedicated SSH deploy key with access only to the website repository. GitHub stores the private key in TDN's `TDN_WEBSITE_DEPLOY_KEY` Actions secret. The workflow writes only the two explorer pages and `tdn/source.json`. All automatic commits use Hongyu Hè as their sole author. Pull-request checks never receive the key or publish pages. A manual run of the TDN workflow can retry a failed publication.
+
+The publication workflow uses one exact TDN commit and validates the page and source hashes before installing either page. It replaces the revision placeholder in each GitHub link with that commit's full ID. The pages therefore link to the same code revision used to generate their line numbers. A failed validation leaves the previously deployed site in place.
 
 ## Retained publication inputs
 
@@ -38,4 +40,4 @@ For a local website preview, install the current publication into the website ch
 python3 scripts/publication/export_pages.py --install /Users/hongyu/Projects/hongyuhe.github.io/tdn --revision FULL_TDN_COMMIT_ID
 ```
 
-Pass the actual website path if it is elsewhere. The install command only writes `hierarchy/index.html`, `ontology/index.html`, and `source.json` inside the requested destination. The website stores initial standalone copies, and its deployment workflow replaces those copies with the latest verified publication. No additional GitHub credential or shared CSS is required.
+Pass the actual website path if it is elsewhere. The install command only writes `hierarchy/index.html`, `ontology/index.html`, and `source.json` inside the requested destination. The website stores the standalone copies delivered by the TDN workflow. Its existing Pages build deploys those files without adding a layout or shared CSS.

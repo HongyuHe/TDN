@@ -44,6 +44,7 @@ def render(page):
         hashes.update({p: h for p, h in data['metadata']['inputs'].items() if not p.startswith('.lavish/')})
         html = html.replace('<a href="construction-v3.1-walkthrough.html">Read the v3.1 report</a>', '<a href="/tdn/ontology/">Role ontology</a>')
         html = html.replace('<p>In Lavish, turn Annotate off to use the diagram.</p>', '')
+        html = html.replace('<a class="brand" href="#">TDN</a>', '<a class="brand" href="https://github.com/HongyuHe/TDN/tree/' + REVISION + '">TDN</a>')
         assets = list((ROOT / 'scripts/publication/hierarchy').glob('*')) + [ROOT / 'scripts/publication/build_hierarchy.py']
     else:
         data['project_root'] = ''
