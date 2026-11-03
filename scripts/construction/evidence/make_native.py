@@ -1,6 +1,6 @@
 import copy,json
 from pathlib import Path
-root=Path(__file__).resolve().parent / "profiles"
+root=Path(__file__).resolve().parents[3] / "data/extraction/networks/profiles"
 profiles={'ipsec-baseline':'NB','shared-same-level':'NT','shared-four-levels':'NF','redundant-four-levels':'NR','management-independent':'NM'}
 for profile,prefix in profiles.items():
  s=json.loads((root/(profile+'.json')).read_text());s['version']=2;s['name']='native-'+prefix.lower();s['router_image']='twinet-msc-router:construction-v2';s['switch_image']='twinet-msc-switch:construction-v2'

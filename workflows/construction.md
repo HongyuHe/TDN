@@ -12,7 +12,7 @@ The supervisor compares each blind interpretation with the original requirements
 
 The initial run began on October 17, 2026. Record v3.1 in a new UTC-stamped directory named `data/construction/v3.1-<timestamp>/`. Preserve all previous runs, pointers, snapshots, reports, and histories. Record exact prompts, replies, source versions, decisions, and validation results so that the development can be reconstructed.
 
-The [evidence MCP server](../mcp/README.md) lives under `mcp/`. Its adapters, parsers, and export views provide the interface for new evidence collection and queries. Proof validation and coordination tools live under [`scripts/construction`](../scripts/construction/README.md). Twinet deployment and protocol experiment tools live under [`scripts/construction/evidence`](../scripts/construction/evidence/README.md), with network profiles in its `profiles/` directory. Historical snapshots and checkpoints retain their original paths and hashes.
+The [evidence MCP server](../mcp/README.md) lives under `mcp/`. Its adapters, parsers, and export views provide the interface for new evidence collection and queries. Proof validation and coordination tools live under [`scripts/construction`](../scripts/construction/README.md). Twinet deployment and protocol experiment tools live under [`scripts/construction/evidence`](../scripts/construction/evidence/README.md), with network profiles in [`data/extraction/networks/profiles`](../data/extraction/networks/profiles/README.md). Historical snapshots and checkpoints retain their original paths and hashes.
 
 ## 1. Inputs and scope
 

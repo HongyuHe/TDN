@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 
 HERE = Path(__file__).resolve().parent
-PROFILES = HERE / "profiles"
+PROFILES = Path(__file__).resolve().parents[3] / "data/extraction/networks/profiles"
 CASES = [
     ("native-ipsec-baseline", "Two-site baseline", "Dedicated Outer encryptor and Outer Firewall for each level."),
     ("native-shared-same-level", "Two networks at one security level", "Network 1 and Network 2 share Outer devices; their identities remain separate."),

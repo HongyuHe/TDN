@@ -3,7 +3,7 @@ import argparse,hashlib,json,os,subprocess,sys
 from datetime import datetime,timezone
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
-PROFILE_DIR=HERE/'profiles'
+PROFILE_DIR=Path(__file__).resolve().parents[3] / 'data/extraction/networks/profiles'
 PROFILES={
  'baseline':('native-ipsec-baseline','NET-001-C01,NET-002-C01,NET-024-C01','native-ipsec-baseline'),
  'samelevel':('native-shared-same-level','NET-005-C01','native-samelevel-identity'),

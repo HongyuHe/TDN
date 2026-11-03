@@ -1,6 +1,6 @@
 # MSC network profiles
 
-The five `native-` topology files define the final FRR/OVS configurations used in the construction run. FRR supplies routing and router CLI access, OVS supplies switching, and strongSwan with Linux XFRM supplies encryption. Black routers and Outer Firewalls use OSPF. Gray routers and Gray Firewalls use static routes in FRR. All devices run in Linux containers.
+The five `native-` topology files define the final FRR/OVS configurations retained for replay and further evidence collection. FRR supplies routing and router CLI access, OVS supplies switching, and strongSwan with Linux XFRM supplies encryption. Black routers and Outer Firewalls use OSPF. Gray routers and Gray Firewalls use static routes in FRR. All devices run in Linux containers.
 
 | Configuration | Topology | Diagram | Devices / virtual links |
 | --- | --- | --- | --- |
@@ -12,16 +12,13 @@ The five `native-` topology files define the final FRR/OVS configurations used i
 
 Each figure includes every device and virtual link from its JSON topology. Colors identify device roles and link zones. Names omit the shared prefix printed above each diagram. Hover over a link in the SVG to inspect its endpoint interfaces. IPsec tunnels run over the depicted links. FRR helper containers are additional runtime containers and are not separate topology devices.
 
-## Why the folder contains more than five profiles
+## Supporting files
 
-The folder contains 15 topology JSON files and seven supporting JSON files from the construction work. The five native topology files above are the final configurations. Ten earlier topology files preserve generator inputs and intermediate experiments:
+The directory contains the five native topology files above and five source profiles used by [make_native.py](../../../../scripts/construction/evidence/make_native.py). The source profiles are `ipsec-baseline.json`, `shared-same-level.json`, `shared-four-levels.json`, `redundant-four-levels.json`, and `management-independent.json`. The generator adds FRR/OVS image settings, device prefixes, and routing choices.
 
-- `ipsec-baseline.json`, `shared-same-level.json`, `shared-four-levels.json`, `redundant-four-levels.json`, and `management-independent.json` are inputs to `../make_native.py`. The generator adds FRR/OVS image settings, distinct device prefixes, and the native routing choices.
-- `shared-three-level.json`, `shared-three-level-inline.json`, `redundant-three-level.json`, `redundant-three-level-inline.json`, and `redundant-router.json` preserve earlier three-level and router-placement versions. The `inline` versions record the repair that inserted Gray Firewalls into paths from Inner encryptors. Earlier failed arrangements remain useful for tracing why the repair was needed.
-- Five `native-*-mapping.json` files record original-to-native device names. They do not define networks.
-- `same-level-probe-policy.json` and `native-same-level-probe-policy.json` specify which test flows should succeed or be blocked. They do not define networks.
+Five `native-*-mapping.json` files record original-to-native device names. `same-level-probe-policy.json` and `native-same-level-probe-policy.json` specify expected test outcomes. `visualization-manifest.json` records diagram source hashes, device IDs, and link endpoints.
 
-The new `visualization-manifest.json` records diagram source hashes, device IDs, and link endpoints. The PNG and SVG files are generated figures.
+Superseded three-level and router-placement profiles were removed from the active directory. Git revision `1a49bb76` preserves them under their former `scripts/construction/evidence/profiles/` path.
 
 ## Regenerate the figures
 

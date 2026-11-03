@@ -1,6 +1,6 @@
 # Evidence provision tools
 
-The evidence tools and their helper modules live in this directory. Network specifications and device mappings live in `profiles/`. The Twinet Go implementation and image Dockerfiles remain in a separate Twinet checkout.
+The evidence tools and their helper modules live in this directory. Network specifications, device mappings, and diagrams live in [data/extraction/networks/profiles](../../../data/extraction/networks/profiles/README.md). The Twinet Go implementation and image Dockerfiles remain in a separate Twinet checkout.
 
 ## Deploy and collect a native profile
 
@@ -21,7 +21,7 @@ sudo python3 scripts/construction/evidence/replay.py collect baseline \
 
 Build `bin/twinet` in the selected checkout before running the replay helper. The helper defaults to `LAB_ROOT/Twinet` when `--twinet-root` and `TWINET_ROOT` are absent. The supported profile names are `baseline`, `samelevel`, `shared`, `redundant` and `management`. The `inventory` action collects process and namespace observations. The `down` action removes the selected owned deployment using the same profile and lab directory.
 
-Every collection needs a fresh snapshot name. Private deployment state goes under `LAB_ROOT/private`, and public observations go under `LAB_ROOT/exports`. The helper uses the local `profiles/` files for deployment and collection. `make_native.py` regenerates those native profile files from the supporting specifications in the same directory.
+Every collection needs a fresh snapshot name. Private deployment state goes under `LAB_ROOT/private`, and public observations go under `LAB_ROOT/exports`. The helper resolves profiles from the repository root, so deployment and collection work from any current directory. `make_native.py` reads the five generator inputs in `data/extraction/networks/profiles/` and regenerates the matching native topology and mapping files there.
 
 ## Experiment entry points
 
@@ -46,12 +46,12 @@ Every collection needs a fresh snapshot name. Private deployment state goes unde
 | Authentication-policy before/after trials | `auth_constraints_v5.py`, `auth_negative.py`, `auth_headers.py` |
 | Native redundancy events | `redundancy_native.py` |
 | Physical/KVM workstation trials | `boot_aw_vm.py`, `aw_tls_provision_v2.py`, `aw_client.py` |
-| Shared, four-level and redundant profile generation | `make_shared.py`, `inline_gray.py`, `make_four_levels.py`, `make_redundant_router.py`, `make_native.py` |
+| Native profile generation and diagrams | `make_native.py`, `draw_profiles.py` |
 | Timestamped command records | `run_command.py --output-dir PATH LABEL COMMAND ...` |
 
-The supplemental experiments retain their existing `--root` or `--output` arguments and their documented capability limits. The authentication before/after scripts target the historical Linux profile, while the native replay helper selects the current FRR/OVS profiles. Earlier Python revisions remain available beside the current entry points because some helpers import them and past experiments used them. The four fixed-date shell command sequences are grouped under `historical/` for reference.
+The supplemental experiments retain their existing `--root` or `--output` arguments and their documented capability limits. The authentication before/after scripts target the historical Linux profile, while the native replay helper selects the current FRR/OVS profiles. Retained earlier Python revisions are still imported by current helpers. Superseded inventory collectors, intermediate topology generators, and fixed-date collection scripts were removed; Git revision `1a49bb76` preserves those historical versions.
 
-The original recorded source remains unchanged under `data/construction/`. New observations record the hashes of the reorganized tools. Historical source hashes continue to refer to the original copies.
+The original recorded source remains unchanged under `data/construction/`. New observations record the hashes of the reorganized tools. Historical source hashes continue to refer to the original copies. The routing-inventory validator recognizes both the historical collector and its relocated version by pinned hashes. New inventory captures include `collector-source.py`; unknown or mismatched versions are rejected.
 
 The correlation collector uses an isolated copy of the retained hostap 2.12 source with the existing MACsec fixes. Apply `patch_hostap_correlation.py` to a fresh source copy and record its manifest. Build the `hostapd` and `wpa_supplicant` targets using the retained OpenSSL 3.5.5 environment. The collector expects those binaries under `ROOT/hostap-v2/`. Run the collector inside a separate privileged container with its own network namespace. It creates fresh experimental credentials, records public logs and certificates, and removes its private credential directory when each case finishes. The v3.1 campaign records the exact build commands, image identity, sources, and results.
 

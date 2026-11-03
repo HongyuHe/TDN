@@ -41,6 +41,7 @@ Each proof establishes a claim about its stated model and assumptions. Applying 
 | [scripts/preprocess](scripts/preprocess/README.md) | Specification extraction, validation, and device-role ontology generation. |
 | [scripts/construction](scripts/construction/README.md) | Importers, proof validation, evidence collection, and iteration recording. |
 | [data/extraction](data/extraction/README.md) | Source-linked requirements, examples, and device roles. |
+| [Emulation profiles](data/extraction/networks/profiles/README.md) | Reusable MSC network configurations, device mappings, and topology diagrams. |
 | [data/snapshots](data/snapshots/) | Timestamped network observations and manifests. |
 | [data/construction](data/construction/) | Versioned agent exchanges, proof attempts, interpretations, and assessments. |
 

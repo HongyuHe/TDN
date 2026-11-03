@@ -60,6 +60,38 @@ class RoutingInventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'namespace attribution'):
             derive(self.bundle,BUNDLES)
 
+    def test_relocated_collector_source_is_accepted(self):
+        source = self.bundle / 'collector-source.py'
+        shutil.copy2(ROOT / 'scripts/construction/evidence/native_inventory.py', source)
+        manifest = self.read('manifest.json')
+        manifest['code_hashes']['native_inventory.py'] = hashlib.sha256(source.read_bytes()).hexdigest()
+        manifest['files'].append({'path': source.name, 'bytes': source.stat().st_size,
+                                  'sha256': hashlib.sha256(source.read_bytes()).hexdigest()})
+        (self.bundle / 'manifest.json').write_text(json.dumps(manifest))
+        derive(self.bundle, BUNDLES)
+        source.unlink()
+        manifest['files'] = [entry for entry in manifest['files'] if entry['path'] != source.name]
+        (self.bundle / 'manifest.json').write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'Recorded collector source is missing'):
+            derive(self.bundle, BUNDLES)
+
+    def test_unreviewed_collector_rejected(self):
+        manifest = self.read('manifest.json')
+        manifest['code_hashes']['native_inventory.py'] = '0' * 64
+        (self.bundle / 'manifest.json').write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'Unreviewed inventory collector'):
+            derive(self.bundle, BUNDLES)
+
+    def test_wrong_captured_source_rejected(self):
+        source = self.bundle / 'collector-source.py'
+        source.write_text('unexpected collector')
+        manifest = self.read('manifest.json')
+        manifest['files'].append({'path': source.name, 'bytes': source.stat().st_size,
+                                  'sha256': hashlib.sha256(source.read_bytes()).hexdigest()})
+        (self.bundle / 'manifest.json').write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'collector source differs'):
+            derive(self.bundle, BUNDLES)
+
     def test_missing_device(self):
         data=self.read('observations.json')
         scope=next(s for s in data['scopes'] if s['configuration_id']=='native-ipsec-baseline')

@@ -12,13 +12,27 @@ from import_macsec_runtime import validate_files
 from validate_evidence import require
 
 
+#* These reviewed versions differ in the profile lookup and source-file retention.
+#* The historical collector is preserved in Git revision 1a49bb76.
+CAPTURED_SOURCE_COLLECTOR_HASH = 'cecc73e859554b925b1c4e1753854a626a940d4bb65c928839894067a432681c'
+REVIEWED_COLLECTOR_HASHES = {
+    '5cb68032584b76109b40b66254fa814cae1e30e75bbe78945d69e24409febf80',
+    'cecc73e859554b925b1c4e1753854a626a940d4bb65c928839894067a432681c',
+}
+
+
 def derive(inventory, bundles):
     inventory = Path(inventory)
     inventory_hash = validate_files(inventory)
     manifest = json.loads((inventory / "manifest.json").read_text())
-    collector = Path(__file__).with_name("native_inventory.py")
-    require(hashlib.sha256(collector.read_bytes()).hexdigest() == manifest["code_hashes"][collector.name],
-            "Inventory collector source differs from captured version")
+    collector_hash = manifest.get("code_hashes", {}).get("native_inventory.py")
+    require(collector_hash in REVIEWED_COLLECTOR_HASHES, "Unreviewed inventory collector source")
+    captured_source = inventory / "collector-source.py"
+    if collector_hash == CAPTURED_SOURCE_COLLECTOR_HASH:
+        require(captured_source.is_file(), "Recorded collector source is missing")
+    if captured_source.exists():
+        require(hashlib.sha256(captured_source.read_bytes()).hexdigest() == collector_hash,
+                "Inventory collector source differs from captured version")
     data = json.loads((inventory / "observations.json").read_text())
     processes = json.loads((inventory / "namespace-processes.json").read_text())
     records = {r["id"]: r for r in data["records"]}
@@ -110,7 +124,7 @@ def derive(inventory, bundles):
     return {"schema_version":"csfc-derived-routing-evidence/v1","request_id":"C-ROUTING-010",
             "derived_at":datetime.now(timezone.utc).isoformat(),"inventory_bundle":str(inventory),
             "inventory_manifest_sha256":inventory_hash,"inventory_interval":[data["started_at"],data["ended_at"]],
-            "host_process_observed_at":processes["observed_at"],"collector_sha256":manifest['code_hashes'][collector.name],
+            "host_process_observed_at":processes["observed_at"],"collector_sha256":collector_hash,
             "configurations":result,
             "assumptions_and_missing_fields":[
                 "The host collector enumerates /proc and selects processes by network namespace, including sidecars. It silently skips vanished or unreadable processes; no per-process read-error ledger is exported. Complete observation therefore requires a collector/access/no-relevant-race assumption.",
