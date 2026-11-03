@@ -1,0 +1,1133 @@
+[
+  {
+    "rg_id": "RG-012",
+    "reuse_accounting": "Unchanged imported baseline/shared configured-pair applications and constructed management-PSK case.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteAuthenticationIsolation.baseline_configured_pair_model_RG012",
+        "conclusion_head": "TDN.Targets.Complete.msc_security_level_key_and_management_separation",
+        "conclusion": "TDN.Targets.Complete.msc_security_level_key_and_management_separation false TDN.Imported.FreshBaselineTrust.peers\n  (TDN.Targets.Complete.EstablishedInnerPair TDN.Imported.CompleteAuthenticationIsolation.baselinePairs)",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAuthenticationIsolation.shared_configured_pair_model_RG012",
+        "conclusion_head": "TDN.Targets.Complete.msc_security_level_key_and_management_separation",
+        "conclusion": "TDN.Targets.Complete.msc_security_level_key_and_management_separation false TDN.Imported.FreshSharedTrust.peers\n  (TDN.Targets.Complete.EstablishedInnerPair TDN.Imported.CompleteAuthenticationIsolation.sharedPairs)",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAuthenticationIsolation.managed_psk_model_RG012",
+        "conclusion_head": "TDN.Targets.Complete.msc_security_level_key_and_management_separation",
+        "conclusion": "TDN.Targets.Complete.msc_security_level_key_and_management_separation true\n  TDN.Imported.CompleteAuthenticationIsolation.pskPeers\n  (TDN.Targets.Complete.EstablishedInnerPair TDN.Imported.CompleteAuthenticationIsolation.pskPairs)",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Bind the complete actual established-pair set and credential inventory to the chosen observation epoch and authentication mechanism."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-013",
+    "reuse_accounting": "Original six-device managed star and new five-device management-free chain; positive packet admission and explicit topology/role difference.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.complete_model_RG013",
+        "conclusion_head": "TDN.Targets.Complete.msc_gray_firewall_path_coverage",
+        "conclusion": "TDN.Targets.Complete.msc_gray_firewall_path_coverage (TDN.Imported.CompleteGrayFirewall.deployment base processing)\n  TDN.Imported.CompleteGrayFirewall.topology",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          },
+          {
+            "type": "base.authority.protectsAsClassified \"node-G\"",
+            "name": "physicalFact",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.same_level_inner_traffic_is_admitted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Imported.CompleteGrayFirewall.deployment base processing).Accepts \"port-G\" TDN.Compliance.Direction.inbound\n  ((TDN.Imported.CompleteGrayFirewall.deployment base processing).Observe TDN.Imported.CompleteGrayFirewall.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.wrong_level_inner_traffic_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Imported.CompleteGrayFirewall.deployment base processing).Accepts \"port-G\" TDN.Compliance.Direction.inbound\n    ((TDN.Imported.CompleteGrayFirewall.deployment base processing).Observe\n      (have __src := TDN.Imported.CompleteGrayFirewall.packet;\n      { source := __src.source, destination := 40, protocol := __src.protocol, ingress := __src.ingress,\n        egress := __src.egress, sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n        ipv4HeaderWords := __src.ipv4HeaderWords, inboundPolicies := __src.inboundPolicies,\n        outboundPolicies := __src.outboundPolicies, connectionState := __src.connectionState,\n        ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n        hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n        connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n        ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.lower_level_workstation_traffic_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Imported.CompleteGrayFirewall.deployment base processing).Accepts \"port-G\" TDN.Compliance.Direction.outbound\n    ((TDN.Imported.CompleteGrayFirewall.deployment base processing).Observe\n      (have __src := TDN.Imported.CompleteGrayFirewall.packet;\n      { source := 100, destination := 10, protocol := __src.protocol, ingress := __src.ingress, egress := __src.egress,\n        sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n        ipv4HeaderWords := __src.ipv4HeaderWords, inboundPolicies := __src.inboundPolicies,\n        outboundPolicies := __src.outboundPolicies, connectionState := __src.connectionState,\n        ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n        hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n        connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n        ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.cross_level_path_really_exists",
+        "conclusion_head": "Relation.ReflTransGen",
+        "conclusion": "Relation.ReflTransGen TDN.Imported.CompleteGrayFirewall.topology.edge \"node-IA\" \"node-IC\"",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.direct_cross_level_bypass_fails_local_edge_check",
+        "conclusion_head": "Not",
+        "conclusion": "¬∀ edge ∈ TDN.Imported.CompleteGrayFirewall.edges ++ [(\"node-IA\", \"node-IC\")],\n    ¬TDN.Imported.CompleteGrayFirewall.topology.grayFirewall edge.1 →\n      ¬TDN.Imported.CompleteGrayFirewall.topology.grayFirewall edge.2 →\n        TDN.Imported.CompleteGrayFirewall.topology.level edge.1 =\n          TDN.Imported.CompleteGrayFirewall.topology.level edge.2",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewallReuse.management_free_chain_model_RG013",
+        "conclusion_head": "TDN.Targets.Complete.msc_gray_firewall_path_coverage",
+        "conclusion": "TDN.Targets.Complete.msc_gray_firewall_path_coverage (TDN.Imported.CompleteGrayFirewallReuse.deployment base processing)\n  TDN.Imported.CompleteGrayFirewallReuse.topology",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          },
+          {
+            "type": "base.authority.protectsAsClassified \"node-G\"",
+            "name": "physicalFact",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewallReuse.management_free_and_topology_differs",
+        "conclusion_head": "And",
+        "conclusion": "(∀ device ∈ TDN.Imported.CompleteGrayFirewallReuse.devices, device.kind ≠ TDN.Compliance.DeviceKind.workstation) ∧\n  (\"node-IA\", \"node-IB\") ∈ TDN.Imported.CompleteGrayFirewallReuse.edges ∧\n    (\"node-IA\", \"node-G\") ∉ TDN.Imported.CompleteGrayFirewallReuse.edges",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewallReuse.same_level_chain_packet_is_admitted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Imported.CompleteGrayFirewallReuse.deployment base processing).Accepts \"port-O\" TDN.Compliance.Direction.outbound\n  ((TDN.Imported.CompleteGrayFirewallReuse.deployment base processing).Observe TDN.Imported.CompleteGrayFirewall.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Declared model checks are fulfilled; physical classified protection is an explicit parameter.",
+      "A deployed complete device/graph/program binding and physical protection record are not yet supplied for this root."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-014",
+    "reuse_accounting": "Routed IP and bridge/Ethernet complete instances now both invoke the designated common unchanged general theorem.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteAddressing.full_routed_RG014",
+        "conclusion_head": "TDN.Targets.Complete.msc_gray_addressing_for_level_filtering",
+        "conclusion": "TDN.Targets.Complete.msc_gray_addressing_for_level_filtering\n  (TDN.Imported.CompleteAddressing.deployment base processing) TDN.Imported.CompleteAddressing.ranges\n  TDN.Imported.CompleteAddressing.pairs",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAddressing.intended_protected_packet_is_accepted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Imported.CompleteAddressing.deployment base processing).Accepts \"port-O\" TDN.Compliance.Direction.outbound\n  ((TDN.Imported.CompleteAddressing.deployment base processing).Observe TDN.Imported.CompleteAddressing.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAddressing.cross_level_packet_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Imported.CompleteAddressing.deployment base processing).Accepts \"port-O\" TDN.Compliance.Direction.outbound\n    ((TDN.Imported.CompleteAddressing.deployment base processing).Observe\n      (have __src := TDN.Imported.CompleteAddressing.packet;\n      { source := __src.source, destination := 40, protocol := __src.protocol, ingress := __src.ingress,\n        egress := __src.egress, sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n        ipv4HeaderWords := __src.ipv4HeaderWords, inboundPolicies := __src.inboundPolicies,\n        outboundPolicies := __src.outboundPolicies, connectionState := __src.connectionState,\n        ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n        hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n        connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n        ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkAddressing.complete_link_model_RG014",
+        "conclusion_head": "TDN.Targets.Complete.msc_gray_addressing_for_level_filtering",
+        "conclusion": "TDN.Targets.Complete.msc_gray_addressing_for_level_filtering\n  (TDN.Imported.CompleteLinkAddressing.deployment base processing) TDN.Imported.CompleteLinkAddressing.ranges\n  TDN.Imported.CompleteLinkAddressing.pairs",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkAddressing.same_level_Ethernet_is_fully_admitted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Imported.CompleteLinkAddressing.deployment base processing).Accepts \"port-O\" TDN.Compliance.Direction.outbound\n  ((TDN.Imported.CompleteLinkAddressing.deployment base processing).Observe TDN.Imported.CompleteLinkAddressing.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkAddressing.link_addresses_bind_intended_Inner_peers",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Imported.CompleteLinkAddressing.deployment base processing).PacketOwner TDN.Imported.CompleteLinkAddressing.packet\n      101 =\n    some \"INNER-A\" ∧\n  (TDN.Imported.CompleteLinkAddressing.deployment base processing).PacketOwner\n        TDN.Imported.CompleteLinkAddressing.packet 202 =\n      some \"INNER-B\" ∧\n    (TDN.Imported.CompleteLinkAddressing.deployment base processing).SameLevelInner\n      ((TDN.Imported.CompleteLinkAddressing.deployment base processing).Observe\n        TDN.Imported.CompleteLinkAddressing.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkAddressing.cross_level_Ethernet_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Imported.CompleteLinkAddressing.deployment base processing).Accepts \"port-O\" TDN.Compliance.Direction.outbound\n    ((TDN.Imported.CompleteLinkAddressing.deployment base processing).Observe\n      (have __src := TDN.Imported.CompleteLinkAddressing.packet;\n      { source := __src.source, destination := 404, protocol := __src.protocol, ingress := __src.ingress,\n        egress := __src.egress, sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n        ipv4HeaderWords := __src.ipv4HeaderWords, inboundPolicies := __src.inboundPolicies,\n        outboundPolicies := __src.outboundPolicies, connectionState := __src.connectionState,\n        ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n        hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n        connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n        ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Checked routed and link model instances are available. Full runtime inventory/range/program correspondence must be supplied for each deployed application."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-021",
+    "reuse_accounting": "Two complete nonempty models: provision/sign, and provision/protected-copy/digest. Exact projections and policy inventory checked; successful uses reachable.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.KeyInterfaceChecks.useful_run",
+        "conclusion_head": "Cslib.LTS.MTr",
+        "conclusion": "(TDN.KeyInterface.system TDN.Imported.KeyInterfaceChecks.confidential TDN.Imported.KeyInterfaceChecks.permitted).MTr []\n  TDN.Imported.KeyInterfaceChecks.usefulActions\n  [TDN.Imported.KeyInterfaceChecks.copiedObject, TDN.Imported.KeyInterfaceChecks.tokenObject]",
+        "binders": [],
+        "axioms": [
+          "propext"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteKeyApplications.signing_model_RG021",
+        "conclusion_head": "TDN.Targets.Complete.msc_vpn_private_key_confinement",
+        "conclusion": "TDN.Targets.Complete.msc_vpn_private_key_confinement (TDN.Imported.CompleteKeyApplications.deployment base)\n  (TDN.Imported.CompleteKeyApplications.model native false) TDN.Imported.CompleteKeyApplications.keys (fun x => true)\n  TDN.Imported.CompleteKeyApplications.policies",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Imported.CompleteKeyApplications.Native",
+            "name": "native",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteKeyApplications.copied_digest_model_RG021",
+        "conclusion_head": "TDN.Targets.Complete.msc_vpn_private_key_confinement",
+        "conclusion": "TDN.Targets.Complete.msc_vpn_private_key_confinement (TDN.Imported.CompleteKeyApplications.deployment base)\n  (TDN.Imported.CompleteKeyApplications.model native true) TDN.Imported.CompleteKeyApplications.keys (fun x => true)\n  TDN.Imported.CompleteKeyApplications.policies",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Imported.CompleteKeyApplications.Native",
+            "name": "native",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteKeyApplications.setup_run",
+        "conclusion_head": "Cslib.LTS.MTr",
+        "conclusion": "(TDN.KeyInterface.system (TDN.Targets.Complete.protectedGatewayKey TDN.Imported.CompleteKeyApplications.keys)\n      fun identity principal => principal ∈ TDN.Imported.CompleteKeyApplications.readers identity).MTr\n  [] (TDN.Imported.CompleteKeyApplications.setup copyFirst) (TDN.Imported.CompleteKeyApplications.store copyFirst)",
+        "binders": [
+          {
+            "type": "Bool",
+            "name": "copyFirst",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteKeyApplications.event_projection",
+        "conclusion_head": "Eq",
+        "conclusion": "List.flatMap TDN.Targets.Complete.privateEvent (TDN.Imported.CompleteKeyApplications.events action) =\n  TDN.KeyInterface.Action.events action",
+        "binders": [
+          {
+            "type": "TDN.Targets.Complete.KeyAction",
+            "name": "action",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteKeyApplications.signing_is_reachable",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Imported.CompleteKeyApplications.model native false).initial [TDN.Imported.CompleteKeyApplications.token] ∧\n  (TDN.Imported.CompleteKeyApplications.model native false).system.MTr [TDN.Imported.CompleteKeyApplications.token]\n      [TDN.KeyInterface.Action.sign TDN.Imported.CompleteKeyApplications.token \"gateway\"]\n      [TDN.Imported.CompleteKeyApplications.token] ∧\n    TDN.Compliance.ProcessingEvent.privateKeyRead \"gateway\" \"private.key\" \"gateway\" ∈\n      (TDN.Imported.CompleteKeyApplications.model native false).TraceEvents\n        [TDN.KeyInterface.Action.sign TDN.Imported.CompleteKeyApplications.token \"gateway\"]",
+        "binders": [
+          {
+            "type": "TDN.Imported.CompleteKeyApplications.Native",
+            "name": "native",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteKeyApplications.copied_digest_is_reachable",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Imported.CompleteKeyApplications.model native true).initial\n    [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token] ∧\n  (TDN.Imported.CompleteKeyApplications.model native true).system.MTr\n      [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token]\n      [TDN.KeyInterface.Action.digest TDN.Imported.CompleteKeyApplications.copied \"gateway\"]\n      [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token] ∧\n    TDN.Compliance.ProcessingEvent.privateKeyRead \"gateway\" \"private.key\" \"gateway\" ∈\n      (TDN.Imported.CompleteKeyApplications.model native true).TraceEvents\n        [TDN.KeyInterface.Action.digest TDN.Imported.CompleteKeyApplications.copied \"gateway\"]",
+        "binders": [
+          {
+            "type": "TDN.Imported.CompleteKeyApplications.Native",
+            "name": "native",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "K02 complete API/interface, setup, object-lineage and source/runtime correspondence is in progress.",
+      "K01 has an actual readable file-backed path and supplies no protected-interface refinement.",
+      "Host/hypervisor exclusion, software implementation correspondence and observation truth stay explicit."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-027",
+    "reuse_accounting": "Generated noncentral key provisioning versus EAP-derived central-site key/server selection. Actual approval and KDF correspondence remain separately named.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteMACsecKeyGeneration.complete_RG027_under_named_approvals",
+        "conclusion_head": "TDN.Targets.Complete.msc_macsec_key_generation_and_server",
+        "conclusion": "TDN.Targets.Complete.msc_macsec_key_generation_and_server (TDN.Imported.CompleteMACsecKeyGeneration.configured d)\n  [TDN.Imported.CompleteMACsecKeyGeneration.key] [TDN.Imported.CompleteMACsecKeyGeneration.pair]\n  [TDN.Imported.CompleteMACsecKeyGeneration.provisioning] fun x x_1 => False",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "d",
+            "is_proposition": false
+          },
+          {
+            "type": "d.authority.nsaApprovedGenerator \"KGS\"",
+            "name": "generator",
+            "is_proposition": true
+          },
+          {
+            "type": "d.authority.securityAdministrator \"security-admin\"",
+            "name": "administrator",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteMACsecKeyGeneration.eap_derivation_record_checked",
+        "conclusion_head": "Eq",
+        "conclusion": "TDN.Targets.Complete.keyGenerationChecked (TDN.Imported.CompleteMACsecKeyGeneration.configured d)\n    [have __src := TDN.Imported.CompleteMACsecKeyGeneration.key;\n      { cak := __src.cak, cakOrigin := TDN.Targets.Complete.KeyOrigin.eapDerived \"MSK\", ckn := __src.ckn,\n        cknGenerator := __src.cknGenerator, fallbackEnabled := __src.fallbackEnabled }]\n    [TDN.Imported.CompleteMACsecKeyGeneration.pair] []\n    (have __src := TDN.Imported.CompleteMACsecKeyGeneration.records;\n    { generators := __src.generators, administrators := __src.administrators,\n      eapDerivations := [(\"CAK-A-B\", \"KGS\")] }) =\n  true",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "d",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.central_EAP_model_RG027",
+        "conclusion_head": "TDN.Targets.Complete.msc_macsec_key_generation_and_server",
+        "conclusion": "TDN.Targets.Complete.msc_macsec_key_generation_and_server (TDN.Imported.CompleteAssuranceReuse.centralDeployment base)\n  [TDN.Imported.CompleteAssuranceReuse.centralKey] [TDN.Imported.CompleteAssuranceReuse.centralPair] [] derivation",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "String → String → Prop",
+            "name": "derivation",
+            "is_proposition": false
+          },
+          {
+            "type": "base.authority.nsaApprovedGenerator \"KGS\"",
+            "name": "generator",
+            "is_proposition": true
+          },
+          {
+            "type": "derivation \"CAK-A-B\" \"KGS\"",
+            "name": "boundDerivation",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.central_server_and_EAP_origin_are_actual",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Imported.CompleteAssuranceReuse.centralPair.secondValue = 0 ∧\n  TDN.Imported.CompleteAssuranceReuse.centralPair.centralSite = some \"central-site\" ∧\n    TDN.Imported.CompleteAssuranceReuse.centralKey.cakOrigin =\n      TDN.Targets.Complete.KeyOrigin.eapDerived \"MSK-session-central\"",
+        "binders": [],
+        "axioms": []
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.wrong_central_server_is_rejected",
+        "conclusion_head": "Eq",
+        "conclusion": "TDN.Targets.Complete.keyGenerationChecked (TDN.Imported.CompleteAssuranceReuse.centralDeployment base)\n    [TDN.Imported.CompleteAssuranceReuse.centralKey]\n    [have __src := TDN.Imported.CompleteAssuranceReuse.centralPair;\n      { first := __src.first, second := __src.second, firstValue := 0, secondValue := 1,\n        centralSite := __src.centralSite }]\n    [] TDN.Imported.CompleteAssuranceReuse.centralRecords =\n  false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Import complete actual CKN/generator/provisioning/server-priority records with endpoint and epoch correspondence.",
+      "Establish individually named NSA generator approval and security-administrator authority facts for the chosen application.",
+      "Bind EAP-derived CAKs to actual MSK/KDF inputs and an approved generator; finite name equality is insufficient."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-032",
+    "reuse_accounting": "Unchanged retained scheduled cover sender and materially different public-Internet model.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteTransec.retained_complete_RG032",
+        "conclusion_head": "TDN.Targets.Complete.msc_transec_conditions",
+        "conclusion": "TDN.Targets.Complete.msc_transec_conditions TDN.Imported.FreshTransecCover.installations",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteTransec.alternate_complete_RG032",
+        "conclusion_head": "TDN.Targets.Complete.msc_transec_conditions",
+        "conclusion": "TDN.Targets.Complete.msc_transec_conditions [TDN.Imported.CompleteTransec.alternateInstallation]",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Full sender implementation correspondence beyond the retained finite observations.",
+      "Architecture/public-Internet/objective/firewall flags retain their separate source and configuration binding."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-034",
+    "reuse_accounting": "Unchanged imported baseline/shared graphs and explicit bypass negative.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteTopology.Baseline.configured_graph_RG034",
+        "conclusion_head": "TDN.Targets.Complete.msc_outer_firewall_placement",
+        "conclusion": "TDN.Targets.Complete.msc_outer_firewall_placement true true true\n  TDN.Imported.native_baseline_20261017T2237Z_topology.edge\n  (Relation.ReflTransGen TDN.Imported.native_baseline_20261017T2237Z_topology.grayEdge)\n  (fun node => node ∈ TDN.Imported.native_baseline_20261017T2237Z_topology.outerNodes)\n  TDN.Imported.native_baseline_20261017T2237Z_topology.firewall\n  (fun node => node ∈ TDN.Imported.native_baseline_20261017T2237Z_topology.blackNodes)\n  TDN.Imported.native_baseline_20261017T2237Z_topology.grayFirewall\n  (fun node => node ∈ TDN.Imported.native_baseline_20261017T2237Z_topology.innerNodes)\n  (fun a b => (a, b) ∈ TDN.Imported.native_baseline_20261017T2237Z_topology.insideAttachments)\n  (fun a b => (a, b) ∈ TDN.Imported.native_baseline_20261017T2237Z_topology.outsideAttachments) fun x x_1 => False",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteTopology.Shared.configured_graph_RG034",
+        "conclusion_head": "TDN.Targets.Complete.msc_outer_firewall_placement",
+        "conclusion": "TDN.Targets.Complete.msc_outer_firewall_placement true true true\n  TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.edge\n  (Relation.ReflTransGen TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.grayEdge)\n  (fun node => node ∈ TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.outerNodes)\n  TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.firewall\n  (fun node => node ∈ TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.blackNodes)\n  TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.grayFirewall\n  (fun node => node ∈ TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.innerNodes)\n  (fun a b => (a, b) ∈ TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.insideAttachments)\n  (fun a b => (a, b) ∈ TDN.Imported.native_shared_four_levels_20261017T2240Z_scope_v2_topology.outsideAttachments)\n  fun x x_1 => False",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteTopology.BypassCheck.full_firewall_path",
+        "conclusion_head": "TDN.Targets.Complete.msc_outer_firewall_placement",
+        "conclusion": "TDN.Targets.Complete.msc_outer_firewall_placement true true false TDN.Imported.CompleteTopology.BypassCheck.edge\n  TDN.Imported.CompleteTopology.BypassCheck.grayConnection TDN.Imported.CompleteTopology.BypassCheck.outer\n  TDN.Imported.CompleteTopology.BypassCheck.firewall TDN.Imported.CompleteTopology.BypassCheck.black (fun x => False)\n  TDN.Imported.CompleteTopology.BypassCheck.inner TDN.Imported.CompleteTopology.BypassCheck.inside\n  TDN.Imported.CompleteTopology.BypassCheck.outside fun x x_1 => False",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Bind generic edge/Gray-connection/attachment predicates and complete node roles to the exact supported observed topology."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-037",
+    "reuse_accounting": "Nonempty threshold-blocked enabled feature and selected-objective disabled feature. Modeled vendor emission and unrelated admitted packet exist; both mutations reject.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.blocking_model_RG037",
+        "conclusion_head": "TDN.Targets.Complete.msc_outer_third_party_services",
+        "conclusion": "TDN.Targets.Complete.msc_outer_third_party_services\n  (TDN.Imported.CompleteThirdPartyApplications.deployment base processing) (fun x => false)\n  [TDN.Imported.CompleteThirdPartyApplications.feature true]",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.disabled_model_RG037",
+        "conclusion_head": "TDN.Targets.Complete.msc_outer_third_party_services",
+        "conclusion": "TDN.Targets.Complete.msc_outer_third_party_services\n  (TDN.Imported.CompleteThirdPartyApplications.deployment base processing) (fun x => true)\n  [TDN.Imported.CompleteThirdPartyApplications.feature false]",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.nonempty_feature_has_actual_emission",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ item ∈ [TDN.Imported.CompleteThirdPartyApplications.feature true],\n  item.canContactThirdParty = true ∧\n    item.emittedTraffic\n      ((TDN.Imported.CompleteThirdPartyApplications.deployment base processing).Observe\n        TDN.Imported.CompleteThirdPartyApplications.vendorPacket)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.unrelated_protected_packet_is_admitted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Imported.CompleteThirdPartyApplications.deployment base processing).Accepts \"port-O\"\n  TDN.Compliance.Direction.outbound\n  ((TDN.Imported.CompleteThirdPartyApplications.deployment base processing).Observe\n    TDN.Imported.CompleteAddressing.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.vendor_packet_is_blocked",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Imported.CompleteThirdPartyApplications.deployment base processing).Accepts \"port-O\"\n    TDN.Compliance.Direction.outbound\n    ((TDN.Imported.CompleteThirdPartyApplications.deployment base processing).Observe\n      TDN.Imported.CompleteThirdPartyApplications.vendorPacket)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.admitting_vendor_rule_violates_exclusion",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Imported.CompleteThirdPartyApplications.badRule.toFilter.accepts\n      TDN.Imported.CompleteThirdPartyApplications.vendorPacket =\n    true ∧\n  ¬TDN.Imported.CompleteThirdPartyApplications.badRule.toFilter.accepts\n        TDN.Imported.CompleteThirdPartyApplications.vendorPacket =\n      false",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.objective_enabled_mutation_fails",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Targets.Complete.msc_outer_third_party_services\n    (TDN.Imported.CompleteThirdPartyApplications.deployment base processing) (fun x => true)\n    [TDN.Imported.CompleteThirdPartyApplications.feature true]",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Complete third-party-feature inventory and emitted-packet characterization.",
+      "Actual per-rule exclusion checks or selected feature-disable configuration.",
+      "The current sufficient theorem's IP-feature premise must be checked; an Ethernet-emitting feature needs a separate link-operation proof."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-038",
+    "reuse_accounting": "Unchanged routed and exact imported L2 program applications including full MKA/bootstrap and installed-data admission.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteHeaderFiltering.routed_ipv4_RG038",
+        "conclusion_head": "TDN.Targets.Complete.msc_ip_header_and_multicast_filtering",
+        "conclusion": "TDN.Targets.Complete.msc_ip_header_and_multicast_filtering\n  (TDN.Imported.CompleteHeaderFiltering.deployment base processing) fun x => false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_link_program_model_RG038",
+        "conclusion_head": "TDN.Targets.Complete.msc_ip_header_and_multicast_filtering",
+        "conclusion": "TDN.Targets.Complete.msc_ip_header_and_multicast_filtering\n  (TDN.Imported.CompleteLinkHeaderFiltering.deployment base processing) fun x => false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_positive_MKA_and_data",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Imported.CompleteLinkHeaderFiltering.program 1).Accepts\n    (TDN.Imported.CompleteLinkHeaderFiltering.mka.Packet \"\" \"A/wire\") ∧\n  (TDN.Imported.CompleteLinkHeaderFiltering.program 2).Accepts\n      (TDN.Imported.CompleteLinkHeaderFiltering.mka.Packet \"B/wire\" \"\") ∧\n    (TDN.Imported.CompleteLinkHeaderFiltering.program 1).Accepts\n        (TDN.Imported.CompleteLinkHeaderFiltering.dataFrame.Packet \"\" \"A/wire\") ∧\n      (TDN.Imported.CompleteLinkHeaderFiltering.program 2).Accepts\n        (TDN.Imported.CompleteLinkHeaderFiltering.dataFrame.Packet \"B/wire\" \"\")",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_negative_group_actor_length_and_vlan",
+        "conclusion_head": "Not",
+        "conclusion": "¬policy.Accepts (frame.Packet \"wire\" \"wire\")",
+        "binders": [
+          {
+            "type": "TDN.LinkAdmission.Program",
+            "name": "policy",
+            "is_proposition": false
+          },
+          {
+            "type": "policy ∈ TDN.Imported.CompleteLinkHeaderFiltering.programs",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          },
+          {
+            "type": "TDN.LinkAdmission.Frame",
+            "name": "frame",
+            "is_proposition": false
+          },
+          {
+            "type": "frame ∈\n  [TDN.Imported.CompleteLinkHeaderFiltering.groupData, TDN.Imported.CompleteLinkHeaderFiltering.wrongActor,\n    TDN.Imported.CompleteLinkHeaderFiltering.wrongLength, TDN.Imported.CompleteLinkHeaderFiltering.taggedMKA,\n    TDN.Imported.CompleteLinkHeaderFiltering.taggedData]",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_bootstrap_MKA_is_fully_admitted",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Imported.CompleteLinkHeaderFiltering.deployment base processing).Accepts \"A/wire\" TDN.Compliance.Direction.outbound\n    ((TDN.Imported.CompleteLinkHeaderFiltering.deployment base processing).Observe\n      (TDN.Imported.CompleteLinkHeaderFiltering.mka.Packet \"\" \"A/wire\")) ∧\n  (TDN.Imported.CompleteLinkHeaderFiltering.deployment base processing).Accepts \"B/wire\"\n    TDN.Compliance.Direction.inbound\n    ((TDN.Imported.CompleteLinkHeaderFiltering.deployment base processing).Observe\n      (TDN.Imported.CompleteLinkHeaderFiltering.mka.Packet \"B/wire\" \"\"))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_installed_program_model_RG038",
+        "conclusion_head": "TDN.Targets.Complete.msc_ip_header_and_multicast_filtering",
+        "conclusion": "TDN.Targets.Complete.msc_ip_header_and_multicast_filtering\n  (TDN.Imported.CompleteLinkHeaderFiltering.installedDeployment base processing) fun x => false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_installed_data_is_fully_admitted",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Imported.CompleteLinkHeaderFiltering.installedDeployment base processing).Accepts \"A/wire\"\n    TDN.Compliance.Direction.outbound\n    ((TDN.Imported.CompleteLinkHeaderFiltering.installedDeployment base processing).Observe\n      (TDN.Imported.CompleteLinkHeaderFiltering.dataFrame.Packet \"\" \"A/wire\")) ∧\n  (TDN.Imported.CompleteLinkHeaderFiltering.installedDeployment base processing).Accepts \"B/wire\"\n    TDN.Compliance.Direction.inbound\n    ((TDN.Imported.CompleteLinkHeaderFiltering.installedDeployment base processing).Observe\n      (TDN.Imported.CompleteLinkHeaderFiltering.dataFrame.Packet \"B/wire\" \"\"))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.local_association_indices_are_distinct",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Imported.CompleteLinkHeaderFiltering.txA.keyGeneration ≠\n    TDN.Imported.CompleteLinkHeaderFiltering.rxB.keyGeneration ∧\n  TDN.Imported.CompleteLinkHeaderFiltering.txB.keyGeneration ≠\n    TDN.Imported.CompleteLinkHeaderFiltering.rxA.keyGeneration",
+        "binders": [],
+        "axioms": []
+      }
+    ],
+    "deployed_application_conditions": [
+      "Complete actual device/interface/service inventory and raw hook/length projection for each claimed deployment.",
+      "Bind selected model inventory to the exact experiment scope; logical addresses, unused interfaces and transport/test-injector namespaces are not claimed covered by the four-port model.",
+      "Actual organization approval/necessity of the deployed MKA control protocol.",
+      "Exact nft/Linux parsing and admission implementation correspondence within the recorded untagged-veth/offload scope."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  },
+  {
+    "rg_id": "RG-047",
+    "reuse_accounting": "Retained finite service history plus selected-assurance model with an actual nonempty declared AW roster and performed operation.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.CompleteAdministration.retained_complete_RG047",
+        "conclusion_head": "TDN.Targets.Complete.msc_administrator_authentication",
+        "conclusion": "TDN.Targets.Complete.msc_administrator_authentication d false false TDN.Imported.FreshAdministratorSessions.events\n  TDN.Imported.FreshAdministratorSessions.accounts TDN.Imported.FreshAdministratorSessions.sessions []",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "d",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAdministration.live_channel_authentication_matches",
+        "conclusion_head": "TDN.Targets.MatchingAdministratorAuthentication",
+        "conclusion": "TDN.Targets.MatchingAdministratorAuthentication false false\n  [TDN.Imported.CompleteAdministration.operation, TDN.Imported.CompleteAdministration.authentication]\n  [TDN.Imported.CompleteAdministration.account] [TDN.Imported.CompleteAdministration.session]\n  TDN.Imported.CompleteAdministration.authentication TDN.Imported.CompleteAdministration.operation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.selected_assurance_AW_model_RG047",
+        "conclusion_head": "TDN.Targets.Complete.msc_administrator_authentication",
+        "conclusion": "TDN.Targets.Complete.msc_administrator_authentication base true true TDN.Imported.CompleteAssuranceReuse.events\n  [TDN.Imported.CompleteAssuranceReuse.account] [TDN.Imported.CompleteAssuranceReuse.session] [7]",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "base.authority.certificateCNSACompliant \"AW-person-7-certificate\"",
+            "name": "certificate",
+            "is_proposition": true
+          },
+          {
+            "type": "base.authority.authenticationConformsToNIST80063 \"AW-person-7-certificate\"",
+            "name": "nist",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.assurance_admission_run",
+        "conclusion_head": "Cslib.LTS.MTr",
+        "conclusion": "(TDN.Admission.lts (fun event => event.kind = TDN.Targets.AdminEventKind.operation)\n      (TDN.Targets.MatchingAdministratorAuthentication true true TDN.Imported.CompleteAssuranceReuse.events\n        [TDN.Imported.CompleteAssuranceReuse.account] [TDN.Imported.CompleteAssuranceReuse.session])).MTr\n  [] [TDN.Imported.CompleteAssuranceReuse.authentication, TDN.Imported.CompleteAssuranceReuse.operation]\n  TDN.Imported.CompleteAssuranceReuse.events",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.nonempty_AW_and_performed_operation",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Imported.CompleteAssuranceReuse.account.workstationAccount = true ∧\n  TDN.Imported.CompleteAssuranceReuse.operation ∈ TDN.Imported.CompleteAssuranceReuse.events ∧\n    TDN.Targets.MatchingAdministratorAuthentication true true TDN.Imported.CompleteAssuranceReuse.events\n      [TDN.Imported.CompleteAssuranceReuse.account] [TDN.Imported.CompleteAssuranceReuse.session]\n      TDN.Imported.CompleteAssuranceReuse.authentication TDN.Imported.CompleteAssuranceReuse.operation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.missing_selected_assurance_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Targets.MatchingAdministratorAuthentication true true TDN.Imported.CompleteAssuranceReuse.events\n    [TDN.Imported.CompleteAssuranceReuse.account] [TDN.Imported.CompleteAssuranceReuse.session]\n    (have __src := TDN.Imported.CompleteAssuranceReuse.authentication;\n    { kind := __src.kind, person := __src.person, component := __src.component, order := __src.order,\n      credential := __src.credential, certificateCNSA := false, nist80063 := __src.nist80063,\n      session := __src.session })\n    TDN.Imported.CompleteAssuranceReuse.operation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Bind the complete actual performed operation/authentication/channel lifecycle inventory and Unix-account/credential records to the finite admission model.",
+      "Check complete AW administrator roster and credential ownership correspondence; human appointment/identity remains a separately named external fact where required.",
+      "Selected CNSA/NIST authority assurances are external facts and are not proved by optional-false fixtures."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+  }
+]

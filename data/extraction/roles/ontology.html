@@ -151,8 +151,9 @@ function renderGraph(){
 }
 function renderTree(){const target=$('tree-view'),openPaths=new Set([...target.querySelectorAll('details[open]')].map(n=>n.dataset.path));target.replaceChildren(el('p','A role may appear under more than one broader role. Topic filters are navigation aids.','muted small'));const allowed=new Set();for(const n of matchingNodes()){allowed.add(n.role_id);n.ancestors.forEach(x=>allowed.add(x));}const children=new Map();for(const e of data.subclass_edges){if(!children.has(e.parent))children.set(e.parent,[]);children.get(e.parent).push(e.child);}let serial=0;function branch(id,depth,path=''){path+='/'+id;if(!allowed.has(id))return null;const n=byId.get(id),li=el('li'),kids=(children.get(id)||[]).filter(x=>allowed.has(x)).sort((a,b)=>byId.get(a).label.localeCompare(byId.get(b).label));const button=el('button',n.label);button.dataset.treeRole=id;button.setAttribute('aria-current',String(id===selected));button.addEventListener('click',e=>{e.preventDefault();selectRole(id);});if(n.parents.length>1)button.append(el('span',`${n.parents.length} parents`,'shared'));if(kids.length){const d=el('details');d.open=depth===0||openPaths.has(path);d.dataset.path=path;d.id='branch-'+serial++;const summary=el('summary');summary.append(button);d.append(summary);const ul=el('ul');for(const child of kids){const c=branch(child,depth+1,path);if(c)ul.append(c);}d.append(ul);li.append(d);}else li.append(button);return li;}const ul=el('ul');const top=branch(data.root_id,0);if(top)ul.append(top);else target.append(el('p','No roles match the current filters.','empty'));target.append(ul);}
 function sourceBlock(sid,open){const s=data.sources[sid],d=el('details',undefined,'evidence-source');d.open=open;d.append(el('summary',`PDF page${s.pages.length>1?'s':''} ${s.pages.join(', ')}`),el('code',sid,'source-id'),el('blockquote',s.text));return d;}
+function sourceURL(reference){return data.codeBase ? `${data.codeBase}/${reference.path}#L${reference.line}` : `vscode://file${data.project_root}/${reference.path}:${reference.line}`;}
 function codeLink(reference){
- const a=el('a',reference.label);a.href=`vscode://file${data.project_root}/${reference.path}:${reference.line}`;
+ const a=el('a',reference.label);a.href=sourceURL(reference);
  a.title=reference.path+':'+reference.line;return a;
 }
 function theoryDetail(node){
@@ -168,7 +169,7 @@ function theoryDetail(node){
  for(const key of record.interpretations){
   const interpretation=data.theory.interpretations[key],detail=el('details',undefined,'theory-interpretation');
   detail.open=key==='V31-015';detail.append(el('summary',interpretation.title),el('p',interpretation.summary));
-  const source=el('a','Open the recorded interpretation');source.href=`vscode://file${data.project_root}/${interpretation.source_path}:${interpretation.source_line}`;detail.append(source);section.append(detail);
+  const source=el('a','Open the recorded interpretation');source.href=sourceURL({path:interpretation.source_path,line:interpretation.source_line});detail.append(source);section.append(detail);
  }
  return section;
 }

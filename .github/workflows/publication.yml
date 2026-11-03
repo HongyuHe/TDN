@@ -1,0 +1,21 @@
+name: Check published explorers
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check publication inputs and GitHub source locations
+        run: python3 scripts/publication/export_pages.py --check
+      - name: Check the publication installer
+        run: python3 -m unittest discover -s tests -p test_publication.py

@@ -1,0 +1,300 @@
+[
+  {
+    "rg_id": "RG-012",
+    "general_theorem": "TDN.Targets.Complete.key_and_management_separation_from_scoped_inventory",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteAuthenticationIsolation.baseline_configured_pair_model_RG012",
+        "status": "Kernel-checked complete configured-pair model; actual established-tunnel/runtime correspondence still required."
+      },
+      {
+        "name": "TDN.Imported.CompleteAuthenticationIsolation.shared_configured_pair_model_RG012",
+        "status": "Kernel-checked complete configured-pair model; actual established-tunnel/runtime correspondence still required."
+      },
+      {
+        "name": "TDN.Imported.CompleteAuthenticationIsolation.managed_psk_model_RG012",
+        "status": "Kernel-checked constructed model fixture; no deployed PSK claim."
+      }
+    ],
+    "open_application_conditions": [
+      "Bind the complete actual established-pair set and credential inventory to the chosen observation epoch and authentication mechanism."
+    ],
+    "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-013",
+    "general_theorem": "TDN.Targets.Complete.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.complete_model_RG013",
+        "status": "Kernel-checked nonempty six-device model, three Inner components at two levels, one Gray Firewall, one Outer and one high-level workstation. Conditional on explicit physical-protection fact; no deployed-network conformance claim."
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.same_level_inner_traffic_is_admitted",
+        "status": "Full Deployment.Accepts, including Supported and matching forward program."
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.wrong_level_inner_traffic_is_rejected",
+        "status": "Full admission rejection of cross-level Inner packet."
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.lower_level_workstation_traffic_is_rejected",
+        "status": "Full admission rejection of highest-level workstation packet to lower Inner."
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.cross_level_path_really_exists",
+        "status": "An actual graph path connects different levels through the firewall."
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewall.direct_cross_level_bypass_fails_local_edge_check",
+        "status": "Adding a direct cross-level edge falsifies the reusable local edge premise."
+      },
+      {
+        "name": "TDN.Imported.CompleteGrayFirewallReuse.management_free_chain_model_RG013",
+        "status": "Five devices, management-free roles and same-level chain topology; named physical-protection premise remains explicit."
+      }
+    ],
+    "open_application_conditions": [
+      "Declared model checks are fulfilled; physical classified protection is an explicit parameter.",
+      "A deployed complete device/graph/program binding and physical protection record are not yet supplied for this root."
+    ],
+    "new_supporting_applications": [
+      "TDN.Imported.CompleteGrayFirewallReuse.management_free_and_topology_differs",
+      "TDN.Imported.CompleteGrayFirewallReuse.same_level_chain_packet_is_admitted"
+    ]
+  },
+  {
+    "rg_id": "RG-014",
+    "general_theorem": "TDN.Targets.Complete.gray_addressing_from_ip_and_link_endpoint_rules",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteAddressing.full_routed_RG014",
+        "status": "Kernel-checked synthetic routed IP filtering instance with three Inner devices at two security levels. No imported deployed application is claimed."
+      },
+      {
+        "name": "TDN.Imported.CompleteAddressing.intended_protected_packet_is_accepted",
+        "status": "Kernel-checked nonempty same-level ESP allowance in the synthetic instance."
+      },
+      {
+        "name": "TDN.Imported.CompleteAddressing.cross_level_packet_is_rejected",
+        "status": "Kernel-checked different-level destination rejection in the same synthetic instance."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkAddressing.complete_link_model_RG014",
+        "status": "Kernel-checked complete nonempty model with explicit IP/MAC addresses, bridge path and actual L2 programs."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkAddressing.same_level_Ethernet_is_fully_admitted",
+        "status": "Full Deployment.Accepts through actual L2 program and LinkCapable bridge path."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkAddressing.link_addresses_bind_intended_Inner_peers",
+        "status": "Actual MAC owner metadata binds distinct same-level Inner components; no absent-owner vacuity."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkAddressing.cross_level_Ethernet_is_rejected",
+        "status": "Full IP/L2 admission rejection of cross-level MAC destination."
+      }
+    ],
+    "open_application_conditions": [
+      "Checked routed and link model instances are available. Full runtime inventory/range/program correspondence must be supplied for each deployed application."
+    ],
+    "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-021",
+    "general_theorem": "TDN.Targets.Complete.vpn_private_key_confinement_from_interface_steps",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.KeyInterfaceChecks.useful_run",
+        "status": "Kernel-checked useful API model trace and rejection fixtures; not a concrete K02 refinement."
+      },
+      {
+        "name": "TDN.Imported.CompleteKeyApplications.signing_model_RG021",
+        "status": "Complete nonempty key-interface ExecutionModel; reachable provision/sign operation; exact local inventory/projection/policy checks."
+      },
+      {
+        "name": "TDN.Imported.CompleteKeyApplications.copied_digest_model_RG021",
+        "status": "Same unchanged general theorem applied to protected duplication and digest use with a different setup store/handle."
+      }
+    ],
+    "open_application_conditions": [
+      "K02 complete API/interface, setup, object-lineage and source/runtime correspondence is in progress.",
+      "K01 has an actual readable file-backed path and supplies no protected-interface refinement.",
+      "Host/hypervisor exclusion, software implementation correspondence and observation truth stay explicit."
+    ],
+    "new_supporting_applications": [
+      "TDN.Imported.CompleteKeyApplications.setup_run",
+      "TDN.Imported.CompleteKeyApplications.event_projection",
+      "TDN.Imported.CompleteKeyApplications.signing_is_reachable",
+      "TDN.Imported.CompleteKeyApplications.copied_digest_is_reachable"
+    ]
+  },
+  {
+    "rg_id": "RG-027",
+    "general_theorem": "TDN.Targets.Complete.macsec_key_generation_from_checked_records",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteMACsecKeyGeneration.complete_RG027_under_named_approvals",
+        "status": "Kernel-checked full constructed finite configuration conditional on named generator/admin approvals; no lab-generator approval claim."
+      },
+      {
+        "name": "TDN.Imported.CompleteMACsecKeyGeneration.eap_derivation_record_checked",
+        "status": "Constructed positive finite EAP-binding fixture. Short CKN, fallback, early application, missing peers, duplicate priorities and empty MSK reject."
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.central_EAP_model_RG027",
+        "status": "Central-site second peer has priority zero; actual EAP-origin field and finite records checked; named generator approval and separate technical derivation binding remain explicit."
+      }
+    ],
+    "open_application_conditions": [
+      "Import complete actual CKN/generator/provisioning/server-priority records with endpoint and epoch correspondence.",
+      "Establish individually named NSA generator approval and security-administrator authority facts for the chosen application.",
+      "Bind EAP-derived CAKs to actual MSK/KDF inputs and an approved generator; finite name equality is insufficient."
+    ],
+    "new_supporting_applications": [
+      "TDN.Imported.CompleteAssuranceReuse.central_server_and_EAP_origin_are_actual",
+      "TDN.Imported.CompleteAssuranceReuse.wrong_central_server_is_rejected"
+    ]
+  },
+  {
+    "rg_id": "RG-032",
+    "general_theorem": "TDN.Targets.Complete.transec_conditions_from_checked_installations",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteTransec.retained_complete_RG032",
+        "status": "Kernel-checked complete formal instance; numeric/activation projection agrees with v034 cover export. Runtime/architecture correspondence remains explicit."
+      },
+      {
+        "name": "TDN.Imported.CompleteTransec.alternate_complete_RG032",
+        "status": "Kernel-checked materially different public-Internet model fixture; no deployed capture."
+      }
+    ],
+    "open_application_conditions": [
+      "Full sender implementation correspondence beyond the retained finite observations.",
+      "Architecture/public-Internet/objective/firewall flags retain their separate source and configuration binding."
+    ],
+    "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-034",
+    "general_theorem": "TDN.Targets.outer_firewall_placement_from_local_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteTopology.Baseline.configured_graph_RG034",
+        "status": "Kernel-checked complete imported graph instance; actual complete topology correspondence remains explicit."
+      },
+      {
+        "name": "TDN.Imported.CompleteTopology.Shared.configured_graph_RG034",
+        "status": "Kernel-checked complete imported graph instance; actual complete topology correspondence remains explicit."
+      },
+      {
+        "name": "TDN.Imported.CompleteTopology.BypassCheck.full_firewall_path",
+        "status": "Kernel-checked constructed model fixture with bypass rejection."
+      }
+    ],
+    "open_application_conditions": [
+      "Bind generic edge/Gray-connection/attachment predicates and complete node roles to the exact supported observed topology."
+    ],
+    "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-037",
+    "general_theorem": "TDN.Targets.Complete.third_party_services_from_disabled_features_and_rule_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.blocking_model_RG037",
+        "status": "Nonempty enabled vendor feature, emitted TCP packet blocked by local ESP allow rules."
+      },
+      {
+        "name": "TDN.Imported.CompleteThirdPartyApplications.disabled_model_RG037",
+        "status": "Selected objective disables a nonempty feature inventory; unrelated protected traffic remains admitted."
+      }
+    ],
+    "open_application_conditions": [
+      "Complete third-party-feature inventory and emitted-packet characterization.",
+      "Actual per-rule exclusion checks or selected feature-disable configuration.",
+      "The current sufficient theorem's IP-feature premise must be checked; an Ethernet-emitting feature needs a separate link-operation proof."
+    ],
+    "new_supporting_applications": [
+      "TDN.Imported.CompleteThirdPartyApplications.nonempty_feature_has_actual_emission",
+      "TDN.Imported.CompleteThirdPartyApplications.unrelated_protected_packet_is_admitted",
+      "TDN.Imported.CompleteThirdPartyApplications.vendor_packet_is_blocked",
+      "TDN.Imported.CompleteThirdPartyApplications.admitting_vendor_rule_violates_exclusion",
+      "TDN.Imported.CompleteThirdPartyApplications.objective_enabled_mutation_fails"
+    ]
+  },
+  {
+    "rg_id": "RG-038",
+    "general_theorem": "TDN.Targets.Complete.ip_and_link_header_filtering_from_inventory_and_rule_atoms",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteHeaderFiltering.routed_ipv4_RG038",
+        "status": "Kernel-checked nonempty routed model, now invokes same IP+L2 complete theorem."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_link_program_model_RG038",
+        "status": "Kernel-checked declared Outer-MACsec model using four imported exact nft programs. Model inventory/approval assignments are explicit; no complete deployed-conformance claim."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_positive_MKA_and_data",
+        "status": "Kernel-checked Program.Accepts only. Full Deployment.Accepts is separately established below."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_negative_group_actor_length_and_vlan",
+        "status": "Captured group data, wrong actor, wrong length, tagged MKA/data rejected by all imported programs."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_bootstrap_MKA_is_fully_admitted",
+        "status": "Full Deployment.Accepts at A outbound and B inbound, with Supported and actual endpoint LinkCapable, no installed data SA."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_installed_program_model_RG038",
+        "status": "Complete RG038 declared installed-state model invokes the same IP/L2 general theorem. Actual local TX/RX SCI/AN records imported."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.captured_installed_data_is_fully_admitted",
+        "status": "Full Deployment.Accepts for the captured encrypted unicast at A outbound and B inbound, including Supported, installed-association LinkCapable and actual program."
+      },
+      {
+        "name": "TDN.Imported.CompleteLinkHeaderFiltering.local_association_indices_are_distinct",
+        "status": "Distinct local model generation indices retained. No secret-key equality, decryption transfer or common atomic epoch inferred from labels."
+      }
+    ],
+    "open_application_conditions": [
+      "Complete actual device/interface/service inventory and raw hook/length projection for each claimed deployment.",
+      "Bind selected model inventory to the exact experiment scope; logical addresses, unused interfaces and transport/test-injector namespaces are not claimed covered by the four-port model.",
+      "Actual organization approval/necessity of the deployed MKA control protocol.",
+      "Exact nft/Linux parsing and admission implementation correspondence within the recorded untagged-veth/offload scope."
+    ],
+    "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-047",
+    "general_theorem": "TDN.Targets.Complete.administrator_authentication_from_local_admission_and_credential_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.CompleteAdministration.retained_complete_RG047",
+        "status": "Kernel-checked complete imported finite admission model with10 performed operations; service/runtime and roster completeness correspondence remains open."
+      },
+      {
+        "name": "TDN.Imported.CompleteAdministration.live_channel_authentication_matches",
+        "status": "Constructed positive channel fixture; missing authentication, revocation, wrong person and shared AW credential fixtures reject."
+      },
+      {
+        "name": "TDN.Imported.CompleteAssuranceReuse.selected_assurance_AW_model_RG047",
+        "status": "Nonempty AW roster, nonempty performed-operation history, both selected assurance branches, individually named authority premises."
+      }
+    ],
+    "open_application_conditions": [
+      "Bind the complete actual performed operation/authentication/channel lifecycle inventory and Unix-account/credential records to the finite admission model.",
+      "Check complete AW administrator roster and credential ownership correspondence; human appointment/identity remains a separately named external fact where required.",
+      "Selected CNSA/NIST authority assurances are external facts and are not proved by optional-false fixtures."
+    ],
+    "new_supporting_applications": [
+      "TDN.Imported.CompleteAssuranceReuse.assurance_admission_run",
+      "TDN.Imported.CompleteAssuranceReuse.nonempty_AW_and_performed_operation",
+      "TDN.Imported.CompleteAssuranceReuse.missing_selected_assurance_is_rejected"
+    ]
+  }
+]

@@ -6,6 +6,8 @@ import json
 import re
 import xml.etree.ElementTree as ET
 import copy
+import subprocess
+import sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -362,6 +364,7 @@ def main():
     else:
         for name, content in outputs.items():
             (folder / name).write_text(content)
+        subprocess.run([sys.executable, str(ROOT / 'scripts/publication/export_pages.py'), '--page', 'ontology'], check=True)
     if read_generated_xml(outputs['ontology.owl']) != set(statements):
         raise ValueError('RDF/XML round-trip differs from expected statements.')
     parser_check = 'not_requested'
