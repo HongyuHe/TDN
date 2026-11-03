@@ -22,7 +22,13 @@ body.targets-hidden .workspace{grid-template-columns:minmax(0,1fr)}body.targets-
 .diagram-node{transition:opacity .14s,filter .14s}.diagram-node.focus-muted{opacity:.4;filter:grayscale(1)}.diagram-node.focus-muted:hover,.diagram-node.focus-muted:focus-visible{opacity:.75}.diagram-node.focus-descendant rect{stroke-width:1.65}.diagram-node.focus-child rect{stroke-width:2.1}.diagram-node.selected rect{stroke-width:3}.edge{transition:opacity .14s,stroke-width .14s}.edge.focus-descendant{stroke-width:1.8}.edge.focus-muted{opacity:.16;filter:grayscale(1)}@media(prefers-reduced-motion:reduce){.diagram-node,.edge{transition:none}}
 
 .target-button.review_pass .number::before{background:#078359}.target-button.deferred .number::before{background:#b57910}.target-button.outside_selected_scope .number::before{background:#929aab}
-</style></head>
+</style><style>
+.tdn-home-nav{display:flex;justify-content:center;padding:24px;border-top:1px solid var(--border);background:var(--panel)}
+.tdn-home-button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text);font:inherit;font-weight:600;text-decoration:none}
+.tdn-home-button:hover{border-color:var(--cyan);color:var(--cyan);background:var(--bg)}
+.tdn-home-button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+</style>
+</head>
 <body>
 <header><div><button id="toggle-targets" aria-controls="targets-panel" aria-expanded="true">Hide targets</button><a class="brand" href="https://github.com/HongyuHe/TDN/tree/__TDN_REVISION__">TDN</a><span class="separator">/</span><span>V3.1 theorem hierarchy</span></div><div class="header-actions"><a href="/tdn/ontology/">Role ontology</a><button id="theme" aria-label="Switch to dark theme">Dark theme</button></div></header>
 <div class="workspace">
@@ -355,4 +361,5 @@ window.addEventListener('hashchange',()=>{const p=new URLSearchParams(location.h
 chooseGroup(activeID,initial.get('theorem'));
 window.hierarchyQA={data,chooseGroup,renderGraph,showDetail,fit,inspect,getLayout:()=>layout,buildOverview,branchGraph,getExpanded:()=>[...expanded]};
 </script>
+<nav class="tdn-home-nav" aria-label="Home"><a class="tdn-home-button" href="/"><span aria-hidden="true">←</span>Back to home</a></nav>
 </body></html>

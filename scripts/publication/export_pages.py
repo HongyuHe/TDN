@@ -15,6 +15,13 @@ PAGES = {
     'hierarchy': ('.lavish/theorem-hierarchy.html', 'hierarchy-data'),
     'ontology': ('data/extraction/roles/ontology.html', 'ontology-data'),
 }
+HOME_STYLE = '''<style>
+.tdn-home-nav{display:flex;justify-content:center;padding:24px;border-top:1px solid var(--border);background:var(--panel)}
+.tdn-home-button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text);font:inherit;font-weight:600;text-decoration:none}
+.tdn-home-button:hover{border-color:var(--cyan);color:var(--cyan);background:var(--bg)}
+.tdn-home-button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+</style>'''
+HOME_NAV = '<nav class="tdn-home-nav" aria-label="Home"><a class="tdn-home-button" href="/"><span aria-hidden="true">←</span>Back to home</a></nav>'
 
 
 def digest(path):
@@ -65,6 +72,8 @@ def render(page):
     #* Public pages only contain GitHub source links; the local UI keeps its editor links.
     html = re.sub(r'`vscode://file\$\{data\.(?:root|project_root)\}/\$\{(?:n|reference)\.path\}:\$\{(?:n|reference)\.line\}`', '""', html)
     html = html.replace('Open in VS Code', 'View on GitHub')
+    html = html.replace('</head>', HOME_STYLE + '\n</head>', 1)
+    html = html.replace('</body>', HOME_NAV + '\n</body>', 1)
     if re.search(r'vscode://|file:///|/Users/|127\.0\.0\.1|localhost:', html):
         raise ValueError('Local-only reference remains in public ' + page)
     return html, hashes
