@@ -1,0 +1,1538 @@
+[
+  {
+    "id": "cmd-0000",
+    "device": null,
+    "command": [
+      "uname",
+      "-a"
+    ],
+    "start_ns": 1243572142466584,
+    "end_ns": 1243572145278078,
+    "returncode": 0,
+    "stdout": "Linux 819ded36f498 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0001",
+    "device": null,
+    "command": [
+      "openssl",
+      "version"
+    ],
+    "start_ns": 1243572145286253,
+    "end_ns": 1243572149310269,
+    "returncode": 0,
+    "stdout": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0002",
+    "device": null,
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tdnv31s-AW"
+    ],
+    "start_ns": 1243572149314746,
+    "end_ns": 1243572154698398,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0003",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "start_ns": 1243572154702584,
+    "end_ns": 1243572159292878,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0004",
+    "device": null,
+    "command": [
+      "ip",
+      "netns",
+      "add",
+      "tdnv31s-OUTER"
+    ],
+    "start_ns": 1243572159297215,
+    "end_ns": 1243572164331496,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0005",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "link",
+      "set",
+      "lo",
+      "up"
+    ],
+    "start_ns": 1243572164336147,
+    "end_ns": 1243572168983728,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0006",
+    "device": null,
+    "command": [
+      "ip",
+      "link",
+      "add",
+      "session-aw",
+      "type",
+      "veth",
+      "peer",
+      "name",
+      "session-outer"
+    ],
+    "start_ns": 1243572168992744,
+    "end_ns": 1243572173671027,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0007",
+    "device": null,
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "session-aw",
+      "netns",
+      "tdnv31s-AW"
+    ],
+    "start_ns": 1243572173677881,
+    "end_ns": 1243572193855956,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0008",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "link",
+      "set",
+      "session-aw",
+      "name",
+      "gray"
+    ],
+    "start_ns": 1243572193860583,
+    "end_ns": 1243572211630020,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0009",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "addr",
+      "add",
+      "10.31.0.1/30",
+      "dev",
+      "gray"
+    ],
+    "start_ns": 1243572211634527,
+    "end_ns": 1243572215284354,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0010",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "link",
+      "set",
+      "gray",
+      "up"
+    ],
+    "start_ns": 1243572215288698,
+    "end_ns": 1243572218335509,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0011",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-P",
+      "INPUT",
+      "DROP"
+    ],
+    "start_ns": 1243572218339854,
+    "end_ns": 1243572235531287,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0012",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-P",
+      "OUTPUT",
+      "DROP"
+    ],
+    "start_ns": 1243572235535885,
+    "end_ns": 1243572253318947,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0013",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-P",
+      "FORWARD",
+      "DROP"
+    ],
+    "start_ns": 1243572253323325,
+    "end_ns": 1243572279403011,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0014",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-A",
+      "INPUT",
+      "-i",
+      "lo",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572279408403,
+    "end_ns": 1243572282876301,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0015",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-A",
+      "INPUT",
+      "-p",
+      "tcp",
+      "-m",
+      "conntrack",
+      "--ctstate",
+      "ESTABLISHED",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572282880699,
+    "end_ns": 1243572286424770,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0016",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-A",
+      "OUTPUT",
+      "-o",
+      "lo",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572286429720,
+    "end_ns": 1243572290314699,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0017",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-A",
+      "OUTPUT",
+      "-p",
+      "tcp",
+      "-m",
+      "conntrack",
+      "--ctstate",
+      "ESTABLISHED",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572290319362,
+    "end_ns": 1243572295585153,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0018",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-A",
+      "OUTPUT",
+      "-s",
+      "10.31.0.1",
+      "-d",
+      "10.31.0.2",
+      "-p",
+      "tcp",
+      "--dport",
+      "443",
+      "-m",
+      "conntrack",
+      "--ctstate",
+      "NEW",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572295590431,
+    "end_ns": 1243572299388107,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0019",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-A",
+      "INPUT",
+      "-j",
+      "DROP"
+    ],
+    "start_ns": 1243572299392635,
+    "end_ns": 1243572302502017,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0020",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables",
+      "-A",
+      "OUTPUT",
+      "-j",
+      "DROP"
+    ],
+    "start_ns": 1243572302506512,
+    "end_ns": 1243572305929212,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0021",
+    "device": null,
+    "command": [
+      "ip",
+      "link",
+      "set",
+      "session-outer",
+      "netns",
+      "tdnv31s-OUTER"
+    ],
+    "start_ns": 1243572305934292,
+    "end_ns": 1243572326992976,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0022",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "link",
+      "set",
+      "session-outer",
+      "name",
+      "gray"
+    ],
+    "start_ns": 1243572327031715,
+    "end_ns": 1243572348789233,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0023",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "addr",
+      "add",
+      "10.31.0.2/30",
+      "dev",
+      "gray"
+    ],
+    "start_ns": 1243572348798086,
+    "end_ns": 1243572352369892,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0024",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "link",
+      "set",
+      "gray",
+      "up"
+    ],
+    "start_ns": 1243572352378783,
+    "end_ns": 1243572356766620,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0025",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-P",
+      "INPUT",
+      "DROP"
+    ],
+    "start_ns": 1243572356775561,
+    "end_ns": 1243572378605281,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0026",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-P",
+      "OUTPUT",
+      "DROP"
+    ],
+    "start_ns": 1243572378614079,
+    "end_ns": 1243572397391807,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0027",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-P",
+      "FORWARD",
+      "DROP"
+    ],
+    "start_ns": 1243572397400377,
+    "end_ns": 1243572417603919,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0028",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-A",
+      "INPUT",
+      "-i",
+      "lo",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572417613714,
+    "end_ns": 1243572421184392,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0029",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-A",
+      "INPUT",
+      "-p",
+      "tcp",
+      "-m",
+      "conntrack",
+      "--ctstate",
+      "ESTABLISHED",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572421192527,
+    "end_ns": 1243572424909463,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0030",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-A",
+      "OUTPUT",
+      "-o",
+      "lo",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572424917850,
+    "end_ns": 1243572428482129,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0031",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-A",
+      "OUTPUT",
+      "-p",
+      "tcp",
+      "-m",
+      "conntrack",
+      "--ctstate",
+      "ESTABLISHED",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572428489820,
+    "end_ns": 1243572432125568,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0032",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-A",
+      "INPUT",
+      "-s",
+      "10.31.0.1",
+      "-d",
+      "10.31.0.2",
+      "-p",
+      "tcp",
+      "--dport",
+      "443",
+      "-m",
+      "conntrack",
+      "--ctstate",
+      "NEW",
+      "-j",
+      "ACCEPT"
+    ],
+    "start_ns": 1243572432135160,
+    "end_ns": 1243572437958823,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0033",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-A",
+      "INPUT",
+      "-j",
+      "DROP"
+    ],
+    "start_ns": 1243572437967901,
+    "end_ns": 1243572441749861,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0034",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables",
+      "-A",
+      "OUTPUT",
+      "-j",
+      "DROP"
+    ],
+    "start_ns": 1243572441757522,
+    "end_ns": 1243572445330184,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0035",
+    "device": null,
+    "command": [
+      "openssl",
+      "req",
+      "-x509",
+      "-newkey",
+      "rsa:3072",
+      "-nodes",
+      "-days",
+      "1",
+      "-subj",
+      "/CN=outer.msc.test",
+      "-addext",
+      "subjectAltName=DNS:outer.msc.test",
+      "-keyout",
+      "/lab/exports/management-session-002-private/server.key",
+      "-out",
+      "/lab/exports/management-session-002-private/server.pem"
+    ],
+    "start_ns": 1243572445441635,
+    "end_ns": 1243574103524894,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ".......+...+......+.+...+...........+....+...........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.....+........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*..+............+...+...+.+...+......+...............+...........................+.........+.....+...+................+.....+................+.........+..+.......+...+.....+.......+..................+..+.+.....................+......+............+...........+......+....+............+.........+...+.....+.+..+....+...+...............+..+.+...+...........+................+.....+.........+......+.........+.+.....+.........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n..+........................+.....+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*......+......+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*....+....+...+...........+....+........+.......+..+...+.......+.....+...+......+.+...+........+......................+.................+..................+.......+...+............+.........+..+...............+....+...+......+..+...+..........+..+.......+..+......+...+....+......+..+...+.........+.+.....+...................+................................+.+..................+..+........................+...+...............+............+.+........+.+.........+..+...+....+..+.............+......+......+..............+.......+..............+...+...+...................+......+....................+.............+..+..........+........+.+......+..............+.+..+.+........................+..+.........+.........+.+...........+..........+........+..........+..+.+.........+........+.+.....+.+...+...........+....+...+............+.....+...+............+.......+......+.....+..................+.......+...+...........+......+.........+.............+...+.....+....+.....+.........+.......+...+.....+.+...+..+...+......+.........+...+....+.....+.........+....+........+.........+.+.....+.........+..........+....................+.+..............+.........+.+........+...+..................+......+.+.......................+....+...........+................+........+...+............+......+.....................+...+.+..+....+.....+...+..........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n-----\n"
+  },
+  {
+    "id": "cmd-0036",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "python3",
+      "-u",
+      "/lab/exports/management-session-002/capture-AW.py"
+    ],
+    "start_ns": 1243574105249214,
+    "kind": "spawn",
+    "pid": 43
+  },
+  {
+    "id": "cmd-0037",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "python3",
+      "-u",
+      "/lab/exports/management-session-002/capture-OUTER.py"
+    ],
+    "start_ns": 1243574156614749,
+    "kind": "spawn",
+    "pid": 44
+  },
+  {
+    "id": "cmd-0038",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "python3",
+      "-u",
+      "/lab/exports/management-session-002/server.py",
+      "/lab/exports/management-session-002-private/server.pem",
+      "/lab/exports/management-session-002-private/server.key"
+    ],
+    "start_ns": 1243574207921739,
+    "kind": "spawn",
+    "pid": 45
+  },
+  {
+    "id": "cmd-0039",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "python3",
+      "-u",
+      "/lab/exports/management-session-002/client.py",
+      "/lab/exports/management-session-002-private/server.pem"
+    ],
+    "start_ns": 1243574259252700,
+    "kind": "spawn",
+    "pid": 46
+  },
+  {
+    "id": "cmd-0040",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "-j",
+      "-d",
+      "addr"
+    ],
+    "start_ns": 1243574359948810,
+    "end_ns": 1243574365582487,
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":6,\"link_index\":5,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"aa:27:55:da:00:e1\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.31.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::a827:55ff:feda:e1\",\"prefixlen\":64,\"scope\":\"link\",\"tentative\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0041",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "-j",
+      "route"
+    ],
+    "start_ns": 1243574365593746,
+    "end_ns": 1243574369348867,
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.31.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.31.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0042",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables-save",
+      "-c"
+    ],
+    "start_ns": 1243574369356949,
+    "end_ns": 1243574372801173,
+    "returncode": 0,
+    "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sun Nov  1 02:34:11 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[0:0] -A INPUT -i lo -j ACCEPT\n[6:2651] -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[0:0] -A INPUT -j DROP\n[0:0] -A OUTPUT -o lo -j ACCEPT\n[7:1029] -A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A OUTPUT -s 10.31.0.1/32 -d 10.31.0.2/32 -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT\n[0:0] -A OUTPUT -j DROP\nCOMMIT\n# Completed on Sun Nov  1 02:34:11 2026\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0043",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "conntrack",
+      "-L",
+      "-p",
+      "tcp",
+      "-o",
+      "extended"
+    ],
+    "start_ns": 1243574372809086,
+    "end_ns": 1243574379915135,
+    "returncode": 0,
+    "stdout": "ipv4     2 tcp      6 431999 ESTABLISHED src=10.31.0.1 dst=10.31.0.2 sport=41000 dport=443 src=10.31.0.2 dst=10.31.0.1 sport=443 dport=41000 [ASSURED] mark=0 use=1\n",
+    "stderr": "conntrack v1.4.8 (conntrack-tools): 1 flow entries have been shown.\n"
+  },
+  {
+    "id": "cmd-0044",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "-j",
+      "-d",
+      "addr"
+    ],
+    "start_ns": 1243574379927745,
+    "end_ns": 1243574383150873,
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":5,\"link_index\":6,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"42:b5:6a:91:9c:11\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.31.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::40b5:6aff:fe91:9c11\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0045",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "-j",
+      "route"
+    ],
+    "start_ns": 1243574383158845,
+    "end_ns": 1243574386099974,
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.31.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.31.0.2\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0046",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables-save",
+      "-c"
+    ],
+    "start_ns": 1243574386108080,
+    "end_ns": 1243574390875920,
+    "returncode": 0,
+    "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sun Nov  1 02:34:11 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[0:0] -A INPUT -i lo -j ACCEPT\n[7:1029] -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A INPUT -s 10.31.0.1/32 -d 10.31.0.2/32 -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT\n[0:0] -A INPUT -j DROP\n[0:0] -A OUTPUT -o lo -j ACCEPT\n[6:2651] -A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[0:0] -A OUTPUT -j DROP\nCOMMIT\n# Completed on Sun Nov  1 02:34:11 2026\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0047",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "conntrack",
+      "-L",
+      "-p",
+      "tcp",
+      "-o",
+      "extended"
+    ],
+    "start_ns": 1243574390883665,
+    "end_ns": 1243574398923771,
+    "returncode": 0,
+    "stdout": "ipv4     2 tcp      6 431999 ESTABLISHED src=10.31.0.1 dst=10.31.0.2 sport=41000 dport=443 src=10.31.0.2 dst=10.31.0.1 sport=443 dport=41000 [ASSURED] mark=0 use=1\n",
+    "stderr": "conntrack v1.4.8 (conntrack-tools): 1 flow entries have been shown.\n"
+  },
+  {
+    "id": "cmd-0048",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "-j",
+      "-d",
+      "addr"
+    ],
+    "start_ns": 1243578333084586,
+    "end_ns": 1243578338034929,
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":6,\"link_index\":5,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"aa:27:55:da:00:e1\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.31.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::a827:55ff:feda:e1\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0049",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "-j",
+      "route"
+    ],
+    "start_ns": 1243578338043803,
+    "end_ns": 1243578342338283,
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.31.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.31.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0050",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables-save",
+      "-c"
+    ],
+    "start_ns": 1243578342346111,
+    "end_ns": 1243578346511694,
+    "returncode": 0,
+    "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sun Nov  1 02:34:14 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[0:0] -A INPUT -i lo -j ACCEPT\n[8:2755] -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[0:0] -A INPUT -j DROP\n[0:0] -A OUTPUT -o lo -j ACCEPT\n[9:1133] -A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A OUTPUT -s 10.31.0.1/32 -d 10.31.0.2/32 -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT\n[0:0] -A OUTPUT -j DROP\nCOMMIT\n# Completed on Sun Nov  1 02:34:14 2026\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0051",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "conntrack",
+      "-L",
+      "-p",
+      "tcp",
+      "-o",
+      "extended"
+    ],
+    "start_ns": 1243578346519442,
+    "end_ns": 1243578355633897,
+    "returncode": 0,
+    "stdout": "ipv4     2 tcp      6 119 TIME_WAIT src=10.31.0.1 dst=10.31.0.2 sport=41000 dport=443 src=10.31.0.2 dst=10.31.0.1 sport=443 dport=41000 [ASSURED] mark=0 use=1\n",
+    "stderr": "conntrack v1.4.8 (conntrack-tools): 1 flow entries have been shown.\n"
+  },
+  {
+    "id": "cmd-0052",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "-j",
+      "-d",
+      "addr"
+    ],
+    "start_ns": 1243578355651047,
+    "end_ns": 1243578359238153,
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":5,\"link_index\":6,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"42:b5:6a:91:9c:11\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.31.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::40b5:6aff:fe91:9c11\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0053",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "-j",
+      "route"
+    ],
+    "start_ns": 1243578359248256,
+    "end_ns": 1243578363323178,
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.31.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.31.0.2\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0054",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables-save",
+      "-c"
+    ],
+    "start_ns": 1243578363331490,
+    "end_ns": 1243578367842944,
+    "returncode": 0,
+    "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sun Nov  1 02:34:15 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[0:0] -A INPUT -i lo -j ACCEPT\n[9:1133] -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A INPUT -s 10.31.0.1/32 -d 10.31.0.2/32 -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT\n[0:0] -A INPUT -j DROP\n[0:0] -A OUTPUT -o lo -j ACCEPT\n[8:2755] -A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[0:0] -A OUTPUT -j DROP\nCOMMIT\n# Completed on Sun Nov  1 02:34:15 2026\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0055",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "conntrack",
+      "-L",
+      "-p",
+      "tcp",
+      "-o",
+      "extended"
+    ],
+    "start_ns": 1243578367850925,
+    "end_ns": 1243578376495927,
+    "returncode": 0,
+    "stdout": "ipv4     2 tcp      6 119 TIME_WAIT src=10.31.0.1 dst=10.31.0.2 sport=41000 dport=443 src=10.31.0.2 dst=10.31.0.1 sport=443 dport=41000 [ASSURED] mark=0 use=1\n",
+    "stderr": "conntrack v1.4.8 (conntrack-tools): 1 flow entries have been shown.\n"
+  },
+  {
+    "id": "cmd-0056",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "python3",
+      "-c",
+      "import socket,json,time\ns=socket.socket();s.settimeout(1);s.bind(('10.31.0.2',42000));start=time.monotonic_ns()\nresult=s.connect_ex(('10.31.0.1',443));print(json.dumps({'event':'unsolicited_connect','start_ns':start,'end_ns':time.monotonic_ns(),'result':result,'source':'10.31.0.2','source_port':42000,'destination':'10.31.0.1','destination_port':443}));assert result!=0\n"
+    ],
+    "start_ns": 1243578377314726,
+    "end_ns": 1243579415062924,
+    "returncode": 0,
+    "stdout": "{\"event\": \"unsolicited_connect\", \"start_ns\": 1243578407975928, \"end_ns\": 1243579409055208, \"result\": 11, \"source\": \"10.31.0.2\", \"source_port\": 42000, \"destination\": \"10.31.0.1\", \"destination_port\": 443}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0057",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "-j",
+      "-d",
+      "addr"
+    ],
+    "start_ns": 1243579415078961,
+    "end_ns": 1243579420532119,
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":6,\"link_index\":5,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"aa:27:55:da:00:e1\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.31.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::a827:55ff:feda:e1\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0058",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "-j",
+      "route"
+    ],
+    "start_ns": 1243579420540268,
+    "end_ns": 1243579424393994,
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.31.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.31.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0059",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables-save",
+      "-c"
+    ],
+    "start_ns": 1243579424401679,
+    "end_ns": 1243579428528602,
+    "returncode": 0,
+    "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sun Nov  1 02:34:16 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[0:0] -A INPUT -i lo -j ACCEPT\n[8:2755] -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[0:0] -A INPUT -j DROP\n[0:0] -A OUTPUT -o lo -j ACCEPT\n[9:1133] -A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A OUTPUT -s 10.31.0.1/32 -d 10.31.0.2/32 -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT\n[0:0] -A OUTPUT -j DROP\nCOMMIT\n# Completed on Sun Nov  1 02:34:16 2026\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0060",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "conntrack",
+      "-L",
+      "-p",
+      "tcp",
+      "-o",
+      "extended"
+    ],
+    "start_ns": 1243579428536192,
+    "end_ns": 1243579436925274,
+    "returncode": 0,
+    "stdout": "ipv4     2 tcp      6 118 TIME_WAIT src=10.31.0.1 dst=10.31.0.2 sport=41000 dport=443 src=10.31.0.2 dst=10.31.0.1 sport=443 dport=41000 [ASSURED] mark=0 use=1\n",
+    "stderr": "conntrack v1.4.8 (conntrack-tools): 1 flow entries have been shown.\n"
+  },
+  {
+    "id": "cmd-0061",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "-j",
+      "-d",
+      "addr"
+    ],
+    "start_ns": 1243579436942681,
+    "end_ns": 1243579441626177,
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":5,\"link_index\":6,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"42:b5:6a:91:9c:11\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.31.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::40b5:6aff:fe91:9c11\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0062",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "-j",
+      "route"
+    ],
+    "start_ns": 1243579441636310,
+    "end_ns": 1243579445873688,
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.31.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.31.0.2\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0063",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables-save",
+      "-c"
+    ],
+    "start_ns": 1243579445881790,
+    "end_ns": 1243579449892360,
+    "returncode": 0,
+    "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sun Nov  1 02:34:16 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[0:0] -A INPUT -i lo -j ACCEPT\n[9:1133] -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A INPUT -s 10.31.0.1/32 -d 10.31.0.2/32 -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT\n[0:0] -A INPUT -j DROP\n[0:0] -A OUTPUT -o lo -j ACCEPT\n[8:2755] -A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A OUTPUT -j DROP\nCOMMIT\n# Completed on Sun Nov  1 02:34:16 2026\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0064",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "conntrack",
+      "-L",
+      "-p",
+      "tcp",
+      "-o",
+      "extended"
+    ],
+    "start_ns": 1243579449899781,
+    "end_ns": 1243579457964334,
+    "returncode": 0,
+    "stdout": "ipv4     2 tcp      6 118 TIME_WAIT src=10.31.0.1 dst=10.31.0.2 sport=41000 dport=443 src=10.31.0.2 dst=10.31.0.1 sport=443 dport=41000 [ASSURED] mark=0 use=1\n",
+    "stderr": "conntrack v1.4.8 (conntrack-tools): 1 flow entries have been shown.\n"
+  },
+  {
+    "id": "cmd-0065",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "python3",
+      "-c",
+      "import socket,struct,json,time,hashlib\ndef checksum(b):\n if len(b)%2:b+=b'\\0'\n n=sum(struct.unpack('!%dH'%(len(b)//2),b));n=(n>>16)+(n&65535);n+=(n>>16);return (~n)&65535\nsrc=socket.inet_aton('10.31.0.2');dst=socket.inet_aton('10.31.0.1');payload=b'v31-unbound-reply'\ntcp=struct.pack('!HHLLBBHHH',443,41001,77,99,5<<4,0x18,4096,0,0)+payload\ncs=checksum(src+dst+struct.pack('!BBH',0,6,len(tcp))+tcp);tcp=tcp[:16]+struct.pack('!H',cs)+tcp[18:]\nip=struct.pack('!BBHHHBBH4s4s',69,0,20+len(tcp),31,0,64,6,0,src,dst);ip=ip[:10]+struct.pack('!H',checksum(ip))+ip[12:]\npacket=ip+tcp;s=socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_RAW);sent=0;error=None\ntry:sent=s.sendto(packet,('10.31.0.1',0))\nexcept OSError as exc:error=exc.errno\nprint(json.dumps({'event':'unbound_reply_attempt','monotonic_ns':time.monotonic_ns(),'packet_hex':packet.hex(),'sha256':hashlib.sha256(packet).hexdigest(),'sent_bytes':sent,'errno':error}))\nassert error in [None,1]\n"
+    ],
+    "start_ns": 1243579458699757,
+    "end_ns": 1243579496765950,
+    "returncode": 0,
+    "stdout": "{\"event\": \"unbound_reply_attempt\", \"monotonic_ns\": 1243579491869494, \"packet_hex\": \"45000039001f0000400666600a1f00020a1f000101bba0290000004d0000006350181000343a00007633312d756e626f756e642d7265706c79\", \"sha256\": \"41e2f6f0d9877ce8b3223d14ba256b4a2314d9abf8c19c56f2e845b8db166f15\", \"sent_bytes\": 0, \"errno\": 1}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0066",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "-j",
+      "-d",
+      "addr"
+    ],
+    "start_ns": 1243579696851764,
+    "end_ns": 1243579701394907,
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":6,\"link_index\":5,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"aa:27:55:da:00:e1\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":1,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.31.0.1\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::a827:55ff:feda:e1\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0067",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "ip",
+      "-j",
+      "route"
+    ],
+    "start_ns": 1243579701403802,
+    "end_ns": 1243579705367248,
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.31.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.31.0.1\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0068",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "iptables-save",
+      "-c"
+    ],
+    "start_ns": 1243579705375221,
+    "end_ns": 1243579710312096,
+    "returncode": 0,
+    "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sun Nov  1 02:34:16 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[0:0] -A INPUT -i lo -j ACCEPT\n[8:2755] -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[0:0] -A INPUT -j DROP\n[0:0] -A OUTPUT -o lo -j ACCEPT\n[9:1133] -A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A OUTPUT -s 10.31.0.1/32 -d 10.31.0.2/32 -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT\n[0:0] -A OUTPUT -j DROP\nCOMMIT\n# Completed on Sun Nov  1 02:34:16 2026\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0069",
+    "device": "AW",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-AW",
+      "conntrack",
+      "-L",
+      "-p",
+      "tcp",
+      "-o",
+      "extended"
+    ],
+    "start_ns": 1243579710320165,
+    "end_ns": 1243579718805048,
+    "returncode": 0,
+    "stdout": "ipv4     2 tcp      6 118 TIME_WAIT src=10.31.0.1 dst=10.31.0.2 sport=41000 dport=443 src=10.31.0.2 dst=10.31.0.1 sport=443 dport=41000 [ASSURED] mark=0 use=1\n",
+    "stderr": "conntrack v1.4.8 (conntrack-tools): 1 flow entries have been shown.\n"
+  },
+  {
+    "id": "cmd-0070",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "-j",
+      "-d",
+      "addr"
+    ],
+    "start_ns": 1243579718819883,
+    "end_ns": 1243579723401054,
+    "returncode": 0,
+    "stdout": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"link\":null,\"ifname\":\"gre0\",\"flags\":[\"NOARP\"],\"mtu\":1476,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"gre\",\"address\":\"0.0.0.0\",\"broadcast\":\"0.0.0.0\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":0,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gre\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":3,\"link\":null,\"ifname\":\"gretap0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1462,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"gretap\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":4,\"link\":null,\"ifname\":\"erspan0\",\"flags\":[\"BROADCAST\",\"MULTICAST\"],\"mtu\":1450,\"qdisc\":\"noop\",\"operstate\":\"DOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":0,\"linkinfo\":{\"info_kind\":\"erspan\",\"info_data\":{\"remote\":\"any\",\"local\":\"any\",\"ttl\":0,\"pmtudisc\":false,\"okey\":\"0.0.0.0\",\"erspan_index\":0,\"erspan_ver\":1}},\"num_tx_queues\":1,\"num_rx_queues\":1,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":65536,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[]},{\"ifindex\":5,\"link_index\":6,\"ifname\":\"gray\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"42:b5:6a:91:9c:11\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"link_netnsid\":0,\"promiscuity\":0,\"allmulti\":0,\"min_mtu\":68,\"max_mtu\":65535,\"linkinfo\":{\"info_kind\":\"veth\"},\"num_tx_queues\":56,\"num_rx_queues\":56,\"gso_max_size\":65536,\"gso_max_segs\":65535,\"tso_max_size\":524280,\"tso_max_segs\":65535,\"gro_max_size\":65536,\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.31.0.2\",\"prefixlen\":30,\"scope\":\"global\",\"label\":\"gray\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"fe80::40b5:6aff:fe91:9c11\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0071",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "ip",
+      "-j",
+      "route"
+    ],
+    "start_ns": 1243579723409684,
+    "end_ns": 1243579726988363,
+    "returncode": 0,
+    "stdout": "[{\"dst\":\"10.31.0.0/30\",\"dev\":\"gray\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.31.0.2\",\"flags\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0072",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "iptables-save",
+      "-c"
+    ],
+    "start_ns": 1243579726996074,
+    "end_ns": 1243579731720003,
+    "returncode": 0,
+    "stdout": "# Generated by iptables-save v1.8.10 (nf_tables) on Sun Nov  1 02:34:16 2026\n*filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT DROP [0:0]\n[0:0] -A INPUT -i lo -j ACCEPT\n[9:1133] -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[1:60] -A INPUT -s 10.31.0.1/32 -d 10.31.0.2/32 -p tcp -m tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT\n[0:0] -A INPUT -j DROP\n[0:0] -A OUTPUT -o lo -j ACCEPT\n[8:2755] -A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT\n[2:117] -A OUTPUT -j DROP\nCOMMIT\n# Completed on Sun Nov  1 02:34:16 2026\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0073",
+    "device": "OUTER",
+    "command": [
+      "ip",
+      "netns",
+      "exec",
+      "tdnv31s-OUTER",
+      "conntrack",
+      "-L",
+      "-p",
+      "tcp",
+      "-o",
+      "extended"
+    ],
+    "start_ns": 1243579731728924,
+    "end_ns": 1243579740804379,
+    "returncode": 0,
+    "stdout": "ipv4     2 tcp      6 118 TIME_WAIT src=10.31.0.1 dst=10.31.0.2 sport=41000 dport=443 src=10.31.0.2 dst=10.31.0.1 sport=443 dport=41000 [ASSURED] mark=0 use=1\n",
+    "stderr": "conntrack v1.4.8 (conntrack-tools): 1 flow entries have been shown.\n"
+  },
+  {
+    "id": "cmd-0074",
+    "device": null,
+    "command": [
+      "cat",
+      "/lab/exports/management-session-002-private/capture-AW.jsonl"
+    ],
+    "start_ns": 1243579805039710,
+    "end_ns": 1243579807875980,
+    "returncode": 0,
+    "stdout": "{\"ready\": true}\n{\"monotonic_ns\": 1243574300452702, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003c11b34000400614c90a1f00010a1f0002a02801bb9a87b31200000000a002faf0146f0000020405b40402080addf56fa10000000001030307\"}\n{\"monotonic_ns\": 1243574300547889, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"aa2755da00e142b56a919c1108004500003c000040004006267c0a1f00020a1f000101bba028b67eae349a87b313a012fe88146f0000020405b40402080af5dc88c3ddf56fa101030307\"}\n{\"monotonic_ns\": 1243574300598449, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411b44000400614d00a1f00010a1f0002a02801bb9a87b313b67eae35801001f6146700000101080addf56fa1f5dc88c3\"}\n{\"monotonic_ns\": 1243574302438348, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500023911b54000400612ca0a1f00010a1f0002a02801bb9a87b313b67eae35801801f6166c00000101080addf56fa3f5dc88c31603010200010001fc0303a0717b21cbc6037d996a62c9b3a06c7fd6cce7abb0e3b56275eb8546f199fd2b20cd0b0f31b758944b3825b529fc27bbe8ee195ee9d37da7d6f5ca798576c039dc003e130213031301c02cc030009fcca9cca8ccaac02bc02f009ec024c028006bc023c0270067c00ac0140039c009c0130033009d009c003d003c0035002f00ff0100017500000013001100000e6f757465722e6d73632e74657374000b000403000102000a00160014001d0017001e0019001801000101010201030104002300000016000000170000000d002a0028040305030603080708080809080a080b080408050806040105010601030303010302040205020602002b00050403040303002d00020101003300260024001d0020bcb921ef4f0da5cda7220c51c27bf57d3f8cb9e2400e13776e99932bf8d1b010001500c50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\"}\n{\"monotonic_ns\": 1243574302502193, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"aa2755da00e142b56a919c11080045000034cc924000400659f10a1f00020a1f000101bba028b67eae359a87b518801001fa146700000101080af5dc88c5ddf56fa3\"}\n{\"monotonic_ns\": 1243574308309177, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"aa2755da00e142b56a919c11080045000712cc934000400653120a1f00020a1f000101bba028b67eae359a87b518801801fa1b4500000101080af5dc88cbddf56fa3160303007a020000760303dee10f1107d5c8bdf39939217a7de8665e78a05ffcdd37c9abb937d2c5df647b20cd0b0f31b758944b3825b529fc27bbe8ee195ee9d37da7d6f5ca798576c039dc130200002e002b0002030400330024001d00204e33ebe1b5ea08fbe776131483be475d3ba3acfe645560c5b706717afab0941e1403030001011703030017d7987ba25c7985b64dff8ea4fc56007cd0c4f9c91bfac317030304507cadcde052f0ca2831dbb57c709e0d0680a574dbf88b3d084299fb0977efb387eff836b37a8e0d7a31c9b61bbb1d50c478a32203e01941cfd97dd305da90142c1a960474d7ab659c87f909960826a9d067828d93df22ab7626d0b08cc3452d061472a5544bee76066c1f87fdbd37792abf614b3f34cce96c626b75b650d46cfc5629aa8086068fc9269ab48ebc402d7191dd378437a0bc5f056e132e6a6077274674883dc1ccf15fb80b10a590ef9b293ce6905fd6795e1e90f12461828b426561d68204a44b19849a349b4281c5cfb570a355a715da96f8d9353defef4a09d520d66cf91c133e52474abaecb7529e960adba157d629e6e926bf683cdfd2787171c1f47e668e51b54384262ae5827e7422dff3cd7354f1cedfa59978c29a757641790838a2d8f55bbbc491e56ce84998e6f4803fe7c1a94e7fc359387178cc4bb9002b21c51b31aacd3789da8056ddcf8980cfb77535e7aea19753532d3a57946e5ecf4c2869c7ac08b336c66be2fed62c0b4a911397fd6187c493bfad24e12828a8fe2eb2c716406a32e1cde970e4a03ee7eac7fd974ab68c6b89adb41724bf73728080e2df802e980e75fdad9ae563c426cb8fb8919cd5d4a8a73c290b0515dcec02c20494f7c26cc9f1fbf8d3eeee498bf3e85ca48f97de35b62ac9a0e1037d352f1053a1fe54fb98e456f1c1fadd8be561166b76f24366fa8b4623235b220b385149224375f72ac2392f7e3a3f654e597ff6989952d0511a39360d966731da85ddf72ab311e00e1ccea1fd35231e8228b5634cd475a7aa7b5aa4c03ccba4a309d0484726d6a8ccf3ab774b3087c45b80907d27e54b5fa15644c878db0700029b34da48eb9871768eeb9e8c589bfb4fa52e5b65c12cce1580a938d2522ff312e55e1e536f94eb23a89a055a8d856e49eb1344fe17ba545b7e2b1b0ddd70c1446ad77e81b47aed116835de3370949b7350a6f1186b26d013dadd2a1d8e5b948beaaead62a940909f46607a19f7f4c2841071e5c45de8097438db2e2d5afe505d4c748a67a5a1bb1db9d282df657ca0075830d05507a3a7b3dd611dd567448d2194906191730e756400b158bfcf6d30b17cf4329355d95a9e8f6cd921eded0532796090aada3168f21ab94d0e3ad2e64a82c5ba8de37ab74bda388f84a646c9fa2b9fd0e7319e8ca43c05b51803cbd66d611a52174e455eeaf413379b5413d8617e9265165728f1b1b839d0902a23015581e6f72d8b6bd0d5f52fbbbd7c12c76857754299cd892b86cdb7609c796517716174b452e3979e0d6e5ea0c4b65c0b7876c5fecf102e743410d16a9eaf6db4bc5bb9e3ca86e40357b89d5733e8f5b3f5ad97253802c1c30fd66aad79d77518a8b6f1bdc9dc37d8e270b66e05f8d5235b3d43d15ed08f9dfeb8c46d2c9972f94ee9e69131e9cba163383e3d65924cb3e5077519015d41d8a867e37fd6b29b18be0f057aac836334032fff2c892de81a32dd6be4d8f2cae2df73d50863124ff683d7ac280afef5dbe27469b6799539ea6b00e9524fcde77fcc108ebccffc2ea5170303019969fb33fd60b2b155912859a9859d2c331d4c9a41b82352c423ea3d3536fce27709e921d2362d02b2758d227f0ad5fb2ba1c4d34d5a8c73ff7459ec05eb5e609c873c64ab23ff1c0c242b06bd3cea67219625a022b2afc2580e18c4e19a6e515ffbce76e6e8c89c14819e2314640e4795c2a8c7eedd3fdd6a99bc859d287ac0bfb8e12277af3efc44f10bfa3431a087eac5daac0780ba325fd1c0aef8b6c7790eaeb9359c6ee080c87189fcb4b71dcb845ee377437f807ed532cef1dcf1e5f0b556799c10bcd61cece201ce35cfa4cfadff80bba3064556b64ebbc46744221833d9525e034f94ba63e0c35a1725f224bdb0a0b6e35797804a8152b04406c33b79d4ffb234d21579c1d21da1be7726b3abe507dd7def70a45a4e5501b7f0d1b8ec3d9368c93860fd80ae8ce8d1e4a5c8383d1d5c52b9ad5a857e90ad071b5b4670198625f3d87bc7c2d10e9bf519e5ac36fe1f37c2bd968c01e996c566503138e8ab4e7555b23b0ef28e5833f02d65225da62ab446786a966fe695c2ad22f53cb196624fb301df8db3d8a65105d19346082b43bb6f299154c4561703030045497fb9a23018bfc78534149f45f91c828816c23b370547673bafa31ba4d372dcb13d86d94347bd041249414b714fdfbd8b385a40d78138268ccbd73a464f7999374ea9125d\"}\n{\"monotonic_ns\": 1243574308432676, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411b64000400614ce0a1f00010a1f0002a02801bb9a87b518b67eb51380100212146700000101080addf56fa9f5dc88cb\"}\n{\"monotonic_ns\": 1243574309157046, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500008411b740004006147d0a1f00010a1f0002a02801bb9a87b518b67eb5138018021214b700000101080addf56faaf5dc88cb140303000101170303004517de55cddec7b9803b001dee7c17c72b9a2e150d573a4a68354055fef67cc6d7617749433edc365fb01357fe9d7e14b8e69ff8834d45dc4d6490b4a6badb4a1bb378c2182a\"}\n{\"monotonic_ns\": 1243574309318014, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"aa2755da00e142b56a919c11080045000133cc954000400658ef0a1f00020a1f000101bba028b67eb5139a87b568801801fa156600000101080af5dc88ccddf56faa17030300fa5152abf15aef2746d0e7d1ff28a80c8721ee365dcd29a01ac7e2ab7e07d0582e981bd38a0edf88a537f627423aeb51ad1312d86badfa782c35f1e82eec846e59ea51fe209e95f9208c7ece367fa4690e458349232dec3cf0e300063b2da9f807d544ef1c1cf1534763df1a508f47c69da05de4e216f4b978912b4751407608a9ac7d4e3cbd6edb6470f3ccee51acd13b9a239ae03391c45a4a4c60b64e40f674d96eab7075e6630942cac4cb6aa3a759010f7e22be915e3c12226779557cef80a61c6212a7cc6d34b5ab7901bde16e1eaa22d5e377282f5fe50d0df60f67f1439563ea4c9703476c692abf249cb8df5e71288ef3f3c665954395\"}\n{\"monotonic_ns\": 1243574309429665, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500007811b84000400614880a1f00010a1f0002a02801bb9a87b568b67eb6128018022914ab00000101080addf56faaf5dc88cc170303003fa8f833ff8d3ae3d605172e1d361d5b32933f2f748a02a3948d81a48f8b6b2e99b9c0306123f123d64952dd52b21987034ac27d8f1d930f686fe01a5da75abd\"}\n{\"monotonic_ns\": 1243574309516383, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"aa2755da00e142b56a919c11080045000133cc964000400658ee0a1f00020a1f000101bba028b67eb6129a87b5ac801801fa156600000101080af5dc88ccddf56faa17030300fa6afc3f1c12d522fce3e3e1173cd04a12e7a77fa687aa608af8a88d5667be8d3056827881ee4682021c911ad16110b19ed79e7db49538d6a2818aa6d6f693f801d0737b39c0b5d2a8bc79267f63f3f309d8d373e525525d6b03dff66409bba305117cae55a6f3bed4400a05b3f52626878f414ab135a2cb3afb0ec537fa639c1d639d4967fa66ea0b81f37e59f9652ca3f9e2eb6dce675d8c6527249a29bc40603b9f4132432f87ed29da1081b414c9593a72b42981b29c8fc196eee1f85aef6bf2e44abb0e3f63af11d0c8170d1d75af4c5892797aec9fce8edd7450b5fd441aa7f5fa1954448130a60aec021a99a659b3b189c80c0c406d6411\"}\n{\"monotonic_ns\": 1243574350056864, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411b94000400614cb0a1f00010a1f0002a02801bb9a87b5acb67eb7118010023f146700000101080addf56fd3f5dc88cc\"}\n{\"monotonic_ns\": 1243574350142997, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"aa2755da00e142b56a919c11080045000073cc974000400659ad0a1f00020a1f000101bba028b67eb7119a87b5ac801801fa14a600000101080af5dc88f5ddf56fd3170303003aa151af7796d78aa5f921e847ab0623bd47dd22b4c03d0b9adbad8d30b288081b2f3c8b4149b778b141c175b72cb5fe72f8ad04f6fc16b774d078\"}\n{\"monotonic_ns\": 1243574350195268, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411ba4000400614ca0a1f00010a1f0002a02801bb9a87b5acb67eb7508010023f146700000101080addf56fd3f5dc88f5\"}\n{\"monotonic_ns\": 1243577350420556, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411bb4000400614c90a1f00010a1f0002a02801bb9a87b5acb67eb7508011023f146700000101080addf57b8bf5dc88f5\"}\n{\"monotonic_ns\": 1243577391082389, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"aa2755da00e142b56a919c11080045000034cc984000400659eb0a1f00020a1f000101bba028b67eb7509a87b5ad801001fa146700000101080af5dc94d6ddf57b8b\"}\n{\"monotonic_ns\": 1243578309729120, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"aa2755da00e142b56a919c11080045000034cc994000400659ea0a1f00020a1f000101bba028b67eb7509a87b5ad801101fa146700000101080af5dc986cddf57b8b\"}\n{\"monotonic_ns\": 1243578309830589, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003400004000400626840a1f00010a1f0002a02801bb9a87b5adb67eb7518010023f14cb00000101080addf57f4af5dc986c\"}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0075",
+    "device": null,
+    "command": [
+      "cat",
+      "/lab/exports/management-session-002-private/capture-OUTER.jsonl"
+    ],
+    "start_ns": 1243579808142534,
+    "end_ns": 1243579810490152,
+    "returncode": 0,
+    "stdout": "{\"ready\": true}\n{\"monotonic_ns\": 1243574300447469, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003c11b34000400614c90a1f00010a1f0002a02801bb9a87b31200000000a002faf0146f0000020405b40402080addf56fa10000000001030307\"}\n{\"monotonic_ns\": 1243574300500427, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"aa2755da00e142b56a919c1108004500003c000040004006267c0a1f00020a1f000101bba028b67eae349a87b313a012fe88146f0000020405b40402080af5dc88c3ddf56fa101030307\"}\n{\"monotonic_ns\": 1243574300527120, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411b44000400614d00a1f00010a1f0002a02801bb9a87b313b67eae35801001f6146700000101080addf56fa1f5dc88c3\"}\n{\"monotonic_ns\": 1243574302430663, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500023911b54000400612ca0a1f00010a1f0002a02801bb9a87b313b67eae35801801f6166c00000101080addf56fa3f5dc88c31603010200010001fc0303a0717b21cbc6037d996a62c9b3a06c7fd6cce7abb0e3b56275eb8546f199fd2b20cd0b0f31b758944b3825b529fc27bbe8ee195ee9d37da7d6f5ca798576c039dc003e130213031301c02cc030009fcca9cca8ccaac02bc02f009ec024c028006bc023c0270067c00ac0140039c009c0130033009d009c003d003c0035002f00ff0100017500000013001100000e6f757465722e6d73632e74657374000b000403000102000a00160014001d0017001e0019001801000101010201030104002300000016000000170000000d002a0028040305030603080708080809080a080b080408050806040105010601030303010302040205020602002b00050403040303002d00020101003300260024001d0020bcb921ef4f0da5cda7220c51c27bf57d3f8cb9e2400e13776e99932bf8d1b010001500c50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\"}\n{\"monotonic_ns\": 1243574302465570, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"aa2755da00e142b56a919c11080045000034cc924000400659f10a1f00020a1f000101bba028b67eae359a87b518801001fa146700000101080af5dc88c5ddf56fa3\"}\n{\"monotonic_ns\": 1243574308295477, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"aa2755da00e142b56a919c11080045000712cc934000400653120a1f00020a1f000101bba028b67eae359a87b518801801fa1b4500000101080af5dc88cbddf56fa3160303007a020000760303dee10f1107d5c8bdf39939217a7de8665e78a05ffcdd37c9abb937d2c5df647b20cd0b0f31b758944b3825b529fc27bbe8ee195ee9d37da7d6f5ca798576c039dc130200002e002b0002030400330024001d00204e33ebe1b5ea08fbe776131483be475d3ba3acfe645560c5b706717afab0941e1403030001011703030017d7987ba25c7985b64dff8ea4fc56007cd0c4f9c91bfac317030304507cadcde052f0ca2831dbb57c709e0d0680a574dbf88b3d084299fb0977efb387eff836b37a8e0d7a31c9b61bbb1d50c478a32203e01941cfd97dd305da90142c1a960474d7ab659c87f909960826a9d067828d93df22ab7626d0b08cc3452d061472a5544bee76066c1f87fdbd37792abf614b3f34cce96c626b75b650d46cfc5629aa8086068fc9269ab48ebc402d7191dd378437a0bc5f056e132e6a6077274674883dc1ccf15fb80b10a590ef9b293ce6905fd6795e1e90f12461828b426561d68204a44b19849a349b4281c5cfb570a355a715da96f8d9353defef4a09d520d66cf91c133e52474abaecb7529e960adba157d629e6e926bf683cdfd2787171c1f47e668e51b54384262ae5827e7422dff3cd7354f1cedfa59978c29a757641790838a2d8f55bbbc491e56ce84998e6f4803fe7c1a94e7fc359387178cc4bb9002b21c51b31aacd3789da8056ddcf8980cfb77535e7aea19753532d3a57946e5ecf4c2869c7ac08b336c66be2fed62c0b4a911397fd6187c493bfad24e12828a8fe2eb2c716406a32e1cde970e4a03ee7eac7fd974ab68c6b89adb41724bf73728080e2df802e980e75fdad9ae563c426cb8fb8919cd5d4a8a73c290b0515dcec02c20494f7c26cc9f1fbf8d3eeee498bf3e85ca48f97de35b62ac9a0e1037d352f1053a1fe54fb98e456f1c1fadd8be561166b76f24366fa8b4623235b220b385149224375f72ac2392f7e3a3f654e597ff6989952d0511a39360d966731da85ddf72ab311e00e1ccea1fd35231e8228b5634cd475a7aa7b5aa4c03ccba4a309d0484726d6a8ccf3ab774b3087c45b80907d27e54b5fa15644c878db0700029b34da48eb9871768eeb9e8c589bfb4fa52e5b65c12cce1580a938d2522ff312e55e1e536f94eb23a89a055a8d856e49eb1344fe17ba545b7e2b1b0ddd70c1446ad77e81b47aed116835de3370949b7350a6f1186b26d013dadd2a1d8e5b948beaaead62a940909f46607a19f7f4c2841071e5c45de8097438db2e2d5afe505d4c748a67a5a1bb1db9d282df657ca0075830d05507a3a7b3dd611dd567448d2194906191730e756400b158bfcf6d30b17cf4329355d95a9e8f6cd921eded0532796090aada3168f21ab94d0e3ad2e64a82c5ba8de37ab74bda388f84a646c9fa2b9fd0e7319e8ca43c05b51803cbd66d611a52174e455eeaf413379b5413d8617e9265165728f1b1b839d0902a23015581e6f72d8b6bd0d5f52fbbbd7c12c76857754299cd892b86cdb7609c796517716174b452e3979e0d6e5ea0c4b65c0b7876c5fecf102e743410d16a9eaf6db4bc5bb9e3ca86e40357b89d5733e8f5b3f5ad97253802c1c30fd66aad79d77518a8b6f1bdc9dc37d8e270b66e05f8d5235b3d43d15ed08f9dfeb8c46d2c9972f94ee9e69131e9cba163383e3d65924cb3e5077519015d41d8a867e37fd6b29b18be0f057aac836334032fff2c892de81a32dd6be4d8f2cae2df73d50863124ff683d7ac280afef5dbe27469b6799539ea6b00e9524fcde77fcc108ebccffc2ea5170303019969fb33fd60b2b155912859a9859d2c331d4c9a41b82352c423ea3d3536fce27709e921d2362d02b2758d227f0ad5fb2ba1c4d34d5a8c73ff7459ec05eb5e609c873c64ab23ff1c0c242b06bd3cea67219625a022b2afc2580e18c4e19a6e515ffbce76e6e8c89c14819e2314640e4795c2a8c7eedd3fdd6a99bc859d287ac0bfb8e12277af3efc44f10bfa3431a087eac5daac0780ba325fd1c0aef8b6c7790eaeb9359c6ee080c87189fcb4b71dcb845ee377437f807ed532cef1dcf1e5f0b556799c10bcd61cece201ce35cfa4cfadff80bba3064556b64ebbc46744221833d9525e034f94ba63e0c35a1725f224bdb0a0b6e35797804a8152b04406c33b79d4ffb234d21579c1d21da1be7726b3abe507dd7def70a45a4e5501b7f0d1b8ec3d9368c93860fd80ae8ce8d1e4a5c8383d1d5c52b9ad5a857e90ad071b5b4670198625f3d87bc7c2d10e9bf519e5ac36fe1f37c2bd968c01e996c566503138e8ab4e7555b23b0ef28e5833f02d65225da62ab446786a966fe695c2ad22f53cb196624fb301df8db3d8a65105d19346082b43bb6f299154c4561703030045497fb9a23018bfc78534149f45f91c828816c23b370547673bafa31ba4d372dcb13d86d94347bd041249414b714fdfbd8b385a40d78138268ccbd73a464f7999374ea9125d\"}\n{\"monotonic_ns\": 1243574308369805, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411b64000400614ce0a1f00010a1f0002a02801bb9a87b518b67eb51380100212146700000101080addf56fa9f5dc88cb\"}\n{\"monotonic_ns\": 1243574309149711, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500008411b740004006147d0a1f00010a1f0002a02801bb9a87b518b67eb5138018021214b700000101080addf56faaf5dc88cb140303000101170303004517de55cddec7b9803b001dee7c17c72b9a2e150d573a4a68354055fef67cc6d7617749433edc365fb01357fe9d7e14b8e69ff8834d45dc4d6490b4a6badb4a1bb378c2182a\"}\n{\"monotonic_ns\": 1243574309276863, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"aa2755da00e142b56a919c11080045000133cc954000400658ef0a1f00020a1f000101bba028b67eb5139a87b568801801fa156600000101080af5dc88ccddf56faa17030300fa5152abf15aef2746d0e7d1ff28a80c8721ee365dcd29a01ac7e2ab7e07d0582e981bd38a0edf88a537f627423aeb51ad1312d86badfa782c35f1e82eec846e59ea51fe209e95f9208c7ece367fa4690e458349232dec3cf0e300063b2da9f807d544ef1c1cf1534763df1a508f47c69da05de4e216f4b978912b4751407608a9ac7d4e3cbd6edb6470f3ccee51acd13b9a239ae03391c45a4a4c60b64e40f674d96eab7075e6630942cac4cb6aa3a759010f7e22be915e3c12226779557cef80a61c6212a7cc6d34b5ab7901bde16e1eaa22d5e377282f5fe50d0df60f67f1439563ea4c9703476c692abf249cb8df5e71288ef3f3c665954395\"}\n{\"monotonic_ns\": 1243574309301099, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500007811b84000400614880a1f00010a1f0002a02801bb9a87b568b67eb6128018022914ab00000101080addf56faaf5dc88cc170303003fa8f833ff8d3ae3d605172e1d361d5b32933f2f748a02a3948d81a48f8b6b2e99b9c0306123f123d64952dd52b21987034ac27d8f1d930f686fe01a5da75abd\"}\n{\"monotonic_ns\": 1243574309361913, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"aa2755da00e142b56a919c11080045000133cc964000400658ee0a1f00020a1f000101bba028b67eb6129a87b5ac801801fa156600000101080af5dc88ccddf56faa17030300fa6afc3f1c12d522fce3e3e1173cd04a12e7a77fa687aa608af8a88d5667be8d3056827881ee4682021c911ad16110b19ed79e7db49538d6a2818aa6d6f693f801d0737b39c0b5d2a8bc79267f63f3f309d8d373e525525d6b03dff66409bba305117cae55a6f3bed4400a05b3f52626878f414ab135a2cb3afb0ec537fa639c1d639d4967fa66ea0b81f37e59f9652ca3f9e2eb6dce675d8c6527249a29bc40603b9f4132432f87ed29da1081b414c9593a72b42981b29c8fc196eee1f85aef6bf2e44abb0e3f63af11d0c8170d1d75af4c5892797aec9fce8edd7450b5fd441aa7f5fa1954448130a60aec021a99a659b3b189c80c0c406d6411\"}\n{\"monotonic_ns\": 1243574350064913, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411b94000400614cb0a1f00010a1f0002a02801bb9a87b5acb67eb7118010023f146700000101080addf56fd3f5dc88cc\"}\n{\"monotonic_ns\": 1243574350147725, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"aa2755da00e142b56a919c11080045000073cc974000400659ad0a1f00020a1f000101bba028b67eb7119a87b5ac801801fa14a600000101080af5dc88f5ddf56fd3170303003aa151af7796d78aa5f921e847ab0623bd47dd22b4c03d0b9adbad8d30b288081b2f3c8b4149b778b141c175b72cb5fe72f8ad04f6fc16b774d078\"}\n{\"monotonic_ns\": 1243574350197934, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411ba4000400614ca0a1f00010a1f0002a02801bb9a87b5acb67eb7508010023f146700000101080addf56fd3f5dc88f5\"}\n{\"monotonic_ns\": 1243577350420186, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003411bb4000400614c90a1f00010a1f0002a02801bb9a87b5acb67eb7508011023f146700000101080addf57b8bf5dc88f5\"}\n{\"monotonic_ns\": 1243577391065279, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"aa2755da00e142b56a919c11080045000034cc984000400659eb0a1f00020a1f000101bba028b67eb7509a87b5ad801001fa146700000101080af5dc94d6ddf57b8b\"}\n{\"monotonic_ns\": 1243578309721329, \"interface\": \"gray\", \"packet_type\": 4, \"frame_hex\": \"aa2755da00e142b56a919c11080045000034cc994000400659ea0a1f00020a1f000101bba028b67eb7509a87b5ad801101fa146700000101080af5dc986cddf57b8b\"}\n{\"monotonic_ns\": 1243578309828337, \"interface\": \"gray\", \"packet_type\": 0, \"frame_hex\": \"42b56a919c11aa2755da00e108004500003400004000400626840a1f00010a1f0002a02801bb9a87b5adb67eb7518010023f14cb00000101080addf57f4af5dc986c\"}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0076",
+    "device": null,
+    "command": [
+      "cat",
+      "/lab/exports/management-session-002-private/client.jsonl"
+    ],
+    "start_ns": 1243579810724211,
+    "end_ns": 1243579813404245,
+    "returncode": 0,
+    "stdout": "{\"event\": \"request\", \"peer\": [\"10.31.0.2\", 443], \"local\": [\"10.31.0.1\", 41000], \"monotonic_ns\": 1243574309215745, \"bytes_hex\": \"474554202f73746174757320485454502f312e310d0a486f73743a206f757465722e6d73632e746573740d0a0d0a\"}\n{\"event\": \"response\", \"monotonic_ns\": 1243574350092027, \"bytes_hex\": \"485454502f312e3120323030204f4b0d0a436f6e74656e742d4c656e6774683a20330d0a0d0a4f4b0a\"}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0077",
+    "device": null,
+    "command": [
+      "cat",
+      "/lab/exports/management-session-002-private/server.jsonl"
+    ],
+    "start_ns": 1243579813609157,
+    "end_ns": 1243579815884935,
+    "returncode": 0,
+    "stdout": "{\"ready\": true}\n{\"event\": \"request\", \"peer\": [\"10.31.0.1\", 41000], \"local\": [\"10.31.0.2\", 443], \"monotonic_ns\": 1243574309412842, \"bytes_hex\": \"474554202f73746174757320485454502f312e310d0a486f73743a206f757465722e6d73632e746573740d0a0d0a\"}\n{\"event\": \"response\", \"monotonic_ns\": 1243574309479291, \"bytes_hex\": \"485454502f312e3120323030204f4b0d0a436f6e74656e742d4c656e6774683a20330d0a0d0a4f4b0a\"}\n",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0078",
+    "device": null,
+    "command": [
+      "ip",
+      "netns",
+      "delete",
+      "tdnv31s-AW"
+    ],
+    "start_ns": 1243579816110681,
+    "end_ns": 1243579818806886,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "id": "cmd-0079",
+    "device": null,
+    "command": [
+      "ip",
+      "netns",
+      "delete",
+      "tdnv31s-OUTER"
+    ],
+    "start_ns": 1243579818814444,
+    "end_ns": 1243579820742242,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

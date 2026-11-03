@@ -1,0 +1,19 @@
+ap_scan=0
+eapol_version=3
+network={
+ key_mgmt=IEEE8021X
+ eap=TLS
+ phase1="tls_disable_tlsv1_0=1 tls_disable_tlsv1_1=1 tls_disable_tlsv1_2=1 tls_disable_tlsv1_3=0"
+ openssl_ciphers="DEFAULT"
+ identity="p1.msc.test"
+ ca_cert="/users/hy/tdn-v31-eap-20261101T0115Z/private/eap-tls-forward-v31-mka-public-v2/ca.pem"
+ client_cert="/users/hy/tdn-v31-eap-20261101T0115Z/private/eap-tls-forward-v31-mka-public-v2/peer.pem"
+ private_key="/users/hy/tdn-v31-eap-20261101T0115Z/private/eap-tls-forward-v31-mka-public-v2/peer.key"
+ domain_match="as.msc.test"
+ eapol_flags=0
+ macsec_policy=1
+ macsec_csindex=1
+ macsec_replay_protect=1
+ macsec_replay_window=0
+ mka_priority=1
+}

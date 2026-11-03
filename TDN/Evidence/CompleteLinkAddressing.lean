@@ -1,0 +1,137 @@
+import TDN.Evidence.CompleteAddressing
+
+namespace TDN.Imported.CompleteLinkAddressing
+open Compliance Targets Targets.Complete Targets.EndpointRuleDerivation
+
+abbrev level := CompleteAddressing.level
+abbrev otherLevel := CompleteAddressing.otherLevel
+
+def interface (name owner : String) (address linkAddress : Nat) : Interface :=
+  { id := name, device := owner, zone := .gray, address := some address,
+    linkAddress := some linkAddress, physical := true, managementNetwork := false }
+
+def interfaces : List Interface :=
+  [interface "port-A" "INNER-A" 10 101, interface "port-B" "INNER-B" 20 202,
+   interface "port-C" "INNER-C" 40 404, interface "port-O" "OUTER-A" 30 303]
+
+def linkRules : List PacketPolicy.Rule :=
+  [⟨[.sourceRange 101 101, .destinationRange 202 202, .protocol "ethernet", .etherTypes [35045]], .allow⟩,
+   ⟨[.sourceRange 202 202, .destinationRange 101 101, .protocol "ethernet", .etherTypes [35045]], .allow⟩]
+
+def linkProgram : LinkAdmission.Program := ⟨linkRules, .deny⟩
+
+def inventory (base : PacketProcessing.Inventory) : PacketProcessing.Inventory :=
+  { CompleteAddressing.inventory base with
+    configuration := { (CompleteAddressing.inventory base).configuration with
+      bridge := fun first second => (first = 0 ∧ second = 3) ∨ (first = 3 ∧ second = 0),
+      linkPolicies := [(3, ⟨linkProgram, linkProgram⟩)] } }
+
+def deployment (base : Deployment) (processing : PacketProcessing.Inventory) : Deployment :=
+  { CompleteAddressing.deployment base processing with
+    interfaces := interfaces, processing := some (inventory processing) }
+
+def ranges : List (Addressing.Range SecurityLevel) :=
+  CompleteAddressing.ranges ++ [⟨101, 202, level⟩, ⟨404, 404, otherLevel⟩]
+
+def pairs : List IntendedAddressPair :=
+  CompleteAddressing.pairs ++ [⟨101, 202, level⟩, ⟨202, 101, level⟩]
+
+def endpoints : List EndpointPair :=
+  [⟨.internet, "INNER-A", "INNER-B", 10, 20⟩,
+   ⟨.internet, "INNER-B", "INNER-A", 20, 10⟩,
+   ⟨.link, "INNER-A", "INNER-B", 101, 202⟩,
+   ⟨.link, "INNER-B", "INNER-A", 202, 101⟩]
+
+theorem complete_link_model_RG014 (base : Deployment) (processing : PacketProcessing.Inventory) :
+    msc_gray_addressing_for_level_filtering (deployment base processing) ranges pairs := by
+  apply gray_addressing_from_ip_and_link_endpoint_rules
+    (deployment base processing) ranges pairs endpoints (inventory processing) rfl
+  · rfl
+  · funext component
+    simp [deployment, CompleteAddressing.deployment, grayWorkstationRole,
+      Deployment.IsDevice, CompleteAddressing.devices]
+  · rfl
+  · decide
+  · unfold Addressing.Separated ranges
+    decide
+  · simp [pairs, ranges, CompleteAddressing.pairs, CompleteAddressing.ranges,
+      Addressing.Owns, Addressing.Contains]
+  · intro port member gray inner
+    simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member
+    rcases member with rfl | rfl | rfl | rfl <;>
+      simp_all [deployment, CompleteAddressing.deployment, interface, Deployment.IsLayer,
+        CompleteAddressing.devices, ranges, CompleteAddressing.ranges,
+        Addressing.Owns, Addressing.Contains]
+  · simp [endpoints, EndpointPair.Bound, AddressView.read, SameLevelComponents,
+      deployment, CompleteAddressing.deployment, CompleteAddressing.devices,
+      interfaces, interface, pairs, CompleteAddressing.pairs, Deployment.IsLayer]
+  · intro port member _ _
+    simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member
+    rcases member with rfl | rfl | rfl | rfl <;>
+      simp [admissionPrograms, deployment, CompleteAddressing.deployment,
+        CompleteAddressing.policies, CompleteAddressing.interfaces, CompleteAddressing.interface,
+        CompleteAddressing.rules, inventory, CompleteAddressing.inventory, interface,
+        LinkAdmission.lookup, linkProgram, linkRules, ProgramRuleChecks, RuleEndpointGuard,
+        endpoints, AddressView.RuleGuard, EthernetTypeAtom, PolicyDerivation.RuleIPGuard,
+        PolicyDerivation.IPProtocolAtom]
+
+def packet : PacketPolicy.Packet :=
+  { source := 101, destination := 202, protocol := "ethernet",
+    ingress := "port-A", egress := "port-O", etherType := some 35045,
+    sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 0,
+    inboundPolicies := [], outboundPolicies := [], connectionState := "" }
+
+lemma same_level_Ethernet_is_fully_admitted (base : Deployment)
+    (processing : PacketProcessing.Inventory) :
+    (deployment base processing).Accepts "port-O" .outbound
+      ((deployment base processing).Observe packet) := by
+  refine ⟨.link, ⟨rfl, ?_⟩, ?_, ?_⟩
+  · change (deployment base processing).ManagementMetadataBound packet
+    simp [Deployment.ManagementMetadataBound, packet, PacketClass, PacketService, PacketIKE,
+      PacketMKA, PacketARP]
+  · refine ⟨inventory processing, rfl, 3, by simp [inventory, CompleteAddressing.inventory], rfl, Or.inl ?_⟩
+    refine ⟨⟨rfl, rfl⟩, Or.inl ⟨0, by simp [inventory, CompleteAddressing.inventory], ?_⟩⟩
+    simp [inventory]
+  · refine ⟨inventory processing, rfl, 3, by simp [inventory, CompleteAddressing.inventory], rfl,
+      ⟨linkProgram, linkProgram⟩, rfl, ?_⟩
+    change linkProgram.Accepts packet
+    decide
+
+lemma link_addresses_bind_intended_Inner_peers (base : Deployment)
+    (processing : PacketProcessing.Inventory) :
+    (deployment base processing).PacketOwner packet 101 = some "INNER-A" ∧
+    (deployment base processing).PacketOwner packet 202 = some "INNER-B" ∧
+    (deployment base processing).SameLevelInner ((deployment base processing).Observe packet) := by
+  refine ⟨rfl, rfl, ?_⟩
+  refine ⟨⟨"INNER-A", "A", .vpn, some .inner, level, true⟩,
+    by simp [deployment, CompleteAddressing.deployment, CompleteAddressing.devices],
+    ⟨"INNER-B", "B", .vpn, some .inner, level, true⟩,
+    by simp [deployment, CompleteAddressing.deployment, CompleteAddressing.devices],
+    rfl, rfl, rfl, Or.inl ⟨rfl, rfl⟩, Or.inl ?_⟩
+  exact ⟨rfl, rfl,
+    ⟨interface "port-A" "INNER-A" 10 101, by simp [deployment, interfaces], rfl, rfl, rfl⟩,
+    interface "port-B" "INNER-B" 20 202, by simp [deployment, interfaces], rfl, rfl, rfl⟩
+
+lemma cross_level_Ethernet_is_rejected (base : Deployment)
+    (processing : PacketProcessing.Inventory) :
+    ¬ (deployment base processing).Accepts "port-O" .outbound
+      ((deployment base processing).Observe {packet with destination := 404}) := by
+  rintro ⟨hook, _, admitted⟩
+  cases hook with
+  | link =>
+    obtain ⟨_, actual, same, port, member, name, policy, selected, admitted⟩ := admitted
+    have equal : actual = inventory processing := Option.some.inj same.symm
+    subst actual
+    simp only [inventory, CompleteAddressing.inventory, List.mem_cons, List.not_mem_nil, or_false] at member
+    rcases member with rfl | rfl | rfl | rfl <;>
+      simp [inventory, CompleteAddressing.inventory, LinkAdmission.lookup] at selected
+    subst policy
+    simp [LinkAdmission.Program.Accepts, linkProgram, linkRules, packet, Deployment.Observe,
+      Filter.evaluate, PacketPolicy.Rule.toFilter, PacketPolicy.Atom.holds] at admitted
+  | input | output | forward =>
+    simp [deployment, CompleteAddressing.deployment, CompleteAddressing.policies,
+      CompleteAddressing.interfaces, CompleteAddressing.interface, CompleteAddressing.rules,
+      InterfacePolicy.Accepts, packet, Deployment.Observe, Filter.evaluate,
+      PacketPolicy.Rule.toFilter, PacketPolicy.Atom.holds] at admitted
+
+end TDN.Imported.CompleteLinkAddressing

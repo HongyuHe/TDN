@@ -25,7 +25,8 @@ def export_saved(directory, destination):
     return {"path": str(destination), "sha256": hashlib.sha256(raw).hexdigest(), "type": "TDN.Evidence.Snapshot", "key": "snapshot"}
 
 
-def export_projection(directory, destination, view):
+def export_projection(directory, destination, view, execution_supplement=None,
+                      include_recorded_sa_epochs=False):
     from .projections import packet_filters, PROJECTIONS
     from .parsers.topology import validated_graph
     from .parsers.correspondence import check_filter_correspondence
@@ -44,12 +45,19 @@ def export_projection(directory, destination, view):
                   "grayEdges": [list(pair) for pair in sorted(graph["gray_edges"])],
                   "firewalls": graph["firewall"], "grayFirewalls": graph["gray_fw"],
                   "outerRegions": graph["outer_sides"], "grayRegions": graph["gray_sides"]}
+    elif view == "multi_protocol_execution":
+        if execution_supplement is None:
+            raise ValueError("multi_protocol_execution requires saved_execution_supplements for this snapshot; configure its hash-bound processing observations")
+        from .parsers.execution import parse_execution
+        values = parse_execution(directory, execution_supplement, include_recorded_sa_epochs)
+        values["projectionVersion"] = "native-ipv4-execution-v3-port-mtu"
     elif view in PROJECTIONS:
         version, project = PROJECTIONS[view]
         values = project(directory, snapshot)
         values["projectionVersion"] = version
     else:
-        raise ValueError("Supported saved views: inventory, packet_filters, topology")
+        raise ValueError("Supported saved views: " + ", ".join([
+            "inventory", "packet_filters", "topology", "multi_protocol_execution", *sorted(PROJECTIONS)]))
     values["provenance"] = {"manifestSha256": hashlib.sha256((directory / "manifest.json").read_bytes()).hexdigest(),
                             "snapshotId": manifest["snapshot_id"], "view": view}
     destination.parent.mkdir(parents=True, exist_ok=True)

@@ -20,6 +20,146 @@ The transitive parent lists are computed for the exported subclass graph. The pi
 - organizational root edges: 44
 - annotation associations: 31
 - multiple parent roles: 8
+- explicit lean roles: 17
+- combined lean roles: 24
+- contextual roles: 21
+- unrepresented roles: 14
+
+## Representation in Lean v3.1
+
+These annotations describe how source roles are represented by the current Lean model. A mapping does not establish deployed role membership or prove a requirement. Source subtype relationships remain unchanged.
+
+[Curated Lean mappings](ontology_theory.json) records all 76 source roles, code references, chosen interpretations and pinned Lean source hashes.
+
+| Role | Representation | Meaning | Code |
+| --- | --- | --- | --- |
+| Solution Component | Related model only | Applicable duties are selected from a device’s kind, encryption layer, deployment membership, and standalone-encapsulator status. V3.1 has no single SolutionComponent membership type. | [CPContext.ComponentApplies](../../../TDN/Targets/CPDuties.lean), [CPContext.AllApplicableDuties](../../../TDN/Targets/CPDuties.lean) |
+| Encryption Component | Combination of Lean fields | The layer field selects Inner or Outer encryption components. Flow validity separately checks whether their mechanism is VPN or MACsec. | [Device](../../../TDN/Targets/ComplianceModel.lean), [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| Inner Encryption Component | Combination of Lean fields | The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. | [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [msc_nested_layer_protection](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Outer Encryption Component | Combination of Lean fields | The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. | [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [msc_nested_layer_protection](../../../TDN/Targets/CompleteSpecifications.lean) |
+| VPN Gateway | Explicit Lean representation | VPN gateways have a dedicated device kind. The layer field identifies Inner and Outer gateways. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| Inner VPN Gateway | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| Outer VPN Gateway | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| MACsec Device | Explicit Lean representation | MACsec devices have a dedicated kind. Authentication records separately describe their EAP functions and key-server behavior. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [MACsecAuthentication](../../../TDN/Targets/DirectSpecifications.lean), [EAPRole](../../../TDN/Targets/DirectSpecifications.lean) |
+| Inner MACsec Device | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| Outer MACsec Device | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| Firewall | Combination of Lean fields | The model distinguishes Gray, Outer, and Inner firewalls with separate device kinds. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Outer Firewall | Explicit Lean representation | The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
+| Gray Firewall | Explicit Lean representation | The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Inner Firewall | Explicit Lean representation | The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
+| Administrative Workstation | Explicit Lean representation | Administrative Workstations use the workstation device kind. Their administrator accounts and sessions are represented separately. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [AdministrativeAccount](../../../TDN/Targets/Administration.lean), [msc_administrator_authentication](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Red Administrative Workstation | Combination of Lean fields | A Red workstation combines the workstation kind with a Red management attachment. Zone information belongs to its interfaces and deployment attachments. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Interface](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_administrator_authentication](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Gray Administrative Workstation | Combination of Lean fields | A Gray workstation combines the workstation kind with a Gray management attachment. The deployment also provides the grayWorkstation predicate. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Interface](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Black Administrative Workstation | Related model only | The model can record a workstation and Black interface, but has no separate Black-workstation role or complete Black-workstation specification. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Interface](../../../TDN/Targets/ComplianceModel.lean) |
+| Management component | Related model only | Management roles are represented through service instances and component attachments. There is no single management-component device kind. | [ManagementServiceInstance](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
+| Red Management Services | Combination of Lean fields | Each management service records its function, hosting device, process, interface, and Red management domain. | [ManagementServiceInstance](../../../TDN/Targets/ComplianceModel.lean), [ManagementDomain](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean) |
+| Gray Management Services | Combination of Lean fields | Each management service records its function, hosting device, process, interface, and Gray management domain. | [ManagementServiceInstance](../../../TDN/Targets/ComplianceModel.lean), [ManagementDomain](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean) |
+| Security Information and Event Management | Explicit Lean representation | SIEM has a dedicated device kind. Monitoring and logging registrations describe its service use. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean), [ServiceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Red SIEM | Combination of Lean fields | The SIEM kind combines with a Red interface or management-service domain. The zone is recorded separately from the device kind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Interface](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceInstance](../../../TDN/Targets/ComplianceModel.lean) |
+| Gray SIEM | Combination of Lean fields | The SIEM kind combines with a Gray interface or management-service domain. The zone is recorded separately from the device kind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Interface](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceInstance](../../../TDN/Targets/ComplianceModel.lean) |
+| Authentication Server | Explicit Lean representation | Authentication Servers have a dedicated device kind. MACsec authentication records identify the server and its site/network attachments. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [MACsecAuthentication](../../../TDN/Targets/DirectSpecifications.lean), [msc_macsec_authentication_choice_and_as](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Supplicant | Explicit Lean representation | The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements. | [EAPRole](../../../TDN/Targets/DirectSpecifications.lean), [MACsecAuthentication](../../../TDN/Targets/DirectSpecifications.lean), [msc_macsec_authentication_choice_and_as](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Authenticator | Explicit Lean representation | The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements. | [EAPRole](../../../TDN/Targets/DirectSpecifications.lean), [MACsecAuthentication](../../../TDN/Targets/DirectSpecifications.lean), [msc_macsec_authentication_choice_and_as](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Key Server | Combination of Lean fields | The key server is an endpoint selected in MACsec authentication and key-server-pair records. The role is not a separate DeviceKind. | [MACsecAuthentication](../../../TDN/Targets/DirectSpecifications.lean), [MACsecServerPair](../../../TDN/Targets/DirectSpecifications.lean), [msc_macsec_key_generation_and_server](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Certification Authority | Explicit Lean representation | Certification Authorities have a dedicated device kind and are associated with authenticated components through key-management records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean) |
+| Inner CA | Combination of Lean fields | The CA serves Inner components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean) |
+| Outer CA | Combination of Lean fields | The CA serves Outer components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean) |
+| Locally run CA | Related model only | The CA kind and its placement can be recorded. GrayTopology separately lists locally run CA nodes for the selected Gray management security-level convention. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Enterprise CA | Related model only | Enterprise CAs can be listed as CA devices and Gray service nodes. V3.1 does not give enterprise CAs a distinct DeviceKind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Root CA | Related model only | The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles. | [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean), [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Signing CA | Related model only | The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles. | [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean), [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Key Generation Solution | Explicit Lean representation | The key-generation solution has a device kind. Approved-generator status is supplied as an explicit authority fact. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [AuthorityFacts](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_macsec_key_generation_and_server](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Encapsulation/Decapsulation Device | Combination of Lean fields | The encapsulation role uses EncapsulationUse records and the standaloneEncapsulator predicate. A device kind is available, while the actual specification checks the selected use, attachments and applicable duties. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [EncapsulationUse](../../../TDN/Targets/DirectSpecifications.lean), [MACsecEncapsulationCore](../../../TDN/Targets/DirectSpecifications.lean), [msc_macsec_encapsulation](../../../TDN/Targets/CompleteSpecifications.lean), [CPContext.AllApplicableDuties](../../../TDN/Targets/CPDuties.lean) |
+| Router | Related model only | The model distinguishes ordinary Gray routers and screening routers. General packet routing is represented by processing records; there is no unrestricted router DeviceKind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment.OrdinaryGray](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
+| Gray Network router | Combination of Lean fields | An ordinary Gray router must have the matching kind, no encryption layer, no infrastructure flag, and only Gray interfaces to satisfy OrdinaryGray. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment.OrdinaryGray](../../../TDN/Targets/ComplianceModel.lean) |
+| Screening router | Explicit Lean representation | Screening routers have a dedicated device kind. Source-defined placement and filtering still require the corresponding configuration. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Customer Edge Router | Related model only | The source’s customer-edge example can realize a router role. V3.1 has no customer-edge-specific device kind or automatic equivalence with screeningRouter. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Switch | Related model only | Ordinary Gray switches have a dedicated kind. Other switching behavior is represented through processing records without a generic switch DeviceKind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment.OrdinaryGray](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
+| Cross Domain Solution | Explicit Lean representation | Cross Domain Solutions have a device kind. Requirement applicability also uses the recorded cross-domain-solution inventory. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [CPContext.ComponentApplies](../../../TDN/Targets/CPDuties.lean) |
+| CRL Distribution Point | Related model only | Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
+| OCSP Responder | Related model only | Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Intrusion Prevention System | Explicit Lean representation | Intrusion Prevention Systems have a dedicated device kind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [CPContext.ComponentApplies](../../../TDN/Targets/CPDuties.lean) |
+| Host/server for AW virtual machines | No distinct representation | V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling. |  |
+| Virtual Machine | No distinct representation | V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling. |  |
+| Physical workstation | No distinct representation | V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling. |  |
+| Enrollment server | No distinct representation | V3.1 does not define a separate role or protocol model for this certificate-provisioning function. |  |
+| Provisioning server | No distinct representation | V3.1 does not define a separate role or protocol model for this certificate-provisioning function. |  |
+| Certificate registration component | No distinct representation | V3.1 does not define a separate role or protocol model for this certificate-provisioning function. |  |
+| Registration Authority | No distinct representation | V3.1 does not define a separate role or protocol model for this certificate-provisioning function. |  |
+| Trusted time source | Explicit Lean representation | A time-source endpoint records the actual source component and interface. Placement and client synchronization use the time model. | [TimeSourceEndpoint](../../../TDN/Targets/TimeSynchronization.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean) |
+| DNS server | Combination of Lean fields | DNS service use is represented by the name-resolution management function and configuration records. DeviceKind has no separate DNS-server constructor. | [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceInstance](../../../TDN/Targets/ComplianceModel.lean) |
+| Control plane network service | Combination of Lean fields | Control service registrations identify protocol and port. Their kind is recorded separately from the hosting device. | [ServiceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Third-party server | Related model only | Third-party behavior is represented by feature and emitted-traffic records. The remote server is not a dedicated device kind. | [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
+| End user device | Related model only | Red network records and modeled payload origins identify source and destination networks. DeviceKind has no separate end-user-host constructor. | [RedNetworkIdentity](../../../TDN/Targets/Architecture.lean) |
+| High Assurance encryptor | No distinct representation | The extracted assurance/product category is not a distinct device kind in v3.1. Product eligibility and external assurance remain separate evidence obligations. | [ExternalFacts](../../../TDN/Targets/CPDutyRecords.lean) |
+| NSA-certified Government-off-the-Shelf product | No distinct representation | The extracted assurance/product category is not a distinct device kind in v3.1. Product eligibility and external assurance remain separate evidence obligations. | [ExternalFacts](../../../TDN/Targets/CPDutyRecords.lean) |
+| Locally Managed Device | Related model only | Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds. | [AdministrativeAccount](../../../TDN/Targets/Administration.lean), [ManagementExchange](../../../TDN/Targets/ComplianceModel.lean), [msc_administrator_authentication](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Remotely Managed Device | Related model only | Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds. | [AdministrativeAccount](../../../TDN/Targets/Administration.lean), [ManagementExchange](../../../TDN/Targets/ComplianceModel.lean), [msc_administrator_authentication](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Auxiliary network device | No distinct representation | The broad source grouping has no dedicated v3.1 role predicate. Specific member functions must be mapped separately. |  |
+| Infrastructure authentication service | Combination of Lean fields | Authentication is a registered service function hosted by a component. The hosting device may also have the authenticationServer kind. | [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean), [ServiceKind](../../../TDN/Targets/ComplianceModel.lean), [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Network administration device | Related model only | The source role may be realized by workstation or administration services. V3.1 has no separate network-administration-device kind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean) |
+| Infrastructure component | Explicit Lean representation | The device record has an infrastructure flag. Flow.Valid requires both encryption endpoints to carry that flag. | [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| Network device | Related model only | Device is the general inventory record for all modeled device kinds. Source role membership beyond that inventory remains contextual. | [Device](../../../TDN/Targets/ComplianceModel.lean) |
+| Perimeter device | No distinct representation | The broad source grouping has no dedicated v3.1 role predicate. Specific member functions must be mapped separately. |  |
+| Key and certificate management component | Combination of Lean fields | Key management combines CA and key-generation device records, service functions, and component-to-service relations. | [Deployment](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean) |
+| Trust Anchor CA | Related model only | The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles. | [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean), [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
+| Approved password generator | No distinct representation | Password-generator approval is an external configuration/authority requirement. V3.1 has no separate password-generator behavior model. | [ExternalFacts](../../../TDN/Targets/CPDutyRecords.lean) |
+| Log and status repository | Combination of Lean fields | Logging and monitoring registrations represent the service role. A repository-specific device kind is not required by the model. | [ServiceKind](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean) |
+| Testing equipment | No distinct representation | These source roles describe the testing process. V3.1 does not formalize them as network device roles. |  |
+| Testing software | No distinct representation | These source roles describe the testing process. V3.1 does not formalize them as network device roles. |  |
+| IKEv2 initiator | Related model only | The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic. | [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean) |
+| IKEv2 responder | Related model only | The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic. | [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean) |
+
+## Chosen v3.1 interpretations
+
+### V31-007: data-plane protection, tunnel endpoints, and services
+
+V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.
+
+Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:67`.
+
+### V31-012: authentication alternatives and management deployment
+
+Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.
+
+Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:81`.
+
+### V31-013: all Gray paths, filtering, and management services
+
+The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level.
+
+Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:87`.
+
+### V31-015: carrier placement and standalone obligations
+
+When built-in encapsulation is unavailable, the selected standalone encapsulator must have the required Inner-side and Outer-side attachments and satisfy its applicable component duties. The current RG-015 definition preserves those duties despite the source passage describing encapsulation as outside the solution boundary.
+
+Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:99`.
+
+### V31-024: certificate roles and AS network scope
+
+A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks.
+
+Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:109`.
+
+### V31-027: key generation, provisioning, central servers, fallback
+
+The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation.
+
+Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:117`.
+
+### V31-047: live sessions and individual credentials
+
+Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions.
+
+Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:173`.
+
+### V31-056-074: whole-solution protection and redundant duties
+
+Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray checks the kind, absence of an encryption layer and infrastructure flag, and Gray-only interfaces. Standalone encapsulators keep their applicable duties even when their underlying device is a router or switch.
+
+Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:185`.
+
 
 ## Encryption
 
@@ -1076,7 +1216,7 @@ Basis: source_stated. The relationship is an annotation assertion.
 
 - **Every Router or Screening Router is a Solution Component.**: The Gray Network redundancy router has no CP security requirements, and the screening router is explicitly outside the MSC Solution.
 - **Every Customer Edge Router is a Screening Router.**: The source supplies an example realization, which does not establish universal class inclusion.
-- **Every Encapsulation/Decapsulation Device is a Solution Component.**: The extracted source-scope issue REQ-I01 remains unresolved. Some passages apply Solution Component requirements; another excludes the device from the solution and recommends those requirements. A universal subclass assertion would settle the unresolved scope.
+- **Every Encapsulation/Decapsulation Device is a Solution Component.**: The source assigns duties to selected standalone encapsulators while another passage places the additional encapsulation step outside the solution boundary. V3.1 adopts the mandatory applicable device duties for the standalone case. That conditional interpretation is recorded in the Lean mapping; it does not assert universal class membership for every encapsulation realization.
 - **Root CA and Trust Anchor CA are equivalent, or every Root CA is a Trust Anchor CA.**: The provisioning passage gives a Root CA certificate as an example Trust Anchor certificate. MSC-VG-4 names the Trust Anchor CA separately.
 - **Locally run CA and Enterprise CA are disjoint classes.**: The source offers operating/management choices without establishing a universal logical partition of CA realizations.
 - **Every CA is a Solution Component.**: The source conditionally says CAs can be part of an MSC Solution and permits enterprise CAs outside Solution Owner management. The general CA category is broader than the explicitly scoped component subclasses.

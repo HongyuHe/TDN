@@ -1,0 +1,99 @@
+{
+  "ATx": {
+    "tag": 2,
+    "sci": 144115398529318913,
+    "associationNumber": 0,
+    "keyGeneration": 11
+  },
+  "ARx": {
+    "tag": 2,
+    "sci": 144115398529384449,
+    "associationNumber": 0,
+    "keyGeneration": 12
+  },
+  "BTx": {
+    "tag": 2,
+    "sci": 144115398529384449,
+    "associationNumber": 0,
+    "keyGeneration": 21
+  },
+  "BRx": {
+    "tag": 2,
+    "sci": 144115398529318913,
+    "associationNumber": 0,
+    "keyGeneration": 22
+  },
+  "bindings": [
+    {
+      "association": "ATx",
+      "device": "A",
+      "direction": "Tx",
+      "physicalInterface": "wire",
+      "logicalInterface": "macsec0",
+      "source": "evidence://v31-l2-admission-tagged/raw/cmd-0770",
+      "rawResponseSha256": "b3a1c2fdc97f025b0707532bd8fe41124657192d9be5261a5a2057f988f4e4ae",
+      "observedSCI": "0200003100010001",
+      "observedAN": 0,
+      "observedPN": 9,
+      "publicInstalledKeyIdentifier": "fe40b4b5d597f9d2a065c2ff01000000",
+      "modelRoleTag": 2,
+      "modelRoleMeaning": "Outer protection role declared in captured devices inventory",
+      "modelGenerationIndex": 11,
+      "generationIndexMeaning": "Distinct local model identifier for this selected observed installation; not a kernel generation counter and not a key-equality claim"
+    },
+    {
+      "association": "ARx",
+      "device": "A",
+      "direction": "Rx",
+      "physicalInterface": "wire",
+      "logicalInterface": "macsec0",
+      "source": "evidence://v31-l2-admission-tagged/raw/cmd-0770",
+      "rawResponseSha256": "b3a1c2fdc97f025b0707532bd8fe41124657192d9be5261a5a2057f988f4e4ae",
+      "observedSCI": "0200003100020001",
+      "observedAN": 0,
+      "observedPN": 7,
+      "publicInstalledKeyIdentifier": "fe40b4b5d597f9d2a065c2ff01000000",
+      "modelRoleTag": 2,
+      "modelRoleMeaning": "Outer protection role declared in captured devices inventory",
+      "modelGenerationIndex": 12,
+      "generationIndexMeaning": "Distinct local model identifier for this selected observed installation; not a kernel generation counter and not a key-equality claim"
+    },
+    {
+      "association": "BTx",
+      "device": "B",
+      "direction": "Tx",
+      "physicalInterface": "wire",
+      "logicalInterface": "macsec0",
+      "source": "evidence://v31-l2-admission-tagged/raw/cmd-0777",
+      "rawResponseSha256": "5dddcd78a1b7cfa14e50de0269cbfab9d97d66b97ab8017bd825390bee6b744d",
+      "observedSCI": "0200003100020001",
+      "observedAN": 0,
+      "observedPN": 7,
+      "publicInstalledKeyIdentifier": "fe40b4b5d597f9d2a065c2ff01000000",
+      "modelRoleTag": 2,
+      "modelRoleMeaning": "Outer protection role declared in captured devices inventory",
+      "modelGenerationIndex": 21,
+      "generationIndexMeaning": "Distinct local model identifier for this selected observed installation; not a kernel generation counter and not a key-equality claim"
+    },
+    {
+      "association": "BRx",
+      "device": "B",
+      "direction": "Rx",
+      "physicalInterface": "wire",
+      "logicalInterface": "macsec0",
+      "source": "evidence://v31-l2-admission-tagged/raw/cmd-0777",
+      "rawResponseSha256": "5dddcd78a1b7cfa14e50de0269cbfab9d97d66b97ab8017bd825390bee6b744d",
+      "observedSCI": "0200003100010001",
+      "observedAN": 0,
+      "observedPN": 9,
+      "publicInstalledKeyIdentifier": "fe40b4b5d597f9d2a065c2ff01000000",
+      "modelRoleTag": 2,
+      "modelRoleMeaning": "Outer protection role declared in captured devices inventory",
+      "modelGenerationIndex": 22,
+      "generationIndexMeaning": "Distinct local model identifier for this selected observed installation; not a kernel generation counter and not a key-equality claim"
+    }
+  ],
+  "sourceSession": "outputs/mcp/l2-state-proof010-002.jsonl",
+  "sourceSessionSha256": "6492594d29f46631875d92a04d405a0044d40198bb1fcd5a36697ece33da5ed5",
+  "scope": "Final installed public TX/RX identity/settings for link-admission checks. No secret material/equality, authentication history, atomic epoch or useful decryption claim."
+}

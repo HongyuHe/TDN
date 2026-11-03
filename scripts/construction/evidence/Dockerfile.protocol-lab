@@ -1,0 +1,2 @@
+FROM ubuntu:24.04
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3 iproute2 iptables ebtables nftables kmod iputils-ping tcpdump procps util-linux ca-certificates conntrack openssl && rm -rf /var/lib/apt/lists/*

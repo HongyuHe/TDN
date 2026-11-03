@@ -5,7 +5,7 @@ from .adapters import Unsupported
 
 def atom_json(atom):
     kind = atom["kind"]
-    if kind in {"sourceRange", "destinationRange"}:
+    if kind in {"sourceRange", "destinationRange", "networkBytesRange"}:
         fields = {"low": atom["low"], "high": atom["high"]}
     elif kind in {"ingress", "egress", "protocol"}:
         fields = {"name": atom["value"]}
@@ -15,6 +15,8 @@ def atom_json(atom):
         fields = {"states": atom["values"]}
     elif kind in {"inboundPolicy", "outboundPolicy"}:
         fields = {"requestId": atom["value"]}
+    elif kind in ["ipsecUDPFraming", "ipsecUDPFramingWithOptions"]:
+        return kind
     elif kind == "ipv4HeaderWords":
         fields = {"words": atom["value"]}
     elif kind in {"icmpType", "icmpCode", "hopLimit"}:
@@ -42,6 +44,6 @@ PROJECTIONS = {}
 
 def register_projection(name, version, project):
     """Register a trusted local projection from validated saved observations to JSON."""
-    if name in {"inventory", "topology", "packet_filters"} or name in PROJECTIONS:
+    if name in {"inventory", "topology", "packet_filters", "multi_protocol_execution"} or name in PROJECTIONS:
         raise ValueError("Projection already registered: " + name)
     PROJECTIONS[name] = (version, project)

@@ -49,6 +49,12 @@ class EvidenceService:
     def __init__(self, config, transport=None):
         self.config_path = Path(config).resolve()
         self.settings = Settings.model_validate_json(self.config_path.read_text())
+        if set(self.settings.saved_experiments) & set(self.settings.saved_snapshots):
+            raise ValueError("Saved experiment and snapshot identifiers must be distinct")
+        if set(self.settings.saved_execution_supplements) - set(self.settings.saved_snapshots):
+            raise ValueError("Execution supplement refers to an unknown saved snapshot")
+        if set(self.settings.execution_epoch_union) - set(self.settings.saved_execution_supplements):
+            raise ValueError("An execution epoch union requires a configured supplement")
         for module in self.settings.adapter_modules:
             importlib.import_module(module)
         self.root = self.resolve(self.settings.store)
@@ -77,14 +83,30 @@ class EvidenceService:
         path = Path(value)
         return path.resolve() if path.is_absolute() else (self.config_path.parent / path).resolve()
 
+    def experiment(self, collection):
+        from .experiments import adapter
+        configured = self.settings.saved_experiments[collection]
+        return adapter(configured.parser), self.resolve(configured.path)
+
     def list_networks(self):
         return {"live": [n.model_dump() for n in self.settings.networks],
-                "saved": sorted(self.settings.saved_snapshots), "collections": sorted(p.name for p in self.root.iterdir() if (p / "manifest.json").is_file())}
+                "saved": sorted([*self.settings.saved_snapshots, *self.settings.saved_experiments]),
+                "saved_experiments": {name: item.parser for name, item in self.settings.saved_experiments.items()},
+                "collections": sorted(p.name for p in self.root.iterdir() if (p / "manifest.json").is_file())}
 
     def describe_capabilities(self, network=None):
+        if network in self.settings.saved_experiments:
+            adapter, _ = self.experiment(network)
+            return {"saved_experiment": {"parser": self.settings.saved_experiments[network].parser,
+                "capabilities": adapter.CAPABILITIES, "lean_views": [adapter.LEAN_VIEW],
+                "scope": adapter.SCOPE}}
         if network in self.settings.saved_snapshots:
             from .projections import PROJECTIONS
-            return {"saved": {"capabilities": ["devices", "interfaces", "links", "routes", "filters", "tunnels", "credentials", "probes"], "lean_views": ["inventory", "packet_filters", "topology", *sorted(PROJECTIONS)]}}
+            return {"saved": {"capabilities": ["devices", "interfaces", "links", "routes", "filters", "tunnels", "credentials", "probes"],
+                "lean_views": ["inventory", "packet_filters", "topology", "multi_protocol_execution", *sorted(PROJECTIONS)],
+                "execution_supplement_configured": network in self.settings.saved_execution_supplements,
+                "execution_scope": "Retained native IPv4 IPsec/OVS observations; other mechanisms require a matching parser",
+                "execution_epoch_union": network in self.settings.execution_epoch_union}}
         names = ADAPTERS if network is None else {a for d in self.networks[network].devices for a in d.adapters}
         return {name: {"parser_version": ADAPTERS[name].version, "capabilities": {
             k: {"meaning": c.meaning, "rechecked": c.recheck} for k, c in ADAPTERS[name].capabilities.items()}}
@@ -92,7 +114,9 @@ class EvidenceService:
 
     def collect_evidence(self, network, capabilities=None):
         if network not in self.networks:
-            raise ValueError("Unknown configured network")
+            if network in self.settings.saved_snapshots or network in self.settings.saved_experiments:
+                raise ValueError("This ID names a saved snapshot. Use query_evidence or prepare_lean_bundle with that collection ID. collect_evidence requires a configured live network.")
+            raise ValueError("Unknown configured live network; use list_networks to discover available IDs")
         capabilities = capabilities or []
         known = {a + "." + c for a, adapter in ADAPTERS.items() for c in adapter.capabilities}
         if set(capabilities) - known:
@@ -106,6 +130,10 @@ class EvidenceService:
 
     def collection_status(self, collection):
         safe_id(collection)
+        if collection in self.settings.saved_experiments:
+            manifest = self.read_manifest(collection)
+            return {"id": collection, "status": "complete", "source_kind": "saved_experiment",
+                    "runtime_backend": manifest["runtime_backend"]}
         if collection in self.settings.saved_snapshots:
             manifest = self.read_manifest(collection)
             return {"id": collection, "status": "complete", "source_kind": "saved", "convergence": manifest["convergence"]}
@@ -195,6 +223,10 @@ class EvidenceService:
                 job.update(status="cancelled" if isinstance(error, InterruptedError) else "failed", error=str(error))
 
     def read_manifest(self, collection):
+        if collection in self.settings.saved_experiments:
+            adapter, directory = self.experiment(collection)
+            manifest, _ = adapter.validated_experiment(directory)
+            return manifest
         if collection in self.settings.saved_snapshots:
             from .saved import validated_snapshot
             manifest, _, _ = validated_snapshot(self.resolve(self.settings.saved_snapshots[collection]))
@@ -216,6 +248,9 @@ class EvidenceService:
     def query_evidence(self, collection, capability=None, device=None, offset=0, limit=100):
         if offset < 0 or not 1 <= limit <= 500:
             raise ValueError("Require offset >= 0 and limit between 1 and 500")
+        if collection in self.settings.saved_experiments:
+            adapter, directory = self.experiment(collection)
+            return adapter.query_experiment(directory, collection, capability, device, offset, limit)
         if collection in self.settings.saved_snapshots:
             from .saved import query_snapshot
             return query_snapshot(self.resolve(self.settings.saved_snapshots[collection]), capability, device, offset, limit)
@@ -235,6 +270,9 @@ class EvidenceService:
                 "devices_without_observation": sorted(({device} if device else {d["id"] for d in manifest["devices"]}) - {o["device"] for o in observations})}
 
     def read_raw(self, collection, observation):
+        if collection in self.settings.saved_experiments:
+            adapter, directory = self.experiment(collection)
+            return adapter.read_experiment_raw(directory, observation)
         if collection in self.settings.saved_snapshots:
             from .saved import validated_snapshot
             directory = self.resolve(self.settings.saved_snapshots[collection])
@@ -246,6 +284,9 @@ class EvidenceService:
         return (self.root / collection / selected["path"]).read_text()
 
     def read_stderr(self, collection, observation):
+        if collection in self.settings.saved_experiments:
+            adapter, directory = self.experiment(collection)
+            return adapter.read_experiment_raw(directory, observation, stderr=True)
         if collection in self.settings.saved_snapshots:
             return json.loads(self.read_raw(collection, observation)).get("stderr", "")
         manifest = self.read_manifest(collection)
@@ -254,10 +295,20 @@ class EvidenceService:
 
     def prepare_lean_bundle(self, collection, view="inventory"):
         from .bundle import prepare_bundle
-        if collection in self.settings.saved_snapshots:
+        if collection in self.settings.saved_experiments:
+            adapter, directory = self.experiment(collection)
+            if view != adapter.LEAN_VIEW:
+                raise ValueError("Selected experiment exports view=" + adapter.LEAN_VIEW)
+            result = adapter.export_experiment(directory,
+                self.root / (safe_id(collection) + "-export") / (adapter.LEAN_VIEW + ".json"))
+        elif collection in self.settings.saved_snapshots:
             from .export_saved import export_saved, export_projection
             if view != "inventory":
-                result = export_projection(self.resolve(self.settings.saved_snapshots[collection]), self.root / (safe_id(collection) + "-export") / (safe_id(view) + ".json"), view)
+                supplement = self.settings.saved_execution_supplements.get(collection)
+                result = export_projection(self.resolve(self.settings.saved_snapshots[collection]),
+                    self.root / (safe_id(collection) + "-export") / (safe_id(view) + ".json"), view,
+                    execution_supplement=self.resolve(supplement) if supplement else None,
+                    include_recorded_sa_epochs=collection in self.settings.execution_epoch_union)
             else:
                 result = export_saved(self.resolve(self.settings.saved_snapshots[collection]), self.root / (safe_id(collection) + "-export") / "lean.json")
         else:

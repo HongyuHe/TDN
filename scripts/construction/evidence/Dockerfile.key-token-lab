@@ -1,0 +1,9 @@
+FROM ubuntu:24.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates openssl opensc softhsm2 p11-kit p11-kit-modules \
+    strongswan-charon strongswan-swanctl strongswan-pki \
+    libstrongswan-standard-plugins libstrongswan-extra-plugins libcharon-extra-plugins \
+    python3 python3-pykcs11 python3-cryptography iproute2 iputils-ping procps \
+    && rm -rf /var/lib/apt/lists/*
+CMD ["sleep", "infinity"]

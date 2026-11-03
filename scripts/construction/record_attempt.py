@@ -5,17 +5,47 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import os
+import re
 import traceback
 from pathlib import Path
 import subprocess
 import sys
 import uuid
 
+
+def referenced_inputs(root, command, explicit):
+    root = root.resolve()
+    candidates = list(explicit)
+    candidates.extend(word for word in command if Path(word).suffix in {".lean", ".py", ".json"})
+    selected, missing, visited = [], [], set()
+    while candidates:
+        name = candidates.pop(0)
+        path = (root / name).resolve()
+        relative = str(path.relative_to(root))
+        if relative in visited:
+            continue
+        visited.add(relative)
+        if any(part in {"private", "secrets", "pki", ".git", ".lake"} for part in Path(relative).parts):
+            raise ValueError("Private or generated inputs cannot be captured: " + relative)
+        if not path.exists():
+            missing.append(relative)
+            continue
+        if not path.is_file():
+            raise ValueError("An explicit attempt input must be a file: " + relative)
+        selected.append(relative)
+        if path.suffix == ".lean":
+            for match in re.finditer(r'\btdn_data\b[^;]*?\bfrom\s+"([^"\n]+)"', path.read_text()):
+                referenced = (path.parent / match.group(1)).resolve()
+                candidates.append(str(referenced.relative_to(root)))
+    return sorted(selected), sorted(missing)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--label", required=True)
     parser.add_argument("--run-dir", default=os.environ.get("TDN_OUTPUT_DIR"))
     parser.add_argument("--timeout", type=float)
+    parser.add_argument("--input", action="append", default=[])
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args()
     command = args.command
@@ -33,14 +63,16 @@ def main():
     run_dir = run_dir.relative_to(root)
     start = datetime.now(timezone.utc)
     stamp = start.strftime("%Y%m%dT%H%M%S.%fZ") + "-" + uuid.uuid4().hex
+    inputs, missing_inputs = referenced_inputs(root, command, args.input)
     output = subprocess.check_output([
         sys.executable, "scripts/construction/record.py", "checkpoint",
         "--actor", "construction", "--label", args.label,
         "--reason", "Preserve exact sources before executing a validation or proof attempt",
-        "--details", json.dumps({"command": command}),
+        "--details", json.dumps({"command": command, "additional_inputs": inputs,
+                                  "missing_inputs": missing_inputs}),
         "--history-dir", str(run_dir / "history"),
         "--paths", "TDN", "TDN.lean", "lakefile.lean", "lakefile.toml", "lake-manifest.json",
-        "lean-toolchain", "scripts/construction", "tests"
+        "lean-toolchain", "scripts/construction", "tests", "data/evidence", *inputs
     ], text=True).strip()
     log = run_dir / "experiments" / (stamp + "-" + args.label + ".log")
     launch_error = None
@@ -56,6 +88,7 @@ def main():
         "label": args.label, "started_at": start.isoformat(),
         "finished_at": datetime.now(timezone.utc).isoformat(),
         "command": command, "source_checkpoint": output,
+        "additional_inputs": inputs, "missing_inputs": missing_inputs,
         "log": str(log), "log_sha256": hashlib.sha256(log.read_bytes()).hexdigest(),
         "exit_code": exit_code, "launch_error": launch_error,
         "cwd": str(root), "timeout_seconds": args.timeout,

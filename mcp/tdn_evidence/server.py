@@ -22,7 +22,7 @@ def create_server(config):
 
     @mcp.tool(structured_output=True)
     def collect_evidence(network: str, capabilities: list[str] | None = None) -> dict[str, Any]:
-        """Start read-only capture across configured workers. Poll collection_status for completion."""
+        """Start read-only capture for a configured live network. For saved snapshot IDs, use query_evidence directly. Poll collection_status for live capture completion."""
         return service.collect_evidence(network, capabilities)
 
     @mcp.tool(structured_output=True)

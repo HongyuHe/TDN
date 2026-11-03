@@ -1,6 +1,7 @@
 """Interpret the supported ordered packet-filter subset as structured records."""
 import ipaddress
 from ..adapters import Unsupported
+from .ipsec_framing import canonical_kind as canonical_ipsec_framing
 
 
 def parse_rule(rule):
@@ -27,7 +28,7 @@ def parse_rule(rule):
                 raise Unsupported("interface wildcard")
             atoms.append({"kind":{"-i":"ingress","-o":"egress","-p":"protocol"}[key],"value":value})
         elif key == "-m":
-            if value not in {"policy","multiport","u32","conntrack","tcp","udp","icmp","icmp6","hl"}:
+            if value not in {"policy","multiport","u32","conntrack","tcp","udp","icmp","icmp6","hl","length","bpf"}:
                 raise Unsupported("unknown module " + value)
             modules.append(value)
         elif key in {"--dir","--pol","--reqid","--mode"}:
@@ -51,6 +52,19 @@ def parse_rule(rule):
             if not value.isdigit() or not 0 <= int(value) <= 255:
                 raise Unsupported("unsupported hop-limit syntax")
             atoms.append({"kind": "hopLimit", "value": int(value)})
+        elif key == "--bytecode":
+            framing_kind = canonical_ipsec_framing(value)
+            if framing_kind is None:
+                raise Unsupported("unknown IPsec framing BPF program")
+            atoms.append({"kind": framing_kind})
+        elif key == "--length":
+            endpoints = value.split(":")
+            if len(endpoints) != 2 or not all(v.isdigit() for v in endpoints):
+                raise Unsupported("unsupported packet length syntax")
+            low, high = map(int, endpoints)
+            if not 0 <= low <= high <= 65535:
+                raise Unsupported("invalid packet length interval")
+            atoms.append({"kind": "networkBytesRange", "low": low, "high": high})
         elif key == "--u32":
             if value != "0x0>>0x18&0xf=0x5":
                 raise Unsupported("unsupported u32 expression")
@@ -67,6 +81,10 @@ def parse_rule(rule):
             raise Unsupported("ICMP type flag lacks matching protocol")
     if any(atom["kind"] == "hopLimit" for atom in atoms) and "hl" not in modules:
         raise Unsupported("hop-limit flag lacks hl module")
+    if any(atom["kind"] == "networkBytesRange" for atom in atoms) != ("length" in modules):
+        raise Unsupported("packet length matcher and module disagree")
+    if sum(atom["kind"] in ["ipsecUDPFraming", "ipsecUDPFramingWithOptions"] for atom in atoms) != modules.count("bpf"):
+        raise Unsupported("BPF matcher and module disagree")
     if policy:
         if "policy" not in modules or set(policy)!={"--dir","--pol","--reqid","--mode"} or policy["--pol"]!="ipsec" or policy["--mode"]!="tunnel" or policy["--dir"] not in {"in","out"} or not policy["--reqid"].isdigit():
             raise Unsupported("incomplete/unsupported policy guard")

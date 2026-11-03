@@ -1,0 +1,20 @@
+{
+  "source_case_ids": [
+    "NET-004-C01",
+    "NET-012-C01",
+    "NET-027-C02"
+  ],
+  "groups": [
+    "RG-011",
+    "RG-044",
+    "RG-046"
+  ],
+  "script_sha256": "8b62818f2720f202ca6624713db3ef18dada8485c2d97818f17f9d8940967e4b",
+  "functional_scope": "Central Gray AW and CA service; central and remote Gray Firewall/Encryption Components protect management between sites through separate Outer protection. Management terminates on the remote Outer dedicated management interface. A separate Red data path remains useful while the Gray management encryption layer is down.",
+  "limitations": [
+    "Supplemental Linux-netns/static-routing backend; native FRR/OVS profiles are retained separately.",
+    "Manually provisioned ephemeral test SAs establish finite encryption behavior, not IKE/credential authentication for the two IPsec layers. TLS authenticates the test AW/server.",
+    "Complete Enterprise Gray Annex controls, product independence, registration, personnel and approval remain unchecked.",
+    "Public CA service is a test trust-publication endpoint, not a certified production enrollment service."
+  ]
+}

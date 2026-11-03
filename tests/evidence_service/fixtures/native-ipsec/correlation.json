@@ -1,0 +1,1188 @@
+{
+  "schema": "native-ipsec-correlation/v1",
+  "startedAt": "2026-11-01T03:04:29.039300+00:00",
+  "endedAt": "2026-11-01T03:04:44.163042+00:00",
+  "phases": [
+    {
+      "id": "phase-0",
+      "startedAt": "2026-11-01T03:04:29.039320+00:00",
+      "devices": [
+        {
+          "id": "V31B_I_A1",
+          "role": "inner",
+          "observations": {
+            "interfaces": "obs-0000",
+            "sas": "obs-0001",
+            "states": "obs-0002",
+            "statistics": "obs-0003",
+            "policies": "obs-0004",
+            "connections": "obs-0005",
+            "configuration": "obs-0006",
+            "materialRead": "obs-0007",
+            "certificates": "obs-0008",
+            "leafCertificate": "obs-0009",
+            "caCertificate": "obs-0010",
+            "crl": "obs-0011",
+            "ikeLog": "obs-0012"
+          }
+        },
+        {
+          "id": "V31B_O_A1",
+          "role": "outer",
+          "observations": {
+            "interfaces": "obs-0013",
+            "sas": "obs-0014",
+            "states": "obs-0015",
+            "statistics": "obs-0016",
+            "policies": "obs-0017",
+            "connections": "obs-0018",
+            "configuration": "obs-0019",
+            "materialRead": "obs-0020",
+            "certificates": "obs-0021",
+            "leafCertificate": "obs-0022",
+            "caCertificate": "obs-0023",
+            "crl": "obs-0024",
+            "ikeLog": "obs-0025"
+          }
+        },
+        {
+          "id": "V31B_I_A2",
+          "role": "inner",
+          "observations": {
+            "interfaces": "obs-0026",
+            "sas": "obs-0027",
+            "states": "obs-0028",
+            "statistics": "obs-0029",
+            "policies": "obs-0030",
+            "connections": "obs-0031",
+            "configuration": "obs-0032",
+            "materialRead": "obs-0033",
+            "certificates": "obs-0034",
+            "leafCertificate": "obs-0035",
+            "caCertificate": "obs-0036",
+            "crl": "obs-0037",
+            "ikeLog": "obs-0038"
+          }
+        },
+        {
+          "id": "V31B_O_A2",
+          "role": "outer",
+          "observations": {
+            "interfaces": "obs-0039",
+            "sas": "obs-0040",
+            "states": "obs-0041",
+            "statistics": "obs-0042",
+            "policies": "obs-0043",
+            "connections": "obs-0044",
+            "configuration": "obs-0045",
+            "materialRead": "obs-0046",
+            "certificates": "obs-0047",
+            "leafCertificate": "obs-0048",
+            "caCertificate": "obs-0049",
+            "crl": "obs-0050",
+            "ikeLog": "obs-0051"
+          }
+        },
+        {
+          "id": "V31B_I_B1",
+          "role": "inner",
+          "observations": {
+            "interfaces": "obs-0052",
+            "sas": "obs-0053",
+            "states": "obs-0054",
+            "statistics": "obs-0055",
+            "policies": "obs-0056",
+            "connections": "obs-0057",
+            "configuration": "obs-0058",
+            "materialRead": "obs-0059",
+            "certificates": "obs-0060",
+            "leafCertificate": "obs-0061",
+            "caCertificate": "obs-0062",
+            "crl": "obs-0063",
+            "ikeLog": "obs-0064"
+          }
+        },
+        {
+          "id": "V31B_O_B1",
+          "role": "outer",
+          "observations": {
+            "interfaces": "obs-0065",
+            "sas": "obs-0066",
+            "states": "obs-0067",
+            "statistics": "obs-0068",
+            "policies": "obs-0069",
+            "connections": "obs-0070",
+            "configuration": "obs-0071",
+            "materialRead": "obs-0072",
+            "certificates": "obs-0073",
+            "leafCertificate": "obs-0074",
+            "caCertificate": "obs-0075",
+            "crl": "obs-0076",
+            "ikeLog": "obs-0077"
+          }
+        },
+        {
+          "id": "V31B_I_B2",
+          "role": "inner",
+          "observations": {
+            "interfaces": "obs-0078",
+            "sas": "obs-0079",
+            "states": "obs-0080",
+            "statistics": "obs-0081",
+            "policies": "obs-0082",
+            "connections": "obs-0083",
+            "configuration": "obs-0084",
+            "materialRead": "obs-0085",
+            "certificates": "obs-0086",
+            "leafCertificate": "obs-0087",
+            "caCertificate": "obs-0088",
+            "crl": "obs-0089",
+            "ikeLog": "obs-0090"
+          }
+        },
+        {
+          "id": "V31B_O_B2",
+          "role": "outer",
+          "observations": {
+            "interfaces": "obs-0091",
+            "sas": "obs-0092",
+            "states": "obs-0093",
+            "statistics": "obs-0094",
+            "policies": "obs-0095",
+            "connections": "obs-0096",
+            "configuration": "obs-0097",
+            "materialRead": "obs-0098",
+            "certificates": "obs-0099",
+            "leafCertificate": "obs-0100",
+            "caCertificate": "obs-0101",
+            "crl": "obs-0102",
+            "ikeLog": "obs-0103"
+          }
+        }
+      ],
+      "bindings": [
+        {
+          "source": "10.100.1.2",
+          "destination": "10.200.1.2",
+          "protocol": "esp",
+          "spi": 3295241396,
+          "reqid": 101,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc46964b4 reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_I_A1:0",
+          "device": "V31B_I_A1",
+          "direction": "outbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0007",
+          "publicStateObservation": "obs-0002",
+          "statisticsObservation": "obs-0003",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "34c80c2a4182b2f0fb03e553aa74aa763e6d697c74192ab88e9dc5d1e755165b",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_I_B1:1"
+        },
+        {
+          "source": "10.200.1.2",
+          "destination": "10.100.1.2",
+          "protocol": "esp",
+          "spi": 3364585549,
+          "reqid": 101,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc88b804d reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_I_A1:1",
+          "device": "V31B_I_A1",
+          "direction": "inbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0007",
+          "publicStateObservation": "obs-0002",
+          "statisticsObservation": "obs-0003",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "c70f930205b04cd5a6a5b51c867665c179a55c642d5b4a94ee76a2d5f9546030",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_I_B1:0"
+        },
+        {
+          "source": "172.20.11.1",
+          "destination": "172.20.21.1",
+          "protocol": "esp",
+          "spi": 3391910189,
+          "reqid": 201,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xca2c712d reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:21\n\tanti-replay context: seq 0x0, oseq 0x1b, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_O_A1:0",
+          "device": "V31B_O_A1",
+          "direction": "outbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0020",
+          "publicStateObservation": "obs-0015",
+          "statisticsObservation": "obs-0016",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "35100a97d7058a59a170b58b3ccdae51abbb11014c950c0dd0808dc64ab67cb9",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_O_B1:1"
+        },
+        {
+          "source": "172.20.21.1",
+          "destination": "172.20.11.1",
+          "protocol": "esp",
+          "spi": 3225142104,
+          "reqid": 201,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xc03bc358 reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:21\n\tanti-replay context: seq 0x1b, oseq 0x0, bitmap 0x07ffffff\n",
+          "id": "phase-0:V31B_O_A1:1",
+          "device": "V31B_O_A1",
+          "direction": "inbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0020",
+          "publicStateObservation": "obs-0015",
+          "statisticsObservation": "obs-0016",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "a2baa06e5c9b7ab213995c001b749417a798c15b0731499505c3bb3e21d22497",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_O_B1:0"
+        },
+        {
+          "source": "10.100.2.2",
+          "destination": "10.200.2.2",
+          "protocol": "esp",
+          "spi": 3258154020,
+          "reqid": 102,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc2337c24 reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_I_A2:0",
+          "device": "V31B_I_A2",
+          "direction": "outbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0033",
+          "publicStateObservation": "obs-0028",
+          "statisticsObservation": "obs-0029",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "548cc52d6db076fe5b8783261fdaf115ca241f9719380ccc96687d0de5f24642",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_I_B2:1"
+        },
+        {
+          "source": "10.200.2.2",
+          "destination": "10.100.2.2",
+          "protocol": "esp",
+          "spi": 3416276853,
+          "reqid": 102,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xcba03f75 reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_I_A2:1",
+          "device": "V31B_I_A2",
+          "direction": "inbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0033",
+          "publicStateObservation": "obs-0028",
+          "statisticsObservation": "obs-0029",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "66338d061bcfd123d842a61af2d861c94cccf59c2badae1c50d2ecc234458311",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_I_B2:0"
+        },
+        {
+          "source": "172.20.12.1",
+          "destination": "172.20.22.1",
+          "protocol": "esp",
+          "spi": 3350156938,
+          "reqid": 202,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc7af568a reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x0, oseq 0x1c, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_O_A2:0",
+          "device": "V31B_O_A2",
+          "direction": "outbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0046",
+          "publicStateObservation": "obs-0041",
+          "statisticsObservation": "obs-0042",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "3baf23e839f034533548e5a12f91de6682e51cb6bf953d14cc49ff9f4e8e0cce",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_O_B2:1"
+        },
+        {
+          "source": "172.20.22.1",
+          "destination": "172.20.12.1",
+          "protocol": "esp",
+          "spi": 3236703171,
+          "reqid": 202,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xc0ec2bc3 reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x1c, oseq 0x0, bitmap 0x0fffffff\n",
+          "id": "phase-0:V31B_O_A2:1",
+          "device": "V31B_O_A2",
+          "direction": "inbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0046",
+          "publicStateObservation": "obs-0041",
+          "statisticsObservation": "obs-0042",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "6fcbb5a99dbd8e3f9bd0fc8aff1171225a018046dfc9390733b496f44aa46abc",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_O_B2:0"
+        },
+        {
+          "source": "10.200.1.2",
+          "destination": "10.100.1.2",
+          "protocol": "esp",
+          "spi": 3364585549,
+          "reqid": 101,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc88b804d reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_I_B1:0",
+          "device": "V31B_I_B1",
+          "direction": "outbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0059",
+          "publicStateObservation": "obs-0054",
+          "statisticsObservation": "obs-0055",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "c70f930205b04cd5a6a5b51c867665c179a55c642d5b4a94ee76a2d5f9546030",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_I_A1:1"
+        },
+        {
+          "source": "10.100.1.2",
+          "destination": "10.200.1.2",
+          "protocol": "esp",
+          "spi": 3295241396,
+          "reqid": 101,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc46964b4 reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_I_B1:1",
+          "device": "V31B_I_B1",
+          "direction": "inbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0059",
+          "publicStateObservation": "obs-0054",
+          "statisticsObservation": "obs-0055",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "34c80c2a4182b2f0fb03e553aa74aa763e6d697c74192ab88e9dc5d1e755165b",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_I_A1:0"
+        },
+        {
+          "source": "172.20.21.1",
+          "destination": "172.20.11.1",
+          "protocol": "esp",
+          "spi": 3225142104,
+          "reqid": 201,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xc03bc358 reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x0, oseq 0x1c, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_O_B1:0",
+          "device": "V31B_O_B1",
+          "direction": "outbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0072",
+          "publicStateObservation": "obs-0067",
+          "statisticsObservation": "obs-0068",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "a2baa06e5c9b7ab213995c001b749417a798c15b0731499505c3bb3e21d22497",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_O_A1:1"
+        },
+        {
+          "source": "172.20.11.1",
+          "destination": "172.20.21.1",
+          "protocol": "esp",
+          "spi": 3391910189,
+          "reqid": 201,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xca2c712d reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x1c, oseq 0x0, bitmap 0x0fffffff\n",
+          "id": "phase-0:V31B_O_B1:1",
+          "device": "V31B_O_B1",
+          "direction": "inbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0072",
+          "publicStateObservation": "obs-0067",
+          "statisticsObservation": "obs-0068",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "35100a97d7058a59a170b58b3ccdae51abbb11014c950c0dd0808dc64ab67cb9",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_O_A1:0"
+        },
+        {
+          "source": "10.200.2.2",
+          "destination": "10.100.2.2",
+          "protocol": "esp",
+          "spi": 3416276853,
+          "reqid": 102,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xcba03f75 reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_I_B2:0",
+          "device": "V31B_I_B2",
+          "direction": "outbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0085",
+          "publicStateObservation": "obs-0080",
+          "statisticsObservation": "obs-0081",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "66338d061bcfd123d842a61af2d861c94cccf59c2badae1c50d2ecc234458311",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_I_A2:1"
+        },
+        {
+          "source": "10.100.2.2",
+          "destination": "10.200.2.2",
+          "protocol": "esp",
+          "spi": 3258154020,
+          "reqid": 102,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc2337c24 reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_I_B2:1",
+          "device": "V31B_I_B2",
+          "direction": "inbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0085",
+          "publicStateObservation": "obs-0080",
+          "statisticsObservation": "obs-0081",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "548cc52d6db076fe5b8783261fdaf115ca241f9719380ccc96687d0de5f24642",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_I_A2:0"
+        },
+        {
+          "source": "172.20.22.1",
+          "destination": "172.20.12.1",
+          "protocol": "esp",
+          "spi": 3236703171,
+          "reqid": 202,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xc0ec2bc3 reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x0, oseq 0x1c, bitmap 0x00000000\n",
+          "id": "phase-0:V31B_O_B2:0",
+          "device": "V31B_O_B2",
+          "direction": "outbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0098",
+          "publicStateObservation": "obs-0093",
+          "statisticsObservation": "obs-0094",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "6fcbb5a99dbd8e3f9bd0fc8aff1171225a018046dfc9390733b496f44aa46abc",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_O_A2:1"
+        },
+        {
+          "source": "172.20.12.1",
+          "destination": "172.20.22.1",
+          "protocol": "esp",
+          "spi": 3350156938,
+          "reqid": 202,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc7af568a reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x1c, oseq 0x0, bitmap 0x0fffffff\n",
+          "id": "phase-0:V31B_O_B2:1",
+          "device": "V31B_O_B2",
+          "direction": "inbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0098",
+          "publicStateObservation": "obs-0093",
+          "statisticsObservation": "obs-0094",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "3baf23e839f034533548e5a12f91de6682e51cb6bf953d14cc49ff9f4e8e0cce",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-0:V31B_O_A2:0"
+        }
+      ],
+      "endedAt": "2026-11-01T03:04:38.125249+00:00"
+    },
+    {
+      "id": "phase-1",
+      "startedAt": "2026-11-01T03:04:38.325341+00:00",
+      "devices": [
+        {
+          "id": "V31B_I_A1",
+          "role": "inner",
+          "observations": {
+            "interfaces": "obs-0104",
+            "sas": "obs-0105",
+            "states": "obs-0106",
+            "statistics": "obs-0107",
+            "policies": "obs-0108",
+            "connections": "obs-0109",
+            "configuration": "obs-0110",
+            "materialRead": "obs-0111"
+          }
+        },
+        {
+          "id": "V31B_O_A1",
+          "role": "outer",
+          "observations": {
+            "interfaces": "obs-0112",
+            "sas": "obs-0113",
+            "states": "obs-0114",
+            "statistics": "obs-0115",
+            "policies": "obs-0116",
+            "connections": "obs-0117",
+            "configuration": "obs-0118",
+            "materialRead": "obs-0119"
+          }
+        },
+        {
+          "id": "V31B_I_A2",
+          "role": "inner",
+          "observations": {
+            "interfaces": "obs-0120",
+            "sas": "obs-0121",
+            "states": "obs-0122",
+            "statistics": "obs-0123",
+            "policies": "obs-0124",
+            "connections": "obs-0125",
+            "configuration": "obs-0126",
+            "materialRead": "obs-0127"
+          }
+        },
+        {
+          "id": "V31B_O_A2",
+          "role": "outer",
+          "observations": {
+            "interfaces": "obs-0128",
+            "sas": "obs-0129",
+            "states": "obs-0130",
+            "statistics": "obs-0131",
+            "policies": "obs-0132",
+            "connections": "obs-0133",
+            "configuration": "obs-0134",
+            "materialRead": "obs-0135"
+          }
+        },
+        {
+          "id": "V31B_I_B1",
+          "role": "inner",
+          "observations": {
+            "interfaces": "obs-0136",
+            "sas": "obs-0137",
+            "states": "obs-0138",
+            "statistics": "obs-0139",
+            "policies": "obs-0140",
+            "connections": "obs-0141",
+            "configuration": "obs-0142",
+            "materialRead": "obs-0143"
+          }
+        },
+        {
+          "id": "V31B_O_B1",
+          "role": "outer",
+          "observations": {
+            "interfaces": "obs-0144",
+            "sas": "obs-0145",
+            "states": "obs-0146",
+            "statistics": "obs-0147",
+            "policies": "obs-0148",
+            "connections": "obs-0149",
+            "configuration": "obs-0150",
+            "materialRead": "obs-0151"
+          }
+        },
+        {
+          "id": "V31B_I_B2",
+          "role": "inner",
+          "observations": {
+            "interfaces": "obs-0152",
+            "sas": "obs-0153",
+            "states": "obs-0154",
+            "statistics": "obs-0155",
+            "policies": "obs-0156",
+            "connections": "obs-0157",
+            "configuration": "obs-0158",
+            "materialRead": "obs-0159"
+          }
+        },
+        {
+          "id": "V31B_O_B2",
+          "role": "outer",
+          "observations": {
+            "interfaces": "obs-0160",
+            "sas": "obs-0161",
+            "states": "obs-0162",
+            "statistics": "obs-0163",
+            "policies": "obs-0164",
+            "connections": "obs-0165",
+            "configuration": "obs-0166",
+            "materialRead": "obs-0167"
+          }
+        }
+      ],
+      "bindings": [
+        {
+          "source": "10.100.1.2",
+          "destination": "10.200.1.2",
+          "protocol": "esp",
+          "spi": 3295241396,
+          "reqid": 101,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc46964b4 reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_I_A1:0",
+          "device": "V31B_I_A1",
+          "direction": "outbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0111",
+          "publicStateObservation": "obs-0106",
+          "statisticsObservation": "obs-0107",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "34c80c2a4182b2f0fb03e553aa74aa763e6d697c74192ab88e9dc5d1e755165b",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_I_B1:1"
+        },
+        {
+          "source": "10.200.1.2",
+          "destination": "10.100.1.2",
+          "protocol": "esp",
+          "spi": 3364585549,
+          "reqid": 101,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc88b804d reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_I_A1:1",
+          "device": "V31B_I_A1",
+          "direction": "inbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0111",
+          "publicStateObservation": "obs-0106",
+          "statisticsObservation": "obs-0107",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "c70f930205b04cd5a6a5b51c867665c179a55c642d5b4a94ee76a2d5f9546030",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_I_B1:0"
+        },
+        {
+          "source": "172.20.11.1",
+          "destination": "172.20.21.1",
+          "protocol": "esp",
+          "spi": 3391910189,
+          "reqid": 201,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xca2c712d reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x0, oseq 0x1c, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_O_A1:0",
+          "device": "V31B_O_A1",
+          "direction": "outbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0119",
+          "publicStateObservation": "obs-0114",
+          "statisticsObservation": "obs-0115",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "35100a97d7058a59a170b58b3ccdae51abbb11014c950c0dd0808dc64ab67cb9",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_O_B1:1"
+        },
+        {
+          "source": "172.20.21.1",
+          "destination": "172.20.11.1",
+          "protocol": "esp",
+          "spi": 3225142104,
+          "reqid": 201,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xc03bc358 reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x1c, oseq 0x0, bitmap 0x0fffffff\n",
+          "id": "phase-1:V31B_O_A1:1",
+          "device": "V31B_O_A1",
+          "direction": "inbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0119",
+          "publicStateObservation": "obs-0114",
+          "statisticsObservation": "obs-0115",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "a2baa06e5c9b7ab213995c001b749417a798c15b0731499505c3bb3e21d22497",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_O_B1:0"
+        },
+        {
+          "source": "10.100.2.2",
+          "destination": "10.200.2.2",
+          "protocol": "esp",
+          "spi": 3258154020,
+          "reqid": 102,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc2337c24 reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_I_A2:0",
+          "device": "V31B_I_A2",
+          "direction": "outbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0127",
+          "publicStateObservation": "obs-0122",
+          "statisticsObservation": "obs-0123",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "548cc52d6db076fe5b8783261fdaf115ca241f9719380ccc96687d0de5f24642",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_I_B2:1"
+        },
+        {
+          "source": "10.200.2.2",
+          "destination": "10.100.2.2",
+          "protocol": "esp",
+          "spi": 3416276853,
+          "reqid": 102,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xcba03f75 reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_I_A2:1",
+          "device": "V31B_I_A2",
+          "direction": "inbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0127",
+          "publicStateObservation": "obs-0122",
+          "statisticsObservation": "obs-0123",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "66338d061bcfd123d842a61af2d861c94cccf59c2badae1c50d2ecc234458311",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_I_B2:0"
+        },
+        {
+          "source": "172.20.12.1",
+          "destination": "172.20.22.1",
+          "protocol": "esp",
+          "spi": 3350156938,
+          "reqid": 202,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc7af568a reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x0, oseq 0x1c, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_O_A2:0",
+          "device": "V31B_O_A2",
+          "direction": "outbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0135",
+          "publicStateObservation": "obs-0130",
+          "statisticsObservation": "obs-0131",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "3baf23e839f034533548e5a12f91de6682e51cb6bf953d14cc49ff9f4e8e0cce",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_O_B2:1"
+        },
+        {
+          "source": "172.20.22.1",
+          "destination": "172.20.12.1",
+          "protocol": "esp",
+          "spi": 3236703171,
+          "reqid": 202,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xc0ec2bc3 reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:31\n\tanti-replay context: seq 0x1c, oseq 0x0, bitmap 0x0fffffff\n",
+          "id": "phase-1:V31B_O_A2:1",
+          "device": "V31B_O_A2",
+          "direction": "inbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0135",
+          "publicStateObservation": "obs-0130",
+          "statisticsObservation": "obs-0131",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "6fcbb5a99dbd8e3f9bd0fc8aff1171225a018046dfc9390733b496f44aa46abc",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_O_B2:0"
+        },
+        {
+          "source": "10.200.1.2",
+          "destination": "10.100.1.2",
+          "protocol": "esp",
+          "spi": 3364585549,
+          "reqid": 101,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc88b804d reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_I_B1:0",
+          "device": "V31B_I_B1",
+          "direction": "outbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0143",
+          "publicStateObservation": "obs-0138",
+          "statisticsObservation": "obs-0139",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "c70f930205b04cd5a6a5b51c867665c179a55c642d5b4a94ee76a2d5f9546030",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_I_A1:1"
+        },
+        {
+          "source": "10.100.1.2",
+          "destination": "10.200.1.2",
+          "protocol": "esp",
+          "spi": 3295241396,
+          "reqid": 101,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc46964b4 reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_I_B1:1",
+          "device": "V31B_I_B1",
+          "direction": "inbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0143",
+          "publicStateObservation": "obs-0138",
+          "statisticsObservation": "obs-0139",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "34c80c2a4182b2f0fb03e553aa74aa763e6d697c74192ab88e9dc5d1e755165b",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_I_A1:0"
+        },
+        {
+          "source": "172.20.21.1",
+          "destination": "172.20.11.1",
+          "protocol": "esp",
+          "spi": 3225142104,
+          "reqid": 201,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xc03bc358 reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:41\n\tanti-replay context: seq 0x0, oseq 0x1d, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_O_B1:0",
+          "device": "V31B_O_B1",
+          "direction": "outbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0151",
+          "publicStateObservation": "obs-0146",
+          "statisticsObservation": "obs-0147",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "a2baa06e5c9b7ab213995c001b749417a798c15b0731499505c3bb3e21d22497",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_O_A1:1"
+        },
+        {
+          "source": "172.20.11.1",
+          "destination": "172.20.21.1",
+          "protocol": "esp",
+          "spi": 3391910189,
+          "reqid": 201,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xca2c712d reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:41\n\tanti-replay context: seq 0x1d, oseq 0x0, bitmap 0x1fffffff\n",
+          "id": "phase-1:V31B_O_B1:1",
+          "device": "V31B_O_B1",
+          "direction": "inbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0151",
+          "publicStateObservation": "obs-0146",
+          "statisticsObservation": "obs-0147",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "35100a97d7058a59a170b58b3ccdae51abbb11014c950c0dd0808dc64ab67cb9",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_O_A1:0"
+        },
+        {
+          "source": "10.200.2.2",
+          "destination": "10.100.2.2",
+          "protocol": "esp",
+          "spi": 3416276853,
+          "reqid": 102,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xcba03f75 reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_I_B2:0",
+          "device": "V31B_I_B2",
+          "direction": "outbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0159",
+          "publicStateObservation": "obs-0154",
+          "statisticsObservation": "obs-0155",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "66338d061bcfd123d842a61af2d861c94cccf59c2badae1c50d2ecc234458311",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_I_A2:1"
+        },
+        {
+          "source": "10.100.2.2",
+          "destination": "10.200.2.2",
+          "protocol": "esp",
+          "spi": 3258154020,
+          "reqid": 102,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc2337c24 reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_I_B2:1",
+          "device": "V31B_I_B2",
+          "direction": "inbound",
+          "localInterface": "gray",
+          "materialObservation": "obs-0159",
+          "publicStateObservation": "obs-0154",
+          "statisticsObservation": "obs-0155",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "548cc52d6db076fe5b8783261fdaf115ca241f9719380ccc96687d0de5f24642",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_I_A2:0"
+        },
+        {
+          "source": "172.20.22.1",
+          "destination": "172.20.12.1",
+          "protocol": "esp",
+          "spi": 3236703171,
+          "reqid": 202,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xc0ec2bc3 reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:41\n\tanti-replay context: seq 0x0, oseq 0x1d, bitmap 0x00000000\n",
+          "id": "phase-1:V31B_O_B2:0",
+          "device": "V31B_O_B2",
+          "direction": "outbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0167",
+          "publicStateObservation": "obs-0162",
+          "statisticsObservation": "obs-0163",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "6fcbb5a99dbd8e3f9bd0fc8aff1171225a018046dfc9390733b496f44aa46abc",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_O_A2:1"
+        },
+        {
+          "source": "172.20.12.1",
+          "destination": "172.20.22.1",
+          "protocol": "esp",
+          "spi": 3350156938,
+          "reqid": 202,
+          "mode": "tunnel",
+          "mark": null,
+          "ifId": null,
+          "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc7af568a reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-01 03:04:41\n\tanti-replay context: seq 0x1d, oseq 0x0, bitmap 0x1fffffff\n",
+          "id": "phase-1:V31B_O_B2:1",
+          "device": "V31B_O_B2",
+          "direction": "inbound",
+          "localInterface": "black",
+          "materialObservation": "obs-0167",
+          "publicStateObservation": "obs-0162",
+          "statisticsObservation": "obs-0163",
+          "materials": [
+            {
+              "kind": "aead",
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "sha256": "3baf23e839f034533548e5a12f91de6682e51cb6bf953d14cc49ff9f4e8e0cce",
+              "parameters": "128"
+            }
+          ],
+          "equalTo": "phase-1:V31B_O_A2:0"
+        }
+      ],
+      "endedAt": "2026-11-01T03:04:43.951507+00:00"
+    }
+  ],
+  "errors": [],
+  "equalityMethod": "Direct equality of algorithm, key bytes and parameters read from both active kernel associations in collector memory.",
+  "scope": "Sequential observations with an explicit before/after comparison; no atomic multi-device capture claim."
+}

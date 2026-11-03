@@ -907,10 +907,21 @@ _:subclass-084 tdn:rationale "Attach an otherwise unparented extracted role to t
 skos:altLabel rdf:type owl:AnnotationProperty .
 <urn:tdn:csfc:msc:roles> rdf:type owl:Ontology .
 <urn:tdn:csfc:msc:roles> rdfs:comment "A class describes entities matching an extracted role or realization concept. Classes may overlap and may have multiple parents. No device existence, class disjointness, or class equivalence is asserted. Non-subtype links are OWL annotation assertions between class IRIs. They preserve source context without imposing object-property restrictions or asserting a relationship for every class member." .
-<urn:tdn:csfc:msc:roles> owl:versionInfo "CSfC MSC 1.3.0; TDN role hierarchy 1.0" .
-<urn:tdn:csfc:msc:roles> tdn:inputHash "roles/ontology_decisions.json sha256:67b6f5f4c370a07cb13fa7034414721a6662bcf99e3407feb592b3fc81c1b7fe" .
+<urn:tdn:csfc:msc:roles> owl:versionInfo "CSfC MSC 1.3.0; TDN role hierarchy 1.1; Lean theory v3.1" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/Administration.lean sha256:dcfbaec5c39839dc9fac870f542e34421e6c9cc41dbf351180f24c668e629041" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/Architecture.lean sha256:fb4b929f86f92c3aa0b7d134548dce8edebf72c645d8b2f9d034567fd91c04c4" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/AuthenticationIsolation.lean sha256:0389df58e5511f4d8c34190fc3bec837c0bb069c6258e98326becacb71cb7065" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/CPDuties.lean sha256:08df288d3b3e06106fbe245ef08d82d76ae1b1771fb977adf347cfff68d5d967" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/CPDutyRecords.lean sha256:8d9ccffbc8a88910768ebd9bfdf467a2d7dc4c10fe251195a8125d6ac7b1c668" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/CompleteSpecifications.lean sha256:13285457ac8eba31a50313408edb08c34e02a134b201553c034c767ebbdc19b4" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/ComplianceModel.lean sha256:c4842ba2c660b6788842ee202d0b590d85699d66f87fedba77f3387677e302a2" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/DirectSpecifications.lean sha256:c13ed64c732b3ce6eefda9c920f91e5e072282a48a2712f8502df4516471e3ad" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "TDN/Targets/TimeSynchronization.lean sha256:1095fd256cfdd3703f3e3e51ab310dcc9c2588daff3c8fa416b75b5dcd6d8d0f" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "roles/ontology_decisions.json sha256:741710dbf55a3725da0d118d244ebc834e82808de256ec236b7dc32af8809688" .
+<urn:tdn:csfc:msc:roles> tdn:inputHash "roles/ontology_theory.json sha256:52ab026cb0d6899640c17b7cfc00e3b190789409aa051f7aa12b2d4e39d4028d" .
 <urn:tdn:csfc:msc:roles> tdn:inputHash "roles/roles.json sha256:6a12f5298603f2cfd51af099a48ae761d561e25b60e7b753ab990cb76454d8e5" .
 <urn:tdn:csfc:msc:roles> tdn:inputHash "source/source_index.jsonl sha256:39b9770a52900512a58e468a83839238d4583e030ac76870fd8f11e4aff2d5dc" .
+<urn:tdn:csfc:msc:roles> tdn:theoryVersion "v3.1" .
 tdn:ExtractedRole rdf:type owl:Class .
 tdn:ExtractedRole rdfs:comment "Analyst-defined organizational superclass for realizations of the role and concept categories extracted from the CSfC MSC v1.3.0 source. Each role class denotes the entities or bearers that realize its source-context category. The categories include devices, services, aggregates, mixed authorities, and protocol functions. The root does not reproduce a CP definition and does not assert that every category is a physical device or an MSC Solution Component. Classes without a curated parent receive a generated organizational edge to the root; that edge is separate from source-backed subtype evidence." .
 tdn:ExtractedRole rdfs:label "Extracted role or concept realization" .
@@ -926,6 +937,14 @@ tdn:ROLE-authentication-server skos:altLabel "Authentication Servers" .
 tdn:ROLE-authentication-server skos:altLabel "MSC AUTHENTICATION SERVER" .
 tdn:ROLE-authentication-server skos:altLabel "MSC Authentication Server" .
 tdn:ROLE-authentication-server skos:altLabel "authentication server" .
+tdn:ROLE-authentication-server tdn:leanExpression "Device.kind = .authenticationServer" .
+tdn:ROLE-authentication-server tdn:leanExpression "MACsecAuthentication.server" .
+tdn:ROLE-authentication-server tdn:leanExpression "MACsecAuthentication.serverAttachments" .
+tdn:ROLE-authentication-server tdn:leanMapping "Authentication Servers have a dedicated device kind. MACsec authentication records identify the server and its site/network attachments." .
+tdn:ROLE-authentication-server tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-authentication-server tdn:leanReference "MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356" .
+tdn:ROLE-authentication-server tdn:leanReference "msc_macsec_authentication_choice_and_as at TDN/Targets/CompleteSpecifications.lean:38" .
+tdn:ROLE-authentication-server tdn:leanRepresentation "direct" .
 tdn:ROLE-authentication-server tdn:roleId "ROLE-authentication-server" .
 tdn:ROLE-authentication-server tdn:roleKind "device_or_service_role" .
 tdn:ROLE-authentication-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p005:u001> .
@@ -943,27 +962,46 @@ tdn:ROLE-authentication-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.
 tdn:ROLE-authentication-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p042:u013> .
 tdn:ROLE-authentication-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p062:u007> .
 tdn:ROLE-authentication-server tdn:supports_authentication tdn:ROLE-macsec-device .
+tdn:ROLE-authentication-server tdn:theoryInterpretation "V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks." .
 tdn:ROLE-authentication-service rdf:type owl:Class .
 tdn:ROLE-authentication-service rdfs:comment "Service used for access to infrastructure components under MSC-GD-27; not assumed identical to the MACsec AS." .
 tdn:ROLE-authentication-service rdfs:label "Infrastructure authentication service" .
 tdn:ROLE-authentication-service rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-authentication-service skos:altLabel "authentication service" .
+tdn:ROLE-authentication-service tdn:leanExpression "ManagementServiceFunction.authentication" .
+tdn:ROLE-authentication-service tdn:leanExpression "ServiceKind.authentication" .
+tdn:ROLE-authentication-service tdn:leanMapping "Authentication is a registered service function hosted by a component. The hosting device may also have the authenticationServer kind." .
+tdn:ROLE-authentication-service tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-authentication-service tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-authentication-service tdn:leanReference "ServiceKind at TDN/Targets/ComplianceModel.lean:511" .
+tdn:ROLE-authentication-service tdn:leanRepresentation "composed" .
 tdn:ROLE-authentication-service tdn:roleId "ROLE-authentication-service" .
 tdn:ROLE-authentication-service tdn:roleKind "device_or_service_role" .
 tdn:ROLE-authentication-service tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p052:u009> .
+tdn:ROLE-authentication-service tdn:theoryInterpretation "V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks." .
 tdn:ROLE-authenticator rdf:type owl:Class .
 tdn:ROLE-authenticator rdfs:comment "MACsec Device authentication function; distinct from the Authentication Server." .
 tdn:ROLE-authenticator rdfs:label "Authenticator" .
 tdn:ROLE-authenticator rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-authenticator skos:altLabel "authenticator" .
+tdn:ROLE-authenticator tdn:leanExpression "EAPRole.authenticator" .
+tdn:ROLE-authenticator tdn:leanExpression "MACsecAuthentication.supportedRoles" .
+tdn:ROLE-authenticator tdn:leanMapping "The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements." .
+tdn:ROLE-authenticator tdn:leanReference "EAPRole at TDN/Targets/DirectSpecifications.lean:271" .
+tdn:ROLE-authenticator tdn:leanReference "MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356" .
+tdn:ROLE-authenticator tdn:leanReference "msc_macsec_authentication_choice_and_as at TDN/Targets/CompleteSpecifications.lean:38" .
+tdn:ROLE-authenticator tdn:leanRepresentation "direct" .
 tdn:ROLE-authenticator tdn:roleId "ROLE-authenticator" .
 tdn:ROLE-authenticator tdn:roleKind "device_or_service_role" .
 tdn:ROLE-authenticator tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002> .
+tdn:ROLE-authenticator tdn:theoryInterpretation "V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks." .
 tdn:ROLE-auxiliary-network-device rdf:type owl:Class .
 tdn:ROLE-auxiliary-network-device rdfs:comment "Generic supporting device category in Security Administrator duties." .
 tdn:ROLE-auxiliary-network-device rdfs:label "Auxiliary network device" .
 tdn:ROLE-auxiliary-network-device rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-auxiliary-network-device skos:altLabel "auxiliary network devices" .
+tdn:ROLE-auxiliary-network-device tdn:leanMapping "The broad source grouping has no dedicated v3.1 role predicate. Specific member functions must be mapped separately." .
+tdn:ROLE-auxiliary-network-device tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-auxiliary-network-device tdn:roleId "ROLE-auxiliary-network-device" .
 tdn:ROLE-auxiliary-network-device tdn:roleKind "device_or_service_role" .
 tdn:ROLE-auxiliary-network-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p054:u011.s001> .
@@ -976,6 +1014,13 @@ tdn:ROLE-aw skos:altLabel "AW" .
 tdn:ROLE-aw skos:altLabel "AWs" .
 tdn:ROLE-aw skos:altLabel "MW" .
 tdn:ROLE-aw skos:altLabel "Management Workstation" .
+tdn:ROLE-aw tdn:leanExpression "AdministrativeAccount.workstationAccount" .
+tdn:ROLE-aw tdn:leanExpression "Device.kind = .workstation" .
+tdn:ROLE-aw tdn:leanMapping "Administrative Workstations use the workstation device kind. Their administrator accounts and sessions are represented separately." .
+tdn:ROLE-aw tdn:leanReference "AdministrativeAccount at TDN/Targets/Administration.lean:20" .
+tdn:ROLE-aw tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-aw tdn:leanReference "msc_administrator_authentication at TDN/Targets/CompleteSpecifications.lean:94" .
+tdn:ROLE-aw tdn:leanRepresentation "direct" .
 tdn:ROLE-aw tdn:may_be_realized_as tdn:ROLE-physical-workstation .
 tdn:ROLE-aw tdn:may_be_realized_as tdn:ROLE-virtual-machine .
 tdn:ROLE-aw tdn:roleId "ROLE-aw" .
@@ -1028,6 +1073,8 @@ tdn:ROLE-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p049
 tdn:ROLE-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u014.s001> .
 tdn:ROLE-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p062:u008> .
 tdn:ROLE-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p063:u010> .
+tdn:ROLE-aw tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
+tdn:ROLE-aw tdn:theoryInterpretation "V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions." .
 tdn:ROLE-aw-host rdf:type owl:Class .
 tdn:ROLE-aw-host rdfs:comment "Physical host/server used to host management or AW virtual machines; restrictions preserve dedicated functions." .
 tdn:ROLE-aw-host rdfs:label "Host/server for AW virtual machines" .
@@ -1036,6 +1083,8 @@ tdn:ROLE-aw-host skos:altLabel "Hosts/servers" .
 tdn:ROLE-aw-host skos:altLabel "hosts/servers" .
 tdn:ROLE-aw-host skos:altLabel "physical host/server" .
 tdn:ROLE-aw-host tdn:hosts tdn:ROLE-virtual-machine .
+tdn:ROLE-aw-host tdn:leanMapping "V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling." .
+tdn:ROLE-aw-host tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-aw-host tdn:roleId "ROLE-aw-host" .
 tdn:ROLE-aw-host tdn:roleKind "management_or_realization_facet" .
 tdn:ROLE-aw-host tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s001> .
@@ -1048,6 +1097,12 @@ tdn:ROLE-black-aw rdfs:comment "Mentioned to prohibit Black AW management of Gra
 tdn:ROLE-black-aw rdfs:label "Black Administrative Workstation" .
 tdn:ROLE-black-aw rdfs:subClassOf tdn:ROLE-aw .
 tdn:ROLE-black-aw skos:altLabel "Black AWs" .
+tdn:ROLE-black-aw tdn:leanExpression "DeviceKind.workstation" .
+tdn:ROLE-black-aw tdn:leanExpression "Interface.zone" .
+tdn:ROLE-black-aw tdn:leanMapping "The model can record a workstation and Black interface, but has no separate Black-workstation role or complete Black-workstation specification." .
+tdn:ROLE-black-aw tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-black-aw tdn:leanReference "Interface at TDN/Targets/ComplianceModel.lean:26" .
+tdn:ROLE-black-aw tdn:leanRepresentation "context" .
 tdn:ROLE-black-aw tdn:roleId "ROLE-black-aw" .
 tdn:ROLE-black-aw tdn:roleKind "device_or_service_role" .
 tdn:ROLE-black-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s006> .
@@ -1059,6 +1114,13 @@ tdn:ROLE-ca skos:altLabel "CA" .
 tdn:ROLE-ca skos:altLabel "CAs" .
 tdn:ROLE-ca skos:altLabel "Certificate Authority" .
 tdn:ROLE-ca skos:altLabel "Certification Authorities" .
+tdn:ROLE-ca tdn:leanExpression "Deployment.keyManagementCA" .
+tdn:ROLE-ca tdn:leanExpression "Device.kind = .certificationAuthority" .
+tdn:ROLE-ca tdn:leanMapping "Certification Authorities have a dedicated device kind and are associated with authenticated components through key-management records." .
+tdn:ROLE-ca tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-ca tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-ca tdn:leanReference "InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11" .
+tdn:ROLE-ca tdn:leanRepresentation "direct" .
 tdn:ROLE-ca tdn:roleId "ROLE-ca" .
 tdn:ROLE-ca tdn:roleKind "device_or_service_role" .
 tdn:ROLE-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002> .
@@ -1088,12 +1150,20 @@ tdn:ROLE-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p059
 tdn:ROLE-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u001.s001> .
 tdn:ROLE-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p061:u005.s001> .
 tdn:ROLE-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p062:u010> .
+tdn:ROLE-ca tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
 tdn:ROLE-cdp rdf:type owl:Class .
 tdn:ROLE-cdp rdfs:comment "Web server hosting a CRL for VPN Gateways to download." .
 tdn:ROLE-cdp rdfs:label "CRL Distribution Point" .
 tdn:ROLE-cdp rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-cdp skos:altLabel "CDP" .
 tdn:ROLE-cdp skos:altLabel "CDPs" .
+tdn:ROLE-cdp tdn:leanExpression "DeviceKind.revocationService" .
+tdn:ROLE-cdp tdn:leanExpression "ManagementServiceFunction.revocation" .
+tdn:ROLE-cdp tdn:leanMapping "Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders." .
+tdn:ROLE-cdp tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-cdp tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-cdp tdn:leanReference "msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20" .
+tdn:ROLE-cdp tdn:leanRepresentation "context" .
 tdn:ROLE-cdp tdn:provides_revocation_information_to tdn:ROLE-vpn-gateway .
 tdn:ROLE-cdp tdn:roleId "ROLE-cdp" .
 tdn:ROLE-cdp tdn:roleKind "device_or_service_role" .
@@ -1102,12 +1172,18 @@ tdn:ROLE-cdp tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p04
 tdn:ROLE-cdp tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p046:u012> .
 tdn:ROLE-cdp tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u001.s001> .
 tdn:ROLE-cdp tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p062:u013> .
+tdn:ROLE-cdp tdn:theoryInterpretation "V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level." .
 tdn:ROLE-cds rdf:type owl:Class .
 tdn:ROLE-cds rdfs:comment "Controlled interface across security domains, including transfer of Gray logs to a Red SIEM." .
 tdn:ROLE-cds rdfs:label "Cross Domain Solution" .
 tdn:ROLE-cds rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-cds skos:altLabel "CDS" .
 tdn:ROLE-cds skos:altLabel "cross domain solution" .
+tdn:ROLE-cds tdn:leanExpression "Device.kind = .crossDomain" .
+tdn:ROLE-cds tdn:leanMapping "Cross Domain Solutions have a device kind. Requirement applicability also uses the recorded cross-domain-solution inventory." .
+tdn:ROLE-cds tdn:leanReference "CPContext.ComponentApplies at TDN/Targets/CPDuties.lean:354" .
+tdn:ROLE-cds tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-cds tdn:leanRepresentation "direct" .
 tdn:ROLE-cds tdn:roleId "ROLE-cds" .
 tdn:ROLE-cds tdn:roleKind "device_or_service_role" .
 tdn:ROLE-cds tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s004> .
@@ -1123,6 +1199,8 @@ tdn:ROLE-certificate-registration rdfs:label "Certificate registration component
 tdn:ROLE-certificate-registration rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-certificate-registration skos:altLabel "CA registration" .
 tdn:ROLE-certificate-registration skos:altLabel "certificate registrations" .
+tdn:ROLE-certificate-registration tdn:leanMapping "V3.1 does not define a separate role or protocol model for this certificate-provisioning function." .
+tdn:ROLE-certificate-registration tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-certificate-registration tdn:roleId "ROLE-certificate-registration" .
 tdn:ROLE-certificate-registration tdn:roleKind "device_or_service_role" .
 tdn:ROLE-certificate-registration tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002> .
@@ -1134,6 +1212,11 @@ tdn:ROLE-control-plane-service rdfs:comment "Inside-network service category; NT
 tdn:ROLE-control-plane-service rdfs:label "Control plane network service" .
 tdn:ROLE-control-plane-service rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-control-plane-service skos:altLabel "Network services provided by control plane" .
+tdn:ROLE-control-plane-service tdn:leanExpression "ServiceKind.control" .
+tdn:ROLE-control-plane-service tdn:leanExpression "ServiceRegistration" .
+tdn:ROLE-control-plane-service tdn:leanMapping "Control service registrations identify protocol and port. Their kind is recorded separately from the hosting device." .
+tdn:ROLE-control-plane-service tdn:leanReference "ServiceKind at TDN/Targets/ComplianceModel.lean:511" .
+tdn:ROLE-control-plane-service tdn:leanRepresentation "composed" .
 tdn:ROLE-control-plane-service tdn:roleId "ROLE-control-plane-service" .
 tdn:ROLE-control-plane-service tdn:roleKind "device_or_service_role" .
 tdn:ROLE-control-plane-service tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u003> .
@@ -1141,6 +1224,9 @@ tdn:ROLE-customer-edge-router rdf:type owl:Class .
 tdn:ROLE-customer-edge-router rdfs:comment "Example of an existing Black Network screening router." .
 tdn:ROLE-customer-edge-router rdfs:label "Customer Edge Router" .
 tdn:ROLE-customer-edge-router rdfs:subClassOf tdn:ROLE-router .
+tdn:ROLE-customer-edge-router tdn:leanMapping "The source’s customer-edge example can realize a router role. V3.1 has no customer-edge-specific device kind or automatic equivalence with screeningRouter." .
+tdn:ROLE-customer-edge-router tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-customer-edge-router tdn:leanRepresentation "context" .
 tdn:ROLE-customer-edge-router tdn:roleId "ROLE-customer-edge-router" .
 tdn:ROLE-customer-edge-router tdn:roleKind "device_or_service_role" .
 tdn:ROLE-customer-edge-router tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005> .
@@ -1148,6 +1234,11 @@ tdn:ROLE-dns-server rdf:type owl:Class .
 tdn:ROLE-dns-server rdfs:comment "Server referenced through configured DNS server addresses; not assigned an explicit deployment location." .
 tdn:ROLE-dns-server rdfs:label "DNS server" .
 tdn:ROLE-dns-server rdfs:subClassOf tdn:ExtractedRole .
+tdn:ROLE-dns-server tdn:leanExpression "ManagementServiceFunction.nameResolution" .
+tdn:ROLE-dns-server tdn:leanMapping "DNS service use is represented by the name-resolution management function and configuration records. DeviceKind has no separate DNS-server constructor." .
+tdn:ROLE-dns-server tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-dns-server tdn:leanReference "ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559" .
+tdn:ROLE-dns-server tdn:leanRepresentation "composed" .
 tdn:ROLE-dns-server tdn:roleId "ROLE-dns-server" .
 tdn:ROLE-dns-server tdn:roleKind "device_or_service_role" .
 tdn:ROLE-dns-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p036:u010> .
@@ -1158,6 +1249,16 @@ tdn:ROLE-encapsulation-device rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-encapsulation-device skos:altLabel "Encapsulation/ Decapsulation Device" .
 tdn:ROLE-encapsulation-device skos:altLabel "standalone device" .
 tdn:ROLE-encapsulation-device skos:altLabel "standalone router or switch" .
+tdn:ROLE-encapsulation-device tdn:leanExpression "Deployment.standaloneEncapsulator" .
+tdn:ROLE-encapsulation-device tdn:leanExpression "DeviceKind.encapsulator" .
+tdn:ROLE-encapsulation-device tdn:leanExpression "EncapsulationUse" .
+tdn:ROLE-encapsulation-device tdn:leanMapping "The encapsulation role uses EncapsulationUse records and the standaloneEncapsulator predicate. A device kind is available, while the actual specification checks the selected use, attachments and applicable duties." .
+tdn:ROLE-encapsulation-device tdn:leanReference "CPContext.AllApplicableDuties at TDN/Targets/CPDuties.lean:424" .
+tdn:ROLE-encapsulation-device tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-encapsulation-device tdn:leanReference "EncapsulationUse at TDN/Targets/DirectSpecifications.lean:200" .
+tdn:ROLE-encapsulation-device tdn:leanReference "MACsecEncapsulationCore at TDN/Targets/DirectSpecifications.lean:212" .
+tdn:ROLE-encapsulation-device tdn:leanReference "msc_macsec_encapsulation at TDN/Targets/CompleteSpecifications.lean:27" .
+tdn:ROLE-encapsulation-device tdn:leanRepresentation "composed" .
 tdn:ROLE-encapsulation-device tdn:may_be_realized_as tdn:ROLE-router .
 tdn:ROLE-encapsulation-device tdn:may_be_realized_as tdn:ROLE-switch .
 tdn:ROLE-encapsulation-device tdn:roleId "ROLE-encapsulation-device" .
@@ -1168,6 +1269,7 @@ tdn:ROLE-encapsulation-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0
 tdn:ROLE-encapsulation-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p020:f08:label009> .
 tdn:ROLE-encapsulation-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003> .
 tdn:ROLE-encapsulation-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p042:u004> .
+tdn:ROLE-encapsulation-device tdn:theoryInterpretation "V31-015: When built-in encapsulation is unavailable, the selected standalone encapsulator must have the required Inner-side and Outer-side attachments and satisfy its applicable component duties. The current RG-015 definition preserves those duties despite the source passage describing encapsulation as outside the solution boundary." .
 tdn:ROLE-encryption-component rdf:type owl:Class .
 tdn:ROLE-encryption-component rdfs:comment "Generic VPN Gateway or MACsec Device category." .
 tdn:ROLE-encryption-component rdfs:label "Encryption Component" .
@@ -1176,6 +1278,13 @@ tdn:ROLE-encryption-component skos:altLabel "ENCRYPTION COMPONENT" .
 tdn:ROLE-encryption-component skos:altLabel "ENCRYPTION COMPONENTS" .
 tdn:ROLE-encryption-component skos:altLabel "Encryption Components" .
 tdn:ROLE-encryption-component skos:altLabel "encryption component" .
+tdn:ROLE-encryption-component tdn:leanExpression "Device.layer = some .inner or some .outer" .
+tdn:ROLE-encryption-component tdn:leanExpression "DeviceKind.vpn / DeviceKind.macsec" .
+tdn:ROLE-encryption-component tdn:leanMapping "The layer field selects Inner or Outer encryption components. Flow validity separately checks whether their mechanism is VPN or MACsec." .
+tdn:ROLE-encryption-component tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-encryption-component tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-encryption-component tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-encryption-component tdn:leanRepresentation "composed" .
 tdn:ROLE-encryption-component tdn:roleId "ROLE-encryption-component" .
 tdn:ROLE-encryption-component tdn:roleKind "device_or_service_role" .
 tdn:ROLE-encryption-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u020> .
@@ -1396,11 +1505,16 @@ tdn:ROLE-encryption-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0
 tdn:ROLE-encryption-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u005.s003> .
 tdn:ROLE-encryption-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u012.s001> .
 tdn:ROLE-encryption-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u012.s003> .
+tdn:ROLE-encryption-component tdn:theoryInterpretation "V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope." .
 tdn:ROLE-end-user-device rdf:type owl:Class .
 tdn:ROLE-end-user-device rdfs:comment "Device category in combined CSfC solutions referenced by MSC-SR-13." .
 tdn:ROLE-end-user-device rdfs:label "End user device" .
 tdn:ROLE-end-user-device rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-end-user-device skos:altLabel "end user devices" .
+tdn:ROLE-end-user-device tdn:leanExpression "RedNetworkIdentity" .
+tdn:ROLE-end-user-device tdn:leanMapping "Red network records and modeled payload origins identify source and destination networks. DeviceKind has no separate end-user-host constructor." .
+tdn:ROLE-end-user-device tdn:leanReference "RedNetworkIdentity at TDN/Targets/Architecture.lean:13" .
+tdn:ROLE-end-user-device tdn:leanRepresentation "context" .
 tdn:ROLE-end-user-device tdn:roleId "ROLE-end-user-device" .
 tdn:ROLE-end-user-device tdn:roleKind "device_or_service_role" .
 tdn:ROLE-end-user-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p036:u003> .
@@ -1410,6 +1524,8 @@ tdn:ROLE-enrollment-server rdfs:label "Enrollment server" .
 tdn:ROLE-enrollment-server rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-enrollment-server skos:altLabel "enrollment or provisioning servers" .
 tdn:ROLE-enrollment-server skos:altLabel "enrollment," .
+tdn:ROLE-enrollment-server tdn:leanMapping "V3.1 does not define a separate role or protocol model for this certificate-provisioning function." .
+tdn:ROLE-enrollment-server tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-enrollment-server tdn:roleId "ROLE-enrollment-server" .
 tdn:ROLE-enrollment-server tdn:roleKind "device_or_service_role" .
 tdn:ROLE-enrollment-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002> .
@@ -1420,10 +1536,16 @@ tdn:ROLE-enterprise-ca rdfs:comment "Enterprise CA that need not be managed by t
 tdn:ROLE-enterprise-ca rdfs:label "Enterprise CA" .
 tdn:ROLE-enterprise-ca rdfs:subClassOf tdn:ROLE-ca .
 tdn:ROLE-enterprise-ca skos:altLabel "enterprise CAs" .
+tdn:ROLE-enterprise-ca tdn:leanExpression "DeviceKind.certificationAuthority" .
+tdn:ROLE-enterprise-ca tdn:leanMapping "Enterprise CAs can be listed as CA devices and Gray service nodes. V3.1 does not give enterprise CAs a distinct DeviceKind." .
+tdn:ROLE-enterprise-ca tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-enterprise-ca tdn:leanReference "msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20" .
+tdn:ROLE-enterprise-ca tdn:leanRepresentation "context" .
 tdn:ROLE-enterprise-ca tdn:roleId "ROLE-enterprise-ca" .
 tdn:ROLE-enterprise-ca tdn:roleKind "device_or_service_role" .
 tdn:ROLE-enterprise-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002> .
 tdn:ROLE-enterprise-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s004> .
+tdn:ROLE-enterprise-ca tdn:theoryInterpretation "V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level." .
 tdn:ROLE-firewall rdf:type owl:Class .
 tdn:ROLE-firewall rdfs:comment "Traffic filtering component category." .
 tdn:ROLE-firewall rdfs:label "Firewall" .
@@ -1433,6 +1555,12 @@ tdn:ROLE-firewall skos:altLabel "Firewalls" .
 tdn:ROLE-firewall skos:altLabel "Traffic Filtering Firewalls" .
 tdn:ROLE-firewall skos:altLabel "firewall" .
 tdn:ROLE-firewall skos:altLabel "traffic filtering firewall" .
+tdn:ROLE-firewall tdn:leanExpression "DeviceKind.grayFirewall" .
+tdn:ROLE-firewall tdn:leanExpression "DeviceKind.innerFirewall" .
+tdn:ROLE-firewall tdn:leanExpression "DeviceKind.outerFirewall" .
+tdn:ROLE-firewall tdn:leanMapping "The model distinguishes Gray, Outer, and Inner firewalls with separate device kinds." .
+tdn:ROLE-firewall tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-firewall tdn:leanRepresentation "composed" .
 tdn:ROLE-firewall tdn:roleId "ROLE-firewall" .
 tdn:ROLE-firewall tdn:roleKind "device_or_service_role" .
 tdn:ROLE-firewall tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u019> .
@@ -1521,6 +1649,9 @@ tdn:ROLE-government-product rdfs:comment "Alternative approved egress product in
 tdn:ROLE-government-product rdfs:label "NSA-certified Government-off-the-Shelf product" .
 tdn:ROLE-government-product rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-government-product skos:altLabel "NSA-certified product" .
+tdn:ROLE-government-product tdn:leanMapping "The extracted assurance/product category is not a distinct device kind in v3.1. Product eligibility and external assurance remain separate evidence obligations." .
+tdn:ROLE-government-product tdn:leanReference "ExternalFacts at TDN/Targets/CPDutyRecords.lean:57" .
+tdn:ROLE-government-product tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-government-product tdn:roleId "ROLE-government-product" .
 tdn:ROLE-government-product tdn:roleKind "device_or_service_role" .
 tdn:ROLE-government-product tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p036:u015.s002> .
@@ -1535,6 +1666,15 @@ tdn:ROLE-gray-aw skos:altLabel "Gray AWs" .
 tdn:ROLE-gray-aw tdn:administers tdn:ROLE-gray-firewall .
 tdn:ROLE-gray-aw tdn:administers tdn:ROLE-gray-management .
 tdn:ROLE-gray-aw tdn:administers tdn:ROLE-outer-encryption .
+tdn:ROLE-gray-aw tdn:leanExpression "Deployment.grayWorkstation" .
+tdn:ROLE-gray-aw tdn:leanExpression "Device.kind = .workstation" .
+tdn:ROLE-gray-aw tdn:leanExpression "Interface.zone = .gray" .
+tdn:ROLE-gray-aw tdn:leanMapping "A Gray workstation combines the workstation kind with a Gray management attachment. The deployment also provides the grayWorkstation predicate." .
+tdn:ROLE-gray-aw tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-gray-aw tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-gray-aw tdn:leanReference "Interface at TDN/Targets/ComplianceModel.lean:26" .
+tdn:ROLE-gray-aw tdn:leanReference "msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20" .
+tdn:ROLE-gray-aw tdn:leanRepresentation "composed" .
 tdn:ROLE-gray-aw tdn:roleId "ROLE-gray-aw" .
 tdn:ROLE-gray-aw tdn:roleKind "device_or_service_role" .
 tdn:ROLE-gray-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u023> .
@@ -1548,6 +1688,8 @@ tdn:ROLE-gray-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708
 tdn:ROLE-gray-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s003> .
 tdn:ROLE-gray-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s008> .
 tdn:ROLE-gray-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u006> .
+tdn:ROLE-gray-aw tdn:theoryInterpretation "V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level." .
+tdn:ROLE-gray-aw tdn:theoryInterpretation "V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions." .
 tdn:ROLE-gray-firewall rdf:type owl:Class .
 tdn:ROLE-gray-firewall rdfs:comment "Filters Gray Network traffic between encryption components and management components." .
 tdn:ROLE-gray-firewall rdfs:label "Gray Firewall" .
@@ -1555,6 +1697,12 @@ tdn:ROLE-gray-firewall rdfs:subClassOf tdn:ROLE-firewall .
 tdn:ROLE-gray-firewall rdfs:subClassOf tdn:ROLE-solution-component .
 tdn:ROLE-gray-firewall skos:altLabel "GRAY FIREWALL" .
 tdn:ROLE-gray-firewall skos:altLabel "Gray Firewalls" .
+tdn:ROLE-gray-firewall tdn:leanExpression "Device.kind = .grayFirewall" .
+tdn:ROLE-gray-firewall tdn:leanMapping "The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records." .
+tdn:ROLE-gray-firewall tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-gray-firewall tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-gray-firewall tdn:leanReference "msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20" .
+tdn:ROLE-gray-firewall tdn:leanRepresentation "direct" .
 tdn:ROLE-gray-firewall tdn:roleId "ROLE-gray-firewall" .
 tdn:ROLE-gray-firewall tdn:roleKind "device_or_service_role" .
 tdn:ROLE-gray-firewall tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u021> .
@@ -1607,6 +1755,7 @@ tdn:ROLE-gray-firewall tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3
 tdn:ROLE-gray-firewall tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p048:u004> .
 tdn:ROLE-gray-firewall tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p049:u013> .
 tdn:ROLE-gray-firewall tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u009.s001> .
+tdn:ROLE-gray-firewall tdn:theoryInterpretation "V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level." .
 tdn:ROLE-gray-management rdf:type owl:Class .
 tdn:ROLE-gray-management rdfs:comment "Aggregate services for secure Gray Network administration and monitoring." .
 tdn:ROLE-gray-management rdfs:label "Gray Management Services" .
@@ -1614,6 +1763,12 @@ tdn:ROLE-gray-management rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-gray-management skos:altLabel "GRAY MANAGEMENT SERVICES" .
 tdn:ROLE-gray-management skos:altLabel "Gray Management Service" .
 tdn:ROLE-gray-management tdn:comprises tdn:ROLE-management-component .
+tdn:ROLE-gray-management tdn:leanExpression "ManagementServiceInstance.domain = .gray" .
+tdn:ROLE-gray-management tdn:leanMapping "Each management service records its function, hosting device, process, interface, and Gray management domain." .
+tdn:ROLE-gray-management tdn:leanReference "ManagementDomain at TDN/Targets/ComplianceModel.lean:551" .
+tdn:ROLE-gray-management tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-gray-management tdn:leanReference "ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559" .
+tdn:ROLE-gray-management tdn:leanRepresentation "composed" .
 tdn:ROLE-gray-management tdn:roleId "ROLE-gray-management" .
 tdn:ROLE-gray-management tdn:roleKind "aggregate_component_service_role" .
 tdn:ROLE-gray-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u022> .
@@ -1644,16 +1799,25 @@ tdn:ROLE-gray-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40
 tdn:ROLE-gray-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u006.s002> .
 tdn:ROLE-gray-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s008> .
 tdn:ROLE-gray-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u006> .
+tdn:ROLE-gray-management tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
+tdn:ROLE-gray-management tdn:theoryInterpretation "V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level." .
 tdn:ROLE-gray-router rdf:type owl:Class .
 tdn:ROLE-gray-router rdfs:comment "Selects a redundant Outer Encryption Component in the availability example." .
 tdn:ROLE-gray-router rdfs:label "Gray Network router" .
 tdn:ROLE-gray-router rdfs:subClassOf tdn:ROLE-router .
 tdn:ROLE-gray-router skos:altLabel "ordinary router" .
 tdn:ROLE-gray-router skos:altLabel "router/switch" .
+tdn:ROLE-gray-router tdn:leanExpression "Deployment.OrdinaryGray" .
+tdn:ROLE-gray-router tdn:leanExpression "Device.kind = .ordinaryGrayRouter" .
+tdn:ROLE-gray-router tdn:leanMapping "An ordinary Gray router must have the matching kind, no encryption layer, no infrastructure flag, and only Gray interfaces to satisfy OrdinaryGray." .
+tdn:ROLE-gray-router tdn:leanReference "Deployment.OrdinaryGray at TDN/Targets/ComplianceModel.lean:660" .
+tdn:ROLE-gray-router tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-gray-router tdn:leanRepresentation "composed" .
 tdn:ROLE-gray-router tdn:roleId "ROLE-gray-router" .
 tdn:ROLE-gray-router tdn:roleKind "device_or_service_role" .
 tdn:ROLE-gray-router tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003> .
 tdn:ROLE-gray-router tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s004> .
+tdn:ROLE-gray-router tdn:theoryInterpretation "V31-056-074: Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray checks the kind, absence of an encryption layer and infrastructure flag, and Gray-only interfaces. Standalone encapsulators keep their applicable duties even when their underlying device is a router or switch." .
 tdn:ROLE-gray-siem rdf:type owl:Class .
 tdn:ROLE-gray-siem rdfs:comment "Collects Gray-side logs; explicitly not a mandatory component." .
 tdn:ROLE-gray-siem rdfs:label "Gray SIEM" .
@@ -1663,6 +1827,13 @@ tdn:ROLE-gray-siem skos:altLabel "Gray Security Information and Event Management
 tdn:ROLE-gray-siem tdn:collects_logs_from tdn:ROLE-gray-firewall .
 tdn:ROLE-gray-siem tdn:collects_logs_from tdn:ROLE-gray-management .
 tdn:ROLE-gray-siem tdn:collects_logs_from tdn:ROLE-outer-encryption .
+tdn:ROLE-gray-siem tdn:leanExpression "Device.kind = .siem" .
+tdn:ROLE-gray-siem tdn:leanExpression "Interface.zone = .gray" .
+tdn:ROLE-gray-siem tdn:leanMapping "The SIEM kind combines with a Gray interface or management-service domain. The zone is recorded separately from the device kind." .
+tdn:ROLE-gray-siem tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-gray-siem tdn:leanReference "Interface at TDN/Targets/ComplianceModel.lean:26" .
+tdn:ROLE-gray-siem tdn:leanReference "ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559" .
+tdn:ROLE-gray-siem tdn:leanRepresentation "composed" .
 tdn:ROLE-gray-siem tdn:roleId "ROLE-gray-siem" .
 tdn:ROLE-gray-siem tdn:roleKind "device_or_service_role" .
 tdn:ROLE-gray-siem tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u024> .
@@ -1674,6 +1845,9 @@ tdn:ROLE-high-assurance-encryptor rdf:type owl:Class .
 tdn:ROLE-high-assurance-encryptor rdfs:comment "Example approved protection for remote administration; not equated to an MSC encryption component." .
 tdn:ROLE-high-assurance-encryptor rdfs:label "High Assurance encryptor" .
 tdn:ROLE-high-assurance-encryptor rdfs:subClassOf tdn:ExtractedRole .
+tdn:ROLE-high-assurance-encryptor tdn:leanMapping "The extracted assurance/product category is not a distinct device kind in v3.1. Product eligibility and external assurance remain separate evidence obligations." .
+tdn:ROLE-high-assurance-encryptor tdn:leanReference "ExternalFacts at TDN/Targets/CPDutyRecords.lean:57" .
+tdn:ROLE-high-assurance-encryptor tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-high-assurance-encryptor tdn:roleId "ROLE-high-assurance-encryptor" .
 tdn:ROLE-high-assurance-encryptor tdn:roleKind "device_or_service_role" .
 tdn:ROLE-high-assurance-encryptor tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p048:u007> .
@@ -1682,6 +1856,10 @@ tdn:ROLE-ike-initiator rdfs:comment "Protocol endpoint role that sends the initi
 tdn:ROLE-ike-initiator rdfs:label "IKEv2 initiator" .
 tdn:ROLE-ike-initiator rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-ike-initiator skos:altLabel "initiator" .
+tdn:ROLE-ike-initiator tdn:leanMapping "The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic." .
+tdn:ROLE-ike-initiator tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-ike-initiator tdn:leanReference "InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11" .
+tdn:ROLE-ike-initiator tdn:leanRepresentation "context" .
 tdn:ROLE-ike-initiator tdn:roleId "ROLE-ike-initiator" .
 tdn:ROLE-ike-initiator tdn:roleKind "protocol_endpoint_role" .
 tdn:ROLE-ike-initiator tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p027:u008.s002> .
@@ -1690,6 +1868,10 @@ tdn:ROLE-ike-responder rdfs:comment "Protocol endpoint role that sends the respo
 tdn:ROLE-ike-responder rdfs:label "IKEv2 responder" .
 tdn:ROLE-ike-responder rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-ike-responder skos:altLabel "responder" .
+tdn:ROLE-ike-responder tdn:leanMapping "The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic." .
+tdn:ROLE-ike-responder tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-ike-responder tdn:leanReference "InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11" .
+tdn:ROLE-ike-responder tdn:leanRepresentation "context" .
 tdn:ROLE-ike-responder tdn:roleId "ROLE-ike-responder" .
 tdn:ROLE-ike-responder tdn:roleKind "protocol_endpoint_role" .
 tdn:ROLE-ike-responder tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p027:u008.s002> .
@@ -1699,21 +1881,36 @@ tdn:ROLE-infrastructure-component rdfs:label "Infrastructure component" .
 tdn:ROLE-infrastructure-component rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-infrastructure-component skos:altLabel "infrastructure components" .
 tdn:ROLE-infrastructure-component skos:altLabel "infrastructure hardware" .
+tdn:ROLE-infrastructure-component tdn:leanExpression "Device.infrastructure" .
+tdn:ROLE-infrastructure-component tdn:leanMapping "The device record has an infrastructure flag. Flow.Valid requires both encryption endpoints to carry that flag." .
+tdn:ROLE-infrastructure-component tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-infrastructure-component tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-infrastructure-component tdn:leanRepresentation "direct" .
 tdn:ROLE-infrastructure-component tdn:roleId "ROLE-infrastructure-component" .
 tdn:ROLE-infrastructure-component tdn:roleKind "device_or_service_role" .
 tdn:ROLE-infrastructure-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s003> .
 tdn:ROLE-infrastructure-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p052:u003> .
 tdn:ROLE-infrastructure-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p052:u009> .
 tdn:ROLE-infrastructure-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p055:u014> .
+tdn:ROLE-infrastructure-component tdn:theoryInterpretation "V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope." .
 tdn:ROLE-inner-ca rdf:type owl:Class .
 tdn:ROLE-inner-ca rdfs:comment "CA associated with Inner Encryption Components." .
 tdn:ROLE-inner-ca rdfs:label "Inner CA" .
 tdn:ROLE-inner-ca rdfs:subClassOf tdn:ROLE-ca .
+tdn:ROLE-inner-ca tdn:leanExpression "Deployment.keyManagementCA" .
+tdn:ROLE-inner-ca tdn:leanExpression "Device.kind = .certificationAuthority" .
+tdn:ROLE-inner-ca tdn:leanMapping "The CA serves Inner components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use." .
+tdn:ROLE-inner-ca tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-inner-ca tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-inner-ca tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-inner-ca tdn:leanReference "InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11" .
+tdn:ROLE-inner-ca tdn:leanRepresentation "composed" .
 tdn:ROLE-inner-ca tdn:roleId "ROLE-inner-ca" .
 tdn:ROLE-inner-ca tdn:roleKind "device_or_service_role" .
 tdn:ROLE-inner-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002> .
 tdn:ROLE-inner-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u013.s002> .
 tdn:ROLE-inner-ca tdn:supports_certificate_provisioning tdn:ROLE-inner-vpn .
+tdn:ROLE-inner-ca tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
 tdn:ROLE-inner-encryption rdf:type owl:Class .
 tdn:ROLE-inner-encryption rdfs:comment "Terminates the inner encryption layer." .
 tdn:ROLE-inner-encryption rdfs:label "Inner Encryption Component" .
@@ -1721,6 +1918,12 @@ tdn:ROLE-inner-encryption rdfs:subClassOf tdn:ROLE-encryption-component .
 tdn:ROLE-inner-encryption skos:altLabel "INNER ENCRYPTION COMPONENT" .
 tdn:ROLE-inner-encryption skos:altLabel "INNER ENCRYPTION COMPONENTS" .
 tdn:ROLE-inner-encryption skos:altLabel "Inner Encryption Components" .
+tdn:ROLE-inner-encryption tdn:leanExpression "Device.layer = some .inner" .
+tdn:ROLE-inner-encryption tdn:leanMapping "The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind." .
+tdn:ROLE-inner-encryption tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-inner-encryption tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-inner-encryption tdn:leanReference "msc_nested_layer_protection at TDN/Targets/CompleteSpecifications.lean:6" .
+tdn:ROLE-inner-encryption tdn:leanRepresentation "composed" .
 tdn:ROLE-inner-encryption tdn:roleId "ROLE-inner-encryption" .
 tdn:ROLE-inner-encryption tdn:roleKind "device_or_service_role" .
 tdn:ROLE-inner-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u025> .
@@ -1831,11 +2034,17 @@ tdn:ROLE-inner-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e4
 tdn:ROLE-inner-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p055:u013> .
 tdn:ROLE-inner-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u005.s003> .
 tdn:ROLE-inner-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u012.s003> .
+tdn:ROLE-inner-encryption tdn:theoryInterpretation "V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope." .
 tdn:ROLE-inner-firewall rdf:type owl:Class .
 tdn:ROLE-inner-firewall rdfs:comment "Located between the Inner Encryption Component and Red Network; requirements may come from another CP." .
 tdn:ROLE-inner-firewall rdfs:label "Inner Firewall" .
 tdn:ROLE-inner-firewall rdfs:subClassOf tdn:ROLE-firewall .
 tdn:ROLE-inner-firewall skos:altLabel "INNER FIREWALL" .
+tdn:ROLE-inner-firewall tdn:leanExpression "Device.kind = .innerFirewall" .
+tdn:ROLE-inner-firewall tdn:leanMapping "The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records." .
+tdn:ROLE-inner-firewall tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-inner-firewall tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-inner-firewall tdn:leanRepresentation "direct" .
 tdn:ROLE-inner-firewall tdn:roleId "ROLE-inner-firewall" .
 tdn:ROLE-inner-firewall tdn:roleKind "device_or_service_role" .
 tdn:ROLE-inner-firewall tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u026> .
@@ -1854,17 +2063,32 @@ tdn:ROLE-inner-macsec rdfs:comment "MACsec Device serving the inner encryption l
 tdn:ROLE-inner-macsec rdfs:label "Inner MACsec Device" .
 tdn:ROLE-inner-macsec rdfs:subClassOf tdn:ROLE-inner-encryption .
 tdn:ROLE-inner-macsec rdfs:subClassOf tdn:ROLE-macsec-device .
+tdn:ROLE-inner-macsec tdn:leanExpression "Device.kind = .macsec" .
+tdn:ROLE-inner-macsec tdn:leanExpression "Device.layer = some .inner" .
+tdn:ROLE-inner-macsec tdn:leanMapping "The device kind identifies the mechanism and the layer identifies its Inner or Outer role." .
+tdn:ROLE-inner-macsec tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-inner-macsec tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-inner-macsec tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-inner-macsec tdn:leanRepresentation "composed" .
 tdn:ROLE-inner-macsec tdn:roleId "ROLE-inner-macsec" .
 tdn:ROLE-inner-macsec tdn:roleKind "device_or_service_role" .
 tdn:ROLE-inner-macsec tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s003> .
 tdn:ROLE-inner-macsec tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001> .
 tdn:ROLE-inner-macsec tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p042:u004> .
+tdn:ROLE-inner-macsec tdn:theoryInterpretation "V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope." .
 tdn:ROLE-inner-vpn rdf:type owl:Class .
 tdn:ROLE-inner-vpn rdfs:comment "VPN Gateway serving the inner encryption layer." .
 tdn:ROLE-inner-vpn rdfs:label "Inner VPN Gateway" .
 tdn:ROLE-inner-vpn rdfs:subClassOf tdn:ROLE-inner-encryption .
 tdn:ROLE-inner-vpn rdfs:subClassOf tdn:ROLE-vpn-gateway .
 tdn:ROLE-inner-vpn skos:altLabel "Inner VPN Gateways" .
+tdn:ROLE-inner-vpn tdn:leanExpression "Device.kind = .vpn" .
+tdn:ROLE-inner-vpn tdn:leanExpression "Device.layer = some .inner" .
+tdn:ROLE-inner-vpn tdn:leanMapping "The device kind identifies the mechanism and the layer identifies its Inner or Outer role." .
+tdn:ROLE-inner-vpn tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-inner-vpn tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-inner-vpn tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-inner-vpn tdn:leanRepresentation "composed" .
 tdn:ROLE-inner-vpn tdn:roleId "ROLE-inner-vpn" .
 tdn:ROLE-inner-vpn tdn:roleKind "device_or_service_role" .
 tdn:ROLE-inner-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001> .
@@ -1875,6 +2099,7 @@ tdn:ROLE-inner-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d837
 tdn:ROLE-inner-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u013> .
 tdn:ROLE-inner-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p046:u012> .
 tdn:ROLE-inner-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p047:u009> .
+tdn:ROLE-inner-vpn tdn:theoryInterpretation "V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope." .
 tdn:ROLE-ips rdf:type owl:Class .
 tdn:ROLE-ips rdfs:comment "Optional product-selection category in MSC-PS-5." .
 tdn:ROLE-ips rdfs:label "Intrusion Prevention System" .
@@ -1882,6 +2107,11 @@ tdn:ROLE-ips rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-ips skos:altLabel "IPS" .
 tdn:ROLE-ips skos:altLabel "IPSs" .
 tdn:ROLE-ips skos:altLabel "Intrusion Prevention Systems" .
+tdn:ROLE-ips tdn:leanExpression "Device.kind = .intrusionPrevention" .
+tdn:ROLE-ips tdn:leanMapping "Intrusion Prevention Systems have a dedicated device kind." .
+tdn:ROLE-ips tdn:leanReference "CPContext.ComponentApplies at TDN/Targets/CPDuties.lean:354" .
+tdn:ROLE-ips tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-ips tdn:leanRepresentation "direct" .
 tdn:ROLE-ips tdn:roleId "ROLE-ips" .
 tdn:ROLE-ips tdn:roleKind "device_or_service_role" .
 tdn:ROLE-ips tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p033:u009> .
@@ -1892,26 +2122,53 @@ tdn:ROLE-key-management-component rdfs:label "Key and certificate management com
 tdn:ROLE-key-management-component rdfs:subClassOf tdn:ROLE-management-component .
 tdn:ROLE-key-management-component skos:altLabel "KEY AND CERTIFICATE MANAGEMENT COMPONENTS" .
 tdn:ROLE-key-management-component skos:altLabel "Key and Certificate Management Components" .
+tdn:ROLE-key-management-component tdn:leanExpression "Deployment.keyManagementCA" .
+tdn:ROLE-key-management-component tdn:leanExpression "Deployment.keyManagementGenerator" .
+tdn:ROLE-key-management-component tdn:leanExpression "ManagementServiceFunction.certification" .
+tdn:ROLE-key-management-component tdn:leanExpression "ManagementServiceFunction.keyGeneration" .
+tdn:ROLE-key-management-component tdn:leanMapping "Key management combines CA and key-generation device records, service functions, and component-to-service relations." .
+tdn:ROLE-key-management-component tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-key-management-component tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-key-management-component tdn:leanRepresentation "composed" .
 tdn:ROLE-key-management-component tdn:roleId "ROLE-key-management-component" .
 tdn:ROLE-key-management-component tdn:roleKind "device_or_service_role" .
 tdn:ROLE-key-management-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p005:u002> .
 tdn:ROLE-key-management-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u007> .
+tdn:ROLE-key-management-component tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
+tdn:ROLE-key-management-component tdn:theoryInterpretation "V31-027: The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation." .
 tdn:ROLE-key-server rdf:type owl:Class .
 tdn:ROLE-key-server rdfs:comment "MACsec Device designated to distribute Secure Association Keys to its peer." .
 tdn:ROLE-key-server rdfs:label "Key Server" .
 tdn:ROLE-key-server rdfs:subClassOf tdn:ROLE-macsec-device .
 tdn:ROLE-key-server tdn:distributes_keys_to tdn:ROLE-macsec-device .
+tdn:ROLE-key-server tdn:leanExpression "MACsecAuthentication.keyServer" .
+tdn:ROLE-key-server tdn:leanExpression "MACsecServerPair" .
+tdn:ROLE-key-server tdn:leanMapping "The key server is an endpoint selected in MACsec authentication and key-server-pair records. The role is not a separate DeviceKind." .
+tdn:ROLE-key-server tdn:leanReference "MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356" .
+tdn:ROLE-key-server tdn:leanReference "MACsecServerPair at TDN/Targets/DirectSpecifications.lean:587" .
+tdn:ROLE-key-server tdn:leanReference "msc_macsec_key_generation_and_server at TDN/Targets/CompleteSpecifications.lean:43" .
+tdn:ROLE-key-server tdn:leanRepresentation "composed" .
 tdn:ROLE-key-server tdn:roleId "ROLE-key-server" .
 tdn:ROLE-key-server tdn:roleKind "device_or_service_role" .
 tdn:ROLE-key-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s004> .
 tdn:ROLE-key-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s005> .
 tdn:ROLE-key-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p041:u011> .
 tdn:ROLE-key-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u013.s001> .
+tdn:ROLE-key-server tdn:theoryInterpretation "V31-027: The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation." .
 tdn:ROLE-kgs rdf:type owl:Class .
 tdn:ROLE-kgs rdfs:comment "Generates pre-shared CAKs and associated CKNs." .
 tdn:ROLE-kgs rdfs:label "Key Generation Solution" .
 tdn:ROLE-kgs rdfs:subClassOf tdn:ROLE-solution-component .
 tdn:ROLE-kgs skos:altLabel "KGS" .
+tdn:ROLE-kgs tdn:leanExpression "AuthorityFacts.nsaApprovedGenerator" .
+tdn:ROLE-kgs tdn:leanExpression "Deployment.keyManagementGenerator" .
+tdn:ROLE-kgs tdn:leanExpression "Device.kind = .keyGenerationSolution" .
+tdn:ROLE-kgs tdn:leanMapping "The key-generation solution has a device kind. Approved-generator status is supplied as an explicit authority fact." .
+tdn:ROLE-kgs tdn:leanReference "AuthorityFacts at TDN/Targets/ComplianceModel.lean:502" .
+tdn:ROLE-kgs tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-kgs tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-kgs tdn:leanReference "msc_macsec_key_generation_and_server at TDN/Targets/CompleteSpecifications.lean:43" .
+tdn:ROLE-kgs tdn:leanRepresentation "direct" .
 tdn:ROLE-kgs tdn:roleId "ROLE-kgs" .
 tdn:ROLE-kgs tdn:roleKind "device_or_service_role" .
 tdn:ROLE-kgs tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p020:u009.s002> .
@@ -1919,29 +2176,51 @@ tdn:ROLE-kgs tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p02
 tdn:ROLE-kgs tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u012.s001> .
 tdn:ROLE-kgs tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p041:u010> .
 tdn:ROLE-kgs tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p063:u002> .
+tdn:ROLE-kgs tdn:theoryInterpretation "V31-027: The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation." .
 tdn:ROLE-local-ca rdf:type owl:Class .
 tdn:ROLE-local-ca rdfs:comment "Locally operated CA placement/management specialization." .
 tdn:ROLE-local-ca rdfs:label "Locally run CA" .
 tdn:ROLE-local-ca rdfs:subClassOf tdn:ROLE-ca .
 tdn:ROLE-local-ca skos:altLabel "locally run CAs" .
+tdn:ROLE-local-ca tdn:leanExpression "DeviceKind.certificationAuthority" .
+tdn:ROLE-local-ca tdn:leanExpression "GrayTopology.localCA" .
+tdn:ROLE-local-ca tdn:leanMapping "The CA kind and its placement can be recorded. GrayTopology separately lists locally run CA nodes for the selected Gray management security-level convention." .
+tdn:ROLE-local-ca tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-local-ca tdn:leanReference "msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20" .
+tdn:ROLE-local-ca tdn:leanRepresentation "context" .
 tdn:ROLE-local-ca tdn:roleId "ROLE-local-ca" .
 tdn:ROLE-local-ca tdn:roleKind "device_or_service_role" .
 tdn:ROLE-local-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002> .
 tdn:ROLE-local-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p018:u001.s001> .
 tdn:ROLE-local-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p018:u001.s002> .
+tdn:ROLE-local-ca tdn:theoryInterpretation "V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level." .
 tdn:ROLE-locally-managed-device rdf:type owl:Class .
 tdn:ROLE-locally-managed-device rdfs:comment "Management-mode role defined by a hardwired AW connection." .
 tdn:ROLE-locally-managed-device rdfs:label "Locally Managed Device" .
 tdn:ROLE-locally-managed-device rdfs:subClassOf tdn:ExtractedRole .
+tdn:ROLE-locally-managed-device tdn:leanExpression "AdministrativeSession" .
+tdn:ROLE-locally-managed-device tdn:leanExpression "ManagementExchange" .
+tdn:ROLE-locally-managed-device tdn:leanMapping "Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds." .
+tdn:ROLE-locally-managed-device tdn:leanReference "AdministrativeAccount at TDN/Targets/Administration.lean:20" .
+tdn:ROLE-locally-managed-device tdn:leanReference "ManagementExchange at TDN/Targets/ComplianceModel.lean:539" .
+tdn:ROLE-locally-managed-device tdn:leanReference "msc_administrator_authentication at TDN/Targets/CompleteSpecifications.lean:94" .
+tdn:ROLE-locally-managed-device tdn:leanRepresentation "context" .
 tdn:ROLE-locally-managed-device tdn:roleId "ROLE-locally-managed-device" .
 tdn:ROLE-locally-managed-device tdn:roleKind "management_or_realization_facet" .
 tdn:ROLE-locally-managed-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u014.s001> .
 tdn:ROLE-locally-managed-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p061:u006.s001> .
+tdn:ROLE-locally-managed-device tdn:theoryInterpretation "V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions." .
 tdn:ROLE-log-repository rdf:type owl:Class .
 tdn:ROLE-log-repository rdfs:comment "Receives logs and status information as an alternative to a SIEM; its implementation is unspecified." .
 tdn:ROLE-log-repository rdfs:label "Log and status repository" .
 tdn:ROLE-log-repository rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-log-repository skos:altLabel "similar repository" .
+tdn:ROLE-log-repository tdn:leanExpression "ManagementServiceFunction.monitoring" .
+tdn:ROLE-log-repository tdn:leanExpression "ServiceKind.logging" .
+tdn:ROLE-log-repository tdn:leanMapping "Logging and monitoring registrations represent the service role. A repository-specific device kind is not required by the model." .
+tdn:ROLE-log-repository tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-log-repository tdn:leanReference "ServiceKind at TDN/Targets/ComplianceModel.lean:511" .
+tdn:ROLE-log-repository tdn:leanRepresentation "composed" .
 tdn:ROLE-log-repository tdn:roleId "ROLE-log-repository" .
 tdn:ROLE-log-repository tdn:roleKind "device_or_service_role" .
 tdn:ROLE-log-repository tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p012:u007.s002> .
@@ -1953,6 +2232,12 @@ tdn:ROLE-macsec-device skos:altLabel "MACSEC DEVICE" .
 tdn:ROLE-macsec-device skos:altLabel "MACsec Devices" .
 tdn:ROLE-macsec-device skos:altLabel "MACsec Ethernet Encryptors" .
 tdn:ROLE-macsec-device skos:altLabel "MACsec device" .
+tdn:ROLE-macsec-device tdn:leanExpression "Device.kind = .macsec" .
+tdn:ROLE-macsec-device tdn:leanMapping "MACsec devices have a dedicated kind. Authentication records separately describe their EAP functions and key-server behavior." .
+tdn:ROLE-macsec-device tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-macsec-device tdn:leanReference "EAPRole at TDN/Targets/DirectSpecifications.lean:271" .
+tdn:ROLE-macsec-device tdn:leanReference "MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356" .
+tdn:ROLE-macsec-device tdn:leanRepresentation "direct" .
 tdn:ROLE-macsec-device tdn:performs_role tdn:ROLE-authenticator .
 tdn:ROLE-macsec-device tdn:performs_role tdn:ROLE-supplicant .
 tdn:ROLE-macsec-device tdn:roleId "ROLE-macsec-device" .
@@ -2021,6 +2306,8 @@ tdn:ROLE-macsec-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3
 tdn:ROLE-macsec-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p044:u017> .
 tdn:ROLE-macsec-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001> .
 tdn:ROLE-macsec-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u013.s001> .
+tdn:ROLE-macsec-device tdn:theoryInterpretation "V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks." .
+tdn:ROLE-macsec-device tdn:theoryInterpretation "V31-027: The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation." .
 tdn:ROLE-management-component rdf:type owl:Class .
 tdn:ROLE-management-component rdfs:comment "Generic component providing management functions; exact realization depends on the stated role." .
 tdn:ROLE-management-component rdfs:label "Management component" .
@@ -2034,6 +2321,12 @@ tdn:ROLE-management-component skos:altLabel "administration components" .
 tdn:ROLE-management-component skos:altLabel "management component" .
 tdn:ROLE-management-component skos:altLabel "management components" .
 tdn:ROLE-management-component skos:altLabel "management devices" .
+tdn:ROLE-management-component tdn:leanExpression "Deployment.managementServices" .
+tdn:ROLE-management-component tdn:leanExpression "ManagementServiceInstance" .
+tdn:ROLE-management-component tdn:leanMapping "Management roles are represented through service instances and component attachments. There is no single management-component device kind." .
+tdn:ROLE-management-component tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-management-component tdn:leanReference "ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559" .
+tdn:ROLE-management-component tdn:leanRepresentation "context" .
 tdn:ROLE-management-component tdn:roleId "ROLE-management-component" .
 tdn:ROLE-management-component tdn:roleKind "aggregate_component_service_role" .
 tdn:ROLE-management-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u028> .
@@ -2050,11 +2343,18 @@ tdn:ROLE-management-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0
 tdn:ROLE-management-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u007> .
 tdn:ROLE-management-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s002> .
 tdn:ROLE-management-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p054:u013.s002> .
+tdn:ROLE-management-component tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
 tdn:ROLE-network-administration-device rdf:type owl:Class .
 tdn:ROLE-network-administration-device rdfs:comment "Generic administrative device wording in MSC-DM-7; correspondence with AW is not explicitly defined." .
 tdn:ROLE-network-administration-device rdfs:label "Network administration device" .
 tdn:ROLE-network-administration-device rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-network-administration-device skos:altLabel "network administration device" .
+tdn:ROLE-network-administration-device tdn:leanExpression "DeviceKind.workstation" .
+tdn:ROLE-network-administration-device tdn:leanExpression "ManagementServiceFunction.administration" .
+tdn:ROLE-network-administration-device tdn:leanMapping "The source role may be realized by workstation or administration services. V3.1 has no separate network-administration-device kind." .
+tdn:ROLE-network-administration-device tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-network-administration-device tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-network-administration-device tdn:leanRepresentation "context" .
 tdn:ROLE-network-administration-device tdn:roleId "ROLE-network-administration-device" .
 tdn:ROLE-network-administration-device tdn:roleKind "device_or_service_role" .
 tdn:ROLE-network-administration-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p048:u006> .
@@ -2063,6 +2363,10 @@ tdn:ROLE-network-device rdfs:comment "Generic device category used in DNS-servic
 tdn:ROLE-network-device rdfs:label "Network device" .
 tdn:ROLE-network-device rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-network-device skos:altLabel "network devices" .
+tdn:ROLE-network-device tdn:leanExpression "Device" .
+tdn:ROLE-network-device tdn:leanMapping "Device is the general inventory record for all modeled device kinds. Source role membership beyond that inventory remains contextual." .
+tdn:ROLE-network-device tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-network-device tdn:leanRepresentation "context" .
 tdn:ROLE-network-device tdn:roleId "ROLE-network-device" .
 tdn:ROLE-network-device tdn:roleKind "device_or_service_role" .
 tdn:ROLE-network-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p027:u009.s002> .
@@ -2073,23 +2377,40 @@ tdn:ROLE-ocsp-responder rdfs:comment "Certificate status responder used for revo
 tdn:ROLE-ocsp-responder rdfs:label "OCSP Responder" .
 tdn:ROLE-ocsp-responder rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-ocsp-responder skos:altLabel "OCSP Responders" .
+tdn:ROLE-ocsp-responder tdn:leanExpression "DeviceKind.revocationService" .
+tdn:ROLE-ocsp-responder tdn:leanExpression "ManagementServiceFunction.revocation" .
+tdn:ROLE-ocsp-responder tdn:leanMapping "Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders." .
+tdn:ROLE-ocsp-responder tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-ocsp-responder tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-ocsp-responder tdn:leanReference "msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20" .
+tdn:ROLE-ocsp-responder tdn:leanRepresentation "context" .
 tdn:ROLE-ocsp-responder tdn:roleId "ROLE-ocsp-responder" .
 tdn:ROLE-ocsp-responder tdn:roleKind "device_or_service_role" .
 tdn:ROLE-ocsp-responder tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u010> .
 tdn:ROLE-ocsp-responder tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p038:u012> .
 tdn:ROLE-ocsp-responder tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u013> .
 tdn:ROLE-ocsp-responder tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p046:u012> .
+tdn:ROLE-ocsp-responder tdn:theoryInterpretation "V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level." .
 tdn:ROLE-outer-ca rdf:type owl:Class .
 tdn:ROLE-outer-ca rdfs:comment "CA associated with Outer Encryption Components." .
 tdn:ROLE-outer-ca rdfs:label "Outer CA" .
 tdn:ROLE-outer-ca rdfs:subClassOf tdn:ROLE-ca .
 tdn:ROLE-outer-ca skos:altLabel "outer ca" .
+tdn:ROLE-outer-ca tdn:leanExpression "Deployment.keyManagementCA" .
+tdn:ROLE-outer-ca tdn:leanExpression "Device.kind = .certificationAuthority" .
+tdn:ROLE-outer-ca tdn:leanMapping "The CA serves Outer components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use." .
+tdn:ROLE-outer-ca tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-outer-ca tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-outer-ca tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-outer-ca tdn:leanReference "InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11" .
+tdn:ROLE-outer-ca tdn:leanRepresentation "composed" .
 tdn:ROLE-outer-ca tdn:roleId "ROLE-outer-ca" .
 tdn:ROLE-outer-ca tdn:roleKind "device_or_service_role" .
 tdn:ROLE-outer-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s002> .
 tdn:ROLE-outer-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002> .
 tdn:ROLE-outer-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u013.s002> .
 tdn:ROLE-outer-ca tdn:supports_certificate_provisioning tdn:ROLE-outer-vpn .
+tdn:ROLE-outer-ca tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
 tdn:ROLE-outer-encryption rdf:type owl:Class .
 tdn:ROLE-outer-encryption rdfs:comment "Terminates the outer encryption layer." .
 tdn:ROLE-outer-encryption rdfs:label "Outer Encryption Component" .
@@ -2097,6 +2418,12 @@ tdn:ROLE-outer-encryption rdfs:subClassOf tdn:ROLE-encryption-component .
 tdn:ROLE-outer-encryption skos:altLabel "OUTER ENCRYPTION COMPONENT" .
 tdn:ROLE-outer-encryption skos:altLabel "OUTER ENCRYPTION COMPONENTS" .
 tdn:ROLE-outer-encryption skos:altLabel "Outer Encryption Components" .
+tdn:ROLE-outer-encryption tdn:leanExpression "Device.layer = some .outer" .
+tdn:ROLE-outer-encryption tdn:leanMapping "The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind." .
+tdn:ROLE-outer-encryption tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-outer-encryption tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-outer-encryption tdn:leanReference "msc_nested_layer_protection at TDN/Targets/CompleteSpecifications.lean:6" .
+tdn:ROLE-outer-encryption tdn:leanRepresentation "composed" .
 tdn:ROLE-outer-encryption tdn:may_perform_role tdn:ROLE-perimeter-device .
 tdn:ROLE-outer-encryption tdn:roleId "ROLE-outer-encryption" .
 tdn:ROLE-outer-encryption tdn:roleKind "device_or_service_role" .
@@ -2233,12 +2560,18 @@ tdn:ROLE-outer-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e4
 tdn:ROLE-outer-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p055:u013> .
 tdn:ROLE-outer-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u005.s003> .
 tdn:ROLE-outer-encryption tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u012.s003> .
+tdn:ROLE-outer-encryption tdn:theoryInterpretation "V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope." .
 tdn:ROLE-outer-firewall rdf:type owl:Class .
 tdn:ROLE-outer-firewall rdfs:comment "Filters traffic between the Black Network and Outer Encryption Component." .
 tdn:ROLE-outer-firewall rdfs:label "Outer Firewall" .
 tdn:ROLE-outer-firewall rdfs:subClassOf tdn:ROLE-firewall .
 tdn:ROLE-outer-firewall rdfs:subClassOf tdn:ROLE-solution-component .
 tdn:ROLE-outer-firewall skos:altLabel "OUTER FIREWALL" .
+tdn:ROLE-outer-firewall tdn:leanExpression "Device.kind = .outerFirewall" .
+tdn:ROLE-outer-firewall tdn:leanMapping "The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records." .
+tdn:ROLE-outer-firewall tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-outer-firewall tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-outer-firewall tdn:leanRepresentation "direct" .
 tdn:ROLE-outer-firewall tdn:roleId "ROLE-outer-firewall" .
 tdn:ROLE-outer-firewall tdn:roleKind "device_or_service_role" .
 tdn:ROLE-outer-firewall tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u019> .
@@ -2269,15 +2602,30 @@ tdn:ROLE-outer-macsec rdfs:comment "MACsec Device serving the outer encryption l
 tdn:ROLE-outer-macsec rdfs:label "Outer MACsec Device" .
 tdn:ROLE-outer-macsec rdfs:subClassOf tdn:ROLE-macsec-device .
 tdn:ROLE-outer-macsec rdfs:subClassOf tdn:ROLE-outer-encryption .
+tdn:ROLE-outer-macsec tdn:leanExpression "Device.kind = .macsec" .
+tdn:ROLE-outer-macsec tdn:leanExpression "Device.layer = some .outer" .
+tdn:ROLE-outer-macsec tdn:leanMapping "The device kind identifies the mechanism and the layer identifies its Inner or Outer role." .
+tdn:ROLE-outer-macsec tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-outer-macsec tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-outer-macsec tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-outer-macsec tdn:leanRepresentation "composed" .
 tdn:ROLE-outer-macsec tdn:roleId "ROLE-outer-macsec" .
 tdn:ROLE-outer-macsec tdn:roleKind "device_or_service_role" .
 tdn:ROLE-outer-macsec tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p044:u017> .
+tdn:ROLE-outer-macsec tdn:theoryInterpretation "V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope." .
 tdn:ROLE-outer-vpn rdf:type owl:Class .
 tdn:ROLE-outer-vpn rdfs:comment "VPN Gateway serving the outer encryption layer." .
 tdn:ROLE-outer-vpn rdfs:label "Outer VPN Gateway" .
 tdn:ROLE-outer-vpn rdfs:subClassOf tdn:ROLE-outer-encryption .
 tdn:ROLE-outer-vpn rdfs:subClassOf tdn:ROLE-vpn-gateway .
 tdn:ROLE-outer-vpn skos:altLabel "Outer VPN Gateways" .
+tdn:ROLE-outer-vpn tdn:leanExpression "Device.kind = .vpn" .
+tdn:ROLE-outer-vpn tdn:leanExpression "Device.layer = some .outer" .
+tdn:ROLE-outer-vpn tdn:leanMapping "The device kind identifies the mechanism and the layer identifies its Inner or Outer role." .
+tdn:ROLE-outer-vpn tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-outer-vpn tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-outer-vpn tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-outer-vpn tdn:leanRepresentation "composed" .
 tdn:ROLE-outer-vpn tdn:roleId "ROLE-outer-vpn" .
 tdn:ROLE-outer-vpn tdn:roleKind "device_or_service_role" .
 tdn:ROLE-outer-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001> .
@@ -2288,11 +2636,15 @@ tdn:ROLE-outer-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d837
 tdn:ROLE-outer-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u008> .
 tdn:ROLE-outer-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u013> .
 tdn:ROLE-outer-vpn tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p049:u002> .
+tdn:ROLE-outer-vpn tdn:theoryInterpretation "V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope." .
 tdn:ROLE-password-generator rdf:type owl:Class .
 tdn:ROLE-password-generator rdfs:comment "Generates passwords as recommended by MSC-GD-21; the document does not specify a hardware or software realization." .
 tdn:ROLE-password-generator rdfs:label "Approved password generator" .
 tdn:ROLE-password-generator rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-password-generator skos:altLabel "approved password generator" .
+tdn:ROLE-password-generator tdn:leanMapping "Password-generator approval is an external configuration/authority requirement. V3.1 has no separate password-generator behavior model." .
+tdn:ROLE-password-generator tdn:leanReference "ExternalFacts at TDN/Targets/CPDutyRecords.lean:57" .
+tdn:ROLE-password-generator tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-password-generator tdn:roleId "ROLE-password-generator" .
 tdn:ROLE-password-generator tdn:roleKind "device_or_service_role" .
 tdn:ROLE-password-generator tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p052:u003> .
@@ -2301,6 +2653,8 @@ tdn:ROLE-perimeter-device rdfs:comment "Outer Encryption Component placement fac
 tdn:ROLE-perimeter-device rdfs:label "Perimeter device" .
 tdn:ROLE-perimeter-device rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-perimeter-device skos:altLabel "perimeter device" .
+tdn:ROLE-perimeter-device tdn:leanMapping "The broad source grouping has no dedicated v3.1 role predicate. Specific member functions must be mapped separately." .
+tdn:ROLE-perimeter-device tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-perimeter-device tdn:roleId "ROLE-perimeter-device" .
 tdn:ROLE-perimeter-device tdn:roleKind "device_or_service_role" .
 tdn:ROLE-perimeter-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s001> .
@@ -2311,6 +2665,8 @@ tdn:ROLE-physical-workstation rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-physical-workstation skos:altLabel "physical workstation" .
 tdn:ROLE-physical-workstation skos:altLabel "separate workstations" .
 tdn:ROLE-physical-workstation skos:altLabel "workstations used" .
+tdn:ROLE-physical-workstation tdn:leanMapping "V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling." .
+tdn:ROLE-physical-workstation tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-physical-workstation tdn:roleId "ROLE-physical-workstation" .
 tdn:ROLE-physical-workstation tdn:roleKind "management_or_realization_facet" .
 tdn:ROLE-physical-workstation tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s003> .
@@ -2323,6 +2679,8 @@ tdn:ROLE-provisioning-server rdfs:label "Provisioning server" .
 tdn:ROLE-provisioning-server rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-provisioning-server skos:altLabel "provisioning servers" .
 tdn:ROLE-provisioning-server skos:altLabel "provisioning," .
+tdn:ROLE-provisioning-server tdn:leanMapping "V3.1 does not define a separate role or protocol model for this certificate-provisioning function." .
+tdn:ROLE-provisioning-server tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-provisioning-server tdn:roleId "ROLE-provisioning-server" .
 tdn:ROLE-provisioning-server tdn:roleKind "device_or_service_role" .
 tdn:ROLE-provisioning-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002> .
@@ -2339,6 +2697,15 @@ tdn:ROLE-red-aw skos:altLabel "Red AWs" .
 tdn:ROLE-red-aw tdn:administers tdn:ROLE-inner-encryption .
 tdn:ROLE-red-aw tdn:administers tdn:ROLE-inner-firewall .
 tdn:ROLE-red-aw tdn:administers tdn:ROLE-red-management .
+tdn:ROLE-red-aw tdn:leanExpression "Device.kind = .workstation" .
+tdn:ROLE-red-aw tdn:leanExpression "Interface.managementNetwork" .
+tdn:ROLE-red-aw tdn:leanExpression "Interface.zone = .red" .
+tdn:ROLE-red-aw tdn:leanMapping "A Red workstation combines the workstation kind with a Red management attachment. Zone information belongs to its interfaces and deployment attachments." .
+tdn:ROLE-red-aw tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-red-aw tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-red-aw tdn:leanReference "Interface at TDN/Targets/ComplianceModel.lean:26" .
+tdn:ROLE-red-aw tdn:leanReference "msc_administrator_authentication at TDN/Targets/CompleteSpecifications.lean:94" .
+tdn:ROLE-red-aw tdn:leanRepresentation "composed" .
 tdn:ROLE-red-aw tdn:roleId "ROLE-red-aw" .
 tdn:ROLE-red-aw tdn:roleKind "device_or_service_role" .
 tdn:ROLE-red-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s005> .
@@ -2348,6 +2715,7 @@ tdn:ROLE-red-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:
 tdn:ROLE-red-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001> .
 tdn:ROLE-red-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s002> .
 tdn:ROLE-red-aw tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s003> .
+tdn:ROLE-red-aw tdn:theoryInterpretation "V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions." .
 tdn:ROLE-red-management rdf:type owl:Class .
 tdn:ROLE-red-management rdfs:comment "Aggregate services for secure inner-layer administration and Red Network monitoring." .
 tdn:ROLE-red-management rdfs:label "Red Management Services" .
@@ -2357,6 +2725,12 @@ tdn:ROLE-red-management skos:altLabel "RED MANAGEMENT SERVICES" .
 tdn:ROLE-red-management skos:altLabel "Red Administration Management Components" .
 tdn:ROLE-red-management skos:altLabel "Red Management Service" .
 tdn:ROLE-red-management tdn:comprises tdn:ROLE-management-component .
+tdn:ROLE-red-management tdn:leanExpression "ManagementServiceInstance.domain = .red" .
+tdn:ROLE-red-management tdn:leanMapping "Each management service records its function, hosting device, process, interface, and Red management domain." .
+tdn:ROLE-red-management tdn:leanReference "ManagementDomain at TDN/Targets/ComplianceModel.lean:551" .
+tdn:ROLE-red-management tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-red-management tdn:leanReference "ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559" .
+tdn:ROLE-red-management tdn:leanRepresentation "composed" .
 tdn:ROLE-red-management tdn:roleId "ROLE-red-management" .
 tdn:ROLE-red-management tdn:roleKind "aggregate_component_service_role" .
 tdn:ROLE-red-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u027> .
@@ -2385,6 +2759,7 @@ tdn:ROLE-red-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e
 tdn:ROLE-red-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u010.s004> .
 tdn:ROLE-red-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u005.s001> .
 tdn:ROLE-red-management tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u005> .
+tdn:ROLE-red-management tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
 tdn:ROLE-red-siem rdf:type owl:Class .
 tdn:ROLE-red-siem rdfs:comment "Collects Red-side logs and flow data; may receive Gray logs through an approved CDS." .
 tdn:ROLE-red-siem rdfs:label "Red SIEM" .
@@ -2395,6 +2770,13 @@ tdn:ROLE-red-siem skos:altLabel "Red Security Information and Event Management" 
 tdn:ROLE-red-siem tdn:collects_logs_from tdn:ROLE-inner-encryption .
 tdn:ROLE-red-siem tdn:collects_logs_from tdn:ROLE-inner-firewall .
 tdn:ROLE-red-siem tdn:collects_logs_from tdn:ROLE-red-management .
+tdn:ROLE-red-siem tdn:leanExpression "Device.kind = .siem" .
+tdn:ROLE-red-siem tdn:leanExpression "Interface.zone = .red" .
+tdn:ROLE-red-siem tdn:leanMapping "The SIEM kind combines with a Red interface or management-service domain. The zone is recorded separately from the device kind." .
+tdn:ROLE-red-siem tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-red-siem tdn:leanReference "Interface at TDN/Targets/ComplianceModel.lean:26" .
+tdn:ROLE-red-siem tdn:leanReference "ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559" .
+tdn:ROLE-red-siem tdn:leanRepresentation "composed" .
 tdn:ROLE-red-siem tdn:roleId "ROLE-red-siem" .
 tdn:ROLE-red-siem tdn:roleKind "device_or_service_role" .
 tdn:ROLE-red-siem tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u029> .
@@ -2408,6 +2790,8 @@ tdn:ROLE-registration-authority rdfs:comment "Mixed hardware, software, and pers
 tdn:ROLE-registration-authority rdfs:label "Registration Authority" .
 tdn:ROLE-registration-authority rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-registration-authority skos:altLabel "RA" .
+tdn:ROLE-registration-authority tdn:leanMapping "V3.1 does not define a separate role or protocol model for this certificate-provisioning function." .
+tdn:ROLE-registration-authority tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-registration-authority tdn:qualification "The glossary includes individuals as well as hardware/software. Only the hardware/software function is within the device-role inventory." .
 tdn:ROLE-registration-authority tdn:roleId "ROLE-registration-authority" .
 tdn:ROLE-registration-authority tdn:roleKind "mixed_authority_role" .
@@ -2419,23 +2803,45 @@ tdn:ROLE-remotely-managed-device rdf:type owl:Class .
 tdn:ROLE-remotely-managed-device rdfs:comment "Management-mode role defined by methods other than a local hardwired AW connection." .
 tdn:ROLE-remotely-managed-device rdfs:label "Remotely Managed Device" .
 tdn:ROLE-remotely-managed-device rdfs:subClassOf tdn:ExtractedRole .
+tdn:ROLE-remotely-managed-device tdn:leanExpression "AdministrativeSession" .
+tdn:ROLE-remotely-managed-device tdn:leanExpression "ManagementExchange" .
+tdn:ROLE-remotely-managed-device tdn:leanMapping "Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds." .
+tdn:ROLE-remotely-managed-device tdn:leanReference "AdministrativeAccount at TDN/Targets/Administration.lean:20" .
+tdn:ROLE-remotely-managed-device tdn:leanReference "ManagementExchange at TDN/Targets/ComplianceModel.lean:539" .
+tdn:ROLE-remotely-managed-device tdn:leanReference "msc_administrator_authentication at TDN/Targets/CompleteSpecifications.lean:94" .
+tdn:ROLE-remotely-managed-device tdn:leanRepresentation "context" .
 tdn:ROLE-remotely-managed-device tdn:roleId "ROLE-remotely-managed-device" .
 tdn:ROLE-remotely-managed-device tdn:roleKind "management_or_realization_facet" .
 tdn:ROLE-remotely-managed-device tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p061:u006.s001> .
+tdn:ROLE-remotely-managed-device tdn:theoryInterpretation "V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions." .
 tdn:ROLE-root-ca rdf:type owl:Class .
 tdn:ROLE-root-ca rdfs:comment "Root CA is given as an example of a trust anchor in certificate-chain provisioning; the document does not make the terms exact synonyms." .
 tdn:ROLE-root-ca rdfs:label "Root CA" .
 tdn:ROLE-root-ca rdfs:subClassOf tdn:ROLE-ca .
 tdn:ROLE-root-ca tdn:example_of_role_realization tdn:ROLE-trust-anchor-ca .
+tdn:ROLE-root-ca tdn:leanExpression "InnerAuthentication.credential" .
+tdn:ROLE-root-ca tdn:leanExpression "InnerCredential.certificate" .
+tdn:ROLE-root-ca tdn:leanMapping "The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles." .
+tdn:ROLE-root-ca tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-root-ca tdn:leanReference "InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11" .
+tdn:ROLE-root-ca tdn:leanRepresentation "context" .
 tdn:ROLE-root-ca tdn:roleId "ROLE-root-ca" .
 tdn:ROLE-root-ca tdn:roleKind "device_or_service_role" .
 tdn:ROLE-root-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s007> .
 tdn:ROLE-root-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u001.s006> .
+tdn:ROLE-root-ca tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
 tdn:ROLE-router rdf:type owl:Class .
 tdn:ROLE-router rdfs:comment "Generic routing device; retain specializations and context rather than equating all routers." .
 tdn:ROLE-router rdfs:label "Router" .
 tdn:ROLE-router rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-router skos:altLabel "router" .
+tdn:ROLE-router tdn:leanExpression "DeviceKind.ordinaryGrayRouter" .
+tdn:ROLE-router tdn:leanExpression "DeviceKind.screeningRouter" .
+tdn:ROLE-router tdn:leanMapping "The model distinguishes ordinary Gray routers and screening routers. General packet routing is represented by processing records; there is no unrestricted router DeviceKind." .
+tdn:ROLE-router tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-router tdn:leanReference "Deployment.OrdinaryGray at TDN/Targets/ComplianceModel.lean:660" .
+tdn:ROLE-router tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-router tdn:leanRepresentation "context" .
 tdn:ROLE-router tdn:roleId "ROLE-router" .
 tdn:ROLE-router tdn:roleKind "device_or_service_role" .
 tdn:ROLE-router tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003> .
@@ -2452,6 +2858,10 @@ tdn:ROLE-screening-router rdfs:comment "Optional Black Network packet filter out
 tdn:ROLE-screening-router rdfs:label "Screening router" .
 tdn:ROLE-screening-router rdfs:subClassOf tdn:ROLE-router .
 tdn:ROLE-screening-router skos:altLabel "screening router" .
+tdn:ROLE-screening-router tdn:leanExpression "Device.kind = .screeningRouter" .
+tdn:ROLE-screening-router tdn:leanMapping "Screening routers have a dedicated device kind. Source-defined placement and filtering still require the corresponding configuration." .
+tdn:ROLE-screening-router tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-screening-router tdn:leanRepresentation "direct" .
 tdn:ROLE-screening-router tdn:may_be_realized_as tdn:ROLE-customer-edge-router .
 tdn:ROLE-screening-router tdn:roleId "ROLE-screening-router" .
 tdn:ROLE-screening-router tdn:roleKind "device_or_service_role" .
@@ -2465,6 +2875,12 @@ tdn:ROLE-siem rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-siem skos:altLabel "SECURITY INFORMATION AND EVENT MANAGEMENT" .
 tdn:ROLE-siem skos:altLabel "SIEM" .
 tdn:ROLE-siem skos:altLabel "SIEMs" .
+tdn:ROLE-siem tdn:leanExpression "Device.kind = .siem" .
+tdn:ROLE-siem tdn:leanMapping "SIEM has a dedicated device kind. Monitoring and logging registrations describe its service use." .
+tdn:ROLE-siem tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-siem tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-siem tdn:leanReference "ServiceKind at TDN/Targets/ComplianceModel.lean:511" .
+tdn:ROLE-siem tdn:leanRepresentation "direct" .
 tdn:ROLE-siem tdn:roleId "ROLE-siem" .
 tdn:ROLE-siem tdn:roleKind "device_or_service_role" .
 tdn:ROLE-siem tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u024> .
@@ -2492,10 +2908,17 @@ tdn:ROLE-signing-ca rdfs:comment "Certificate-signing CA role mentioned in provi
 tdn:ROLE-signing-ca rdfs:label "Signing CA" .
 tdn:ROLE-signing-ca rdfs:subClassOf tdn:ROLE-ca .
 tdn:ROLE-signing-ca skos:altLabel "signing CA" .
+tdn:ROLE-signing-ca tdn:leanExpression "InnerAuthentication.credential" .
+tdn:ROLE-signing-ca tdn:leanExpression "InnerCredential.certificate" .
+tdn:ROLE-signing-ca tdn:leanMapping "The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles." .
+tdn:ROLE-signing-ca tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-signing-ca tdn:leanReference "InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11" .
+tdn:ROLE-signing-ca tdn:leanRepresentation "context" .
 tdn:ROLE-signing-ca tdn:roleId "ROLE-signing-ca" .
 tdn:ROLE-signing-ca tdn:roleKind "device_or_service_role" .
 tdn:ROLE-signing-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s005> .
 tdn:ROLE-signing-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u001.s004> .
+tdn:ROLE-signing-ca tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
 tdn:ROLE-solution-component rdf:type owl:Class .
 tdn:ROLE-solution-component rdfs:comment "Generic component category to which the CP assigns solution-wide requirements." .
 tdn:ROLE-solution-component rdfs:label "Solution Component" .
@@ -2505,6 +2928,12 @@ tdn:ROLE-solution-component skos:altLabel "MSC Solution Components" .
 tdn:ROLE-solution-component skos:altLabel "SOLUTION COMPONENTS" .
 tdn:ROLE-solution-component skos:altLabel "Solution Components" .
 tdn:ROLE-solution-component skos:altLabel "solution components" .
+tdn:ROLE-solution-component tdn:leanExpression "CPContext.AllApplicableDuties" .
+tdn:ROLE-solution-component tdn:leanExpression "CPContext.ComponentApplies" .
+tdn:ROLE-solution-component tdn:leanMapping "Applicable duties are selected from a device’s kind, encryption layer, deployment membership, and standalone-encapsulator status. V3.1 has no single SolutionComponent membership type." .
+tdn:ROLE-solution-component tdn:leanReference "CPContext.AllApplicableDuties at TDN/Targets/CPDuties.lean:424" .
+tdn:ROLE-solution-component tdn:leanReference "CPContext.ComponentApplies at TDN/Targets/CPDuties.lean:354" .
+tdn:ROLE-solution-component tdn:leanRepresentation "context" .
 tdn:ROLE-solution-component tdn:roleId "ROLE-solution-component" .
 tdn:ROLE-solution-component tdn:roleKind "device_or_service_role" .
 tdn:ROLE-solution-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u018> .
@@ -2556,29 +2985,48 @@ tdn:ROLE-solution-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4
 tdn:ROLE-solution-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p059:u010.s001> .
 tdn:ROLE-solution-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u010.s001> .
 tdn:ROLE-solution-component tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p061:u007.s001> .
+tdn:ROLE-solution-component tdn:theoryInterpretation "V31-015: When built-in encapsulation is unavailable, the selected standalone encapsulator must have the required Inner-side and Outer-side attachments and satisfy its applicable component duties. The current RG-015 definition preserves those duties despite the source passage describing encapsulation as outside the solution boundary." .
 tdn:ROLE-supplicant rdf:type owl:Class .
 tdn:ROLE-supplicant rdfs:comment "MACsec Device authentication function; each device performs both supplicant and authenticator functions." .
 tdn:ROLE-supplicant rdfs:label "Supplicant" .
 tdn:ROLE-supplicant rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-supplicant skos:altLabel "supplicant" .
+tdn:ROLE-supplicant tdn:leanExpression "EAPRole.supplicant" .
+tdn:ROLE-supplicant tdn:leanExpression "MACsecAuthentication.supportedRoles" .
+tdn:ROLE-supplicant tdn:leanMapping "The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements." .
+tdn:ROLE-supplicant tdn:leanReference "EAPRole at TDN/Targets/DirectSpecifications.lean:271" .
+tdn:ROLE-supplicant tdn:leanReference "MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356" .
+tdn:ROLE-supplicant tdn:leanReference "msc_macsec_authentication_choice_and_as at TDN/Targets/CompleteSpecifications.lean:38" .
+tdn:ROLE-supplicant tdn:leanRepresentation "direct" .
 tdn:ROLE-supplicant tdn:roleId "ROLE-supplicant" .
 tdn:ROLE-supplicant tdn:roleKind "device_or_service_role" .
 tdn:ROLE-supplicant tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002> .
+tdn:ROLE-supplicant tdn:theoryInterpretation "V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks." .
 tdn:ROLE-switch rdf:type owl:Class .
 tdn:ROLE-switch rdfs:comment "Device alternative for standalone encapsulation or Gray infrastructure forwarding; switching as an activity is not an instance." .
 tdn:ROLE-switch rdfs:label "Switch" .
 tdn:ROLE-switch rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-switch skos:altLabel "router/switch" .
 tdn:ROLE-switch skos:altLabel "switch" .
+tdn:ROLE-switch tdn:leanExpression "Deployment.OrdinaryGray" .
+tdn:ROLE-switch tdn:leanExpression "DeviceKind.ordinaryGraySwitch" .
+tdn:ROLE-switch tdn:leanMapping "Ordinary Gray switches have a dedicated kind. Other switching behavior is represented through processing records without a generic switch DeviceKind." .
+tdn:ROLE-switch tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-switch tdn:leanReference "Deployment.OrdinaryGray at TDN/Targets/ComplianceModel.lean:660" .
+tdn:ROLE-switch tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-switch tdn:leanRepresentation "context" .
 tdn:ROLE-switch tdn:roleId "ROLE-switch" .
 tdn:ROLE-switch tdn:roleKind "device_or_service_role" .
 tdn:ROLE-switch tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s004> .
 tdn:ROLE-switch tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003> .
+tdn:ROLE-switch tdn:theoryInterpretation "V31-056-074: Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray checks the kind, absence of an encryption layer and infrastructure flag, and Gray-only interfaces. Standalone encapsulators keep their applicable duties even when their underlying device is a router or switch." .
 tdn:ROLE-testing-equipment rdf:type owl:Class .
 tdn:ROLE-testing-equipment rdfs:comment "Equipment available for gray-box testing inside and outside the developed solution; no particular product is specified." .
 tdn:ROLE-testing-equipment rdfs:label "Testing equipment" .
 tdn:ROLE-testing-equipment rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-testing-equipment skos:altLabel "testing equipment" .
+tdn:ROLE-testing-equipment tdn:leanMapping "These source roles describe the testing process. V3.1 does not formalize them as network device roles." .
+tdn:ROLE-testing-equipment tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-testing-equipment tdn:roleId "ROLE-testing-equipment" .
 tdn:ROLE-testing-equipment tdn:roleKind "device_or_service_role" .
 tdn:ROLE-testing-equipment tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u007.s004> .
@@ -2587,6 +3035,8 @@ tdn:ROLE-testing-software rdfs:comment "Software available for gray-box testing 
 tdn:ROLE-testing-software rdfs:label "Testing software" .
 tdn:ROLE-testing-software rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-testing-software skos:altLabel "testing software" .
+tdn:ROLE-testing-software tdn:leanMapping "These source roles describe the testing process. V3.1 does not formalize them as network device roles." .
+tdn:ROLE-testing-software tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-testing-software tdn:roleId "ROLE-testing-software" .
 tdn:ROLE-testing-software tdn:roleKind "device_or_service_role" .
 tdn:ROLE-testing-software tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u007.s004> .
@@ -2596,6 +3046,9 @@ tdn:ROLE-third-party-server rdfs:label "Third-party server" .
 tdn:ROLE-third-party-server rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-third-party-server skos:altLabel "third party server" .
 tdn:ROLE-third-party-server skos:altLabel "third-party server" .
+tdn:ROLE-third-party-server tdn:leanMapping "Third-party behavior is represented by feature and emitted-traffic records. The remote server is not a dedicated device kind." .
+tdn:ROLE-third-party-server tdn:leanReference "Deployment at TDN/Targets/ComplianceModel.lean:573" .
+tdn:ROLE-third-party-server tdn:leanRepresentation "context" .
 tdn:ROLE-third-party-server tdn:roleId "ROLE-third-party-server" .
 tdn:ROLE-third-party-server tdn:roleKind "device_or_service_role" .
 tdn:ROLE-third-party-server tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u004> .
@@ -2604,14 +3057,26 @@ tdn:ROLE-trust-anchor-ca rdf:type owl:Class .
 tdn:ROLE-trust-anchor-ca rdfs:comment "CA whose certificate is installed as the trust anchor under MSC-VG-4; Root CA remains a separately preserved example rather than an exact alias." .
 tdn:ROLE-trust-anchor-ca rdfs:label "Trust Anchor CA" .
 tdn:ROLE-trust-anchor-ca rdfs:subClassOf tdn:ROLE-ca .
+tdn:ROLE-trust-anchor-ca tdn:leanExpression "InnerAuthentication.credential" .
+tdn:ROLE-trust-anchor-ca tdn:leanExpression "InnerCredential.certificate" .
+tdn:ROLE-trust-anchor-ca tdn:leanMapping "The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles." .
+tdn:ROLE-trust-anchor-ca tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-trust-anchor-ca tdn:leanReference "InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11" .
+tdn:ROLE-trust-anchor-ca tdn:leanRepresentation "context" .
 tdn:ROLE-trust-anchor-ca tdn:roleId "ROLE-trust-anchor-ca" .
 tdn:ROLE-trust-anchor-ca tdn:roleKind "device_or_service_role" .
 tdn:ROLE-trust-anchor-ca tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p038:u009> .
+tdn:ROLE-trust-anchor-ca tdn:theoryInterpretation "V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels." .
 tdn:ROLE-trusted-time-source rdf:type owl:Class .
 tdn:ROLE-trusted-time-source rdfs:comment "Trusted time source on the Red Network for Red components or on the Gray Management Network for Gray components." .
 tdn:ROLE-trusted-time-source rdfs:label "Trusted time source" .
 tdn:ROLE-trusted-time-source rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-trusted-time-source skos:altLabel "trusted time source" .
+tdn:ROLE-trusted-time-source tdn:leanExpression "TimeSourceEndpoint" .
+tdn:ROLE-trusted-time-source tdn:leanMapping "A time-source endpoint records the actual source component and interface. Placement and client synchronization use the time model." .
+tdn:ROLE-trusted-time-source tdn:leanReference "ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546" .
+tdn:ROLE-trusted-time-source tdn:leanReference "TimeSourceEndpoint at TDN/Targets/TimeSynchronization.lean:40" .
+tdn:ROLE-trusted-time-source tdn:leanRepresentation "direct" .
 tdn:ROLE-trusted-time-source tdn:roleId "ROLE-trusted-time-source" .
 tdn:ROLE-trusted-time-source tdn:roleKind "device_or_service_role" .
 tdn:ROLE-trusted-time-source tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u005> .
@@ -2623,6 +3088,8 @@ tdn:ROLE-virtual-machine rdfs:subClassOf tdn:ExtractedRole .
 tdn:ROLE-virtual-machine skos:altLabel "VM" .
 tdn:ROLE-virtual-machine skos:altLabel "VMs" .
 tdn:ROLE-virtual-machine skos:altLabel "virtual machines" .
+tdn:ROLE-virtual-machine tdn:leanMapping "V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling." .
+tdn:ROLE-virtual-machine tdn:leanRepresentation "unrepresented" .
 tdn:ROLE-virtual-machine tdn:roleId "ROLE-virtual-machine" .
 tdn:ROLE-virtual-machine tdn:roleKind "management_or_realization_facet" .
 tdn:ROLE-virtual-machine tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s003> .
@@ -2642,6 +3109,12 @@ tdn:ROLE-vpn-gateway skos:altLabel "IPsec VPN Gateways" .
 tdn:ROLE-vpn-gateway skos:altLabel "VPN Components" .
 tdn:ROLE-vpn-gateway skos:altLabel "VPN GATEWAY" .
 tdn:ROLE-vpn-gateway skos:altLabel "VPN Gateways" .
+tdn:ROLE-vpn-gateway tdn:leanExpression "Device.kind = .vpn" .
+tdn:ROLE-vpn-gateway tdn:leanMapping "VPN gateways have a dedicated device kind. The layer field identifies Inner and Outer gateways." .
+tdn:ROLE-vpn-gateway tdn:leanReference "Device at TDN/Targets/ComplianceModel.lean:18" .
+tdn:ROLE-vpn-gateway tdn:leanReference "DeviceKind at TDN/Targets/ComplianceModel.lean:11" .
+tdn:ROLE-vpn-gateway tdn:leanReference "Flow.Valid at TDN/Targets/DirectSpecifications.lean:19" .
+tdn:ROLE-vpn-gateway tdn:leanRepresentation "direct" .
 tdn:ROLE-vpn-gateway tdn:roleId "ROLE-vpn-gateway" .
 tdn:ROLE-vpn-gateway tdn:roleKind "device_or_service_role" .
 tdn:ROLE-vpn-gateway tdn:sourceUnit <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p005:u019> .
@@ -2713,6 +3186,10 @@ tdn:distributes_keys_to rdf:type owl:AnnotationProperty .
 tdn:example_of_role_realization rdf:type owl:AnnotationProperty .
 tdn:hosts rdf:type owl:AnnotationProperty .
 tdn:inputHash rdf:type owl:AnnotationProperty .
+tdn:leanExpression rdf:type owl:AnnotationProperty .
+tdn:leanMapping rdf:type owl:AnnotationProperty .
+tdn:leanReference rdf:type owl:AnnotationProperty .
+tdn:leanRepresentation rdf:type owl:AnnotationProperty .
 tdn:may_be_realized_as rdf:type owl:AnnotationProperty .
 tdn:may_perform_role rdf:type owl:AnnotationProperty .
 tdn:pdfPages rdf:type owl:AnnotationProperty .
@@ -2727,6 +3204,8 @@ tdn:sourceUnit rdf:type owl:AnnotationProperty .
 tdn:supports rdf:type owl:AnnotationProperty .
 tdn:supports_authentication rdf:type owl:AnnotationProperty .
 tdn:supports_certificate_provisioning rdf:type owl:AnnotationProperty .
+tdn:theoryInterpretation rdf:type owl:AnnotationProperty .
+tdn:theoryVersion rdf:type owl:AnnotationProperty .
 <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p002:u003> rdfs:label "CSFC-MSC-1.3.0-4e40e3d83708:p002:u003" .
 <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p002:u003> tdn:pdfPages "2" .
 <urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p002:u003> tdn:sourceText "Commercial Solutions for Classified (CSfC) Multi-Site Connectivity (MSC) Capability Package (CP) 1.3.0 27 March 2026 • Added new CNSA 2.0 objective requirements: MSC-SR-24, MSC-VG-19, MSC-VG-20, and MSC-AA-4. • Added new Approved CNSA 2.0 Algorithms Tables 2, 7, and 11. • Updated Section 2 to include CNSS Policy 15 algorithms. • Added Section 5.11 -- CNSA 2.0 IPsec. • Provided language clarification in section 5.1 and 4.1.3 regarding Public Internet. • Updated MSC-GD-10, MSC-GD-11, MSC- GD-15, MSC-SR-21 language to add more clarity. • Changed Management Workstation to Administrative Workstation. • Updated MSC-PS-8, MSC-PS-14, MSC- DM-20, MSC-DM-21 to remove “Optional”. • Updated Table 7 and included SHA-512. • Various formatting and document cleanup." .

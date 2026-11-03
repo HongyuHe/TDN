@@ -16,6 +16,46 @@ New evidence requests use the [MCP server](../../mcp/README.md), which exports J
 
 The shared `record.py` preserves nested history through manifest references. Both the validation runner and coordinator use that implementation.
 
+## Run supervised v3.1 construction
+
+`start_v31.py` creates a new UTC-stamped run, preserves the current source checkpoint, and prepares a Constructor workspace under `/tmp`. The workspace contains the active theory, permitted source requirements, current campaign evidence, and pinned Lean dependencies. Repository history and the archived theory are excluded. The generated execution wrapper denies access to the original project and Codex directories. Agents must use that wrapper for filesystem commands; the tool service itself is not confined by the wrapper.
+
+```sh
+python3 scripts/construction/start_v31.py
+```
+
+The supervisor launches the independent Constructor with GPT-6.1 Sol at `xhigh`. After the Constructor compiles a complete 24-specification candidate, `prepare_interpretation.py` freezes its sources and uses `export_spec_definitions.lean` to export the actual compiled definitions. Each fresh GPT-6.1 Sol interpreter at `high` receives only those definitions and their dependencies. The supervisor retains the source-to-RG mapping outside the interpreter workspace.
+
+```sh
+python3 scripts/construction/prepare_interpretation.py \
+  --run v3.1-TIMESTAMP \
+  --workspace /tmp/tdn-v3.1-TIMESTAMP/constructor \
+  --round 1
+```
+
+`mcp_session.py` calls the real evidence server through its stdio MCP interface. Run it with the MCP package environment and a trusted configuration. Its request file contains an array of tool calls or resource reads. Each response, including failures, is saved to a new JSONL file. A failed tool call produces a nonzero client exit code. A collection request can set `wait_complete` to keep the session open while recording status polls. Subsequent requests can refer to a named result through `$result.ID.field`.
+
+```sh
+uv run --frozen --project mcp python scripts/construction/mcp_session.py \
+  --config inputs/evidence-mcp.json \
+  --requests inputs/requests.json \
+  --output outputs/mcp/session-001.jsonl
+```
+
+The workflow defines uncapped interpretation rounds and separate proof-validation rounds. Full clause coverage, kernel checks, meaningful assumptions, and reusable general proofs are required for PASS. A failing eleventh proof-validation round ends the run with its remaining work recorded. All new records stay under the new run directory.
+
+`export_proof_audit.lean` reads a newline-separated list of fully qualified theorem names from `TDN_PROOF_NAMES`. After a successful build, it writes their compiled assumptions, conclusions, transitive TDN dependencies, and axioms to the path in `TDN_PROOF_AUDIT`. The command rejects missing names, definitions supplied as proofs, and axioms beyond Lean's three permitted foundational axioms. The supervisor still reviews whether the assumptions justify the source requirements and whether concrete observations establish them.
+
+```sh
+TDN_PROOF_NAMES=outputs/proof-names.txt \
+TDN_PROOF_AUDIT=outputs/proof-audit.json \
+lake env lean scripts/construction/export_proof_audit.lean
+```
+
+`export_spec_definitions.lean` records each specification's readable form and complete internal Lean expressions, including implicit arguments. Rebuild the accepted frozen source and the proof candidate with the same pinned dependencies before comparing those exports. `check_proof_submission.py` checks the 24-target mapping, the compiled general proofs, their evidence dependencies, and changes to the accepted definitions. The checker reports whether the accepted export contains the complete expressions. Older exports remain usable but compare only their recorded fields. The supervisor reviews clause coverage and assumptions separately.
+
+`checkpoint_proof_attempts.py` archives completed attempts with their logs and hash-checked source checkpoints. It excludes unfinished attempts and creates a new archive without replacing an earlier one. `record_agent_messages.py` preserves the actual agent prompts and replies for the selected run interval.
+
 ## Validate the active theory
 
 ```sh
@@ -44,6 +84,8 @@ python3 scripts/construction/record_attempt.py --label local-current-case-covera
 ~~~
 
 Run dependent commands only after their predecessors succeed. The axiom audit must follow the build. An interrupted or failed build cannot support a final axiom result. The record_attempt tool records the exact command, working directory, toolchain, source checkpoint and failure status. Its output path is configurable through TDN_OUTPUT_DIR or --run-dir.
+
+The recorder also captures command-target Lean, Python and JSON files, including temporary fixtures under the run's output directory. It follows literal `tdn_data` JSON references relative to each Lean file. Use `--input path/to/file` for additional inputs consumed through scripts or environment variables. Missing referenced inputs are listed explicitly. The checkpoint preserves the copied bytes and avoids duplicate entries when input paths overlap.
 
 The older run_validation tool remains available for its original selected input set. It does not regenerate every continuation module. Use the current generators below and retain the commands recorded in the current run's experiment attempt files for other scoped imports. Regeneration remains part of the active completion work; the checks above do not claim whole-document compliance.
 

@@ -1,0 +1,434 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "configuration_id": "central-gray-management-v3",
+  "runtime_backend": "supplemental-linux-netns-static-routes",
+  "started_at": "2026-10-24T02:42:30.913280+00:00",
+  "ended_at": "2026-10-24T02:42:50.829369+00:00",
+  "devices": [
+    {
+      "id": "HA",
+      "role": "central-Gray-AW",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-HA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IA",
+      "role": "central-Gray-Firewall-Encryption-Component",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-IA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OA",
+      "role": "central-Outer",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-OA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "FA",
+      "role": "central-Outer-Firewall",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-FA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "FB",
+      "role": "remote-Outer-Firewall",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-FB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "OB",
+      "role": "remote-Outer",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-OB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "IB",
+      "role": "remote-Gray-Firewall-Encryption-Component",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-IB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "MGTSW",
+      "role": "central-Gray-management-switch",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-MGTSW",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "CA",
+      "role": "central-Gray-CA-public-service",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-CA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "RA",
+      "role": "Red-host",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-RA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "DA",
+      "role": "Inner",
+      "site": "A",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-DA",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "RB",
+      "role": "Red-host",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-RB",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "DB",
+      "role": "Inner",
+      "site": "B",
+      "security_level_id": "L1",
+      "namespace": "tcv3cg-DB",
+      "physical_independence": "unavailable"
+    }
+  ],
+  "links": [
+    {
+      "endpoints": [
+        "IA:gray",
+        "OA:gray"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        "10.11.0.1/30",
+        "10.11.0.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OA:black",
+        "FA:inside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "192.0.2.1/30",
+        "192.0.2.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IB:gray",
+        "OB:gray"
+      ],
+      "relation": "veth",
+      "zone": "gray",
+      "addresses": [
+        "10.21.0.1/30",
+        "10.21.0.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "OB:black",
+        "FB:inside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "192.0.3.1/30",
+        "192.0.3.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "FA:outside",
+        "FB:outside"
+      ],
+      "relation": "veth",
+      "zone": "black",
+      "addresses": [
+        "198.51.100.1/30",
+        "198.51.100.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IB:red",
+        "OB:management"
+      ],
+      "relation": "veth",
+      "zone": "gray-management",
+      "addresses": [
+        "10.2.0.1/24",
+        "10.2.0.2/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "HA:red",
+        "MGTSW:aw"
+      ],
+      "relation": "veth",
+      "zone": "gray-management",
+      "addresses": [
+        "10.1.0.2/24",
+        null
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "IA:red",
+        "MGTSW:router"
+      ],
+      "relation": "veth",
+      "zone": "gray-management",
+      "addresses": [
+        "10.1.0.1/24",
+        null
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "CA:management",
+        "MGTSW:ca"
+      ],
+      "relation": "veth",
+      "zone": "gray-management",
+      "addresses": [
+        "10.1.0.3/24",
+        null
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "RA:red",
+        "DA:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.10.1.2/24",
+        "10.10.1.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "DA:gray",
+        "OA:data"
+      ],
+      "relation": "veth",
+      "zone": "gray-data",
+      "addresses": [
+        "10.111.0.1/30",
+        "10.111.0.2/30"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "RB:red",
+        "DB:red"
+      ],
+      "relation": "veth",
+      "zone": "red",
+      "addresses": [
+        "10.10.2.2/24",
+        "10.10.2.1/24"
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "DB:gray",
+        "OB:data"
+      ],
+      "relation": "veth",
+      "zone": "gray-data",
+      "addresses": [
+        "10.121.0.1/30",
+        "10.121.0.2/30"
+      ],
+      "physical_claim_supported": false
+    }
+  ],
+  "tunnels": [
+    {
+      "id": "inner",
+      "mechanism": "IPsec",
+      "layer": "inner",
+      "endpoints": [
+        "IA",
+        "IB"
+      ],
+      "local": "10.11.0.1",
+      "remote": "10.21.0.1",
+      "selectors": [
+        "10.1.0.0/24",
+        "10.2.0.0/24"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    },
+    {
+      "id": "outer",
+      "mechanism": "IPsec",
+      "layer": "outer",
+      "endpoints": [
+        "OA",
+        "OB"
+      ],
+      "local": "192.0.2.1",
+      "remote": "192.0.3.1",
+      "selectors": [
+        "10.11.0.1/32",
+        "10.21.0.1/32"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    },
+    {
+      "id": "Red-Inner",
+      "mechanism": "IPsec",
+      "layer": "Red-Inner",
+      "endpoints": [
+        "DA",
+        "DB"
+      ],
+      "local": "10.111.0.1",
+      "remote": "10.121.0.1",
+      "selectors": [
+        "10.10.1.0/24",
+        "10.10.2.0/24"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    },
+    {
+      "id": "Red-Outer",
+      "mechanism": "IPsec",
+      "layer": "Red-Outer",
+      "endpoints": [
+        "OA",
+        "OB"
+      ],
+      "local": "192.0.2.1",
+      "remote": "192.0.3.1",
+      "selectors": [
+        "10.111.0.1/32",
+        "10.121.0.1/32"
+      ],
+      "mode": "tunnel",
+      "algorithm": "AES-GCM-256",
+      "replay_window": 32,
+      "authentication": "manual test SA provisioning; no IKE/authentication claim"
+    }
+  ],
+  "probes": [
+    {
+      "id": "mtls-True",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0285"
+    },
+    {
+      "id": "mtls-False",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "rejected",
+      "observed_result": "rejected",
+      "observation_id": "cmd-0286"
+    },
+    {
+      "id": "separate-Red-A-B",
+      "source_device": "RA",
+      "destination": "10.10.2.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0288"
+    },
+    {
+      "id": "separate-Red-B-A",
+      "source_device": "RB",
+      "destination": "10.10.1.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0289"
+    },
+    {
+      "id": "Red-cannot-use-Gray-management-path",
+      "source_device": "RA",
+      "destination": "10.2.0.2",
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0291"
+    },
+    {
+      "id": "Gray-management-layer-loss-fail-closed",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "no_reply",
+      "observed_result": "no_reply",
+      "observation_id": "cmd-0397"
+    },
+    {
+      "id": "Red-continues-with-management-layer-down",
+      "source_device": "RA",
+      "destination": "10.10.2.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0398"
+    },
+    {
+      "id": "restored-Gray-management-path",
+      "source_device": "HA",
+      "destination": "10.2.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0405"
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Virtual namespace graph; no physical independence or product approval",
+    "Manually provisioned SAs do not establish IKE/MKA/certificate authentication",
+    "Test keys generated by Python secrets; no NSA KGS approval claim"
+  ]
+}

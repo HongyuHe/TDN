@@ -117,6 +117,46 @@ class RoleOntologyContract(unittest.TestCase):
         self.assertEqual(json.loads(outputs['ontology.json'])['counts'], graph['counts'])
         self.assertNotIn('<script src=', outputs['ontology.html'])
 
+    def test_lean_overlay_covers_roles_and_preserves_source_edges(self):
+        theory = self.graph['theory']
+        self.assertEqual(set(theory['roles']), {r['role_id'] for r in self.roles})
+        for reference in theory['references'].values():
+            line = (ROOT / reference['path']).read_text().splitlines()[reference['line'] - 1]
+            self.assertTrue(line.startswith(reference['anchor']))
+        mapped = {(e['child'], e['parent']) for e in self.graph['subclass_edges']
+                  if e['basis'] != 'analyst_organization'}
+        self.assertEqual(mapped, {(e['child'], e['parent']) for e in self.decisions['subclass_edges']})
+        role = theory['roles']['ROLE-encapsulation-device']
+        self.assertIn('V31-015', role['interpretations'])
+        self.assertNotIn(('ROLE-encapsulation-device', 'ROLE-solution-component'), mapped)
+
+    def test_lean_source_drift_is_rejected(self):
+        mapping = json.loads((OUT / 'roles/ontology_theory.json').read_text())
+        mapping['source_hashes']['TDN/Targets/ComplianceModel.lean'] = 'stale'
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            (out / 'roles').mkdir()
+            (out / 'roles/ontology_theory.json').write_text(json.dumps(mapping))
+            with self.assertRaisesRegex(ValueError, 'Lean source changed'):
+                ONTOLOGY.theory_mapping(out, {r['role_id'] for r in self.roles})
+
+    def test_missing_role_mapping_is_rejected(self):
+        mapping = json.loads((OUT / 'roles/ontology_theory.json').read_text())
+        del mapping['roles']['ROLE-inner-vpn']
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            (out / 'roles').mkdir()
+            (out / 'roles/ontology_theory.json').write_text(json.dumps(mapping))
+            with self.assertRaisesRegex(ValueError, 'cover every extracted role'):
+                ONTOLOGY.theory_mapping(out, {r['role_id'] for r in self.roles})
+
+    def test_lean_annotations_survive_rdf_export(self):
+        base = ONTOLOGY.BASE
+        self.assertIn((ONTOLOGY.ONTOLOGY_IRI, base + 'theoryVersion', 'v3.1', True), self.statements)
+        for role_id, record in self.graph['theory']['roles'].items():
+            self.assertIn((base + role_id, base + 'leanRepresentation', record['status'], True), self.statements)
+            self.assertIn((base + role_id, base + 'leanMapping', record['meaning'], True), self.statements)
+
 
 if __name__ == '__main__':
     unittest.main()

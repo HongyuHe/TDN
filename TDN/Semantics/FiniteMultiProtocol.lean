@@ -76,7 +76,7 @@ theorem local_conditions_from_finite_checks (devices : List Execution.DeviceData
           (Execution.portAt ports receiver.virtualPort).stack) :
     LocalConditions (finiteConfig devices ports routes links bridges macPorts carriers)
       (Execution.finiteLayout ports) := by
-  refine ⟨ipChecks, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨rfl, ipChecks, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · exact fun a b member => linkChecks (a,b) member
   · exact fun a b member => bridgeChecks (a,b) member
   · intro port member association installed

@@ -5,6 +5,7 @@ import hashlib
 import json
 import re
 import xml.etree.ElementTree as ET
+import copy
 from collections import defaultdict
 from pathlib import Path
 
@@ -97,6 +98,35 @@ def ancestors(role_id, parents):
     return sorted(found)
 
 
+def theory_mapping(out, role_ids):
+    mapping = read(out / 'roles/ontology_theory.json')
+    if set(mapping['roles']) != role_ids:
+        raise ValueError('Theory mappings must cover every extracted role exactly.')
+    for filename, expected in mapping['source_hashes'].items():
+        path = ROOT / filename
+        if not path.is_file() or digest(path) != expected:
+            raise ValueError('Lean source changed; review role mappings: ' + filename)
+    result = copy.deepcopy(mapping)
+    for reference in result['references'].values():
+        if reference['path'] not in result['source_hashes']:
+            raise ValueError('Unpinned Lean reference: ' + reference['path'])
+        lines = (ROOT / reference['path']).read_text().splitlines()
+        matches = [i + 1 for i, line in enumerate(lines) if line.startswith(reference['anchor'])]
+        if len(matches) != 1:
+            raise ValueError('Ambiguous or missing Lean reference: ' + reference['label'])
+        reference['line'] = matches[0]
+    for role_id, record in result['roles'].items():
+        if record['status'] not in result['status_labels'] or not record['meaning']:
+            raise ValueError('Invalid role representation: ' + role_id)
+        if not set(record['references']) <= set(result['references']):
+            raise ValueError('Unknown Lean reference for ' + role_id)
+        if not set(record['interpretations']) <= set(result['interpretations']):
+            raise ValueError('Unknown v3.1 interpretation for ' + role_id)
+        if record['status'] in {'direct', 'composed'} and not record['references']:
+            raise ValueError('Represented role lacks a code reference: ' + role_id)
+    return result
+
+
 def build_graph(out=OUT):
     roles = read(out / 'roles/roles.json')
     source = {r['source_id']: r for r in map(json.loads, (out / 'source/source_index.jsonl').read_text().splitlines())}
@@ -107,6 +137,7 @@ def build_graph(out=OUT):
             errors.append('Curated ontology input hash differs: ' + filename)
     if errors:
         raise ValueError('\n'.join(errors))
+    theory = theory_mapping(out, {r['role_id'] for r in roles})
     families = {rid: f['id'] for f in decisions['families'] for rid in f['role_ids']}
     root = {**decisions['root'], 'role_id': 'ExtractedRole', 'iri': BASE + 'ExtractedRole', 'source_ids': [], 'family': 'organization', 'aliases': [], 'kind': 'analyst_organization'}
     nodes = [root]
@@ -128,10 +159,11 @@ def build_graph(out=OUT):
     for node in nodes:
         node['parents'] = parents[node['role_id']]
         node['ancestors'] = ancestors(node['role_id'], parents)
+        node['theory'] = theory['roles'].get(node['role_id'])
     used_sources = {sid for node in nodes for sid in node['source_ids']}
     used_sources.update(sid for edge in edges + associations + decisions.get('excluded_inferences', []) for sid in edge['source_ids'])
     source_views = {sid: {'text': source[sid]['text'], 'pages': sorted({p['page'] for p in source[sid]['locations']})} for sid in sorted(used_sources)}
-    return {'schema_version': '1.0', 'ontology_iri': ONTOLOGY_IRI, 'class_semantics': 'A class describes entities matching an extracted role or realization concept. Classes may overlap and may have multiple parents. No device existence, class disjointness, or class equivalence is asserted.', 'association_semantics': 'Non-subtype links are OWL annotation assertions between class IRIs. They preserve source context without imposing object-property restrictions or asserting a relationship for every class member.', 'root_id': 'ExtractedRole', 'families': decisions['families'], 'nodes': nodes, 'subclass_edges': edges, 'associations': associations, 'excluded_inferences': decisions.get('excluded_inferences', []), 'sources': source_views, 'input_hashes': {'roles/roles.json': digest(out / 'roles/roles.json'), 'source/source_index.jsonl': digest(out / 'source/source_index.jsonl'), 'roles/ontology_decisions.json': digest(out / 'roles/ontology_decisions.json')}, 'counts': {'extracted_roles': len(roles), 'owl_classes': len(nodes), 'source_backed_subclass_edges': len(decisions['subclass_edges']), 'organizational_root_edges': len(edges) - len(decisions['subclass_edges']), 'annotation_associations': len(associations), 'multiple_parent_roles': sum(len(n['parents']) > 1 for n in nodes)}}
+    return {'schema_version': '1.1', 'theory': theory, 'ontology_iri': ONTOLOGY_IRI, 'class_semantics': 'A class describes entities matching an extracted role or realization concept. Classes may overlap and may have multiple parents. No device existence, class disjointness, or class equivalence is asserted.', 'association_semantics': 'Non-subtype links are OWL annotation assertions between class IRIs. They preserve source context without imposing object-property restrictions or asserting a relationship for every class member.', 'root_id': 'ExtractedRole', 'families': decisions['families'], 'nodes': nodes, 'subclass_edges': edges, 'associations': associations, 'excluded_inferences': decisions.get('excluded_inferences', []), 'sources': source_views, 'input_hashes': {'roles/roles.json': digest(out / 'roles/roles.json'), 'source/source_index.jsonl': digest(out / 'source/source_index.jsonl'), 'roles/ontology_decisions.json': digest(out / 'roles/ontology_decisions.json'), 'roles/ontology_theory.json': digest(out / 'roles/ontology_theory.json')}, 'counts': {'extracted_roles': len(roles), 'owl_classes': len(nodes), 'source_backed_subclass_edges': len(decisions['subclass_edges']), 'organizational_root_edges': len(edges) - len(decisions['subclass_edges']), 'annotation_associations': len(associations), 'multiple_parent_roles': sum(len(n['parents']) > 1 for n in nodes), 'explicit_lean_roles': sum(r['status'] == 'direct' for r in theory['roles'].values()), 'combined_lean_roles': sum(r['status'] == 'composed' for r in theory['roles'].values()), 'contextual_roles': sum(r['status'] == 'context' for r in theory['roles'].values()), 'unrepresented_roles': sum(r['status'] == 'unrepresented' for r in theory['roles'].values())}}
 
 
 def triples(graph):
@@ -141,12 +173,15 @@ def triples(graph):
     rdf_type, label = NS['rdf'] + 'type', NS['rdfs'] + 'label'
     add(ONTOLOGY_IRI, rdf_type, NS['owl'] + 'Ontology')
     add(ONTOLOGY_IRI, NS['rdfs'] + 'comment', graph['class_semantics'] + ' ' + graph['association_semantics'], True)
-    add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', 'CSfC MSC 1.3.0; TDN role hierarchy 1.0', True)
-    props = ['roleId', 'roleKind', 'sourceUnit', 'sourceText', 'pdfPages', 'basis', 'rationale', 'qualification', 'inputHash']
+    add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', 'CSfC MSC 1.3.0; TDN role hierarchy 1.1; Lean theory v3.1', True)
+    props = ['roleId', 'roleKind', 'sourceUnit', 'sourceText', 'pdfPages', 'basis', 'rationale', 'qualification', 'inputHash', 'theoryVersion', 'leanRepresentation', 'leanMapping', 'leanExpression', 'leanReference', 'theoryInterpretation']
     props += sorted({a['relation'] for a in graph['associations']})
     for prop in props:
         add(BASE + prop, rdf_type, NS['owl'] + 'AnnotationProperty')
     add(NS['skos'] + 'altLabel', rdf_type, NS['owl'] + 'AnnotationProperty')
+    add(ONTOLOGY_IRI, BASE + 'theoryVersion', graph['theory']['theory_version'], True)
+    for filename, sha in graph['theory']['source_hashes'].items():
+        add(ONTOLOGY_IRI, BASE + 'inputHash', filename + ' sha256:' + sha, True)
     for filename, sha in graph['input_hashes'].items():
         add(ONTOLOGY_IRI, BASE + 'inputHash', filename + ' sha256:' + sha, True)
     for node in graph['nodes']:
@@ -158,6 +193,17 @@ def triples(graph):
         add(iri, BASE + 'roleKind', node['kind'], True)
         if node.get('uncertainty'):
             add(iri, BASE + 'qualification', node['uncertainty'], True)
+        if node.get('theory'):
+            record = node['theory']
+            add(iri, BASE + 'leanRepresentation', record['status'], True)
+            add(iri, BASE + 'leanMapping', record['meaning'], True)
+            for expression in record['expressions']:
+                add(iri, BASE + 'leanExpression', expression, True)
+            for key in record['references']:
+                reference = graph['theory']['references'][key]
+                add(iri, BASE + 'leanReference', reference['label'] + ' at ' + reference['path'] + ':' + str(reference['line']), True)
+            for key in record['interpretations']:
+                add(iri, BASE + 'theoryInterpretation', key + ': ' + graph['theory']['interpretations'][key]['summary'], True)
         for alias in node['aliases']:
             if alias != node['label']:
                 add(iri, NS['skos'] + 'altLabel', alias, True)
@@ -231,6 +277,20 @@ def markdown(graph):
     nodes = {n['role_id']: n for n in graph['nodes']}
     lines = ['# CSfC role ontology', '', 'The hierarchy organizes all extracted roles and preserves source evidence for each subtype relationship. A role can have multiple parents. The navigation families group related topics for browsing and add no OWL subclass claims.', '', '[Interactive explorer](ontology.html) | [OWL in RDF/XML](ontology.owl) | [Turtle](ontology.ttl) | [Structured graph](ontology.json) | [Curation decisions](ontology_decisions.json)', '', graph['class_semantics'], '', graph['association_semantics'], '', 'OWL uses an open-world interpretation: an absent relationship remains unasserted. The extraction validators separately check that every extracted role and every declared evidence reference is present.', '', 'The transitive parent lists are computed for the exported subclass graph. The pipeline validates its supported serialization and hierarchy; it does not run a general OWL DL reasoner or prove CSfC compliance.', '', '## Counts', '']
     lines += ['- ' + key.replace('_', ' ') + ': ' + str(value) for key, value in graph['counts'].items()]
+    lines += ['', '## Representation in Lean v3.1', '', graph['theory']['mapping_scope'], '',
+              '[Curated Lean mappings](ontology_theory.json) records all 76 source roles, code references, chosen interpretations and pinned Lean source hashes.', '',
+              '| Role | Representation | Meaning | Code |', '| --- | --- | --- | --- |']
+    for node in graph['nodes']:
+        record = node.get('theory')
+        if not record:
+            continue
+        references = [graph['theory']['references'][key] for key in record['references']]
+        links = ', '.join('[' + r['label'] + '](../../../' + r['path'] + ')' for r in references)
+        lines.append('| ' + node['label'] + ' | ' + graph['theory']['status_labels'][record['status']] + ' | ' + record['meaning'] + ' | ' + links + ' |')
+    lines += ['', '## Chosen v3.1 interpretations', '']
+    for key, interpretation in graph['theory']['interpretations'].items():
+        lines += ['### ' + interpretation['title'], '', interpretation['summary'], '',
+                  'Recorded decision: `' + interpretation['source_path'] + ':' + str(interpretation['source_line']) + '`.', '']
     for family in graph['families']:
         lines += ['', '## ' + family['label'], '', '| Role | Direct broader roles |', '| --- | --- |']
         for rid in family['role_ids']:
@@ -263,7 +323,7 @@ def expected_outputs(out=OUT):
     graph = build_graph(out)
     statements = triples(graph)
     xml, ttl = rdf_xml(statements), turtle(statements)
-    payload = {**graph, 'downloads': {'owl': xml, 'turtle': ttl}}
+    payload = {**graph, 'project_root': str(ROOT), 'downloads': {'owl': xml, 'turtle': ttl}}
     embedded = json.dumps(payload, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
     template = TEMPLATE.read_text()
     if template.count('__ONTOLOGY_DATA__') != 1:

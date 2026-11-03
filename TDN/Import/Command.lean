@@ -11,6 +11,15 @@ The kernel checks the resulting definition. All proofs remain ordinary Lean proo
 namespace TDN.Import
 open Lean Elab Command Meta
 
+instance : ToJson UInt8 where
+  toJson value := toJson value.toNat
+
+instance : FromJson UInt8 where
+  fromJson? json := do
+    let value : Nat ← fromJson? json
+    if value < 256 then pure value.toUInt8
+    else throw s!"byte {value} is outside 0..255"
+
 instance {n : Nat} : ToJson (Fin n) where
   toJson value := toJson value.val
 

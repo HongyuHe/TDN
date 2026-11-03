@@ -5,8 +5,8 @@ namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
 lemma unwrap_preserves_original_ethernet
-    (localAddress remote sourcePort destinationPort localSession : Nat) (before after : Body)
-    (unwrapped : unwrapCarrier localAddress remote sourcePort destinationPort localSession before = some after) :
+    (localAddress remote sourcePort destinationPort localSession : Nat) {protocol networkProtocol : String} (before after : Body)
+    (unwrapped : unwrapCarrier localAddress remote sourcePort destinationPort localSession before protocol networkProtocol = some after) :
     after.originalEthernet = before.originalEthernet := by
   cases before <;> simp only [unwrapCarrier] at unwrapped
   all_goals try cases unwrapped
@@ -18,7 +18,8 @@ lemma unwrap_preserves_original_ethernet
 lemma step_preserves_original_ethernet {c : Config} {before after : State} {action : Action}
     (step : Step c before action after) :
     after.frame.body.originalEthernet = before.frame.body.originalEthernet := by
-  cases step <;> try rfl
+  cases step <;> simp only [Config.forwardedFrame_body, Config.ipsecFrame_body,
+    Config.macsecFrame_body, Config.carrierFrame_body, Config.restoredFrame_body] <;> try rfl
   all_goals try simp_all only [Body.originalEthernet]
   all_goals exact unwrap_preserves_original_ethernet _ _ _ _ _ _ _ ‹_›
 
@@ -44,7 +45,8 @@ lemma step_layer_effect {c : Config} {before after : State} {action : Action}
       after.frame.body.protectionLayers = tag :: before.frame.body.protectionLayers) ∨
     (IsDecryption action ∧ ∃ tag,
       before.frame.body.protectionLayers = tag :: after.frame.body.protectionLayers) := by
-  cases step <;> try exact Or.inl rfl
+  cases step <;> simp only [Config.forwardedFrame_body, Config.ipsecFrame_body,
+    Config.macsecFrame_body, Config.carrierFrame_body, Config.restoredFrame_body] <;> try exact Or.inl rfl
   all_goals first
     | exact Or.inl (successful_carrier_unwrap_preserves_layers _ _ _ _ _ _ _ ‹_›)
     | simp_all [IsEncryption, IsDecryption, Body.protectionLayers]

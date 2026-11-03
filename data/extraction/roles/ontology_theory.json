@@ -1,0 +1,1259 @@
+{
+  "schema_version": "1.0",
+  "theory_version": "v3.1",
+  "source_run": "v3.1-20261031T231942Z",
+  "mapping_scope": "These annotations describe how source roles are represented by the current Lean model. A mapping does not establish deployed role membership or prove a requirement. Source subtype relationships remain unchanged.",
+  "status_labels": {
+    "direct": "Explicit Lean representation",
+    "composed": "Combination of Lean fields",
+    "context": "Related model only",
+    "unrepresented": "No distinct representation"
+  },
+  "references": {
+    "kind": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "inductive DeviceKind where",
+      "label": "DeviceKind"
+    },
+    "device": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "structure Device where",
+      "label": "Device"
+    },
+    "interface": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "structure Interface where",
+      "label": "Interface"
+    },
+    "deployment": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "structure Deployment where",
+      "label": "Deployment"
+    },
+    "ordinary": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "def Deployment.OrdinaryGray",
+      "label": "Deployment.OrdinaryGray"
+    },
+    "service": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "inductive ServiceKind where",
+      "label": "ServiceKind"
+    },
+    "management": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "structure ManagementServiceInstance where",
+      "label": "ManagementServiceInstance"
+    },
+    "management_function": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "inductive ManagementServiceFunction where",
+      "label": "ManagementServiceFunction"
+    },
+    "management_domain": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "inductive ManagementDomain where",
+      "label": "ManagementDomain"
+    },
+    "authority": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "structure AuthorityFacts where",
+      "label": "AuthorityFacts"
+    },
+    "exchange": {
+      "path": "TDN/Targets/ComplianceModel.lean",
+      "anchor": "structure ManagementExchange where",
+      "label": "ManagementExchange"
+    },
+    "eap_role": {
+      "path": "TDN/Targets/DirectSpecifications.lean",
+      "anchor": "inductive EAPRole where",
+      "label": "EAPRole"
+    },
+    "mac_auth": {
+      "path": "TDN/Targets/DirectSpecifications.lean",
+      "anchor": "structure MACsecAuthentication where",
+      "label": "MACsecAuthentication"
+    },
+    "key_server": {
+      "path": "TDN/Targets/DirectSpecifications.lean",
+      "anchor": "structure MACsecServerPair where",
+      "label": "MACsecServerPair"
+    },
+    "carrier": {
+      "path": "TDN/Targets/DirectSpecifications.lean",
+      "anchor": "structure EncapsulationUse where",
+      "label": "EncapsulationUse"
+    },
+    "carrier_core": {
+      "path": "TDN/Targets/DirectSpecifications.lean",
+      "anchor": "def MACsecEncapsulationCore",
+      "label": "MACsecEncapsulationCore"
+    },
+    "services": {
+      "path": "TDN/Targets/DirectSpecifications.lean",
+      "anchor": "def AuthenticationServices",
+      "label": "AuthenticationServices"
+    },
+    "flow": {
+      "path": "TDN/Targets/DirectSpecifications.lean",
+      "anchor": "def Flow.Valid",
+      "label": "Flow.Valid"
+    },
+    "applicability": {
+      "path": "TDN/Targets/CPDuties.lean",
+      "anchor": "def CPContext.ComponentApplies",
+      "label": "CPContext.ComponentApplies"
+    },
+    "duties": {
+      "path": "TDN/Targets/CPDuties.lean",
+      "anchor": "def CPContext.AllApplicableDuties",
+      "label": "CPContext.AllApplicableDuties"
+    },
+    "rg007": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_nested_layer_protection",
+      "label": "msc_nested_layer_protection"
+    },
+    "rg012": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_security_level_key_and_management_separation",
+      "label": "msc_security_level_key_and_management_separation"
+    },
+    "rg013": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_gray_firewall_path_coverage",
+      "label": "msc_gray_firewall_path_coverage"
+    },
+    "rg015": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_macsec_encapsulation",
+      "label": "msc_macsec_encapsulation"
+    },
+    "rg024": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_macsec_authentication_choice_and_as",
+      "label": "msc_macsec_authentication_choice_and_as"
+    },
+    "rg027": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_macsec_key_generation_and_server",
+      "label": "msc_macsec_key_generation_and_server"
+    },
+    "rg047": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_administrator_authentication",
+      "label": "msc_administrator_authentication"
+    },
+    "rg074": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_redundant_component_permission",
+      "label": "msc_redundant_component_permission"
+    },
+    "credentials": {
+      "path": "TDN/Targets/AuthenticationIsolation.lean",
+      "anchor": "structure InnerAuthentication where",
+      "label": "InnerAuthentication"
+    },
+    "accounts": {
+      "path": "TDN/Targets/Administration.lean",
+      "anchor": "structure AdministrativeAccount where",
+      "label": "AdministrativeAccount"
+    },
+    "time": {
+      "path": "TDN/Targets/TimeSynchronization.lean",
+      "anchor": "structure TimeSourceEndpoint where",
+      "label": "TimeSourceEndpoint"
+    },
+    "external": {
+      "path": "TDN/Targets/CPDutyRecords.lean",
+      "anchor": "structure ExternalFacts where",
+      "label": "ExternalFacts"
+    },
+    "level": {
+      "path": "TDN/Targets/Architecture.lean",
+      "anchor": "structure SecurityLevel where",
+      "label": "SecurityLevel"
+    },
+    "red_network": {
+      "path": "TDN/Targets/Architecture.lean",
+      "anchor": "structure RedNetworkIdentity where",
+      "label": "RedNetworkIdentity"
+    }
+  },
+  "source_hashes": {
+    "TDN/Targets/Administration.lean": "dcfbaec5c39839dc9fac870f542e34421e6c9cc41dbf351180f24c668e629041",
+    "TDN/Targets/Architecture.lean": "fb4b929f86f92c3aa0b7d134548dce8edebf72c645d8b2f9d034567fd91c04c4",
+    "TDN/Targets/AuthenticationIsolation.lean": "0389df58e5511f4d8c34190fc3bec837c0bb069c6258e98326becacb71cb7065",
+    "TDN/Targets/CPDuties.lean": "08df288d3b3e06106fbe245ef08d82d76ae1b1771fb977adf347cfff68d5d967",
+    "TDN/Targets/CPDutyRecords.lean": "8d9ccffbc8a88910768ebd9bfdf467a2d7dc4c10fe251195a8125d6ac7b1c668",
+    "TDN/Targets/CompleteSpecifications.lean": "13285457ac8eba31a50313408edb08c34e02a134b201553c034c767ebbdc19b4",
+    "TDN/Targets/ComplianceModel.lean": "c4842ba2c660b6788842ee202d0b590d85699d66f87fedba77f3387677e302a2",
+    "TDN/Targets/DirectSpecifications.lean": "c13ed64c732b3ce6eefda9c920f91e5e072282a48a2712f8502df4516471e3ad",
+    "TDN/Targets/TimeSynchronization.lean": "1095fd256cfdd3703f3e3e51ab310dcc9c2588daff3c8fa416b75b5dcd6d8d0f"
+  },
+  "interpretations": {
+    "V31-007": {
+      "title": "V31-007: data-plane protection, tunnel endpoints, and services",
+      "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
+      "source_line": 67,
+      "source_text": "Affected groups: RG-007, RG-008, RG-029, RG-030, RG-035. Original pages 10–14, 18–19, 22–25, 42–47. Page 10 requires Inner encryption followed by Outer encryption and reverse Outer/Inner decryption. Pages 12–13 distinguish protected data from permitted control traffic. Arbitrary classified payloads cannot be labelled harmless control.\n\nThe selected reading tracks protected payload identities through complete executions. Gray transmission carries Inner protection. Black transmission carries Outer around Inner, with ordered encryption and matching configured endpoints. A completed cross-Black plaintext delivery has ordered reverse decryption. Local Red deliveries that never cross Black do not acquire a fictitious two-decryption duty. The mechanism type admits exactly the four IPsec/MACsec combinations. Outer MACsec restricts the solution to two sites.\n\nThe page-22 service clause remains recorded. Under the explicit user optional-management scope, actual management deployment requires its workstations and method-specific CA/KGS infrastructure. Different levels sharing an Outer still require a Gray Firewall. These facts do not gate the packet-transition relation. Management-free packet results have no administrative service-presence prerequisite. The user scope is a stated modeling choice, not a claim that the source's unconditional architectural wording disappeared. Cryptographic confidentiality, integrity, key independence, and faithful operation labels require separately justified primitive and implementation correspondence. Event ordering alone does not establish cryptographic secrecy. Affected declarations: ArchitectureServices, Flow.Valid, CrossedBlack, msc_nested_layer_protection, LayerNoBypass. Inherited decision: INT-007.",
+      "summary": "V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope."
+    },
+    "V31-012": {
+      "title": "V31-012: authentication alternatives and management deployment",
+      "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
+      "source_line": 81,
+      "source_text": "Affected group: RG-012. Original page 16, with pages 15–18. Separate CAs, CAKs, and management devices apply to the chosen certificate or shared-key method. Certificate authorities and effective trust closures differ across full levels. PSK identities differ across full levels. Cross-level mutual authentication and established tunnels are both prohibited.\n\nManagement presence and separation apply when management is deployed. A packet-only snapshot cannot establish management-device presence. Figure 5 has two Secret U.S.-only networks at the same full level. Different names do not create different levels. Additional same-level filtering is permitted. Inherited decision: INT-012.",
+      "summary": "Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels."
+    },
+    "V31-013": {
+      "title": "V31-013: all Gray paths, filtering, and management services",
+      "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
+      "source_line": 87,
+      "source_text": "Affected group: RG-013. Original pages 17–18, 24, 35. SR-7 covers every physical Gray path between different-level Inners. SR-8 separately names a CA, AW, and CDP/OCSP responder at a different level. The page-18 highest-level convention names Gray AWs and locally run CAs. It does not assign every CDP/OCSP service to the highest level.\n\nThe selected reading assigns the highest level to Gray AWs and locally run CAs, retains the broader SR-8 cut for each named service when its actual level differs, and includes enterprise CAs in SR-8. Actual filtering rejects unintended or cross-level Inner endpoints. Highest-group management traffic to lower Inners is rejected. Outer filtering remains mandatory with standalone Gray Firewalls. Gray Firewalls retain classified-device physical protection and placement between Inner and Outer. The word typically does not cancel SR-7 or SR-8. Physical protection and the classification ordering require authoritative external facts.",
+      "summary": "The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level."
+    },
+    "V31-015": {
+      "title": "V31-015: carrier placement and standalone obligations",
+      "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
+      "source_line": 99,
+      "source_text": "Affected group: RG-015. Original pages 19–20, 25, 42. Encapsulation is required when MACsec is Inner or crosses IP. Inner encapsulation precedes Outer encryption. A carrier preserves the MACsec body until its destination. Unsupported built-in encapsulation requires a standalone device with the stated internal/Inner and external/Outer attachments. The protocol needs AO approval.\n\nPages 19 and 25 impose all applicable Solution Component duties on the standalone device. MD-13 separately confirms Section 11.1 inclusion. Page 20 places the additional step outside the boundary and recommends DM/filtering. Those passages do not cancel the explicit mandatory device duties. Fixed technical meanings and typed external duties replace the caller-supplied catalogue. External records and concrete implementation bindings remain unresolved proof/evidence obligations. The encapsulate event denotes wrapping the exact existing body. Refinement must connect that event to the active carrier operation and the actual remote decapsulator. Inherited decision: INT-015.",
+      "summary": "When built-in encapsulation is unavailable, the selected standalone encapsulator must have the required Inner-side and Outer-side attachments and satisfy its applicable component duties. The current RG-015 definition preserves those duties despite the source passage describing encapsulation as outside the solution boundary."
+    },
+    "V31-024": {
+      "title": "V31-024: certificate roles and AS network scope",
+      "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
+      "source_line": 109,
+      "source_text": "Affected group: RG-024. Original pages 14, 20, 26, 41–42. MD-3 and MD-14 are both Threshold alternatives. PSK uses a shared CAK. EAP-TLS uses device certificates, mutual AS admission, MSK-derived CAKs, and both supplicant and authenticator functions at each device. Both functions are supported across arrangements; simultaneity is not imposed.\n\nAA-2 limits the AS to one site network. The ambiguous page-14 both Gray and/or Red wording is read as forbidding one AS from bridging Red and Gray or several site networks. A nonempty attachment list identifies one site and one zone, either Red or Gray. A ban on every Red and every Gray attachment would prevent the described architecture and is rejected.\n\nKey-server peer authentication and SAK issuance remain explicit. Every MACsec encryption history has key-server authentication before SAK issuance. A trust-list entry alone does not prove an EAP-TLS handshake. The implementation connection remains outstanding. Inherited decision: INT024.",
+      "summary": "A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks."
+    },
+    "V31-027": {
+      "title": "V31-027: key generation, provisioning, central servers, fallback",
+      "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
+      "source_line": 117,
+      "source_text": "Affected group: RG-027. Original pages 20, 29, 41–42. Page 20 explicitly requires all CAKs and CKNs from an NSA-approved KGS while also describing EAP-MSK-derived CAKs. Both duties are retained: an EAP-derived CAK needs an approved generation mechanism. An arbitrary EAP implementation is not assumed approved. Exempting all EAP CAKs from the word all is rejected. Approval remains external.\n\nEach CKN has at least 16 bytes and approved generator provenance. PSK provisioning identifies an authorized Security Administrator obtaining the key before applying it to both endpoints. Each actual tunnel has values 0 and 1 for its key-server pair. A present central management site supplies the server endpoint. The pair central-site declaration must bind the actual deployment; omitting that fact cannot establish the conditional duty.\n\nFallback means configured alternate CAKs for fallback or rollover. Fresh CAKs from a new authenticated EAP exchange remain permitted. The current INT-MD15-20261024 input was reviewed with the original page-42 row. Its fresh-process and unchanged-configuration assumptions remain explicit. No approval fact is inferred from that interpretation.",
+      "summary": "The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation."
+    },
+    "V31-047": {
+      "title": "V31-047: live sessions and individual credentials",
+      "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
+      "source_line": 173,
+      "source_text": "Affected group: RG-047. Original pages 48–49. Every operation has earlier authentication bound to the same person, component, account, session, and operation token. Logout/revocation invalidates subsequent operations. Selected CNSA/NIST objectives require actual conformity facts in addition to captured flags. Every declared AW administrator has an individual account. AW group accounts are prohibited. Different people have distinct credentials.\n\nA captured certificate identity is not automatically a verified person. Person/account/session ownership and complete lifecycle inventories remain application obligations. Packet behavior does not require an administrative application. Inherited decisions: INT-047-SESSION and INT-047-service-history.",
+      "summary": "Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions."
+    },
+    "V31-056-074": {
+      "title": "V31-056-074: whole-solution protection and redundant duties",
+      "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
+      "source_line": 185,
+      "source_text": "Affected groups: RG-056 and RG-074. Original pages 21–25, 36 and the SR-14 footnote. Every physical Red egress crosses a CP-conforming MSC solution or AO-approved data-in-transit solution. Crossing an Inner alone is insufficient. Government-certified and CSfC paths may coexist without an unprotected path.\n\nEvery actual redundant solution component retains its fixed applicable CP duties, including Outer Firewalls and selected management components. Ordinary Gray routing infrastructure receives no invented CP security obligation. Standalone encapsulators keep RG-015 duties. Possible failover does not create an automatic availability guarantee. The fixed duty expansion and external assumption boundary remain visible. No whole-group proof completion is claimed.",
+      "summary": "Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray checks the kind, absence of an encryption layer and infrastructure flag, and Gray-only interfaces. Standalone encapsulators keep their applicable duties even when their underlying device is a router or switch."
+    }
+  },
+  "roles": {
+    "ROLE-solution-component": {
+      "status": "context",
+      "meaning": "Applicable duties are selected from a device’s kind, encryption layer, deployment membership, and standalone-encapsulator status. V3.1 has no single SolutionComponent membership type.",
+      "expressions": [
+        "CPContext.ComponentApplies",
+        "CPContext.AllApplicableDuties"
+      ],
+      "references": [
+        "applicability",
+        "duties"
+      ],
+      "interpretations": [
+        "V31-015"
+      ]
+    },
+    "ROLE-encryption-component": {
+      "status": "composed",
+      "meaning": "The layer field selects Inner or Outer encryption components. Flow validity separately checks whether their mechanism is VPN or MACsec.",
+      "expressions": [
+        "Device.layer = some .inner or some .outer",
+        "DeviceKind.vpn / DeviceKind.macsec"
+      ],
+      "references": [
+        "device",
+        "kind",
+        "flow"
+      ],
+      "interpretations": [
+        "V31-007"
+      ]
+    },
+    "ROLE-inner-encryption": {
+      "status": "composed",
+      "meaning": "The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind.",
+      "expressions": [
+        "Device.layer = some .inner"
+      ],
+      "references": [
+        "device",
+        "flow",
+        "rg007"
+      ],
+      "interpretations": [
+        "V31-007"
+      ]
+    },
+    "ROLE-inner-vpn": {
+      "status": "composed",
+      "meaning": "The device kind identifies the mechanism and the layer identifies its Inner or Outer role.",
+      "expressions": [
+        "Device.kind = .vpn",
+        "Device.layer = some .inner"
+      ],
+      "references": [
+        "kind",
+        "device",
+        "flow"
+      ],
+      "interpretations": [
+        "V31-007"
+      ]
+    },
+    "ROLE-inner-macsec": {
+      "status": "composed",
+      "meaning": "The device kind identifies the mechanism and the layer identifies its Inner or Outer role.",
+      "expressions": [
+        "Device.kind = .macsec",
+        "Device.layer = some .inner"
+      ],
+      "references": [
+        "kind",
+        "device",
+        "flow"
+      ],
+      "interpretations": [
+        "V31-007"
+      ]
+    },
+    "ROLE-outer-encryption": {
+      "status": "composed",
+      "meaning": "The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind.",
+      "expressions": [
+        "Device.layer = some .outer"
+      ],
+      "references": [
+        "device",
+        "flow",
+        "rg007"
+      ],
+      "interpretations": [
+        "V31-007"
+      ]
+    },
+    "ROLE-outer-vpn": {
+      "status": "composed",
+      "meaning": "The device kind identifies the mechanism and the layer identifies its Inner or Outer role.",
+      "expressions": [
+        "Device.kind = .vpn",
+        "Device.layer = some .outer"
+      ],
+      "references": [
+        "kind",
+        "device",
+        "flow"
+      ],
+      "interpretations": [
+        "V31-007"
+      ]
+    },
+    "ROLE-outer-macsec": {
+      "status": "composed",
+      "meaning": "The device kind identifies the mechanism and the layer identifies its Inner or Outer role.",
+      "expressions": [
+        "Device.kind = .macsec",
+        "Device.layer = some .outer"
+      ],
+      "references": [
+        "kind",
+        "device",
+        "flow"
+      ],
+      "interpretations": [
+        "V31-007"
+      ]
+    },
+    "ROLE-vpn-gateway": {
+      "status": "direct",
+      "meaning": "VPN gateways have a dedicated device kind. The layer field identifies Inner and Outer gateways.",
+      "expressions": [
+        "Device.kind = .vpn"
+      ],
+      "references": [
+        "kind",
+        "device",
+        "flow"
+      ],
+      "interpretations": []
+    },
+    "ROLE-macsec-device": {
+      "status": "direct",
+      "meaning": "MACsec devices have a dedicated kind. Authentication records separately describe their EAP functions and key-server behavior.",
+      "expressions": [
+        "Device.kind = .macsec"
+      ],
+      "references": [
+        "kind",
+        "mac_auth",
+        "eap_role"
+      ],
+      "interpretations": [
+        "V31-024",
+        "V31-027"
+      ]
+    },
+    "ROLE-firewall": {
+      "status": "composed",
+      "meaning": "The model distinguishes Gray, Outer, and Inner firewalls with separate device kinds.",
+      "expressions": [
+        "DeviceKind.grayFirewall",
+        "DeviceKind.outerFirewall",
+        "DeviceKind.innerFirewall"
+      ],
+      "references": [
+        "kind"
+      ],
+      "interpretations": []
+    },
+    "ROLE-gray-firewall": {
+      "status": "direct",
+      "meaning": "The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.",
+      "expressions": [
+        "Device.kind = .grayFirewall"
+      ],
+      "references": [
+        "kind",
+        "deployment",
+        "rg013"
+      ],
+      "interpretations": [
+        "V31-013"
+      ]
+    },
+    "ROLE-outer-firewall": {
+      "status": "direct",
+      "meaning": "The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.",
+      "expressions": [
+        "Device.kind = .outerFirewall"
+      ],
+      "references": [
+        "kind",
+        "deployment"
+      ],
+      "interpretations": []
+    },
+    "ROLE-inner-firewall": {
+      "status": "direct",
+      "meaning": "The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.",
+      "expressions": [
+        "Device.kind = .innerFirewall"
+      ],
+      "references": [
+        "kind",
+        "deployment"
+      ],
+      "interpretations": []
+    },
+    "ROLE-aw": {
+      "status": "direct",
+      "meaning": "Administrative Workstations use the workstation device kind. Their administrator accounts and sessions are represented separately.",
+      "expressions": [
+        "Device.kind = .workstation",
+        "AdministrativeAccount.workstationAccount"
+      ],
+      "references": [
+        "kind",
+        "accounts",
+        "rg047"
+      ],
+      "interpretations": [
+        "V31-047",
+        "V31-012"
+      ]
+    },
+    "ROLE-red-aw": {
+      "status": "composed",
+      "meaning": "A Red workstation combines the workstation kind with a Red management attachment. Zone information belongs to its interfaces and deployment attachments.",
+      "expressions": [
+        "Device.kind = .workstation",
+        "Interface.zone = .red",
+        "Interface.managementNetwork"
+      ],
+      "references": [
+        "kind",
+        "interface",
+        "deployment",
+        "rg047"
+      ],
+      "interpretations": [
+        "V31-047"
+      ]
+    },
+    "ROLE-gray-aw": {
+      "status": "composed",
+      "meaning": "A Gray workstation combines the workstation kind with a Gray management attachment. The deployment also provides the grayWorkstation predicate.",
+      "expressions": [
+        "Device.kind = .workstation",
+        "Deployment.grayWorkstation",
+        "Interface.zone = .gray"
+      ],
+      "references": [
+        "kind",
+        "interface",
+        "deployment",
+        "rg013"
+      ],
+      "interpretations": [
+        "V31-013",
+        "V31-047"
+      ]
+    },
+    "ROLE-black-aw": {
+      "status": "context",
+      "meaning": "The model can record a workstation and Black interface, but has no separate Black-workstation role or complete Black-workstation specification.",
+      "expressions": [
+        "DeviceKind.workstation",
+        "Interface.zone"
+      ],
+      "references": [
+        "kind",
+        "interface"
+      ],
+      "interpretations": []
+    },
+    "ROLE-management-component": {
+      "status": "context",
+      "meaning": "Management roles are represented through service instances and component attachments. There is no single management-component device kind.",
+      "expressions": [
+        "Deployment.managementServices",
+        "ManagementServiceInstance"
+      ],
+      "references": [
+        "management",
+        "deployment"
+      ],
+      "interpretations": [
+        "V31-012"
+      ]
+    },
+    "ROLE-red-management": {
+      "status": "composed",
+      "meaning": "Each management service records its function, hosting device, process, interface, and Red management domain.",
+      "expressions": [
+        "ManagementServiceInstance.domain = .red"
+      ],
+      "references": [
+        "management",
+        "management_domain",
+        "management_function"
+      ],
+      "interpretations": [
+        "V31-012"
+      ]
+    },
+    "ROLE-gray-management": {
+      "status": "composed",
+      "meaning": "Each management service records its function, hosting device, process, interface, and Gray management domain.",
+      "expressions": [
+        "ManagementServiceInstance.domain = .gray"
+      ],
+      "references": [
+        "management",
+        "management_domain",
+        "management_function"
+      ],
+      "interpretations": [
+        "V31-012",
+        "V31-013"
+      ]
+    },
+    "ROLE-siem": {
+      "status": "direct",
+      "meaning": "SIEM has a dedicated device kind. Monitoring and logging registrations describe its service use.",
+      "expressions": [
+        "Device.kind = .siem"
+      ],
+      "references": [
+        "kind",
+        "management_function",
+        "service"
+      ],
+      "interpretations": []
+    },
+    "ROLE-red-siem": {
+      "status": "composed",
+      "meaning": "The SIEM kind combines with a Red interface or management-service domain. The zone is recorded separately from the device kind.",
+      "expressions": [
+        "Device.kind = .siem",
+        "Interface.zone = .red"
+      ],
+      "references": [
+        "kind",
+        "interface",
+        "management"
+      ],
+      "interpretations": []
+    },
+    "ROLE-gray-siem": {
+      "status": "composed",
+      "meaning": "The SIEM kind combines with a Gray interface or management-service domain. The zone is recorded separately from the device kind.",
+      "expressions": [
+        "Device.kind = .siem",
+        "Interface.zone = .gray"
+      ],
+      "references": [
+        "kind",
+        "interface",
+        "management"
+      ],
+      "interpretations": []
+    },
+    "ROLE-authentication-server": {
+      "status": "direct",
+      "meaning": "Authentication Servers have a dedicated device kind. MACsec authentication records identify the server and its site/network attachments.",
+      "expressions": [
+        "Device.kind = .authenticationServer",
+        "MACsecAuthentication.server",
+        "MACsecAuthentication.serverAttachments"
+      ],
+      "references": [
+        "kind",
+        "mac_auth",
+        "rg024"
+      ],
+      "interpretations": [
+        "V31-024"
+      ]
+    },
+    "ROLE-supplicant": {
+      "status": "direct",
+      "meaning": "The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements.",
+      "expressions": [
+        "EAPRole.supplicant",
+        "MACsecAuthentication.supportedRoles"
+      ],
+      "references": [
+        "eap_role",
+        "mac_auth",
+        "rg024"
+      ],
+      "interpretations": [
+        "V31-024"
+      ]
+    },
+    "ROLE-authenticator": {
+      "status": "direct",
+      "meaning": "The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements.",
+      "expressions": [
+        "EAPRole.authenticator",
+        "MACsecAuthentication.supportedRoles"
+      ],
+      "references": [
+        "eap_role",
+        "mac_auth",
+        "rg024"
+      ],
+      "interpretations": [
+        "V31-024"
+      ]
+    },
+    "ROLE-key-server": {
+      "status": "composed",
+      "meaning": "The key server is an endpoint selected in MACsec authentication and key-server-pair records. The role is not a separate DeviceKind.",
+      "expressions": [
+        "MACsecAuthentication.keyServer",
+        "MACsecServerPair"
+      ],
+      "references": [
+        "mac_auth",
+        "key_server",
+        "rg027"
+      ],
+      "interpretations": [
+        "V31-027"
+      ]
+    },
+    "ROLE-ca": {
+      "status": "direct",
+      "meaning": "Certification Authorities have a dedicated device kind and are associated with authenticated components through key-management records.",
+      "expressions": [
+        "Device.kind = .certificationAuthority",
+        "Deployment.keyManagementCA"
+      ],
+      "references": [
+        "kind",
+        "deployment",
+        "credentials"
+      ],
+      "interpretations": [
+        "V31-012"
+      ]
+    },
+    "ROLE-inner-ca": {
+      "status": "composed",
+      "meaning": "The CA serves Inner components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use.",
+      "expressions": [
+        "Device.kind = .certificationAuthority",
+        "Deployment.keyManagementCA"
+      ],
+      "references": [
+        "kind",
+        "deployment",
+        "device",
+        "credentials"
+      ],
+      "interpretations": [
+        "V31-012"
+      ]
+    },
+    "ROLE-outer-ca": {
+      "status": "composed",
+      "meaning": "The CA serves Outer components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use.",
+      "expressions": [
+        "Device.kind = .certificationAuthority",
+        "Deployment.keyManagementCA"
+      ],
+      "references": [
+        "kind",
+        "deployment",
+        "device",
+        "credentials"
+      ],
+      "interpretations": [
+        "V31-012"
+      ]
+    },
+    "ROLE-local-ca": {
+      "status": "context",
+      "meaning": "The CA kind and its placement can be recorded. GrayTopology separately lists locally run CA nodes for the selected Gray management security-level convention.",
+      "expressions": [
+        "DeviceKind.certificationAuthority",
+        "GrayTopology.localCA"
+      ],
+      "references": [
+        "kind",
+        "rg013"
+      ],
+      "interpretations": [
+        "V31-013"
+      ]
+    },
+    "ROLE-enterprise-ca": {
+      "status": "context",
+      "meaning": "Enterprise CAs can be listed as CA devices and Gray service nodes. V3.1 does not give enterprise CAs a distinct DeviceKind.",
+      "expressions": [
+        "DeviceKind.certificationAuthority"
+      ],
+      "references": [
+        "kind",
+        "rg013"
+      ],
+      "interpretations": [
+        "V31-013"
+      ]
+    },
+    "ROLE-root-ca": {
+      "status": "context",
+      "meaning": "The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles.",
+      "expressions": [
+        "InnerCredential.certificate",
+        "InnerAuthentication.credential"
+      ],
+      "references": [
+        "credentials",
+        "kind"
+      ],
+      "interpretations": [
+        "V31-012"
+      ]
+    },
+    "ROLE-signing-ca": {
+      "status": "context",
+      "meaning": "The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles.",
+      "expressions": [
+        "InnerCredential.certificate",
+        "InnerAuthentication.credential"
+      ],
+      "references": [
+        "credentials",
+        "kind"
+      ],
+      "interpretations": [
+        "V31-012"
+      ]
+    },
+    "ROLE-trust-anchor-ca": {
+      "status": "context",
+      "meaning": "The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles.",
+      "expressions": [
+        "InnerCredential.certificate",
+        "InnerAuthentication.credential"
+      ],
+      "references": [
+        "credentials",
+        "kind"
+      ],
+      "interpretations": [
+        "V31-012"
+      ]
+    },
+    "ROLE-kgs": {
+      "status": "direct",
+      "meaning": "The key-generation solution has a device kind. Approved-generator status is supplied as an explicit authority fact.",
+      "expressions": [
+        "Device.kind = .keyGenerationSolution",
+        "AuthorityFacts.nsaApprovedGenerator",
+        "Deployment.keyManagementGenerator"
+      ],
+      "references": [
+        "kind",
+        "authority",
+        "deployment",
+        "rg027"
+      ],
+      "interpretations": [
+        "V31-027"
+      ]
+    },
+    "ROLE-encapsulation-device": {
+      "status": "composed",
+      "meaning": "The encapsulation role uses EncapsulationUse records and the standaloneEncapsulator predicate. A device kind is available, while the actual specification checks the selected use, attachments and applicable duties.",
+      "expressions": [
+        "DeviceKind.encapsulator",
+        "Deployment.standaloneEncapsulator",
+        "EncapsulationUse"
+      ],
+      "references": [
+        "kind",
+        "carrier",
+        "carrier_core",
+        "rg015",
+        "duties"
+      ],
+      "interpretations": [
+        "V31-015"
+      ]
+    },
+    "ROLE-router": {
+      "status": "context",
+      "meaning": "The model distinguishes ordinary Gray routers and screening routers. General packet routing is represented by processing records; there is no unrestricted router DeviceKind.",
+      "expressions": [
+        "DeviceKind.ordinaryGrayRouter",
+        "DeviceKind.screeningRouter"
+      ],
+      "references": [
+        "kind",
+        "ordinary",
+        "deployment"
+      ],
+      "interpretations": []
+    },
+    "ROLE-gray-router": {
+      "status": "composed",
+      "meaning": "An ordinary Gray router must have the matching kind, no encryption layer, no infrastructure flag, and only Gray interfaces to satisfy OrdinaryGray.",
+      "expressions": [
+        "Device.kind = .ordinaryGrayRouter",
+        "Deployment.OrdinaryGray"
+      ],
+      "references": [
+        "kind",
+        "ordinary"
+      ],
+      "interpretations": [
+        "V31-056-074"
+      ]
+    },
+    "ROLE-screening-router": {
+      "status": "direct",
+      "meaning": "Screening routers have a dedicated device kind. Source-defined placement and filtering still require the corresponding configuration.",
+      "expressions": [
+        "Device.kind = .screeningRouter"
+      ],
+      "references": [
+        "kind"
+      ],
+      "interpretations": []
+    },
+    "ROLE-customer-edge-router": {
+      "status": "context",
+      "meaning": "The source’s customer-edge example can realize a router role. V3.1 has no customer-edge-specific device kind or automatic equivalence with screeningRouter.",
+      "expressions": [],
+      "references": [
+        "kind"
+      ],
+      "interpretations": []
+    },
+    "ROLE-switch": {
+      "status": "context",
+      "meaning": "Ordinary Gray switches have a dedicated kind. Other switching behavior is represented through processing records without a generic switch DeviceKind.",
+      "expressions": [
+        "DeviceKind.ordinaryGraySwitch",
+        "Deployment.OrdinaryGray"
+      ],
+      "references": [
+        "kind",
+        "ordinary",
+        "deployment"
+      ],
+      "interpretations": [
+        "V31-056-074"
+      ]
+    },
+    "ROLE-cds": {
+      "status": "direct",
+      "meaning": "Cross Domain Solutions have a device kind. Requirement applicability also uses the recorded cross-domain-solution inventory.",
+      "expressions": [
+        "Device.kind = .crossDomain"
+      ],
+      "references": [
+        "kind",
+        "applicability"
+      ],
+      "interpretations": []
+    },
+    "ROLE-cdp": {
+      "status": "context",
+      "meaning": "Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders.",
+      "expressions": [
+        "DeviceKind.revocationService",
+        "ManagementServiceFunction.revocation"
+      ],
+      "references": [
+        "kind",
+        "management_function",
+        "rg013"
+      ],
+      "interpretations": [
+        "V31-013"
+      ]
+    },
+    "ROLE-ocsp-responder": {
+      "status": "context",
+      "meaning": "Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders.",
+      "expressions": [
+        "DeviceKind.revocationService",
+        "ManagementServiceFunction.revocation"
+      ],
+      "references": [
+        "kind",
+        "management_function",
+        "rg013"
+      ],
+      "interpretations": [
+        "V31-013"
+      ]
+    },
+    "ROLE-ips": {
+      "status": "direct",
+      "meaning": "Intrusion Prevention Systems have a dedicated device kind.",
+      "expressions": [
+        "Device.kind = .intrusionPrevention"
+      ],
+      "references": [
+        "kind",
+        "applicability"
+      ],
+      "interpretations": []
+    },
+    "ROLE-aw-host": {
+      "status": "unrepresented",
+      "meaning": "V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-virtual-machine": {
+      "status": "unrepresented",
+      "meaning": "V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-physical-workstation": {
+      "status": "unrepresented",
+      "meaning": "V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-enrollment-server": {
+      "status": "unrepresented",
+      "meaning": "V3.1 does not define a separate role or protocol model for this certificate-provisioning function.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-provisioning-server": {
+      "status": "unrepresented",
+      "meaning": "V3.1 does not define a separate role or protocol model for this certificate-provisioning function.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-certificate-registration": {
+      "status": "unrepresented",
+      "meaning": "V3.1 does not define a separate role or protocol model for this certificate-provisioning function.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-registration-authority": {
+      "status": "unrepresented",
+      "meaning": "V3.1 does not define a separate role or protocol model for this certificate-provisioning function.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-trusted-time-source": {
+      "status": "direct",
+      "meaning": "A time-source endpoint records the actual source component and interface. Placement and client synchronization use the time model.",
+      "expressions": [
+        "TimeSourceEndpoint"
+      ],
+      "references": [
+        "time",
+        "management_function"
+      ],
+      "interpretations": []
+    },
+    "ROLE-dns-server": {
+      "status": "composed",
+      "meaning": "DNS service use is represented by the name-resolution management function and configuration records. DeviceKind has no separate DNS-server constructor.",
+      "expressions": [
+        "ManagementServiceFunction.nameResolution"
+      ],
+      "references": [
+        "management_function",
+        "management"
+      ],
+      "interpretations": []
+    },
+    "ROLE-control-plane-service": {
+      "status": "composed",
+      "meaning": "Control service registrations identify protocol and port. Their kind is recorded separately from the hosting device.",
+      "expressions": [
+        "ServiceKind.control",
+        "ServiceRegistration"
+      ],
+      "references": [
+        "service"
+      ],
+      "interpretations": []
+    },
+    "ROLE-third-party-server": {
+      "status": "context",
+      "meaning": "Third-party behavior is represented by feature and emitted-traffic records. The remote server is not a dedicated device kind.",
+      "expressions": [],
+      "references": [
+        "deployment"
+      ],
+      "interpretations": []
+    },
+    "ROLE-end-user-device": {
+      "status": "context",
+      "meaning": "Red network records and modeled payload origins identify source and destination networks. DeviceKind has no separate end-user-host constructor.",
+      "expressions": [
+        "RedNetworkIdentity"
+      ],
+      "references": [
+        "red_network"
+      ],
+      "interpretations": []
+    },
+    "ROLE-high-assurance-encryptor": {
+      "status": "unrepresented",
+      "meaning": "The extracted assurance/product category is not a distinct device kind in v3.1. Product eligibility and external assurance remain separate evidence obligations.",
+      "expressions": [],
+      "references": [
+        "external"
+      ],
+      "interpretations": []
+    },
+    "ROLE-government-product": {
+      "status": "unrepresented",
+      "meaning": "The extracted assurance/product category is not a distinct device kind in v3.1. Product eligibility and external assurance remain separate evidence obligations.",
+      "expressions": [],
+      "references": [
+        "external"
+      ],
+      "interpretations": []
+    },
+    "ROLE-locally-managed-device": {
+      "status": "context",
+      "meaning": "Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds.",
+      "expressions": [
+        "AdministrativeSession",
+        "ManagementExchange"
+      ],
+      "references": [
+        "accounts",
+        "exchange",
+        "rg047"
+      ],
+      "interpretations": [
+        "V31-047"
+      ]
+    },
+    "ROLE-remotely-managed-device": {
+      "status": "context",
+      "meaning": "Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds.",
+      "expressions": [
+        "AdministrativeSession",
+        "ManagementExchange"
+      ],
+      "references": [
+        "accounts",
+        "exchange",
+        "rg047"
+      ],
+      "interpretations": [
+        "V31-047"
+      ]
+    },
+    "ROLE-network-administration-device": {
+      "status": "context",
+      "meaning": "The source role may be realized by workstation or administration services. V3.1 has no separate network-administration-device kind.",
+      "expressions": [
+        "DeviceKind.workstation",
+        "ManagementServiceFunction.administration"
+      ],
+      "references": [
+        "kind",
+        "management_function"
+      ],
+      "interpretations": []
+    },
+    "ROLE-auxiliary-network-device": {
+      "status": "unrepresented",
+      "meaning": "The broad source grouping has no dedicated v3.1 role predicate. Specific member functions must be mapped separately.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-perimeter-device": {
+      "status": "unrepresented",
+      "meaning": "The broad source grouping has no dedicated v3.1 role predicate. Specific member functions must be mapped separately.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-authentication-service": {
+      "status": "composed",
+      "meaning": "Authentication is a registered service function hosted by a component. The hosting device may also have the authenticationServer kind.",
+      "expressions": [
+        "ManagementServiceFunction.authentication",
+        "ServiceKind.authentication"
+      ],
+      "references": [
+        "management_function",
+        "service",
+        "kind"
+      ],
+      "interpretations": [
+        "V31-024"
+      ]
+    },
+    "ROLE-infrastructure-component": {
+      "status": "direct",
+      "meaning": "The device record has an infrastructure flag. Flow.Valid requires both encryption endpoints to carry that flag.",
+      "expressions": [
+        "Device.infrastructure"
+      ],
+      "references": [
+        "device",
+        "flow"
+      ],
+      "interpretations": [
+        "V31-007"
+      ]
+    },
+    "ROLE-network-device": {
+      "status": "context",
+      "meaning": "Device is the general inventory record for all modeled device kinds. Source role membership beyond that inventory remains contextual.",
+      "expressions": [
+        "Device"
+      ],
+      "references": [
+        "device"
+      ],
+      "interpretations": []
+    },
+    "ROLE-key-management-component": {
+      "status": "composed",
+      "meaning": "Key management combines CA and key-generation device records, service functions, and component-to-service relations.",
+      "expressions": [
+        "Deployment.keyManagementCA",
+        "Deployment.keyManagementGenerator",
+        "ManagementServiceFunction.certification",
+        "ManagementServiceFunction.keyGeneration"
+      ],
+      "references": [
+        "deployment",
+        "management_function"
+      ],
+      "interpretations": [
+        "V31-012",
+        "V31-027"
+      ]
+    },
+    "ROLE-password-generator": {
+      "status": "unrepresented",
+      "meaning": "Password-generator approval is an external configuration/authority requirement. V3.1 has no separate password-generator behavior model.",
+      "expressions": [],
+      "references": [
+        "external"
+      ],
+      "interpretations": []
+    },
+    "ROLE-log-repository": {
+      "status": "composed",
+      "meaning": "Logging and monitoring registrations represent the service role. A repository-specific device kind is not required by the model.",
+      "expressions": [
+        "ServiceKind.logging",
+        "ManagementServiceFunction.monitoring"
+      ],
+      "references": [
+        "service",
+        "management_function"
+      ],
+      "interpretations": []
+    },
+    "ROLE-testing-equipment": {
+      "status": "unrepresented",
+      "meaning": "These source roles describe the testing process. V3.1 does not formalize them as network device roles.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-testing-software": {
+      "status": "unrepresented",
+      "meaning": "These source roles describe the testing process. V3.1 does not formalize them as network device roles.",
+      "expressions": [],
+      "references": [],
+      "interpretations": []
+    },
+    "ROLE-ike-initiator": {
+      "status": "context",
+      "meaning": "The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic.",
+      "expressions": [],
+      "references": [
+        "flow",
+        "credentials"
+      ],
+      "interpretations": []
+    },
+    "ROLE-ike-responder": {
+      "status": "context",
+      "meaning": "The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic.",
+      "expressions": [],
+      "references": [
+        "flow",
+        "credentials"
+      ],
+      "interpretations": []
+    }
+  }
+}

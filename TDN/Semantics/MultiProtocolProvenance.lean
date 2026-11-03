@@ -10,9 +10,9 @@ def ProducedIPBodies (c : Config) : Body → Prop
   | .macsec _ body | .carrier _ body => ProducedIPBodies c body
 
 lemma unwrap_preserves_ip_provenance (c : Config)
-    (localAddress remote sourcePort destinationPort localSession : Nat) (before after : Body)
+    (localAddress remote sourcePort destinationPort localSession : Nat) {protocol networkProtocol : String} (before after : Body)
     (valid : ProducedIPBodies c before)
-    (unwrapped : unwrapCarrier localAddress remote sourcePort destinationPort localSession before = some after) :
+    (unwrapped : unwrapCarrier localAddress remote sourcePort destinationPort localSession before protocol networkProtocol = some after) :
     ProducedIPBodies c after := by
   cases before <;> simp only [unwrapCarrier] at unwrapped
   all_goals try cases unwrapped
@@ -24,7 +24,9 @@ lemma unwrap_preserves_ip_provenance (c : Config)
 lemma step_preserves_ip_provenance {c : Config} {before after : State} {action : Action}
     (step : Step c before action after) (valid : ProducedIPBodies c before.frame.body) :
     ProducedIPBodies c after.frame.body := by
-  cases step <;> try exact valid
+  cases step <;>
+    simp only [Config.forwardedFrame_body, Config.ipsecFrame_body, Config.macsecFrame_body,
+      Config.carrierFrame_body, Config.restoredFrame_body] <;> try exact valid
   case encryptIPsec policy association phase visible selected installed bound =>
     exact ⟨⟨before.port, policy, (Execution.matched_policy_is_configured selected).1,
       association, installed, bound, rfl⟩, valid⟩
@@ -57,7 +59,7 @@ theorem wire_matching_ipsec_decryption_is_admitted (c : Config)
     (visible : body.visibleHeader = some header)
     (selected : policy.matches header = true) (tracking : String) :
     Step c state .decryptIPsec
-      { state with phase := .ingress, enteredPort := state.port, frame := { state.frame with body := body }, authenticated := [policy.id], tracking := tracking } := by
+      { state with initialEntry := false, phase := .ingress, enteredPort := state.port, frame := c.restoredFrame state.frame body, authenticated := [policy.id], tracking := tracking } := by
   have produced : Execution.ProducedSeal c.ip transmitted := by
     rw [encrypted] at provenance
     exact provenance.1

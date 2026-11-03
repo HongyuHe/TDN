@@ -14,7 +14,7 @@ def Routed (c : Config) (s : State) (header : PacketPolicy.Packet) : Prop :=
     route.ingress = s.enteredPort ∧ route.egress = s.port
 
 def carrierHeader (port : CarrierPort) : PacketPolicy.Packet :=
-  outerHeader port.transmit.source port.transmit.destination "udp"
+  outerHeader port.transmit.source port.transmit.destination port.transmit.networkProtocol
     port.transmit.sourcePort port.transmit.destinationPort
 
 def LocalHeader (c : Config) (entry : Nat) (header : PacketPolicy.Packet) : Prop :=
@@ -42,9 +42,12 @@ def CarrierPeers (sender receiver : CarrierPort) : Prop :=
   sender.transmit.source = receiver.transmit.destination ∧
   sender.transmit.sourcePort = receiver.transmit.destinationPort ∧
   sender.transmit.destinationPort = receiver.transmit.sourcePort ∧
-  sender.transmit.peerSession = receiver.localSession
+  sender.transmit.peerSession = receiver.localSession ∧
+  sender.transmit.protocol = receiver.transmit.protocol ∧
+  sender.transmit.networkProtocol = receiver.transmit.networkProtocol
 
 structure LocalConditions (c : Config) (layout : Nat → List Nat) : Prop where
+  legacyHeaders : c.headerProcessing = none
   ip : Execution.LocalStackConditions c.ip layout
   wire : ∀ a b, c.physicalLink a b → layout a = layout b
   bridge : ∀ a b, c.bridge a b → layout a = layout b
@@ -94,7 +97,7 @@ def StackInvariant (c : Config) (layout : Nat → List Nat) (s : State) : Prop :
 
 def ipFrame (c : Config) (s : State) (header : PacketPolicy.Packet) : Execution.Frame :=
   { payload := s.frame.payload, originDomain := s.frame.originDomain,
-    packet := { header with ingress := c.ip.interfaceName s.enteredPort, connectionState := s.tracking },
+    packet := { header with ingress := c.ip.interfaceName s.enteredPort, connectionState := s.tracking, networkBytes := c.networkBytes s.frame.body s.frame.payload },
     envelopes := [], enteredPort := s.enteredPort }
 
 lemma selected_route_metadata (routes : List Execution.Route) (route : Execution.Route)
@@ -149,7 +152,7 @@ lemma unwrap_carrier_preserves_record {c : Config} {layout : Nat → List Nat}
     (configured : receiver ∈ c.carriers) (before after : Body)
     (valid : CarrierBodies c layout before)
     (unwrapped : unwrapCarrier receiver.transmit.source receiver.transmit.destination
-      receiver.transmit.destinationPort receiver.transmit.sourcePort receiver.localSession before = some after) :
+      receiver.transmit.destinationPort receiver.transmit.sourcePort receiver.localSession before receiver.transmit.protocol receiver.transmit.networkProtocol = some after) :
     CarrierBodies c layout after ∧ after.protectionLayers = layout receiver.virtualPort := by
   cases before <;> simp only [unwrapCarrier] at unwrapped
   all_goals try cases unwrapped
@@ -166,13 +169,19 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     (conditions : LocalConditions c layout) {before after : State} {action : Action}
     (step : Step c before action after) (invariant : StackInvariant c layout before) :
     StackInvariant c layout after := by
+  have mode := conditions.legacyHeaders
   obtain ⟨wellformed, valid⟩ := invariant
   cases step with
   | @receive header phase visible tracking =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [phase] at valid
     refine ⟨wellformed, header, visible, ?_, rfl⟩
     exact ⟨by simpa [Execution.processingStack] using valid, Or.inl rfl, rfl⟩
   | @route header route phase visible chosen entry =>
+    simp only [Config.visibleHeader, mode] at visible
+    simp only [Config.forwardedFrame, mode]
+
     simp only [phase] at valid
     obtain ⟨h, hv, processing, entered⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -183,6 +192,8 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
         (by simpa [entry] using processing.2.2)
     · intro impossible; cases impossible
   | @outputRoute header route phase visible chosen entry =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [phase] at valid
     obtain ⟨h, hv, processing, origin, empty, entered⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -192,12 +203,16 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     exact (conditions.ip.routeOwner route chosen.1).trans
       (by simpa [entry] using processing.2.2)
   | @forwardFilter header phase visible accepted =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [phase] at valid
     obtain ⟨h, hv, processing, routed, _⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
     subst h
     exact ⟨wellformed, header, visible, processing, routed, Or.inl accepted⟩
   | @outputFilter header phase visible accepted =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [phase] at valid
     obtain ⟨h, hv, processing, routed, origin⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -205,6 +220,9 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     obtain ⟨origin, empty⟩ := origin trivial
     exact ⟨wellformed, header, visible, processing, routed, Or.inr ⟨empty, origin, accepted⟩⟩
   | @encryptIPsec header policy association phase visible selected installed bound =>
+    simp only [Config.visibleHeader, mode] at visible
+    simp only [Config.ipsecFrame, mode]
+
     simp only [phase] at valid
     obtain ⟨h, hv, processing, routed, accepted⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -214,6 +232,8 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
       association, before.frame.body, bound, rfl⟩
     exact (congrArg (List.cons policy.tag) processing.1).trans effect
   | @outerRoute header route phase visible chosen entry =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [phase] at valid
     obtain ⟨stack, policy, member, association, body, bound, encrypted⟩ := valid
     have destination : header.destination = policy.receiver := by
@@ -229,6 +249,8 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     exact ⟨wellformed, stack.trans
       (conditions.ip.outerRoute before.port policy member head association (ipFrame c before header) route selectedView entry)⟩
   | @plain header phase visible noPolicy =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [phase] at valid
     obtain ⟨h, hv, processing, routed, accepted⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -236,6 +258,8 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     exact ⟨wellformed, processing.1.trans
       ((hook_stack_effect conditions before header processing routed accepted).1 noPolicy)⟩
   | @decryptIPsec policy association body header phase encrypted configured installed bound visible selected tracking =>
+    simp only [Config.restoredFrame, mode]
+
     simp only [phase] at valid
     have recursive : CarrierBodies c layout body := by simpa [encrypted, CarrierBodies] using wellformed
     have stack : policy.tag :: body.protectionLayers = layout before.port := by
@@ -244,6 +268,8 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     · simpa [Execution.processingStack] using congrArg List.tail stack
     · exact Or.inr ⟨policy, configured, rfl, body.protectionLayers, stack.symm⟩
   | @inputFilter header phase visible addressed accepted =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [phase] at valid
     obtain ⟨h, hv, processing, _⟩ := valid
     exact ⟨wellformed, h, hv, processing⟩
@@ -261,6 +287,8 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     simp only [phase] at valid
     exact ⟨wellformed, valid.trans (conditions.bridge before.port next member)⟩
   | @encryptMACsec port association configured phase logical emits =>
+    simp only [Config.macsecFrame, mode]
+
     simp only [phase] at valid
     refine ⟨⟨wellformed, port, configured, emits.1⟩, ?_⟩
     simp only [phase]
@@ -273,6 +301,8 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     · simp [encrypt] at impossible
     · exact False.elim (impossible zero)
   | @decryptMACsec port association transmitted body configured phase physical encrypted installed wireIdentity =>
+    simp only [Config.restoredFrame, mode]
+
     simp only [phase] at valid
     have records : CarrierBodies c layout body ∧
         ∃ sender ∈ c.macPorts, sender.transmitAssociation = some transmitted := by
@@ -292,15 +322,19 @@ lemma step_preserves_stack {c : Config} {layout : Nat → List Nat}
     have checked := (conditions.macSecure port configured).2.2.2
     simp [checked] at unchecked
   | @encapsulate port configured phase virtualPort =>
+    simp only [Config.carrierFrame, mode]
+
     simp only [phase] at valid
     have same := conditions.carrierOutput port configured
     have atVirtual : before.frame.body.protectionLayers = layout port.virtualPort := by simpa [virtualPort] using valid
     refine ⟨⟨wellformed, port, configured, rfl, atVirtual⟩,
-      outerHeader port.transmit.source port.transmit.destination "udp"
+      outerHeader port.transmit.source port.transmit.destination port.transmit.networkProtocol
         port.transmit.sourcePort port.transmit.destinationPort, rfl,
       ⟨?_, Or.inl rfl, rfl⟩, Or.inr ⟨port, configured, rfl, rfl⟩, rfl, rfl⟩
     simpa [Execution.processingStack, Body.protectionLayers] using atVirtual.trans same
   | @decapsulate port body configured phase owner unwrapped =>
+    simp only [Config.restoredFrame, mode]
+
     obtain ⟨recursive, layers⟩ := unwrap_carrier_preserves_record conditions port configured
       before.frame.body body wellformed unwrapped
     exact ⟨recursive, layers⟩

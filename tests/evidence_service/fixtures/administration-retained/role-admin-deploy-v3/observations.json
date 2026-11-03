@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-24T03:34:05.479598+00:00",
+  "records": [
+    {
+      "at": "2026-10-24T03:34:05.439407+00:00",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/role-admin-v3/security-admin.key",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/role-admin-v3/security-admin.csr",
+        "-sha384",
+        "-subj",
+        "/CN=security-admin.nd.test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "at": "2026-10-24T03:34:05.479566+00:00",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/role-admin-v3/security-admin.csr",
+        "-CA",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-endpoints-v3/ca.pem",
+        "-CAkey",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/aw-endpoints-v3/ca.key",
+        "-CAcreateserial",
+        "-out",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/role-admin-v3/security-admin.pem",
+        "-days",
+        "1",
+        "-sha384",
+        "-extfile",
+        "/users/hy/tdn-continuation-2026-10-24T014455Z/private/role-admin-v3/security-admin.ext"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN = security-admin.nd.test\n"
+    }
+  ],
+  "error": "module 'ssl' has no attribute 'pem_cert_to_DER_cert'",
+  "scope": [
+    "Actual source-bound mutual-TLS administration service on only the owned ND OuterA management interface. Certificate DER-SHA256 role map and complete API permission table are public.",
+    "SecurityAdministrator may readstate/audit, change one diagnostic input-filter rule and rotate retained logs. Auditor may readstate/audit and rotate logs, but cannot change the filter. An issuer-trusted unmapped certificate gets no API permission.",
+    "Synthetic credential-to-role mapping does not establish actual appointment, clearance, organizational reporting/review, full product administration, all other debug/configuration interfaces or OS/hypervisor confinement. Host Docker/root and VM host access remain explicit trusted controls.",
+    "The API has fixed handlers and constant argv operations; no arbitrary file retrieval, path mapping or command arguments are accepted. Private-key API path is explicitly denied to every role."
+  ]
+}

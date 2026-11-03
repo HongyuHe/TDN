@@ -1,0 +1,732 @@
+{
+  "startedAt": "2026-11-01T04:31:45.082330+00:00",
+  "endedAt": "2026-11-01T04:31:48.678369+00:00",
+  "commands": [
+    {
+      "id": "admin-0000",
+      "command": [
+        "openssl",
+        "version"
+      ],
+      "startOrder": 1250628428522399,
+      "endOrder": 1250628433963422,
+      "returncode": 0,
+      "stdout": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0001",
+      "command": [
+        "openssl",
+        "req",
+        "-x509",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/work/exports/admin-tls-lifecycle-003-private/ca.key",
+        "-out",
+        "/work/exports/admin-tls-lifecycle-003/ca.pem",
+        "-days",
+        "2",
+        "-subj",
+        "/CN=V31 administration lab CA",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE",
+        "-addext",
+        "keyUsage=critical,keyCertSign,cRLSign"
+      ],
+      "startOrder": 1250628434044134,
+      "endOrder": 1250628445312545,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "id": "admin-0002",
+      "command": [
+        "useradd",
+        "-M",
+        "-U",
+        "-s",
+        "/usr/sbin/nologin",
+        "v31admin"
+      ],
+      "startOrder": 1250628445322148,
+      "endOrder": 1250630191852003,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0003",
+      "command": [
+        "id",
+        "v31admin"
+      ],
+      "startOrder": 1250630191862995,
+      "endOrder": 1250630197222643,
+      "returncode": 0,
+      "stdout": "uid=1001(v31admin) gid=1001(v31admin) groups=1001(v31admin)\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0004",
+      "command": [
+        "id",
+        "-u",
+        "v31admin"
+      ],
+      "startOrder": 1250630197234992,
+      "endOrder": 1250630200879121,
+      "returncode": 0,
+      "stdout": "1001\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0005",
+      "command": [
+        "id",
+        "-g",
+        "v31admin"
+      ],
+      "startOrder": 1250630200888385,
+      "endOrder": 1250630204897949,
+      "returncode": 0,
+      "stdout": "1001\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0006",
+      "command": [
+        "useradd",
+        "-M",
+        "-U",
+        "-s",
+        "/usr/sbin/nologin",
+        "v31auditor"
+      ],
+      "startOrder": 1250630204907146,
+      "endOrder": 1250631294244621,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0007",
+      "command": [
+        "id",
+        "v31auditor"
+      ],
+      "startOrder": 1250631294259515,
+      "endOrder": 1250631299389753,
+      "returncode": 0,
+      "stdout": "uid=1002(v31auditor) gid=1002(v31auditor) groups=1002(v31auditor)\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0008",
+      "command": [
+        "id",
+        "-u",
+        "v31auditor"
+      ],
+      "startOrder": 1250631299400778,
+      "endOrder": 1250631305265274,
+      "returncode": 0,
+      "stdout": "1002\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0009",
+      "command": [
+        "id",
+        "-g",
+        "v31auditor"
+      ],
+      "startOrder": 1250631305285043,
+      "endOrder": 1250631309762699,
+      "returncode": 0,
+      "stdout": "1002\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0010",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/work/exports/admin-tls-lifecycle-003-private/server.key",
+        "-out",
+        "/work/exports/admin-tls-lifecycle-003-private/server.csr",
+        "-subj",
+        "/CN=outer-service"
+      ],
+      "startOrder": 1250631309867127,
+      "endOrder": 1250631318807135,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "id": "admin-0011",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/work/exports/admin-tls-lifecycle-003-private/server.csr",
+        "-CA",
+        "/work/exports/admin-tls-lifecycle-003/ca.pem",
+        "-CAkey",
+        "/work/exports/admin-tls-lifecycle-003-private/ca.key",
+        "-CAserial",
+        "/work/exports/admin-tls-lifecycle-003-private/serial",
+        "-CAcreateserial",
+        "-out",
+        "/work/exports/admin-tls-lifecycle-003-private/server.pem",
+        "-days",
+        "2",
+        "-sha384",
+        "-extfile",
+        "/work/exports/admin-tls-lifecycle-003/server.ext"
+      ],
+      "startOrder": 1250631319192073,
+      "endOrder": 1250631339593611,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN=outer-service\n"
+    },
+    {
+      "id": "admin-0012",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/work/exports/admin-tls-lifecycle-003-private/admin.key",
+        "-out",
+        "/work/exports/admin-tls-lifecycle-003-private/admin.csr",
+        "-subj",
+        "/CN=lab-security-administrator"
+      ],
+      "startOrder": 1250631356835142,
+      "endOrder": 1250631365511616,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "id": "admin-0013",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/work/exports/admin-tls-lifecycle-003-private/admin.csr",
+        "-CA",
+        "/work/exports/admin-tls-lifecycle-003/ca.pem",
+        "-CAkey",
+        "/work/exports/admin-tls-lifecycle-003-private/ca.key",
+        "-CAserial",
+        "/work/exports/admin-tls-lifecycle-003-private/serial",
+        "-CAcreateserial",
+        "-out",
+        "/work/exports/admin-tls-lifecycle-003/admin.pem",
+        "-days",
+        "2",
+        "-sha384",
+        "-extfile",
+        "/work/exports/admin-tls-lifecycle-003/admin.ext"
+      ],
+      "startOrder": 1250631365833508,
+      "endOrder": 1250631385486335,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN=lab-security-administrator\n"
+    },
+    {
+      "id": "admin-0014",
+      "command": [
+        "chown",
+        "1001:1001",
+        "/work/exports/admin-tls-lifecycle-003-private/admin.key"
+      ],
+      "startOrder": 1250631385677328,
+      "endOrder": 1250631390459994,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0015",
+      "command": [
+        "chmod",
+        "600",
+        "/work/exports/admin-tls-lifecycle-003-private/admin.key"
+      ],
+      "startOrder": 1250631390527317,
+      "endOrder": 1250631394803680,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0016",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "ec",
+        "-pkeyopt",
+        "ec_paramgen_curve:secp384r1",
+        "-nodes",
+        "-keyout",
+        "/work/exports/admin-tls-lifecycle-003-private/auditor.key",
+        "-out",
+        "/work/exports/admin-tls-lifecycle-003-private/auditor.csr",
+        "-subj",
+        "/CN=lab-auditor"
+      ],
+      "startOrder": 1250631394926318,
+      "endOrder": 1250631404301653,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "-----\n"
+    },
+    {
+      "id": "admin-0017",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/work/exports/admin-tls-lifecycle-003-private/auditor.csr",
+        "-CA",
+        "/work/exports/admin-tls-lifecycle-003/ca.pem",
+        "-CAkey",
+        "/work/exports/admin-tls-lifecycle-003-private/ca.key",
+        "-CAserial",
+        "/work/exports/admin-tls-lifecycle-003-private/serial",
+        "-CAcreateserial",
+        "-out",
+        "/work/exports/admin-tls-lifecycle-003/auditor.pem",
+        "-days",
+        "2",
+        "-sha384",
+        "-extfile",
+        "/work/exports/admin-tls-lifecycle-003/auditor.ext"
+      ],
+      "startOrder": 1250631404609192,
+      "endOrder": 1250631425139030,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN=lab-auditor\n"
+    },
+    {
+      "id": "admin-0018",
+      "command": [
+        "chown",
+        "1002:1002",
+        "/work/exports/admin-tls-lifecycle-003-private/auditor.key"
+      ],
+      "startOrder": 1250631425282886,
+      "endOrder": 1250631429482936,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0019",
+      "command": [
+        "chmod",
+        "600",
+        "/work/exports/admin-tls-lifecycle-003-private/auditor.key"
+      ],
+      "startOrder": 1250631429519027,
+      "endOrder": 1250631432604534,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0020",
+      "command": [
+        "ip",
+        "netns",
+        "add",
+        "v31admin-aw"
+      ],
+      "startOrder": 1250631432824053,
+      "endOrder": 1250631437584068,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0021",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-aw",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "startOrder": 1250631437590627,
+      "endOrder": 1250631479246242,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0022",
+      "command": [
+        "ip",
+        "netns",
+        "add",
+        "v31admin-outer"
+      ],
+      "startOrder": 1250631479252795,
+      "endOrder": 1250631484306858,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0023",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-outer",
+        "ip",
+        "link",
+        "set",
+        "lo",
+        "up"
+      ],
+      "startOrder": 1250631484318966,
+      "endOrder": 1250631489502053,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0024",
+      "command": [
+        "ip",
+        "link",
+        "add",
+        "adma",
+        "type",
+        "veth",
+        "peer",
+        "name",
+        "admo"
+      ],
+      "startOrder": 1250631489514124,
+      "endOrder": 1250631494567455,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0025",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "adma",
+        "netns",
+        "v31admin-aw"
+      ],
+      "startOrder": 1250631494580090,
+      "endOrder": 1250631515853311,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0026",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-aw",
+        "ip",
+        "addr",
+        "add",
+        "10.32.0.1/30",
+        "dev",
+        "adma"
+      ],
+      "startOrder": 1250631515866452,
+      "endOrder": 1250631520158478,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0027",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-aw",
+        "ip",
+        "link",
+        "set",
+        "adma",
+        "up"
+      ],
+      "startOrder": 1250631520182380,
+      "endOrder": 1250631524722334,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0028",
+      "command": [
+        "ip",
+        "link",
+        "set",
+        "admo",
+        "netns",
+        "v31admin-outer"
+      ],
+      "startOrder": 1250631524734893,
+      "endOrder": 1250631547712385,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0029",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-outer",
+        "ip",
+        "addr",
+        "add",
+        "10.32.0.2/30",
+        "dev",
+        "admo"
+      ],
+      "startOrder": 1250631547724871,
+      "endOrder": 1250631552602230,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0030",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-outer",
+        "ip",
+        "link",
+        "set",
+        "admo",
+        "up"
+      ],
+      "startOrder": 1250631552613790,
+      "endOrder": 1250631556511834,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0031",
+      "kind": "spawn",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-outer",
+        "/usr/bin/python3",
+        "-u",
+        "/work/exports/admin-tls-lifecycle-003/server.py",
+        "/work/exports/admin-tls-lifecycle-003",
+        "/work/exports/admin-tls-lifecycle-003-private"
+      ],
+      "pid": 46,
+      "startOrder": 1250631557555585
+    },
+    {
+      "id": "admin-0032",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-outer",
+        "ss",
+        "-lntp"
+      ],
+      "startOrder": 1250631618236086,
+      "endOrder": 1250631650433284,
+      "returncode": 0,
+      "stdout": "State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess                         \nLISTEN 0      8          10.32.0.2:8443      0.0.0.0:*    users:((\"python3\",pid=46,fd=3))\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0033",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-aw",
+        "setpriv",
+        "--reuid",
+        "1001",
+        "--regid",
+        "1001",
+        "--clear-groups",
+        "/usr/bin/python3",
+        "/work/exports/admin-tls-lifecycle-003/client.py",
+        "/work/exports/admin-tls-lifecycle-003",
+        "/work/exports/admin-tls-lifecycle-003-private",
+        "admin",
+        "/filter",
+        "41000"
+      ],
+      "startOrder": 1250631650504612,
+      "endOrder": 1250631719336126,
+      "returncode": 0,
+      "stdout": "{\"event\": \"response\", \"name\": \"admin\", \"local\": [\"10.32.0.1\", 41000], \"peer\": [\"10.32.0.2\", 8443], \"requestHex\": \"474554202f66696c74657220485454502f312e310d0a486f73743a206f757465722e6d73632e746573740d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a\", \"responseHex\": \"485454502f312e312032303020526573756c740d0a436f6e74656e742d4c656e6774683a20320d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a4f4b\", \"order\": 1250631711198523}\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0034",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-aw",
+        "setpriv",
+        "--reuid",
+        "1002",
+        "--regid",
+        "1002",
+        "--clear-groups",
+        "/usr/bin/python3",
+        "/work/exports/admin-tls-lifecycle-003/client.py",
+        "/work/exports/admin-tls-lifecycle-003",
+        "/work/exports/admin-tls-lifecycle-003-private",
+        "auditor",
+        "/filter",
+        "41001"
+      ],
+      "startOrder": 1250631719409372,
+      "endOrder": 1250631789379547,
+      "returncode": 0,
+      "stdout": "{\"event\": \"response\", \"name\": \"auditor\", \"local\": [\"10.32.0.1\", 41001], \"peer\": [\"10.32.0.2\", 8443], \"requestHex\": \"474554202f66696c74657220485454502f312e310d0a486f73743a206f757465722e6d73632e746573740d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a\", \"responseHex\": \"485454502f312e312034303320526573756c740d0a436f6e74656e742d4c656e6774683a20320d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a4f4b\", \"order\": 1250631781582011}\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0035",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-aw",
+        "setpriv",
+        "--reuid",
+        "1002",
+        "--regid",
+        "1002",
+        "--clear-groups",
+        "/usr/bin/python3",
+        "/work/exports/admin-tls-lifecycle-003/client.py",
+        "/work/exports/admin-tls-lifecycle-003",
+        "/work/exports/admin-tls-lifecycle-003-private",
+        "auditor",
+        "/status",
+        "41002"
+      ],
+      "startOrder": 1250631789446218,
+      "endOrder": 1250631861044188,
+      "returncode": 0,
+      "stdout": "{\"event\": \"response\", \"name\": \"auditor\", \"local\": [\"10.32.0.1\", 41002], \"peer\": [\"10.32.0.2\", 8443], \"requestHex\": \"474554202f73746174757320485454502f312e310d0a486f73743a206f757465722e6d73632e746573740d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a\", \"responseHex\": \"485454502f312e312032303020526573756c740d0a436f6e74656e742d4c656e6774683a20320d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a4f4b\", \"order\": 1250631853217691}\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0036",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-aw",
+        "setpriv",
+        "--reuid",
+        "1002",
+        "--regid",
+        "1002",
+        "--clear-groups",
+        "/usr/bin/python3",
+        "/work/exports/admin-tls-lifecycle-003/client.py",
+        "/work/exports/admin-tls-lifecycle-003",
+        "/work/exports/admin-tls-lifecycle-003-private",
+        "auditor",
+        "/status",
+        "41003"
+      ],
+      "startOrder": 1250631861113735,
+      "endOrder": 1250631937518176,
+      "returncode": 0,
+      "stdout": "{\"event\": \"response\", \"name\": \"auditor\", \"local\": [\"10.32.0.1\", 41003], \"peer\": [\"10.32.0.2\", 8443], \"requestHex\": \"474554202f73746174757320485454502f312e310d0a486f73743a206f757465722e6d73632e746573740d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a\", \"responseHex\": \"485454502f312e312034303320526573756c740d0a436f6e74656e742d4c656e6774683a20320d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a4f4b\", \"order\": 1250631929060946}\n",
+      "stderr": ""
+    },
+    {
+      "id": "admin-0037",
+      "command": [
+        "ip",
+        "netns",
+        "exec",
+        "v31admin-aw",
+        "setpriv",
+        "--reuid",
+        "1002",
+        "--regid",
+        "1002",
+        "--clear-groups",
+        "/usr/bin/python3",
+        "/work/exports/admin-tls-lifecycle-003/client.py",
+        "/work/exports/admin-tls-lifecycle-003",
+        "/work/exports/admin-tls-lifecycle-003-private",
+        "none",
+        "/status",
+        "41004"
+      ],
+      "startOrder": 1250631937594756,
+      "endOrder": 1250632002031703,
+      "returncode": 0,
+      "stdout": "{\"event\": \"tlsRejected\", \"name\": \"none\", \"error\": \"[SSL: TLSV13_ALERT_CERTIFICATE_REQUIRED] tlsv13 alert certificate required (_ssl.c:2711)\", \"order\": 1250631994288879}\n",
+      "stderr": ""
+    }
+  ],
+  "error": null,
+  "privateFilesRemaining": 0
+}

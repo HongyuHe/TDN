@@ -5,37 +5,37 @@ namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
 def carrierReceiveHeader (port : CarrierPort) : PacketPolicy.Packet :=
-  outerHeader port.transmit.destination port.transmit.source "udp"
+  outerHeader port.transmit.destination port.transmit.source port.transmit.networkProtocol
     port.transmit.destinationPort port.transmit.sourcePort
 
 def carrierInputPacket (c : Config) (entry : Nat) (tracking : String)
-    (port : CarrierPort) : PacketPolicy.Packet :=
+    (networkBytes : Option Nat) (port : CarrierPort) : PacketPolicy.Packet :=
   { carrierReceiveHeader port with
     ingress := c.ip.interfaceName entry, egress := c.ip.interfaceName entry,
     inboundPolicies := [],
     outboundPolicies := (Execution.selectedAssociations (c.ip.outbound entry)
       (carrierReceiveHeader port)).map Execution.Association.id,
-    connectionState := tracking }
+    connectionState := tracking, networkBytes := networkBytes }
 
 def CarrierInputCheck (c : Config) (layout : Nat → List Nat) (tag : Nat) : Prop :=
-  ∀ port ∈ c.carriers, ∀ entry tracking,
+  ∀ port ∈ c.carriers, ∀ entry tracking networkBytes,
     c.ip.owner entry = c.ip.owner port.routingPort →
     tag ∈ layout entry →
     Execution.accepts (c.ip.inputRules entry) (c.ip.inputFallback entry)
-      (carrierInputPacket c entry tracking port) →
+      (carrierInputPacket c entry tracking networkBytes port) →
     tag ∈ layout port.virtualPort
 
 lemma successful_unwrap_has_receiving_header (port : CarrierPort) (before after : Body)
     (unwrapped : unwrapCarrier port.transmit.source port.transmit.destination
-      port.transmit.destinationPort port.transmit.sourcePort port.localSession before = some after) :
+      port.transmit.destinationPort port.transmit.sourcePort port.localSession before port.transmit.protocol port.transmit.networkProtocol = some after) :
     before.visibleHeader = some (carrierReceiveHeader port) := by
   cases before <;> simp only [unwrapCarrier] at unwrapped
   all_goals try cases unwrapped
   case carrier endpoint body =>
     split at unwrapped
     next matched =>
-      obtain ⟨destination, source, sourcePort, destinationPort, session⟩ := matched
-      simp only [Body.visibleHeader, carrierReceiveHeader, destination, source, sourcePort, destinationPort]
+      obtain ⟨destination, source, sourcePort, destinationPort, session, protocol, networkProtocol⟩ := matched
+      simp only [Body.visibleHeader, carrierReceiveHeader, destination, source, sourcePort, destinationPort, networkProtocol]
     next missed => cases unwrapped
 
 def UndecryptedRegion (c : Config) (layout : Nat → List Nat) (tag : Nat) (s : State) : Prop :=
@@ -71,11 +71,17 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
     {before after : State} {action : Action} (step : Step c before action after)
     (notDecrypt : ¬ IsDecryption action) (invariant : UndecryptedRegion c layout tag before) :
     UndecryptedRegion c layout tag after := by
+  have mode := conditions.legacyHeaders
   cases step with
   | @receive header phase visible tracking =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     exact ⟨trivial, header, visible, trivial, trivial, invariant.2⟩
   | @route header route phase visible chosen entry =>
+    simp only [Config.visibleHeader, mode] at visible
+    simp only [Config.forwardedFrame, mode]
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, h, hv, owner, entered, member⟩ := invariant
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -84,6 +90,8 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
       (fun impossible => by cases impossible), member⟩
     exact (conditions.ip.routeOwner route chosen.1).trans (entry ▸ owner)
   | @outputRoute header route phase visible chosen entry =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, h, hv, owner, entered, origin, member⟩ := invariant
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -92,18 +100,25 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
       (fun _ => origin), member⟩
     exact (conditions.ip.routeOwner route chosen.1).trans (entry ▸ owner)
   | @forwardFilter header phase visible accepted =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, h, hv, owner, routed, origin, member⟩ := invariant
     have same : h = header := Option.some.inj (hv.symm.trans visible)
     subst h
     exact ⟨empty, header, visible, owner, routed, Or.inl accepted, member⟩
   | @outputFilter header phase visible accepted =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, h, hv, owner, routed, origin, member⟩ := invariant
     have same : h = header := Option.some.inj (hv.symm.trans visible)
     subst h
     exact ⟨empty, header, visible, owner, routed, Or.inr ⟨empty, origin trivial, accepted⟩, member⟩
   | @encryptIPsec header policy association phase visible selected installed bound =>
+    simp only [Config.visibleHeader, mode] at visible
+    simp only [Config.ipsecFrame, mode]
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, h, hv, owner, routed, accepted, member⟩ := invariant
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -117,6 +132,8 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
     · rw [← equal]; exact List.mem_cons_of_mem _ member
     · rw [← equal]; rfl
   | @outerRoute header route phase visible chosen entry =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, member, policy, configured, association, body, bound, encrypted, head⟩ := invariant
     have destination : header.destination = policy.receiver := by
@@ -129,6 +146,8 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
     exact ⟨empty, (conditions.ip.outerRoute before.port policy configured head association
       (ipFrame c before header) route selectedView entry) ▸ member⟩
   | @plain header phase visible noPolicy =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, h, hv, owner, routed, accepted, member⟩ := invariant
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -140,6 +159,8 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
     exact ⟨empty, equal ▸ member⟩
   | decryptIPsec => exact False.elim (notDecrypt (Or.inl rfl))
   | @inputFilter header phase visible addressed accepted =>
+    simp only [Config.visibleHeader, mode] at visible
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, h, hv, owner, entered, member⟩ := invariant
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -157,6 +178,8 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
     simp only [UndecryptedRegion, phase] at invariant ⊢
     exact ⟨invariant.1, (conditions.bridge before.port next member) ▸ invariant.2⟩
   | @encryptMACsec port association configured phase logical emits =>
+    simp only [Config.macsecFrame, mode]
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     have member : tag ∈ layout port.logicalPort := logical ▸ invariant.2
     rw [← conditions.macTransmit port configured association emits.1]
@@ -172,20 +195,26 @@ lemma nondecryption_preserves_region {c : Config} {layout : Nat → List Nat} {t
     have strict := (conditions.macSecure port configured).2.2.2
     simp [strict] at unchecked
   | @encapsulate port configured phase virtualPort =>
+    simp only [Config.carrierFrame, mode]
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     refine ⟨trivial, carrierHeader port, rfl, trivial, trivial, ?_, ?_⟩
     · exact Or.inr ⟨port, configured, rfl, rfl⟩
     · exact (conditions.carrierOutput port configured) ▸ (virtualPort ▸ invariant.2)
   | @decapsulate port body configured phase owner unwrapped =>
+    simp only [Config.restoredFrame, mode]
+
     simp only [UndecryptedRegion, phase] at invariant ⊢
     obtain ⟨empty, header, visible, entered, member, accepted⟩ := invariant
     have same : header = carrierReceiveHeader port :=
       Option.some.inj (visible.symm.trans (successful_unwrap_has_receiving_header port _ _ unwrapped))
     subst header
     have input : Execution.accepts (c.ip.inputRules before.port) (c.ip.inputFallback before.port)
-        (carrierInputPacket c before.port before.tracking port) := by
+        (carrierInputPacket c before.port before.tracking
+          (c.networkBytes before.frame.body before.frame.payload) port) := by
       simpa only [policyHeader, carrierInputPacket, entered, empty] using accepted
-    exact ⟨trivial, carrierCheck port configured before.port before.tracking owner (entered ▸ member) input⟩
+    exact ⟨trivial, carrierCheck port configured before.port before.tracking
+      (c.networkBytes before.frame.body before.frame.payload) owner (entered ▸ member) input⟩
   | drop => exact ⟨invariant.1, trivial⟩
 
 def BoundaryDecryption (c : Config) (tag : Nat) (left : State)
@@ -235,7 +264,7 @@ theorem inbound_crossing_has_actual_boundary_decryption
       simp [encrypted, Body.protectionLayers, Execution.Association.seal, same]
     case decryptMACsec port association transmitted body configured phase physical encrypted installed wireIdentity =>
       refine Or.inr ⟨rfl, port, configured, physical, rfl, association, installed, ?_,
-        transmitted, body, encrypted, rfl, wireIdentity⟩
+        transmitted, body, encrypted, (by simp), wireIdentity⟩
       exact macTags port configured (physical ▸ owner) association installed
   exact ⟨earlier, later, left, action, right, sequence,
     RestrictedExecution.project_trace _ _ first, step.1,

@@ -5,22 +5,22 @@ namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
 def ignoresTracking : PacketPolicy.Atom → Bool
-  | .connectionStates _ => false
+  | .connectionStates _ | .networkBytesRange _ _ | .ethernetHeaderBytes _ | .ipsecUDPFraming | .ipsecUDPFramingWithOptions => false
   | _ => true
 
 lemma atom_holds_ignores_tracking (atom : PacketPolicy.Atom) (packet : PacketPolicy.Packet)
-    (tracking : String) (independent : ignoresTracking atom = true) :
-    atom.holds { packet with connectionState := tracking } ↔ atom.holds packet := by
-  cases atom <;> simp_all only [ignoresTracking, Bool.false_eq_true, PacketPolicy.Atom.holds]
+    (tracking : String) (networkBytes : Option Nat) (independent : ignoresTracking atom = true) :
+    atom.holds { packet with connectionState := tracking, networkBytes := networkBytes } ↔ atom.holds packet := by
+  cases atom <;> simp_all only [ignoresTracking, Bool.false_eq_true, PacketPolicy.Atom.holds, PacketPolicy.Packet.MKAFraming]
 
 def carrierRecordPacket (device : Execution.DeviceData) (entry : Execution.PortData)
-    (tracking : String) (port : CarrierPort) : PacketPolicy.Packet :=
+    (tracking : String) (networkBytes : Option Nat) (port : CarrierPort) : PacketPolicy.Packet :=
   { carrierReceiveHeader port with
     ingress := entry.name, egress := entry.name,
     inboundPolicies := [],
     outboundPolicies := (Execution.selectedAssociations device.outbound
       (carrierReceiveHeader port)).map Execution.Association.id,
-    connectionState := tracking }
+    connectionState := tracking, networkBytes := networkBytes }
 
 def FiniteCarrierInputChecks (devices : List Execution.DeviceData)
     (ports : List Execution.PortData) (carriers : List CarrierPort) (tag : Nat) : Prop :=
@@ -32,7 +32,7 @@ def FiniteCarrierInputChecks (devices : List Execution.DeviceData)
       ∀ rule ∈ (Execution.deviceAt devices entry.owner).inputRules,
         rule.verdict = .allow → ∃ atom ∈ rule.atoms, ignoresTracking atom = true ∧
           ¬ atom.holds (carrierRecordPacket (Execution.deviceAt devices entry.owner)
-            entry "" carrier))
+            entry "" none carrier))
 
 instance (devices : List Execution.DeviceData) (ports : List Execution.PortData)
     (carriers : List CarrierPort) (tag : Nat) :
@@ -46,14 +46,14 @@ theorem finite_carrier_input_checks_sound (devices : List Execution.DeviceData)
     (tag : Nat) (checked : FiniteCarrierInputChecks devices ports carriers tag) :
     CarrierInputCheck (finiteConfig devices ports routes links bridges macPorts carriers)
       (Execution.finiteLayout ports) tag := by
-  intro carrier configured entry tracking owner outside accepted
+  intro carrier configured entry tracking networkBytes owner outside accepted
   rcases checked carrier configured (Execution.portAt ports entry)
       (Execution.port_at_member_or_default ports entry) owner outside with inside | ⟨fallback, rules⟩
   · exact inside
   · change Execution.accepts (Execution.deviceAt devices (Execution.portAt ports entry).owner).inputRules
       (Execution.deviceAt devices (Execution.portAt ports entry).owner).inputFallback
       (carrierRecordPacket (Execution.deviceAt devices (Execution.portAt ports entry).owner)
-        (Execution.portAt ports entry) tracking carrier) at accepted
+        (Execution.portAt ports entry) tracking networkBytes carrier) at accepted
     rw [fallback] at accepted
     obtain ⟨filtered, member, matched, allow⟩ := Filter.allowed_has_matching_allow _ _ accepted
     obtain ⟨rule, inRules, rfl⟩ := List.mem_map.mp member
@@ -61,6 +61,6 @@ theorem finite_carrier_input_checks_sound (devices : List Execution.DeviceData)
     have holds := PacketPolicy.matching_atom matched atomMember
     exact False.elim (rejected ((atom_holds_ignores_tracking atom
       (carrierRecordPacket (Execution.deviceAt devices (Execution.portAt ports entry).owner)
-        (Execution.portAt ports entry) "" carrier) tracking independent).mp holds))
+        (Execution.portAt ports entry) "" none carrier) tracking networkBytes independent).mp holds))
 
 end TDN.MultiProtocolExecution

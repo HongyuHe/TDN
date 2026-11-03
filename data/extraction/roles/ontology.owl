@@ -1136,10 +1136,21 @@
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology" />
     <rdfs:comment>A class describes entities matching an extracted role or realization concept. Classes may overlap and may have multiple parents. No device existence, class disjointness, or class equivalence is asserted. Non-subtype links are OWL annotation assertions between class IRIs. They preserve source context without imposing object-property restrictions or asserting a relationship for every class member.</rdfs:comment>
-    <owl:versionInfo>CSfC MSC 1.3.0; TDN role hierarchy 1.0</owl:versionInfo>
-    <tdn:inputHash>roles/ontology_decisions.json sha256:67b6f5f4c370a07cb13fa7034414721a6662bcf99e3407feb592b3fc81c1b7fe</tdn:inputHash>
+    <owl:versionInfo>CSfC MSC 1.3.0; TDN role hierarchy 1.1; Lean theory v3.1</owl:versionInfo>
+    <tdn:inputHash>TDN/Targets/Administration.lean sha256:dcfbaec5c39839dc9fac870f542e34421e6c9cc41dbf351180f24c668e629041</tdn:inputHash>
+    <tdn:inputHash>TDN/Targets/Architecture.lean sha256:fb4b929f86f92c3aa0b7d134548dce8edebf72c645d8b2f9d034567fd91c04c4</tdn:inputHash>
+    <tdn:inputHash>TDN/Targets/AuthenticationIsolation.lean sha256:0389df58e5511f4d8c34190fc3bec837c0bb069c6258e98326becacb71cb7065</tdn:inputHash>
+    <tdn:inputHash>TDN/Targets/CPDuties.lean sha256:08df288d3b3e06106fbe245ef08d82d76ae1b1771fb977adf347cfff68d5d967</tdn:inputHash>
+    <tdn:inputHash>TDN/Targets/CPDutyRecords.lean sha256:8d9ccffbc8a88910768ebd9bfdf467a2d7dc4c10fe251195a8125d6ac7b1c668</tdn:inputHash>
+    <tdn:inputHash>TDN/Targets/CompleteSpecifications.lean sha256:13285457ac8eba31a50313408edb08c34e02a134b201553c034c767ebbdc19b4</tdn:inputHash>
+    <tdn:inputHash>TDN/Targets/ComplianceModel.lean sha256:c4842ba2c660b6788842ee202d0b590d85699d66f87fedba77f3387677e302a2</tdn:inputHash>
+    <tdn:inputHash>TDN/Targets/DirectSpecifications.lean sha256:c13ed64c732b3ce6eefda9c920f91e5e072282a48a2712f8502df4516471e3ad</tdn:inputHash>
+    <tdn:inputHash>TDN/Targets/TimeSynchronization.lean sha256:1095fd256cfdd3703f3e3e51ab310dcc9c2588daff3c8fa416b75b5dcd6d8d0f</tdn:inputHash>
+    <tdn:inputHash>roles/ontology_decisions.json sha256:741710dbf55a3725da0d118d244ebc834e82808de256ec236b7dc32af8809688</tdn:inputHash>
+    <tdn:inputHash>roles/ontology_theory.json sha256:52ab026cb0d6899640c17b7cfc00e3b190789409aa051f7aa12b2d4e39d4028d</tdn:inputHash>
     <tdn:inputHash>roles/roles.json sha256:6a12f5298603f2cfd51af099a48ae761d561e25b60e7b753ab990cb76454d8e5</tdn:inputHash>
     <tdn:inputHash>source/source_index.jsonl sha256:39b9770a52900512a58e468a83839238d4583e030ac76870fd8f11e4aff2d5dc</tdn:inputHash>
+    <tdn:theoryVersion>v3.1</tdn:theoryVersion>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ExtractedRole">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1159,6 +1170,14 @@
     <skos:altLabel>MSC AUTHENTICATION SERVER</skos:altLabel>
     <skos:altLabel>MSC Authentication Server</skos:altLabel>
     <skos:altLabel>authentication server</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .authenticationServer</tdn:leanExpression>
+    <tdn:leanExpression>MACsecAuthentication.server</tdn:leanExpression>
+    <tdn:leanExpression>MACsecAuthentication.serverAttachments</tdn:leanExpression>
+    <tdn:leanMapping>Authentication Servers have a dedicated device kind. MACsec authentication records identify the server and its site/network attachments.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356</tdn:leanReference>
+    <tdn:leanReference>msc_macsec_authentication_choice_and_as at TDN/Targets/CompleteSpecifications.lean:38</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-authentication-server</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p005:u001" />
@@ -1176,6 +1195,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p042:u013" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p062:u007" />
     <tdn:supports_authentication rdf:resource="urn:tdn:csfc:msc:roles:ROLE-macsec-device" />
+    <tdn:theoryInterpretation>V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-authentication-service">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1183,9 +1203,17 @@
     <rdfs:label>Infrastructure authentication service</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>authentication service</skos:altLabel>
+    <tdn:leanExpression>ManagementServiceFunction.authentication</tdn:leanExpression>
+    <tdn:leanExpression>ServiceKind.authentication</tdn:leanExpression>
+    <tdn:leanMapping>Authentication is a registered service function hosted by a component. The hosting device may also have the authenticationServer kind.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>ServiceKind at TDN/Targets/ComplianceModel.lean:511</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-authentication-service</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p052:u009" />
+    <tdn:theoryInterpretation>V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-authenticator">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1193,9 +1221,17 @@
     <rdfs:label>Authenticator</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>authenticator</skos:altLabel>
+    <tdn:leanExpression>EAPRole.authenticator</tdn:leanExpression>
+    <tdn:leanExpression>MACsecAuthentication.supportedRoles</tdn:leanExpression>
+    <tdn:leanMapping>The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements.</tdn:leanMapping>
+    <tdn:leanReference>EAPRole at TDN/Targets/DirectSpecifications.lean:271</tdn:leanReference>
+    <tdn:leanReference>MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356</tdn:leanReference>
+    <tdn:leanReference>msc_macsec_authentication_choice_and_as at TDN/Targets/CompleteSpecifications.lean:38</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-authenticator</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002" />
+    <tdn:theoryInterpretation>V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-auxiliary-network-device">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1203,6 +1239,8 @@
     <rdfs:label>Auxiliary network device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>auxiliary network devices</skos:altLabel>
+    <tdn:leanMapping>The broad source grouping has no dedicated v3.1 role predicate. Specific member functions must be mapped separately.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-auxiliary-network-device</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p054:u011.s001" />
@@ -1217,6 +1255,13 @@
     <skos:altLabel>AWs</skos:altLabel>
     <skos:altLabel>MW</skos:altLabel>
     <skos:altLabel>Management Workstation</skos:altLabel>
+    <tdn:leanExpression>AdministrativeAccount.workstationAccount</tdn:leanExpression>
+    <tdn:leanExpression>Device.kind = .workstation</tdn:leanExpression>
+    <tdn:leanMapping>Administrative Workstations use the workstation device kind. Their administrator accounts and sessions are represented separately.</tdn:leanMapping>
+    <tdn:leanReference>AdministrativeAccount at TDN/Targets/Administration.lean:20</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>msc_administrator_authentication at TDN/Targets/CompleteSpecifications.lean:94</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:may_be_realized_as rdf:resource="urn:tdn:csfc:msc:roles:ROLE-physical-workstation" />
     <tdn:may_be_realized_as rdf:resource="urn:tdn:csfc:msc:roles:ROLE-virtual-machine" />
     <tdn:roleId>ROLE-aw</tdn:roleId>
@@ -1269,6 +1314,8 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u014.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p062:u008" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p063:u010" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
+    <tdn:theoryInterpretation>V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-aw-host">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1279,6 +1326,8 @@
     <skos:altLabel>hosts/servers</skos:altLabel>
     <skos:altLabel>physical host/server</skos:altLabel>
     <tdn:hosts rdf:resource="urn:tdn:csfc:msc:roles:ROLE-virtual-machine" />
+    <tdn:leanMapping>V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-aw-host</tdn:roleId>
     <tdn:roleKind>management_or_realization_facet</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s001" />
@@ -1293,6 +1342,12 @@
     <rdfs:label>Black Administrative Workstation</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-aw" />
     <skos:altLabel>Black AWs</skos:altLabel>
+    <tdn:leanExpression>DeviceKind.workstation</tdn:leanExpression>
+    <tdn:leanExpression>Interface.zone</tdn:leanExpression>
+    <tdn:leanMapping>The model can record a workstation and Black interface, but has no separate Black-workstation role or complete Black-workstation specification.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Interface at TDN/Targets/ComplianceModel.lean:26</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-black-aw</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s006" />
@@ -1306,6 +1361,13 @@
     <skos:altLabel>CAs</skos:altLabel>
     <skos:altLabel>Certificate Authority</skos:altLabel>
     <skos:altLabel>Certification Authorities</skos:altLabel>
+    <tdn:leanExpression>Deployment.keyManagementCA</tdn:leanExpression>
+    <tdn:leanExpression>Device.kind = .certificationAuthority</tdn:leanExpression>
+    <tdn:leanMapping>Certification Authorities have a dedicated device kind and are associated with authenticated components through key-management records.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-ca</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002" />
@@ -1335,6 +1397,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u001.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p061:u005.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p062:u010" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-cdp">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1343,6 +1406,13 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>CDP</skos:altLabel>
     <skos:altLabel>CDPs</skos:altLabel>
+    <tdn:leanExpression>DeviceKind.revocationService</tdn:leanExpression>
+    <tdn:leanExpression>ManagementServiceFunction.revocation</tdn:leanExpression>
+    <tdn:leanMapping>Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:provides_revocation_information_to rdf:resource="urn:tdn:csfc:msc:roles:ROLE-vpn-gateway" />
     <tdn:roleId>ROLE-cdp</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -1351,6 +1421,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p046:u012" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u001.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p062:u013" />
+    <tdn:theoryInterpretation>V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-cds">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1359,6 +1430,11 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>CDS</skos:altLabel>
     <skos:altLabel>cross domain solution</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .crossDomain</tdn:leanExpression>
+    <tdn:leanMapping>Cross Domain Solutions have a device kind. Requirement applicability also uses the recorded cross-domain-solution inventory.</tdn:leanMapping>
+    <tdn:leanReference>CPContext.ComponentApplies at TDN/Targets/CPDuties.lean:354</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-cds</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s004" />
@@ -1376,6 +1452,8 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>CA registration</skos:altLabel>
     <skos:altLabel>certificate registrations</skos:altLabel>
+    <tdn:leanMapping>V3.1 does not define a separate role or protocol model for this certificate-provisioning function.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-certificate-registration</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002" />
@@ -1389,6 +1467,11 @@
     <rdfs:label>Control plane network service</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>Network services provided by control plane</skos:altLabel>
+    <tdn:leanExpression>ServiceKind.control</tdn:leanExpression>
+    <tdn:leanExpression>ServiceRegistration</tdn:leanExpression>
+    <tdn:leanMapping>Control service registrations identify protocol and port. Their kind is recorded separately from the hosting device.</tdn:leanMapping>
+    <tdn:leanReference>ServiceKind at TDN/Targets/ComplianceModel.lean:511</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-control-plane-service</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u003" />
@@ -1398,6 +1481,9 @@
     <rdfs:comment>Example of an existing Black Network screening router.</rdfs:comment>
     <rdfs:label>Customer Edge Router</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-router" />
+    <tdn:leanMapping>The source’s customer-edge example can realize a router role. V3.1 has no customer-edge-specific device kind or automatic equivalence with screeningRouter.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-customer-edge-router</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s005" />
@@ -1407,6 +1493,11 @@
     <rdfs:comment>Server referenced through configured DNS server addresses; not assigned an explicit deployment location.</rdfs:comment>
     <rdfs:label>DNS server</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
+    <tdn:leanExpression>ManagementServiceFunction.nameResolution</tdn:leanExpression>
+    <tdn:leanMapping>DNS service use is represented by the name-resolution management function and configuration records. DeviceKind has no separate DNS-server constructor.</tdn:leanMapping>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-dns-server</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p036:u010" />
@@ -1419,6 +1510,16 @@
     <skos:altLabel>Encapsulation/ Decapsulation Device</skos:altLabel>
     <skos:altLabel>standalone device</skos:altLabel>
     <skos:altLabel>standalone router or switch</skos:altLabel>
+    <tdn:leanExpression>Deployment.standaloneEncapsulator</tdn:leanExpression>
+    <tdn:leanExpression>DeviceKind.encapsulator</tdn:leanExpression>
+    <tdn:leanExpression>EncapsulationUse</tdn:leanExpression>
+    <tdn:leanMapping>The encapsulation role uses EncapsulationUse records and the standaloneEncapsulator predicate. A device kind is available, while the actual specification checks the selected use, attachments and applicable duties.</tdn:leanMapping>
+    <tdn:leanReference>CPContext.AllApplicableDuties at TDN/Targets/CPDuties.lean:424</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>EncapsulationUse at TDN/Targets/DirectSpecifications.lean:200</tdn:leanReference>
+    <tdn:leanReference>MACsecEncapsulationCore at TDN/Targets/DirectSpecifications.lean:212</tdn:leanReference>
+    <tdn:leanReference>msc_macsec_encapsulation at TDN/Targets/CompleteSpecifications.lean:27</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:may_be_realized_as rdf:resource="urn:tdn:csfc:msc:roles:ROLE-router" />
     <tdn:may_be_realized_as rdf:resource="urn:tdn:csfc:msc:roles:ROLE-switch" />
     <tdn:roleId>ROLE-encapsulation-device</tdn:roleId>
@@ -1429,6 +1530,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p020:f08:label009" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p042:u004" />
+    <tdn:theoryInterpretation>V31-015: When built-in encapsulation is unavailable, the selected standalone encapsulator must have the required Inner-side and Outer-side attachments and satisfy its applicable component duties. The current RG-015 definition preserves those duties despite the source passage describing encapsulation as outside the solution boundary.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-encryption-component">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1439,6 +1541,13 @@
     <skos:altLabel>ENCRYPTION COMPONENTS</skos:altLabel>
     <skos:altLabel>Encryption Components</skos:altLabel>
     <skos:altLabel>encryption component</skos:altLabel>
+    <tdn:leanExpression>Device.layer = some .inner or some .outer</tdn:leanExpression>
+    <tdn:leanExpression>DeviceKind.vpn / DeviceKind.macsec</tdn:leanExpression>
+    <tdn:leanMapping>The layer field selects Inner or Outer encryption components. Flow validity separately checks whether their mechanism is VPN or MACsec.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-encryption-component</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u020" />
@@ -1659,6 +1768,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u005.s003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u012.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u012.s003" />
+    <tdn:theoryInterpretation>V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-end-user-device">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1666,6 +1776,10 @@
     <rdfs:label>End user device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>end user devices</skos:altLabel>
+    <tdn:leanExpression>RedNetworkIdentity</tdn:leanExpression>
+    <tdn:leanMapping>Red network records and modeled payload origins identify source and destination networks. DeviceKind has no separate end-user-host constructor.</tdn:leanMapping>
+    <tdn:leanReference>RedNetworkIdentity at TDN/Targets/Architecture.lean:13</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-end-user-device</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p036:u003" />
@@ -1677,6 +1791,8 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>enrollment or provisioning servers</skos:altLabel>
     <skos:altLabel>enrollment,</skos:altLabel>
+    <tdn:leanMapping>V3.1 does not define a separate role or protocol model for this certificate-provisioning function.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-enrollment-server</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002" />
@@ -1689,10 +1805,16 @@
     <rdfs:label>Enterprise CA</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-ca" />
     <skos:altLabel>enterprise CAs</skos:altLabel>
+    <tdn:leanExpression>DeviceKind.certificationAuthority</tdn:leanExpression>
+    <tdn:leanMapping>Enterprise CAs can be listed as CA devices and Gray service nodes. V3.1 does not give enterprise CAs a distinct DeviceKind.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-enterprise-ca</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p015:u002.s004" />
+    <tdn:theoryInterpretation>V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-firewall">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1704,6 +1826,12 @@
     <skos:altLabel>Traffic Filtering Firewalls</skos:altLabel>
     <skos:altLabel>firewall</skos:altLabel>
     <skos:altLabel>traffic filtering firewall</skos:altLabel>
+    <tdn:leanExpression>DeviceKind.grayFirewall</tdn:leanExpression>
+    <tdn:leanExpression>DeviceKind.innerFirewall</tdn:leanExpression>
+    <tdn:leanExpression>DeviceKind.outerFirewall</tdn:leanExpression>
+    <tdn:leanMapping>The model distinguishes Gray, Outer, and Inner firewalls with separate device kinds.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-firewall</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u019" />
@@ -1794,6 +1922,9 @@
     <rdfs:label>NSA-certified Government-off-the-Shelf product</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>NSA-certified product</skos:altLabel>
+    <tdn:leanMapping>The extracted assurance/product category is not a distinct device kind in v3.1. Product eligibility and external assurance remain separate evidence obligations.</tdn:leanMapping>
+    <tdn:leanReference>ExternalFacts at TDN/Targets/CPDutyRecords.lean:57</tdn:leanReference>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-government-product</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p036:u015.s002" />
@@ -1810,6 +1941,15 @@
     <tdn:administers rdf:resource="urn:tdn:csfc:msc:roles:ROLE-gray-firewall" />
     <tdn:administers rdf:resource="urn:tdn:csfc:msc:roles:ROLE-gray-management" />
     <tdn:administers rdf:resource="urn:tdn:csfc:msc:roles:ROLE-outer-encryption" />
+    <tdn:leanExpression>Deployment.grayWorkstation</tdn:leanExpression>
+    <tdn:leanExpression>Device.kind = .workstation</tdn:leanExpression>
+    <tdn:leanExpression>Interface.zone = .gray</tdn:leanExpression>
+    <tdn:leanMapping>A Gray workstation combines the workstation kind with a Gray management attachment. The deployment also provides the grayWorkstation predicate.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Interface at TDN/Targets/ComplianceModel.lean:26</tdn:leanReference>
+    <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-gray-aw</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u023" />
@@ -1823,6 +1963,8 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s008" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u006" />
+    <tdn:theoryInterpretation>V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level.</tdn:theoryInterpretation>
+    <tdn:theoryInterpretation>V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-gray-firewall">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1832,6 +1974,12 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-solution-component" />
     <skos:altLabel>GRAY FIREWALL</skos:altLabel>
     <skos:altLabel>Gray Firewalls</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .grayFirewall</tdn:leanExpression>
+    <tdn:leanMapping>The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-gray-firewall</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u021" />
@@ -1884,6 +2032,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p048:u004" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p049:u013" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u009.s001" />
+    <tdn:theoryInterpretation>V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-gray-management">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1893,6 +2042,12 @@
     <skos:altLabel>GRAY MANAGEMENT SERVICES</skos:altLabel>
     <skos:altLabel>Gray Management Service</skos:altLabel>
     <tdn:comprises rdf:resource="urn:tdn:csfc:msc:roles:ROLE-management-component" />
+    <tdn:leanExpression>ManagementServiceInstance.domain = .gray</tdn:leanExpression>
+    <tdn:leanMapping>Each management service records its function, hosting device, process, interface, and Gray management domain.</tdn:leanMapping>
+    <tdn:leanReference>ManagementDomain at TDN/Targets/ComplianceModel.lean:551</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-gray-management</tdn:roleId>
     <tdn:roleKind>aggregate_component_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u022" />
@@ -1923,6 +2078,8 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u006.s002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u007.s008" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u006" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
+    <tdn:theoryInterpretation>V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-gray-router">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1931,10 +2088,17 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-router" />
     <skos:altLabel>ordinary router</skos:altLabel>
     <skos:altLabel>router/switch</skos:altLabel>
+    <tdn:leanExpression>Deployment.OrdinaryGray</tdn:leanExpression>
+    <tdn:leanExpression>Device.kind = .ordinaryGrayRouter</tdn:leanExpression>
+    <tdn:leanMapping>An ordinary Gray router must have the matching kind, no encryption layer, no infrastructure flag, and only Gray interfaces to satisfy OrdinaryGray.</tdn:leanMapping>
+    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Targets/ComplianceModel.lean:660</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-gray-router</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s004" />
+    <tdn:theoryInterpretation>V31-056-074: Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray checks the kind, absence of an encryption layer and infrastructure flag, and Gray-only interfaces. Standalone encapsulators keep their applicable duties even when their underlying device is a router or switch.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-gray-siem">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1946,6 +2110,13 @@
     <tdn:collects_logs_from rdf:resource="urn:tdn:csfc:msc:roles:ROLE-gray-firewall" />
     <tdn:collects_logs_from rdf:resource="urn:tdn:csfc:msc:roles:ROLE-gray-management" />
     <tdn:collects_logs_from rdf:resource="urn:tdn:csfc:msc:roles:ROLE-outer-encryption" />
+    <tdn:leanExpression>Device.kind = .siem</tdn:leanExpression>
+    <tdn:leanExpression>Interface.zone = .gray</tdn:leanExpression>
+    <tdn:leanMapping>The SIEM kind combines with a Gray interface or management-service domain. The zone is recorded separately from the device kind.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Interface at TDN/Targets/ComplianceModel.lean:26</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-gray-siem</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u024" />
@@ -1959,6 +2130,9 @@
     <rdfs:comment>Example approved protection for remote administration; not equated to an MSC encryption component.</rdfs:comment>
     <rdfs:label>High Assurance encryptor</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
+    <tdn:leanMapping>The extracted assurance/product category is not a distinct device kind in v3.1. Product eligibility and external assurance remain separate evidence obligations.</tdn:leanMapping>
+    <tdn:leanReference>ExternalFacts at TDN/Targets/CPDutyRecords.lean:57</tdn:leanReference>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-high-assurance-encryptor</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p048:u007" />
@@ -1969,6 +2143,10 @@
     <rdfs:label>IKEv2 initiator</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>initiator</skos:altLabel>
+    <tdn:leanMapping>The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic.</tdn:leanMapping>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanReference>InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-ike-initiator</tdn:roleId>
     <tdn:roleKind>protocol_endpoint_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p027:u008.s002" />
@@ -1979,6 +2157,10 @@
     <rdfs:label>IKEv2 responder</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>responder</skos:altLabel>
+    <tdn:leanMapping>The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic.</tdn:leanMapping>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanReference>InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-ike-responder</tdn:roleId>
     <tdn:roleKind>protocol_endpoint_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p027:u008.s002" />
@@ -1990,23 +2172,38 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>infrastructure components</skos:altLabel>
     <skos:altLabel>infrastructure hardware</skos:altLabel>
+    <tdn:leanExpression>Device.infrastructure</tdn:leanExpression>
+    <tdn:leanMapping>The device record has an infrastructure flag. Flow.Valid requires both encryption endpoints to carry that flag.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-infrastructure-component</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p052:u003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p052:u009" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p055:u014" />
+    <tdn:theoryInterpretation>V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-inner-ca">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
     <rdfs:comment>CA associated with Inner Encryption Components.</rdfs:comment>
     <rdfs:label>Inner CA</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-ca" />
+    <tdn:leanExpression>Deployment.keyManagementCA</tdn:leanExpression>
+    <tdn:leanExpression>Device.kind = .certificationAuthority</tdn:leanExpression>
+    <tdn:leanMapping>The CA serves Inner components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-inner-ca</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u013.s002" />
     <tdn:supports_certificate_provisioning rdf:resource="urn:tdn:csfc:msc:roles:ROLE-inner-vpn" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-inner-encryption">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2016,6 +2213,12 @@
     <skos:altLabel>INNER ENCRYPTION COMPONENT</skos:altLabel>
     <skos:altLabel>INNER ENCRYPTION COMPONENTS</skos:altLabel>
     <skos:altLabel>Inner Encryption Components</skos:altLabel>
+    <tdn:leanExpression>Device.layer = some .inner</tdn:leanExpression>
+    <tdn:leanMapping>The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanReference>msc_nested_layer_protection at TDN/Targets/CompleteSpecifications.lean:6</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-inner-encryption</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u025" />
@@ -2126,6 +2329,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p055:u013" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u005.s003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u012.s003" />
+    <tdn:theoryInterpretation>V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-inner-firewall">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2133,6 +2337,11 @@
     <rdfs:label>Inner Firewall</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-firewall" />
     <skos:altLabel>INNER FIREWALL</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .innerFirewall</tdn:leanExpression>
+    <tdn:leanMapping>The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-inner-firewall</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u026" />
@@ -2153,11 +2362,19 @@
     <rdfs:label>Inner MACsec Device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-inner-encryption" />
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-macsec-device" />
+    <tdn:leanExpression>Device.kind = .macsec</tdn:leanExpression>
+    <tdn:leanExpression>Device.layer = some .inner</tdn:leanExpression>
+    <tdn:leanMapping>The device kind identifies the mechanism and the layer identifies its Inner or Outer role.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-inner-macsec</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p019:u009.s003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p042:u004" />
+    <tdn:theoryInterpretation>V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-inner-vpn">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2166,6 +2383,13 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-inner-encryption" />
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-vpn-gateway" />
     <skos:altLabel>Inner VPN Gateways</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .vpn</tdn:leanExpression>
+    <tdn:leanExpression>Device.layer = some .inner</tdn:leanExpression>
+    <tdn:leanMapping>The device kind identifies the mechanism and the layer identifies its Inner or Outer role.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-inner-vpn</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001" />
@@ -2176,6 +2400,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u013" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p046:u012" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p047:u009" />
+    <tdn:theoryInterpretation>V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-ips">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2185,6 +2410,11 @@
     <skos:altLabel>IPS</skos:altLabel>
     <skos:altLabel>IPSs</skos:altLabel>
     <skos:altLabel>Intrusion Prevention Systems</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .intrusionPrevention</tdn:leanExpression>
+    <tdn:leanMapping>Intrusion Prevention Systems have a dedicated device kind.</tdn:leanMapping>
+    <tdn:leanReference>CPContext.ComponentApplies at TDN/Targets/CPDuties.lean:354</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-ips</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p033:u009" />
@@ -2197,10 +2427,20 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-management-component" />
     <skos:altLabel>KEY AND CERTIFICATE MANAGEMENT COMPONENTS</skos:altLabel>
     <skos:altLabel>Key and Certificate Management Components</skos:altLabel>
+    <tdn:leanExpression>Deployment.keyManagementCA</tdn:leanExpression>
+    <tdn:leanExpression>Deployment.keyManagementGenerator</tdn:leanExpression>
+    <tdn:leanExpression>ManagementServiceFunction.certification</tdn:leanExpression>
+    <tdn:leanExpression>ManagementServiceFunction.keyGeneration</tdn:leanExpression>
+    <tdn:leanMapping>Key management combines CA and key-generation device records, service functions, and component-to-service relations.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-key-management-component</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p005:u002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u007" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
+    <tdn:theoryInterpretation>V31-027: The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-key-server">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2208,12 +2448,20 @@
     <rdfs:label>Key Server</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-macsec-device" />
     <tdn:distributes_keys_to rdf:resource="urn:tdn:csfc:msc:roles:ROLE-macsec-device" />
+    <tdn:leanExpression>MACsecAuthentication.keyServer</tdn:leanExpression>
+    <tdn:leanExpression>MACsecServerPair</tdn:leanExpression>
+    <tdn:leanMapping>The key server is an endpoint selected in MACsec authentication and key-server-pair records. The role is not a separate DeviceKind.</tdn:leanMapping>
+    <tdn:leanReference>MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356</tdn:leanReference>
+    <tdn:leanReference>MACsecServerPair at TDN/Targets/DirectSpecifications.lean:587</tdn:leanReference>
+    <tdn:leanReference>msc_macsec_key_generation_and_server at TDN/Targets/CompleteSpecifications.lean:43</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-key-server</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s004" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p020:u008.s005" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p041:u011" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u013.s001" />
+    <tdn:theoryInterpretation>V31-027: The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-kgs">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2221,6 +2469,15 @@
     <rdfs:label>Key Generation Solution</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-solution-component" />
     <skos:altLabel>KGS</skos:altLabel>
+    <tdn:leanExpression>AuthorityFacts.nsaApprovedGenerator</tdn:leanExpression>
+    <tdn:leanExpression>Deployment.keyManagementGenerator</tdn:leanExpression>
+    <tdn:leanExpression>Device.kind = .keyGenerationSolution</tdn:leanExpression>
+    <tdn:leanMapping>The key-generation solution has a device kind. Approved-generator status is supplied as an explicit authority fact.</tdn:leanMapping>
+    <tdn:leanReference>AuthorityFacts at TDN/Targets/ComplianceModel.lean:502</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>msc_macsec_key_generation_and_server at TDN/Targets/CompleteSpecifications.lean:43</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-kgs</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p020:u009.s002" />
@@ -2228,6 +2485,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u012.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p041:u010" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p063:u002" />
+    <tdn:theoryInterpretation>V31-027: The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-local-ca">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2235,21 +2493,36 @@
     <rdfs:label>Locally run CA</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-ca" />
     <skos:altLabel>locally run CAs</skos:altLabel>
+    <tdn:leanExpression>DeviceKind.certificationAuthority</tdn:leanExpression>
+    <tdn:leanExpression>GrayTopology.localCA</tdn:leanExpression>
+    <tdn:leanMapping>The CA kind and its placement can be recorded. GrayTopology separately lists locally run CA nodes for the selected Gray management security-level convention.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-local-ca</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p014:u006.s002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p018:u001.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p018:u001.s002" />
+    <tdn:theoryInterpretation>V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-locally-managed-device">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
     <rdfs:comment>Management-mode role defined by a hardwired AW connection.</rdfs:comment>
     <rdfs:label>Locally Managed Device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
+    <tdn:leanExpression>AdministrativeSession</tdn:leanExpression>
+    <tdn:leanExpression>ManagementExchange</tdn:leanExpression>
+    <tdn:leanMapping>Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds.</tdn:leanMapping>
+    <tdn:leanReference>AdministrativeAccount at TDN/Targets/Administration.lean:20</tdn:leanReference>
+    <tdn:leanReference>ManagementExchange at TDN/Targets/ComplianceModel.lean:539</tdn:leanReference>
+    <tdn:leanReference>msc_administrator_authentication at TDN/Targets/CompleteSpecifications.lean:94</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-locally-managed-device</tdn:roleId>
     <tdn:roleKind>management_or_realization_facet</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u014.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p061:u006.s001" />
+    <tdn:theoryInterpretation>V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-log-repository">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2257,6 +2530,12 @@
     <rdfs:label>Log and status repository</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>similar repository</skos:altLabel>
+    <tdn:leanExpression>ManagementServiceFunction.monitoring</tdn:leanExpression>
+    <tdn:leanExpression>ServiceKind.logging</tdn:leanExpression>
+    <tdn:leanMapping>Logging and monitoring registrations represent the service role. A repository-specific device kind is not required by the model.</tdn:leanMapping>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>ServiceKind at TDN/Targets/ComplianceModel.lean:511</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-log-repository</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p012:u007.s002" />
@@ -2270,6 +2549,12 @@
     <skos:altLabel>MACsec Devices</skos:altLabel>
     <skos:altLabel>MACsec Ethernet Encryptors</skos:altLabel>
     <skos:altLabel>MACsec device</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .macsec</tdn:leanExpression>
+    <tdn:leanMapping>MACsec devices have a dedicated kind. Authentication records separately describe their EAP functions and key-server behavior.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>EAPRole at TDN/Targets/DirectSpecifications.lean:271</tdn:leanReference>
+    <tdn:leanReference>MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:performs_role rdf:resource="urn:tdn:csfc:msc:roles:ROLE-authenticator" />
     <tdn:performs_role rdf:resource="urn:tdn:csfc:msc:roles:ROLE-supplicant" />
     <tdn:roleId>ROLE-macsec-device</tdn:roleId>
@@ -2338,6 +2623,8 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p044:u017" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u004.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u013.s001" />
+    <tdn:theoryInterpretation>V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks.</tdn:theoryInterpretation>
+    <tdn:theoryInterpretation>V31-027: The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-management-component">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2353,6 +2640,12 @@
     <skos:altLabel>management component</skos:altLabel>
     <skos:altLabel>management components</skos:altLabel>
     <skos:altLabel>management devices</skos:altLabel>
+    <tdn:leanExpression>Deployment.managementServices</tdn:leanExpression>
+    <tdn:leanExpression>ManagementServiceInstance</tdn:leanExpression>
+    <tdn:leanMapping>Management roles are represented through service instances and component attachments. There is no single management-component device kind.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-management-component</tdn:roleId>
     <tdn:roleKind>aggregate_component_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u028" />
@@ -2369,6 +2662,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u007" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u003.s002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p054:u013.s002" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-network-administration-device">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2376,6 +2670,12 @@
     <rdfs:label>Network administration device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>network administration device</skos:altLabel>
+    <tdn:leanExpression>DeviceKind.workstation</tdn:leanExpression>
+    <tdn:leanExpression>ManagementServiceFunction.administration</tdn:leanExpression>
+    <tdn:leanMapping>The source role may be realized by workstation or administration services. V3.1 has no separate network-administration-device kind.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-network-administration-device</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p048:u006" />
@@ -2386,6 +2686,10 @@
     <rdfs:label>Network device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>network devices</skos:altLabel>
+    <tdn:leanExpression>Device</tdn:leanExpression>
+    <tdn:leanMapping>Device is the general inventory record for all modeled device kinds. Source role membership beyond that inventory remains contextual.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-network-device</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p027:u009.s002" />
@@ -2398,12 +2702,20 @@
     <rdfs:label>OCSP Responder</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>OCSP Responders</skos:altLabel>
+    <tdn:leanExpression>DeviceKind.revocationService</tdn:leanExpression>
+    <tdn:leanExpression>ManagementServiceFunction.revocation</tdn:leanExpression>
+    <tdn:leanMapping>Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Targets/CompleteSpecifications.lean:20</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-ocsp-responder</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u010" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p038:u012" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u013" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p046:u012" />
+    <tdn:theoryInterpretation>V31-013: The Gray path specification distinguishes Inner components, Gray Firewalls, workstations, locally run CAs, all CAs and revocation services. Gray AWs and locally run CAs follow the highest-level convention. The broader service-path requirements retain each service’s actual level.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-outer-ca">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2411,12 +2723,21 @@
     <rdfs:label>Outer CA</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-ca" />
     <skos:altLabel>outer ca</skos:altLabel>
+    <tdn:leanExpression>Deployment.keyManagementCA</tdn:leanExpression>
+    <tdn:leanExpression>Device.kind = .certificationAuthority</tdn:leanExpression>
+    <tdn:leanMapping>The CA serves Outer components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-outer-ca</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u010.s002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u013.s002" />
     <tdn:supports_certificate_provisioning rdf:resource="urn:tdn:csfc:msc:roles:ROLE-outer-vpn" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-outer-encryption">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2426,6 +2747,12 @@
     <skos:altLabel>OUTER ENCRYPTION COMPONENT</skos:altLabel>
     <skos:altLabel>OUTER ENCRYPTION COMPONENTS</skos:altLabel>
     <skos:altLabel>Outer Encryption Components</skos:altLabel>
+    <tdn:leanExpression>Device.layer = some .outer</tdn:leanExpression>
+    <tdn:leanMapping>The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanReference>msc_nested_layer_protection at TDN/Targets/CompleteSpecifications.lean:6</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:may_perform_role rdf:resource="urn:tdn:csfc:msc:roles:ROLE-perimeter-device" />
     <tdn:roleId>ROLE-outer-encryption</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -2562,6 +2889,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p055:u013" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u005.s003" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u012.s003" />
+    <tdn:theoryInterpretation>V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-outer-firewall">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2570,6 +2898,11 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-firewall" />
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-solution-component" />
     <skos:altLabel>OUTER FIREWALL</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .outerFirewall</tdn:leanExpression>
+    <tdn:leanMapping>The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-outer-firewall</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u019" />
@@ -2602,9 +2935,17 @@
     <rdfs:label>Outer MACsec Device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-macsec-device" />
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-outer-encryption" />
+    <tdn:leanExpression>Device.kind = .macsec</tdn:leanExpression>
+    <tdn:leanExpression>Device.layer = some .outer</tdn:leanExpression>
+    <tdn:leanMapping>The device kind identifies the mechanism and the layer identifies its Inner or Outer role.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-outer-macsec</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p044:u017" />
+    <tdn:theoryInterpretation>V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-outer-vpn">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2613,6 +2954,13 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-outer-encryption" />
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-vpn-gateway" />
     <skos:altLabel>Outer VPN Gateways</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .vpn</tdn:leanExpression>
+    <tdn:leanExpression>Device.layer = some .outer</tdn:leanExpression>
+    <tdn:leanMapping>The device kind identifies the mechanism and the layer identifies its Inner or Outer role.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-outer-vpn</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s001" />
@@ -2623,6 +2971,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u008" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u013" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p049:u002" />
+    <tdn:theoryInterpretation>V31-007: V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-password-generator">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2630,6 +2979,9 @@
     <rdfs:label>Approved password generator</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>approved password generator</skos:altLabel>
+    <tdn:leanMapping>Password-generator approval is an external configuration/authority requirement. V3.1 has no separate password-generator behavior model.</tdn:leanMapping>
+    <tdn:leanReference>ExternalFacts at TDN/Targets/CPDutyRecords.lean:57</tdn:leanReference>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-password-generator</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p052:u003" />
@@ -2640,6 +2992,8 @@
     <rdfs:label>Perimeter device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>perimeter device</skos:altLabel>
+    <tdn:leanMapping>The broad source grouping has no dedicated v3.1 role predicate. Specific member functions must be mapped separately.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-perimeter-device</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s001" />
@@ -2652,6 +3006,8 @@
     <skos:altLabel>physical workstation</skos:altLabel>
     <skos:altLabel>separate workstations</skos:altLabel>
     <skos:altLabel>workstations used</skos:altLabel>
+    <tdn:leanMapping>V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-physical-workstation</tdn:roleId>
     <tdn:roleKind>management_or_realization_facet</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s003" />
@@ -2666,6 +3022,8 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>provisioning servers</skos:altLabel>
     <skos:altLabel>provisioning,</skos:altLabel>
+    <tdn:leanMapping>V3.1 does not define a separate role or protocol model for this certificate-provisioning function.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-provisioning-server</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u004.s002" />
@@ -2684,6 +3042,15 @@
     <tdn:administers rdf:resource="urn:tdn:csfc:msc:roles:ROLE-inner-encryption" />
     <tdn:administers rdf:resource="urn:tdn:csfc:msc:roles:ROLE-inner-firewall" />
     <tdn:administers rdf:resource="urn:tdn:csfc:msc:roles:ROLE-red-management" />
+    <tdn:leanExpression>Device.kind = .workstation</tdn:leanExpression>
+    <tdn:leanExpression>Interface.managementNetwork</tdn:leanExpression>
+    <tdn:leanExpression>Interface.zone = .red</tdn:leanExpression>
+    <tdn:leanMapping>A Red workstation combines the workstation kind with a Red management attachment. Zone information belongs to its interfaces and deployment attachments.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Interface at TDN/Targets/ComplianceModel.lean:26</tdn:leanReference>
+    <tdn:leanReference>msc_administrator_authentication at TDN/Targets/CompleteSpecifications.lean:94</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-red-aw</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s005" />
@@ -2693,6 +3060,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s002" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u002.s003" />
+    <tdn:theoryInterpretation>V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-red-management">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2704,6 +3072,12 @@
     <skos:altLabel>Red Administration Management Components</skos:altLabel>
     <skos:altLabel>Red Management Service</skos:altLabel>
     <tdn:comprises rdf:resource="urn:tdn:csfc:msc:roles:ROLE-management-component" />
+    <tdn:leanExpression>ManagementServiceInstance.domain = .red</tdn:leanExpression>
+    <tdn:leanMapping>Each management service records its function, hosting device, process, interface, and Red management domain.</tdn:leanMapping>
+    <tdn:leanReference>ManagementDomain at TDN/Targets/ComplianceModel.lean:551</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-red-management</tdn:roleId>
     <tdn:roleKind>aggregate_component_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u027" />
@@ -2732,6 +3106,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u010.s004" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u005.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u005" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-red-siem">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2744,6 +3119,13 @@
     <tdn:collects_logs_from rdf:resource="urn:tdn:csfc:msc:roles:ROLE-inner-encryption" />
     <tdn:collects_logs_from rdf:resource="urn:tdn:csfc:msc:roles:ROLE-inner-firewall" />
     <tdn:collects_logs_from rdf:resource="urn:tdn:csfc:msc:roles:ROLE-red-management" />
+    <tdn:leanExpression>Device.kind = .siem</tdn:leanExpression>
+    <tdn:leanExpression>Interface.zone = .red</tdn:leanExpression>
+    <tdn:leanMapping>The SIEM kind combines with a Red interface or management-service domain. The zone is recorded separately from the device kind.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Interface at TDN/Targets/ComplianceModel.lean:26</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Targets/ComplianceModel.lean:559</tdn:leanReference>
+    <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-red-siem</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u029" />
@@ -2759,6 +3141,8 @@
     <rdfs:label>Registration Authority</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>RA</skos:altLabel>
+    <tdn:leanMapping>V3.1 does not define a separate role or protocol model for this certificate-provisioning function.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:qualification>The glossary includes individuals as well as hardware/software. Only the hardware/software function is within the device-role inventory.</tdn:qualification>
     <tdn:roleId>ROLE-registration-authority</tdn:roleId>
     <tdn:roleKind>mixed_authority_role</tdn:roleKind>
@@ -2772,9 +3156,17 @@
     <rdfs:comment>Management-mode role defined by methods other than a local hardwired AW connection.</rdfs:comment>
     <rdfs:label>Remotely Managed Device</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
+    <tdn:leanExpression>AdministrativeSession</tdn:leanExpression>
+    <tdn:leanExpression>ManagementExchange</tdn:leanExpression>
+    <tdn:leanMapping>Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds.</tdn:leanMapping>
+    <tdn:leanReference>AdministrativeAccount at TDN/Targets/Administration.lean:20</tdn:leanReference>
+    <tdn:leanReference>ManagementExchange at TDN/Targets/ComplianceModel.lean:539</tdn:leanReference>
+    <tdn:leanReference>msc_administrator_authentication at TDN/Targets/CompleteSpecifications.lean:94</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-remotely-managed-device</tdn:roleId>
     <tdn:roleKind>management_or_realization_facet</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p061:u006.s001" />
+    <tdn:theoryInterpretation>V31-047: Administrative Workstations are optional. When deployed, administrator accounts and active sessions must bind each accepted operation to the appropriate individual and prior authentication. Certificate and NIST objectives add their selected assurance conditions.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-root-ca">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2782,10 +3174,17 @@
     <rdfs:label>Root CA</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-ca" />
     <tdn:example_of_role_realization rdf:resource="urn:tdn:csfc:msc:roles:ROLE-trust-anchor-ca" />
+    <tdn:leanExpression>InnerAuthentication.credential</tdn:leanExpression>
+    <tdn:leanExpression>InnerCredential.certificate</tdn:leanExpression>
+    <tdn:leanMapping>The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-root-ca</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s007" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u001.s006" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-router">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2793,6 +3192,13 @@
     <rdfs:label>Router</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>router</skos:altLabel>
+    <tdn:leanExpression>DeviceKind.ordinaryGrayRouter</tdn:leanExpression>
+    <tdn:leanExpression>DeviceKind.screeningRouter</tdn:leanExpression>
+    <tdn:leanMapping>The model distinguishes ordinary Gray routers and screening routers. General packet routing is represented by processing records; there is no unrestricted router DeviceKind.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Targets/ComplianceModel.lean:660</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-router</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s003" />
@@ -2811,6 +3217,10 @@
     <rdfs:label>Screening router</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-router" />
     <skos:altLabel>screening router</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .screeningRouter</tdn:leanExpression>
+    <tdn:leanMapping>Screening routers have a dedicated device kind. Source-defined placement and filtering still require the corresponding configuration.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:may_be_realized_as rdf:resource="urn:tdn:csfc:msc:roles:ROLE-customer-edge-router" />
     <tdn:roleId>ROLE-screening-router</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -2826,6 +3236,12 @@
     <skos:altLabel>SECURITY INFORMATION AND EVENT MANAGEMENT</skos:altLabel>
     <skos:altLabel>SIEM</skos:altLabel>
     <skos:altLabel>SIEMs</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .siem</tdn:leanExpression>
+    <tdn:leanMapping>SIEM has a dedicated device kind. Monitoring and logging registrations describe its service use.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>ServiceKind at TDN/Targets/ComplianceModel.lean:511</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-siem</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u024" />
@@ -2855,10 +3271,17 @@
     <rdfs:label>Signing CA</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-ca" />
     <skos:altLabel>signing CA</skos:altLabel>
+    <tdn:leanExpression>InnerAuthentication.credential</tdn:leanExpression>
+    <tdn:leanExpression>InnerCredential.certificate</tdn:leanExpression>
+    <tdn:leanMapping>The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-signing-ca</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p029:u011.s005" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p030:u001.s004" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-solution-component">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2870,6 +3293,12 @@
     <skos:altLabel>SOLUTION COMPONENTS</skos:altLabel>
     <skos:altLabel>Solution Components</skos:altLabel>
     <skos:altLabel>solution components</skos:altLabel>
+    <tdn:leanExpression>CPContext.AllApplicableDuties</tdn:leanExpression>
+    <tdn:leanExpression>CPContext.ComponentApplies</tdn:leanExpression>
+    <tdn:leanMapping>Applicable duties are selected from a device’s kind, encryption layer, deployment membership, and standalone-encapsulator status. V3.1 has no single SolutionComponent membership type.</tdn:leanMapping>
+    <tdn:leanReference>CPContext.AllApplicableDuties at TDN/Targets/CPDuties.lean:424</tdn:leanReference>
+    <tdn:leanReference>CPContext.ComponentApplies at TDN/Targets/CPDuties.lean:354</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-solution-component</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p004:u018" />
@@ -2921,6 +3350,7 @@
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p059:u010.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u010.s001" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p061:u007.s001" />
+    <tdn:theoryInterpretation>V31-015: When built-in encapsulation is unavailable, the selected standalone encapsulator must have the required Inner-side and Outer-side attachments and satisfy its applicable component duties. The current RG-015 definition preserves those duties despite the source passage describing encapsulation as outside the solution boundary.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-supplicant">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2928,9 +3358,17 @@
     <rdfs:label>Supplicant</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>supplicant</skos:altLabel>
+    <tdn:leanExpression>EAPRole.supplicant</tdn:leanExpression>
+    <tdn:leanExpression>MACsecAuthentication.supportedRoles</tdn:leanExpression>
+    <tdn:leanMapping>The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements.</tdn:leanMapping>
+    <tdn:leanReference>EAPRole at TDN/Targets/DirectSpecifications.lean:271</tdn:leanReference>
+    <tdn:leanReference>MACsecAuthentication at TDN/Targets/DirectSpecifications.lean:356</tdn:leanReference>
+    <tdn:leanReference>msc_macsec_authentication_choice_and_as at TDN/Targets/CompleteSpecifications.lean:38</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-supplicant</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p026:u006.s002" />
+    <tdn:theoryInterpretation>V31-024: A MACsec device supports supplicant and authenticator functions across arrangements. EAPRole describes those functions separately from DeviceKind. The AS is bound to one site network in the selected interpretation; one AS must not bridge Red and Gray or several site networks.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-switch">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2939,10 +3377,18 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>router/switch</skos:altLabel>
     <skos:altLabel>switch</skos:altLabel>
+    <tdn:leanExpression>Deployment.OrdinaryGray</tdn:leanExpression>
+    <tdn:leanExpression>DeviceKind.ordinaryGraySwitch</tdn:leanExpression>
+    <tdn:leanMapping>Ordinary Gray switches have a dedicated kind. Other switching behavior is represented through processing records without a generic switch DeviceKind.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Targets/ComplianceModel.lean:660</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-switch</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p021:u008.s004" />
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p025:u007.s003" />
+    <tdn:theoryInterpretation>V31-056-074: Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray checks the kind, absence of an encryption layer and infrastructure flag, and Gray-only interfaces. Standalone encapsulators keep their applicable duties even when their underlying device is a router or switch.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-testing-equipment">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2950,6 +3396,8 @@
     <rdfs:label>Testing equipment</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>testing equipment</skos:altLabel>
+    <tdn:leanMapping>These source roles describe the testing process. V3.1 does not formalize them as network device roles.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-testing-equipment</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u007.s004" />
@@ -2960,6 +3408,8 @@
     <rdfs:label>Testing software</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>testing software</skos:altLabel>
+    <tdn:leanMapping>These source roles describe the testing process. V3.1 does not formalize them as network device roles.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-testing-software</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p060:u007.s004" />
@@ -2971,6 +3421,9 @@
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>third party server</skos:altLabel>
     <skos:altLabel>third-party server</skos:altLabel>
+    <tdn:leanMapping>Third-party behavior is represented by feature and emitted-traffic records. The remote server is not a dedicated device kind.</tdn:leanMapping>
+    <tdn:leanReference>Deployment at TDN/Targets/ComplianceModel.lean:573</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-third-party-server</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p045:u004" />
@@ -2981,9 +3434,16 @@
     <rdfs:comment>CA whose certificate is installed as the trust anchor under MSC-VG-4; Root CA remains a separately preserved example rather than an exact alias.</rdfs:comment>
     <rdfs:label>Trust Anchor CA</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ROLE-ca" />
+    <tdn:leanExpression>InnerAuthentication.credential</tdn:leanExpression>
+    <tdn:leanExpression>InnerCredential.certificate</tdn:leanExpression>
+    <tdn:leanMapping>The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles.</tdn:leanMapping>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>InnerAuthentication at TDN/Targets/AuthenticationIsolation.lean:11</tdn:leanReference>
+    <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-trust-anchor-ca</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p038:u009" />
+    <tdn:theoryInterpretation>V31-012: Credential separation applies to the selected certificate or shared-key method. Management-device presence and separation are required only when managementSelected is true. Different network names do not imply different full security levels.</tdn:theoryInterpretation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ROLE-trusted-time-source">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -2991,6 +3451,11 @@
     <rdfs:label>Trusted time source</rdfs:label>
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <skos:altLabel>trusted time source</skos:altLabel>
+    <tdn:leanExpression>TimeSourceEndpoint</tdn:leanExpression>
+    <tdn:leanMapping>A time-source endpoint records the actual source component and interface. Placement and client synchronization use the time model.</tdn:leanMapping>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Targets/ComplianceModel.lean:546</tdn:leanReference>
+    <tdn:leanReference>TimeSourceEndpoint at TDN/Targets/TimeSynchronization.lean:40</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-trusted-time-source</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p035:u005" />
@@ -3004,6 +3469,8 @@
     <skos:altLabel>VM</skos:altLabel>
     <skos:altLabel>VMs</skos:altLabel>
     <skos:altLabel>virtual machines</skos:altLabel>
+    <tdn:leanMapping>V3.1 does not define the host/guest virtualization or physical-workstation realization hierarchy. The source role remains available for future modeling.</tdn:leanMapping>
+    <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-virtual-machine</tdn:roleId>
     <tdn:roleKind>management_or_realization_facet</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p011:u009.s003" />
@@ -3025,6 +3492,12 @@
     <skos:altLabel>VPN Components</skos:altLabel>
     <skos:altLabel>VPN GATEWAY</skos:altLabel>
     <skos:altLabel>VPN Gateways</skos:altLabel>
+    <tdn:leanExpression>Device.kind = .vpn</tdn:leanExpression>
+    <tdn:leanMapping>VPN gateways have a dedicated device kind. The layer field identifies Inner and Outer gateways.</tdn:leanMapping>
+    <tdn:leanReference>Device at TDN/Targets/ComplianceModel.lean:18</tdn:leanReference>
+    <tdn:leanReference>DeviceKind at TDN/Targets/ComplianceModel.lean:11</tdn:leanReference>
+    <tdn:leanReference>Flow.Valid at TDN/Targets/DirectSpecifications.lean:19</tdn:leanReference>
+    <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-vpn-gateway</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
     <tdn:sourceUnit rdf:resource="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p005:u019" />
@@ -3113,6 +3586,18 @@
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:inputHash">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
   </rdf:Description>
+  <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:leanExpression">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:leanMapping">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:leanReference">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:leanRepresentation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
+  </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:may_be_realized_as">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
   </rdf:Description>
@@ -3153,6 +3638,12 @@
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:supports_certificate_provisioning">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:theoryInterpretation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:theoryVersion">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty" />
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:source:CSFC-MSC-1.3.0-4e40e3d83708:p002:u003">

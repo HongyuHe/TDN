@@ -1,0 +1,85 @@
+{
+  "schema_version": "csfc-mechanism-evidence/v1",
+  "configuration_id": "eap-tls-forward-v31-full-public-v2",
+  "started_at": "2026-11-01T01:54:40.136810+00:00",
+  "ended_at": "2026-11-01T01:54:49.442033+00:00",
+  "devices": [
+    {
+      "id": "P0",
+      "role": "MACsec-peer",
+      "site": "central",
+      "security_level_id": "L1",
+      "namespace": "tv31e-P0",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "P1",
+      "role": "MACsec-peer",
+      "site": "remote",
+      "security_level_id": "L1",
+      "namespace": "tv31e-P1",
+      "physical_independence": "unavailable"
+    },
+    {
+      "id": "AS",
+      "role": "central-authentication-server",
+      "site": "central",
+      "security_level_id": "L1",
+      "namespace": "tv31e-AS",
+      "physical_independence": "unavailable"
+    }
+  ],
+  "links": [
+    {
+      "endpoints": [
+        "P0:eth0",
+        "P1:eth0"
+      ],
+      "relation": "veth",
+      "zone": "gray-data",
+      "addresses": [
+        null,
+        null
+      ],
+      "physical_claim_supported": false
+    },
+    {
+      "endpoints": [
+        "P0:control",
+        "AS:eth0"
+      ],
+      "relation": "veth",
+      "zone": "gray-management",
+      "addresses": [
+        "10.88.0.1/30",
+        "10.88.0.2/30"
+      ],
+      "physical_claim_supported": false
+    }
+  ],
+  "tunnels": [],
+  "probes": [
+    {
+      "id": "EAP-derived-MKA-traffic",
+      "source_device": "P0",
+      "destination": "10.92.0.2",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0080"
+    },
+    {
+      "id": "EAP-derived-reverse-traffic",
+      "source_device": "P1",
+      "destination": "10.92.0.1",
+      "expected_result": "delivered",
+      "observed_result": "delivered",
+      "observation_id": "cmd-0081"
+    }
+  ],
+  "error": null,
+  "limitations": [
+    "Virtual namespace graph; no physical independence or product approval",
+    "One instrumented authentication exchange per case; no universal implementation-conformance proof",
+    "Fresh experimental CA; no external PKI or product approval"
+  ]
+}

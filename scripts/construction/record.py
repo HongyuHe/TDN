@@ -34,6 +34,7 @@ def main():
         target = history / (stamp + '-' + args.actor)
         target.mkdir()
         files = []
+        captured = set()
         history_references = []
         for name in args.paths:
             source = (root / name).resolve()
@@ -65,6 +66,8 @@ def main():
                 candidates=[source]
             for path in candidates:
                 relative = path.relative_to(root)
+                if str(relative) in captured:
+                    continue
                 if not path.is_file() or path.is_symlink():
                     continue
                 if history == path or history in path.parents:
@@ -74,7 +77,9 @@ def main():
                 destination = target / relative
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(path, destination)
-                files.append({'path': str(relative), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'bytes': path.stat().st_size})
+                copied = destination.read_bytes()
+                files.append({'path': str(relative), 'sha256': hashlib.sha256(copied).hexdigest(), 'bytes': len(copied)})
+                captured.add(str(relative))
         entry['checkpoint'] = str(target.relative_to(root))
         entry['files'] = files
         entry['history_references'] = history_references
