@@ -1,6 +1,6 @@
 # MSC network profiles
 
-The five `native-` topology files define the final FRR/OVS configurations retained for replay and further evidence collection. FRR supplies routing and router CLI access, OVS supplies switching, and strongSwan with Linux XFRM supplies encryption. Black routers and Outer Firewalls use OSPF. Gray routers and Gray Firewalls use static routes in FRR. All devices run in Linux containers.
+The five `native-` topology files define reusable FRR/OVS layouts for replay and further evidence collection. FRR supplies routing and router CLI access, OVS supplies switching, and strongSwan with Linux XFRM supplies encryption. Black routers and Outer Firewalls use OSPF. Gray routers and Gray Firewalls use static routes in FRR. All devices run in Linux containers.
 
 | Configuration | Topology | Diagram | Devices / virtual links |
 | --- | --- | --- | --- |
@@ -11,6 +11,8 @@ The five `native-` topology files define the final FRR/OVS configurations retain
 | Independent management at both sites | [native-management-independent.json](native-management-independent.json) | [PNG](native-management-independent.png) / [SVG](native-management-independent.svg) | 35 / 44 |
 
 Each figure includes every device and virtual link from its JSON topology. Colors identify device roles and link zones. Names omit the shared prefix printed above each diagram. Hover over a link in the SVG to inspect its endpoint interfaces. IPsec tunnels run over the depicted links. FRR helper containers are additional runtime containers and are not separate topology devices.
+
+The November 4 proof continuation uses the baseline and four-level shared layouts with additional firewall, service and packet-sizing configuration. Its exact observations and deployment changes are recorded under [the continuation run](../../../construction/v3.1-20261104-continuation/). The proof inputs are under [data/evidence/continuation](../../../evidence/continuation/). Reproducing a checked application requires the recorded configuration as well as its topology. The collection and configuration helpers are documented in [the evidence tools guide](../../../../scripts/construction/evidence/README.md).
 
 ## Supporting files
 
