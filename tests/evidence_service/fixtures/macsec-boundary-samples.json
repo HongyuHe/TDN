@@ -1,0 +1,375 @@
+{
+  "source": "macsec-boundary-002",
+  "manifestSha256": "3dc6a8539271066ab7cfdf2859c596f6f8e6c3d351efc55501166f5a28f3f8dd",
+  "policies": [
+    {
+      "case": "protected",
+      "json": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "netdev",
+              "name": "tdn_boundary",
+              "handle": 1
+            }
+          },
+          {
+            "chain": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "name": "ingress",
+              "handle": 1,
+              "type": "filter",
+              "hook": "ingress",
+              "prio": -500,
+              "policy": "accept"
+            }
+          },
+          {
+            "chain": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "name": "egress",
+              "handle": 2,
+              "type": "filter",
+              "hook": "egress",
+              "prio": -500,
+              "policy": "drop"
+            }
+          },
+          {
+            "rule": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "chain": "ingress",
+              "handle": 3,
+              "comment": "incoming",
+              "expr": [
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "chain": "egress",
+              "handle": 4,
+              "comment": "protected",
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ether",
+                        "field": "type"
+                      }
+                    },
+                    "right": 35045
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 3,
+                    "bytes": 306
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "chain": "egress",
+              "handle": 5,
+              "comment": "plaintext",
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ether",
+                        "field": "type"
+                      }
+                    },
+                    "right": "ip"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "chain": "egress",
+              "handle": 6,
+              "comment": "other",
+              "expr": [
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "text": "table netdev tdn_boundary { # handle 1\n\tchain ingress { # handle 1\n\t\ttype filter hook ingress device \"wire\" priority -500; policy accept;\n\t\tcounter packets 0 bytes 0 accept comment \"incoming\" # handle 3\n\t}\n\n\tchain egress { # handle 2\n\t\ttype filter hook egress device \"wire\" priority -500; policy drop;\n\t\tether type 0x88e5 counter packets 3 bytes 306 accept comment \"protected\" # handle 4\n\t\tether type ip counter packets 0 bytes 0 accept comment \"plaintext\" # handle 5\n\t\tcounter packets 0 bytes 0 drop comment \"other\" # handle 6\n\t}\n}\n"
+    },
+    {
+      "case": "unprotected-denied",
+      "json": {
+        "nftables": [
+          {
+            "metainfo": {
+              "version": "1.0.9",
+              "release_name": "Old Doc Yak #3",
+              "json_schema_version": 1
+            }
+          },
+          {
+            "table": {
+              "family": "netdev",
+              "name": "tdn_boundary",
+              "handle": 2
+            }
+          },
+          {
+            "chain": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "name": "ingress",
+              "handle": 1,
+              "type": "filter",
+              "hook": "ingress",
+              "prio": -500,
+              "policy": "accept"
+            }
+          },
+          {
+            "chain": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "name": "egress",
+              "handle": 2,
+              "type": "filter",
+              "hook": "egress",
+              "prio": -500,
+              "policy": "drop"
+            }
+          },
+          {
+            "rule": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "chain": "ingress",
+              "handle": 3,
+              "comment": "incoming",
+              "expr": [
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "chain": "egress",
+              "handle": 4,
+              "comment": "protected",
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ether",
+                        "field": "type"
+                      }
+                    },
+                    "right": 35045
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "accept": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "chain": "egress",
+              "handle": 5,
+              "comment": "plaintext",
+              "expr": [
+                {
+                  "match": {
+                    "op": "==",
+                    "left": {
+                      "payload": {
+                        "protocol": "ether",
+                        "field": "type"
+                      }
+                    },
+                    "right": "ip"
+                  }
+                },
+                {
+                  "counter": {
+                    "packets": 3,
+                    "bytes": 210
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          },
+          {
+            "rule": {
+              "family": "netdev",
+              "table": "tdn_boundary",
+              "chain": "egress",
+              "handle": 6,
+              "comment": "other",
+              "expr": [
+                {
+                  "counter": {
+                    "packets": 0,
+                    "bytes": 0
+                  }
+                },
+                {
+                  "drop": null
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "text": "table netdev tdn_boundary { # handle 2\n\tchain ingress { # handle 1\n\t\ttype filter hook ingress device \"wire\" priority -500; policy accept;\n\t\tcounter packets 0 bytes 0 accept comment \"incoming\" # handle 3\n\t}\n\n\tchain egress { # handle 2\n\t\ttype filter hook egress device \"wire\" priority -500; policy drop;\n\t\tether type 0x88e5 counter packets 0 bytes 0 accept comment \"protected\" # handle 4\n\t\tether type ip counter packets 3 bytes 210 drop comment \"plaintext\" # handle 5\n\t\tcounter packets 0 bytes 0 drop comment \"other\" # handle 6\n\t}\n}\n"
+    }
+  ],
+  "frames": [
+    {
+      "at": "2026-11-04T10:18:15.446548+00:00",
+      "monotonicNs": 1530618792724894,
+      "interface": "wire",
+      "packetType": 0,
+      "capturedBytes": "02000043000202000043000188e52c00000000010200004300010001791466e796e359a04e9ad8dddf7d5d0dc4b0dd4aba89d9ab6b6edb2df2b77294e44fcce2abe17751d1bd22f3cefeafdda1f0174b3ae6bfa677ca05203f73b56ff4926ba7bee54cf761df",
+      "packetAuxiliary": {
+        "status": 1,
+        "length": 102,
+        "snapLength": 102,
+        "macOffset": 0,
+        "networkOffset": 14,
+        "vlanTCI": 0,
+        "vlanTPID": 0
+      },
+      "receiveFlags": 0,
+      "source": "020000430001",
+      "destination": "020000430002",
+      "etherType": 35045,
+      "bytes": "02000043000202000043000188e52c00000000010200004300010001791466e796e359a04e9ad8dddf7d5d0dc4b0dd4aba89d9ab6b6edb2df2b77294e44fcce2abe17751d1bd22f3cefeafdda1f0174b3ae6bfa677ca05203f73b56ff4926ba7bee54cf761df",
+      "sha256": "d1e9c41608243be08702ca52dad1d2e3e40f2099acf90840d5810c3cb473ea45"
+    },
+    {
+      "at": "2026-11-04T10:18:17.952996+00:00",
+      "monotonicNs": 1530621299173102,
+      "interface": "wire",
+      "packetType": 0,
+      "capturedBytes": "02000043000202000043000108004500003881c140003f11a40b0af200020af30002aebaaebb00248d6454444e2d4d41435345432d504859534943414c2d424f554e44415259",
+      "packetAuxiliary": {
+        "status": 1,
+        "length": 70,
+        "snapLength": 70,
+        "macOffset": 0,
+        "networkOffset": 14,
+        "vlanTCI": 0,
+        "vlanTPID": 0
+      },
+      "receiveFlags": 0,
+      "source": "020000430001",
+      "destination": "020000430002",
+      "etherType": 2048,
+      "bytes": "02000043000202000043000108004500003881c140003f11a40b0af200020af30002aebaaebb00248d6454444e2d4d41435345432d504859534943414c2d424f554e44415259",
+      "sha256": "51af44ae9c2b5d791ab06917c4cc3396c8c209e00dee4661a0f0269c4e237502"
+    }
+  ],
+  "associations": "5: mac0: protect on validate strict sc off sa off encrypt on send_sci on end_station off scb off replay on window 0 \n    cipher suite: GCM-AES-256, using ICV length 16\n    TXSC: 0200004300010001 on SA 0\n    stats: OutPktsUntagged InPktsUntagged OutPktsTooLong InPktsNoTag InPktsBadTag InPktsUnknownSCI InPktsNoSCI InPktsOverrun\n                         0              0              0           0            0                0           0             0\n    stats: OutPktsProtected OutPktsEncrypted OutOctetsProtected OutOctetsEncrypted\n                          0                0                  0                  0\n        0: PN 1, state on, key 01000000000000000000000000000000\n    stats: OutPktsProtected OutPktsEncrypted\n                          0                0\n    RXSC: 0200004300020001, state on\n    stats: InOctetsValidated InOctetsDecrypted InPktsUnchecked InPktsDelayed InPktsOK InPktsInvalid InPktsLate InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                           0                 0               0             0        0             0          0              0                0              0\n        0: PN 1, state on, key 02000000000000000000000000000000\n    stats: InPktsOK InPktsInvalid InPktsNotValid InPktsNotUsingSA InPktsUnusedSA\n                  0             0              0                0              0\n    offload: off \n",
+  "integrityFrame": {
+    "at": "2026-11-04T10:42:15.722262+00:00",
+    "monotonicNs": 1532059068426615,
+    "interface": "wire",
+    "packetType": 4,
+    "capturedBytes": "02000043000202000043000188e52000000000040200004300010001080045000038ca8340003f115b490af200020af30002aebaaebb00248d6454444e2d4d41435345432d504859534943414c2d424f554e44415259f661946bf83a63f7721120181b68b2d9",
+    "packetAuxiliary": {
+      "status": 1,
+      "length": 102,
+      "snapLength": 102,
+      "macOffset": 0,
+      "networkOffset": 30,
+      "vlanTCI": 0,
+      "vlanTPID": 0
+    },
+    "receiveFlags": 0,
+    "source": "020000430001",
+    "destination": "020000430002",
+    "etherType": 35045,
+    "bytes": "02000043000202000043000188e52000000000040200004300010001080045000038ca8340003f115b490af200020af30002aebaaebb00248d6454444e2d4d41435345432d504859534943414c2d424f554e44415259f661946bf83a63f7721120181b68b2d9",
+    "sha256": "9cecf2da816961a6437a04112eef69e62b7a745fb444bcdd966c8edfcf738faa"
+  }
+}

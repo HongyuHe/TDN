@@ -55,3 +55,17 @@ A captured certificate identity is not automatically a verified person. Person/a
 Affected groups: RG-056 and RG-074. Original pages 21–25, 36 and the SR-14 footnote. Every physical Red egress crosses a CP-conforming MSC solution or AO-approved data-in-transit solution. Crossing an Inner alone is insufficient. Government-certified and CSfC paths may coexist without an unprotected path.
 
 Every actual redundant solution component retains its fixed applicable CP duties, including Outer Firewalls and selected management components. Ordinary Gray routing infrastructure receives no invented CP security obligation. Standalone encapsulators keep RG-015 duties. Possible failover does not create an automatic availability guarantee. The fixed duty expansion and external assumption boundary remain visible. No whole-group proof completion is claimed.
+
+## V31R-033 — RG-033: external interface sizes and optional Inner reduction
+
+The source review uses SR-23 on physical PDF pages 36–37 and IR-2 on pages 42–43. The original [CSfC document](../../extraction/source/CSfC_documentation_v1.3.0.pdf) preserves both passages.
+
+SR-23 requires packet-size configuration that prevents further fragmentation at the external interface of a Gray Firewall or Encryption Component. The selected interpretation includes the Inner encryptor’s Gray-facing interface and the Outer encryptor’s Black-facing interface. Both interfaces are external interfaces of encryption components. The source provides no Inner exclusion. The Gray Firewall’s applicable external interfaces are included as well.
+
+IR-2 adds an optional objective for Inner components: reduce fragmentation and its performance impact while considering Outer and Black limits. That comparison remains separate from the mandatory local MTU bound. The concrete baseline and shared applications leave the optional comparison unselected.
+
+Round 001 exposed an incorrect separation: the mandatory no-further-fragmentation clause selected only the Gray-Firewall/Outer sizing role. The corrected clause also selects the Inner external role. The existing recorded size limits already covered both roles. The correction therefore strengthens the specification and general proof without weakening the recorded checks.
+
+The sizing inventory links each record to the actual device, interface and zone. Inner Gray interfaces use `innerExternal`; Outer Black interfaces and applicable Gray Firewall external interfaces use `grayFirewallOrEncryptionExternal`. These names classify interfaces for the proof. Device kinds and the source ontology remain unchanged.
+
+The accepted interpretation requires a proof about actual represented emissions. A stored MTU or a count of sizing records alone cannot establish the requirement. Source preparation, subsequent processing, header and encryption overhead, and final transmission must satisfy the corresponding size bounds. The instantiated applications cover the selected IPv4/IPsec processing model and retain its explicit implementation assumptions.

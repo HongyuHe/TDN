@@ -230,7 +230,7 @@ def EGConfiguration.ManagementTopology (configuration : EGConfiguration)
   ∀ source target, configuration.Managed source → configuration.ManagedTarget d target →
     source ≠ target →
     Relation.ReflTransGen d.DeviceAdjacent source target ∧
-    ¬ Relation.ReflTransGen (Paths.Avoiding d.DeviceAdjacent
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding d.DeviceAdjacent
       (fun component => component ∈ configuration.grayFirewalls)) source target
 
 def EGConfiguration.ManagementPaths (configuration : EGConfiguration) (d : Deployment)
@@ -336,9 +336,9 @@ def EGConfiguration.IntersiteProtection {S A : Type} (configuration : EGConfigur
   (∀ encryptor ∈ configuration.encryptors, ∀ id ∈ encryptor.dataTunnels,
     (∃ tunnel ∈ d.tunnels, tunnel.id = id ∧ tunnel.sender = encryptor.component) ∧
     records.external.Confirms .egNecessaryGrayDataTunnel (.component id)) ∧
-  model.AllTraces (fun events => ∀ payload port layers,
-    .transmit payload port layers .management ∈ events →
-    ∀ interface ∈ d.interfaces, interface.id = port → interface.zone = .black →
+  model.AllTraces (fun events => ∀ payload iface layers,
+    .transmit payload iface layers .management ∈ events →
+    ∀ interface ∈ d.interfaces, interface.id = iface → interface.zone = .black →
       ∃ gray ∈ d.tunnels, ∃ outer ∈ d.tunnels,
         gray.layer = .inner ∧ outer.layer = .outer ∧ layers = [outer.id, gray.id] ∧
         configuration.GrayEncryption gray.sender ∧ d.IsLayer outer.sender .outer ∧
@@ -442,7 +442,7 @@ def EGConfiguration.ExternalSizing {S A : Type} (configuration : EGConfiguration
     (d : Deployment) (model : ExecutionModel S A) (sizing : List PacketSizing) : Prop :=
   ∀ encryptor ∈ configuration.encryptors, d.Relevant encryptor.component →
     ∀ id ∈ encryptor.externalInterfaces,
-      ∃ setting ∈ sizing, model.native.portName setting.interface = id ∧
+      ∃ setting ∈ sizing, model.native.ifaceName setting.interface = id ∧
         setting.role = .grayFirewallOrEncryptionExternal ∧
         0 < setting.externalMtu ∧ 0 < setting.payloadLimit ∧
         (setting.family = .ipv6 → setting.ipv6PmtuConfigured = true) ∧

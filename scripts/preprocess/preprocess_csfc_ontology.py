@@ -100,6 +100,83 @@ def ancestors(role_id, parents):
     return sorted(found)
 
 
+def lean_excerpt(path, name, branch=None):
+    lines = (ROOT / path).read_text().splitlines()
+    starts = [i for i, line in enumerate(lines)
+              if re.match(r'^(?:def|structure|inductive|theorem|lemma|abbrev) ' + re.escape(name) + r'(?=\s|\{|\(|:|$)', line)]
+    if len(starts) != 1:
+        raise ValueError('Missing or ambiguous obligation declaration: ' + name)
+    start = starts[0]
+    end = next((i for i in range(start + 1, len(lines))
+                if re.match(r'^(?:def|structure|inductive|theorem|lemma|abbrev|namespace|end)\b', lines[i])), len(lines))
+    if branch is not None:
+        start = next(i for i in range(start, end) if lines[i].startswith(f'  | {branch} =>'))
+        end = next((i for i in range(start + 1, end) if lines[i].startswith('  | ')), end)
+    code = '\n'.join(lines[start:end]).strip()
+    return {'path': path, 'line': start + 1, 'label': name if branch is None else f'{name}, branch {branch}',
+            'code': code, 'kind': 'declaration' if branch is None else 'match_branch'}
+
+
+def obligation_catalog(out, role_ids):
+    curated = read(out / 'roles/ontology_obligations.json')
+    if set(curated['direct_role_groups']) != role_ids:
+        raise ValueError('Obligation mappings must cover every role exactly.')
+    for path, expected in curated['source_hashes'].items():
+        if digest(ROOT / path) != expected:
+            raise ValueError('Lean obligations changed; review translations: ' + path)
+    register_path = 'data/publication/v3.1/register.json'
+    register = read(ROOT / register_path)['groups']
+    groups = {g['rg_id']: g for g in register}
+    if set(curated['translations']) != set(groups):
+        raise ValueError('Obligation translations must cover the requirement register exactly.')
+    for role, ids in curated['direct_role_groups'].items():
+        if len(ids) != len(set(ids)) or not set(ids) <= set(groups):
+            raise ValueError('Duplicate or unknown obligation for ' + role)
+    if not set(curated['role_notes']) <= role_ids:
+        raise ValueError('Unknown role in obligation scope notes.')
+    catalog = {}
+    for rg, group in groups.items():
+        translation = curated['translations'][rg]
+        if not translation.strip():
+            raise ValueError('Missing obligation translation: ' + rg)
+        if group.get('specification'):
+            name = group['specification'].removeprefix('TDN.Targets.Complete.')
+            reference = lean_excerpt('TDN/Targets/CompleteSpecifications.lean', name)
+            references = [reference]
+            for primitive in dict.fromkeys(re.findall(r'\b(?:Primitive_msc_\w+|SecurityLevelConnectivityCore|MACsecEncapsulationCore|RedEgressCore)\b', reference['code'])):
+                references.append(lean_excerpt('TDN/Targets/DirectSpecifications.lean', primitive))
+            if rg == 'RG-012':
+                references.append(lean_excerpt('TDN/Targets/AuthenticationIsolation.lean', name))
+            if rg in {'RG-013', 'RG-034'}:
+                references.append(lean_excerpt('TDN/Targets/Topology.lean', name))
+            status = 'Complete model proof reviewed' if group['proof_status'] == 'PASS' else 'Complete proof unfinished'
+            formalization = 'Dedicated requirement specification'
+        else:
+            references = [lean_excerpt('TDN/Targets/CPDuties.lean', 'CPContext.BaseSourceMeaning', int(rg[3:]))]
+            status = {'check': 'Assigned to direct checks', 'external': 'Requires external evidence',
+                      'scope': 'Permission or applicability condition'}.get(group['proof_status'], group['proof_status'])
+            formalization = 'Shared requirement condition'
+        for declaration in curated.get('supporting_declarations', {}).get(rg, []):
+            if declaration['path'] not in curated['source_hashes']:
+                raise ValueError('Unpinned obligation source: ' + declaration['path'])
+            references.append(lean_excerpt(declaration['path'], declaration['name']))
+        catalog[rg] = {'rg_id': rg, 'title': group['title'], 'translation': translation,
+                       'status': status, 'formalization': formalization, 'references': references,
+                       'proof_note': group['new_validation_claim']}
+    hashes = {**curated['source_hashes'], register_path: digest(ROOT / register_path)}
+    return {**curated, 'source_hashes': hashes, 'catalog': catalog}
+
+
+def inherited_obligations(role_id, parents, direct):
+    origins = defaultdict(set)
+    for origin in [role_id, *ancestors(role_id, parents)]:
+        for rg in direct.get(origin, []):
+            origins[rg].add(origin)
+    return [{'rg_id': rg, 'direct': role_id in owners,
+             'inherited_from': sorted(owners - {role_id})}
+            for rg, owners in sorted(origins.items())]
+
+
 def theory_mapping(out, role_ids):
     mapping = read(out / 'roles/ontology_theory.json')
     if set(mapping['roles']) != role_ids:
@@ -140,6 +217,8 @@ def build_graph(out=OUT):
     if errors:
         raise ValueError('\n'.join(errors))
     theory = theory_mapping(out, {r['role_id'] for r in roles})
+    obligations = obligation_catalog(out, {r['role_id'] for r in roles})
+    theory['source_hashes'].update(obligations['source_hashes'])
     families = {rid: f['id'] for f in decisions['families'] for rid in f['role_ids']}
     root = {**decisions['root'], 'role_id': 'ExtractedRole', 'iri': BASE + 'ExtractedRole', 'source_ids': [], 'family': 'organization', 'aliases': [], 'kind': 'analyst_organization'}
     nodes = [root]
@@ -162,10 +241,12 @@ def build_graph(out=OUT):
         node['parents'] = parents[node['role_id']]
         node['ancestors'] = ancestors(node['role_id'], parents)
         node['theory'] = theory['roles'].get(node['role_id'])
+        node['obligations'] = inherited_obligations(node['role_id'], parents, obligations['direct_role_groups'])
+        node['obligation_note'] = obligations['role_notes'].get(node['role_id'], '')
     used_sources = {sid for node in nodes for sid in node['source_ids']}
     used_sources.update(sid for edge in edges + associations + decisions.get('excluded_inferences', []) for sid in edge['source_ids'])
     source_views = {sid: {'text': source[sid]['text'], 'pages': sorted({p['page'] for p in source[sid]['locations']})} for sid in sorted(used_sources)}
-    return {'schema_version': '1.1', 'theory': theory, 'ontology_iri': ONTOLOGY_IRI, 'class_semantics': 'A class describes entities matching an extracted role or realization concept. Classes may overlap and may have multiple parents. No device existence, class disjointness, or class equivalence is asserted.', 'association_semantics': 'Non-subtype links are OWL annotation assertions between class IRIs. They preserve source context without imposing object-property restrictions or asserting a relationship for every class member.', 'root_id': 'ExtractedRole', 'families': decisions['families'], 'nodes': nodes, 'subclass_edges': edges, 'associations': associations, 'excluded_inferences': decisions.get('excluded_inferences', []), 'sources': source_views, 'input_hashes': {'roles/roles.json': digest(out / 'roles/roles.json'), 'source/source_index.jsonl': digest(out / 'source/source_index.jsonl'), 'roles/ontology_decisions.json': digest(out / 'roles/ontology_decisions.json'), 'roles/ontology_theory.json': digest(out / 'roles/ontology_theory.json')}, 'counts': {'extracted_roles': len(roles), 'owl_classes': len(nodes), 'source_backed_subclass_edges': len(decisions['subclass_edges']), 'organizational_root_edges': len(edges) - len(decisions['subclass_edges']), 'annotation_associations': len(associations), 'multiple_parent_roles': sum(len(n['parents']) > 1 for n in nodes), 'explicit_lean_roles': sum(r['status'] == 'direct' for r in theory['roles'].values()), 'combined_lean_roles': sum(r['status'] == 'composed' for r in theory['roles'].values()), 'contextual_roles': sum(r['status'] == 'context' for r in theory['roles'].values()), 'unrepresented_roles': sum(r['status'] == 'unrepresented' for r in theory['roles'].values())}}
+    return {'schema_version': '1.2', 'theory': theory, 'obligations': {'scope': obligations['scope'], 'catalog': obligations['catalog']}, 'ontology_iri': ONTOLOGY_IRI, 'class_semantics': 'A class describes entities matching an extracted role or realization concept. Classes may overlap and may have multiple parents. No device existence, class disjointness, or class equivalence is asserted.', 'association_semantics': 'Non-subtype links are OWL annotation assertions between class IRIs. They preserve source context without imposing object-property restrictions or asserting a relationship for every class member.', 'root_id': 'ExtractedRole', 'families': decisions['families'], 'nodes': nodes, 'subclass_edges': edges, 'associations': associations, 'excluded_inferences': decisions.get('excluded_inferences', []), 'sources': source_views, 'input_hashes': {'roles/roles.json': digest(out / 'roles/roles.json'), 'source/source_index.jsonl': digest(out / 'source/source_index.jsonl'), 'roles/ontology_decisions.json': digest(out / 'roles/ontology_decisions.json'), 'roles/ontology_theory.json': digest(out / 'roles/ontology_theory.json'), 'roles/ontology_obligations.json': digest(out / 'roles/ontology_obligations.json')}, 'counts': {'extracted_roles': len(roles), 'owl_classes': len(nodes), 'source_backed_subclass_edges': len(decisions['subclass_edges']), 'organizational_root_edges': len(edges) - len(decisions['subclass_edges']), 'annotation_associations': len(associations), 'multiple_parent_roles': sum(len(n['parents']) > 1 for n in nodes), 'explicit_lean_roles': sum(r['status'] == 'direct' for r in theory['roles'].values()), 'combined_lean_roles': sum(r['status'] == 'composed' for r in theory['roles'].values()), 'contextual_roles': sum(r['status'] == 'context' for r in theory['roles'].values()), 'unrepresented_roles': sum(r['status'] == 'unrepresented' for r in theory['roles'].values())}}
 
 
 def triples(graph):
@@ -175,8 +256,9 @@ def triples(graph):
     rdf_type, label = NS['rdf'] + 'type', NS['rdfs'] + 'label'
     add(ONTOLOGY_IRI, rdf_type, NS['owl'] + 'Ontology')
     add(ONTOLOGY_IRI, NS['rdfs'] + 'comment', graph['class_semantics'] + ' ' + graph['association_semantics'], True)
-    add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', 'CSfC MSC 1.3.0; TDN role hierarchy 1.1; Lean theory v3.1', True)
+    add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', 'CSfC MSC 1.3.0; TDN role hierarchy 1.1; TDN theory v3.1', True)
     props = ['roleId', 'roleKind', 'sourceUnit', 'sourceText', 'pdfPages', 'basis', 'rationale', 'qualification', 'inputHash', 'theoryVersion', 'leanRepresentation', 'leanMapping', 'leanExpression', 'leanReference', 'theoryInterpretation']
+    props += ['associatedRequirement', 'directRequirement', 'inheritedRequirement', 'requirementTranslation', 'requirementCode', 'requirementStatus']
     props += sorted({a['relation'] for a in graph['associations']})
     for prop in props:
         add(BASE + prop, rdf_type, NS['owl'] + 'AnnotationProperty')
@@ -193,6 +275,13 @@ def triples(graph):
         add(iri, NS['rdfs'] + 'comment', node['description'], True)
         add(iri, BASE + 'roleId', node['role_id'], True)
         add(iri, BASE + 'roleKind', node['kind'], True)
+        for obligation in node['obligations']:
+            requirement = BASE + obligation['rg_id']
+            add(iri, BASE + 'associatedRequirement', requirement)
+            if obligation['direct']:
+                add(iri, BASE + 'directRequirement', requirement)
+            if obligation['inherited_from']:
+                add(iri, BASE + 'inheritedRequirement', requirement)
         if node.get('uncertainty'):
             add(iri, BASE + 'qualification', node['uncertainty'], True)
         if node.get('theory'):
@@ -211,6 +300,13 @@ def triples(graph):
                 add(iri, NS['skos'] + 'altLabel', alias, True)
         for sid in node['source_ids']:
             add(iri, BASE + 'sourceUnit', source_iri(sid))
+    for rg, obligation in graph['obligations']['catalog'].items():
+        iri = BASE + rg
+        add(iri, label, obligation['title'], True)
+        add(iri, BASE + 'requirementTranslation', obligation['translation'], True)
+        add(iri, BASE + 'requirementStatus', obligation['status'], True)
+        for reference in obligation['references']:
+            add(iri, BASE + 'requirementCode', reference['path'] + ':' + str(reference['line']) + '\n' + reference['code'], True)
     for edge in graph['subclass_edges'] + graph['associations']:
         if edge['type'] == 'subclass':
             subject, predicate, target = BASE + edge['child'], NS['rdfs'] + 'subClassOf', BASE + edge['parent']
@@ -279,7 +375,7 @@ def markdown(graph):
     nodes = {n['role_id']: n for n in graph['nodes']}
     lines = ['# CSfC role ontology', '', 'The hierarchy organizes all extracted roles and preserves source evidence for each subtype relationship. A role can have multiple parents. The navigation families group related topics for browsing and add no OWL subclass claims.', '', '[Interactive explorer](ontology.html) | [OWL in RDF/XML](ontology.owl) | [Turtle](ontology.ttl) | [Structured graph](ontology.json) | [Curation decisions](ontology_decisions.json)', '', graph['class_semantics'], '', graph['association_semantics'], '', 'OWL uses an open-world interpretation: an absent relationship remains unasserted. The extraction validators separately check that every extracted role and every declared evidence reference is present.', '', 'The transitive parent lists are computed for the exported subclass graph. The pipeline validates its supported serialization and hierarchy; it does not run a general OWL DL reasoner or prove CSfC compliance.', '', '## Counts', '']
     lines += ['- ' + key.replace('_', ' ') + ': ' + str(value) for key, value in graph['counts'].items()]
-    lines += ['', '## Representation in Lean v3.1', '', graph['theory']['mapping_scope'], '',
+    lines += ['', '## Representation in TDN v3.1', '', graph['theory']['mapping_scope'], '',
               '[Curated Lean mappings](ontology_theory.json) records all 76 source roles, code references, chosen interpretations and pinned Lean source hashes.', '',
               '| Role | Representation | Meaning | Code |', '| --- | --- | --- | --- |']
     for node in graph['nodes']:
@@ -289,6 +385,16 @@ def markdown(graph):
         references = [graph['theory']['references'][key] for key in record['references']]
         links = ', '.join('[' + r['label'] + '](../../../' + r['path'] + ')' for r in references)
         lines.append('| ' + node['label'] + ' | ' + graph['theory']['status_labels'][record['status']] + ' | ' + record['meaning'] + ' | ' + links + ' |')
+    lines += ['', '## Associated proof obligations', '', graph['obligations']['scope'], '',
+              'The explorer shows each selected role’s obligations below its name. Every entry includes a plain-English summary, its current Lean code, source links, and the recorded proof status. Parent-role obligations are included once and identify the roles from which they were inherited.', '',
+              '[Curated obligation mappings and translations](ontology_obligations.json) connect roles to requirement groups. The generator reads the code and proof status from the current sources. Source changes require reviewing the translations before regeneration.', '',
+              '| Role | Directly associated RGs | Inherited RGs |', '| --- | --- | --- |']
+    for node in graph['nodes']:
+        if node['role_id'] == graph['root_id']:
+            continue
+        direct = ', '.join(o['rg_id'] for o in node['obligations'] if o['direct']) or 'None recorded'
+        inherited = ', '.join(o['rg_id'] for o in node['obligations'] if o['inherited_from']) or 'None'
+        lines.append('| ' + node['label'] + ' | ' + direct + ' | ' + inherited + ' |')
     lines += ['', '## Chosen v3.1 interpretations', '']
     for key, interpretation in graph['theory']['interpretations'].items():
         lines += ['### ' + interpretation['title'], '', interpretation['summary'], '',

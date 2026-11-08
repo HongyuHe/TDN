@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "theory_version": "v3.1",
-  "source_run": "v3.1-20261031T231942Z",
-  "mapping_scope": "These annotations describe how source roles are represented by the current Lean model. A mapping does not establish deployed role membership or prove a requirement. Source subtype relationships remain unchanged.",
+  "source_run": "v3.1-20261104-continuation",
+  "mapping_scope": "These annotations explain how source roles are represented by the current Lean model. Device kind, encryption layer and interface zone are separate fields. The local zone represents device-internal interfaces. Device roles remain classified separately. Namespace-local addresses belong to their recorded device, including loopback addresses shared by several devices. Source subtype relationships remain unchanged. Role mappings alone do not establish requirement compliance.",
   "status_labels": {
     "direct": "Explicit Lean representation",
     "composed": "Combination of Lean fields",
@@ -13,183 +13,267 @@
     "kind": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "inductive DeviceKind where",
-      "label": "DeviceKind"
+      "label": "DeviceKind",
+      "line": 11
     },
     "device": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "structure Device where",
-      "label": "Device"
+      "label": "Device",
+      "line": 18
     },
     "interface": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "structure Interface where",
-      "label": "Interface"
+      "label": "Interface",
+      "line": 26
     },
     "deployment": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "structure Deployment where",
-      "label": "Deployment"
+      "label": "Deployment",
+      "line": 581
     },
     "ordinary": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "def Deployment.OrdinaryGray",
-      "label": "Deployment.OrdinaryGray"
+      "label": "Deployment.OrdinaryGray",
+      "line": 668
     },
     "service": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "inductive ServiceKind where",
-      "label": "ServiceKind"
+      "label": "ServiceKind",
+      "line": 519
     },
     "management": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "structure ManagementServiceInstance where",
-      "label": "ManagementServiceInstance"
+      "label": "ManagementServiceInstance",
+      "line": 567
     },
     "management_function": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "inductive ManagementServiceFunction where",
-      "label": "ManagementServiceFunction"
+      "label": "ManagementServiceFunction",
+      "line": 554
     },
     "management_domain": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "inductive ManagementDomain where",
-      "label": "ManagementDomain"
+      "label": "ManagementDomain",
+      "line": 559
     },
     "authority": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "structure AuthorityFacts where",
-      "label": "AuthorityFacts"
+      "label": "AuthorityFacts",
+      "line": 510
     },
     "exchange": {
       "path": "TDN/Targets/ComplianceModel.lean",
       "anchor": "structure ManagementExchange where",
-      "label": "ManagementExchange"
+      "label": "ManagementExchange",
+      "line": 547
     },
     "eap_role": {
       "path": "TDN/Targets/DirectSpecifications.lean",
       "anchor": "inductive EAPRole where",
-      "label": "EAPRole"
+      "label": "EAPRole",
+      "line": 273
     },
     "mac_auth": {
       "path": "TDN/Targets/DirectSpecifications.lean",
       "anchor": "structure MACsecAuthentication where",
-      "label": "MACsecAuthentication"
+      "label": "MACsecAuthentication",
+      "line": 358
     },
     "key_server": {
       "path": "TDN/Targets/DirectSpecifications.lean",
       "anchor": "structure MACsecServerPair where",
-      "label": "MACsecServerPair"
+      "label": "MACsecServerPair",
+      "line": 589
     },
     "carrier": {
       "path": "TDN/Targets/DirectSpecifications.lean",
       "anchor": "structure EncapsulationUse where",
-      "label": "EncapsulationUse"
+      "label": "EncapsulationUse",
+      "line": 202
     },
     "carrier_core": {
       "path": "TDN/Targets/DirectSpecifications.lean",
       "anchor": "def MACsecEncapsulationCore",
-      "label": "MACsecEncapsulationCore"
+      "label": "MACsecEncapsulationCore",
+      "line": 214
     },
     "services": {
       "path": "TDN/Targets/DirectSpecifications.lean",
       "anchor": "def AuthenticationServices",
-      "label": "AuthenticationServices"
+      "label": "AuthenticationServices",
+      "line": 45
     },
     "flow": {
       "path": "TDN/Targets/DirectSpecifications.lean",
       "anchor": "def Flow.Valid",
-      "label": "Flow.Valid"
+      "label": "Flow.Valid",
+      "line": 21
     },
     "applicability": {
       "path": "TDN/Targets/CPDuties.lean",
       "anchor": "def CPContext.ComponentApplies",
-      "label": "CPContext.ComponentApplies"
+      "label": "CPContext.ComponentApplies",
+      "line": 354
     },
     "duties": {
       "path": "TDN/Targets/CPDuties.lean",
       "anchor": "def CPContext.AllApplicableDuties",
-      "label": "CPContext.AllApplicableDuties"
+      "label": "CPContext.AllApplicableDuties",
+      "line": 424
     },
     "rg007": {
       "path": "TDN/Targets/CompleteSpecifications.lean",
       "anchor": "def msc_nested_layer_protection",
-      "label": "msc_nested_layer_protection"
+      "label": "msc_nested_layer_protection",
+      "line": 6
     },
     "rg012": {
       "path": "TDN/Targets/CompleteSpecifications.lean",
       "anchor": "def msc_security_level_key_and_management_separation",
-      "label": "msc_security_level_key_and_management_separation"
+      "label": "msc_security_level_key_and_management_separation",
+      "line": 17
     },
     "rg013": {
       "path": "TDN/Targets/CompleteSpecifications.lean",
       "anchor": "def msc_gray_firewall_path_coverage",
-      "label": "msc_gray_firewall_path_coverage"
+      "label": "msc_gray_firewall_path_coverage",
+      "line": 20
     },
     "rg015": {
       "path": "TDN/Targets/CompleteSpecifications.lean",
       "anchor": "def msc_macsec_encapsulation",
-      "label": "msc_macsec_encapsulation"
+      "label": "msc_macsec_encapsulation",
+      "line": 27
     },
     "rg024": {
       "path": "TDN/Targets/CompleteSpecifications.lean",
       "anchor": "def msc_macsec_authentication_choice_and_as",
-      "label": "msc_macsec_authentication_choice_and_as"
+      "label": "msc_macsec_authentication_choice_and_as",
+      "line": 38
     },
     "rg027": {
       "path": "TDN/Targets/CompleteSpecifications.lean",
       "anchor": "def msc_macsec_key_generation_and_server",
-      "label": "msc_macsec_key_generation_and_server"
+      "label": "msc_macsec_key_generation_and_server",
+      "line": 43
     },
     "rg047": {
       "path": "TDN/Targets/CompleteSpecifications.lean",
       "anchor": "def msc_administrator_authentication",
-      "label": "msc_administrator_authentication"
+      "label": "msc_administrator_authentication",
+      "line": 94
     },
     "rg074": {
       "path": "TDN/Targets/CompleteSpecifications.lean",
       "anchor": "def msc_redundant_component_permission",
-      "label": "msc_redundant_component_permission"
+      "label": "msc_redundant_component_permission",
+      "line": 114
     },
     "credentials": {
       "path": "TDN/Targets/AuthenticationIsolation.lean",
       "anchor": "structure InnerAuthentication where",
-      "label": "InnerAuthentication"
+      "label": "InnerAuthentication",
+      "line": 11
     },
     "accounts": {
       "path": "TDN/Targets/Administration.lean",
       "anchor": "structure AdministrativeAccount where",
-      "label": "AdministrativeAccount"
+      "label": "AdministrativeAccount",
+      "line": 20
     },
     "time": {
       "path": "TDN/Targets/TimeSynchronization.lean",
       "anchor": "structure TimeSourceEndpoint where",
-      "label": "TimeSourceEndpoint"
+      "label": "TimeSourceEndpoint",
+      "line": 40
     },
     "external": {
       "path": "TDN/Targets/CPDutyRecords.lean",
       "anchor": "structure ExternalFacts where",
-      "label": "ExternalFacts"
+      "label": "ExternalFacts",
+      "line": 57
     },
     "level": {
       "path": "TDN/Targets/Architecture.lean",
       "anchor": "structure SecurityLevel where",
-      "label": "SecurityLevel"
+      "label": "SecurityLevel",
+      "line": 6
     },
     "red_network": {
       "path": "TDN/Targets/Architecture.lean",
       "anchor": "structure RedNetworkIdentity where",
-      "label": "RedNetworkIdentity"
+      "label": "RedNetworkIdentity",
+      "line": 13
+    },
+    "zone": {
+      "path": "TDN/Targets/Architecture.lean",
+      "anchor": "inductive Zone where",
+      "label": "Zone",
+      "line": 40
+    },
+    "namespace_addresses": {
+      "path": "TDN/Targets/NamespaceAddresses.lean",
+      "anchor": "def NamespaceAddressChecks",
+      "label": "NamespaceAddressChecks",
+      "line": 22
+    },
+    "sizing_inventory": {
+      "path": "TDN/Targets/DirectSpecifications.lean",
+      "anchor": "def PacketSizingInventory",
+      "label": "PacketSizingInventory",
+      "line": 861
+    },
+    "sizing_roles": {
+      "path": "TDN/Targets/PacketSizing.lean",
+      "anchor": "inductive SizingInterface where",
+      "label": "SizingInterface",
+      "line": 6
+    },
+    "rg033": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_packet_size_configuration",
+      "label": "msc_packet_size_configuration",
+      "line": 67
+    },
+    "rg040": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_gray_firewall_allowlist",
+      "label": "msc_gray_firewall_allowlist",
+      "line": 91
+    },
+    "rg035": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_boundary_interface_filtering",
+      "label": "msc_boundary_interface_filtering",
+      "line": 75
+    },
+    "rg039": {
+      "path": "TDN/Targets/CompleteSpecifications.lean",
+      "anchor": "def msc_outer_gray_interface_policy",
+      "label": "msc_outer_gray_interface_policy",
+      "line": 88
     }
   },
   "source_hashes": {
     "TDN/Targets/Administration.lean": "dcfbaec5c39839dc9fac870f542e34421e6c9cc41dbf351180f24c668e629041",
-    "TDN/Targets/Architecture.lean": "fb4b929f86f92c3aa0b7d134548dce8edebf72c645d8b2f9d034567fd91c04c4",
+    "TDN/Targets/Architecture.lean": "98f3a81365a9ed998096ac8e5389880e0d661eeb5cd9fd0eb4deb4d57cd8318b",
     "TDN/Targets/AuthenticationIsolation.lean": "0389df58e5511f4d8c34190fc3bec837c0bb069c6258e98326becacb71cb7065",
-    "TDN/Targets/CPDuties.lean": "08df288d3b3e06106fbe245ef08d82d76ae1b1771fb977adf347cfff68d5d967",
-    "TDN/Targets/CPDutyRecords.lean": "8d9ccffbc8a88910768ebd9bfdf467a2d7dc4c10fe251195a8125d6ac7b1c668",
+    "TDN/Targets/CPDuties.lean": "293047fbbe979f5dea490cd4c1aa23c82a0909110a94a44517a1ad5d0ab16cfa",
+    "TDN/Targets/CPDutyRecords.lean": "b3c84c6700cd46766f03237a949d39c11dd04b07aab194d5f4ca3fa5e0fbce61",
     "TDN/Targets/CompleteSpecifications.lean": "13285457ac8eba31a50313408edb08c34e02a134b201553c034c767ebbdc19b4",
-    "TDN/Targets/ComplianceModel.lean": "c4842ba2c660b6788842ee202d0b590d85699d66f87fedba77f3387677e302a2",
-    "TDN/Targets/DirectSpecifications.lean": "c13ed64c732b3ce6eefda9c920f91e5e072282a48a2712f8502df4516471e3ad",
+    "TDN/Targets/ComplianceModel.lean": "5cd92ca338866714a06f71c67b9c7e027fa7e90ccb6e46bbca202f0d3b148e23",
+    "TDN/Targets/DirectSpecifications.lean": "163c61e6bc1a651c456f27472583429ab3b09c77848565e1258e2b0be45438ff",
+    "TDN/Targets/NamespaceAddresses.lean": "f6b83ca3ef2589a7b362fad9f096d01080830bb81524500c3251cef781ec39a9",
+    "TDN/Targets/PacketSizing.lean": "0efefade6d7fdd839a49d14d5c098bbbc4111c164f85222f12862e972e04852a",
     "TDN/Targets/TimeSynchronization.lean": "1095fd256cfdd3703f3e3e51ab310dcc9c2588daff3c8fa416b75b5dcd6d8d0f"
   },
   "interpretations": {
@@ -247,7 +331,14 @@
       "source_path": "data/construction/v3.1-20261031T231942Z/interpretations.md",
       "source_line": 185,
       "source_text": "Affected groups: RG-056 and RG-074. Original pages 21–25, 36 and the SR-14 footnote. Every physical Red egress crosses a CP-conforming MSC solution or AO-approved data-in-transit solution. Crossing an Inner alone is insufficient. Government-certified and CSfC paths may coexist without an unprotected path.\n\nEvery actual redundant solution component retains its fixed applicable CP duties, including Outer Firewalls and selected management components. Ordinary Gray routing infrastructure receives no invented CP security obligation. Standalone encapsulators keep RG-015 duties. Possible failover does not create an automatic availability guarantee. The fixed duty expansion and external assumption boundary remain visible. No whole-group proof completion is claimed.",
-      "summary": "Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray checks the kind, absence of an encryption layer and infrastructure flag, and Gray-only interfaces. Standalone encapsulators keep their applicable duties even when their underlying device is a router or switch."
+      "summary": "Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray requires the matching kind, no encryption layer or infrastructure flag, at least one Gray interface, and only Gray or local interfaces. Standalone encapsulators retain their applicable duties."
+    },
+    "V31R-033": {
+      "title": "RG-033: external interface sizes and optional Inner reduction",
+      "source_path": "data/construction/v3.1-20261104-continuation/source-review/RG-033.md",
+      "source_line": 3,
+      "source_text": "# RG-033: packet size and external-interface limits\n\nThe source review uses SR-23 on physical PDF pages 36–37 and IR-2 on pages 42–43. The exact extracted passages are retained in `../proof/RG-033/round-001/source-pages.txt`.\n\nSR-23 requires packet-size configuration that prevents further fragmentation at the external interface of a Gray Firewall or Encryption Component. The selected interpretation includes the Inner encryptor’s Gray-facing interface and the Outer encryptor’s Black-facing interface. Both interfaces are external interfaces of encryption components. The source provides no Inner exclusion. The Gray Firewall’s applicable external interfaces are included as well.\n\nIR-2 adds an optional objective for Inner components: reduce fragmentation and its performance impact while considering Outer and Black limits. That comparison remains separate from the mandatory local MTU bound. The concrete baseline and shared applications leave the optional comparison unselected.\n\nRound 001 exposed an incorrect separation: the mandatory no-further-fragmentation clause selected only the Gray-Firewall/Outer sizing role. The corrected clause also selects the Inner external role. The existing recorded size limits already covered both roles. The correction therefore strengthens the specification and general proof without weakening the recorded checks.\n\nThe sizing inventory links each record to the actual device, interface and zone. Inner Gray interfaces use `innerExternal`; Outer Black interfaces and applicable Gray Firewall external interfaces use `grayFirewallOrEncryptionExternal`. These names classify interfaces for the proof. Device kinds and the source ontology remain unchanged.\n\nThe accepted interpretation requires a proof about actual represented emissions. A stored MTU or a count of sizing records alone cannot establish the requirement. Source preparation, subsequent processing, header and encryption overhead, and final transmission must satisfy the corresponding size bounds. The instantiated applications cover the selected IPv4/IPsec processing model and retain its explicit implementation assumptions.\n",
+      "summary": "Mandatory MTU bounds include Inner Gray interfaces, Outer Black interfaces and applicable Gray Firewall external interfaces. The separate Inner fragmentation-reduction objective remains optional."
     }
   },
   "roles": {
@@ -276,25 +367,34 @@
       "references": [
         "device",
         "kind",
-        "flow"
+        "flow",
+        "sizing_inventory",
+        "sizing_roles",
+        "rg033"
       ],
       "interpretations": [
-        "V31-007"
+        "V31-007",
+        "V31R-033"
       ]
     },
     "ROLE-inner-encryption": {
       "status": "composed",
-      "meaning": "The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind.",
+      "meaning": "The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. Its Gray-facing interfaces appear in the packet-size inventory with the Inner external role.",
       "expressions": [
         "Device.layer = some .inner"
       ],
       "references": [
         "device",
         "flow",
-        "rg007"
+        "rg007",
+        "sizing_inventory",
+        "sizing_roles",
+        "rg033",
+        "rg035"
       ],
       "interpretations": [
-        "V31-007"
+        "V31-007",
+        "V31R-033"
       ]
     },
     "ROLE-inner-vpn": {
@@ -307,10 +407,15 @@
       "references": [
         "kind",
         "device",
-        "flow"
+        "flow",
+        "sizing_inventory",
+        "sizing_roles",
+        "rg033",
+        "rg035"
       ],
       "interpretations": [
-        "V31-007"
+        "V31-007",
+        "V31R-033"
       ]
     },
     "ROLE-inner-macsec": {
@@ -323,25 +428,36 @@
       "references": [
         "kind",
         "device",
-        "flow"
+        "flow",
+        "sizing_inventory",
+        "sizing_roles",
+        "rg033",
+        "rg035"
       ],
       "interpretations": [
-        "V31-007"
+        "V31-007",
+        "V31R-033"
       ]
     },
     "ROLE-outer-encryption": {
       "status": "composed",
-      "meaning": "The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind.",
+      "meaning": "The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. Its Black-facing interfaces appear in the packet-size inventory with the encryption external role.",
       "expressions": [
         "Device.layer = some .outer"
       ],
       "references": [
         "device",
         "flow",
-        "rg007"
+        "rg007",
+        "sizing_inventory",
+        "sizing_roles",
+        "rg033",
+        "rg035",
+        "rg039"
       ],
       "interpretations": [
-        "V31-007"
+        "V31-007",
+        "V31R-033"
       ]
     },
     "ROLE-outer-vpn": {
@@ -354,10 +470,16 @@
       "references": [
         "kind",
         "device",
-        "flow"
+        "flow",
+        "sizing_inventory",
+        "sizing_roles",
+        "rg033",
+        "rg035",
+        "rg039"
       ],
       "interpretations": [
-        "V31-007"
+        "V31-007",
+        "V31R-033"
       ]
     },
     "ROLE-outer-macsec": {
@@ -370,10 +492,16 @@
       "references": [
         "kind",
         "device",
-        "flow"
+        "flow",
+        "sizing_inventory",
+        "sizing_roles",
+        "rg033",
+        "rg035",
+        "rg039"
       ],
       "interpretations": [
-        "V31-007"
+        "V31-007",
+        "V31R-033"
       ]
     },
     "ROLE-vpn-gateway": {
@@ -420,17 +548,22 @@
     },
     "ROLE-gray-firewall": {
       "status": "direct",
-      "meaning": "The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.",
+      "meaning": "The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. Its applicable external interfaces also appear in the packet-size inventory.",
       "expressions": [
         "Device.kind = .grayFirewall"
       ],
       "references": [
         "kind",
         "deployment",
-        "rg013"
+        "rg013",
+        "sizing_inventory",
+        "sizing_roles",
+        "rg033",
+        "rg040"
       ],
       "interpretations": [
-        "V31-013"
+        "V31-013",
+        "V31R-033"
       ]
     },
     "ROLE-outer-firewall": {
@@ -441,7 +574,8 @@
       ],
       "references": [
         "kind",
-        "deployment"
+        "deployment",
+        "rg035"
       ],
       "interpretations": []
     },
@@ -853,14 +987,15 @@
     },
     "ROLE-gray-router": {
       "status": "composed",
-      "meaning": "An ordinary Gray router must have the matching kind, no encryption layer, no infrastructure flag, and only Gray interfaces to satisfy OrdinaryGray.",
+      "meaning": "An ordinary Gray router has the router kind, no encryption layer and no infrastructure flag. It has at least one Gray interface; every other interface is Gray or local. Local includes device-internal interfaces such as loopback.",
       "expressions": [
         "Device.kind = .ordinaryGrayRouter",
         "Deployment.OrdinaryGray"
       ],
       "references": [
         "kind",
-        "ordinary"
+        "ordinary",
+        "zone"
       ],
       "interpretations": [
         "V31-056-074"
@@ -888,7 +1023,7 @@
     },
     "ROLE-switch": {
       "status": "context",
-      "meaning": "Ordinary Gray switches have a dedicated kind. Other switching behavior is represented through processing records without a generic switch DeviceKind.",
+      "meaning": "An ordinary Gray switch has a dedicated kind, no encryption layer and no infrastructure flag. It has at least one Gray interface and only Gray or local interfaces. Other switching behavior is represented through packet-processing records.",
       "expressions": [
         "DeviceKind.ordinaryGraySwitch",
         "Deployment.OrdinaryGray"
@@ -896,7 +1031,8 @@
       "references": [
         "kind",
         "ordinary",
-        "deployment"
+        "deployment",
+        "zone"
       ],
       "interpretations": [
         "V31-056-074"

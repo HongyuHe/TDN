@@ -10,7 +10,7 @@ abbrev KeyAction := KeyInterface.Action GatewayKey String String
 abbrev KeyEvent := KeyInterface.Event GatewayKey String String
 abbrev KeyObject := KeyInterface.Object GatewayKey
 
-def privateEvent : ProcessingEvent → List KeyEvent
+def privateEvent : NetworkEvent → List KeyEvent
   | .privateKeyExport gateway key interface => [.export (gateway, key) interface]
   | .privateKeyRead gateway key principal => [.read (gateway, key) principal]
   | _ => []
@@ -18,13 +18,13 @@ def privateEvent : ProcessingEvent → List KeyEvent
 def protectedGatewayKey (keys : List PrivateKey) (identity : GatewayKey) : Prop :=
   ∃ entry ∈ keys, identity = (entry.gateway, entry.id)
 
-lemma private_export_projects {events : List ProcessingEvent} {gateway key interface : String}
-    (member : ProcessingEvent.privateKeyExport gateway key interface ∈ events) :
+lemma private_export_projects {events : List NetworkEvent} {gateway key interface : String}
+    (member : NetworkEvent.privateKeyExport gateway key interface ∈ events) :
     KeyInterface.Event.export (gateway, key) interface ∈ events.flatMap privateEvent :=
   List.mem_flatMap.mpr ⟨_, member, List.mem_singleton_self _⟩
 
-lemma private_read_projects {events : List ProcessingEvent} {gateway key principal : String}
-    (member : ProcessingEvent.privateKeyRead gateway key principal ∈ events) :
+lemma private_read_projects {events : List NetworkEvent} {gateway key principal : String}
+    (member : NetworkEvent.privateKeyRead gateway key principal ∈ events) :
     KeyInterface.Event.read (gateway, key) principal ∈ events.flatMap privateEvent :=
   List.mem_flatMap.mpr ⟨_, member, List.mem_singleton_self _⟩
 

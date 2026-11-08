@@ -4,6 +4,7 @@ import argparse
 import datetime
 import hashlib
 import json
+import os
 from pathlib import Path
 import socket
 import struct
@@ -25,13 +26,13 @@ def checksum(data):
     return (~value) & 65535
 
 
-def udp_packet(port, payload, ihl=5):
+def udp_packet(port, payload, ihl=5, source_port=40000):
     header = bytearray.fromhex('4500000000010000401100000afb00010afb0002')
     header[0] = 0x40 + ihl
     header.extend(bytes([1]) * (4 * (ihl - 5)))
     header[2:4] = struct.pack('!H', len(header) + 8 + len(payload))
     header[10:12] = struct.pack('!H', checksum(bytes(header)))
-    return bytes(header) + struct.pack('!HHHH', 40000, port, 8 + len(payload), 0) + payload
+    return bytes(header) + struct.pack('!HHHH', source_port, port, 8 + len(payload), 0) + payload
 
 
 def ike(size=28):
@@ -47,6 +48,7 @@ def main():
     parser.add_argument('--bytecode', type=Path)
     parser.add_argument('--send')
     parser.add_argument('--options', action='store_true')
+    parser.add_argument('--source-port-framing', action='store_true')
     args = parser.parse_args()
     if args.send:
         sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
@@ -64,22 +66,25 @@ def main():
         return result.stdout
     cases = []
     started = now()
+    names = ['tdnfr%d-%d' % (os.getpid(), index) for index in [0, 1]]
+    created = []
     try:
-        for name in ['v31f0', 'v31f1']:
+        for name in names:
             run(['ip', 'netns', 'add', name])
+            created.append(name)
         run(['ip', 'link', 'add', 'f0', 'type', 'veth', 'peer', 'name', 'f1'])
         for index in [0, 1]:
-            name = 'v31f%d' % index
+            name = names[index]
             port = 'f%d' % index
             run(['ip', 'link', 'set', port, 'netns', name])
             run(['ip', '-n', name, 'addr', 'add', '10.251.0.%d/24' % (index + 1), 'dev', port])
             run(['ip', '-n', name, 'link', 'set', port, 'up'])
             run(['ip', '-n', name, 'link', 'set', 'lo', 'up'])
-        prefix = ['ip', 'netns', 'exec', 'v31f1', 'iptables']
+        prefix = ['ip', 'netns', 'exec', names[1], 'iptables']
         program = args.bytecode.read_text().strip()
         run(prefix + ['-A', 'INPUT', '-p', 'udp', '-m', 'bpf', '--bytecode', program, '-j', 'ACCEPT'])
         run(prefix + ['-A', 'INPUT', '-p', 'udp', '-j', 'DROP'])
-        run(['ip', 'netns', 'exec', 'v31f1', 'iptables-save'])
+        run(['ip', 'netns', 'exec', names[1], 'iptables-save'])
         run(['uname', '-a'])
         values = [('short500', 500, b'\xff', False), ('short4500', 4500, b'\xff', False),
             ('ike500', 500, ike(), True), ('ike500large', 500, ike(256), True),
@@ -97,8 +102,8 @@ def main():
                 ('malformed500-options6', 500, b'\xff', False, 6)])
         for name, port, payload, expected, ihl in cases_to_send:
             run(prefix + ['-Z', 'INPUT'])
-            raw = udp_packet(port, payload, ihl)
-            send = ['ip', 'netns', 'exec', 'v31f0', sys.executable, str(Path(__file__).resolve()), '--send', raw.hex()]
+            raw = udp_packet(40000, payload, ihl, source_port=port) if args.source_port_framing else udp_packet(port, payload, ihl)
+            send = ['ip', 'netns', 'exec', names[0], sys.executable, str(Path(__file__).resolve()), '--send', raw.hex()]
             run(send)
             time.sleep(.08)
             counters = run(prefix + ['-L', 'INPUT', '-n', '-v', '-x'])
@@ -109,7 +114,7 @@ def main():
             if (accepted, dropped) != ((1, 0) if expected else (0, 1)):
                 raise RuntimeError('Kernel result differs for ' + name)
     finally:
-        for name in ['v31f1', 'v31f0']:
+        for name in reversed(created):
             run(['ip', 'netns', 'del', name], optional=True)
         (args.output / 'observations.json').write_text(json.dumps({'startedAt': started, 'endedAt': now(), 'commands': commands, 'cases': cases}, indent=2) + '\n')
         (args.output / 'bytecode.txt').write_text(args.bytecode.read_text())

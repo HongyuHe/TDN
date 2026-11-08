@@ -3,6 +3,18 @@ from . import mixed
 
 
 def adapter(name):
+    if name == "macsec-boundary-v1":
+        from . import macsec_boundary
+        return macsec_boundary
+    if name == "native-underlay-policy-v1":
+        from . import underlay_policy
+        return underlay_policy
+    if name == "red-service-policy-v1":
+        from . import red_services
+        return red_services
+    if name == "xfrm-forward-policy-v1":
+        from . import xfrm_forward
+        return xfrm_forward
     if name == "l2-filter-admission-v1":
         from . import l2_admission
         return l2_admission

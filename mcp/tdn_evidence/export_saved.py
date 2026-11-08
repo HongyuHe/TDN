@@ -51,13 +51,17 @@ def export_projection(directory, destination, view, execution_supplement=None,
         from .parsers.execution import parse_execution
         values = parse_execution(directory, execution_supplement, include_recorded_sa_epochs)
         values["projectionVersion"] = "native-ipv4-execution-v3-port-mtu"
+    elif view == "bridge_processing":
+        from .bridge_processing import project_bridge_processing, VERSION
+        values = project_bridge_processing(directory, snapshot)
+        values["projectionVersion"] = VERSION
     elif view in PROJECTIONS:
         version, project = PROJECTIONS[view]
         values = project(directory, snapshot)
         values["projectionVersion"] = version
     else:
         raise ValueError("Supported saved views: " + ", ".join([
-            "inventory", "packet_filters", "topology", "multi_protocol_execution", *sorted(PROJECTIONS)]))
+            "inventory", "packet_filters", "topology", "multi_protocol_execution", "bridge_processing", *sorted(PROJECTIONS)]))
     values["provenance"] = {"manifestSha256": hashlib.sha256((directory / "manifest.json").read_bytes()).hexdigest(),
                             "snapshotId": manifest["snapshot_id"], "view": view}
     destination.parent.mkdir(parents=True, exist_ok=True)

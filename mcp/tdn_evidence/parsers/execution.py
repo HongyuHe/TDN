@@ -130,7 +130,7 @@ def binding_records(snapshot, device_ids, port_ids, devices, policies, states):
     seals = [(row["seal"]["tag"], row["seal"]["association"], row["seal"]["sender"],
               row["seal"]["receiver"]) for row in tunnels]
     require(len(seals) == len(set(seals)), "A wire association has ambiguous declared tunnel bindings")
-    return {"portBindings": ports, "sourceAttachments": sources, "ipsecTunnelBindings": tunnels,
+    return {"ifaceBindings": ports, "sourceAttachments": sources, "ipsecTunnelBindings": tunnels,
             "bindingLimitations": ["Missing declared network IDs require an explicit network-to-attachment map",
                 "Role and zone labels are architectural assignments checked against observations",
                 "Shared-kernel attachments do not establish physical hardware independence"]}
@@ -321,7 +321,7 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
         port_records.append({"owner": device_index[interface["device_id"]],
             "name": interface["name"], "stack": stack, "payloadOrigin": origin})
     links = []
-    switching = []
+    bridging = []
     for link in snapshot["links"]:
         if link["relation"] != "veth":
             continue
@@ -340,7 +340,7 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
         require(flows[0]["raw_value"].strip() == "reset_counts priority=0 actions=NORMAL", "Non-NORMAL OVS processing requires extension")
         ports = [i for i in interfaces if i["device_id"] == device["id"] and i["link_kind"] == "veth"]
         require(ports, "Empty physical bridge membership")
-        switching.extend([[port_index[a["id"]], port_index[b["id"]]] for a in ports for b in ports if a != b])
+        bridging.extend([[port_index[a["id"]], port_index[b["id"]]] for a in ports for b in ports if a != b])
     sources = [port_index[i["id"]] for i in interfaces if i["zone"] == "red" and
                next(d for d in devices if d["id"] == i["device_id"])["role"] == "host"]
     black = [port_index[i["id"]] for i in interfaces if i["zone"] == "black"]
@@ -352,8 +352,8 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
         **bindings,
         "devices": device_records, "ports": port_records,
         "routes": [dict(zip(route_fields, row)) for row in routes],
-        "links": links, "bridges": switching, "macPorts": [], "carriers": [],
-        "redSources": sources, "grayPorts": gray, "blackPorts": black,
+        "links": links, "bridges": bridging, "macIfaces": [], "carriers": [],
+        "redSources": sources, "grayIfaces": gray, "blackIfaces": black,
         "deviceIds": device_index, "portIds": port_index, "levels": levels,
         "routeGateways": route_gateways,
         "sourceDevices": snapshot["devices"], "sourceInterfaces": snapshot["interfaces"],

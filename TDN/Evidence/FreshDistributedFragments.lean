@@ -11,12 +11,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.FreshSharedExecution
 
@@ -30,12 +30,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.FreshBaselineExecution
 
@@ -49,12 +49,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.Family444
 
@@ -68,12 +68,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.Family446
 
@@ -87,12 +87,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.Family464
 
@@ -106,12 +106,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.Family466
 
@@ -125,12 +125,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.Family644
 
@@ -144,12 +144,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.Family646
 
@@ -163,12 +163,12 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.Family664
 
@@ -182,11 +182,11 @@ theorem each_fragment_at_black_retains_protection {Byte : Type}
     (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (Fragmentation.distributed (Execution.lts config)
       (Execution.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
-    ∀ entry ∈ located, entry.1.phase = .ready → entry.1.port ∈ blackPorts →
+    ∀ entry ∈ located, entry.1.datapathStage = .ready → entry.1.iface ∈ blackIfaces →
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain :=
-  Targets.every_distributed_black_piece_is_double_protected config layout redSources blackPorts
-    encodedBytes local_stack_conditions sources_checked black_ports_checked origin run
+  Targets.every_distributed_black_piece_is_double_protected config expectedEncapStack redSources blackIfaces
+    encodedBytes local_stack_conditions sources_checked black_ifaces_checked origin run
 
 end TDN.Imported.Family666

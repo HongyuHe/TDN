@@ -21,9 +21,9 @@ def level : SecurityLevel := ⟨"secret", ∅, ∅, ∅⟩
 
 def component (owner : Nat) : String := if owner = 0 then "A" else "B"
 
-def portName (port : Nat) : String :=
-  if port = 0 then "A/wire" else if port = 1 then "B/wire"
-  else if port = 2 then "A/macsec" else "B/macsec"
+def ifaceName (iface : Nat) : String :=
+  if iface = 0 then "A/wire" else if iface = 1 then "B/wire"
+  else if iface = 2 then "A/macsec" else "B/macsec"
 
 def devices : List Device :=
   [⟨"A", "siteA", .macsec, some .outer, level, true⟩,
@@ -46,20 +46,20 @@ def tunnels : List Tunnel :=
 def peers : List PacketProcessing.MKAEndpoint :=
   [⟨0, 1, 144115398529318913, "AB"⟩, ⟨1, 0, 144115398529384449, "BA"⟩]
 
-def macPort (physical logical : Nat) : MultiProtocolExecution.MACPort :=
+def macIface (physical logical : Nat) : MultiProtocolExecution.MACIface :=
   ⟨logical, physical, ⟨true, true, true, 0⟩, none, [], true⟩
 
 def inventory (base : PacketProcessing.Inventory) : PacketProcessing.Inventory :=
   { base with
-    ports := [0, 1, 2, 3], portName := portName, componentName := component,
+    ifaces := [0, 1, 2, 3], ifaceName := ifaceName, componentName := component,
     mkaPeers := peers, ipsecSizes := [],
     configuration := { base.configuration with
       ip := { base.configuration.ip with
-        owner := fun port => port % 2, interfaceName := portName,
+        owner := fun iface => iface % 2, interfaceName := ifaceName,
         routes := [], outbound := fun _ => [], inbound := fun _ => [],
         localAddress := fun _ _ => False,
         forwardRules := fun _ => [], forwardFallback := fun _ => .deny },
-      macPorts := [macPort 0 2, macPort 1 3], carriers := [], bridge := fun _ _ => False,
+      macIfaces := [macIface 0 2, macIface 1 3], carriers := [], bridge := fun _ _ => False,
       linkPolicies := [(0, ⟨program 0, program 1⟩), (1, ⟨program 2, program 3⟩)],
       networkBytes := fun body _ => body.visibleHeader.bind PacketPolicy.Packet.networkBytes } }
 
@@ -94,12 +94,12 @@ theorem captured_link_program_model_RG038 (base : Deployment) (processing : Pack
     simp [deployment, grayWorkstationRole, Deployment.IsDevice, devices]
   · rfl
   · rfl
-  · funext port address
-    simp [deployment, inventory, nativeLocalAddress, interfaces]
+  · funext iface address
+    simp [deployment, inventory, nativeLocalAddress, interfaces, Interface.HasLocalAddress]
   · rfl
   · rfl
   · unfold LinkPolicyRecordChecks Deployment.LinkPath
-    dsimp [inventory, macPort]
+    dsimp [inventory, macIface]
     decide
   · exact link_header_records_checked base processing
   · intro interface member endpoint endpointMember name packet framing destination
@@ -144,22 +144,30 @@ lemma captured_bootstrap_MKA_is_fully_admitted
       exact (show PacketClass (mka.Packet "" "") = .control from by decide)
     simp [control]
   constructor
-  · refine ⟨.link, supported "" "A/wire", ?_⟩
-    refine ⟨⟨inventory processing, rfl, 0, by simp [inventory], rfl, Or.inr (Or.inl ?_)⟩,
-      inventory processing, rfl, 0, by simp [inventory], rfl,
-      ⟨program 0, program 1⟩, rfl, ?_⟩
-    · refine ⟨framing "" "A/wire", ⟨0, 1, 144115398529318913, "AB"⟩,
-        by simp [inventory, peers], rfl, mka.payload, rfl, ?_, ?_, ?_⟩
-      all_goals exact of_decide_eq_true rfl
-    · exact captured_positive_MKA_and_data.1
-  · refine ⟨.link, supported "B/wire" "", ?_⟩
-    refine ⟨⟨inventory processing, rfl, 1, by simp [inventory], rfl, Or.inr (Or.inl ?_)⟩,
-      inventory processing, rfl, 1, by simp [inventory], rfl,
-      ⟨program 2, program 3⟩, rfl, ?_⟩
-    · refine ⟨framing "B/wire" "", ⟨0, 1, 144115398529318913, "AB"⟩,
-        by simp [inventory, peers], rfl, mka.payload, rfl, ?_, ?_, ?_⟩
-      all_goals exact of_decide_eq_true rfl
-    · exact captured_positive_MKA_and_data.2.1
+  · refine ⟨.link, supported "" "A/wire", ?_, ?_⟩
+    · refine ⟨inventory processing, rfl, 0, by simp [inventory], rfl,
+        interfaces[0], by simp [deployment, interfaces], rfl, rfl, ?_⟩
+      simp [PacketAtHook, HookDirection, inventory, ifaceName,
+        LinkAdmission.Frame.Packet, Deployment.Observe]
+    · refine ⟨⟨inventory processing, rfl, 0, by simp [inventory], rfl, Or.inr (Or.inl ?_)⟩,
+        inventory processing, rfl, 0, by simp [inventory], rfl,
+        ⟨program 0, program 1⟩, rfl, ?_⟩
+      · refine ⟨framing "" "A/wire", ⟨0, 1, 144115398529318913, "AB"⟩,
+          by simp [inventory, peers], rfl, mka.payload, rfl, ?_, ?_, ?_⟩
+        all_goals exact of_decide_eq_true rfl
+      · exact captured_positive_MKA_and_data.1
+  · refine ⟨.link, supported "B/wire" "", ?_, ?_⟩
+    · refine ⟨inventory processing, rfl, 1, by simp [inventory], rfl,
+        interfaces[1], by simp [deployment, interfaces], rfl, rfl, ?_⟩
+      simp [PacketAtHook, HookDirection, inventory, ifaceName,
+        LinkAdmission.Frame.Packet, Deployment.Observe]
+    · refine ⟨⟨inventory processing, rfl, 1, by simp [inventory], rfl, Or.inr (Or.inl ?_)⟩,
+        inventory processing, rfl, 1, by simp [inventory], rfl,
+        ⟨program 2, program 3⟩, rfl, ?_⟩
+      · refine ⟨framing "B/wire" "", ⟨0, 1, 144115398529318913, "AB"⟩,
+          by simp [inventory, peers], rfl, mka.payload, rfl, ?_, ?_, ?_⟩
+        all_goals exact of_decide_eq_true rfl
+      · exact captured_positive_MKA_and_data.2.1
 
 end TDN.Imported.CompleteLinkHeaderFiltering
 
@@ -175,9 +183,9 @@ def installedInventory (base : PacketProcessing.Inventory) : PacketProcessing.In
   { inventory base with
     macsecTunnel := fun association => if association.sci = txA.sci then "AB" else "BA",
     configuration := { (inventory base).configuration with
-      macPorts := [
-        { macPort 0 2 with transmitAssociation := some txA, receiveAssociations := [rxA] },
-        { macPort 1 3 with transmitAssociation := some txB, receiveAssociations := [rxB] }] } }
+      macIfaces := [
+        { macIface 0 2 with transmitAssociation := some txA, receiveAssociations := [rxA] },
+        { macIface 1 3 with transmitAssociation := some txB, receiveAssociations := [rxB] }] } }
 
 def installedDeployment (base : Deployment) (processing : PacketProcessing.Inventory) : Deployment :=
   { deployment base processing with processing := some (installedInventory processing) }
@@ -201,12 +209,12 @@ theorem captured_installed_program_model_RG038
     simp [installedDeployment, deployment, grayWorkstationRole, Deployment.IsDevice, devices]
   · rfl
   · rfl
-  · funext port address
-    simp [installedDeployment, installedInventory, deployment, inventory, nativeLocalAddress, interfaces]
+  · funext iface address
+    simp [installedDeployment, installedInventory, deployment, inventory, nativeLocalAddress, interfaces, Interface.HasLocalAddress]
   · rfl
   · rfl
   · unfold LinkPolicyRecordChecks Deployment.LinkPath
-    dsimp [installedInventory, inventory, macPort]
+    dsimp [installedInventory, inventory, macIface]
     decide
   · exact of_decide_eq_true rfl
   · intro interface member endpoint endpointMember name packet framing destination
@@ -235,26 +243,34 @@ lemma captured_installed_data_is_fully_admitted
       exact (show PacketClass (dataFrame.Packet "" "") = .protectedData from by decide)
     simp [dataClass]
   constructor
-  · refine ⟨.link, supported "" "A/wire", ?_⟩
-    refine ⟨⟨installedInventory processing, rfl, 0, by simp [installedInventory, inventory], rfl,
-      Or.inr (Or.inr ?_)⟩,
-      installedInventory processing, rfl, 0, by simp [installedInventory, inventory], rfl,
-      ⟨program 0, program 1⟩, rfl, ?_⟩
-    · refine ⟨macsec "" "A/wire",
-        { macPort 0 2 with transmitAssociation := some txA, receiveAssociations := [rxA] },
-        by simp [installedInventory], rfl, txA, dataFrame.payload, rfl, ?_, ?_, ?_⟩
-      all_goals exact of_decide_eq_true rfl
-    · exact captured_positive_MKA_and_data.2.2.1
-  · refine ⟨.link, supported "B/wire" "", ?_⟩
-    refine ⟨⟨installedInventory processing, rfl, 1, by simp [installedInventory, inventory], rfl,
-      Or.inr (Or.inr ?_)⟩,
-      installedInventory processing, rfl, 1, by simp [installedInventory, inventory], rfl,
-      ⟨program 2, program 3⟩, rfl, ?_⟩
-    · refine ⟨macsec "B/wire" "",
-        { macPort 1 3 with transmitAssociation := some txB, receiveAssociations := [rxB] },
-        by simp [installedInventory], rfl, rxB, dataFrame.payload, rfl, ?_, ?_, ?_⟩
-      all_goals exact of_decide_eq_true rfl
-    · exact captured_positive_MKA_and_data.2.2.2
+  · refine ⟨.link, supported "" "A/wire", ?_, ?_⟩
+    · refine ⟨installedInventory processing, rfl, 0, by simp [installedInventory, inventory], rfl,
+        interfaces[0], by simp [installedDeployment, installedInventory, deployment, interfaces], rfl, rfl, ?_⟩
+      simp [PacketAtHook, HookDirection, installedDeployment, installedInventory, inventory, ifaceName,
+        LinkAdmission.Frame.Packet, Deployment.Observe]
+    · refine ⟨⟨installedInventory processing, rfl, 0, by simp [installedInventory, inventory], rfl,
+        Or.inr (Or.inr ?_)⟩,
+        installedInventory processing, rfl, 0, by simp [installedInventory, inventory], rfl,
+        ⟨program 0, program 1⟩, rfl, ?_⟩
+      · refine ⟨macsec "" "A/wire",
+          { macIface 0 2 with transmitAssociation := some txA, receiveAssociations := [rxA] },
+          by simp [installedInventory], rfl, txA, dataFrame.payload, rfl, ?_, ?_, ?_⟩
+        all_goals exact of_decide_eq_true rfl
+      · exact captured_positive_MKA_and_data.2.2.1
+  · refine ⟨.link, supported "B/wire" "", ?_, ?_⟩
+    · refine ⟨installedInventory processing, rfl, 1, by simp [installedInventory, inventory], rfl,
+        interfaces[1], by simp [installedDeployment, installedInventory, deployment, interfaces], rfl, rfl, ?_⟩
+      simp [PacketAtHook, HookDirection, installedDeployment, installedInventory, inventory, ifaceName,
+        LinkAdmission.Frame.Packet, Deployment.Observe]
+    · refine ⟨⟨installedInventory processing, rfl, 1, by simp [installedInventory, inventory], rfl,
+        Or.inr (Or.inr ?_)⟩,
+        installedInventory processing, rfl, 1, by simp [installedInventory, inventory], rfl,
+        ⟨program 2, program 3⟩, rfl, ?_⟩
+      · refine ⟨macsec "B/wire" "",
+          { macIface 1 3 with transmitAssociation := some txB, receiveAssociations := [rxB] },
+          by simp [installedInventory], rfl, rxB, dataFrame.payload, rfl, ?_, ?_, ?_⟩
+        all_goals exact of_decide_eq_true rfl
+      · exact captured_positive_MKA_and_data.2.2.2
 
 lemma local_association_indices_are_distinct :
     txA.keyGeneration ≠ rxB.keyGeneration ∧ txB.keyGeneration ≠ rxA.keyGeneration := by decide

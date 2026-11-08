@@ -26,17 +26,17 @@ def rules : List PacketPolicy.Rule :=
    ⟨[.sourceRange 20 20, .destinationRange 10 10, .protocol "esp"], .allow⟩]
 
 def policies : List InterfacePolicy :=
-  interfaces.flatMap fun port =>
-    [⟨port.id, .inbound, rules, .deny, .input⟩,
-     ⟨port.id, .outbound, rules, .deny, .output⟩,
-     ⟨port.id, .inbound, rules, .deny, .forward⟩,
-     ⟨port.id, .outbound, rules, .deny, .forward⟩]
+  interfaces.flatMap fun iface =>
+    [⟨iface.id, .inbound, rules, .deny, .input⟩,
+     ⟨iface.id, .outbound, rules, .deny, .output⟩,
+     ⟨iface.id, .inbound, rules, .deny, .forward⟩,
+     ⟨iface.id, .outbound, rules, .deny, .forward⟩]
 
 def inventory (base : PacketProcessing.Inventory) : PacketProcessing.Inventory :=
   { CompleteGrayFirewall.inventory base with
-    ports := [0, 1, 2, 3, 4]
-    portName := fun port => if port = 0 then "port-IA" else if port = 1 then "port-IB"
-      else if port = 2 then "port-IC" else if port = 3 then "port-G" else "port-O" }
+    ifaces := [0, 1, 2, 3, 4]
+    ifaceName := fun iface => if iface = 0 then "port-IA" else if iface = 1 then "port-IB"
+      else if iface = 2 then "port-IC" else if iface = 3 then "port-G" else "port-O" }
 
 def deployment (base : Deployment) (processing : PacketProcessing.Inventory) : Deployment :=
   { CompleteGrayFirewall.deployment base processing with
@@ -116,7 +116,7 @@ theorem management_free_chain_model_RG013 (base : Deployment)
       GrayEndpointRelation, SameLevelComponents, GrayManagement, topology,
       CompleteGrayFirewall.topology, Deployment.IsLayer, devices,
       CompleteGrayFirewall.deployment]
-  · intro port member _
+  · intro iface member _
     simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member
     rcases member with rfl | rfl | rfl | rfl | rfl <;>
       simp [admissionPrograms, deployment, policies, inventory, CompleteGrayFirewall.inventory,
@@ -137,11 +137,18 @@ lemma management_free_and_topology_differs :
 lemma same_level_chain_packet_is_admitted (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     (deployment base processing).Accepts "port-O" .outbound
-      ((deployment base processing).Observe CompleteGrayFirewall.packet) := by
-  refine ⟨.forward, ⟨rfl, ?_⟩, ?_⟩
-  · change (deployment base processing).ManagementMetadataBound CompleteGrayFirewall.packet
+      ((deployment base processing).Observe
+        { CompleteGrayFirewall.packet with ingress := "port-O", egress := "port-O" }) := by
+  refine ⟨.forward, ⟨rfl, ?_⟩, ?_, ?_⟩
+  · change (deployment base processing).ManagementMetadataBound
+      { CompleteGrayFirewall.packet with ingress := "port-O", egress := "port-O" }
     simp [Deployment.ManagementMetadataBound, CompleteGrayFirewall.packet,
       PacketClass, PacketService, PacketIKE, PacketMKA, PacketARP]
+  · refine ⟨inventory processing, rfl, 4,
+      by simp [inventory], rfl, interface "port-O" "node-O" 80,
+      by simp [deployment, interfaces], rfl, rfl, ?_⟩
+    simp [PacketAtHook, HookDirection, inventory, CompleteGrayFirewall.inventory,
+      CompleteGrayFirewall.ifaceName, CompleteGrayFirewall.packet, Deployment.Observe]
   · simp [deployment, policies, interfaces, interface, CompleteGrayFirewall.packet,
       InterfacePolicy.Accepts, rules, PacketPolicy.Rule.toFilter, Filter.evaluate,
       Deployment.Observe, PacketPolicy.Atom.holds]

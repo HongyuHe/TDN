@@ -5,18 +5,18 @@ namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
 def PlainByteAssembly (before after : State) : Prop :=
-  before.phase = .received ∧ after.phase = .received ∧ before.port = after.port ∧
+  before.datapathStage = .received ∧ after.datapathStage = .received ∧ before.iface = after.iface ∧
   before.frame.body.protectionLayers = [] ∧
   ((∃ header, after.frame.body = .datagram header) ∨
    (∃ header, after.frame.body = .ethernet header))
 
-lemma plain_byte_assembly_preserves_stack (c : Config) (layout : Nat → List Nat)
+lemma plain_byte_assembly_preserves_stack (c : Config) (expectedEncapStack : Nat → List Nat)
     {before after : State} (assembly : PlainByteAssembly before after)
-    (safe : StackInvariant c layout before) : StackInvariant c layout after := by
-  obtain ⟨beforePhase, afterPhase, port, empty, body⟩ := assembly
-  have beforeStack : before.frame.body.protectionLayers = layout before.port := by
+    (safe : StackInvariant c expectedEncapStack before) : StackInvariant c expectedEncapStack after := by
+  obtain ⟨beforePhase, afterPhase, iface, empty, body⟩ := assembly
+  have beforeStack : before.frame.body.protectionLayers = expectedEncapStack before.iface := by
     simpa only [beforePhase] using safe.2
-  have afterStack : layout after.port = [] := port ▸ (beforeStack.symm.trans empty)
+  have afterStack : expectedEncapStack after.iface = [] := iface ▸ (beforeStack.symm.trans empty)
   rcases body with ⟨header, plain⟩ | ⟨header, plain⟩ <;>
     simp [StackInvariant, CarrierBodies, afterPhase, plain, Body.protectionLayers, afterStack]
 
@@ -24,27 +24,27 @@ def byteSystem {Byte : Type} (c : Config) (origin : State → Byte → Prop) :=
   ByteFlows.lts (lts c) origin PlainByteAssembly
 
 theorem mixed_byte_execution_preserves_stack {Byte : Type}
-    (c : Config) (layout : Nat → List Nat) (origin : State → Byte → Prop)
-    (conditions : LocalConditions c layout)
-    (source : ∀ state byte, origin state byte → StackInvariant c layout state)
+    (c : Config) (expectedEncapStack : Nat → List Nat) (origin : State → Byte → Prop)
+    (conditions : LocalConditions c expectedEncapStack)
+    (source : ∀ state byte, origin state byte → StackInvariant c expectedEncapStack state)
     {after : List (ByteFlows.Carrier State Byte)} {actions : List (ByteFlows.Action Action)}
     (run : (byteSystem c origin).MTr [] actions after) :
-    ByteFlows.Safe (fun _ => StackInvariant c layout) after := by
+    ByteFlows.Safe (fun _ => StackInvariant c expectedEncapStack) after := by
   exact ByteFlows.all_executions_preserve_byte_properties (lts c) origin PlainByteAssembly
-    (fun _ => StackInvariant c layout) source
+    (fun _ => StackInvariant c expectedEncapStack) source
     (fun _ _ _ _ step safe => step_preserves_stack conditions step safe)
     (fun before after _ compatible safe =>
-      plain_byte_assembly_preserves_stack c layout compatible safe)
+      plain_byte_assembly_preserves_stack c expectedEncapStack compatible safe)
     run (by simp [ByteFlows.Safe])
 
 def byteLineage (c : Config) := ByteLineage.lts (lts c) PlainByteAssembly
 
-lemma byte_lineage_preserves_stack (c : Config) (layout : Nat → List Nat)
-    (conditions : LocalConditions c layout) :
-    (byteLineage c).TrInv (StackInvariant c layout) :=
-  ByteLineage.local_checks_preserve_lineage (lts c) PlainByteAssembly (StackInvariant c layout)
+lemma byte_lineage_preserves_stack (c : Config) (expectedEncapStack : Nat → List Nat)
+    (conditions : LocalConditions c expectedEncapStack) :
+    (byteLineage c).TrInv (StackInvariant c expectedEncapStack) :=
+  ByteLineage.local_checks_preserve_lineage (lts c) PlainByteAssembly (StackInvariant c expectedEncapStack)
     (fun _ _ _ step safe => step_preserves_stack conditions step safe)
-    (fun _ _ compatible safe => plain_byte_assembly_preserves_stack c layout compatible safe)
+    (fun _ _ compatible safe => plain_byte_assembly_preserves_stack c expectedEncapStack compatible safe)
 
 def ByteEncryptionEvent (c : Config) (tag : Nat)
     (before : State) (action : Option Action) (after : State) : Prop :=
@@ -85,12 +85,12 @@ def ByteOrderedEncryptions (c : Config) (inner outer : Nat)
     (byteLineage c).MTr right later after ∧ ByteEncryptionEvent c outer left action right ∧
     TraceEvents.Contains (byteLineage c) before earlier left (ByteEncryptionEvent c inner)
 
-theorem mixed_byte_path_requires_ordered_encryptions (c : Config) (layout : Nat → List Nat)
-    (conditions : LocalConditions c layout) (inner outer : Nat)
-    (placement : ∀ port, (layout port).head? = some outer → layout port = [outer, inner])
+theorem mixed_byte_path_requires_ordered_encryptions (c : Config) (expectedEncapStack : Nat → List Nat)
+    (conditions : LocalConditions c expectedEncapStack) (inner outer : Nat)
+    (placement : ∀ iface, (expectedEncapStack iface).head? = some outer → expectedEncapStack iface = [outer, inner])
     {before after : State} {actions : List (Option Action)}
     (run : (byteLineage c).MTr before actions after)
-    (initial : StackInvariant c layout before)
+    (initial : StackInvariant c expectedEncapStack before)
     (empty : before.frame.body.protectionLayers = [])
     (present : outer ∈ after.frame.body.protectionLayers) :
     ByteOrderedEncryptions c inner outer before actions after := by
@@ -98,14 +98,14 @@ theorem mixed_byte_path_requires_ordered_encryptions (c : Config) (layout : Nat 
     byte_path_layer_addition_has_encryption c outer run (by simp [empty]) present
   obtain ⟨label, actionEq, operation, encryption, added⟩ := outerEvent
   have preserved := Cslib.LTS.mtrInv_of_trInv
-    (byte_lineage_preserves_stack c layout conditions) before _ right
+    (byte_lineage_preserves_stack c expectedEncapStack conditions) before _ right
     (first.stepR (byteLineage c) step) initial
   have stack := encryption_output_layout operation encryption preserved
-  have head : (layout right.port).head? = some outer := by
+  have head : (expectedEncapStack right.iface).head? = some outer := by
     rw [← stack, added]
     rfl
   have innerStack : left.frame.body.protectionLayers = [inner] :=
-    (List.cons.inj (added.symm.trans (stack.trans (placement right.port head)))).2
+    (List.cons.inj (added.symm.trans (stack.trans (placement right.iface head)))).2
   exact ⟨earlier, later, left, action, right, sequence, first, step, last,
     ⟨label, actionEq, operation, encryption, added⟩,
     byte_path_layer_addition_has_encryption c inner first (by simp [empty])

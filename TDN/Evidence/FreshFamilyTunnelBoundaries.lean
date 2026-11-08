@@ -24,19 +24,19 @@ set_option maxRecDepth 1000000
 
 set_option maxHeartbeats 0
 
-def boundaryIA := Targets.operationalTunnelBoundary config layout [12] [10] 1 5
+def boundaryIA := Targets.operationalTunnelBoundary config expectedEncapStack [12] [10] 1 5
 
-lemma boundaryIA_inbound_tags : ∀ port, config.owner port = 5 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIA_inbound_tags : ∀ iface, config.owner iface = 5 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 5).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 5 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 5 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIA_no_bypass : Targets.BoundaryNoBypass boundaryIA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [12] [10] 1 5
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [12] [10] 1 5
     local_stack_conditions boundaryIA_inbound_tags (by decide) (by decide)
 
 theorem boundaryIA_positive_outbound :
@@ -49,19 +49,19 @@ theorem boundaryIA_positive_outbound :
   · simp only [boundaryIA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryIB := Targets.operationalTunnelBoundary config layout [15] [13] 1 6
+def boundaryIB := Targets.operationalTunnelBoundary config expectedEncapStack [15] [13] 1 6
 
-lemma boundaryIB_inbound_tags : ∀ port, config.owner port = 6 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIB_inbound_tags : ∀ iface, config.owner iface = 6 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 6).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 6 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 6 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIB_no_bypass : Targets.BoundaryNoBypass boundaryIB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [15] [13] 1 6
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [15] [13] 1 6
     local_stack_conditions boundaryIB_inbound_tags (by decide) (by decide)
 
 theorem boundaryIB_positive_inbound :
@@ -74,19 +74,19 @@ theorem boundaryIB_positive_inbound :
   · simp only [boundaryIB, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOA := Targets.operationalTunnelBoundary config layout [17] [16] 2 7
+def boundaryOA := Targets.operationalTunnelBoundary config expectedEncapStack [17] [16] 2 7
 
-lemma boundaryOA_inbound_tags : ∀ port, config.owner port = 7 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOA_inbound_tags : ∀ iface, config.owner iface = 7 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 7).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 7 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 7 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOA_no_bypass : Targets.BoundaryNoBypass boundaryOA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [17] [16] 2 7
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [17] [16] 2 7
     local_stack_conditions boundaryOA_inbound_tags (by decide) (by decide)
 
 theorem boundaryOA_positive_outbound :
@@ -99,19 +99,19 @@ theorem boundaryOA_positive_outbound :
   · simp only [boundaryOA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOB := Targets.operationalTunnelBoundary config layout [20] [19] 2 8
+def boundaryOB := Targets.operationalTunnelBoundary config expectedEncapStack [20] [19] 2 8
 
-lemma boundaryOB_inbound_tags : ∀ port, config.owner port = 8 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOB_inbound_tags : ∀ iface, config.owner iface = 8 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 8).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 8 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 8 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOB_no_bypass : Targets.BoundaryNoBypass boundaryOB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [20] [19] 2 8
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [20] [19] 2 8
     local_stack_conditions boundaryOB_inbound_tags (by decide) (by decide)
 
 theorem boundaryOB_positive_inbound :
@@ -134,19 +134,19 @@ set_option maxRecDepth 1000000
 
 set_option maxHeartbeats 0
 
-def boundaryIA := Targets.operationalTunnelBoundary config layout [12] [10] 1 5
+def boundaryIA := Targets.operationalTunnelBoundary config expectedEncapStack [12] [10] 1 5
 
-lemma boundaryIA_inbound_tags : ∀ port, config.owner port = 5 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIA_inbound_tags : ∀ iface, config.owner iface = 5 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 5).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 5 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 5 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIA_no_bypass : Targets.BoundaryNoBypass boundaryIA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [12] [10] 1 5
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [12] [10] 1 5
     local_stack_conditions boundaryIA_inbound_tags (by decide) (by decide)
 
 theorem boundaryIA_positive_outbound :
@@ -159,19 +159,19 @@ theorem boundaryIA_positive_outbound :
   · simp only [boundaryIA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryIB := Targets.operationalTunnelBoundary config layout [15] [13] 1 6
+def boundaryIB := Targets.operationalTunnelBoundary config expectedEncapStack [15] [13] 1 6
 
-lemma boundaryIB_inbound_tags : ∀ port, config.owner port = 6 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIB_inbound_tags : ∀ iface, config.owner iface = 6 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 6).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 6 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 6 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIB_no_bypass : Targets.BoundaryNoBypass boundaryIB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [15] [13] 1 6
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [15] [13] 1 6
     local_stack_conditions boundaryIB_inbound_tags (by decide) (by decide)
 
 theorem boundaryIB_positive_inbound :
@@ -184,19 +184,19 @@ theorem boundaryIB_positive_inbound :
   · simp only [boundaryIB, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOA := Targets.operationalTunnelBoundary config layout [17] [16] 2 7
+def boundaryOA := Targets.operationalTunnelBoundary config expectedEncapStack [17] [16] 2 7
 
-lemma boundaryOA_inbound_tags : ∀ port, config.owner port = 7 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOA_inbound_tags : ∀ iface, config.owner iface = 7 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 7).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 7 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 7 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOA_no_bypass : Targets.BoundaryNoBypass boundaryOA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [17] [16] 2 7
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [17] [16] 2 7
     local_stack_conditions boundaryOA_inbound_tags (by decide) (by decide)
 
 theorem boundaryOA_positive_outbound :
@@ -209,19 +209,19 @@ theorem boundaryOA_positive_outbound :
   · simp only [boundaryOA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOB := Targets.operationalTunnelBoundary config layout [20] [19] 2 8
+def boundaryOB := Targets.operationalTunnelBoundary config expectedEncapStack [20] [19] 2 8
 
-lemma boundaryOB_inbound_tags : ∀ port, config.owner port = 8 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOB_inbound_tags : ∀ iface, config.owner iface = 8 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 8).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 8 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 8 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOB_no_bypass : Targets.BoundaryNoBypass boundaryOB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [20] [19] 2 8
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [20] [19] 2 8
     local_stack_conditions boundaryOB_inbound_tags (by decide) (by decide)
 
 theorem boundaryOB_positive_inbound :
@@ -244,19 +244,19 @@ set_option maxRecDepth 1000000
 
 set_option maxHeartbeats 0
 
-def boundaryIA := Targets.operationalTunnelBoundary config layout [12] [10] 1 5
+def boundaryIA := Targets.operationalTunnelBoundary config expectedEncapStack [12] [10] 1 5
 
-lemma boundaryIA_inbound_tags : ∀ port, config.owner port = 5 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIA_inbound_tags : ∀ iface, config.owner iface = 5 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 5).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 5 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 5 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIA_no_bypass : Targets.BoundaryNoBypass boundaryIA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [12] [10] 1 5
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [12] [10] 1 5
     local_stack_conditions boundaryIA_inbound_tags (by decide) (by decide)
 
 theorem boundaryIA_positive_outbound :
@@ -269,19 +269,19 @@ theorem boundaryIA_positive_outbound :
   · simp only [boundaryIA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryIB := Targets.operationalTunnelBoundary config layout [15] [13] 1 6
+def boundaryIB := Targets.operationalTunnelBoundary config expectedEncapStack [15] [13] 1 6
 
-lemma boundaryIB_inbound_tags : ∀ port, config.owner port = 6 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIB_inbound_tags : ∀ iface, config.owner iface = 6 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 6).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 6 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 6 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIB_no_bypass : Targets.BoundaryNoBypass boundaryIB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [15] [13] 1 6
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [15] [13] 1 6
     local_stack_conditions boundaryIB_inbound_tags (by decide) (by decide)
 
 theorem boundaryIB_positive_inbound :
@@ -294,19 +294,19 @@ theorem boundaryIB_positive_inbound :
   · simp only [boundaryIB, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOA := Targets.operationalTunnelBoundary config layout [17] [16] 2 7
+def boundaryOA := Targets.operationalTunnelBoundary config expectedEncapStack [17] [16] 2 7
 
-lemma boundaryOA_inbound_tags : ∀ port, config.owner port = 7 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOA_inbound_tags : ∀ iface, config.owner iface = 7 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 7).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 7 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 7 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOA_no_bypass : Targets.BoundaryNoBypass boundaryOA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [17] [16] 2 7
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [17] [16] 2 7
     local_stack_conditions boundaryOA_inbound_tags (by decide) (by decide)
 
 theorem boundaryOA_positive_outbound :
@@ -319,19 +319,19 @@ theorem boundaryOA_positive_outbound :
   · simp only [boundaryOA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOB := Targets.operationalTunnelBoundary config layout [20] [19] 2 8
+def boundaryOB := Targets.operationalTunnelBoundary config expectedEncapStack [20] [19] 2 8
 
-lemma boundaryOB_inbound_tags : ∀ port, config.owner port = 8 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOB_inbound_tags : ∀ iface, config.owner iface = 8 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 8).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 8 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 8 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOB_no_bypass : Targets.BoundaryNoBypass boundaryOB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [20] [19] 2 8
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [20] [19] 2 8
     local_stack_conditions boundaryOB_inbound_tags (by decide) (by decide)
 
 theorem boundaryOB_positive_inbound :
@@ -354,19 +354,19 @@ set_option maxRecDepth 1000000
 
 set_option maxHeartbeats 0
 
-def boundaryIA := Targets.operationalTunnelBoundary config layout [12] [10] 1 5
+def boundaryIA := Targets.operationalTunnelBoundary config expectedEncapStack [12] [10] 1 5
 
-lemma boundaryIA_inbound_tags : ∀ port, config.owner port = 5 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIA_inbound_tags : ∀ iface, config.owner iface = 5 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 5).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 5 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 5 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIA_no_bypass : Targets.BoundaryNoBypass boundaryIA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [12] [10] 1 5
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [12] [10] 1 5
     local_stack_conditions boundaryIA_inbound_tags (by decide) (by decide)
 
 theorem boundaryIA_positive_outbound :
@@ -379,19 +379,19 @@ theorem boundaryIA_positive_outbound :
   · simp only [boundaryIA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryIB := Targets.operationalTunnelBoundary config layout [15] [13] 1 6
+def boundaryIB := Targets.operationalTunnelBoundary config expectedEncapStack [15] [13] 1 6
 
-lemma boundaryIB_inbound_tags : ∀ port, config.owner port = 6 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIB_inbound_tags : ∀ iface, config.owner iface = 6 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 6).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 6 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 6 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIB_no_bypass : Targets.BoundaryNoBypass boundaryIB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [15] [13] 1 6
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [15] [13] 1 6
     local_stack_conditions boundaryIB_inbound_tags (by decide) (by decide)
 
 theorem boundaryIB_positive_inbound :
@@ -404,19 +404,19 @@ theorem boundaryIB_positive_inbound :
   · simp only [boundaryIB, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOA := Targets.operationalTunnelBoundary config layout [17] [16] 2 7
+def boundaryOA := Targets.operationalTunnelBoundary config expectedEncapStack [17] [16] 2 7
 
-lemma boundaryOA_inbound_tags : ∀ port, config.owner port = 7 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOA_inbound_tags : ∀ iface, config.owner iface = 7 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 7).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 7 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 7 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOA_no_bypass : Targets.BoundaryNoBypass boundaryOA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [17] [16] 2 7
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [17] [16] 2 7
     local_stack_conditions boundaryOA_inbound_tags (by decide) (by decide)
 
 theorem boundaryOA_positive_outbound :
@@ -429,19 +429,19 @@ theorem boundaryOA_positive_outbound :
   · simp only [boundaryOA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOB := Targets.operationalTunnelBoundary config layout [20] [19] 2 8
+def boundaryOB := Targets.operationalTunnelBoundary config expectedEncapStack [20] [19] 2 8
 
-lemma boundaryOB_inbound_tags : ∀ port, config.owner port = 8 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOB_inbound_tags : ∀ iface, config.owner iface = 8 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 8).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 8 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 8 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOB_no_bypass : Targets.BoundaryNoBypass boundaryOB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [20] [19] 2 8
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [20] [19] 2 8
     local_stack_conditions boundaryOB_inbound_tags (by decide) (by decide)
 
 theorem boundaryOB_positive_inbound :
@@ -464,19 +464,19 @@ set_option maxRecDepth 1000000
 
 set_option maxHeartbeats 0
 
-def boundaryIA := Targets.operationalTunnelBoundary config layout [12] [10] 1 5
+def boundaryIA := Targets.operationalTunnelBoundary config expectedEncapStack [12] [10] 1 5
 
-lemma boundaryIA_inbound_tags : ∀ port, config.owner port = 5 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIA_inbound_tags : ∀ iface, config.owner iface = 5 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 5).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 5 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 5 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIA_no_bypass : Targets.BoundaryNoBypass boundaryIA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [12] [10] 1 5
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [12] [10] 1 5
     local_stack_conditions boundaryIA_inbound_tags (by decide) (by decide)
 
 theorem boundaryIA_positive_outbound :
@@ -489,19 +489,19 @@ theorem boundaryIA_positive_outbound :
   · simp only [boundaryIA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryIB := Targets.operationalTunnelBoundary config layout [15] [13] 1 6
+def boundaryIB := Targets.operationalTunnelBoundary config expectedEncapStack [15] [13] 1 6
 
-lemma boundaryIB_inbound_tags : ∀ port, config.owner port = 6 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIB_inbound_tags : ∀ iface, config.owner iface = 6 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 6).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 6 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 6 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIB_no_bypass : Targets.BoundaryNoBypass boundaryIB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [15] [13] 1 6
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [15] [13] 1 6
     local_stack_conditions boundaryIB_inbound_tags (by decide) (by decide)
 
 theorem boundaryIB_positive_inbound :
@@ -514,19 +514,19 @@ theorem boundaryIB_positive_inbound :
   · simp only [boundaryIB, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOA := Targets.operationalTunnelBoundary config layout [17] [16] 2 7
+def boundaryOA := Targets.operationalTunnelBoundary config expectedEncapStack [17] [16] 2 7
 
-lemma boundaryOA_inbound_tags : ∀ port, config.owner port = 7 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOA_inbound_tags : ∀ iface, config.owner iface = 7 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 7).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 7 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 7 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOA_no_bypass : Targets.BoundaryNoBypass boundaryOA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [17] [16] 2 7
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [17] [16] 2 7
     local_stack_conditions boundaryOA_inbound_tags (by decide) (by decide)
 
 theorem boundaryOA_positive_outbound :
@@ -539,19 +539,19 @@ theorem boundaryOA_positive_outbound :
   · simp only [boundaryOA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOB := Targets.operationalTunnelBoundary config layout [20] [19] 2 8
+def boundaryOB := Targets.operationalTunnelBoundary config expectedEncapStack [20] [19] 2 8
 
-lemma boundaryOB_inbound_tags : ∀ port, config.owner port = 8 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOB_inbound_tags : ∀ iface, config.owner iface = 8 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 8).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 8 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 8 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOB_no_bypass : Targets.BoundaryNoBypass boundaryOB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [20] [19] 2 8
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [20] [19] 2 8
     local_stack_conditions boundaryOB_inbound_tags (by decide) (by decide)
 
 theorem boundaryOB_positive_inbound :
@@ -574,19 +574,19 @@ set_option maxRecDepth 1000000
 
 set_option maxHeartbeats 0
 
-def boundaryIA := Targets.operationalTunnelBoundary config layout [12] [10] 1 5
+def boundaryIA := Targets.operationalTunnelBoundary config expectedEncapStack [12] [10] 1 5
 
-lemma boundaryIA_inbound_tags : ∀ port, config.owner port = 5 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIA_inbound_tags : ∀ iface, config.owner iface = 5 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 5).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 5 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 5 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIA_no_bypass : Targets.BoundaryNoBypass boundaryIA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [12] [10] 1 5
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [12] [10] 1 5
     local_stack_conditions boundaryIA_inbound_tags (by decide) (by decide)
 
 theorem boundaryIA_positive_outbound :
@@ -599,19 +599,19 @@ theorem boundaryIA_positive_outbound :
   · simp only [boundaryIA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryIB := Targets.operationalTunnelBoundary config layout [15] [13] 1 6
+def boundaryIB := Targets.operationalTunnelBoundary config expectedEncapStack [15] [13] 1 6
 
-lemma boundaryIB_inbound_tags : ∀ port, config.owner port = 6 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIB_inbound_tags : ∀ iface, config.owner iface = 6 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 6).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 6 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 6 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIB_no_bypass : Targets.BoundaryNoBypass boundaryIB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [15] [13] 1 6
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [15] [13] 1 6
     local_stack_conditions boundaryIB_inbound_tags (by decide) (by decide)
 
 theorem boundaryIB_positive_inbound :
@@ -624,19 +624,19 @@ theorem boundaryIB_positive_inbound :
   · simp only [boundaryIB, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOA := Targets.operationalTunnelBoundary config layout [17] [16] 2 7
+def boundaryOA := Targets.operationalTunnelBoundary config expectedEncapStack [17] [16] 2 7
 
-lemma boundaryOA_inbound_tags : ∀ port, config.owner port = 7 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOA_inbound_tags : ∀ iface, config.owner iface = 7 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 7).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 7 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 7 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOA_no_bypass : Targets.BoundaryNoBypass boundaryOA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [17] [16] 2 7
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [17] [16] 2 7
     local_stack_conditions boundaryOA_inbound_tags (by decide) (by decide)
 
 theorem boundaryOA_positive_outbound :
@@ -649,19 +649,19 @@ theorem boundaryOA_positive_outbound :
   · simp only [boundaryOA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOB := Targets.operationalTunnelBoundary config layout [20] [19] 2 8
+def boundaryOB := Targets.operationalTunnelBoundary config expectedEncapStack [20] [19] 2 8
 
-lemma boundaryOB_inbound_tags : ∀ port, config.owner port = 8 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOB_inbound_tags : ∀ iface, config.owner iface = 8 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 8).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 8 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 8 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOB_no_bypass : Targets.BoundaryNoBypass boundaryOB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [20] [19] 2 8
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [20] [19] 2 8
     local_stack_conditions boundaryOB_inbound_tags (by decide) (by decide)
 
 theorem boundaryOB_positive_inbound :
@@ -684,19 +684,19 @@ set_option maxRecDepth 1000000
 
 set_option maxHeartbeats 0
 
-def boundaryIA := Targets.operationalTunnelBoundary config layout [12] [10] 1 5
+def boundaryIA := Targets.operationalTunnelBoundary config expectedEncapStack [12] [10] 1 5
 
-lemma boundaryIA_inbound_tags : ∀ port, config.owner port = 5 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIA_inbound_tags : ∀ iface, config.owner iface = 5 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 5).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 5 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 5 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIA_no_bypass : Targets.BoundaryNoBypass boundaryIA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [12] [10] 1 5
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [12] [10] 1 5
     local_stack_conditions boundaryIA_inbound_tags (by decide) (by decide)
 
 theorem boundaryIA_positive_outbound :
@@ -709,19 +709,19 @@ theorem boundaryIA_positive_outbound :
   · simp only [boundaryIA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryIB := Targets.operationalTunnelBoundary config layout [15] [13] 1 6
+def boundaryIB := Targets.operationalTunnelBoundary config expectedEncapStack [15] [13] 1 6
 
-lemma boundaryIB_inbound_tags : ∀ port, config.owner port = 6 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIB_inbound_tags : ∀ iface, config.owner iface = 6 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 6).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 6 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 6 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIB_no_bypass : Targets.BoundaryNoBypass boundaryIB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [15] [13] 1 6
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [15] [13] 1 6
     local_stack_conditions boundaryIB_inbound_tags (by decide) (by decide)
 
 theorem boundaryIB_positive_inbound :
@@ -734,19 +734,19 @@ theorem boundaryIB_positive_inbound :
   · simp only [boundaryIB, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOA := Targets.operationalTunnelBoundary config layout [17] [16] 2 7
+def boundaryOA := Targets.operationalTunnelBoundary config expectedEncapStack [17] [16] 2 7
 
-lemma boundaryOA_inbound_tags : ∀ port, config.owner port = 7 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOA_inbound_tags : ∀ iface, config.owner iface = 7 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 7).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 7 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 7 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOA_no_bypass : Targets.BoundaryNoBypass boundaryOA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [17] [16] 2 7
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [17] [16] 2 7
     local_stack_conditions boundaryOA_inbound_tags (by decide) (by decide)
 
 theorem boundaryOA_positive_outbound :
@@ -759,19 +759,19 @@ theorem boundaryOA_positive_outbound :
   · simp only [boundaryOA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOB := Targets.operationalTunnelBoundary config layout [20] [19] 2 8
+def boundaryOB := Targets.operationalTunnelBoundary config expectedEncapStack [20] [19] 2 8
 
-lemma boundaryOB_inbound_tags : ∀ port, config.owner port = 8 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOB_inbound_tags : ∀ iface, config.owner iface = 8 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 8).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 8 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 8 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOB_no_bypass : Targets.BoundaryNoBypass boundaryOB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [20] [19] 2 8
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [20] [19] 2 8
     local_stack_conditions boundaryOB_inbound_tags (by decide) (by decide)
 
 theorem boundaryOB_positive_inbound :
@@ -794,19 +794,19 @@ set_option maxRecDepth 1000000
 
 set_option maxHeartbeats 0
 
-def boundaryIA := Targets.operationalTunnelBoundary config layout [12] [10] 1 5
+def boundaryIA := Targets.operationalTunnelBoundary config expectedEncapStack [12] [10] 1 5
 
-lemma boundaryIA_inbound_tags : ∀ port, config.owner port = 5 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIA_inbound_tags : ∀ iface, config.owner iface = 5 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 5).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 5 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 5 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIA_no_bypass : Targets.BoundaryNoBypass boundaryIA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [12] [10] 1 5
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [12] [10] 1 5
     local_stack_conditions boundaryIA_inbound_tags (by decide) (by decide)
 
 theorem boundaryIA_positive_outbound :
@@ -819,19 +819,19 @@ theorem boundaryIA_positive_outbound :
   · simp only [boundaryIA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryIB := Targets.operationalTunnelBoundary config layout [15] [13] 1 6
+def boundaryIB := Targets.operationalTunnelBoundary config expectedEncapStack [15] [13] 1 6
 
-lemma boundaryIB_inbound_tags : ∀ port, config.owner port = 6 →
-    ∀ a ∈ config.inbound port, a.tag = 1 := by
+lemma boundaryIB_inbound_tags : ∀ iface, config.owner iface = 6 →
+    ∀ a ∈ config.inbound iface, a.tag = 1 := by
   have checked : ∀ a ∈ (deviceAt devices 6).inbound, a.tag = 1 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 6 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 6 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryIB_no_bypass : Targets.BoundaryNoBypass boundaryIB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [15] [13] 1 6
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [15] [13] 1 6
     local_stack_conditions boundaryIB_inbound_tags (by decide) (by decide)
 
 theorem boundaryIB_positive_inbound :
@@ -844,19 +844,19 @@ theorem boundaryIB_positive_inbound :
   · simp only [boundaryIB, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOA := Targets.operationalTunnelBoundary config layout [17] [16] 2 7
+def boundaryOA := Targets.operationalTunnelBoundary config expectedEncapStack [17] [16] 2 7
 
-lemma boundaryOA_inbound_tags : ∀ port, config.owner port = 7 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOA_inbound_tags : ∀ iface, config.owner iface = 7 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 7).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 7 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 7 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOA_no_bypass : Targets.BoundaryNoBypass boundaryOA :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [17] [16] 2 7
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [17] [16] 2 7
     local_stack_conditions boundaryOA_inbound_tags (by decide) (by decide)
 
 theorem boundaryOA_positive_outbound :
@@ -869,19 +869,19 @@ theorem boundaryOA_positive_outbound :
   · simp only [boundaryOA, Targets.operationalTunnelBoundary]
     decide
 
-def boundaryOB := Targets.operationalTunnelBoundary config layout [20] [19] 2 8
+def boundaryOB := Targets.operationalTunnelBoundary config expectedEncapStack [20] [19] 2 8
 
-lemma boundaryOB_inbound_tags : ∀ port, config.owner port = 8 →
-    ∀ a ∈ config.inbound port, a.tag = 2 := by
+lemma boundaryOB_inbound_tags : ∀ iface, config.owner iface = 8 →
+    ∀ a ∈ config.inbound iface, a.tag = 2 := by
   have checked : ∀ a ∈ (deviceAt devices 8).inbound, a.tag = 2 := by decide
-  intro port owner a member
-  change (portAt ports port).owner = 8 at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = 8 at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem boundaryOB_no_bypass : Targets.BoundaryNoBypass boundaryOB :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [20] [19] 2 8
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [20] [19] 2 8
     local_stack_conditions boundaryOB_inbound_tags (by decide) (by decide)
 
 theorem boundaryOB_positive_inbound :

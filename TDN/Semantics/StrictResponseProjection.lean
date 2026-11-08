@@ -4,9 +4,9 @@ namespace TDN.KernelResponses
 
 theorem strict_response_result_has_network_execution {S A : Type}
     (network : Cslib.LTS S A) (config : Config S)
-    (checked : ∀ source, config.generates source → ∀ port,
-      config.outputFallback source port = .deny ∧
-      ∀ rule ∈ config.outputRules source port,
+    (checked : ∀ source, config.generates source → ∀ iface,
+      config.outputFallback source iface = .deny ∧
+      ∀ rule ∈ config.outputRules source iface,
         rule.verdict = .allow → SafeResponseRule rule)
     {before after : S} {actions : List (Action A)}
     (run : (lts network config).MTr (.network before) actions (.network after)) :

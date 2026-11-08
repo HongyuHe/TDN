@@ -18,7 +18,7 @@ theorem gateway_response_executions_keep_stack
       (GuardedResponseNetwork.responseConfig responseData)).MTr
       (.network before) actions (.network after))
     (initial : GuardedResponseNetwork.Safe responseData before) :
-    StackInvariant config layout after :=
+    StackInvariant config expectedEncapStack after :=
   GuardedResponseNetwork.all_guarded_response_executions_preserve_stack responseData
     local_stack_conditions all_source_output_reply_pairs_checked all_input_interfaces_covered
     response_default_checks run initial
@@ -36,7 +36,7 @@ lemma guardedWitnessStep2 :
   exact ⟨witnessStep2, by decide⟩
 
 lemma guardedWitnessStep3 :
-    (GuardedResponseNetwork.network responseData).Tr witnessState3 .wire witnessState4 := by
+    (GuardedResponseNetwork.network responseData).Tr witnessState3 .linkTransmit witnessState4 := by
   exact ⟨witnessStep3, by decide⟩
 
 lemma guardedWitnessStep4 :
@@ -60,7 +60,7 @@ lemma guardedWitnessStep8 :
   exact ⟨witnessStep8, by decide⟩
 
 lemma guardedWitnessStep9 :
-    (GuardedResponseNetwork.network responseData).Tr witnessState9 .wire witnessState10 := by
+    (GuardedResponseNetwork.network responseData).Tr witnessState9 .linkTransmit witnessState10 := by
   exact ⟨witnessStep9, by decide⟩
 
 lemma guardedWitnessStep10 :
@@ -84,7 +84,7 @@ lemma guardedWitnessStep14 :
   exact ⟨witnessStep14, by decide⟩
 
 lemma guardedWitnessStep15 :
-    (GuardedResponseNetwork.network responseData).Tr witnessState15 .wire witnessState16 := by
+    (GuardedResponseNetwork.network responseData).Tr witnessState15 .linkTransmit witnessState16 := by
   exact ⟨witnessStep15, by decide⟩
 
 lemma guardedWitnessStep16 :
@@ -104,7 +104,7 @@ lemma guardedWitnessStep19 :
   exact ⟨witnessStep19, by decide⟩
 
 lemma guardedWitnessStep20 :
-    (GuardedResponseNetwork.network responseData).Tr witnessState20 .wire witnessState21 := by
+    (GuardedResponseNetwork.network responseData).Tr witnessState20 .linkTransmit witnessState21 := by
   exact ⟨witnessStep20, by decide⟩
 
 lemma guardedWitnessStep21 :
@@ -124,7 +124,7 @@ lemma guardedWitnessStep24 :
   exact ⟨witnessStep24, by decide⟩
 
 lemma guardedWitnessStep25 :
-    (GuardedResponseNetwork.network responseData).Tr witnessState25 .wire witnessState26 := by
+    (GuardedResponseNetwork.network responseData).Tr witnessState25 .linkTransmit witnessState26 := by
   exact ⟨witnessStep25, by decide⟩
 
 lemma guardedWitnessStep26 :
@@ -144,7 +144,7 @@ lemma guardedWitnessStep29 :
   exact ⟨witnessStep29, by decide⟩
 
 lemma guardedWitnessStep30 :
-    (GuardedResponseNetwork.network responseData).Tr witnessState30 .wire witnessState31 := by
+    (GuardedResponseNetwork.network responseData).Tr witnessState30 .linkTransmit witnessState31 := by
   exact ⟨witnessStep30, by decide⟩
 
 lemma guardedWitnessStep31 :
@@ -164,7 +164,7 @@ lemma guardedWitnessStep34 :
   exact ⟨witnessStep34, by decide⟩
 
 lemma guardedWitnessStep35 :
-    (GuardedResponseNetwork.network responseData).Tr witnessState35 .wire witnessState36 := by
+    (GuardedResponseNetwork.network responseData).Tr witnessState35 .linkTransmit witnessState36 := by
   exact ⟨witnessStep35, by decide⟩
 
 lemma guardedWitnessStep36 :

@@ -2,7 +2,8 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CSfC role ontology / Lean v3.1 | TDN</title>
+<link rel="icon" href="data:,">
+<title>TDN v3.1 | Role ontology</title>
 <style>
 :root{--bg:#f8fafc;--text:#0f172a;--muted:#526277;--panel:#fff;--border:#d8e0eb;--cyan:#087e98;--purple:#6d3cc5;--green:#087950;--amber:#986400;--code:#f1f5f9;--selected:#e6f5f8;color-scheme:light}
 :root[data-theme=dark]{--bg:#020617;--text:#f8fafc;--muted:#a6b3c7;--panel:#0f172a;--border:#334155;--cyan:#67d9e8;--purple:#c4a1ff;--green:#6ee7b7;--amber:#fcd34d;--code:#172337;--selected:#153744;color-scheme:dark}
@@ -11,19 +12,21 @@
 @media(max-width:760px){.hero{display:block;padding:24px 18px 20px}.stats{margin-top:20px}.workspace{display:block;padding:0 18px 24px}.workspace>.panel{margin-bottom:16px}.role-list{max-height:175px}.search-wrap{grid-template-columns:1fr 1fr}.search-wrap label,.search-wrap #result-count{grid-column:1/-1}.detail-body{display:grid;grid-template-columns:minmax(0,1fr)}.detail-body>*{grid-column:1}.topbar{padding:12px 18px}.topbar-actions button{font-size:12px;padding:6px 8px}.guide{width:calc(100% - 36px);grid-template-columns:1fr;margin:0 18px 20px;padding:18px 0}.graph-wrap{max-height:650px}.footer{padding:0 18px 24px}}
 @media print{.topbar-actions,.search-wrap,.role-list,.toolbar{display:none}.workspace{display:block}.detail-body,.graph-wrap{max-height:none}.panel{break-inside:avoid;margin-bottom:16px}.guide{display:block}.guide>div{margin-bottom:12px}}
 #representation{grid-column:1/-1}.theory-detail{display:grid;gap:10px;min-width:0;grid-column:1/-1;border:1px solid var(--border);border-radius:9px;padding:12px;background:var(--selected)}.theory-expression{display:block;white-space:normal}.theory-interpretation{font-size:12px;border-top:1px solid var(--border);padding-top:9px}.theory-interpretation summary{cursor:pointer;font-weight:600}.theory-interpretation p{margin:9px 0}.theory-detail ul{margin:0;padding-left:18px}.theory-detail li{margin:6px 0}.theory-detail a{overflow-wrap:anywhere}.theory-detail+.callout{grid-column:1/-1}
+
+.role-obligations{display:grid;gap:12px;min-width:0}.obligation-controls{display:grid;gap:7px}.obligation-controls input{width:100%;min-width:0}.obligation-list{display:grid;gap:12px;max-height:680px;overflow:auto;padding:2px 5px 2px 0}.obligation-card{border:1px solid var(--border);border-radius:9px;padding:13px;display:grid;gap:9px;background:var(--panel);min-width:0}.obligation-card h4{margin:0;font-size:14px;line-height:1.5}.obligation-card p{font-size:13px;line-height:1.65}.obligation-card .obligation-origin{font-size:11px;color:var(--muted)}.obligation-origin button{padding:1px 4px;border:0;background:transparent;font-size:inherit;color:var(--cyan);text-decoration:underline}.obligation-tags{display:flex;gap:6px;flex-wrap:wrap}.obligation-card details{border-top:1px solid var(--border);padding-top:8px;min-width:0}.obligation-card summary{font-size:12px;color:var(--cyan);cursor:pointer}.obligation-code{margin-top:12px;min-width:0}.obligation-code pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:360px;overflow:auto;background:var(--code);padding:12px;border-radius:6px;font-size:11px;line-height:1.7}.obligation-code pre code{padding:0;font:inherit}.obligation-code a{font-size:12px}.obligation-empty{font-size:13px;color:var(--muted)}.obligation-status{color:var(--green)}.obligation-note{color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="brand">TDN <span class="muted">/ CSfC role ontology / Lean v3.1</span></div><div class="topbar-actions"><button id="download-owl">Download OWL</button><button id="download-ttl">Download Turtle</button><button id="download-json">Download graph</button><button id="theme" aria-pressed="false">Dark theme</button></div></header>
+<header class="topbar"><div class="brand">TDN v3.1 <span class="muted">/ CSfC role ontology</span></div><div class="topbar-actions"><button id="download-owl">Download OWL</button><button id="download-ttl">Download Turtle</button><button id="download-json">Download graph</button><button id="theme" aria-pressed="false">Dark theme</button></div></header>
 <section class="hero"><div><h1>How MSC roles relate</h1><p>Explore the document’s role hierarchy and how v3.1 represents each role in Lean. Select a role for its current code links, chosen interpretations, and original source passages.</p></div><div class="stats" aria-label="Ontology counts"><div class="stat"><strong id="role-count"></strong><span>extracted roles</span></div><div class="stat"><strong id="subtype-count"></strong><span>subtype links</span></div><div class="stat"><strong id="association-count"></strong><span>associations</span></div></div></section>
 <noscript><p class="noscript">JavaScript is needed for the interactive explorer. The adjacent ontology.md and ontology.owl files provide the complete hierarchy and source evidence.</p></noscript>
 <main class="workspace">
 <aside class="panel" aria-label="Browse roles"><div class="panel-head"><h2>Find a role</h2></div><div class="search-wrap"><label for="search">Search names, aliases, or role IDs</label><input id="search" type="search" placeholder="Try “inner VPN”"><select id="family" aria-label="Filter by topic"><option value="all">All topics</option></select><select id="representation" aria-label="Filter by Lean representation"><option value="all">All mappings</option></select><p id="result-count" class="small muted" aria-live="polite"></p></div><div id="role-list" class="role-list"></div></aside>
-<section class="panel" aria-label="Ontology visualization"><div class="toolbar"><div class="tabs" role="group" aria-label="Visualization mode"><button id="mode-neighborhood" aria-pressed="true">Role relationships</button><button id="mode-hierarchy" aria-pressed="false">Full hierarchy</button></div><button id="associations" aria-pressed="false">Show associations</button></div><div class="legend"><span><i class="line-key"></i>Is a type of</span><span><i class="line-key root"></i>Organizing root</span><span><i class="line-key dashed"></i>Documented association</span></div><div class="graph-wrap" id="graph-wrap"><svg id="graph" role="img" aria-label="Selected role and its broader and specialized roles"></svg></div><div id="tree-view" class="tree-view" hidden></div><div class="focus-description"><div class="chips" id="focus-chips"></div><h2 id="focus-label"></h2><p id="focus-description" class="muted"></p><p id="graph-caption" class="small muted">Broader parent roles appear on the left; specialized child roles appear on the right. Subtype arrows point left, from child to parent. Selecting an arrow opens its evidence.</p></div><div id="edge-actions" class="edge-actions"></div></section>
+<section class="panel" aria-label="Ontology visualization"><div class="toolbar"><div class="tabs" role="group" aria-label="Visualization mode"><button id="mode-neighborhood" aria-pressed="true">Role relationships</button><button id="mode-hierarchy" aria-pressed="false">Full hierarchy</button></div><button id="associations" aria-pressed="false">Show associations</button></div><div class="legend"><span><i class="line-key"></i>Is a type of</span><span><i class="line-key root"></i>Organizing root</span><span><i class="line-key dashed"></i>Documented association</span></div><div class="graph-wrap" id="graph-wrap"><svg id="graph" role="img" aria-label="Selected role and its broader and specialized roles"></svg></div><div id="tree-view" class="tree-view" hidden></div><div class="focus-description"><div class="chips" id="focus-chips"></div><h2 id="focus-label"></h2><p id="focus-description" class="muted"></p><section id="role-obligations" class="role-obligations" aria-label="Associated proof obligations"></section><p id="graph-caption" class="small muted">Broader parent roles appear on the left; specialized child roles appear on the right. Subtype arrows point left, from child to parent. Selecting an arrow opens its evidence.</p></div><div id="edge-actions" class="edge-actions"></div></section>
 <aside class="panel detail" aria-label="Source evidence"><div class="panel-head"><h2>Meaning and evidence</h2><p class="small muted">Current Lean representation and source passages</p></div><div class="detail-body" id="details"></div></aside>
 </main>
 <section class="guide"><div><h3>Read a subtype link</h3><p>“Inner VPN Gateway is a type of VPN Gateway” includes every Inner VPN Gateway in the broader VPN Gateway class. Multiple parents preserve both technology and inner/outer roles.</p></div><div><h3>Keep associations separate</h3><p>Links such as “administers” and “may be realized as” preserve documented relationships. They are annotations in OWL and do not impose a relationship on every member of a class.</p></div><div><details id="limits"><summary>What the ontology leaves unasserted</summary><p>The organizing root and topic filters help navigation. Missing relationships remain unknown. The export asserts no class equivalence, disjointness, deployed device instances, or CSfC compliance.</p><ul id="excluded"></ul></details></div></section>
-<footer class="footer">Updated for Lean v3.1. The mapping checker verifies every role, code reference and pinned Lean source hash. These mappings describe representation; proof status remains in the theorem hierarchy. Generated from the CSfC MSC v1.3.0 extraction. The source-backed subtype decisions and their interpretation status remain inspectable. Design follows the TDN walkthrough’s light theme. The hierarchy is available offline in OWL RDF/XML, Turtle, JSON, and Markdown.</footer>
+<footer class="footer">Updated for TDN v3.1. The mapping checker verifies every role, code reference and pinned Lean source hash. Each role includes associated obligations, inherited parent obligations, current Lean code, English summaries, and recorded proof status. Generated from the CSfC MSC v1.3.0 extraction. The source-backed subtype decisions and their interpretation status remain inspectable. Design follows the TDN walkthrough’s light theme. The hierarchy is available offline in OWL RDF/XML, Turtle, JSON, and Markdown.</footer>
 <script id="ontology-data" type="application/json">__ONTOLOGY_DATA__</script>
 <script>
 'use strict';
@@ -34,9 +37,9 @@ let selected='ROLE-inner-vpn',mode='neighborhood',showAssociations=false;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function el(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
-function selectRole(id){selected=id;if($('family').value!=='all'&&byId.get(id).family!==$('family').value)$('family').value='all';renderList();renderGraph();renderTree();renderRoleDetail(id);}
+function selectRole(id){selected=id;if($('family').value!=='all'&&byId.get(id).family!==$('family').value)$('family').value='all';renderList();renderGraph();renderTree();renderRoleDetail(id);renderObligations(id);}
 function matchingNodes(){const query=$('search').value.toLowerCase().trim();const family=$('family').value,representation=$('representation').value;return data.nodes.filter(n=>n.role_id!==data.root_id&&(representation==='all'||n.theory?.status===representation)&&(family==='all'||n.family===family)&&(!query||[n.label,n.role_id,...n.aliases,n.theory?.meaning||'',...(n.theory?.expressions||[])].join(' ').toLowerCase().includes(query))).sort((a,b)=>a.label.localeCompare(b.label));}
-function renderList(){const nodes=matchingNodes();$('role-list').replaceChildren();$('result-count').textContent=`${nodes.length} of ${data.counts.extracted_roles} roles`;for(const n of nodes){const b=el('button');b.className='role-item';b.dataset.role=n.role_id;b.setAttribute('aria-current',String(n.role_id===selected));const dot=el('span','','family-dot');dot.style.background=familyById.get(n.family)?.color||'var(--muted)';b.append(dot,document.createTextNode(n.label));b.append(el('small',data.theory.status_labels[n.theory.status]));b.addEventListener('click',()=>selectRole(n.role_id));$('role-list').append(b);}if(!nodes.length)$('role-list').append(el('p','No roles match. Clear the search or choose another topic.','empty'));}
+function renderList(){const nodes=matchingNodes();$('role-list').replaceChildren();$('result-count').textContent=`${nodes.length} of ${data.counts.extracted_roles} roles`;for(const n of nodes){const b=el('button');b.className='role-item';b.dataset.role=n.role_id;b.setAttribute('aria-current',String(n.role_id===selected));const dot=el('span','','family-dot');dot.style.background=familyById.get(n.family)?.color||'var(--muted)';b.append(dot,document.createTextNode(n.label));b.append(el('small',data.theory.status_labels[n.theory.status]));b.append(el('small',`${n.obligations.length} associated obligations`));b.addEventListener('click',()=>selectRole(n.role_id));$('role-list').append(b);}if(!nodes.length)$('role-list').append(el('p','No roles match. Clear the search or choose another topic.','empty'));}
 const measureContext=document.createElement('canvas').getContext('2d');
 function wrapWords(text,maxWidth){
   measureContext.font='14px '+getComputedStyle(document.body).fontFamily;
@@ -159,7 +162,7 @@ function codeLink(reference){
 function theoryDetail(node){
  const section=el('section',undefined,'theory-detail'),record=node.theory;
  if(!record)return section;
- section.append(el('h3','Representation in Lean v3.1'),el('span',data.theory.status_labels[record.status],'badge'),el('p',record.meaning));
+ section.append(el('h3','Representation in TDN v3.1'),el('span',data.theory.status_labels[record.status],'badge'),el('p',record.meaning));
  for(const expression of record.expressions)section.append(el('code',expression,'theory-expression'));
  if(record.references.length){
   const list=el('ul',undefined,'details-list');
@@ -172,6 +175,60 @@ function theoryDetail(node){
   const source=el('a','Open the recorded interpretation');source.href=sourceURL({path:interpretation.source_path,line:interpretation.source_line});detail.append(source);section.append(detail);
  }
  return section;
+}
+function obligationCard(binding){
+ const obligation=data.obligations.catalog[binding.rg_id],card=el('article',undefined,'obligation-card');
+ card.dataset.rg=binding.rg_id;
+ card.append(el('h4',`${binding.rg_id}: ${obligation.title}`));
+ const tags=el('div',undefined,'obligation-tags');
+ tags.append(el('span',obligation.status,'badge'+(obligation.status==='Complete model proof reviewed'?' obligation-status':'')),el('span',obligation.formalization,'badge'));
+ card.append(tags);
+ const origin=el('p',undefined,'obligation-origin');
+ if(binding.direct)origin.append(document.createTextNode('Directly associated with this role. '));
+ if(binding.inherited_from.length){
+  origin.append(document.createTextNode('Inherited from '));
+  binding.inherited_from.forEach((rid,index)=>{
+   if(index)origin.append(document.createTextNode(', '));
+   const button=el('button',byId.get(rid).label);button.type='button';
+   button.addEventListener('click',()=>selectRole(rid));origin.append(button);
+  });
+  origin.append(document.createTextNode('.'));
+ }
+ card.append(origin,el('p',obligation.translation));
+ const detail=el('details'),summary=el('summary','Lean code and source links');
+ detail.append(summary);
+ if(obligation.references[0].kind==='match_branch')detail.append(el('p','The excerpt is the selected branch of CPContext.BaseSourceMeaning. Its group number is the RG number. The surrounding function supplies the deployment, records, subject, and external-confirmation checks.','obligation-note'));
+ for(const reference of obligation.references){
+  const block=el('div',undefined,'obligation-code'),pre=el('pre');
+  pre.append(el('code',reference.code));block.append(codeLink(reference),el('small',reference.path+':'+reference.line,'source-id'),pre);detail.append(block);
+ }
+ detail.append(el('p',obligation.proof_note,'obligation-note'));card.append(detail);
+ return card;
+}
+function renderObligations(id){
+ const node=byId.get(id),target=$('role-obligations'),bindings=node.obligations;
+ const direct=bindings.filter(o=>o.direct).length,inherited=bindings.filter(o=>o.inherited_from.length).length;
+ target.replaceChildren(el('h3','Associated proof obligations'));
+ if(!bindings.length){
+  target.append(el('p',node.obligation_note||'No Lean obligation is currently associated with this role or its parent roles.','obligation-empty'));return;
+ }
+ target.append(el('p',`${bindings.length} unique obligations: ${direct} directly associated and ${inherited} inherited. An obligation can have both origins.`,'small muted'));
+ target.append(el('p','Each entry summarizes the current Lean condition for the role or the network it participates in. Applicability conditions and selected objectives still apply. Reviewed proofs establish the statement for their models under their stated assumptions.','small muted'));
+ if(node.obligation_note)target.append(el('p',node.obligation_note,'callout'));
+ const controls=el('div',undefined,'obligation-controls'),label=el('label','Find an obligation by RG, condition, or Lean name');
+ const search=el('input');search.type='search';search.id='obligation-search';search.placeholder='For example, RG-021 or private key';label.htmlFor=search.id;
+ const count=el('p',undefined,'small muted'),list=el('div',undefined,'obligation-list');list.setAttribute('aria-label','Obligation entries');
+ const update=()=>{
+  const query=search.value.toLowerCase().trim();
+  const visible=bindings.filter(binding=>{
+   const o=data.obligations.catalog[binding.rg_id];
+   return !query||[binding.rg_id,o.title,o.translation,...o.references.map(r=>r.label)].join(' ').toLowerCase().includes(query);
+  });
+  count.textContent=`Showing ${visible.length} of ${bindings.length} obligations`;
+  list.replaceChildren(...visible.map(obligationCard));
+  if(!visible.length)list.append(el('p','No obligations match that search.','obligation-empty'));
+ };
+ search.addEventListener('input',update);controls.append(label,search,count);target.append(controls,list);update();
 }
 function renderRoleDetail(id){const n=byId.get(id),d=$('details');d.replaceChildren(el('h3',n.label),el('p',n.description),el('code',n.role_id));if(n.theory)d.append(theoryDetail(n));if(n.uncertainty)d.append(el('p','Source extraction note: '+n.uncertainty,'callout'));if(n.parents.length){d.append(el('h3','Broader roles'));const list=el('div',undefined,'chips');for(const pid of n.parents){const b=el('button',byId.get(pid).label);b.style.fontSize='12px';b.addEventListener('click',()=>selectRole(pid));list.append(b);}d.append(list);}if(n.aliases.length)d.append(el('p','Source wording: '+n.aliases.join('; ')+'.'));if(n.source_ids.length){d.append(el('h3','Role evidence'));n.source_ids.slice(0,4).forEach((sid,i)=>d.append(sourceBlock(sid,i===0)));if(n.source_ids.length>4){const b=el('button',`Show all ${n.source_ids.length} source references`);b.addEventListener('click',()=>{b.remove();n.source_ids.slice(4).forEach(sid=>d.append(sourceBlock(sid,false)));});d.append(b);}}else d.append(el('p','The root organizes the extracted vocabulary. It is not a category defined by the CP.','callout'));}
 function renderEdgeDetail(id){const edge=[...data.subclass_edges,...data.associations].find(e=>e.edge_id===id),association=edge.type==='annotation_association',a=byId.get(association?edge.source:edge.child),b=byId.get(association?edge.target:edge.parent),d=$('details');d.replaceChildren(el('span',association?'Association annotation':edge.basis==='analyst_organization'?'Organizational subclass':'OWL subclass','badge'),el('h3',`${a.label} ${association?edge.label:'is a type of'} ${b.label}`),el('p',edge.rationale),el('p','Evidence basis: '+edge.basis.replaceAll('_',' ')+'.','small muted'));if(association)d.append(el('p','The export records a relationship between the role descriptions. It imposes no object-property restriction on every entity in either class.','callout'));if(edge.qualifications.length){const ul=el('ul',undefined,'details-list');edge.qualifications.forEach(q=>ul.append(el('li',q)));d.append(ul);}edge.source_ids.forEach((sid,i)=>d.append(sourceBlock(sid,i===0)));if(!edge.source_ids.length)d.append(el('p','The organizing edge is explicitly analyst-defined.','callout'));}
@@ -189,7 +246,7 @@ $('download-ttl').addEventListener('click',()=>download(data.downloads.turtle,'c
 $('download-json').addEventListener('click',()=>{const {downloads,project_root,...graph}=data;download(JSON.stringify(graph,null,2)+'\n','csfc-role-ontology.json','application/json');});
 let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(renderGraph,100);});
 selectRole(selected);
-window.ontologyQA={data,selectRole,matchingNodes,renderGraph,renderTree};
+window.ontologyQA={data,selectRole,matchingNodes,renderGraph,renderTree,renderObligations};
 </script>
 </body>
 </html>

@@ -8,7 +8,7 @@ inductive Stage where
 
 structure InterfaceLimit where
   device : String
-  port : String
+  iface : String
   stage : Stage
   mtu : Nat
   deriving DecidableEq, Repr

@@ -4,7 +4,7 @@ namespace TDN.FragmentHeaders
 open PacketPolicy
 
 def availableWithoutTransport : Atom → Bool
-  | .sourcePorts _ | .destinationPorts _ | .icmpType _ | .icmpCode _ | .ipsecUDPFraming | .ipsecUDPFramingWithOptions => false
+  | .sourcePorts _ | .destinationPorts _ | .icmpType _ | .icmpCode _ | .ipsecUDPFraming | .ipsecUDPFramingWithOptions | .ipsecUDPReplyFramingWithOptions => false
   | _ => true
 
 def rule (r : Rule) : Filter.Rule Packet :=

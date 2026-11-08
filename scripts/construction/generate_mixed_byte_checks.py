@@ -23,8 +23,8 @@ theorem every_mixed_byte_keeps_stack {{Byte : Type}}
     {{after : List (ByteFlows.Carrier MultiProtocolExecution.State Byte)}}
     {{actions : List (ByteFlows.Action MultiProtocolExecution.Action)}}
     (run : (byteSystem config (Targets.MixedByteOrigin redSources)).MTr [] actions after) :
-    ByteFlows.Safe (fun _ => StackInvariant config layout) after :=
-  Targets.mixed_bytes_keep_protection config layout redSources mixed_local_conditions
+    ByteFlows.Safe (fun _ => StackInvariant config expectedEncapStack) after :=
+  Targets.mixed_bytes_keep_protection config expectedEncapStack redSources mixed_local_conditions
     red_sources_checked run
 
 theorem every_mixed_black_byte_has_actual_layer_order {{Byte : Type}}
@@ -32,15 +32,15 @@ theorem every_mixed_black_byte_has_actual_layer_order {{Byte : Type}}
     {{actions : List (ByteFlows.Action MultiProtocolExecution.Action)}}
     (run : (byteSystem config (Targets.MixedByteOrigin redSources)).MTr [] actions after)
     (packet : ByteFlows.Carrier MultiProtocolExecution.State Byte) (member : packet ∈ after)
-    (ready : packet.state.phase = .ready) (black : packet.state.port ∈ blackPorts)
+    (ready : packet.state.datapathStage = .ready) (black : packet.state.iface ∈ blackIfaces)
     (byte : Byte) (contains : byte ∈ packet.bytes) :
     packet.state.frame.body.protectionLayers = [2, 1] ∧
     ∃ start labels, Targets.MixedByteOrigin redSources start byte ∧
       (byteLineage config).MTr start labels packet.state ∧
       ByteOrderedEncryptions config 1 2 start labels packet.state :=
-  Targets.every_mixed_black_byte_has_ordered_encryptions config layout redSources blackPorts
-    mixed_local_conditions red_sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (Execution.port_at_member_or_default ports port))
+  Targets.every_mixed_black_byte_has_ordered_encryptions config expectedEncapStack redSources blackIfaces
+    mixed_local_conditions red_sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (Execution.iface_at_member_or_default ifaces iface))
     run packet member ready black byte contains
 
 end {namespace}

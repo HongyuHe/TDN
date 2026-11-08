@@ -15,6 +15,15 @@ spec.loader.exec_module(publication)
 
 
 class PublicationTests(unittest.TestCase):
+    def test_project_version_is_named_tdn_in_both_explorers(self):
+        for page in publication.PAGES:
+            html = (publication.PUBLIC / page / 'index.html').read_text()
+            title = re.search(r'<title>(.*?)</title>', html)[1]
+            self.assertTrue(title.startswith('TDN v3.1 | '), title)
+            self.assertNotIn('Lean v3.1', html)
+            header = re.search(r'<header[^>]*>(.*?)</header>', html, re.S)[1]
+            self.assertIn('TDN v3.1', header)
+
     def test_current_sources_and_line_numbers(self):
         self.assertEqual(set(publication.validate()['pages']), {'hierarchy', 'ontology'})
 

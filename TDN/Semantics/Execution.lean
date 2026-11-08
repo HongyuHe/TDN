@@ -20,7 +20,7 @@ structure Frame where
   originDomain : Nat
   packet : PacketPolicy.Packet
   envelopes : List Envelope
-  enteredPort : Nat := 0
+  enteredIface : Nat := 0
 
 def payloadAddresses (packet : PacketPolicy.Packet) : List Envelope → Nat × Nat
   | [] => (packet.source, packet.destination)
@@ -36,14 +36,14 @@ lemma payload_addresses_ignore_metadata {a b : PacketPolicy.Packet} (envelopes :
   | nil => exact Prod.ext source destination
   | cons => rfl
 
-inductive Phase where
+inductive DatapathStage where
   | received | ingress | localOutput | routed | outputRouted
   | filtered | encapsulated | ready | localInput | delivered | dropped
   deriving DecidableEq, Repr
 
 structure State where
-  port : Nat
-  phase : Phase
+  iface : Nat
+  datapathStage : DatapathStage
   frame : Frame
   authenticated : List Nat
 
@@ -85,7 +85,7 @@ def selectedAssociations (associations : List Association) (p : PacketPolicy.Pac
     associations.all (fun b => !b.matches p || decide (a.priority ≤ b.priority))
 
 inductive Action where
-  | route | filter | encrypt | decrypt | wire | switch | local | deliver | drop
+  | route | filter | encrypt | decrypt | linkTransmit | bridge | local | deliver | drop
   deriving DecidableEq, Repr
 
 structure Route where
@@ -107,7 +107,7 @@ def SelectedRoute (routes : List Route) (r : Route) (p : PacketPolicy.Packet) : 
       (other.tablePriority = r.tablePriority → other.prefixLength ≤ r.prefixLength ∧
         (other.prefixLength = r.prefixLength → r.metric ≤ other.metric))
 
-structure Config where
+structure Environment where
   routes : List Route
   forwardRules : Nat → List PacketPolicy.Rule
   inputRules : Nat → List PacketPolicy.Rule
@@ -122,17 +122,17 @@ structure Config where
   interfaceName : Nat → String
   owner : Nat → Nat
   link : Nat → Nat → Prop
-  switching : Nat → Nat → PacketPolicy.Packet → Prop
+  bridging : Nat → Nat → PacketPolicy.Packet → Prop
   localAddress : Nat → Nat → Prop
   recipientDomain : Nat → Option Nat
   payloadOrigin : Nat → Prop
 
-def policyPacket (c : Config) (port : Nat) (f : Frame) (authenticated : List Nat) :
+def policyPacket (c : Environment) (iface : Nat) (f : Frame) (authenticated : List Nat) :
     PacketPolicy.Packet :=
   { f.packet with
-    egress := c.interfaceName port
+    egress := c.interfaceName iface
     inboundPolicies := authenticated
-    outboundPolicies := (selectedAssociations (c.outbound port) f.packet).map Association.id }
+    outboundPolicies := (selectedAssociations (c.outbound iface) f.packet).map Association.id }
 
 def accepts (rules : List PacketPolicy.Rule) (fallback : Filter.Verdict)
     (packet : PacketPolicy.Packet) : Prop :=
@@ -152,85 +152,85 @@ def encrypt (a : Association) (sa : SecurityAssociation) (f : Frame) : Frame :=
       ipv6NextHeader := if a.sender < 2^32 then 0 else 50 }
     envelopes := ⟨a.seal sa, f.packet⟩ :: f.envelopes }
 
-inductive Step (c : Config) : State → Action → State → Prop
-  | receive {port : Nat} {f : Frame} (tracking : String) :
-      Step c ⟨port, .received, f, []⟩ .local
-        ⟨port, .ingress, { f with enteredPort := port, packet := { f.packet with
-          ingress := c.interfaceName port, inboundPolicies := [], outboundPolicies := [],
+inductive Step (c : Environment) : State → Action → State → Prop
+  | receive {iface : Nat} {f : Frame} (tracking : String) :
+      Step c ⟨iface, .received, f, []⟩ .local
+        ⟨iface, .ingress, { f with enteredIface := iface, packet := { f.packet with
+          ingress := c.interfaceName iface, inboundPolicies := [], outboundPolicies := [],
           connectionState := tracking } }, []⟩
-  | route {port : Nat} {f : Frame} {authenticated : List Nat} (r : Route)
-      (chosen : SelectedRoute c.routes r f.packet) (atIngress : r.ingress = port) :
-      Step c ⟨port, .ingress, f, authenticated⟩ .route
+  | route {iface : Nat} {f : Frame} {authenticated : List Nat} (r : Route)
+      (chosen : SelectedRoute c.routes r f.packet) (atIngress : r.ingress = iface) :
+      Step c ⟨iface, .ingress, f, authenticated⟩ .route
         ⟨r.egress, .routed, f, authenticated⟩
-  | outputRoute {port : Nat} {f : Frame} (r : Route)
-      (chosen : SelectedRoute c.routes r f.packet) (atOrigin : r.ingress = port) :
-      Step c ⟨port, .localOutput, f, []⟩ .route ⟨r.egress, .outputRouted, f, []⟩
-  | filter {port : Nat} {f : Frame} {authenticated : List Nat}
-      (accepted : accepts (c.forwardRules port) (c.forwardFallback port)
-        (policyPacket c port f authenticated)) :
-      Step c ⟨port, .routed, f, authenticated⟩ .filter
-        ⟨port, .filtered, f, authenticated⟩
-  | outputFilter {port : Nat} {f : Frame}
-      (accepted : accepts (c.outputRules port) (c.outputFallback port)
-        (policyPacket c port f [])) :
-      Step c ⟨port, .outputRouted, f, []⟩ .filter ⟨port, .filtered, f, []⟩
-  | encrypt {port : Nat} {f : Frame} {authenticated : List Nat} (a : Association)
+  | routeLocalOutput {iface : Nat} {f : Frame} (r : Route)
+      (chosen : SelectedRoute c.routes r f.packet) (atOrigin : r.ingress = iface) :
+      Step c ⟨iface, .localOutput, f, []⟩ .route ⟨r.egress, .outputRouted, f, []⟩
+  | filter {iface : Nat} {f : Frame} {authenticated : List Nat}
+      (accepted : accepts (c.forwardRules iface) (c.forwardFallback iface)
+        (policyPacket c iface f authenticated)) :
+      Step c ⟨iface, .routed, f, authenticated⟩ .filter
+        ⟨iface, .filtered, f, authenticated⟩
+  | outputFilter {iface : Nat} {f : Frame}
+      (accepted : accepts (c.outputRules iface) (c.outputFallback iface)
+        (policyPacket c iface f [])) :
+      Step c ⟨iface, .outputRouted, f, []⟩ .filter ⟨iface, .filtered, f, []⟩
+  | encrypt {iface : Nat} {f : Frame} {authenticated : List Nat} (a : Association)
       (sa : SecurityAssociation)
-      (selected : a ∈ selectedAssociations (c.outbound port) f.packet)
-      (installed : sa ∈ c.outboundStates port)
+      (selected : a ∈ selectedAssociations (c.outbound iface) f.packet)
+      (installed : sa ∈ c.outboundStates iface)
       (bound : StateBindsPolicy sa a) :
-      Step c ⟨port, .filtered, f, authenticated⟩ .encrypt
-        ⟨port, .encapsulated, encrypt a sa f, authenticated⟩
-  | outerRoute {port : Nat} {f : Frame} {authenticated : List Nat} (r : Route)
-      (chosen : SelectedRoute c.routes r f.packet) (atEncryptor : r.ingress = port) :
-      Step c ⟨port, .encapsulated, f, authenticated⟩ .route
+      Step c ⟨iface, .filtered, f, authenticated⟩ .encrypt
+        ⟨iface, .encapsulated, encrypt a sa f, authenticated⟩
+  | routeOuterPacket {iface : Nat} {f : Frame} {authenticated : List Nat} (r : Route)
+      (chosen : SelectedRoute c.routes r f.packet) (atEncryptor : r.ingress = iface) :
+      Step c ⟨iface, .encapsulated, f, authenticated⟩ .route
         ⟨r.egress, .ready, f, authenticated⟩
-  | switch {a b : Nat} {f : Frame} {authenticated : List Nat}
-      (permitted : c.switching a b f.packet) :
-      Step c ⟨a, .ingress, f, authenticated⟩ .switch ⟨b, .ready, f, authenticated⟩
-  | plain {port : Nat} {f : Frame} {authenticated : List Nat}
-      (noPolicy : selectedAssociations (c.outbound port) f.packet = []) :
-      Step c ⟨port, .filtered, f, authenticated⟩ .local
-        ⟨port, .ready, f, authenticated⟩
-  | decrypt {port : Nat} {f : Frame} (a : Association)
+  | bridge {a b : Nat} {f : Frame} {authenticated : List Nat}
+      (permitted : c.bridging a b f.packet) :
+      Step c ⟨a, .ingress, f, authenticated⟩ .bridge ⟨b, .ready, f, authenticated⟩
+  | passWithoutTransform {iface : Nat} {f : Frame} {authenticated : List Nat}
+      (noPolicy : selectedAssociations (c.outbound iface) f.packet = []) :
+      Step c ⟨iface, .filtered, f, authenticated⟩ .local
+        ⟨iface, .ready, f, authenticated⟩
+  | decrypt {iface : Nat} {f : Frame} (a : Association)
       (sa : SecurityAssociation) (header : PacketPolicy.Packet) (rest : List Envelope)
       (tracking : String)
-      (configured : a ∈ c.inbound port)
-      (installed : sa ∈ c.inboundStates port)
+      (configured : a ∈ c.inbound iface)
+      (installed : sa ∈ c.inboundStates iface)
       (bound : StateBindsPolicy sa a)
       (received : f.envelopes = ⟨a.seal sa, header⟩ :: rest)
       (outerSource : f.packet.source = a.sender)
       (outerDestination : f.packet.destination = a.receiver)
       (esp : f.packet.protocol = "esp")
       (selected : a.matches header = true) :
-      Step c ⟨port, .received, f, []⟩ .decrypt
-        ⟨port, .ingress, { f with enteredPort := port, packet := { header with
-          ingress := c.interfaceName port
+      Step c ⟨iface, .received, f, []⟩ .decrypt
+        ⟨iface, .ingress, { f with enteredIface := iface, packet := { header with
+          ingress := c.interfaceName iface
           inboundPolicies := []
           outboundPolicies := [], connectionState := tracking }, envelopes := rest }, [a.id]⟩
-  | wire {a b : Nat} {f : Frame} {authenticated : List Nat} (linked : c.link a b) :
-      Step c ⟨a, .ready, f, authenticated⟩ .wire ⟨b, .received, f, []⟩
-  | local {port : Nat} {f : Frame} {authenticated : List Nat}
-      (addressed : c.localAddress port f.packet.destination)
-      (accepted : accepts (c.inputRules port) (c.inputFallback port)
-        (policyPacket c port f authenticated)) :
-      Step c ⟨port, .ingress, f, authenticated⟩ .local
-        ⟨port, .localInput, f, authenticated⟩
-  | deliver {port : Nat} {f : Frame} {authenticated : List Nat} (domain : Nat)
-      (recipient : c.recipientDomain port = some domain) (plaintext : f.envelopes = []) :
-      Step c ⟨port, .localInput, f, authenticated⟩ .deliver
-        ⟨port, .delivered, f, authenticated⟩
+  | linkTransmit {a b : Nat} {f : Frame} {authenticated : List Nat} (linked : c.link a b) :
+      Step c ⟨a, .ready, f, authenticated⟩ .linkTransmit ⟨b, .received, f, []⟩
+  | local {iface : Nat} {f : Frame} {authenticated : List Nat}
+      (addressed : c.localAddress iface f.packet.destination)
+      (accepted : accepts (c.inputRules iface) (c.inputFallback iface)
+        (policyPacket c iface f authenticated)) :
+      Step c ⟨iface, .ingress, f, authenticated⟩ .local
+        ⟨iface, .localInput, f, authenticated⟩
+  | deliver {iface : Nat} {f : Frame} {authenticated : List Nat} (domain : Nat)
+      (recipient : c.recipientDomain iface = some domain) (plaintext : f.envelopes = []) :
+      Step c ⟨iface, .localInput, f, authenticated⟩ .deliver
+        ⟨iface, .delivered, f, authenticated⟩
   | drop (s : State) :
-      Step c s .drop { s with phase := .dropped }
+      Step c s .drop { s with datapathStage := .dropped }
 
-def lts (c : Config) : Cslib.LTS State Action := ⟨Step c⟩
+def lts (c : Environment) : Cslib.LTS State Action := ⟨Step c⟩
 
-lemma step_preserves_payload {c : Config} {a b : State} {action : Action}
+lemma step_preserves_payload {c : Environment} {a b : State} {action : Action}
     (h : Step c a action b) :
     b.frame.payload = a.frame.payload ∧ b.frame.originDomain = a.frame.originDomain := by
   cases h <;> exact ⟨rfl, rfl⟩
 
-lemma step_preserves_original_addresses {c : Config} {a b : State} {action : Action}
+lemma step_preserves_original_addresses {c : Environment} {a b : State} {action : Action}
     (h : Step c a action b) : b.frame.addresses = a.frame.addresses := by
   cases h with
   | receive =>
@@ -240,18 +240,18 @@ lemma step_preserves_original_addresses {c : Config} {a b : State} {action : Act
     exact payload_addresses_ignore_metadata rest rfl rfl
   | encrypt => rfl
   | route => rfl
-  | outputRoute => rfl
+  | routeLocalOutput => rfl
   | filter => rfl
   | outputFilter => rfl
-  | outerRoute => rfl
-  | switch => rfl
-  | plain => rfl
-  | wire => rfl
+  | routeOuterPacket => rfl
+  | bridge => rfl
+  | passWithoutTransform => rfl
+  | linkTransmit => rfl
   | «local» => rfl
   | deliver => rfl
   | drop => rfl
 
-theorem execution_preserves_original_addresses (c : Config) {a b : State}
+theorem execution_preserves_original_addresses (c : Environment) {a b : State}
     {actions : List Action} (execution : (lts c).MTr a actions b) :
     b.frame.addresses = a.frame.addresses := by
   have localProof : (lts c).TrInv (fun s => s.frame.addresses = a.frame.addresses) := by
@@ -259,7 +259,7 @@ theorem execution_preserves_original_addresses (c : Config) {a b : State}
     exact (step_preserves_original_addresses step).trans earlier
   exact Cslib.LTS.mtrInv_of_trInv localProof a actions b execution rfl
 
-theorem plaintext_delivery_retains_addresses (c : Config) {a b : State}
+theorem plaintext_delivery_retains_addresses (c : Environment) {a b : State}
     {actions : List Action} (execution : (lts c).MTr a actions b)
     (initial : a.frame.envelopes = []) (delivered : b.frame.envelopes = []) :
     b.frame.packet.source = a.frame.packet.source ∧
@@ -268,7 +268,7 @@ theorem plaintext_delivery_retains_addresses (c : Config) {a b : State}
   simp only [Frame.addresses, initial, delivered, payloadAddresses, Prod.mk.injEq] at same
   exact same
 
-theorem execution_preserves_payload (c : Config) {a b : State} {actions : List Action}
+theorem execution_preserves_payload (c : Environment) {a b : State} {actions : List Action}
     (h : (lts c).MTr a actions b) :
     b.frame.payload = a.frame.payload ∧ b.frame.originDomain = a.frame.originDomain := by
   let invariant := fun s : State =>
@@ -287,28 +287,28 @@ lemma matched_policy_is_configured {associations : List Association} {p : Packet
   have both := Bool.and_eq_true_iff.mp matched
   exact both.1
 
-theorem outbound_policy_atom_selects_operation (c : Config) (port : Nat) (f : Frame)
+theorem outbound_policy_atom_selects_operation (c : Environment) (iface : Nat) (f : Frame)
     (authenticated : List Nat) {rule : PacketPolicy.Rule} {id : Nat}
     (atom : .outboundPolicy id ∈ rule.atoms)
-    (matched : rule.toFilter.accepts (policyPacket c port f authenticated) = true) :
-    ∃ a ∈ c.outbound port, a.id = id ∧ a.matches f.packet = true := by
-  have present : id ∈ (selectedAssociations (c.outbound port) f.packet).map Association.id :=
+    (matched : rule.toFilter.accepts (policyPacket c iface f authenticated) = true) :
+    ∃ a ∈ c.outbound iface, a.id = id ∧ a.matches f.packet = true := by
+  have present : id ∈ (selectedAssociations (c.outbound iface) f.packet).map Association.id :=
     PacketPolicy.matching_atom matched atom
   obtain ⟨a, selected, same⟩ := List.mem_map.mp present
   obtain ⟨installed, matched⟩ := matched_policy_is_configured selected
   exact ⟨a, installed, same, matched⟩
 
-lemma outbound_policy_atom_excludes_plain (c : Config) (port : Nat) (f : Frame)
+lemma outbound_policy_atom_excludes_plain (c : Environment) (iface : Nat) (f : Frame)
     (authenticated : List Nat) {rule : PacketPolicy.Rule} {id : Nat}
     (atom : .outboundPolicy id ∈ rule.atoms)
-    (matched : rule.toFilter.accepts (policyPacket c port f authenticated) = true) :
-    selectedAssociations (c.outbound port) f.packet ≠ [] := by
-  have present : id ∈ (selectedAssociations (c.outbound port) f.packet).map Association.id :=
+    (matched : rule.toFilter.accepts (policyPacket c iface f authenticated) = true) :
+    selectedAssociations (c.outbound iface) f.packet ≠ [] := by
+  have present : id ∈ (selectedAssociations (c.outbound iface) f.packet).map Association.id :=
     PacketPolicy.matching_atom matched atom
   intro empty
   simp [empty] at present
 
-lemma simulation_of_step_map {Abstract : Type} (c : Config)
+lemma simulation_of_step_map {Abstract : Type} (c : Environment)
     (abstractLTS : Cslib.LTS Abstract Action) (project : State → Abstract)
     (stepMap : ∀ a action b, Step c a action b →
       abstractLTS.Tr (project a) action (project b)) :
@@ -317,7 +317,7 @@ lemma simulation_of_step_map {Abstract : Type} (c : Config)
   subst b
   exact ⟨project next, stepMap a action next step, rfl⟩
 
-theorem matched_execution {Abstract : Type} (c : Config)
+theorem matched_execution {Abstract : Type} (c : Environment)
     (abstractLTS : Cslib.LTS Abstract Action) (project : State → Abstract)
     (stepMap : ∀ a action b, Step c a action b →
       abstractLTS.Tr (project a) action (project b))

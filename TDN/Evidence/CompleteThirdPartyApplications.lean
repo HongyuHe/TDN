@@ -24,7 +24,7 @@ theorem blocking_model_RG037 (base : Deployment) (processing : PacketProcessing.
     have packet : traffic.packet = vendorPacket := emitted
     simp [packet, vendorPacket]
   · simp [deployment, CompleteAddressing.deployment, CompleteAddressing.policies, CompleteAddressing.interfaces]
-  · intro item member _ _ _ port _ _ policy present _ _ rule inRules _ traffic emitted
+  · intro item member _ _ _ iface _ _ policy present _ _ rule inRules _ traffic emitted
     simp only [List.mem_singleton] at member
     subst item
     have packet : traffic.packet = vendorPacket := emitted

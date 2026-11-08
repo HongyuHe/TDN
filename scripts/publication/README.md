@@ -24,6 +24,8 @@ Use `--render-only` after interface-only changes with unchanged hierarchy data. 
 
 Commit the changed source files and `public/`, then push TDN's `main` branch. TDN's **Check and publish explorers** workflow validates the publication and updates the two pages in the website repository. That commit triggers the website's normal Pages build. An unchanged publication makes no website commit.
 
+An explorer update is complete when the source templates, generated local page, public export, committed code, and deployed website agree. Both page titles and headers use **TDN v3.1**. After publishing, verify that `/tdn/source.json` records the intended TDN commit and that the live pages match the recorded page hashes. Pull the website checkout forward after an automatic publication so its local copies also match. Report any failed publication or deployment as unfinished work.
+
 The workflow uses a dedicated SSH deploy key with access only to the website repository. GitHub stores the private key in TDN's `TDN_WEBSITE_DEPLOY_KEY` Actions secret. The workflow writes only the two explorer pages and `tdn/source.json`. All automatic commits use Hongyu Hè as their sole author. Pull-request checks never receive the key or publish pages. A manual run of the TDN workflow can retry a failed publication.
 
 The publication workflow uses one exact TDN commit and validates the page and source hashes before installing either page. It replaces the revision placeholder in each GitHub link with that commit's full ID. The pages therefore link to the same code revision used to generate their line numbers. A failed validation leaves the previously deployed site in place.

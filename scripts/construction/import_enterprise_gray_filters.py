@@ -33,7 +33,7 @@ def parse(root):
     records = []
     for phase in phases:
         observations = json.loads((root / phase).read_text())
-        require(set(observations) == set(devices), "Phase device inventory incomplete")
+        require(set(observations) == set(devices), "DatapathStage device inventory incomplete")
         for device in sorted(selected):
             observed = observations[device]["filters4"]
             command = commands.get(observed["observation_id"])

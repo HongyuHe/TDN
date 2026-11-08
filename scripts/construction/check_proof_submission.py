@@ -27,16 +27,21 @@ def main():
     parser.add_argument("--candidate-definitions", required=True)
     parser.add_argument("--compiled-audit", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--groups", nargs="+", help="Review only these completed RGs; default: all 24.")
     args = parser.parse_args()
     accepted = load(args.accepted_map)
     proof_map = load(args.proof_map)
     if isinstance(accepted, dict):
         accepted = accepted["groups"]
-    expected = {row["rg_id"]: row for row in accepted}
+    catalog = {row["rg_id"]: row for row in accepted}
+    selected = set(args.groups) if args.groups else set(catalog)
+    if len(catalog) != 24 or not selected or not selected <= set(catalog):
+        parser.error("Select known RGs from the complete 24-group accepted map.")
+    expected = {key: value for key, value in catalog.items() if key in selected}
     supplied = {row["rg_id"]: row for row in proof_map}
     failures = []
-    if len(expected) != 24 or len(proof_map) != 24 or set(supplied) != set(expected):
-        failures.append("The submitted map must contain exactly the 24 accepted RGs.")
+    if len(proof_map) != len(expected) or set(supplied) != set(expected):
+        failures.append("The submitted map must contain exactly the selected accepted RGs.")
     audit = load(args.compiled_audit)
     audited_roots = {row["name"]: row for row in audit["roots"]}
     compiled = declarations(audit)
@@ -93,7 +98,8 @@ def main():
                         "conclusion_head_matches_without_unfolding": root.get("conclusion_head") == expected_spec})
     report = {"at": datetime.now(timezone.utc).isoformat(),
               "scope": "Structural audit only. Supervisor must inspect clause coverage, assumptions, applicability and meaningful applications.",
-              "input_sha256": {key: digest(value) for key, value in vars(args).items() if key != "output"},
+              "selected_groups": sorted(selected),
+              "input_sha256": {key: digest(value) for key, value in vars(args).items() if key not in ["output", "groups"]},
               "exact_expression_comparison": all("type_expression" in row and "body_expression" in row
                                                  for row in prior.values()),
               "failures": failures, "accepted_definitions_removed": removed,

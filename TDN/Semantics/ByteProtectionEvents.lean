@@ -11,12 +11,12 @@ def tags : KernelResponses.State Execution.State → List Nat
   | .network state | .generated state _ _ | .routed state _ _ _ => state.frame.tags
   | .consumed => []
 
-def system (c : Execution.Config) (strict uniformOwners : List Nat) :=
+def system (c : Execution.Environment) (strict uniformOwners : List Nat) :=
   ByteLineage.lts
     (KernelResponses.lts (Execution.lts c) (UniformDomainResponses.responseConfig c strict uniformOwners))
     (ResponseByteFlows.assembly PlaintextAssembly)
 
-def EncryptionEvent (c : Execution.Config) (tag : Nat)
+def EncryptionEvent (c : Execution.Environment) (tag : Nat)
     (left : KernelResponses.State Execution.State)
     (action : Option (KernelResponses.Action Execution.Action))
     (right : KernelResponses.State Execution.State) : Prop :=
@@ -24,7 +24,7 @@ def EncryptionEvent (c : Execution.Config) (tag : Nat)
     action = some (.network .encrypt) ∧ Step c before .encrypt after ∧
     after.frame.tags = tag :: before.frame.tags
 
-lemma added_tag_is_actual_encryption (c : Execution.Config) (strict uniformOwners : List Nat)
+lemma added_tag_is_actual_encryption (c : Execution.Environment) (strict uniformOwners : List Nat)
     {before after : KernelResponses.State Execution.State}
     {action : Option (KernelResponses.Action Execution.Action)} {tag : Nat}
     (step : (system c strict uniformOwners).Tr before action after)
@@ -46,7 +46,7 @@ lemma added_tag_is_actual_encryption (c : Execution.Config) (strict uniformOwner
       simp only [ResponseByteFlows.assembly] at compatible <;> try contradiction
     simp only [tags, compatible.2.2.2.2, List.not_mem_nil] at present
 
-theorem trace_tag_addition_has_encryption (c : Execution.Config) (strict uniformOwners : List Nat)
+theorem trace_tag_addition_has_encryption (c : Execution.Environment) (strict uniformOwners : List Nat)
     (tag : Nat) {before after : KernelResponses.State Execution.State}
     {actions : List (Option (KernelResponses.Action Execution.Action))}
     (run : (system c strict uniformOwners).MTr before actions after)
@@ -60,26 +60,26 @@ theorem trace_tag_addition_has_encryption (c : Execution.Config) (strict uniform
   exact added_tag_is_actual_encryption c strict uniformOwners step changed.1
     (Classical.not_not.mp changed.2)
 
-lemma domain_lineage_preservation (c : Execution.Config) (layout : Nat → List Nat)
+lemma domain_lineage_preservation (c : Execution.Environment) (expectedEncapStack : Nat → List Nat)
     (allowed : Nat → Prop) (strict uniformOwners : List Nat)
-    (conditions : LocalDomainConditions c layout allowed)
-    (guards : ∀ port, c.owner port ∈ strict →
-      c.outputFallback port = .deny ∧ ∀ rule ∈ c.outputRules port,
+    (conditions : LocalDomainConditions c expectedEncapStack allowed)
+    (guards : ∀ iface, c.owner iface ∈ strict →
+      c.outputFallback iface = .deny ∧ ∀ rule ∈ c.outputRules iface,
         rule.verdict = .allow → KernelResponses.SafeResponseRule rule)
-    (uniform : ∀ owner ∈ uniformOwners, UniformDomainResponses.Uniform c layout allowed owner) :
+    (uniform : ∀ owner ∈ uniformOwners, UniformDomainResponses.Uniform c expectedEncapStack allowed owner) :
     (system c strict uniformOwners).TrInv
       (KernelResponses.ProvenanceInvariant (UniformDomainResponses.responseConfig c strict uniformOwners)
-        (DomainInvariant c layout allowed)) := by
+        (DomainInvariant c expectedEncapStack allowed)) := by
   apply ByteLineage.local_checks_preserve_lineage
   · exact KernelResponses.local_reply_checks_preserve_network_safety
       (Execution.lts c) (UniformDomainResponses.responseConfig c strict uniformOwners)
-      (DomainInvariant c layout allowed)
+      (DomainInvariant c expectedEncapStack allowed)
       (fun _ _ _ step safe => step_preserves_domain_invariant conditions step safe)
-      (UniformDomainResponses.reply_preserves_domain c layout allowed strict uniformOwners
+      (UniformDomainResponses.reply_preserves_domain c expectedEncapStack allowed strict uniformOwners
         conditions guards uniform)
   · intro before after compatible safe
     cases before <;> cases after <;>
       simp only [ResponseByteFlows.assembly] at compatible <;> try contradiction
-    exact plaintext_assembly_preserves_domain c layout allowed compatible safe
+    exact plaintext_assembly_preserves_domain c expectedEncapStack allowed compatible safe
 
 end TDN.ByteProtectionEvents

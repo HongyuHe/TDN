@@ -9,9 +9,9 @@ def NativeExecutionBinding.SourceOriginCompatible {S A : Type}
   match binding.origin request.originDomain with
   | .red _ => True
   | .management component => BodyManagement d datagram.body ∧
-      d.LocalBodySource component (binding.portName request.port) datagram.body
+      d.LocalBodySource component (binding.ifaceName request.iface) datagram.body
   | .control component protocol => BodyControlProtocol d datagram.body protocol ∧
-      d.LocalBodySource component (binding.portName request.port) datagram.body
+      d.LocalBodySource component (binding.ifaceName request.iface) datagram.body
 
 lemma NativeExecutionBinding.emitted_source_state_initial {S A : Type}
     (binding : NativeExecutionBinding S A) (d : Deployment)
@@ -20,7 +20,7 @@ lemma NativeExecutionBinding.emitted_source_state_initial {S A : Type}
     (allowed : binding.SourceRequestAllowed d request)
     (emitted : binding.sourceProcessing.process request = .emitted datagrams)
     (member : datagram ∈ datagrams)
-    (valid : datagram.ValidFor request (binding.sourceProcessing.sourceMtu request.port))
+    (valid : datagram.ValidFor request (binding.sourceProcessing.sourceMtu request.iface))
     (compatible : binding.SourceOriginCompatible d request datagram) :
     binding.SourceInitial d (binding.SourceState request datagram) := by
   have body : binding.SourceBody datagram.body := by
@@ -53,30 +53,30 @@ namespace TDN.Targets.CanonicalExecution
 open Compliance
 
 theorem canonical_source_coverage {S A : Type}
-    (prototype : NativeExecutionBinding S A) (ports : List Nat)
+    (prototype : NativeExecutionBinding S A) (ifaces : List Nat)
     (d : Deployment) (history : ObservedHistory)
     (emissions : PacketSource.EmissionConditions prototype.sourceProcessing)
     (errors : PacketSource.ErrorConditions prototype.sourceProcessing)
-    (sourcePorts : ∀ request, (binding prototype ports).SourceRequestAllowed d request →
-      request.port ∈ ports)
+    (sourceIfaces : ∀ request, (binding prototype ifaces).SourceRequestAllowed d request →
+      request.iface ∈ ifaces)
     (sourceOrigins : ∀ request datagrams datagram,
-      (binding prototype ports).SourceRequestAllowed d request →
+      (binding prototype ifaces).SourceRequestAllowed d request →
       prototype.sourceProcessing.process request = .emitted datagrams →
       datagram ∈ datagrams →
-      (binding prototype ports).SourceOriginCompatible d request datagram)
+      (binding prototype ifaces).SourceOriginCompatible d request datagram)
     (networkSources : ∀ network ∈ d.networks, ∃ request datagrams,
-      (binding prototype ports).SourceRequestAllowed d request ∧ request.application ≠ [] ∧
+      (binding prototype ifaces).SourceRequestAllowed d request ∧ request.application ≠ [] ∧
       prototype.origin request.originDomain = .red network.id ∧
       prototype.sourceProcessing.process request = .emitted datagrams) :
-    (model prototype ports d history).SourceCoverage d := by
+    (model prototype ifaces d history).SourceCoverage d := by
   have initialSource : ∀ request datagrams datagram,
-      (binding prototype ports).SourceRequestAllowed d request →
+      (binding prototype ifaces).SourceRequestAllowed d request →
       prototype.sourceProcessing.process request = .emitted datagrams →
       datagram ∈ datagrams →
-      (binding prototype ports).SourceInitial d
-        ((binding prototype ports).SourceState request datagram) := by
+      (binding prototype ifaces).SourceInitial d
+        ((binding prototype ifaces).SourceState request datagram) := by
     intro request datagrams datagram allowed emitted member
-    exact (binding prototype ports).emitted_source_state_initial d request datagrams datagram
+    exact (binding prototype ifaces).emitted_source_state_initial d request datagrams datagram
       allowed emitted member (PacketSource.emitted_datagram_valid emissions emitted member)
       (sourceOrigins request datagrams datagram allowed emitted member)
   refine ⟨?_, ?_, ?_, ?_, networkSources⟩
@@ -84,15 +84,15 @@ theorem canonical_source_coverage {S A : Type}
     exact PacketSource.processing_outcomes_valid prototype.sourceProcessing emissions errors request
   · intro request datagrams datagram allowed emitted member
     have source := initialSource request datagrams datagram allowed emitted member
-    let start : State ports :=
-      ⟨(binding prototype ports).SourceState request datagram,
-        sourcePorts request allowed, some (request, datagram)⟩
+    let start : State ifaces :=
+      ⟨(binding prototype ifaces).SourceState request datagram,
+        sourceIfaces request allowed, some (request, datagram)⟩
     refine ⟨source, start, ?_, rfl, rfl⟩
     exact ⟨source, request, datagrams, datagram, rfl, allowed, emitted, member, rfl⟩
   · intro state source
     obtain ⟨request, datagrams, datagram, allowed, emitted, member, _, same⟩ := source.2.2.1
-    let start : State ports :=
-      ⟨state, same ▸ sourcePorts request allowed, some (request, datagram)⟩
+    let start : State ifaces :=
+      ⟨state, same ▸ sourceIfaces request allowed, some (request, datagram)⟩
     refine ⟨start, ?_, rfl⟩
     exact ⟨source, request, datagrams, datagram, rfl, allowed, emitted, member, same⟩
   · intro start initialized

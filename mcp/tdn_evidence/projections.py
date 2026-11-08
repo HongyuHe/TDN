@@ -15,7 +15,7 @@ def atom_json(atom):
         fields = {"states": atom["values"]}
     elif kind in {"inboundPolicy", "outboundPolicy"}:
         fields = {"requestId": atom["value"]}
-    elif kind in ["ipsecUDPFraming", "ipsecUDPFramingWithOptions"]:
+    elif kind in ["ipsecUDPFraming", "ipsecUDPFramingWithOptions", "ipsecUDPReplyFramingWithOptions"]:
         return kind
     elif kind == "ipv4HeaderWords":
         fields = {"words": atom["value"]}
@@ -44,6 +44,6 @@ PROJECTIONS = {}
 
 def register_projection(name, version, project):
     """Register a trusted local projection from validated saved observations to JSON."""
-    if name in {"inventory", "topology", "packet_filters", "multi_protocol_execution"} or name in PROJECTIONS:
+    if name in {"inventory", "topology", "packet_filters", "multi_protocol_execution", "bridge_processing"} or name in PROJECTIONS:
         raise ValueError("Projection already registered: " + name)
     PROJECTIONS[name] = (version, project)

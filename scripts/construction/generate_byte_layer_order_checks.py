@@ -16,17 +16,17 @@ set_option maxHeartbeats 0
 
 """
         for domain in range(1, count + 1):
-            text += f"""lemma byte_outer_placement{domain} : ∀ port,
-    (domainLayout{domain} port).head? = some 2 →
-      domainLayout{domain} port = [2, {domain + 10}] := by
-  have checked : ∀ record ∈ ({{}} : PortData) :: domainPorts{domain},
+            text += f"""lemma byte_outer_placement{domain} : ∀ iface,
+    (domainLayout{domain} iface).head? = some 2 →
+      domainLayout{domain} iface = [2, {domain + 10}] := by
+  have checked : ∀ record ∈ ({{}} : IfaceData) :: domainIfaces{domain},
       record.stack.head? = some 2 → record.stack = [2, {domain + 10}] := by decide
-  intro port head
-  exact checked (portAt domainPorts{domain} port) (port_at_member_or_default domainPorts{domain} port) head
+  intro iface head
+  exact checked (ifaceAt domainIfaces{domain} iface) (iface_at_member_or_default domainIfaces{domain} iface) head
 
 """
-        text += """lemma all_byte_outer_placement : ∀ d ∈ domains, ∀ port,
-    (byteLayout d port).head? = some 2 → byteLayout d port = [2, d + 10] := by
+        text += """lemma all_byte_outer_placement : ∀ d ∈ domains, ∀ iface,
+    (byteLayout d iface).head? = some 2 → byteLayout d iface = [2, d + 10] := by
   intro d member
   simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at member
   rcases member with """ + " | ".join(["rfl"] * count) + "\n"
@@ -41,13 +41,13 @@ theorem every_assembled_black_byte_has_inner_before_outer {{Byte : Type}}
       (Targets.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
     (finish : Execution.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (packetPresent : ⟨.network finish, bytes⟩ ∈ after)
-    (ready : finish.phase = .ready) (black : finish.port ∈ {base}.blackPorts)
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ {base}.blackIfaces)
     (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (bytePresent : byte ∈ bytes) :
     ∃ start labels, Targets.RedByteOrigin config redSources start byte ∧
       Targets.BytePathOrderedEncryptions config {base}.responseGateways uniformResponseOwners
         (byte.domain + 10) 2 (.network start) labels (.network finish) :=
   Targets.every_black_byte_has_ordered_encryption_path config redSources domains
-    {base}.responseGateways uniformResponseOwners {base}.blackPorts
+    {base}.responseGateways uniformResponseOwners {base}.blackIfaces
     byteLayout byteAllowed all_byte_domain_conditions all_byte_source_domains all_byte_source_checks
     tagged_gateway_response_guards all_uniform_domain_responses (fun d => d + 10) 2
     all_byte_black_checks all_byte_outer_placement run finish bytes packetPresent ready black byte bytePresent

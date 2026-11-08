@@ -8,7 +8,7 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 tdn_data devices : List Execution.DeviceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.devices"]
 
-tdn_data ports : List Execution.PortData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.ports"]
+tdn_data ifaces : List Execution.IfaceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.ifaces"]
 
 tdn_data routes : List Execution.Route from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.routes"]
 
@@ -16,34 +16,34 @@ tdn_data links : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fie
 
 tdn_data bridges : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.bridges"]
 
-tdn_data macPorts : List MACPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.macPorts"]
+tdn_data macIfaces : List MACIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.macIfaces"]
 
-tdn_data carriers : List CarrierPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.carriers"]
+tdn_data carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.carriers"]
 
-def config : Config := MultiProtocolExecution.finiteConfig devices ports routes links bridges macPorts carriers
-def layout := Execution.finiteLayout ports
+def config : Config := MultiProtocolExecution.dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers
+def expectedEncapStack := Execution.expectedEncapStackFromRecords ifaces
 tdn_data redSources : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.redSources"]
 
-tdn_data grayPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.grayPorts"]
+tdn_data grayIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.grayIfaces"]
 
-tdn_data blackPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.blackPorts"]
+tdn_data blackIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecIpsecIntegrated.blackIfaces"]
 
-lemma mac_configuration_checked : ∀ port ∈ macPorts,
-    port.settings.controlledPortEnabled = true ∧ port.settings.protectFrames = true ∧
-    port.settings.encryptFrames = true ∧ port.settings.confidentialityOffset = 0 ∧
-    ∃ association, port.transmitAssociation = some association := by
-  simp [macPorts]
+lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
+    iface.settings.controlledPortEnabled = true ∧ iface.settings.protectFrames = true ∧
+    iface.settings.encryptFrames = true ∧ iface.settings.confidentialityOffset = 0 ∧
+    ∃ association, iface.transmitAssociation = some association := by
+  simp [macIfaces]
 
-lemma receive_peer_bindings : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,
-    ∃ peer ∈ macPorts, peer.transmitAssociation = some association := by
-  unfold macPorts; decide
+lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
+    ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
+  unfold macIfaces; decide
 
-theorem every_configured_mac_port_emits_full_encryption (port : MACPort)
-    (member : port ∈ macPorts) :
-    ∃ association, ∀ body, fullMACsecTransmit port association body := by
-  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked port member
+theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
+    (member : iface ∈ macIfaces) :
+    ∃ association, ∀ body, fullMACsecTransmit iface association body := by
+  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked iface member
   refine ⟨association, fun body => ⟨installed, ?_⟩⟩
-  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt
+  simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
 theorem payload_preserved_by_every_mixed_execution {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
@@ -58,7 +58,7 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 tdn_data devices : List Execution.DeviceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.devices"]
 
-tdn_data ports : List Execution.PortData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.ports"]
+tdn_data ifaces : List Execution.IfaceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.ifaces"]
 
 tdn_data routes : List Execution.Route from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.routes"]
 
@@ -66,34 +66,34 @@ tdn_data links : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fie
 
 tdn_data bridges : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.bridges"]
 
-tdn_data macPorts : List MACPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.macPorts"]
+tdn_data macIfaces : List MACIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.macIfaces"]
 
-tdn_data carriers : List CarrierPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.carriers"]
+tdn_data carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.carriers"]
 
-def config : Config := MultiProtocolExecution.finiteConfig devices ports routes links bridges macPorts carriers
-def layout := Execution.finiteLayout ports
+def config : Config := MultiProtocolExecution.dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers
+def expectedEncapStack := Execution.expectedEncapStackFromRecords ifaces
 tdn_data redSources : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.redSources"]
 
-tdn_data grayPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.grayPorts"]
+tdn_data grayIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.grayIfaces"]
 
-tdn_data blackPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.blackPorts"]
+tdn_data blackIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingIpsecMacsecIntegrated.blackIfaces"]
 
-lemma mac_configuration_checked : ∀ port ∈ macPorts,
-    port.settings.controlledPortEnabled = true ∧ port.settings.protectFrames = true ∧
-    port.settings.encryptFrames = true ∧ port.settings.confidentialityOffset = 0 ∧
-    ∃ association, port.transmitAssociation = some association := by
-  simp [macPorts]
+lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
+    iface.settings.controlledPortEnabled = true ∧ iface.settings.protectFrames = true ∧
+    iface.settings.encryptFrames = true ∧ iface.settings.confidentialityOffset = 0 ∧
+    ∃ association, iface.transmitAssociation = some association := by
+  simp [macIfaces]
 
-lemma receive_peer_bindings : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,
-    ∃ peer ∈ macPorts, peer.transmitAssociation = some association := by
-  unfold macPorts; decide
+lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
+    ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
+  unfold macIfaces; decide
 
-theorem every_configured_mac_port_emits_full_encryption (port : MACPort)
-    (member : port ∈ macPorts) :
-    ∃ association, ∀ body, fullMACsecTransmit port association body := by
-  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked port member
+theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
+    (member : iface ∈ macIfaces) :
+    ∃ association, ∀ body, fullMACsecTransmit iface association body := by
+  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked iface member
   refine ⟨association, fun body => ⟨installed, ?_⟩⟩
-  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt
+  simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
 theorem payload_preserved_by_every_mixed_execution {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
@@ -108,7 +108,7 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 tdn_data devices : List Execution.DeviceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.devices"]
 
-tdn_data ports : List Execution.PortData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.ports"]
+tdn_data ifaces : List Execution.IfaceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.ifaces"]
 
 tdn_data routes : List Execution.Route from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.routes"]
 
@@ -116,34 +116,34 @@ tdn_data links : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fie
 
 tdn_data bridges : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.bridges"]
 
-tdn_data macPorts : List MACPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.macPorts"]
+tdn_data macIfaces : List MACIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.macIfaces"]
 
-tdn_data carriers : List CarrierPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.carriers"]
+tdn_data carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.carriers"]
 
-def config : Config := MultiProtocolExecution.finiteConfig devices ports routes links bridges macPorts carriers
-def layout := Execution.finiteLayout ports
+def config : Config := MultiProtocolExecution.dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers
+def expectedEncapStack := Execution.expectedEncapStackFromRecords ifaces
 tdn_data redSources : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.redSources"]
 
-tdn_data grayPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.grayPorts"]
+tdn_data grayIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.grayIfaces"]
 
-tdn_data blackPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.blackPorts"]
+tdn_data blackIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecIntegrated.blackIfaces"]
 
-lemma mac_configuration_checked : ∀ port ∈ macPorts,
-    port.settings.controlledPortEnabled = true ∧ port.settings.protectFrames = true ∧
-    port.settings.encryptFrames = true ∧ port.settings.confidentialityOffset = 0 ∧
-    ∃ association, port.transmitAssociation = some association := by
-  simp [macPorts]
+lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
+    iface.settings.controlledPortEnabled = true ∧ iface.settings.protectFrames = true ∧
+    iface.settings.encryptFrames = true ∧ iface.settings.confidentialityOffset = 0 ∧
+    ∃ association, iface.transmitAssociation = some association := by
+  simp [macIfaces]
 
-lemma receive_peer_bindings : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,
-    ∃ peer ∈ macPorts, peer.transmitAssociation = some association := by
-  unfold macPorts; decide
+lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
+    ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
+  unfold macIfaces; decide
 
-theorem every_configured_mac_port_emits_full_encryption (port : MACPort)
-    (member : port ∈ macPorts) :
-    ∃ association, ∀ body, fullMACsecTransmit port association body := by
-  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked port member
+theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
+    (member : iface ∈ macIfaces) :
+    ∃ association, ∀ body, fullMACsecTransmit iface association body := by
+  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked iface member
   refine ⟨association, fun body => ⟨installed, ?_⟩⟩
-  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt
+  simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
 theorem payload_preserved_by_every_mixed_execution {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
@@ -158,7 +158,7 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 tdn_data devices : List Execution.DeviceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.devices"]
 
-tdn_data ports : List Execution.PortData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.ports"]
+tdn_data ifaces : List Execution.IfaceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.ifaces"]
 
 tdn_data routes : List Execution.Route from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.routes"]
 
@@ -166,34 +166,34 @@ tdn_data links : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fie
 
 tdn_data bridges : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.bridges"]
 
-tdn_data macPorts : List MACPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.macPorts"]
+tdn_data macIfaces : List MACIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.macIfaces"]
 
-tdn_data carriers : List CarrierPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.carriers"]
+tdn_data carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.carriers"]
 
-def config : Config := MultiProtocolExecution.finiteConfig devices ports routes links bridges macPorts carriers
-def layout := Execution.finiteLayout ports
+def config : Config := MultiProtocolExecution.dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers
+def expectedEncapStack := Execution.expectedEncapStackFromRecords ifaces
 tdn_data redSources : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.redSources"]
 
-tdn_data grayPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.grayPorts"]
+tdn_data grayIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.grayIfaces"]
 
-tdn_data blackPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.blackPorts"]
+tdn_data blackIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecIpsecStandalone.blackIfaces"]
 
-lemma mac_configuration_checked : ∀ port ∈ macPorts,
-    port.settings.controlledPortEnabled = true ∧ port.settings.protectFrames = true ∧
-    port.settings.encryptFrames = true ∧ port.settings.confidentialityOffset = 0 ∧
-    ∃ association, port.transmitAssociation = some association := by
-  simp [macPorts]
+lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
+    iface.settings.controlledPortEnabled = true ∧ iface.settings.protectFrames = true ∧
+    iface.settings.encryptFrames = true ∧ iface.settings.confidentialityOffset = 0 ∧
+    ∃ association, iface.transmitAssociation = some association := by
+  simp [macIfaces]
 
-lemma receive_peer_bindings : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,
-    ∃ peer ∈ macPorts, peer.transmitAssociation = some association := by
-  unfold macPorts; decide
+lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
+    ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
+  unfold macIfaces; decide
 
-theorem every_configured_mac_port_emits_full_encryption (port : MACPort)
-    (member : port ∈ macPorts) :
-    ∃ association, ∀ body, fullMACsecTransmit port association body := by
-  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked port member
+theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
+    (member : iface ∈ macIfaces) :
+    ∃ association, ∀ body, fullMACsecTransmit iface association body := by
+  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked iface member
   refine ⟨association, fun body => ⟨installed, ?_⟩⟩
-  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt
+  simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
 theorem payload_preserved_by_every_mixed_execution {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
@@ -208,7 +208,7 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 tdn_data devices : List Execution.DeviceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.devices"]
 
-tdn_data ports : List Execution.PortData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.ports"]
+tdn_data ifaces : List Execution.IfaceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.ifaces"]
 
 tdn_data routes : List Execution.Route from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.routes"]
 
@@ -216,34 +216,34 @@ tdn_data links : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fie
 
 tdn_data bridges : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.bridges"]
 
-tdn_data macPorts : List MACPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.macPorts"]
+tdn_data macIfaces : List MACIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.macIfaces"]
 
-tdn_data carriers : List CarrierPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.carriers"]
+tdn_data carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.carriers"]
 
-def config : Config := MultiProtocolExecution.finiteConfig devices ports routes links bridges macPorts carriers
-def layout := Execution.finiteLayout ports
+def config : Config := MultiProtocolExecution.dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers
+def expectedEncapStack := Execution.expectedEncapStackFromRecords ifaces
 tdn_data redSources : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.redSources"]
 
-tdn_data grayPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.grayPorts"]
+tdn_data grayIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.grayIfaces"]
 
-tdn_data blackPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.blackPorts"]
+tdn_data blackIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecIntegrated.blackIfaces"]
 
-lemma mac_configuration_checked : ∀ port ∈ macPorts,
-    port.settings.controlledPortEnabled = true ∧ port.settings.protectFrames = true ∧
-    port.settings.encryptFrames = true ∧ port.settings.confidentialityOffset = 0 ∧
-    ∃ association, port.transmitAssociation = some association := by
-  simp [macPorts]
+lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
+    iface.settings.controlledPortEnabled = true ∧ iface.settings.protectFrames = true ∧
+    iface.settings.encryptFrames = true ∧ iface.settings.confidentialityOffset = 0 ∧
+    ∃ association, iface.transmitAssociation = some association := by
+  simp [macIfaces]
 
-lemma receive_peer_bindings : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,
-    ∃ peer ∈ macPorts, peer.transmitAssociation = some association := by
-  unfold macPorts; decide
+lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
+    ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
+  unfold macIfaces; decide
 
-theorem every_configured_mac_port_emits_full_encryption (port : MACPort)
-    (member : port ∈ macPorts) :
-    ∃ association, ∀ body, fullMACsecTransmit port association body := by
-  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked port member
+theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
+    (member : iface ∈ macIfaces) :
+    ∃ association, ∀ body, fullMACsecTransmit iface association body := by
+  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked iface member
   refine ⟨association, fun body => ⟨installed, ?_⟩⟩
-  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt
+  simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
 theorem payload_preserved_by_every_mixed_execution {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
@@ -258,7 +258,7 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 tdn_data devices : List Execution.DeviceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.devices"]
 
-tdn_data ports : List Execution.PortData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.ports"]
+tdn_data ifaces : List Execution.IfaceData from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.ifaces"]
 
 tdn_data routes : List Execution.Route from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.routes"]
 
@@ -266,34 +266,34 @@ tdn_data links : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fie
 
 tdn_data bridges : List (Nat × Nat) from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.bridges"]
 
-tdn_data macPorts : List MACPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.macPorts"]
+tdn_data macIfaces : List MACIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.macIfaces"]
 
-tdn_data carriers : List CarrierPort from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.carriers"]
+tdn_data carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.carriers"]
 
-def config : Config := MultiProtocolExecution.finiteConfig devices ports routes links bridges macPorts carriers
-def layout := Execution.finiteLayout ports
+def config : Config := MultiProtocolExecution.dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers
+def expectedEncapStack := Execution.expectedEncapStackFromRecords ifaces
 tdn_data redSources : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.redSources"]
 
-tdn_data grayPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.grayPorts"]
+tdn_data grayIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.grayIfaces"]
 
-tdn_data blackPorts : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.blackPorts"]
+tdn_data blackIfaces : List Nat from "../../data/evidence/spec002-carrier-fields/FreshPairingConfigs.json" ["TDN.Imported.PairingMacsecMacsecStandalone.blackIfaces"]
 
-lemma mac_configuration_checked : ∀ port ∈ macPorts,
-    port.settings.controlledPortEnabled = true ∧ port.settings.protectFrames = true ∧
-    port.settings.encryptFrames = true ∧ port.settings.confidentialityOffset = 0 ∧
-    ∃ association, port.transmitAssociation = some association := by
-  simp [macPorts]
+lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
+    iface.settings.controlledPortEnabled = true ∧ iface.settings.protectFrames = true ∧
+    iface.settings.encryptFrames = true ∧ iface.settings.confidentialityOffset = 0 ∧
+    ∃ association, iface.transmitAssociation = some association := by
+  simp [macIfaces]
 
-lemma receive_peer_bindings : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,
-    ∃ peer ∈ macPorts, peer.transmitAssociation = some association := by
-  unfold macPorts; decide
+lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
+    ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
+  unfold macIfaces; decide
 
-theorem every_configured_mac_port_emits_full_encryption (port : MACPort)
-    (member : port ∈ macPorts) :
-    ∃ association, ∀ body, fullMACsecTransmit port association body := by
-  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked port member
+theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
+    (member : iface ∈ macIfaces) :
+    ∃ association, ∀ body, fullMACsecTransmit iface association body := by
+  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked iface member
   refine ⟨association, fun body => ⟨installed, ?_⟩⟩
-  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt
+  simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
 theorem payload_preserved_by_every_mixed_execution {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}

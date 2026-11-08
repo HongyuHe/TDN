@@ -44,18 +44,18 @@ def responseConfig {S : Type} (config : KernelResponses.Config S) :
   outputRules state := config.outputRules state.current
   outputFallback state := config.outputFallback state.current
   interfaceName := config.interfaceName
-  emit state header port :=
-    ⟨config.emit state.current header port, state.current :: state.retained⟩
+  emit state header iface :=
+    ⟨config.emit state.current header iface, state.current :: state.retained⟩
 
 theorem all_historical_responses_preserve_safety {S A : Type}
     (network : Cslib.LTS S A) (config : KernelResponses.Config S) (safe : S → Prop)
     (preserves : network.TrInv safe)
-    (replyPreserves : ∀ source header port,
+    (replyPreserves : ∀ source header iface,
       safe source → config.generates source → KernelResponses.ResponseProtocol header.protocol →
-      config.selectedRoute source header port →
-      Filter.evaluate ((config.outputRules source port).map PacketPolicy.Rule.toFilter)
-        (config.outputFallback source port) (KernelResponses.outputPacket config header port) = .allow →
-      config.interfaceName port ≠ "lo" → safe (config.emit source header port))
+      config.selectedRoute source header iface →
+      Filter.evaluate ((config.outputRules source iface).map PacketPolicy.Rule.toFilter)
+        (config.outputFallback source iface) (KernelResponses.outputPacket config header iface) = .allow →
+      config.interfaceName iface ≠ "lo" → safe (config.emit source header iface))
     {before after : State S}
     {actions : List (KernelResponses.Action (Action A))}
     (run : (KernelResponses.lts (lts network) (responseConfig config)).MTr
@@ -64,8 +64,8 @@ theorem all_historical_responses_preserve_safety {S A : Type}
   apply KernelResponses.copied_response_executions_remain_safe
     (lts network) (responseConfig config) (Safe safe)
     (network_preserves_retained_safety network safe preserves) _ run initial
-  intro source header port valid enabled protocol selected accepted external
-  refine ⟨replyPreserves source.current header port valid.1 enabled protocol selected accepted external, ?_⟩
+  intro source header iface valid enabled protocol selected accepted external
+  refine ⟨replyPreserves source.current header iface valid.1 enabled protocol selected accepted external, ?_⟩
   intro saved member
   rcases List.mem_cons.mp member with same | old
   · simpa [same] using valid.1

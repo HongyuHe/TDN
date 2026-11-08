@@ -1,9 +1,8 @@
 {
-  "at": "2026-11-01T13:50:29.223916+00:00",
-  "round": 2,
-  "candidate": "proof-ten-002",
+  "at": "2026-11-04T20:10:38.835038+00:00",
   "verdict": "PASS",
-  "scope": "The ten selected accepted formal specifications have complete general conditional proofs and meaningful checked model applications/reuse. Full live-deployment compliance is outside this verdict.",
+  "source_run": "data/construction/v3.1-20261104-continuation",
+  "scope": "Fourteen selected formal specifications have complete general proofs and checked model applications within their recorded scopes. Ten groups are deferred by the user.",
   "selected_RGs": [
     "RG-012",
     "RG-013",
@@ -11,96 +10,15 @@
     "RG-021",
     "RG-027",
     "RG-032",
+    "RG-033",
     "RG-034",
+    "RG-035",
     "RG-037",
     "RG-038",
+    "RG-039",
+    "RG-040",
     "RG-047"
   ],
-  "accepted_specification": "spec-011",
-  "source_passages_reviewed": 84,
-  "formal_clause_groups_reviewed": 32,
-  "closed_findings": [
-    {
-      "id": "R1",
-      "status": "RESOLVED",
-      "basis": "Complete nonempty key-interface models prove the technical step/event/history/inventory/policy premises, and exhibit reachable provisioning, signing and protected-copy digest use. Actual K02 implementation correspondence and K01 readable-key violation remain explicit."
-    },
-    {
-      "id": "R2",
-      "status": "RESOLVED",
-      "basis": "Complete blocking and disabled-feature cases use a nonempty feature inventory. Vendor TCP traffic is represented; unrelated protected ESP is accepted; rule and feature mutations fail the intended conditions."
-    },
-    {
-      "id": "R3",
-      "status": "RESOLVED",
-      "basis": "The same unchanged general theorem is used by materially different complete applications for every selected RG. Added management-free topology, common IP/L2 addressing, central-site EAP key-generation and selected-assurance AW examples. Compiled body dependency paths independently checked."
-    }
-  ],
-  "open_review_findings": [],
-  "validation": {
-    "build_jobs": 1176,
-    "general_roots": 10,
-    "application_support_roots": 96,
-    "accepted_definitions_unchanged": 2500,
-    "general_Evidence_dependencies": [],
-    "unexpected_axioms": [],
-    "package_files_verified": 9741,
-    "source_files_matching_independent_build": 544,
-    "new_meaning_review_required": false
-  },
-  "per_RG": [
-    {
-      "rg_id": "RG-012",
-      "verdict": "PASS",
-      "complete_model_application_count": 3
-    },
-    {
-      "rg_id": "RG-013",
-      "verdict": "PASS",
-      "complete_model_application_count": 2
-    },
-    {
-      "rg_id": "RG-014",
-      "verdict": "PASS",
-      "complete_model_application_count": 2
-    },
-    {
-      "rg_id": "RG-021",
-      "verdict": "PASS",
-      "complete_model_application_count": 2
-    },
-    {
-      "rg_id": "RG-027",
-      "verdict": "PASS",
-      "complete_model_application_count": 2
-    },
-    {
-      "rg_id": "RG-032",
-      "verdict": "PASS",
-      "complete_model_application_count": 2
-    },
-    {
-      "rg_id": "RG-034",
-      "verdict": "PASS",
-      "complete_model_application_count": 3
-    },
-    {
-      "rg_id": "RG-037",
-      "verdict": "PASS",
-      "complete_model_application_count": 2
-    },
-    {
-      "rg_id": "RG-038",
-      "verdict": "PASS",
-      "complete_model_application_count": 3
-    },
-    {
-      "rg_id": "RG-047",
-      "verdict": "PASS",
-      "complete_model_application_count": 2
-    }
-  ],
-  "conditions": "Physical protection, authority approvals, complete actual observations, and implementation-to-model correspondence remain explicitly named conditions. No actual K02 no-export guarantee or comprehensive vendor-service audit is inferred.",
   "deferred_RGs": [
     "RG-007",
     "RG-008",
@@ -109,13 +27,137 @@
     "RG-028",
     "RG-029",
     "RG-030",
-    "RG-033",
-    "RG-035",
-    "RG-039",
-    "RG-040",
     "RG-054",
     "RG-056",
     "RG-074"
   ],
-  "stopping_action": "Stop proof construction and review; deliver the validated candidate to the canonical workspace and verify integration. Do not resume the other fourteen RGs."
+  "review_records": {
+    "previous_ten": "data/construction/v3.1-20261031T231942Z",
+    "RG-039": "data/construction/v3.1-20261104-continuation/proof/RG-039/round-002/verdict.json",
+    "RG-035": "data/construction/v3.1-20261104-continuation/proof/RG-035/round-002/verdict.json",
+    "RG-040": "data/construction/v3.1-20261104-continuation/proof/RG-040/round-001/verdict.json",
+    "RG-033": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/verdict.json"
+  },
+  "previous_review_summary": {
+    "at": "2026-11-01T13:50:29.223916+00:00",
+    "round": 2,
+    "candidate": "proof-ten-002",
+    "verdict": "PASS",
+    "scope": "The ten selected accepted formal specifications have complete general conditional proofs and meaningful checked model applications/reuse. Full live-deployment compliance is outside this verdict.",
+    "selected_RGs": [
+      "RG-012",
+      "RG-013",
+      "RG-014",
+      "RG-021",
+      "RG-027",
+      "RG-032",
+      "RG-034",
+      "RG-037",
+      "RG-038",
+      "RG-047"
+    ],
+    "accepted_specification": "spec-011",
+    "source_passages_reviewed": 84,
+    "formal_clause_groups_reviewed": 32,
+    "closed_findings": [
+      {
+        "id": "R1",
+        "status": "RESOLVED",
+        "basis": "Complete nonempty key-interface models prove the technical step/event/history/inventory/policy premises, and exhibit reachable provisioning, signing and protected-copy digest use. Actual K02 implementation correspondence and K01 readable-key violation remain explicit."
+      },
+      {
+        "id": "R2",
+        "status": "RESOLVED",
+        "basis": "Complete blocking and disabled-feature cases use a nonempty feature inventory. Vendor TCP traffic is represented; unrelated protected ESP is accepted; rule and feature mutations fail the intended conditions."
+      },
+      {
+        "id": "R3",
+        "status": "RESOLVED",
+        "basis": "The same unchanged general theorem is used by materially different complete applications for every selected RG. Added management-free topology, common IP/L2 addressing, central-site EAP key-generation and selected-assurance AW examples. Compiled body dependency paths independently checked."
+      }
+    ],
+    "open_review_findings": [],
+    "validation": {
+      "build_jobs": 1176,
+      "general_roots": 10,
+      "application_support_roots": 96,
+      "accepted_definitions_unchanged": 2500,
+      "general_Evidence_dependencies": [],
+      "unexpected_axioms": [],
+      "package_files_verified": 9741,
+      "source_files_matching_independent_build": 544,
+      "new_meaning_review_required": false
+    },
+    "per_RG": [
+      {
+        "rg_id": "RG-012",
+        "verdict": "PASS",
+        "complete_model_application_count": 3
+      },
+      {
+        "rg_id": "RG-013",
+        "verdict": "PASS",
+        "complete_model_application_count": 2
+      },
+      {
+        "rg_id": "RG-014",
+        "verdict": "PASS",
+        "complete_model_application_count": 2
+      },
+      {
+        "rg_id": "RG-021",
+        "verdict": "PASS",
+        "complete_model_application_count": 2
+      },
+      {
+        "rg_id": "RG-027",
+        "verdict": "PASS",
+        "complete_model_application_count": 2
+      },
+      {
+        "rg_id": "RG-032",
+        "verdict": "PASS",
+        "complete_model_application_count": 2
+      },
+      {
+        "rg_id": "RG-034",
+        "verdict": "PASS",
+        "complete_model_application_count": 3
+      },
+      {
+        "rg_id": "RG-037",
+        "verdict": "PASS",
+        "complete_model_application_count": 2
+      },
+      {
+        "rg_id": "RG-038",
+        "verdict": "PASS",
+        "complete_model_application_count": 3
+      },
+      {
+        "rg_id": "RG-047",
+        "verdict": "PASS",
+        "complete_model_application_count": 2
+      }
+    ],
+    "conditions": "Physical protection, authority approvals, complete actual observations, and implementation-to-model correspondence remain explicitly named conditions. No actual K02 no-export guarantee or comprehensive vendor-service audit is inferred.",
+    "deferred_RGs": [
+      "RG-007",
+      "RG-008",
+      "RG-015",
+      "RG-024",
+      "RG-028",
+      "RG-029",
+      "RG-030",
+      "RG-033",
+      "RG-035",
+      "RG-039",
+      "RG-040",
+      "RG-054",
+      "RG-056",
+      "RG-074"
+    ],
+    "stopping_action": "Stop proof construction and review; deliver the validated candidate to the canonical workspace and verify integration. Do not resume the other fourteen RGs."
+  },
+  "stopping_action": "Finish RG033 and documentation, then stop. Leave the other ten groups for a later continuation."
 }

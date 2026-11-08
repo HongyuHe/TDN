@@ -1,5 +1,5 @@
 import TDN.Targets.ComplianceModel
-import TDN.Semantics.MultiProtocolPorts
+import TDN.Semantics.MultiProtocolIfaces
 
 namespace TDN.Compliance
 
@@ -10,7 +10,7 @@ def NativeExecutionBinding.withProjection {S A T B : Type}
   { configuration := binding.configuration
     state := state
     action := action
-    portName := binding.portName
+    ifaceName := binding.ifaceName
     ipsecTunnel := binding.ipsecTunnel
     ipsecEpoch := binding.ipsecEpoch
     ipsecInstallations := binding.ipsecInstallations
@@ -27,7 +27,7 @@ def NativeExecutionBinding.withProjection {S A T B : Type}
 
 lemma NativeExecutionBinding.source_events_are_network {S A : Type}
     (binding : NativeExecutionBinding S A) (before : S) :
-    (binding.SourceEvents before).filter ProcessingEvent.NetworkOperation =
+    (binding.SourceEvents before).filter NetworkEvent.NetworkOperation =
       binding.SourceEvents before := by
   dsimp only [NativeExecutionBinding.SourceEvents]
   split
@@ -39,7 +39,7 @@ lemma NativeExecutionBinding.source_events_are_network {S A : Type}
 lemma NativeExecutionBinding.operation_events_are_network {S A : Type}
     (binding : NativeExecutionBinding S A) (before : S)
     (action : MultiProtocolExecution.Action) (after : S) :
-    (binding.OperationEvents before action after).filter ProcessingEvent.NetworkOperation =
+    (binding.OperationEvents before action after).filter NetworkEvent.NetworkOperation =
       binding.OperationEvents before action after := by
   cases action
   case encryptIPsec =>
@@ -68,7 +68,7 @@ lemma NativeExecutionBinding.operation_events_are_network {S A : Type}
 lemma NativeExecutionBinding.required_events_are_network {S A : Type}
     (binding : NativeExecutionBinding S A) (before : S)
     (action : MultiProtocolExecution.Action) (after : S) :
-    (binding.RequiredEvents before action after).filter ProcessingEvent.NetworkOperation =
+    (binding.RequiredEvents before action after).filter NetworkEvent.NetworkOperation =
       binding.RequiredEvents before action after := by
   rw [NativeExecutionBinding.RequiredEvents, List.filter_append,
     binding.source_events_are_network, binding.operation_events_are_network]
@@ -78,63 +78,63 @@ end TDN.Compliance
 namespace TDN.Targets.CanonicalExecution
 open Compliance
 
-structure State (ports : List Nat) where
+structure State (ifaces : List Nat) where
   native : MultiProtocolExecution.State
-  portPresent : native.port ∈ ports
+  ifacePresent : native.iface ∈ ifaces
   source : Option (PacketSource.Request × PacketSource.Datagram)
 
-structure Action (ports : List Nat) where
-  before : State ports
+structure Action (ifaces : List Nat) where
+  before : State ifaces
   operation : MultiProtocolExecution.Action
-  after : State ports
+  after : State ifaces
 
-def binding {S A : Type} (prototype : NativeExecutionBinding S A) (ports : List Nat) :
-    NativeExecutionBinding (State ports) (Action ports) :=
+def binding {S A : Type} (prototype : NativeExecutionBinding S A) (ifaces : List Nat) :
+    NativeExecutionBinding (State ifaces) (Action ifaces) :=
   prototype.withProjection State.native (fun action => some action.operation)
 
-def system {S A : Type} (prototype : NativeExecutionBinding S A) (ports : List Nat) :
-    Cslib.LTS (State ports) (Action ports) :=
+def system {S A : Type} (prototype : NativeExecutionBinding S A) (ifaces : List Nat) :
+    Cslib.LTS (State ifaces) (Action ifaces) :=
   ⟨fun before action after =>
     action.before = before ∧ action.after = after ∧ before.source = after.source ∧
-    (binding prototype ports).AcceptedStep before.native action.operation after.native⟩
+    (binding prototype ifaces).AcceptedStep before.native action.operation after.native⟩
 
-def initial {S A : Type} (prototype : NativeExecutionBinding S A) (ports : List Nat)
-    (d : Deployment) (state : State ports) : Prop :=
-  (binding prototype ports).SourceInitial d state.native ∧
+def initial {S A : Type} (prototype : NativeExecutionBinding S A) (ifaces : List Nat)
+    (d : Deployment) (state : State ifaces) : Prop :=
+  (binding prototype ifaces).SourceInitial d state.native ∧
   ∃ request datagrams datagram,
     state.source = some (request, datagram) ∧
-    (binding prototype ports).SourceRequestAllowed d request ∧
+    (binding prototype ifaces).SourceRequestAllowed d request ∧
     prototype.sourceProcessing.process request = .emitted datagrams ∧ datagram ∈ datagrams ∧
-    state.native = (binding prototype ports).SourceState request datagram
+    state.native = (binding prototype ifaces).SourceState request datagram
 
-def model {S A : Type} (prototype : NativeExecutionBinding S A) (ports : List Nat)
-    (d : Deployment) (history : ObservedHistory) : ExecutionModel (State ports) (Action ports) :=
-  { system := system prototype ports
-    initial := initial prototype ports d
+def model {S A : Type} (prototype : NativeExecutionBinding S A) (ifaces : List Nat)
+    (d : Deployment) (history : ObservedHistory) : ExecutionModel (State ifaces) (Action ifaces) :=
+  { system := system prototype ifaces
+    initial := initial prototype ifaces d
     events := fun action =>
-      (binding prototype ports).RequiredEvents action.before action.operation action.after
-    native := binding prototype ports
+      (binding prototype ifaces).RequiredEvents action.before action.operation action.after
+    native := binding prototype ifaces
     sourceRecord := State.source
     history := history }
 
 theorem canonical_model_faithful {S A : Type} (prototype : NativeExecutionBinding S A)
-    (ports : List Nat) (d : Deployment) (history : ObservedHistory) :
-    (model prototype ports d history).Faithful := by
+    (ifaces : List Nat) (d : Deployment) (history : ObservedHistory) :
+    (model prototype ifaces d history).Faithful := by
   intro before action after step
   obtain ⟨sameBefore, sameAfter, _, accepted⟩ := step
   subst before
   subst after
-  exact ⟨accepted, (binding prototype ports).required_events_are_network ..⟩
+  exact ⟨accepted, (binding prototype ifaces).required_events_are_network ..⟩
 
 theorem canonical_model_covers_every_native_step {S A : Type}
-    (prototype : NativeExecutionBinding S A) (ports : List Nat)
+    (prototype : NativeExecutionBinding S A) (ifaces : List Nat)
     (d : Deployment) (history : ObservedHistory)
-    (conditions : MultiProtocolExecution.PortConditions prototype.configuration ports) :
-    (model prototype ports d history).NativeStepCoverage := by
+    (conditions : MultiProtocolExecution.IfaceConditions prototype.configuration ifaces) :
+    (model prototype ifaces d history).NativeStepCoverage := by
   intro before operation nativeAfter accepted
-  let after : State ports :=
+  let after : State ifaces :=
     ⟨nativeAfter,
-      MultiProtocolExecution.step_preserves_port_inventory conditions accepted.1 before.portPresent,
+      MultiProtocolExecution.step_preserves_iface_inventory conditions accepted.1 before.ifacePresent,
       before.source⟩
   refine ⟨⟨before, operation, after⟩, after, ?_, rfl, rfl⟩
   exact ⟨rfl, rfl, rfl, accepted⟩

@@ -4,84 +4,84 @@ import TDN.Semantics.FiniteRoutedExecution
 namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
-def finiteConfig (devices : List Execution.DeviceData) (ports : List Execution.PortData)
+def dataPlaneConfigFromRecords (devices : List Execution.DeviceData) (ifaces : List Execution.IfaceData)
     (routes : List Execution.Route) (links bridges : List (Nat × Nat))
-    (macPorts : List MACPort) (carriers : List CarrierPort) : Config :=
-  { ip := Execution.finiteConfig devices ports routes links [],
-    macPorts := macPorts, carriers := carriers,
+    (macIfaces : List MACIface) (carriers : List CarrierIface) : Config :=
+  { ip := Execution.dataPlaneConfigFromRecords devices ifaces routes links [],
+    macIfaces := macIfaces, carriers := carriers,
     bridge := fun a b => (a, b) ∈ bridges, physicalLink := fun a b => (a, b) ∈ links }
 
-def MACTransmitCheck (ports : List Execution.PortData) (port : MACPort) : Prop :=
-  match port.transmitAssociation with
+def MACTransmitCheck (ifaces : List Execution.IfaceData) (iface : MACIface) : Prop :=
+  match iface.transmitAssociation with
   | none => True
   | some association =>
-      association.tag :: (Execution.portAt ports port.logicalPort).stack =
-        (Execution.portAt ports port.physicalPort).stack
+      association.tag :: (Execution.ifaceAt ifaces iface.logicalIface).stack =
+        (Execution.ifaceAt ifaces iface.physicalIface).stack
 
-def CarrierRouteChecks (devices : List Execution.DeviceData) (ports : List Execution.PortData)
-    (routes : List Execution.Route) (carriers : List CarrierPort) : Prop :=
-  ∀ carrier ∈ carriers, ∀ route ∈ routes, route.ingress = carrier.routingPort →
+def CarrierRouteChecks (devices : List Execution.DeviceData) (ifaces : List Execution.IfaceData)
+    (routes : List Execution.Route) (carriers : List CarrierIface) : Prop :=
+  ∀ carrier ∈ carriers, ∀ route ∈ routes, route.ingress = carrier.routingIface →
     route.low ≤ (carrierHeader carrier).destination →
     (carrierHeader carrier).destination ≤ route.high →
     let selected := Execution.selectedAssociations
-      (Execution.deviceAt devices (Execution.portAt ports route.egress).owner).outbound
+      (Execution.deviceAt devices (Execution.ifaceAt ifaces route.egress).owner).outbound
         (carrierHeader carrier)
-    (selected = [] → (Execution.portAt ports carrier.routingPort).stack =
-      (Execution.portAt ports route.egress).stack) ∧
-    (∀ policy ∈ selected, policy.tag :: (Execution.portAt ports carrier.routingPort).stack =
-      (Execution.portAt ports route.egress).stack)
+    (selected = [] → (Execution.ifaceAt ifaces carrier.routingIface).stack =
+      (Execution.ifaceAt ifaces route.egress).stack) ∧
+    (∀ policy ∈ selected, policy.tag :: (Execution.ifaceAt ifaces carrier.routingIface).stack =
+      (Execution.ifaceAt ifaces route.egress).stack)
 
-instance (ports : List Execution.PortData) (port : MACPort) :
-    Decidable (MACTransmitCheck ports port) := by
+instance (ifaces : List Execution.IfaceData) (iface : MACIface) :
+    Decidable (MACTransmitCheck ifaces iface) := by
   unfold MACTransmitCheck
   split <;> infer_instance
 
-instance (devices : List Execution.DeviceData) (ports : List Execution.PortData)
-    (routes : List Execution.Route) (carriers : List CarrierPort) :
-    Decidable (CarrierRouteChecks devices ports routes carriers) := by
+instance (devices : List Execution.DeviceData) (ifaces : List Execution.IfaceData)
+    (routes : List Execution.Route) (carriers : List CarrierIface) :
+    Decidable (CarrierRouteChecks devices ifaces routes carriers) := by
   unfold CarrierRouteChecks
   infer_instance
 
-instance (sender receiver : CarrierPort) : Decidable (CarrierPeers sender receiver) := by
+instance (sender receiver : CarrierIface) : Decidable (CarrierPeers sender receiver) := by
   unfold CarrierPeers
   infer_instance
 
 theorem local_conditions_from_finite_checks (devices : List Execution.DeviceData)
-    (ports : List Execution.PortData) (routes : List Execution.Route)
-    (links bridges : List (Nat × Nat)) (macPorts : List MACPort) (carriers : List CarrierPort)
+    (ifaces : List Execution.IfaceData) (routes : List Execution.Route)
+    (links bridges : List (Nat × Nat)) (macIfaces : List MACIface) (carriers : List CarrierIface)
     (ipChecks : Execution.LocalStackConditions
-      (Execution.finiteConfig devices ports routes links []) (Execution.finiteLayout ports))
+      (Execution.dataPlaneConfigFromRecords devices ifaces routes links []) (Execution.expectedEncapStackFromRecords ifaces))
     (linkChecks : ∀ edge ∈ links,
-      (Execution.portAt ports edge.1).stack = (Execution.portAt ports edge.2).stack)
+      (Execution.ifaceAt ifaces edge.1).stack = (Execution.ifaceAt ifaces edge.2).stack)
     (bridgeChecks : ∀ edge ∈ bridges,
-      (Execution.portAt ports edge.1).stack = (Execution.portAt ports edge.2).stack)
-    (macTransmitChecks : ∀ port ∈ macPorts, MACTransmitCheck ports port)
-    (macReceiveChecks : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,
-      association.tag :: (Execution.portAt ports port.logicalPort).stack =
-        (Execution.portAt ports port.physicalPort).stack)
-    (macRoleChecks : ∀ sender ∈ macPorts, ∀ transmitted,
-      sender.transmitAssociation = some transmitted → ∀ receiver ∈ macPorts,
+      (Execution.ifaceAt ifaces edge.1).stack = (Execution.ifaceAt ifaces edge.2).stack)
+    (macTransmitChecks : ∀ iface ∈ macIfaces, MACTransmitCheck ifaces iface)
+    (macReceiveChecks : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
+      association.tag :: (Execution.ifaceAt ifaces iface.logicalIface).stack =
+        (Execution.ifaceAt ifaces iface.physicalIface).stack)
+    (macRoleChecks : ∀ sender ∈ macIfaces, ∀ transmitted,
+      sender.transmitAssociation = some transmitted → ∀ receiver ∈ macIfaces,
       ∀ association ∈ receiver.receiveAssociations, SameMACWireIdentity transmitted association →
       transmitted.tag = association.tag)
-    (macSecureChecks : ∀ port ∈ macPorts,
-      port.settings.protectFrames = true ∧ port.settings.encryptFrames = true ∧
-      port.settings.confidentialityOffset = 0 ∧ port.validateStrict = true)
+    (macSecureChecks : ∀ iface ∈ macIfaces,
+      iface.settings.protectFrames = true ∧ iface.settings.encryptFrames = true ∧
+      iface.settings.confidentialityOffset = 0 ∧ iface.validateStrict = true)
     (carrierOutputChecks : ∀ carrier ∈ carriers,
-      (Execution.portAt ports carrier.virtualPort).stack =
-        (Execution.portAt ports carrier.routingPort).stack)
-    (carrierRoutes : CarrierRouteChecks devices ports routes carriers)
+      (Execution.ifaceAt ifaces carrier.virtualIface).stack =
+        (Execution.ifaceAt ifaces carrier.routingIface).stack)
+    (carrierRoutes : CarrierRouteChecks devices ifaces routes carriers)
     (carrierPeerChecks : ∀ sender ∈ carriers, ∀ receiver ∈ carriers,
       CarrierPeers sender receiver →
-        (Execution.portAt ports sender.virtualPort).stack =
-          (Execution.portAt ports receiver.virtualPort).stack) :
-    LocalConditions (finiteConfig devices ports routes links bridges macPorts carriers)
-      (Execution.finiteLayout ports) := by
+        (Execution.ifaceAt ifaces sender.virtualIface).stack =
+          (Execution.ifaceAt ifaces receiver.virtualIface).stack) :
+    LocalConditions (dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers)
+      (Execution.expectedEncapStackFromRecords ifaces) := by
   refine ⟨rfl, ipChecks, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · exact fun a b member => linkChecks (a,b) member
   · exact fun a b member => bridgeChecks (a,b) member
-  · intro port member association installed
-    have checked := macTransmitChecks port member
-    simpa only [MACTransmitCheck, installed, Execution.finiteLayout] using checked
+  · intro iface member association installed
+    have checked := macTransmitChecks iface member
+    simpa only [MACTransmitCheck, installed, Execution.expectedEncapStackFromRecords] using checked
   · exact macReceiveChecks
   · exact macRoleChecks
   · exact macSecureChecks

@@ -21,7 +21,6 @@ def load(path):
     return json.loads(raw)
 
 
-RUN = Path('data/construction/v3.1-20261031T231942Z')
 SUBMISSION = Path('data/publication/v3.1')
 REGISTER = SUBMISSION / 'register.json'
 compiled = {row['name']: row for row in load(HERE.relative_to(ROOT) / 'lean-dependencies.json')}
@@ -29,10 +28,21 @@ register = load(REGISTER)['groups']
 proof_map = {row['rg_id']: row for row in load(SUBMISSION / 'proof_map.json')}
 applications_register = {row['rg_id']: row for row in load(SUBMISSION / 'applications.json')}
 verdict = load(SUBMISSION / 'verdict.json')
+RUN = Path(verdict.get('source_run', 'data/construction/v3.1-20261031T231942Z'))
 extracted = {row['group_id']: row for row in load('data/extraction/requirements/groups.json')['groups']}
 assert verdict['verdict'] == 'PASS' and set(proof_map) == set(verdict['selected_RGs'])
 nodes = {}
 source_hashes = {}
+active_modules, pending_modules = set(), ['TDN']
+while pending_modules:
+    module = pending_modules.pop()
+    if module in active_modules:
+        continue
+    active_modules.add(module)
+    source = ROOT / (module.replace('.', '/') + '.lean')
+    for imported in re.findall(r'^import\s+(TDN(?:\.[\w]+)*)\s*$', source.read_text(), re.M):
+        pending_modules.append(imported)
+inactive_source_files = []
 
 
 def without_comments(text):
@@ -65,11 +75,21 @@ declaration = re.compile(r'^(?:@\[[^\]]+\]\s*)?(?:(?:noncomputable|private|prote
 for path in sorted((ROOT / 'TDN').rglob('*.lean')):
     if 'Import' in path.relative_to(ROOT / 'TDN').parts[:-1]:
         continue
+    module = '.'.join(path.relative_to(ROOT).with_suffix('').parts)
+    if module not in active_modules:
+        inactive_source_files.append(str(path.relative_to(ROOT)))
+        continue
     original = path.read_text()
     lines = original.splitlines()
     clean = without_comments(original).splitlines()
     relative = str(path.relative_to(ROOT))
     source_hashes[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+    #* Imported JSON contributes to the compiled declarations shown by the page.
+    for imported in re.findall(r'^tdn_(?:data|snapshot)\b[^\n]*(?:\n[ \t]+[^\n]*)*?\bfrom\s+"([^"\n]+)"', original, re.M):
+        evidence = (path.parent / imported).resolve()
+        if not evidence.is_relative_to(ROOT) or not evidence.is_file():
+            raise ValueError('Missing or external hierarchy evidence input: ' + imported)
+        source_hashes[str(evidence.relative_to(ROOT))] = hashlib.sha256(evidence.read_bytes()).hexdigest()
     scopes = []
     starts = []
     for i, line in enumerate(clean):
@@ -93,7 +113,7 @@ for path in sorted((ROOT / 'TDN').rglob('*.lean')):
         nodes[name] = {
             'name': name, 'short': name.split('.')[-1], 'path': relative, 'line': i + 1,
             'source': source, 'kind': 'def' if keyword == 'tdn_data' else keyword, 'compiledKind': compiled[name]['kind'],
-            'decide': bool(re.search(r'\b(?:native_)?decide\b', without_comments(source))),
+            'decide': bool(re.search(r'\b(?:(?:native_)?decide|of_decide_eq_true|decide_eq_true)\b', without_comments(source))),
             'doc': ' '.join(doc[1].split()) if doc else '',
             'conclusionHead': compiled[name]['conclusionHead'],
             'aliasOf': compiled[name].get('aliasOf', ''),
@@ -234,8 +254,8 @@ for row in register:
                 scopes[name] = applications_register[gid]['scope']
         assert complete_applications, gid
     status = 'review_pass' if reviewed else 'deferred' if formal else 'outside_selected_scope'
-    reason = ('All clauses of the accepted specification have a general conditional proof. Review round 2 passed. Applying the result to a running deployment still requires its explicit premises.' if reviewed else
-              'The specification passed interpretation review. Construction stopped at the requested ten-RG boundary before a complete general proof was accepted for this group.' if formal else
+    reason = ('All clauses of the accepted specification have a general proof and checked applications within the recorded model scope. Complete-candidate review passed. Applying the result to a running deployment still requires its explicit premises.' if reviewed else
+              verdict.get('deferred_reason', 'The specification passed interpretation review. A complete proof remains deferred under the user-selected stopping point.') if formal else
               row['prior_reason'])
     conditions = reviewed.get('open_application_conditions', []) if reviewed else []
     roots = list(dict.fromkeys(generals + list(applications)))
@@ -264,17 +284,20 @@ for row in register:
 
 assert len(groups) == 76
 assert sum(g['formal'] is not None for g in groups) == 24
-assert sum(g['positive'] for g in groups) == 10
-summary = {'groups': len(groups), 'formal_definitions': 24, 'review_pass_groups': 10,
-           'deferred_groups': 14, 'outside_selected_groups': 52,
+passed_count = sum(g['positive'] for g in groups)
+formal_count = sum(g['formal'] is not None for g in groups)
+assert passed_count == len(verdict['selected_RGs'])
+summary = {'groups': len(groups), 'formal_definitions': formal_count, 'review_pass_groups': passed_count,
+           'deferred_groups': formal_count - passed_count, 'outside_selected_groups': len(groups) - formal_count,
            'complete_model_applications': sum(len(g['completeApplications']) for g in groups),
            'registered_proof_associations': sum(len(g['roots']) for g in groups),
            'source_declarations': len(nodes), 'source_kinds': dict(Counter(n['kind'] for n in nodes.values()))}
 metadata = {'version': 'v3.1', 'run': str(RUN), 'register_path': str(REGISTER),
             'generated_at': datetime.now(ZoneInfo('America/New_York')).isoformat(),
             'inputs': inputs, 'source_hashes': source_hashes, 'summary': summary,
+            'inactive_source_files': inactive_source_files,
             'review_scope': verdict['scope'], 'review_verdict': verdict['verdict']}
 (HERE / 'proof-map.json').write_text(json.dumps({'groups': groups, 'nodes': nodes, 'metadata': metadata}, ensure_ascii=False, indent=2) + '\n')
 (HERE / 'target-mapping-audit.json').write_text(json.dumps({**metadata, 'groups': audits,
-    'method': 'Fresh compiled proof dependencies and current source locations. All 24 accepted definitions and ten reviewed general roots resolve. Complete registered applications conclude the accepted definition or an exact constant alias and use the recorded general proof. The other 52 RGs remain catalog entries.'}, indent=2) + '\n')
+    'method': f'Fresh compiled proof dependencies and current source locations. All {formal_count} accepted definitions and {passed_count} reviewed general roots resolve. Complete registered applications conclude the accepted definition or an exact constant alias and use the recorded general proof. The other {len(groups) - formal_count} RGs remain catalog entries.'}, indent=2) + '\n')
 print(json.dumps(summary))

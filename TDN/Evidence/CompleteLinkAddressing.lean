@@ -56,7 +56,7 @@ theorem complete_link_model_RG014 (base : Deployment) (processing : PacketProces
     decide
   · simp [pairs, ranges, CompleteAddressing.pairs, CompleteAddressing.ranges,
       Addressing.Owns, Addressing.Contains]
-  · intro port member gray inner
+  · intro iface member gray inner
     simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member
     rcases member with rfl | rfl | rfl | rfl <;>
       simp_all [deployment, CompleteAddressing.deployment, interface, Deployment.IsLayer,
@@ -65,7 +65,7 @@ theorem complete_link_model_RG014 (base : Deployment) (processing : PacketProces
   · simp [endpoints, EndpointPair.Bound, AddressView.read, SameLevelComponents,
       deployment, CompleteAddressing.deployment, CompleteAddressing.devices,
       interfaces, interface, pairs, CompleteAddressing.pairs, Deployment.IsLayer]
-  · intro port member _ _
+  · intro iface member _ _
     simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member
     rcases member with rfl | rfl | rfl | rfl <;>
       simp [admissionPrograms, deployment, CompleteAddressing.deployment,
@@ -77,7 +77,7 @@ theorem complete_link_model_RG014 (base : Deployment) (processing : PacketProces
 
 def packet : PacketPolicy.Packet :=
   { source := 101, destination := 202, protocol := "ethernet",
-    ingress := "port-A", egress := "port-O", etherType := some 35045,
+    ingress := "", egress := "port-O", etherType := some 35045,
     sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 0,
     inboundPolicies := [], outboundPolicies := [], connectionState := "" }
 
@@ -85,10 +85,14 @@ lemma same_level_Ethernet_is_fully_admitted (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     (deployment base processing).Accepts "port-O" .outbound
       ((deployment base processing).Observe packet) := by
-  refine ⟨.link, ⟨rfl, ?_⟩, ?_, ?_⟩
+  refine ⟨.link, ⟨rfl, ?_⟩, ?_, ?_, ?_⟩
   · change (deployment base processing).ManagementMetadataBound packet
     simp [Deployment.ManagementMetadataBound, packet, PacketClass, PacketService, PacketIKE,
       PacketMKA, PacketARP]
+  · refine ⟨inventory processing, rfl, 3, by simp [inventory, CompleteAddressing.inventory], rfl,
+      interface "port-O" "OUTER-A" 30 303, by simp [deployment, interfaces], rfl, rfl, ?_⟩
+    simp [PacketAtHook, HookDirection, inventory, CompleteAddressing.inventory,
+      CompleteAddressing.ifaceName, packet, Deployment.Observe]
   · refine ⟨inventory processing, rfl, 3, by simp [inventory, CompleteAddressing.inventory], rfl, Or.inl ?_⟩
     refine ⟨⟨rfl, rfl⟩, Or.inl ⟨0, by simp [inventory, CompleteAddressing.inventory], ?_⟩⟩
     simp [inventory]
@@ -116,10 +120,10 @@ lemma cross_level_Ethernet_is_rejected (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     ¬ (deployment base processing).Accepts "port-O" .outbound
       ((deployment base processing).Observe {packet with destination := 404}) := by
-  rintro ⟨hook, _, admitted⟩
+  rintro ⟨hook, _, _, admitted⟩
   cases hook with
   | link =>
-    obtain ⟨_, actual, same, port, member, name, policy, selected, admitted⟩ := admitted
+    obtain ⟨_, actual, same, iface, member, name, policy, selected, admitted⟩ := admitted
     have equal : actual = inventory processing := Option.some.inj same.symm
     subst actual
     simp only [inventory, CompleteAddressing.inventory, List.mem_cons, List.not_mem_nil, or_false] at member

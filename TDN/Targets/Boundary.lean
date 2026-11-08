@@ -37,6 +37,7 @@ def Executes (e : Edge) (a b : State) : Prop :=
 
 def Shape (zone : Zone) (seals : List Seal) : Prop :=
   match zone with
+  | .local => False
   | .red => seals = []
   | .gray => ∃ i, seals = [i] ∧ i.layer = .inner
   | .black => ∃ o i, seals = [o, i] ∧ o.layer = .outer ∧ i.layer = .inner

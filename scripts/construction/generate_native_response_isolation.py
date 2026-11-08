@@ -26,20 +26,20 @@ lemma tagged_gateway_response_guards :
     simp only [{base}.responseGateways, taggedDevices,
       {base}.devices, ownerTag, ownerDomain]
     decide
-  intro port member
-  exact checks (config.owner port) member
+  intro iface member
+  exact checks (config.owner iface) member
 
 theorem gateway_response_delivery_preserves_full_label
     {{start finish : Execution.State}}
     {{actions : List (KernelResponses.Action Execution.Action)}}
     {{source recipient : Nat}}
     (origin : Targets.RedPayloadOrigin config redSources start)
-    (sourceLevel : config.recipientDomain start.port = some source)
+    (sourceLevel : config.recipientDomain start.iface = some source)
     (run : (KernelResponses.lts (lts config)
       (Targets.nativeKernelResponses config {base}.responseGateways)).MTr
       (.network start) actions (.network finish))
-    (delivered : finish.phase = .delivered)
-    (recipientLevel : config.recipientDomain finish.port = some recipient) :
+    (delivered : finish.datapathStage = .delivered)
+    (recipientLevel : config.recipientDomain finish.iface = some recipient) :
     fullLevel source = fullLevel recipient := by
   exact congrArg fullLevel (Targets.same_domain_delivery_with_strict_gateway_responses
     config redSources {base}.responseGateways snapshot_RG008_IPv4_ESP_delivery

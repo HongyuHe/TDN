@@ -31,19 +31,26 @@ def rules : List PacketPolicy.Rule :=
    ⟨[.sourceRange 20 20, .destinationRange 10 10, .protocol "esp"], .allow⟩]
 
 def policies : List InterfacePolicy :=
-  interfaces.flatMap fun port =>
-    [⟨port.id, .inbound, rules, .deny, .input⟩,
-     ⟨port.id, .outbound, rules, .deny, .output⟩,
-     ⟨port.id, .inbound, rules, .deny, .forward⟩,
-     ⟨port.id, .outbound, rules, .deny, .forward⟩]
+  interfaces.flatMap fun iface =>
+    [⟨iface.id, .inbound, rules, .deny, .input⟩,
+     ⟨iface.id, .outbound, rules, .deny, .output⟩,
+     ⟨iface.id, .inbound, rules, .deny, .forward⟩,
+     ⟨iface.id, .outbound, rules, .deny, .forward⟩]
+
+def ifaceName (iface : Nat) : String :=
+  if iface = 0 then "port-A" else if iface = 1 then "port-B" else if iface = 2 then "port-C" else "port-O"
+
+def componentName (iface : Nat) : String :=
+  if iface = 0 then "INNER-A" else if iface = 1 then "INNER-B" else if iface = 2 then "INNER-C" else "OUTER-A"
 
 def inventory (base : PacketProcessing.Inventory) : PacketProcessing.Inventory :=
   { base with
-    ports := [0, 1, 2, 3]
-    portName := fun port => if port = 0 then "port-A" else if port = 1 then "port-B"
-      else if port = 2 then "port-C" else "port-O"
+    ifaces := [0, 1, 2, 3]
+    ifaceName := ifaceName
+    componentName := componentName
     configuration := { base.configuration with
-      macPorts := [], bridge := fun _ _ => False, carriers := [], linkPolicies := [] }
+      ip := { base.configuration.ip with owner := fun iface => iface, interfaceName := ifaceName }
+      macIfaces := [], bridge := fun _ _ => False, carriers := [], linkPolicies := [] }
     mkaPeers := [] }
 
 def deployment (base : Deployment) (processing : PacketProcessing.Inventory) : Deployment :=
@@ -71,7 +78,7 @@ theorem full_routed_RG014 (base : Deployment) (processing : PacketProcessing.Inv
   · unfold Addressing.Separated ranges
     decide
   · simp [pairs, ranges, Addressing.Owns, Addressing.Contains]
-  · intro port member gray innerLayer
+  · intro iface member gray innerLayer
     simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member
     rcases member with rfl | rfl | rfl | rfl <;>
       simp_all [deployment, interface, devices, Deployment.IsLayer,
@@ -80,7 +87,7 @@ theorem full_routed_RG014 (base : Deployment) (processing : PacketProcessing.Inv
       Targets.EndpointRuleDerivation.AddressView.read, deployment, devices,
       interfaces, interface, pairs, Deployment.IsLayer,
       Targets.EndpointRuleDerivation.SameLevelComponents]
-  · intro port member _ _
+  · intro iface member _ _
     simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member
     rcases member with rfl | rfl | rfl | rfl <;>
       simp [Targets.EndpointRuleDerivation.admissionPrograms, deployment,
@@ -100,11 +107,14 @@ lemma intended_protected_packet_is_accepted (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     (deployment base processing).Accepts "port-O" .outbound
       ((deployment base processing).Observe packet) := by
-  refine ⟨.forward, ?_, ?_⟩
+  refine ⟨.forward, ?_, ?_, ?_⟩
   · refine ⟨rfl, ?_⟩
     change (deployment base processing).ManagementMetadataBound packet
     simp [Deployment.ManagementMetadataBound, packet, PacketClass, PacketService, PacketIKE,
       PacketMKA, PacketARP]
+  · refine ⟨inventory processing, rfl, 3, by simp [inventory], rfl,
+      interface "port-O" "OUTER-A" 30, by simp [deployment, interfaces], rfl, rfl, ?_⟩
+    simp [PacketAtHook, HookDirection, inventory, ifaceName, packet, Deployment.Observe]
   · simp [deployment, policies, interfaces, interface,
       InterfacePolicy.Accepts, rules, PacketPolicy.Rule.toFilter, Filter.evaluate, packet,
       Deployment.Observe, PacketPolicy.Atom.holds]
@@ -113,12 +123,12 @@ lemma cross_level_packet_is_rejected (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     ¬ (deployment base processing).Accepts "port-O" .outbound
       ((deployment base processing).Observe { packet with destination := 40 }) := by
-  rintro ⟨hook, _, admitted⟩
+  rintro ⟨hook, _, _, admitted⟩
   cases hook with
   | link =>
-    exact PolicyDerivation.routed_port_has_no_link_operation
+    exact PolicyDerivation.routed_iface_has_no_link_operation
       (deployment base processing) (inventory processing) rfl "port-O"
-      (by intro port _ _; simp [PolicyDerivation.RoutedPort, inventory])
+      (by intro iface _ _; simp [PolicyDerivation.RoutedIface, inventory])
       .outbound _ admitted
   | input | output | forward =>
     simp [deployment, policies, interfaces, interface, InterfacePolicy.Accepts, rules,

@@ -14,19 +14,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -35,10 +35,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.FreshSharedExecution
 
@@ -47,19 +47,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -68,10 +68,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.FreshBaselineExecution
 
@@ -80,19 +80,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -101,10 +101,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.Family666
 
@@ -113,19 +113,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -134,10 +134,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.Family444
 
@@ -146,19 +146,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -167,10 +167,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.Family446
 
@@ -179,19 +179,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -200,10 +200,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.Family464
 
@@ -212,19 +212,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -233,10 +233,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.Family466
 
@@ -245,19 +245,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -266,10 +266,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.Family644
 
@@ -278,19 +278,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -299,10 +299,10 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.Family646
 
@@ -311,19 +311,19 @@ open Execution
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
-lemma outer_port_shapes : ∀ port ∈ ({} : PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports
+lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces
   decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : Execution.State}
     {actions : List Action} (origin : Targets.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     OrderedEncryptions config 1 2 start actions finish :=
-  Targets.protected_black_execution_applies_layers_in_order config layout redSources blackPorts
-    local_stack_conditions sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (port_at_member_or_default ports port))
+  Targets.protected_black_execution_applies_layers_in_order config expectedEncapStack redSources blackIfaces
+    local_stack_conditions sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (iface_at_member_or_default ifaces iface))
     origin run ready black
 
 theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableEq Header]
@@ -332,9 +332,9 @@ theorem fragmented_transmission_has_both_layers {Header Byte : Type} [DecidableE
     {actions : List (Option Action)}
     (origin : Targets.RedPayloadOrigin config redSources start.logical)
     (run : (Fragmentation.segmented (lts config) encode).MTr start actions finish)
-    (ready : finish.logical.phase = .ready) (black : finish.logical.port ∈ blackPorts) :
+    (ready : finish.logical.datapathStage = .ready) (black : finish.logical.iface ∈ blackIfaces) :
     finish.logical.frame.tags = [2, 1] :=
-  Targets.fragmented_black_transmission_keeps_layers config layout redSources blackPorts encode
-    local_stack_conditions sources_checked black_ports_checked origin run ready black
+  Targets.fragmented_black_transmission_keeps_layers config expectedEncapStack redSources blackIfaces encode
+    local_stack_conditions sources_checked black_ifaces_checked origin run ready black
 
 end TDN.Imported.Family664

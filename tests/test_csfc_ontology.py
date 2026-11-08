@@ -157,6 +157,71 @@ class RoleOntologyContract(unittest.TestCase):
             self.assertIn((base + role_id, base + 'leanRepresentation', record['status'], True), self.statements)
             self.assertIn((base + role_id, base + 'leanMapping', record['meaning'], True), self.statements)
 
+    def test_inner_vpn_inherits_technology_and_layer_obligations(self):
+        node = next(n for n in self.graph['nodes'] if n['role_id'] == 'ROLE-inner-vpn')
+        obligations = {o['rg_id']: o for o in node['obligations']}
+        self.assertIn('ROLE-vpn-gateway', obligations['RG-021']['inherited_from'])
+        self.assertIn('ROLE-inner-encryption', obligations['RG-029']['inherited_from'])
+        self.assertIn('ROLE-encryption-component', obligations['RG-007']['inherited_from'])
+        self.assertIn('ROLE-solution-component', obligations['RG-036']['inherited_from'])
+        self.assertNotIn('RG-030', obligations)
+
+    def test_every_child_contains_every_parent_obligation(self):
+        nodes = {n['role_id']: n for n in self.graph['nodes']}
+        for edge in self.graph['subclass_edges']:
+            child = {o['rg_id'] for o in nodes[edge['child']]['obligations']}
+            parent = {o['rg_id'] for o in nodes[edge['parent']]['obligations']}
+            self.assertLessEqual(parent, child, edge)
+
+    def test_multiple_inheritance_keeps_all_origins_without_duplicates(self):
+        node = next(n for n in self.graph['nodes'] if n['role_id'] == 'ROLE-outer-vpn')
+        header = [o for o in node['obligations'] if o['rg_id'] == 'RG-038']
+        self.assertEqual(len(header), 1)
+        self.assertEqual(set(header[0]['inherited_from']), {'ROLE-vpn-gateway', 'ROLE-outer-encryption'})
+        for node in self.graph['nodes']:
+            self.assertEqual(len(node['obligations']), len({o['rg_id'] for o in node['obligations']}))
+
+    def test_association_does_not_propagate_obligations(self):
+        switch = next(n for n in self.graph['nodes'] if n['role_id'] == 'ROLE-switch')
+        self.assertEqual(switch['obligations'], [])
+        self.assertIn('no dedicated switch-role obligation', switch['obligation_note'])
+
+    def test_obligation_code_is_an_exact_current_source_excerpt(self):
+        catalog = self.graph['obligations']['catalog']
+        self.assertEqual(len(catalog), 76)
+        for rg, obligation in catalog.items():
+            self.assertTrue(obligation['translation'].strip(), rg)
+            self.assertTrue(obligation['references'], rg)
+            for ref in obligation['references']:
+                lines = (ROOT / ref['path']).read_text().splitlines()
+                source = '\n'.join(lines[ref['line'] - 1:ref['line'] - 1 + len(ref['code'].splitlines())]).strip()
+                self.assertEqual(ref['code'], source, rg)
+
+    def test_proof_status_does_not_promote_deferred_or_external_conditions(self):
+        catalog = self.graph['obligations']['catalog']
+        self.assertEqual(catalog['RG-007']['status'], 'Complete proof unfinished')
+        self.assertEqual(catalog['RG-021']['status'], 'Complete model proof reviewed')
+        self.assertEqual(catalog['RG-003']['status'], 'Requires external evidence')
+        self.assertEqual(catalog['RG-070']['references'][0]['code'], '| 70 => True')
+        self.assertIn('adds no condition', catalog['RG-070']['translation'])
+
+    def test_obligations_survive_rdf_export(self):
+        base = ONTOLOGY.BASE
+        self.assertIn((base + 'ROLE-inner-vpn', base + 'inheritedRequirement', base + 'RG-021', False), self.statements)
+        self.assertIn((base + 'ROLE-vpn-gateway', base + 'directRequirement', base + 'RG-021', False), self.statements)
+        self.assertIn((base + 'RG-021', base + 'requirementTranslation',
+                       self.graph['obligations']['catalog']['RG-021']['translation'], True), self.statements)
+
+    def test_changed_obligation_code_requires_translation_review(self):
+        mapping = json.loads((OUT / 'roles/ontology_obligations.json').read_text())
+        mapping['source_hashes']['TDN/Targets/CompleteSpecifications.lean'] = 'stale'
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            (out / 'roles').mkdir()
+            (out / 'roles/ontology_obligations.json').write_text(json.dumps(mapping))
+            with self.assertRaisesRegex(ValueError, 'review translations'):
+                ONTOLOGY.obligation_catalog(out, {r['role_id'] for r in self.roles})
+
 
 if __name__ == '__main__':
     unittest.main()

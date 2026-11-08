@@ -25,21 +25,21 @@ import TDN.Evidence.FreshBaselineIsolation
 """ + cases
         text += "".join("  · exact local_domain_conditions" + str(d) + "\n" for d in range(1, count + 1))
         text += """
-lemma all_byte_source_checks : ∀ d ∈ domains, ∀ port ∈ redSources,
-    config.recipientDomain port = some d →
-    byteLayout d port = [] ∧ config.payloadOrigin port ∧ byteAllowed d port := by
+lemma all_byte_source_checks : ∀ d ∈ domains, ∀ iface ∈ redSources,
+    config.recipientDomain iface = some d →
+    byteLayout d iface = [] ∧ config.payloadOrigin iface ∧ byteAllowed d iface := by
 """ + cases
         text += "".join("  · exact source_checks" + str(d) + "\n" for d in range(1, count + 1))
         text += """
-lemma all_byte_recipient_checks : ∀ d ∈ domains, ∀ port, byteAllowed d port →
-    config.recipientDomain port = none ∨ config.recipientDomain port = some d := by
+lemma all_byte_recipient_checks : ∀ d ∈ domains, ∀ iface, byteAllowed d iface →
+    config.recipientDomain iface = none ∨ config.recipientDomain iface = some d := by
 """ + cases
         text += "".join("  · exact recipient_checks" + str(d) + "\n" for d in range(1, count + 1))
         text += """
-lemma all_byte_source_domains : ∀ port ∈ redSources, ∀ d,
-    config.recipientDomain port = some d → d ∈ domains := by
-  intro port member d assigned
-  have present := source_domains_checked port member
+lemma all_byte_source_domains : ∀ iface ∈ redSources, ∀ d,
+    config.recipientDomain iface = some d → d ∈ domains := by
+  intro iface member d assigned
+  have present := source_domains_checked iface member
   rw [assigned] at present
   simpa using present
 
@@ -52,8 +52,8 @@ theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
     (run : (ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
     (packet : ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
-    (present : packet ∈ after) (delivered : packet.state.phase = .delivered)
-    (recipientDomain : Nat) (recipient : config.recipientDomain packet.state.port = some recipientDomain) :
+    (present : packet ∈ after) (delivered : packet.state.datapathStage = .delivered)
+    (recipientDomain : Nat) (recipient : config.recipientDomain packet.state.iface = some recipientDomain) :
     ∀ byte ∈ packet.bytes, fullLevel byte.domain = fullLevel recipientDomain := by
   have checked := Targets.assembled_packet_delivery_preserves_each_byte_domain
     config redSources domains byteLayout byteAllowed all_byte_domain_conditions all_byte_source_domains
@@ -63,11 +63,11 @@ theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
 """
         base = "TDN.Imported.Fresh" + name + "Execution"
         text += f"""
-lemma all_byte_black_checks : ∀ d ∈ domains, ∀ port ∈ {base}.blackPorts,
-    byteLayout d port = [2, d + 10] := by
+lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ {base}.blackIfaces,
+    byteLayout d iface = [2, d + 10] := by
 """ + cases
         for d in range(1, count + 1):
-            text += f"""  · simp only [{base}.blackPorts, List.mem_cons, List.not_mem_nil,
+            text += f"""  · simp only [{base}.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
     all_goals decide
 """
@@ -78,11 +78,11 @@ theorem every_assembled_black_byte_has_both_layers {{Byte : Type}}
     (run : (ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
     (packet : ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
-    (present : packet ∈ after) (ready : packet.state.phase = .ready)
-    (black : packet.state.port ∈ {base}.blackPorts) :
+    (present : packet ∈ after) (ready : packet.state.datapathStage = .ready)
+    (black : packet.state.iface ∈ {base}.blackIfaces) :
     ∀ byte ∈ packet.bytes, packet.state.frame.tags = [2, byte.domain + 10] :=
   Targets.assembled_packet_at_black_keeps_each_byte_protected config redSources domains
-    {base}.blackPorts byteLayout byteAllowed (fun d => d + 10) 2
+    {base}.blackIfaces byteLayout byteAllowed (fun d => d + 10) 2
     all_byte_domain_conditions all_byte_source_domains all_byte_source_checks
     all_byte_black_checks run packet present ready black
 

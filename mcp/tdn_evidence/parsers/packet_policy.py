@@ -83,7 +83,7 @@ def parse_rule(rule):
         raise Unsupported("hop-limit flag lacks hl module")
     if any(atom["kind"] == "networkBytesRange" for atom in atoms) != ("length" in modules):
         raise Unsupported("packet length matcher and module disagree")
-    if sum(atom["kind"] in ["ipsecUDPFraming", "ipsecUDPFramingWithOptions"] for atom in atoms) != modules.count("bpf"):
+    if sum(atom["kind"] in ["ipsecUDPFraming", "ipsecUDPFramingWithOptions", "ipsecUDPReplyFramingWithOptions"] for atom in atoms) != modules.count("bpf"):
         raise Unsupported("BPF matcher and module disagree")
     if policy:
         if "policy" not in modules or set(policy)!={"--dir","--pol","--reqid","--mode"} or policy["--pol"]!="ipsec" or policy["--mode"]!="tunnel" or policy["--dir"] not in {"in","out"} or not policy["--reqid"].isdigit():

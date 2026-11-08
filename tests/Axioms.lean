@@ -4,7 +4,7 @@ import TDN
 #print axioms TDN.Execution.inbound_crossing_requires_local_decryption
 #print axioms TDN.Imported.Family444.boundaryIA_no_bypass
 #print axioms TDN.Imported.Family444.boundaryOA_no_bypass
-#print axioms TDN.Imported.FinalMACsecKeySources.eap_ports_have_no_pre_shared_fallback
+#print axioms TDN.Imported.FinalMACsecKeySources.eap_ifaces_have_no_pre_shared_fallback
 #print axioms TDN.Imported.FinalMACsecRuntime.every_runtime_data_emission_is_encrypted
 #print axioms TDN.Imported.FreshAdministratorSessions.recorded_service_authentication
 #print axioms TDN.Imported.FreshFamilyImmediateHeaders.admitted_header_before_defragmentation_is_permitted
@@ -18,7 +18,7 @@ import TDN
 #print axioms TDN.Imported.FreshSharedAddressing.snapshot_RG014_outer_forwarding
 #print axioms TDN.Imported.FreshSharedIsolation.every_assembled_black_byte_has_inner_before_outer
 #print axioms TDN.Imported.FreshSharedIsolation.snapshot_RG008_full_label_delivery
-#print axioms TDN.Imported.FreshSharedTopology.cross_level_gray_paths_cross_firewall
+#print axioms TDN.Imported.FreshSharedTopology.cross_level_gray_waypointing
 #print axioms TDN.Imported.FreshSharedTopology.every_virtual_red_egress_crosses_inner
 #print axioms TDN.Imported.FreshSharedTopology.snapshot_public_internet_RG034
 #print axioms TDN.Imported.FreshSharedTrust.snapshot_RG012_management_free
@@ -28,7 +28,7 @@ import TDN
 #print axioms TDN.KeySources.executions_have_only_authenticated_sources
 #print axioms TDN.LinkProtection.every_emitted_frame_is_encrypted
 #print axioms TDN.PacketPolicy.accepted_immediate_header
-#print axioms TDN.Paths.no_firewall_free_crossing
+#print axioms TDN.Waypointing.waypointing_of_edge_invariant
 #print axioms TDN.Targets.NestedSizing.all_sizes_fit_each_interface
 #print axioms TDN.Targets.accepted_named_peer_addresses_share_level
 #print axioms TDN.Targets.accepted_nonloopback_output_has_peer_destination

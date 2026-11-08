@@ -13,24 +13,24 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma carrier_inbound_checks_1 :
-    FiniteCarrierInputChecks devices ports carriers 1 := by
+    FiniteCarrierInputChecks devices ifaces carriers 1 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
+lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config expectedEncapStack 1 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 1
     carrier_inbound_checks_1
 
 lemma carrier_inbound_checks_2 :
-    FiniteCarrierInputChecks devices ports carriers 2 := by
+    FiniteCarrierInputChecks devices ifaces carriers 2 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
+lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config expectedEncapStack 2 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 2
     carrier_inbound_checks_2
 
-def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIA := Targets.mixedTunnelBoundary config expectedEncapStack
   [13] [11] 1 5
 
 lemma mixedBoundaryIA_nonempty_attachments :
@@ -41,34 +41,34 @@ lemma mixedBoundaryIA_ip_tags : ∀ entry, config.ip.owner entry = 5 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 5).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 5 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 5 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [13] [11] 1 5
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [13] [11] 1 5
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
-  refine ⟨Reverse.usefulState31, [.decryptIPsec, .route, .forwardFilter, .plain], Reverse.usefulState35, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState31, [.decryptIPsec, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState35, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep31, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIB := Targets.mixedTunnelBoundary config expectedEncapStack
   [16] [14] 1 6
 
 lemma mixedBoundaryIB_nonempty_attachments :
@@ -79,34 +79,34 @@ lemma mixedBoundaryIB_ip_tags : ∀ entry, config.ip.owner entry = 6 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 6).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 6 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 6 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [16] [14] 1 6
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [16] [14] 1 6
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
-  refine ⟨Forward.usefulState31, [.decryptIPsec, .route, .forwardFilter, .plain], Forward.usefulState35, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState31, [.decryptIPsec, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState35, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep31, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOA := Targets.mixedTunnelBoundary config expectedEncapStack
   [18] [17] 2 7
 
 lemma mixedBoundaryOA_nonempty_attachments :
@@ -117,34 +117,34 @@ lemma mixedBoundaryOA_ip_tags : ∀ entry, config.ip.owner entry = 7 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 7).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 7 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 7 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [18] [17] 2 7
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [18] [17] 2 7
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
-  refine ⟨Reverse.usefulState26, [.decryptIPsec, .route, .forwardFilter, .plain], Reverse.usefulState30, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState26, [.decryptIPsec, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState30, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOB := Targets.mixedTunnelBoundary config expectedEncapStack
   [21] [20] 2 8
 
 lemma mixedBoundaryOB_nonempty_attachments :
@@ -155,27 +155,27 @@ lemma mixedBoundaryOB_ip_tags : ∀ entry, config.ip.owner entry = 8 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 8).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 8 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 8 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [21] [20] 2 8
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [21] [20] 2 8
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
-  refine ⟨Forward.usefulState26, [.decryptIPsec, .route, .forwardFilter, .plain], Forward.usefulState30, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState26, [.decryptIPsec, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState30, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
@@ -193,24 +193,24 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma carrier_inbound_checks_1 :
-    FiniteCarrierInputChecks devices ports carriers 1 := by
+    FiniteCarrierInputChecks devices ifaces carriers 1 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
+lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config expectedEncapStack 1 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 1
     carrier_inbound_checks_1
 
 lemma carrier_inbound_checks_2 :
-    FiniteCarrierInputChecks devices ports carriers 2 := by
+    FiniteCarrierInputChecks devices ifaces carriers 2 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
+lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config expectedEncapStack 2 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 2
     carrier_inbound_checks_2
 
-def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIA := Targets.mixedTunnelBoundary config expectedEncapStack
   [11] [9] 1 4
 
 lemma mixedBoundaryIA_nonempty_attachments :
@@ -221,34 +221,34 @@ lemma mixedBoundaryIA_ip_tags : ∀ entry, config.ip.owner entry = 4 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 4).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 4 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 4 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 4 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 4 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 4 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 4 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [11] [9] 1 4
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [11] [9] 1 4
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
-  refine ⟨Reverse.usefulState24, [.decryptIPsec, .route, .forwardFilter, .plain], Reverse.usefulState28, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState24, [.decryptIPsec, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState28, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIB := Targets.mixedTunnelBoundary config expectedEncapStack
   [14] [12] 1 5
 
 lemma mixedBoundaryIB_nonempty_attachments :
@@ -259,34 +259,34 @@ lemma mixedBoundaryIB_ip_tags : ∀ entry, config.ip.owner entry = 5 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 5).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 5 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 5 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [14] [12] 1 5
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [14] [12] 1 5
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
-  refine ⟨Forward.usefulState24, [.decryptIPsec, .route, .forwardFilter, .plain], Forward.usefulState28, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState24, [.decryptIPsec, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState28, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOA := Targets.mixedTunnelBoundary config expectedEncapStack
   [16] [15] 2 6
 
 lemma mixedBoundaryOA_nonempty_attachments :
@@ -297,34 +297,34 @@ lemma mixedBoundaryOA_ip_tags : ∀ entry, config.ip.owner entry = 6 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 6).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 6 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 6 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [16] [15] 2 6
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [16] [15] 2 6
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
-  refine ⟨Reverse.usefulState18, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Reverse.usefulState23, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState18, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState23, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep18, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOB := Targets.mixedTunnelBoundary config expectedEncapStack
   [20] [19] 2 7
 
 lemma mixedBoundaryOB_nonempty_attachments :
@@ -335,27 +335,27 @@ lemma mixedBoundaryOB_ip_tags : ∀ entry, config.ip.owner entry = 7 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 7).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 7 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 7 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [20] [19] 2 7
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [20] [19] 2 7
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
-  refine ⟨Forward.usefulState18, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Forward.usefulState23, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState18, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState23, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep18, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
@@ -373,24 +373,24 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma carrier_inbound_checks_1 :
-    FiniteCarrierInputChecks devices ports carriers 1 := by
+    FiniteCarrierInputChecks devices ifaces carriers 1 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
+lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config expectedEncapStack 1 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 1
     carrier_inbound_checks_1
 
 lemma carrier_inbound_checks_2 :
-    FiniteCarrierInputChecks devices ports carriers 2 := by
+    FiniteCarrierInputChecks devices ifaces carriers 2 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
+lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config expectedEncapStack 2 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 2
     carrier_inbound_checks_2
 
-def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIA := Targets.mixedTunnelBoundary config expectedEncapStack
   [14] [11] 1 5
 
 lemma mixedBoundaryIA_nonempty_attachments :
@@ -401,34 +401,34 @@ lemma mixedBoundaryIA_ip_tags : ∀ entry, config.ip.owner entry = 5 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 5).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 5 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 5 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [14] [11] 1 5
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [14] [11] 1 5
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
-  refine ⟨Reverse.usefulState32, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Reverse.usefulState37, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState32, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState37, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIB := Targets.mixedTunnelBoundary config expectedEncapStack
   [18] [15] 1 6
 
 lemma mixedBoundaryIB_nonempty_attachments :
@@ -439,34 +439,34 @@ lemma mixedBoundaryIB_ip_tags : ∀ entry, config.ip.owner entry = 6 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 6).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 6 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 6 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [18] [15] 1 6
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [18] [15] 1 6
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
-  refine ⟨Forward.usefulState32, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Forward.usefulState37, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState32, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState37, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOA := Targets.mixedTunnelBoundary config expectedEncapStack
   [21] [19] 2 7
 
 lemma mixedBoundaryOA_nonempty_attachments :
@@ -477,20 +477,20 @@ lemma mixedBoundaryOA_ip_tags : ∀ entry, config.ip.owner entry = 7 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 7).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 7 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 7 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [21] [19] 2 7
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [21] [19] 2 7
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
@@ -504,7 +504,7 @@ theorem mixedBoundaryOA_positive_inbound :
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOB := Targets.mixedTunnelBoundary config expectedEncapStack
   [26] [24] 2 8
 
 lemma mixedBoundaryOB_nonempty_attachments :
@@ -515,20 +515,20 @@ lemma mixedBoundaryOB_ip_tags : ∀ entry, config.ip.owner entry = 8 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 8).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 8 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 8 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [26] [24] 2 8
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [26] [24] 2 8
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
@@ -553,24 +553,24 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma carrier_inbound_checks_1 :
-    FiniteCarrierInputChecks devices ports carriers 1 := by
+    FiniteCarrierInputChecks devices ifaces carriers 1 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
+lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config expectedEncapStack 1 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 1
     carrier_inbound_checks_1
 
 lemma carrier_inbound_checks_2 :
-    FiniteCarrierInputChecks devices ports carriers 2 := by
+    FiniteCarrierInputChecks devices ifaces carriers 2 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
+lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config expectedEncapStack 2 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 2
     carrier_inbound_checks_2
 
-def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIA := Targets.mixedTunnelBoundary config expectedEncapStack
   [24] [21] 1 7
 
 lemma mixedBoundaryIA_nonempty_attachments :
@@ -581,34 +581,34 @@ lemma mixedBoundaryIA_ip_tags : ∀ entry, config.ip.owner entry = 7 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 7).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 7 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 7 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [24] [21] 1 7
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [24] [21] 1 7
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
-  refine ⟨Reverse.usefulState42, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Reverse.usefulState47, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState42, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState47, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep42, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep43, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep44, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep45, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep46, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIB := Targets.mixedTunnelBoundary config expectedEncapStack
   [28] [25] 1 8
 
 lemma mixedBoundaryIB_nonempty_attachments :
@@ -619,34 +619,34 @@ lemma mixedBoundaryIB_ip_tags : ∀ entry, config.ip.owner entry = 8 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 8).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 8 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 8 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [28] [25] 1 8
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [28] [25] 1 8
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
-  refine ⟨Forward.usefulState42, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Forward.usefulState47, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState42, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState47, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep42, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep43, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep44, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep45, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep46, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOA := Targets.mixedTunnelBoundary config expectedEncapStack
   [30] [29] 2 9
 
 lemma mixedBoundaryOA_nonempty_attachments :
@@ -657,34 +657,34 @@ lemma mixedBoundaryOA_ip_tags : ∀ entry, config.ip.owner entry = 9 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 9).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 9 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 9 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 9 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 9 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 9 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 9 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [30] [29] 2 9
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [30] [29] 2 9
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
-  refine ⟨Reverse.usefulState32, [.decryptIPsec, .route, .forwardFilter, .plain], Reverse.usefulState36, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState32, [.decryptIPsec, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState36, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOB := Targets.mixedTunnelBoundary config expectedEncapStack
   [33] [32] 2 10
 
 lemma mixedBoundaryOB_nonempty_attachments :
@@ -695,27 +695,27 @@ lemma mixedBoundaryOB_ip_tags : ∀ entry, config.ip.owner entry = 10 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 10).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 10 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 10 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 10 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 10 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 10 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 10 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [33] [32] 2 10
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [33] [32] 2 10
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
-  refine ⟨Forward.usefulState32, [.decryptIPsec, .route, .forwardFilter, .plain], Forward.usefulState36, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState32, [.decryptIPsec, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState36, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
@@ -733,24 +733,24 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma carrier_inbound_checks_1 :
-    FiniteCarrierInputChecks devices ports carriers 1 := by
+    FiniteCarrierInputChecks devices ifaces carriers 1 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
+lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config expectedEncapStack 1 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 1
     carrier_inbound_checks_1
 
 lemma carrier_inbound_checks_2 :
-    FiniteCarrierInputChecks devices ports carriers 2 := by
+    FiniteCarrierInputChecks devices ifaces carriers 2 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
+lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config expectedEncapStack 2 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 2
     carrier_inbound_checks_2
 
-def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIA := Targets.mixedTunnelBoundary config expectedEncapStack
   [12] [9] 1 4
 
 lemma mixedBoundaryIA_nonempty_attachments :
@@ -761,34 +761,34 @@ lemma mixedBoundaryIA_ip_tags : ∀ entry, config.ip.owner entry = 4 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 4).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 4 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 4 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 4 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 4 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 4 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 4 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [12] [9] 1 4
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [12] [9] 1 4
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
-  refine ⟨Reverse.usefulState25, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Reverse.usefulState30, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState25, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState30, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIB := Targets.mixedTunnelBoundary config expectedEncapStack
   [16] [13] 1 5
 
 lemma mixedBoundaryIB_nonempty_attachments :
@@ -799,34 +799,34 @@ lemma mixedBoundaryIB_ip_tags : ∀ entry, config.ip.owner entry = 5 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 5).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 5 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 5 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [16] [13] 1 5
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [16] [13] 1 5
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
-  refine ⟨Forward.usefulState25, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Forward.usefulState30, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState25, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState30, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOA := Targets.mixedTunnelBoundary config expectedEncapStack
   [19] [17] 2 6
 
 lemma mixedBoundaryOA_nonempty_attachments :
@@ -837,20 +837,20 @@ lemma mixedBoundaryOA_ip_tags : ∀ entry, config.ip.owner entry = 6 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 6).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 6 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 6 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [19] [17] 2 6
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [19] [17] 2 6
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
@@ -864,7 +864,7 @@ theorem mixedBoundaryOA_positive_inbound :
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOB := Targets.mixedTunnelBoundary config expectedEncapStack
   [25] [23] 2 7
 
 lemma mixedBoundaryOB_nonempty_attachments :
@@ -875,20 +875,20 @@ lemma mixedBoundaryOB_ip_tags : ∀ entry, config.ip.owner entry = 7 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 7).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 7 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 7 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [25] [23] 2 7
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [25] [23] 2 7
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
@@ -913,24 +913,24 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma carrier_inbound_checks_1 :
-    FiniteCarrierInputChecks devices ports carriers 1 := by
+    FiniteCarrierInputChecks devices ifaces carriers 1 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
+lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config expectedEncapStack 1 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 1
     carrier_inbound_checks_1
 
 lemma carrier_inbound_checks_2 :
-    FiniteCarrierInputChecks devices ports carriers 2 := by
+    FiniteCarrierInputChecks devices ifaces carriers 2 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
+lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config expectedEncapStack 2 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 2
     carrier_inbound_checks_2
 
-def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIA := Targets.mixedTunnelBoundary config expectedEncapStack
   [22] [19] 1 6
 
 lemma mixedBoundaryIA_nonempty_attachments :
@@ -941,34 +941,34 @@ lemma mixedBoundaryIA_ip_tags : ∀ entry, config.ip.owner entry = 6 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 6).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 6 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 6 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [22] [19] 1 6
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [22] [19] 1 6
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
-  refine ⟨Reverse.usefulState35, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Reverse.usefulState40, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState35, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState40, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep37, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep38, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep39, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIB := Targets.mixedTunnelBoundary config expectedEncapStack
   [26] [23] 1 7
 
 lemma mixedBoundaryIB_nonempty_attachments :
@@ -979,34 +979,34 @@ lemma mixedBoundaryIB_ip_tags : ∀ entry, config.ip.owner entry = 7 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 7).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 7 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 7 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [26] [23] 1 7
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [26] [23] 1 7
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
-  refine ⟨Forward.usefulState35, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Forward.usefulState40, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState35, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState40, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep37, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep38, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep39, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOA := Targets.mixedTunnelBoundary config expectedEncapStack
   [28] [27] 2 8
 
 lemma mixedBoundaryOA_nonempty_attachments :
@@ -1017,34 +1017,34 @@ lemma mixedBoundaryOA_ip_tags : ∀ entry, config.ip.owner entry = 8 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 8).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 8 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 8 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [28] [27] 2 8
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [28] [27] 2 8
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
-  refine ⟨Reverse.usefulState24, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Reverse.usefulState29, ?_, ?_, ?_⟩
+  refine ⟨Reverse.usefulState24, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Reverse.usefulState29, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOB := Targets.mixedTunnelBoundary config expectedEncapStack
   [32] [31] 2 9
 
 lemma mixedBoundaryOB_nonempty_attachments :
@@ -1055,27 +1055,27 @@ lemma mixedBoundaryOB_ip_tags : ∀ entry, config.ip.owner entry = 9 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 9).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 9 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 9 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 9 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 9 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 9 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 9 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [32] [31] 2 9
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [32] [31] 2 9
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 
 theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
-  refine ⟨Forward.usefulState24, [.decryptMACsec, .receive, .route, .forwardFilter, .plain], Forward.usefulState29, ?_, ?_, ?_⟩
+  refine ⟨Forward.usefulState24, [.decryptMACsec, .receive, .route, .forwardFilter, .passWithoutTransform], Forward.usefulState29, ?_, ?_, ?_⟩
   · simp only [mixedBoundaryOB, Targets.mixedTunnelBoundary]
     decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
@@ -1093,24 +1093,24 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma carrier_inbound_checks_1 :
-    FiniteCarrierInputChecks devices ports carriers 1 := by
+    FiniteCarrierInputChecks devices ifaces carriers 1 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config layout 1 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 1
+lemma carrier_input_preserves_boundary_1 : CarrierInputCheck config expectedEncapStack 1 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 1
     carrier_inbound_checks_1
 
 lemma carrier_inbound_checks_2 :
-    FiniteCarrierInputChecks devices ports carriers 2 := by
+    FiniteCarrierInputChecks devices ifaces carriers 2 := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config layout 2 :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers 2
+lemma carrier_input_preserves_boundary_2 : CarrierInputCheck config expectedEncapStack 2 :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers 2
     carrier_inbound_checks_2
 
-def mixedBoundaryIA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIA := Targets.mixedTunnelBoundary config expectedEncapStack
   [15] [12] 1 5
 
 lemma mixedBoundaryIA_nonempty_attachments :
@@ -1121,20 +1121,20 @@ lemma mixedBoundaryIA_ip_tags : ∀ entry, config.ip.owner entry = 5 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 5).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 5 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 5 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 5 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 5 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [15] [12] 1 5
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [15] [12] 1 5
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIA_ip_tags mixedBoundaryIA_mac_tags (by decide) (by decide)
 
@@ -1148,7 +1148,7 @@ theorem mixedBoundaryIA_positive_inbound :
   · simp only [mixedBoundaryIA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryIB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryIB := Targets.mixedTunnelBoundary config expectedEncapStack
   [20] [17] 1 6
 
 lemma mixedBoundaryIB_nonempty_attachments :
@@ -1159,20 +1159,20 @@ lemma mixedBoundaryIB_ip_tags : ∀ entry, config.ip.owner entry = 6 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 6).inbound,
       policy.tag = 1 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 6 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 6 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryIB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 6 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 1
+lemma mixedBoundaryIB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 6 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 1
   decide
 
 theorem mixedBoundaryIB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryIB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [20] [17] 1 6
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [20] [17] 1 6
     mixed_local_conditions carrier_input_preserves_boundary_1
     mixedBoundaryIB_ip_tags mixedBoundaryIB_mac_tags (by decide) (by decide)
 
@@ -1186,7 +1186,7 @@ theorem mixedBoundaryIB_positive_inbound :
   · simp only [mixedBoundaryIB, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOA := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOA := Targets.mixedTunnelBoundary config expectedEncapStack
   [23] [21] 2 7
 
 lemma mixedBoundaryOA_nonempty_attachments :
@@ -1197,20 +1197,20 @@ lemma mixedBoundaryOA_ip_tags : ∀ entry, config.ip.owner entry = 7 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 7).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 7 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 7 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOA_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 7 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOA_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 7 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOA_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOA :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [23] [21] 2 7
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [23] [21] 2 7
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOA_ip_tags mixedBoundaryOA_mac_tags (by decide) (by decide)
 
@@ -1224,7 +1224,7 @@ theorem mixedBoundaryOA_positive_inbound :
   · simp only [mixedBoundaryOA, Targets.mixedTunnelBoundary]
     decide
 
-def mixedBoundaryOB := Targets.mixedTunnelBoundary config layout
+def mixedBoundaryOB := Targets.mixedTunnelBoundary config expectedEncapStack
   [28] [26] 2 8
 
 lemma mixedBoundaryOB_nonempty_attachments :
@@ -1235,20 +1235,20 @@ lemma mixedBoundaryOB_ip_tags : ∀ entry, config.ip.owner entry = 8 →
   have checked : ∀ policy ∈ (Execution.deviceAt devices 8).inbound,
       policy.tag = 2 := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = 8 at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = 8 at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma mixedBoundaryOB_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2 := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = 8 →
-    ∀ association ∈ port.receiveAssociations, association.tag = 2
+lemma mixedBoundaryOB_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2 := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = 8 →
+    ∀ association ∈ iface.receiveAssociations, association.tag = 2
   decide
 
 theorem mixedBoundaryOB_no_bypass : Targets.BoundaryNoBypass mixedBoundaryOB :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [28] [26] 2 8
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [28] [26] 2 8
     mixed_local_conditions carrier_input_preserves_boundary_2
     mixedBoundaryOB_ip_tags mixedBoundaryOB_mac_tags (by decide) (by decide)
 

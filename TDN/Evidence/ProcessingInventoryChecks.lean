@@ -9,7 +9,7 @@ def interfaces : List Interface :=
    { id := "out", device := "router", zone := .black, address := some 20,
       physical := true, managementNetwork := false, mtu := some 1500 }]
 
-def name (port : Nat) : String := if port = 0 then "in" else "out"
+def name (iface : Nat) : String := if iface = 0 then "in" else "out"
 
 def rules : List PacketPolicy.Rule :=
   [⟨[.protocol "esp", .sourceRange 0 100, .destinationRange 0 100], .allow⟩]
@@ -23,7 +23,7 @@ def policies : List InterfacePolicy :=
 
 def inventory (base : PacketProcessing.Inventory) : PacketProcessing.Inventory :=
   { base with
-    ports := [0, 1], portName := name, componentName := fun _ => "router",
+    ifaces := [0, 1], ifaceName := name, componentName := fun _ => "router",
     mkaPeers := [], ipsecSizes := [],
     configuration := { base.configuration with
       ip := { base.configuration.ip with
@@ -35,7 +35,7 @@ def inventory (base : PacketProcessing.Inventory) : PacketProcessing.Inventory :
         outputRules := fun _ => rules, forwardFallback := fun _ => .deny,
         inputFallback := fun _ => .deny, outputFallback := fun _ => .deny,
         outbound := fun _ => [], inbound := fun _ => [] },
-      macPorts := [], carriers := [], bridge := fun _ _ => False, linkPolicies := [],
+      macIfaces := [], carriers := [], bridge := fun _ _ => False, linkPolicies := [],
       networkBytes := fun body _ => body.visibleHeader.bind PacketPolicy.Packet.networkBytes } }
 
 def deployment (base : Deployment) (processing : PacketProcessing.Inventory) : Deployment :=
@@ -53,8 +53,8 @@ theorem configured_processing_is_coherent (base : Deployment)
   apply processing_coherence_from_record_checks
     (deployment base processing) (inventory processing) rfl (record_checks base processing)
   · rfl
-  · funext port address
-    simp [inventory, nativeLocalAddress, deployment, interfaces]
+  · funext iface address
+    simp [inventory, nativeLocalAddress, deployment, interfaces, Interface.HasLocalAddress]
 
 lemma missing_mtu_is_rejected (base : Deployment) (processing : PacketProcessing.Inventory) :
     processingInventoryChecked
@@ -68,10 +68,10 @@ lemma wrong_owner_is_rejected (base : Deployment) (processing : PacketProcessing
       { inventory processing with componentName := fun _ => "unbound-owner" } = false := by
   rfl
 
-lemma missing_policy_port_is_rejected (base : Deployment)
+lemma missing_policy_iface_is_rejected (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     processingInventoryChecked (deployment base processing)
-      { inventory processing with ports := [0] } = false := by
+      { inventory processing with ifaces := [0] } = false := by
   rfl
 
 lemma wrong_native_hook_is_rejected (base : Deployment)

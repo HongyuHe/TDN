@@ -12,68 +12,68 @@ def uniformResponseOwners : List Nat :=
   (List.range TDN.Imported.FreshSharedExecution.devices.length).filter (fun owner => !(owner ∈ TDN.Imported.FreshSharedExecution.responseGateways))
 
 lemma every_retained_owner_has_response_case :
-    ∀ port ∈ ({} : PortData) :: TDN.Imported.FreshSharedExecution.ports,
-      port.owner ∈ TDN.Imported.FreshSharedExecution.responseGateways ∨ port.owner ∈ uniformResponseOwners := by
+    ∀ iface ∈ ({} : IfaceData) :: TDN.Imported.FreshSharedExecution.ifaces,
+      iface.owner ∈ TDN.Imported.FreshSharedExecution.responseGateways ∨ iface.owner ∈ uniformResponseOwners := by
   decide
 
 lemma every_active_component_can_generate (state : Execution.State)
-    (active : state.phase ≠ .dropped) :
+    (active : state.datapathStage ≠ .dropped) :
     (UniformDomainResponses.responseConfig config TDN.Imported.FreshSharedExecution.responseGateways
       uniformResponseOwners).generates state := by
-  exact ⟨active, every_retained_owner_has_response_case (portAt TDN.Imported.FreshSharedExecution.ports state.port)
-    (port_at_member_or_default TDN.Imported.FreshSharedExecution.ports state.port)⟩
+  exact ⟨active, every_retained_owner_has_response_case (ifaceAt TDN.Imported.FreshSharedExecution.ifaces state.iface)
+    (iface_at_member_or_default TDN.Imported.FreshSharedExecution.ifaces state.iface)⟩
 
 lemma uniform_domain_response_checks1 :
-    UniformDomainResponses.FiniteUniform taggedDevices domainPorts1
+    UniformDomainResponses.FiniteUniform taggedDevices domainIfaces1
       (allowedRecord 1) uniformResponseOwners := by
   decide
 
 lemma uniform_domain_responses1 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout1 domainAllowed1 owner := by
   intro owner member
-  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainPorts1
+  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainIfaces1
     TDN.Imported.FreshSharedExecution.routes TDN.Imported.FreshSharedExecution.links TDN.Imported.FreshSharedExecution.switches
     (allowedRecord 1) uniformResponseOwners uniform_domain_response_checks1 owner member
   rw [config_same1] at checked
   exact checked
 
 lemma uniform_domain_response_checks2 :
-    UniformDomainResponses.FiniteUniform taggedDevices domainPorts2
+    UniformDomainResponses.FiniteUniform taggedDevices domainIfaces2
       (allowedRecord 2) uniformResponseOwners := by
   decide
 
 lemma uniform_domain_responses2 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout2 domainAllowed2 owner := by
   intro owner member
-  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainPorts2
+  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainIfaces2
     TDN.Imported.FreshSharedExecution.routes TDN.Imported.FreshSharedExecution.links TDN.Imported.FreshSharedExecution.switches
     (allowedRecord 2) uniformResponseOwners uniform_domain_response_checks2 owner member
   rw [config_same2] at checked
   exact checked
 
 lemma uniform_domain_response_checks3 :
-    UniformDomainResponses.FiniteUniform taggedDevices domainPorts3
+    UniformDomainResponses.FiniteUniform taggedDevices domainIfaces3
       (allowedRecord 3) uniformResponseOwners := by
   decide
 
 lemma uniform_domain_responses3 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout3 domainAllowed3 owner := by
   intro owner member
-  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainPorts3
+  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainIfaces3
     TDN.Imported.FreshSharedExecution.routes TDN.Imported.FreshSharedExecution.links TDN.Imported.FreshSharedExecution.switches
     (allowedRecord 3) uniformResponseOwners uniform_domain_response_checks3 owner member
   rw [config_same3] at checked
   exact checked
 
 lemma uniform_domain_response_checks4 :
-    UniformDomainResponses.FiniteUniform taggedDevices domainPorts4
+    UniformDomainResponses.FiniteUniform taggedDevices domainIfaces4
       (allowedRecord 4) uniformResponseOwners := by
   decide
 
 lemma uniform_domain_responses4 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout4 domainAllowed4 owner := by
   intro owner member
-  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainPorts4
+  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainIfaces4
     TDN.Imported.FreshSharedExecution.routes TDN.Imported.FreshSharedExecution.links TDN.Imported.FreshSharedExecution.switches
     (allowedRecord 4) uniformResponseOwners uniform_domain_response_checks4 owner member
   rw [config_same4] at checked
@@ -113,8 +113,8 @@ theorem assembled_component_response_delivery_keeps_full_labels {Byte : Type}
       (Targets.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
     (finish : Execution.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : ⟨.network finish, bytes⟩ ∈ after)
-    (delivered : finish.phase = .delivered)
-    (recipientDomain : Nat) (recipient : config.recipientDomain finish.port = some recipientDomain) :
+    (delivered : finish.datapathStage = .delivered)
+    (recipientDomain : Nat) (recipient : config.recipientDomain finish.iface = some recipientDomain) :
     ∀ byte ∈ bytes, fullLevel byte.domain = fullLevel recipientDomain := by
   intro byte member
   have preserved := all_assembled_component_response_bytes_keep_domains run
@@ -122,8 +122,8 @@ theorem assembled_component_response_delivery_keeps_full_labels {Byte : Type}
   change Targets.ByteDomainInvariant config domains byteLayout byteAllowed byte finish at preserved
   obtain ⟨supported, safe⟩ := preserved
   simp only [DomainInvariant, delivered] at safe
-  have permitted : byteAllowed byte.domain finish.port := by simpa [safe.2] using safe.1.2
-  rcases all_byte_recipient_checks byte.domain supported finish.port permitted with absent | same
+  have permitted : byteAllowed byte.domain finish.iface := by simpa [safe.2] using safe.1.2
+  rcases all_byte_recipient_checks byte.domain supported finish.iface permitted with absent | same
   · simp [recipient] at absent
   · exact congrArg fullLevel (Option.some.inj (same.symm.trans recipient))
 
@@ -136,7 +136,7 @@ theorem assembled_component_response_black_bytes_keep_both_layers {Byte : Type}
       (Targets.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
     (finish : Execution.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : ⟨.network finish, bytes⟩ ∈ after)
-    (ready : finish.phase = .ready) (black : finish.port ∈ TDN.Imported.FreshSharedExecution.blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ TDN.Imported.FreshSharedExecution.blackIfaces) :
     ∀ byte ∈ bytes, finish.frame.tags = [2, byte.domain + 10] := by
   intro byte member
   have preserved := all_assembled_component_response_bytes_keep_domains run
@@ -144,7 +144,7 @@ theorem assembled_component_response_black_bytes_keep_both_layers {Byte : Type}
   change Targets.ByteDomainInvariant config domains byteLayout byteAllowed byte finish at preserved
   obtain ⟨supported, safe⟩ := preserved
   simp only [DomainInvariant, ready] at safe
-  exact safe.1.trans (all_byte_black_checks byte.domain supported finish.port black)
+  exact safe.1.trans (all_byte_black_checks byte.domain supported finish.iface black)
 
 end TDN.Imported.FreshSharedIsolation
 
@@ -158,40 +158,40 @@ def uniformResponseOwners : List Nat :=
   (List.range TDN.Imported.FreshBaselineExecution.devices.length).filter (fun owner => !(owner ∈ TDN.Imported.FreshBaselineExecution.responseGateways))
 
 lemma every_retained_owner_has_response_case :
-    ∀ port ∈ ({} : PortData) :: TDN.Imported.FreshBaselineExecution.ports,
-      port.owner ∈ TDN.Imported.FreshBaselineExecution.responseGateways ∨ port.owner ∈ uniformResponseOwners := by
+    ∀ iface ∈ ({} : IfaceData) :: TDN.Imported.FreshBaselineExecution.ifaces,
+      iface.owner ∈ TDN.Imported.FreshBaselineExecution.responseGateways ∨ iface.owner ∈ uniformResponseOwners := by
   decide
 
 lemma every_active_component_can_generate (state : Execution.State)
-    (active : state.phase ≠ .dropped) :
+    (active : state.datapathStage ≠ .dropped) :
     (UniformDomainResponses.responseConfig config TDN.Imported.FreshBaselineExecution.responseGateways
       uniformResponseOwners).generates state := by
-  exact ⟨active, every_retained_owner_has_response_case (portAt TDN.Imported.FreshBaselineExecution.ports state.port)
-    (port_at_member_or_default TDN.Imported.FreshBaselineExecution.ports state.port)⟩
+  exact ⟨active, every_retained_owner_has_response_case (ifaceAt TDN.Imported.FreshBaselineExecution.ifaces state.iface)
+    (iface_at_member_or_default TDN.Imported.FreshBaselineExecution.ifaces state.iface)⟩
 
 lemma uniform_domain_response_checks1 :
-    UniformDomainResponses.FiniteUniform taggedDevices domainPorts1
+    UniformDomainResponses.FiniteUniform taggedDevices domainIfaces1
       (allowedRecord 1) uniformResponseOwners := by
   decide
 
 lemma uniform_domain_responses1 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout1 domainAllowed1 owner := by
   intro owner member
-  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainPorts1
+  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainIfaces1
     TDN.Imported.FreshBaselineExecution.routes TDN.Imported.FreshBaselineExecution.links TDN.Imported.FreshBaselineExecution.switches
     (allowedRecord 1) uniformResponseOwners uniform_domain_response_checks1 owner member
   rw [config_same1] at checked
   exact checked
 
 lemma uniform_domain_response_checks2 :
-    UniformDomainResponses.FiniteUniform taggedDevices domainPorts2
+    UniformDomainResponses.FiniteUniform taggedDevices domainIfaces2
       (allowedRecord 2) uniformResponseOwners := by
   decide
 
 lemma uniform_domain_responses2 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout2 domainAllowed2 owner := by
   intro owner member
-  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainPorts2
+  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainIfaces2
     TDN.Imported.FreshBaselineExecution.routes TDN.Imported.FreshBaselineExecution.links TDN.Imported.FreshBaselineExecution.switches
     (allowedRecord 2) uniformResponseOwners uniform_domain_response_checks2 owner member
   rw [config_same2] at checked
@@ -229,8 +229,8 @@ theorem assembled_component_response_delivery_keeps_full_labels {Byte : Type}
       (Targets.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
     (finish : Execution.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : ⟨.network finish, bytes⟩ ∈ after)
-    (delivered : finish.phase = .delivered)
-    (recipientDomain : Nat) (recipient : config.recipientDomain finish.port = some recipientDomain) :
+    (delivered : finish.datapathStage = .delivered)
+    (recipientDomain : Nat) (recipient : config.recipientDomain finish.iface = some recipientDomain) :
     ∀ byte ∈ bytes, fullLevel byte.domain = fullLevel recipientDomain := by
   intro byte member
   have preserved := all_assembled_component_response_bytes_keep_domains run
@@ -238,8 +238,8 @@ theorem assembled_component_response_delivery_keeps_full_labels {Byte : Type}
   change Targets.ByteDomainInvariant config domains byteLayout byteAllowed byte finish at preserved
   obtain ⟨supported, safe⟩ := preserved
   simp only [DomainInvariant, delivered] at safe
-  have permitted : byteAllowed byte.domain finish.port := by simpa [safe.2] using safe.1.2
-  rcases all_byte_recipient_checks byte.domain supported finish.port permitted with absent | same
+  have permitted : byteAllowed byte.domain finish.iface := by simpa [safe.2] using safe.1.2
+  rcases all_byte_recipient_checks byte.domain supported finish.iface permitted with absent | same
   · simp [recipient] at absent
   · exact congrArg fullLevel (Option.some.inj (same.symm.trans recipient))
 
@@ -252,7 +252,7 @@ theorem assembled_component_response_black_bytes_keep_both_layers {Byte : Type}
       (Targets.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
     (finish : Execution.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : ⟨.network finish, bytes⟩ ∈ after)
-    (ready : finish.phase = .ready) (black : finish.port ∈ TDN.Imported.FreshBaselineExecution.blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ TDN.Imported.FreshBaselineExecution.blackIfaces) :
     ∀ byte ∈ bytes, finish.frame.tags = [2, byte.domain + 10] := by
   intro byte member
   have preserved := all_assembled_component_response_bytes_keep_domains run
@@ -260,7 +260,7 @@ theorem assembled_component_response_black_bytes_keep_both_layers {Byte : Type}
   change Targets.ByteDomainInvariant config domains byteLayout byteAllowed byte finish at preserved
   obtain ⟨supported, safe⟩ := preserved
   simp only [DomainInvariant, ready] at safe
-  exact safe.1.trans (all_byte_black_checks byte.domain supported finish.port black)
+  exact safe.1.trans (all_byte_black_checks byte.domain supported finish.iface black)
 
 end TDN.Imported.FreshBaselineIsolation
 

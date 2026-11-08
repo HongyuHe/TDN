@@ -38,7 +38,7 @@ uv run --frozen --project mcp python scripts/construction/mcp_session.py \
   --output outputs/mcp/session-001.jsonl
 ```
 
-The workflow defines uncapped interpretation rounds and separate proof-validation rounds. Full clause coverage, kernel checks, meaningful assumptions, and reusable general proofs are required for PASS. A failing eleventh proof-validation round ends the run with its remaining work recorded. All new records stay under the new run directory.
+The November 4 continuation submits one complete RG at a time. The Constructor uses focused compiler feedback during development and postpones broad validation until the RG's general proof and applications are ready. Full clause coverage, kernel checks, meaningful assumptions, and reusable general proofs are required for PASS. Interpretation review resumes only when a specification's meaning changes. All new records stay under the new run directory.
 
 `export_proof_audit.lean` reads a newline-separated list of fully qualified theorem names from `TDN_PROOF_NAMES`. After a successful build, it writes their compiled assumptions, conclusions, transitive TDN dependencies, and axioms to the path in `TDN_PROOF_AUDIT`. The command rejects missing names, definitions supplied as proofs, and axioms beyond Lean's three permitted foundational axioms. The supervisor still reviews whether the assumptions justify the source requirements and whether concrete observations establish them.
 
@@ -49,6 +49,24 @@ lake env lean scripts/construction/export_proof_audit.lean
 ```
 
 `export_spec_definitions.lean` records each specification's readable form and complete internal Lean expressions, including implicit arguments. Rebuild the accepted frozen source and the proof candidate with the same pinned dependencies before comparing those exports. `check_proof_submission.py` checks the 24-target mapping, the compiled general proofs, their evidence dependencies, and changes to the accepted definitions. The checker reports whether the accepted export contains the complete expressions. Older exports remain usable but compare only their recorded fields. The supervisor reviews clause coverage and assumptions separately.
+
+For a completed individual RG, pass `--groups RG-039` to `check_proof_submission.py` and provide a proof map containing that RG. The accepted map still contains all 24 specifications. The default checks all 24 groups. Selecting one group changes the submission scope; it preserves the checks for specification changes, unexpected axioms and dependencies on concrete evidence.
+
+When a completed RG changes a specification's meaning, `prepare_interpretation.py --groups RG-039` limits the blind Interpreter's targets to that group. The supervisor's export still records all 24 definitions for change tracking. Use `--import-module TDN.Targets.CompleteSpecifications` to build the specification modules without rebuilding unrelated snapshot proofs. Additional `--import-module` arguments are supported when the specification map spans several modules. The default imports `TDN` and gives the Interpreter all 24 targets.
+
+A frozen candidate can supply its existing compiled definitions through `--compiled-export FILE --compiled-export-sha256 HASH` while the independent validation build runs. The preparation script verifies the hash, preserves the supplied definitions and source hashes, and tests the Interpreter's access restrictions. It does not repeat the build. Acceptance still requires the independent build to export exactly the same definitions; the preparation manifest records that outstanding check.
+
+The RG-033 packet-size application uses `packet_sizing_records.py` to combine saved native processing, public IPsec association records, packet-size observations, bridge processing and declared Red services. The output retains the raw inputs and their hashes. `packet_sizing_cases.py` selects concrete source, rejection and wire examples. `packet_sizing_continuation.py` extends a source example through the recorded route, filter, encryption and switching steps to an Outer Black interface. Both scripts produce JSON; Lean imports the records and checks the proposed steps.
+
+```sh
+python3 scripts/construction/packet_sizing_records.py \
+  native.json keys-before.json keys-after.json sizing.json output.json \
+  --bridge bridge.json --intent red-services.json
+python3 scripts/construction/packet_sizing_cases.py output.json cases.json
+python3 scripts/construction/packet_sizing_continuation.py output.json cases.json continuation.json
+```
+
+`migrate_local_projection.py` reproduces the recorded migration that adds device-local interfaces and namespace-owned addresses to older active JSON records. Preserve its before/after records when reproducing that migration. Source captures remain unchanged. New packet-size records obtain those fields directly from the current projection.
 
 `checkpoint_proof_attempts.py` archives completed attempts with their logs and hash-checked source checkpoints. It excludes unfinished attempts and creates a new archive without replacing an earlier one. `record_agent_messages.py` preserves the actual agent prompts and replies for the selected run interval.
 

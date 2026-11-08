@@ -21,12 +21,12 @@ class LeanImportTests(unittest.TestCase):
             return result.stdout + result.stderr
 
     def test_relative_path_and_kernel_decide(self):
-        self.run_lean({"ports": [{"owner": 1, "name": "eth0", "stack": [2, 1], "payloadOrigin": False}]},
-                      'tdn_data ports : List TDN.Execution.PortData from "data.json" ["ports"]\nexample : ports.length = 1 := by decide\n', True)
+        self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [2, 1], "payloadOrigin": False}]},
+                      'tdn_data ifaces : List TDN.Execution.IfaceData from "data.json" ["ifaces"]\nexample : ifaces.length = 1 := by decide\n', True)
 
     def test_unknown_field_rejected(self):
-        output = self.run_lean({"ports": [{"owner": 1, "name": "eth0", "stack": [], "payloadOrigin": False, "ignored": True}]},
-                              'tdn_data ports : List TDN.Execution.PortData from "data.json" ["ports"]\n', False)
+        output = self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [], "payloadOrigin": False, "ignored": True}]},
+                              'tdn_data ifaces : List TDN.Execution.IfaceData from "data.json" ["ifaces"]\n', False)
         self.assertIn("unrecognized evidence fields", output)
 
     def test_bad_finite_index_rejected(self):
@@ -34,8 +34,8 @@ class LeanImportTests(unittest.TestCase):
         self.assertIn("outside Fin 4", output)
 
     def test_changed_data_breaks_local_check(self):
-        self.run_lean({"ports": [{"owner": 1, "name": "eth0", "stack": [], "payloadOrigin": False}]},
-                      'tdn_data ports : List TDN.Execution.PortData from "data.json" ["ports"]\nexample : (ports[0]!).stack = [2, 1] := by decide\n', False)
+        self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [], "payloadOrigin": False}]},
+                      'tdn_data ifaces : List TDN.Execution.IfaceData from "data.json" ["ifaces"]\nexample : (ifaces[0]!).stack = [2, 1] := by decide\n', False)
 
     def test_parameterized_record_can_be_imported_twice(self):
         self.run_lean({"ranges": [{"low": 1, "high": 8, "label": 3}]},

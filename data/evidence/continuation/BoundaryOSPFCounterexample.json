@@ -1,0 +1,122 @@
+{
+  "flow": {
+    "destination": 2887060225,
+    "device": "V31B_OF_A1",
+    "direction": "inbound",
+    "hook": "input",
+    "interface": "V31B_OF_A1:outside",
+    "nativeName": "outside",
+    "protocol": "ospf",
+    "source": 2887060226
+  },
+  "interface": {
+    "address": 2887060225,
+    "device": "V31B_OF_A1",
+    "externalData": false,
+    "id": "V31B_OF_A1:outside",
+    "linkAddress": null,
+    "managementNetwork": false,
+    "mtu": 1500,
+    "namespaceAddresses": [
+      2887060225
+    ],
+    "physical": true,
+    "zone": "black"
+  },
+  "packet": {
+    "connectionId": null,
+    "connectionState": "new",
+    "destination": 2887060225,
+    "destinationPort": 0,
+    "egress": "",
+    "etherType": null,
+    "hopLimit": 1,
+    "icmpCode": 0,
+    "icmpType": 0,
+    "inboundPolicies": [],
+    "ingress": "outside",
+    "ipv4FragmentOffset": null,
+    "ipv4HeaderWords": 5,
+    "ipv6NextHeader": 0,
+    "networkBytes": null,
+    "outboundPolicies": [],
+    "payloadBytes": null,
+    "protocol": "ospf",
+    "source": 2887060226,
+    "sourcePort": 0
+  },
+  "policy": {
+    "defaultVerdict": "deny",
+    "direction": "inbound",
+    "hook": "input",
+    "interface": "V31B_OF_A1:outside",
+    "rules": [
+      {
+        "atoms": [
+          {
+            "ingress": {
+              "name": "lo"
+            }
+          }
+        ],
+        "verdict": "allow"
+      },
+      {
+        "atoms": [
+          {
+            "sourceRange": {
+              "high": 2887060226,
+              "low": 2887060226
+            }
+          },
+          {
+            "destinationRange": {
+              "high": 2887060225,
+              "low": 2887060225
+            }
+          },
+          {
+            "ingress": {
+              "name": "outside"
+            }
+          },
+          {
+            "protocol": {
+              "name": "ospf"
+            }
+          }
+        ],
+        "verdict": "allow"
+      },
+      {
+        "atoms": [
+          {
+            "sourceRange": {
+              "high": 2887060226,
+              "low": 2887060226
+            }
+          },
+          {
+            "destinationRange": {
+              "high": 3758096389,
+              "low": 3758096389
+            }
+          },
+          {
+            "ingress": {
+              "name": "outside"
+            }
+          },
+          {
+            "protocol": {
+              "name": "ospf"
+            }
+          }
+        ],
+        "verdict": "allow"
+      }
+    ]
+  },
+  "port": 85,
+  "source": "Declared peer endpoints plus retained native INPUT program; packet is a local hook-header witness, not a raw OSPF decoder witness."
+}

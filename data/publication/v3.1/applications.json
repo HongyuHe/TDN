@@ -40,7 +40,8 @@
     "deployed_application_conditions": [
       "Bind the complete actual established-pair set and credential inventory to the chosen observation epoch and authentication mechanism."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-013",
@@ -201,7 +202,7 @@
       {
         "name": "TDN.Imported.CompleteGrayFirewallReuse.same_level_chain_packet_is_admitted",
         "conclusion_head": "TDN.Compliance.Deployment.Accepts",
-        "conclusion": "(TDN.Imported.CompleteGrayFirewallReuse.deployment base processing).Accepts \"port-O\" TDN.Compliance.Direction.outbound\n  ((TDN.Imported.CompleteGrayFirewallReuse.deployment base processing).Observe TDN.Imported.CompleteGrayFirewall.packet)",
+        "conclusion": "(TDN.Imported.CompleteGrayFirewallReuse.deployment base processing).Accepts \"port-O\" TDN.Compliance.Direction.outbound\n  ((TDN.Imported.CompleteGrayFirewallReuse.deployment base processing).Observe\n    (have __src := TDN.Imported.CompleteGrayFirewall.packet;\n    { source := __src.source, destination := __src.destination, protocol := __src.protocol, ingress := \"port-O\",\n      egress := \"port-O\", sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n      ipv4HeaderWords := __src.ipv4HeaderWords, inboundPolicies := __src.inboundPolicies,\n      outboundPolicies := __src.outboundPolicies, connectionState := __src.connectionState,\n      ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n      hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n      connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n      ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
         "binders": [
           {
             "type": "TDN.Compliance.Deployment",
@@ -225,7 +226,8 @@
       "Declared model checks are fulfilled; physical classified protection is an explicit parameter.",
       "A deployed complete device/graph/program binding and physical protection record are not yet supplied for this root."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-014",
@@ -389,7 +391,8 @@
     "deployed_application_conditions": [
       "Checked routed and link model instances are available. Full runtime inventory/range/program correspondence must be supplied for each deployed application."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-021",
@@ -483,7 +486,7 @@
       {
         "name": "TDN.Imported.CompleteKeyApplications.signing_is_reachable",
         "conclusion_head": "And",
-        "conclusion": "(TDN.Imported.CompleteKeyApplications.model native false).initial [TDN.Imported.CompleteKeyApplications.token] ∧\n  (TDN.Imported.CompleteKeyApplications.model native false).system.MTr [TDN.Imported.CompleteKeyApplications.token]\n      [TDN.KeyInterface.Action.sign TDN.Imported.CompleteKeyApplications.token \"gateway\"]\n      [TDN.Imported.CompleteKeyApplications.token] ∧\n    TDN.Compliance.ProcessingEvent.privateKeyRead \"gateway\" \"private.key\" \"gateway\" ∈\n      (TDN.Imported.CompleteKeyApplications.model native false).TraceEvents\n        [TDN.KeyInterface.Action.sign TDN.Imported.CompleteKeyApplications.token \"gateway\"]",
+        "conclusion": "(TDN.Imported.CompleteKeyApplications.model native false).initial [TDN.Imported.CompleteKeyApplications.token] ∧\n  (TDN.Imported.CompleteKeyApplications.model native false).system.MTr [TDN.Imported.CompleteKeyApplications.token]\n      [TDN.KeyInterface.Action.sign TDN.Imported.CompleteKeyApplications.token \"gateway\"]\n      [TDN.Imported.CompleteKeyApplications.token] ∧\n    TDN.Compliance.NetworkEvent.privateKeyRead \"gateway\" \"private.key\" \"gateway\" ∈\n      (TDN.Imported.CompleteKeyApplications.model native false).TraceEvents\n        [TDN.KeyInterface.Action.sign TDN.Imported.CompleteKeyApplications.token \"gateway\"]",
         "binders": [
           {
             "type": "TDN.Imported.CompleteKeyApplications.Native",
@@ -500,7 +503,7 @@
       {
         "name": "TDN.Imported.CompleteKeyApplications.copied_digest_is_reachable",
         "conclusion_head": "And",
-        "conclusion": "(TDN.Imported.CompleteKeyApplications.model native true).initial\n    [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token] ∧\n  (TDN.Imported.CompleteKeyApplications.model native true).system.MTr\n      [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token]\n      [TDN.KeyInterface.Action.digest TDN.Imported.CompleteKeyApplications.copied \"gateway\"]\n      [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token] ∧\n    TDN.Compliance.ProcessingEvent.privateKeyRead \"gateway\" \"private.key\" \"gateway\" ∈\n      (TDN.Imported.CompleteKeyApplications.model native true).TraceEvents\n        [TDN.KeyInterface.Action.digest TDN.Imported.CompleteKeyApplications.copied \"gateway\"]",
+        "conclusion": "(TDN.Imported.CompleteKeyApplications.model native true).initial\n    [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token] ∧\n  (TDN.Imported.CompleteKeyApplications.model native true).system.MTr\n      [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token]\n      [TDN.KeyInterface.Action.digest TDN.Imported.CompleteKeyApplications.copied \"gateway\"]\n      [TDN.Imported.CompleteKeyApplications.copied, TDN.Imported.CompleteKeyApplications.token] ∧\n    TDN.Compliance.NetworkEvent.privateKeyRead \"gateway\" \"private.key\" \"gateway\" ∈\n      (TDN.Imported.CompleteKeyApplications.model native true).TraceEvents\n        [TDN.KeyInterface.Action.digest TDN.Imported.CompleteKeyApplications.copied \"gateway\"]",
         "binders": [
           {
             "type": "TDN.Imported.CompleteKeyApplications.Native",
@@ -520,7 +523,8 @@
       "K01 has an actual readable file-backed path and supplies no protected-interface refinement.",
       "Host/hypervisor exclusion, software implementation correspondence and observation truth stay explicit."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-027",
@@ -628,7 +632,8 @@
       "Establish individually named NSA generator approval and security-administrator authority facts for the chosen application.",
       "Bind EAP-derived CAKs to actual MSK/KDF inputs and an approved generator; finite name equality is insufficient."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-032",
@@ -661,7 +666,94 @@
       "Full sender implementation correspondence beyond the retained finite observations.",
       "Architecture/public-Internet/objective/firewall flags retain their separate source and configuration binding."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
+  },
+  {
+    "rg_id": "RG-033",
+    "reuse_accounting": "The same general theorem is applied to the baseline and shared network records.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.SizingBaseline.complete_recorded_packet_size_configuration",
+        "conclusion_head": "TDN.Targets.Complete.msc_packet_size_configuration",
+        "conclusion": "TDN.Targets.Complete.msc_packet_size_configuration\n  (TDN.Imported.SizingBaseline.deployment material primitive parameters base)\n  (TDN.Imported.SizingBaseline.execution material primitive parameters base)\n  (TDN.Targets.CanonicalExecution.sizedWireModel (TDN.Imported.SizingBaseline.codec material primitive parameters)\n    (TDN.Imported.PacketSizingRecords.sourceMtu TDN.Imported.SizingBaseline.roles)\n    (TDN.Imported.PacketSizingRecords.sourceMtu TDN.Imported.SizingBaseline.roles))\n  (TDN.Imported.PacketSizingRecords.settings TDN.Imported.SizingBaseline.roles) []",
+        "binders": [
+          {
+            "type": "String → TDN.Compliance.IPsecKeyMaterial",
+            "name": "material",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Execution.Seal → TDN.IPsecFrameEncoding.Parameters",
+            "name": "parameters",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Imported.PacketSizingRecords.PrivateMaterialAssurance TDN.Imported.SizingBaseline.installations material",
+            "name": "privateMaterial",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.SizingShared.complete_recorded_packet_size_configuration",
+        "conclusion_head": "TDN.Targets.Complete.msc_packet_size_configuration",
+        "conclusion": "TDN.Targets.Complete.msc_packet_size_configuration\n  (TDN.Imported.SizingShared.deployment material primitive parameters base)\n  (TDN.Imported.SizingShared.execution material primitive parameters base)\n  (TDN.Targets.CanonicalExecution.sizedWireModel (TDN.Imported.SizingShared.codec material primitive parameters)\n    (TDN.Imported.PacketSizingRecords.sourceMtu TDN.Imported.SizingShared.roles)\n    (TDN.Imported.PacketSizingRecords.sourceMtu TDN.Imported.SizingShared.roles))\n  (TDN.Imported.PacketSizingRecords.settings TDN.Imported.SizingShared.roles) []",
+        "binders": [
+          {
+            "type": "String → TDN.Compliance.IPsecKeyMaterial",
+            "name": "material",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Execution.Seal → TDN.IPsecFrameEncoding.Parameters",
+            "name": "parameters",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Imported.PacketSizingRecords.PrivateMaterialAssurance TDN.Imported.SizingShared.installations material",
+            "name": "privateMaterial",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Whole instantiated RG033 specification for the recorded baseline and shared IPv4/IPsec configurations. Mandatory sizing covers Inner Gray, Outer Black and applicable Gray Firewall external interfaces. Optional IR2 reduction is unselected. Private-material validity, encryption-function laws and faithful Linux execution remain explicit assumptions."
+    ],
+    "scope": "Whole instantiated RG033 specification for the recorded baseline and shared IPv4/IPsec configurations. Mandatory sizing covers Inner Gray, Outer Black and applicable Gray Firewall external interfaces. Optional IR2 reduction is unselected. Private-material validity, encryption-function laws and faithful Linux execution remain explicit assumptions.",
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/verdict.json",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-034",
@@ -704,7 +796,54 @@
     "deployed_application_conditions": [
       "Bind generic edge/Gray-connection/attachment predicates and complete node roles to the exact supported observed topology."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
+  },
+  {
+    "rg_id": "RG-035",
+    "reuse_accounting": "The same general theorem is applied to the baseline and shared network records.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.BoundaryBaseline.complete_native_boundary_policy",
+        "conclusion_head": "TDN.Targets.Complete.msc_boundary_interface_filtering",
+        "conclusion": "TDN.Targets.Complete.msc_boundary_interface_filtering (TDN.Imported.BoundaryBaseline.deployment base) true\n  (fun name => TDN.Imported.BoundaryBaseline.firewallInternal.contains name)\n  (TDN.Imported.BoundaryNativeModel.localOuter TDN.Imported.BoundaryBaseline.firewalls)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.BoundaryShared.complete_native_boundary_policy",
+        "conclusion_head": "TDN.Targets.Complete.msc_boundary_interface_filtering",
+        "conclusion": "TDN.Targets.Complete.msc_boundary_interface_filtering (TDN.Imported.BoundaryShared.deployment base) true\n  (fun name => TDN.Imported.BoundaryShared.firewallInternal.contains name)\n  (TDN.Imported.BoundaryNativeModel.localOuter TDN.Imported.BoundaryShared.firewalls)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Whole instantiated RG035 specification for two IPv4/IPsec deployments; physical MACsec coverage and counterexamples separately checked. Other unfinished RGs remain pending."
+    ],
+    "scope": "Whole instantiated RG035 specification for two IPv4/IPsec deployments; physical MACsec coverage and counterexamples separately checked. Other unfinished RGs remain pending.",
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-035/round-002/verdict.json",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-037",
@@ -858,7 +997,8 @@
       "Actual per-rule exclusion checks or selected feature-disable configuration.",
       "The current sufficient theorem's IP-feature premise must be checked; an Ethernet-emitting feature needs a separate link-operation proof."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-038",
@@ -1029,7 +1169,100 @@
       "Actual organization approval/necessity of the deployed MKA control protocol.",
       "Exact nft/Linux parsing and admission implementation correspondence within the recorded untagged-veth/offload scope."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
+  },
+  {
+    "rg_id": "RG-039",
+    "reuse_accounting": "The same general theorem is applied to the baseline and shared network records.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.OuterGrayBaseline.complete_Outer_gray_policy",
+        "conclusion_head": "TDN.Targets.Complete.msc_outer_gray_interface_policy",
+        "conclusion": "TDN.Targets.Complete.msc_outer_gray_interface_policy (TDN.Imported.OuterGrayBaseline.records.deployment base) false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.OuterGrayShared.complete_Outer_gray_policy",
+        "conclusion_head": "TDN.Targets.Complete.msc_outer_gray_interface_policy",
+        "conclusion": "TDN.Targets.Complete.msc_outer_gray_interface_policy (TDN.Imported.OuterGrayShared.records.deployment base) false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "IPv4 IPsec VPN deployments satisfying explicit local conditions; cdpOnGray=false; optional management absent."
+    ],
+    "scope": "IPv4 IPsec VPN deployments satisfying explicit local conditions; cdpOnGray=false; optional management absent.",
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-039/round-002/verdict.json",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
+  },
+  {
+    "rg_id": "RG-040",
+    "reuse_accounting": "The same general theorem is applied to the baseline and shared network records.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Imported.BoundaryBaseline.complete_native_Gray_firewall_allowlist",
+        "conclusion_head": "TDN.Targets.Complete.msc_gray_firewall_allowlist",
+        "conclusion": "TDN.Targets.Complete.msc_gray_firewall_allowlist (TDN.Imported.BoundaryBaseline.deployment base) true",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Imported.GrayFirewallShared.complete_native_Gray_firewall_allowlist",
+        "conclusion_head": "TDN.Targets.Complete.msc_gray_firewall_allowlist",
+        "conclusion": "TDN.Targets.Complete.msc_gray_firewall_allowlist (TDN.Imported.GrayFirewallShared.deployment base) true",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Whole instantiated RG040 specification for baseline and shared IPv4/IPsec deployments; all other unfinished groups remain pending."
+    ],
+    "scope": "Whole instantiated RG040 specification for baseline and shared IPv4/IPsec deployments; all other unfinished groups remain pending.",
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-040/round-001/verdict.json",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   },
   {
     "rg_id": "RG-047",
@@ -1128,6 +1361,7 @@
       "Check complete AW administrator roster and credential ownership correspondence; human appointment/identity remains a separately named external fact where required.",
       "Selected CNSA/NIST authority assurances are external facts and are not proved by optional-false fixtures."
     ],
-    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim."
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/independent-worker/publication-audit.json"
   }
 ]

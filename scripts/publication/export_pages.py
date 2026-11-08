@@ -51,7 +51,7 @@ def render(page):
         hashes.update({p: h for p, h in data['metadata']['inputs'].items() if not p.startswith('.lavish/')})
         html = html.replace('<a href="construction-v3.1-walkthrough.html">Read the v3.1 report</a>', '<a href="/tdn/ontology/">Role ontology</a>')
         html = html.replace('<p>In Lavish, turn Annotate off to use the diagram.</p>', '')
-        html = html.replace('<a class="brand" href="#">TDN</a>', '<a class="brand" href="https://github.com/HongyuHe/TDN/tree/' + REVISION + '">TDN</a>')
+        html = html.replace('<a class="brand" href="#">', '<a class="brand" href="https://github.com/HongyuHe/TDN/tree/' + REVISION + '">')
         assets = list((ROOT / 'scripts/publication/hierarchy').glob('*')) + [ROOT / 'scripts/publication/build_hierarchy.py']
     else:
         data['project_root'] = ''
@@ -64,7 +64,7 @@ def render(page):
             record['source_line'] = next(i for i, line in enumerate(lines, 1) if line.startswith('## ' + key + ' '))
         hashes.update(source_files([ROOT / interpretation_path]))
         assets = [ROOT / 'scripts/preprocess/preprocess_csfc_ontology.py', ROOT / 'scripts/preprocess/templates/csfc_role_ontology.html']
-        assets += [ROOT / 'data/extraction/roles' / n for n in ['roles.json', 'ontology_decisions.json', 'ontology_theory.json']]
+        assets += [ROOT / 'data/extraction/roles' / n for n in ['roles.json', 'ontology_decisions.json', 'ontology_theory.json', 'ontology_obligations.json']]
         html = html.replace('</header>', '<a href="/tdn/hierarchy/" style="display:inline-block;margin-top:8px">Theory hierarchy</a></header>', 1)
     hashes.update(source_files(assets + [Path(__file__)]))
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
@@ -112,6 +112,7 @@ def validate():
         else:
             refs = list(data['theory']['references'].values())
             refs += [{'path': v['source_path'], 'line': v['source_line']} for v in data['theory']['interpretations'].values()]
+            refs += [ref for obligation in data['obligations']['catalog'].values() for ref in obligation['references']]
         for ref in refs:
             p = ROOT / ref['path']
             if not p.is_file() or not 1 <= ref['line'] <= len(p.read_text().splitlines()):

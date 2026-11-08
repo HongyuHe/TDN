@@ -186,7 +186,7 @@ def CPContext.DirectMeaning {S A : Type} (context : CPContext S A) (subject : Du
       context.wireSizes.NoFurtherFragmentation context.model context.sizing ∧ PacketSizingInventory d model context.sizing ∧
       Primitive_msc_packet_size_configuration (context.sizing.filter
       (fun sizing => d.interfaces.any (fun interface =>
-        interface.id == model.native.portName sizing.interface &&
+        interface.id == model.native.ifaceName sizing.interface &&
           (d.focus.isNone || d.focus == some interface.device)))) context.fragmentation
   | 34 => Primitive_msc_outer_firewall_placement context.untrustedBlack context.publicInternet
       context.grayFirewallRequired context.edge context.grayConnection context.outer

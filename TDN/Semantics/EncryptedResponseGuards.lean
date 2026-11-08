@@ -3,9 +3,9 @@ import TDN.Semantics.GuardedResponseNetwork
 namespace TDN.EncryptedResponseGuards
 open Execution
 
-def LocallyEncrypted (c : Execution.Config) (state : Execution.State) : Prop :=
-  ∃ port, c.owner state.port = c.owner port ∧
-    ∃ association ∈ c.outbound port, ∃ sa previous,
+def LocallyEncrypted (c : Execution.Environment) (state : Execution.State) : Prop :=
+  ∃ iface, c.owner state.iface = c.owner iface ∧
+    ∃ association ∈ c.outbound iface, ∃ sa previous,
       state.frame = encrypt association sa previous
 
 def ExcludesWireSource (rule : PacketPolicy.Rule) (source : Nat) : Prop :=
@@ -32,7 +32,7 @@ lemma matching_destination_not_excluded {rule : PacketPolicy.Rule}
   simp only [PacketPolicy.Atom.holds] at holds
   omega
 
-def LocalDeny (c : Execution.Config) : Prop :=
+def LocalDeny (c : Execution.Environment) : Prop :=
   ∀ input output, c.owner input = c.owner output →
     ∀ association ∈ c.outbound input,
       c.outputFallback output = .deny ∧
@@ -40,10 +40,10 @@ def LocalDeny (c : Execution.Config) : Prop :=
         KernelResponses.SafeResponseRule rule ∨ ExcludesWireSource rule association.sender
 
 theorem encrypted_error_cannot_leave_component
-    (c : Execution.Config) (checked : LocalDeny c)
+    (c : Execution.Environment) (checked : LocalDeny c)
     (state : Execution.State) (reply : PacketPolicy.Packet) (output : Nat)
     (encrypted : LocallyEncrypted c state)
-    (sameOwner : c.owner output = c.owner state.port)
+    (sameOwner : c.owner output = c.owner state.iface)
     (returns : reply.destination = state.frame.packet.source)
     (protocol : KernelResponses.ResponseProtocol reply.protocol)
     (external : reply.egress ≠ "lo")
@@ -73,16 +73,16 @@ instance (devices : List DeviceData) : Decidable (FiniteDeny devices) := by
   unfold FiniteDeny
   infer_instance
 
-theorem finite_deny_sound (devices : List DeviceData) (ports : List PortData)
+theorem finite_deny_sound (devices : List DeviceData) (ifaces : List IfaceData)
     (routes : List Route) (links switches : List (Nat × Nat))
     (checked : FiniteDeny devices) :
-    LocalDeny (finiteConfig devices ports routes links switches) := by
+    LocalDeny (dataPlaneConfigFromRecords devices ifaces routes links switches) := by
   intro input output owner association member
-  change (portAt ports input).owner = (portAt ports output).owner at owner
-  have result := checked (deviceAt devices (portAt ports input).owner)
+  change (ifaceAt ifaces input).owner = (ifaceAt ifaces output).owner at owner
+  have result := checked (deviceAt devices (ifaceAt ifaces input).owner)
     (device_at_member_or_default devices _) association member
-  change (deviceAt devices (portAt ports output).owner).outputFallback = .deny ∧
-    ∀ rule ∈ (deviceAt devices (portAt ports output).owner).outputRules,
+  change (deviceAt devices (ifaceAt ifaces output).owner).outputFallback = .deny ∧
+    ∀ rule ∈ (deviceAt devices (ifaceAt ifaces output).owner).outputRules,
       rule.verdict = .allow → KernelResponses.SafeResponseRule rule ∨
         ExcludesWireSource rule association.sender
   rw [← owner]
@@ -95,9 +95,9 @@ def combinedConfig (data : GuardedResponseNetwork.Data) : KernelResponses.Config
         LocallyEncrypted data.config state }
 
 lemma combined_reply_preserves_safe (data : GuardedResponseNetwork.Data)
-    (conditions : LocalStackConditions data.config data.layout)
-    (pairs : SourceResponseGuards.FiniteReplyChecks data.devices data.ports data.sourceGuards)
-    (coverage : SourceResponseGuards.FiniteGuardCoverage data.ports data.sourceGuards)
+    (conditions : LocalStackConditions data.config data.expectedEncapStack)
+    (pairs : SourceResponseGuards.FiniteReplyChecks data.devices data.ifaces data.sourceGuards)
+    (coverage : SourceResponseGuards.FiniteGuardCoverage data.ifaces data.sourceGuards)
     (defaults : ∀ guard ∈ data.sourceGuards,
       (deviceAt data.devices guard.1).outputFallback = .deny)
     (encryptedChecks : LocalDeny data.config)
@@ -123,9 +123,9 @@ lemma combined_reply_preserves_safe (data : GuardedResponseNetwork.Data)
       returns protocol external accepted)
 
 theorem combined_executions_preserve_stack (data : GuardedResponseNetwork.Data)
-    (conditions : LocalStackConditions data.config data.layout)
-    (pairs : SourceResponseGuards.FiniteReplyChecks data.devices data.ports data.sourceGuards)
-    (coverage : SourceResponseGuards.FiniteGuardCoverage data.ports data.sourceGuards)
+    (conditions : LocalStackConditions data.config data.expectedEncapStack)
+    (pairs : SourceResponseGuards.FiniteReplyChecks data.devices data.ifaces data.sourceGuards)
+    (coverage : SourceResponseGuards.FiniteGuardCoverage data.ifaces data.sourceGuards)
     (defaults : ∀ guard ∈ data.sourceGuards,
       (deviceAt data.devices guard.1).outputFallback = .deny)
     (encryptedChecks : LocalDeny data.config)
@@ -133,7 +133,7 @@ theorem combined_executions_preserve_stack (data : GuardedResponseNetwork.Data)
     (run : (KernelResponses.lts (GuardedResponseNetwork.network data) (combinedConfig data)).MTr
       (.network before) actions (.network after))
     (initial : GuardedResponseNetwork.Safe data before) :
-    StackInvariant data.config data.layout after :=
+    StackInvariant data.config data.expectedEncapStack after :=
   (KernelResponses.copied_response_executions_remain_safe
     (GuardedResponseNetwork.network data) (combinedConfig data)
     (GuardedResponseNetwork.Safe data)
@@ -141,7 +141,7 @@ theorem combined_executions_preserve_stack (data : GuardedResponseNetwork.Data)
     (combined_reply_preserves_safe data conditions pairs coverage defaults encryptedChecks)
     run initial).1
 
-lemma encryption_step_is_local {c : Execution.Config} {before after : Execution.State}
+lemma encryption_step_is_local {c : Execution.Environment} {before after : Execution.State}
     (step : Execution.Step c before .encrypt after) : LocallyEncrypted c after := by
   cases step with
   | encrypt association sa selected installed bound =>

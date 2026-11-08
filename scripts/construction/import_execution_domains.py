@@ -53,24 +53,24 @@ def main():
     declarations += ["  | " + str(owner) + " => some " + str(domain) for owner, domain in sorted(owner_domains.items())] + ["  | _ => none", "", "def ownerTag : Nat → Nat"]
     declarations += ["  | " + str(owner) + " => " + str(tag) for owner, tag in sorted(owner_tags.items())] + ["  | _ => 0", "", "def fullLevel : Nat → SecurityLevel"]
     declarations += ["  | " + str(domain) + " => " + lean_level(value) for domain, value in full_levels.items()]
-    declarations += ['  | _ => ⟨"", {}, {}, {}⟩', "", f"def taggedDevices : List DeviceData := {base}.devices.zipIdx.map fun pair =>", "  { pair.1 with", "    outbound := pair.1.outbound.map (fun a => { a with tag := ownerTag pair.2 })", "    inbound := pair.1.inbound.map (fun a => { a with tag := ownerTag pair.2 })", "    recipientDomain := pair.1.recipientDomain.bind (fun _ => ownerDomain pair.2) }", "", "def stackFor (domain : Nat) (port : PortData) : List Nat :=", "  if port.stack = [] then [] else if port.stack = [1] then [domain + 10] else [2, domain + 10]", "def allowedRecord (domain : Nat) (port : PortData) : Bool :=", "  !port.stack.isEmpty || decide (ownerDomain port.owner = some domain)", "", f"def config : Execution.Config := finiteConfig taggedDevices {base}.ports {base}.routes {base}.links {base}.switches", f"def redSources : List Nat := {base}.redSources", "def domains : List Nat := " + lean_list([str(d) for d in domains]), "", "lemma peer_tag_checks : FinitePeerTagAgreement taggedDevices := by", f"  unfold FinitePeerTagAgreement taggedDevices {base}.devices ownerTag ownerDomain StateBindsPolicy SameWireAssociation; decide", "lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=", f"  finite_peer_tag_agreement_sound taggedDevices {base}.ports {base}.routes {base}.links {base}.switches peer_tag_checks", ""]
+    declarations += ['  | _ => ⟨"", {}, {}, {}⟩', "", f"def taggedDevices : List DeviceData := {base}.devices.zipIdx.map fun pair =>", "  { pair.1 with", "    outbound := pair.1.outbound.map (fun a => { a with tag := ownerTag pair.2 })", "    inbound := pair.1.inbound.map (fun a => { a with tag := ownerTag pair.2 })", "    recipientDomain := pair.1.recipientDomain.bind (fun _ => ownerDomain pair.2) }", "", "def stackFor (domain : Nat) (iface : IfaceData) : List Nat :=", "  if port.stack = [] then [] else if port.stack = [1] then [domain + 10] else [2, domain + 10]", "def allowedRecord (domain : Nat) (iface : IfaceData) : Bool :=", "  !port.stack.isEmpty || decide (ownerDomain port.owner = some domain)", "", f"def config : Execution.Environment := dataPlaneConfigFromRecords taggedDevices {base}.ifaces {base}.routes {base}.links {base}.switches", f"def redSources : List Nat := {base}.redSources", "def domains : List Nat := " + lean_list([str(d) for d in domains]), "", "lemma peer_tag_checks : FinitePeerTagAgreement taggedDevices := by", f"  unfold FinitePeerTagAgreement taggedDevices {base}.devices ownerTag ownerDomain StateBindsPolicy SameWireAssociation; decide", "lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=", f"  finite_peer_tag_agreement_sound taggedDevices {base}.ifaces {base}.routes {base}.links {base}.switches peer_tag_checks", ""]
     for domain in domains:
         n = str(domain)
-        port_name = "domainPorts" + n
+        port_name = "domainIfaces" + n
         layout_name = "domainLayout" + n
         allow_name = "domainAllowed" + n
-        expand = f"{port_name} withPortStacks stackFor allowedRecord taggedDevices ownerTag ownerDomain {base}.ports {base}.devices"
+        expand = f"{port_name} withEncapStackAnnotations stackFor allowedRecord taggedDevices ownerTag ownerDomain {base}.ifaces {base}.devices"
         declarations += [
-            f"def {port_name} : List PortData := withPortStacks {base}.ports (stackFor {n})",
-            f"def {layout_name} : Nat → List Nat := finiteLayout {port_name}",
-            f"def {allow_name} (p : Nat) : Prop := allowedRecord {n} (portAt {port_name} p) = true",
-            f"lemma config_same{n} : finiteConfig taggedDevices {port_name} {base}.routes {base}.links {base}.switches = config :=",
-            f"  finite_config_ignores_port_stack_annotations taggedDevices {base}.ports (stackFor {n}) {base}.routes {base}.links {base}.switches",
-            f"lemma route_owner_checks{n} : ∀ r ∈ {base}.routes, (portAt {port_name} r.egress).owner = (portAt {port_name} r.ingress).owner := by",
+            f"def {port_name} : List IfaceData := withEncapStackAnnotations {base}.ifaces (stackFor {n})",
+            f"def {layout_name} : Nat → List Nat := expectedEncapStackFromRecords {port_name}",
+            f"def {allow_name} (p : Nat) : Prop := allowedRecord {n} (ifaceAt {port_name} p) = true",
+            f"lemma config_same{n} : dataPlaneConfigFromRecords taggedDevices {port_name} {base}.routes {base}.links {base}.switches = config :=",
+            f"  data_plane_ignores_encap_stack_annotations taggedDevices {base}.ifaces (stackFor {n}) {base}.routes {base}.links {base}.switches",
+            f"lemma route_owner_checks{n} : ∀ r ∈ {base}.routes, (ifaceAt {port_name} r.egress).owner = (ifaceAt {port_name} r.ingress).owner := by",
             f"  unfold {base}.routes {expand}; decide",
-            f"lemma link_checks{n} : ∀ edge ∈ {base}.links, allowedRecord {n} (portAt {port_name} edge.1) = true → (portAt {port_name} edge.1).stack = (portAt {port_name} edge.2).stack ∧ allowedRecord {n} (portAt {port_name} edge.2) = true := by",
+            f"lemma link_checks{n} : ∀ edge ∈ {base}.links, allowedRecord {n} (ifaceAt {port_name} edge.1) = true → (ifaceAt {port_name} edge.1).stack = (ifaceAt {port_name} edge.2).stack ∧ allowedRecord {n} (ifaceAt {port_name} edge.2) = true := by",
             f"  unfold {base}.links {expand}; decide",
-            f"lemma switch_checks{n} : ∀ edge ∈ {base}.switches, allowedRecord {n} (portAt {port_name} edge.1) = true → ((portAt {port_name} edge.1).stack = (portAt {port_name} edge.2).stack ∧ (deviceAt taggedDevices (portAt {port_name} edge.1).owner).inbound = []) ∧ allowedRecord {n} (portAt {port_name} edge.2) = true := by",
+            f"lemma switch_checks{n} : ∀ edge ∈ {base}.switches, allowedRecord {n} (ifaceAt {port_name} edge.1) = true → ((ifaceAt {port_name} edge.1).stack = (ifaceAt {port_name} edge.2).stack ∧ (deviceAt taggedDevices (ifaceAt {port_name} edge.1).owner).inbound = []) ∧ allowedRecord {n} (ifaceAt {port_name} edge.2) = true := by",
             f"  unfold {base}.switches {expand}; decide",
             f"lemma forward_default_checks{n} : ∀ d ∈ ({{}} : DeviceData) :: taggedDevices, d.forwardFallback = .deny := by",
             f"  unfold {expand}; decide",
@@ -86,25 +86,25 @@ def main():
             f"  rw [config_same{n}] at checked",
             "  exact checked",
             f"lemma source_checks{n} : ∀ p ∈ redSources, config.recipientDomain p = some {n} → {layout_name} p = [] ∧ config.payloadOrigin p ∧ {allow_name} p := by",
-            f"  unfold redSources {base}.redSources config finiteConfig {layout_name} finiteLayout {allow_name} {expand}; decide",
-            f"lemma recipient_records{n} : ∀ p ∈ ({{}} : PortData) :: {port_name}, allowedRecord {n} p = true → (deviceAt taggedDevices p.owner).recipientDomain = none ∨ (deviceAt taggedDevices p.owner).recipientDomain = some {n} := by",
+            f"  unfold redSources {base}.redSources config dataPlaneConfigFromRecords {layout_name} expectedEncapStackFromRecords {allow_name} {expand}; decide",
+            f"lemma recipient_records{n} : ∀ p ∈ ({{}} : IfaceData) :: {port_name}, allowedRecord {n} p = true → (deviceAt taggedDevices p.owner).recipientDomain = none ∨ (deviceAt taggedDevices p.owner).recipientDomain = some {n} := by",
             f"  unfold {expand}; decide",
             f"lemma recipient_checks{n} : ∀ p, {allow_name} p → config.recipientDomain p = none ∨ config.recipientDomain p = some {n} := by",
             "  intro p permitted",
-            f"  have checked := recipient_records{n} (portAt {port_name} p) (port_at_member_or_default {port_name} p) permitted",
-            f"  change (finiteConfig taggedDevices {port_name} {base}.routes {base}.links {base}.switches).recipientDomain p = none ∨ (finiteConfig taggedDevices {port_name} {base}.routes {base}.links {base}.switches).recipientDomain p = some {n} at checked",
+            f"  have checked := recipient_records{n} (ifaceAt {port_name} p) (iface_at_member_or_default {port_name} p) permitted",
+            f"  change (dataPlaneConfigFromRecords taggedDevices {port_name} {base}.routes {base}.links {base}.switches).recipientDomain p = none ∨ (dataPlaneConfigFromRecords taggedDevices {port_name} {base}.routes {base}.links {base}.switches).recipientDomain p = some {n} at checked",
             f"  rw [config_same{n}] at checked",
             "  exact checked",
             ""
         ]
     declarations += [
         "lemma source_domains_checked : ∀ p ∈ redSources, config.recipientDomain p ∈ domains.map some := by",
-        f"  unfold redSources {base}.redSources config finiteConfig taggedDevices ownerTag ownerDomain domains {base}.devices {base}.ports; decide",
+        f"  unfold redSources {base}.redSources config dataPlaneConfigFromRecords taggedDevices ownerTag ownerDomain domains {base}.devices {base}.ifaces; decide",
         "theorem snapshot_RG008_IPv4_ESP_delivery : Targets.msc_same_domain_plaintext_delivery config redSources := by",
         "  intro start finish actions sourceDomain recipientDomain origin sourceLevel run delivered recipientLevel",
         "  have member : some sourceDomain ∈ domains.map some := by",
         "    rw [← sourceLevel]",
-        "    exact source_domains_checked start.port origin.1",
+        "    exact source_domains_checked start.iface origin.1",
         "  have domainMember : sourceDomain ∈ domains := by simpa using member",
         "  simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at domainMember",
         "  rcases domainMember with " + " | ".join("rfl" for _ in domains)
@@ -116,12 +116,12 @@ def main():
     declarations += [
         "",
         "theorem snapshot_RG008_full_label_delivery {start finish : Execution.State} {actions : List Execution.Action} {source recipient : Nat}",
-        "    (origin : Targets.RedPayloadOrigin config redSources start) (sourceLevel : config.recipientDomain start.port = some source)",
-        "    (run : (lts config).MTr start actions finish) (delivered : finish.phase = .delivered)",
-        "    (recipientLevel : config.recipientDomain finish.port = some recipient) : fullLevel source = fullLevel recipient :=",
+        "    (origin : Targets.RedPayloadOrigin config redSources start) (sourceLevel : config.recipientDomain start.iface = some source)",
+        "    (run : (lts config).MTr start actions finish) (delivered : finish.datapathStage = .delivered)",
+        "    (recipientLevel : config.recipientDomain finish.iface = some recipient) : fullLevel source = fullLevel recipient :=",
         "  congrArg fullLevel (snapshot_RG008_IPv4_ESP_delivery start finish actions source recipient origin sourceLevel run delivered recipientLevel)",
         "",
-        "def layout : Nat → List Nat := domainLayout" + str(domains[0]),
+        "def expectedEncapStack : Nat → List Nat := domainLayout" + str(domains[0]),
         "",
         "end TDN.Imported." + args.namespace,
         ""

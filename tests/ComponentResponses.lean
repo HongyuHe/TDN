@@ -36,9 +36,9 @@ example : (KernelResponses.lts (lts config) responses).MTr
   apply Cslib.LTS.MTr.stepL (KernelResponses.Step.route _ _ _ _ host_reply_route)
   exact Cslib.LTS.MTr.stepL host_reply_emit Cslib.LTS.MTr.refl
 
--- Both imported inventories include the transport, firewall, switch and host
+-- Both imported inventories include the transport, firewall, bridge and host
 -- owners in the checked cases. No source-domain constraint is assumed here.
-example (state : Execution.State) (active : state.phase ≠ .dropped) :
+example (state : Execution.State) (active : state.datapathStage ≠ .dropped) :
     responses.generates state := every_active_component_can_generate state active
 
 -- A Black-router error quote retains already encrypted byte provenance.

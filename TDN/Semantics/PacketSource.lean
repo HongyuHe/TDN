@@ -22,7 +22,7 @@ inductive Mode where
   deriving DecidableEq
 
 structure Request where
-  port : Nat
+  iface : Nat
   originDomain : Nat
   body : LayeredFrame.Body
   application : List UInt8
@@ -33,6 +33,18 @@ structure Request where
 
 def Request.Overhead (request : Request) : Nat :=
   request.networkHeaderBytes + request.transportHeaderBytes
+
+def HeaderRepresentable (packet : PacketPolicy.Packet) : Prop :=
+  packet.hopLimit ≤ 255 ∧
+  (2^32 ≤ packet.source → protocolNumber packet.protocol = some packet.ipv6NextHeader) ∧
+  (packet.protocol ∈ ["icmp", "icmpv6"] →
+    packet.sourcePort = 0 ∧ packet.destinationPort = 0 ∧
+    packet.icmpType ≤ 255 ∧ packet.icmpCode ≤ 255)
+
+def Request.HeadersRepresentable (request : Request) : Prop :=
+  match request.body with
+  | .datagram packet => HeaderRepresentable packet
+  | _ => True
 
 def Request.TemplateValid (request : Request) : Prop :=
   match request.body with
@@ -48,7 +60,7 @@ def Request.TemplateValid (request : Request) : Prop :=
         request.transportHeaderBytes ≤ 60 ∧ request.transportHeaderBytes % 4 = 0) ∨
        (header.protocol ∈ ["icmp", "icmpv6"] ∧ request.transportHeaderBytes = 8)) ∧
       header.sourcePort < 65536 ∧ header.destinationPort < 65536 ∧
-      (request.mode = .stream → header.protocol = "tcp")
+      (request.mode = .stream → header.protocol = "tcp") ∧ HeaderRepresentable header
   | .ethernet header =>
       header.source < 2^48 ∧ header.destination < 2^48 ∧ header.etherType < 65536 ∧
       (∀ tag ∈ header.vlanTags, tag < 65536) ∧

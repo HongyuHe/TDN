@@ -102,8 +102,14 @@ class EvidenceService:
                 "scope": adapter.SCOPE}}
         if network in self.settings.saved_snapshots:
             from .projections import PROJECTIONS
-            return {"saved": {"capabilities": ["devices", "interfaces", "links", "routes", "filters", "tunnels", "credentials", "probes"],
-                "lean_views": ["inventory", "packet_filters", "topology", "multi_protocol_execution", *sorted(PROJECTIONS)],
+            capabilities = ["devices", "interfaces", "links", "routes", "filters", "tunnels", "credentials", "probes", "bridge_processing"]
+            if network in self.settings.saved_execution_supplements:
+                from .processing import validated_processing
+                document, _ = validated_processing(self.resolve(self.settings.saved_snapshots[network]),
+                    self.resolve(self.settings.saved_execution_supplements[network]))
+                capabilities += ["processing", *sorted({"processing." + row["kind"] for row in document["records"]})]
+            return {"saved": {"capabilities": capabilities,
+                "lean_views": ["inventory", "packet_filters", "topology", "multi_protocol_execution", "bridge_processing", *sorted(PROJECTIONS)],
                 "execution_supplement_configured": network in self.settings.saved_execution_supplements,
                 "execution_scope": "Retained native IPv4 IPsec/OVS observations; other mechanisms require a matching parser",
                 "execution_epoch_union": network in self.settings.execution_epoch_union}}
@@ -252,6 +258,17 @@ class EvidenceService:
             adapter, directory = self.experiment(collection)
             return adapter.query_experiment(directory, collection, capability, device, offset, limit)
         if collection in self.settings.saved_snapshots:
+            if capability == "bridge_processing":
+                from .bridge_processing import query_bridge_processing
+                return query_bridge_processing(self.resolve(self.settings.saved_snapshots[collection]),
+                    collection, device, offset, limit)
+            if capability == "processing" or (capability is not None and capability.startswith("processing.")):
+                from .processing import query_processing
+                supplement = self.settings.saved_execution_supplements.get(collection)
+                if supplement is None:
+                    raise ValueError("No processing supplement is configured for this snapshot")
+                return query_processing(self.resolve(self.settings.saved_snapshots[collection]), self.resolve(supplement),
+                    collection, capability, device, offset, limit)
             from .saved import query_snapshot
             return query_snapshot(self.resolve(self.settings.saved_snapshots[collection]), capability, device, offset, limit)
         manifest = self.read_manifest(collection)
@@ -274,6 +291,13 @@ class EvidenceService:
             adapter, directory = self.experiment(collection)
             return adapter.read_experiment_raw(directory, observation)
         if collection in self.settings.saved_snapshots:
+            if observation.startswith("supplement:"):
+                from .processing import read_processing
+                supplement = self.settings.saved_execution_supplements.get(collection)
+                if supplement is None:
+                    raise ValueError("No processing supplement is configured for this snapshot")
+                return read_processing(self.resolve(self.settings.saved_snapshots[collection]), self.resolve(supplement),
+                    observation.removeprefix("supplement:"))
             from .saved import validated_snapshot
             directory = self.resolve(self.settings.saved_snapshots[collection])
             _, snapshot, _ = validated_snapshot(directory)

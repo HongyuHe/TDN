@@ -50,45 +50,45 @@ namespace TDN.Targets.CanonicalExecution
 open Compliance
 
 theorem source_record_preserved {S A : Type} (prototype : NativeExecutionBinding S A)
-    (ports : List Nat) (d : Deployment) (history : ObservedHistory)
-    {before after : State ports} {actions : List (Action ports)}
-    (run : (model prototype ports d history).system.MTr before actions after) :
+    (ifaces : List Nat) (d : Deployment) (history : ObservedHistory)
+    {before after : State ifaces} {actions : List (Action ifaces)}
+    (run : (model prototype ifaces d history).system.MTr before actions after) :
     after.source = before.source := by
-  have stepProjection : (model prototype ports d history).system.TrInv
+  have stepProjection : (model prototype ifaces d history).system.TrInv
       (fun state => state.source = before.source) := by
     intro first action last step same
     exact step.2.2.1.symm.trans same
   exact Cslib.LTS.mtrInv_of_trInv stepProjection before actions after run rfl
 
 theorem native_execution {S A : Type} (prototype : NativeExecutionBinding S A)
-    (ports : List Nat) (d : Deployment) (history : ObservedHistory)
-    {before after : State ports} {actions : List (Action ports)}
-    (run : (model prototype ports d history).system.MTr before actions after) :
+    (ifaces : List Nat) (d : Deployment) (history : ObservedHistory)
+    {before after : State ifaces} {actions : List (Action ifaces)}
+    (run : (model prototype ifaces d history).system.MTr before actions after) :
     (MultiProtocolExecution.lts prototype.configuration).MTr
       before.native (actions.map Action.operation) after.native := by
-  have projected := (model prototype ports d history).project_native_trace
-    (canonical_model_faithful prototype ports d history) run
+  have projected := (model prototype ifaces d history).project_native_trace
+    (canonical_model_faithful prototype ifaces d history) run
   change (MultiProtocolExecution.lts prototype.configuration).MTr
     before.native (actions.filterMap (fun action => some action.operation)) after.native at projected
-  have same : actions.filterMap (fun action : Action ports => some action.operation) =
+  have same : actions.filterMap (fun action : Action ifaces => some action.operation) =
       actions.map Action.operation :=
     List.filterMap_eq_map_iff_forall_eq_some.mpr (by intro action member; rfl)
   rw [same] at projected
   exact projected
 
 theorem source_identity_preserved {S A : Type} (prototype : NativeExecutionBinding S A)
-    (ports : List Nat) (d : Deployment) (history : ObservedHistory)
-    {before after : State ports} {actions : List (Action ports)}
-    (run : (model prototype ports d history).system.MTr before actions after) :
+    (ifaces : List Nat) (d : Deployment) (history : ObservedHistory)
+    {before after : State ifaces} {actions : List (Action ifaces)}
+    (run : (model prototype ifaces d history).system.MTr before actions after) :
     after.native.frame.payload = before.native.frame.payload ∧
     after.native.frame.originDomain = before.native.frame.originDomain ∧
     after.native.frame.body.originalHeader = before.native.frame.body.originalHeader ∧
     after.native.frame.body.originalEthernet = before.native.frame.body.originalEthernet ∧
     after.source = before.source := by
-  have payload := (model prototype ports d history).preserves_payload_identity
-    (canonical_model_faithful prototype ports d history) run
-  have headers := (model prototype ports d history).preserves_source_headers
-    (canonical_model_faithful prototype ports d history) run
-  exact ⟨payload.1, payload.2, headers.1, headers.2, source_record_preserved prototype ports d history run⟩
+  have payload := (model prototype ifaces d history).preserves_payload_identity
+    (canonical_model_faithful prototype ifaces d history) run
+  have headers := (model prototype ifaces d history).preserves_source_headers
+    (canonical_model_faithful prototype ifaces d history) run
+  exact ⟨payload.1, payload.2, headers.1, headers.2, source_record_preserved prototype ifaces d history run⟩
 
 end TDN.Targets.CanonicalExecution

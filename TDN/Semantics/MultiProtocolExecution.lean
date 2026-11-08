@@ -4,18 +4,18 @@ import TDN.Semantics.LinkAdmission
 namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
-structure MACPort where
-  logicalPort : Nat
-  physicalPort : Nat
+structure MACIface where
+  logicalIface : Nat
+  physicalIface : Nat
   settings : LinkProtection.Config
   transmitAssociation : Option MACsecAssociation
   receiveAssociations : List MACsecAssociation
   validateStrict : Bool
   deriving DecidableEq
 
-structure CarrierPort where
-  virtualPort : Nat
-  routingPort : Nat
+structure CarrierIface where
+  virtualIface : Nat
+  routingIface : Nat
   transmit : Carrier
   localSession : Nat
   deriving DecidableEq
@@ -25,13 +25,13 @@ structure HeaderProcessing where
   carrierHopLimit : Nat → Nat
 
 structure Config where
-  ip : Execution.Config
-  macPorts : List MACPort
-  carriers : List CarrierPort
+  ip : Execution.Environment
+  macIfaces : List MACIface
+  carriers : List CarrierIface
   bridge : Nat → Nat → Prop
   physicalLink : Nat → Nat → Prop
   headerProcessing : Option HeaderProcessing := none
-  linkPolicies : List (Nat × LinkAdmission.PortPolicy) := []
+  linkPolicies : List (Nat × LinkAdmission.IfacePolicy) := []
   linkEncoding : Nat → LayeredFrame.Frame → Option LinkAdmission.Frame := fun _ _ => none
   networkBytes : Body → Nat → Option Nat := fun body _ =>
     body.visibleHeader.bind PacketPolicy.Packet.networkBytes
@@ -41,14 +41,14 @@ def Config.forwardedFrame (configuration : Config) (frame : Frame) : Frame :=
   | none => frame
   | some _ => frame.forwarded
 
-def Config.ipsecFrame (configuration : Config) (port : Nat) (frame : Frame)
+def Config.ipsecFrame (configuration : Config) (iface : Nat) (frame : Frame)
     (association : Execution.Seal) : Frame :=
   match configuration.headerProcessing with
   | none => { frame with body := .ipsec association frame.body }
   | some processing =>
       frame.pushHeader (.ipsec association frame.body)
         (some { outerHeader association.sender association.receiver "esp" 0 0 with
-          hopLimit := processing.ipsecHopLimit port })
+          hopLimit := processing.ipsecHopLimit iface })
 
 def Config.macsecFrame (configuration : Config) (frame : Frame)
     (association : MACsecAssociation) : Frame :=
@@ -56,14 +56,14 @@ def Config.macsecFrame (configuration : Config) (frame : Frame)
   | none => { frame with body := .macsec association frame.body }
   | some _ => frame.pushHeader (.macsec association frame.body) none
 
-def Config.carrierFrame (configuration : Config) (port : Nat) (frame : Frame)
+def Config.carrierFrame (configuration : Config) (iface : Nat) (frame : Frame)
     (carrier : Carrier) : Frame :=
   match configuration.headerProcessing with
   | none => { frame with body := .carrier carrier frame.body }
   | some processing =>
       frame.pushHeader (.carrier carrier frame.body)
         (some { outerHeader carrier.source carrier.destination carrier.networkProtocol
-          carrier.sourcePort carrier.destinationPort with hopLimit := processing.carrierHopLimit port })
+          carrier.sourcePort carrier.destinationPort with hopLimit := processing.carrierHopLimit iface })
 
 def Config.restoredFrame (configuration : Config) (frame : Frame) (body : Body) : Frame :=
   match configuration.headerProcessing with
@@ -77,132 +77,132 @@ def Config.visibleHeader (configuration : Config) (frame : Frame) : Option Packe
 
 structure State where
   initialEntry : Bool := false
-  port : Nat
-  phase : Execution.Phase
+  iface : Nat
+  datapathStage : Execution.DatapathStage
   frame : Frame
-  enteredPort : Nat
+  enteredIface : Nat
   authenticated : List Nat
   tracking : String
 
 inductive Action where
   | receive | route | forwardFilter | inputFilter | outputFilter
   | encryptIPsec | decryptIPsec | encryptMACsec | decryptMACsec
-  | encapsulate | decapsulate | wire | bridge | plain | deliver | drop
+  | encapsulate | decapsulate | linkTransmit | bridge | passWithoutTransform | deliver | drop
   deriving DecidableEq, Repr
 
 def policyHeader (c : Config) (state : State) (header : PacketPolicy.Packet) : PacketPolicy.Packet :=
-  { header with ingress := c.ip.interfaceName state.enteredPort, egress := c.ip.interfaceName state.port, inboundPolicies := state.authenticated, outboundPolicies := (Execution.selectedAssociations (c.ip.outbound state.port) header).map Execution.Association.id, connectionState := state.tracking, networkBytes := c.networkBytes state.frame.body state.frame.payload }
+  { header with ingress := c.ip.interfaceName state.enteredIface, egress := c.ip.interfaceName state.iface, inboundPolicies := state.authenticated, outboundPolicies := (Execution.selectedAssociations (c.ip.outbound state.iface) header).map Execution.Association.id, connectionState := state.tracking, networkBytes := c.networkBytes state.frame.body state.frame.payload }
 
-def fullMACsecTransmit (port : MACPort) (association : MACsecAssociation) (body : Body) : Prop :=
-  port.transmitAssociation = some association ∧
-  LinkProtection.transmit port.settings (some association.keyGeneration) body =
+def fullMACsecTransmit (iface : MACIface) (association : MACsecAssociation) (body : Body) : Prop :=
+  iface.transmitAssociation = some association ∧
+  LinkProtection.transmit iface.settings (some association.keyGeneration) body =
     some (.encrypted association.keyGeneration 0 body)
 
 inductive Step (c : Config) : State → Action → State → Prop
   | receive {s : State} {header : PacketPolicy.Packet}
-      (phase : s.phase = .received) (visible : c.visibleHeader s.frame = some header)
+      (datapathStage : s.datapathStage = .received) (visible : c.visibleHeader s.frame = some header)
       (tracking : String) :
-      Step c s .receive { s with initialEntry := false, phase := .ingress, enteredPort := s.port, authenticated := [], tracking := tracking }
+      Step c s .receive { s with initialEntry := false, datapathStage := .ingress, enteredIface := s.iface, authenticated := [], tracking := tracking }
   | route {s : State} {header : PacketPolicy.Packet} (route : Execution.Route)
-      (phase : s.phase = .ingress) (visible : c.visibleHeader s.frame = some header)
-      (chosen : Execution.SelectedRoute c.ip.routes route header) (entry : route.ingress = s.port) :
-      Step c s .route { s with initialEntry := false, port := route.egress, phase := .routed, frame := c.forwardedFrame s.frame }
-  | outputRoute {s : State} {header : PacketPolicy.Packet} (route : Execution.Route)
-      (phase : s.phase = .localOutput) (visible : c.visibleHeader s.frame = some header)
-      (chosen : Execution.SelectedRoute c.ip.routes route header) (entry : route.ingress = s.port) :
-      Step c s .route { s with initialEntry := false, port := route.egress, phase := .outputRouted }
+      (datapathStage : s.datapathStage = .ingress) (visible : c.visibleHeader s.frame = some header)
+      (chosen : Execution.SelectedRoute c.ip.routes route header) (entry : route.ingress = s.iface) :
+      Step c s .route { s with initialEntry := false, iface := route.egress, datapathStage := .routed, frame := c.forwardedFrame s.frame }
+  | routeLocalOutput {s : State} {header : PacketPolicy.Packet} (route : Execution.Route)
+      (datapathStage : s.datapathStage = .localOutput) (visible : c.visibleHeader s.frame = some header)
+      (chosen : Execution.SelectedRoute c.ip.routes route header) (entry : route.ingress = s.iface) :
+      Step c s .route { s with initialEntry := false, iface := route.egress, datapathStage := .outputRouted }
   | forwardFilter {s : State} {header : PacketPolicy.Packet}
-      (phase : s.phase = .routed) (visible : c.visibleHeader s.frame = some header)
-      (accepted : Execution.accepts (c.ip.forwardRules s.port) (c.ip.forwardFallback s.port)
+      (datapathStage : s.datapathStage = .routed) (visible : c.visibleHeader s.frame = some header)
+      (accepted : Execution.accepts (c.ip.forwardRules s.iface) (c.ip.forwardFallback s.iface)
         (policyHeader c s header)) :
-      Step c s .forwardFilter { s with initialEntry := false, phase := .filtered }
+      Step c s .forwardFilter { s with initialEntry := false, datapathStage := .filtered }
   | outputFilter {s : State} {header : PacketPolicy.Packet}
-      (phase : s.phase = .outputRouted) (visible : c.visibleHeader s.frame = some header)
-      (accepted : Execution.accepts (c.ip.outputRules s.port) (c.ip.outputFallback s.port)
+      (datapathStage : s.datapathStage = .outputRouted) (visible : c.visibleHeader s.frame = some header)
+      (accepted : Execution.accepts (c.ip.outputRules s.iface) (c.ip.outputFallback s.iface)
         (policyHeader c s header)) :
-      Step c s .outputFilter { s with initialEntry := false, phase := .filtered }
+      Step c s .outputFilter { s with initialEntry := false, datapathStage := .filtered }
   | encryptIPsec {s : State} {header : PacketPolicy.Packet}
       (policy : Execution.Association) (association : Execution.SecurityAssociation)
-      (phase : s.phase = .filtered) (visible : c.visibleHeader s.frame = some header)
-      (selected : policy ∈ Execution.selectedAssociations (c.ip.outbound s.port) header)
-      (installed : association ∈ c.ip.outboundStates s.port)
+      (datapathStage : s.datapathStage = .filtered) (visible : c.visibleHeader s.frame = some header)
+      (selected : policy ∈ Execution.selectedAssociations (c.ip.outbound s.iface) header)
+      (installed : association ∈ c.ip.outboundStates s.iface)
       (bound : Execution.StateBindsPolicy association policy) :
-      Step c s .encryptIPsec { s with initialEntry := false, phase := .encapsulated, frame := c.ipsecFrame s.port s.frame (policy.seal association) }
-  | outerRoute {s : State} {header : PacketPolicy.Packet} (route : Execution.Route)
-      (phase : s.phase = .encapsulated) (visible : c.visibleHeader s.frame = some header)
-      (chosen : Execution.SelectedRoute c.ip.routes route header) (entry : route.ingress = s.port) :
-      Step c s .route { s with initialEntry := false, port := route.egress, phase := .ready }
-  | plain {s : State} {header : PacketPolicy.Packet}
-      (phase : s.phase = .filtered) (visible : c.visibleHeader s.frame = some header)
-      (noPolicy : Execution.selectedAssociations (c.ip.outbound s.port) header = []) :
-      Step c s .plain { s with initialEntry := false, phase := .ready }
+      Step c s .encryptIPsec { s with initialEntry := false, datapathStage := .encapsulated, frame := c.ipsecFrame s.iface s.frame (policy.seal association) }
+  | routeOuterPacket {s : State} {header : PacketPolicy.Packet} (route : Execution.Route)
+      (datapathStage : s.datapathStage = .encapsulated) (visible : c.visibleHeader s.frame = some header)
+      (chosen : Execution.SelectedRoute c.ip.routes route header) (entry : route.ingress = s.iface) :
+      Step c s .route { s with initialEntry := false, iface := route.egress, datapathStage := .ready }
+  | passWithoutTransform {s : State} {header : PacketPolicy.Packet}
+      (datapathStage : s.datapathStage = .filtered) (visible : c.visibleHeader s.frame = some header)
+      (noPolicy : Execution.selectedAssociations (c.ip.outbound s.iface) header = []) :
+      Step c s .passWithoutTransform { s with initialEntry := false, datapathStage := .ready }
   | decryptIPsec {s : State} (policy : Execution.Association)
       (association : Execution.SecurityAssociation) (body : Body) (header : PacketPolicy.Packet)
-      (phase : s.phase = .received)
+      (datapathStage : s.datapathStage = .received)
       (encrypted : s.frame.body = .ipsec (policy.seal association) body)
-      (configured : policy ∈ c.ip.inbound s.port)
-      (installed : association ∈ c.ip.inboundStates s.port)
+      (configured : policy ∈ c.ip.inbound s.iface)
+      (installed : association ∈ c.ip.inboundStates s.iface)
       (bound : Execution.StateBindsPolicy association policy)
       (visible : body.visibleHeader = some header)
       (selected : policy.matches header = true) (tracking : String) :
-      Step c s .decryptIPsec { s with initialEntry := false, phase := .ingress, enteredPort := s.port, frame := c.restoredFrame s.frame body, authenticated := [policy.id], tracking := tracking }
+      Step c s .decryptIPsec { s with initialEntry := false, datapathStage := .ingress, enteredIface := s.iface, frame := c.restoredFrame s.frame body, authenticated := [policy.id], tracking := tracking }
   | inputFilter {s : State} {header : PacketPolicy.Packet}
-      (phase : s.phase = .ingress) (visible : c.visibleHeader s.frame = some header)
-      (addressed : c.ip.localAddress s.port header.destination)
-      (accepted : Execution.accepts (c.ip.inputRules s.port) (c.ip.inputFallback s.port)
+      (datapathStage : s.datapathStage = .ingress) (visible : c.visibleHeader s.frame = some header)
+      (addressed : c.ip.localAddress s.iface header.destination)
+      (accepted : Execution.accepts (c.ip.inputRules s.iface) (c.ip.inputFallback s.iface)
         (policyHeader c s header)) :
-      Step c s .inputFilter { s with initialEntry := false, phase := .localInput }
+      Step c s .inputFilter { s with initialEntry := false, datapathStage := .localInput }
   | deliver {s : State} {header : PacketPolicy.Packet} (domain : Nat)
-      (phase : s.phase = .localInput) (plain : s.frame.body = .datagram header)
-      (recipient : c.ip.recipientDomain s.port = some domain) :
-      Step c s .deliver { s with initialEntry := false, phase := .delivered }
+      (datapathStage : s.datapathStage = .localInput) (plain : s.frame.body = .datagram header)
+      (recipient : c.ip.recipientDomain s.iface = some domain) :
+      Step c s .deliver { s with initialEntry := false, datapathStage := .delivered }
   | deliverEthernet {s : State} (header : EthernetHeader) (domain : Nat)
-      (phase : s.phase = .received) (plain : s.frame.body = .ethernet header)
-      (recipient : c.ip.recipientDomain s.port = some domain) :
-      Step c s .deliver { s with initialEntry := false, phase := .delivered }
-  | wire {s : State} (next : Nat) (phase : s.phase = .ready)
-      (linked : c.physicalLink s.port next) :
-      Step c s .wire { s with initialEntry := false, port := next, phase := .received, authenticated := [] }
-  | bridge {s : State} (next : Nat) (phase : s.phase = .received)
-      (member : c.bridge s.port next) :
-      Step c s .bridge { s with initialEntry := false, port := next, phase := .ready }
-  | bridgeOutput {s : State} (next : Nat) (phase : s.phase = .ready)
-      (member : c.bridge s.port next) :
-      Step c s .bridge { s with initialEntry := false, port := next, phase := .ready }
-  | encryptMACsec {s : State} (port : MACPort) (association : MACsecAssociation)
-      (configured : port ∈ c.macPorts) (phase : s.phase = .ready)
-      (logical : s.port = port.logicalPort)
-      (emits : fullMACsecTransmit port association s.frame.body) :
-      Step c s .encryptMACsec { s with initialEntry := false, port := port.physicalPort, frame := c.macsecFrame s.frame association }
-  | unprotectedMACsec {s : State} (port : MACPort)
-      (configured : port ∈ c.macPorts) (phase : s.phase = .ready)
-      (logical : s.port = port.logicalPort)
-      (enabled : port.settings.controlledPortEnabled = true)
-      (unprotected : port.settings.protectFrames = false ∨
-        port.settings.encryptFrames = false ∨ port.settings.confidentialityOffset ≠ 0) :
-      Step c s .plain { s with initialEntry := false, port := port.physicalPort }
-  | decryptMACsec {s : State} (port : MACPort) (association transmitted : MACsecAssociation) (body : Body)
-      (configured : port ∈ c.macPorts) (phase : s.phase = .received)
-      (physical : s.port = port.physicalPort)
+      (datapathStage : s.datapathStage = .received) (plain : s.frame.body = .ethernet header)
+      (recipient : c.ip.recipientDomain s.iface = some domain) :
+      Step c s .deliver { s with initialEntry := false, datapathStage := .delivered }
+  | linkTransmit {s : State} (next : Nat) (datapathStage : s.datapathStage = .ready)
+      (linked : c.physicalLink s.iface next) :
+      Step c s .linkTransmit { s with initialEntry := false, iface := next, datapathStage := .received, authenticated := [] }
+  | bridge {s : State} (next : Nat) (datapathStage : s.datapathStage = .received)
+      (member : c.bridge s.iface next) :
+      Step c s .bridge { s with initialEntry := false, iface := next, datapathStage := .ready }
+  | bridgeOutput {s : State} (next : Nat) (datapathStage : s.datapathStage = .ready)
+      (member : c.bridge s.iface next) :
+      Step c s .bridge { s with initialEntry := false, iface := next, datapathStage := .ready }
+  | encryptMACsec {s : State} (iface : MACIface) (association : MACsecAssociation)
+      (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .ready)
+      (logical : s.iface = iface.logicalIface)
+      (emits : fullMACsecTransmit iface association s.frame.body) :
+      Step c s .encryptMACsec { s with initialEntry := false, iface := iface.physicalIface, frame := c.macsecFrame s.frame association }
+  | unprotectedMACsec {s : State} (iface : MACIface)
+      (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .ready)
+      (logical : s.iface = iface.logicalIface)
+      (enabled : iface.settings.controlledPortEnabled = true)
+      (unprotected : iface.settings.protectFrames = false ∨
+        iface.settings.encryptFrames = false ∨ iface.settings.confidentialityOffset ≠ 0) :
+      Step c s .passWithoutTransform { s with initialEntry := false, iface := iface.physicalIface }
+  | decryptMACsec {s : State} (iface : MACIface) (association transmitted : MACsecAssociation) (body : Body)
+      (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .received)
+      (physical : s.iface = iface.physicalIface)
       (encrypted : s.frame.body = .macsec transmitted body)
-      (installed : association ∈ port.receiveAssociations)
+      (installed : association ∈ iface.receiveAssociations)
       (wireIdentity : SameMACWireIdentity transmitted association) :
-      Step c s .decryptMACsec { s with initialEntry := false, port := port.logicalPort, frame := c.restoredFrame s.frame body, authenticated := [] }
-  | uncheckedMACsec {s : State} (port : MACPort)
-      (configured : port ∈ c.macPorts) (phase : s.phase = .received)
-      (physical : s.port = port.physicalPort) (unchecked : port.validateStrict = false) :
-      Step c s .plain { s with initialEntry := false, port := port.logicalPort, authenticated := [] }
-  | encapsulate {s : State} (port : CarrierPort)
-      (configured : port ∈ c.carriers) (phase : s.phase = .ready)
-      (virtualPort : s.port = port.virtualPort) :
-      Step c s .encapsulate { s with initialEntry := false, port := port.routingPort, phase := .localOutput, enteredPort := port.routingPort, authenticated := [], frame := c.carrierFrame port.routingPort s.frame port.transmit }
-  | decapsulate {s : State} (port : CarrierPort) (body : Body)
-      (configured : port ∈ c.carriers) (phase : s.phase = .localInput)
-      (owner : c.ip.owner s.port = c.ip.owner port.routingPort)
-      (unwrapped : unwrapCarrier port.transmit.source port.transmit.destination
-        port.transmit.destinationPort port.transmit.sourcePort port.localSession s.frame.body port.transmit.protocol port.transmit.networkProtocol = some body) :
-      Step c s .decapsulate { s with initialEntry := false, port := port.virtualPort, phase := .received, frame := c.restoredFrame s.frame body, authenticated := [] }
-  | drop (s : State) : Step c s .drop { s with initialEntry := false, phase := .dropped }
+      Step c s .decryptMACsec { s with initialEntry := false, iface := iface.logicalIface, frame := c.restoredFrame s.frame body, authenticated := [] }
+  | uncheckedMACsec {s : State} (iface : MACIface)
+      (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .received)
+      (physical : s.iface = iface.physicalIface) (unchecked : iface.validateStrict = false) :
+      Step c s .passWithoutTransform { s with initialEntry := false, iface := iface.logicalIface, authenticated := [] }
+  | encapsulate {s : State} (iface : CarrierIface)
+      (configured : iface ∈ c.carriers) (datapathStage : s.datapathStage = .ready)
+      (virtualIface : s.iface = iface.virtualIface) :
+      Step c s .encapsulate { s with initialEntry := false, iface := iface.routingIface, datapathStage := .localOutput, enteredIface := iface.routingIface, authenticated := [], frame := c.carrierFrame iface.routingIface s.frame iface.transmit }
+  | decapsulate {s : State} (iface : CarrierIface) (body : Body)
+      (configured : iface ∈ c.carriers) (datapathStage : s.datapathStage = .localInput)
+      (owner : c.ip.owner s.iface = c.ip.owner iface.routingIface)
+      (unwrapped : unwrapCarrier iface.transmit.source iface.transmit.destination
+        iface.transmit.destinationPort iface.transmit.sourcePort iface.localSession s.frame.body iface.transmit.protocol iface.transmit.networkProtocol = some body) :
+      Step c s .decapsulate { s with initialEntry := false, iface := iface.virtualIface, datapathStage := .received, frame := c.restoredFrame s.frame body, authenticated := [] }
+  | drop (s : State) : Step c s .drop { s with initialEntry := false, datapathStage := .dropped }
 
 def lts (c : Config) : Cslib.LTS State Action := ⟨Step c⟩
 
@@ -232,30 +232,30 @@ end TDN.MultiProtocolExecution
 namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
-def Config.LinkPath (c : Config) (port : Nat) : Prop :=
-  (∃ mac ∈ c.macPorts, mac.physicalPort = port) ∨
-  (∃ next, c.bridge port next ∨ c.bridge next port) ∨
-  ∃ carrier ∈ c.carriers, carrier.virtualPort = port
+def Config.LinkPath (c : Config) (iface : Nat) : Prop :=
+  (∃ mac ∈ c.macIfaces, mac.physicalIface = iface) ∨
+  (∃ next, c.bridge iface next ∨ c.bridge next iface) ∨
+  ∃ carrier ∈ c.carriers, carrier.virtualIface = iface
 
-def Config.LinkAdmitted (c : Config) (port : Nat) (outbound : Bool)
+def Config.LinkAdmitted (c : Config) (iface : Nat) (outbound : Bool)
     (frame : LayeredFrame.Frame) : Prop :=
-  ∃ encoded, c.linkEncoding port frame = some encoded ∧ encoded.Describes frame ∧
-    LinkAdmission.Admitted c.linkPolicies port outbound
-      (encoded.Packet (if outbound then "" else c.ip.interfaceName port)
-        (if outbound then c.ip.interfaceName port else ""))
+  ∃ encoded, c.linkEncoding iface frame = some encoded ∧ encoded.Describes frame ∧
+    LinkAdmission.Admitted c.linkPolicies iface outbound
+      (encoded.Packet (if outbound then "" else c.ip.interfaceName iface)
+        (if outbound then c.ip.interfaceName iface else ""))
 
 def Config.LinkStepAdmitted (c : Config) (before : State) (action : Action) (after : State) : Prop :=
-  (action = .wire →
-    (c.LinkPath before.port → c.LinkAdmitted before.port true before.frame) ∧
-    (c.LinkPath after.port → c.LinkAdmitted after.port false after.frame) ∧
-    (c.LinkPath before.port ∨ c.LinkPath after.port →
-      c.linkEncoding before.port before.frame = c.linkEncoding after.port after.frame)) ∧
-  (action = .decryptMACsec → c.LinkAdmitted before.port false before.frame) ∧
+  (action = .linkTransmit →
+    (c.LinkPath before.iface → c.LinkAdmitted before.iface true before.frame) ∧
+    (c.LinkPath after.iface → c.LinkAdmitted after.iface false after.frame) ∧
+    (c.LinkPath before.iface ∨ c.LinkPath after.iface →
+      c.linkEncoding before.iface before.frame = c.linkEncoding after.iface after.frame)) ∧
+  (action = .decryptMACsec → c.LinkAdmitted before.iface false before.frame) ∧
   (action = .bridge →
-    c.LinkAdmitted before.port false before.frame ∧
-    c.LinkAdmitted after.port true after.frame) ∧
-  (action = .deliver → before.frame.visibleHeader = none → c.LinkPath before.port →
-    c.LinkAdmitted before.port false before.frame)
+    c.LinkAdmitted before.iface false before.frame ∧
+    c.LinkAdmitted after.iface true after.frame) ∧
+  (action = .deliver → before.frame.visibleHeader = none → c.LinkPath before.iface →
+    c.LinkAdmitted before.iface false before.frame)
 
 end TDN.MultiProtocolExecution
 
@@ -266,18 +266,18 @@ def Config.ForwardableHeader (c : Config) (header : PacketPolicy.Packet) : Prop 
   c.headerProcessing.isSome = true → 1 < header.hopLimit
 
 def Config.HeaderStepAdmitted (c : Config) (before : State) (action : Action) : Prop :=
-  action = .route → before.phase = .ingress →
+  action = .route → before.datapathStage = .ingress →
     ∀ header, c.visibleHeader before.frame = some header → c.ForwardableHeader header
 
-def Config.HeaderGenerationKnown (c : Config) (ports : List Nat) : Prop :=
+def Config.HeaderGenerationKnown (c : Config) (ifaces : List Nat) : Prop :=
   ∃ processing, c.headerProcessing = some processing ∧
-    ∀ port ∈ ports,
-      0 < processing.ipsecHopLimit port ∧ processing.ipsecHopLimit port ≤ 255 ∧
-      0 < processing.carrierHopLimit port ∧ processing.carrierHopLimit port ≤ 255
+    ∀ iface ∈ ifaces,
+      0 < processing.ipsecHopLimit iface ∧ processing.ipsecHopLimit iface ≤ 255 ∧
+      0 < processing.carrierHopLimit iface ∧ processing.carrierHopLimit iface ≤ 255
 
 def Config.LinkEncodingComplete (c : Config) (state : State) : Prop :=
-  c.LinkPath state.port →
-    ∃ encoded, c.linkEncoding state.port state.frame = some encoded ∧
+  c.LinkPath state.iface →
+    ∃ encoded, c.linkEncoding state.iface state.frame = some encoded ∧
       encoded.Describes state.frame
 
 end TDN.MultiProtocolExecution
@@ -289,9 +289,9 @@ open LayeredFrame
     (c.forwardedFrame frame).body = frame.body := by
   cases mode : c.headerProcessing <;> simp [Config.forwardedFrame, mode]
 
-@[simp] lemma Config.ipsecFrame_body (c : Config) (port : Nat) (frame : Frame)
+@[simp] lemma Config.ipsecFrame_body (c : Config) (iface : Nat) (frame : Frame)
     (association : Execution.Seal) :
-    (c.ipsecFrame port frame association).body = .ipsec association frame.body := by
+    (c.ipsecFrame iface frame association).body = .ipsec association frame.body := by
   unfold Config.ipsecFrame
   cases c.headerProcessing <;> rfl
 
@@ -301,9 +301,9 @@ open LayeredFrame
   unfold Config.macsecFrame
   cases c.headerProcessing <;> rfl
 
-@[simp] lemma Config.carrierFrame_body (c : Config) (port : Nat) (frame : Frame)
+@[simp] lemma Config.carrierFrame_body (c : Config) (iface : Nat) (frame : Frame)
     (endpoint : Carrier) :
-    (c.carrierFrame port frame endpoint).body = .carrier endpoint frame.body := by
+    (c.carrierFrame iface frame endpoint).body = .carrier endpoint frame.body := by
   unfold Config.carrierFrame
   cases c.headerProcessing <;> rfl
 

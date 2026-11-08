@@ -24,7 +24,7 @@ theorem noninternet_mediated_connection :
     subst o
     exact ⟨2, rfl, (Relation.ReflTransGen.single (show edge (0 : Node) 1 from Or.inl ⟨rfl,rfl⟩)).tail (Or.inr ⟨rfl,rfl⟩)⟩
   · intro _ o b ho hb
-    exact Paths.no_firewall_free_crossing edge firewall side
+    exact Waypointing.waypointing_of_edge_invariant edge firewall side
       (by unfold edge firewall side; decide)
       (by unfold outer at ho; subst o; unfold firewall; decide)
       (by unfold outer at ho; unfold black at hb; subst o; subst b; unfold side; decide)

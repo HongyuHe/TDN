@@ -29,9 +29,9 @@ lemma all_byte_domain_conditions : ∀ d ∈ domains,
   · exact local_domain_conditions3
   · exact local_domain_conditions4
 
-lemma all_byte_source_checks : ∀ d ∈ domains, ∀ port ∈ redSources,
-    config.recipientDomain port = some d →
-    byteLayout d port = [] ∧ config.payloadOrigin port ∧ byteAllowed d port := by
+lemma all_byte_source_checks : ∀ d ∈ domains, ∀ iface ∈ redSources,
+    config.recipientDomain iface = some d →
+    byteLayout d iface = [] ∧ config.payloadOrigin iface ∧ byteAllowed d iface := by
   intro d member
   simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at member
   rcases member with rfl | rfl | rfl | rfl
@@ -40,8 +40,8 @@ lemma all_byte_source_checks : ∀ d ∈ domains, ∀ port ∈ redSources,
   · exact source_checks3
   · exact source_checks4
 
-lemma all_byte_recipient_checks : ∀ d ∈ domains, ∀ port, byteAllowed d port →
-    config.recipientDomain port = none ∨ config.recipientDomain port = some d := by
+lemma all_byte_recipient_checks : ∀ d ∈ domains, ∀ iface, byteAllowed d iface →
+    config.recipientDomain iface = none ∨ config.recipientDomain iface = some d := by
   intro d member
   simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at member
   rcases member with rfl | rfl | rfl | rfl
@@ -50,10 +50,10 @@ lemma all_byte_recipient_checks : ∀ d ∈ domains, ∀ port, byteAllowed d por
   · exact recipient_checks3
   · exact recipient_checks4
 
-lemma all_byte_source_domains : ∀ port ∈ redSources, ∀ d,
-    config.recipientDomain port = some d → d ∈ domains := by
-  intro port member d assigned
-  have present := source_domains_checked port member
+lemma all_byte_source_domains : ∀ iface ∈ redSources, ∀ d,
+    config.recipientDomain iface = some d → d ∈ domains := by
+  intro iface member d assigned
+  have present := source_domains_checked iface member
   rw [assigned] at present
   simpa using present
 
@@ -63,29 +63,29 @@ theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
     (run : (ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
     (packet : ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
-    (present : packet ∈ after) (delivered : packet.state.phase = .delivered)
-    (recipientDomain : Nat) (recipient : config.recipientDomain packet.state.port = some recipientDomain) :
+    (present : packet ∈ after) (delivered : packet.state.datapathStage = .delivered)
+    (recipientDomain : Nat) (recipient : config.recipientDomain packet.state.iface = some recipientDomain) :
     ∀ byte ∈ packet.bytes, fullLevel byte.domain = fullLevel recipientDomain := by
   have checked := Targets.assembled_packet_delivery_preserves_each_byte_domain
     config redSources domains byteLayout byteAllowed all_byte_domain_conditions all_byte_source_domains
     all_byte_source_checks all_byte_recipient_checks run packet present delivered recipientDomain recipient
   exact fun byte member => congrArg fullLevel (checked byte member)
 
-lemma all_byte_black_checks : ∀ d ∈ domains, ∀ port ∈ TDN.Imported.FreshSharedExecution.blackPorts,
-    byteLayout d port = [2, d + 10] := by
+lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ TDN.Imported.FreshSharedExecution.blackIfaces,
+    byteLayout d iface = [2, d + 10] := by
   intro d member
   simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at member
   rcases member with rfl | rfl | rfl | rfl
-  · simp only [TDN.Imported.FreshSharedExecution.blackPorts, List.mem_cons, List.not_mem_nil,
+  · simp only [TDN.Imported.FreshSharedExecution.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
     all_goals decide
-  · simp only [TDN.Imported.FreshSharedExecution.blackPorts, List.mem_cons, List.not_mem_nil,
+  · simp only [TDN.Imported.FreshSharedExecution.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
     all_goals decide
-  · simp only [TDN.Imported.FreshSharedExecution.blackPorts, List.mem_cons, List.not_mem_nil,
+  · simp only [TDN.Imported.FreshSharedExecution.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
     all_goals decide
-  · simp only [TDN.Imported.FreshSharedExecution.blackPorts, List.mem_cons, List.not_mem_nil,
+  · simp only [TDN.Imported.FreshSharedExecution.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
     all_goals decide
 
@@ -95,11 +95,11 @@ theorem every_assembled_black_byte_has_both_layers {Byte : Type}
     (run : (ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
     (packet : ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
-    (present : packet ∈ after) (ready : packet.state.phase = .ready)
-    (black : packet.state.port ∈ TDN.Imported.FreshSharedExecution.blackPorts) :
+    (present : packet ∈ after) (ready : packet.state.datapathStage = .ready)
+    (black : packet.state.iface ∈ TDN.Imported.FreshSharedExecution.blackIfaces) :
     ∀ byte ∈ packet.bytes, packet.state.frame.tags = [2, byte.domain + 10] :=
   Targets.assembled_packet_at_black_keeps_each_byte_protected config redSources domains
-    TDN.Imported.FreshSharedExecution.blackPorts byteLayout byteAllowed (fun d => d + 10) 2
+    TDN.Imported.FreshSharedExecution.blackIfaces byteLayout byteAllowed (fun d => d + 10) 2
     all_byte_domain_conditions all_byte_source_domains all_byte_source_checks
     all_byte_black_checks run packet present ready black
 
@@ -126,27 +126,27 @@ lemma all_byte_domain_conditions : ∀ d ∈ domains,
   · exact local_domain_conditions1
   · exact local_domain_conditions2
 
-lemma all_byte_source_checks : ∀ d ∈ domains, ∀ port ∈ redSources,
-    config.recipientDomain port = some d →
-    byteLayout d port = [] ∧ config.payloadOrigin port ∧ byteAllowed d port := by
+lemma all_byte_source_checks : ∀ d ∈ domains, ∀ iface ∈ redSources,
+    config.recipientDomain iface = some d →
+    byteLayout d iface = [] ∧ config.payloadOrigin iface ∧ byteAllowed d iface := by
   intro d member
   simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at member
   rcases member with rfl | rfl
   · exact source_checks1
   · exact source_checks2
 
-lemma all_byte_recipient_checks : ∀ d ∈ domains, ∀ port, byteAllowed d port →
-    config.recipientDomain port = none ∨ config.recipientDomain port = some d := by
+lemma all_byte_recipient_checks : ∀ d ∈ domains, ∀ iface, byteAllowed d iface →
+    config.recipientDomain iface = none ∨ config.recipientDomain iface = some d := by
   intro d member
   simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at member
   rcases member with rfl | rfl
   · exact recipient_checks1
   · exact recipient_checks2
 
-lemma all_byte_source_domains : ∀ port ∈ redSources, ∀ d,
-    config.recipientDomain port = some d → d ∈ domains := by
-  intro port member d assigned
-  have present := source_domains_checked port member
+lemma all_byte_source_domains : ∀ iface ∈ redSources, ∀ d,
+    config.recipientDomain iface = some d → d ∈ domains := by
+  intro iface member d assigned
+  have present := source_domains_checked iface member
   rw [assigned] at present
   simpa using present
 
@@ -156,23 +156,23 @@ theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
     (run : (ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
     (packet : ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
-    (present : packet ∈ after) (delivered : packet.state.phase = .delivered)
-    (recipientDomain : Nat) (recipient : config.recipientDomain packet.state.port = some recipientDomain) :
+    (present : packet ∈ after) (delivered : packet.state.datapathStage = .delivered)
+    (recipientDomain : Nat) (recipient : config.recipientDomain packet.state.iface = some recipientDomain) :
     ∀ byte ∈ packet.bytes, fullLevel byte.domain = fullLevel recipientDomain := by
   have checked := Targets.assembled_packet_delivery_preserves_each_byte_domain
     config redSources domains byteLayout byteAllowed all_byte_domain_conditions all_byte_source_domains
     all_byte_source_checks all_byte_recipient_checks run packet present delivered recipientDomain recipient
   exact fun byte member => congrArg fullLevel (checked byte member)
 
-lemma all_byte_black_checks : ∀ d ∈ domains, ∀ port ∈ TDN.Imported.FreshBaselineExecution.blackPorts,
-    byteLayout d port = [2, d + 10] := by
+lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ TDN.Imported.FreshBaselineExecution.blackIfaces,
+    byteLayout d iface = [2, d + 10] := by
   intro d member
   simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at member
   rcases member with rfl | rfl
-  · simp only [TDN.Imported.FreshBaselineExecution.blackPorts, List.mem_cons, List.not_mem_nil,
+  · simp only [TDN.Imported.FreshBaselineExecution.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
     all_goals decide
-  · simp only [TDN.Imported.FreshBaselineExecution.blackPorts, List.mem_cons, List.not_mem_nil,
+  · simp only [TDN.Imported.FreshBaselineExecution.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
     all_goals decide
 
@@ -182,11 +182,11 @@ theorem every_assembled_black_byte_has_both_layers {Byte : Type}
     (run : (ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
     (packet : ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
-    (present : packet ∈ after) (ready : packet.state.phase = .ready)
-    (black : packet.state.port ∈ TDN.Imported.FreshBaselineExecution.blackPorts) :
+    (present : packet ∈ after) (ready : packet.state.datapathStage = .ready)
+    (black : packet.state.iface ∈ TDN.Imported.FreshBaselineExecution.blackIfaces) :
     ∀ byte ∈ packet.bytes, packet.state.frame.tags = [2, byte.domain + 10] :=
   Targets.assembled_packet_at_black_keeps_each_byte_protected config redSources domains
-    TDN.Imported.FreshBaselineExecution.blackPorts byteLayout byteAllowed (fun d => d + 10) 2
+    TDN.Imported.FreshBaselineExecution.blackIfaces byteLayout byteAllowed (fun d => d + 10) 2
     all_byte_domain_conditions all_byte_source_domains all_byte_source_checks
     all_byte_black_checks run packet present ready black
 

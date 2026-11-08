@@ -79,8 +79,8 @@ def execution_values(report):
                 "interface": row["logical"], "direction": direction,
                 "installedKeyIdentifier": row[direction + "_key_id"], "association": association,
                 "meaning": "Local installed association label; no claim that key identifiers prove equal secret keys"})
-        mac_ports.append({"logicalPort": port_ids[row["device"] + ":" + row["logical"]],
-            "physicalPort": port_ids[row["device"] + ":" + row["physical"]],
+        mac_ports.append({"logicalIface": port_ids[row["device"] + ":" + row["logical"]],
+            "physicalIface": port_ids[row["device"] + ":" + row["physical"]],
             "settings": {"controlledPortEnabled": True, "protectFrames": True,
                          "encryptFrames": True, "confidentialityOffset": 0},
             "transmitAssociation": associations["tx"], "receiveAssociations": [associations["rx"]],
@@ -108,8 +108,8 @@ def execution_values(report):
                    if key.startswith(row["device"] + ":") and
                    any(a[1] == row["source"] for a in interface["addresses"])]
         require(len(anchors) == 1, "Carrier source address lacks a unique interface")
-        carriers.append({"virtualPort": port_ids[row["device"] + ":" + row["interface"]],
-            "routingPort": port_ids[anchors[0]], "transmit": {"protocol": "l2tpv3", "networkProtocol": "udp",
+        carriers.append({"virtualIface": port_ids[row["device"] + ":" + row["interface"]],
+            "routingIface": port_ids[anchors[0]], "transmit": {"protocol": "l2tpv3", "networkProtocol": "udp",
                 "source": encode_address(row["source"]), "destination": encode_address(row["destination"]),
                 "sourcePort": row["source_port"], "destinationPort": row["destination_port"],
                 "peerSession": row["peer_session"]}, "localSession": row["local_session"]})
@@ -118,12 +118,12 @@ def execution_values(report):
     result = {"devices": devices, "ports": ports, "routes": routes,
         "links": [[port_ids[a], port_ids[b]] for a, b in data["links"]],
         "bridges": [[port_ids[a], port_ids[b]] for a, b in data["bridges"]],
-        "macPorts": mac_ports, "carriers": carriers, "redSources": source_ports,
-        "grayPorts": sorted({port_ids[e] for link in report["architecture_links"]
+        "macIfaces": mac_ports, "carriers": carriers, "redSources": source_ports,
+        "grayIfaces": sorted({port_ids[e] for link in report["architecture_links"]
                              if link["zone"] == "gray" for e in link["endpoints"]}),
-        "blackPorts": sorted({port_ids[e] for link in report["architecture_links"]
+        "blackIfaces": sorted({port_ids[e] for link in report["architecture_links"]
                               if link["zone"] == "black" for e in link["endpoints"]}),
-        "deviceIds": device_ids, "portIds": port_ids, "portBindings": port_bindings,
+        "deviceIds": device_ids, "portIds": port_ids, "ifaceBindings": port_bindings,
         "macsecKeyBindings": key_bindings, "operational": data,
         "addressEpochs": report["address_epochs"], "routeEpochs": report["route_epochs"],
         "scope": report["scope"], "projectionVersion": "mixed-execution-v1"}

@@ -11,7 +11,7 @@ lemma ip_peer_tag_checks : Execution.FinitePeerTagAgreement devices := by
   decide
 
 lemma ip_peer_wire_tag_agreement : Execution.PeerTagAgreement config.ip :=
-  Execution.finite_peer_tag_agreement_sound devices ports routes links [] ip_peer_tag_checks
+  Execution.finite_peer_tag_agreement_sound devices ifaces routes links [] ip_peer_tag_checks
 
 theorem reachable_IPsec_seals_have_actual_transmit_provenance
     {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
@@ -22,110 +22,110 @@ theorem reachable_IPsec_seals_have_actual_transmit_provenance
     simp [ProducedIPBodies, plain]
 
 lemma route_owner_checks : ∀ route ∈ routes,
-    (Execution.portAt ports route.egress).owner = (Execution.portAt ports route.ingress).owner := by
-  unfold routes ports; decide
+    (Execution.ifaceAt ifaces route.egress).owner = (Execution.ifaceAt ifaces route.ingress).owner := by
+  unfold routes ifaces; decide
 
 lemma link_stack_checks : ∀ edge ∈ links,
-    (Execution.portAt ports edge.1).stack = (Execution.portAt ports edge.2).stack := by
-  unfold links ports; decide
+    (Execution.ifaceAt ifaces edge.1).stack = (Execution.ifaceAt ifaces edge.2).stack := by
+  unfold links ifaces; decide
 
 lemma bridge_stack_checks : ∀ edge ∈ bridges,
-    (Execution.portAt ports edge.1).stack = (Execution.portAt ports edge.2).stack := by
-  unfold bridges ports; decide
+    (Execution.ifaceAt ifaces edge.1).stack = (Execution.ifaceAt ifaces edge.2).stack := by
+  unfold bridges ifaces; decide
 
-lemma forward_checks : Execution.FiniteRoutedForwardChecks devices ports routes := by
-  unfold Execution.FiniteRoutedForwardChecks devices ports routes; decide
+lemma forward_checks : Execution.FiniteRoutedForwardChecks devices ifaces routes := by
+  unfold Execution.FiniteRoutedForwardChecks devices ifaces routes; decide
 
-lemma output_checks : Execution.FiniteOutputChecks devices ports := by
-  unfold Execution.FiniteOutputChecks devices ports; decide
+lemma output_checks : Execution.FiniteOutputChecks devices ifaces := by
+  unfold Execution.FiniteOutputChecks devices ifaces; decide
 
-lemma outer_route_checks : Execution.FiniteOuterRoutes devices ports routes := by
-  unfold Execution.FiniteOuterRoutes devices ports routes; decide
+lemma outer_route_checks : Execution.FiniteOuterRoutes devices ifaces routes := by
+  unfold Execution.FiniteOuterRoutes devices ifaces routes; decide
 
-lemma ip_local_conditions : Execution.LocalStackConditions config.ip layout := by
-  exact Execution.local_stack_conditions_of_routed_finite_checks devices ports routes links []
+lemma ip_local_conditions : Execution.LocalStackConditions config.ip expectedEncapStack := by
+  exact Execution.local_stack_conditions_of_routed_finite_checks devices ifaces routes links []
     route_owner_checks link_stack_checks (by simp)
     (by unfold devices; decide) forward_checks output_checks outer_route_checks
 
-lemma mac_transmit_checks : ∀ port ∈ macPorts, MACTransmitCheck ports port := by
-  unfold macPorts ports; decide
+lemma mac_transmit_checks : ∀ iface ∈ macIfaces, MACTransmitCheck ifaces iface := by
+  unfold macIfaces ifaces; decide
 
-lemma mac_receive_checks : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,
-    association.tag :: (Execution.portAt ports port.logicalPort).stack =
-      (Execution.portAt ports port.physicalPort).stack := by
-  unfold macPorts ports; decide
+lemma mac_receive_checks : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
+    association.tag :: (Execution.ifaceAt ifaces iface.logicalIface).stack =
+      (Execution.ifaceAt ifaces iface.physicalIface).stack := by
+  unfold macIfaces ifaces; decide
 
-lemma mac_role_checks : ∀ sender ∈ macPorts, ∀ transmitted,
-    sender.transmitAssociation = some transmitted → ∀ receiver ∈ macPorts,
+lemma mac_role_checks : ∀ sender ∈ macIfaces, ∀ transmitted,
+    sender.transmitAssociation = some transmitted → ∀ receiver ∈ macIfaces,
     ∀ association ∈ receiver.receiveAssociations, SameMACWireIdentity transmitted association →
     transmitted.tag = association.tag := by
-  simp [macPorts, SameMACWireIdentity]
+  simp [macIfaces, SameMACWireIdentity]
 
-lemma mac_secure_checks : ∀ port ∈ macPorts,
-    port.settings.protectFrames = true ∧ port.settings.encryptFrames = true ∧
-    port.settings.confidentialityOffset = 0 ∧ port.validateStrict = true := by
-  unfold macPorts; decide
+lemma mac_secure_checks : ∀ iface ∈ macIfaces,
+    iface.settings.protectFrames = true ∧ iface.settings.encryptFrames = true ∧
+    iface.settings.confidentialityOffset = 0 ∧ iface.validateStrict = true := by
+  unfold macIfaces; decide
 
 lemma carrier_output_checks : ∀ carrier ∈ carriers,
-    (Execution.portAt ports carrier.virtualPort).stack =
-      (Execution.portAt ports carrier.routingPort).stack := by
-  unfold carriers ports; decide
+    (Execution.ifaceAt ifaces carrier.virtualIface).stack =
+      (Execution.ifaceAt ifaces carrier.routingIface).stack := by
+  unfold carriers ifaces; decide
 
-lemma carrier_route_checks : CarrierRouteChecks devices ports routes carriers := by
-  unfold CarrierRouteChecks devices ports routes carriers; decide
+lemma carrier_route_checks : CarrierRouteChecks devices ifaces routes carriers := by
+  unfold CarrierRouteChecks devices ifaces routes carriers; decide
 
 lemma carrier_peer_checks : ∀ sender ∈ carriers, ∀ receiver ∈ carriers,
     CarrierPeers sender receiver →
-      (Execution.portAt ports sender.virtualPort).stack =
-        (Execution.portAt ports receiver.virtualPort).stack := by
-  unfold carriers ports CarrierPeers; decide
+      (Execution.ifaceAt ifaces sender.virtualIface).stack =
+        (Execution.ifaceAt ifaces receiver.virtualIface).stack := by
+  unfold carriers ifaces CarrierPeers; decide
 
-lemma mixed_local_conditions : LocalConditions config layout :=
-  local_conditions_from_finite_checks devices ports routes links bridges macPorts carriers
+lemma mixed_local_conditions : LocalConditions config expectedEncapStack :=
+  local_conditions_from_finite_checks devices ifaces routes links bridges macIfaces carriers
     ip_local_conditions link_stack_checks bridge_stack_checks mac_transmit_checks mac_receive_checks
     mac_role_checks mac_secure_checks carrier_output_checks carrier_route_checks carrier_peer_checks
 
-lemma red_sources_checked : ∀ port ∈ redSources, layout port = [] ∧ config.ip.payloadOrigin port := by
-  unfold redSources layout config MultiProtocolExecution.finiteConfig Execution.finiteConfig
-    Execution.finiteLayout ports; decide
+lemma red_sources_checked : ∀ iface ∈ redSources, expectedEncapStack iface = [] ∧ config.ip.payloadOrigin iface := by
+  unfold redSources expectedEncapStack config MultiProtocolExecution.dataPlaneConfigFromRecords Execution.dataPlaneConfigFromRecords
+    Execution.expectedEncapStackFromRecords ifaces; decide
 
-lemma gray_ports_checked : ∀ port ∈ grayPorts, layout port = [1] := by
-  unfold grayPorts layout Execution.finiteLayout ports; decide
+lemma gray_ifaces_checked : ∀ iface ∈ grayIfaces, expectedEncapStack iface = [1] := by
+  unfold grayIfaces expectedEncapStack Execution.expectedEncapStackFromRecords ifaces; decide
 
-lemma black_ports_checked : ∀ port ∈ blackPorts, layout port = [2, 1] := by
-  unfold blackPorts layout Execution.finiteLayout ports; decide
+lemma black_ifaces_checked : ∀ iface ∈ blackIfaces, expectedEncapStack iface = [2, 1] := by
+  unfold blackIfaces expectedEncapStack Execution.expectedEncapStackFromRecords ifaces; decide
 
 theorem every_red_origin_transmission_has_gray_or_black_protection
     {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
     (source : Targets.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) :
-    (finish.port ∈ grayPorts → finish.frame.body.protectionLayers = [1]) ∧
-    (finish.port ∈ blackPorts → finish.frame.body.protectionLayers = [2, 1]) := by
-  have initial := Targets.mixed_red_initial_invariant config layout redSources red_sources_checked source
-  have preserved := all_executions_preserve_stack config layout mixed_local_conditions run initial
-  have layers : finish.frame.body.protectionLayers = layout finish.port := by
+    (ready : finish.datapathStage = .ready) :
+    (finish.iface ∈ grayIfaces → finish.frame.body.protectionLayers = [1]) ∧
+    (finish.iface ∈ blackIfaces → finish.frame.body.protectionLayers = [2, 1]) := by
+  have initial := Targets.mixed_red_initial_invariant config expectedEncapStack redSources red_sources_checked source
+  have preserved := all_executions_preserve_stack config expectedEncapStack mixed_local_conditions run initial
+  have layers : finish.frame.body.protectionLayers = expectedEncapStack finish.iface := by
     simpa only [ready] using preserved.2
-  exact ⟨fun member => layers.trans (gray_ports_checked finish.port member),
-    fun member => layers.trans (black_ports_checked finish.port member)⟩
+  exact ⟨fun member => layers.trans (gray_ifaces_checked finish.iface member),
+    fun member => layers.trans (black_ifaces_checked finish.iface member)⟩
 
-lemma outer_port_shapes : ∀ port ∈ ({} : Execution.PortData) :: ports,
-    port.stack.head? = some 2 → port.stack = [2, 1] := by
-  unfold ports; decide
+lemma outer_iface_shapes : ∀ iface ∈ ({} : Execution.IfaceData) :: ifaces,
+    iface.stack.head? = some 2 → iface.stack = [2, 1] := by
+  unfold ifaces; decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : MultiProtocolExecution.State}
     {actions : List MultiProtocolExecution.Action}
     (source : Targets.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     MultiProtocolExecution.OrderedEncryptions config 1 2 start actions finish :=
-  Targets.mixed_black_transmission_has_ordered_encryptions config layout redSources blackPorts
-    mixed_local_conditions red_sources_checked black_ports_checked
-    (fun port => outer_port_shapes _ (Execution.port_at_member_or_default ports port))
+  Targets.mixed_black_transmission_has_ordered_encryptions config expectedEncapStack redSources blackIfaces
+    mixed_local_conditions red_sources_checked black_ifaces_checked
+    (fun iface => outer_iface_shapes _ (Execution.iface_at_member_or_default ifaces iface))
     source run ready black
 
 theorem every_mixed_execution_keeps_actual_layers {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
     (run : (lts config).MTr start actions finish)
-    (initial : StackInvariant config layout start) :
-    StackInvariant config layout finish :=
-  all_executions_preserve_stack config layout mixed_local_conditions run initial
+    (initial : StackInvariant config expectedEncapStack start) :
+    StackInvariant config expectedEncapStack finish :=
+  all_executions_preserve_stack config expectedEncapStack mixed_local_conditions run initial
 
 end TDN.Imported.PairingInnerMacsecOuterIpsec

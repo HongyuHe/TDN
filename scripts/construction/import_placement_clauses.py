@@ -55,9 +55,9 @@ set_option maxHeartbeats 0
     text += """
 lemma branch_checks : ∀ branch ∈ independentBranches,
     inner branch.1 ∧ outer branch.2.1 ∧
-    List.IsChain (Paths.Avoiding grayEdge inner) (branch.1 :: branch.2.2) ∧
+    List.IsChain (Waypointing.Avoiding grayEdge inner) (branch.1 :: branch.2.2) ∧
     (branch.1 :: branch.2.2).getLast (List.cons_ne_nil _ _) = branch.2.1 := by
-  unfold independentBranches inner innerNodes outer outerNodes Paths.Avoiding grayEdge grayEdges
+  unfold independentBranches inner innerNodes outer outerNodes Waypointing.Avoiding grayEdge grayEdges
   decide
 
 lemma branch_inventory_complete : ∀ node ∈ innerNodes,
@@ -67,7 +67,7 @@ lemma branch_inventory_complete : ∀ node ∈ innerNodes,
 
 theorem every_inner_has_an_independent_outer_branch (node : Node) (member : node ∈ innerNodes) :
     ∃ destination, outer destination ∧
-      Relation.ReflTransGen (Paths.Avoiding grayEdge inner) node destination := by
+      Relation.ReflTransGen (Waypointing.Avoiding grayEdge inner) node destination := by
   obtain ⟨branch, present, same⟩ := branch_inventory_complete node member
   obtain ⟨_, destination, chain, last⟩ := branch_checks branch present
   refine ⟨branch.2.1, destination, ?_⟩
@@ -90,7 +90,7 @@ lemma actual_red_attachment_nonempty : redNodes ≠ [] ∧
 
 theorem every_virtual_red_egress_crosses_inner (source destination : Node)
     (start : source ∈ redNodes) (outside : isRed destination = false) :
-    ¬ Relation.ReflTransGen (Paths.Avoiding edge inner) source destination :=
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding edge inner) source destination :=
   Targets.red_egress_crosses_inner_from_attachment_cut edge inner isRed red_attachment_cut
     (red_start_clear source start) (by simpa [isRed] using start) outside
 
@@ -124,8 +124,8 @@ lemma actual_firewall_connections : ∀ source ∈ outerNodes, ∃ f ∈ firewal
   decide
 theorem redundant_outers_preserve_required_firewall_cut (source destination : Node)
     (start : source ∈ outerNodes) (finish : destination ∈ blackNodes) :
-    ¬ Relation.ReflTransGen (Paths.Avoiding edge firewall) source destination :=
-  Paths.no_firewall_free_crossing edge firewall side local_cut
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding edge firewall) source destination :=
+  Waypointing.waypointing_of_edge_invariant edge firewall side local_cut
     (starts_clear source start) (sides_differ source start destination finish)
 end TDN.Imported.FreshRedundantPlacement
 """

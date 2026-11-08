@@ -26,7 +26,7 @@ class Lab:
         self.output = self.root / "public" / (phase + "-" + label)
         self.output.mkdir(parents=True, exist_ok=False)
         self.records = []
-        self.phase = phase
+        self.datapathStage = phase
 
     def run(self, command, *, allow_failure=False, timeout=90):
         command = [str(value) for value in command]
@@ -36,7 +36,7 @@ class Lab:
             code, stdout, stderr = value.returncode, value.stdout, value.stderr
         except subprocess.TimeoutExpired:
             code, stdout, stderr = 124, "", "timeout"
-        record = {"id": self.phase + "-%04d" % len(self.records), "command": command,
+        record = {"id": self.datapathStage + "-%04d" % len(self.records), "command": command,
                   "startedAt": started, "endedAt": datetime.now(timezone.utc).isoformat(),
                   "returncode": code, "stdout": stdout, "stderr": stderr}
         if "PRIVATE KEY-----" in stdout + stderr:
@@ -50,7 +50,7 @@ class Lab:
         return self.run(["docker", "exec", name] + list(arguments), **kwargs)
 
     def finish(self, error=None):
-        document = {"phase": self.phase, "records": self.records, "error": error,
+        document = {"phase": self.datapathStage, "records": self.records, "error": error,
                     "scope": ["Separate two-peer VPN key experiment, not a complete MSC topology.",
                               "Gateway filesystems contain public certificates, user PIN and RPC client only; token storage belongs to separate backend containers.",
                               "Backend software, host/hypervisor and collector correctness remain explicit trust assumptions.",
@@ -194,10 +194,10 @@ if __name__ == "__main__":
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--label", default="001")
     args = parser.parse_args()
-    lab = Lab(args.root, args.phase, args.label)
+    lab = Lab(args.root, args.datapathStage, args.label)
     error = None
     try:
-        getattr(lab, args.phase)()
+        getattr(lab, args.datapathStage)()
     except Exception as failure:
         error = str(failure)
     finally:

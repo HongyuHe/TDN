@@ -133,16 +133,16 @@ open KeySources Targets
 
 /-- Complete public configurations from both EAP role arrangements. The import
 report records source bindings and the fresh-process/fixed-configuration assumptions. -/
-def ports : List (String × Config) := [""" + ", ".join(entries) + """]
+def ifaces : List (String × Config) := [""" + ", ".join(entries) + """]
 
-lemma no_configured_pre_shared_pair : ∀ port ∈ ports,
-    port.2.preSharedEnabled = false := by decide
+lemma no_configured_pre_shared_pair : ∀ iface ∈ ifaces,
+    iface.2.preSharedEnabled = false := by decide
 
-theorem eap_ports_have_no_pre_shared_fallback (port : String × Config)
-    (member : port ∈ ports) : no_pre_shared_fallback_in_eap_mode port.2 :=
-  eap_key_sources_disable_pre_shared_fallback port.2 (no_configured_pre_shared_pair port member)
+theorem eap_ifaces_have_no_pre_shared_fallback (iface : String × Config)
+    (member : iface ∈ ifaces) : no_pre_shared_fallback_in_eap_mode iface.2 :=
+  eap_key_sources_disable_pre_shared_fallback iface.2 (no_configured_pre_shared_pair iface member)
 
-lemma all_four_ports_present : ports.length = 4 := by decide
+lemma all_four_ifaces_present : ifaces.length = 4 := by decide
 
 end TDN.Imported.FinalMACsecKeySources
 """

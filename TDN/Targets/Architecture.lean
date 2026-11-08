@@ -38,7 +38,7 @@ structure Seal where
   deriving DecidableEq
 
 inductive Zone where
-  | red | gray | black
+  | red | gray | black | local
   deriving DecidableEq
 
 structure State where
@@ -82,6 +82,7 @@ inductive Step (n : Network) : State → State → Prop
 
 def WellLayered (s : State) : Prop :=
   match s.zone with
+  | .local => False
   | .red => s.seals = []
   | .gray => ∃ i, s.seals = [i] ∧ i.layer = .inner
   | .black => ∃ o i, s.seals = [o, i] ∧ o.layer = .outer ∧ i.layer = .inner

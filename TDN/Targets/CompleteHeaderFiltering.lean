@@ -233,7 +233,7 @@ theorem ip_header_filtering_from_inventory_and_rule_atoms (d : Deployment)
     (linkPolicies : d.LinkPoliciesComplete)
     (routed : ∀ interface ∈ d.interfaces, ∀ device ∈ d.devices,
       interface.device = device.id → HeaderFilterApplies device interface →
-      ∀ port ∈ inventory.ports, inventory.portName port = interface.id → RoutedPort inventory port) :
+      ∀ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface.id → RoutedIface inventory iface) :
     msc_ip_header_and_multicast_filtering d objective := by
   have address := address_inventory_from_checked_records d addressChecked workstationDefinition
   have processing := processing_coherence_from_record_checks d inventory present processingChecked

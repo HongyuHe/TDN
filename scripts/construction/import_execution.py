@@ -252,7 +252,7 @@ def main():
         origin = device["role"] == "host" and interface["zone"] == "red"
         port_records.append("⟨" + str(device_index[interface["device_id"]]) + ", " + quoted(interface["name"]) + ", " + lean_list([str(x) for x in stack]) + ", " + str(origin).lower() + "⟩")
     links = []
-    switching = []
+    bridging = []
     for link in snapshot["links"]:
         if link["relation"] != "veth":
             continue
@@ -271,54 +271,54 @@ def main():
         require(flows[0]["raw_value"].strip() == "reset_counts priority=0 actions=NORMAL", "Non-NORMAL OVS processing requires extension")
         ports = [i for i in interfaces if i["device_id"] == device["id"] and i["link_kind"] == "veth"]
         require(ports, "Empty physical bridge membership")
-        switching.extend([[port_index[a["id"]], port_index[b["id"]]] for a in ports for b in ports if a != b])
-    lines = ["import TDN.Targets.PacketExecution", "import TDN.Semantics.ExecutionProvenance", "", "namespace TDN.Imported." + args.namespace, "", "open Execution", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "", "def devices : List DeviceData := " + lean_list(device_records), "", "def ports : List PortData := " + lean_list(port_records), "", "def routes : List Route := " + tuple_list(routes), "", "def links : List (Nat × Nat) := " + tuple_list(links), "", "def switches : List (Nat × Nat) := " + tuple_list(switching), "", "def config : Config := finiteConfig devices ports routes links switches", "def layout : Nat → List Nat := finiteLayout ports", "", "lemma forward_checks : FiniteForwardChecks devices ports := by", "  unfold FiniteForwardChecks devices ports", "  decide", "", "end TDN.Imported." + args.namespace, ""]
+        bridging.extend([[port_index[a["id"]], port_index[b["id"]]] for a in ports for b in ports if a != b])
+    lines = ["import TDN.Targets.PacketExecution", "import TDN.Semantics.ExecutionProvenance", "", "namespace TDN.Imported." + args.namespace, "", "open Execution", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "", "def devices : List DeviceData := " + lean_list(device_records), "", "def ifaces : List IfaceData := " + lean_list(port_records), "", "def routes : List Route := " + tuple_list(routes), "", "def links : List (Nat × Nat) := " + tuple_list(links), "", "def switches : List (Nat × Nat) := " + tuple_list(bridging), "", "def config : Environment := dataPlaneConfigFromRecords devices ifaces routes links switches", "def expectedEncapStack : Nat → List Nat := expectedEncapStackFromRecords ifaces", "", "lemma forward_checks : FiniteForwardChecks devices ifaces := by", "  unfold FiniteForwardChecks devices ifaces", "  decide", "", "end TDN.Imported." + args.namespace, ""]
     checks = [
         "lemma peer_tag_checks : FinitePeerTagAgreement devices := by",
         "  unfold FinitePeerTagAgreement devices StateBindsPolicy SameWireAssociation; decide",
         "lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=",
         "  finite_peer_tag_agreement_sound devices ports routes links switches peer_tag_checks",
         "",
-        "lemma route_owner_checks : ∀ r ∈ routes, (portAt ports r.egress).owner = (portAt ports r.ingress).owner := by",
-        "  unfold routes ports; decide",
-        "lemma link_checks : ∀ edge ∈ links, (portAt ports edge.1).stack = (portAt ports edge.2).stack := by",
-        "  unfold links ports; decide",
-        "lemma switch_checks : ∀ edge ∈ switches, (portAt ports edge.1).stack = (portAt ports edge.2).stack ∧ (deviceAt devices (portAt ports edge.1).owner).inbound = [] := by",
-        "  unfold switches ports devices; decide",
+        "lemma route_owner_checks : ∀ r ∈ routes, (ifaceAt ifaces r.egress).owner = (ifaceAt ifaces r.ingress).owner := by",
+        "  unfold routes ifaces; decide",
+        "lemma link_checks : ∀ edge ∈ links, (ifaceAt ifaces edge.1).stack = (ifaceAt ifaces edge.2).stack := by",
+        "  unfold links ifaces; decide",
+        "lemma switch_checks : ∀ edge ∈ switches, (ifaceAt ifaces edge.1).stack = (ifaceAt ifaces edge.2).stack ∧ (deviceAt devices (ifaceAt ifaces edge.1).owner).inbound = [] := by",
+        "  unfold switches ifaces devices; decide",
         "lemma forward_default_checks : ∀ device ∈ ({} : DeviceData) :: devices, device.forwardFallback = .deny := by",
         "  unfold devices; decide",
-        "lemma output_checks : FiniteOutputChecks devices ports := by",
-        "  unfold FiniteOutputChecks devices ports; decide",
-        "lemma outer_route_checks : FiniteOuterRoutes devices ports routes := by",
-        "  unfold FiniteOuterRoutes devices ports routes; decide",
+        "lemma output_checks : FiniteOutputChecks devices ifaces := by",
+        "  unfold FiniteOutputChecks devices ifaces; decide",
+        "lemma outer_route_checks : FiniteOuterRoutes devices ifaces routes := by",
+        "  unfold FiniteOuterRoutes devices ifaces routes; decide",
         "",
-        "lemma local_stack_conditions : LocalStackConditions config layout :=",
+        "lemma local_stack_conditions : LocalStackConditions config expectedEncapStack :=",
         "  local_stack_conditions_of_finite_checks devices ports routes links switches",
         "    route_owner_checks link_checks switch_checks forward_default_checks forward_checks output_checks outer_route_checks",
         "",
-        "theorem every_transmission_has_port_stack {start finish : Execution.State} {actions : List Action}",
-        "    (run : (lts config).MTr start actions finish) (initial : StackInvariant config layout start)",
-        "    (ready : finish.phase = .ready) : finish.frame.tags = layout finish.port :=",
-        "  transmitted_stack config layout local_stack_conditions run initial ready",
+        "theorem every_transmission_has_iface_stack {start finish : Execution.State} {actions : List Action}",
+        "    (run : (lts config).MTr start actions finish) (initial : StackInvariant config expectedEncapStack start)",
+        "    (ready : finish.datapathStage = .ready) : finish.frame.tags = expectedEncapStack finish.iface :=",
+        "  transmitted_stack config expectedEncapStack local_stack_conditions run initial ready",
         ""
     ]
     sources = [str(port_index[i["id"]]) for i in interfaces if i["zone"] == "red" and next(d for d in devices if d["id"] == i["device_id"])["role"] == "host"]
     black_ports = [str(port_index[i["id"]]) for i in interfaces if i["zone"] == "black"]
     checks += [
         "def redSources : List Nat := " + lean_list(sources),
-        "def blackPorts : List Nat := " + lean_list(black_ports),
-        "lemma sources_checked : ∀ p ∈ redSources, layout p = [] ∧ config.payloadOrigin p := by",
-        "  unfold redSources layout config finiteLayout finiteConfig ports; decide",
-        "lemma black_ports_checked : ∀ p ∈ blackPorts, layout p = [2, 1] := by",
-        "  unfold blackPorts layout finiteLayout ports; decide",
-        "theorem snapshot_RG007_IPv4_ESP_packet_stack : Targets.msc_protected_red_payload_stack config redSources blackPorts :=",
-        "  Targets.protected_red_stack_from_local_checks config layout redSources blackPorts",
-        "    local_stack_conditions sources_checked black_ports_checked",
+        "def blackIfaces : List Nat := " + lean_list(black_ports),
+        "lemma sources_checked : ∀ p ∈ redSources, expectedEncapStack p = [] ∧ config.payloadOrigin p := by",
+        "  unfold redSources expectedEncapStack config expectedEncapStackFromRecords dataPlaneConfigFromRecords ifaces; decide",
+        "lemma black_ifaces_checked : ∀ p ∈ blackIfaces, expectedEncapStack p = [2, 1] := by",
+        "  unfold blackIfaces expectedEncapStack expectedEncapStackFromRecords ifaces; decide",
+        "theorem snapshot_RG007_IPv4_ESP_packet_stack : Targets.msc_protected_red_payload_stack config redSources blackIfaces :=",
+        "  Targets.protected_red_stack_from_local_checks config expectedEncapStack redSources blackIfaces",
+        "    local_stack_conditions sources_checked black_ifaces_checked",
         ""
     ]
     lines[-3:-3] = checks
     Path(args.output).write_text("\n".join(lines))
-    report = {"snapshot": str(bundle), "supplement": str(supplement_path), "validation": validation, "filter_correspondence": filter_check, "native_nft_correspondence": nft_check, "native_and_namespace_correspondence": topology["native_runtime"], "checked_inactive_interfaces": topology["inactive_interfaces"], "device_count": len(devices), "port_count": len(interfaces), "route_count": len(routes), "routes": routes, "route_gateways": route_gateways, "links": links, "switches": switching, "directed_links": len(links), "directed_switches": len(switching), "socket_policies": socket_policy_count, "device_ids": device_index, "port_ids": port_index, "levels": levels, "states": states_by_device, "policies": policy_summary, "observations_used": sorted(set(observations_used)), "epoch_records": epoch_records, "epoch_scope": "Conservative union of explicitly retained SPD/SAD observations; positive execution is model satisfiability, not an observed simultaneous mixed-epoch run" if args.include_recorded_sa_epochs else "Single selected raw SPD/SAD observation per device; collection consistency retained separately", "scope": "Fixed IPv4 tunnel ESP configurations; Red-host payload origins. OVS NORMAL switching overapproximated by all physical bridge member destinations. Additional drop-only checks and local-route distinctions are overapproximated, not exact acceptance.", "remaining": ["This importer supplies the native IPv4 configuration; separate generated local stack, full-label, byte-response and positive-path modules must be validated together", "Socket-bound IKE bypass remains scoped to the captured trusted IKE programs", "Authenticated encrypted assembly uses the declared cryptographic and kernel-processing correspondence; ordinary fragment keys do not establish shared provenance", "Separate IPv6, MACsec, carrier and FreeBSD applications retain their own backend scope and completion records"]}
+    report = {"snapshot": str(bundle), "supplement": str(supplement_path), "validation": validation, "filter_correspondence": filter_check, "native_nft_correspondence": nft_check, "native_and_namespace_correspondence": topology["native_runtime"], "checked_inactive_interfaces": topology["inactive_interfaces"], "device_count": len(devices), "port_count": len(interfaces), "route_count": len(routes), "routes": routes, "route_gateways": route_gateways, "links": links, "switches": bridging, "directed_links": len(links), "directed_switches": len(bridging), "socket_policies": socket_policy_count, "device_ids": device_index, "port_ids": port_index, "levels": levels, "states": states_by_device, "policies": policy_summary, "observations_used": sorted(set(observations_used)), "epoch_records": epoch_records, "epoch_scope": "Conservative union of explicitly retained SPD/SAD observations; positive execution is model satisfiability, not an observed simultaneous mixed-epoch run" if args.include_recorded_sa_epochs else "Single selected raw SPD/SAD observation per device; collection consistency retained separately", "scope": "Fixed IPv4 tunnel ESP configurations; Red-host payload origins. OVS NORMAL bridging overapproximated by all physical bridge member destinations. Additional drop-only checks and local-route distinctions are overapproximated, not exact acceptance.", "remaining": ["This importer supplies the native IPv4 configuration; separate generated local stack, full-label, byte-response and positive-path modules must be validated together", "Socket-bound IKE bypass remains scoped to the captured trusted IKE programs", "Authenticated encrypted assembly uses the declared cryptographic and kernel-processing correspondence; ordinary fragment keys do not establish shared provenance", "Separate IPv6, MACsec, carrier and FreeBSD applications retain their own backend scope and completion records"]}
     Path(args.report).write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({k: report[k] for k in ["device_count", "port_count", "route_count", "directed_links", "directed_switches", "socket_policies"]}))
 

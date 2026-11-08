@@ -25,7 +25,7 @@ def packet_lean(packet):
 
 def frame_lean(frame):
     envelopes = ["⟨⟨" + ", ".join(str(x) for x in envelope["seal"]) + "⟩, " + packet_lean(envelope["header"]) + "⟩" for envelope in frame["envelopes"]]
-    return "{ payload := 1, originDomain := " + str(frame["originDomain"]) + ", enteredPort := " + str(frame["enteredPort"]) + ", packet := " + packet_lean(frame["packet"]) + ", envelopes := " + lean_list(envelopes) + " }"
+    return "{ payload := 1, originDomain := " + str(frame["originDomain"]) + ", enteredIface := " + str(frame["enteredIface"]) + ", packet := " + packet_lean(frame["packet"]) + ", envelopes := " + lean_list(envelopes) + " }"
 
 
 def matches(association, packet):
@@ -79,7 +79,7 @@ def main():
     address = lambda interface: encode(next(a["local"] for a in interface["addresses"]
         if a["family"] == ("inet" if red_family == 4 else "inet6") and a.get("scope") != "link"))
     port = report["port_ids"][args.source_port]
-    frame = {"payload": 1, "originDomain": level(devices[source["device_id"]]), "enteredPort": port, "packet": {"source": address(source), "destination": address(destination), "protocol": "icmp" if red_family == 4 else "ipv6-icmp", "ingress": source["name"], "egress": "", "sourcePort": 0, "destinationPort": 0, "ipv4HeaderWords": 5 if red_family == 4 else 0, "ipv6NextHeader": 0 if red_family == 4 else 58, "inboundPolicies": [], "outboundPolicies": [], "connectionState": "NEW", "icmpType": 8 if red_family == 4 else 128, "icmpCode": 0, "hopLimit": 64}, "envelopes": []}
+    frame = {"payload": 1, "originDomain": level(devices[source["device_id"]]), "enteredIface": port, "packet": {"source": address(source), "destination": address(destination), "protocol": "icmp" if red_family == 4 else "ipv6-icmp", "ingress": source["name"], "egress": "", "sourcePort": 0, "destinationPort": 0, "ipv4HeaderWords": 5 if red_family == 4 else 0, "ipv6NextHeader": 0 if red_family == 4 else 58, "inboundPolicies": [], "outboundPolicies": [], "connectionState": "NEW", "icmpType": 8 if red_family == 4 else 128, "icmpCode": 0, "hopLimit": 64}, "envelopes": []}
     state = {"port": port, "phase": "localOutput", "frame": frame, "authenticated": []}
     states = [copy.deepcopy(state)]
     steps = []
@@ -142,7 +142,7 @@ def main():
                 if switch:
                     state["port"] = switch[1]
                     state["phase"] = "ready"
-                    add("switch", "switch", "(by decide)")
+                    add("bridge", "bridge", "(by decide)")
                     continue
             routes = [r for r in report["routes"] if r[0] == state["port"] and r[2] <= packet["destination"] <= r[3]]
             require(routes, "No witness route at " + current["id"] + " to " + str(packet["destination"]))
@@ -151,7 +151,7 @@ def main():
             next_hop = report["route_gateways"][route_index] or packet["destination"]
             state["port"] = route[1]
             state["phase"] = {"localOutput": "outputRouted", "ingress": "routed", "encapsulated": "ready"}[phase]
-            add("route", {"localOutput": "outputRoute", "ingress": "route", "encapsulated": "outerRoute"}[phase], "⟨" + ", ".join(str(v) for v in route) + "⟩ (by decide) rfl")
+            add("route", {"localOutput": "routeLocalOutput", "ingress": "route", "encapsulated": "routeOuterPacket"}[phase], "⟨" + ", ".join(str(v) for v in route) + "⟩ (by decide) rfl")
         elif phase in {"routed", "outputRouted"}:
             require(accepts("FORWARD" if phase == "routed" else "OUTPUT"), "Filter denies witness at " + current["id"])
             state["phase"] = "filtered"
@@ -160,7 +160,7 @@ def main():
             candidates = selected(report["policies"][device]["out"], packet)
             if not candidates:
                 state["phase"] = "ready"
-                add("local", "plain", "(by decide)")
+                add("local", "passWithoutTransform", "(by decide)")
                 continue
             association = candidates[0]
             sa = next((s for s in report["states"][device] if bound(association, s)), None)
@@ -176,7 +176,7 @@ def main():
             state["port"] = edge[1]
             state["phase"] = "received"
             state["authenticated"] = []
-            add("wire", "wire", "(by decide)")
+            add("linkTransmit", "linkTransmit", "(by decide)")
         elif phase == "received":
             candidate = None
             if state["frame"]["envelopes"]:
@@ -187,7 +187,7 @@ def main():
                             candidate = (association, sa, envelope)
                             break
             state["phase"] = "ingress"
-            state["frame"]["enteredPort"] = state["port"]
+            state["frame"]["enteredIface"] = state["port"]
             if candidate:
                 association, sa, envelope = candidate
                 state["frame"]["envelopes"].pop(0)
@@ -226,8 +226,8 @@ def main():
                   " ∧ ".join(immediate_checks + ["True"]) + " := by decide"]
     for index, step in enumerate(steps):
         lines += ["", "lemma witnessStep" + str(index) + " : Execution.Step config witnessState" + str(index) + " ." + step["action"] + " witnessState" + str(index + 1) + " := by", "  exact Execution.Step." + step["constructor"] + " " + step["arguments"]]
-    lines += ["", "def witnessActions : List Action := " + lean_list(["." + step["action"] for step in steps]), "", "theorem positive_delivery_execution : (lts config).MTr witnessState0 witnessActions witnessState" + str(len(steps)) + " := by", "  exact " + "(".join(["Cslib.LTS.MTr.stepL witnessStep" + str(i) + " " for i in range(len(steps))]) + "Cslib.LTS.MTr.refl" + ")" * (len(steps) - 1), "", "lemma witness_initial_stack : StackInvariant config layout witnessState0 := by", "  unfold StackInvariant ProcessingInvariant LocalAuthentication processingStack witnessState0 Frame.tags config layout finiteConfig finiteLayout portAt deviceAt ports devices", "  decide", "", "end TDN.Imported." + args.namespace, ""]
-    lines = [line.replace("(by decide)", "(by (try simp only [config, finiteConfig, SelectedRoute, Route.matches, accepts, StateBindsPolicy]); all_goals decide)") for line in lines]
+    lines += ["", "def witnessActions : List Action := " + lean_list(["." + step["action"] for step in steps]), "", "theorem positive_delivery_execution : (lts config).MTr witnessState0 witnessActions witnessState" + str(len(steps)) + " := by", "  exact " + "(".join(["Cslib.LTS.MTr.stepL witnessStep" + str(i) + " " for i in range(len(steps))]) + "Cslib.LTS.MTr.refl" + ")" * (len(steps) - 1), "", "lemma witness_initial_stack : StackInvariant config expectedEncapStack witnessState0 := by", "  unfold StackInvariant ProcessingInvariant LocalAuthentication encapStackAfterIngress witnessState0 Frame.tags config expectedEncapStack dataPlaneConfigFromRecords expectedEncapStackFromRecords ifaceAt deviceAt ifaces devices", "  decide", "", "end TDN.Imported." + args.namespace, ""]
+    lines = [line.replace("(by decide)", "(by (try simp only [config, dataPlaneConfigFromRecords, SelectedRoute, Route.matches, accepts, StateBindsPolicy]); all_goals decide)") for line in lines]
     start = next(i for i, line in enumerate(lines) if line.startswith("lemma witness_initial_stack"))
     lines[start + 1:start + 3] = ["  exact ⟨⟨⟨rfl, rfl, Or.inl rfl, rfl⟩, rfl⟩, rfl⟩"]
     Path(args.output).write_text("\n".join(lines))

@@ -177,6 +177,25 @@
     "new_supporting_applications": []
   },
   {
+    "rg_id": "RG-033",
+    "general_theorem": "TDN.Targets.Complete.complete_canonical_IPsec_packet_sizing",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.SizingBaseline.complete_recorded_packet_size_configuration",
+        "status": "Complete model application accepted in the recorded review."
+      },
+      {
+        "name": "TDN.Imported.SizingShared.complete_recorded_packet_size_configuration",
+        "status": "Complete model application accepted in the recorded review."
+      }
+    ],
+    "open_application_conditions": [
+      "Whole instantiated RG033 specification for the recorded baseline and shared IPv4/IPsec configurations. Mandatory sizing covers Inner Gray, Outer Black and applicable Gray Firewall external interfaces. Optional IR2 reduction is unselected. Private-material validity, encryption-function laws and faithful Linux execution remain explicit assumptions."
+    ],
+    "new_supporting_applications": [],
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/verdict.json"
+  },
+  {
     "rg_id": "RG-034",
     "general_theorem": "TDN.Targets.outer_firewall_placement_from_local_checks",
     "concrete_applications": [
@@ -197,6 +216,26 @@
       "Bind generic edge/Gray-connection/attachment predicates and complete node roles to the exact supported observed topology."
     ],
     "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-035",
+    "general_theorem": "TDN.Targets.Complete.native_boundary_interface_filtering_from_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.BoundaryBaseline.complete_native_boundary_policy",
+        "status": "Complete model application accepted in the recorded review."
+      },
+      {
+        "name": "TDN.Imported.BoundaryShared.complete_native_boundary_policy",
+        "status": "Complete model application accepted in the recorded review."
+      }
+    ],
+    "open_application_conditions": [
+      "Whole instantiated RG035 specification for two IPv4/IPsec deployments; physical MACsec coverage and counterexamples separately checked. Other unfinished RGs remain pending."
+    ],
+    "new_supporting_applications": [],
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-035/round-002/verdict.json",
+    "additional_general_theorem": "TDN.Targets.Complete.MACsec_boundary_interface_filtering_from_link_rule_checks"
   },
   {
     "rg_id": "RG-037",
@@ -268,6 +307,44 @@
       "Exact nft/Linux parsing and admission implementation correspondence within the recorded untagged-veth/offload scope."
     ],
     "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-039",
+    "general_theorem": "TDN.Targets.Complete.outer_gray_IPsec_policy_from_native_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.OuterGrayBaseline.complete_Outer_gray_policy",
+        "status": "Complete model application accepted in the recorded review."
+      },
+      {
+        "name": "TDN.Imported.OuterGrayShared.complete_Outer_gray_policy",
+        "status": "Complete model application accepted in the recorded review."
+      }
+    ],
+    "open_application_conditions": [
+      "IPv4 IPsec VPN deployments satisfying explicit local conditions; cdpOnGray=false; optional management absent."
+    ],
+    "new_supporting_applications": [],
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-039/round-002/verdict.json"
+  },
+  {
+    "rg_id": "RG-040",
+    "general_theorem": "TDN.Targets.Complete.gray_firewall_allowlist_from_native_IPsec_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Imported.BoundaryBaseline.complete_native_Gray_firewall_allowlist",
+        "status": "Complete model application accepted in the recorded review."
+      },
+      {
+        "name": "TDN.Imported.GrayFirewallShared.complete_native_Gray_firewall_allowlist",
+        "status": "Complete model application accepted in the recorded review."
+      }
+    ],
+    "open_application_conditions": [
+      "Whole instantiated RG040 specification for baseline and shared IPv4/IPsec deployments; all other unfinished groups remain pending."
+    ],
+    "new_supporting_applications": [],
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-040/round-001/verdict.json"
   },
   {
     "rg_id": "RG-047",

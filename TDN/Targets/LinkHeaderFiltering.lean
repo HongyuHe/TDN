@@ -82,11 +82,13 @@ lemma mka_observation_class (d : Deployment) (packet : PacketPolicy.Packet) (act
       have forbidden := (records.2 device member kind interface present owner).1
       apply forbidden
       simpa [Interface.PacketAddress, ethernet, etherType, source] using assigned
+  have notIKE : ¬ PacketIKE packet := by simp [PacketIKE, ethernet]
+  have notUDPESP : ¬ PacketUDPESP packet := by simp [PacketUDPESP, ethernet]
   have control : PacketClass packet = .control := by
     have mka := mka_framing_is_control_protocol packet actor framing
-    simp [PacketClass, PacketService, ethernet, mka]
+    simp [PacketClass, PacketService, PacketPortService, notIKE, notUDPESP, ethernet, mka]
   simp only [Deployment.Observe, notRevocation, Bool.false_eq_true, ↓reduceIte]
-  unfold Deployment.ObservedClass
+  simp only [Deployment.ObservedClass, notIKE, notUDPESP, ↓reduceIte]
   split
   · rfl
   · simp [noService]
@@ -99,34 +101,34 @@ instance (atom : PacketPolicy.Atom) : Decidable (UnicastLinkDestinationAtom atom
   cases atom <;> unfold UnicastLinkDestinationAtom <;> infer_instance
 
 def LinkRuleHeaderGuard (d : Deployment) (inventory : PacketProcessing.Inventory)
-    (interface : Interface) (port : Nat) (rule : PacketPolicy.Rule) : Prop :=
+    (interface : Interface) (iface : Nat) (rule : PacketPolicy.Rule) : Prop :=
   (∃ atom ∈ rule.atoms, UnicastLinkDestinationAtom atom) ∨
   ∃ endpoint ∈ inventory.mkaPeers,
-    endpoint.destinationPort = port ∧
+    endpoint.destinationIface = iface ∧
     .mkaFraming endpoint.actorSCI ∈ rule.atoms ∧
     .destinationRange 1652522221571 1652522221571 ∈ rule.atoms ∧
     .payloadByteEquals 0 3 ∈ rule.atoms ∧
     MKAObservationRecords d endpoint.actorSCI ∧
     ∃ tunnel ∈ d.tunnels, tunnel.id = endpoint.tunnel ∧ tunnel.layer = .outer ∧
       tunnel.mechanism = .macsec ∧
-      inventory.componentName (inventory.configuration.ip.owner endpoint.sourcePort) = tunnel.sender ∧
-      inventory.componentName (inventory.configuration.ip.owner endpoint.destinationPort) = tunnel.receiver ∧
+      inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = tunnel.sender ∧
+      inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = tunnel.receiver ∧
       tunnel.receiver = interface.device ∧ d.intendedPeer tunnel.sender tunnel.receiver
 
 instance (d : Deployment) [DecidableRel d.intendedPeer] (inventory : PacketProcessing.Inventory)
-    (interface : Interface) (port : Nat) (rule : PacketPolicy.Rule) :
-    Decidable (LinkRuleHeaderGuard d inventory interface port rule) := by
+    (interface : Interface) (iface : Nat) (rule : PacketPolicy.Rule) :
+    Decidable (LinkRuleHeaderGuard d inventory interface iface rule) := by
   unfold LinkRuleHeaderGuard
   infer_instance
 
 lemma link_rule_multicast_restriction (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
-    (interface : Interface) (port : Nat) (name : inventory.portName port = interface.id)
+    (interface : Interface) (iface : Nat) (name : inventory.ifaceName iface = interface.id)
     (rule : PacketPolicy.Rule) (traffic : Traffic) (supported : d.Supported traffic)
     (ethernet : traffic.packet.protocol = "ethernet")
-    (guard : LinkRuleHeaderGuard d inventory interface port rule)
+    (guard : LinkRuleHeaderGuard d inventory interface iface rule)
     (approvedMKA : ∀ endpoint ∈ inventory.mkaPeers,
-      inventory.portName endpoint.destinationPort = interface.id →
+      inventory.ifaceName endpoint.destinationIface = interface.id →
       ∀ packet, packet.MKAFraming endpoint.actorSCI →
       packet.destination = 1652522221571 →
         d.policyApproved interface.device (d.Observe packet))
@@ -151,12 +153,12 @@ lemma link_rule_multicast_restriction (d : Deployment)
     have version : (traffic.packet.payloadBytes.bind (fun bytes => bytes[0]?)) = some 3 :=
       PacketPolicy.matching_atom matched versionAtom
     right
-    refine ⟨?_, ?_, address, inventory, present, endpoint, member, (congrArg inventory.portName target).trans name,
+    refine ⟨?_, ?_, address, inventory, present, endpoint, member, (congrArg inventory.ifaceName target).trans name,
       framing, version, tunnel, tunnelMember, tunnelId, outer, macsec, sender, receiver, owner, peer⟩
     · exact (congrArg Traffic.trafficClass supported.1).trans
         (mka_observation_class d traffic.packet endpoint.actorSCI records framing address)
     · exact (congrArg (d.policyApproved interface.device) supported.1).mpr
-        (approvedMKA endpoint member ((congrArg inventory.portName target).trans name)
+        (approvedMKA endpoint member ((congrArg inventory.ifaceName target).trans name)
           traffic.packet framing address)
 
 end TDN.Targets.Complete
@@ -212,30 +214,30 @@ lemma header_atoms_force_admission_properties (d : Deployment)
 def LinkHeaderPolicyChecks (d : Deployment) (inventory : PacketProcessing.Inventory) : Prop :=
   ∀ interface ∈ d.interfaces, ∀ device ∈ d.devices,
     interface.device = device.id → HeaderFilterApplies device interface →
-    ∀ port ∈ inventory.ports, inventory.portName port = interface.id →
-      match LinkAdmission.lookup inventory.configuration.linkPolicies port with
+    ∀ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface.id →
+      match LinkAdmission.lookup inventory.configuration.linkPolicies iface with
       | none => True
       | some policy => policy.inbound.fallback = .deny ∧
           ∀ rule ∈ policy.inbound.rules, rule.verdict = .allow →
-            LinkRuleHeaderGuard d inventory interface port rule
+            LinkRuleHeaderGuard d inventory interface iface rule
 
 instance (d : Deployment) [DecidableRel d.intendedPeer]
     (inventory : PacketProcessing.Inventory) : Decidable (LinkHeaderPolicyChecks d inventory) := by
   unfold LinkHeaderPolicyChecks
-  have (interface : Interface) (port : Nat) :
-      Decidable (match LinkAdmission.lookup inventory.configuration.linkPolicies port with
+  have (interface : Interface) (iface : Nat) :
+      Decidable (match LinkAdmission.lookup inventory.configuration.linkPolicies iface with
         | none => True
         | some policy => policy.inbound.fallback = .deny ∧
             ∀ rule ∈ policy.inbound.rules, rule.verdict = .allow →
-              LinkRuleHeaderGuard d inventory interface port rule) := by
-    cases LinkAdmission.lookup inventory.configuration.linkPolicies port <;> infer_instance
+              LinkRuleHeaderGuard d inventory interface iface rule) := by
+    cases LinkAdmission.lookup inventory.configuration.linkPolicies iface <;> infer_instance
   infer_instance
 
 def LinkPolicyRecordChecks (d : Deployment) (inventory : PacketProcessing.Inventory) : Prop :=
-  (∀ port ∈ inventory.ports, d.LinkPath inventory port →
-    (LinkAdmission.lookup inventory.configuration.linkPolicies port).isSome = true) ∧
+  (∀ iface ∈ inventory.ifaces, d.LinkPath inventory iface →
+    (LinkAdmission.lookup inventory.configuration.linkPolicies iface).isSome = true) ∧
   (∀ entry ∈ inventory.configuration.linkPolicies,
-    entry.1 ∈ inventory.ports ∧ d.LinkPath inventory entry.1) ∧
+    entry.1 ∈ inventory.ifaces ∧ d.LinkPath inventory entry.1) ∧
   (∀ first ∈ inventory.configuration.linkPolicies,
     ∀ second ∈ inventory.configuration.linkPolicies, first.1 = second.1 → first = second)
 
@@ -249,8 +251,8 @@ lemma link_policy_completeness_from_records (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (checks : LinkPolicyRecordChecks d inventory) : d.LinkPoliciesComplete := by
   refine ⟨inventory, present, ?_, checks.2.1, checks.2.2⟩
-  intro port member path
-  exact Option.isSome_iff_exists.mp (checks.1 port member path)
+  intro iface member path
+  exact Option.isSome_iff_exists.mp (checks.1 iface member path)
 
 theorem ip_and_link_header_filtering_from_inventory_and_rule_atoms (d : Deployment)
     (inventory : PacketProcessing.Inventory) (objective : String → Bool)
@@ -268,7 +270,7 @@ theorem ip_and_link_header_filtering_from_inventory_and_rule_atoms (d : Deployme
     (linkRecords : LinkPolicyRecordChecks d inventory)
     (linkRules : LinkHeaderPolicyChecks d inventory)
     (approvedMKA : ∀ interface ∈ d.interfaces, ∀ endpoint ∈ inventory.mkaPeers,
-      inventory.portName endpoint.destinationPort = interface.id →
+      inventory.ifaceName endpoint.destinationIface = interface.id →
       ∀ packet, packet.MKAFraming endpoint.actorSCI →
       packet.destination = 1652522221571 →
         d.policyApproved interface.device (d.Observe packet)) :
@@ -283,18 +285,18 @@ theorem ip_and_link_header_filtering_from_inventory_and_rule_atoms (d : Deployme
   refine ⟨policy_coverage_from_checked_indices d indicesChecked interface interfaceMember, ?_⟩
   intro traffic admitted
   have supported := accepted_traffic_supported d interface.id .inbound traffic admitted
-  obtain ⟨hook, _, admission⟩ := admitted
+  obtain ⟨hook, _, _, admission⟩ := admitted
   by_cases link : hook = .link
   · subst hook
     have operation : d.LinkOperation interface.id .inbound traffic := admission
     have ethernet : traffic.packet.protocol = "ethernet" := by
       by_contra notEthernet
       exact non_ethernet_has_no_link_operation d interface.id .inbound traffic notEthernet operation
-    obtain ⟨_, actual, same, port, portMember, name, policy, selected, accepted⟩ := operation
+    obtain ⟨_, actual, same, iface, ifaceMember, name, policy, selected, accepted⟩ := operation
     have sameInventory : actual = inventory := Option.some.inj (same.symm.trans present)
     subst actual
     have policyChecks := linkRules interface interfaceMember device deviceMember owner applies
-      port portMember name
+      iface ifaceMember name
     rw [selected] at policyChecks
     have acceptedRule : ∃ rule ∈ policy.inbound.rules,
         rule.toFilter.accepts traffic.packet = true ∧ rule.verdict = .allow := by
@@ -310,7 +312,7 @@ theorem ip_and_link_header_filtering_from_inventory_and_rule_atoms (d : Deployme
     have version : traffic.ipVersion = none := by
       have sameVersion := congrArg Traffic.ipVersion supported.1
       simpa [Deployment.Observe, PacketIPVersion, ethernet] using sameVersion
-    refine ⟨fun _ _ => link_rule_multicast_restriction d inventory present interface port name
+    refine ⟨fun _ _ => link_rule_multicast_restriction d inventory present interface iface name
       rule traffic supported ethernet (policyChecks.2 rule ruleMember allow)
         (approvedMKA interface interfaceMember) matched, ?_, ?_, ?_⟩
     · intro _ impossible

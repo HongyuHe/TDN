@@ -36,9 +36,9 @@ theorem all_fragment_and_response_histories_preserve_bytes {S B A : Type}
     (forwarding : ∀ byte, network.TrInv (property byte))
     (reassembly : ∀ before after byte, canAssemble before after →
       property byte before → property byte after)
-    (guards : ∀ state, responses.generates state → ∀ port,
-      responses.outputFallback state port = .deny ∧
-      ∀ rule ∈ responses.outputRules state port,
+    (guards : ∀ state, responses.generates state → ∀ iface,
+      responses.outputFallback state iface = .deny ∧
+      ∀ rule ∈ responses.outputRules state iface,
         rule.verdict = .allow → KernelResponses.SafeResponseRule rule)
     {after : List (ByteFlows.Carrier (KernelResponses.State S) B)}
     {actions : List (ByteFlows.Action (KernelResponses.Action A))}
@@ -66,13 +66,13 @@ theorem all_fragment_and_permitted_response_histories_preserve_bytes {S B A : Ty
     (forwarding : ∀ byte, network.TrInv (property byte))
     (reassembly : ∀ before after byte, canAssemble before after →
       property byte before → property byte after)
-    (reply : ∀ byte state header port,
+    (reply : ∀ byte state header iface,
       property byte state → responses.generates state →
       KernelResponses.ResponseProtocol header.protocol →
-      responses.selectedRoute state header port →
-      Filter.evaluate ((responses.outputRules state port).map PacketPolicy.Rule.toFilter)
-        (responses.outputFallback state port) (KernelResponses.outputPacket responses header port) = .allow →
-      responses.interfaceName port ≠ "lo" → property byte (responses.emit state header port))
+      responses.selectedRoute state header iface →
+      Filter.evaluate ((responses.outputRules state iface).map PacketPolicy.Rule.toFilter)
+        (responses.outputFallback state iface) (KernelResponses.outputPacket responses header iface) = .allow →
+      responses.interfaceName iface ≠ "lo" → property byte (responses.emit state header iface))
     {after : List (ByteFlows.Carrier (KernelResponses.State S) B)}
     {actions : List (ByteFlows.Action (KernelResponses.Action A))}
     (run : (system network responses origin canAssemble).MTr [] actions after) :

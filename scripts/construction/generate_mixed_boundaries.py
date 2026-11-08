@@ -25,12 +25,12 @@ def main():
                    "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0"]
         for tag in [1, 2]:
             blocks.append(f"""lemma carrier_inbound_checks_{tag} :
-    FiniteCarrierInputChecks devices ports carriers {tag} := by
+    FiniteCarrierInputChecks devices ifaces carriers {tag} := by
   unfold FiniteCarrierInputChecks
   decide
 
-lemma carrier_input_preserves_boundary_{tag} : CarrierInputCheck config layout {tag} :=
-  finite_carrier_input_checks_sound devices ports routes links bridges macPorts carriers {tag}
+lemma carrier_input_preserves_boundary_{tag} : CarrierInputCheck config expectedEncapStack {tag} :=
+  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers {tag}
     carrier_inbound_checks_{tag}
 """)
         for device in ["IA", "IB", "OA", "OB"]:
@@ -44,7 +44,7 @@ lemma carrier_input_preserves_boundary_{tag} : CarrierInputCheck config layout {
             inside = boundary_port("red" if tag == 1 else "gray")
             outside = boundary_port("gray" if tag == 1 else "black")
             name = "mixedBoundary" + device
-            blocks.append(f"""def {name} := Targets.mixedTunnelBoundary config layout
+            blocks.append(f"""def {name} := Targets.mixedTunnelBoundary config expectedEncapStack
   [{inside}] [{outside}] {tag} {component}
 
 lemma {name}_nonempty_attachments :
@@ -55,20 +55,20 @@ lemma {name}_ip_tags : ∀ entry, config.ip.owner entry = {component} →
   have checked : ∀ policy ∈ (Execution.deviceAt devices {component}).inbound,
       policy.tag = {tag} := by decide
   intro entry owner policy member
-  change (Execution.portAt ports entry).owner = {component} at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.portAt ports entry).owner).inbound at member
+  change (Execution.ifaceAt ifaces entry).owner = {component} at owner
+  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
   rw [owner] at member
   exact checked policy member
 
-lemma {name}_mac_tags : ∀ port ∈ config.macPorts,
-    config.ip.owner port.physicalPort = {component} →
-    ∀ association ∈ port.receiveAssociations, association.tag = {tag} := by
-  change ∀ port ∈ macPorts, (Execution.portAt ports port.physicalPort).owner = {component} →
-    ∀ association ∈ port.receiveAssociations, association.tag = {tag}
+lemma {name}_mac_tags : ∀ iface ∈ config.macIfaces,
+    config.ip.owner iface.physicalIface = {component} →
+    ∀ association ∈ iface.receiveAssociations, association.tag = {tag} := by
+  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = {component} →
+    ∀ association ∈ iface.receiveAssociations, association.tag = {tag}
   decide
 
 theorem {name}_no_bypass : Targets.BoundaryNoBypass {name} :=
-  Targets.mixed_tunnel_boundary_from_local_checks config layout [{inside}] [{outside}] {tag} {component}
+  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [{inside}] [{outside}] {tag} {component}
     mixed_local_conditions carrier_input_preserves_boundary_{tag}
     {name}_ip_tags {name}_mac_tags (by decide) (by decide)
 """)

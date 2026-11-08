@@ -20,7 +20,7 @@ def store (copyFirst : Bool) : Store :=
 def setup (copyFirst : Bool) : List KeyAction :=
   if copyFirst then [.provision token, .duplicate token copied] else [.provision token]
 
-def events : KeyAction → List ProcessingEvent
+def events : KeyAction → List NetworkEvent
   | .sign object principal | .digest object principal =>
       [.privateKeyRead object.key.1 object.key.2 principal]
   | .value object interface | .wrap object interface =>
@@ -97,7 +97,7 @@ theorem copied_digest_model_RG021 (base : Deployment) (native : Native) :
 lemma signing_is_reachable (native : Native) :
     (model native false).initial [token] ∧
     (model native false).system.MTr [token] [.sign token "gateway"] [token] ∧
-    ProcessingEvent.privateKeyRead "gateway" "private.key" "gateway" ∈
+    NetworkEvent.privateKeyRead "gateway" "private.key" "gateway" ∈
       (model native false).TraceEvents [.sign token "gateway"] := by
   refine ⟨rfl, .single _ (.sign [token] token "gateway" (by simp) (by simp [readers, token])), ?_⟩
   simp [ExecutionModel.TraceEvents, model, events, ObservedHistory.Events, token]
@@ -105,7 +105,7 @@ lemma signing_is_reachable (native : Native) :
 lemma copied_digest_is_reachable (native : Native) :
     (model native true).initial [copied, token] ∧
     (model native true).system.MTr [copied, token] [.digest copied "gateway"] [copied, token] ∧
-    ProcessingEvent.privateKeyRead "gateway" "private.key" "gateway" ∈
+    NetworkEvent.privateKeyRead "gateway" "private.key" "gateway" ∈
       (model native true).TraceEvents [.digest copied "gateway"] := by
   refine ⟨rfl, .single _ (.digest [copied, token] copied "gateway"
     (by simp) (by simp [readers, copied])), ?_⟩

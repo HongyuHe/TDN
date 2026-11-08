@@ -23,14 +23,14 @@ formal={31:"TDN.Targets.msc_encryption_component_routing_limits",42:"TDN.Targets
 generic={
 7:["TDN.black_has_two_layers","TDN.concrete_black_protection","TDN.Boundary.checked_machine_preserves_layers"],
 8:["TDN.execution_preserves_level","TDN.inner_delivery_same_level"],
-13:["TDN.Paths.no_firewall_free_crossing"],
+13:["TDN.Waypointing.waypointing_of_edge_invariant"],
 23:["TDN.Temporal.deadline_elapsed_bound"],
 29:["TDN.PacketPolicy.forwarding_policy_protects","TDN.Boundary.checked_machine_preserves_layers"],
 30:["TDN.PacketPolicy.forwarding_policy_protects","TDN.Boundary.checked_machine_preserves_layers"],
-34:["TDN.Paths.no_firewall_free_crossing"],
+34:["TDN.Waypointing.waypointing_of_edge_invariant"],
 35:["TDN.Filter.default_deny_sound"],
 39:["TDN.Filter.rejects_outside_allowlist"],
-40:["TDN.Filter.rejects_outside_allowlist","TDN.Paths.no_firewall_free_crossing"],
+40:["TDN.Filter.rejects_outside_allowlist","TDN.Waypointing.waypointing_of_edge_invariant"],
 64:["TDN.Temporal.deadline_elapsed_bound"]}
 specific={
 1:"Applicable CNSS/local policy and capability-compliance evidence are external; no conjunction over all requirements is assumed as a premise.",
@@ -85,7 +85,7 @@ specific={
 50:"SIEM optionality is retained; deployed collection/alerts/CDS behavior and recommended transport need a selected management case.",
 51:"CDS baseline membership and external policy compliance are unavailable; a simulated relay is insufficient.",
 52:"Physical protection, personnel access, classified configuration copies and disposal/declassification require external records.",
-53:"Virtual topology can show parallel placement, but unique physical ports and absence of physical enclave trunking require physical evidence.",
+53:"Virtual topology can show parallel placement, but unique physical ifaces and absence of physical enclave trunking require physical evidence.",
 54:"Successful same-level baseline traffic supports interoperability for those observed sessions; all required pairings/implementations remain open.",
 55:"Combined-CP applicability and external Inner Firewall requirements were not supplied; no blanket exemption is inferred.",
 56:"All physical Red egress paths and AO-approved alternative protection are external/physical obligations not covered by a virtual subset.",
@@ -243,7 +243,7 @@ for group in data["groups"]:
                 clause["reason"]="Observed replay window 0, protect/encrypt and strict validation; all external-port connectivity and MKA settings are not inferred."
     if number in {13,53}:
         group["topology_evolution"]={"before_report":"outputs/shared_before-gray.json","after_reports":["outputs/shared_after-gray.json","outputs/redundant_after-gray.json"],"before_result":"Six structural Gray firewall-free cross-level paths; all sampled Red probe expectations still matched","after_result":"The same conservative Gray graph semantics excludes every cross-level path avoiding Gray Firewalls","physical_claim":False}
-        group["lean_theorems"] += ["TDN.Imported.shared_three_level_20261017T2117Z_gray.concrete_bypass","TDN.Imported.shared_inline_20261017T2128Z_gray.all_cross_level_paths_cross_firewall","TDN.Imported.redundant_inline_20261017T2128Z_gray.all_cross_level_paths_cross_firewall"]
+        group["lean_theorems"] += ["TDN.Imported.shared_three_level_20261017T2117Z_gray.concrete_bypass","TDN.Imported.shared_inline_20261017T2128Z_gray.cross_level_waypointing","TDN.Imported.redundant_inline_20261017T2128Z_gray.cross_level_waypointing"]
         group["status"]="partial_results"
         if number==13:group["disposition_reason"]="Before-state structural bypass is checked and both repaired graphs have universal Gray separators. The full group still includes prohibited-flow semantics, management-service paths and Outer filtering."
 

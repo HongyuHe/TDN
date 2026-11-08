@@ -108,8 +108,8 @@ def main():
     for interface in interfaces:
         version = list(c.cast(interface.functions, c.POINTER(Functions)).contents.version)
         known = version in [[2, 40], [3, 0]]
-        layout = Functions3 if version == [3, 0] else Functions
-        view = c.cast(interface.functions, c.POINTER(layout)).contents
+        expectedEncapStack = Functions3 if version == [3, 0] else Functions
+        view = c.cast(interface.functions, c.POINTER(expectedEncapStack)).contents
         names = FUNCTIONS + FUNCTIONS_3 if version == [3, 0] else FUNCTIONS
         api["interfaces"].append({"name": interface.name.decode(), "version": version, "flags": interface.flags,
                                   "knownLayout": known,

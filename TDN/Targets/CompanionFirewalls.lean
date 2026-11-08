@@ -32,7 +32,7 @@ def CompanionFirewall.AttachmentPaths (configuration : CompanionFirewall)
   (∀ endpoint ∈ configuration.innerEndpoints, ∀ network ∈ configuration.redNetworks,
     ∀ target, d.RedAttachmentDevice network target →
     ¬ Relation.ReflTransGen
-      (Paths.Avoiding d.DeviceAdjacent (fun node => node = configuration.innerFirewall))
+      (Waypointing.Avoiding d.DeviceAdjacent (fun node => node = configuration.innerFirewall))
         endpoint target)
 
 def CompanionFirewall.Bound (configuration : CompanionFirewall) (d : Deployment) : Prop :=

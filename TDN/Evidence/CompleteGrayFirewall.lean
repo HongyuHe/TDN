@@ -29,20 +29,26 @@ def rules : List PacketPolicy.Rule :=
    ⟨[.sourceRange 100 100, .destinationRange 80 80, .protocol "tcp"], .allow⟩]
 
 def policies : List InterfacePolicy :=
-  interfaces.flatMap fun port =>
-    [⟨port.id, .inbound, rules, .deny, .input⟩,
-     ⟨port.id, .outbound, rules, .deny, .output⟩,
-     ⟨port.id, .inbound, rules, .deny, .forward⟩,
-     ⟨port.id, .outbound, rules, .deny, .forward⟩]
+  interfaces.flatMap fun iface =>
+    [⟨iface.id, .inbound, rules, .deny, .input⟩,
+     ⟨iface.id, .outbound, rules, .deny, .output⟩,
+     ⟨iface.id, .inbound, rules, .deny, .forward⟩,
+     ⟨iface.id, .outbound, rules, .deny, .forward⟩]
+
+def ifaceName (iface : Nat) : String :=
+  if iface = 0 then "port-IA" else if iface = 1 then "port-IB" else if iface = 2 then "port-IC" else if iface = 3 then "port-G" else if iface = 4 then "port-O" else "port-M"
+
+def componentName (iface : Nat) : String :=
+  if iface = 0 then "node-IA" else if iface = 1 then "node-IB" else if iface = 2 then "node-IC" else if iface = 3 then "node-G" else if iface = 4 then "node-O" else "node-M"
 
 def inventory (base : PacketProcessing.Inventory) : PacketProcessing.Inventory :=
   { base with
-    ports := [0, 1, 2, 3, 4, 5]
-    portName := fun port => if port = 0 then "port-IA" else if port = 1 then "port-IB"
-      else if port = 2 then "port-IC" else if port = 3 then "port-G"
-      else if port = 4 then "port-O" else "port-M"
+    ifaces := [0, 1, 2, 3, 4, 5]
+    ifaceName := ifaceName
+    componentName := componentName
     configuration := { base.configuration with
-      macPorts := [], bridge := fun _ _ => False, carriers := [], linkPolicies := [] }
+      ip := { base.configuration.ip with owner := fun iface => iface, interfaceName := ifaceName }
+      macIfaces := [], bridge := fun _ _ => False, carriers := [], linkPolicies := [] }
     mkaPeers := [] }
 
 def deployment (base : Deployment) (processing : PacketProcessing.Inventory) : Deployment :=
@@ -137,7 +143,7 @@ theorem complete_model_RG013 (base : Deployment) (processing : PacketProcessing.
   · simp [pairs, EndpointPair.Bound, AddressView.read, deployment, interfaces, interface,
       GrayEndpointRelation, SameLevelComponents, GrayManagement, topology, Deployment.IsLayer,
       devices]
-  · intro port member _
+  · intro iface member _
     simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member
     rcases member with rfl | rfl | rfl | rfl | rfl | rfl <;>
       simp [admissionPrograms, deployment, policies, inventory, interfaces, ProgramRuleChecks,
@@ -155,7 +161,7 @@ namespace TDN.Imported.CompleteGrayFirewall
 open Compliance Targets Targets.Complete Targets.EndpointRuleDerivation
 
 def packet : PacketPolicy.Packet :=
-  { source := 10, destination := 20, protocol := "esp", ingress := "port-IA", egress := "port-O",
+  { source := 10, destination := 20, protocol := "esp", ingress := "port-G", egress := "port-G",
     sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, inboundPolicies := [],
     outboundPolicies := [], connectionState := "new" }
 
@@ -163,10 +169,13 @@ lemma same_level_inner_traffic_is_admitted (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     (deployment base processing).Accepts "port-G" .inbound
       ((deployment base processing).Observe packet) := by
-  refine ⟨.forward, ⟨rfl, ?_⟩, ?_⟩
+  refine ⟨.forward, ⟨rfl, ?_⟩, ?_, ?_⟩
   · change (deployment base processing).ManagementMetadataBound packet
     simp [Deployment.ManagementMetadataBound, packet, PacketClass, PacketService, PacketIKE,
       PacketMKA, PacketARP]
+  · refine ⟨inventory processing, rfl, 3, by simp [inventory], rfl,
+      interface "port-G" "node-G" 90, by simp [deployment, interfaces], rfl, rfl, ?_⟩
+    simp [PacketAtHook, HookDirection, inventory, ifaceName, packet, Deployment.Observe]
   · simp [deployment, policies, interfaces, interface, InterfacePolicy.Accepts, rules,
       PacketPolicy.Rule.toFilter, Filter.evaluate, packet, Deployment.Observe, PacketPolicy.Atom.holds]
 
@@ -174,12 +183,12 @@ lemma wrong_level_inner_traffic_is_rejected (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     ¬ (deployment base processing).Accepts "port-G" .inbound
       ((deployment base processing).Observe {packet with destination := 40}) := by
-  rintro ⟨hook, _, admitted⟩
+  rintro ⟨hook, _, _, admitted⟩
   cases hook with
   | link =>
-    exact PolicyDerivation.routed_port_has_no_link_operation (deployment base processing)
+    exact PolicyDerivation.routed_iface_has_no_link_operation (deployment base processing)
       (inventory processing) rfl "port-G"
-      (by intro _ _ _; simp [PolicyDerivation.RoutedPort, inventory]) .inbound _ admitted
+      (by intro _ _ _; simp [PolicyDerivation.RoutedIface, inventory]) .inbound _ admitted
   | input | output | forward =>
     simp [deployment, policies, interfaces, interface, InterfacePolicy.Accepts, rules,
       PacketPolicy.Rule.toFilter, Filter.evaluate, packet, Deployment.Observe,
@@ -189,12 +198,12 @@ lemma lower_level_workstation_traffic_is_rejected (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     ¬ (deployment base processing).Accepts "port-G" .outbound
       ((deployment base processing).Observe {packet with source := 100, destination := 10}) := by
-  rintro ⟨hook, _, admitted⟩
+  rintro ⟨hook, _, _, admitted⟩
   cases hook with
   | link =>
-    exact PolicyDerivation.routed_port_has_no_link_operation (deployment base processing)
+    exact PolicyDerivation.routed_iface_has_no_link_operation (deployment base processing)
       (inventory processing) rfl "port-G"
-      (by intro _ _ _; simp [PolicyDerivation.RoutedPort, inventory]) .outbound _ admitted
+      (by intro _ _ _; simp [PolicyDerivation.RoutedIface, inventory]) .outbound _ admitted
   | input | output | forward =>
     simp [deployment, policies, interfaces, interface, InterfacePolicy.Accepts, rules,
       PacketPolicy.Rule.toFilter, Filter.evaluate, packet, Deployment.Observe,

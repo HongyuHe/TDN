@@ -2,23 +2,23 @@ import TDN.Semantics.FiniteExecution
 
 namespace TDN.Execution
 
-def ProducedSeal (c : Config) (token : Seal) : Prop :=
-  ∃ port association, association ∈ c.outbound port ∧
-    ∃ state, state ∈ c.outboundStates port ∧ StateBindsPolicy state association ∧
+def ProducedSeal (c : Environment) (token : Seal) : Prop :=
+  ∃ iface association, association ∈ c.outbound iface ∧
+    ∃ state, state ∈ c.outboundStates iface ∧ StateBindsPolicy state association ∧
       token = association.seal state
 
-def ProducedEnvelopes (c : Config) (frame : Frame) : Prop :=
+def ProducedEnvelopes (c : Environment) (frame : Frame) : Prop :=
   ∀ envelope ∈ frame.envelopes, ProducedSeal c envelope.authentication
 
-lemma step_preserves_envelope_provenance {c : Config} {a b : State} {action : Action}
+lemma step_preserves_envelope_provenance {c : Environment} {a b : State} {action : Action}
     (step : Step c a action b) (before : ProducedEnvelopes c a.frame) :
     ProducedEnvelopes c b.frame := by
   cases step with
-  | @encrypt port frame authenticated association sa selected installed bound =>
+  | @encrypt iface frame authenticated association sa selected installed bound =>
     intro envelope member
     rcases List.mem_cons.mp member with first | rest
     · subst envelope
-      exact ⟨port, association, (matched_policy_is_configured selected).1,
+      exact ⟨iface, association, (matched_policy_is_configured selected).1,
         sa, installed, bound, rfl⟩
     · exact before envelope rest
   | decrypt association sa header rest tracking configured installed bound received outerSource outerDestination esp selected =>
@@ -28,18 +28,18 @@ lemma step_preserves_envelope_provenance {c : Config} {a b : State} {action : Ac
     exact List.mem_cons_of_mem _ member
   | receive => exact before
   | route => exact before
-  | outputRoute => exact before
+  | routeLocalOutput => exact before
   | filter => exact before
   | outputFilter => exact before
-  | outerRoute => exact before
-  | switch => exact before
-  | plain => exact before
-  | wire => exact before
+  | routeOuterPacket => exact before
+  | bridge => exact before
+  | passWithoutTransform => exact before
+  | linkTransmit => exact before
   | «local» => exact before
   | deliver => exact before
   | drop => exact before
 
-theorem execution_envelopes_have_configured_provenance (c : Config)
+theorem execution_envelopes_have_configured_provenance (c : Environment)
     {a b : State} {actions : List Action} (run : (lts c).MTr a actions b)
     (initial : a.frame.envelopes = []) : ProducedEnvelopes c b.frame := by
   have preservation : (lts c).TrInv (fun s => ProducedEnvelopes c s.frame) :=
@@ -51,7 +51,7 @@ theorem execution_envelopes_have_configured_provenance (c : Config)
 def SameWireAssociation (a b : SecurityAssociation) : Prop :=
   a.wireIdentity = b.wireIdentity ∧ a.sender = b.sender ∧ a.receiver = b.receiver
 
-def PeerTagAgreement (c : Config) : Prop :=
+def PeerTagAgreement (c : Environment) : Prop :=
   ∀ sender outgoing, outgoing ∈ c.outbound sender →
     ∀ sendState, sendState ∈ c.outboundStates sender → StateBindsPolicy sendState outgoing →
     ∀ receiver incoming, incoming ∈ c.inbound receiver →
@@ -62,7 +62,7 @@ def PeerTagAgreement (c : Config) : Prop :=
 def WireMatchesSeal (token : Seal) (state : SecurityAssociation) : Prop :=
   token.association = state.wireIdentity ∧ token.sender = state.sender ∧ token.receiver = state.receiver
 
-theorem wire_match_determines_annotated_seal {c : Config}
+theorem wire_match_determines_annotated_seal {c : Environment}
     (agreement : PeerTagAgreement c) {token : Seal} (produced : ProducedSeal c token)
     (receiver : Nat) (incoming : Association) (configured : incoming ∈ c.inbound receiver)
     (state : SecurityAssociation) (installed : state ∈ c.inboundStates receiver)
@@ -90,14 +90,14 @@ instance (devices : List DeviceData) : Decidable (FinitePeerTagAgreement devices
   unfold FinitePeerTagAgreement StateBindsPolicy SameWireAssociation
   infer_instance
 
-theorem finite_peer_tag_agreement_sound (devices : List DeviceData) (ports : List PortData)
+theorem finite_peer_tag_agreement_sound (devices : List DeviceData) (ifaces : List IfaceData)
     (routes : List Route) (links switches : List (Nat × Nat))
     (checked : FinitePeerTagAgreement devices) :
-    PeerTagAgreement (finiteConfig devices ports routes links switches) := by
+    PeerTagAgreement (dataPlaneConfigFromRecords devices ifaces routes links switches) := by
   intro sender outgoing member sendState installed bound receiver incoming configured receiveState present boundReceive same
-  exact checked _ (device_at_member_or_default devices (portAt ports sender).owner)
+  exact checked _ (device_at_member_or_default devices (ifaceAt ifaces sender).owner)
     outgoing member sendState installed bound
-    _ (device_at_member_or_default devices (portAt ports receiver).owner)
+    _ (device_at_member_or_default devices (ifaceAt ifaces receiver).owner)
     incoming configured receiveState present boundReceive same
 
 end TDN.Execution

@@ -1,0 +1,2107 @@
+{
+  "source_snapshot_sha256": "56f1457521ff7e782c79ac43442d08dc372815981888e2e83febe6c65e4fda74",
+  "observation": {
+    "id": "obs-00130",
+    "collector": "construction-collect/v1",
+    "command": [
+      "nsenter",
+      "-t",
+      "2117322",
+      "-n",
+      "nft",
+      "-j",
+      "list",
+      "ruleset"
+    ],
+    "device_id": null,
+    "kind": "nft-hooks",
+    "started_at": "2026-11-04T08:07:48.485543+00:00",
+    "ended_at": "2026-11-04T08:07:48.492055+00:00",
+    "returncode": 0,
+    "raw_path": "raw/obs-00130.json",
+    "raw_sha256": "215057ade5a74215a9d60f3f0ac6dd40d79fc1fc328278bb1069c5bb50fcd25c",
+    "sanitizer": "xfrm-nokeys-and-public-allowlist",
+    "parse_status": "parsed"
+  },
+  "nft": {
+    "nftables": [
+      {
+        "metainfo": {
+          "version": "1.0.9",
+          "release_name": "Old Doc Yak #3",
+          "json_schema_version": 1
+        }
+      },
+      {
+        "table": {
+          "family": "ip",
+          "name": "filter",
+          "handle": 7
+        }
+      },
+      {
+        "chain": {
+          "family": "ip",
+          "table": "filter",
+          "name": "INPUT",
+          "handle": 1,
+          "type": "filter",
+          "hook": "input",
+          "prio": 0,
+          "policy": "drop"
+        }
+      },
+      {
+        "chain": {
+          "family": "ip",
+          "table": "filter",
+          "name": "FORWARD",
+          "handle": 2,
+          "type": "filter",
+          "hook": "forward",
+          "prio": 0,
+          "policy": "drop"
+        }
+      },
+      {
+        "chain": {
+          "family": "ip",
+          "table": "filter",
+          "name": "OUTPUT",
+          "handle": 3,
+          "type": "filter",
+          "hook": "output",
+          "prio": 0,
+          "policy": "drop"
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "INPUT",
+          "handle": 4,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "lo"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "tcp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "INPUT",
+          "handle": 5,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "lo"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "udp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "INPUT",
+          "handle": 6,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "lo"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "esp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "INPUT",
+          "handle": 7,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "lo"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "icmp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "INPUT",
+          "handle": 8,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.200.1.2"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.100.1.2"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "udp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "multiport"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "bpf"
+              }
+            },
+            {
+              "counter": {
+                "packets": 23,
+                "bytes": 1955
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "INPUT",
+          "handle": 9,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.200.1.2"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.100.1.2"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "esp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 14,
+                "bytes": 1872
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 10,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "length"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "drop": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 18,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.1.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.2.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "red"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "tcp",
+                    "field": "dport"
+                  }
+                },
+                "right": 8080
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "policy"
+              }
+            },
+            {
+              "counter": {
+                "packets": 7,
+                "bytes": 439
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 19,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.1.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.2.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "red"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "tcp",
+                    "field": "sport"
+                  }
+                },
+                "right": 8080
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "policy"
+              }
+            },
+            {
+              "counter": {
+                "packets": 6,
+                "bytes": 533
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 20,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.1.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.2.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "red"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "icmp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "icmp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "policy"
+              }
+            },
+            {
+              "counter": {
+                "packets": 1,
+                "bytes": 84
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 21,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.1.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.2.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "red"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "icmp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "icmp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "policy"
+              }
+            },
+            {
+              "counter": {
+                "packets": 1,
+                "bytes": 84
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 22,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.2.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.1.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "red"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "tcp",
+                    "field": "dport"
+                  }
+                },
+                "right": 8080
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "policy"
+              }
+            },
+            {
+              "counter": {
+                "packets": 6,
+                "bytes": 387
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 23,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.2.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.1.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "red"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "tcp",
+                    "field": "sport"
+                  }
+                },
+                "right": 8080
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "policy"
+              }
+            },
+            {
+              "counter": {
+                "packets": 6,
+                "bytes": 533
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 24,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.2.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.1.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "red"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "icmp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "icmp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "policy"
+              }
+            },
+            {
+              "counter": {
+                "packets": 1,
+                "bytes": 84
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "FORWARD",
+          "handle": 25,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.2.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.1.1.10"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "iifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "red"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "icmp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "icmp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "policy"
+              }
+            },
+            {
+              "counter": {
+                "packets": 1,
+                "bytes": 84
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "OUTPUT",
+          "handle": 11,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "lo"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "tcp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "OUTPUT",
+          "handle": 12,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "lo"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "udp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "OUTPUT",
+          "handle": 13,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "lo"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "esp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "OUTPUT",
+          "handle": 14,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "lo"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "icmp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "OUTPUT",
+          "handle": 15,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "length"
+              }
+            },
+            {
+              "counter": {
+                "packets": 0,
+                "bytes": 0
+              }
+            },
+            {
+              "drop": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "OUTPUT",
+          "handle": 16,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.100.1.2"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.200.1.2"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "udp"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "multiport"
+              }
+            },
+            {
+              "xt": {
+                "type": "match",
+                "name": "bpf"
+              }
+            },
+            {
+              "counter": {
+                "packets": 23,
+                "bytes": 1955
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      },
+      {
+        "rule": {
+          "family": "ip",
+          "table": "filter",
+          "chain": "OUTPUT",
+          "handle": 17,
+          "expr": [
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "saddr"
+                  }
+                },
+                "right": "10.100.1.2"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "daddr"
+                  }
+                },
+                "right": "10.200.1.2"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "meta": {
+                    "key": "oifname"
+                  }
+                },
+                "right": "gray"
+              }
+            },
+            {
+              "match": {
+                "op": "==",
+                "left": {
+                  "payload": {
+                    "protocol": "ip",
+                    "field": "protocol"
+                  }
+                },
+                "right": "esp"
+              }
+            },
+            {
+              "counter": {
+                "packets": 15,
+                "bytes": 1980
+              }
+            },
+            {
+              "accept": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "chains": [
+    {
+      "id": "V31B_I_A1:filters4:INPUT",
+      "device_id": "V31B_I_A1",
+      "status": "observed",
+      "family": 4,
+      "table": "filter",
+      "chain": "INPUT",
+      "hook": "input",
+      "priority": 0,
+      "observation_ids": [
+        "obs-00122"
+      ],
+      "policy": "drop",
+      "ordered_rules": [
+        {
+          "ordinal": 0,
+          "matches": {
+            "iptables_tokens": [
+              "-i",
+              "lo",
+              "-p",
+              "tcp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A INPUT -i lo -p tcp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 1,
+          "matches": {
+            "iptables_tokens": [
+              "-i",
+              "lo",
+              "-p",
+              "udp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A INPUT -i lo -p udp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 2,
+          "matches": {
+            "iptables_tokens": [
+              "-i",
+              "lo",
+              "-p",
+              "esp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A INPUT -i lo -p esp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 3,
+          "matches": {
+            "iptables_tokens": [
+              "-i",
+              "lo",
+              "-p",
+              "icmp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A INPUT -i lo -p icmp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 4,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.200.1.2/32",
+              "-d",
+              "10.100.1.2/32",
+              "-i",
+              "gray",
+              "-p",
+              "udp",
+              "-m",
+              "multiport",
+              "--dports",
+              "500,4500",
+              "-m",
+              "bpf",
+              "--bytecode",
+              "62,48 0 0 0,84 0 0 240,21 0 58 64,48 0 0 0,84 0 0 240,21 0 55 64,48 0 0 0,84 0 0 15,53 0 52 5,48 0 0 9,21 0 50 17,21 0 49 17,40 0 0 6,69 47 0 8191,40 0 0 2,2 0 0 9,177 0 0 0,72 0 0 4,2 0 0 11,48 0 0 0,84 0 0 15,36 0 0 4,7 0 0 15,96 0 0 11,12 0 0 0,7 0 0 15,96 0 0 9,29 0 33 0,177 0 0 0,72 0 0 2,21 0 12 500,72 0 0 4,53 0 28 36,80 0 0 25,84 0 0 240,21 0 25 32,64 0 0 32,2 0 0 5,72 0 0 4,20 0 0 8,7 0 0 8,96 0 0 5,29 17 18 0,21 0 17 4500,72 0 0 4,53 0 15 16,64 0 0 8,21 0 12 0,72 0 0 4,53 0 11 40,80 0 0 29,84 0 0 240,21 0 8 32,64 0 0 36,2 0 0 2,72 0 0 4,20 0 0 12,7 0 0 5,96 0 0 2,29 0 1 0,6 0 0 262144,6 0 0 0"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A INPUT -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -p udp -m multiport --dports 500,4500 -m bpf --bytecode \"62,48 0 0 0,84 0 0 240,21 0 58 64,48 0 0 0,84 0 0 240,21 0 55 64,48 0 0 0,84 0 0 15,53 0 52 5,48 0 0 9,21 0 50 17,21 0 49 17,40 0 0 6,69 47 0 8191,40 0 0 2,2 0 0 9,177 0 0 0,72 0 0 4,2 0 0 11,48 0 0 0,84 0 0 15,36 0 0 4,7 0 0 15,96 0 0 11,12 0 0 0,7 0 0 15,96 0 0 9,29 0 33 0,177 0 0 0,72 0 0 2,21 0 12 500,72 0 0 4,53 0 28 36,80 0 0 25,84 0 0 240,21 0 25 32,64 0 0 32,2 0 0 5,72 0 0 4,20 0 0 8,7 0 0 8,96 0 0 5,29 17 18 0,21 0 17 4500,72 0 0 4,53 0 15 16,64 0 0 8,21 0 12 0,72 0 0 4,53 0 11 40,80 0 0 29,84 0 0 240,21 0 8 32,64 0 0 36,2 0 0 2,72 0 0 4,20 0 0 12,7 0 0 5,96 0 0 2,29 0 1 0,6 0 0 262144,6 0 0 0\" -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 5,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.200.1.2/32",
+              "-d",
+              "10.100.1.2/32",
+              "-i",
+              "gray",
+              "-p",
+              "esp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A INPUT -s 10.200.1.2/32 -d 10.100.1.2/32 -i gray -p esp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "V31B_I_A1:filters4:FORWARD",
+      "device_id": "V31B_I_A1",
+      "status": "observed",
+      "family": 4,
+      "table": "filter",
+      "chain": "FORWARD",
+      "hook": "forward",
+      "priority": 0,
+      "observation_ids": [
+        "obs-00122"
+      ],
+      "policy": "drop",
+      "ordered_rules": [
+        {
+          "ordinal": 0,
+          "matches": {
+            "iptables_tokens": [
+              "-o",
+              "gray",
+              "-m",
+              "length",
+              "--length",
+              "1321:65535"
+            ]
+          },
+          "action": "drop",
+          "raw_text": "-A FORWARD -o gray -m length --length 1321:65535 -j DROP",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 1,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.1.1.10/32",
+              "-d",
+              "10.2.1.10/32",
+              "-i",
+              "red",
+              "-o",
+              "gray",
+              "-p",
+              "tcp",
+              "-m",
+              "tcp",
+              "--dport",
+              "8080",
+              "-m",
+              "policy",
+              "--dir",
+              "out",
+              "--pol",
+              "ipsec",
+              "--reqid",
+              "101",
+              "--mode",
+              "tunnel"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A FORWARD -s 10.1.1.10/32 -d 10.2.1.10/32 -i red -o gray -p tcp -m tcp --dport 8080 -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 2,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.1.1.10/32",
+              "-d",
+              "10.2.1.10/32",
+              "-i",
+              "red",
+              "-o",
+              "gray",
+              "-p",
+              "tcp",
+              "-m",
+              "tcp",
+              "--sport",
+              "8080",
+              "-m",
+              "policy",
+              "--dir",
+              "out",
+              "--pol",
+              "ipsec",
+              "--reqid",
+              "101",
+              "--mode",
+              "tunnel"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A FORWARD -s 10.1.1.10/32 -d 10.2.1.10/32 -i red -o gray -p tcp -m tcp --sport 8080 -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 3,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.1.1.10/32",
+              "-d",
+              "10.2.1.10/32",
+              "-i",
+              "red",
+              "-o",
+              "gray",
+              "-p",
+              "icmp",
+              "-m",
+              "icmp",
+              "--icmp-type",
+              "8",
+              "-m",
+              "policy",
+              "--dir",
+              "out",
+              "--pol",
+              "ipsec",
+              "--reqid",
+              "101",
+              "--mode",
+              "tunnel"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A FORWARD -s 10.1.1.10/32 -d 10.2.1.10/32 -i red -o gray -p icmp -m icmp --icmp-type 8 -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 4,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.1.1.10/32",
+              "-d",
+              "10.2.1.10/32",
+              "-i",
+              "red",
+              "-o",
+              "gray",
+              "-p",
+              "icmp",
+              "-m",
+              "icmp",
+              "--icmp-type",
+              "0",
+              "-m",
+              "policy",
+              "--dir",
+              "out",
+              "--pol",
+              "ipsec",
+              "--reqid",
+              "101",
+              "--mode",
+              "tunnel"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A FORWARD -s 10.1.1.10/32 -d 10.2.1.10/32 -i red -o gray -p icmp -m icmp --icmp-type 0 -m policy --dir out --pol ipsec --reqid 101 --mode tunnel -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 5,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.2.1.10/32",
+              "-d",
+              "10.1.1.10/32",
+              "-i",
+              "gray",
+              "-o",
+              "red",
+              "-p",
+              "tcp",
+              "-m",
+              "tcp",
+              "--dport",
+              "8080",
+              "-m",
+              "policy",
+              "--dir",
+              "in",
+              "--pol",
+              "ipsec",
+              "--reqid",
+              "101",
+              "--mode",
+              "tunnel"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A FORWARD -s 10.2.1.10/32 -d 10.1.1.10/32 -i gray -o red -p tcp -m tcp --dport 8080 -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 6,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.2.1.10/32",
+              "-d",
+              "10.1.1.10/32",
+              "-i",
+              "gray",
+              "-o",
+              "red",
+              "-p",
+              "tcp",
+              "-m",
+              "tcp",
+              "--sport",
+              "8080",
+              "-m",
+              "policy",
+              "--dir",
+              "in",
+              "--pol",
+              "ipsec",
+              "--reqid",
+              "101",
+              "--mode",
+              "tunnel"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A FORWARD -s 10.2.1.10/32 -d 10.1.1.10/32 -i gray -o red -p tcp -m tcp --sport 8080 -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 7,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.2.1.10/32",
+              "-d",
+              "10.1.1.10/32",
+              "-i",
+              "gray",
+              "-o",
+              "red",
+              "-p",
+              "icmp",
+              "-m",
+              "icmp",
+              "--icmp-type",
+              "8",
+              "-m",
+              "policy",
+              "--dir",
+              "in",
+              "--pol",
+              "ipsec",
+              "--reqid",
+              "101",
+              "--mode",
+              "tunnel"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A FORWARD -s 10.2.1.10/32 -d 10.1.1.10/32 -i gray -o red -p icmp -m icmp --icmp-type 8 -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 8,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.2.1.10/32",
+              "-d",
+              "10.1.1.10/32",
+              "-i",
+              "gray",
+              "-o",
+              "red",
+              "-p",
+              "icmp",
+              "-m",
+              "icmp",
+              "--icmp-type",
+              "0",
+              "-m",
+              "policy",
+              "--dir",
+              "in",
+              "--pol",
+              "ipsec",
+              "--reqid",
+              "101",
+              "--mode",
+              "tunnel"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A FORWARD -s 10.2.1.10/32 -d 10.1.1.10/32 -i gray -o red -p icmp -m icmp --icmp-type 0 -m policy --dir in --pol ipsec --reqid 101 --mode tunnel -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "V31B_I_A1:filters4:OUTPUT",
+      "device_id": "V31B_I_A1",
+      "status": "observed",
+      "family": 4,
+      "table": "filter",
+      "chain": "OUTPUT",
+      "hook": "output",
+      "priority": 0,
+      "observation_ids": [
+        "obs-00122"
+      ],
+      "policy": "drop",
+      "ordered_rules": [
+        {
+          "ordinal": 0,
+          "matches": {
+            "iptables_tokens": [
+              "-o",
+              "lo",
+              "-p",
+              "tcp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A OUTPUT -o lo -p tcp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 1,
+          "matches": {
+            "iptables_tokens": [
+              "-o",
+              "lo",
+              "-p",
+              "udp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A OUTPUT -o lo -p udp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 2,
+          "matches": {
+            "iptables_tokens": [
+              "-o",
+              "lo",
+              "-p",
+              "esp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A OUTPUT -o lo -p esp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 3,
+          "matches": {
+            "iptables_tokens": [
+              "-o",
+              "lo",
+              "-p",
+              "icmp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A OUTPUT -o lo -p icmp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 4,
+          "matches": {
+            "iptables_tokens": [
+              "-o",
+              "gray",
+              "-m",
+              "length",
+              "--length",
+              "1401:65535"
+            ]
+          },
+          "action": "drop",
+          "raw_text": "-A OUTPUT -o gray -m length --length 1401:65535 -j DROP",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 5,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.100.1.2/32",
+              "-d",
+              "10.200.1.2/32",
+              "-o",
+              "gray",
+              "-p",
+              "udp",
+              "-m",
+              "multiport",
+              "--dports",
+              "500,4500",
+              "-m",
+              "bpf",
+              "--bytecode",
+              "62,48 0 0 0,84 0 0 240,21 0 58 64,48 0 0 0,84 0 0 240,21 0 55 64,48 0 0 0,84 0 0 15,53 0 52 5,48 0 0 9,21 0 50 17,21 0 49 17,40 0 0 6,69 47 0 8191,40 0 0 2,2 0 0 9,177 0 0 0,72 0 0 4,2 0 0 11,48 0 0 0,84 0 0 15,36 0 0 4,7 0 0 15,96 0 0 11,12 0 0 0,7 0 0 15,96 0 0 9,29 0 33 0,177 0 0 0,72 0 0 2,21 0 12 500,72 0 0 4,53 0 28 36,80 0 0 25,84 0 0 240,21 0 25 32,64 0 0 32,2 0 0 5,72 0 0 4,20 0 0 8,7 0 0 8,96 0 0 5,29 17 18 0,21 0 17 4500,72 0 0 4,53 0 15 16,64 0 0 8,21 0 12 0,72 0 0 4,53 0 11 40,80 0 0 29,84 0 0 240,21 0 8 32,64 0 0 36,2 0 0 2,72 0 0 4,20 0 0 12,7 0 0 5,96 0 0 2,29 0 1 0,6 0 0 262144,6 0 0 0"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A OUTPUT -s 10.100.1.2/32 -d 10.200.1.2/32 -o gray -p udp -m multiport --dports 500,4500 -m bpf --bytecode \"62,48 0 0 0,84 0 0 240,21 0 58 64,48 0 0 0,84 0 0 240,21 0 55 64,48 0 0 0,84 0 0 15,53 0 52 5,48 0 0 9,21 0 50 17,21 0 49 17,40 0 0 6,69 47 0 8191,40 0 0 2,2 0 0 9,177 0 0 0,72 0 0 4,2 0 0 11,48 0 0 0,84 0 0 15,36 0 0 4,7 0 0 15,96 0 0 11,12 0 0 0,7 0 0 15,96 0 0 9,29 0 33 0,177 0 0 0,72 0 0 2,21 0 12 500,72 0 0 4,53 0 28 36,80 0 0 25,84 0 0 240,21 0 25 32,64 0 0 32,2 0 0 5,72 0 0 4,20 0 0 8,7 0 0 8,96 0 0 5,29 17 18 0,21 0 17 4500,72 0 0 4,53 0 15 16,64 0 0 8,21 0 12 0,72 0 0 4,53 0 11 40,80 0 0 29,84 0 0 240,21 0 8 32,64 0 0 36,2 0 0 2,72 0 0 4,20 0 0 12,7 0 0 5,96 0 0 2,29 0 1 0,6 0 0 262144,6 0 0 0\" -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        },
+        {
+          "ordinal": 6,
+          "matches": {
+            "iptables_tokens": [
+              "-s",
+              "10.100.1.2/32",
+              "-d",
+              "10.200.1.2/32",
+              "-o",
+              "gray",
+              "-p",
+              "esp"
+            ]
+          },
+          "action": "accept",
+          "raw_text": "-A OUTPUT -s 10.100.1.2/32 -d 10.200.1.2/32 -o gray -p esp -j ACCEPT",
+          "observation_ids": [
+            "obs-00122"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "V31B_I_A1:filters6:INPUT",
+      "device_id": "V31B_I_A1",
+      "status": "observed",
+      "family": 6,
+      "table": "filter",
+      "chain": "INPUT",
+      "hook": "input",
+      "priority": 0,
+      "observation_ids": [
+        "obs-00123"
+      ],
+      "policy": "accept",
+      "ordered_rules": []
+    },
+    {
+      "id": "V31B_I_A1:filters6:FORWARD",
+      "device_id": "V31B_I_A1",
+      "status": "observed",
+      "family": 6,
+      "table": "filter",
+      "chain": "FORWARD",
+      "hook": "forward",
+      "priority": 0,
+      "observation_ids": [
+        "obs-00123"
+      ],
+      "policy": "accept",
+      "ordered_rules": []
+    },
+    {
+      "id": "V31B_I_A1:filters6:OUTPUT",
+      "device_id": "V31B_I_A1",
+      "status": "observed",
+      "family": 6,
+      "table": "filter",
+      "chain": "OUTPUT",
+      "hook": "output",
+      "priority": 0,
+      "observation_ids": [
+        "obs-00123"
+      ],
+      "policy": "accept",
+      "ordered_rules": []
+    }
+  ]
+}

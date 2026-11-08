@@ -112,154 +112,154 @@ tdn_data usefulState50 : MultiProtocolExecution.State from "../../data/evidence/
 tdn_data usefulState51 : MultiProtocolExecution.State from "../../data/evidence/spec009-header-state/spec006-fragment-offset/spec005-size-field/spec004-wire-fields/spec002-state-entry/FreshPairingMacsecIpsecStandaloneForward.json" ["TDN.Imported.PairingMacsecIpsecStandalone.Forward.usefulState51"]
 
 lemma usefulStep0 : MultiProtocolExecution.Step config usefulState0 .route usefulState1 := by
-  exact MultiProtocolExecution.Step.outputRoute ⟨18, 18, 167903232, 167903487, 24, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.routeLocalOutput ⟨18, 18, 167903232, 167903487, 24, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
 lemma usefulStep1 : MultiProtocolExecution.Step config usefulState1 .outputFilter usefulState2 := by
-  exact MultiProtocolExecution.Step.outputFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.outputFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep2 : MultiProtocolExecution.Step config usefulState2 .plain usefulState3 := by
-  exact MultiProtocolExecution.Step.plain rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep2 : MultiProtocolExecution.Step config usefulState2 .passWithoutTransform usefulState3 := by
+  exact MultiProtocolExecution.Step.passWithoutTransform rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep3 : MultiProtocolExecution.Step config usefulState3 .wire usefulState4 := by
-  exact MultiProtocolExecution.Step.wire 24 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep3 : MultiProtocolExecution.Step config usefulState3 .linkTransmit usefulState4 := by
+  exact MultiProtocolExecution.Step.linkTransmit 24 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep4 : MultiProtocolExecution.Step config usefulState4 .receive usefulState5 := by
   exact Step.receive rfl rfl "NEW"
 
 lemma usefulStep5 : MultiProtocolExecution.Step config usefulState5 .route usefulState6 := by
-  exact MultiProtocolExecution.Step.route ⟨24, 23, 167903232, 167903487, 24, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.route ⟨24, 23, 167903232, 167903487, 24, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
 lemma usefulStep6 : MultiProtocolExecution.Step config usefulState6 .forwardFilter usefulState7 := by
-  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep7 : MultiProtocolExecution.Step config usefulState7 .plain usefulState8 := by
-  exact MultiProtocolExecution.Step.plain rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep7 : MultiProtocolExecution.Step config usefulState7 .passWithoutTransform usefulState8 := by
+  exact MultiProtocolExecution.Step.passWithoutTransform rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep8 : MultiProtocolExecution.Step config usefulState8 .encryptMACsec usefulState9 := by
-  exact MultiProtocolExecution.Step.encryptMACsec (macPorts[0]'(by decide)) ⟨1, 778884615472676865, 0, 0⟩ (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl rfl ⟨rfl, rfl⟩
+  exact MultiProtocolExecution.Step.encryptMACsec (macIfaces[0]'(by decide)) ⟨1, 778884615472676865, 0, 0⟩ (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl rfl ⟨rfl, rfl⟩
 
-lemma usefulStep9 : MultiProtocolExecution.Step config usefulState9 .wire usefulState10 := by
-  exact MultiProtocolExecution.Step.wire 2 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep9 : MultiProtocolExecution.Step config usefulState9 .linkTransmit usefulState10 := by
+  exact MultiProtocolExecution.Step.linkTransmit 2 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep10 : MultiProtocolExecution.Step config usefulState10 .bridge usefulState11 := by
-  exact MultiProtocolExecution.Step.bridge 3 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.bridge 3 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep11 : MultiProtocolExecution.Step config usefulState11 .encapsulate usefulState12 := by
-  exact MultiProtocolExecution.Step.encapsulate (carriers[0]'(by decide)) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl rfl
+  exact MultiProtocolExecution.Step.encapsulate (carriers[0]'(by decide)) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl rfl
 
 lemma usefulStep12 : MultiProtocolExecution.Step config usefulState12 .route usefulState13 := by
-  exact MultiProtocolExecution.Step.outputRoute ⟨5, 5, 169148417, 169148417, 32, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.routeLocalOutput ⟨5, 5, 169148417, 169148417, 32, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
 lemma usefulStep13 : MultiProtocolExecution.Step config usefulState13 .outputFilter usefulState14 := by
-  exact MultiProtocolExecution.Step.outputFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.outputFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep14 : MultiProtocolExecution.Step config usefulState14 .plain usefulState15 := by
-  exact MultiProtocolExecution.Step.plain rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep14 : MultiProtocolExecution.Step config usefulState14 .passWithoutTransform usefulState15 := by
+  exact MultiProtocolExecution.Step.passWithoutTransform rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep15 : MultiProtocolExecution.Step config usefulState15 .wire usefulState16 := by
-  exact MultiProtocolExecution.Step.wire 30 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep15 : MultiProtocolExecution.Step config usefulState15 .linkTransmit usefulState16 := by
+  exact MultiProtocolExecution.Step.linkTransmit 30 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep16 : MultiProtocolExecution.Step config usefulState16 .receive usefulState17 := by
   exact Step.receive rfl rfl "NEW"
 
 lemma usefulStep17 : MultiProtocolExecution.Step config usefulState17 .route usefulState18 := by
-  exact MultiProtocolExecution.Step.route ⟨30, 29, 0, 4294967295, 0, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.route ⟨30, 29, 0, 4294967295, 0, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
 lemma usefulStep18 : MultiProtocolExecution.Step config usefulState18 .forwardFilter usefulState19 := by
-  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep19 : MultiProtocolExecution.Step config usefulState19 .encryptIPsec usefulState20 := by
-  exact MultiProtocolExecution.Step.encryptIPsec ⟨200, 2, 3221225985, 3221226241, 168493057, 168493057, 169148417, 169148417, 0, none⟩ ⟨200, 2001, 3221225985, 3221226241⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.encryptIPsec ⟨200, 2, 3221225985, 3221226241, 168493057, 168493057, 169148417, 169148417, 0, none⟩ ⟨200, 2001, 3221225985, 3221226241⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep20 : MultiProtocolExecution.Step config usefulState20 .route usefulState21 := by
-  exact MultiProtocolExecution.Step.outerRoute ⟨29, 29, 0, 4294967295, 0, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.routeOuterPacket ⟨29, 29, 0, 4294967295, 0, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
-lemma usefulStep21 : MultiProtocolExecution.Step config usefulState21 .wire usefulState22 := by
-  exact MultiProtocolExecution.Step.wire 11 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep21 : MultiProtocolExecution.Step config usefulState21 .linkTransmit usefulState22 := by
+  exact MultiProtocolExecution.Step.linkTransmit 11 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep22 : MultiProtocolExecution.Step config usefulState22 .receive usefulState23 := by
   exact Step.receive rfl rfl "NEW"
 
 lemma usefulStep23 : MultiProtocolExecution.Step config usefulState23 .route usefulState24 := by
-  exact MultiProtocolExecution.Step.route ⟨11, 13, 3221226240, 3221226243, 30, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.route ⟨11, 13, 3221226240, 3221226243, 30, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
 lemma usefulStep24 : MultiProtocolExecution.Step config usefulState24 .forwardFilter usefulState25 := by
-  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep25 : MultiProtocolExecution.Step config usefulState25 .plain usefulState26 := by
-  exact MultiProtocolExecution.Step.plain rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep25 : MultiProtocolExecution.Step config usefulState25 .passWithoutTransform usefulState26 := by
+  exact MultiProtocolExecution.Step.passWithoutTransform rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep26 : MultiProtocolExecution.Step config usefulState26 .wire usefulState27 := by
-  exact MultiProtocolExecution.Step.wire 16 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep26 : MultiProtocolExecution.Step config usefulState26 .linkTransmit usefulState27 := by
+  exact MultiProtocolExecution.Step.linkTransmit 16 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep27 : MultiProtocolExecution.Step config usefulState27 .receive usefulState28 := by
   exact Step.receive rfl rfl "NEW"
 
 lemma usefulStep28 : MultiProtocolExecution.Step config usefulState28 .route usefulState29 := by
-  exact MultiProtocolExecution.Step.route ⟨16, 14, 3221226240, 3221226243, 30, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.route ⟨16, 14, 3221226240, 3221226243, 30, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
 lemma usefulStep29 : MultiProtocolExecution.Step config usefulState29 .forwardFilter usefulState30 := by
-  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep30 : MultiProtocolExecution.Step config usefulState30 .plain usefulState31 := by
-  exact MultiProtocolExecution.Step.plain rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep30 : MultiProtocolExecution.Step config usefulState30 .passWithoutTransform usefulState31 := by
+  exact MultiProtocolExecution.Step.passWithoutTransform rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep31 : MultiProtocolExecution.Step config usefulState31 .wire usefulState32 := by
-  exact MultiProtocolExecution.Step.wire 32 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep31 : MultiProtocolExecution.Step config usefulState31 .linkTransmit usefulState32 := by
+  exact MultiProtocolExecution.Step.linkTransmit 32 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep32 : MultiProtocolExecution.Step config usefulState32 .decryptIPsec usefulState33 := by
-  exact MultiProtocolExecution.Step.decryptIPsec ⟨200, 2, 3221225985, 3221226241, 168493057, 168493057, 169148417, 169148417, 0, none⟩ ⟨200, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493057, 169148417, 1701, 1701, 200, "l2tpv3", "udp"⟩ (.macsec ⟨1, 778884615472676865, 0, 0⟩ (.datagram { source := 167837698, destination := 167903234, protocol := "icmp", ingress := "", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, inboundPolicies := [], outboundPolicies := [], connectionState := "" }))) { source := 168493057, destination := 169148417, protocol := "udp", ingress := "", egress := "", sourcePort := 1701, destinationPort := 1701, ipv4HeaderWords := 5, ipv6NextHeader := 0, inboundPolicies := [], outboundPolicies := [], connectionState := "" } rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) "NEW"
+  exact MultiProtocolExecution.Step.decryptIPsec ⟨200, 2, 3221225985, 3221226241, 168493057, 168493057, 169148417, 169148417, 0, none⟩ ⟨200, 2001, 3221225985, 3221226241⟩ (.carrier ⟨168493057, 169148417, 1701, 1701, 200, "l2tpv3", "udp"⟩ (.macsec ⟨1, 778884615472676865, 0, 0⟩ (.datagram { source := 167837698, destination := 167903234, protocol := "icmp", ingress := "", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, inboundPolicies := [], outboundPolicies := [], connectionState := "" }))) { source := 168493057, destination := 169148417, protocol := "udp", ingress := "", egress := "", sourcePort := 1701, destinationPort := 1701, ipv4HeaderWords := 5, ipv6NextHeader := 0, inboundPolicies := [], outboundPolicies := [], connectionState := "" } rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) "NEW"
 
 lemma usefulStep33 : MultiProtocolExecution.Step config usefulState33 .route usefulState34 := by
-  exact MultiProtocolExecution.Step.route ⟨32, 33, 169148416, 169148419, 30, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.route ⟨32, 33, 169148416, 169148419, 30, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
 lemma usefulStep34 : MultiProtocolExecution.Step config usefulState34 .forwardFilter usefulState35 := by
-  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep35 : MultiProtocolExecution.Step config usefulState35 .plain usefulState36 := by
-  exact MultiProtocolExecution.Step.plain rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep35 : MultiProtocolExecution.Step config usefulState35 .passWithoutTransform usefulState36 := by
+  exact MultiProtocolExecution.Step.passWithoutTransform rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep36 : MultiProtocolExecution.Step config usefulState36 .wire usefulState37 := by
-  exact MultiProtocolExecution.Step.wire 10 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep36 : MultiProtocolExecution.Step config usefulState36 .linkTransmit usefulState37 := by
+  exact MultiProtocolExecution.Step.linkTransmit 10 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep37 : MultiProtocolExecution.Step config usefulState37 .receive usefulState38 := by
   exact Step.receive rfl rfl "NEW"
 
 lemma usefulStep38 : MultiProtocolExecution.Step config usefulState38 .inputFilter usefulState39 := by
-  exact MultiProtocolExecution.Step.inputFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.inputFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep39 : MultiProtocolExecution.Step config usefulState39 .decapsulate usefulState40 := by
-  exact MultiProtocolExecution.Step.decapsulate (carriers[1]'(by decide)) (.macsec ⟨1, 778884615472676865, 0, 0⟩ (.datagram { source := 167837698, destination := 167903234, protocol := "icmp", ingress := "", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, inboundPolicies := [], outboundPolicies := [], connectionState := "" })) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl rfl rfl
+  exact MultiProtocolExecution.Step.decapsulate (carriers[1]'(by decide)) (.macsec ⟨1, 778884615472676865, 0, 0⟩ (.datagram { source := 167837698, destination := 167903234, protocol := "icmp", ingress := "", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, inboundPolicies := [], outboundPolicies := [], connectionState := "" })) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl rfl rfl
 
 lemma usefulStep40 : MultiProtocolExecution.Step config usefulState40 .bridge usefulState41 := by
-  exact MultiProtocolExecution.Step.bridge 7 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.bridge 7 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep41 : MultiProtocolExecution.Step config usefulState41 .wire usefulState42 := by
-  exact MultiProtocolExecution.Step.wire 25 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep41 : MultiProtocolExecution.Step config usefulState41 .linkTransmit usefulState42 := by
+  exact MultiProtocolExecution.Step.linkTransmit 25 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep42 : MultiProtocolExecution.Step config usefulState42 .decryptMACsec usefulState43 := by
-  exact MultiProtocolExecution.Step.decryptMACsec (macPorts[1]'(by decide)) ⟨1, 778884615472676865, 0, 0⟩ ⟨1, 778884615472676865, 0, 0⟩ (.datagram { source := 167837698, destination := 167903234, protocol := "icmp", ingress := "", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, inboundPolicies := [], outboundPolicies := [], connectionState := "" }) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.decryptMACsec (macIfaces[1]'(by decide)) ⟨1, 778884615472676865, 0, 0⟩ ⟨1, 778884615472676865, 0, 0⟩ (.datagram { source := 167837698, destination := 167903234, protocol := "icmp", ingress := "", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, inboundPolicies := [], outboundPolicies := [], connectionState := "" }) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep43 : MultiProtocolExecution.Step config usefulState43 .receive usefulState44 := by
   exact Step.receive rfl rfl "NEW"
 
 lemma usefulStep44 : MultiProtocolExecution.Step config usefulState44 .route usefulState45 := by
-  exact MultiProtocolExecution.Step.route ⟨27, 28, 167903232, 167903487, 24, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
+  exact MultiProtocolExecution.Step.route ⟨27, 28, 167903232, 167903487, 24, 0, 32766⟩ rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) rfl
 
 lemma usefulStep45 : MultiProtocolExecution.Step config usefulState45 .forwardFilter usefulState46 := by
-  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.forwardFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep46 : MultiProtocolExecution.Step config usefulState46 .plain usefulState47 := by
-  exact MultiProtocolExecution.Step.plain rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep46 : MultiProtocolExecution.Step config usefulState46 .passWithoutTransform usefulState47 := by
+  exact MultiProtocolExecution.Step.passWithoutTransform rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
-lemma usefulStep47 : MultiProtocolExecution.Step config usefulState47 .wire usefulState48 := by
-  exact MultiProtocolExecution.Step.wire 20 rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+lemma usefulStep47 : MultiProtocolExecution.Step config usefulState47 .linkTransmit usefulState48 := by
+  exact MultiProtocolExecution.Step.linkTransmit 20 rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep48 : MultiProtocolExecution.Step config usefulState48 .receive usefulState49 := by
   exact Step.receive rfl rfl "NEW"
 
 lemma usefulStep49 : MultiProtocolExecution.Step config usefulState49 .inputFilter usefulState50 := by
-  exact MultiProtocolExecution.Step.inputFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
+  exact MultiProtocolExecution.Step.inputFilter rfl rfl (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide) (by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)
 
 lemma usefulStep50 : MultiProtocolExecution.Step config usefulState50 .deliver usefulState51 := by
   exact MultiProtocolExecution.Step.deliver 1 rfl rfl rfl
@@ -286,6 +286,6 @@ theorem positive_mixed_delivery : (lts config).MTr usefulState0 usefulActions us
 lemma useful_red_origin : Targets.MixedRedOrigin redSources usefulState0 := by
   simp [Targets.MixedRedOrigin, usefulState0, redSources]
 
-lemma useful_plaintext_delivery : usefulState51.phase = .delivered ∧
+lemma useful_plaintext_delivery : usefulState51.datapathStage = .delivered ∧
     usefulState51.frame.body.protectionLayers = [] := ⟨rfl, rfl⟩
 end TDN.Imported.PairingMacsecIpsecStandalone.Forward

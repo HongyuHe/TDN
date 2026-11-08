@@ -4,40 +4,40 @@ import TDN.Semantics.MultiProtocolEvents
 namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
-lemma headered_encryption_output_layout {c : Config} {layout : Nat → List Nat}
+lemma headered_encryption_output_layout {c : Config} {expectedEncapStack : Nat → List Nat}
     {before after : State} {action : Action}
     (step : Step c before action after) (label : IsEncryption action)
-    (invariant : HeaderedStackInvariant c layout after) :
-    after.frame.body.protectionLayers = layout after.port := by
+    (invariant : HeaderedStackInvariant c expectedEncapStack after) :
+    after.frame.body.protectionLayers = expectedEncapStack after.iface := by
   cases step <;> simp only [IsEncryption, reduceCtorEq, false_or] at label
   case encryptIPsec => exact invariant.2.2.1
-  case encryptMACsec port association configured phase logical emits =>
-    simpa only [HeaderedStackInvariant, phase] using invariant.2.2
+  case encryptMACsec iface association configured datapathStage logical emits =>
+    simpa only [HeaderedStackInvariant, datapathStage] using invariant.2.2
 
 theorem headered_nested_stack_requires_ordered_encryptions
-    (c : Config) (layout : Nat → List Nat)
-    (conditions : HeaderedLocalConditions c layout)
+    (c : Config) (expectedEncapStack : Nat → List Nat)
+    (conditions : HeaderedLocalConditions c expectedEncapStack)
     (processing : HeaderProcessing) (mode : c.headerProcessing = some processing)
     (bounds : HeaderBounds processing) (innerTag outerTag : Nat)
-    (placement : ∀ port, (layout port).head? = some outerTag →
-      layout port = [outerTag, innerTag])
+    (placement : ∀ iface, (expectedEncapStack iface).head? = some outerTag →
+      expectedEncapStack iface = [outerTag, innerTag])
     {before after : State} {actions : List Action}
     (run : (lts c).MTr before actions after)
-    (initial : HeaderedStackInvariant c layout before)
+    (initial : HeaderedStackInvariant c expectedEncapStack before)
     (empty : before.frame.body.protectionLayers = [])
     (present : outerTag ∈ after.frame.body.protectionLayers) :
     OrderedEncryptions c innerTag outerTag before actions after := by
   have absent : outerTag ∉ before.frame.body.protectionLayers := by simp [empty]
   obtain ⟨earlier, later, left, action, right, sequence, first, step, last, label, added, payload⟩ :=
     boundary_addition_has_actual_encryption c outerTag run absent present
-  have preserved := headered_executions_preserve_stack c layout conditions processing mode bounds
+  have preserved := headered_executions_preserve_stack c expectedEncapStack conditions processing mode bounds
     (first.stepR (lts c) step) initial
   have output := headered_encryption_output_layout step label preserved
-  have head : (layout right.port).head? = some outerTag := by
+  have head : (expectedEncapStack right.iface).head? = some outerTag := by
     rw [← output, added]
     rfl
   have shape : outerTag :: left.frame.body.protectionLayers = [outerTag, innerTag] :=
-    added.symm.trans (output.trans (placement right.port head))
+    added.symm.trans (output.trans (placement right.iface head))
   have inner := (List.cons.inj shape).2
   have innerPresent : innerTag ∈ left.frame.body.protectionLayers := by simp [inner]
   have innerAbsent : innerTag ∉ before.frame.body.protectionLayers := by simp [empty]

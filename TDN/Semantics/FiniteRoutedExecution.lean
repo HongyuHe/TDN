@@ -35,70 +35,70 @@ lemma matches_with_route {rule : PacketPolicy.Rule} {route : Route}
     PacketPolicy.Atom.holds]
   exact ⟨decide_eq_true routed, matched⟩
 
-def FiniteRoutedForwardChecks (devices : List DeviceData) (ports : List PortData)
+def FiniteRoutedForwardChecks (devices : List DeviceData) (ifaces : List IfaceData)
     (routes : List Route) : Prop :=
   ∀ route ∈ routes,
     ∀ auth ∈ possibleAuthentications
-      (deviceAt devices (portAt ports route.ingress).owner) (portAt ports route.ingress),
-    ∀ rule ∈ (deviceAt devices (portAt ports route.egress).owner).forwardRules,
+      (deviceAt devices (ifaceAt ifaces route.ingress).owner) (ifaceAt ifaces route.ingress),
+    ∀ rule ∈ (deviceAt devices (ifaceAt ifaces route.egress).owner).forwardRules,
       rule.verdict = .allow →
-      ExcludesRoute rule route ∨ RecordRuleCheck (portAt ports route.ingress)
-        (portAt ports route.egress) (deviceAt devices (portAt ports route.egress).owner) auth (withRoute rule route)
+      ExcludesRoute rule route ∨ RecordRuleCheck (ifaceAt ifaces route.ingress)
+        (ifaceAt ifaces route.egress) (deviceAt devices (ifaceAt ifaces route.egress).owner) auth (withRoute rule route)
 
-instance (devices : List DeviceData) (ports : List PortData) (routes : List Route) :
-    Decidable (FiniteRoutedForwardChecks devices ports routes) := by
+instance (devices : List DeviceData) (ifaces : List IfaceData) (routes : List Route) :
+    Decidable (FiniteRoutedForwardChecks devices ifaces routes) := by
   unfold FiniteRoutedForwardChecks
   infer_instance
 
-theorem finite_routed_forward_checks_sound (devices : List DeviceData) (ports : List PortData)
+theorem finite_routed_forward_checks_sound (devices : List DeviceData) (ifaces : List IfaceData)
     (routes : List Route) (links switches : List (Nat × Nat))
-    (checked : FiniteRoutedForwardChecks devices ports routes)
-    (denying : ∀ p, (finiteConfig devices ports routes links switches).forwardFallback p = .deny)
-    (port : Nat) (frame : Frame) (authenticated : List Nat)
-    (routed : RoutedFrame (finiteConfig devices ports routes links switches) port frame)
+    (checked : FiniteRoutedForwardChecks devices ifaces routes)
+    (denying : ∀ p, (dataPlaneConfigFromRecords devices ifaces routes links switches).forwardFallback p = .deny)
+    (iface : Nat) (frame : Frame) (authenticated : List Nat)
+    (routed : RoutedFrame (dataPlaneConfigFromRecords devices ifaces routes links switches) iface frame)
     (ingress : frame.packet.ingress =
-      (finiteConfig devices ports routes links switches).interfaceName frame.enteredPort)
-    (valid : LocalAuthentication (finiteConfig devices ports routes links switches)
-      (finiteLayout ports) frame.enteredPort authenticated)
+      (dataPlaneConfigFromRecords devices ifaces routes links switches).interfaceName frame.enteredIface)
+    (valid : LocalAuthentication (dataPlaneConfigFromRecords devices ifaces routes links switches)
+      (expectedEncapStackFromRecords ifaces) frame.enteredIface authenticated)
     (accepted : accepts
-      ((finiteConfig devices ports routes links switches).forwardRules port)
-      ((finiteConfig devices ports routes links switches).forwardFallback port)
-      (policyPacket (finiteConfig devices ports routes links switches) port frame authenticated)) :
-    (selectedAssociations ((finiteConfig devices ports routes links switches).outbound port)
+      ((dataPlaneConfigFromRecords devices ifaces routes links switches).forwardRules iface)
+      ((dataPlaneConfigFromRecords devices ifaces routes links switches).forwardFallback iface)
+      (policyPacket (dataPlaneConfigFromRecords devices ifaces routes links switches) iface frame authenticated)) :
+    (selectedAssociations ((dataPlaneConfigFromRecords devices ifaces routes links switches).outbound iface)
       frame.packet = [] →
-      processingStack (finiteLayout ports) frame.enteredPort authenticated = finiteLayout ports port) ∧
+      encapStackAfterIngress (expectedEncapStackFromRecords ifaces) frame.enteredIface authenticated = expectedEncapStackFromRecords ifaces iface) ∧
     (∀ association ∈ selectedAssociations
-      ((finiteConfig devices ports routes links switches).outbound port) frame.packet,
-      association.tag :: processingStack (finiteLayout ports) frame.enteredPort authenticated =
-        finiteLayout ports port) := by
-  obtain ⟨route, selected, atEntry, atPort⟩ := routed
+      ((dataPlaneConfigFromRecords devices ifaces routes links switches).outbound iface) frame.packet,
+      association.tag :: encapStackAfterIngress (expectedEncapStackFromRecords ifaces) frame.enteredIface authenticated =
+        expectedEncapStackFromRecords ifaces iface) := by
+  obtain ⟨route, selected, atEntry, atIface⟩ := routed
   rw [denying] at accepted
   obtain ⟨filtered, member, matched, allow⟩ := Filter.allowed_has_matching_allow _ _ accepted
   obtain ⟨rule, inRules, rfl⟩ := List.mem_map.mp member
-  have authMember := valid_authentication_in_finite_list devices ports routes links switches
-    frame.enteredPort authenticated valid
+  have authMember := valid_authentication_in_finite_list devices ifaces routes links switches
+    frame.enteredIface authenticated valid
   have check := checked route selected.1
-  rw [atEntry, atPort] at check
+  rw [atEntry, atIface] at check
   rcases check authenticated authMember rule inRules allow with excluded | stack
   · exact False.elim (matching_route_not_excluded matched selected.2.1 excluded)
   · exact checked_rule_stack_effect ingress stack (matches_with_route matched selected.2.1)
 
 theorem local_stack_conditions_of_routed_finite_checks
-    (devices : List DeviceData) (ports : List PortData)
+    (devices : List DeviceData) (ifaces : List IfaceData)
     (routes : List Route) (links switches : List (Nat × Nat))
-    (routeOwner : ∀ r ∈ routes, (portAt ports r.egress).owner = (portAt ports r.ingress).owner)
-    (linkStack : ∀ edge ∈ links, (portAt ports edge.1).stack = (portAt ports edge.2).stack)
+    (routeOwner : ∀ r ∈ routes, (ifaceAt ifaces r.egress).owner = (ifaceAt ifaces r.ingress).owner)
+    (linkStack : ∀ edge ∈ links, (ifaceAt ifaces edge.1).stack = (ifaceAt ifaces edge.2).stack)
     (switchStack : ∀ edge ∈ switches,
-      (portAt ports edge.1).stack = (portAt ports edge.2).stack ∧
-      (deviceAt devices (portAt ports edge.1).owner).inbound = [])
+      (ifaceAt ifaces edge.1).stack = (ifaceAt ifaces edge.2).stack ∧
+      (deviceAt devices (ifaceAt ifaces edge.1).owner).inbound = [])
     (forwardDefaults : ∀ device ∈ ({} : DeviceData) :: devices, device.forwardFallback = .deny)
-    (forward : FiniteRoutedForwardChecks devices ports routes)
-    (output : FiniteOutputChecks devices ports)
-    (outerRoutes : FiniteOuterRoutes devices ports routes) :
-    LocalStackConditions (finiteConfig devices ports routes links switches) (finiteLayout ports) := by
+    (forward : FiniteRoutedForwardChecks devices ifaces routes)
+    (output : FiniteOutputChecks devices ifaces)
+    (outerRoutes : FiniteOuterRoutes devices ifaces routes) :
+    LocalStackConditions (dataPlaneConfigFromRecords devices ifaces routes links switches) (expectedEncapStackFromRecords ifaces) := by
   have defaults : ∀ p,
-      (finiteConfig devices ports routes links switches).forwardFallback p = .deny :=
-    fun p => forwardDefaults _ (device_at_member_or_default devices (portAt ports p).owner)
+      (dataPlaneConfigFromRecords devices ifaces routes links switches).forwardFallback p = .deny :=
+    fun p => forwardDefaults _ (device_at_member_or_default devices (ifaceAt ifaces p).owner)
   constructor
   · exact routeOwner
   · intro a b linked
@@ -108,14 +108,14 @@ theorem local_stack_conditions_of_routed_finite_checks
     have noAuth : authenticated = [] := by
       rcases valid with none | ⟨association, member, _, _⟩
       · exact none
-      · change association ∈ (deviceAt devices (portAt ports a).owner).inbound at member
+      · change association ∈ (deviceAt devices (ifaceAt ifaces a).owner).inbound at member
         simp [empty] at member
-    simpa [processingStack, noAuth, finiteLayout] using same
-  · intro port frame authenticated routed ingress valid owner accepted
-    exact finite_routed_forward_checks_sound devices ports routes links switches
-      forward defaults port frame authenticated routed ingress valid accepted
-  · intro port frame routed origin ingress owner accepted
-    exact finite_output_checks_sound devices ports routes links switches output port frame origin owner
-  · exact finite_outer_routes_sound devices ports routes links switches outerRoutes
+    simpa [encapStackAfterIngress, noAuth, expectedEncapStackFromRecords] using same
+  · intro iface frame authenticated routed ingress valid owner accepted
+    exact finite_routed_forward_checks_sound devices ifaces routes links switches
+      forward defaults iface frame authenticated routed ingress valid accepted
+  · intro iface frame routed origin ingress owner accepted
+    exact finite_output_checks_sound devices ifaces routes links switches output iface frame origin owner
+  · exact finite_outer_routes_sound devices ifaces routes links switches outerRoutes
 
 end TDN.Execution

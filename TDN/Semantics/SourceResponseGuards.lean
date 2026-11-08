@@ -180,10 +180,10 @@ lemma authenticated_reply_cannot_match
   have interval := of_decide_eq_true selected
   omega
 
-def FiniteReplyChecks (devices : List Execution.DeviceData) (ports : List Execution.PortData)
+def FiniteReplyChecks (devices : List Execution.DeviceData) (ifaces : List Execution.IfaceData)
     (guards : List (Nat × List PacketPolicy.Rule)) : Prop :=
-  ∀ guard ∈ guards, ∀ entry ∈ ports, entry.owner = guard.1 → entry.name ≠ "lo" →
-    ∀ output ∈ ports, output.owner = entry.owner → output.name ≠ "lo" →
+  ∀ guard ∈ guards, ∀ entry ∈ ifaces, entry.owner = guard.1 → entry.name ≠ "lo" →
+    ∀ output ∈ ifaces, output.owner = entry.owner → output.name ≠ "lo" →
       ∀ auth ∈ Execution.possibleAuthentications (Execution.deviceAt devices entry.owner) entry,
       ∀ source ∈ guard.2, source.verdict = .allow →
       ∀ rule ∈ (Execution.deviceAt devices output.owner).outputRules, rule.verdict = .allow →
@@ -191,20 +191,20 @@ def FiniteReplyChecks (devices : List Execution.DeviceData) (ports : List Execut
           (if auth = [] then entry.stack else entry.stack.tail) output.stack source rule ∨
         AuthenticationReplyConflict (Execution.deviceAt devices entry.owner) auth rule
 
-instance (devices : List Execution.DeviceData) (ports : List Execution.PortData)
+instance (devices : List Execution.DeviceData) (ifaces : List Execution.IfaceData)
     (guards : List (Nat × List PacketPolicy.Rule)) :
-    Decidable (FiniteReplyChecks devices ports guards) := by
+    Decidable (FiniteReplyChecks devices ifaces guards) := by
   unfold FiniteReplyChecks
   infer_instance
 
 theorem finite_reply_checks_preserve_layers
-    (devices : List Execution.DeviceData) (ports : List Execution.PortData)
+    (devices : List Execution.DeviceData) (ifaces : List Execution.IfaceData)
     (guards : List (Nat × List PacketPolicy.Rule))
-    (checked : FiniteReplyChecks devices ports guards)
+    (checked : FiniteReplyChecks devices ifaces guards)
     {guard : Nat × List PacketPolicy.Rule} (guardMember : guard ∈ guards)
-    {entry output : Execution.PortData} (entryMember : entry ∈ ports)
+    {entry output : Execution.IfaceData} (entryMember : entry ∈ ifaces)
     (entryOwner : entry.owner = guard.1) (inputExternal : entry.name ≠ "lo")
-    (outputMember : output ∈ ports) (owner : output.owner = entry.owner)
+    (outputMember : output ∈ ifaces) (owner : output.owner = entry.owner)
     (outputExternal : output.name ≠ "lo")
     {auth : List Nat}
     (authenticated : auth ∈ Execution.possibleAuthentications
@@ -270,22 +270,22 @@ lemma coverage_rule_matches {rule : PacketPolicy.Rule} {packet : PacketPolicy.Pa
 def ValidSourceAddress (source : Nat) : Prop :=
   source ≤ 2^32 - 1 ∨ (2^128 ≤ source ∧ source ≤ 2 * 2^128 - 1)
 
-def FiniteGuardCoverage (ports : List Execution.PortData)
+def FiniteGuardCoverage (ifaces : List Execution.IfaceData)
     (guards : List (Nat × List PacketPolicy.Rule)) : Prop :=
-  ∀ guard ∈ guards, ∀ entry ∈ ports, entry.owner = guard.1 → entry.name ≠ "lo" →
+  ∀ guard ∈ guards, ∀ entry ∈ ifaces, entry.owner = guard.1 → entry.name ≠ "lo" →
     (∃ rule ∈ guard.2, CoverageRule rule entry.name 0 (2^32 - 1)) ∧
     (∃ rule ∈ guard.2, CoverageRule rule entry.name (2^128) (2 * 2^128 - 1))
 
-instance (ports : List Execution.PortData) (guards : List (Nat × List PacketPolicy.Rule)) :
-    Decidable (FiniteGuardCoverage ports guards) := by
+instance (ifaces : List Execution.IfaceData) (guards : List (Nat × List PacketPolicy.Rule)) :
+    Decidable (FiniteGuardCoverage ifaces guards) := by
   unfold FiniteGuardCoverage
   infer_instance
 
 theorem finite_guard_coverage_excludes_fallback
-    (ports : List Execution.PortData) (guards : List (Nat × List PacketPolicy.Rule))
-    (checked : FiniteGuardCoverage ports guards)
+    (ifaces : List Execution.IfaceData) (guards : List (Nat × List PacketPolicy.Rule))
+    (checked : FiniteGuardCoverage ifaces guards)
     {guard : Nat × List PacketPolicy.Rule} (guardMember : guard ∈ guards)
-    {entry : Execution.PortData} (entryMember : entry ∈ ports)
+    {entry : Execution.IfaceData} (entryMember : entry ∈ ifaces)
     (owner : entry.owner = guard.1) (external : entry.name ≠ "lo")
     (packet : PacketPolicy.Packet) (inputName : packet.ingress = entry.name)
     (address : ValidSourceAddress packet.source) :

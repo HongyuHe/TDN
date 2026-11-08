@@ -44,7 +44,7 @@ theorem accepted_response_is_loopback (rules : List PacketPolicy.Rule)
 inductive State (NetworkState : Type) where
   | network (state : NetworkState)
   | generated (source : NetworkState) (kind : Kind) (header : PacketPolicy.Packet)
-  | routed (source : NetworkState) (kind : Kind) (header : PacketPolicy.Packet) (port : Nat)
+  | routed (source : NetworkState) (kind : Kind) (header : PacketPolicy.Packet) (iface : Nat)
   | consumed
 
 inductive Action (NetworkAction : Type) where
@@ -59,9 +59,9 @@ structure Config (NetworkState : Type) where
   interfaceName : Nat → String
   emit : NetworkState → PacketPolicy.Packet → Nat → NetworkState
 
-def outputPacket {S : Type} (config : Config S) (header : PacketPolicy.Packet) (port : Nat) :
+def outputPacket {S : Type} (config : Config S) (header : PacketPolicy.Packet) (iface : Nat) :
     PacketPolicy.Packet :=
-  { header with egress := config.interfaceName port, inboundPolicies := [] }
+  { header with egress := config.interfaceName iface, inboundPolicies := [] }
 
 inductive Step {S A : Type} (network : Cslib.LTS S A) (config : Config S) :
     State S → Action A → State S → Prop
@@ -70,16 +70,16 @@ inductive Step {S A : Type} (network : Cslib.LTS S A) (config : Config S) :
   | generate (source : S) (kind : Kind) (header : PacketPolicy.Packet)
       (enabled : config.generates source) (protocol : ResponseProtocol header.protocol) :
       Step network config (.network source) .generate (.generated source kind header)
-  | route (source : S) (kind : Kind) (header : PacketPolicy.Packet) (port : Nat)
-      (chosen : config.selectedRoute source header port) :
-      Step network config (.generated source kind header) .route (.routed source kind header port)
-  | emit (source : S) (kind : Kind) (header : PacketPolicy.Packet) (port : Nat)
+  | route (source : S) (kind : Kind) (header : PacketPolicy.Packet) (iface : Nat)
+      (chosen : config.selectedRoute source header iface) :
+      Step network config (.generated source kind header) .route (.routed source kind header iface)
+  | emit (source : S) (kind : Kind) (header : PacketPolicy.Packet) (iface : Nat)
       (accepted : Filter.evaluate
-        ((config.outputRules source port).map PacketPolicy.Rule.toFilter) (config.outputFallback source port)
-        (outputPacket config header port) = .allow)
-      (external : config.interfaceName port ≠ "lo") :
-      Step network config (.routed source kind header port) .emit
-        (.network (config.emit source header port))
+        ((config.outputRules source iface).map PacketPolicy.Rule.toFilter) (config.outputFallback source iface)
+        (outputPacket config header iface) = .allow)
+      (external : config.interfaceName iface ≠ "lo") :
+      Step network config (.routed source kind header iface) .emit
+        (.network (config.emit source header iface))
   | consume (state : State S) : Step network config state .consume .consumed
 
 def lts {S A : Type} (network : Cslib.LTS S A) (config : Config S) :
@@ -94,9 +94,9 @@ def Invariant {S : Type} (config : Config S) (safe : S → Prop) : State S → P
 lemma response_output_guards_preserve_network_invariant {S A : Type}
     (network : Cslib.LTS S A) (config : Config S) (safe : S → Prop)
     (networkPreserves : network.TrInv safe)
-    (checked : ∀ source, config.generates source → ∀ port,
-      config.outputFallback source port = .deny ∧
-      ∀ rule ∈ config.outputRules source port,
+    (checked : ∀ source, config.generates source → ∀ iface,
+      config.outputFallback source iface = .deny ∧
+      ∀ rule ∈ config.outputRules source iface,
         rule.verdict = .allow → SafeResponseRule rule) :
     (lts network config).TrInv (Invariant config safe) := by
   intro before action after step valid
@@ -104,19 +104,19 @@ lemma response_output_guards_preserve_network_invariant {S A : Type}
   | network step => exact networkPreserves _ _ _ step valid
   | generate source kind header enabled protocol => exact ⟨enabled, protocol⟩
   | route => exact valid
-  | emit source kind header port accepted external =>
-    obtain ⟨fallback, rules⟩ := checked source valid.1 port
+  | emit source kind header iface accepted external =>
+    obtain ⟨fallback, rules⟩ := checked source valid.1 iface
     rw [fallback] at accepted
-    exact False.elim (external (accepted_response_is_loopback (config.outputRules source port)
-      rules (outputPacket config header port) valid.2 accepted))
+    exact False.elim (external (accepted_response_is_loopback (config.outputRules source iface)
+      rules (outputPacket config header iface) valid.2 accepted))
   | consume => trivial
 
 theorem network_observations_remain_safe_with_kernel_responses {S A : Type}
     (network : Cslib.LTS S A) (config : Config S) (safe : S → Prop)
     (networkPreserves : network.TrInv safe)
-    (checked : ∀ source, config.generates source → ∀ port,
-      config.outputFallback source port = .deny ∧
-      ∀ rule ∈ config.outputRules source port,
+    (checked : ∀ source, config.generates source → ∀ iface,
+      config.outputFallback source iface = .deny ∧
+      ∀ rule ∈ config.outputRules source iface,
         rule.verdict = .allow → SafeResponseRule rule)
     {before after : S} {actions : List (Action A)}
     (run : (lts network config).MTr (.network before) actions (.network after))
@@ -129,39 +129,39 @@ def ProvenanceInvariant {S : Type} (config : Config S) (safe : S → Prop) : Sta
   | .network state => safe state
   | .generated source _ header =>
       safe source ∧ config.generates source ∧ ResponseProtocol header.protocol
-  | .routed source _ header port =>
+  | .routed source _ header iface =>
       safe source ∧ config.generates source ∧ ResponseProtocol header.protocol ∧
-        config.selectedRoute source header port
+        config.selectedRoute source header iface
   | .consumed => True
 
 lemma local_reply_checks_preserve_network_safety {S A : Type}
     (network : Cslib.LTS S A) (config : Config S) (safe : S → Prop)
     (networkPreserves : network.TrInv safe)
-    (replyPreserves : ∀ source header port,
+    (replyPreserves : ∀ source header iface,
       safe source → config.generates source → ResponseProtocol header.protocol →
-      config.selectedRoute source header port →
-      Filter.evaluate ((config.outputRules source port).map PacketPolicy.Rule.toFilter)
-        (config.outputFallback source port) (outputPacket config header port) = .allow →
-      config.interfaceName port ≠ "lo" → safe (config.emit source header port)) :
+      config.selectedRoute source header iface →
+      Filter.evaluate ((config.outputRules source iface).map PacketPolicy.Rule.toFilter)
+        (config.outputFallback source iface) (outputPacket config header iface) = .allow →
+      config.interfaceName iface ≠ "lo" → safe (config.emit source header iface)) :
     (lts network config).TrInv (ProvenanceInvariant config safe) := by
   intro before action after step valid
   cases step with
   | network step => exact networkPreserves _ _ _ step valid
   | generate source kind header enabled protocol => exact ⟨valid, enabled, protocol⟩
-  | route source kind header port selected => exact ⟨valid.1, valid.2.1, valid.2.2, selected⟩
-  | emit source kind header port accepted external =>
-    exact replyPreserves source header port valid.1 valid.2.1 valid.2.2.1 valid.2.2.2 accepted external
+  | route source kind header iface selected => exact ⟨valid.1, valid.2.1, valid.2.2, selected⟩
+  | emit source kind header iface accepted external =>
+    exact replyPreserves source header iface valid.1 valid.2.1 valid.2.2.1 valid.2.2.2 accepted external
   | consume => trivial
 
 theorem copied_response_executions_remain_safe {S A : Type}
     (network : Cslib.LTS S A) (config : Config S) (safe : S → Prop)
     (networkPreserves : network.TrInv safe)
-    (replyPreserves : ∀ source header port,
+    (replyPreserves : ∀ source header iface,
       safe source → config.generates source → ResponseProtocol header.protocol →
-      config.selectedRoute source header port →
-      Filter.evaluate ((config.outputRules source port).map PacketPolicy.Rule.toFilter)
-        (config.outputFallback source port) (outputPacket config header port) = .allow →
-      config.interfaceName port ≠ "lo" → safe (config.emit source header port))
+      config.selectedRoute source header iface →
+      Filter.evaluate ((config.outputRules source iface).map PacketPolicy.Rule.toFilter)
+        (config.outputFallback source iface) (outputPacket config header iface) = .allow →
+      config.interfaceName iface ≠ "lo" → safe (config.emit source header iface))
     {before after : S} {actions : List (Action A)}
     (run : (lts network config).MTr (.network before) actions (.network after))
     (initial : safe before) : safe after :=

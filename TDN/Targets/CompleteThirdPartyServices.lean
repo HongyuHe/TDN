@@ -28,14 +28,14 @@ theorem third_party_services_from_disabled_features_and_rule_checks
     exact disabled feature member outer canContact selected
   | false =>
     simp only [Bool.false_eq_true, ↓reduceIte]
-    intro interface port _ owner traffic emitted accepted
-    obtain ⟨policy, present, samePort, outgoing, allows⟩ :=
+    intro interface iface _ owner traffic emitted accepted
+    obtain ⟨policy, present, sameIface, outgoing, allows⟩ :=
       PolicyDerivation.ip_acceptance_has_policy { d with focus := none } interface.id
         .outbound traffic (ipFeatures feature member outer canContact selected traffic emitted) accepted
     exact PolicyDerivation.policy_denies_if_allow_rules_miss policy traffic
       (defaultDeny policy present outgoing)
       (fun rule matchRule allow =>
-        ruleChecks feature member outer canContact selected interface port owner
-          policy present samePort outgoing rule matchRule allow traffic emitted) allows
+        ruleChecks feature member outer canContact selected interface iface owner
+          policy present sameIface outgoing rule matchRule allow traffic emitted) allows
 
 end TDN.Targets.Complete

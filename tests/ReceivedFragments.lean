@@ -26,19 +26,19 @@ example : Targets.ArrivedFragment config redSources 196 arrival goodPiece := by
     subst byte
     constructor <;> decide
 
--- The ordinary fragment key stays unchanged; source-port provenance rejects a forged domain.
+-- The ordinary fragment key stays unchanged; source-iface provenance rejects a forged domain.
 example : ¬ Targets.ArrivedFragment config redSources 196 arrival foreignPiece := by
   intro arrived
   have impossible := (arrived.2.2.2.2.2 ⟨65, 2, 1⟩ (by simp [foreignPiece])).1
-  have actual : config.recipientDomain arrival.start.port = some 1 := by decide
+  have actual : config.recipientDomain arrival.start.iface = some 1 := by decide
   rw [actual] at impossible
   contradiction
 
 -- A blocked response extension preserves an underlying execution for any state space.
 example {S A : Type} (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
-    (guards : ∀ source, responses.generates source → ∀ port,
-      responses.outputFallback source port = .deny ∧
-      ∀ rule ∈ responses.outputRules source port, rule.verdict = .allow →
+    (guards : ∀ source, responses.generates source → ∀ iface,
+      responses.outputFallback source iface = .deny ∧
+      ∀ rule ∈ responses.outputRules source iface, rule.verdict = .allow →
         KernelResponses.SafeResponseRule rule)
     {a b : S} {labels : List (KernelResponses.Action A)}
     (run : (KernelResponses.lts network responses).MTr (.network a) labels (.network b)) :

@@ -53,8 +53,9 @@ let locatorMatches=[],locatorIndex=0;
 const initial=new URLSearchParams(location.hash.slice(1));
 let activeID=initial.get('target')||'RG-034';
 if(!data.groups.some(g=>g.id===activeID))activeID='RG-034';
-$('#coverage-summary').textContent='24 selected specifications: 10 complete conditional proofs passed review; 14 deferred. The other 52 RGs remain catalog entries.';
-$('#source-summary').textContent=`V3.1: 24 accepted specifications, 10 reviewed complete general proofs, and 14 deferred targets. Status comes from the final round-2 verdict. Dependencies and source links were refreshed from the current Lean development. ${data.metadata.summary.complete_model_applications} registered complete model applications use the reviewed general proofs. Live-deployment correspondence remains subject to explicit assumptions.`;
+const coverage=data.metadata.summary;
+$('#coverage-summary').textContent=`${coverage.formal_definitions} selected specifications: ${coverage.review_pass_groups} complete proofs passed review; ${coverage.deferred_groups} deferred. The other ${coverage.outside_selected_groups} RGs remain catalog entries.`;
+$('#source-summary').textContent=`V3.1: ${coverage.formal_definitions} accepted specifications, ${coverage.review_pass_groups} reviewed complete general proofs, and ${coverage.deferred_groups} deferred targets. Status comes from the recorded complete-candidate reviews. Dependencies and source links were refreshed from the current Lean development. ${coverage.complete_model_applications} registered complete model applications use the reviewed general proofs. Applying those results to a live deployment requires the stated observation and implementation assumptions.`;
 function renderTargets(){
  const query=$('#search').value.toLowerCase();
  const matches=data.groups.filter(g=>[g.id,g.title,g.target,g.targetName,...g.choices].join(' ').toLowerCase().includes(query));

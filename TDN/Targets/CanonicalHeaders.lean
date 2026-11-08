@@ -40,17 +40,17 @@ namespace TDN.Targets.CanonicalExecution
 open Compliance
 
 theorem canonical_reachable_headers {S A : Type}
-    (prototype : NativeExecutionBinding S A) (ports : List Nat)
+    (prototype : NativeExecutionBinding S A) (ifaces : List Nat)
     (d : Deployment) (history : ObservedHistory)
     (processing : MultiProtocolExecution.HeaderProcessing)
     (mode : prototype.configuration.headerProcessing = some processing)
     (bounds : MultiProtocolExecution.HeaderBounds processing)
-    (start finish : State ports) (actions : List (Action ports))
-    (initialized : (model prototype ports d history).initial start)
-    (run : (model prototype ports d history).system.MTr start actions finish) :
+    (start finish : State ifaces) (actions : List (Action ifaces))
+    (initialized : (model prototype ifaces d history).initial start)
+    (run : (model prototype ifaces d history).system.MTr start actions finish) :
     finish.native.frame.HeadersCoherent := by
-  exact reachable_headers_from_local_steps (model prototype ports d history)
-    (canonical_model_faithful prototype ports d history) processing mode bounds run
-    ((binding prototype ports).source_initial_headers d start.native initialized.1)
+  exact reachable_headers_from_local_steps (model prototype ifaces d history)
+    (canonical_model_faithful prototype ifaces d history) processing mode bounds run
+    ((binding prototype ifaces).source_initial_headers d start.native initialized.1)
 
 end TDN.Targets.CanonicalExecution

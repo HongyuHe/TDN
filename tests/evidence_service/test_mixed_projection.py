@@ -23,14 +23,14 @@ class MixedProjectionTests(unittest.TestCase):
                 _, report = validated_experiment(path)
                 values = execution_values(report)
                 namespace = "TDN.Imported.Pairing" + "".join(piece.capitalize() for piece in path.name.split("-")[1:])
-                for key in ["devices", "ports", "routes", "links", "bridges", "redSources", "grayPorts", "blackPorts"]:
-                    self.assertEqual(values[key], previous[namespace + "." + key])
-                macs = copy.deepcopy(values["macPorts"])
+                for key in ["devices", "ports", "routes", "links", "bridges", "redSources", "grayIfaces", "blackIfaces"]:
+                    self.assertEqual(values[key], previous[namespace + "." + ("ifaces" if key == "ports" else key)])
+                macs = copy.deepcopy(values["macIfaces"])
                 for port in macs:
                     port["transmitAssociation"]["keyGeneration"] = 0
                     for association in port["receiveAssociations"]:
                         association["keyGeneration"] = 0
-                self.assertEqual(macs, previous[namespace + ".macPorts"])
+                self.assertEqual(macs, previous[namespace + ".macIfaces"])
                 carriers = copy.deepcopy(values["carriers"])
                 for port in carriers:
                     self.assertEqual(port["transmit"].pop("protocol"), "l2tpv3")

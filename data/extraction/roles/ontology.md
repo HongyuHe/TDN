@@ -25,27 +25,27 @@ The transitive parent lists are computed for the exported subclass graph. The pi
 - contextual roles: 21
 - unrepresented roles: 14
 
-## Representation in Lean v3.1
+## Representation in TDN v3.1
 
-These annotations describe how source roles are represented by the current Lean model. A mapping does not establish deployed role membership or prove a requirement. Source subtype relationships remain unchanged.
+These annotations explain how source roles are represented by the current Lean model. Device kind, encryption layer and interface zone are separate fields. The local zone represents device-internal interfaces. Device roles remain classified separately. Namespace-local addresses belong to their recorded device, including loopback addresses shared by several devices. Source subtype relationships remain unchanged. Role mappings alone do not establish requirement compliance.
 
 [Curated Lean mappings](ontology_theory.json) records all 76 source roles, code references, chosen interpretations and pinned Lean source hashes.
 
 | Role | Representation | Meaning | Code |
 | --- | --- | --- | --- |
 | Solution Component | Related model only | Applicable duties are selected from a device’s kind, encryption layer, deployment membership, and standalone-encapsulator status. V3.1 has no single SolutionComponent membership type. | [CPContext.ComponentApplies](../../../TDN/Targets/CPDuties.lean), [CPContext.AllApplicableDuties](../../../TDN/Targets/CPDuties.lean) |
-| Encryption Component | Combination of Lean fields | The layer field selects Inner or Outer encryption components. Flow validity separately checks whether their mechanism is VPN or MACsec. | [Device](../../../TDN/Targets/ComplianceModel.lean), [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
-| Inner Encryption Component | Combination of Lean fields | The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. | [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [msc_nested_layer_protection](../../../TDN/Targets/CompleteSpecifications.lean) |
-| Outer Encryption Component | Combination of Lean fields | The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. | [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [msc_nested_layer_protection](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Encryption Component | Combination of Lean fields | The layer field selects Inner or Outer encryption components. Flow validity separately checks whether their mechanism is VPN or MACsec. | [Device](../../../TDN/Targets/ComplianceModel.lean), [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [PacketSizingInventory](../../../TDN/Targets/DirectSpecifications.lean), [SizingInterface](../../../TDN/Targets/PacketSizing.lean), [msc_packet_size_configuration](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Inner Encryption Component | Combination of Lean fields | The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. Its Gray-facing interfaces appear in the packet-size inventory with the Inner external role. | [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [msc_nested_layer_protection](../../../TDN/Targets/CompleteSpecifications.lean), [PacketSizingInventory](../../../TDN/Targets/DirectSpecifications.lean), [SizingInterface](../../../TDN/Targets/PacketSizing.lean), [msc_packet_size_configuration](../../../TDN/Targets/CompleteSpecifications.lean), [msc_boundary_interface_filtering](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Outer Encryption Component | Combination of Lean fields | The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. Its Black-facing interfaces appear in the packet-size inventory with the encryption external role. | [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [msc_nested_layer_protection](../../../TDN/Targets/CompleteSpecifications.lean), [PacketSizingInventory](../../../TDN/Targets/DirectSpecifications.lean), [SizingInterface](../../../TDN/Targets/PacketSizing.lean), [msc_packet_size_configuration](../../../TDN/Targets/CompleteSpecifications.lean), [msc_boundary_interface_filtering](../../../TDN/Targets/CompleteSpecifications.lean), [msc_outer_gray_interface_policy](../../../TDN/Targets/CompleteSpecifications.lean) |
 | VPN Gateway | Explicit Lean representation | VPN gateways have a dedicated device kind. The layer field identifies Inner and Outer gateways. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
-| Inner VPN Gateway | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
-| Outer VPN Gateway | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| Inner VPN Gateway | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [PacketSizingInventory](../../../TDN/Targets/DirectSpecifications.lean), [SizingInterface](../../../TDN/Targets/PacketSizing.lean), [msc_packet_size_configuration](../../../TDN/Targets/CompleteSpecifications.lean), [msc_boundary_interface_filtering](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Outer VPN Gateway | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [PacketSizingInventory](../../../TDN/Targets/DirectSpecifications.lean), [SizingInterface](../../../TDN/Targets/PacketSizing.lean), [msc_packet_size_configuration](../../../TDN/Targets/CompleteSpecifications.lean), [msc_boundary_interface_filtering](../../../TDN/Targets/CompleteSpecifications.lean), [msc_outer_gray_interface_policy](../../../TDN/Targets/CompleteSpecifications.lean) |
 | MACsec Device | Explicit Lean representation | MACsec devices have a dedicated kind. Authentication records separately describe their EAP functions and key-server behavior. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [MACsecAuthentication](../../../TDN/Targets/DirectSpecifications.lean), [EAPRole](../../../TDN/Targets/DirectSpecifications.lean) |
-| Inner MACsec Device | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
-| Outer MACsec Device | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean) |
+| Inner MACsec Device | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [PacketSizingInventory](../../../TDN/Targets/DirectSpecifications.lean), [SizingInterface](../../../TDN/Targets/PacketSizing.lean), [msc_packet_size_configuration](../../../TDN/Targets/CompleteSpecifications.lean), [msc_boundary_interface_filtering](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Outer MACsec Device | Combination of Lean fields | The device kind identifies the mechanism and the layer identifies its Inner or Outer role. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Device](../../../TDN/Targets/ComplianceModel.lean), [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [PacketSizingInventory](../../../TDN/Targets/DirectSpecifications.lean), [SizingInterface](../../../TDN/Targets/PacketSizing.lean), [msc_packet_size_configuration](../../../TDN/Targets/CompleteSpecifications.lean), [msc_boundary_interface_filtering](../../../TDN/Targets/CompleteSpecifications.lean), [msc_outer_gray_interface_policy](../../../TDN/Targets/CompleteSpecifications.lean) |
 | Firewall | Combination of Lean fields | The model distinguishes Gray, Outer, and Inner firewalls with separate device kinds. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
-| Outer Firewall | Explicit Lean representation | The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
-| Gray Firewall | Explicit Lean representation | The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Outer Firewall | Explicit Lean representation | The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_boundary_interface_filtering](../../../TDN/Targets/CompleteSpecifications.lean) |
+| Gray Firewall | Explicit Lean representation | The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. Its applicable external interfaces also appear in the packet-size inventory. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean), [PacketSizingInventory](../../../TDN/Targets/DirectSpecifications.lean), [SizingInterface](../../../TDN/Targets/PacketSizing.lean), [msc_packet_size_configuration](../../../TDN/Targets/CompleteSpecifications.lean), [msc_gray_firewall_allowlist](../../../TDN/Targets/CompleteSpecifications.lean) |
 | Inner Firewall | Explicit Lean representation | The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
 | Administrative Workstation | Explicit Lean representation | Administrative Workstations use the workstation device kind. Their administrator accounts and sessions are represented separately. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [AdministrativeAccount](../../../TDN/Targets/Administration.lean), [msc_administrator_authentication](../../../TDN/Targets/CompleteSpecifications.lean) |
 | Red Administrative Workstation | Combination of Lean fields | A Red workstation combines the workstation kind with a Red management attachment. Zone information belongs to its interfaces and deployment attachments. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Interface](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_administrator_authentication](../../../TDN/Targets/CompleteSpecifications.lean) |
@@ -71,10 +71,10 @@ These annotations describe how source roles are represented by the current Lean 
 | Key Generation Solution | Explicit Lean representation | The key-generation solution has a device kind. Approved-generator status is supplied as an explicit authority fact. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [AuthorityFacts](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [msc_macsec_key_generation_and_server](../../../TDN/Targets/CompleteSpecifications.lean) |
 | Encapsulation/Decapsulation Device | Combination of Lean fields | The encapsulation role uses EncapsulationUse records and the standaloneEncapsulator predicate. A device kind is available, while the actual specification checks the selected use, attachments and applicable duties. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [EncapsulationUse](../../../TDN/Targets/DirectSpecifications.lean), [MACsecEncapsulationCore](../../../TDN/Targets/DirectSpecifications.lean), [msc_macsec_encapsulation](../../../TDN/Targets/CompleteSpecifications.lean), [CPContext.AllApplicableDuties](../../../TDN/Targets/CPDuties.lean) |
 | Router | Related model only | The model distinguishes ordinary Gray routers and screening routers. General packet routing is represented by processing records; there is no unrestricted router DeviceKind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment.OrdinaryGray](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
-| Gray Network router | Combination of Lean fields | An ordinary Gray router must have the matching kind, no encryption layer, no infrastructure flag, and only Gray interfaces to satisfy OrdinaryGray. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment.OrdinaryGray](../../../TDN/Targets/ComplianceModel.lean) |
+| Gray Network router | Combination of Lean fields | An ordinary Gray router has the router kind, no encryption layer and no infrastructure flag. It has at least one Gray interface; every other interface is Gray or local. Local includes device-internal interfaces such as loopback. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment.OrdinaryGray](../../../TDN/Targets/ComplianceModel.lean), [Zone](../../../TDN/Targets/Architecture.lean) |
 | Screening router | Explicit Lean representation | Screening routers have a dedicated device kind. Source-defined placement and filtering still require the corresponding configuration. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
 | Customer Edge Router | Related model only | The source’s customer-edge example can realize a router role. V3.1 has no customer-edge-specific device kind or automatic equivalence with screeningRouter. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean) |
-| Switch | Related model only | Ordinary Gray switches have a dedicated kind. Other switching behavior is represented through processing records without a generic switch DeviceKind. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment.OrdinaryGray](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean) |
+| Switch | Related model only | An ordinary Gray switch has a dedicated kind, no encryption layer and no infrastructure flag. It has at least one Gray interface and only Gray or local interfaces. Other switching behavior is represented through packet-processing records. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [Deployment.OrdinaryGray](../../../TDN/Targets/ComplianceModel.lean), [Deployment](../../../TDN/Targets/ComplianceModel.lean), [Zone](../../../TDN/Targets/Architecture.lean) |
 | Cross Domain Solution | Explicit Lean representation | Cross Domain Solutions have a device kind. Requirement applicability also uses the recorded cross-domain-solution inventory. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [CPContext.ComponentApplies](../../../TDN/Targets/CPDuties.lean) |
 | CRL Distribution Point | Related model only | Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
 | OCSP Responder | Related model only | Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders. | [DeviceKind](../../../TDN/Targets/ComplianceModel.lean), [ManagementServiceFunction](../../../TDN/Targets/ComplianceModel.lean), [msc_gray_firewall_path_coverage](../../../TDN/Targets/CompleteSpecifications.lean) |
@@ -109,6 +109,93 @@ These annotations describe how source roles are represented by the current Lean 
 | Testing software | No distinct representation | These source roles describe the testing process. V3.1 does not formalize them as network device roles. |  |
 | IKEv2 initiator | Related model only | The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic. | [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean) |
 | IKEv2 responder | Related model only | The retained model records tunnel and authentication endpoints. It does not introduce an IKE initiator/responder role type; ManagementExchange.responder concerns management traffic. | [Flow.Valid](../../../TDN/Targets/DirectSpecifications.lean), [InnerAuthentication](../../../TDN/Targets/AuthenticationIsolation.lean) |
+
+## Associated proof obligations
+
+Associations connect a role to the current formalized requirement in which it participates. Applicability conditions, selected objectives, external evidence, and whole-network quantifiers remain part of each statement. Child roles inherit associations from every subclass ancestor; documented associations do not transmit obligations. Listing a requirement does not assert that a device or deployment satisfies it.
+
+The explorer shows each selected role’s obligations below its name. Every entry includes a plain-English summary, its current Lean code, source links, and the recorded proof status. Parent-role obligations are included once and identify the roles from which they were inherited.
+
+[Curated obligation mappings and translations](ontology_obligations.json) connect roles to requirement groups. The generator reads the code and proof status from the current sources. Source changes require reviewing the translations before regeneration.
+
+| Role | Directly associated RGs | Inherited RGs |
+| --- | --- | --- |
+| Solution Component | RG-001, RG-002, RG-003, RG-006, RG-036, RG-041, RG-043, RG-046, RG-047, RG-049, RG-052, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 | None |
+| Encryption Component | RG-004, RG-005, RG-007, RG-017, RG-018, RG-031, RG-032, RG-033, RG-035, RG-042, RG-048, RG-053, RG-054, RG-056 | RG-001, RG-002, RG-003, RG-006, RG-036, RG-041, RG-043, RG-046, RG-047, RG-049, RG-052, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Inner Encryption Component | RG-008, RG-012, RG-013, RG-014, RG-029 | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-017, RG-018, RG-031, RG-032, RG-033, RG-035, RG-036, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Outer Encryption Component | RG-013, RG-014, RG-030, RG-034, RG-037, RG-038, RG-039 | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-017, RG-018, RG-031, RG-032, RG-033, RG-035, RG-036, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| VPN Gateway | RG-019, RG-020, RG-021, RG-022, RG-023, RG-038 | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-017, RG-018, RG-031, RG-032, RG-033, RG-035, RG-036, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Inner VPN Gateway | None recorded | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-008, RG-012, RG-013, RG-014, RG-017, RG-018, RG-019, RG-020, RG-021, RG-022, RG-023, RG-029, RG-031, RG-032, RG-033, RG-035, RG-036, RG-038, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Outer VPN Gateway | None recorded | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-013, RG-014, RG-017, RG-018, RG-019, RG-020, RG-021, RG-022, RG-023, RG-030, RG-031, RG-032, RG-033, RG-034, RG-035, RG-036, RG-037, RG-038, RG-039, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| MACsec Device | RG-015, RG-016, RG-024, RG-025, RG-026, RG-027, RG-028 | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-017, RG-018, RG-031, RG-032, RG-033, RG-035, RG-036, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Inner MACsec Device | None recorded | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-008, RG-012, RG-013, RG-014, RG-015, RG-016, RG-017, RG-018, RG-024, RG-025, RG-026, RG-027, RG-028, RG-029, RG-031, RG-032, RG-033, RG-035, RG-036, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Outer MACsec Device | None recorded | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-013, RG-014, RG-015, RG-016, RG-017, RG-018, RG-024, RG-025, RG-026, RG-027, RG-028, RG-030, RG-031, RG-032, RG-033, RG-034, RG-035, RG-036, RG-037, RG-038, RG-039, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Firewall | RG-035, RG-055 | None |
+| Outer Firewall | RG-034, RG-038 | RG-001, RG-002, RG-003, RG-006, RG-035, RG-036, RG-041, RG-043, RG-046, RG-047, RG-049, RG-052, RG-055, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Gray Firewall | RG-005, RG-013, RG-014, RG-033, RG-040 | RG-001, RG-002, RG-003, RG-006, RG-035, RG-036, RG-041, RG-043, RG-046, RG-047, RG-049, RG-052, RG-055, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Inner Firewall | RG-055 | RG-035, RG-055 |
+| Administrative Workstation | RG-044, RG-045, RG-046, RG-047 | RG-010, RG-011, RG-044, RG-046 |
+| Red Administrative Workstation | RG-012 | RG-001, RG-002, RG-003, RG-006, RG-010, RG-011, RG-036, RG-041, RG-043, RG-044, RG-045, RG-046, RG-047, RG-049, RG-052, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Gray Administrative Workstation | RG-013, RG-039, RG-040 | RG-001, RG-002, RG-003, RG-006, RG-010, RG-011, RG-036, RG-041, RG-043, RG-044, RG-045, RG-046, RG-047, RG-049, RG-052, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Black Administrative Workstation | None recorded | RG-010, RG-011, RG-044, RG-045, RG-046, RG-047 |
+| Management component | RG-010, RG-011, RG-044, RG-046 | None |
+| Red Management Services | RG-011, RG-012, RG-041, RG-042, RG-044 | None |
+| Gray Management Services | RG-011, RG-013, RG-039, RG-040, RG-041, RG-042, RG-044 | None |
+| Security Information and Event Management | RG-050, RG-062 | None |
+| Red SIEM | None recorded | RG-050, RG-062 |
+| Gray SIEM | None recorded | RG-050, RG-062 |
+| Authentication Server | RG-024, RG-026 | RG-001, RG-002, RG-003, RG-006, RG-036, RG-041, RG-043, RG-046, RG-047, RG-049, RG-052, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Supplicant | RG-024 | None |
+| Authenticator | RG-024 | None |
+| Key Server | RG-027 | RG-001, RG-002, RG-003, RG-004, RG-005, RG-006, RG-007, RG-015, RG-016, RG-017, RG-018, RG-024, RG-025, RG-026, RG-027, RG-028, RG-031, RG-032, RG-033, RG-035, RG-036, RG-041, RG-042, RG-043, RG-046, RG-047, RG-048, RG-049, RG-052, RG-053, RG-054, RG-056, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Certification Authority | RG-007, RG-017, RG-020, RG-024, RG-048, RG-067 | None |
+| Inner CA | RG-012 | RG-007, RG-017, RG-020, RG-024, RG-048, RG-067 |
+| Outer CA | None recorded | RG-007, RG-017, RG-020, RG-024, RG-048, RG-067 |
+| Locally run CA | RG-013 | RG-007, RG-017, RG-020, RG-024, RG-048, RG-067 |
+| Enterprise CA | RG-011 | RG-007, RG-017, RG-020, RG-024, RG-048, RG-067 |
+| Root CA | RG-020 | RG-007, RG-017, RG-020, RG-024, RG-048, RG-067 |
+| Signing CA | RG-020 | RG-007, RG-017, RG-020, RG-024, RG-048, RG-067 |
+| Key Generation Solution | RG-007, RG-027 | RG-001, RG-002, RG-003, RG-006, RG-036, RG-041, RG-043, RG-046, RG-047, RG-049, RG-052, RG-057, RG-058, RG-062, RG-063, RG-066, RG-067, RG-073, RG-074 |
+| Encapsulation/Decapsulation Device | RG-015, RG-033 | None |
+| Router | RG-075 | None |
+| Gray Network router | None recorded | RG-075 |
+| Screening router | RG-075 | RG-075 |
+| Customer Edge Router | RG-032 | RG-075 |
+| Switch | None recorded | None |
+| Cross Domain Solution | RG-051, RG-056 | None |
+| CRL Distribution Point | RG-013, RG-020, RG-039, RG-040, RG-067 | None |
+| OCSP Responder | RG-013, RG-020, RG-067 | None |
+| Intrusion Prevention System | RG-003, RG-055 | None |
+| Host/server for AW virtual machines | RG-045 | None |
+| Virtual Machine | RG-045 | None |
+| Physical workstation | RG-045 | None |
+| Enrollment server | RG-048 | None |
+| Provisioning server | RG-043, RG-048 | None |
+| Certificate registration component | RG-048 | None |
+| Registration Authority | RG-048 | None |
+| Trusted time source | RG-042 | None |
+| DNS server | RG-043 | None |
+| Control plane network service | RG-035, RG-039, RG-040, RG-041 | None |
+| Third-party server | RG-037 | None |
+| End user device | RG-008, RG-055, RG-056 | None |
+| High Assurance encryptor | RG-056 | None |
+| NSA-certified Government-off-the-Shelf product | RG-056 | None |
+| Locally Managed Device | RG-044, RG-046 | None |
+| Remotely Managed Device | RG-011, RG-044, RG-046 | None |
+| Auxiliary network device | RG-068 | None |
+| Infrastructure authentication service | RG-063 | None |
+| Network administration device | RG-044, RG-046, RG-047 | None |
+| Infrastructure component | RG-041, RG-043, RG-044, RG-046, RG-063 | None |
+| Network device | RG-036 | None |
+| Perimeter device | RG-055 | None |
+| Key and certificate management component | RG-007, RG-017, RG-027, RG-048, RG-067 | RG-010, RG-011, RG-044, RG-046 |
+| Trust Anchor CA | RG-020 | RG-007, RG-017, RG-020, RG-024, RG-048, RG-067 |
+| Approved password generator | RG-063 | None |
+| Log and status repository | RG-050, RG-062 | None |
+| Testing equipment | RG-072 | None |
+| Testing software | RG-072 | None |
+| IKEv2 initiator | RG-017, RG-019, RG-020, RG-022, RG-023 | None |
+| IKEv2 responder | RG-017, RG-019, RG-020, RG-022, RG-023 | None |
 
 ## Chosen v3.1 interpretations
 
@@ -156,9 +243,15 @@ Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:1
 
 ### V31-056-074: whole-solution protection and redundant duties
 
-Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray checks the kind, absence of an encryption layer and infrastructure flag, and Gray-only interfaces. Standalone encapsulators keep their applicable duties even when their underlying device is a router or switch.
+Ordinary Gray routing and switching infrastructure has a narrowly defined exemption from component duties. OrdinaryGray requires the matching kind, no encryption layer or infrastructure flag, at least one Gray interface, and only Gray or local interfaces. Standalone encapsulators retain their applicable duties.
 
 Recorded decision: `data/construction/v3.1-20261031T231942Z/interpretations.md:185`.
+
+### RG-033: external interface sizes and optional Inner reduction
+
+Mandatory MTU bounds include Inner Gray interfaces, Outer Black interfaces and applicable Gray Firewall external interfaces. The separate Inner fragmentation-reduction objective remains optional.
+
+Recorded decision: `data/construction/v3.1-20261104-continuation/source-review/RG-033.md:3`.
 
 
 ## Encryption

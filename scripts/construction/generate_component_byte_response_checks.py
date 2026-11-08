@@ -25,28 +25,28 @@ def uniformResponseOwners : List Nat :=
   (List.range {base}.devices.length).filter (fun owner => !(owner ∈ {base}.responseGateways))
 
 lemma every_retained_owner_has_response_case :
-    ∀ port ∈ ({{}} : PortData) :: {base}.ports,
-      port.owner ∈ {base}.responseGateways ∨ port.owner ∈ uniformResponseOwners := by
+    ∀ iface ∈ ({{}} : IfaceData) :: {base}.ifaces,
+      iface.owner ∈ {base}.responseGateways ∨ iface.owner ∈ uniformResponseOwners := by
   decide
 
 lemma every_active_component_can_generate (state : Execution.State)
-    (active : state.phase ≠ .dropped) :
+    (active : state.datapathStage ≠ .dropped) :
     (UniformDomainResponses.responseConfig config {base}.responseGateways
       uniformResponseOwners).generates state := by
-  exact ⟨active, every_retained_owner_has_response_case (portAt {base}.ports state.port)
-    (port_at_member_or_default {base}.ports state.port)⟩
+  exact ⟨active, every_retained_owner_has_response_case (ifaceAt {base}.ifaces state.iface)
+    (iface_at_member_or_default {base}.ifaces state.iface)⟩
 
 """
         for domain in range(1, count + 1):
             extra += f"""lemma uniform_domain_response_checks{domain} :
-    UniformDomainResponses.FiniteUniform taggedDevices domainPorts{domain}
+    UniformDomainResponses.FiniteUniform taggedDevices domainIfaces{domain}
       (allowedRecord {domain}) uniformResponseOwners := by
   decide
 
 lemma uniform_domain_responses{domain} : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout{domain} domainAllowed{domain} owner := by
   intro owner member
-  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainPorts{domain}
+  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainIfaces{domain}
     {base}.routes {base}.links {base}.switches
     (allowedRecord {domain}) uniformResponseOwners uniform_domain_response_checks{domain} owner member
   rw [config_same{domain}] at checked

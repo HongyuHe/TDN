@@ -138,11 +138,11 @@ def msc_outer_tunnel_no_bypass {S A : Type} (view : TunnelBoundaryView S A)
     (outboundMACObjective = true → component.outboundMACPolicy = true) ∧
     (inboundMACObjective = true → component.inboundMACPolicy = true)
 
-theorem protected_black_execution_has_two_encryptions (c : Execution.Config)
-    (sources blackPorts : List Nat) (protection : msc_protected_red_payload_stack c sources blackPorts)
+theorem protected_black_execution_has_two_encryptions (c : Execution.Environment)
+    (sources blackIfaces : List Nat) (protection : msc_protected_red_payload_stack c sources blackIfaces)
     {start finish : Execution.State} {actions : List Execution.Action}
     (origin : RedPayloadOrigin c sources start) (run : (Execution.lts c).MTr start actions finish)
-    (ready : finish.phase = .ready) (black : finish.port ∈ blackPorts) :
+    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
     2 ≤ (actions.map Execution.encryptionCredit).sum := by
   have stack := protection start finish actions origin run ready black
   have length : finish.frame.envelopes.length = 2 := by
@@ -152,7 +152,7 @@ theorem protected_black_execution_has_two_encryptions (c : Execution.Config)
   rw [origin.2.2.2.1, List.length_nil, length] at growth
   simpa using growth
 
-theorem two_layer_plaintext_restoration_has_two_decryptions (c : Execution.Config)
+theorem two_layer_plaintext_restoration_has_two_decryptions (c : Execution.Environment)
     {start finish : Execution.State} {actions : List Execution.Action}
     (run : (Execution.lts c).MTr start actions finish)
     (initial : start.frame.envelopes.length = 2) (plaintext : finish.frame.envelopes = []) :

@@ -13,7 +13,7 @@ The [construction workflow](workflows/construction.md) connects proof constructi
 - **The Construction Agent works top down.** It selects clauses that need general behavioral arguments, translates them into Lean specifications, and develops general theorems supported by smaller lemmas. Routine record comparisons use direct checks. Those conditions guide requests for evidence.
 - **The evidence MCP server supplies observations.** The Construction Agent queries configurations and runtime state, requests supported collections, and exports JSON for Lean import commands. The coordinator handles Twinet deployment changes and experiments.
 
-The two directions meet at **checked conditions that connect network evidence to general proofs**. For example, Lean can check every imported edge and establish that each edge avoiding a firewall preserves a label. A reusable induction proof extends that condition to paths of any finite length. Different snapshots supply different edges and checks while using the same general proof.
+The two directions meet at **checked conditions that connect network evidence to general proofs**. For example, a waypointing requirement says that traffic must traverse a designated device, such as a firewall. Lean can check every imported edge and establish that each edge avoiding the firewall preserves a region label. A reusable induction proof extends that condition to paths of any finite length. Different snapshots supply different edges and checks while using the same general proof.
 
 Proof construction and evidence provision refine one another. A failed proof can reveal an incorrect model, missing observations, or a deployment flaw. The Construction Agent first checks its own reasoning, then requests additional evidence or a justified network repair. The workflow records interpretation decisions, evidence requests, deployment changes, proof revisions, and remaining limitations.
 
@@ -23,7 +23,7 @@ The current case study formalizes the CSfC Multi-Site Connectivity specification
 
 The requirements catalog contains **76 groups**. The [scope assessment](specs/proof_scope.json) recommends general proofs for **24 groups** and direct checks for **29 current contributions**. The active Lean theory now follows that scope. The remaining **22 groups** need external assurance or unsupported capabilities; **one group** states an optional permission. These decisions concern the assessed clauses, and full CSfC compliance remains unproved.
 
-The [scope guide](docs/theory_scope.md) explains the retained arguments, removed models, and validation commands. The earlier [construction record](data/construction/current.json) preserves its original 53-group partial-contribution count.
+Of the 24 selected groups, **14 have reviewed proofs of every clause of their instantiated specifications**. The remaining **10 are deferred** and retain supporting results. The [theory hierarchy](https://hongyuhe.github.io/tdn/hierarchy/) connects each specification to its general proofs and concrete checks; the [role ontology](https://hongyuhe.github.io/tdn/ontology/) explains how device roles map to the model. The [scope guide](docs/theory_scope.md) records the accepted scopes, assumptions and validation commands. The earlier [construction record](data/construction/current.json) preserves its original 53-group partial-contribution count.
 
 Each proof establishes a claim about its stated model and assumptions. Applying the claim to a deployment requires faithful collection, correct translation, and a justified connection between actual processing and the modeled operations. Continuous proof maintenance remains a research goal.
 
@@ -31,7 +31,7 @@ Each proof establishes a claim about its stated model and assumptions. Applying 
 
 | Location | Purpose |
 | --- | --- |
-| [TDN/Semantics](TDN/Semantics/) | Reusable network models and proofs. The [library guide](docs/semantics.md) explains every module, its assumptions, and its declarations. |
+| [TDN/Semantics](TDN/Semantics/) | Reusable network models and proofs. The [library guide](docs/semantics.md) explains every module, its assumptions, and its declarations. The [terminology guide](docs/network_terminology.md) explains the networking names and model-refinement relationships. |
 | [TDN/Targets](TDN/Targets/) | CSfC specifications and general proofs of requirements or individual clauses. |
 | [TDN/Evidence](TDN/Evidence/) | Imported data, local checks, and applications of general theorems to concrete networks. |
 | [specs/proof_scope.json](specs/proof_scope.json) | Current decisions for all 76 groups, with retained general results and snapshot applications. |

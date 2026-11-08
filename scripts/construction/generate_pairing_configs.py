@@ -58,8 +58,8 @@ def render(report, namespace):
                                row["prefix"], row["metric"], row["priority"]])
     macs = []
     for row in data["mac_ports"]:
-        macs.append("{ logicalPort := " + str(port_ids[row["device"] + ":" + row["logical"]]) +
-                    ", physicalPort := " + str(port_ids[row["device"] + ":" + row["physical"]]) +
+        macs.append("{ logicalIface := " + str(port_ids[row["device"] + ":" + row["logical"]]) +
+                    ", physicalIface := " + str(port_ids[row["device"] + ":" + row["physical"]]) +
                     ", settings := ⟨true, true, true, 0⟩, transmitAssociation := some " +
                     mac_association(row, "tx") + ", receiveAssociations := [" +
                     mac_association(row, "rx") + "], validateStrict := true }")
@@ -68,8 +68,8 @@ def render(report, namespace):
         anchors = [key for key, interface in data["interfaces"].items() if key.startswith(row["device"] + ":")
                    and any(a[1] == row["source"] for a in interface["addresses"])]
         require(len(anchors) == 1, "Carrier source address lacks a unique local interface")
-        carriers.append("{ virtualPort := " + str(port_ids[row["device"] + ":" + row["interface"]]) +
-                        ", routingPort := " + str(port_ids[anchors[0]]) + ", transmit := { source := " +
+        carriers.append("{ virtualIface := " + str(port_ids[row["device"] + ":" + row["interface"]]) +
+                        ", routingIface := " + str(port_ids[anchors[0]]) + ", transmit := { source := " +
                         str(encode_address(row["source"])) + ", destination := " +
                         str(encode_address(row["destination"])) + ", sourcePort := " + str(row["source_port"]) +
                         ", destinationPort := " + str(row["destination_port"]) + ", peerSession := " +
@@ -87,29 +87,29 @@ def render(report, namespace):
         "open MultiProtocolExecution LayeredFrame", "set_option maxRecDepth 1000000",
         "set_option maxHeartbeats 0",
         "def devices : List Execution.DeviceData := " + lean_list(devices),
-        "def ports : List Execution.PortData := " + lean_list(ports),
+        "def ifaces : List Execution.IfaceData := " + lean_list(ports),
         "def routes : List Execution.Route := " + tuple_list(routes),
         "def links : List (Nat × Nat) := " + tuple_list(links),
         "def bridges : List (Nat × Nat) := " + tuple_list(bridges),
-        "def macPorts : List MACPort := " + lean_list(macs),
-        "def carriers : List CarrierPort := " + lean_list(carriers),
-        "def config : Config := MultiProtocolExecution.finiteConfig devices ports routes links bridges macPorts carriers",
-        "def layout := Execution.finiteLayout ports",
+        "def macIfaces : List MACIface := " + lean_list(macs),
+        "def carriers : List CarrierIface := " + lean_list(carriers),
+        "def config : Config := MultiProtocolExecution.dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers",
+        "def expectedEncapStack := Execution.expectedEncapStackFromRecords ifaces",
         "def redSources : List Nat := " + lean_list([str(n) for n in sources]),
-        "def grayPorts : List Nat := " + lean_list([str(n) for n in gray]),
-        "def blackPorts : List Nat := " + lean_list([str(n) for n in black]), "",
-        "lemma mac_configuration_checked : ∀ port ∈ macPorts,",
-        "    port.settings.controlledPortEnabled = true ∧ port.settings.protectFrames = true ∧",
-        "    port.settings.encryptFrames = true ∧ port.settings.confidentialityOffset = 0 ∧",
+        "def grayIfaces : List Nat := " + lean_list([str(n) for n in gray]),
+        "def blackIfaces : List Nat := " + lean_list([str(n) for n in black]), "",
+        "lemma mac_configuration_checked : ∀ iface ∈ macIfaces,",
+        "    iface.settings.controlledPortEnabled = true ∧ iface.settings.protectFrames = true ∧",
+        "    iface.settings.encryptFrames = true ∧ iface.settings.confidentialityOffset = 0 ∧",
         "    ∃ association, port.transmitAssociation = some association := by",
-        "  simp [macPorts]", "",
-        "lemma receive_peer_bindings : ∀ port ∈ macPorts, ∀ association ∈ port.receiveAssociations,",
-        "    ∃ peer ∈ macPorts, peer.transmitAssociation = some association := by",
-        "  unfold macPorts; decide", "",
-        "theorem every_configured_mac_port_emits_full_encryption (port : MACPort)",
-        "    (member : port ∈ macPorts) :",
-        "    ∃ association, ∀ body, fullMACsecTransmit port association body := by",
-        "  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked port member",
+        "  simp [macIfaces]", "",
+        "lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,",
+        "    ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by",
+        "  unfold macIfaces; decide", "",
+        "theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)",
+        "    (member : port ∈ macIfaces) :",
+        "    ∃ association, ∀ body, fullMACsecTransmit iface association body := by",
+        "  obtain ⟨enabled, protect, encrypt, zero, association, installed⟩ := mac_configuration_checked iface member",
         "  refine ⟨association, fun body => ⟨installed, ?_⟩⟩",
         "  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt",
         "    association.keyGeneration body", "",

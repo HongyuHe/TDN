@@ -520,7 +520,7 @@ def ManagementTransportConfiguration (record : ComponentDutyRecord) : Prop :=
       (connection.localDedicatedLAN = true → connection.sameVLAN = true))
 
 def ManagementSeparation (record : ComponentDutyRecord) : Prop :=
-  (∀ port ∈ record.managementInterfaces, port ∉ record.dataInterfaces) ∧
+  (∀ iface ∈ record.managementInterfaces, iface ∉ record.dataInterfaces) ∧
   record.managementPhysicalSeparated = true ∧ record.managementCryptographicSeparated = true ∧
   record.managementACLSeparated = true ∧ record.directNIPRConnection = false
 
@@ -535,8 +535,8 @@ def ManagementAttachmentConfiguration (records : TechnicalDutyRecords) (d : Depl
   ∀ device ∈ d.devices, d.Relevant device.id →
     ∀ record ∈ records.components, record.component = device.id →
       ManagementSeparation record ∧
-      (∀ port ∈ record.managementInterfaces, ∃ interface ∈ d.interfaces,
-        interface.id = port ∧ interface.device = device.id ∧ interface.managementNetwork = true) ∧
+      (∀ iface ∈ record.managementInterfaces, ∃ interface ∈ d.interfaces,
+        interface.id = iface ∧ interface.device = device.id ∧ interface.managementNetwork = true) ∧
       record.managementConnections ≠ [] ∧
       ∀ connection ∈ record.managementConnections,
         connection.component = device.id ∧

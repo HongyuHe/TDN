@@ -1,0 +1,1148 @@
+{
+  "baseline": {
+    "esp": {
+      "bytes": 28,
+      "entryMtu": 1400,
+      "entryIface": 12,
+      "exitMtu": 1400,
+      "header": {
+        "connectionId": null,
+        "connectionState": "new",
+        "destination": 174326018,
+        "destinationPort": 0,
+        "egress": "",
+        "etherType": null,
+        "hopLimit": 64,
+        "icmpCode": 0,
+        "icmpType": 0,
+        "inboundPolicies": [],
+        "ingress": "",
+        "ipv4FragmentOffset": null,
+        "ipv4HeaderWords": 5,
+        "ipv6NextHeader": 0,
+        "networkBytes": 28,
+        "outboundPolicies": [],
+        "payloadBytes": null,
+        "protocol": "esp",
+        "source": 180879618,
+        "sourcePort": 0
+      },
+      "interface": {
+        "address": 174326270,
+        "device": "V31B_GF_A",
+        "externalData": false,
+        "id": "V31B_GF_A:s1",
+        "linkAddress": null,
+        "managementNetwork": false,
+        "mtu": 1400,
+        "namespaceAddresses": [
+          174326270
+        ],
+        "physical": true,
+        "zone": "gray"
+      },
+      "network": [
+        69,
+        0,
+        0,
+        28,
+        0,
+        0,
+        0,
+        0,
+        63,
+        50,
+        100,
+        129,
+        10,
+        200,
+        1,
+        2,
+        10,
+        100,
+        1,
+        2
+      ],
+      "payload": [
+        1,
+        2,
+        3,
+        4,
+        0,
+        0,
+        0,
+        1
+      ],
+      "route": {
+        "egress": 12,
+        "high": 174326271,
+        "ingress": 12,
+        "low": 174326016,
+        "metric": 0,
+        "prefixLength": 24,
+        "tablePriority": 32766
+      },
+      "transport": []
+    },
+    "espGuard": {
+      "atoms": [
+        {
+          "protocol": {
+            "name": "esp"
+          }
+        },
+        {
+          "sourceRange": {
+            "high": 180879618,
+            "low": 180879618
+          }
+        },
+        {
+          "destinationRange": {
+            "high": 174326018,
+            "low": 174326018
+          }
+        }
+      ],
+      "verdict": "allow"
+    },
+    "pair": {
+      "endpoints": {
+        "destination": "V31B_I_A1",
+        "destinationAddress": 174326018,
+        "source": "V31B_I_B1",
+        "sourceAddress": 180879618,
+        "view": "internet"
+      },
+      "tunnel": "V31B_I_B1:tunnel"
+    },
+    "reply": {
+      "bytes": 56,
+      "entryMtu": 1400,
+      "entryIface": 12,
+      "exitMtu": 1400,
+      "header": {
+        "connectionId": null,
+        "connectionState": "new",
+        "destination": 174326018,
+        "destinationPort": 9999,
+        "egress": "",
+        "etherType": null,
+        "hopLimit": 64,
+        "icmpCode": 0,
+        "icmpType": 0,
+        "inboundPolicies": [],
+        "ingress": "",
+        "ipv4FragmentOffset": 0,
+        "ipv4HeaderWords": 5,
+        "ipv6NextHeader": 0,
+        "networkBytes": 56,
+        "outboundPolicies": [],
+        "payloadBytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          28
+        ],
+        "protocol": "udp",
+        "source": 180879618,
+        "sourcePort": 500
+      },
+      "interface": {
+        "address": 174326270,
+        "device": "V31B_GF_A",
+        "externalData": false,
+        "id": "V31B_GF_A:s1",
+        "linkAddress": null,
+        "managementNetwork": false,
+        "mtu": 1400,
+        "namespaceAddresses": [
+          174326270
+        ],
+        "physical": true,
+        "zone": "gray"
+      },
+      "network": [
+        69,
+        0,
+        0,
+        56,
+        0,
+        0,
+        0,
+        0,
+        63,
+        17,
+        100,
+        134,
+        10,
+        200,
+        1,
+        2,
+        10,
+        100,
+        1,
+        2
+      ],
+      "payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        32,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        28
+      ],
+      "route": {
+        "egress": 12,
+        "high": 174326271,
+        "ingress": 12,
+        "low": 174326016,
+        "metric": 0,
+        "prefixLength": 24,
+        "tablePriority": 32766
+      },
+      "transport": [
+        1,
+        244,
+        39,
+        15,
+        0,
+        36,
+        0,
+        0
+      ]
+    },
+    "replyGuard": {
+      "atoms": [
+        {
+          "protocol": {
+            "name": "udp"
+          }
+        },
+        {
+          "sourceRange": {
+            "high": 180879618,
+            "low": 180879618
+          }
+        },
+        {
+          "destinationRange": {
+            "high": 174326018,
+            "low": 174326018
+          }
+        },
+        "ipsecUDPReplyFramingWithOptions"
+      ],
+      "verdict": "allow"
+    },
+    "sourcePhase": {
+      "intentSHA256": "e1a2a7476565446e39961f199d02b49966595e2f07067e72bc7bcf86bbb95703",
+      "intentSource": "outputs/mcp/exported/v31r-red-services-red_service_policy.json",
+      "meaning": "Declared service and diagnostic intent remains separate from measured cases",
+      "nativeSHA256": "cd435087be7fa53d3fc90b4c2a5e1d7c8d3e04c48609165ab87e1a16caca5f80",
+      "nativeSource": "outputs/mcp/exported/v31r-baseline-red-services-multi_protocol_execution.json",
+      "underlaySHA256": "0a86b7aba45a091352b8f936f9acd3311c189f1fa20a359221b6378598bba85f",
+      "underlaySource": "outputs/mcp/exported/v31r-underlay-policy-underlay_control_policy.json"
+    }
+  },
+  "baselineESP": {
+    "bytes": 28,
+    "entryMtu": 1400,
+    "entryIface": 12,
+    "exitMtu": 1400,
+    "header": {
+      "connectionId": null,
+      "connectionState": "new",
+      "destination": 174326018,
+      "destinationPort": 0,
+      "egress": "",
+      "etherType": null,
+      "hopLimit": 64,
+      "icmpCode": 0,
+      "icmpType": 0,
+      "inboundPolicies": [],
+      "ingress": "",
+      "ipv4FragmentOffset": null,
+      "ipv4HeaderWords": 5,
+      "ipv6NextHeader": 0,
+      "networkBytes": 28,
+      "outboundPolicies": [],
+      "payloadBytes": null,
+      "protocol": "esp",
+      "source": 180879618,
+      "sourcePort": 0
+    },
+    "interface": {
+      "address": 174326270,
+      "device": "V31B_GF_A",
+      "externalData": false,
+      "id": "V31B_GF_A:s1",
+      "linkAddress": null,
+      "managementNetwork": false,
+      "mtu": 1400,
+      "namespaceAddresses": [
+        174326270
+      ],
+      "physical": true,
+      "zone": "gray"
+    },
+    "network": [
+      69,
+      0,
+      0,
+      28,
+      0,
+      0,
+      0,
+      0,
+      63,
+      50,
+      100,
+      129,
+      10,
+      200,
+      1,
+      2,
+      10,
+      100,
+      1,
+      2
+    ],
+    "payload": [
+      1,
+      2,
+      3,
+      4,
+      0,
+      0,
+      0,
+      1
+    ],
+    "route": {
+      "egress": 12,
+      "high": 174326271,
+      "ingress": 12,
+      "low": 174326016,
+      "metric": 0,
+      "prefixLength": 24,
+      "tablePriority": 32766
+    },
+    "transport": []
+  },
+  "baselineESPGuard": {
+    "atoms": [
+      {
+        "protocol": {
+          "name": "esp"
+        }
+      },
+      {
+        "sourceRange": {
+          "high": 180879618,
+          "low": 180879618
+        }
+      },
+      {
+        "destinationRange": {
+          "high": 174326018,
+          "low": 174326018
+        }
+      }
+    ],
+    "verdict": "allow"
+  },
+  "baselinePair": {
+    "endpoints": {
+      "destination": "V31B_I_A1",
+      "destinationAddress": 174326018,
+      "source": "V31B_I_B1",
+      "sourceAddress": 180879618,
+      "view": "internet"
+    },
+    "tunnel": "V31B_I_B1:tunnel"
+  },
+  "baselineReply": {
+    "bytes": 56,
+    "entryMtu": 1400,
+    "entryIface": 12,
+    "exitMtu": 1400,
+    "header": {
+      "connectionId": null,
+      "connectionState": "new",
+      "destination": 174326018,
+      "destinationPort": 9999,
+      "egress": "",
+      "etherType": null,
+      "hopLimit": 64,
+      "icmpCode": 0,
+      "icmpType": 0,
+      "inboundPolicies": [],
+      "ingress": "",
+      "ipv4FragmentOffset": 0,
+      "ipv4HeaderWords": 5,
+      "ipv6NextHeader": 0,
+      "networkBytes": 56,
+      "outboundPolicies": [],
+      "payloadBytes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        32,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        28
+      ],
+      "protocol": "udp",
+      "source": 180879618,
+      "sourcePort": 500
+    },
+    "interface": {
+      "address": 174326270,
+      "device": "V31B_GF_A",
+      "externalData": false,
+      "id": "V31B_GF_A:s1",
+      "linkAddress": null,
+      "managementNetwork": false,
+      "mtu": 1400,
+      "namespaceAddresses": [
+        174326270
+      ],
+      "physical": true,
+      "zone": "gray"
+    },
+    "network": [
+      69,
+      0,
+      0,
+      56,
+      0,
+      0,
+      0,
+      0,
+      63,
+      17,
+      100,
+      134,
+      10,
+      200,
+      1,
+      2,
+      10,
+      100,
+      1,
+      2
+    ],
+    "payload": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      32,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      28
+    ],
+    "route": {
+      "egress": 12,
+      "high": 174326271,
+      "ingress": 12,
+      "low": 174326016,
+      "metric": 0,
+      "prefixLength": 24,
+      "tablePriority": 32766
+    },
+    "transport": [
+      1,
+      244,
+      39,
+      15,
+      0,
+      36,
+      0,
+      0
+    ]
+  },
+  "baselineReplyGuard": {
+    "atoms": [
+      {
+        "protocol": {
+          "name": "udp"
+        }
+      },
+      {
+        "sourceRange": {
+          "high": 180879618,
+          "low": 180879618
+        }
+      },
+      {
+        "destinationRange": {
+          "high": 174326018,
+          "low": 174326018
+        }
+      },
+      "ipsecUDPReplyFramingWithOptions"
+    ],
+    "verdict": "allow"
+  },
+  "shared": {
+    "esp": {
+      "bytes": 28,
+      "entryMtu": 1400,
+      "entryIface": 7,
+      "exitMtu": 1400,
+      "header": {
+        "connectionId": null,
+        "connectionState": "new",
+        "destination": 174326018,
+        "destinationPort": 0,
+        "egress": "",
+        "etherType": null,
+        "hopLimit": 64,
+        "icmpCode": 0,
+        "icmpType": 0,
+        "inboundPolicies": [],
+        "ingress": "",
+        "ipv4FragmentOffset": null,
+        "ipv4HeaderWords": 5,
+        "ipv6NextHeader": 0,
+        "networkBytes": 28,
+        "outboundPolicies": [],
+        "payloadBytes": null,
+        "protocol": "esp",
+        "source": 180879618,
+        "sourcePort": 0
+      },
+      "interface": {
+        "address": 174981630,
+        "device": "V31F_GF_A",
+        "externalData": false,
+        "id": "V31F_GF_A:g1",
+        "linkAddress": null,
+        "managementNetwork": false,
+        "mtu": 1400,
+        "namespaceAddresses": [
+          174981630
+        ],
+        "physical": true,
+        "zone": "gray"
+      },
+      "network": [
+        69,
+        0,
+        0,
+        28,
+        0,
+        0,
+        0,
+        0,
+        63,
+        50,
+        100,
+        129,
+        10,
+        200,
+        1,
+        2,
+        10,
+        100,
+        1,
+        2
+      ],
+      "payload": [
+        1,
+        2,
+        3,
+        4,
+        0,
+        0,
+        0,
+        1
+      ],
+      "route": {
+        "egress": 14,
+        "high": 174326271,
+        "ingress": 7,
+        "low": 174326016,
+        "metric": 0,
+        "prefixLength": 24,
+        "tablePriority": 32766
+      },
+      "transport": []
+    },
+    "espGuard": {
+      "atoms": [
+        {
+          "protocol": {
+            "name": "esp"
+          }
+        },
+        {
+          "sourceRange": {
+            "high": 180879618,
+            "low": 180879618
+          }
+        },
+        {
+          "destinationRange": {
+            "high": 174326018,
+            "low": 174326018
+          }
+        }
+      ],
+      "verdict": "allow"
+    },
+    "pair": {
+      "endpoints": {
+        "destination": "V31F_I_A1",
+        "destinationAddress": 174326018,
+        "source": "V31F_I_B1",
+        "sourceAddress": 180879618,
+        "view": "internet"
+      },
+      "tunnel": "V31F_I_B1:tunnel"
+    },
+    "reply": {
+      "bytes": 56,
+      "entryMtu": 1400,
+      "entryIface": 7,
+      "exitMtu": 1400,
+      "header": {
+        "connectionId": null,
+        "connectionState": "new",
+        "destination": 174326018,
+        "destinationPort": 9999,
+        "egress": "",
+        "etherType": null,
+        "hopLimit": 64,
+        "icmpCode": 0,
+        "icmpType": 0,
+        "inboundPolicies": [],
+        "ingress": "",
+        "ipv4FragmentOffset": 0,
+        "ipv4HeaderWords": 5,
+        "ipv6NextHeader": 0,
+        "networkBytes": 56,
+        "outboundPolicies": [],
+        "payloadBytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          28
+        ],
+        "protocol": "udp",
+        "source": 180879618,
+        "sourcePort": 500
+      },
+      "interface": {
+        "address": 174981630,
+        "device": "V31F_GF_A",
+        "externalData": false,
+        "id": "V31F_GF_A:g1",
+        "linkAddress": null,
+        "managementNetwork": false,
+        "mtu": 1400,
+        "namespaceAddresses": [
+          174981630
+        ],
+        "physical": true,
+        "zone": "gray"
+      },
+      "network": [
+        69,
+        0,
+        0,
+        56,
+        0,
+        0,
+        0,
+        0,
+        63,
+        17,
+        100,
+        134,
+        10,
+        200,
+        1,
+        2,
+        10,
+        100,
+        1,
+        2
+      ],
+      "payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        32,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        28
+      ],
+      "route": {
+        "egress": 14,
+        "high": 174326271,
+        "ingress": 7,
+        "low": 174326016,
+        "metric": 0,
+        "prefixLength": 24,
+        "tablePriority": 32766
+      },
+      "transport": [
+        1,
+        244,
+        39,
+        15,
+        0,
+        36,
+        0,
+        0
+      ]
+    },
+    "replyGuard": {
+      "atoms": [
+        {
+          "protocol": {
+            "name": "udp"
+          }
+        },
+        {
+          "sourceRange": {
+            "high": 180879618,
+            "low": 180879618
+          }
+        },
+        {
+          "destinationRange": {
+            "high": 174326018,
+            "low": 174326018
+          }
+        },
+        "ipsecUDPReplyFramingWithOptions"
+      ],
+      "verdict": "allow"
+    },
+    "sourcePhase": {
+      "intentSHA256": "e1a2a7476565446e39961f199d02b49966595e2f07067e72bc7bcf86bbb95703",
+      "intentSource": "outputs/mcp/exported/v31r-red-services-red_service_policy.json",
+      "meaning": "Declared service and diagnostic intent remains separate from measured cases",
+      "nativeSHA256": "583d2f95a1195eb0c35b7f1c1f43b5587a91d85a1320bd5a39f01da9dd69002e",
+      "nativeSource": "outputs/mcp/exported/v31r-shared-red-services-multi_protocol_execution.json",
+      "underlaySHA256": "0a86b7aba45a091352b8f936f9acd3311c189f1fa20a359221b6378598bba85f",
+      "underlaySource": "outputs/mcp/exported/v31r-underlay-policy-underlay_control_policy.json"
+    }
+  },
+  "sharedESP": {
+    "bytes": 28,
+    "entryMtu": 1400,
+    "entryIface": 7,
+    "exitMtu": 1400,
+    "header": {
+      "connectionId": null,
+      "connectionState": "new",
+      "destination": 174326018,
+      "destinationPort": 0,
+      "egress": "",
+      "etherType": null,
+      "hopLimit": 64,
+      "icmpCode": 0,
+      "icmpType": 0,
+      "inboundPolicies": [],
+      "ingress": "",
+      "ipv4FragmentOffset": null,
+      "ipv4HeaderWords": 5,
+      "ipv6NextHeader": 0,
+      "networkBytes": 28,
+      "outboundPolicies": [],
+      "payloadBytes": null,
+      "protocol": "esp",
+      "source": 180879618,
+      "sourcePort": 0
+    },
+    "interface": {
+      "address": 174981630,
+      "device": "V31F_GF_A",
+      "externalData": false,
+      "id": "V31F_GF_A:g1",
+      "linkAddress": null,
+      "managementNetwork": false,
+      "mtu": 1400,
+      "namespaceAddresses": [
+        174981630
+      ],
+      "physical": true,
+      "zone": "gray"
+    },
+    "network": [
+      69,
+      0,
+      0,
+      28,
+      0,
+      0,
+      0,
+      0,
+      63,
+      50,
+      100,
+      129,
+      10,
+      200,
+      1,
+      2,
+      10,
+      100,
+      1,
+      2
+    ],
+    "payload": [
+      1,
+      2,
+      3,
+      4,
+      0,
+      0,
+      0,
+      1
+    ],
+    "route": {
+      "egress": 14,
+      "high": 174326271,
+      "ingress": 7,
+      "low": 174326016,
+      "metric": 0,
+      "prefixLength": 24,
+      "tablePriority": 32766
+    },
+    "transport": []
+  },
+  "sharedESPGuard": {
+    "atoms": [
+      {
+        "protocol": {
+          "name": "esp"
+        }
+      },
+      {
+        "sourceRange": {
+          "high": 180879618,
+          "low": 180879618
+        }
+      },
+      {
+        "destinationRange": {
+          "high": 174326018,
+          "low": 174326018
+        }
+      }
+    ],
+    "verdict": "allow"
+  },
+  "sharedPair": {
+    "endpoints": {
+      "destination": "V31F_I_A1",
+      "destinationAddress": 174326018,
+      "source": "V31F_I_B1",
+      "sourceAddress": 180879618,
+      "view": "internet"
+    },
+    "tunnel": "V31F_I_B1:tunnel"
+  },
+  "sharedReply": {
+    "bytes": 56,
+    "entryMtu": 1400,
+    "entryIface": 7,
+    "exitMtu": 1400,
+    "header": {
+      "connectionId": null,
+      "connectionState": "new",
+      "destination": 174326018,
+      "destinationPort": 9999,
+      "egress": "",
+      "etherType": null,
+      "hopLimit": 64,
+      "icmpCode": 0,
+      "icmpType": 0,
+      "inboundPolicies": [],
+      "ingress": "",
+      "ipv4FragmentOffset": 0,
+      "ipv4HeaderWords": 5,
+      "ipv6NextHeader": 0,
+      "networkBytes": 56,
+      "outboundPolicies": [],
+      "payloadBytes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        32,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        28
+      ],
+      "protocol": "udp",
+      "source": 180879618,
+      "sourcePort": 500
+    },
+    "interface": {
+      "address": 174981630,
+      "device": "V31F_GF_A",
+      "externalData": false,
+      "id": "V31F_GF_A:g1",
+      "linkAddress": null,
+      "managementNetwork": false,
+      "mtu": 1400,
+      "namespaceAddresses": [
+        174981630
+      ],
+      "physical": true,
+      "zone": "gray"
+    },
+    "network": [
+      69,
+      0,
+      0,
+      56,
+      0,
+      0,
+      0,
+      0,
+      63,
+      17,
+      100,
+      134,
+      10,
+      200,
+      1,
+      2,
+      10,
+      100,
+      1,
+      2
+    ],
+    "payload": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      32,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      28
+    ],
+    "route": {
+      "egress": 14,
+      "high": 174326271,
+      "ingress": 7,
+      "low": 174326016,
+      "metric": 0,
+      "prefixLength": 24,
+      "tablePriority": 32766
+    },
+    "transport": [
+      1,
+      244,
+      39,
+      15,
+      0,
+      36,
+      0,
+      0
+    ]
+  },
+  "sharedReplyGuard": {
+    "atoms": [
+      {
+        "protocol": {
+          "name": "udp"
+        }
+      },
+      {
+        "sourceRange": {
+          "high": 180879618,
+          "low": 180879618
+        }
+      },
+      {
+        "destinationRange": {
+          "high": 174326018,
+          "low": 174326018
+        }
+      },
+      "ipsecUDPReplyFramingWithOptions"
+    ],
+    "verdict": "allow"
+  }
+}

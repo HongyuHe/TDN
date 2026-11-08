@@ -11,7 +11,7 @@ lemma locally_encrypted_response_rules_checked :
   decide
 
 lemma locally_encrypted_response_denial : EncryptedResponseGuards.LocalDeny config :=
-  EncryptedResponseGuards.finite_deny_sound devices ports routes links switches
+  EncryptedResponseGuards.finite_deny_sound devices ifaces routes links switches
     locally_encrypted_response_rules_checked
 
 theorem gateway_pre_and_post_encryption_responses_keep_stack
@@ -20,7 +20,7 @@ theorem gateway_pre_and_post_encryption_responses_keep_stack
       (EncryptedResponseGuards.combinedConfig responseData)).MTr
       (.network before) actions (.network after))
     (initial : GuardedResponseNetwork.Safe responseData before) :
-    Execution.StackInvariant config layout after :=
+    Execution.StackInvariant config expectedEncapStack after :=
   EncryptedResponseGuards.combined_executions_preserve_stack responseData
     local_stack_conditions all_source_output_reply_pairs_checked all_input_interfaces_covered
     response_default_checks locally_encrypted_response_denial run initial

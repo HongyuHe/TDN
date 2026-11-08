@@ -19,7 +19,7 @@ def encodeForFragmentation {Byte : Type} (encodedBytes : Frame → List Byte)
     (state : State) : Fragmentation.Datagram FragmentDescriptor Byte :=
   ⟨fragmentDescriptor state, encodedBytes state.frame⟩
 
-theorem execution_fragment_descriptors_match {Byte : Type} (c : Config)
+theorem execution_fragment_descriptors_match {Byte : Type} (c : Environment)
     (encodedBytes : Frame → List Byte)
     {before after : Fragmentation.SegmentedState State FragmentDescriptor Byte}
     {actions : List (Option Action)}

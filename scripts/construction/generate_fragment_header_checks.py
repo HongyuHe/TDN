@@ -22,15 +22,15 @@ lemma native_all_hooks_only_allow : ∀ device ∈ ({{}} : DeviceData) :: tagged
 
 """
         for hook in ["input", "forward", "output"]:
-            text += f"""theorem noninitial_{hook}_accepted_by_header_completion (port : Nat)
+            text += f"""theorem noninitial_{hook}_accepted_by_header_completion (iface : Nat)
     (packet : PacketPolicy.Packet)
-    (accepted : Filter.evaluate ((config.{hook}Rules port).map FragmentHeaders.rule)
-      (config.{hook}Fallback port) packet = .allow) :
-    accepts (config.{hook}Rules port) (config.{hook}Fallback port) packet := by
+    (accepted : Filter.evaluate ((config.{hook}Rules iface).map FragmentHeaders.rule)
+      (config.{hook}Fallback iface) packet = .allow) :
+    accepts (config.{hook}Rules iface) (config.{hook}Fallback iface) packet := by
   apply FragmentHeaders.allow_only_rules_cover_noninitial_fragments
-    (config.{hook}Rules port) ?_ (config.{hook}Fallback port) packet accepted
-  exact native_all_hooks_only_allow (deviceAt taggedDevices (portAt {base}.ports port).owner)
-    (device_at_member_or_default taggedDevices _) _ (by simp [config, finiteConfig])
+    (config.{hook}Rules iface) ?_ (config.{hook}Fallback iface) packet accepted
+  exact native_all_hooks_only_allow (deviceAt taggedDevices (ifaceAt {base}.ifaces iface).owner)
+    (device_at_member_or_default taggedDevices _) _ (by simp [config, dataPlaneConfigFromRecords])
 
 """
         text += f"end TDN.Imported.Fresh{name}Isolation\n\n"

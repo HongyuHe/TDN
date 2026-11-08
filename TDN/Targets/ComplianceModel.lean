@@ -1,6 +1,6 @@
 import TDN.Targets.Architecture
 import TDN.Semantics.PacketPolicy
-import TDN.Semantics.Paths
+import TDN.Semantics.Waypointing
 import TDN.Semantics.MultiProtocolExecution
 import TDN.Semantics.PacketSource
 import TDN.Semantics.PacketProcessing
@@ -28,11 +28,19 @@ structure Interface where
   device : String
   zone : Zone
   address : Option Nat
+  namespaceAddresses : List Nat := []
   linkAddress : Option Nat := none
   physical : Bool
   externalData : Bool := false
   managementNetwork : Bool
   mtu : Option Nat := none
+
+def Interface.HasLocalAddress (interface : Interface) (address : Nat) : Prop :=
+  interface.address = some address ∨ address ∈ interface.namespaceAddresses
+
+instance (interface : Interface) (address : Nat) : Decidable (interface.HasLocalAddress address) := by
+  unfold Interface.HasLocalAddress
+  infer_instance
 
 inductive Direction where
   | inbound | outbound
@@ -95,7 +103,7 @@ inductive ProtectionSession where
   | macsec (association : LayeredFrame.MACsecAssociation)
   deriving DecidableEq
 
-inductive ProcessingEvent where
+inductive NetworkEvent where
   | protect (payload : PayloadId) (tunnel : String) (session : ProtectionSession)
   | unprotect (payload : PayloadId) (tunnel : String) (session : ProtectionSession)
   | sessionTransmit (payload : PayloadId) (interface : String) (sessions : List ProtectionSession)
@@ -175,7 +183,7 @@ structure NativeExecutionBinding (State Action : Type) where
   configuration : MultiProtocolExecution.Config
   state : State → MultiProtocolExecution.State
   action : Action → Option MultiProtocolExecution.Action
-  portName : Nat → String
+  ifaceName : Nat → String
   ipsecTunnel : Execution.Seal → String
   ipsecEpoch : Option String
   ipsecInstallations : List IPsecLocalSA
@@ -198,7 +206,7 @@ structure HistoricalEvent where
   position : Nat
   epoch : String
   session : Option String
-  event : ProcessingEvent
+  event : NetworkEvent
   deriving DecidableEq
 
 def HistoricalEvent.SetupOnly (record : HistoricalEvent) : Prop :=
@@ -218,7 +226,7 @@ structure ObservedHistory where
   entries : List HistoricalEvent := []
   dependencies : List (Nat × Nat) := []
 
-def ObservedHistory.Events (history : ObservedHistory) : List ProcessingEvent :=
+def ObservedHistory.Events (history : ObservedHistory) : List NetworkEvent :=
   history.entries.map HistoricalEvent.event
 
 def HistoricalEvent.DirectPrecedes (first second : HistoricalEvent) : Prop :=
@@ -263,7 +271,7 @@ structure MACsecHistoryInstallation where
 structure ExecutionModel (State Action : Type) where
   system : Cslib.LTS State Action
   initial : State → Prop
-  events : Action → List ProcessingEvent
+  events : Action → List NetworkEvent
   native : NativeExecutionBinding State Action
   sourceRecord : State → Option (PacketSource.Request × PacketSource.Datagram) := fun _ => none
   history : ObservedHistory := {}
@@ -289,7 +297,7 @@ def BodySessions : LayeredFrame.Body → List ProtectionSession
   | .carrier _ body => BodySessions body
 
 def NativeExecutionBinding.OperationEvents {S A : Type} (binding : NativeExecutionBinding S A)
-    (before : S) (action : MultiProtocolExecution.Action) (after : S) : List ProcessingEvent :=
+    (before : S) (action : MultiProtocolExecution.Action) (after : S) : List NetworkEvent :=
   let first := binding.state before
   let last := binding.state after
   let payload : PayloadId := ⟨first.frame.originDomain, first.frame.payload⟩
@@ -325,49 +333,49 @@ def NativeExecutionBinding.OperationEvents {S A : Type} (binding : NativeExecuti
           [.unprotect payload (binding.macsecTunnel association) (.macsec association),
             .decrypt payload (binding.macsecTunnel association)]
       | _ => []
-  | .wire =>
-      [.sessionTransmit payload (binding.portName first.port) (BodySessions first.frame.body),
-        .transmit payload (binding.portName first.port) oldLayers trafficClass,
-        .receive payload (binding.portName last.port) newLayers trafficClass,
-        .sessionReceive payload (binding.portName last.port) (BodySessions last.frame.body)]
+  | .linkTransmit =>
+      [.sessionTransmit payload (binding.ifaceName first.iface) (BodySessions first.frame.body),
+        .transmit payload (binding.ifaceName first.iface) oldLayers trafficClass,
+        .receive payload (binding.ifaceName last.iface) newLayers trafficClass,
+        .sessionReceive payload (binding.ifaceName last.iface) (BodySessions last.frame.body)]
   | .receive => []
   | .encapsulate =>
       match last.frame.body with
       | .carrier carrier _ =>
-          [.encapsulate payload (binding.componentName (binding.configuration.ip.owner first.port))
+          [.encapsulate payload (binding.componentName (binding.configuration.ip.owner first.iface))
             carrier.protocol]
       | _ => []
   | .decapsulate =>
       match first.frame.body with
       | .carrier carrier _ =>
-          [.decapsulate payload (binding.componentName (binding.configuration.ip.owner last.port))
+          [.decapsulate payload (binding.componentName (binding.configuration.ip.owner last.iface))
             carrier.protocol]
       | _ => []
   | .deliver =>
-      match binding.configuration.ip.recipientDomain first.port with
+      match binding.configuration.ip.recipientDomain first.iface with
       | some domain => [.deliver payload (binding.domainName domain) newLayers]
       | none => []
   | _ => []
 
 def NativeExecutionBinding.SourceEvents {S A : Type} (binding : NativeExecutionBinding S A)
-    (before : S) : List ProcessingEvent :=
+    (before : S) : List NetworkEvent :=
   let state := binding.state before
   let payload : PayloadId := ⟨state.frame.originDomain, state.frame.payload⟩
   if state.initialEntry then
     match binding.origin state.frame.originDomain with
     | .red network =>
-        if binding.sourceEntry state.port = some network ∧ binding.LayerIds state.frame.body = []
+        if binding.sourceEntry state.iface = some network ∧ binding.LayerIds state.frame.body = []
         then [.inject payload network,
-          .receive payload (binding.portName state.port) [] .protectedData]
+          .receive payload (binding.ifaceName state.iface) [] .protectedData]
         else []
     | _ => []
   else []
 
 def NativeExecutionBinding.RequiredEvents {S A : Type} (binding : NativeExecutionBinding S A)
-    (before : S) (action : MultiProtocolExecution.Action) (after : S) : List ProcessingEvent :=
+    (before : S) (action : MultiProtocolExecution.Action) (after : S) : List NetworkEvent :=
   binding.SourceEvents before ++ binding.OperationEvents before action after
 
-def ProcessingEvent.NetworkOperation : ProcessingEvent → Bool
+def NetworkEvent.NetworkOperation : NetworkEvent → Bool
   | .protect .. | .unprotect .. | .sessionTransmit .. | .sessionReceive .. | .useSAK .. |
     .inject .. | .encrypt .. | .decrypt .. | .encapsulate .. | .decapsulate .. |
       .transmit .. | .receive .. | .deliver .. => true
@@ -375,30 +383,30 @@ def ProcessingEvent.NetworkOperation : ProcessingEvent → Bool
 
 def NativeExecutionBinding.MACsecKeyInventory {S A : Type}
     (binding : NativeExecutionBinding S A) : Prop :=
-  ∀ port ∈ binding.configuration.macPorts, ∀ association,
-    (port.transmitAssociation = some association ∨ association ∈ port.receiveAssociations) →
+  ∀ iface ∈ binding.configuration.macIfaces, ∀ association,
+    (iface.transmitAssociation = some association ∨ association ∈ iface.receiveAssociations) →
     ∃ key, binding.macsecKeyMaterial association = some key ∧
       (key.length = 16 ∨ key.length = 32)
 
 def IPsecLocalSA.InstalledAt {S A : Type} (installation : IPsecLocalSA)
-    (binding : NativeExecutionBinding S A) (port : Nat) : Prop :=
-  installation.device = binding.configuration.ip.owner port ∧
+    (binding : NativeExecutionBinding S A) (iface : Nat) : Prop :=
+  installation.device = binding.configuration.ip.owner iface ∧
   match installation.direction with
-  | .outbound => installation.association ∈ binding.configuration.ip.outboundStates port
-  | .inbound => installation.association ∈ binding.configuration.ip.inboundStates port
+  | .outbound => installation.association ∈ binding.configuration.ip.outboundStates iface
+  | .inbound => installation.association ∈ binding.configuration.ip.inboundStates iface
 
 def IPsecLocalSA.OutboundSeal {S A : Type} (installation : IPsecLocalSA)
     (binding : NativeExecutionBinding S A) (wireSeal : Execution.Seal) : Prop :=
   installation.direction = .outbound ∧
-  ∃ port, installation.InstalledAt binding port ∧
-    ∃ policy ∈ binding.configuration.ip.outbound port,
+  ∃ iface, installation.InstalledAt binding iface ∧
+    ∃ policy ∈ binding.configuration.ip.outbound iface,
       Execution.StateBindsPolicy installation.association policy ∧
       policy.seal installation.association = wireSeal
 
 def IPsecLocalSA.InboundSeal {S A : Type} (installation : IPsecLocalSA)
-    (binding : NativeExecutionBinding S A) (port : Nat) (wireSeal : Execution.Seal) : Prop :=
-  installation.direction = .inbound ∧ installation.InstalledAt binding port ∧
-  ∃ policy ∈ binding.configuration.ip.inbound port,
+    (binding : NativeExecutionBinding S A) (iface : Nat) (wireSeal : Execution.Seal) : Prop :=
+  installation.direction = .inbound ∧ installation.InstalledAt binding iface ∧
+  ∃ policy ∈ binding.configuration.ip.inbound iface,
     Execution.StateBindsPolicy installation.association policy ∧
     policy.seal installation.association = wireSeal
 
@@ -407,31 +415,31 @@ def NativeExecutionBinding.IPsecKeyInventory {S A : Type}
   (∀ installation ∈ binding.ipsecInstallations, ∃ epoch,
     binding.ipsecEpoch = some epoch ∧ installation.epoch = epoch ∧
     installation.installation ≠ "" ∧
-    (∃ port, installation.InstalledAt binding port) ∧
+    (∃ iface, installation.InstalledAt binding iface) ∧
     ∃ material, binding.ipsecKeyMaterial installation = some material ∧ material.Valid) ∧
-  (∀ port association, association ∈ binding.configuration.ip.outboundStates port →
+  (∀ iface association, association ∈ binding.configuration.ip.outboundStates iface →
     ∃ installation ∈ binding.ipsecInstallations,
-      installation.device = binding.configuration.ip.owner port ∧
+      installation.device = binding.configuration.ip.owner iface ∧
       installation.direction = .outbound ∧ installation.association = association) ∧
-  (∀ port association, association ∈ binding.configuration.ip.inboundStates port →
+  (∀ iface association, association ∈ binding.configuration.ip.inboundStates iface →
     ∃ installation ∈ binding.ipsecInstallations,
-      installation.device = binding.configuration.ip.owner port ∧
+      installation.device = binding.configuration.ip.owner iface ∧
       installation.direction = .inbound ∧ installation.association = association) ∧
   (∀ first ∈ binding.ipsecInstallations, ∀ second ∈ binding.ipsecInstallations,
     first.device = second.device → first.installation = second.installation → first = second) ∧
   (∀ first ∈ binding.ipsecInstallations, ∀ second ∈ binding.ipsecInstallations, ∀ wireSeal,
     first.OutboundSeal binding wireSeal → second.OutboundSeal binding wireSeal → first = second) ∧
-  (∀ first ∈ binding.ipsecInstallations, ∀ second ∈ binding.ipsecInstallations, ∀ port wireSeal,
-    first.InboundSeal binding port wireSeal → second.InboundSeal binding port wireSeal → first = second)
+  (∀ first ∈ binding.ipsecInstallations, ∀ second ∈ binding.ipsecInstallations, ∀ iface wireSeal,
+    first.InboundSeal binding iface wireSeal → second.InboundSeal binding iface wireSeal → first = second)
 
 def NativeExecutionBinding.AcceptedStep {S A : Type} (binding : NativeExecutionBinding S A)
     (before : MultiProtocolExecution.State) (action : MultiProtocolExecution.Action)
     (after : MultiProtocolExecution.State) : Prop :=
   MultiProtocolExecution.Step binding.configuration before action after ∧
   (action = .decryptMACsec →
-    ∃ port ∈ binding.configuration.macPorts, ∃ installed ∈ port.receiveAssociations,
+    ∃ iface ∈ binding.configuration.macIfaces, ∃ installed ∈ iface.receiveAssociations,
       ∃ transmitted body,
-        before.port = port.physicalPort ∧ after.port = port.logicalPort ∧
+        before.iface = iface.physicalIface ∧ after.iface = iface.logicalIface ∧
         before.frame.body = .macsec transmitted body ∧ after.frame.body = body ∧
         LayeredFrame.SameMACWireIdentity transmitted installed ∧
         MACsecKeyMaterialMatches binding.macsecKeyMaterial transmitted installed) ∧
@@ -439,7 +447,7 @@ def NativeExecutionBinding.AcceptedStep {S A : Type} (binding : NativeExecutionB
     ∃ source ∈ binding.ipsecInstallations, ∃ receiver ∈ binding.ipsecInstallations,
       ∃ wireSeal body, before.frame.body = .ipsec wireSeal body ∧ after.frame.body = body ∧
         source.OutboundSeal binding wireSeal ∧
-        receiver.InboundSeal binding before.port wireSeal ∧
+        receiver.InboundSeal binding before.iface wireSeal ∧
         IPsecKeyMaterialMatches binding.ipsecKeyMaterial source receiver) ∧
   binding.configuration.LinkStepAdmitted before action after ∧
   binding.configuration.HeaderStepAdmitted before action
@@ -450,11 +458,11 @@ def ExecutionModel.Faithful {S A : Type} (model : ExecutionModel S A) : Prop :=
     | some nativeAction =>
         model.native.AcceptedStep
           (model.native.state before) nativeAction (model.native.state after) ∧
-        (model.events action).filter ProcessingEvent.NetworkOperation =
+        (model.events action).filter NetworkEvent.NetworkOperation =
           model.native.RequiredEvents before nativeAction after
     | none =>
         model.native.state before = model.native.state after ∧
-        (model.events action).filter ProcessingEvent.NetworkOperation = []
+        (model.events action).filter NetworkEvent.NetworkOperation = []
 
 def ExecutionModel.NativeStepCoverage {S A : Type} (model : ExecutionModel S A) : Prop :=
   ∀ before nativeAction nativeAfter,
@@ -464,7 +472,7 @@ def ExecutionModel.NativeStepCoverage {S A : Type} (model : ExecutionModel S A) 
       model.native.action action = some nativeAction ∧ model.native.state after = nativeAfter
 
 def ExecutionModel.TraceEvents {S A : Type} (model : ExecutionModel S A)
-    (actions : List A) : List ProcessingEvent :=
+    (actions : List A) : List NetworkEvent :=
   model.history.Events ++ actions.flatMap model.events
 
 def MACsecHistoryInstallation.Bound {S A : Type} (record : MACsecHistoryInstallation)
@@ -489,14 +497,14 @@ def MACsecHistoryInstallation.Bound {S A : Type} (record : MACsecHistoryInstalla
     model.native.macsecKeyMaterial record.association = some material
 
 def ExecutionModel.AllTraces {S A : Type} (model : ExecutionModel S A)
-    (property : List ProcessingEvent → Prop) : Prop :=
+    (property : List NetworkEvent → Prop) : Prop :=
   ∀ start actions finish, model.initial start → model.system.MTr start actions finish →
     property (model.TraceEvents actions)
 
-def Before (events : List ProcessingEvent) (first second : ProcessingEvent) : Prop :=
+def Before (events : List NetworkEvent) (first second : NetworkEvent) : Prop :=
   ∃ earlier middle later, events = earlier ++ [first] ++ middle ++ [second] ++ later
 
-def BeforeEvery (events : List ProcessingEvent) (first second : ProcessingEvent) : Prop :=
+def BeforeEvery (events : List NetworkEvent) (first second : NetworkEvent) : Prop :=
   ∀ earlier later, events = earlier ++ [second] ++ later → first ∈ earlier
 
 structure AuthorityFacts where
@@ -631,16 +639,16 @@ def Deployment.RedAttachmentDevice (d : Deployment) (network component : String)
       interface.device = component
 
 def Deployment.OwnedGrayAttachment (d : Deployment)
-    (first second : String) (secondPort : String) : Prop :=
+    (first second : String) (secondIface : String) : Prop :=
   ∃ source ∈ d.interfaces, ∃ destination ∈ d.interfaces,
     source.device = first ∧ source.zone = .gray ∧
     destination.device = second ∧ destination.zone = .gray ∧
-    destination.id = secondPort ∧ d.physicalLink source.id destination.id
+    destination.id = secondIface ∧ d.physicalLink source.id destination.id
 
 def Deployment.OwnedGrayExit (d : Deployment)
-    (first : String) (firstPort : String) (second : String) : Prop :=
+    (first : String) (firstIface : String) (second : String) : Prop :=
   ∃ source ∈ d.interfaces, ∃ destination ∈ d.interfaces,
-    source.device = first ∧ source.zone = .gray ∧ source.id = firstPort ∧
+    source.device = first ∧ source.zone = .gray ∧ source.id = firstIface ∧
     destination.device = second ∧ destination.zone = .gray ∧
     d.physicalLink source.id destination.id
 
@@ -662,7 +670,8 @@ def Deployment.OrdinaryGray (d : Deployment) (component : String) : Prop :=
     device.infrastructure = false ∧
     device.kind ∈ [.ordinaryGrayRouter, .ordinaryGraySwitch]) ∧
   (∃ interface ∈ d.interfaces, interface.device = component ∧ interface.zone = .gray) ∧
-  ∀ interface ∈ d.interfaces, interface.device = component → interface.zone = .gray
+  ∀ interface ∈ d.interfaces, interface.device = component →
+    interface.zone = .gray ∨ interface.zone = .local
 
 def Interface.PacketAddress (interface : Interface) (packet : PacketPolicy.Packet) : Option Nat :=
   if packet.protocol = "ethernet" ∧ packet.etherType.isSome = true
@@ -746,6 +755,7 @@ def PacketIPProtocol (packet : PacketPolicy.Packet) : Nat :=
     | "tcp" => 6
     | "udp" => 17
     | "esp" => 50
+    | "ospf" => 89
     | "icmp" => 1
     | other => other.toNat?.getD 0
 
@@ -755,7 +765,7 @@ def PacketMulticast (packet : PacketPolicy.Packet) : Bool :=
   | some 6 => decide (255 * 2^120 ≤ packet.destination - 2^128)
   | _ => decide (packet.destination / 2^40 % 2 = 1)
 
-def PacketService (packet : PacketPolicy.Packet) : String :=
+def PacketPortService (packet : PacketPolicy.Packet) : String :=
   if packet.protocol = "tcp" ∧ (packet.sourcePort = 80 ∨ packet.destinationPort = 80) then "http"
   else if packet.protocol = "udp" ∧
     (packet.destinationPort = 514 ∨ packet.sourcePort = 514) then "logging"
@@ -772,6 +782,11 @@ def PacketService (packet : PacketPolicy.Packet) : String :=
   else if packet.protocol = "udp" ∧
     (packet.destinationPort ∈ [67, 68] ∨ packet.sourcePort ∈ [67, 68]) then "dhcp"
   else packet.protocol
+
+def PacketService (packet : PacketPolicy.Packet) : String :=
+  if PacketIKE packet then "ike"
+  else if PacketUDPESP packet then "esp"
+  else PacketPortService packet
 
 def PacketARP (packet : PacketPolicy.Packet) : Prop :=
   packet.protocol = "arp" ∨ (PacketIsEthernet packet ∧ packet.etherType = some 2054)
@@ -796,7 +811,7 @@ def PacketClass (packet : PacketPolicy.Packet) : TrafficClass :=
   if PacketService packet ∈ ["logging", "authentication", "administration"]
     then .management
   else if PacketService packet ∈ ["time", "dns", "dhcp"] ∨ PacketIKE packet ∨ PacketMKA packet ∨ PacketARP packet ∨
-    packet.protocol ∈ ["icmp", "icmpv6", "ndp"] then .control
+    packet.protocol ∈ ["icmp", "icmpv6", "ndp", "ospf"] then .control
   else .protectedData
 
 def Deployment.AddressOwner (d : Deployment) (address : Nat) : Option String :=
@@ -905,12 +920,14 @@ def Deployment.RegisteredService (d : Deployment) (packet : PacketPolicy.Packet)
         ServiceRegistration.kind)
 
 def Deployment.ObservedService (d : Deployment) (packet : PacketPolicy.Packet) : String :=
+  if PacketIKE packet then "ike" else if PacketUDPESP packet then "esp" else
   match d.RegisteredService packet with
   | some .application | some .control => PacketService packet
   | some kind => kind.name
   | none => PacketService packet
 
 def Deployment.ObservedClass (d : Deployment) (packet : PacketPolicy.Packet) : TrafficClass :=
+  if PacketIKE packet then .control else if PacketUDPESP packet then .protectedData else
   if d.udpBindings.any (fun binding => decide (binding.mode = .keepalive ∧ binding.WellFormed ∧ binding.Framing packet))
     then .control else
   match d.RegisteredService packet with
@@ -990,10 +1007,10 @@ def MKAPayloadSCI (association : LayeredFrame.MACsecAssociation) (bytes : List U
 def Deployment.AssociationPeers (d : Deployment) (association : LayeredFrame.MACsecAssociation)
     (source destination : String) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
-    ∃ sender ∈ inventory.configuration.macPorts, sender.transmitAssociation = some association ∧
-      inventory.componentName (inventory.configuration.ip.owner sender.physicalPort) = source ∧
-      ∃ receiver ∈ inventory.configuration.macPorts,
-        inventory.componentName (inventory.configuration.ip.owner receiver.physicalPort) = destination ∧
+    ∃ sender ∈ inventory.configuration.macIfaces, sender.transmitAssociation = some association ∧
+      inventory.componentName (inventory.configuration.ip.owner sender.physicalIface) = source ∧
+      ∃ receiver ∈ inventory.configuration.macIfaces,
+        inventory.componentName (inventory.configuration.ip.owner receiver.physicalIface) = destination ∧
         ∃ installed ∈ receiver.receiveAssociations,
           LayeredFrame.SameMACWireIdentity association installed ∧
           ∃ tunnel ∈ d.tunnels, tunnel.id = inventory.macsecTunnel association ∧
@@ -1019,10 +1036,10 @@ def Deployment.CarrierBindingWellFormed (d : Deployment) (binding : PacketProces
     interface.zone = .gray ∧ interface.address = some binding.endpoint.destination) ∧
   ∃ inventory, d.processing = some inventory ∧
     (∃ sender ∈ inventory.configuration.carriers, sender.transmit = binding.endpoint ∧
-      inventory.componentName (inventory.configuration.ip.owner sender.routingPort) =
+      inventory.componentName (inventory.configuration.ip.owner sender.routingIface) =
         binding.sourceEncapsulator) ∧
     (∃ receiver ∈ inventory.configuration.carriers,
-      inventory.componentName (inventory.configuration.ip.owner receiver.routingPort) =
+      inventory.componentName (inventory.configuration.ip.owner receiver.routingIface) =
         binding.destinationEncapsulator ∧
       receiver.transmit.source = binding.endpoint.destination ∧
       receiver.transmit.destination = binding.endpoint.source ∧
@@ -1035,8 +1052,8 @@ def Deployment.CarrierBindingWellFormed (d : Deployment) (binding : PacketProces
 def Deployment.MKAActorPeers (d : Deployment) (sci : Nat) (source destination : String) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
     ∃ endpoint ∈ inventory.mkaPeers, endpoint.actorSCI = sci ∧
-      inventory.componentName (inventory.configuration.ip.owner endpoint.sourcePort) = source ∧
-      inventory.componentName (inventory.configuration.ip.owner endpoint.destinationPort) = destination ∧
+      inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = source ∧
+      inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = destination ∧
       ∃ tunnel ∈ d.tunnels, tunnel.id = endpoint.tunnel ∧ tunnel.layer = .inner ∧
         tunnel.mechanism = .macsec ∧ tunnel.sender = source ∧ tunnel.receiver = destination
 
@@ -1110,18 +1127,18 @@ def Deployment.IntendedMKAPeerAt (d : Deployment) (interface device : String)
   | none => False
   | some inventory =>
     ∃ endpoint ∈ inventory.mkaPeers,
-      endpoint.sourcePort ∈ inventory.ports ∧ endpoint.destinationPort ∈ inventory.ports ∧
-      inventory.portName endpoint.sourcePort = interface ∧ traffic.packet.egress = interface ∧
-      inventory.componentName (inventory.configuration.ip.owner endpoint.sourcePort) = device ∧
-      (∃ mac ∈ inventory.configuration.macPorts, mac.physicalPort = endpoint.sourcePort) ∧
-      (∃ mac ∈ inventory.configuration.macPorts, mac.physicalPort = endpoint.destinationPort) ∧
+      endpoint.sourceIface ∈ inventory.ifaces ∧ endpoint.destinationIface ∈ inventory.ifaces ∧
+      inventory.ifaceName endpoint.sourceIface = interface ∧ traffic.packet.egress = interface ∧
+      inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = device ∧
+      (∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = endpoint.sourceIface) ∧
+      (∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = endpoint.destinationIface) ∧
       (∃ source ∈ d.interfaces, source.id = interface ∧ source.device = device ∧
         source.zone = .black ∧ source.linkAddress = some (endpoint.actorSCI / 65536)) ∧
       (∃ sender ∈ d.devices, sender.id = device ∧ sender.kind = .macsec ∧ sender.layer = some .outer) ∧
       ∃ receiver ∈ d.devices, receiver.kind = .macsec ∧ receiver.layer = some .outer ∧
-        inventory.componentName (inventory.configuration.ip.owner endpoint.destinationPort) = receiver.id ∧
+        inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = receiver.id ∧
         (∃ destination ∈ d.interfaces,
-          destination.id = inventory.portName endpoint.destinationPort ∧
+          destination.id = inventory.ifaceName endpoint.destinationIface ∧
           destination.device = receiver.id ∧ destination.zone = .black) ∧
         (∃ tunnel ∈ d.tunnels, tunnel.id = endpoint.tunnel ∧ tunnel.layer = .outer ∧
           tunnel.mechanism = .macsec ∧ tunnel.sender = device ∧ tunnel.receiver = receiver.id) ∧
@@ -1136,33 +1153,34 @@ def Deployment.IntendedPacketPeerAt (d : Deployment) (interface device : String)
 
 
 def Deployment.LinkPath (_d : Deployment) (inventory : PacketProcessing.Inventory)
-    (port : Nat) : Prop :=
-  (∃ mac ∈ inventory.configuration.macPorts, mac.physicalPort = port) ∨
-  (∃ next ∈ inventory.ports,
-    inventory.configuration.bridge port next ∨ inventory.configuration.bridge next port) ∨
-  (∃ carrier ∈ inventory.configuration.carriers, carrier.virtualPort = port)
+    (iface : Nat) : Prop :=
+  (∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = iface) ∨
+  (∃ next ∈ inventory.ifaces,
+    inventory.configuration.bridge iface next ∨ inventory.configuration.bridge next iface) ∨
+  (∃ carrier ∈ inventory.configuration.carriers, carrier.virtualIface = iface)
 
 def Deployment.LinkTransit (_d : Deployment) (inventory : PacketProcessing.Inventory)
-    (port : Nat) (direction : Direction) : Prop :=
-  (∃ next ∈ inventory.ports,
-    if direction = .inbound then inventory.configuration.bridge port next
-    else inventory.configuration.bridge next port) ∨
-  ∃ carrier ∈ inventory.configuration.carriers, carrier.virtualPort = port
+    (iface : Nat) (direction : Direction) : Prop :=
+  (∃ next ∈ inventory.ifaces,
+    if direction = .inbound then inventory.configuration.bridge iface next
+    else inventory.configuration.bridge next iface) ∨
+  (∃ carrier ∈ inventory.configuration.carriers, carrier.virtualIface = iface) ∨
+  ∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = iface
 
 def Deployment.LinkCapable (d : Deployment) (interface : String) (direction : Direction)
     (traffic : Traffic) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
-    ∃ port ∈ inventory.ports, inventory.portName port = interface ∧
-      ((PacketIsEthernet traffic.packet ∧ d.LinkTransit inventory port direction) ∨
+    ∃ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface ∧
+      ((PacketIsEthernet traffic.packet ∧ d.LinkTransit inventory iface direction) ∨
        (PacketMKA traffic.packet ∧
         ∃ endpoint ∈ inventory.mkaPeers,
-          (if direction = .outbound then endpoint.sourcePort = port
-            else endpoint.destinationPort = port) ∧
+          (if direction = .outbound then endpoint.sourceIface = iface
+            else endpoint.destinationIface = iface) ∧
           ∃ bytes, traffic.packet.payloadBytes = some bytes ∧ 36 ≤ bytes.length ∧
             PacketSource.field bytes 8 8 = endpoint.actorSCI ∧
             traffic.packet.source = endpoint.actorSCI / 65536) ∨
        (PacketMACsec traffic.packet ∧
-        ∃ mac ∈ inventory.configuration.macPorts, mac.physicalPort = port ∧
+        ∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = iface ∧
           ∃ association bytes, traffic.packet.payloadBytes = some bytes ∧
             MACsecPayload association bytes ∧
             (PacketSource.field bytes 0 1 / 32 % 2 = 0 →
@@ -1178,8 +1196,8 @@ def Deployment.LinkOperation (d : Deployment) (interface : String) (direction : 
     (traffic : Traffic) : Prop :=
   d.LinkCapable interface direction traffic ∧
   ∃ inventory, d.processing = some inventory ∧
-    ∃ port ∈ inventory.ports, inventory.portName port = interface ∧
-      LinkAdmission.Admitted inventory.configuration.linkPolicies port
+    ∃ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface ∧
+      LinkAdmission.Admitted inventory.configuration.linkPolicies iface
         (direction = .outbound) traffic.packet
 
 def HookDirection (hook : PacketProcessing.Hook) (direction : Direction) : Prop :=
@@ -1197,9 +1215,29 @@ def Deployment.PolicyCoverage (d : Deployment) (interface : Interface) : Prop :=
     ∀ other ∈ d.policies, other.interface = interface.id → other.direction = direction →
       other.hook = hook → other = policy
 
+def PacketAtHook (name : String) (direction : Direction) (hook : PacketProcessing.Hook)
+    (packet : PacketPolicy.Packet) : Prop :=
+  HookDirection hook direction ∧
+  match hook with
+  | .input => packet.ingress = name ∧ packet.egress = "" ∧ packet.outboundPolicies = []
+  | .output => packet.egress = name ∧ packet.ingress = "" ∧ packet.inboundPolicies = []
+  | .forward => if direction = .inbound then packet.ingress = name else packet.egress = name
+  | .link =>
+      (if direction = .inbound then packet.ingress = name ∧ packet.egress = ""
+       else packet.egress = name ∧ packet.ingress = "") ∧
+      packet.inboundPolicies = [] ∧ packet.outboundPolicies = []
+
+def Deployment.HookContext (d : Deployment) (interface : String) (direction : Direction)
+    (hook : PacketProcessing.Hook) (packet : PacketPolicy.Packet) : Prop :=
+  ∃ inventory, d.processing = some inventory ∧
+    ∃ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface ∧
+      ∃ record ∈ d.interfaces, record.id = interface ∧
+        record.device = inventory.componentName (inventory.configuration.ip.owner iface) ∧
+        PacketAtHook (inventory.configuration.ip.interfaceName iface) direction hook packet
+
 def Deployment.AcceptsAt (d : Deployment) (interface : String) (direction : Direction)
     (hook : PacketProcessing.Hook) (traffic : Traffic) : Prop :=
-  d.Supported traffic ∧
+  d.Supported traffic ∧ d.HookContext interface direction hook traffic.packet ∧
   if hook = .link then d.LinkOperation interface direction traffic else
   ∃ policy ∈ d.policies,
     policy.interface = interface ∧ policy.direction = direction ∧ policy.hook = hook ∧
@@ -1219,62 +1257,62 @@ def AtomAtHook (hook : PacketProcessing.Hook) : PacketPolicy.Atom → Prop
 def Deployment.ProcessingCoherent (d : Deployment) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
     (∀ endpoint ∈ inventory.mkaPeers,
-      endpoint.sourcePort ∈ inventory.ports ∧ endpoint.destinationPort ∈ inventory.ports ∧
-      (∃ mac ∈ inventory.configuration.macPorts, mac.physicalPort = endpoint.sourcePort) ∧
-      (∃ mac ∈ inventory.configuration.macPorts, mac.physicalPort = endpoint.destinationPort) ∧
-      ∃ interface ∈ d.interfaces, interface.id = inventory.portName endpoint.sourcePort ∧
+      endpoint.sourceIface ∈ inventory.ifaces ∧ endpoint.destinationIface ∈ inventory.ifaces ∧
+      (∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = endpoint.sourceIface) ∧
+      (∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = endpoint.destinationIface) ∧
+      ∃ interface ∈ d.interfaces, interface.id = inventory.ifaceName endpoint.sourceIface ∧
         interface.linkAddress = some (endpoint.actorSCI / 65536)) ∧
     (∀ tunnel ∈ d.tunnels, tunnel.mechanism = .macsec →
       ∃ endpoint ∈ inventory.mkaPeers, endpoint.tunnel = tunnel.id ∧
-        inventory.componentName (inventory.configuration.ip.owner endpoint.sourcePort) = tunnel.sender ∧
-        inventory.componentName (inventory.configuration.ip.owner endpoint.destinationPort) = tunnel.receiver) ∧
-    (∀ port ∈ inventory.ports, ∃ interface ∈ d.interfaces,
-      interface.id = inventory.portName port ∧
-      interface.device = inventory.componentName (inventory.configuration.ip.owner port)) ∧
-    (∀ interface ∈ d.interfaces, ∃ port ∈ inventory.ports,
-      inventory.portName port = interface.id ∧
-      inventory.componentName (inventory.configuration.ip.owner port) = interface.device) ∧
-    (∀ first ∈ inventory.ports, ∀ second ∈ inventory.ports,
-      inventory.portName first = inventory.portName second → first = second) ∧
+        inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = tunnel.sender ∧
+        inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = tunnel.receiver) ∧
+    (∀ iface ∈ inventory.ifaces, ∃ interface ∈ d.interfaces,
+      interface.id = inventory.ifaceName iface ∧
+      interface.device = inventory.componentName (inventory.configuration.ip.owner iface)) ∧
+    (∀ interface ∈ d.interfaces, ∃ iface ∈ inventory.ifaces,
+      inventory.ifaceName iface = interface.id ∧
+      inventory.componentName (inventory.configuration.ip.owner iface) = interface.device) ∧
+    (∀ first ∈ inventory.ifaces, ∀ second ∈ inventory.ifaces,
+      inventory.ifaceName first = inventory.ifaceName second → first = second) ∧
     (∀ packet payload, inventory.configuration.networkBytes (.datagram packet) payload = packet.networkBytes) ∧
     (∀ interface ∈ d.interfaces, ∃ mtu, interface.mtu = some mtu ∧ 0 < mtu) ∧
-    (∀ port ∈ inventory.ports, ∀ policy ∈ inventory.configuration.ip.outbound port,
-      ∃ size ∈ inventory.ipsecSizes, size.port = port ∧ size.policy = policy) ∧
-    (∀ size ∈ inventory.ipsecSizes, size.Valid ∧ size.port ∈ inventory.ports ∧
-      size.policy ∈ inventory.configuration.ip.outbound size.port) ∧
+    (∀ iface ∈ inventory.ifaces, ∀ policy ∈ inventory.configuration.ip.outbound iface,
+      ∃ size ∈ inventory.ipsecSizes, size.iface = iface ∧ size.policy = policy) ∧
+    (∀ size ∈ inventory.ipsecSizes, size.Valid ∧ size.iface ∈ inventory.ifaces ∧
+      size.policy ∈ inventory.configuration.ip.outbound size.iface) ∧
     (∀ route ∈ inventory.configuration.ip.routes,
-      route.ingress ∈ inventory.ports ∧ route.egress ∈ inventory.ports ∧
+      route.ingress ∈ inventory.ifaces ∧ route.egress ∈ inventory.ifaces ∧
       inventory.configuration.ip.owner route.ingress = inventory.configuration.ip.owner route.egress) ∧
-    (∀ port ∈ inventory.ports, ∀ address,
-      inventory.configuration.ip.localAddress port address ↔
+    (∀ iface ∈ inventory.ifaces, ∀ address,
+      inventory.configuration.ip.localAddress iface address ↔
         ∃ interface ∈ d.interfaces,
-          interface.device = inventory.componentName (inventory.configuration.ip.owner port) ∧
-          interface.address = some address) ∧
-    (∀ first ∈ inventory.ports, ∀ second ∈ inventory.ports,
+          interface.device = inventory.componentName (inventory.configuration.ip.owner iface) ∧
+          interface.HasLocalAddress address) ∧
+    (∀ first ∈ inventory.ifaces, ∀ second ∈ inventory.ifaces,
       inventory.configuration.ip.owner first = inventory.configuration.ip.owner second →
       inventory.configuration.ip.forwardRules first = inventory.configuration.ip.forwardRules second ∧
       inventory.configuration.ip.forwardFallback first = inventory.configuration.ip.forwardFallback second) ∧
-    (∀ policy ∈ d.policies, ∃ interface ∈ d.interfaces, ∃ port ∈ inventory.ports,
-      interface.id = policy.interface ∧ inventory.portName port = interface.id ∧
+    (∀ policy ∈ d.policies, ∃ interface ∈ d.interfaces, ∃ iface ∈ inventory.ifaces,
+      interface.id = policy.interface ∧ inventory.ifaceName iface = interface.id ∧
       interface.HookApplies policy.hook policy.direction ∧
       (∀ rule ∈ policy.rules, ∀ atom ∈ rule.atoms, AtomAtHook policy.hook atom) ∧
       match policy.hook with
       | .input =>
-          policy.rules = inventory.configuration.ip.inputRules port ∧
-          policy.defaultVerdict = inventory.configuration.ip.inputFallback port
+          policy.rules = inventory.configuration.ip.inputRules iface ∧
+          policy.defaultVerdict = inventory.configuration.ip.inputFallback iface
       | .output =>
-          policy.rules = inventory.configuration.ip.outputRules port ∧
-          policy.defaultVerdict = inventory.configuration.ip.outputFallback port
+          policy.rules = inventory.configuration.ip.outputRules iface ∧
+          policy.defaultVerdict = inventory.configuration.ip.outputFallback iface
       | .forward =>
-          policy.rules = inventory.configuration.ip.forwardRules port ∧
-          policy.defaultVerdict = inventory.configuration.ip.forwardFallback port
+          policy.rules = inventory.configuration.ip.forwardRules iface ∧
+          policy.defaultVerdict = inventory.configuration.ip.forwardFallback iface
       | .link => False)
 
 def Deployment.LinkPoliciesComplete (d : Deployment) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
-    (∀ port ∈ inventory.ports, d.LinkPath inventory port →
-      ∃ policy, LinkAdmission.lookup inventory.configuration.linkPolicies port = some policy) ∧
-    (∀ entry ∈ inventory.configuration.linkPolicies, entry.1 ∈ inventory.ports ∧
+    (∀ iface ∈ inventory.ifaces, d.LinkPath inventory iface →
+      ∃ policy, LinkAdmission.lookup inventory.configuration.linkPolicies iface = some policy) ∧
+    (∀ entry ∈ inventory.configuration.linkPolicies, entry.1 ∈ inventory.ifaces ∧
       d.LinkPath inventory entry.1) ∧
     (∀ first ∈ inventory.configuration.linkPolicies,
       ∀ second ∈ inventory.configuration.linkPolicies, first.1 = second.1 → first = second)
@@ -1282,14 +1320,14 @@ def Deployment.LinkPoliciesComplete (d : Deployment) : Prop :=
 def Deployment.LocalSourceAddress (d : Deployment) (component : String)
     (packet : PacketPolicy.Packet) : Prop :=
   (∃ interface ∈ d.interfaces, interface.device = component ∧
-    interface.address = some packet.source) ∨
+    interface.HasLocalAddress packet.source) ∨
   (packet.source = 0 ∧ packet.protocol = "udp" ∧
     packet.sourcePort = 68 ∧ packet.destinationPort = 67) ∨
   (packet.source = 2^128 ∧ packet.protocol = "icmpv6" ∧ packet.icmpType = 135)
 
-def Deployment.LocalBodySource (d : Deployment) (component port : String)
+def Deployment.LocalBodySource (d : Deployment) (component iface : String)
     (body : LayeredFrame.Body) : Prop :=
-  ∃ interface ∈ d.interfaces, interface.id = port ∧ interface.device = component ∧
+  ∃ interface ∈ d.interfaces, interface.id = iface ∧ interface.device = component ∧
     match body with
     | .datagram header => d.LocalSourceAddress component header
     | .ethernet header => interface.linkAddress = some header.source
@@ -1297,20 +1335,20 @@ def Deployment.LocalBodySource (d : Deployment) (component port : String)
 
 def Deployment.ContextLocation (d : Deployment) (inventory : PacketProcessing.Inventory)
     (interface : Interface) (direction : Direction) (context : PacketProcessing.Context) : Prop :=
-  context.entry.port ∈ inventory.ports ∧ context.state.port ∈ inventory.ports ∧
-  context.state.enteredPort ∈ inventory.ports ∧
-  inventory.componentName (inventory.configuration.ip.owner context.state.port) = interface.device ∧
-  inventory.configuration.ip.owner context.state.enteredPort =
-    inventory.configuration.ip.owner context.state.port ∧
+  context.entry.iface ∈ inventory.ifaces ∧ context.state.iface ∈ inventory.ifaces ∧
+  context.state.enteredIface ∈ inventory.ifaces ∧
+  inventory.componentName (inventory.configuration.ip.owner context.state.iface) = interface.device ∧
+  inventory.configuration.ip.owner context.state.enteredIface =
+    inventory.configuration.ip.owner context.state.iface ∧
   (match context.hook, direction with
    | .input, .inbound =>
-       inventory.portName context.state.enteredPort = interface.id ∧
+       inventory.ifaceName context.state.enteredIface = interface.id ∧
        ∃ endpoint ∈ d.interfaces, endpoint.device = interface.device ∧
          endpoint.address = some context.header.destination
-   | .forward, .inbound => inventory.portName context.state.enteredPort = interface.id
-   | .forward, .outbound => inventory.portName context.state.port = interface.id
+   | .forward, .inbound => inventory.ifaceName context.state.enteredIface = interface.id
+   | .forward, .outbound => inventory.ifaceName context.state.iface = interface.id
    | .output, .outbound =>
-       inventory.portName context.state.port = interface.id ∧
+       inventory.ifaceName context.state.iface = interface.id ∧
        d.LocalSourceAddress interface.device context.header
    | _, _ => False)
 
@@ -1325,42 +1363,80 @@ def Deployment.SupportedAt (d : Deployment) (interface : Interface) (direction :
 def Deployment.SupportedLinkAt (d : Deployment) (interface : Interface) (direction : Direction)
     (context : PacketProcessing.LinkContext) (traffic : Traffic) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
-    context.port ∈ inventory.ports ∧ context.peerPort ∈ inventory.ports ∧
+    context.iface ∈ inventory.ifaces ∧ context.peerIface ∈ inventory.ifaces ∧
     interface ∈ d.interfaces ∧ interface.linkAddress.isSome = true ∧
-    d.LinkPath inventory context.port ∧
-    inventory.portName context.port = interface.id ∧
-    inventory.componentName (inventory.configuration.ip.owner context.port) = interface.device ∧
+    d.LinkPath inventory context.iface ∧
+    inventory.ifaceName context.iface = interface.id ∧
+    inventory.componentName (inventory.configuration.ip.owner context.iface) = interface.device ∧
     (if direction = .inbound then
-      inventory.configuration.physicalLink context.peerPort context.port
-    else inventory.configuration.physicalLink context.port context.peerPort) ∧
+      inventory.configuration.physicalLink context.peerIface context.iface
+    else inventory.configuration.physicalLink context.iface context.peerIface) ∧
     traffic.packet = context.packet ∧ context.raw.PreHookValid context.packet .link ∧
-    context.packet.protocol = "ethernet" ∧ d.Supported traffic
+    context.packet.protocol = "ethernet" ∧ d.Supported traffic ∧
+    PacketAtHook (inventory.configuration.ip.interfaceName context.iface) direction .link context.packet
 
-def Deployment.PortMtu (d : Deployment) (inventory : PacketProcessing.Inventory)
-    (port mtu : Nat) : Prop :=
-  ∃ interface ∈ d.interfaces, interface.id = inventory.portName port ∧ interface.mtu = some mtu
+def Deployment.IfaceMtu (d : Deployment) (inventory : PacketProcessing.Inventory)
+    (iface mtu : Nat) : Prop :=
+  ∃ interface ∈ d.interfaces, interface.id = inventory.ifaceName iface ∧ interface.mtu = some mtu
 
 def Deployment.ContextSizeEligible (d : Deployment) (context : PacketProcessing.Context) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
     ∃ bytes, (context.Packet inventory.configuration).networkBytes = some bytes ∧
       (context.hook = .input ∨ context.hook = .forward →
-        ∃ mtu, d.PortMtu inventory context.state.enteredPort mtu ∧ bytes ≤ mtu) ∧
+        ∃ mtu, d.IfaceMtu inventory context.state.enteredIface mtu ∧ bytes ≤ mtu) ∧
       (context.hook = .output ∨ context.hook = .forward →
-        ∃ mtu, d.PortMtu inventory context.state.port mtu ∧ bytes ≤ mtu ∧
+        ∃ mtu, d.IfaceMtu inventory context.state.iface mtu ∧ bytes ≤ mtu ∧
           ∀ policy ∈ Execution.selectedAssociations
-              (inventory.configuration.ip.outbound context.state.port) context.header,
-            ∃ size ∈ inventory.ipsecSizes, size.Valid ∧ size.port = context.state.port ∧ size.policy = policy ∧
+              (inventory.configuration.ip.outbound context.state.iface) context.header,
+            ∃ size ∈ inventory.ipsecSizes, size.Valid ∧ size.iface = context.state.iface ∧ size.policy = policy ∧
               size.EncodedSize bytes ≤ mtu)
 
 def Deployment.LinkSizeEligible (d : Deployment) (context : PacketProcessing.LinkContext) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
-    ∃ mtu, d.PortMtu inventory context.port mtu ∧
+    ∃ mtu, d.IfaceMtu inventory context.iface mtu ∧
       ∃ header rawHeader payload, context.raw = .ethernet header rawHeader payload ∧
         payload.length ≤ mtu
 
+def NativeIngressAttachment (inventory : PacketProcessing.Inventory) (iface : Nat) : Prop :=
+  (∃ peer ∈ inventory.ifaces, inventory.configuration.physicalLink peer iface) ∨
+  (∃ mac ∈ inventory.configuration.macIfaces, mac.logicalIface = iface) ∨
+  ∃ carrier ∈ inventory.configuration.carriers, carrier.virtualIface = iface
+
+def Deployment.NativeArrivalEligible (d : Deployment) (inventory : PacketProcessing.Inventory)
+    (state : MultiProtocolExecution.State) : Prop :=
+  NativeIngressAttachment inventory state.iface ∨
+    ∃ header, state.frame.visibleHeader = some header ∧
+      d.LocalSourceAddress (inventory.componentName (inventory.configuration.ip.owner state.iface)) header
+
+def Deployment.InboundIPsecBoundary (d : Deployment) (inventory : PacketProcessing.Inventory)
+    (iface : Nat) : Prop :=
+  ∃ interface ∈ d.interfaces, interface.id = inventory.ifaceName iface ∧
+    ∃ device ∈ d.devices, device.id = interface.device ∧ device.kind = .vpn ∧
+      ((device.layer = some .outer ∧ interface.zone = .black) ∨
+        (device.layer = some .inner ∧ interface.zone = .gray))
+
+def Deployment.InboundIPsecRequired (d : Deployment) (inventory : PacketProcessing.Inventory)
+    (iface : Nat) (header : PacketPolicy.Packet) : Prop :=
+  d.InboundIPsecBoundary inventory iface ∨
+    ∃ policy ∈ inventory.configuration.ip.inbound iface, policy.matches header = true
+
+def Deployment.ContextIngressEligible (d : Deployment) (context : PacketProcessing.Context)
+    (traffic : Traffic) : Prop :=
+  ∃ inventory, d.processing = some inventory ∧ context.entry.frame.HeadersCoherent ∧
+    (context.hook = .forward → d.NativeArrivalEligible inventory context.entry) ∧
+    (context.hook = .forward → d.InboundIPsecRequired inventory context.entry.iface context.header →
+      (∃ entered, MultiProtocolExecution.Step inventory.configuration context.entry .decryptIPsec entered ∧
+        MultiProtocolExecution.Step inventory.configuration entered .route context.state ∧
+        PacketProcessing.InputAdmitted inventory.configuration context.entry) ∨
+      (traffic.trafficClass = .control ∧
+        d.policyApproved (inventory.componentName
+          (inventory.configuration.ip.owner context.entry.iface)) traffic ∧
+        inventory.configuration.ip.localAddress context.entry.iface traffic.packet.destination))
+
 def Deployment.PacketEligibleAt (d : Deployment) (interface : Interface) (direction : Direction)
     (hook : PacketProcessing.Hook) (traffic : Traffic) : Prop :=
-  (∃ context, context.hook = hook ∧ d.SupportedAt interface direction context traffic ∧ d.ContextSizeEligible context) ∨
+  (∃ context, context.hook = hook ∧ d.SupportedAt interface direction context traffic ∧
+    d.ContextSizeEligible context ∧ d.ContextIngressEligible context traffic) ∨
   (hook = .link ∧ ∃ context, d.SupportedLinkAt interface direction context traffic ∧ d.LinkSizeEligible context)
 
 def Deployment.HeaderEligible (d : Deployment) (interface : Interface) (traffic : Traffic) : Prop :=
@@ -1388,17 +1464,17 @@ def NativeExecutionBinding.ProcessingBound {S A : Type} (binding : NativeExecuti
   d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧
   ∃ inventory, d.processing = some inventory ∧
     inventory.configuration = binding.configuration ∧
-    inventory.portName = binding.portName ∧ inventory.componentName = binding.componentName ∧
+    inventory.ifaceName = binding.ifaceName ∧ inventory.componentName = binding.componentName ∧
     inventory.macsecTunnel = binding.macsecTunnel ∧
     (∀ carrier ∈ d.carrierBindings, d.CarrierBindingWellFormed carrier) ∧
-    (∀ port ∈ inventory.ports, ∃ interface ∈ d.interfaces,
-      interface.id = binding.portName port ∧
-      interface.device = binding.componentName (binding.configuration.ip.owner port)) ∧
-    (∀ mac ∈ binding.configuration.macPorts,
-      mac.physicalPort ∈ inventory.ports ∧ mac.logicalPort ∈ inventory.ports) ∧
+    (∀ iface ∈ inventory.ifaces, ∃ interface ∈ d.interfaces,
+      interface.id = binding.ifaceName iface ∧
+      interface.device = binding.componentName (binding.configuration.ip.owner iface)) ∧
+    (∀ mac ∈ binding.configuration.macIfaces,
+      mac.physicalIface ∈ inventory.ifaces ∧ mac.logicalIface ∈ inventory.ifaces) ∧
     (∀ size ∈ inventory.ipsecSizes, ∀ installation ∈ binding.ipsecInstallations,
       installation.direction = .outbound →
-      installation.device = binding.configuration.ip.owner size.port →
+      installation.device = binding.configuration.ip.owner size.iface →
       Execution.StateBindsPolicy installation.association size.policy →
       ∃ material, binding.ipsecKeyMaterial installation = some material ∧
         material.transform.encryptionAlgorithm = "rfc4106(gcm(aes))" ∧
@@ -1432,28 +1508,28 @@ def NativeExecutionBinding.SourceRequestAllowed {S A : Type}
     (binding : NativeExecutionBinding S A) (d : Deployment) (request : PacketSource.Request) : Prop :=
   binding.SourceBody request.body ∧ request.PayloadMatches ∧
   match binding.origin request.originDomain with
-  | .red network => binding.sourceEntry request.port = some network ∧
+  | .red network => binding.sourceEntry request.iface = some network ∧
       ∃ red ∈ d.networks, red.id = network
   | .management component => BodyManagement d request.body ∧
-      binding.componentName (binding.configuration.ip.owner request.port) = component ∧
-      d.LocalBodySource component (binding.portName request.port) request.body
+      binding.componentName (binding.configuration.ip.owner request.iface) = component ∧
+      d.LocalBodySource component (binding.ifaceName request.iface) request.body
   | .control component protocol => BodyControlProtocol d request.body protocol ∧
-      binding.componentName (binding.configuration.ip.owner request.port) = component ∧
-      d.LocalBodySource component (binding.portName request.port) request.body
+      binding.componentName (binding.configuration.ip.owner request.iface) = component ∧
+      d.LocalBodySource component (binding.ifaceName request.iface) request.body
 
-def SourceOutputPhase : LayeredFrame.Body → Execution.Phase
+def SourceOutputPhase : LayeredFrame.Body → Execution.DatapathStage
   | .ethernet _ => .ready
   | _ => .localOutput
 
 def NativeExecutionBinding.SourceState {S A : Type}
     (binding : NativeExecutionBinding S A) (request : PacketSource.Request)
     (datagram : PacketSource.Datagram) : MultiProtocolExecution.State :=
-  { initialEntry := true, port := request.port,
-    phase := match binding.origin request.originDomain with
+  { initialEntry := true, iface := request.iface,
+    datapathStage := match binding.origin request.originDomain with
       | .red _ => .received
       | .management _ | .control _ _ => SourceOutputPhase datagram.body
     frame := { payload := PayloadCode datagram.application, originDomain := request.originDomain, body := datagram.body }
-    enteredPort := request.port, authenticated := [],
+    enteredIface := request.iface, authenticated := [],
     tracking := (datagram.body.originalHeader.map PacketPolicy.Packet.connectionState).getD "new" }
 
 def NativeExecutionBinding.SourceDatagram {S A : Type}
@@ -1462,7 +1538,7 @@ def NativeExecutionBinding.SourceDatagram {S A : Type}
   ∃ request datagrams datagram,
     binding.SourceRequestAllowed d request ∧
     binding.sourceProcessing.process request = .emitted datagrams ∧ datagram ∈ datagrams ∧
-    datagram.ValidFor request (binding.sourceProcessing.sourceMtu request.port) ∧
+    datagram.ValidFor request (binding.sourceProcessing.sourceMtu request.iface) ∧
 state = binding.SourceState request datagram
 
 def NativeExecutionBinding.SourceInitial {S A : Type} (binding : NativeExecutionBinding S A)
@@ -1470,23 +1546,23 @@ def NativeExecutionBinding.SourceInitial {S A : Type} (binding : NativeExecution
   state.initialEntry = true ∧ binding.SourceBody state.frame.body ∧
   binding.SourceDatagram d state ∧
   match binding.origin state.frame.originDomain with
-  | .red network => state.phase = .received ∧
-      binding.sourceEntry state.port = some network ∧
+  | .red network => state.datapathStage = .received ∧
+      binding.sourceEntry state.iface = some network ∧
       ∃ red ∈ d.networks, red.id = network
   | .management component =>
-      state.phase = SourceOutputPhase state.frame.body ∧ BodyManagement d state.frame.body ∧
-      binding.componentName (binding.configuration.ip.owner state.port) = component ∧
-      d.LocalBodySource component (binding.portName state.port) state.frame.body
+      state.datapathStage = SourceOutputPhase state.frame.body ∧ BodyManagement d state.frame.body ∧
+      binding.componentName (binding.configuration.ip.owner state.iface) = component ∧
+      d.LocalBodySource component (binding.ifaceName state.iface) state.frame.body
   | .control component protocol =>
-      state.phase = SourceOutputPhase state.frame.body ∧ BodyControlProtocol d state.frame.body protocol ∧
-      binding.componentName (binding.configuration.ip.owner state.port) = component ∧
-      d.LocalBodySource component (binding.portName state.port) state.frame.body
+      state.datapathStage = SourceOutputPhase state.frame.body ∧ BodyControlProtocol d state.frame.body protocol ∧
+      binding.componentName (binding.configuration.ip.owner state.iface) = component ∧
+      d.LocalBodySource component (binding.ifaceName state.iface) state.frame.body
 
 def ExecutionModel.SourceCoverage {S A : Type} (model : ExecutionModel S A)
     (d : Deployment) : Prop :=
   (∀ request, model.native.SourceRequestAllowed d request →
     (model.native.sourceProcessing.process request).Valid request
-      (model.native.sourceProcessing.sourceMtu request.port)) ∧
+      (model.native.sourceProcessing.sourceMtu request.iface)) ∧
   (∀ request datagrams datagram, model.native.SourceRequestAllowed d request →
     model.native.sourceProcessing.process request = .emitted datagrams → datagram ∈ datagrams →
     model.native.SourceInitial d (model.native.SourceState request datagram) ∧
@@ -1512,7 +1588,7 @@ def ExecutionModel.CoversDeployment {S A : Type} (model : ExecutionModel S A)
   model.native.ProcessingBound d ∧ model.Faithful ∧ model.NativeStepCoverage ∧ model.SourceCoverage d ∧ model.history.Valid ∧
   d.InterfaceLinksWellFormed ∧ d.LinkPoliciesComplete ∧
   (∃ inventory, d.processing = some inventory ∧
-    model.native.configuration.HeaderGenerationKnown inventory.ports) ∧
+    model.native.configuration.HeaderGenerationKnown inventory.ifaces) ∧
   (∀ start actions state, model.initial start → model.system.MTr start actions state →
     (model.native.state state).frame.HeadersCoherent ∧
     model.native.configuration.LinkEncodingComplete (model.native.state state)) ∧
@@ -1521,36 +1597,36 @@ def ExecutionModel.CoversDeployment {S A : Type} (model : ExecutionModel S A)
   (∀ first ∈ d.devices, ∀ second ∈ d.devices, first.id = second.id → first = second) ∧
   (∀ first ∈ d.interfaces, ∀ second ∈ d.interfaces, first.id = second.id → first = second) ∧
   (∀ first ∈ d.tunnels, ∀ second ∈ d.tunnels, first.id = second.id → first = second) ∧
-  (∀ interface ∈ d.interfaces, ∃ port,
-    model.native.portName port = interface.id ∧
-      model.native.componentName (model.native.configuration.ip.owner port) = interface.device) ∧
+  (∀ interface ∈ d.interfaces, ∃ iface,
+    model.native.ifaceName iface = interface.id ∧
+      model.native.componentName (model.native.configuration.ip.owner iface) = interface.device) ∧
   (∀ state : S, ∃ interface ∈ d.interfaces,
-    interface.id = model.native.portName (model.native.state state).port ∧
+    interface.id = model.native.ifaceName (model.native.state state).iface ∧
       interface.device = model.native.componentName
-        (model.native.configuration.ip.owner (model.native.state state).port)) ∧
+        (model.native.configuration.ip.owner (model.native.state state).iface)) ∧
   (∀ first second, model.native.configuration.physicalLink first second →
-    d.physicalLink (model.native.portName first) (model.native.portName second)) ∧
-  (∀ port network, model.native.sourceEntry port = some network ↔
-    ∃ interface ∈ d.interfaces, interface.id = model.native.portName port ∧
+    d.physicalLink (model.native.ifaceName first) (model.native.ifaceName second)) ∧
+  (∀ iface network, model.native.sourceEntry iface = some network ↔
+    ∃ interface ∈ d.interfaces, interface.id = model.native.ifaceName iface ∧
       interface.zone = .red ∧ interface.managementNetwork = false ∧ ∃ red ∈ d.networks, red.id = network ∧
         interface.device ∈ red.innerComponents) ∧
-  (∀ port ∈ model.native.configuration.macPorts, ∀ association,
-    port.transmitAssociation = some association →
+  (∀ iface ∈ model.native.configuration.macIfaces, ∀ association,
+    iface.transmitAssociation = some association →
     ∃ tunnel ∈ d.tunnels, tunnel.id = model.native.macsecTunnel association ∧
       tunnel.mechanism = .macsec ∧
       tunnel.keyContext = model.native.keyName association.keyGeneration ∧
       tunnel.sender = model.native.componentName
-        (model.native.configuration.ip.owner port.physicalPort) ∧
-      ∀ peer ∈ model.native.configuration.macPorts,
+        (model.native.configuration.ip.owner iface.physicalIface) ∧
+      ∀ peer ∈ model.native.configuration.macIfaces,
         (∃ installed ∈ peer.receiveAssociations,
           LayeredFrame.SameMACWireIdentity association installed) →
         tunnel.receiver = model.native.componentName
-          (model.native.configuration.ip.owner peer.physicalPort)) ∧
-  (∀ port association policy,
-    (association ∈ model.native.configuration.ip.outboundStates port ∧
-      policy ∈ model.native.configuration.ip.outbound port ∨
-      association ∈ model.native.configuration.ip.inboundStates port ∧
-      policy ∈ model.native.configuration.ip.inbound port) →
+          (model.native.configuration.ip.owner peer.physicalIface)) ∧
+  (∀ iface association policy,
+    (association ∈ model.native.configuration.ip.outboundStates iface ∧
+      policy ∈ model.native.configuration.ip.outbound iface ∨
+      association ∈ model.native.configuration.ip.inboundStates iface ∧
+      policy ∈ model.native.configuration.ip.inbound iface) →
     Execution.StateBindsPolicy association policy →
     ∃ tunnel ∈ d.tunnels, tunnel.id = model.native.ipsecTunnel (policy.seal association) ∧
       tunnel.mechanism = .ipsec ∧

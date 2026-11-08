@@ -20,8 +20,8 @@ class PairingExecutionTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.bundle = Path(self.temp.name) / "bundle"
         shutil.copytree(self.source, self.bundle)
-        self.phase_file = "bridged-before.json" if (self.bundle / "bridged-before.json").exists() else "stable-before.json"
-        self.before = json.loads((self.bundle / self.phase_file).read_text())
+        self.datapathStage_file = "bridged-before.json" if (self.bundle / "bridged-before.json").exists() else "stable-before.json"
+        self.before = json.loads((self.bundle / self.datapathStage_file).read_text())
         self.commands = json.loads((self.bundle / "commands.json").read_text())
 
     def tearDown(self):
@@ -32,7 +32,7 @@ class PairingExecutionTests(unittest.TestCase):
         row["value"] = transform(row["value"])
         if bind:
             next(r for r in self.commands if r["id"] == row["observation_id"])["stdout"] = row["value"]
-        (self.bundle / self.phase_file).write_text(json.dumps(self.before))
+        (self.bundle / self.datapathStage_file).write_text(json.dumps(self.before))
         (self.bundle / "commands.json").write_text(json.dumps(self.commands))
         manifest = json.loads((self.bundle / "manifest.json").read_text())
         for item in manifest["files"]:

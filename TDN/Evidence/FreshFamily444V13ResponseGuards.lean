@@ -8,16 +8,16 @@ namespace TDN.Imported.Family444V13
 tdn_data responseSourceGuards : List (Nat × List PacketPolicy.Rule) from "../../data/evidence/FreshFamily444V13ResponseGuards.json" ["TDN.Imported.Family444V13.responseSourceGuards"]
 
 lemma all_input_interfaces_covered :
-    SourceResponseGuards.FiniteGuardCoverage ports responseSourceGuards := by decide
+    SourceResponseGuards.FiniteGuardCoverage ifaces responseSourceGuards := by decide
 
 lemma all_source_output_reply_pairs_checked :
-    SourceResponseGuards.FiniteReplyChecks devices ports responseSourceGuards := by decide
+    SourceResponseGuards.FiniteReplyChecks devices ifaces responseSourceGuards := by decide
 
 theorem source_output_reply_layers
     {guard : Nat × List PacketPolicy.Rule} (guardMember : guard ∈ responseSourceGuards)
-    {entry output : Execution.PortData} (entryMember : entry ∈ ports)
+    {entry output : Execution.IfaceData} (entryMember : entry ∈ ifaces)
     (entryOwner : entry.owner = guard.1) (inputExternal : entry.name ≠ "lo")
-    (outputMember : output ∈ ports) (owner : output.owner = entry.owner)
+    (outputMember : output ∈ ifaces) (owner : output.owner = entry.owner)
     (outputExternal : output.name ≠ "lo") {auth : List Nat}
     (authenticated : auth ∈ Execution.possibleAuthentications
       (Execution.deviceAt devices entry.owner) entry)
@@ -34,10 +34,10 @@ theorem source_output_reply_layers
     (protocol : KernelResponses.ResponseProtocol reply.protocol) :
     (if auth = [] then entry.stack else entry.stack.tail) = output.stack :=
   SourceResponseGuards.finite_reply_checks_preserve_layers
-    devices ports responseSourceGuards all_source_output_reply_pairs_checked
+    devices ifaces responseSourceGuards all_source_output_reply_pairs_checked
     guardMember entryMember entryOwner inputExternal outputMember owner outputExternal authenticated
     original reply inputName outputName inputAuth selectorBound
-    (SourceResponseGuards.finite_guard_coverage_excludes_fallback ports responseSourceGuards
+    (SourceResponseGuards.finite_guard_coverage_excludes_fallback ifaces responseSourceGuards
       all_input_interfaces_covered guardMember entryMember entryOwner inputExternal original inputName address)
     inputAccepted outputAccepted returnsToSource protocol
 

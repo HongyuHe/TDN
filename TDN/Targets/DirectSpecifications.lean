@@ -1,4 +1,6 @@
 import TDN.Targets.ComplianceModel
+import TDN.Targets.GrayForwardAllowance
+import TDN.Targets.BoundaryView
 import TDN.Targets.LayeredRequirements
 import TDN.Targets.AuthenticationIsolation
 import TDN.Targets.Topology
@@ -56,7 +58,7 @@ def ArchitectureServices (d : Deployment) : Prop :=
     a.level ≠ b.level → (∃ outer, d.innerUsesOuter a.id outer ∧ d.innerUsesOuter b.id outer) →
       ∃ firewall ∈ d.devices, firewall.kind = .grayFirewall
 
-def CrossedBlack (d : Deployment) (events : List ProcessingEvent) (payload : PayloadId) : Prop :=
+def CrossedBlack (d : Deployment) (events : List NetworkEvent) (payload : PayloadId) : Prop :=
   ∃ interface ∈ d.interfaces, interface.zone = .black ∧ ∃ layers,
     ∃ trafficClass, .transmit payload interface.id layers trafficClass ∈ events ∨
       .receive payload interface.id layers trafficClass ∈ events
@@ -70,19 +72,19 @@ def Primitive_msc_nested_layer_protection {S A : Type} (d : Deployment) (model :
     let selectedFlow := flowOf start actions finish
     (∀ payload network, .inject payload network ∈ events →
       selectedFlow payload ∈ flows ∧ (selectedFlow payload).sourceNetwork = network) ∧
-    (∀ earlier later payload port layers trafficClass,
-      events = earlier ++ [.transmit payload port layers trafficClass] ++ later →
+    (∀ earlier later payload iface layers trafficClass,
+      events = earlier ++ [.transmit payload iface layers trafficClass] ++ later →
       model.ProtectedPayload d payload →
-      ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = port →
+      ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = iface →
       (interface.zone = .gray → selectedFlow payload ∈ flows ∧ layers = [(selectedFlow payload).innerTunnel] ∧
         .encrypt payload (selectedFlow payload).innerTunnel ∈ earlier) ∧
       (interface.zone = .black → selectedFlow payload ∈ flows ∧
         layers = [(selectedFlow payload).outerTunnel, (selectedFlow payload).innerTunnel] ∧
         Before earlier (.encrypt payload (selectedFlow payload).innerTunnel)
           (.encrypt payload (selectedFlow payload).outerTunnel))) ∧
-    (∀ payload port layers trafficClass, .receive payload port layers trafficClass ∈ events →
+    (∀ payload iface layers trafficClass, .receive payload iface layers trafficClass ∈ events →
       model.ProtectedPayload d payload →
-      ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = port → interface.zone = .black →
+      ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = iface → interface.zone = .black →
       selectedFlow payload ∈ flows ∧
       layers = [(selectedFlow payload).outerTunnel, (selectedFlow payload).innerTunnel]) ∧
     ∀ earlier later payload network layers,
@@ -167,7 +169,7 @@ def Primitive_msc_gray_firewall_path_coverage (d : Deployment) (topology : GrayT
     (topology.workstation service ∨ topology.certificationAuthority service ∨
       topology.revocationService service) → topology.inner component →
     topology.level service ≠ topology.level component →
-    ¬ Relation.ReflTransGen (Paths.Avoiding topology.edge topology.grayFirewall) service component) ∧
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding topology.edge topology.grayFirewall) service component) ∧
   (∀ outer, topology.outer outer → FiltersIntendedPeers d outer) ∧
   (∀ firewall, topology.grayFirewall firewall → ∀ interface ∈ d.interfaces, d.Relevant interface.device →
     interface.device = firewall → ∀ direction traffic,
@@ -437,7 +439,7 @@ def EAPEndpointRoleEvidence (primitive : TLSPrimitive) (selected : MACsecAuthent
 
 
 def SAKKeyUseAt (selected : MACsecAuthentication) (payload : PayloadId) (tunnel : String)
-    (events : List ProcessingEvent) (authenticated issued used : Nat) : Prop :=
+    (events : List NetworkEvent) (authenticated issued used : Nat) : Prop :=
   events[authenticated]? = some (.authenticate selected.keyServer
     (if selected.keyServer = selected.device then selected.peer else selected.device) selected.cak) ∧
   events[issued]? = some (.issueSAK selected.keyServer
@@ -447,11 +449,11 @@ def SAKKeyUseAt (selected : MACsecAuthentication) (payload : PayloadId) (tunnel 
   authenticated < issued ∧ issued < used
 
 def PreSharedKeyUsePrefix (selected : MACsecAuthentication) (payload : PayloadId)
-    (tunnel : String) (events : List ProcessingEvent) : Prop :=
+    (tunnel : String) (events : List NetworkEvent) : Prop :=
   ∃ authenticated issued used, SAKKeyUseAt selected payload tunnel events authenticated issued used
 
 def EAPKeyUsePrefix (primitive : TLSPrimitive) (selected : MACsecAuthentication)
-    (payload : PayloadId) (tunnel : String) (events : List ProcessingEvent) : Prop :=
+    (payload : PayloadId) (tunnel : String) (events : List NetworkEvent) : Prop :=
   ∃ exchange ∈ selected.exchanges, EAPSessionBinding primitive selected exchange ∧
     ∃ verified delivered supplicantDerived authenticatorDerived authenticated issued used : Nat,
       events[verified]? = some (.eapTLSVerified exchange.input.session
@@ -469,13 +471,13 @@ def EAPKeyUsePrefix (primitive : TLSPrimitive) (selected : MACsecAuthentication)
       authenticatorDerived < authenticated
 
 def MACsecKeyUsePrefix (primitive : TLSPrimitive) (selected : MACsecAuthentication)
-    (payload : PayloadId) (tunnel : String) (events : List ProcessingEvent) : Prop :=
+    (payload : PayloadId) (tunnel : String) (events : List NetworkEvent) : Prop :=
   match selected.method with
   | .preSharedCAK => PreSharedKeyUsePrefix selected payload tunnel events
   | .eapTLS => EAPKeyUsePrefix primitive selected payload tunnel events
 
 def HistoricalSetup (history : ObservedHistory) (session : Option String)
-    (event : ProcessingEvent) (position : Nat) : Prop :=
+    (event : NetworkEvent) (position : Nat) : Prop :=
   ∃ record ∈ history.entries, record.position = position ∧
     record.session = session ∧ record.event = event
 
@@ -515,14 +517,14 @@ def HistoricalEAPSetup (history : ObservedHistory) (primitive : TLSPrimitive)
 def MACsecInstalledHistory {S A : Type} (d : Deployment) (model : ExecutionModel S A)
     (primitive : TLSPrimitive) (authentication : List MACsecAuthentication) : Prop :=
   model.history.Valid ∧
-  ∀ port ∈ model.native.configuration.macPorts, ∀ association,
-    port.transmitAssociation = some association →
+  ∀ iface ∈ model.native.configuration.macIfaces, ∀ association,
+    iface.transmitAssociation = some association →
     let owner := model.native.componentName
-      (model.native.configuration.ip.owner port.physicalPort)
+      (model.native.configuration.ip.owner iface.physicalIface)
     d.Relevant owner →
     ∃ installation ∈ model.macsecInstallationHistory,
       installation.Bound model ∧
-      installation.device = model.native.configuration.ip.owner port.physicalPort ∧
+      installation.device = model.native.configuration.ip.owner iface.physicalIface ∧
       installation.association = association ∧
       ∃ tunnel ∈ d.tunnels, tunnel.id = model.native.macsecTunnel association ∧
         tunnel.sender = owner ∧ tunnel.mechanism = .macsec ∧
@@ -638,9 +640,9 @@ def Primitive_msc_macsec_protection_parameters {S A : Type} (d : Deployment)
     (parameter.replayWindow = 2 ∨ (parameter.feasibleReplayWindow parameter.replayWindow ∧
       ∀ feasible, parameter.feasibleReplayWindow feasible → parameter.replayWindow ≤ feasible)) ∧
     parameter.confidentialityOffset = 0 ∧ parameter.mustSecure = true) ∧
-  model.AllTraces (fun events => ∀ payload port layers trafficClass,
-    .transmit payload port layers trafficClass ∈ events → ¬ model.GenuineControl payload →
-    ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = port →
+  model.AllTraces (fun events => ∀ payload iface layers trafficClass,
+    .transmit payload iface layers trafficClass ∈ events → ¬ model.GenuineControl payload →
+    ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = iface →
     ∀ device ∈ d.devices, d.Relevant device.id → device.id = interface.device → device.kind = .macsec →
     device.layer = some .inner ∧ interface.zone = .gray ∨
       device.layer = some .outer ∧ interface.zone = .black →
@@ -655,7 +657,7 @@ def ExternalZone : Layer → Zone
   | .outer => .black
 
 def TraceNoBypass (d : Deployment) (genuineControl : PayloadId → Prop)
-    (layer : Layer) (events : List ProcessingEvent) : Prop :=
+    (layer : Layer) (events : List NetworkEvent) : Prop :=
   (∀ earlier middle later payload ingress receivedLayers receiveClass egress sentLayers sendClass,
     events = earlier ++ [.receive payload ingress receivedLayers receiveClass] ++ middle ++
       [.transmit payload egress sentLayers sendClass] ++ later →
@@ -669,10 +671,10 @@ def TraceNoBypass (d : Deployment) (genuineControl : PayloadId → Prop)
       (input.zone = ExternalZone layer → output.zone = InternalZone layer →
         ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.receiver = input.device ∧
           tunnel.id ∈ receivedLayers ∧ .decrypt payload tunnel.id ∈ middle)) ∧
-  ∀ earlier later payload port layers trafficClass,
-    events = earlier ++ [.transmit payload port layers trafficClass] ++ later →
+  ∀ earlier later payload iface layers trafficClass,
+    events = earlier ++ [.transmit payload iface layers trafficClass] ++ later →
     ¬ genuineControl payload →
-    ∀ interface ∈ d.interfaces, interface.id = port →
+    ∀ interface ∈ d.interfaces, interface.id = iface →
       d.IsLayer interface.device layer → interface.zone = ExternalZone layer →
       ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.sender = interface.device ∧
         tunnel.id ∈ layers ∧ .encrypt payload tunnel.id ∈ earlier
@@ -763,7 +765,7 @@ def FragmentationProfile.Reduces (profile : FragmentationProfile) : Prop :=
 def Primitive_msc_packet_size_configuration (interfaces : List PacketSizing)
     (profiles : List FragmentationProfile) : Prop :=
   ∀ sizing ∈ interfaces,
-    (sizing.role = .grayFirewallOrEncryptionExternal →
+    (sizing.role ≠ .other →
       0 < sizing.externalMtu ∧ 0 < sizing.payloadLimit ∧
       (sizing.family = .ipv6 → sizing.ipv6PmtuConfigured = true) ∧
       ∀ bytes, bytes ≤ sizing.payloadLimit → sizing.encodedSize bytes ≤ sizing.externalMtu) ∧
@@ -806,7 +808,7 @@ def WireSizeModel.WireEncoding {S A : Type} (sizes : WireSizeModel S)
   let native := model.native.state state
   let emission := sizes.emission state
   emission.Raw = sizes.serialize state native.frame.body (sizes.payload state) ∧
-  emission.Reassembles (sizes.configuredMtu native.port) ∧
+  emission.Reassembles (sizes.configuredMtu native.iface) ∧
   match native.frame.visibleHeader with
   | some header =>
       emission.body = .datagram { header with networkBytes := some emission.Raw.length } ∧
@@ -833,9 +835,9 @@ def WireSizeModel.Correspondence {S A : Type} (sizes : WireSizeModel S)
     sizes.StateEncoding model state) ∧
   ∀ start actions before action after,
     model.initial start → model.system.MTr start actions before →
-    model.system.Tr before action after → model.native.action action = some .wire →
+    model.system.Tr before action after → model.native.action action = some .linkTransmit →
     sizes.WireEncoding model before ∧
-    ∀ setting ∈ settings, setting.interface = (model.native.state before).port →
+    ∀ setting ∈ settings, setting.interface = (model.native.state before).iface →
       (sizes.payload before).length ≤ setting.payloadLimit ∧
       (sizes.emission before).MtuBytes ≤
         setting.encodedSize (sizes.payload before).length
@@ -844,9 +846,9 @@ def WireSizeModel.NoFurtherFragmentation {S A : Type} (sizes : WireSizeModel S)
     (model : ExecutionModel S A) (settings : List PacketSizing) : Prop :=
   ∀ start actions before action after setting,
     model.initial start → model.system.MTr start actions before →
-    model.system.Tr before action after → model.native.action action = some .wire →
-    setting ∈ settings → setting.interface = (model.native.state before).port →
-    setting.role = .grayFirewallOrEncryptionExternal →
+    model.system.Tr before action after → model.native.action action = some .linkTransmit →
+    setting ∈ settings → setting.interface = (model.native.state before).iface →
+    setting.role ≠ .other →
       (sizes.emission before).fragments.length = 1
 
 def WireSizeModel.FragmentPayload {S A : Type} (sizes : WireSizeModel S)
@@ -866,7 +868,7 @@ def PacketSizingInventory {S A : Type} (d : Deployment) (model : ExecutionModel 
       (device.layer = some .outer ∧ interface.zone = .black) ∨
       (device.kind = .grayFirewall ∧ interface.externalData = true)) →
     ∃ configuration ∈ sizing,
-      model.native.portName configuration.interface = interface.id ∧
+      model.native.ifaceName configuration.interface = interface.id ∧
       configuration.role = (if device.layer = some .inner then
         .innerExternal else .grayFirewallOrEncryptionExternal) ∧
       (∀ address, interface.address = some address →
@@ -901,7 +903,7 @@ def Primitive_msc_boundary_interface_filtering (d : Deployment) (outerFirewallRe
       (device.layer = some .inner ∧ interface.zone = .gray) ∨
       (device.layer = some .inner ∧ interface.zone = .red) ∨
       (device.kind = .outerFirewall ∧ outerFirewallRequired = true)) →
-    d.PolicyCoverage interface ∧ ∀ direction traffic, d.Accepts interface.id direction traffic →
+    d.BoundaryPolicyCoverage interface ∧ ∀ direction traffic, d.BoundaryAdmission device interface direction traffic →
       (device.layer = some .outer → interface.zone = .black →
         ((device.kind = .vpn → d.IPsecTraffic traffic ∨
           ApprovedControl d device.id traffic) ∧
@@ -911,8 +913,8 @@ def Primitive_msc_boundary_interface_filtering (d : Deployment) (outerFirewallRe
       (device.layer = some .inner → interface.zone = .gray →
         d.PermittedTunnelTraffic traffic ∨ AOApprovedControl d device.id traffic) ∧
       (device.layer = some .inner → interface.zone = .red →
-        d.redService device.id traffic.packet.source traffic.packet.sourcePort ∨
-        d.redService device.id traffic.packet.destination traffic.packet.destinationPort) ∧
+        d.redService device.id traffic.packet.source (TransportServicePort traffic.packet true) ∨
+        d.redService device.id traffic.packet.destination (TransportServicePort traffic.packet false)) ∧
       (device.kind = .outerFirewall → outerFirewallRequired = true →
         (d.PermittedTunnelTraffic traffic ∨ ApprovedControl d device.id traffic) ∧
         (direction = .inbound → ¬ ApprovedControl d device.id traffic →
@@ -943,13 +945,13 @@ def NecessaryApprovedL2Control (d : Deployment) (interface : Interface) (traffic
   traffic.packet.destination = 1652522221571 ∧
   ∃ inventory, d.processing = some inventory ∧
     ∃ endpoint ∈ inventory.mkaPeers,
-      inventory.portName endpoint.destinationPort = interface.id ∧
+      inventory.ifaceName endpoint.destinationIface = interface.id ∧
       PacketPolicy.Packet.MKAFraming traffic.packet endpoint.actorSCI ∧
       (traffic.packet.payloadBytes.bind (fun bytes => bytes[0]?)) = some 3 ∧
       ∃ tunnel ∈ d.tunnels, tunnel.id = endpoint.tunnel ∧ tunnel.layer = .outer ∧
         tunnel.mechanism = .macsec ∧
-        inventory.componentName (inventory.configuration.ip.owner endpoint.sourcePort) = tunnel.sender ∧
-        inventory.componentName (inventory.configuration.ip.owner endpoint.destinationPort) = tunnel.receiver ∧
+        inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = tunnel.sender ∧
+        inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = tunnel.receiver ∧
         tunnel.receiver = interface.device ∧ d.intendedPeer tunnel.sender tunnel.receiver
 
 def Primitive_msc_ip_header_and_multicast_filtering (d : Deployment)
@@ -1047,6 +1049,7 @@ def Primitive_msc_gray_firewall_allowlist (d : Deployment) (grayFirewallRequired
           GrayFirewallRestrictions d interface direction traffic ∧
           GrayPolicyAllowance d interface traffic) ∧
         ∀ direction hook traffic, d.PacketEligibleAt interface direction hook traffic →
+          d.GrayForwardPermission interface hook traffic →
           GrayFirewallRestrictions d interface direction traffic →
           GrayPolicyAllowance d interface traffic →
           d.AcceptsAt interface.id direction hook traffic) ∧
@@ -1086,7 +1089,7 @@ def TunnelTransfer {S A : Type} (d : Deployment) (model : ExecutionModel S A)
     (domain : PayloadDomain) (tunnel : Tunnel) : Prop :=
   domain.protocols ≠ [] ∧ 0 < domain.maximumBytes ∧
   ∀ protocol bytes, domain.Supports protocol bytes →
-  ∃ start actions finish payload session sent received senderPort receiverPort earlier
+  ∃ start actions finish payload session sent received senderIface receiverIface earlier
       encryptToSend sendToReceive receiveToDecrypt later,
     model.initial start ∧ model.system.MTr start actions finish ∧
     payload.value = PayloadCode bytes ∧
@@ -1096,13 +1099,13 @@ def TunnelTransfer {S A : Type} (d : Deployment) (model : ExecutionModel S A)
       header.protocol = protocol) ∨ (protocol = "ethernet" ∧
       (model.native.state start).frame.body.originalEthernet.isSome = true)) ∧
     model.native.SessionTunnel session = tunnel.id ∧
-    senderPort ∈ d.interfaces ∧ receiverPort ∈ d.interfaces ∧
-    senderPort.device = tunnel.sender ∧ receiverPort.device = tunnel.receiver ∧
+    senderIface ∈ d.interfaces ∧ receiverIface ∈ d.interfaces ∧
+    senderIface.device = tunnel.sender ∧ receiverIface.device = tunnel.receiver ∧
     session ∈ sent ∧ session ∈ received ∧ sent = received ∧
     model.TraceEvents actions =
       earlier ++ [.protect payload tunnel.id session] ++ encryptToSend ++
-      [.sessionTransmit payload senderPort.id sent] ++ sendToReceive ++
-      [.sessionReceive payload receiverPort.id received] ++ receiveToDecrypt ++
+      [.sessionTransmit payload senderIface.id sent] ++ sendToReceive ++
+      [.sessionReceive payload receiverIface.id received] ++ receiveToDecrypt ++
       [.unprotect payload tunnel.id session] ++ later
 
 def RequiredSitePairsBound (d : Deployment) (pairs : List (String × String)) : Prop :=
@@ -1167,7 +1170,7 @@ def RedEgressCore (d : Deployment)
     (red outside : String → Prop) (conformingMSC aoApprovedProtection : String → Prop) : Prop :=
   (∀ solution, aoApprovedProtection solution → d.authority.aoApprovedTransitSolution solution) ∧
   ∀ source destination, red source → outside destination →
-    ¬ Relation.ReflTransGen (Paths.Avoiding d.DeviceAdjacent
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding d.DeviceAdjacent
       (fun node => conformingMSC node ∨ aoApprovedProtection node)) source destination
 
 end TDN.Targets.Complete

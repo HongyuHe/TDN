@@ -11,7 +11,7 @@ private def produces (record : Message Nat Nat Nat Annotation) : Prop :=
 private def authenticates (published : List (Message Nat Nat Nat Annotation))
     (result : Decoded Nat Nat (List Nat)) : Prop :=
   published.any (fun record => decide (record.context = result.context ∧
-    record.wire = result.wire ∧ record.annotation.1 = result.plaintext)) = true
+    record.linkTransmit = result.linkTransmit ∧ record.annotation.1 = result.plaintext)) = true
 private def first : Fragmentation.Fragment Nat Nat := ⟨99, 0, [10]⟩
 private def second : Fragmentation.Fragment Nat Nat := ⟨99, 1, [20, 30]⟩
 private def start : State Nat Nat Nat Nat Annotation (List Nat) := ⟨[], [], []⟩
@@ -24,7 +24,7 @@ example : AuthenticationSound Eq Prod.fst authenticates := by
   intro published result verified
   obtain ⟨record, member, matching⟩ := List.any_eq_true.mp verified
   refine ⟨record, member, ?_⟩
-  change record.context = result.context ∧ record.wire = result.wire ∧
+  change record.context = result.context ∧ record.linkTransmit = result.linkTransmit ∧
     record.annotation.1 = result.plaintext
   exact of_decide_eq_true matching
 

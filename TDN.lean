@@ -1,15 +1,11 @@
-/- Typed evidence imports. -/
 import TDN.Import
 
-/- Reusable behavioral models and proofs. -/
 import TDN.Semantics.AuthenticatedAssembly
 import TDN.Semantics.CiphertextTransit
 import TDN.Semantics.SequenceFreshness
 
-/- CSfC behavioral specifications. -/
 import TDN.Targets.Boundary
 
-/- Checked applications and useful-execution witnesses. -/
 import TDN.Evidence.FinalMACsecKeySources
 import TDN.Evidence.FinalMACsecRuntime
 import TDN.Evidence.FreshAdministratorSessions
@@ -99,3 +95,15 @@ import TDN.Evidence.CompleteKeyApplications
 import TDN.Evidence.CompleteThirdPartyApplications
 import TDN.Evidence.CompleteAssuranceReuse
 import TDN.Evidence.CompleteGrayFirewallReuse
+import TDN.Evidence.OuterGrayBaseline
+import TDN.Evidence.OuterGrayShared
+import TDN.Evidence.OuterGrayBaselineCases
+import TDN.Evidence.OuterGraySharedCases
+import TDN.Evidence.OuterGrayCompatibility
+import TDN.Evidence.BoundaryCompleteApplications
+import TDN.Evidence.GrayFirewallApplications
+import TDN.Semantics.SourceTemplateCounterexample
+import TDN.Evidence.NamespaceLocalCases
+import TDN.Evidence.SizingBaselineWitnesses
+import TDN.Evidence.SizingSharedWitnesses
+import TDN.Targets.PacketSizingExecution

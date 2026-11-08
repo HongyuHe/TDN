@@ -277,7 +277,7 @@ theorem gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms
   · intro device member _
     exact levelBinding device member
   · intro service component role _ different
-    exact Paths.no_firewall_free_crossing topology.edge topology.grayFirewall topology.level
+    exact Waypointing.waypointing_of_edge_invariant topology.edge topology.grayFirewall topology.level
       localEdges (serviceClear service role) different
   · intro outer role
     exact filters outer (Or.inl role)

@@ -41,17 +41,17 @@ class ExecutionProjectionTests(unittest.TestCase):
             with self.subTest(namespace=namespace):
                 result = parse_execution(snapshot, supplement, epoch_union)
                 previous = json.loads((ROOT / "data/evidence" / (namespace + ".json")).read_text())
-                keys = {"devices": "devices", "ports": "ports", "routes": "routes",
+                keys = {"devices": "devices", "ifaces": "ports", "routes": "routes",
                         "links": "links", "switches": "bridges",
-                        "redSources": "redSources", "blackPorts": "blackPorts"}
+                        "redSources": "redSources", "blackIfaces": "blackIfaces"}
                 for original, current in keys.items():
                     self.assertEqual(result[current], previous["TDN.Imported." + namespace + "." + original])
                 self.assertFalse(result["scope"]["claimsSimultaneousEpochs"])
                 self.assertTrue(result["sourceBindings"])
                 observed_mtu = {row["id"]: row["mtu"] for row in result["sourceInterfaces"]}
-                self.assertEqual({row["interfaceId"]: row["mtu"] for row in result["portBindings"]},
+                self.assertEqual({row["interfaceId"]: row["mtu"] for row in result["ifaceBindings"]},
                                  observed_mtu)
-                self.assertTrue(all(row["observationIds"] for row in result["portBindings"]))
+                self.assertTrue(all(row["observationIds"] for row in result["ifaceBindings"]))
 
     def test_service_requires_processing_supplement(self):
         with tempfile.TemporaryDirectory() as directory:

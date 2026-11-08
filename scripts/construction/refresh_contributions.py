@@ -31,7 +31,7 @@ def refresh(register,requests):
             partial(number,"Additional loaded Linux-profile forwarding-chain certificates for "+report["snapshot_id"]+". Each certificate constrains all accepted modeled packets to matching directional tunnel-policy metadata. Local/input/output paths, cryptographic execution and full refinement remain open.",theorems,["bypass","split tunneling"])
         graph=json.loads(output_path(key+"-gray.json").read_text())
         if graph["cross_level_cut_passed"] is True and graph["applicable_cross_level_pairs"]>0:
-            theorem=graph["theorem_namespace"]+".all_cross_level_paths_cross_firewall"
+            theorem=graph["theorem_namespace"]+".cross_level_waypointing"
             partial(13,"Universal Gray firewall separators in the conservative observed graph of "+report["snapshot_id"]+". Inactive fallback interfaces meet explicit checked conditions. Firewall packet rules and management endpoints are separate obligations.",[theorem],["paths","traverse"])
     for namespace in ["SameLevelBinding","FourSharedBinding","FourRedundantBinding"]:
         theorems=["TDN.Imported."+namespace+"."+n for n in ["observed_inner_peers_have_same_full_declared_level","recorded_logical_domain_outcomes","positive_and_negative_witnesses"]]
@@ -84,7 +84,7 @@ def refresh(register,requests):
         groups[38]["established_scopes"].append({"scope":native_header["scope"]+" in "+native["snapshot_id"],"theorem":native_header["theorem"],"report":str(output_path(key+"-headers.json")),"assumptions":native_header["assumptions"],"manifest_sha256":native_header["validation"]["source_manifest_sha256"],"platform_scope":platform})
         groups[38]["lean_theorems"].append(native_header["theorem"])
         if native_graph["applicable_cross_level_pairs"]>0:
-            partial(13,"The native FRR/OVS profile "+native["snapshot_id"]+" has a conservative observed Gray separator after raw OVS UUID/ifindex/MAC and FRR namespace correspondence checks. All supported switch ports are contracted; OpenFlow packet semantics and future controller behavior remain separate.",[native_graph["theorem_namespace"]+".all_cross_level_paths_cross_firewall"],["paths","traverse"])
+            partial(13,"The native FRR/OVS profile "+native["snapshot_id"]+" has a conservative observed Gray separator after raw OVS UUID/ifindex/MAC and FRR namespace correspondence checks. All supported switch ports are contracted; OpenFlow packet semantics and future controller behavior remain separate.",[native_graph["theorem_namespace"]+".cross_level_waypointing"],["paths","traverse"])
         snapshot=json.loads((source_path(key)/"snapshot.json").read_text())
         roles={d["id"]:d["role"] for d in snapshot["devices"]}
         for number,role in [(29,"inner"),(30,"outer")]:
@@ -113,7 +113,7 @@ def refresh(register,requests):
     for request in requests["requests"]:
         if request["request_id"]=="ER-016":
             request["status"]="supported_with_declared_identity_scope"
-            request["response"]={"artifact":str(source_path("domain_declaration")),"reports":[str(output_path(n)) for n in ["same-level-binding.json","four_shared-binding.json","four_redundant-binding.json"]],"finding":"All three current exact-spec declarations bind full levels/logical domains to observed device/port/peer/probe data. Classification authority and physical identity remain external."}
+            request["response"]={"artifact":str(source_path("domain_declaration")),"reports":[str(output_path(n)) for n in ["same-level-binding.json","four_shared-binding.json","four_redundant-binding.json"]],"finding":"All three current exact-spec declarations bind full levels/logical domains to observed device/iface/peer/probe data. Classification authority and physical identity remain external."}
     revised={
         7:"Generic layer invariants, all five encapsulation pairings and eight family combinations have checked contributions. Independence, cryptographic execution and complete concrete forwarding refinement remain unproved.",
         8:"Historical and five native profiles bind full security labels and logical Red domains to observed peers and finite positive/negative probes. Universal authentication and communication exclusion remain unproved.",

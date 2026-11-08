@@ -4,7 +4,7 @@ import struct
 import unittest
 from tdn_evidence.adapters import Unsupported
 from tdn_evidence.parsers.ipsec_framing import (
-    BYTECODE, BYTECODE_WITH_OPTIONS, PROGRAM_WITH_OPTIONS, canonical,
+    BYTECODE, BYTECODE_WITH_OPTIONS, BYTECODE_REPLY_WITH_OPTIONS, PROGRAM_WITH_OPTIONS, PROGRAM_REPLY_WITH_OPTIONS, canonical,
     canonical_kind, execute, payload_allowed,
 )
 from tdn_evidence.parsers.packet_policy import parse_rule
@@ -27,6 +27,29 @@ def ike(size=28):
 
 
 class FramingTests(unittest.TestCase):
+    def test_reply_program_reads_source_port_and_preserves_framing(self):
+        self.assertEqual(canonical_kind(BYTECODE_REPLY_WITH_OPTIONS), "ipsecUDPReplyFramingWithOptions")
+        self.assertEqual(atom_json({"kind": "ipsecUDPReplyFramingWithOptions"}), "ipsecUDPReplyFramingWithOptions")
+        rng = random.Random(31039)
+        for _ in range(3000):
+            body = rng.randbytes(rng.randrange(0, 300))
+            if len(body) >= 28 and rng.randrange(2):
+                body = body[:17] + b"\x20" + body[18:24] + struct.pack("!I", len(body)) + body[28:]
+            if rng.randrange(2):
+                body = bytes(4) + body
+            source_port = rng.choice([500, 4500, 501])
+            destination_port = rng.choice([500, 4500, 9999])
+            raw = packet(destination_port, body, source_port=source_port, ihl=rng.randrange(5, 16))
+            self.assertEqual(execute(raw, PROGRAM_REPLY_WITH_OPTIONS), payload_allowed(source_port, body))
+        self.assertTrue(execute(packet(9999, ike(), source_port=500), PROGRAM_REPLY_WITH_OPTIONS))
+        self.assertFalse(execute(packet(500, ike(), source_port=9999), PROGRAM_REPLY_WITH_OPTIONS))
+        rule = {"matches": {"iptables_tokens": ["-p", "udp", "-m", "bpf", "--bytecode", BYTECODE_REPLY_WITH_OPTIONS]},
+                "action": "accept", "ordinal": 0, "raw_text": "reply fixture"}
+        self.assertIn({"kind": "ipsecUDPReplyFramingWithOptions"}, parse_rule(rule)["atoms"])
+        rule["matches"]["iptables_tokens"][-1] = BYTECODE_REPLY_WITH_OPTIONS.replace("262144", "0")
+        with self.assertRaisesRegex(Unsupported, "unknown IPsec framing"):
+            parse_rule(rule)
+
     def test_variable_header_program_preserves_old_meaning(self):
         for ihl in range(5, 16):
             for port, payload in [(500, ike()), (4500, bytes(4) + ike()),

@@ -69,6 +69,17 @@ def Ingress (configuration : MultiProtocolExecution.Config)
   MultiProtocolExecution.Step configuration before .receive after ∨
   MultiProtocolExecution.Step configuration before .decryptIPsec after
 
+def inputPacket (configuration : MultiProtocolExecution.Config)
+    (state : MultiProtocolExecution.State) (header : PacketPolicy.Packet) : PacketPolicy.Packet :=
+  { MultiProtocolExecution.policyHeader configuration state header with
+    ingress := configuration.ip.interfaceName state.iface, egress := "", outboundPolicies := [] }
+
+def InputAdmitted (configuration : MultiProtocolExecution.Config)
+    (state : MultiProtocolExecution.State) : Prop :=
+  ∃ header, state.frame.visibleHeader = some header ∧
+    Execution.accepts (configuration.ip.inputRules state.iface)
+      (configuration.ip.inputFallback state.iface) (inputPacket configuration state header)
+
 structure Context where
   entry : MultiProtocolExecution.State
   state : MultiProtocolExecution.State
@@ -89,24 +100,24 @@ def Context.AtHook (context : Context) (configuration : MultiProtocolExecution.C
   match context.hook with
   | .input =>
       Ingress configuration context.entry context.state ∧
-      configuration.ip.localAddress context.state.port context.header.destination
+      configuration.ip.localAddress context.state.iface context.header.destination
   | .forward =>
       ∃ entered route, Ingress configuration context.entry entered ∧
         (∀ incoming, configuration.visibleHeader entered.frame = some incoming →
           configuration.ForwardableHeader incoming) ∧
         MultiProtocolExecution.Step configuration entered .route context.state ∧
-        entered.phase = .ingress ∧ context.state.phase = .routed ∧
+        entered.datapathStage = .ingress ∧ context.state.datapathStage = .routed ∧
         Execution.SelectedRoute configuration.ip.routes route context.header ∧
-        route.ingress = entered.port ∧ route.egress = context.state.port
+        route.ingress = entered.iface ∧ route.egress = context.state.iface
   | .output =>
-      context.entry.phase = .localOutput ∧
+      context.entry.datapathStage = .localOutput ∧
       MultiProtocolExecution.Step configuration context.entry .route context.state ∧
-      context.state.phase = .outputRouted
+      context.state.datapathStage = .outputRouted
   | .link => False
 
 structure LinkContext where
-  port : Nat
-  peerPort : Nat
+  iface : Nat
+  peerIface : Nat
   packet : PacketPolicy.Packet
   raw : RawPacket
 
@@ -146,14 +157,14 @@ structure CarrierBinding where
 
 
 structure MKAEndpoint where
-  sourcePort : Nat
-  destinationPort : Nat
+  sourceIface : Nat
+  destinationIface : Nat
   actorSCI : Nat
   tunnel : String
   deriving DecidableEq
 
 structure IPsecSizeBinding where
-  port : Nat
+  iface : Nat
   policy : Execution.Association
   outerHeaderBytes : Nat := 20
   deriving DecidableEq
@@ -172,9 +183,9 @@ instance (binding : IPsecSizeBinding) : Decidable binding.Valid := by
   infer_instance
 
 structure Inventory where
-  ports : List Nat
+  ifaces : List Nat
   configuration : MultiProtocolExecution.Config
-  portName : Nat → String
+  ifaceName : Nat → String
   componentName : Nat → String
   mkaPeers : List MKAEndpoint
   ipsecSizes : List IPsecSizeBinding := []

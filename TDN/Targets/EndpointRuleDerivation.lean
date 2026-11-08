@@ -225,8 +225,8 @@ open Compliance
 def admissionPrograms (d : Deployment) (inventory : PacketProcessing.Inventory) (interface : String) :
     List LinkAdmission.Program :=
   (d.policies.filter (fun policy => policy.interface == interface)).map (fun policy => ⟨policy.rules, policy.defaultVerdict⟩) ++
-  (inventory.ports.filter (fun port => inventory.portName port == interface)).flatMap (fun port =>
-    match LinkAdmission.lookup inventory.configuration.linkPolicies port with
+  (inventory.ifaces.filter (fun iface => inventory.ifaceName iface == interface)).flatMap (fun iface =>
+    match LinkAdmission.lookup inventory.configuration.linkPolicies iface with
     | none => []
     | some policy => [policy.inbound, policy.outbound])
 
@@ -235,16 +235,16 @@ lemma admitted_packet_has_inventory_program (d : Deployment)
     (interface : String) (direction : Direction) (traffic : Traffic)
     (accepted : d.Accepts interface direction traffic) :
     ∃ program ∈ admissionPrograms d inventory interface, program.Accepts traffic.packet := by
-  obtain ⟨hook, _, admission⟩ := accepted
+  obtain ⟨hook, _, _, admission⟩ := accepted
   by_cases link : hook = .link
   · subst hook
-    obtain ⟨_, actual, same, port, member, name, policy, selected, admits⟩ := admission
+    obtain ⟨_, actual, same, iface, member, name, policy, selected, admits⟩ := admission
     have actualEq : actual = inventory := Option.some.inj (same.symm.trans present)
     subst actual
     refine ⟨if direction = .outbound then policy.outbound else policy.inbound, ?_, by simpa using admits⟩
     apply List.mem_append_right
     apply List.mem_flatMap.mpr
-    refine ⟨port, List.mem_filter.mpr ⟨member, by simpa using name⟩, ?_⟩
+    refine ⟨iface, List.mem_filter.mpr ⟨member, by simpa using name⟩, ?_⟩
     simp only [selected]
     cases direction <;> simp
   · simp only [link, ↓reduceIte] at admission

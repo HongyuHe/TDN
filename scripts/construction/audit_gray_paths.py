@@ -38,7 +38,7 @@ def audit(bundle,output,report_path):
     ns=identifier(graph["snapshot"]["snapshot_id"])+"_gray"
     levels=sorted({d["security_level_id"] for d in devices if d["security_level_id"] is not None})
     level_ids=[0 if d["security_level_id"] is None else levels.index(d["security_level_id"])+1 for d in devices]
-    lines=["import TDN.Semantics.Paths","namespace TDN.Imported."+ns,"set_option maxRecDepth 100000","set_option maxHeartbeats 0","abbrev Node := Fin "+str(len(devices))]
+    lines=["import TDN.Semantics.Waypointing","namespace TDN.Imported."+ns,"set_option maxRecDepth 100000","set_option maxHeartbeats 0","abbrev Node := Fin "+str(len(devices))]
     lines.append("def edges : List (Node × Node) := "+lean_list(["("+str(a)+", "+str(b)+")" for a,b in sorted(edges)]))
     lines.append("def innerNodes : List Node := "+lean_list([str(i) for i in inner]))
     lines.append("def firewallNodes : List Node := "+lean_list([str(i) for i in firewalls]))
@@ -46,17 +46,17 @@ def audit(bundle,output,report_path):
     if failures:
         path=failures[0]["nodes"]
         def step(a,b):
-            return "(show Paths.Avoiding edge firewall ("+str(a)+" : Node) "+str(b)+" from by unfold Paths.Avoiding edge edges firewall firewallNodes; decide)"
+            return "(show Waypointing.Avoiding edge firewall ("+str(a)+" : Node) "+str(b)+" from by unfold Waypointing.Avoiding edge edges firewall firewallNodes; decide)"
         proof="(Relation.ReflTransGen.single "+step(path[0],path[1])+")"
         for a,b in zip(path[1:-1],path[2:]):proof="("+proof+".tail "+step(a,b)+")"
-        lines.append("theorem concrete_bypass : Relation.ReflTransGen (Paths.Avoiding edge firewall) ("+str(path[0])+" : Node) "+str(path[-1])+" := "+proof)
+        lines.append("theorem concrete_bypass : Relation.ReflTransGen (Waypointing.Avoiding edge firewall) ("+str(path[0])+" : Node) "+str(path[-1])+" := "+proof)
         lines.append("theorem bypass_crosses_distinct_levels : ("+str(path[0])+" : Node) ∈ innerNodes ∧ ("+str(path[-1])+" : Node) ∈ innerNodes ∧ level "+str(path[0])+" ≠ level "+str(path[-1])+" ∧ ¬ firewall "+str(path[0])+" := by unfold innerNodes level firewall firewallNodes; decide")
     elif applicable_pairs>0:
         lines += [
             "lemma local_cut : ∀ a b, edge a b → ¬ firewall a → ¬ firewall b → side a = side b := by unfold edge edges firewall firewallNodes side; decide",
             "lemma start_clear : ∀ a, a ∈ innerNodes → ¬ firewall a := by unfold innerNodes firewall firewallNodes; decide",
             "lemma sides_differ : ∀ a b, a ∈ innerNodes → b ∈ innerNodes → level a ≠ level b → side a ≠ side b := by unfold innerNodes level side; decide",
-            "theorem all_cross_level_paths_cross_firewall (a b : Node) (ha : a ∈ innerNodes) (hb : b ∈ innerNodes) (different : level a ≠ level b) : ¬ Relation.ReflTransGen (Paths.Avoiding edge firewall) a b := Paths.no_firewall_free_crossing edge firewall side local_cut (start_clear a ha) (sides_differ a b ha hb different)"
+            "theorem cross_level_waypointing (a b : Node) (ha : a ∈ innerNodes) (hb : b ∈ innerNodes) (different : level a ≠ level b) : ¬ Relation.ReflTransGen (Waypointing.Avoiding edge firewall) a b := Waypointing.waypointing_of_edge_invariant edge firewall side local_cut (start_clear a ha) (sides_differ a b ha hb different)"
         ]
     lines.append("end TDN.Imported."+ns)
     output.write_text("\n\n".join(lines)+"\n")

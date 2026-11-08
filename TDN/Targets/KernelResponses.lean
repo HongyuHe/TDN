@@ -3,37 +3,37 @@ import TDN.Targets.PacketExecution
 
 namespace TDN.Targets
 
-def nativeKernelResponses (c : Execution.Config) (gatewayDevices : List Nat) :
+def nativeKernelResponses (c : Execution.Environment) (gatewayDevices : List Nat) :
     KernelResponses.Config Execution.State where
-  generates state := c.owner state.port ∈ gatewayDevices
-  selectedRoute state header port := ∃ route,
-    Execution.SelectedRoute c.routes route header ∧ route.ingress = state.port ∧ route.egress = port
-  outputRules state _ := c.outputRules state.port
-  outputFallback state _ := c.outputFallback state.port
+  generates state := c.owner state.iface ∈ gatewayDevices
+  selectedRoute state header iface := ∃ route,
+    Execution.SelectedRoute c.routes route header ∧ route.ingress = state.iface ∧ route.egress = iface
+  outputRules state _ := c.outputRules state.iface
+  outputFallback state _ := c.outputFallback state.iface
   interfaceName := c.interfaceName
-  emit state header port :=
-    { port := port, phase := .ready, frame := { state.frame with packet := header }, authenticated := [] }
+  emit state header iface :=
+    { iface := iface, datapathStage := .ready, frame := { state.frame with packet := header }, authenticated := [] }
 
-def GatewayResponseGuards (c : Execution.Config) (gatewayDevices : List Nat) : Prop :=
-  ∀ port, c.owner port ∈ gatewayDevices →
-    c.outputFallback port = .deny ∧
-    ∀ rule ∈ c.outputRules port, rule.verdict = .allow → KernelResponses.SafeResponseRule rule
+def GatewayResponseGuards (c : Execution.Environment) (gatewayDevices : List Nat) : Prop :=
+  ∀ iface, c.owner iface ∈ gatewayDevices →
+    c.outputFallback iface = .deny ∧
+    ∀ rule ∈ c.outputRules iface, rule.verdict = .allow → KernelResponses.SafeResponseRule rule
 
 theorem native_packet_stack_with_kernel_response_guards
-    (c : Execution.Config) (layout : Nat → List Nat) (gatewayDevices : List Nat)
-    (conditions : Execution.LocalStackConditions c layout)
+    (c : Execution.Environment) (expectedEncapStack : Nat → List Nat) (gatewayDevices : List Nat)
+    (conditions : Execution.LocalStackConditions c expectedEncapStack)
     (guards : GatewayResponseGuards c gatewayDevices)
     {before after : Execution.State} {actions : List (KernelResponses.Action Execution.Action)}
     (run : (KernelResponses.lts (Execution.lts c) (nativeKernelResponses c gatewayDevices)).MTr
       (.network before) actions (.network after))
-    (initial : Execution.StackInvariant c layout before) :
-    Execution.StackInvariant c layout after := by
+    (initial : Execution.StackInvariant c expectedEncapStack before) :
+    Execution.StackInvariant c expectedEncapStack after := by
   apply KernelResponses.network_observations_remain_safe_with_kernel_responses
     (Execution.lts c) (nativeKernelResponses c gatewayDevices)
-    (Execution.StackInvariant c layout)
+    (Execution.StackInvariant c expectedEncapStack)
     (fun _ _ _ step valid => Execution.step_preserves_stack_invariant conditions step valid)
     ?_ run initial
-  intro source enabled port
-  exact guards source.port enabled
+  intro source enabled iface
+  exact guards source.iface enabled
 
 end TDN.Targets

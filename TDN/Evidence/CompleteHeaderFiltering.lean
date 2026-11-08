@@ -24,9 +24,9 @@ theorem routed_ipv4_RG038 (base : Deployment) (processing : PacketProcessing.Inv
     simp [deployment, grayWorkstationRole, Deployment.IsDevice]
   · rfl
   · rfl
-  · funext port address
+  · funext iface address
     simp [deployment, ProcessingInventoryChecks.deployment, ProcessingInventoryChecks.inventory,
-      nativeLocalAddress, ProcessingInventoryChecks.interfaces]
+      nativeLocalAddress, ProcessingInventoryChecks.interfaces, Interface.HasLocalAddress]
   · rfl
   · rfl
   · simp [LinkPolicyRecordChecks, Deployment.LinkPath, ProcessingInventoryChecks.inventory]
@@ -35,17 +35,25 @@ theorem routed_ipv4_RG038 (base : Deployment) (processing : PacketProcessing.Inv
     simp [ProcessingInventoryChecks.inventory] at endpointMember
 
 def packet : PacketPolicy.Packet :=
-  { source := 10, destination := 20, protocol := "esp", ingress := "in", egress := "out",
+  { source := 10, destination := 20, protocol := "esp", ingress := "out", egress := "",
     sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, inboundPolicies := [],
     outboundPolicies := [], connectionState := "new" }
 
 lemma permitted_esp_is_accepted (base : Deployment) (processing : PacketProcessing.Inventory) :
     (deployment base processing).Accepts "out" .inbound
       ((deployment base processing).Observe packet) := by
-  refine ⟨.input, ⟨rfl, ?_⟩, ?_⟩
+  refine ⟨.input, ⟨rfl, ?_⟩, ?_, ?_⟩
   · change (deployment base processing).ManagementMetadataBound packet
     simp [Deployment.ManagementMetadataBound, PacketClass, PacketService, PacketIKE,
       PacketMKA, PacketARP, packet]
+  · refine ⟨ProcessingInventoryChecks.inventory processing, rfl, 1,
+      by simp [ProcessingInventoryChecks.inventory], rfl,
+      { id := "out", device := "router", zone := .black, address := some 20,
+        physical := true, managementNetwork := false, mtu := some 1500 },
+      by simp [deployment, ProcessingInventoryChecks.deployment, ProcessingInventoryChecks.interfaces],
+      rfl, rfl, ?_⟩
+    simp [PacketAtHook, HookDirection, ProcessingInventoryChecks.inventory,
+      ProcessingInventoryChecks.name, packet, Deployment.Observe]
   · simp [deployment, ProcessingInventoryChecks.deployment, ProcessingInventoryChecks.policies,
       ProcessingInventoryChecks.interfaces, ProcessingInventoryChecks.rules,
       InterfacePolicy.Accepts, PacketPolicy.Rule.toFilter, Filter.evaluate,
@@ -54,12 +62,12 @@ lemma permitted_esp_is_accepted (base : Deployment) (processing : PacketProcessi
 lemma gre_is_rejected (base : Deployment) (processing : PacketProcessing.Inventory) :
     ¬ (deployment base processing).Accepts "out" .inbound
       ((deployment base processing).Observe { packet with protocol := "gre" }) := by
-  rintro ⟨hook, _, accepts⟩
+  rintro ⟨hook, _, _, accepts⟩
   cases hook with
   | link =>
-    exact routed_port_has_no_link_operation (deployment base processing)
+    exact routed_iface_has_no_link_operation (deployment base processing)
       (ProcessingInventoryChecks.inventory processing) rfl "out"
-      (by intro port _ _; simp [RoutedPort, ProcessingInventoryChecks.inventory]) .inbound _ accepts
+      (by intro iface _ _; simp [RoutedIface, ProcessingInventoryChecks.inventory]) .inbound _ accepts
   | input | output | forward =>
     simp [deployment, ProcessingInventoryChecks.deployment, ProcessingInventoryChecks.policies,
       ProcessingInventoryChecks.interfaces, ProcessingInventoryChecks.rules,

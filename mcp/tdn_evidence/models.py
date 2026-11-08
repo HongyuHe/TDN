@@ -22,7 +22,7 @@ class Network(StrictModel):
 
 class SavedExperiment(StrictModel):
     path: str
-    parser: Literal["l2-filter-admission-v1", "pkcs11-token-binding-v1", "pkcs11-token-extra-v1", "pkcs11-token-boundary-v1", "key-interface-audit-v1", "os-provider-identity-v1", "guest-clock-use-v1", "mixed-protocol-v1", "mixed-packet-sizing-v1", "eap-correlation-v1", "eap-public-v1", "eap-mka-public-v1", "administration-observations-v1", "administration-lifecycle-v1", "cover-sender-v1", "native-component-audit-v1", "management-session-v1", "native-ipsec-correlation-v1", "native-packet-sizing-v1"]
+    parser: Literal["macsec-boundary-v1", "native-underlay-policy-v1", "red-service-policy-v1", "xfrm-forward-policy-v1", "l2-filter-admission-v1", "pkcs11-token-binding-v1", "pkcs11-token-extra-v1", "pkcs11-token-boundary-v1", "key-interface-audit-v1", "os-provider-identity-v1", "guest-clock-use-v1", "mixed-protocol-v1", "mixed-packet-sizing-v1", "eap-correlation-v1", "eap-public-v1", "eap-mka-public-v1", "administration-observations-v1", "administration-lifecycle-v1", "cover-sender-v1", "native-component-audit-v1", "management-session-v1", "native-ipsec-correlation-v1", "native-packet-sizing-v1"]
 
 
 class Settings(StrictModel):

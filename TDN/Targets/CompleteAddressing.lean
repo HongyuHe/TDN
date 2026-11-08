@@ -164,8 +164,8 @@ theorem gray_addressing_from_inventory_ranges_and_local_rule_checks
     (routed : ∀ interface ∈ d.interfaces,
       (d.IsLayer interface.device .outer ∨ d.IsDevice interface.device .grayFirewall) →
       interface.zone = .gray →
-      ∀ port ∈ inventory.ports, inventory.portName port = interface.id →
-        PolicyDerivation.RoutedPort inventory port) :
+      ∀ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface.id →
+        PolicyDerivation.RoutedIface inventory iface) :
     msc_gray_addressing_for_level_filtering d ranges pairs := by
   have coherent := address_inventory_from_checked_records d addressChecks workstations
   have acceptedPairs : ∀ interface ∈ d.interfaces,

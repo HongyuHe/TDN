@@ -31,18 +31,18 @@ def main():
             require(all(a[1] == tag for a in report["policies"][device]["in"]),
                     "Inbound policy tag differs")
             name = "boundary" + device
-            blocks.append(f"def {name} := Targets.operationalTunnelBoundary config layout [{inside}] [{outside}] {tag} {component}")
-            blocks.append(f"""lemma {name}_inbound_tags : ∀ port, config.owner port = {component} →
-    ∀ a ∈ config.inbound port, a.tag = {tag} := by
+            blocks.append(f"def {name} := Targets.operationalTunnelBoundary config expectedEncapStack [{inside}] [{outside}] {tag} {component}")
+            blocks.append(f"""lemma {name}_inbound_tags : ∀ iface, config.owner iface = {component} →
+    ∀ a ∈ config.inbound iface, a.tag = {tag} := by
   have checked : ∀ a ∈ (deviceAt devices {component}).inbound, a.tag = {tag} := by decide
-  intro port owner a member
-  change (portAt ports port).owner = {component} at owner
-  change a ∈ (deviceAt devices (portAt ports port).owner).inbound at member
+  intro iface owner a member
+  change (ifaceAt ifaces iface).owner = {component} at owner
+  change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).inbound at member
   rw [owner] at member
   exact checked a member
 
 theorem {name}_no_bypass : Targets.BoundaryNoBypass {name} :=
-  Targets.tunnel_boundary_from_local_stack_checks config layout [{inside}] [{outside}] {tag} {component}
+  Targets.tunnel_boundary_from_local_stack_checks config expectedEncapStack [{inside}] [{outside}] {tag} {component}
     local_stack_conditions {name}_inbound_tags (by decide) (by decide)
 """)
             outbound = device[-1] == "A"

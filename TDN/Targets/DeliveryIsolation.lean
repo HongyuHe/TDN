@@ -3,47 +3,49 @@ import TDN.Semantics.FiniteDomains
 
 namespace TDN.Targets
 
-def msc_same_domain_plaintext_delivery (c : Execution.Config) (sources : List Nat) : Prop :=
-  ∀ start finish actions sourceDomain recipientDomain,
-    RedPayloadOrigin c sources start → c.recipientDomain start.port = some sourceDomain →
-    (Execution.lts c).MTr start actions finish → finish.phase = .delivered →
-    c.recipientDomain finish.port = some recipientDomain → sourceDomain = recipientDomain
+def msc_same_domain_plaintext_delivery (env : Execution.Environment)
+    (redSourceIfaces : List Nat) : Prop :=
+  ∀ initialState finalState actions sourceDomain destinationDomain,
+    RedPayloadOrigin env redSourceIfaces initialState →
+    env.recipientDomain initialState.iface = some sourceDomain →
+    (Execution.lts env).MTr initialState actions finalState → finalState.datapathStage = .delivered →
+    env.recipientDomain finalState.iface = some destinationDomain → sourceDomain = destinationDomain
 
-lemma red_origin_has_domain_invariant (c : Execution.Config) (layout : Nat → List Nat)
+lemma red_origin_has_domain_invariant (c : Execution.Environment) (expectedEncapStack : Nat → List Nat)
     (allowed : Nat → Prop) (sources : List Nat) (domain : Nat)
-    (sourceCheck : ∀ port ∈ sources, c.recipientDomain port = some domain →
-      layout port = [] ∧ c.payloadOrigin port ∧ allowed port)
+    (sourceCheck : ∀ iface ∈ sources, c.recipientDomain iface = some domain →
+      expectedEncapStack iface = [] ∧ c.payloadOrigin iface ∧ allowed iface)
     {start : Execution.State} (origin : RedPayloadOrigin c sources start)
-    (domainAtSource : c.recipientDomain start.port = some domain) :
-    Execution.DomainInvariant c layout allowed start := by
-  obtain ⟨member, phase, entry, empty, ingress, authentication⟩ := origin
-  obtain ⟨stack, admitted, permitted⟩ := sourceCheck start.port member domainAtSource
-  simp only [Execution.DomainInvariant, phase]
+    (domainAtSource : c.recipientDomain start.iface = some domain) :
+    Execution.DomainInvariant c expectedEncapStack allowed start := by
+  obtain ⟨member, datapathStage, entry, empty, ingress, authentication⟩ := origin
+  obtain ⟨stack, admitted, permitted⟩ := sourceCheck start.iface member domainAtSource
+  simp only [Execution.DomainInvariant, datapathStage]
   refine ⟨⟨⟨?_, ?_, Or.inl authentication, ?_⟩, ?_⟩, ?_⟩
-  · simp [Execution.Frame.tags, empty, Execution.processingStack, authentication, entry, stack]
+  · simp [Execution.Frame.tags, empty, Execution.encapStackAfterIngress, authentication, entry, stack]
   · simpa [entry] using ingress
   · simp [entry]
   · simpa [entry] using permitted
   · simpa [entry] using admitted
 
 theorem delivered_domain_from_local_checks
-    (c : Execution.Config) (layout : Nat → List Nat) (allowed : Nat → Prop)
+    (c : Execution.Environment) (expectedEncapStack : Nat → List Nat) (allowed : Nat → Prop)
     (sources : List Nat) (domain : Nat)
-    (conditions : Execution.LocalDomainConditions c layout allowed)
-    (sourceCheck : ∀ port ∈ sources, c.recipientDomain port = some domain →
-      layout port = [] ∧ c.payloadOrigin port ∧ allowed port)
-    (recipientCheck : ∀ port, allowed port →
-      c.recipientDomain port = none ∨ c.recipientDomain port = some domain)
+    (conditions : Execution.LocalDomainConditions c expectedEncapStack allowed)
+    (sourceCheck : ∀ iface ∈ sources, c.recipientDomain iface = some domain →
+      expectedEncapStack iface = [] ∧ c.payloadOrigin iface ∧ allowed iface)
+    (recipientCheck : ∀ iface, allowed iface →
+      c.recipientDomain iface = none ∨ c.recipientDomain iface = some domain)
     {start finish : Execution.State} {actions : List Execution.Action} {recipient : Nat}
     (origin : RedPayloadOrigin c sources start)
-    (domainAtSource : c.recipientDomain start.port = some domain)
+    (domainAtSource : c.recipientDomain start.iface = some domain)
     (run : (Execution.lts c).MTr start actions finish)
-    (delivered : finish.phase = .delivered)
-    (recipientAtEnd : c.recipientDomain finish.port = some recipient) :
+    (delivered : finish.datapathStage = .delivered)
+    (recipientAtEnd : c.recipientDomain finish.iface = some recipient) :
     domain = recipient := by
-  have initial := red_origin_has_domain_invariant c layout allowed sources domain sourceCheck origin domainAtSource
-  have permitted := Execution.delivered_port_is_allowed c layout allowed conditions run initial delivered
-  rcases recipientCheck finish.port permitted with absent | same
+  have initial := red_origin_has_domain_invariant c expectedEncapStack allowed sources domain sourceCheck origin domainAtSource
+  have permitted := Execution.delivered_iface_is_allowed c expectedEncapStack allowed conditions run initial delivered
+  rcases recipientCheck finish.iface permitted with absent | same
   · simp [recipientAtEnd] at absent
   · exact Option.some.inj (same.symm.trans recipientAtEnd)
 

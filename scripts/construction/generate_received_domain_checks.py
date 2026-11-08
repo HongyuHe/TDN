@@ -18,7 +18,7 @@ theorem snapshot_received_domain :
   intro start finish actions sourceDomain recipientDomain origin sourceLevel run received plain recipientLevel
   have member : some sourceDomain ∈ domains.map some := by
     rw [← sourceLevel]
-    exact source_domains_checked start.port origin.1
+    exact source_domains_checked start.iface origin.1
   have domainMember : sourceDomain ∈ domains := by simpa using member
   simp only [domains, List.mem_cons, List.not_mem_nil, or_false] at domainMember
   rcases domainMember with """ + " | ".join(["rfl"] * count) + "\n"
@@ -31,18 +31,18 @@ theorem snapshot_received_domain :
 /-- Fragment keys and packet identities can collide. The separate implementation
 correspondence must map each received piece to its byte source and admitted path. -/
 theorem reassembled_bytes_have_recipient_full_label {Header Byte : Type}
-    [DecidableEq Header] (recipientPort recipientDomain : Nat)
-    (recipient : config.recipientDomain recipientPort = some recipientDomain)
+    [DecidableEq Header] (recipientIface recipientDomain : Nat)
+    (recipient : config.recipientDomain recipientIface = some recipientDomain)
     {actions : List ReassemblyOrigins.Action}
     {pieces : List (Fragmentation.Fragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
     {header : Header}
     {result : Fragmentation.Datagram Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat)}
     (run : (ReassemblyOrigins.system
-      (Targets.ArrivedFragment config redSources recipientPort)).MTr [] actions pieces)
+      (Targets.ArrivedFragment config redSources recipientIface)).MTr [] actions pieces)
     (accepted : ReassemblyOrigins.assemble header pieces = some result) :
     ∀ byte ∈ result.bytes, fullLevel byte.domain = fullLevel recipientDomain := by
   have domainsMatch := Targets.reassembled_delivery_domain_from_checked_reception
-    config redSources snapshot_received_domain recipientPort recipientDomain recipient run accepted
+    config redSources snapshot_received_domain recipientIface recipientDomain recipient run accepted
   exact fun byte member => congrArg fullLevel (domainsMatch byte member)
 
 """

@@ -1,0 +1,627 @@
+{
+  "schema_version": "1.0",
+  "scope": "Associations connect a role to the current formalized requirement in which it participates. Applicability conditions, selected objectives, external evidence, and whole-network quantifiers remain part of each statement. Child roles inherit associations from every subclass ancestor; documented associations do not transmit obligations. Listing a requirement does not assert that a device or deployment satisfies it.",
+  "source_hashes": {
+    "TDN/Targets/CompleteSpecifications.lean": "13285457ac8eba31a50313408edb08c34e02a134b201553c034c767ebbdc19b4",
+    "TDN/Targets/DirectSpecifications.lean": "163c61e6bc1a651c456f27472583429ab3b09c77848565e1258e2b0be45438ff",
+    "TDN/Targets/CPDuties.lean": "293047fbbe979f5dea490cd4c1aa23c82a0909110a94a44517a1ad5d0ab16cfa",
+    "TDN/Targets/AuthenticationIsolation.lean": "0389df58e5511f4d8c34190fc3bec837c0bb069c6258e98326becacb71cb7065",
+    "TDN/Targets/Topology.lean": "1962b194dbd4686c50c23ac79b7699fa1ead7be0d4f426c64b1fbf12dfa229ea",
+    "TDN/Targets/CPDutyRecords.lean": "b3c84c6700cd46766f03237a949d39c11dd04b07aab194d5f4ca3fa5e0fbce61",
+    "TDN/Targets/Administration.lean": "dcfbaec5c39839dc9fac870f542e34421e6c9cc41dbf351180f24c668e629041",
+    "TDN/Targets/TimeSynchronization.lean": "1095fd256cfdd3703f3e3e51ab310dcc9c2588daff3c8fa416b75b5dcd6d8d0f"
+  },
+  "translations": {
+    "RG-001": "The context must contain external confirmations that local and government guidance, CNSS policy, and the duty to report policy conflicts have been met.",
+    "RG-002": "Each component must have confirmation that its product and version match an evaluated configuration. A modified component also needs confirmation that the modification preserves certification.",
+    "RG-003": "Components of the listed kinds need external confirmation that their product and version are eligible on the CSfC Components List.",
+    "RG-004": "Inner encryptors must use different physical devices from Outer encryptors and Gray Firewalls. The component records must show independent manufacturers, or different products with explicit NSA approval. Inner and Outer encryptors also need different operating-system families and the specified cryptographic-library independence.",
+    "RG-005": "An Inner and Outer encryptor must not share a physical device. A Gray Firewall must also use a physical device distinct from either encryption layer.",
+    "RG-006": "Each component needs external confirmations of a supply-chain threat assessment and the required mitigation.",
+    "RG-007": "Every modeled trace must use the declared Inner and Outer tunnel pairing for protected Red payloads. Gray transmission carries the Inner layer; Black transmission and reception carry both layers. Inner encryption precedes Outer encryption, and receiving-side decryption removes Outer before Inner. The definition also requires complete model coverage, independent key contexts, suitable peer placement, and the required authentication and architecture services.",
+    "RG-008": "Each Red network has dedicated Inner components with matching security levels. Authenticated Inner pairs and established Inner tunnels stay within one level, and every delivered payload stays within its source level. Required connectivity pairs must have a successful execution. Included unclassified networks also satisfy the applicable duties, and references to other MSC solutions must be accounted for.",
+    "RG-009": "The context needs external confirmation that Red and Gray networks are under trusted control and that Gray information has been classified as unclassified.",
+    "RG-010": "When independently managed operation is selected, recorded management connections must stay off Black. Each IPsec tunnel's two peers must have certificate chains that trust the other's issuer.",
+    "RG-011": "When a central management site is declared, certificate-authenticated components need a CA at that site, and Inner and Outer components use distinct CAs. Certificate-authenticated MACsec devices also need an Authentication Server there. Recorded management connections crossing Black use at least two approved encryption layers, and components with management connections have cryptographic separation enabled.",
+    "RG-012": "Inner peers at different levels must use separated authentication material, must not authenticate each other, and must have no established tunnel between them. When management is deployed, each peer has management devices and different levels use disjoint management-device sets.",
+    "RG-013": "Every Gray path that crosses the specified security-level boundary must pass through a Gray Firewall. The modeled roles and levels must match the device records. Firewalls and Outer components filter Inner peers by level; Gray management and certificate services have the stated placement and separation conditions. Each Gray Firewall must also lie on an actual Inner-to-Outer path.",
+    "RG-014": "Gray address ranges must be valid and must assign an address to at most one security level. Inner Gray addresses and intended address pairs belong to the recorded level. Outer components and Gray Firewalls accept Inner-peer traffic only for the intended same-level pairs.",
+    "RG-015": "Inner MACsec traffic and MACsec traffic crossing IP must have a declared, approved encapsulation arrangement. Encapsulation precedes the required Outer encryption or IP transmission, and the protected MACsec layer stays encrypted between encapsulation and decapsulation. A standalone encapsulator needs the specified Gray attachments and all applicable component duties.",
+    "RG-016": "A MACsec device may select clear VLAN tags or XPN only when its recorded supported features contain the corresponding option.",
+    "RG-017": "Every relevant tunnel needs authentication observations in both directions, with each verifier authenticating the opposite peer for that tunnel. The current shared condition uses certificate authentication for IPsec and proof of possession of the tunnel key for MACsec.",
+    "RG-018": "Every VPN gateway offers a nonempty set of suites satisfying the chosen CNSA profile. Selecting CNSA 2 also requires the recorded classical initial exchange and encrypted ML-KEM-1024 intermediate exchange, with multiple exchanges and IKE fragmentation supported. MACsec components use 256-bit GCM-AES or GCM-AES-XPN.",
+    "RG-019": "Every VPN gateway offers at least one suite, and every offered suite meets its selected CNSA profile. CNSA 2 connections begin with ECDH-P384, DH3072, or DH4096 and use ML-KEM-1024 in an encrypted intermediate exchange. Multiple exchanges, the intermediate exchange, and IKE fragmentation must be supported.",
+    "RG-020": "Every VPN gateway has a nonempty device-certificate identity whose chain contains its issuer and trust anchor. That certificate identity cannot belong to another component. Recorded authentications involving the gateway satisfy the certificate-verification conditions. Selecting default-certificate removal excludes vendor-default, self-signed, and proprietary certificates.",
+    "RG-021": "The key inventory must account for the VPN gateway's stored private keys. No modeled trace may export a listed private key. When the access-control objective is selected, an enforced policy permits only the gateway to read its key, and every modeled key read respects that restriction.",
+    "RG-022": "Every VPN gateway uses IKEv2 and the selected GCM or CBC modes. CBC for ESP requires HMAC. Recorded IKE lifetimes are positive and at most 24 hours; ESP lifetimes are positive and at most eight hours.",
+    "RG-023": "VPN gateways satisfy the IKEv2, selected-mode, and positive lifetime limits: at most 24 hours for IKE and eight hours for ESP. Every recorded rekey follows an authenticated observation for the same gateway, peer, and association; the authentication time precedes the rekey time.",
+    "RG-024": "Each MACsec device must have a declared authentication choice and peer. A pre-shared CAK must match the peer's CAK. EAP-TLS requires the device, peer, and server certificates, the supported endpoint roles, session evidence, and an Authentication Server attached to one Red or Gray site-and-zone pair. Installed keys and every encryption use must be connected to the required earlier authentication and key setup.",
+    "RG-025": "MACsec encryption uses 256-bit GCM-AES or GCM-AES-XPN, and key wrapping uses 256-bit AES-Key-Wrap.",
+    "RG-026": "Certificate-authenticated MACsec devices and Authentication Servers offer a nonempty set of EAP-TLS suites, all satisfying the selected CNSA profile. Selecting CNSA 2 requires TLS 1.3.",
+    "RG-027": "Relevant MACsec keys use the required key-name length and approved generation records, with fallback disabled. Generated CAKs must be obtained by an authorized administrator before application to both peers; EAP-derived CAKs need the required generator evidence. Every MACsec tunnel has a key and peer-pair record. The peers have complementary key-server values, and a centrally managed pair gives value 0 to a peer at the central site.",
+    "RG-028": "Every MACsec device has parameters with data-delay protection, a 6000 ms lifetime, a 2000 ms normal hello interval, and a positive active hello interval no greater than 2000 ms. The replay window is 2 or the smallest feasible value; confidentiality offset is 0 and must-secure is enabled. Every relevant non-control transmission carries that device's MACsec tunnel layer.",
+    "RG-029": "The records cover every Inner encryptor and match its mechanism. For every modeled non-control packet crossing from the internal side, Inner encryption occurs before transmission and the transmitted packet carries the Inner layer. Incoming protected traffic is decrypted before passage to the internal side. IPsec uses ESP tunnel mode and an associated IP tunnel. Selected mandatory-access-control objectives must be enabled.",
+    "RG-030": "The records cover every Outer encryptor and match its mechanism. Every modeled non-control outward transmission carries the Outer layer after Outer encryption, and an inward crossing requires Outer decryption. IPsec uses ESP tunnel mode, and selected mandatory-access-control objectives are enabled. Non-control traffic arriving at an Outer Gray interface already carries exactly one Inner tunnel layer.",
+    "RG-031": "Outer encryptors must not use a dynamic routing protocol. An Inner routing use must serve its own tunnel lookup or have that same component as both source and destination.",
+    "RG-032": "The TRANSEC records must satisfy the selected conditions and agree with actual modeled activation. Public-Internet use, or the selected external-MACsec objective with an Outer Firewall, requires an active installation and its ScheduledCoverGuarantee.",
+    "RG-033": "The model must cover the deployment and its packet-sizing inventory. The byte-size model must agree with packet processing and show that the selected sizing avoids further fragmentation. The recorded before-and-after fragmentation profiles must also satisfy the sizing conditions.",
+    "RG-034": "Public Internet counts as untrusted Black transport. Declared attachments must correspond to paths. Internet-connected Outer devices attach through Outer Firewalls; other Outer devices have the specified Black connection. Every Outer-to-untrusted-Black path crosses an Outer Firewall. Each Outer also has the required internal Gray connection to a Gray Firewall or Inner component.",
+    "RG-035": "Addresses, packet processing, UDP bindings, and interface policies must agree. Admitted traffic at the specified Inner, Outer, and Outer-Firewall boundaries must match the permitted tunnel, service, or approved-control conditions. Outbound Outer traffic must use an intended peer, and Outer-Firewall ingress must use the local Outer address on the appropriate side.",
+    "RG-036": "Each component's enabled interfaces must equal its recorded minimum feasible exposure, and every recorded unused interface must be disabled.",
+    "RG-037": "An Outer feature that can contact third parties must be disabled when the disabling objective is selected. Otherwise, every packet that feature could emit must be rejected on every relevant outbound interface.",
+    "RG-038": "The interface policy must cover the relevant VPN and Outer interfaces. Accepted VPN traffic uses the listed IPv4 protocols or IPv6 next headers. Outer Black multicast is rejected except for the precisely modeled necessary, approved Layer-2 control traffic. When the IPv4-options objective is selected, accepted Outer VPN IPv4 packets have the ordinary five-word header.",
+    "RG-039": "Outer Gray policies allow the specified same-level Inner tunnels, Gray-management tunnels, approved management or control traffic, and the selected Inner-revocation HTTP exception. Accepted packets also satisfy header restrictions, reachable-source checks on ingress, and the management-initiation restrictions. Every eligible packet meeting the complete modeled allowance and restrictions is accepted at its processing hook. The address, processing, UDP, and policy records must agree.",
+    "RG-040": "Gray Firewall policies allow the specified same-level Inner tunnels, Inner-revocation HTTP, approved control traffic, and approved management traffic on a physical management interface. Accepted traffic satisfies header, source-reachability, and classification restrictions. Eligible packets meeting the complete conditions and forwarding permission are accepted. Traffic between Inner VPNs at different classifications is always rejected.",
+    "RG-041": "An enabled control service on an Inner encryptor is attached to Red; on an Outer encryptor it is attached to Gray. Each enabled service is either necessary Layer-2 control traffic or explicitly approved by the AO.",
+    "RG-042": "Each device that requires a trusted clock source must have a recorded clock binding and at least one in-scope clock use. Every such use must match a trusted source in the required zone, an enabled synchronization configuration, and a preceding valid clock update. Configured correction and skew limits must hold, the selected update must be the latest at that use, and no intervening clock invalidation is allowed.",
+    "RG-043": "Every recorded vendor-default setting is removed or changed. Enabled DNS has a server list, automatic remote boot is disabled, and selecting the DNS-lookup-disable objective disables lookups.",
+    "RG-044": "When management is deployed, the deployment has both Red and Gray management workstations. Each relevant component has separate management interfaces, physical, cryptographic, and ACL separation, and no direct NIPR connection. Recorded management connections start at a workstation in the same zone. Inner encryptors and Inner Firewalls use Red management; Outer encryptors and Gray Firewalls use Gray management.",
+    "RG-045": "An unused Administrative Workstation must be powered off. Every service recorded on its host must be an administrative-workstation service. The component also needs external confirmation of vendor and local hardening and a protected facility.",
+    "RG-046": "Administrator addresses are limited to the recorded minimum set. Each management connection uses a management interface and either a direct physical connection, SSH, IPsec, MACsec, or TLS 1.2 or later within major version 1. Connections crossing Black use at least two approved encryption layers. A connection marked as a local dedicated LAN must then also remain on the same VLAN.",
+    "RG-047": "Every administrative operation has a matching authentication event satisfying the session, account, and ordering conditions. Account credentials are nonempty. Workstation accounts are individual, every listed workstation administrator has one, and different people use different credentials. Selected certificate and NIST objectives add the corresponding credential-approval conditions.",
+    "RG-048": "Every eligible non-default certificate has a provisioning record. Each provisioning record names an authorized administrator, a key generated on the component, a nonempty certificate request, and a secure out-of-band physical setup. Provisioning precedes first use and recorded authentications with the certificate. The certificate and its assigned CA must match the component and deployment records.",
+    "RG-049": "The context needs external confirmations of the required administrator clearances, including Outer administration.",
+    "RG-050": "When a SIEM is available for the required monitoring zone, the component must log to a recorded SIEM that collects and analyzes its logs and has alerts. Red monitoring also collects and analyzes flows. Moving Gray logs to a Red SIEM needs an approved cross-domain path. Outer components and Gray Firewalls need an unexpected-boundary-traffic-drop alert.",
+    "RG-051": "Every listed Cross Domain Solution needs external confirmations of the specified DoDI, connection-guide, and official-baseline requirements.",
+    "RG-052": "Components need external confirmations for authorized physical access and classified disposal or approved declassification. Every component except an Outer Firewall also needs Gray physical-protection confirmation; MACsec components need configuration-protection confirmation.",
+    "RG-053": "Inner components sharing an Outer must be parallel: no serial predecessor and no VLAN trunk in the recorded attachments. Distinct Red networks must use distinct Outer physical interfaces.",
+    "RG-054": "Required site pairs must be bound to the deployment and have an interoperation choice for each layer. Choices cover intended peers and recorded tunnels. For each relevant choice, matching forward and reverse tunnels must support the modeled payload domain in both directions.",
+    "RG-055": "Combined solutions must include a Gray Firewall when required. A combined end-user solution must have companion-firewall records, and every such record must satisfy its associated requirements.",
+    "RG-056": "Every modeled Red-to-outside path must pass through a conforming MSC solution or approved alternative protection. Approval must be backed by the authority record. Referenced MSC solutions must have supplied contexts satisfying all applicable duties, and their further MSC references must be accounted for.",
+    "RG-057": "Each component needs external confirmations of the required antivirus-update policy, critical-patch testing, local patching policy, and TEMPEST duties.",
+    "RG-058": "Each component needs external confirmations that its hardware inventory is authorized and its baseline configuration is available to the auditor.",
+    "RG-059": "The context needs external confirmation that procurement documentation follows the restriction on mentioning the classified-protection purpose.",
+    "RG-060": "The context needs external confirmations for NSA audit permission and cooperation, the annual AO audit, and review of its results.",
+    "RG-061": "The context needs external confirmations for registration approval, the AO package, annual renewal, reported changes, and the version-migration deadline.",
+    "RG-062": "Recorded audit events are retained for at least 365 days and have a backup at or after the event. Storage capacity is checked during every calendar quarter overlapping operation. Low-space warning and offload are enabled, and overflow and power-loss handling are recorded. Frequent offload and the required incident-response and storage plans also need external confirmation.",
+    "RG-063": "If the password alternative is selected, a domain authentication service must be recorded. Otherwise, the recorded infrastructure secret must have at least 112 bits of entropy.",
+    "RG-064": "The context needs external confirmations for the reporting deadline and channel, required report fields, and each listed kind of security or service incident.",
+    "RG-065": "The context needs external confirmations that administrator and auditor duties are separated and that Red and Gray administrators are different. Selecting optional role-based mandatory access control adds its confirmation requirement.",
+    "RG-066": "The context needs external confirmations of security training and physical tamper inspection.",
+    "RG-067": "For a recorded disposal, certificate-revocation initiation must precede disposal when certificates are used. CAK-destruction initiation must precede disposal when a pre-shared CAK is used.",
+    "RG-068": "The context needs external confirmations of the Security Administrator's maintenance, updates, incident reporting, logistical support, auxiliary-device defenses, and version-compliance duties.",
+    "RG-069": "The context needs external confirmations of the Auditor's review, restricted administration access, log management, incident reporting, and capability-survey duties.",
+    "RG-070": "The current shared Lean branch is True, so it adds no condition for optional Integrator duties. There is no substantive proof obligation in that branch.",
+    "RG-071": "The context needs external confirmations for assessment and authorization, AO review and implementation verification, lifecycle configuration and update control, external engagements, compromise revocation, and risk assessment.",
+    "RG-072": "The context needs external confirmations that the required tests, coverage, discrepancy records, baseline, test plan, and preserved results and AO report exist.",
+    "RG-073": "When the signing objective is selected, the record contains at least one software-signing algorithm and every listed algorithm satisfies the modeled Approved condition.",
+    "RG-074": "Every selected redundant component must satisfy all applicable component duties whenever it is outside ordinary Gray scope or is a standalone encapsulator. The condition applies separately to each selected redundant device.",
+    "RG-075": "Every selected screening router must exist in the device inventory and have no encryption-layer assignment.",
+    "RG-076": "The context needs external confirmation of the legal undertaking. The Lean branch records that confirmation as an external input."
+  },
+  "direct_role_groups": {
+    "ROLE-solution-component": [
+      "RG-001",
+      "RG-002",
+      "RG-003",
+      "RG-006",
+      "RG-036",
+      "RG-041",
+      "RG-043",
+      "RG-046",
+      "RG-047",
+      "RG-049",
+      "RG-052",
+      "RG-057",
+      "RG-058",
+      "RG-062",
+      "RG-063",
+      "RG-066",
+      "RG-067",
+      "RG-073",
+      "RG-074"
+    ],
+    "ROLE-encryption-component": [
+      "RG-004",
+      "RG-005",
+      "RG-007",
+      "RG-017",
+      "RG-018",
+      "RG-031",
+      "RG-032",
+      "RG-033",
+      "RG-035",
+      "RG-042",
+      "RG-048",
+      "RG-053",
+      "RG-054",
+      "RG-056"
+    ],
+    "ROLE-inner-encryption": [
+      "RG-008",
+      "RG-012",
+      "RG-013",
+      "RG-014",
+      "RG-029"
+    ],
+    "ROLE-outer-encryption": [
+      "RG-013",
+      "RG-014",
+      "RG-030",
+      "RG-034",
+      "RG-037",
+      "RG-038",
+      "RG-039"
+    ],
+    "ROLE-vpn-gateway": [
+      "RG-019",
+      "RG-020",
+      "RG-021",
+      "RG-022",
+      "RG-023",
+      "RG-038"
+    ],
+    "ROLE-inner-vpn": [],
+    "ROLE-outer-vpn": [],
+    "ROLE-macsec-device": [
+      "RG-015",
+      "RG-016",
+      "RG-024",
+      "RG-025",
+      "RG-026",
+      "RG-027",
+      "RG-028"
+    ],
+    "ROLE-inner-macsec": [],
+    "ROLE-outer-macsec": [],
+    "ROLE-firewall": [
+      "RG-035",
+      "RG-055"
+    ],
+    "ROLE-outer-firewall": [
+      "RG-034",
+      "RG-038"
+    ],
+    "ROLE-gray-firewall": [
+      "RG-005",
+      "RG-013",
+      "RG-014",
+      "RG-033",
+      "RG-040"
+    ],
+    "ROLE-inner-firewall": [
+      "RG-055"
+    ],
+    "ROLE-aw": [
+      "RG-044",
+      "RG-045",
+      "RG-046",
+      "RG-047"
+    ],
+    "ROLE-red-aw": [
+      "RG-012"
+    ],
+    "ROLE-gray-aw": [
+      "RG-013",
+      "RG-039",
+      "RG-040"
+    ],
+    "ROLE-black-aw": [],
+    "ROLE-management-component": [
+      "RG-010",
+      "RG-011",
+      "RG-044",
+      "RG-046"
+    ],
+    "ROLE-red-management": [
+      "RG-011",
+      "RG-012",
+      "RG-041",
+      "RG-042",
+      "RG-044"
+    ],
+    "ROLE-gray-management": [
+      "RG-011",
+      "RG-013",
+      "RG-039",
+      "RG-040",
+      "RG-041",
+      "RG-042",
+      "RG-044"
+    ],
+    "ROLE-siem": [
+      "RG-050",
+      "RG-062"
+    ],
+    "ROLE-red-siem": [],
+    "ROLE-gray-siem": [],
+    "ROLE-authentication-server": [
+      "RG-024",
+      "RG-026"
+    ],
+    "ROLE-supplicant": [
+      "RG-024"
+    ],
+    "ROLE-authenticator": [
+      "RG-024"
+    ],
+    "ROLE-key-server": [
+      "RG-027"
+    ],
+    "ROLE-ca": [
+      "RG-007",
+      "RG-017",
+      "RG-020",
+      "RG-024",
+      "RG-048",
+      "RG-067"
+    ],
+    "ROLE-inner-ca": [
+      "RG-012"
+    ],
+    "ROLE-outer-ca": [],
+    "ROLE-local-ca": [
+      "RG-013"
+    ],
+    "ROLE-enterprise-ca": [
+      "RG-011"
+    ],
+    "ROLE-root-ca": [
+      "RG-020"
+    ],
+    "ROLE-signing-ca": [
+      "RG-020"
+    ],
+    "ROLE-kgs": [
+      "RG-007",
+      "RG-027"
+    ],
+    "ROLE-encapsulation-device": [
+      "RG-015",
+      "RG-033"
+    ],
+    "ROLE-router": [
+      "RG-075"
+    ],
+    "ROLE-gray-router": [],
+    "ROLE-screening-router": [
+      "RG-075"
+    ],
+    "ROLE-customer-edge-router": [
+      "RG-032"
+    ],
+    "ROLE-switch": [],
+    "ROLE-cds": [
+      "RG-051",
+      "RG-056"
+    ],
+    "ROLE-cdp": [
+      "RG-013",
+      "RG-020",
+      "RG-039",
+      "RG-040",
+      "RG-067"
+    ],
+    "ROLE-ocsp-responder": [
+      "RG-013",
+      "RG-020",
+      "RG-067"
+    ],
+    "ROLE-ips": [
+      "RG-003",
+      "RG-055"
+    ],
+    "ROLE-aw-host": [
+      "RG-045"
+    ],
+    "ROLE-virtual-machine": [
+      "RG-045"
+    ],
+    "ROLE-physical-workstation": [
+      "RG-045"
+    ],
+    "ROLE-enrollment-server": [
+      "RG-048"
+    ],
+    "ROLE-provisioning-server": [
+      "RG-043",
+      "RG-048"
+    ],
+    "ROLE-certificate-registration": [
+      "RG-048"
+    ],
+    "ROLE-registration-authority": [
+      "RG-048"
+    ],
+    "ROLE-trusted-time-source": [
+      "RG-042"
+    ],
+    "ROLE-dns-server": [
+      "RG-043"
+    ],
+    "ROLE-control-plane-service": [
+      "RG-035",
+      "RG-039",
+      "RG-040",
+      "RG-041"
+    ],
+    "ROLE-third-party-server": [
+      "RG-037"
+    ],
+    "ROLE-end-user-device": [
+      "RG-008",
+      "RG-055",
+      "RG-056"
+    ],
+    "ROLE-high-assurance-encryptor": [
+      "RG-056"
+    ],
+    "ROLE-government-product": [
+      "RG-056"
+    ],
+    "ROLE-locally-managed-device": [
+      "RG-044",
+      "RG-046"
+    ],
+    "ROLE-remotely-managed-device": [
+      "RG-011",
+      "RG-044",
+      "RG-046"
+    ],
+    "ROLE-auxiliary-network-device": [
+      "RG-068"
+    ],
+    "ROLE-authentication-service": [
+      "RG-063"
+    ],
+    "ROLE-network-administration-device": [
+      "RG-044",
+      "RG-046",
+      "RG-047"
+    ],
+    "ROLE-infrastructure-component": [
+      "RG-041",
+      "RG-043",
+      "RG-044",
+      "RG-046",
+      "RG-063"
+    ],
+    "ROLE-network-device": [
+      "RG-036"
+    ],
+    "ROLE-perimeter-device": [
+      "RG-055"
+    ],
+    "ROLE-key-management-component": [
+      "RG-007",
+      "RG-017",
+      "RG-027",
+      "RG-048",
+      "RG-067"
+    ],
+    "ROLE-trust-anchor-ca": [
+      "RG-020"
+    ],
+    "ROLE-password-generator": [
+      "RG-063"
+    ],
+    "ROLE-log-repository": [
+      "RG-050",
+      "RG-062"
+    ],
+    "ROLE-testing-equipment": [
+      "RG-072"
+    ],
+    "ROLE-testing-software": [
+      "RG-072"
+    ],
+    "ROLE-ike-initiator": [
+      "RG-017",
+      "RG-019",
+      "RG-020",
+      "RG-022",
+      "RG-023"
+    ],
+    "ROLE-ike-responder": [
+      "RG-017",
+      "RG-019",
+      "RG-020",
+      "RG-022",
+      "RG-023"
+    ]
+  },
+  "role_notes": {
+    "ROLE-black-aw": "The inherited workstation and management conditions retain their own applicability tests. The current theory has no dedicated Black-workstation specification.",
+    "ROLE-router": "RG-075 applies when a router is selected as a screening router. It does not require every router to be a screening router.",
+    "ROLE-switch": "The current theory has no dedicated switch-role obligation. Switching behavior is used by packet-execution proofs at the network level.",
+    "ROLE-third-party-server": "RG-037 constrains Outer components that could contact the server. The obligation is enforced at the Outer component.",
+    "ROLE-end-user-device": "These are associated network protection and combined-solution duties. The current role model does not represent a distinct end-user-device kind.",
+    "ROLE-customer-edge-router": "The TRANSEC association applies to the selected protected transport arrangement; it does not impose cover traffic on every Customer Edge Router.",
+    "ROLE-high-assurance-encryptor": "The Red-egress specification accepts an authority-approved alternative protection path. It does not formalize the internals of a High Assurance encryptor.",
+    "ROLE-government-product": "The Red-egress specification accepts authority-approved alternative protection. It does not establish product certification.",
+    "ROLE-testing-equipment": "The shared case requires externally supplied testing confirmations. The code does not model the testing equipment itself.",
+    "ROLE-testing-software": "The shared case requires externally supplied testing confirmations. The code does not model the testing software itself.",
+    "ROLE-ike-initiator": "These VPN authentication, algorithm, and rekey conditions concern the exchange. The current role model has no separate IKE initiator type.",
+    "ROLE-ike-responder": "These VPN authentication, algorithm, and rekey conditions concern the exchange. The current role model has no separate IKE responder type.",
+    "ROLE-password-generator": "The shared case records a secret-entropy threshold or a domain-authentication alternative. It does not prove how a password generator produces its output.",
+    "ROLE-virtual-machine": "The association concerns virtual machines used for Administrative Workstations. It does not impose workstation duties on every virtual machine.",
+    "ROLE-physical-workstation": "The association concerns machines used for Administrative Workstations.",
+    "ROLE-auxiliary-network-device": "The shared case records the administrator duty to defend auxiliary devices; it does not assign them a separate packet-processing specification."
+  },
+  "supporting_declarations": {
+    "RG-004": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "IndependentComponents"
+      }
+    ],
+    "RG-005": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "PhysicalRoleSeparation"
+      }
+    ],
+    "RG-011": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "CentralManagementConfiguration"
+      }
+    ],
+    "RG-017": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "MutuallyAuthenticatedTunnels"
+      }
+    ],
+    "RG-018": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "IPsecAlgorithmConfiguration"
+      }
+    ],
+    "RG-019": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "IPsecAlgorithmConfiguration"
+      }
+    ],
+    "RG-020": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "CertificateIdentityConfiguration"
+      }
+    ],
+    "RG-022": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "IPsecModesAndLifetimes"
+      }
+    ],
+    "RG-023": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "IPsecModesAndLifetimes"
+      }
+    ],
+    "RG-026": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "EAPAlgorithmConfiguration"
+      }
+    ],
+    "RG-041": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "ControlServiceConfiguration"
+      }
+    ],
+    "RG-043": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "DefaultAndDNSConfiguration"
+      }
+    ],
+    "RG-044": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "ManagementAttachmentConfiguration"
+      },
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "ManagementSeparation"
+      }
+    ],
+    "RG-045": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "WorkstationHostConfiguration"
+      }
+    ],
+    "RG-046": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "ManagementTransportConfiguration"
+      }
+    ],
+    "RG-048": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "ProvisioningConfiguration"
+      }
+    ],
+    "RG-050": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "SIEMConfiguration"
+      }
+    ],
+    "RG-062": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "AuditRetentionConfiguration"
+      }
+    ],
+    "RG-067": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "RevocationBeforeDisposal"
+      }
+    ],
+    "RG-073": [
+      {
+        "path": "TDN/Targets/CPDutyRecords.lean",
+        "name": "SigningConfiguration"
+      }
+    ],
+    "RG-029": [
+      {
+        "path": "TDN/Targets/DirectSpecifications.lean",
+        "name": "TraceNoBypass"
+      }
+    ],
+    "RG-030": [
+      {
+        "path": "TDN/Targets/DirectSpecifications.lean",
+        "name": "TraceNoBypass"
+      }
+    ],
+    "RG-039": [
+      {
+        "path": "TDN/Targets/DirectSpecifications.lean",
+        "name": "OuterGrayRestrictions"
+      },
+      {
+        "path": "TDN/Targets/DirectSpecifications.lean",
+        "name": "OuterPolicyAllowance"
+      },
+      {
+        "path": "TDN/Targets/DirectSpecifications.lean",
+        "name": "OuterTunnelAllowance"
+      },
+      {
+        "path": "TDN/Targets/DirectSpecifications.lean",
+        "name": "OuterManagementInitiation"
+      }
+    ],
+    "RG-040": [
+      {
+        "path": "TDN/Targets/DirectSpecifications.lean",
+        "name": "GrayFirewallRestrictions"
+      },
+      {
+        "path": "TDN/Targets/DirectSpecifications.lean",
+        "name": "GrayPolicyAllowance"
+      }
+    ],
+    "RG-047": [
+      {
+        "path": "TDN/Targets/Administration.lean",
+        "name": "msc_administrator_authentication"
+      }
+    ],
+    "RG-042": [
+      {
+        "path": "TDN/Targets/TimeSynchronization.lean",
+        "name": "TrustedTimeConfiguration"
+      },
+      {
+        "path": "TDN/Targets/TimeSynchronization.lean",
+        "name": "TimeConfigurationForClient"
+      },
+      {
+        "path": "TDN/Targets/TimeSynchronization.lean",
+        "name": "TimeServiceRecord.ValidUse"
+      }
+    ]
+  }
+}

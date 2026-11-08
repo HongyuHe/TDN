@@ -7,7 +7,7 @@ structure Program where
   fallback : Filter.Verdict
   deriving DecidableEq, Repr
 
-structure PortPolicy where
+structure IfacePolicy where
   inbound : Program
   outbound : Program
   deriving DecidableEq, Repr
@@ -52,12 +52,12 @@ def Frame.DescribesBody (frame : Frame) (body : LayeredFrame.Body) : Prop :=
         frame.header.source = association.sci / 65536)
   | _ => False
 
-def lookup (policies : List (Nat × PortPolicy)) (port : Nat) : Option PortPolicy :=
-  (policies.find? (fun entry => entry.1 == port)).map Prod.snd
+def lookup (policies : List (Nat × IfacePolicy)) (iface : Nat) : Option IfacePolicy :=
+  (policies.find? (fun entry => entry.1 == iface)).map Prod.snd
 
-def Admitted (policies : List (Nat × PortPolicy)) (port : Nat) (outbound : Bool)
+def Admitted (policies : List (Nat × IfacePolicy)) (iface : Nat) (outbound : Bool)
     (packet : PacketPolicy.Packet) : Prop :=
-  ∃ policy, lookup policies port = some policy ∧
+  ∃ policy, lookup policies iface = some policy ∧
     (if outbound then policy.outbound else policy.inbound).Accepts packet
 
 instance (program : Program) (packet : PacketPolicy.Packet) :
@@ -65,8 +65,8 @@ instance (program : Program) (packet : PacketPolicy.Packet) :
   unfold Program.Accepts
   infer_instance
 
-instance (policies : List (Nat × PortPolicy)) (port : Nat) (outbound : Bool)
-    (packet : PacketPolicy.Packet) : Decidable (Admitted policies port outbound packet) := by
+instance (policies : List (Nat × IfacePolicy)) (iface : Nat) (outbound : Bool)
+    (packet : PacketPolicy.Packet) : Decidable (Admitted policies iface outbound packet) := by
   unfold Admitted
   infer_instance
 

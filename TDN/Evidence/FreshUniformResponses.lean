@@ -10,13 +10,13 @@ set_option maxHeartbeats 0
 tdn_data uniformResponseOwners : List Nat from "../../data/evidence/FreshUniformResponses.json" ["TDN.Imported.Family444V13.uniformResponseOwners"]
 
 lemma uniform_response_regions_checked :
-    UniformResponseRegions.FiniteUniform devices ports uniformResponseOwners := by
+    UniformResponseRegions.FiniteUniform devices ifaces uniformResponseOwners := by
   unfold UniformResponseRegions.FiniteUniform
   decide
 
 lemma response_component_inventory_complete :
-    ∀ port ∈ ports, port.owner ∈ uniformResponseOwners ∨
-      ∃ guard ∈ responseSourceGuards, port.owner = guard.1 := by decide
+    ∀ iface ∈ ifaces, iface.owner ∈ uniformResponseOwners ∨
+      ∃ guard ∈ responseSourceGuards, iface.owner = guard.1 := by decide
 
 theorem all_component_copied_responses_keep_stack
     {before after : Execution.State} {actions : List (KernelResponses.Action Execution.Action)}
@@ -24,7 +24,7 @@ theorem all_component_copied_responses_keep_stack
       (UniformResponseRegions.responseConfig responseData uniformResponseOwners)).MTr
       (.network before) actions (.network after))
     (initial : GuardedResponseNetwork.Safe responseData before) :
-    Execution.StackInvariant config layout after :=
+    Execution.StackInvariant config expectedEncapStack after :=
   UniformResponseRegions.all_component_response_executions_preserve_stack responseData
     uniformResponseOwners local_stack_conditions all_source_output_reply_pairs_checked
     all_input_interfaces_covered response_default_checks locally_encrypted_response_denial
@@ -49,7 +49,7 @@ theorem all_retained_packet_responses_keep_stack
       (HistoricalResponses.lts (GuardedResponseNetwork.network responseData))
       responseHistoryConfig).MTr (.network before) actions (.network after))
     (initial : HistoricalResponses.Safe (GuardedResponseNetwork.Safe responseData) before) :
-    Execution.StackInvariant config layout after.current :=
+    Execution.StackInvariant config expectedEncapStack after.current :=
   (HistoricalResponses.all_historical_responses_preserve_safety
     (GuardedResponseNetwork.network responseData)
     (UniformResponseRegions.responseConfig responseData uniformResponseOwners)

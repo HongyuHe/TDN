@@ -43,7 +43,7 @@ class Lab:
         self.private.mkdir(mode=0o700, parents=True, exist_ok=True)
         self.images.mkdir(parents=True, exist_ok=True)
         self.records = []
-        self.phase = phase
+        self.datapathStage = phase
 
     def run(self, command, required=True, timeout=60):
         started = utc()
@@ -58,7 +58,7 @@ class Lab:
                    "endedAt": utc(), "returncode": 124,
                    "stdout": (error.stdout or b"").decode() if isinstance(error.stdout, bytes)
                    else error.stdout or "", "stderr": "Command timed out"}
-        row["id"] = f"{self.phase}:{len(self.records):04d}"
+        row["id"] = f"{self.datapathStage}:{len(self.records):04d}"
         self.records.append(row)
         with (self.output / "observations.jsonl").open("a") as stream:
             stream.write(json.dumps(row) + "\n")
@@ -85,14 +85,14 @@ class Lab:
                          "lab@127.0.0.1:" + destination])
 
     def finish(self, error):
-        document = {"phase": self.phase, "finishedAt": utc(), "error": error,
+        document = {"phase": self.datapathStage, "finishedAt": utc(), "error": error,
                     "guests": GUESTS, "records": self.records,
                     "scope": "Separate clock-use experiment; not a full MSC deployment or a repair of other profiles."}
         (self.output / "observations.json").write_text(json.dumps(document, indent=2) + "\n")
         files = [{"path": path.name, "sha256": digest(path)}
                  for path in sorted(self.output.iterdir()) if path.is_file()]
         (self.output / "manifest.json").write_text(json.dumps({"files": files}, indent=2) + "\n")
-        print(json.dumps({"phase": self.phase, "error": error, "observations": len(self.records)}), flush=True)
+        print(json.dumps({"phase": self.datapathStage, "error": error, "observations": len(self.records)}), flush=True)
 
     def bootstrap(self):
         image = self.images / "noble-server-cloudimg-amd64.img"
@@ -388,10 +388,10 @@ def main():
     args = parser.parse_args()
     if os.geteuid() != 0:
         raise SystemExit("Run on the dedicated experiment worker with sudo")
-    lab = Lab(args.root, args.label or args.phase)
+    lab = Lab(args.root, args.label or args.datapathStage)
     error = None
     try:
-        getattr(lab, args.phase)()
+        getattr(lab, args.datapathStage)()
     except Exception as exception:
         error = str(exception)
     finally:

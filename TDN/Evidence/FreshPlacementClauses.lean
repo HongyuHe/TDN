@@ -21,7 +21,7 @@ lemma actual_red_attachment_nonempty : redNodes ≠ [] ∧
 
 theorem every_virtual_red_egress_crosses_inner (source destination : Node)
     (start : source ∈ redNodes) (outside : isRed destination = false) :
-    ¬ Relation.ReflTransGen (Paths.Avoiding edge inner) source destination :=
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding edge inner) source destination :=
   Targets.red_egress_crosses_inner_from_attachment_cut edge inner isRed red_attachment_cut
     (red_start_clear source start) (by simpa [isRed] using start) outside
 
@@ -59,7 +59,7 @@ lemma actual_firewall_connections : ∀ source ∈ outerNodes, ∃ f ∈ firewal
   decide
 theorem redundant_outers_preserve_required_firewall_cut (source destination : Node)
     (start : source ∈ outerNodes) (finish : destination ∈ blackNodes) :
-    ¬ Relation.ReflTransGen (Paths.Avoiding edge firewall) source destination :=
-  Paths.no_firewall_free_crossing edge firewall side local_cut
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding edge firewall) source destination :=
+  Waypointing.waypointing_of_edge_invariant edge firewall side local_cut
     (starts_clear source start) (sides_differ source start destination finish)
 end TDN.Imported.FreshRedundantPlacement

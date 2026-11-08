@@ -108,7 +108,7 @@ namespace TDN.MultiProtocolExecution
 open LayeredFrame
 
 def HeaderBounds (processing : HeaderProcessing) : Prop :=
-  ∀ port, processing.ipsecHopLimit port ≤ 255 ∧ processing.carrierHopLimit port ≤ 255
+  ∀ iface, processing.ipsecHopLimit iface ≤ 255 ∧ processing.carrierHopLimit iface ≤ 255
 
 lemma step_preserves_headers {c : Config} (processing : HeaderProcessing)
     (mode : c.headerProcessing = some processing) (bounds : HeaderBounds processing)
@@ -119,35 +119,35 @@ lemma step_preserves_headers {c : Config} (processing : HeaderProcessing)
   | receive => exact coherent
   | route =>
     simpa [Config.forwardedFrame, mode] using Frame.forwarded_headers coherent
-  | outputRoute => exact coherent
+  | routeLocalOutput => exact coherent
   | forwardFilter => exact coherent
   | outputFilter => exact coherent
   | encryptIPsec policy association =>
     simpa [Config.ipsecFrame, mode] using
       Frame.push_ipsec_headers coherent (policy.seal association) _
-        (bounds before.port).1
-  | outerRoute => exact coherent
-  | plain => exact coherent
-  | decryptIPsec policy association body header phase encrypted =>
+        (bounds before.iface).1
+  | routeOuterPacket => exact coherent
+  | passWithoutTransform => exact coherent
+  | decryptIPsec policy association body header datapathStage encrypted =>
     simpa [Config.restoredFrame, mode] using
       Frame.pop_ipsec_headers coherent (policy.seal association) body encrypted
   | inputFilter => exact coherent
   | deliver => exact coherent
   | deliverEthernet => exact coherent
-  | wire => exact coherent
+  | linkTransmit => exact coherent
   | bridge => exact coherent
   | bridgeOutput => exact coherent
-  | encryptMACsec port association =>
+  | encryptMACsec iface association =>
     simpa [Config.macsecFrame, mode] using Frame.push_macsec_headers coherent association
   | unprotectedMACsec => exact coherent
-  | decryptMACsec port association transmitted body configured phase physical encrypted =>
+  | decryptMACsec iface association transmitted body configured datapathStage physical encrypted =>
     simpa [Config.restoredFrame, mode] using
       Frame.pop_macsec_headers coherent transmitted body encrypted
   | uncheckedMACsec => exact coherent
-  | encapsulate port =>
+  | encapsulate iface =>
     simpa [Config.carrierFrame, mode] using
-      Frame.push_carrier_headers coherent port.transmit _ (bounds port.routingPort).2
-  | decapsulate port body configured phase owner unwrapped =>
+      Frame.push_carrier_headers coherent iface.transmit _ (bounds iface.routingIface).2
+  | decapsulate iface body configured datapathStage owner unwrapped =>
     obtain ⟨endpoint, shape⟩ := unwrap_carrier_has_body unwrapped
     simpa [Config.restoredFrame, mode] using
       Frame.pop_carrier_headers coherent endpoint body shape

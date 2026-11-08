@@ -121,11 +121,11 @@ lemma guarded_dns_is_denied (device : DNSDevice) (member : device ∈ devices)
     simp
   · intro candidate request
     rw [all_prefixes device member]
-    rcases request with ⟨port, protocol | protocol⟩
+    rcases request with ⟨iface, protocol | protocol⟩
     · refine ⟨{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, by simp, ?_⟩
-      simp [Rule.toFilter, Atom.holds, port, protocol]
+      simp [Rule.toFilter, Atom.holds, iface, protocol]
     · refine ⟨{ atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }, by simp, ?_⟩
-      simp [Rule.toFilter, Atom.holds, port, protocol]
+      simp [Rule.toFilter, Atom.holds, iface, protocol]
   · exact dns
 
 theorem every_new_conventional_dns_request_is_denied (device : DNSDevice)

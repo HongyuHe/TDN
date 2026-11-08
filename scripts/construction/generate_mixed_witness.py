@@ -54,13 +54,13 @@ def body_lean(body):
 
 
 def state_lean(state):
-    return "{ port := " + str(state["port"]) + ", phase := ." + state["phase"] + \
+    return "{ iface := " + str(state["port"]) + ", datapathStage := ." + state["phase"] + \
            ", frame := { payload := 1, originDomain := 1, body := " + body_lean(state["body"]) + \
-           " }, enteredPort := " + str(state["entered"]) + ", authenticated := " + \
+           " }, enteredIface := " + str(state["entered"]) + ", authenticated := " + \
            lean_list([str(v) for v in state["authenticated"]]) + ', tracking := "NEW" }'
 
 
-CHECK = "(by (try simp only [config, MultiProtocolExecution.finiteConfig, Execution.finiteConfig, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)"
+CHECK = "(by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)"
 
 
 def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=None):
@@ -113,8 +113,8 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                     continue
                 row = [port, ids[route["egress"]], route["low"], route["high"],
                        route["prefix"], route["metric"], route["priority"]]
-                constructor, next_phase = {"localOutput": ("outputRoute", "outputRouted"),
-                    "ingress": ("route", "routed"), "encapsulated": ("outerRoute", "ready")}[phase]
+                constructor, next_phase = {"localOutput": ("routeLocalOutput", "outputRouted"),
+                    "ingress": ("route", "routed"), "encapsulated": ("routeOuterPacket", "ready")}[phase]
                 yield emit("route", "MultiProtocolExecution.Step." + constructor + " " + tup(row) +
                            " rfl rfl " + CHECK + " rfl", port=row[1], phase=next_phase)
             if phase == "ingress" and header["destination"] in addresses(device) and accepts("INPUT"):
@@ -128,7 +128,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
         if phase == "filtered" and header:
             policies = selected(data["policies"][device]["out"], header)
             if not policies:
-                yield emit("plain", "MultiProtocolExecution.Step.plain rfl rfl " + CHECK, phase="ready")
+                yield emit("passWithoutTransform", "MultiProtocolExecution.Step.passWithoutTransform rfl rfl " + CHECK, phase="ready")
             for policy in policies:
                 for association in data["states"][device]:
                     if bound(policy, association):
@@ -176,12 +176,12 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
         if phase == "ready":
             for a, b in data["links"]:
                 if ids[a] == port:
-                    yield emit("wire", "MultiProtocolExecution.Step.wire " + str(ids[b]) + " rfl " + CHECK,
+                    yield emit("linkTransmit", "MultiProtocolExecution.Step.linkTransmit " + str(ids[b]) + " rfl " + CHECK,
                                port=ids[b], phase="received", authenticated=[])
             for index, mac in enumerate(data["mac_ports"]):
                 if ids[mac["device"] + ":" + mac["logical"]] == port:
                     assoc = [mac["tag"], mac["tx_sci"], mac["tx_an"], 0]
-                    expression = "(macPorts[" + str(index) + "]'(by decide))"
+                    expression = "(macIfaces[" + str(index) + "]'(by decide))"
                     yield emit("encryptMACsec", "MultiProtocolExecution.Step.encryptMACsec " + expression + " " + tup(assoc) +
                                " " + CHECK + " rfl rfl ⟨rfl, rfl⟩",
                                port=ids[mac["device"] + ":" + mac["physical"]],
@@ -203,7 +203,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                 if ids[mac["device"] + ":" + mac["physical"]] == port:
                     assoc = [mac["tag"], mac["rx_sci"], mac["rx_an"], 0]
                     if assoc[1:3] == body["association"][1:3]:
-                        expression = "(macPorts[" + str(index) + "]'(by decide))"
+                        expression = "(macIfaces[" + str(index) + "]'(by decide))"
                         yield emit("decryptMACsec", "MultiProtocolExecution.Step.decryptMACsec " + expression + " " +
                                    tup(assoc) + " " + tup(body["association"]) + " " +
                                    body_lean(body["body"]) + " " + CHECK + " rfl rfl rfl " +
@@ -308,7 +308,7 @@ def render(report, module, ethernet=False, tags=None, reverse=False, label=""):
               "Cslib.LTS.MTr.refl" + ")"*len(actions), "",
               "lemma useful_red_origin : Targets.MixedRedOrigin redSources usefulState0 := by",
               "  simp [Targets.MixedRedOrigin, usefulState0, redSources]",
-              "", "lemma useful_plaintext_delivery : usefulState" + str(len(actions)) + ".phase = .delivered ∧",
+              "", "lemma useful_plaintext_delivery : usefulState" + str(len(actions)) + ".datapathStage = .delivered ∧",
               "    usefulState" + str(len(actions)) + ".frame.body.protectionLayers = [] := ⟨rfl, rfl⟩",
               "end " + ns, ""]
     return "\n".join(lines), {"states": states, "actions": actions, "bridge_checks": bridge_checks,

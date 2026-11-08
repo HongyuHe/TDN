@@ -71,6 +71,16 @@ instance (packet : Packet) : Decidable packet.IPsecUDPFramingWithOptions := by
   infer_instance
 
 
+def Packet.IPsecUDPReplyFramingWithOptions (packet : Packet) : Prop :=
+  ({ packet with
+    sourcePort := packet.destinationPort
+    destinationPort := packet.sourcePort } : Packet).IPsecUDPFramingWithOptions
+
+instance (packet : Packet) : Decidable packet.IPsecUDPReplyFramingWithOptions := by
+  unfold Packet.IPsecUDPReplyFramingWithOptions
+  infer_instance
+
+
 def byteField (bytes : List UInt8) (offset count : Nat) : Nat :=
   ((bytes.drop offset).take count).foldl (fun value byte => value * 256 + byte.toNat) 0
 
@@ -103,6 +113,7 @@ inductive Atom where
   | networkBytesRange (low high : Nat)
   | ipsecUDPFraming
   | ipsecUDPFramingWithOptions
+  | ipsecUDPReplyFramingWithOptions
   | mkaFraming (actorSCI : Nat)
   | ethernetHeaderBytes (bytes : Nat)
   | payloadBytesRange (low high : Nat)
@@ -130,6 +141,7 @@ def Atom.holds : Atom → Packet → Prop
   | .networkBytesRange low high, p => ∃ bytes, p.networkBytes = some bytes ∧ low ≤ bytes ∧ bytes ≤ high
   | .ipsecUDPFraming, p => p.IPsecUDPFraming
   | .ipsecUDPFramingWithOptions, p => p.IPsecUDPFramingWithOptions
+  | .ipsecUDPReplyFramingWithOptions, p => p.IPsecUDPReplyFramingWithOptions
   | .mkaFraming actorSCI, p => p.MKAFraming actorSCI
   | .ethernetHeaderBytes bytes, p => p.protocol = "ethernet" ∧
       ∃ payload, p.payloadBytes = some payload ∧ p.networkBytes = some (bytes + payload.length)

@@ -2,7 +2,7 @@
 
 `TDN/Semantics` provides network models and general proofs that can be applied to different configurations and snapshots. The modules describe packet processing, topology, filtering, encryption layers, authentication, fragmentation, generated replies, authenticated operations and cover traffic. A caller supplies the relevant configuration and proves the theorem's premises for that configuration.
 
-The catalog covers the 59 active Lean files after the 2026-10-31 simplification. It lists 543 explicitly named declarations: 51 structures, 31 inductive types or relations, 223 definitions, 3 abbreviations, 106 lemmas, and 129 theorems. It also links the 47 explicit instances that make particular propositions decidable. Constructors, structure-field projections, and automatically derived declarations are included through their parent types.
+The catalog covers all 111 active Lean files in `TDN/Semantics`. It indexes 1064 explicitly named declarations and 79 explicit instances. Each index links to the current source line. Constructors, structure-field projections, and automatically derived declarations are represented by their parent types.
 
 Each module section explains its purpose, principal results, and conditions for reuse. The expandable declaration index in each section links every named declaration to its source line. The source links are relative to the repository so they remain usable in another checkout and on GitHub.
 
@@ -12,7 +12,7 @@ A **model** describes the states and operations considered by a proof. For examp
 
 A **predicate** is a condition on a value, such as whether a node is a firewall. A **contract** is an explicitly required guarantee from another model or implementation. A **soundness theorem** proves that passing a check is sufficient for the condition claimed by that check. An **induction proof** establishes an initial case and proves that one more permitted step preserves the result. The same argument then covers any finite number of steps.
 
-An **assumption** or **premise** is a condition that must be supplied when applying a theorem. For example, a link may be required to connect ports with the same expected encryption stack. A **witness** is concrete supporting information, such as a path demonstrating connectivity. A **local check** verifies one of the required conditions from the supplied data. Local checks can compare several devices or inspect an entire finite rule list.
+An **assumption** or **premise** is a condition that must be supplied when applying a theorem. For example, a link may be required to connect interfaces with the same expected encryption stack. A **witness** is concrete supporting information, such as a path demonstrating connectivity. A **local check** verifies one of the required conditions from the supplied data. Local checks can compare several devices or inspect an entire finite rule list.
 
 Lean declarations serve the following roles:
 
@@ -20,7 +20,7 @@ Lean declarations serve the following roles:
 | --- | --- |
 | `structure` | A record with named fields, such as a route or device. A structure ending in `: Prop` packages logical conditions that need proofs. |
 | `inductive` | A type or relation defined by its permitted cases. The constructors of `Execution.Step` specify which packet-processing steps exist. |
-| `def` | A named computation or expression. A definition returning `Prop` states a condition, such as a required relationship between ports. |
+| `def` | A named computation or expression. A definition returning `Prop` states a condition, such as a required relationship between interfaces. |
 | `abbrev` | A short name for another expression or type. |
 | `lemma` | A checked supporting result, such as preservation by one step, a finite record check, or the assembly of local assumptions. |
 | `theorem` | A checked principal result offered by the module, such as a reusable execution guarantee, a requirement result, or its application to a snapshot. |
@@ -40,19 +40,21 @@ A principal theorem retains that role when another theorem uses it. For example,
 
 The word **stack** means the ordered list of encryption-layer tags in a modeled packet. The first tag is the outermost layer. For example, `[2, 11]` describes Outer layer `2` surrounding Inner layer `11`. The tags identify protection layers in the proof. Actual addresses, protocol fields, and SPIs have separate fields.
 
-A **port** is a modeled connection point identified by a natural number. The configuration maps ports to their devices and interface names. A **layout** assigns an expected stack to each port: `layout : Nat → List Nat`. A port might expect `[]` on Red, `[11]` on Gray, or `[2, 11]` on Black. The layout is supporting information whose consistency must be proved against the operational configuration. `FiniteDomains.finite_config_ignores_port_stack_annotations` establishes that changing only the stored stack annotations leaves the modeled operational configuration unchanged.
+An **interface** is a modeled connection point identified by a natural number. The configuration maps interfaces to their devices and interface names. The **expected encapsulation stack** assigns an expected protection-layer list to each interface: `expectedEncapStack : Nat → List Nat`. An interface might expect `[]` on Red, `[11]` on Gray, or `[2, 11]` on Black. The `expectedEncapStack` function supplies proof annotations whose consistency must be proved against the operational configuration. `TDN.Execution.data_plane_ignores_encap_stack_annotations` establishes that changing only the stored stack annotations leaves the modeled operational configuration unchanged.
 
 A **projection** maps a detailed state to the information retained by a simpler model. For example, a fragmented-packet state contains both a logical packet state and its pieces; a projection can retain only the logical state. A proof relating the models checks each detailed step and then transfers properties across complete traces. Some detailed steps can leave the projected state unchanged, as splitting a packet can leave its logical identity unchanged.
 
+The naming choices and their networking meanings are recorded in [Network terminology and model refinement](network_terminology.md).
+
 ## Organization and dependencies
 
-The modules separate general arguments from the finite data used to apply them. None of the 59 modules imports a snapshot, an instance module, or a document-specific target. Every direct project import stays within `TDN.Semantics`. Some modules describe broadly reusable mathematics; others describe a specific supported network mechanism or configuration pattern, such as authenticated fragment assembly.
+The modules separate general arguments from the finite data used to apply them. None of the 111 modules imports a snapshot, an instance module, or a document-specific target. Every direct project import stays within `TDN.Semantics`. Some modules describe broadly reusable mathematics; others describe a specific supported network mechanism or configuration pattern, such as authenticated fragment assembly.
 
 | Topic | Starting modules | What a caller supplies |
 | --- | --- | --- |
-| [Topology and packet policy](#topology-and-packet-policy) | `Paths`, `Addressing`, `Filter`, `PacketPolicy` | Edges, labels, ranges, ordered rules, and coverage of relevant connections. |
-| [IP packet execution](#ip-packet-execution) | `Execution`, `ExecutionInvariant`, `FiniteExecution` | Devices, ports, routes, rules, policies, installed associations, links, and a checked layout. |
-| [MACsec and mixed-protocol execution](#macsec-and-mixed-protocol-execution) | `LinkProtection`, `LayeredFrame`, `MultiProtocolExecution` | MACsec settings, associations, logical/physical ports, carriers, and their connection to IP processing. |
+| [Topology and packet policy](#topology-and-packet-policy) | `Waypointing`, `Addressing`, `Filter`, `PacketPolicy` | Edges, labels, ranges, ordered rules, and coverage of relevant connections. |
+| [IP packet execution](#ip-packet-execution) | `Execution`, `ExecutionInvariant`, `FiniteExecution` | Devices, interfaces, routes, rules, policies, installed associations, links, and checked expected encapsulation stacks. |
+| [MACsec and mixed-protocol execution](#macsec-and-mixed-protocol-execution) | `LinkProtection`, `LayeredFrame`, `MultiProtocolExecution` | MACsec settings, associations, logical/physical interfaces, carriers, and their connection to IP processing. |
 | [Generated replies](#generated-replies) | `KernelResponses`, `SourceResponseGuards`, `GuardedResponseNetwork` | Reply-generation scope, source/output rules, route choices, and safety of allowed emissions. |
 | [Fragments, copied bytes, and reassembly](#fragments-copied-bytes-and-reassembly) | `Fragmentation`, `ByteFlows`, `AuthenticatedAssembly` | Byte origins, assembly rules, encodings, and any authentication contract. |
 | [Trust and access](#trust-and-access) | `Trust`, `IKEContexts`, `KeySources`, `AccessControl` | Authority/key ownership, reciprocal peer observations, permitted key sources, and role permissions. |
@@ -63,7 +65,7 @@ The packet-stack proof follows the dependency chain shown below. Each arrow mean
 
 ```mermaid
 flowchart TD
-    records["Imported devices, ports, routes, policies, and links"]
+    records["Imported devices, ifaces, routes, policies, and links"]
     checks["Finite checks, proved for the supplied records"]
     local["LocalStackConditions for the resulting configuration"]
     step["step_preserves_stack_invariant"]
@@ -83,7 +85,7 @@ The finite checks and their soundness theorems avoid enumerating all possible pa
 A four-node graph illustrates the complete proof structure. Nodes `0` and `1` connect to firewall `2`, which connects to node `3`. The graph has a real path from `0` to `3`. The property to prove is that every such path must visit the firewall.
 
 ```lean
-import TDN.Semantics.Paths
+import TDN.Semantics.Waypointing
 
 namespace SemanticsGuide
 
@@ -100,8 +102,8 @@ lemma checked_edges : ∀ a b : Fin 4,
   decide
 
 theorem no_bypass :
-    ¬ Relation.ReflTransGen (TDN.Paths.Avoiding edge firewall) 0 3 := by
-  exact TDN.Paths.no_firewall_free_crossing edge firewall side checked_edges
+    ¬ Relation.ReflTransGen (TDN.Waypointing.Avoiding edge firewall) 0 3 := by
+  exact TDN.Waypointing.waypointing_of_edge_invariant edge firewall side checked_edges
     (by unfold firewall; decide) (by decide)
 
 end SemanticsGuide
@@ -113,36 +115,36 @@ end SemanticsGuide
 
 ## Example: checked local processing determines the transmitted stack
 
-The packet theorem states exactly which conditions connect local processing to a two-layer result. In the following example, `checks` is a proof of all `LocalStackConditions` for configuration `c` and layout `layout`. A snapshot application can obtain that proof using the finite-check modules.
+The packet theorem states exactly which conditions connect local processing to a two-layer result. In the following example, `checks` is a proof of all `LocalStackConditions` for configuration `c` and expected stacks `expectedEncapStack`. A snapshot application can obtain that proof using the finite-check modules.
 
 ```lean
 import TDN.Semantics.ExecutionInvariant
 
 open TDN.Execution
 
-example (c : Config) (layout : Nat → List Nat)
-    (checks : LocalStackConditions c layout)
-    (inner outer : Nat) (start finish : State) (actions : List Action)
-    (run : (lts c).MTr start actions finish)
-    (initial : StackInvariant c layout start)
-    (ready : finish.phase = .ready)
-    (blackPort : layout finish.port = [outer, inner]) :
-    finish.frame.tags = [outer, inner] := by
-  have stack := transmitted_stack c layout checks run initial ready
-  exact stack.trans blackPort
+example (env : Environment) (expectedEncapStack : Nat → List Nat)
+    (checks : LocalStackConditions env expectedEncapStack)
+    (inner outer : Nat) (initialState finalState : State) (actions : List Action)
+    (run : (lts env).MTr initialState actions finalState)
+    (initial : StackInvariant env expectedEncapStack initialState)
+    (ready : finalState.datapathStage = .ready)
+    (blackIface : expectedEncapStack finalState.iface = [outer, inner]) :
+    finalState.frame.tags = [outer, inner] := by
+  have stack := transmitted_stack env expectedEncapStack checks run initial ready
+  exact stack.trans blackIface
 ```
 
-The premises identify a permitted finite execution, a valid starting state, a final state ready for transmission, and a final port assigned the two-layer layout. `transmitted_stack` proves that the final frame's tags equal the layout at that port. `stack.trans blackPort` combines the two equalities to obtain `[outer, inner]`.
+The premises identify a permitted finite execution, a valid starting state, a final state ready for transmission, and a final interface assigned the two-layer expected stack. `transmitted_stack` proves that the final frame's tags equal the expected stack at that interface. `stack.trans blackIface` combines the two equalities to obtain `[outer, inner]`.
 
 `LocalStackConditions` is where the network-specific proof work enters the argument. Its fields require evidence about route ownership, links, switching, accepted forwarding and local output, and routing after encryption. `ExecutionEvents.nested_stack_requires_ordered_encryptions` can additionally identify the Inner and Outer encryption events in order when its placement and initial-stack premises hold.
 
 ## Applying the modules to another network
 
-A new network application starts by choosing the behavior needed for its requirement. A topology requirement can use `Paths`; a packet-protection requirement needs an execution model that includes the relevant forwarding, encryption, switching, and delivery steps. Generated replies, fragment movement, and mixed protocols require the corresponding extensions when they can affect the claim.
+A new network application starts by choosing the behavior needed for its requirement. A topology requirement can use `Waypointing`; a packet-protection requirement needs an execution model that includes the relevant forwarding, encryption, switching, and delivery steps. Generated replies, fragment movement, and mixed protocols require the corresponding extensions when they can affect the claim.
 
 1. Import the relevant modules and state the desired property for a configuration parameter.
-2. Populate the supported device, port, policy, route, and observation records from the new network. Preserve every choice covered by the model, including equally selected policies or routes.
-3. Supply supporting information such as port layouts, domain membership, graph labels, or concrete paths. Keep the meaning of those values explicit.
+2. Populate the supported device, interface, policy, route, and observation records from the new network. Preserve every choice covered by the model, including equally selected policies or routes.
+3. Supply supporting information such as expected interface encapsulation stacks, domain membership, graph labels, or concrete paths. Keep the meaning of those values explicit.
 4. Prove the required checks over the records. Use `by decide` for supported concrete finite propositions. If a check fails, inspect the configuration, translation, and chosen sufficient conditions before changing any general theorem.
 5. Apply the appropriate soundness theorem to obtain the general local premises. Apply the path or execution theorem to derive the required consequence.
 6. When the requirement includes useful communication, provide a separate accepted packet or delivery trace. A safety theorem can also hold for a configuration that drops all traffic.
@@ -167,30 +169,29 @@ The catalog groups all modules by their primary purpose. Namespaces are listed s
 
 ## Topology and packet policy
 
-[Paths](#paths), [Addressing](#addressing), [InternetAddresses](#internetaddresses), [Filter](#filter), [PacketPolicy](#packetpolicy), [HeaderPolicy](#headerpolicy)
+[Waypointing](#waypointing), [Addressing](#addressing), [InternetAddresses](#internetaddresses), [Filter](#filter), [PacketPolicy](#packetpolicy), [HeaderPolicy](#headerpolicy)
 
-### Paths
+### Waypointing
 
-Source: [Paths.lean](../TDN/Semantics/Paths.lean). Namespace: `TDN.Paths`.
+Source: [Waypointing.lean](../TDN/Semantics/Waypointing.lean). Namespace: `TDN.Waypointing`.
 
-`Paths` turns an edge-level check into a statement about every finite path. You supply the graph, a predicate identifying firewalls, and a `side` label for each node. [`Avoiding`](../TDN/Semantics/Paths.lean#L5) permits an edge only when its destination is not a firewall; the theorems separately require a non-firewall starting node.
+`Waypointing` turns an edge-level check into a statement about every finite path. You supply the graph, a predicate identifying the acceptable waypoints, and a `region` label for each node. Firewalls are one application of that waypoint set. [`Avoiding`](../TDN/Semantics/Waypointing.lean#L5) permits an edge only when its destination is outside the waypoint set; the theorems separately require a starting node outside that set.
 
-[`avoidance_preserves_side`](../TDN/Semantics/Paths.lean#L8) proves that a path avoiding firewalls preserves its starting label when every non-firewall edge does so. [`no_firewall_free_crossing`](../TDN/Semantics/Paths.lean#L17) then excludes paths between differently labeled endpoints. [`path_avoids_absent_firewalls`](../TDN/Semantics/Paths.lean#L25) establishes that every graph path avoids firewalls if no node is a firewall. A requirement proof can combine that result with an existing connection to show that a mandatory firewall must exist.
+[`waypoint_free_path_preserves_region`](../TDN/Semantics/Waypointing.lean#L8) proves that a path avoiding the waypoints preserves its starting label when every edge outside the waypoint set does so. [`waypointing_of_edge_invariant`](../TDN/Semantics/Waypointing.lean#L17) then excludes waypoint-free paths between differently labeled endpoints. [`path_avoids_absent_waypoints`](../TDN/Semantics/Waypointing.lean#L25) establishes that every graph path avoids the waypoint set when that set is empty. A requirement proof can combine that result with an existing connection to show that a mandatory waypoint must exist.
 
 A new topology supplies new edges and labels. The proofs stay unchanged. The graph must include every connection relevant to the claimed path property.
 
 Direct imports: `Mathlib.Logic.Relation`.
 
 <details>
-<summary>All 4 named declarations in Paths</summary>
+<summary>All 4 named declarations in Waypointing</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`Avoiding`](../TDN/Semantics/Paths.lean#L5) |
-| `theorem` | [`avoidance_preserves_side`](../TDN/Semantics/Paths.lean#L8) |
-| `theorem` | [`no_firewall_free_crossing`](../TDN/Semantics/Paths.lean#L17) |
-| `lemma` | [`path_avoids_absent_firewalls`](../TDN/Semantics/Paths.lean#L25) |
-
+| `def` | [`Avoiding`](../TDN/Semantics/Waypointing.lean#L5) |
+| `theorem` | [`waypoint_free_path_preserves_region`](../TDN/Semantics/Waypointing.lean#L8) |
+| `theorem` | [`waypointing_of_edge_invariant`](../TDN/Semantics/Waypointing.lean#L17) |
+| `lemma` | [`path_avoids_absent_waypoints`](../TDN/Semantics/Waypointing.lean#L25) |
 
 </details>
 
@@ -214,7 +215,6 @@ Direct imports: `Mathlib.Data.List.Basic`, `Lean.Elab.Tactic.Omega`.
 | `def` | [`Owns`](../TDN/Semantics/Addressing.lean#L15) |
 | `def` | [`Separated`](../TDN/Semantics/Addressing.lean#L18) |
 | `theorem` | [`separated_ranges_unique_label`](../TDN/Semantics/Addressing.lean#L21) |
-
 
 </details>
 
@@ -240,7 +240,6 @@ Direct imports: `Mathlib.Data.Fin.Basic`, `Lean.Elab.Tactic.Omega`.
 | `theorem` | [`ipv6_encoding_injective`](../TDN/Semantics/InternetAddresses.lean#L18) |
 | `def` | [`headerWords`](../TDN/Semantics/InternetAddresses.lean#L24) |
 | `theorem` | [`ipv6_has_no_ipv4_ihl`](../TDN/Semantics/InternetAddresses.lean#L26) |
-
 
 </details>
 
@@ -272,45 +271,56 @@ Direct imports: `Mathlib.Data.List.Basic`.
 | `theorem` | [`accepts_at_first_matching_rule`](../TDN/Semantics/Filter.lean#L61) |
 | `theorem` | [`denying_prefix_blocks`](../TDN/Semantics/Filter.lean#L69) |
 
-
 </details>
 
 ### PacketPolicy
 
 Source: [PacketPolicy.lean](../TDN/Semantics/PacketPolicy.lean). Namespace: `TDN.PacketPolicy`.
 
-`PacketPolicy` supplies the concrete packet fields and rule conditions used by the execution models. [`Packet`](../TDN/Semantics/PacketPolicy.lean#L5) includes addresses, protocol, interfaces, transport ports, header fields, connection state, and inbound/outbound IPsec-policy identifiers. [`Atom`](../TDN/Semantics/PacketPolicy.lean#L22) describes one condition on those fields. A [`Rule`](../TDN/Semantics/PacketPolicy.lean#L60) matches only when every atom holds.
+`PacketPolicy` supplies the concrete packet fields and rule conditions used by the execution models. [`Packet`](../TDN/Semantics/PacketPolicy.lean#L5) includes addresses, protocol, interfaces, transport ports, header fields, connection state, and inbound/outbound IPsec-policy identifiers. [`Atom`](../TDN/Semantics/PacketPolicy.lean#L98) describes one condition on those fields. A [`Rule`](../TDN/Semantics/PacketPolicy.lean#L159) matches only when every atom holds.
 
-[`Rule.toFilter`](../TDN/Semantics/PacketPolicy.lean#L65) connects those records to the ordered evaluator in `Filter`. [`matching_atom`](../TDN/Semantics/PacketPolicy.lean#L68) recovers any atom's condition from a successful match. [`Guarded`](../TDN/Semantics/PacketPolicy.lean#L82) requires the appropriate interface direction and an inbound or outbound policy condition. [`forwarding_policy_protects`](../TDN/Semantics/PacketPolicy.lean#L112) proves that every accepted packet has one of those guarded directions when every allow rule is guarded and the fallback denies traffic.
+[`Rule.toFilter`](../TDN/Semantics/PacketPolicy.lean#L164) connects those records to the ordered evaluator in `Filter`. [`matching_atom`](../TDN/Semantics/PacketPolicy.lean#L167) recovers any atom's condition from a successful match. [`Guarded`](../TDN/Semantics/PacketPolicy.lean#L181) requires the appropriate interface direction and an inbound or outbound policy condition. [`forwarding_policy_protects`](../TDN/Semantics/PacketPolicy.lean#L211) proves that every accepted packet has one of those guarded directions when every allow rule is guarded and the fallback denies traffic.
 
 The result concerns policy metadata on the modeled packet. The execution modules connect outbound policy selection to an encryption operation and installed state.
+
+The boundary proofs also inspect packet contents. `IKEHeader` checks the represented IKE version and message length. The UDP framing conditions distinguish IKE and encapsulated ESP, account for IPv4 header options, and handle reply ports explicitly. `MKAFraming` checks the supported Ethernet control-frame layout and actor identity. Size and byte-field atoms let ordered filter rules impose the same conditions. These checks establish the listed packet-format conditions; authentication depends on the separate protocol and credential models.
 
 Direct imports: [Filter](#filter).
 
 <details>
-<summary>All 12 named declarations in PacketPolicy</summary>
+<summary>All 19 named declarations in PacketPolicy</summary>
 
 | Kind | Declaration |
 | --- | --- |
 | `structure` | [`Packet`](../TDN/Semantics/PacketPolicy.lean#L5) |
-| `inductive` | [`Atom`](../TDN/Semantics/PacketPolicy.lean#L22) |
-| `def` | [`Atom.holds`](../TDN/Semantics/PacketPolicy.lean#L40) |
-| `structure` | [`Rule`](../TDN/Semantics/PacketPolicy.lean#L60) |
-| `def` | [`Rule.toFilter`](../TDN/Semantics/PacketPolicy.lean#L65) |
-| `lemma` | [`matching_atom`](../TDN/Semantics/PacketPolicy.lean#L68) |
-| `def` | [`OutboundGuard`](../TDN/Semantics/PacketPolicy.lean#L74) |
-| `def` | [`InboundGuard`](../TDN/Semantics/PacketPolicy.lean#L78) |
-| `def` | [`Guarded`](../TDN/Semantics/PacketPolicy.lean#L82) |
-| `def` | [`ProtectedForward`](../TDN/Semantics/PacketPolicy.lean#L93) |
-| `lemma` | [`guarded_rule_protects`](../TDN/Semantics/PacketPolicy.lean#L97) |
-| `theorem` | [`forwarding_policy_protects`](../TDN/Semantics/PacketPolicy.lean#L112) |
+| `def` | [`IKEHeader`](../TDN/Semantics/PacketPolicy.lean#L28) |
+| `def` | [`Packet.IPv4FragmentOffsetDecoded`](../TDN/Semantics/PacketPolicy.lean#L38) |
+| `def` | [`Packet.IPsecUDPFraming`](../TDN/Semantics/PacketPolicy.lean#L43) |
+| `def` | [`Packet.IPsecUDPFramingWithOptions`](../TDN/Semantics/PacketPolicy.lean#L58) |
+| `def` | [`Packet.IPsecUDPReplyFramingWithOptions`](../TDN/Semantics/PacketPolicy.lean#L74) |
+| `def` | [`byteField`](../TDN/Semantics/PacketPolicy.lean#L84) |
+| `def` | [`Packet.MKAFraming`](../TDN/Semantics/PacketPolicy.lean#L87) |
+| `inductive` | [`Atom`](../TDN/Semantics/PacketPolicy.lean#L98) |
+| `def` | [`Atom.holds`](../TDN/Semantics/PacketPolicy.lean#L126) |
+| `structure` | [`Rule`](../TDN/Semantics/PacketPolicy.lean#L159) |
+| `def` | [`Rule.toFilter`](../TDN/Semantics/PacketPolicy.lean#L164) |
+| `lemma` | [`matching_atom`](../TDN/Semantics/PacketPolicy.lean#L167) |
+| `def` | [`OutboundGuard`](../TDN/Semantics/PacketPolicy.lean#L173) |
+| `def` | [`InboundGuard`](../TDN/Semantics/PacketPolicy.lean#L177) |
+| `def` | [`Guarded`](../TDN/Semantics/PacketPolicy.lean#L181) |
+| `def` | [`ProtectedForward`](../TDN/Semantics/PacketPolicy.lean#L192) |
+| `lemma` | [`guarded_rule_protects`](../TDN/Semantics/PacketPolicy.lean#L196) |
+| `theorem` | [`forwarding_policy_protects`](../TDN/Semantics/PacketPolicy.lean#L211) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (a.holds p)`](../TDN/Semantics/PacketPolicy.lean#L57)
-- [`Decidable (Guarded r inside outside)`](../TDN/Semantics/PacketPolicy.lean#L85)
-
+- [Instance at line 34](../TDN/Semantics/PacketPolicy.lean#L34)
+- [Instance at line 54](../TDN/Semantics/PacketPolicy.lean#L54)
+- [Instance at line 69](../TDN/Semantics/PacketPolicy.lean#L69)
+- [Instance at line 79](../TDN/Semantics/PacketPolicy.lean#L79)
+- [Instance at line 94](../TDN/Semantics/PacketPolicy.lean#L94)
+- [Instance at line 156](../TDN/Semantics/PacketPolicy.lean#L156)
+- [Instance at line 184](../TDN/Semantics/PacketPolicy.lean#L184)
 
 </details>
 
@@ -338,13 +348,11 @@ Direct imports: [PacketPolicy](#packetpolicy).
 | `theorem` | [`accepted_header_words`](../TDN/Semantics/HeaderPolicy.lean#L56) |
 | `theorem` | [`accepted_external_unicast`](../TDN/Semantics/HeaderPolicy.lean#L64) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (ProtocolGuard allowed r)`](../TDN/Semantics/HeaderPolicy.lean#L8)
-- [`Decidable (UnicastGuard external low high r)`](../TDN/Semantics/HeaderPolicy.lean#L18)
-- [`Decidable (ImmediateHeaderGuard allowed rule)`](../TDN/Semantics/HeaderPolicy.lean#L43)
-
+- [Instance at line 8](../TDN/Semantics/HeaderPolicy.lean#L8)
+- [Instance at line 18](../TDN/Semantics/HeaderPolicy.lean#L18)
+- [Instance at line 43](../TDN/Semantics/HeaderPolicy.lean#L43)
 
 </details>
 
@@ -356,9 +364,9 @@ Explicit decidability instances:
 
 Source: [Execution.lean](../TDN/Semantics/Execution.lean). Namespace: `TDN.Execution`.
 
-`Execution` defines the packet-processing steps shared by the IPsec proofs. A [`State`](../TDN/Semantics/Execution.lean#L44) contains a port, a processing phase, a [`Frame`](../TDN/Semantics/Execution.lean#L18), and the policy identifiers authenticated at ingress. The frame stores the current header, payload identity, origin domain, saved encryption envelopes, and the entry port. Each [`Envelope`](../TDN/Semantics/Execution.lean#L14) preserves the preceding header so that decryption can restore it.
+`Execution` defines the packet-processing steps shared by the IPsec proofs. A [`State`](../TDN/Semantics/Execution.lean#L44) contains an interface, a processing phase, a [`Frame`](../TDN/Semantics/Execution.lean#L18), and the policy identifiers authenticated at ingress. The frame stores the current header, payload identity, origin domain, saved encryption envelopes, and the entry interface. Each [`Envelope`](../TDN/Semantics/Execution.lean#L14) preserves the preceding header so that decryption can restore it.
 
-[`Config`](../TDN/Semantics/Execution.lean#L110) supplies routes, INPUT/FORWARD/OUTPUT rules and fallback verdicts, IPsec policies, installed security associations, interface names, device ownership, links, switching, local addresses, and Red payload origins. [`Association`](../TDN/Semantics/Execution.lean#L50) represents a policy and its selectors. [`SecurityAssociation`](../TDN/Semantics/Execution.lean#L63) represents installed state. [`StateBindsPolicy`](../TDN/Semantics/Execution.lean#L70) checks the local request identifier, endpoints, and any required SPI. [`selectedAssociations`](../TDN/Semantics/Execution.lean#L82) retains all equally best matching policies.
+[`Environment`](../TDN/Semantics/Execution.lean#L110) supplies routes, INPUT/FORWARD/OUTPUT rules and fallback verdicts, IPsec policies, installed security associations, interface names, device ownership, links, switching, local addresses, and Red payload origins. [`Association`](../TDN/Semantics/Execution.lean#L50) represents a policy and its selectors. [`SecurityAssociation`](../TDN/Semantics/Execution.lean#L63) represents installed state. [`StateBindsPolicy`](../TDN/Semantics/Execution.lean#L70) checks the local request identifier, endpoints, and any required SPI. [`selectedAssociations`](../TDN/Semantics/Execution.lean#L82) retains all equally best matching policies.
 
 [`SelectedRoute`](../TDN/Semantics/Execution.lean#L104) chooses among matching routes for the same ingress: lowest table priority first, then longest prefix, then lowest metric. Equal choices remain possible. [`Step`](../TDN/Semantics/Execution.lean#L155) describes receipt, route selection, filtering, encryption, decryption, transmission, switching, local delivery, and dropping. Encryption requires both a selected policy and matching installed state. Plain transmission after filtering requires that no outbound policy was selected.
 
@@ -377,7 +385,7 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Simulation`, [PacketPolicy](#pa
 | `def` | [`payloadAddresses`](../TDN/Semantics/Execution.lean#L25) |
 | `def` | [`Frame.addresses`](../TDN/Semantics/Execution.lean#L29) |
 | `lemma` | [`payload_addresses_ignore_metadata`](../TDN/Semantics/Execution.lean#L32) |
-| `inductive` | [`Phase`](../TDN/Semantics/Execution.lean#L39) |
+| `inductive` | [`DatapathStage`](../TDN/Semantics/Execution.lean#L39) |
 | `structure` | [`State`](../TDN/Semantics/Execution.lean#L44) |
 | `structure` | [`Association`](../TDN/Semantics/Execution.lean#L50) |
 | `structure` | [`SecurityAssociation`](../TDN/Semantics/Execution.lean#L63) |
@@ -389,7 +397,7 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Simulation`, [PacketPolicy](#pa
 | `structure` | [`Route`](../TDN/Semantics/Execution.lean#L91) |
 | `def` | [`Route.matches`](../TDN/Semantics/Execution.lean#L101) |
 | `def` | [`SelectedRoute`](../TDN/Semantics/Execution.lean#L104) |
-| `structure` | [`Config`](../TDN/Semantics/Execution.lean#L110) |
+| `structure` | [`Environment`](../TDN/Semantics/Execution.lean#L110) |
 | `def` | [`policyPacket`](../TDN/Semantics/Execution.lean#L130) |
 | `def` | [`accepts`](../TDN/Semantics/Execution.lean#L137) |
 | `def` | [`encrypt`](../TDN/Semantics/Execution.lean#L141) |
@@ -406,18 +414,17 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Simulation`, [PacketPolicy](#pa
 | `lemma` | [`simulation_of_step_map`](../TDN/Semantics/Execution.lean#L311) |
 | `theorem` | [`matched_execution`](../TDN/Semantics/Execution.lean#L320) |
 
-
 </details>
 
 ### ExecutionInvariant
 
 Source: [ExecutionInvariant.lean](../TDN/Semantics/ExecutionInvariant.lean). Namespace: `TDN.Execution`.
 
-`ExecutionInvariant` assigns an expected list of encryption-layer tags to each port through `layout : Nat → List Nat`. [`Frame.tags`](../TDN/Semantics/ExecutionInvariant.lean#L5) reads the actual tags in the modeled envelopes. [`processingStack`](../TDN/Semantics/ExecutionInvariant.lean#L8) accounts for a successful inbound decryption by removing the first expected tag. [`StackInvariant`](../TDN/Semantics/ExecutionInvariant.lean#L61) states the appropriate relationship for each processing phase.
+`ExecutionInvariant` assigns an expected list of encryption-layer tags to each interface through `expectedEncapStack : Nat → List Nat`. [`Frame.tags`](../TDN/Semantics/ExecutionInvariant.lean#L5) reads the actual tags in the modeled envelopes. [`encapStackAfterIngress`](../TDN/Semantics/ExecutionInvariant.lean#L8) accounts for a successful inbound decryption by removing the first expected tag. [`StackInvariant`](../TDN/Semantics/ExecutionInvariant.lean#L61) states the appropriate relationship for each processing phase.
 
 [`LocalStackConditions`](../TDN/Semantics/ExecutionInvariant.lean#L32) packages six kinds of premises: routes stay within a device; links preserve the expected stack; switching preserves the processing stack; accepted forwarding rules produce the expected output stack; locally generated output does the same; and routing after encryption preserves the resulting stack. The conditions cover every selected policy, including ties.
 
-[`step_preserves_stack_invariant`](../TDN/Semantics/ExecutionInvariant.lean#L91) checks every constructor of `Execution.Step`. [`execution_preserves_stack_invariant`](../TDN/Semantics/ExecutionInvariant.lean#L143) applies CSLib's general induction result to any finite execution. [`transmitted_stack`](../TDN/Semantics/ExecutionInvariant.lean#L152) concludes that a state ready for transmission has exactly the stack assigned to its port. A new network supplies a configuration, a layout, and proofs of the local conditions.
+[`step_preserves_stack_invariant`](../TDN/Semantics/ExecutionInvariant.lean#L91) checks every constructor of `Execution.Step`. [`execution_preserves_stack_invariant`](../TDN/Semantics/ExecutionInvariant.lean#L143) applies CSLib's general induction result to any finite execution. [`transmitted_stack`](../TDN/Semantics/ExecutionInvariant.lean#L152) concludes that a state ready for transmission has exactly the stack assigned to its interface. A new network supplies a configuration, expected encapsulation stacks, and proofs of the local conditions.
 
 Direct imports: [Execution](#execution).
 
@@ -427,7 +434,7 @@ Direct imports: [Execution](#execution).
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`Frame.tags`](../TDN/Semantics/ExecutionInvariant.lean#L5) |
-| `def` | [`processingStack`](../TDN/Semantics/ExecutionInvariant.lean#L8) |
+| `def` | [`encapStackAfterIngress`](../TDN/Semantics/ExecutionInvariant.lean#L8) |
 | `def` | [`LocalAuthentication`](../TDN/Semantics/ExecutionInvariant.lean#L12) |
 | `def` | [`ProcessingInvariant`](../TDN/Semantics/ExecutionInvariant.lean#L16) |
 | `def` | [`AcceptedHook`](../TDN/Semantics/ExecutionInvariant.lean#L22) |
@@ -439,14 +446,13 @@ Direct imports: [Execution](#execution).
 | `theorem` | [`execution_preserves_stack_invariant`](../TDN/Semantics/ExecutionInvariant.lean#L143) |
 | `theorem` | [`transmitted_stack`](../TDN/Semantics/ExecutionInvariant.lean#L152) |
 
-
 </details>
 
 ### ExecutionChecks
 
 Source: [ExecutionChecks.lean](../TDN/Semantics/ExecutionChecks.lean). Namespace: `TDN.Execution`.
 
-`ExecutionChecks` reduces a packet-dependent stack obligation to checks on rule records. [`PortCompatible`](../TDN/Semantics/ExecutionChecks.lean#L6) checks interface constraints. [`ImpossibleAuthentication`](../TDN/Semantics/ExecutionChecks.lean#L12) finds an inbound-policy requirement absent from the known authentication list. [`ExcludesSelector`](../TDN/Semantics/ExecutionChecks.lean#L22) finds address ranges that cannot match a policy. [`HasOutboundGuard`](../TDN/Semantics/ExecutionChecks.lean#L17) identifies a required outbound policy.
+`ExecutionChecks` reduces a packet-dependent stack obligation to checks on rule records. [`IfaceCompatible`](../TDN/Semantics/ExecutionChecks.lean#L6) checks interface constraints. [`ImpossibleAuthentication`](../TDN/Semantics/ExecutionChecks.lean#L12) finds an inbound-policy requirement absent from the known authentication list. [`ExcludesSelector`](../TDN/Semantics/ExecutionChecks.lean#L22) finds address ranges that cannot match a policy. [`HasOutboundGuard`](../TDN/Semantics/ExecutionChecks.lean#L17) identifies a required outbound policy.
 
 [`RuleStackCheck`](../TDN/Semantics/ExecutionChecks.lean#L82) combines those tests: either the rule cannot apply, or plain and encrypted forwarding produce the required stack. [`checked_rule_stack_effect`](../TDN/Semantics/ExecutionChecks.lean#L90) proves that conclusion for a matching rule. [`checked_hook_stack_effect`](../TDN/Semantics/ExecutionChecks.lean#L121) extends the argument to an accepted packet under a default-deny rule list. The checks are sufficient conditions; a failure can require a more precise argument about why a rule is unreachable.
 
@@ -457,25 +463,23 @@ Direct imports: [ExecutionInvariant](#executioninvariant), `Lean.Elab.Tactic.Ome
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`PortCompatible`](../TDN/Semantics/ExecutionChecks.lean#L6) |
+| `def` | [`IfaceCompatible`](../TDN/Semantics/ExecutionChecks.lean#L6) |
 | `def` | [`ImpossibleAuthentication`](../TDN/Semantics/ExecutionChecks.lean#L12) |
 | `def` | [`HasOutboundGuard`](../TDN/Semantics/ExecutionChecks.lean#L17) |
 | `def` | [`ExcludesSelector`](../TDN/Semantics/ExecutionChecks.lean#L22) |
-| `lemma` | [`matched_ports_compatible`](../TDN/Semantics/ExecutionChecks.lean#L56) |
+| `lemma` | [`matched_ifaces_compatible`](../TDN/Semantics/ExecutionChecks.lean#L56) |
 | `lemma` | [`matching_authentication_possible`](../TDN/Semantics/ExecutionChecks.lean#L63) |
 | `lemma` | [`excluded_selector_cannot_match`](../TDN/Semantics/ExecutionChecks.lean#L70) |
 | `def` | [`RuleStackCheck`](../TDN/Semantics/ExecutionChecks.lean#L82) |
 | `lemma` | [`checked_rule_stack_effect`](../TDN/Semantics/ExecutionChecks.lean#L90) |
 | `theorem` | [`checked_hook_stack_effect`](../TDN/Semantics/ExecutionChecks.lean#L121) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (PortCompatible r i o)`](../TDN/Semantics/ExecutionChecks.lean#L29)
-- [`Decidable (ImpossibleAuthentication r auth)`](../TDN/Semantics/ExecutionChecks.lean#L35)
-- [`Decidable (HasOutboundGuard r)`](../TDN/Semantics/ExecutionChecks.lean#L42)
-- [`Decidable (ExcludesSelector r p)`](../TDN/Semantics/ExecutionChecks.lean#L48)
-
+- [Instance at line 29](../TDN/Semantics/ExecutionChecks.lean#L29)
+- [Instance at line 35](../TDN/Semantics/ExecutionChecks.lean#L35)
+- [Instance at line 42](../TDN/Semantics/ExecutionChecks.lean#L42)
+- [Instance at line 48](../TDN/Semantics/ExecutionChecks.lean#L48)
 
 </details>
 
@@ -483,11 +487,11 @@ Explicit decidability instances:
 
 Source: [FiniteExecution.lean](../TDN/Semantics/FiniteExecution.lean). Namespace: `TDN.Execution`.
 
-`FiniteExecution` builds `Execution.Config` from finite lists of devices, ports, routes, links, and switch connections. [`DeviceData`](../TDN/Semantics/FiniteExecution.lean#L5) holds policies, rules, installed state, local addresses, and a recipient domain. [`PortData`](../TDN/Semantics/FiniteExecution.lean#L18) holds its owner, interface name, expected stack, and whether it originates payload traffic. [`deviceAt`](../TDN/Semantics/FiniteExecution.lean#L25) and [`portAt`](../TDN/Semantics/FiniteExecution.lean#L28) return default records for indices outside their lists.
+`FiniteExecution` builds `Execution.Environment` from finite lists of devices, interfaces, routes, links, and switch connections. [`DeviceData`](../TDN/Semantics/FiniteExecution.lean#L5) holds policies, rules, installed state, local addresses, and a recipient domain. [`IfaceData`](../TDN/Semantics/FiniteExecution.lean#L18) holds its owner, interface name, expected stack, and whether it originates payload traffic. [`deviceAt`](../TDN/Semantics/FiniteExecution.lean#L25) and [`ifaceAt`](../TDN/Semantics/FiniteExecution.lean#L28) return default records for indices outside their lists.
 
-[`possibleAuthentications`](../TDN/Semantics/FiniteExecution.lean#L64) enumerates the empty authentication list and the singleton lists allowed by the inbound policies and port stack. [`FiniteForwardChecks`](../TDN/Semantics/FiniteExecution.lean#L94), [`FiniteOutputChecks`](../TDN/Semantics/FiniteExecution.lean#L135), and [`FiniteOuterRoutes`](../TDN/Semantics/FiniteExecution.lean#L168) state checks over finite records. The soundness theorems prove that those checks imply the corresponding obligations for arbitrary modeled packets. [`local_stack_conditions_of_finite_checks`](../TDN/Semantics/FiniteExecution.lean#L202) assembles the results into [`LocalStackConditions`](../TDN/Semantics/ExecutionInvariant.lean#L32).
+[`possibleAuthentications`](../TDN/Semantics/FiniteExecution.lean#L64) enumerates the empty authentication list and the singleton lists allowed by the inbound policies and interface stack. [`FiniteForwardChecks`](../TDN/Semantics/FiniteExecution.lean#L94), [`FiniteOutputChecks`](../TDN/Semantics/FiniteExecution.lean#L135), and [`FiniteOuterRoutes`](../TDN/Semantics/FiniteExecution.lean#L168) state checks over finite records. The soundness theorems prove that those checks imply the corresponding obligations for arbitrary modeled packets. [`local_stack_conditions_of_finite_checks`](../TDN/Semantics/FiniteExecution.lean#L202) assembles the results into [`LocalStackConditions`](../TDN/Semantics/ExecutionInvariant.lean#L32).
 
-The checks include default records because the general configuration accepts any natural-number port index. Snapshot applications can prove the finite propositions with `by decide`, then reuse the general soundness theorems.
+The checks include default records because the general configuration accepts any natural-number interface index. Snapshot applications can prove the finite propositions with `by decide`, then reuse the general soundness theorems.
 
 Direct imports: [ExecutionChecks](#executionchecks).
 
@@ -497,12 +501,12 @@ Direct imports: [ExecutionChecks](#executionchecks).
 | Kind | Declaration |
 | --- | --- |
 | `structure` | [`DeviceData`](../TDN/Semantics/FiniteExecution.lean#L5) |
-| `structure` | [`PortData`](../TDN/Semantics/FiniteExecution.lean#L18) |
+| `structure` | [`IfaceData`](../TDN/Semantics/FiniteExecution.lean#L18) |
 | `def` | [`deviceAt`](../TDN/Semantics/FiniteExecution.lean#L25) |
-| `def` | [`portAt`](../TDN/Semantics/FiniteExecution.lean#L28) |
-| `def` | [`finiteConfig`](../TDN/Semantics/FiniteExecution.lean#L31) |
-| `def` | [`finiteLayout`](../TDN/Semantics/FiniteExecution.lean#L52) |
-| `lemma` | [`port_at_member_or_default`](../TDN/Semantics/FiniteExecution.lean#L55) |
+| `def` | [`ifaceAt`](../TDN/Semantics/FiniteExecution.lean#L28) |
+| `def` | [`dataPlaneConfigFromRecords`](../TDN/Semantics/FiniteExecution.lean#L31) |
+| `def` | [`expectedEncapStackFromRecords`](../TDN/Semantics/FiniteExecution.lean#L52) |
+| `lemma` | [`iface_at_member_or_default`](../TDN/Semantics/FiniteExecution.lean#L55) |
 | `def` | [`possibleAuthentications`](../TDN/Semantics/FiniteExecution.lean#L64) |
 | `lemma` | [`valid_authentication_in_finite_list`](../TDN/Semantics/FiniteExecution.lean#L67) |
 | `def` | [`RecordRuleCheck`](../TDN/Semantics/FiniteExecution.lean#L82) |
@@ -515,14 +519,12 @@ Direct imports: [ExecutionChecks](#executionchecks).
 | `lemma` | [`device_at_member_or_default`](../TDN/Semantics/FiniteExecution.lean#L193) |
 | `theorem` | [`local_stack_conditions_of_finite_checks`](../TDN/Semantics/FiniteExecution.lean#L202) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (RecordRuleCheck i o d a r)`](../TDN/Semantics/FiniteExecution.lean#L91)
-- [`Decidable (FiniteForwardChecks devices ports)`](../TDN/Semantics/FiniteExecution.lean#L101)
-- [`Decidable (FiniteOutputChecks devices ports)`](../TDN/Semantics/FiniteExecution.lean#L140)
-- [`Decidable (FiniteOuterRoutes devices ports routes)`](../TDN/Semantics/FiniteExecution.lean#L175)
-
+- [Instance at line 91](../TDN/Semantics/FiniteExecution.lean#L91)
+- [Instance at line 101](../TDN/Semantics/FiniteExecution.lean#L101)
+- [Instance at line 140](../TDN/Semantics/FiniteExecution.lean#L140)
+- [Instance at line 175](../TDN/Semantics/FiniteExecution.lean#L175)
 
 </details>
 
@@ -549,12 +551,10 @@ Direct imports: [FiniteExecution](#finiteexecution).
 | `theorem` | [`finite_routed_forward_checks_sound`](../TDN/Semantics/FiniteRoutedExecution.lean#L53) |
 | `theorem` | [`local_stack_conditions_of_routed_finite_checks`](../TDN/Semantics/FiniteRoutedExecution.lean#L86) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (ExcludesRoute rule route)`](../TDN/Semantics/FiniteRoutedExecution.lean#L10)
-- [`Decidable (FiniteRoutedForwardChecks devices ports routes)`](../TDN/Semantics/FiniteRoutedExecution.lean#L48)
-
+- [Instance at line 10](../TDN/Semantics/FiniteRoutedExecution.lean#L10)
+- [Instance at line 48](../TDN/Semantics/FiniteRoutedExecution.lean#L48)
 
 </details>
 
@@ -562,11 +562,11 @@ Explicit decidability instances:
 
 Source: [ExecutionDomains.lean](../TDN/Semantics/ExecutionDomains.lean). Namespace: `TDN.Execution`.
 
-`ExecutionDomains` tracks whether processing stays within a chosen set of allowed ports. The caller defines that set as `allowed : Nat → Prop`. [`DomainProcessing`](../TDN/Semantics/ExecutionDomains.lean#L5) and [`DomainInvariant`](../TDN/Semantics/ExecutionDomains.lean#L38) combine membership in the set with the encryption-stack conditions.
+`ExecutionDomains` tracks whether processing stays within a chosen set of allowed interfaces. The caller defines that set as `allowed : Nat → Prop`. [`DomainProcessing`](../TDN/Semantics/ExecutionDomains.lean#L5) and [`DomainInvariant`](../TDN/Semantics/ExecutionDomains.lean#L38) combine membership in the set with the encryption-stack conditions.
 
-[`LocalDomainConditions`](../TDN/Semantics/ExecutionDomains.lean#L9) requires links, switches, accepted forwarding, local output, and post-encryption routing to preserve both the expected stack and the allowed set. [`execution_preserves_domain_invariant`](../TDN/Semantics/ExecutionDomains.lean#L125) lifts those local premises to every finite execution. [`delivered_port_is_allowed`](../TDN/Semantics/ExecutionDomains.lean#L134) applies the invariant to a delivered state.
+[`LocalDomainConditions`](../TDN/Semantics/ExecutionDomains.lean#L9) requires links, switches, accepted forwarding, local output, and post-encryption routing to preserve both the expected stack and the allowed set. [`execution_preserves_domain_invariant`](../TDN/Semantics/ExecutionDomains.lean#L125) lifts those local premises to every finite execution. [`delivered_iface_is_allowed`](../TDN/Semantics/ExecutionDomains.lean#L134) applies the invariant to a delivered state.
 
-A caller can instantiate the allowed set for one security domain and exclude recipients in another. The library itself leaves the meaning of a domain and the membership of each port to the caller.
+A caller can instantiate the allowed set for one security domain and exclude recipients in another. The library itself leaves the meaning of a domain and the membership of each interface to the caller.
 
 Direct imports: [ExecutionProvenance](#executionprovenance).
 
@@ -581,8 +581,7 @@ Direct imports: [ExecutionProvenance](#executionprovenance).
 | `lemma` | [`accepted_hook_domain_effect`](../TDN/Semantics/ExecutionDomains.lean#L52) |
 | `lemma` | [`step_preserves_domain_invariant`](../TDN/Semantics/ExecutionDomains.lean#L67) |
 | `theorem` | [`execution_preserves_domain_invariant`](../TDN/Semantics/ExecutionDomains.lean#L125) |
-| `theorem` | [`delivered_port_is_allowed`](../TDN/Semantics/ExecutionDomains.lean#L134) |
-
+| `theorem` | [`delivered_iface_is_allowed`](../TDN/Semantics/ExecutionDomains.lean#L134) |
 
 </details>
 
@@ -590,9 +589,9 @@ Direct imports: [ExecutionProvenance](#executionprovenance).
 
 Source: [FiniteDomains.lean](../TDN/Semantics/FiniteDomains.lean). Namespace: `TDN.Execution`.
 
-`FiniteDomains` supplies finite checks for the allowed-port argument. [`RecordDomainCheck`](../TDN/Semantics/FiniteDomains.lean#L5) extends the per-rule stack check with permission for the output port. The forwarding, local-output, and outer-route predicates check the finite device and port records. [`local_domain_conditions_of_finite_checks`](../TDN/Semantics/FiniteDomains.lean#L112) turns the results into [`LocalDomainConditions`](../TDN/Semantics/ExecutionDomains.lean#L9) for all modeled packets.
+`FiniteDomains` supplies finite checks for the allowed-interface argument. [`RecordDomainCheck`](../TDN/Semantics/FiniteDomains.lean#L5) extends the per-rule stack check with permission for the output interface. The forwarding, local-output, and outer-route predicates check the finite device and interface records. [`local_domain_conditions_of_finite_checks`](../TDN/Semantics/FiniteDomains.lean#L112) turns the results into [`LocalDomainConditions`](../TDN/Semantics/ExecutionDomains.lean#L9) for all modeled packets.
 
-[`withPortStacks`](../TDN/Semantics/FiniteDomains.lean#L159) changes the proof's expected-stack annotations. [`finite_config_ignores_port_stack_annotations`](../TDN/Semantics/FiniteDomains.lean#L170) proves that changing only those annotations leaves `finiteConfig` unchanged. A network can therefore support several domain-specific layouts while retaining the same operational configuration. Every chosen layout still needs its own checked local premises.
+[`withEncapStackAnnotations`](../TDN/Semantics/FiniteDomains.lean#L159) changes the proof's expected-stack annotations. [`data_plane_ignores_encap_stack_annotations`](../TDN/Semantics/FiniteDomains.lean#L170) proves that changing only those annotations leaves `dataPlaneConfigFromRecords` unchanged. A network can therefore support several domain-specific stack annotations while retaining the same operational configuration. Every chosen stack annotation still needs its own checked local premises.
 
 Direct imports: [ExecutionDomains](#executiondomains).
 
@@ -609,18 +608,16 @@ Direct imports: [ExecutionDomains](#executiondomains).
 | `def` | [`FiniteDomainOutputChecks`](../TDN/Semantics/FiniteDomains.lean#L86) |
 | `def` | [`FiniteDomainOuterRoutes`](../TDN/Semantics/FiniteDomains.lean#L98) |
 | `theorem` | [`local_domain_conditions_of_finite_checks`](../TDN/Semantics/FiniteDomains.lean#L112) |
-| `def` | [`withPortStacks`](../TDN/Semantics/FiniteDomains.lean#L159) |
-| `lemma` | [`port_stack_update_keeps_operational_fields`](../TDN/Semantics/FiniteDomains.lean#L162) |
-| `theorem` | [`finite_config_ignores_port_stack_annotations`](../TDN/Semantics/FiniteDomains.lean#L170) |
+| `def` | [`withEncapStackAnnotations`](../TDN/Semantics/FiniteDomains.lean#L159) |
+| `lemma` | [`encap_stack_update_preserves_data_plane_fields`](../TDN/Semantics/FiniteDomains.lean#L162) |
+| `theorem` | [`data_plane_ignores_encap_stack_annotations`](../TDN/Semantics/FiniteDomains.lean#L170) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (RecordDomainCheck allowed i o d a r)`](../TDN/Semantics/FiniteDomains.lean#L15)
-- [`Decidable (FiniteDomainForwardChecks devices ports allowed)`](../TDN/Semantics/FiniteDomains.lean#L48)
-- [`Decidable (FiniteDomainOutputChecks devices ports allowed)`](../TDN/Semantics/FiniteDomains.lean#L93)
-- [`Decidable (FiniteDomainOuterRoutes devices ports routes allowed)`](../TDN/Semantics/FiniteDomains.lean#L107)
-
+- [Instance at line 15](../TDN/Semantics/FiniteDomains.lean#L15)
+- [Instance at line 48](../TDN/Semantics/FiniteDomains.lean#L48)
+- [Instance at line 93](../TDN/Semantics/FiniteDomains.lean#L93)
+- [Instance at line 107](../TDN/Semantics/FiniteDomains.lean#L107)
 
 </details>
 
@@ -650,11 +647,9 @@ Direct imports: [FiniteExecution](#finiteexecution).
 | `def` | [`FinitePeerTagAgreement`](../TDN/Semantics/ExecutionProvenance.lean#L82) |
 | `theorem` | [`finite_peer_tag_agreement_sound`](../TDN/Semantics/ExecutionProvenance.lean#L93) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (FinitePeerTagAgreement devices)`](../TDN/Semantics/ExecutionProvenance.lean#L89)
-
+- [Instance at line 89](../TDN/Semantics/ExecutionProvenance.lean#L89)
 
 </details>
 
@@ -678,7 +673,6 @@ Direct imports: [ExecutionInvariant](#executioninvariant).
 | `lemma` | [`step_preserves_authentication_selectors`](../TDN/Semantics/AuthenticationSelectors.lean#L14) |
 | `theorem` | [`execution_preserves_authentication_selectors`](../TDN/Semantics/AuthenticationSelectors.lean#L31) |
 
-
 </details>
 
 ### ExecutionAuthentication
@@ -687,7 +681,7 @@ Source: [ExecutionAuthentication.lean](../TDN/Semantics/ExecutionAuthentication.
 
 `ExecutionAuthentication` proves that crossing a component's protected boundary requires a decryption step inside that component. [`UndecryptedRegion`](../TDN/Semantics/ExecutionAuthentication.lean#L10) describes states that remain on the protected side while their authentication list is empty.
 
-[`undecrypted_step_retains_region`](../TDN/Semantics/ExecutionAuthentication.lean#L25) proves that every non-decryption step preserves the condition under [`LocalStackConditions`](../TDN/Semantics/ExecutionInvariant.lean#L32). [`inbound_crossing_requires_local_decryption`](../TDN/Semantics/ExecutionAuthentication.lean#L95) then identifies an actual decryption event in a finite execution confined to one component. The execution must begin received and unauthenticated at a port whose layout includes the tag, and finish ready at a port whose layout excludes it. The component's inbound policies must all use the specified tag. The event also retains the original payload identity.
+[`undecrypted_step_retains_region`](../TDN/Semantics/ExecutionAuthentication.lean#L25) proves that every non-decryption step preserves the condition under [`LocalStackConditions`](../TDN/Semantics/ExecutionInvariant.lean#L32). [`inbound_crossing_requires_local_decryption`](../TDN/Semantics/ExecutionAuthentication.lean#L95) then identifies an actual decryption event in a finite execution confined to one component. The execution must begin received and unauthenticated at an interface whose expected stack includes the tag, and finish ready at an interface whose expected stack excludes it. The component's inbound policies must all use the specified tag. The event also retains the original payload identity.
 
 Direct imports: [ExecutionEvents](#executionevents), [RestrictedExecution](#restrictedexecution).
 
@@ -700,7 +694,6 @@ Direct imports: [ExecutionEvents](#executionevents), [RestrictedExecution](#rest
 | `def` | [`UndecryptedRegion`](../TDN/Semantics/ExecutionAuthentication.lean#L10) |
 | `lemma` | [`undecrypted_step_retains_region`](../TDN/Semantics/ExecutionAuthentication.lean#L25) |
 | `theorem` | [`inbound_crossing_requires_local_decryption`](../TDN/Semantics/ExecutionAuthentication.lean#L95) |
-
 
 </details>
 
@@ -726,7 +719,6 @@ Direct imports: [Execution](#execution), [TraceAccounting](#traceaccounting).
 | `theorem` | [`stack_growth_requires_encryptions`](../TDN/Semantics/ExecutionHistory.lean#L22) |
 | `theorem` | [`stack_removal_requires_decryptions`](../TDN/Semantics/ExecutionHistory.lean#L29) |
 
-
 </details>
 
 ### ExecutionEvents
@@ -735,7 +727,7 @@ Source: [ExecutionEvents.lean](../TDN/Semantics/ExecutionEvents.lean). Namespace
 
 `ExecutionEvents` finds specific encryption or decryption steps within an execution. The one-step lemmas show that adding a previously absent tag requires encryption and removing a present tag requires decryption. The boundary theorems locate those events and preserve the payload identity.
 
-[`OrderedEncryptions`](../TDN/Semantics/ExecutionEvents.lean#L95) states that an Inner encryption event occurs before a particular Outer encryption event. [`nested_stack_requires_ordered_encryptions`](../TDN/Semantics/ExecutionEvents.lean#L107) proves that order when the execution starts with an empty stack, ends with the Outer tag present, satisfies [`LocalStackConditions`](../TDN/Semantics/ExecutionInvariant.lean#L32), and every port headed by the Outer tag expects exactly `[outerTag, innerTag]`. The theorem supplies event witnesses within the modeled execution.
+[`OrderedEncryptions`](../TDN/Semantics/ExecutionEvents.lean#L95) states that an Inner encryption event occurs before a particular Outer encryption event. [`nested_stack_requires_ordered_encryptions`](../TDN/Semantics/ExecutionEvents.lean#L107) proves that order when the execution starts with an empty stack, ends with the Outer tag present, satisfies [`LocalStackConditions`](../TDN/Semantics/ExecutionInvariant.lean#L32), and every interface headed by the Outer tag expects exactly `[outerTag, innerTag]`. The theorem supplies event witnesses within the modeled execution.
 
 Direct imports: [ExecutionInvariant](#executioninvariant), [TraceEvents](#traceevents).
 
@@ -752,7 +744,6 @@ Direct imports: [ExecutionInvariant](#executioninvariant), [TraceEvents](#tracee
 | `lemma` | [`outer_encryption_has_inner_stack`](../TDN/Semantics/ExecutionEvents.lean#L74) |
 | `def` | [`OrderedEncryptions`](../TDN/Semantics/ExecutionEvents.lean#L95) |
 | `theorem` | [`nested_stack_requires_ordered_encryptions`](../TDN/Semantics/ExecutionEvents.lean#L107) |
-
 
 </details>
 
@@ -778,11 +769,9 @@ Direct imports: [ExecutionDomains](#executiondomains).
 | `theorem` | [`transit_path_ignores_hidden_content`](../TDN/Semantics/CiphertextTransit.lean#L45) |
 | `theorem` | [`recovered_content_follows_checked_transit`](../TDN/Semantics/CiphertextTransit.lean#L56) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (TransitAction action)`](../TDN/Semantics/CiphertextTransit.lean#L8)
-
+- [Instance at line 8](../TDN/Semantics/CiphertextTransit.lean#L8)
 
 </details>
 
@@ -813,49 +802,56 @@ Direct imports: .
 | `theorem` | [`absent_sa_blocks_data`](../TDN/Semantics/LinkProtection.lean#L40) |
 | `theorem` | [`enabled_sa_emits_encryption`](../TDN/Semantics/LinkProtection.lean#L45) |
 
-
 </details>
 
 ### LayeredFrame
 
 Source: [LayeredFrame.lean](../TDN/Semantics/LayeredFrame.lean). Namespace: `TDN.LayeredFrame`.
 
-`LayeredFrame` represents nested IPsec, MACsec, and carrier encapsulation. [`Body`](../TDN/Semantics/LayeredFrame.lean#L36) can contain an IP datagram, an Ethernet frame, or another body wrapped in one of those three mechanisms. `visibleHeader` returns the currently routable IP header. `protectionLayers` collects only the IPsec and MACsec tags; a carrier wrapper preserves that list.
+`LayeredFrame` represents nested IPsec, MACsec, and carrier encapsulation. [`Body`](../TDN/Semantics/LayeredFrame.lean#L38) can contain an IP datagram, an Ethernet frame, or another body wrapped in one of those three mechanisms. `visibleHeader` returns the currently routable IP header. `protectionLayers` collects only the IPsec and MACsec tags; a carrier wrapper preserves that list.
 
-[`MACsecAssociation`](../TDN/Semantics/LayeredFrame.lean#L6) records a tag, SCI, association number, and a local key-generation identifier. [`SameMACWireIdentity`](../TDN/Semantics/LayeredFrame.lean#L14) compares SCI and association number. [`Carrier`](../TDN/Semantics/LayeredFrame.lean#L21) records addresses, ports, and the peer session. [`unwrapCarrier`](../TDN/Semantics/LayeredFrame.lean#L93) checks the receiving address, remote address, ports, and local session before removing the wrapper.
+[`MACsecAssociation`](../TDN/Semantics/LayeredFrame.lean#L6) records a tag, SCI, association number, and a local key-generation identifier. [`SameMACWireIdentity`](../TDN/Semantics/LayeredFrame.lean#L14) compares SCI and association number. [`Carrier`](../TDN/Semantics/LayeredFrame.lean#L21) records addresses, ports, and the peer session. [`unwrapCarrier`](../TDN/Semantics/LayeredFrame.lean#L97) checks the receiving address, remote address, ports, and local session before removing the wrapper.
 
-The lemmas establish the expected header visibility and layer order. [`successful_carrier_unwrap_preserves_layers`](../TDN/Semantics/LayeredFrame.lean#L101) proves that successful removal of a carrier changes no encryption layers. Cryptographic operations remain represented by typed wrappers.
+The lemmas establish the expected header visibility and layer order. [`successful_carrier_unwrap_preserves_layers`](../TDN/Semantics/LayeredFrame.lean#L108) proves that successful removal of a carrier changes no encryption layers. Cryptographic operations remain represented by typed wrappers.
 
 Direct imports: [Execution](#execution), [LinkProtection](#linkprotection).
 
 <details>
-<summary>All 17 named declarations in LayeredFrame</summary>
+<summary>All 27 named declarations in LayeredFrame</summary>
 
 | Kind | Declaration |
 | --- | --- |
 | `structure` | [`MACsecAssociation`](../TDN/Semantics/LayeredFrame.lean#L6) |
 | `def` | [`SameMACWireIdentity`](../TDN/Semantics/LayeredFrame.lean#L14) |
 | `structure` | [`Carrier`](../TDN/Semantics/LayeredFrame.lean#L21) |
-| `structure` | [`EthernetHeader`](../TDN/Semantics/LayeredFrame.lean#L29) |
-| `inductive` | [`Body`](../TDN/Semantics/LayeredFrame.lean#L36) |
-| `structure` | [`Frame`](../TDN/Semantics/LayeredFrame.lean#L43) |
-| `def` | [`outerHeader`](../TDN/Semantics/LayeredFrame.lean#L48) |
-| `def` | [`Body.visibleHeader`](../TDN/Semantics/LayeredFrame.lean#L55) |
-| `def` | [`Body.protectionLayers`](../TDN/Semantics/LayeredFrame.lean#L63) |
-| `def` | [`Body.originalHeader`](../TDN/Semantics/LayeredFrame.lean#L69) |
-| `def` | [`Body.originalEthernet`](../TDN/Semantics/LayeredFrame.lean#L74) |
-| `def` | [`Body.isEthernetCiphertext`](../TDN/Semantics/LayeredFrame.lean#L79) |
-| `lemma` | [`macsec_has_no_routable_inner_header`](../TDN/Semantics/LayeredFrame.lean#L83) |
-| `lemma` | [`carrier_preserves_protection_layers`](../TDN/Semantics/LayeredFrame.lean#L86) |
-| `lemma` | [`nested_outer_inner_order`](../TDN/Semantics/LayeredFrame.lean#L89) |
-| `def` | [`unwrapCarrier`](../TDN/Semantics/LayeredFrame.lean#L93) |
-| `theorem` | [`successful_carrier_unwrap_preserves_layers`](../TDN/Semantics/LayeredFrame.lean#L101) |
+| `structure` | [`EthernetHeader`](../TDN/Semantics/LayeredFrame.lean#L31) |
+| `inductive` | [`Body`](../TDN/Semantics/LayeredFrame.lean#L38) |
+| `structure` | [`Frame`](../TDN/Semantics/LayeredFrame.lean#L45) |
+| `def` | [`outerHeader`](../TDN/Semantics/LayeredFrame.lean#L52) |
+| `def` | [`Body.visibleHeader`](../TDN/Semantics/LayeredFrame.lean#L59) |
+| `def` | [`Body.protectionLayers`](../TDN/Semantics/LayeredFrame.lean#L67) |
+| `def` | [`Body.originalHeader`](../TDN/Semantics/LayeredFrame.lean#L73) |
+| `def` | [`Body.originalEthernet`](../TDN/Semantics/LayeredFrame.lean#L78) |
+| `def` | [`Body.isEthernetCiphertext`](../TDN/Semantics/LayeredFrame.lean#L83) |
+| `lemma` | [`macsec_has_no_routable_inner_header`](../TDN/Semantics/LayeredFrame.lean#L87) |
+| `lemma` | [`carrier_preserves_protection_layers`](../TDN/Semantics/LayeredFrame.lean#L90) |
+| `lemma` | [`nested_outer_inner_order`](../TDN/Semantics/LayeredFrame.lean#L93) |
+| `def` | [`unwrapCarrier`](../TDN/Semantics/LayeredFrame.lean#L97) |
+| `theorem` | [`successful_carrier_unwrap_preserves_layers`](../TDN/Semantics/LayeredFrame.lean#L108) |
+| `def` | [`Frame.visibleHeader`](../TDN/Semantics/LayeredFrame.lean#L123) |
+| `def` | [`Frame.pushHeader`](../TDN/Semantics/LayeredFrame.lean#L128) |
+| `def` | [`Frame.popHeader`](../TDN/Semantics/LayeredFrame.lean#L133) |
+| `def` | [`Frame.forwarded`](../TDN/Semantics/LayeredFrame.lean#L138) |
+| `lemma` | [`Frame.forwarded_payload`](../TDN/Semantics/LayeredFrame.lean#L147) |
+| `lemma` | [`Frame.forwarded_origin`](../TDN/Semantics/LayeredFrame.lean#L151) |
+| `def` | [`HeaderIdentity`](../TDN/Semantics/LayeredFrame.lean#L160) |
+| `def` | [`Body.HeadersCoherent`](../TDN/Semantics/LayeredFrame.lean#L163) |
+| `def` | [`Frame.HeadersCoherent`](../TDN/Semantics/LayeredFrame.lean#L182) |
+| `lemma` | [`Frame.forwarded_body`](../TDN/Semantics/LayeredFrame.lean#L189) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (SameMACWireIdentity first second)`](../TDN/Semantics/LayeredFrame.lean#L17)
-
+- [Instance at line 17](../TDN/Semantics/LayeredFrame.lean#L17)
 
 </details>
 
@@ -863,31 +859,49 @@ Explicit decidability instances:
 
 Source: [MultiProtocolExecution.lean](../TDN/Semantics/MultiProtocolExecution.lean). Namespace: `TDN.MultiProtocolExecution`.
 
-`MultiProtocolExecution` combines IP processing with MACsec ports, carrier endpoints, bridges, and physical links. `Config.ip` reuses `Execution.Config`. [`MACPort`](../TDN/Semantics/MultiProtocolExecution.lean#L6) links logical and physical ports to transmit/receive associations and protection settings. [`CarrierPort`](../TDN/Semantics/MultiProtocolExecution.lean#L15) links a virtual port to a routing port and session information.
+`MultiProtocolExecution` combines IP processing with MACsec interfaces, carrier endpoints, bridges, and physical links. `Config.ip` reuses `Execution.Environment`. [`MACIface`](../TDN/Semantics/MultiProtocolExecution.lean#L7) links logical and physical interfaces to transmit/receive associations and protection settings. [`CarrierIface`](../TDN/Semantics/MultiProtocolExecution.lean#L16) links a virtual interface to a routing interface and session information.
 
-[`Step`](../TDN/Semantics/MultiProtocolExecution.lean#L51) models IPsec encryption/decryption, MACsec encryption/decryption, carrier encapsulation/decapsulation, IP filtering and routing, bridging, delivery, and dropping. It also includes unprotected MACsec transmission and unchecked reception when their settings permit those behaviors. [`fullMACsecTransmit`](../TDN/Semantics/MultiProtocolExecution.lean#L46) identifies successful full-frame encryption. [`all_executions_preserve_payload`](../TDN/Semantics/MultiProtocolExecution.lean#L165) preserves payload identity and origin domain across all modeled steps.
+[`Step`](../TDN/Semantics/MultiProtocolExecution.lean#L101) models IPsec encryption/decryption, MACsec encryption/decryption, carrier encapsulation/decapsulation, IP filtering and routing, bridging, delivery, and dropping. It also includes unprotected MACsec transmission and unchecked reception when their settings permit those behaviors. [`fullMACsecTransmit`](../TDN/Semantics/MultiProtocolExecution.lean#L96) identifies successful full-frame encryption. [`all_executions_preserve_payload`](../TDN/Semantics/MultiProtocolExecution.lean#L217) preserves payload identity and origin domain across all modeled steps.
 
 Applications supply the device records and topology. The stronger security results require the settings and local conditions checked in the next modules.
 
 Direct imports: [LayeredFrame](#layeredframe).
 
 <details>
-<summary>All 11 named declarations in MultiProtocolExecution</summary>
+<summary>All 30 named declarations in MultiProtocolExecution</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`MACPort`](../TDN/Semantics/MultiProtocolExecution.lean#L6) |
-| `structure` | [`CarrierPort`](../TDN/Semantics/MultiProtocolExecution.lean#L15) |
-| `structure` | [`Config`](../TDN/Semantics/MultiProtocolExecution.lean#L22) |
-| `structure` | [`State`](../TDN/Semantics/MultiProtocolExecution.lean#L29) |
-| `inductive` | [`Action`](../TDN/Semantics/MultiProtocolExecution.lean#L37) |
-| `def` | [`policyHeader`](../TDN/Semantics/MultiProtocolExecution.lean#L43) |
-| `def` | [`fullMACsecTransmit`](../TDN/Semantics/MultiProtocolExecution.lean#L46) |
-| `inductive` | [`Step`](../TDN/Semantics/MultiProtocolExecution.lean#L51) |
-| `def` | [`lts`](../TDN/Semantics/MultiProtocolExecution.lean#L157) |
-| `lemma` | [`step_preserves_payload`](../TDN/Semantics/MultiProtocolExecution.lean#L159) |
-| `theorem` | [`all_executions_preserve_payload`](../TDN/Semantics/MultiProtocolExecution.lean#L165) |
-
+| `structure` | [`MACIface`](../TDN/Semantics/MultiProtocolExecution.lean#L7) |
+| `structure` | [`CarrierIface`](../TDN/Semantics/MultiProtocolExecution.lean#L16) |
+| `structure` | [`HeaderProcessing`](../TDN/Semantics/MultiProtocolExecution.lean#L23) |
+| `structure` | [`Config`](../TDN/Semantics/MultiProtocolExecution.lean#L27) |
+| `def` | [`Config.forwardedFrame`](../TDN/Semantics/MultiProtocolExecution.lean#L39) |
+| `def` | [`Config.ipsecFrame`](../TDN/Semantics/MultiProtocolExecution.lean#L44) |
+| `def` | [`Config.macsecFrame`](../TDN/Semantics/MultiProtocolExecution.lean#L53) |
+| `def` | [`Config.carrierFrame`](../TDN/Semantics/MultiProtocolExecution.lean#L59) |
+| `def` | [`Config.restoredFrame`](../TDN/Semantics/MultiProtocolExecution.lean#L68) |
+| `def` | [`Config.visibleHeader`](../TDN/Semantics/MultiProtocolExecution.lean#L73) |
+| `structure` | [`State`](../TDN/Semantics/MultiProtocolExecution.lean#L78) |
+| `inductive` | [`Action`](../TDN/Semantics/MultiProtocolExecution.lean#L87) |
+| `def` | [`policyHeader`](../TDN/Semantics/MultiProtocolExecution.lean#L93) |
+| `def` | [`fullMACsecTransmit`](../TDN/Semantics/MultiProtocolExecution.lean#L96) |
+| `inductive` | [`Step`](../TDN/Semantics/MultiProtocolExecution.lean#L101) |
+| `def` | [`lts`](../TDN/Semantics/MultiProtocolExecution.lean#L207) |
+| `lemma` | [`step_preserves_payload`](../TDN/Semantics/MultiProtocolExecution.lean#L209) |
+| `theorem` | [`all_executions_preserve_payload`](../TDN/Semantics/MultiProtocolExecution.lean#L217) |
+| `def` | [`Config.LinkPath`](../TDN/Semantics/MultiProtocolExecution.lean#L235) |
+| `def` | [`Config.LinkAdmitted`](../TDN/Semantics/MultiProtocolExecution.lean#L240) |
+| `def` | [`Config.LinkStepAdmitted`](../TDN/Semantics/MultiProtocolExecution.lean#L247) |
+| `def` | [`Config.ForwardableHeader`](../TDN/Semantics/MultiProtocolExecution.lean#L265) |
+| `def` | [`Config.HeaderStepAdmitted`](../TDN/Semantics/MultiProtocolExecution.lean#L268) |
+| `def` | [`Config.HeaderGenerationKnown`](../TDN/Semantics/MultiProtocolExecution.lean#L272) |
+| `def` | [`Config.LinkEncodingComplete`](../TDN/Semantics/MultiProtocolExecution.lean#L278) |
+| `lemma` | [`Config.forwardedFrame_body`](../TDN/Semantics/MultiProtocolExecution.lean#L288) |
+| `lemma` | [`Config.ipsecFrame_body`](../TDN/Semantics/MultiProtocolExecution.lean#L292) |
+| `lemma` | [`Config.macsecFrame_body`](../TDN/Semantics/MultiProtocolExecution.lean#L298) |
+| `lemma` | [`Config.carrierFrame_body`](../TDN/Semantics/MultiProtocolExecution.lean#L304) |
+| `lemma` | [`Config.restoredFrame_body`](../TDN/Semantics/MultiProtocolExecution.lean#L310) |
 
 </details>
 
@@ -895,9 +909,9 @@ Direct imports: [LayeredFrame](#layeredframe).
 
 Source: [MultiProtocolInvariant.lean](../TDN/Semantics/MultiProtocolInvariant.lean). Namespace: `TDN.MultiProtocolExecution`.
 
-`MultiProtocolInvariant` extends expected-stack reasoning to nested IPsec, MACsec, and carrier bodies. [`CarrierBodies`](../TDN/Semantics/MultiProtocolInvariant.lean#L31) records how a body relates to configured transmitters and carrier endpoints. [`CarrierPeers`](../TDN/Semantics/MultiProtocolInvariant.lean#L40) checks reciprocal addresses, ports, and directional session matching. [`StackInvariant`](../TDN/Semantics/MultiProtocolInvariant.lean#L75) combines those relationships with the conditions for each processing phase.
+`MultiProtocolInvariant` extends expected-stack reasoning to nested IPsec, MACsec, and carrier bodies. [`CarrierBodies`](../TDN/Semantics/MultiProtocolInvariant.lean#L31) records how a body relates to configured transmitters and carrier endpoints. [`CarrierPeers`](../TDN/Semantics/MultiProtocolInvariant.lean#L40) checks reciprocal addresses, ports, and directional session matching. [`StackInvariant`](../TDN/Semantics/MultiProtocolInvariant.lean#L78) combines those relationships with the conditions for each processing phase.
 
-[`LocalConditions`](../TDN/Semantics/MultiProtocolInvariant.lean#L47) includes the IP stack conditions, stack-preserving links and bridges, MACsec transmit/receive tag placement, peer-tag agreement, protection/encryption enabled with zero confidentiality offset, strict receive validation, and carrier route/peer conditions. [`all_executions_preserve_stack`](../TDN/Semantics/MultiProtocolInvariant.lean#L309) proves preservation across any finite mixed-protocol execution once those premises and the initial invariant hold.
+[`LocalConditions`](../TDN/Semantics/MultiProtocolInvariant.lean#L49) includes the IP stack conditions, stack-preserving links and bridges, MACsec transmit/receive tag placement, peer-tag agreement, protection/encryption enabled with zero confidentiality offset, strict receive validation, and carrier route/peer conditions. [`all_executions_preserve_stack`](../TDN/Semantics/MultiProtocolInvariant.lean#L343) proves preservation across any finite mixed-protocol execution once those premises and the initial invariant hold.
 
 The constructor-by-constructor proof excludes insecure MACsec steps through the required settings. A new protocol wrapper needs its own behavior and preservation argument.
 
@@ -915,16 +929,15 @@ Direct imports: [MultiProtocolExecution](#multiprotocolexecution), [ExecutionInv
 | `def` | [`AcceptedHook`](../TDN/Semantics/MultiProtocolInvariant.lean#L24) |
 | `def` | [`CarrierBodies`](../TDN/Semantics/MultiProtocolInvariant.lean#L31) |
 | `def` | [`CarrierPeers`](../TDN/Semantics/MultiProtocolInvariant.lean#L40) |
-| `structure` | [`LocalConditions`](../TDN/Semantics/MultiProtocolInvariant.lean#L47) |
-| `def` | [`StackInvariant`](../TDN/Semantics/MultiProtocolInvariant.lean#L75) |
-| `def` | [`ipFrame`](../TDN/Semantics/MultiProtocolInvariant.lean#L95) |
-| `lemma` | [`selected_route_metadata`](../TDN/Semantics/MultiProtocolInvariant.lean#L100) |
-| `lemma` | [`hook_stack_effect_from_metadata`](../TDN/Semantics/MultiProtocolInvariant.lean#L105) |
-| `lemma` | [`hook_stack_effect`](../TDN/Semantics/MultiProtocolInvariant.lean#L137) |
-| `lemma` | [`unwrap_carrier_preserves_record`](../TDN/Semantics/MultiProtocolInvariant.lean#L147) |
-| `lemma` | [`step_preserves_stack`](../TDN/Semantics/MultiProtocolInvariant.lean#L165) |
-| `theorem` | [`all_executions_preserve_stack`](../TDN/Semantics/MultiProtocolInvariant.lean#L309) |
-
+| `structure` | [`LocalConditions`](../TDN/Semantics/MultiProtocolInvariant.lean#L49) |
+| `def` | [`StackInvariant`](../TDN/Semantics/MultiProtocolInvariant.lean#L78) |
+| `def` | [`ipFrame`](../TDN/Semantics/MultiProtocolInvariant.lean#L98) |
+| `lemma` | [`selected_route_metadata`](../TDN/Semantics/MultiProtocolInvariant.lean#L103) |
+| `lemma` | [`hook_stack_effect_from_metadata`](../TDN/Semantics/MultiProtocolInvariant.lean#L108) |
+| `lemma` | [`hook_stack_effect`](../TDN/Semantics/MultiProtocolInvariant.lean#L140) |
+| `lemma` | [`unwrap_carrier_preserves_record`](../TDN/Semantics/MultiProtocolInvariant.lean#L150) |
+| `lemma` | [`step_preserves_stack`](../TDN/Semantics/MultiProtocolInvariant.lean#L168) |
+| `theorem` | [`all_executions_preserve_stack`](../TDN/Semantics/MultiProtocolInvariant.lean#L343) |
 
 </details>
 
@@ -932,7 +945,7 @@ Direct imports: [MultiProtocolExecution](#multiprotocolexecution), [ExecutionInv
 
 Source: [FiniteMultiProtocol.lean](../TDN/Semantics/FiniteMultiProtocol.lean). Namespace: `TDN.MultiProtocolExecution`.
 
-`FiniteMultiProtocol` constructs the mixed-protocol configuration from finite device, port, route, link, bridge, MACsec, and carrier lists. [`MACTransmitCheck`](../TDN/Semantics/FiniteMultiProtocol.lean#L14) checks tag placement for a configured transmit association. [`CarrierRouteChecks`](../TDN/Semantics/FiniteMultiProtocol.lean#L21) checks the stack effect of selected IPsec policies on each carrier header's route.
+`FiniteMultiProtocol` constructs the mixed-protocol configuration from finite device, interface, route, link, bridge, MACsec, and carrier lists. [`MACTransmitCheck`](../TDN/Semantics/FiniteMultiProtocol.lean#L14) checks tag placement for a configured transmit association. [`CarrierRouteChecks`](../TDN/Semantics/FiniteMultiProtocol.lean#L21) checks the stack effect of selected IPsec policies on each carrier header's route.
 
 [`local_conditions_from_finite_checks`](../TDN/Semantics/FiniteMultiProtocol.lean#L49) assembles those checks, MACsec receive/tag/security checks, carrier-peer checks, and existing IP conditions into `MultiProtocolExecution.LocalConditions`. The resulting general execution theorem can then be applied without changing its proof. Missing transmit associations can satisfy the placement check, so a separate delivery witness is needed when the requirement includes successful communication.
 
@@ -943,18 +956,16 @@ Direct imports: [MultiProtocolInvariant](#multiprotocolinvariant), [FiniteRouted
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`finiteConfig`](../TDN/Semantics/FiniteMultiProtocol.lean#L7) |
+| `def` | [`dataPlaneConfigFromRecords`](../TDN/Semantics/FiniteMultiProtocol.lean#L7) |
 | `def` | [`MACTransmitCheck`](../TDN/Semantics/FiniteMultiProtocol.lean#L14) |
 | `def` | [`CarrierRouteChecks`](../TDN/Semantics/FiniteMultiProtocol.lean#L21) |
 | `theorem` | [`local_conditions_from_finite_checks`](../TDN/Semantics/FiniteMultiProtocol.lean#L49) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (MACTransmitCheck ports port)`](../TDN/Semantics/FiniteMultiProtocol.lean#L34)
-- [`Decidable (CarrierRouteChecks devices ports routes carriers)`](../TDN/Semantics/FiniteMultiProtocol.lean#L39)
-- [`Decidable (CarrierPeers sender receiver)`](../TDN/Semantics/FiniteMultiProtocol.lean#L45)
-
+- [Instance at line 34](../TDN/Semantics/FiniteMultiProtocol.lean#L34)
+- [Instance at line 39](../TDN/Semantics/FiniteMultiProtocol.lean#L39)
+- [Instance at line 45](../TDN/Semantics/FiniteMultiProtocol.lean#L45)
 
 </details>
 
@@ -964,7 +975,7 @@ Source: [MultiProtocolProvenance.lean](../TDN/Semantics/MultiProtocolProvenance.
 
 `MultiProtocolProvenance` tracks configured IPsec origins inside bodies that may also contain MACsec or carrier wrappers. [`ProducedIPBodies`](../TDN/Semantics/MultiProtocolProvenance.lean#L7) recursively requires every IPsec seal to come from a configured policy and installed state.
 
-[`all_executions_preserve_ip_provenance`](../TDN/Semantics/MultiProtocolProvenance.lean#L39) preserves that property. [`wire_matching_ipsec_decryption_is_admitted`](../TDN/Semantics/MultiProtocolProvenance.lean#L46) proves that a receiving IPsec decryption step is available when the wire identity matches, sender/receiver tag agreement holds, the inbound policy and state are installed and bound, and the recovered header satisfies the selectors. The theorem concerns the IPsec portion of the mixed model; MACsec settings and tag relationships have their own premises.
+[`all_executions_preserve_ip_provenance`](../TDN/Semantics/MultiProtocolProvenance.lean#L41) preserves that property. [`wire_matching_ipsec_decryption_is_admitted`](../TDN/Semantics/MultiProtocolProvenance.lean#L48) proves that a receiving IPsec decryption step is available when the wire identity matches, sender/receiver tag agreement holds, the inbound policy and state are installed and bound, and the recovered header satisfies the selectors. The theorem concerns the IPsec portion of the mixed model; MACsec settings and tag relationships have their own premises.
 
 Direct imports: [MultiProtocolExecution](#multiprotocolexecution), [ExecutionProvenance](#executionprovenance).
 
@@ -976,9 +987,8 @@ Direct imports: [MultiProtocolExecution](#multiprotocolexecution), [ExecutionPro
 | `def` | [`ProducedIPBodies`](../TDN/Semantics/MultiProtocolProvenance.lean#L7) |
 | `lemma` | [`unwrap_preserves_ip_provenance`](../TDN/Semantics/MultiProtocolProvenance.lean#L12) |
 | `lemma` | [`step_preserves_ip_provenance`](../TDN/Semantics/MultiProtocolProvenance.lean#L24) |
-| `theorem` | [`all_executions_preserve_ip_provenance`](../TDN/Semantics/MultiProtocolProvenance.lean#L39) |
-| `theorem` | [`wire_matching_ipsec_decryption_is_admitted`](../TDN/Semantics/MultiProtocolProvenance.lean#L46) |
-
+| `theorem` | [`all_executions_preserve_ip_provenance`](../TDN/Semantics/MultiProtocolProvenance.lean#L41) |
+| `theorem` | [`wire_matching_ipsec_decryption_is_admitted`](../TDN/Semantics/MultiProtocolProvenance.lean#L48) |
 
 </details>
 
@@ -986,9 +996,9 @@ Direct imports: [MultiProtocolExecution](#multiprotocolexecution), [ExecutionPro
 
 Source: [MultiProtocolEvents.lean](../TDN/Semantics/MultiProtocolEvents.lean). Namespace: `TDN.MultiProtocolExecution`.
 
-`MultiProtocolEvents` proves operation-order facts across IPsec and MACsec. [`IsEncryption`](../TDN/Semantics/MultiProtocolEvents.lean#L34) and [`IsDecryption`](../TDN/Semantics/MultiProtocolEvents.lean#L37) each include both protocols. The step lemmas classify layer changes, and the boundary theorems locate the operation that added or removed a tag.
+`MultiProtocolEvents` proves operation-order facts across IPsec and MACsec. [`IsEncryption`](../TDN/Semantics/MultiProtocolEvents.lean#L35) and [`IsDecryption`](../TDN/Semantics/MultiProtocolEvents.lean#L38) each include both protocols. The step lemmas classify layer changes, and the boundary theorems locate the operation that added or removed a tag.
 
-[`nested_stack_requires_ordered_encryptions`](../TDN/Semantics/MultiProtocolEvents.lean#L134) establishes Inner-before-Outer encryption under the mixed-protocol local conditions and the two-layer placement condition. The original-Ethernet lemmas and theorem also preserve the innermost Ethernet header through all modeled steps. Carrier encapsulation preserves the encryption-layer list, so a carrier operation cannot supply an encryption event.
+[`nested_stack_requires_ordered_encryptions`](../TDN/Semantics/MultiProtocolEvents.lean#L136) establishes Inner-before-Outer encryption under the mixed-protocol local conditions and the two-layer placement condition. The original-Ethernet lemmas and theorem also preserve the innermost Ethernet header through all modeled steps. Carrier encapsulation preserves the encryption-layer list, so a carrier operation cannot supply an encryption event.
 
 Direct imports: [MultiProtocolInvariant](#multiprotocolinvariant), [TraceEvents](#traceevents).
 
@@ -999,18 +1009,17 @@ Direct imports: [MultiProtocolInvariant](#multiprotocolinvariant), [TraceEvents]
 | --- | --- |
 | `lemma` | [`unwrap_preserves_original_ethernet`](../TDN/Semantics/MultiProtocolEvents.lean#L7) |
 | `lemma` | [`step_preserves_original_ethernet`](../TDN/Semantics/MultiProtocolEvents.lean#L18) |
-| `theorem` | [`all_executions_preserve_original_ethernet`](../TDN/Semantics/MultiProtocolEvents.lean#L25) |
-| `def` | [`IsEncryption`](../TDN/Semantics/MultiProtocolEvents.lean#L34) |
-| `def` | [`IsDecryption`](../TDN/Semantics/MultiProtocolEvents.lean#L37) |
-| `lemma` | [`step_layer_effect`](../TDN/Semantics/MultiProtocolEvents.lean#L40) |
-| `lemma` | [`missing_layer_requires_encryption`](../TDN/Semantics/MultiProtocolEvents.lean#L52) |
-| `lemma` | [`removed_layer_requires_decryption`](../TDN/Semantics/MultiProtocolEvents.lean#L66) |
-| `theorem` | [`boundary_addition_has_actual_encryption`](../TDN/Semantics/MultiProtocolEvents.lean#L80) |
-| `theorem` | [`boundary_removal_has_actual_decryption`](../TDN/Semantics/MultiProtocolEvents.lean#L95) |
-| `lemma` | [`encryption_output_layout`](../TDN/Semantics/MultiProtocolEvents.lean#L110) |
-| `def` | [`OrderedEncryptions`](../TDN/Semantics/MultiProtocolEvents.lean#L120) |
-| `theorem` | [`nested_stack_requires_ordered_encryptions`](../TDN/Semantics/MultiProtocolEvents.lean#L134) |
-
+| `theorem` | [`all_executions_preserve_original_ethernet`](../TDN/Semantics/MultiProtocolEvents.lean#L26) |
+| `def` | [`IsEncryption`](../TDN/Semantics/MultiProtocolEvents.lean#L35) |
+| `def` | [`IsDecryption`](../TDN/Semantics/MultiProtocolEvents.lean#L38) |
+| `lemma` | [`step_layer_effect`](../TDN/Semantics/MultiProtocolEvents.lean#L41) |
+| `lemma` | [`missing_layer_requires_encryption`](../TDN/Semantics/MultiProtocolEvents.lean#L54) |
+| `lemma` | [`removed_layer_requires_decryption`](../TDN/Semantics/MultiProtocolEvents.lean#L68) |
+| `theorem` | [`boundary_addition_has_actual_encryption`](../TDN/Semantics/MultiProtocolEvents.lean#L82) |
+| `theorem` | [`boundary_removal_has_actual_decryption`](../TDN/Semantics/MultiProtocolEvents.lean#L97) |
+| `lemma` | [`encryption_output_layout`](../TDN/Semantics/MultiProtocolEvents.lean#L112) |
+| `def` | [`OrderedEncryptions`](../TDN/Semantics/MultiProtocolEvents.lean#L122) |
+| `theorem` | [`nested_stack_requires_ordered_encryptions`](../TDN/Semantics/MultiProtocolEvents.lean#L136) |
 
 </details>
 
@@ -1018,9 +1027,9 @@ Direct imports: [MultiProtocolInvariant](#multiprotocolinvariant), [TraceEvents]
 
 Source: [MultiProtocolAuthentication.lean](../TDN/Semantics/MultiProtocolAuthentication.lean). Namespace: `TDN.MultiProtocolExecution`.
 
-`MultiProtocolAuthentication` proves required boundary decryption when a component may use IPsec, MACsec, and carriers. [`CarrierInputCheck`](../TDN/Semantics/MultiProtocolAuthentication.lean#L20) prevents accepted carrier input from removing a required boundary tag merely by moving to a virtual port. [`UndecryptedRegion`](../TDN/Semantics/MultiProtocolAuthentication.lean#L41) tracks the corresponding condition through processing phases.
+`MultiProtocolAuthentication` proves required boundary decryption when a component may use IPsec, MACsec, and carriers. [`CarrierInputCheck`](../TDN/Semantics/MultiProtocolAuthentication.lean#L20) prevents accepted carrier input from removing a required boundary tag merely by moving to a virtual interface. [`UndecryptedRegion`](../TDN/Semantics/MultiProtocolAuthentication.lean#L41) tracks the corresponding condition through processing phases.
 
-[`inbound_crossing_has_actual_boundary_decryption`](../TDN/Semantics/MultiProtocolAuthentication.lean#L201) locates an IPsec or MACsec decryption inside the chosen component. Its premises include the mixed local conditions, the carrier input check, policy/tag restrictions for the component, and an execution confined to that component from a protected-side received state to an unprotected-side ready state. [`BoundaryDecryption`](../TDN/Semantics/MultiProtocolAuthentication.lean#L191) records the relevant policy or MACsec association and the layer removal.
+[`inbound_crossing_has_actual_boundary_decryption`](../TDN/Semantics/MultiProtocolAuthentication.lean#L230) locates an IPsec or MACsec decryption inside the chosen component. Its premises include the mixed local conditions, the carrier input check, policy/tag restrictions for the component, and an execution confined to that component from a protected-side received state to an unprotected-side ready state. [`BoundaryDecryption`](../TDN/Semantics/MultiProtocolAuthentication.lean#L220) records the relevant policy or MACsec association and the layer removal.
 
 Direct imports: [MultiProtocolEvents](#multiprotocolevents), [RestrictedExecution](#restrictedexecution).
 
@@ -1035,9 +1044,8 @@ Direct imports: [MultiProtocolEvents](#multiprotocolevents), [RestrictedExecutio
 | `lemma` | [`successful_unwrap_has_receiving_header`](../TDN/Semantics/MultiProtocolAuthentication.lean#L28) |
 | `def` | [`UndecryptedRegion`](../TDN/Semantics/MultiProtocolAuthentication.lean#L41) |
 | `lemma` | [`nondecryption_preserves_region`](../TDN/Semantics/MultiProtocolAuthentication.lean#L69) |
-| `def` | [`BoundaryDecryption`](../TDN/Semantics/MultiProtocolAuthentication.lean#L191) |
-| `theorem` | [`inbound_crossing_has_actual_boundary_decryption`](../TDN/Semantics/MultiProtocolAuthentication.lean#L201) |
-
+| `def` | [`BoundaryDecryption`](../TDN/Semantics/MultiProtocolAuthentication.lean#L220) |
+| `theorem` | [`inbound_crossing_has_actual_boundary_decryption`](../TDN/Semantics/MultiProtocolAuthentication.lean#L230) |
 
 </details>
 
@@ -1045,7 +1053,7 @@ Direct imports: [MultiProtocolEvents](#multiprotocolevents), [RestrictedExecutio
 
 Source: [FiniteMultiProtocolAuthentication.lean](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean). Namespace: `TDN.MultiProtocolExecution`.
 
-`FiniteMultiProtocolAuthentication` makes carrier-input checking finite. [`carrierRecordPacket`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L16) builds the packet fields seen at a recorded ingress. [`FiniteCarrierInputChecks`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L25) requires the virtual port to retain the tag, or default-deny INPUT rules to reject the carrier independently of connection-tracking state.
+`FiniteMultiProtocolAuthentication` makes carrier-input checking finite. [`carrierRecordPacket`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L16) builds the packet fields seen at a recorded ingress. [`FiniteCarrierInputChecks`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L25) requires the virtual interface to retain the tag, or default-deny INPUT rules to reject the carrier independently of connection-tracking state.
 
 [`ignoresTracking`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L7) identifies atoms that do not inspect that state. [`finite_carrier_input_checks_sound`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L43) proves the general [`CarrierInputCheck`](../TDN/Semantics/MultiProtocolAuthentication.lean#L20) from the finite records. The condition covers arbitrary tracking strings by using a rejecting atom whose result cannot change with the string.
 
@@ -1062,11 +1070,9 @@ Direct imports: [MultiProtocolAuthentication](#multiprotocolauthentication), [Fi
 | `def` | [`FiniteCarrierInputChecks`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L25) |
 | `theorem` | [`finite_carrier_input_checks_sound`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L43) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (FiniteCarrierInputChecks devices ports carriers tag)`](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L37)
-
+- [Instance at line 37](../TDN/Semantics/FiniteMultiProtocolAuthentication.lean#L37)
 
 </details>
 
@@ -1108,12 +1114,10 @@ Direct imports: [PacketPolicy](#packetpolicy), `Cslib.Foundations.Semantics.LTS.
 | `lemma` | [`local_reply_checks_preserve_network_safety`](../TDN/Semantics/KernelResponses.lean#L137) |
 | `theorem` | [`copied_response_executions_remain_safe`](../TDN/Semantics/KernelResponses.lean#L156) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (ResponseProtocol protocol)`](../TDN/Semantics/KernelResponses.lean#L13)
-- [`Decidable (SafeResponseRule rule)`](../TDN/Semantics/KernelResponses.lean#L23)
-
+- [Instance at line 13](../TDN/Semantics/KernelResponses.lean#L13)
+- [Instance at line 23](../TDN/Semantics/KernelResponses.lean#L23)
 
 </details>
 
@@ -1123,7 +1127,7 @@ Source: [SourceResponseGuards.lean](../TDN/Semantics/SourceResponseGuards.lean).
 
 `SourceResponseGuards` compares the rules that admitted a source packet with the OUTPUT rules that could admit its reply. [`PairCheck`](../TDN/Semantics/SourceResponseGuards.lean#L72) requires equal protection stacks or identifies a reason the source/reply pair cannot match: interface mismatch, impossible authentication, non-response protocol, or disjoint source/reply address ranges.
 
-[`AuthenticationReplyConflict`](../TDN/Semantics/SourceResponseGuards.lean#L155) adds exclusions derived from the packet's authenticated inbound policy. [`FiniteReplyChecks`](../TDN/Semantics/SourceResponseGuards.lean#L183) evaluates the cases over recorded ports, policies, and rules. Its soundness theorem proves equal source and output stacks for an accepted reply to the original source address.
+[`AuthenticationReplyConflict`](../TDN/Semantics/SourceResponseGuards.lean#L155) adds exclusions derived from the packet's authenticated inbound policy. [`FiniteReplyChecks`](../TDN/Semantics/SourceResponseGuards.lean#L183) evaluates the cases over recorded interfaces, policies, and rules. Its soundness theorem proves equal source and output stacks for an accepted reply to the original source address.
 
 [`FiniteGuardCoverage`](../TDN/Semantics/SourceResponseGuards.lean#L273) ensures that source-guard rules cover both encoded address families. [`finite_guard_coverage_excludes_fallback`](../TDN/Semantics/SourceResponseGuards.lean#L284) supplies an actual matching rule, so a permissive source fallback cannot silently justify an unchecked reply. The rule-pair conditions and coverage checks must both hold.
 
@@ -1153,20 +1157,18 @@ Direct imports: [KernelResponses](#kernelresponses), [FiniteExecution](#finiteex
 | `def` | [`FiniteGuardCoverage`](../TDN/Semantics/SourceResponseGuards.lean#L273) |
 | `theorem` | [`finite_guard_coverage_excludes_fallback`](../TDN/Semantics/SourceResponseGuards.lean#L284) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (WrongIngress rule name)`](../TDN/Semantics/SourceResponseGuards.lean#L45)
-- [`Decidable (WrongEgress rule name)`](../TDN/Semantics/SourceResponseGuards.lean#L51)
-- [`Decidable (NonResponseProtocol rule)`](../TDN/Semantics/SourceResponseGuards.lean#L57)
-- [`Decidable (DisjointReplyAddress source output)`](../TDN/Semantics/SourceResponseGuards.lean#L64)
-- [`Decidable (PairCheck ingress egress authenticated sourceLayers outputLayers source output)`](../TDN/Semantics/SourceResponseGuards.lean#L78)
-- [`Decidable (ReplyExcludesSelector output association)`](../TDN/Semantics/SourceResponseGuards.lean#L147)
-- [`Decidable (AuthenticationReplyConflict device auth output)`](../TDN/Semantics/SourceResponseGuards.lean#L160)
-- [`Decidable (FiniteReplyChecks devices ports guards)`](../TDN/Semantics/SourceResponseGuards.lean#L194)
-- [`Decidable (CoverageRule rule ingress low high)`](../TDN/Semantics/SourceResponseGuards.lean#L248)
-- [`Decidable (FiniteGuardCoverage ports guards)`](../TDN/Semantics/SourceResponseGuards.lean#L279)
-
+- [Instance at line 45](../TDN/Semantics/SourceResponseGuards.lean#L45)
+- [Instance at line 51](../TDN/Semantics/SourceResponseGuards.lean#L51)
+- [Instance at line 57](../TDN/Semantics/SourceResponseGuards.lean#L57)
+- [Instance at line 64](../TDN/Semantics/SourceResponseGuards.lean#L64)
+- [Instance at line 78](../TDN/Semantics/SourceResponseGuards.lean#L78)
+- [Instance at line 147](../TDN/Semantics/SourceResponseGuards.lean#L147)
+- [Instance at line 160](../TDN/Semantics/SourceResponseGuards.lean#L160)
+- [Instance at line 194](../TDN/Semantics/SourceResponseGuards.lean#L194)
+- [Instance at line 248](../TDN/Semantics/SourceResponseGuards.lean#L248)
+- [Instance at line 279](../TDN/Semantics/SourceResponseGuards.lean#L279)
 
 </details>
 
@@ -1190,7 +1192,7 @@ Direct imports: [SourceResponseGuards](#sourceresponseguards).
 | `def` | [`ActivePhase`](../TDN/Semantics/GuardedResponseNetwork.lean#L6) |
 | `structure` | [`Data`](../TDN/Semantics/GuardedResponseNetwork.lean#L13) |
 | `def` | [`Data.config`](../TDN/Semantics/GuardedResponseNetwork.lean#L21) |
-| `def` | [`Data.layout`](../TDN/Semantics/GuardedResponseNetwork.lean#L24) |
+| `def` | [`Data.expectedEncapStack`](../TDN/Semantics/GuardedResponseNetwork.lean#L24) |
 | `def` | [`sourcePacket`](../TDN/Semantics/GuardedResponseNetwork.lean#L26) |
 | `def` | [`Guarded`](../TDN/Semantics/GuardedResponseNetwork.lean#L29) |
 | `def` | [`network`](../TDN/Semantics/GuardedResponseNetwork.lean#L38) |
@@ -1202,12 +1204,10 @@ Direct imports: [SourceResponseGuards](#sourceresponseguards).
 | `lemma` | [`reply_emission_preserves_safe`](../TDN/Semantics/GuardedResponseNetwork.lean#L80) |
 | `theorem` | [`all_guarded_response_executions_preserve_stack`](../TDN/Semantics/GuardedResponseNetwork.lean#L130) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (ActivePhase phase)`](../TDN/Semantics/GuardedResponseNetwork.lean#L9)
-- [`Decidable (Guarded data state)`](../TDN/Semantics/GuardedResponseNetwork.lean#L34)
-
+- [Instance at line 9](../TDN/Semantics/GuardedResponseNetwork.lean#L9)
+- [Instance at line 34](../TDN/Semantics/GuardedResponseNetwork.lean#L34)
 
 </details>
 
@@ -1239,12 +1239,10 @@ Direct imports: [GuardedResponseNetwork](#guardedresponsenetwork).
 | `lemma` | [`encryption_step_is_local`](../TDN/Semantics/EncryptedResponseGuards.lean#L144) |
 | `lemma` | [`network_trace_in_response_system`](../TDN/Semantics/EncryptedResponseGuards.lean#L150) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (ExcludesWireSource rule source)`](../TDN/Semantics/EncryptedResponseGuards.lean#L16)
-- [`Decidable (FiniteDeny devices)`](../TDN/Semantics/EncryptedResponseGuards.lean#L72)
-
+- [Instance at line 16](../TDN/Semantics/EncryptedResponseGuards.lean#L16)
+- [Instance at line 72](../TDN/Semantics/EncryptedResponseGuards.lean#L72)
 
 </details>
 
@@ -1252,9 +1250,9 @@ Explicit decidability instances:
 
 Source: [UniformResponseRegions.lean](../TDN/Semantics/UniformResponseRegions.lean). Namespace: `TDN.UniformResponseRegions`.
 
-`UniformResponseRegions` handles devices whose ports all require the same protection stack and that have no inbound decryption policies. [`Uniform`](../TDN/Semantics/UniformResponseRegions.lean#L6) states those two conditions. [`all_active_phases_have_uniform_stack`](../TDN/Semantics/UniformResponseRegions.lean#L26) proves that every non-dropped state satisfying the stack invariant has the stack assigned to its current port.
+`UniformResponseRegions` handles devices whose interfaces all require the same protection stack and that have no inbound decryption policies. [`Uniform`](../TDN/Semantics/UniformResponseRegions.lean#L6) states those two conditions. [`all_active_phases_have_uniform_stack`](../TDN/Semantics/UniformResponseRegions.lean#L26) proves that every non-dropped state satisfying the stack invariant has the stack assigned to its current interface.
 
-[`FiniteUniform`](../TDN/Semantics/UniformResponseRegions.lean#L44) checks the condition over device and port records. The response configuration extends the previous model to those devices, and [`all_component_response_executions_preserve_stack`](../TDN/Semantics/UniformResponseRegions.lean#L109) combines uniform-device checks with the source-guard and encrypted-response checks. A device that crosses encryption boundaries needs the stronger checks from the other response modules.
+[`FiniteUniform`](../TDN/Semantics/UniformResponseRegions.lean#L44) checks the condition over device and interface records. The response configuration extends the previous model to those devices, and [`all_component_response_executions_preserve_stack`](../TDN/Semantics/UniformResponseRegions.lean#L109) combines uniform-device checks with the source-guard and encrypted-response checks. A device that crosses encryption boundaries needs the stronger checks from the other response modules.
 
 Direct imports: [EncryptedResponseGuards](#encryptedresponseguards).
 
@@ -1264,7 +1262,7 @@ Direct imports: [EncryptedResponseGuards](#encryptedresponseguards).
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`Uniform`](../TDN/Semantics/UniformResponseRegions.lean#L6) |
-| `lemma` | [`processing_stack_at_port`](../TDN/Semantics/UniformResponseRegions.lean#L11) |
+| `lemma` | [`processing_stack_at_iface`](../TDN/Semantics/UniformResponseRegions.lean#L11) |
 | `theorem` | [`all_active_phases_have_uniform_stack`](../TDN/Semantics/UniformResponseRegions.lean#L26) |
 | `def` | [`FiniteUniform`](../TDN/Semantics/UniformResponseRegions.lean#L44) |
 | `theorem` | [`finite_uniform_sound`](../TDN/Semantics/UniformResponseRegions.lean#L54) |
@@ -1272,11 +1270,9 @@ Direct imports: [EncryptedResponseGuards](#encryptedresponseguards).
 | `lemma` | [`reply_preserves_safe`](../TDN/Semantics/UniformResponseRegions.lean#L74) |
 | `theorem` | [`all_component_response_executions_preserve_stack`](../TDN/Semantics/UniformResponseRegions.lean#L109) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (FiniteUniform devices ports owners)`](../TDN/Semantics/UniformResponseRegions.lean#L49)
-
+- [Instance at line 49](../TDN/Semantics/UniformResponseRegions.lean#L49)
 
 </details>
 
@@ -1284,9 +1280,9 @@ Explicit decidability instances:
 
 Source: [UniformDomainResponses.lean](../TDN/Semantics/UniformDomainResponses.lean). Namespace: `TDN.UniformDomainResponses`.
 
-`UniformDomainResponses` extends uniform-device reasoning with membership in an allowed set of ports. [`Uniform`](../TDN/Semantics/UniformDomainResponses.lean#L7) requires both uniform stacks and preservation of allowed membership between ports on the device.
+`UniformDomainResponses` extends uniform-device reasoning with membership in an allowed set of interfaces. [`Uniform`](../TDN/Semantics/UniformDomainResponses.lean#L7) requires both uniform stacks and preservation of allowed membership between interfaces on the device.
 
-[`responseConfig`](../TDN/Semantics/UniformDomainResponses.lean#L39) covers two declared device sets: devices whose output rules strictly block external responses, and devices satisfying the uniform conditions. [`reply_preserves_domain`](../TDN/Semantics/UniformDomainResponses.lean#L51) proves that permitted emissions preserve [`DomainInvariant`](../TDN/Semantics/ExecutionDomains.lean#L38). [`FiniteUniform`](../TDN/Semantics/UniformDomainResponses.lean#L85) and its soundness theorem reduce the uniform premise to recorded ports and devices. The sets of response-generating devices and their premises are explicit application inputs.
+[`responseConfig`](../TDN/Semantics/UniformDomainResponses.lean#L39) covers two declared device sets: devices whose output rules strictly block external responses, and devices satisfying the uniform conditions. [`reply_preserves_domain`](../TDN/Semantics/UniformDomainResponses.lean#L51) proves that permitted emissions preserve [`DomainInvariant`](../TDN/Semantics/ExecutionDomains.lean#L38). [`FiniteUniform`](../TDN/Semantics/UniformDomainResponses.lean#L85) and its soundness theorem reduce the uniform premise to recorded interfaces and devices. The sets of response-generating devices and their premises are explicit application inputs.
 
 Direct imports: [UniformResponseRegions](#uniformresponseregions), [ExecutionDomains](#executiondomains).
 
@@ -1296,18 +1292,16 @@ Direct imports: [UniformResponseRegions](#uniformresponseregions), [ExecutionDom
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`Uniform`](../TDN/Semantics/UniformDomainResponses.lean#L7) |
-| `lemma` | [`processing_at_port`](../TDN/Semantics/UniformDomainResponses.lean#L13) |
-| `lemma` | [`active_domain_at_port`](../TDN/Semantics/UniformDomainResponses.lean#L21) |
+| `lemma` | [`processing_at_iface`](../TDN/Semantics/UniformDomainResponses.lean#L13) |
+| `lemma` | [`active_domain_at_iface`](../TDN/Semantics/UniformDomainResponses.lean#L21) |
 | `def` | [`responseConfig`](../TDN/Semantics/UniformDomainResponses.lean#L39) |
 | `lemma` | [`reply_preserves_domain`](../TDN/Semantics/UniformDomainResponses.lean#L51) |
 | `def` | [`FiniteUniform`](../TDN/Semantics/UniformDomainResponses.lean#L85) |
 | `theorem` | [`finite_uniform_sound`](../TDN/Semantics/UniformDomainResponses.lean#L98) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (FiniteUniform devices ports allowed owners)`](../TDN/Semantics/UniformDomainResponses.lean#L92)
-
+- [Instance at line 92](../TDN/Semantics/UniformDomainResponses.lean#L92)
 
 </details>
 
@@ -1327,7 +1321,6 @@ Direct imports: [KernelResponses](#kernelresponses).
 | Kind | Declaration |
 | --- | --- |
 | `theorem` | [`strict_response_result_has_network_execution`](../TDN/Semantics/StrictResponseProjection.lean#L5) |
-
 
 </details>
 
@@ -1355,7 +1348,6 @@ Direct imports: [KernelResponses](#kernelresponses).
 | `def` | [`responseConfig`](../TDN/Semantics/HistoricalResponses.lean#L40) |
 | `theorem` | [`all_historical_responses_preserve_safety`](../TDN/Semantics/HistoricalResponses.lean#L50) |
 | `theorem` | [`lift_network_trace`](../TDN/Semantics/HistoricalResponses.lean#L74) |
-
 
 </details>
 
@@ -1405,11 +1397,9 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Simulation`, `Mathlib.Data.List
 | `theorem` | [`execution_preserves_piece_consistency`](../TDN/Semantics/Fragmentation.lean#L181) |
 | `theorem` | [`arbitrary_partition_reassembles`](../TDN/Semantics/Fragmentation.lean#L189) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (Contiguous offset pieces)`](../TDN/Semantics/Fragmentation.lean#L82)
-
+- [Instance at line 82](../TDN/Semantics/Fragmentation.lean#L82)
 
 </details>
 
@@ -1435,7 +1425,6 @@ Direct imports: [Fragmentation](#fragmentation).
 | `lemma` | [`distributed_step_preserves`](../TDN/Semantics/DistributedFragments.lean#L40) |
 | `theorem` | [`distributed_execution_preserves`](../TDN/Semantics/DistributedFragments.lean#L64) |
 
-
 </details>
 
 ### ExecutionFragments
@@ -1457,7 +1446,6 @@ Direct imports: [ExecutionInvariant](#executioninvariant), [Fragmentation](#frag
 | `def` | [`fragmentDescriptor`](../TDN/Semantics/ExecutionFragments.lean#L14) |
 | `def` | [`encodeForFragmentation`](../TDN/Semantics/ExecutionFragments.lean#L18) |
 | `theorem` | [`execution_fragment_descriptors_match`](../TDN/Semantics/ExecutionFragments.lean#L22) |
-
 
 </details>
 
@@ -1489,7 +1477,6 @@ Direct imports: [Execution](#execution).
 | `lemma` | [`route_selection_ignores_unavailable_transport`](../TDN/Semantics/FragmentHeaders.lean#L83) |
 | `lemma` | [`policy_selection_ignores_unavailable_transport`](../TDN/Semantics/FragmentHeaders.lean#L89) |
 
-
 </details>
 
 ### ReassemblyOrigins
@@ -1519,7 +1506,6 @@ Direct imports: [Fragmentation](#fragmentation).
 | `lemma` | [`admission_preserves_byte_safety`](../TDN/Semantics/ReassemblyOrigins.lean#L67) |
 | `theorem` | [`every_reassembly_history_preserves_byte_safety`](../TDN/Semantics/ReassemblyOrigins.lean#L83) |
 | `theorem` | [`reassembled_bytes_stay_in_admitted_domain`](../TDN/Semantics/ReassemblyOrigins.lean#L98) |
-
 
 </details>
 
@@ -1556,7 +1542,6 @@ Direct imports: [ReassemblyOrigins](#reassemblyorigins).
 | `theorem` | [`accepted_messages_from_seeded_history`](../TDN/Semantics/AuthenticatedAssembly.lean#L151) |
 | `theorem` | [`published_messages_were_produced`](../TDN/Semantics/AuthenticatedAssembly.lean#L172) |
 
-
 </details>
 
 ### ByteFlows
@@ -1583,7 +1568,6 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basi
 | `theorem` | [`all_executions_preserve_byte_properties`](../TDN/Semantics/ByteFlows.lean#L108) |
 | `theorem` | [`network_trace_on_one_carrier`](../TDN/Semantics/ByteFlows.lean#L122) |
 
-
 </details>
 
 ### ByteLineage
@@ -1607,16 +1591,15 @@ Direct imports: [ByteFlows](#byteflows).
 | `theorem` | [`every_byte_has_source_path`](../TDN/Semantics/ByteLineage.lean#L19) |
 | `lemma` | [`local_checks_preserve_lineage`](../TDN/Semantics/ByteLineage.lean#L38) |
 
-
 </details>
 
 ### PlaintextAssembly
 
 Source: [PlaintextAssembly.lean](../TDN/Semantics/PlaintextAssembly.lean). Namespace: `TDN.Execution`.
 
-[`PlaintextAssembly`](../TDN/Semantics/PlaintextAssembly.lean#L6) permits assembly between received states at the same port when both states have empty encryption-tag lists. [`plaintext_assembly_preserves_domain`](../TDN/Semantics/PlaintextAssembly.lean#L10) proves that such a change preserves [`DomainInvariant`](../TDN/Semantics/ExecutionDomains.lean#L38).
+[`PlaintextAssembly`](../TDN/Semantics/PlaintextAssembly.lean#L6) permits assembly between received states at the same interface when both states have empty encryption-tag lists. [`plaintext_assembly_preserves_domain`](../TDN/Semantics/PlaintextAssembly.lean#L10) proves that such a change preserves [`DomainInvariant`](../TDN/Semantics/ExecutionDomains.lean#L38).
 
-The proof works because the received-state domain invariant depends on the port and expected stack. It gives a specific assembly relation for byte-flow applications. Authenticated ciphertext assembly uses the separate authentication model.
+The proof works because the received-state domain invariant depends on the interface and expected stack. It gives a specific assembly relation for byte-flow applications. Authenticated ciphertext assembly uses the separate authentication model.
 
 Direct imports: [ByteFlows](#byteflows), [ExecutionDomains](#executiondomains).
 
@@ -1627,7 +1610,6 @@ Direct imports: [ByteFlows](#byteflows), [ExecutionDomains](#executiondomains).
 | --- | --- |
 | `def` | [`PlaintextAssembly`](../TDN/Semantics/PlaintextAssembly.lean#L6) |
 | `lemma` | [`plaintext_assembly_preserves_domain`](../TDN/Semantics/PlaintextAssembly.lean#L10) |
-
 
 </details>
 
@@ -1653,7 +1635,6 @@ Direct imports: [ByteFlows](#byteflows), [KernelResponses](#kernelresponses).
 | `theorem` | [`all_fragment_and_response_histories_preserve_bytes`](../TDN/Semantics/ResponseByteFlows.lean#L31) |
 | `theorem` | [`all_fragment_and_permitted_response_histories_preserve_bytes`](../TDN/Semantics/ResponseByteFlows.lean#L61) |
 
-
 </details>
 
 ### ByteProtectionEvents
@@ -1678,14 +1659,13 @@ Direct imports: [ByteLineage](#bytelineage), [ResponseByteFlows](#responsebytefl
 | `theorem` | [`trace_tag_addition_has_encryption`](../TDN/Semantics/ByteProtectionEvents.lean#L49) |
 | `lemma` | [`domain_lineage_preservation`](../TDN/Semantics/ByteProtectionEvents.lean#L63) |
 
-
 </details>
 
 ### MixedByteFlows
 
 Source: [MixedByteFlows.lean](../TDN/Semantics/MixedByteFlows.lean). Namespace: `TDN.MultiProtocolExecution`.
 
-`MixedByteFlows` applies byte-origin reasoning to the IPsec/MACsec/carrier model. [`PlainByteAssembly`](../TDN/Semantics/MixedByteFlows.lean#L7) permits same-port assembly of received plaintext into a datagram or Ethernet body. [`mixed_byte_execution_preserves_stack`](../TDN/Semantics/MixedByteFlows.lean#L26) lifts the mixed stack invariant to all resulting byte carriers when injection and local conditions are checked.
+`MixedByteFlows` applies byte-origin reasoning to the IPsec/MACsec/carrier model. [`PlainByteAssembly`](../TDN/Semantics/MixedByteFlows.lean#L7) permits same-interface assembly of received plaintext into a datagram or Ethernet body. [`mixed_byte_execution_preserves_stack`](../TDN/Semantics/MixedByteFlows.lean#L26) lifts the mixed stack invariant to all resulting byte carriers when injection and local conditions are checked.
 
 [`byteLineage`](../TDN/Semantics/MixedByteFlows.lean#L40) tracks the individual source paths. [`byte_path_layer_addition_has_encryption`](../TDN/Semantics/MixedByteFlows.lean#L68) locates an IPsec or MACsec encryption event on such a path. [`mixed_byte_path_requires_ordered_encryptions`](../TDN/Semantics/MixedByteFlows.lean#L88) proves Inner-before-Outer order under the two-layer placement premise. The scope is the mixed network and stated plaintext assembly relation; generated-response composition is provided separately for the IP model.
 
@@ -1707,7 +1687,6 @@ Direct imports: [ByteLineage](#bytelineage), [MultiProtocolEvents](#multiprotoco
 | `theorem` | [`byte_path_layer_addition_has_encryption`](../TDN/Semantics/MixedByteFlows.lean#L68) |
 | `def` | [`ByteOrderedEncryptions`](../TDN/Semantics/MixedByteFlows.lean#L80) |
 | `theorem` | [`mixed_byte_path_requires_ordered_encryptions`](../TDN/Semantics/MixedByteFlows.lean#L88) |
-
 
 </details>
 
@@ -1740,7 +1719,6 @@ Direct imports: `Mathlib.Data.List.Basic`.
 | `def` | [`KeyAdmits`](../TDN/Semantics/Trust.lean#L34) |
 | `theorem` | [`scoped_keys_exclude_cross_domain`](../TDN/Semantics/Trust.lean#L36) |
 
-
 </details>
 
 ### IKEContexts
@@ -1765,11 +1743,9 @@ Direct imports: `Mathlib.Data.List.Basic`.
 | `theorem` | [`reciprocal_peers_agree_on_directional_record`](../TDN/Semantics/IKEContexts.lean#L48) |
 | `theorem` | [`reciprocal_peers_share_key_under_derivation_contract`](../TDN/Semantics/IKEContexts.lean#L53) |
 
+Explicit instances:
 
-Explicit decidability instances:
-
-- [`Decidable (Peer sender receiver)`](../TDN/Semantics/IKEContexts.lean#L36)
-
+- [Instance at line 36](../TDN/Semantics/IKEContexts.lean#L36)
 
 </details>
 
@@ -1800,7 +1776,6 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basi
 | `lemma` | [`creation_preserves_authenticated_sources`](../TDN/Semantics/KeySources.lean#L50) |
 | `theorem` | [`executions_have_only_authenticated_sources`](../TDN/Semantics/KeySources.lean#L67) |
 
-
 </details>
 
 ### SequenceFreshness
@@ -1827,7 +1802,6 @@ Direct imports: [Admission](#admission), `Lean.Elab.Tactic.Omega`.
 | `def` | [`InstallMatches`](../TDN/Semantics/SequenceFreshness.lean#L45) |
 | `theorem` | [`installed_samples_have_matching_updates`](../TDN/Semantics/SequenceFreshness.lean#L51) |
 
-
 </details>
 
 ### AccessControl
@@ -1852,7 +1826,6 @@ Direct imports: `Mathlib.Data.List.Basic`.
 | `theorem` | [`unmapped_peer_is_denied`](../TDN/Semantics/AccessControl.lean#L37) |
 | `theorem` | [`absent_path_is_denied`](../TDN/Semantics/AccessControl.lean#L43) |
 | `theorem` | [`role_permission_restricts_operations`](../TDN/Semantics/AccessControl.lean#L54) |
-
 
 </details>
 
@@ -1881,7 +1854,6 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`.
 | `lemma` | [`step_preserves_prerequisites`](../TDN/Semantics/Admission.lean#L18) |
 | `theorem` | [`all_admitted_events_have_prerequisites`](../TDN/Semantics/Admission.lean#L33) |
 
-
 </details>
 
 ### TraceEvents
@@ -1903,7 +1875,6 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`.
 | `theorem` | [`changing_predicate_has_event`](../TDN/Semantics/TraceEvents.lean#L13) |
 | `theorem` | [`map_event`](../TDN/Semantics/TraceEvents.lean#L31) |
 
-
 </details>
 
 ### TraceAccounting
@@ -1923,7 +1894,6 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basi
 | --- | --- |
 | `theorem` | [`trace_balance`](../TDN/Semantics/TraceAccounting.lean#L7) |
 | `theorem` | [`increase_requires_credit`](../TDN/Semantics/TraceAccounting.lean#L21) |
-
 
 </details>
 
@@ -1945,7 +1915,6 @@ Direct imports: [TraceEvents](#traceevents).
 | `def` | [`within`](../TDN/Semantics/RestrictedExecution.lean#L5) |
 | `theorem` | [`project_trace`](../TDN/Semantics/RestrictedExecution.lean#L8) |
 | `theorem` | [`actual_event_in_scope`](../TDN/Semantics/RestrictedExecution.lean#L16) |
-
 
 </details>
 
@@ -1971,7 +1940,6 @@ Direct imports: `Mathlib.Data.Nat.Basic`, `Mathlib.Order.Monotone.Defs`, `Lean.E
 | `def` | [`alignedWireLength`](../TDN/Semantics/PacketLength.lean#L7) |
 | `theorem` | [`aligned_wire_length_monotone`](../TDN/Semantics/PacketLength.lean#L10) |
 | `theorem` | [`all_sizes_fit_from_maximum`](../TDN/Semantics/PacketLength.lean#L19) |
-
 
 </details>
 
@@ -2014,11 +1982,1272 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basi
 | `theorem` | [`all_executions_have_bounded_queues_and_fixed_records`](../TDN/Semantics/CoverTraffic.lean#L143) |
 | `theorem` | [`equal_schedule_gives_equal_size_observations`](../TDN/Semantics/CoverTraffic.lean#L149) |
 
+Explicit instances:
 
-Explicit decidability instances:
+- [Instance at line 17](../TDN/Semantics/CoverTraffic.lean#L17)
 
-- [`Decidable c.Valid`](../TDN/Semantics/CoverTraffic.lean#L17)
+</details>
 
+## Native processing, source bytes, and boundary checks
+
+### BinaryWire
+
+Source: [BinaryWire.lean](../TDN/Semantics/BinaryWire.lean).
+
+Converts integers to fixed-width bytes and reads integer fields back. The proofs require each value to fit its chosen width. These results support source headers, fragment fields and ESP headers without depending on a network configuration.
+
+<details>
+<summary>All 13 named declarations in BinaryWire</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`unsigned_accumulator`](../TDN/Semantics/BinaryWire.lean#L6) |
+| `lemma` | [`unsigned_append`](../TDN/Semantics/BinaryWire.lean#L17) |
+| `lemma` | [`unsigned_bound`](../TDN/Semantics/BinaryWire.lean#L23) |
+| `lemma` | [`field_bound`](../TDN/Semantics/BinaryWire.lean#L33) |
+| `def` | [`encodeUnsigned`](../TDN/Semantics/BinaryWire.lean#L42) |
+| `lemma` | [`encodeUnsigned_length`](../TDN/Semantics/BinaryWire.lean#L46) |
+| `theorem` | [`encodeUnsigned_decodes`](../TDN/Semantics/BinaryWire.lean#L52) |
+| `theorem` | [`field_encoded_segment`](../TDN/Semantics/BinaryWire.lean#L71) |
+| `lemma` | [`field_append_before`](../TDN/Semantics/BinaryWire.lean#L80) |
+| `lemma` | [`field_append_after`](../TDN/Semantics/BinaryWire.lean#L88) |
+| `lemma` | [`field_encodeUnsigned`](../TDN/Semantics/BinaryWire.lean#L93) |
+| `lemma` | [`field_two_bytes`](../TDN/Semantics/BinaryWire.lean#L99) |
+| `lemma` | [`decoded_fragment_offset_from_field`](../TDN/Semantics/BinaryWire.lean#L115) |
+
+</details>
+
+### BoundaryObservation
+
+Source: [BoundaryObservation.lean](../TDN/Semantics/BoundaryObservation.lean).
+
+Connects a packet observed at a physical boundary to the modeled operations that produced it. The outbound argument follows filtering, any selected IPsec operation, and routing until transmission is ready. The inbound argument requires a real modeled decryption step for the corresponding policy annotation. The caller supplies the configuration and a permitted native execution.
+
+<details>
+<summary>All 19 named declarations in BoundaryObservation</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`BoundaryPacket`](../TDN/Semantics/BoundaryObservation.lean#L6) |
+| `lemma` | [`boundary_packet_keeps_endpoints`](../TDN/Semantics/BoundaryObservation.lean#L13) |
+| `lemma` | [`IPsec_output_has_configured_outer_header`](../TDN/Semantics/BoundaryObservation.lean#L20) |
+| `lemma` | [`IPsec_input_has_configured_outer_header`](../TDN/Semantics/BoundaryObservation.lean#L41) |
+| `lemma` | [`outer_route_keeps_boundary_header`](../TDN/Semantics/BoundaryObservation.lean#L72) |
+| `lemma` | [`wire_keeps_boundary_header`](../TDN/Semantics/BoundaryObservation.lean#L82) |
+| `inductive` | [`OutboundSuffix`](../TDN/Semantics/BoundaryObservation.lean#L89) |
+| `lemma` | [`outbound_suffix_has_ready_state`](../TDN/Semantics/BoundaryObservation.lean#L98) |
+| `lemma` | [`outbound_suffix_is_native_execution`](../TDN/Semantics/BoundaryObservation.lean#L108) |
+| `lemma` | [`IPsec_suffix_boundary_packet_uses_installed_policy`](../TDN/Semantics/BoundaryObservation.lean#L117) |
+| `inductive` | [`FirstReadyRun`](../TDN/Semantics/BoundaryObservation.lean#L135) |
+| `lemma` | [`first_ready_run_is_native_execution`](../TDN/Semantics/BoundaryObservation.lean#L144) |
+| `lemma` | [`first_ready_run_finishes_ready`](../TDN/Semantics/BoundaryObservation.lean#L153) |
+| `lemma` | [`first_ready_run_from_ready_is_identity`](../TDN/Semantics/BoundaryObservation.lean#L160) |
+| `lemma` | [`dropped_state_has_no_first_ready_run`](../TDN/Semantics/BoundaryObservation.lean#L167) |
+| `lemma` | [`first_ready_run_from_encapsulated_is_one_route`](../TDN/Semantics/BoundaryObservation.lean#L177) |
+| `theorem` | [`first_ready_run_from_filtered_is_native_suffix`](../TDN/Semantics/BoundaryObservation.lean#L192) |
+| `theorem` | [`outbound_policy_annotation_forces_actual_IPsec`](../TDN/Semantics/BoundaryObservation.lean#L210) |
+| `theorem` | [`inbound_policy_annotation_requires_actual_decryption`](../TDN/Semantics/BoundaryObservation.lean#L225) |
+
+</details>
+
+### BytePartition
+
+Source: [BytePartition.lean](../TDN/Semantics/BytePartition.lean).
+
+Splits a byte list into bounded, nonempty pieces. The proofs show that concatenating the pieces restores the original bytes and that each piece respects the capacity. The supplied recursion bound must allow the complete input to be processed.
+
+<details>
+<summary>All 6 named declarations in BytePartition</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`bytePartition`](../TDN/Semantics/BytePartition.lean#L5) |
+| `lemma` | [`byte_partition_nonempty`](../TDN/Semantics/BytePartition.lean#L11) |
+| `lemma` | [`byte_partition_restores_bytes`](../TDN/Semantics/BytePartition.lean#L19) |
+| `lemma` | [`byte_partition_piece_bound`](../TDN/Semantics/BytePartition.lean#L29) |
+| `inductive` | [`BoundedPartition`](../TDN/Semantics/BytePartition.lean#L56) |
+| `theorem` | [`byte_partition_is_bounded`](../TDN/Semantics/BytePartition.lean#L65) |
+
+</details>
+
+### CanonicalRootEncoding
+
+Source: [CanonicalRootEncoding.lean](../TDN/Semantics/CanonicalRootEncoding.lean).
+
+`canonicalRoot` reconstructs a representative source packet from a modeled frame. For IP traffic, the packet fields determine the network and transport headers, while the stored payload determines the application bytes. For Ethernet traffic, it rebuilds the Ethernet header and decodes the stored payload. The proof shows that the rebuilt packet satisfies the modeled decoding conditions and preserves the application bytes and original header identities. Reconstructed IPv4 identification and fragment flags are set to zero. The construction gives later byte-length proofs a source packet they can compute from the current frame.
+
+<details>
+<summary>All 6 named declarations in CanonicalRootEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`matched_transport_template`](../TDN/Semantics/CanonicalRootEncoding.lean#L7) |
+| `def` | [`canonicalIPRoot`](../TDN/Semantics/CanonicalRootEncoding.lean#L36) |
+| `theorem` | [`canonical_IP_root_decodes`](../TDN/Semantics/CanonicalRootEncoding.lean#L45) |
+| `lemma` | [`matched_Ethernet_header_bounds`](../TDN/Semantics/CanonicalRootEncoding.lean#L113) |
+| `def` | [`canonicalRoot`](../TDN/Semantics/CanonicalRootEncoding.lean#L134) |
+| `theorem` | [`canonical_root_properties`](../TDN/Semantics/CanonicalRootEncoding.lean#L143) |
+
+</details>
+
+### DecodedHeaderProperties
+
+Source: [DecodedHeaderProperties.lean](../TDN/Semantics/DecodedHeaderProperties.lean).
+
+Extracts address, protocol, header-size and representability conditions from a decoded source datagram. The results let later proofs use the decoder conditions without inspecting the original byte list repeatedly.
+
+<details>
+<summary>All 3 named declarations in DecodedHeaderProperties</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`matched_network_header_properties`](../TDN/Semantics/DecodedHeaderProperties.lean#L5) |
+| `lemma` | [`matched_transport_ICMP_representable`](../TDN/Semantics/DecodedHeaderProperties.lean#L45) |
+| `theorem` | [`decoded_IP_header_properties`](../TDN/Semantics/DecodedHeaderProperties.lean#L62) |
+
+</details>
+
+### ESPWire
+
+Source: [ESPWire.lean](../TDN/Semantics/ESPWire.lean).
+
+Builds the modeled ESP header, IV, padding, trailer and protected bytes. The general proofs establish the exact encoded length and successful decoding after encoding. The caller supplies an encryption function together with proofs of its output length and successful decoding after encryption. Cryptographic secrecy and nonce freshness need separate arguments.
+
+<details>
+<summary>All 18 named declarations in ESPWire</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`GCMPrimitive`](../TDN/Semantics/ESPWire.lean#L9) |
+| `def` | [`paddingLength`](../TDN/Semantics/ESPWire.lean#L19) |
+| `lemma` | [`padding_length_bound`](../TDN/Semantics/ESPWire.lean#L22) |
+| `lemma` | [`padded_length`](../TDN/Semantics/ESPWire.lean#L26) |
+| `def` | [`padding`](../TDN/Semantics/ESPWire.lean#L32) |
+| `lemma` | [`padding_length`](../TDN/Semantics/ESPWire.lean#L35) |
+| `def` | [`protectedPlaintext`](../TDN/Semantics/ESPWire.lean#L39) |
+| `lemma` | [`protected_plaintext_length`](../TDN/Semantics/ESPWire.lean#L43) |
+| `def` | [`espAAD`](../TDN/Semantics/ESPWire.lean#L51) |
+| `lemma` | [`aad_length`](../TDN/Semantics/ESPWire.lean#L54) |
+| `def` | [`encodeESP`](../TDN/Semantics/ESPWire.lean#L58) |
+| `def` | [`openESP`](../TDN/Semantics/ESPWire.lean#L65) |
+| `lemma` | [`encoded_ESP_length`](../TDN/Semantics/ESPWire.lean#L69) |
+| `lemma` | [`open_encoded_ESP`](../TDN/Semantics/ESPWire.lean#L78) |
+| `def` | [`unpadESP`](../TDN/Semantics/ESPWire.lean#L104) |
+| `lemma` | [`unpad_protected_plaintext`](../TDN/Semantics/ESPWire.lean#L111) |
+| `def` | [`decodeESP`](../TDN/Semantics/ESPWire.lean#L150) |
+| `theorem` | [`decode_encoded_ESP`](../TDN/Semantics/ESPWire.lean#L154) |
+
+</details>
+
+### EthernetHeaderEncoding
+
+Source: [EthernetHeaderEncoding.lean](../TDN/Semantics/EthernetHeaderEncoding.lean).
+
+Constructs Ethernet headers with supported VLAN tags. The matching theorem proves that the generated bytes contain the supplied addresses, EtherType and tag fields when those fields fit their encoded widths.
+
+<details>
+<summary>All 6 named declarations in EthernetHeaderEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`encodeVLANs`](../TDN/Semantics/EthernetHeaderEncoding.lean#L5) |
+| `lemma` | [`encoded_VLAN_length`](../TDN/Semantics/EthernetHeaderEncoding.lean#L9) |
+| `lemma` | [`encoded_VLAN_fields`](../TDN/Semantics/EthernetHeaderEncoding.lean#L15) |
+| `def` | [`encodeEthernetHeader`](../TDN/Semantics/EthernetHeaderEncoding.lean#L42) |
+| `lemma` | [`encoded_Ethernet_header_length`](../TDN/Semantics/EthernetHeaderEncoding.lean#L46) |
+| `theorem` | [`encoded_Ethernet_header_matches`](../TDN/Semantics/EthernetHeaderEncoding.lean#L51) |
+
+</details>
+
+### EthernetSizeBudgets
+
+Source: [EthernetSizeBudgets.lean](../TDN/Semantics/EthernetSizeBudgets.lean).
+
+Preserves a plain Ethernet payload size bound across the supported native steps. Link and bridge conditions require a receiving interface to support the sending interface’s MTU. The supporting reassembly lemma recovers the payload bound from a valid single Ethernet frame.
+
+<details>
+<summary>All 5 named declarations in EthernetSizeBudgets</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`EthernetSizeBound`](../TDN/Semantics/EthernetSizeBudgets.lean#L8) |
+| `structure` | [`EthernetMTUChecks`](../TDN/Semantics/EthernetSizeBudgets.lean#L12) |
+| `lemma` | [`Ethernet_no_visible`](../TDN/Semantics/EthernetSizeBudgets.lean#L16) |
+| `theorem` | [`native_step_preserves_Ethernet_size`](../TDN/Semantics/EthernetSizeBudgets.lean#L22) |
+| `lemma` | [`Ethernet_reassembly_size`](../TDN/Semantics/EthernetSizeBudgets.lean#L67) |
+
+</details>
+
+### ForwardedDatagramEncoding
+
+Source: [ForwardedDatagramEncoding.lean](../TDN/Semantics/ForwardedDatagramEncoding.lean).
+
+Updates a source datagram header to reflect the hop limit after forwarding. The proofs retain the other modeled header fields and the source transport header. The serializer initializes fields outside the modeled comparison, including checksums; its matching claim follows the fields listed in the formal decoder.
+
+<details>
+<summary>All 5 named declarations in ForwardedDatagramEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`HeaderIdentity.actual_is_nominal_with_hop`](../TDN/Semantics/ForwardedDatagramEncoding.lean#L5) |
+| `def` | [`forwardedNetworkHeader`](../TDN/Semantics/ForwardedDatagramEncoding.lean#L17) |
+| `lemma` | [`forwarded_network_header_matches`](../TDN/Semantics/ForwardedDatagramEncoding.lean#L23) |
+| `lemma` | [`forwarded_transport_header_matches`](../TDN/Semantics/ForwardedDatagramEncoding.lean#L62) |
+| `lemma` | [`initial_forwarded_network_bytes`](../TDN/Semantics/ForwardedDatagramEncoding.lean#L71) |
+
+</details>
+
+### FragmentPlan
+
+Source: [FragmentPlan.lean](../TDN/Semantics/FragmentPlan.lean).
+
+Constructs fragment records from a bounded byte partition. The proofs account for offsets, nonempty pieces, alignment, total length and restoration of the original data. The caller supplies the fragment-header encoder and its field conditions.
+
+<details>
+<summary>All 8 named declarations in FragmentPlan</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `abbrev` | [`FragmentHeaderEncoder`](../TDN/Semantics/FragmentPlan.lean#L6) |
+| `def` | [`makeFragments`](../TDN/Semantics/FragmentPlan.lean#L8) |
+| `lemma` | [`made_fragments_as_pieces`](../TDN/Semantics/FragmentPlan.lean#L16) |
+| `structure` | [`FragmentPlanFacts`](../TDN/Semantics/FragmentPlan.lean#L24) |
+| `theorem` | [`made_fragments_follow_plan`](../TDN/Semantics/FragmentPlan.lean#L33) |
+| `lemma` | [`BoundedPartition.chunks_nonempty`](../TDN/Semantics/FragmentPlan.lean#L69) |
+| `lemma` | [`BoundedPartition.restores_bytes`](../TDN/Semantics/FragmentPlan.lean#L74) |
+| `theorem` | [`made_fragments_are_valid_pieces`](../TDN/Semantics/FragmentPlan.lean#L85) |
+
+</details>
+
+### HeaderedEvents
+
+Source: [HeaderedEvents.lean](../TDN/Semantics/HeaderedEvents.lean).
+
+Proves the order of Inner and Outer encryption while retaining the headers used by the actual modeled filters. A final two-layer stack identifies an earlier Inner encryption followed by an Outer encryption. The caller supplies the initial stack, placement conditions, and local header-processing conditions.
+
+<details>
+<summary>All 2 named declarations in HeaderedEvents</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`headered_encryption_output_layout`](../TDN/Semantics/HeaderedEvents.lean#L7) |
+| `theorem` | [`headered_nested_stack_requires_ordered_encryptions`](../TDN/Semantics/HeaderedEvents.lean#L17) |
+
+</details>
+
+### HeaderedStack
+
+Source: [HeaderedStack.lean](../TDN/Semantics/HeaderedStack.lean).
+
+Maintains the expected encryption layers as packets move through routing, filtering, encapsulation and decryption. The argument uses the header currently visible to each operation. Checked local conditions and the initial invariant imply that every finite execution preserves the expected stack.
+
+<details>
+<summary>All 14 named declarations in HeaderedStack</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`HeaderIdentity.source`](../TDN/Semantics/HeaderedStack.lean#L6) |
+| `lemma` | [`HeaderIdentity.destination`](../TDN/Semantics/HeaderedStack.lean#L11) |
+| `lemma` | [`Frame.forwarded_visible`](../TDN/Semantics/HeaderedStack.lean#L16) |
+| `lemma` | [`Frame.pop_visible`](../TDN/Semantics/HeaderedStack.lean#L26) |
+| `abbrev` | [`withoutHeaderProcessing`](../TDN/Semantics/HeaderedStack.lean#L37) |
+| `abbrev` | [`HeaderedLocalConditions`](../TDN/Semantics/HeaderedStack.lean#L39) |
+| `lemma` | [`carrier_bodies_without_headers`](../TDN/Semantics/HeaderedStack.lean#L42) |
+| `def` | [`HeaderedLocalHeader`](../TDN/Semantics/HeaderedStack.lean#L46) |
+| `def` | [`HeaderedAcceptedHook`](../TDN/Semantics/HeaderedStack.lean#L50) |
+| `def` | [`HeaderedStackInvariant`](../TDN/Semantics/HeaderedStack.lean#L57) |
+| `lemma` | [`selected_associations_same_header`](../TDN/Semantics/HeaderedStack.lean#L78) |
+| `lemma` | [`headered_hook_stack_effect`](../TDN/Semantics/HeaderedStack.lean#L85) |
+| `lemma` | [`headered_step_preserves_stack`](../TDN/Semantics/HeaderedStack.lean#L106) |
+| `theorem` | [`headered_executions_preserve_stack`](../TDN/Semantics/HeaderedStack.lean#L290) |
+
+</details>
+
+### HookPrograms
+
+Source: [HookPrograms.lean](../TDN/Semantics/HookPrograms.lean).
+
+Adds the actual receiving or sending interface to a rule program. The proofs show how the added interface conditions affect evaluation and preserve the corresponding native admission decision. A caller provides the original rules, interface names and interface context.
+
+<details>
+<summary>All 15 named declarations in HookPrograms</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`Rule.withContext`](../TDN/Semantics/HookPrograms.lean#L5) |
+| `def` | [`contextProgram`](../TDN/Semantics/HookPrograms.lean#L8) |
+| `lemma` | [`context_rule_matches`](../TDN/Semantics/HookPrograms.lean#L11) |
+| `theorem` | [`context_program_evaluation`](../TDN/Semantics/HookPrograms.lean#L20) |
+| `lemma` | [`context_rule_requires_context`](../TDN/Semantics/HookPrograms.lean#L34) |
+| `theorem` | [`context_program_rejects_wrong_context`](../TDN/Semantics/HookPrograms.lean#L40) |
+| `def` | [`Program.withContext`](../TDN/Semantics/HookPrograms.lean#L59) |
+| `lemma` | [`Program.context_evaluation`](../TDN/Semantics/HookPrograms.lean#L62) |
+| `def` | [`IfacePolicy.withContext`](../TDN/Semantics/HookPrograms.lean#L68) |
+| `def` | [`contextPolicies`](../TDN/Semantics/HookPrograms.lean#L72) |
+| `lemma` | [`lookup_context_policies`](../TDN/Semantics/HookPrograms.lean#L76) |
+| `theorem` | [`contextual_link_admission_preserves_actual_hook`](../TDN/Semantics/HookPrograms.lean#L90) |
+| `def` | [`Config.withLinkContext`](../TDN/Semantics/HookPrograms.lean#L114) |
+| `theorem` | [`link_context_preserves_native_admission`](../TDN/Semantics/HookPrograms.lean#L118) |
+| `theorem` | [`link_context_preserves_native_step_admission`](../TDN/Semantics/HookPrograms.lean#L132) |
+
+</details>
+
+### IPFragmentation
+
+Source: [IPFragmentation.lean](../TDN/Semantics/IPFragmentation.lean).
+
+Chooses fragment capacities from the IP header size and MTU, then constructs IPv4 or IPv6 fragments. The reassembly theorem proves that the resulting fragments reconstruct the datagram within the supplied size and header conditions.
+
+<details>
+<summary>All 8 named declarations in IPFragmentation</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`fragmentHeaderSize`](../TDN/Semantics/IPFragmentation.lean#L9) |
+| `def` | [`fragmentCapacity`](../TDN/Semantics/IPFragmentation.lean#L12) |
+| `def` | [`encodeIPFragmentHeader`](../TDN/Semantics/IPFragmentation.lean#L15) |
+| `lemma` | [`fragment_capacity_bounds`](../TDN/Semantics/IPFragmentation.lean#L21) |
+| `theorem` | [`encoded_IP_fragment_is_valid`](../TDN/Semantics/IPFragmentation.lean#L36) |
+| `def` | [`Datagram.fragmentIP`](../TDN/Semantics/IPFragmentation.lean#L104) |
+| `theorem` | [`Datagram.fragment_IP_reassembles`](../TDN/Semantics/IPFragmentation.lean#L109) |
+| `theorem` | [`Datagram.fragment_IP_reassembles_from_header`](../TDN/Semantics/IPFragmentation.lean#L137) |
+
+</details>
+
+### IPsecBodyShape
+
+Source: [IPsecBodyShape.lean](../TDN/Semantics/IPsecBodyShape.lean).
+
+Tracks whether a packet contains only the supported IPsec layers and a plain inner body. The preservation lemma rules out introducing unsupported MACsec or carrier wrappers when those mechanisms are absent from the supplied configuration.
+
+<details>
+<summary>All 3 named declarations in IPsecBodyShape</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`Body.IPsecOnly`](../TDN/Semantics/IPsecBodyShape.lean#L5) |
+| `lemma` | [`Config.visible_implies_body_header`](../TDN/Semantics/IPsecBodyShape.lean#L16) |
+| `lemma` | [`step_preserves_IPsec_body_shape`](../TDN/Semantics/IPsecBodyShape.lean#L27) |
+
+</details>
+
+### IPsecFrameEncoding
+
+Source: [IPsecFrameEncoding.lean](../TDN/Semantics/IPsecFrameEncoding.lean).
+
+Serializes and decodes nested IPsec bodies while preserving their original payload and modeled headers. The reusable results connect the encoded byte length to the recursive IPsec size calculation. The caller supplies the encryption function and its required length and decoding properties, supported IPv4 tunnel parameters and coherent visible and hidden headers.
+
+<details>
+<summary>All 17 named declarations in IPsecFrameEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`Parameters`](../TDN/Semantics/IPsecFrameEncoding.lean#L8) |
+| `structure` | [`Codec`](../TDN/Semantics/IPsecFrameEncoding.lean#L15) |
+| `def` | [`KnownIPv4Seal`](../TDN/Semantics/IPsecFrameEncoding.lean#L22) |
+| `def` | [`nextHeader`](../TDN/Semantics/IPsecFrameEncoding.lean#L26) |
+| `lemma` | [`next_header_bound`](../TDN/Semantics/IPsecFrameEncoding.lean#L31) |
+| `def` | [`networkLength`](../TDN/Semantics/IPsecFrameEncoding.lean#L38) |
+| `def` | [`leafNetwork`](../TDN/Semantics/IPsecFrameEncoding.lean#L44) |
+| `def` | [`encodeBody`](../TDN/Semantics/IPsecFrameEncoding.lean#L48) |
+| `def` | [`decodeBody`](../TDN/Semantics/IPsecFrameEncoding.lean#L63) |
+| `def` | [`encodeFrame`](../TDN/Semantics/IPsecFrameEncoding.lean#L78) |
+| `def` | [`decodeFrame`](../TDN/Semantics/IPsecFrameEncoding.lean#L82) |
+| `lemma` | [`known_outer_header_size`](../TDN/Semantics/IPsecFrameEncoding.lean#L87) |
+| `theorem` | [`initial_body_serialization`](../TDN/Semantics/IPsecFrameEncoding.lean#L100) |
+| `lemma` | [`source_IP_body_from_original`](../TDN/Semantics/IPsecFrameEncoding.lean#L114) |
+| `lemma` | [`ESP_network_length_at_least_inner`](../TDN/Semantics/IPsecFrameEncoding.lean#L126) |
+| `theorem` | [`decode_encoded_body`](../TDN/Semantics/IPsecFrameEncoding.lean#L133) |
+| `theorem` | [`encoded_body_network_length`](../TDN/Semantics/IPsecFrameEncoding.lean#L190) |
+
+</details>
+
+### IPsecInput
+
+Source: [IPsecInput.lean](../TDN/Semantics/IPsecInput.lean).
+
+Connects admitted decryption and subsequent routing to the installed IPsec policy and visible header. The lemmas retain endpoint addresses and authentication facts through the receiving path. They require coherent headers and the recorded policy, association and processing relations.
+
+<details>
+<summary>All 6 named declarations in IPsecInput</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`coherent_IPsec_visible_fields`](../TDN/Semantics/IPsecInput.lean#L5) |
+| `def` | [`IPsecInputAtom`](../TDN/Semantics/IPsecInput.lean#L20) |
+| `def` | [`IPsecInputPossible`](../TDN/Semantics/IPsecInput.lean#L33) |
+| `lemma` | [`admitted_decryption_has_possible_rule`](../TDN/Semantics/IPsecInput.lean#L43) |
+| `lemma` | [`coherent_same_body_has_same_visible_source`](../TDN/Semantics/IPsecInput.lean#L75) |
+| `lemma` | [`ingress_route_detailed_authentication`](../TDN/Semantics/IPsecInput.lean#L96) |
+
+Explicit instances:
+
+- [Instance at line 29](../TDN/Semantics/IPsecInput.lean#L29)
+- [Instance at line 38](../TDN/Semantics/IPsecInput.lean#L38)
+
+</details>
+
+### IPsecLinkEncoding
+
+Source: [IPsecLinkEncoding.lean](../TDN/Semantics/IPsecLinkEncoding.lean).
+
+`linkEncoding` gives a modeled frame an Ethernet representation. IP traffic receives an Ethernet header with the appropriate IPv4 or IPv6 EtherType and the bytes produced by the IPsec emission model. The Ethernet source and destination fields are zero placeholders. An existing Ethernet body retains its modeled header and payload. `encoded_link_describes_reachable_IPsec_frame` proves that the resulting header and byte layout describe a reachable frame, assuming source decoding, consistent headers and the established packet-size limits. That connection lets bridge-rule checks operate on the represented transmitted frame.
+
+<details>
+<summary>All 4 named declarations in IPsecLinkEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`IPLinkHeader`](../TDN/Semantics/IPsecLinkEncoding.lean#L7) |
+| `def` | [`linkEncoding`](../TDN/Semantics/IPsecLinkEncoding.lean#L11) |
+| `lemma` | [`IP_link_header_decoded`](../TDN/Semantics/IPsecLinkEncoding.lean#L21) |
+| `theorem` | [`encoded_link_describes_reachable_IPsec_frame`](../TDN/Semantics/IPsecLinkEncoding.lean#L31) |
+
+</details>
+
+### IPsecOptionForms
+
+Source: [IPsecOptionForms.lean](../TDN/Semantics/IPsecOptionForms.lean).
+
+Extends the finite IPsec packet descriptions with IPv4-header options. Its matching lemma connects the resulting rule conditions to the packet fields. The supplied source, destination, interface and header-word values determine the supported packet class.
+
+<details>
+<summary>All 2 named declarations in IPsecOptionForms</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`IPsecForm.maskWithOptions`](../TDN/Semantics/IPsecOptionForms.lean#L5) |
+| `lemma` | [`IPsecForm.maskWithOptions_matches`](../TDN/Semantics/IPsecOptionForms.lean#L10) |
+
+</details>
+
+### IPsecPacketForms
+
+Source: [IPsecPacketForms.lean](../TDN/Semantics/IPsecPacketForms.lean).
+
+Describes the supported ESP and UDP request/reply forms used in the boundary-rule proofs. Each form fixes its protocol, relevant ports and framing conditions. The proofs relate decoded packet bytes to those forms and their finite rule descriptions.
+
+<details>
+<summary>All 13 named declarations in IPsecPacketForms</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `inductive` | [`IPsecForm`](../TDN/Semantics/IPsecPacketForms.lean#L6) |
+| `def` | [`IPsecForm.all`](../TDN/Semantics/IPsecPacketForms.lean#L10) |
+| `def` | [`IPsecForm.protocol`](../TDN/Semantics/IPsecPacketForms.lean#L12) |
+| `def` | [`IPsecForm.sourcePort`](../TDN/Semantics/IPsecPacketForms.lean#L16) |
+| `def` | [`IPsecForm.destinationPort`](../TDN/Semantics/IPsecPacketForms.lean#L21) |
+| `def` | [`IPsecForm.requestFraming`](../TDN/Semantics/IPsecPacketForms.lean#L26) |
+| `def` | [`IPsecForm.replyFraming`](../TDN/Semantics/IPsecPacketForms.lean#L30) |
+| `def` | [`IPsecForm.Matches`](../TDN/Semantics/IPsecPacketForms.lean#L34) |
+| `lemma` | [`request_framing_has_form`](../TDN/Semantics/IPsecPacketForms.lean#L41) |
+| `lemma` | [`reply_framing_has_form`](../TDN/Semantics/IPsecPacketForms.lean#L58) |
+| `lemma` | [`decoded_IPsec_has_form`](../TDN/Semantics/IPsecPacketForms.lean#L75) |
+| `def` | [`IPsecForm.mask`](../TDN/Semantics/IPsecPacketForms.lean#L96) |
+| `lemma` | [`IPsecForm.mask_matches`](../TDN/Semantics/IPsecPacketForms.lean#L105) |
+
+</details>
+
+### IPsecWireEmission
+
+Source: [IPsecWireEmission.lean](../TDN/Semantics/IPsecWireEmission.lean).
+
+Constructs the emitted datagram from the current plain or nested IPsec packet body. The proofs bind its raw length and visible header to the serializer, then establish reconstruction from the MTU-selected fragments. The result uses the same encryption primitive and field-comparison assumptions as the source and ESP encoders.
+
+<details>
+<summary>All 13 named declarations in IPsecWireEmission</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`protectedData`](../TDN/Semantics/IPsecWireEmission.lean#L8) |
+| `def` | [`bareEmission`](../TDN/Semantics/IPsecWireEmission.lean#L16) |
+| `def` | [`wireEmission`](../TDN/Semantics/IPsecWireEmission.lean#L36) |
+| `lemma` | [`bare_emission_raw`](../TDN/Semantics/IPsecWireEmission.lean#L42) |
+| `lemma` | [`wire_emission_raw`](../TDN/Semantics/IPsecWireEmission.lean#L49) |
+| `lemma` | [`wire_emission_body`](../TDN/Semantics/IPsecWireEmission.lean#L58) |
+| `lemma` | [`wire_emission_network`](../TDN/Semantics/IPsecWireEmission.lean#L67) |
+| `lemma` | [`wire_Ethernet_size`](../TDN/Semantics/IPsecWireEmission.lean#L77) |
+| `lemma` | [`wire_fitting_fragment_count`](../TDN/Semantics/IPsecWireEmission.lean#L83) |
+| `lemma` | [`forwarded_header_unfragmented`](../TDN/Semantics/IPsecWireEmission.lean#L103) |
+| `lemma` | [`bare_emission_IP_properties`](../TDN/Semantics/IPsecWireEmission.lean#L119) |
+| `lemma` | [`reachable_visible_representable`](../TDN/Semantics/IPsecWireEmission.lean#L209) |
+| `theorem` | [`wire_IP_reassembles`](../TDN/Semantics/IPsecWireEmission.lean#L242) |
+
+</details>
+
+### IPv4FragmentEncoding
+
+Source: [IPv4FragmentEncoding.lean](../TDN/Semantics/IPv4FragmentEncoding.lean).
+
+Constructs IPv4 fragment headers and proves their identification, offset, length and more-fragments fields. The theorem requires representable addresses and header values, valid fragment alignment and a bounded total length.
+
+<details>
+<summary>All 5 named declarations in IPv4FragmentEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`ipv4FragmentFlags`](../TDN/Semantics/IPv4FragmentEncoding.lean#L5) |
+| `def` | [`encodeIPv4Fragment`](../TDN/Semantics/IPv4FragmentEncoding.lean#L8) |
+| `lemma` | [`ipv4_fragment_flags_bound`](../TDN/Semantics/IPv4FragmentEncoding.lean#L13) |
+| `theorem` | [`encoded_IPv4_fragment_fields`](../TDN/Semantics/IPv4FragmentEncoding.lean#L17) |
+| `lemma` | [`encoded_IPv4_fragment_size`](../TDN/Semantics/IPv4FragmentEncoding.lean#L39) |
+
+</details>
+
+### IPv6FragmentEncoding
+
+Source: [IPv6FragmentEncoding.lean](../TDN/Semantics/IPv6FragmentEncoding.lean).
+
+Constructs the supported IPv6 base and fragment headers. The field theorem connects the encoded bytes to the next-header value, payload length, fragment offset and more-fragments bit under the supplied bounds.
+
+<details>
+<summary>All 4 named declarations in IPv6FragmentEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`fragmentMoreBit`](../TDN/Semantics/IPv6FragmentEncoding.lean#L5) |
+| `def` | [`encodeIPv6FragmentHeader`](../TDN/Semantics/IPv6FragmentEncoding.lean#L7) |
+| `lemma` | [`encoded_IPv6_fragment_header_length`](../TDN/Semantics/IPv6FragmentEncoding.lean#L15) |
+| `theorem` | [`encoded_IPv6_fragment_fields`](../TDN/Semantics/IPv6FragmentEncoding.lean#L20) |
+
+</details>
+
+### KeyInterface
+
+Source: [KeyInterface.lean](../TDN/Semantics/KeyInterface.lean).
+
+Models a protected key store and its operations. The reusable proofs exclude forbidden key exports and require authorization for reads across every modeled execution. The caller supplies key confidentiality, principal permissions and an initial safe store. Applying the results to a token requires correspondence with its actual interfaces.
+
+<details>
+<summary>All 13 named declarations in KeyInterface</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`Object`](../TDN/Semantics/KeyInterface.lean#L5) |
+| `def` | [`Object.Restricted`](../TDN/Semantics/KeyInterface.lean#L12) |
+| `def` | [`StoreSafe`](../TDN/Semantics/KeyInterface.lean#L15) |
+| `inductive` | [`Event`](../TDN/Semantics/KeyInterface.lean#L18) |
+| `inductive` | [`Action`](../TDN/Semantics/KeyInterface.lean#L23) |
+| `def` | [`Action.events`](../TDN/Semantics/KeyInterface.lean#L34) |
+| `inductive` | [`Step`](../TDN/Semantics/KeyInterface.lean#L41) |
+| `def` | [`system`](../TDN/Semantics/KeyInterface.lean#L69) |
+| `lemma` | [`step_preserves_store`](../TDN/Semantics/KeyInterface.lean#L74) |
+| `lemma` | [`step_export_impossible`](../TDN/Semantics/KeyInterface.lean#L101) |
+| `lemma` | [`step_read_authorized`](../TDN/Semantics/KeyInterface.lean#L127) |
+| `theorem` | [`protected_exports_impossible`](../TDN/Semantics/KeyInterface.lean#L144) |
+| `theorem` | [`all_reads_authorized`](../TDN/Semantics/KeyInterface.lean#L160) |
+
+</details>
+
+### LinkAdmission
+
+Source: [LinkAdmission.lean](../TDN/Semantics/LinkAdmission.lean).
+
+Represents ordered link-layer filtering at a named input or output interface. A frame record connects Ethernet bytes, IP fields and MACsec framing to a modeled body. Admission requires a present interface policy and acceptance by the selected directional program.
+
+<details>
+<summary>All 12 named declarations in LinkAdmission</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`Program`](../TDN/Semantics/LinkAdmission.lean#L5) |
+| `structure` | [`IfacePolicy`](../TDN/Semantics/LinkAdmission.lean#L10) |
+| `def` | [`Program.Accepts`](../TDN/Semantics/LinkAdmission.lean#L15) |
+| `structure` | [`Frame`](../TDN/Semantics/LinkAdmission.lean#L18) |
+| `def` | [`Frame.Packet`](../TDN/Semantics/LinkAdmission.lean#L24) |
+| `def` | [`Frame.Decoded`](../TDN/Semantics/LinkAdmission.lean#L32) |
+| `def` | [`MACsecFraming`](../TDN/Semantics/LinkAdmission.lean#L35) |
+| `def` | [`Frame.DescribesBody`](../TDN/Semantics/LinkAdmission.lean#L45) |
+| `def` | [`lookup`](../TDN/Semantics/LinkAdmission.lean#L55) |
+| `def` | [`Admitted`](../TDN/Semantics/LinkAdmission.lean#L58) |
+| `def` | [`payloadCode`](../TDN/Semantics/LinkAdmission.lean#L73) |
+| `def` | [`Frame.Describes`](../TDN/Semantics/LinkAdmission.lean#L76) |
+
+Explicit instances:
+
+- [Instance at line 41](../TDN/Semantics/LinkAdmission.lean#L41)
+- [Instance at line 63](../TDN/Semantics/LinkAdmission.lean#L63)
+- [Instance at line 68](../TDN/Semantics/LinkAdmission.lean#L68)
+
+</details>
+
+### LocalAddressProjection
+
+Source: [LocalAddressProjection.lean](../TDN/Semantics/LocalAddressProjection.lean).
+
+Replaces the local-address predicate in an execution configuration and proves which policy decisions remain unchanged. The proofs make their equality conditions explicit for the packet and input, forwarding or output decision in question.
+
+<details>
+<summary>All 6 named declarations in LocalAddressProjection</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`Config.withLocalAddresses`](../TDN/Semantics/LocalAddressProjection.lean#L5) |
+| `lemma` | [`local_address_projection_preserves_policy_packet`](../TDN/Semantics/LocalAddressProjection.lean#L8) |
+| `lemma` | [`local_address_projection_preserves_input_admission`](../TDN/Semantics/LocalAddressProjection.lean#L13) |
+| `lemma` | [`local_address_projection_preserves_forward_decision`](../TDN/Semantics/LocalAddressProjection.lean#L19) |
+| `lemma` | [`local_address_projection_preserves_input_decision`](../TDN/Semantics/LocalAddressProjection.lean#L30) |
+| `lemma` | [`local_address_projection_preserves_output_decision`](../TDN/Semantics/LocalAddressProjection.lean#L41) |
+
+</details>
+
+### MultiProtocolHeaders
+
+Source: [MultiProtocolHeaders.lean](../TDN/Semantics/MultiProtocolHeaders.lean).
+
+Tracks the visible and hidden headers through forwarding, IPsec, MACsec and carrier operations. The step lemma proves header consistency for one operation, and the execution theorem extends that result to any finite run. Generated header bounds and initial header consistency remain required inputs.
+
+<details>
+<summary>All 18 named declarations in MultiProtocolHeaders</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`HeaderIdentity.decrement`](../TDN/Semantics/MultiProtocolHeaders.lean#L5) |
+| `lemma` | [`Body.coherent_visible`](../TDN/Semantics/MultiProtocolHeaders.lean#L12) |
+| `lemma` | [`Body.coherent_set_active`](../TDN/Semantics/MultiProtocolHeaders.lean#L19) |
+| `lemma` | [`Frame.coherent_visible`](../TDN/Semantics/MultiProtocolHeaders.lean#L27) |
+| `lemma` | [`Frame.forwarded_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L39) |
+| `lemma` | [`Frame.push_ipsec_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L49) |
+| `lemma` | [`Frame.push_carrier_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L56) |
+| `lemma` | [`Frame.push_macsec_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L63) |
+| `lemma` | [`Frame.pop_ipsec_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L68) |
+| `lemma` | [`Frame.pop_macsec_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L76) |
+| `lemma` | [`Frame.pop_carrier_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L84) |
+| `lemma` | [`unwrap_carrier_has_body`](../TDN/Semantics/MultiProtocolHeaders.lean#L92) |
+| `def` | [`HeaderBounds`](../TDN/Semantics/MultiProtocolHeaders.lean#L110) |
+| `lemma` | [`step_preserves_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L113) |
+| `theorem` | [`all_executions_preserve_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L156) |
+| `lemma` | [`field_byte_bound`](../TDN/Semantics/MultiProtocolHeaders.lean#L170) |
+| `lemma` | [`matched_network_hop_bound`](../TDN/Semantics/MultiProtocolHeaders.lean#L181) |
+| `lemma` | [`decoded_source_headers`](../TDN/Semantics/MultiProtocolHeaders.lean#L192) |
+
+</details>
+
+### MultiProtocolIdentity
+
+Source: [MultiProtocolIdentity.lean](../TDN/Semantics/MultiProtocolIdentity.lean).
+
+Shows that the original packet header survives modeled wrapping, unwrapping and forwarding. The single-step result is lifted to every finite execution. The result concerns the original header retained by the model.
+
+<details>
+<summary>All 3 named declarations in MultiProtocolIdentity</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`unwrap_preserves_original_header`](../TDN/Semantics/MultiProtocolIdentity.lean#L6) |
+| `lemma` | [`step_preserves_original_header`](../TDN/Semantics/MultiProtocolIdentity.lean#L19) |
+| `theorem` | [`all_executions_preserve_original_header`](../TDN/Semantics/MultiProtocolIdentity.lean#L27) |
+
+</details>
+
+### MultiProtocolIfaces
+
+Source: [MultiProtocolIfaces.lean](../TDN/Semantics/MultiProtocolIfaces.lean).
+
+Keeps every reachable packet state within an explicit interface inventory. Local conditions cover each possible interface change. The general execution theorem reuses those conditions across any finite run.
+
+<details>
+<summary>All 3 named declarations in MultiProtocolIfaces</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`IfaceConditions`](../TDN/Semantics/MultiProtocolIfaces.lean#L5) |
+| `lemma` | [`step_preserves_iface_inventory`](../TDN/Semantics/MultiProtocolIfaces.lean#L16) |
+| `theorem` | [`all_executions_stay_in_iface_inventory`](../TDN/Semantics/MultiProtocolIfaces.lean#L46) |
+
+</details>
+
+### NativeAdmission
+
+Source: [NativeAdmission.lean](../TDN/Semantics/NativeAdmission.lean).
+
+Provides decidability instances for concrete rule acceptance and association-to-policy binding. The instances let Lean compute these finite conditions when a network application supplies concrete records.
+
+<details>
+<summary>All 0 named declarations in NativeAdmission</summary>
+
+| Kind | Declaration |
+| --- | --- |
+
+Explicit instances:
+
+- [Instance at line 5](../TDN/Semantics/NativeAdmission.lean#L5)
+- [Instance at line 10](../TDN/Semantics/NativeAdmission.lean#L10)
+
+</details>
+
+### NativeHookFacts
+
+Source: [NativeHookFacts.lean](../TDN/Semantics/NativeHookFacts.lean).
+
+Preserves interface, source-address and authentication facts between arrival, route selection and filtering. Several lemmas show that route and association choices depend on the specified address fields. These facts connect finite rule checks to arbitrary eligible packets.
+
+<details>
+<summary>All 8 named declarations in NativeHookFacts</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`ingress_has_native_ifaces`](../TDN/Semantics/NativeHookFacts.lean#L6) |
+| `lemma` | [`route_from_ingress_preserves_local_state`](../TDN/Semantics/NativeHookFacts.lean#L15) |
+| `lemma` | [`association_matches_depends_on_addresses`](../TDN/Semantics/NativeHookFacts.lean#L29) |
+| `lemma` | [`selected_associations_depend_on_addresses`](../TDN/Semantics/NativeHookFacts.lean#L35) |
+| `lemma` | [`selected_route_depends_on_destination`](../TDN/Semantics/NativeHookFacts.lean#L42) |
+| `def` | [`addressPoint`](../TDN/Semantics/NativeHookFacts.lean#L48) |
+| `lemma` | [`decrypted_route_has_authentication`](../TDN/Semantics/NativeHookFacts.lean#L53) |
+| `lemma` | [`ingress_route_authentication`](../TDN/Semantics/NativeHookFacts.lean#L61) |
+
+</details>
+
+### NativeSizeBudgets
+
+Source: [NativeSizeBudgets.lean](../TDN/Semantics/NativeSizeBudgets.lean).
+
+States the size conditions needed at each packet-processing phase. Its main theorem proves that one permitted native step preserves those conditions. The proof accounts for source datagrams, ordered filtering, route selection, successful decryption and the length added by nested ESP.
+
+<details>
+<summary>All 13 named declarations in NativeSizeBudgets</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`BodySizeBudget`](../TDN/Semantics/NativeSizeBudgets.lean#L9) |
+| `lemma` | [`body_budget_has_length`](../TDN/Semantics/NativeSizeBudgets.lean#L19) |
+| `lemma` | [`decoded_source_body_budget`](../TDN/Semantics/NativeSizeBudgets.lean#L48) |
+| `def` | [`AuthenticationSizeBound`](../TDN/Semantics/NativeSizeBudgets.lean#L62) |
+| `def` | [`FilteredSizeBound`](../TDN/Semantics/NativeSizeBudgets.lean#L67) |
+| `def` | [`SizeRouted`](../TDN/Semantics/NativeSizeBudgets.lean#L75) |
+| `def` | [`ReadySizeBound`](../TDN/Semantics/NativeSizeBudgets.lean#L80) |
+| `def` | [`SizeInvariant`](../TDN/Semantics/NativeSizeBudgets.lean#L86) |
+| `structure` | [`SizeChecks`](../TDN/Semantics/NativeSizeBudgets.lean#L105) |
+| `lemma` | [`filtered_size_from_checks`](../TDN/Semantics/NativeSizeBudgets.lean#L138) |
+| `lemma` | [`authentication_bound_empty`](../TDN/Semantics/NativeSizeBudgets.lean#L191) |
+| `lemma` | [`size_ready_if_not_required`](../TDN/Semantics/NativeSizeBudgets.lean#L196) |
+| `theorem` | [`native_step_preserves_size_budget`](../TDN/Semantics/NativeSizeBudgets.lean#L204) |
+
+</details>
+
+### OrderedSizeGuards
+
+Source: [OrderedSizeGuards.lean](../TDN/Semantics/OrderedSizeGuards.lean).
+
+Derives size bounds from ordered firewall rules. A bound can come from the accepting rule, an earlier oversized-packet denial, or the size established by authenticated decryption. The program theorem proves the bound for every accepted packet under its explicit route and policy conditions.
+
+<details>
+<summary>All 9 named declarations in OrderedSizeGuards</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`EarlierSizeGuard`](../TDN/Semantics/OrderedSizeGuards.lean#L5) |
+| `def` | [`SizeBoundAtom`](../TDN/Semantics/OrderedSizeGuards.lean#L16) |
+| `def` | [`RuleSizeBound`](../TDN/Semantics/OrderedSizeGuards.lean#L26) |
+| `def` | [`RouteExcludesPolicy`](../TDN/Semantics/OrderedSizeGuards.lean#L38) |
+| `lemma` | [`route_and_policy_overlap`](../TDN/Semantics/OrderedSizeGuards.lean#L45) |
+| `lemma` | [`checked_rule_size_bound`](../TDN/Semantics/OrderedSizeGuards.lean#L51) |
+| `def` | [`SizedRuleCheck`](../TDN/Semantics/OrderedSizeGuards.lean#L89) |
+| `def` | [`SizedProgramChecks`](../TDN/Semantics/OrderedSizeGuards.lean#L99) |
+| `theorem` | [`checked_program_size_bounds`](../TDN/Semantics/OrderedSizeGuards.lean#L127) |
+
+Explicit instances:
+
+- [Instance at line 10](../TDN/Semantics/OrderedSizeGuards.lean#L10)
+- [Instance at line 21](../TDN/Semantics/OrderedSizeGuards.lean#L21)
+- [Instance at line 31](../TDN/Semantics/OrderedSizeGuards.lean#L31)
+- [Instance at line 41](../TDN/Semantics/OrderedSizeGuards.lean#L41)
+- [Instance at line 108](../TDN/Semantics/OrderedSizeGuards.lean#L108)
+- [Instance at line 115](../TDN/Semantics/OrderedSizeGuards.lean#L115)
+
+</details>
+
+### PacketHeaderEncoding
+
+Source: [PacketHeaderEncoding.lean](../TDN/Semantics/PacketHeaderEncoding.lean).
+
+Constructs the modeled IPv4, IPv6, UDP, TCP and ICMP header fields and proves that the decoder reads them back. Width and length bounds prevent truncation. Checksums and unused fields are initialized to zero, and the matching condition covers the listed field comparisons and sizes. Protocol checksum validation remains separate.
+
+<details>
+<summary>All 17 named declarations in PacketHeaderEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`encodeIPv4Header`](../TDN/Semantics/PacketHeaderEncoding.lean#L5) |
+| `lemma` | [`encoded_IPv4_header_length`](../TDN/Semantics/PacketHeaderEncoding.lean#L15) |
+| `theorem` | [`encoded_IPv4_header_matches`](../TDN/Semantics/PacketHeaderEncoding.lean#L22) |
+| `def` | [`encodeIPv6Header`](../TDN/Semantics/PacketHeaderEncoding.lean#L42) |
+| `lemma` | [`encoded_IPv6_header_length`](../TDN/Semantics/PacketHeaderEncoding.lean#L47) |
+| `theorem` | [`encoded_IPv6_header_matches`](../TDN/Semantics/PacketHeaderEncoding.lean#L51) |
+| `def` | [`encodeUDPHeader`](../TDN/Semantics/PacketHeaderEncoding.lean#L68) |
+| `lemma` | [`encoded_UDP_header_length`](../TDN/Semantics/PacketHeaderEncoding.lean#L72) |
+| `theorem` | [`encoded_UDP_header_matches`](../TDN/Semantics/PacketHeaderEncoding.lean#L76) |
+| `def` | [`encodeICMPHeader`](../TDN/Semantics/PacketHeaderEncoding.lean#L87) |
+| `lemma` | [`encoded_ICMP_header_length`](../TDN/Semantics/PacketHeaderEncoding.lean#L90) |
+| `theorem` | [`encoded_ICMP_header_matches`](../TDN/Semantics/PacketHeaderEncoding.lean#L94) |
+| `def` | [`encodeTCPHeader`](../TDN/Semantics/PacketHeaderEncoding.lean#L107) |
+| `lemma` | [`encoded_TCP_header_length`](../TDN/Semantics/PacketHeaderEncoding.lean#L113) |
+| `theorem` | [`encoded_TCP_header_matches`](../TDN/Semantics/PacketHeaderEncoding.lean#L118) |
+| `lemma` | [`encoded_IPv4_flags`](../TDN/Semantics/PacketHeaderEncoding.lean#L142) |
+| `lemma` | [`encoded_IPv4_identity`](../TDN/Semantics/PacketHeaderEncoding.lean#L148) |
+
+</details>
+
+### PacketProcessing
+
+Source: [PacketProcessing.lean](../TDN/Semantics/PacketProcessing.lean).
+
+Defines raw packet decoding, IP and link-layer filter contexts, and the observed processing inventory. The inventory records interface names, header generation and supported encryption-size or encapsulation settings. These definitions state the conditions needed to connect byte observations with packet-processing proofs.
+
+<details>
+<summary>All 38 named declarations in PacketProcessing</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `inductive` | [`Hook`](../TDN/Semantics/PacketProcessing.lean#L6) |
+| `inductive` | [`RawPacket`](../TDN/Semantics/PacketProcessing.lean#L10) |
+| `def` | [`RawPacket.Bytes`](../TDN/Semantics/PacketProcessing.lean#L15) |
+| `def` | [`RawPacket.Decoded`](../TDN/Semantics/PacketProcessing.lean#L19) |
+| `def` | [`RawPacket.Complete`](../TDN/Semantics/PacketProcessing.lean#L36) |
+| `def` | [`RawPacket.Fragment`](../TDN/Semantics/PacketProcessing.lean#L45) |
+| `inductive` | [`DecodeOutcome`](../TDN/Semantics/PacketProcessing.lean#L56) |
+| `def` | [`DecodeOutcome.Valid`](../TDN/Semantics/PacketProcessing.lean#L60) |
+| `def` | [`Ingress`](../TDN/Semantics/PacketProcessing.lean#L67) |
+| `def` | [`inputPacket`](../TDN/Semantics/PacketProcessing.lean#L72) |
+| `def` | [`InputAdmitted`](../TDN/Semantics/PacketProcessing.lean#L77) |
+| `structure` | [`Context`](../TDN/Semantics/PacketProcessing.lean#L83) |
+| `def` | [`Context.Packet`](../TDN/Semantics/PacketProcessing.lean#L90) |
+| `def` | [`Context.AtHook`](../TDN/Semantics/PacketProcessing.lean#L98) |
+| `structure` | [`LinkContext`](../TDN/Semantics/PacketProcessing.lean#L118) |
+| `structure` | [`CarrierEncoding`](../TDN/Semantics/PacketProcessing.lean#L124) |
+| `def` | [`CarrierEncoding.header`](../TDN/Semantics/PacketProcessing.lean#L130) |
+| `def` | [`CarrierEncoding.session`](../TDN/Semantics/PacketProcessing.lean#L133) |
+| `def` | [`carrierNetworkOrder`](../TDN/Semantics/PacketProcessing.lean#L136) |
+| `def` | [`CarrierEncoding.Valid`](../TDN/Semantics/PacketProcessing.lean#L139) |
+| `structure` | [`CarrierBinding`](../TDN/Semantics/PacketProcessing.lean#L151) |
+| `structure` | [`MKAEndpoint`](../TDN/Semantics/PacketProcessing.lean#L159) |
+| `structure` | [`IPsecSizeBinding`](../TDN/Semantics/PacketProcessing.lean#L166) |
+| `def` | [`IPsecSizeBinding.EncodedSize`](../TDN/Semantics/PacketProcessing.lean#L172) |
+| `def` | [`IPsecSizeBinding.Valid`](../TDN/Semantics/PacketProcessing.lean#L175) |
+| `structure` | [`Inventory`](../TDN/Semantics/PacketProcessing.lean#L185) |
+| `inductive` | [`UDPMode`](../TDN/Semantics/PacketProcessing.lean#L194) |
+| `structure` | [`UDPBinding`](../TDN/Semantics/PacketProcessing.lean#L198) |
+| `def` | [`UDPBinding.Tuple`](../TDN/Semantics/PacketProcessing.lean#L215) |
+| `def` | [`UDPBinding.Framing`](../TDN/Semantics/PacketProcessing.lean#L220) |
+| `def` | [`UDPBinding.WellFormed`](../TDN/Semantics/PacketProcessing.lean#L229) |
+| `def` | [`words16`](../TDN/Semantics/PacketProcessing.lean#L258) |
+| `def` | [`ChecksumValid`](../TDN/Semantics/PacketProcessing.lean#L263) |
+| `def` | [`networkOrder`](../TDN/Semantics/PacketProcessing.lean#L266) |
+| `def` | [`pseudoHeader`](../TDN/Semantics/PacketProcessing.lean#L269) |
+| `def` | [`optionsValid`](../TDN/Semantics/PacketProcessing.lean#L277) |
+| `def` | [`IPv4OptionsValid`](../TDN/Semantics/PacketProcessing.lean#L287) |
+| `def` | [`RawPacket.PreHookValid`](../TDN/Semantics/PacketProcessing.lean#L290) |
+
+Explicit instances:
+
+- [Instance at line 147](../TDN/Semantics/PacketProcessing.lean#L147)
+- [Instance at line 181](../TDN/Semantics/PacketProcessing.lean#L181)
+- [Instance at line 243](../TDN/Semantics/PacketProcessing.lean#L243)
+- [Instance at line 248](../TDN/Semantics/PacketProcessing.lean#L248)
+- [Instance at line 253](../TDN/Semantics/PacketProcessing.lean#L253)
+- [Instance at line 310](../TDN/Semantics/PacketProcessing.lean#L310)
+- [Instance at line 315](../TDN/Semantics/PacketProcessing.lean#L315)
+- [Instance at line 318](../TDN/Semantics/PacketProcessing.lean#L318)
+- [Instance at line 322](../TDN/Semantics/PacketProcessing.lean#L322)
+- [Instance at line 326](../TDN/Semantics/PacketProcessing.lean#L326)
+
+</details>
+
+### PacketSource
+
+Source: [PacketSource.lean](../TDN/Semantics/PacketSource.lean).
+
+Defines an application request, its network and transport headers, emitted datagrams, fragments and possible source errors. The validity conditions require correct header fields, payload preservation and reconstruction from fragments. A concrete source processor must prove those conditions for all its outcomes. Header validity also requires that hop limits and protocol fields fit their encoded widths, that IPv6 next-header metadata agrees with the selected protocol, and that ICMP has no synthetic transport ports.
+
+<details>
+<summary>All 35 named declarations in PacketSource</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`unsigned`](../TDN/Semantics/PacketSource.lean#L6) |
+| `def` | [`field`](../TDN/Semantics/PacketSource.lean#L9) |
+| `def` | [`protocolNumber`](../TDN/Semantics/PacketSource.lean#L12) |
+| `inductive` | [`Mode`](../TDN/Semantics/PacketSource.lean#L19) |
+| `structure` | [`Request`](../TDN/Semantics/PacketSource.lean#L24) |
+| `def` | [`Request.Overhead`](../TDN/Semantics/PacketSource.lean#L34) |
+| `def` | [`HeaderRepresentable`](../TDN/Semantics/PacketSource.lean#L37) |
+| `def` | [`Request.HeadersRepresentable`](../TDN/Semantics/PacketSource.lean#L44) |
+| `def` | [`Request.TemplateValid`](../TDN/Semantics/PacketSource.lean#L49) |
+| `def` | [`Request.PayloadMatches`](../TDN/Semantics/PacketSource.lean#L72) |
+| `def` | [`Request.ProtocolLimit`](../TDN/Semantics/PacketSource.lean#L78) |
+| `def` | [`Request.PacketSize`](../TDN/Semantics/PacketSource.lean#L84) |
+| `def` | [`Request.MtuOverhead`](../TDN/Semantics/PacketSource.lean#L87) |
+| `def` | [`Request.MtuBytes`](../TDN/Semantics/PacketSource.lean#L92) |
+| `def` | [`NetworkHeaderMatches`](../TDN/Semantics/PacketSource.lean#L95) |
+| `def` | [`TransportHeaderMatches`](../TDN/Semantics/PacketSource.lean#L114) |
+| `def` | [`EthernetHeaderMatches`](../TDN/Semantics/PacketSource.lean#L126) |
+| `structure` | [`Fragment`](../TDN/Semantics/PacketSource.lean#L135) |
+| `def` | [`Fragment.Raw`](../TDN/Semantics/PacketSource.lean#L141) |
+| `def` | [`Fragment.MtuBytes`](../TDN/Semantics/PacketSource.lean#L144) |
+| `def` | [`Fragment.AsPiece`](../TDN/Semantics/PacketSource.lean#L149) |
+| `def` | [`Fragment.IPv4Fields`](../TDN/Semantics/PacketSource.lean#L152) |
+| `def` | [`Fragment.IPv6Fields`](../TDN/Semantics/PacketSource.lean#L160) |
+| `structure` | [`Datagram`](../TDN/Semantics/PacketSource.lean#L174) |
+| `def` | [`Datagram.Data`](../TDN/Semantics/PacketSource.lean#L181) |
+| `def` | [`Datagram.Raw`](../TDN/Semantics/PacketSource.lean#L184) |
+| `def` | [`Datagram.MtuBytes`](../TDN/Semantics/PacketSource.lean#L187) |
+| `def` | [`Datagram.Decoded`](../TDN/Semantics/PacketSource.lean#L192) |
+| `def` | [`Datagram.HeaderFrom`](../TDN/Semantics/PacketSource.lean#L206) |
+| `def` | [`Datagram.Reassembles`](../TDN/Semantics/PacketSource.lean#L219) |
+| `def` | [`Datagram.ValidFor`](../TDN/Semantics/PacketSource.lean#L241) |
+| `inductive` | [`Error`](../TDN/Semantics/PacketSource.lean#L252) |
+| `inductive` | [`Outcome`](../TDN/Semantics/PacketSource.lean#L256) |
+| `def` | [`Outcome.Valid`](../TDN/Semantics/PacketSource.lean#L260) |
+| `structure` | [`Processing`](../TDN/Semantics/PacketSource.lean#L277) |
+
+</details>
+
+### PayloadEncoding
+
+Source: [PayloadEncoding.lean](../TDN/Semantics/PayloadEncoding.lean).
+
+Encodes payload bytes as a natural number and proves that distinct byte lists remain distinguishable. The decoding theorem recovers the original bytes. These results connect symbolic packet identity to the bytes stored in a frame observation.
+
+<details>
+<summary>All 8 named declarations in PayloadEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`payloadCode_concat`](../TDN/Semantics/PayloadEncoding.lean#L6) |
+| `lemma` | [`payloadCode_as_digits`](../TDN/Semantics/PayloadEncoding.lean#L10) |
+| `lemma` | [`digits_payloadCode`](../TDN/Semantics/PayloadEncoding.lean#L17) |
+| `theorem` | [`payloadCode_injective`](../TDN/Semantics/PayloadEncoding.lean#L29) |
+| `lemma` | [`Frame.Describes.plain_Ethernet_payload`](../TDN/Semantics/PayloadEncoding.lean#L43) |
+| `lemma` | [`Frame.Describes.plain_IP_payload`](../TDN/Semantics/PayloadEncoding.lean#L51) |
+| `def` | [`decodePayload`](../TDN/Semantics/PayloadEncoding.lean#L65) |
+| `lemma` | [`decodePayload_payloadCode`](../TDN/Semantics/PayloadEncoding.lean#L68) |
+
+</details>
+
+### PlannedFragmentation
+
+Source: [PlannedFragmentation.lean](../TDN/Semantics/PlannedFragmentation.lean).
+
+Applies a fragment plan to a datagram and proves reassembly. A separate result shows that a packet larger than the MTU needs multiple pieces. The proof relies on the bounded partition and fragment-header conditions.
+
+<details>
+<summary>All 7 named declarations in PlannedFragmentation</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`made_fragments_length`](../TDN/Semantics/PlannedFragmentation.lean#L5) |
+| `lemma` | [`partition_of_oversized_packet_has_multiple_chunks`](../TDN/Semantics/PlannedFragmentation.lean#L12) |
+| `def` | [`Datagram.withPlannedFragments`](../TDN/Semantics/PlannedFragmentation.lean#L24) |
+| `lemma` | [`Datagram.planned_body`](../TDN/Semantics/PlannedFragmentation.lean#L30) |
+| `lemma` | [`Datagram.planned_data`](../TDN/Semantics/PlannedFragmentation.lean#L33) |
+| `lemma` | [`Datagram.planned_raw`](../TDN/Semantics/PlannedFragmentation.lean#L36) |
+| `theorem` | [`Datagram.planned_fragments_reassemble`](../TDN/Semantics/PlannedFragmentation.lean#L39) |
+
+</details>
+
+### PolicyMasks
+
+Source: [PolicyMasks.lean](../TDN/Semantics/PolicyMasks.lean).
+
+Describes a set of packets using finite conditions on addresses, protocols, ports and interfaces. The coverage proof checks ordered rules and establishes that every packet satisfying the description is allowed. Rejected earlier conditions remain part of the proof, so an accepting rule cannot hide a preceding denial.
+
+<details>
+<summary>All 10 named declarations in PolicyMasks</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`Mask`](../TDN/Semantics/PolicyMasks.lean#L5) |
+| `def` | [`Mask.Matches`](../TDN/Semantics/PolicyMasks.lean#L22) |
+| `def` | [`Mask.Allows`](../TDN/Semantics/PolicyMasks.lean#L34) |
+| `lemma` | [`Mask.allowed_atom_holds`](../TDN/Semantics/PolicyMasks.lean#L53) |
+| `def` | [`Mask.Rejects`](../TDN/Semantics/PolicyMasks.lean#L82) |
+| `lemma` | [`Mask.rejected_atom_fails`](../TDN/Semantics/PolicyMasks.lean#L97) |
+| `def` | [`Mask.Covers`](../TDN/Semantics/PolicyMasks.lean#L128) |
+| `def` | [`Mask.finiteCovers`](../TDN/Semantics/PolicyMasks.lean#L134) |
+| `lemma` | [`Mask.finiteCovers_correct`](../TDN/Semantics/PolicyMasks.lean#L141) |
+| `theorem` | [`Mask.covered_packets_are_allowed`](../TDN/Semantics/PolicyMasks.lean#L152) |
+
+Explicit instances:
+
+- [Instance at line 50](../TDN/Semantics/PolicyMasks.lean#L50)
+- [Instance at line 94](../TDN/Semantics/PolicyMasks.lean#L94)
+- [Instance at line 149](../TDN/Semantics/PolicyMasks.lean#L149)
+
+</details>
+
+### RawIPsecFraming
+
+Source: [RawIPsecFraming.lean](../TDN/Semantics/RawIPsecFraming.lean).
+
+Derives supported IKE and UDP-encapsulated ESP framing from the original packet bytes. The lemmas connect byte offsets and lengths with the packet fields used by filter proofs. They require the relevant decoding and eligibility premises.
+
+<details>
+<summary>All 4 named declarations in RawIPsecFraming</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`two_byte_field`](../TDN/Semantics/RawIPsecFraming.lean#L6) |
+| `lemma` | [`decoded_IPv4_UDP_framing`](../TDN/Semantics/RawIPsecFraming.lean#L27) |
+| `lemma` | [`eligible_IKE_has_framing`](../TDN/Semantics/RawIPsecFraming.lean#L59) |
+| `lemma` | [`eligible_UDPESP_has_framing`](../TDN/Semantics/RawIPsecFraming.lean#L98) |
+
+</details>
+
+### SourceCodec
+
+Source: [SourceCodec.lean](../TDN/Semantics/SourceCodec.lean).
+
+Separates the conditions for successful packet generation from the conditions for source errors. The main theorem combines both sets of conditions and establishes validity for every result returned by a supplied source processor.
+
+<details>
+<summary>All 4 named declarations in SourceCodec</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`EmissionConditions`](../TDN/Semantics/SourceCodec.lean#L5) |
+| `structure` | [`ErrorConditions`](../TDN/Semantics/SourceCodec.lean#L36) |
+| `lemma` | [`emitted_datagram_valid`](../TDN/Semantics/SourceCodec.lean#L50) |
+| `theorem` | [`processing_outcomes_valid`](../TDN/Semantics/SourceCodec.lean#L66) |
+
+</details>
+
+### SourceDatagramEncoding
+
+Source: [SourceDatagramEncoding.lean](../TDN/Semantics/SourceDatagramEncoding.lean).
+
+Builds an IP source datagram from an application request. The proofs preserve its payload, selected addresses and transport fields, source fragment flags and declared lengths. Valid request templates and size bounds provide the required encoding premises.
+
+<details>
+<summary>All 10 named declarations in SourceDatagramEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`sourceFlags`](../TDN/Semantics/SourceDatagramEncoding.lean#L6) |
+| `lemma` | [`source_flags_fit`](../TDN/Semantics/SourceDatagramEncoding.lean#L9) |
+| `lemma` | [`source_flags_are_not_fragments`](../TDN/Semantics/SourceDatagramEncoding.lean#L13) |
+| `lemma` | [`source_flags_match_df`](../TDN/Semantics/SourceDatagramEncoding.lean#L18) |
+| `def` | [`sourceHeader`](../TDN/Semantics/SourceDatagramEncoding.lean#L23) |
+| `def` | [`encodeSourceDatagram`](../TDN/Semantics/SourceDatagramEncoding.lean#L30) |
+| `lemma` | [`Request.ip_template_parts`](../TDN/Semantics/SourceDatagramEncoding.lean#L39) |
+| `theorem` | [`source_IP_datagram_decodes`](../TDN/Semantics/SourceDatagramEncoding.lean#L55) |
+| `lemma` | [`source_IP_datagram_flags`](../TDN/Semantics/SourceDatagramEncoding.lean#L145) |
+| `theorem` | [`source_IP_whole_datagram_valid`](../TDN/Semantics/SourceDatagramEncoding.lean#L153) |
+
+</details>
+
+### SourceEthernetEncoding
+
+Source: [SourceEthernetEncoding.lean](../TDN/Semantics/SourceEthernetEncoding.lean).
+
+Builds an Ethernet source datagram from a header and payload. The proofs establish the supported header interpretation, payload identity and valid whole-frame emission within the supplied MTU.
+
+<details>
+<summary>All 4 named declarations in SourceEthernetEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`encodeSourceEthernet`](../TDN/Semantics/SourceEthernetEncoding.lean#L6) |
+| `lemma` | [`source_Ethernet_mtu_bytes`](../TDN/Semantics/SourceEthernetEncoding.lean#L10) |
+| `theorem` | [`source_Ethernet_datagram_decodes`](../TDN/Semantics/SourceEthernetEncoding.lean#L13) |
+| `theorem` | [`source_Ethernet_whole_datagram_valid`](../TDN/Semantics/SourceEthernetEncoding.lean#L27) |
+
+</details>
+
+### SourceHeaderEncoding
+
+Source: [SourceHeaderEncoding.lean](../TDN/Semantics/SourceHeaderEncoding.lean).
+
+Selects the network and transport encoders for a supported source request. The template conditions spell out the supported protocols and field bounds. The matching theorems connect those conditions to the generated bytes.
+
+<details>
+<summary>All 9 named declarations in SourceHeaderEncoding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`TransportTemplate`](../TDN/Semantics/SourceHeaderEncoding.lean#L6) |
+| `def` | [`encodeTransportHeader`](../TDN/Semantics/SourceHeaderEncoding.lean#L11) |
+| `theorem` | [`source_transport_header_matches`](../TDN/Semantics/SourceHeaderEncoding.lean#L16) |
+| `lemma` | [`transport_template_protocol_bound`](../TDN/Semantics/SourceHeaderEncoding.lean#L44) |
+| `def` | [`NetworkTemplate`](../TDN/Semantics/SourceHeaderEncoding.lean#L55) |
+| `def` | [`networkHeaderSize`](../TDN/Semantics/SourceHeaderEncoding.lean#L61) |
+| `def` | [`networkProtocolLimit`](../TDN/Semantics/SourceHeaderEncoding.lean#L64) |
+| `def` | [`encodeNetworkHeader`](../TDN/Semantics/SourceHeaderEncoding.lean#L67) |
+| `theorem` | [`source_network_header_matches`](../TDN/Semantics/SourceHeaderEncoding.lean#L71) |
+
+</details>
+
+### SourceHeaderRepresentability
+
+Source: [SourceHeaderRepresentability.lean](../TDN/Semantics/SourceHeaderRepresentability.lean).
+
+Proves that a valid emitted datagram requires fields that fit their packet encodings. The results identify necessary hop-limit, protocol and header conditions for source requests.
+
+<details>
+<summary>All 2 named declarations in SourceHeaderRepresentability</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `lemma` | [`Datagram.valid_source_hop_bound`](../TDN/Semantics/SourceHeaderRepresentability.lean#L5) |
+| `lemma` | [`Datagram.valid_source_header_representable`](../TDN/Semantics/SourceHeaderRepresentability.lean#L23) |
+
+</details>
+
+### SourceIPFragmentation
+
+Source: [SourceIPFragmentation.lean](../TDN/Semantics/SourceIPFragmentation.lean).
+
+Connects source-request encoding to IP fragmentation. The resulting datagram preserves the application payload and source fields, and its fragments satisfy the source-validity condition for the configured MTU.
+
+<details>
+<summary>All 3 named declarations in SourceIPFragmentation</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`encodeFragmentedSourceDatagram`](../TDN/Semantics/SourceIPFragmentation.lean#L6) |
+| `lemma` | [`source_IP_fragmentation_preserves`](../TDN/Semantics/SourceIPFragmentation.lean#L11) |
+| `theorem` | [`source_IP_fragmented_datagram_valid`](../TDN/Semantics/SourceIPFragmentation.lean#L23) |
+
+</details>
+
+### SourceIPSegmentation
+
+Source: [SourceIPSegmentation.lean](../TDN/Semantics/SourceIPSegmentation.lean).
+
+Splits stream data into source datagrams that fit the MTU and protocol-length limits. The validity theorem accounts for every segment and preserves the complete application byte sequence. Datagram requests retain the corresponding fragmentation behavior.
+
+<details>
+<summary>All 6 named declarations in SourceIPSegmentation</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`Request.segmentCapacity`](../TDN/Semantics/SourceIPSegmentation.lean#L5) |
+| `lemma` | [`Request.ip_overhead_bounds`](../TDN/Semantics/SourceIPSegmentation.lean#L8) |
+| `lemma` | [`Request.segment_capacity_positive`](../TDN/Semantics/SourceIPSegmentation.lean#L22) |
+| `def` | [`sourceIPDatagrams`](../TDN/Semantics/SourceIPSegmentation.lean#L29) |
+| `lemma` | [`source_whole_application`](../TDN/Semantics/SourceIPSegmentation.lean#L36) |
+| `theorem` | [`source_IP_datagrams_valid`](../TDN/Semantics/SourceIPSegmentation.lean#L40) |
+
+</details>
+
+### SourceProcessing
+
+Source: [SourceProcessing.lean](../TDN/Semantics/SourceProcessing.lean).
+
+Implements the modeled source processor for supported IP and Ethernet requests. It emits datagrams or reports an invalid template, invalid MTU, excessive protocol length or a forbidden oversized datagram. Its general correctness theorem requires an MTU of at least 1280 and establishes the specified result for every request.
+
+<details>
+<summary>All 8 named declarations in SourceProcessing</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`processSource`](../TDN/Semantics/SourceProcessing.lean#L10) |
+| `theorem` | [`source_processing_valid_for_representable_headers`](../TDN/Semantics/SourceProcessing.lean#L26) |
+| `def` | [`sourceProcessing`](../TDN/Semantics/SourceProcessing.lean#L95) |
+| `lemma` | [`Request.template_headers_representable`](../TDN/Semantics/SourceProcessing.lean#L98) |
+| `theorem` | [`source_processing_valid`](../TDN/Semantics/SourceProcessing.lean#L106) |
+| `lemma` | [`source_IP_emission_shape`](../TDN/Semantics/SourceProcessing.lean#L113) |
+| `lemma` | [`source_Ethernet_emission_shape`](../TDN/Semantics/SourceProcessing.lean#L132) |
+| `lemma` | [`source_IP_datagrams_have_source_headers`](../TDN/Semantics/SourceProcessing.lean#L148) |
+
+Explicit instances:
+
+- [Instance at line 6](../TDN/Semantics/SourceProcessing.lean#L6)
+
+</details>
+
+### SourceProcessingCodec
+
+Source: [SourceProcessingCodec.lean](../TDN/Semantics/SourceProcessingCodec.lean).
+
+Packages the source processor correctness results into its successful-emission and error conditions. Other proofs can reuse those conditions without repeating the source processor case analysis.
+
+<details>
+<summary>All 2 named declarations in SourceProcessingCodec</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `theorem` | [`source_processing_emission_conditions`](../TDN/Semantics/SourceProcessingCodec.lean#L6) |
+| `theorem` | [`source_processing_error_conditions`](../TDN/Semantics/SourceProcessingCodec.lean#L44) |
+
+</details>
+
+### SourceTemplateCounterexample
+
+Source: [SourceTemplateCounterexample.lean](../TDN/Semantics/SourceTemplateCounterexample.lean).
+
+Preserves concrete failures of the earlier request-template conditions. The examples cover a hop limit of 256, an inconsistent IPv6 next-header value and nonzero ICMP transport ports. The corrected template rejects those unrepresentable requests with the specified error result.
+
+<details>
+<summary>All 16 named declarations in SourceTemplateCounterexample</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`Request.TemplateValidBeforeRepresentability`](../TDN/Semantics/SourceTemplateCounterexample.lean#L6) |
+| `def` | [`Outcome.ValidBeforeRepresentability`](../TDN/Semantics/SourceTemplateCounterexample.lean#L30) |
+| `theorem` | [`request_with_unrepresentable_hop_has_no_valid_outcome`](../TDN/Semantics/SourceTemplateCounterexample.lean#L48) |
+| `theorem` | [`request_with_unrepresentable_header_has_no_valid_outcome`](../TDN/Semantics/SourceTemplateCounterexample.lean#L78) |
+| `def` | [`oversizedHopRequest`](../TDN/Semantics/SourceTemplateCounterexample.lean#L108) |
+| `lemma` | [`oversized_hop_old_template_is_allowed`](../TDN/Semantics/SourceTemplateCounterexample.lean#L118) |
+| `theorem` | [`oversized_hop_request_cannot_be_processed`](../TDN/Semantics/SourceTemplateCounterexample.lean#L122) |
+| `def` | [`ipv6NextHeaderMismatchRequest`](../TDN/Semantics/SourceTemplateCounterexample.lean#L129) |
+| `def` | [`nonzeroICMPPortRequest`](../TDN/Semantics/SourceTemplateCounterexample.lean#L139) |
+| `lemma` | [`ipv6_next_header_mismatch_old_template_is_allowed`](../TDN/Semantics/SourceTemplateCounterexample.lean#L147) |
+| `lemma` | [`nonzero_icmp_port_old_template_is_allowed`](../TDN/Semantics/SourceTemplateCounterexample.lean#L152) |
+| `theorem` | [`ipv6_next_header_mismatch_cannot_be_processed`](../TDN/Semantics/SourceTemplateCounterexample.lean#L156) |
+| `theorem` | [`nonzero_icmp_port_cannot_be_processed`](../TDN/Semantics/SourceTemplateCounterexample.lean#L164) |
+| `theorem` | [`oversized_hop_receives_valid_unsupported_result`](../TDN/Semantics/SourceTemplateCounterexample.lean#L172) |
+| `theorem` | [`ipv6_next_header_mismatch_receives_valid_unsupported_result`](../TDN/Semantics/SourceTemplateCounterexample.lean#L177) |
+| `theorem` | [`nonzero_icmp_port_receives_valid_unsupported_result`](../TDN/Semantics/SourceTemplateCounterexample.lean#L182) |
+
+</details>
+
+### TraceProjection
+
+Source: [TraceProjection.lean](../TDN/Semantics/TraceProjection.lean).
+
+Maps detailed executions to a simpler transition system. Actions omitted by the mapping must preserve the represented state. The general theorem constructs the corresponding simpler execution from the per-step mapping condition.
+
+<details>
+<summary>All 3 named declarations in TraceProjection</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `theorem` | [`optional_actions`](../TDN/Semantics/TraceProjection.lean#L5) |
+| `theorem` | [`action_member_has_actual_step`](../TDN/Semantics/TraceProjection.lean#L30) |
+| `theorem` | [`project_execution`](../TDN/Semantics/TraceProjection.lean#L44) |
+
+</details>
+
+### WholePacketEmission
+
+Source: [WholePacketEmission.lean](../TDN/Semantics/WholePacketEmission.lean).
+
+Emits a datagram as one fragment when it fits and constructs fragments when necessary. The proofs show that both choices reassemble to the original bytes. The one-fragment lemma connects a proved MTU bound to the packet-sizing requirement.
+
+<details>
+<summary>All 19 named declarations in WholePacketEmission</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`Datagram.wholeFragment`](../TDN/Semantics/WholePacketEmission.lean#L5) |
+| `def` | [`Datagram.asWhole`](../TDN/Semantics/WholePacketEmission.lean#L8) |
+| `lemma` | [`Datagram.asWhole_body`](../TDN/Semantics/WholePacketEmission.lean#L11) |
+| `lemma` | [`Datagram.asWhole_application`](../TDN/Semantics/WholePacketEmission.lean#L14) |
+| `lemma` | [`Datagram.asWhole_raw`](../TDN/Semantics/WholePacketEmission.lean#L17) |
+| `lemma` | [`Datagram.asWhole_mtuBytes`](../TDN/Semantics/WholePacketEmission.lean#L20) |
+| `lemma` | [`Datagram.asWhole_decoded`](../TDN/Semantics/WholePacketEmission.lean#L23) |
+| `lemma` | [`Datagram.asWhole_headerFrom`](../TDN/Semantics/WholePacketEmission.lean#L27) |
+| `lemma` | [`Datagram.asWhole_fragment_count`](../TDN/Semantics/WholePacketEmission.lean#L31) |
+| `lemma` | [`Datagram.whole_fragment_mtuBytes`](../TDN/Semantics/WholePacketEmission.lean#L34) |
+| `lemma` | [`Datagram.whole_fragment_pieces_valid`](../TDN/Semantics/WholePacketEmission.lean#L40) |
+| `def` | [`Datagram.UnfragmentedHeader`](../TDN/Semantics/WholePacketEmission.lean#L47) |
+| `lemma` | [`Datagram.decoded_header_is_unfragmented`](../TDN/Semantics/WholePacketEmission.lean#L55) |
+| `theorem` | [`Datagram.whole_packet_reassembles_from_header`](../TDN/Semantics/WholePacketEmission.lean#L67) |
+| `theorem` | [`Datagram.whole_packet_reassembles`](../TDN/Semantics/WholePacketEmission.lean#L90) |
+| `def` | [`Datagram.fragmentOnlyWhenNeeded`](../TDN/Semantics/WholePacketEmission.lean#L114) |
+| `lemma` | [`Datagram.needed_fragmentation_preserves_raw`](../TDN/Semantics/WholePacketEmission.lean#L117) |
+| `lemma` | [`Datagram.fitting_packet_uses_one_fragment`](../TDN/Semantics/WholePacketEmission.lean#L122) |
+| `theorem` | [`Datagram.fragment_only_when_needed_reassembles`](../TDN/Semantics/WholePacketEmission.lean#L127) |
 
 </details>
 

@@ -34,18 +34,29 @@ def expected_conditions(rule):
     parse_rule(rule)
     tokens = rule["matches"]["iptables_tokens"]
     require(len(tokens) % 2 == 0, "Unpaired native iptables token")
+    pairs = list(zip(tokens[::2], tokens[1::2]))
+    transport = [value for key, value in pairs if key == "-p"]
     conditions = []
-    for key, value in zip(tokens[::2], tokens[1::2]):
+    for key, value in pairs:
         if key in ["-s", "-d"]:
             conditions.append((key, address(value)))
         elif key in ["-i", "-o", "-p"]:
             conditions.append((key, value))
         elif key == "-m":
-            require(value in ["multiport", "policy", "u32", "conntrack", "length", "bpf"],
+            if value in ["tcp", "udp"]:
+                require(transport == [value] and any(k in ["--sport", "--dport"] for k, _ in pairs),
+                        "Native transport module lacks its protocol or literal port")
+                continue
+            require(value in ["multiport", "policy", "u32", "conntrack", "length", "bpf", "icmp", "icmp6"],
                     "Unsupported native compatibility matcher")
             conditions.append(("xt", value))
+        elif key in ["--sport", "--dport"]:
+            require(len(transport) == 1 and transport[0] in ["tcp", "udp"] and
+                    ("-m", transport[0]) in pairs and value.isdigit() and 0 <= int(value) <= 65535,
+                    "Native port matcher lacks its transport module or literal value")
+            conditions.append((key, int(value)))
         else:
-            require(key in ["--dports", "--sports", "--dir", "--pol", "--reqid", "--mode", "--u32", "--ctstate", "--length", "--bytecode"],
+            require(key in ["--dports", "--sports", "--dir", "--pol", "--reqid", "--mode", "--u32", "--ctstate", "--length", "--bytecode", "--icmp-type", "--icmpv6-type"],
                     "Unsupported native match argument")
     return Counter(conditions)
 
@@ -54,6 +65,7 @@ def actual_conditions(expressions, action):
     require(expressions and expressions[-1] == {action: None},
             "Native nft terminal verdict differs")
     conditions = []
+    payload_protocols = set()
     for expression in expressions[:-1]:
         require(len(expression) == 1, "Ambiguous nft expression")
         if "counter" in expression:
@@ -72,14 +84,29 @@ def actual_conditions(expressions, action):
         if left in [{"meta": {"key": "iifname"}}, {"meta": {"key": "oifname"}}]:
             conditions.append(("-i" if left["meta"]["key"] == "iifname" else "-o", right))
         else:
-            require(set(left) == {"payload"} and set(left["payload"]) == {"protocol", "field"} and
-                    left["payload"]["protocol"] in ["ip", "ip6"], "Unsupported native nft payload matcher")
+            require(set(left) == {"payload"} and set(left["payload"]) == {"protocol", "field"},
+                    "Unsupported native nft payload matcher")
+            protocol = left["payload"]["protocol"]
             field = left["payload"]["field"]
+            if protocol in ["tcp", "udp"]:
+                require(field in ["sport", "dport"] and type(right) is int and 0 <= right <= 65535,
+                        "Unsupported native nft transport field or port")
+                payload_protocols.add(protocol)
+                conditions.append(("--" + field, right))
+                continue
+            require(protocol in ["ip", "ip6"], "Unsupported native nft payload protocol")
             require(field in ["saddr", "daddr", "protocol"], "Unsupported native nft header field")
             if field in ["saddr", "daddr"]:
                 conditions.append(("-s" if field == "saddr" else "-d", address(right)))
             else:
                 conditions.append(("-p", right))
+    if payload_protocols:
+        require(len(payload_protocols) == 1, "Mixed native transport payload protocols")
+        protocol = next(iter(payload_protocols))
+        explicit = [value for key, value in conditions if key == "-p"]
+        require(not explicit or explicit == [protocol], "Native transport protocol conditions disagree")
+        if not explicit:
+            conditions.append(("-p", protocol))
     return Counter(conditions)
 
 

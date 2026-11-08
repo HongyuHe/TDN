@@ -1,4 +1,4 @@
-import TDN.Semantics.Paths
+import TDN.Semantics.Waypointing
 
 namespace TDN.Targets
 
@@ -15,7 +15,7 @@ def msc_outer_firewall_placement {Node : Type}
       insideAttachment o f ∧ outsideAttachment f b
    else ∀ o, outer o → ∃ b, black b ∧ externalBlackConnection o b) ∧
   (untrustedBlack = true → ∀ o b, outer o → black b →
-    ¬ Relation.ReflTransGen (Paths.Avoiding edge firewall) o b) ∧
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding edge firewall) o b) ∧
   (if grayFirewallRequired then
     ∀ o, outer o → ∃ g, grayFirewall g ∧ grayConnection o g
    else ∀ o, outer o → ∃ i, inner i ∧ grayConnection o i)
@@ -43,7 +43,7 @@ theorem outer_firewall_placement_from_local_checks {Node Side : Type}
       outer firewall black grayFirewall inner inside outside external := by
   refine ⟨internetUntrusted, connections, placement, ?_, grayPlacement⟩
   intro applies o b ho hb
-  exact Paths.no_firewall_free_crossing edge firewall side (edgesChecked applies)
+  exact Waypointing.waypointing_of_edge_invariant edge firewall side (edgesChecked applies)
     (outerClear applies o ho) (differentSides applies o b ho hb)
 
 theorem untrusted_outer_connection_has_firewall {Node : Type}
@@ -67,7 +67,7 @@ theorem untrusted_outer_connection_has_firewall {Node : Type}
     apply Classical.byContradiction
     intro absent
     have clear : ∀ f, ¬ firewall f := fun f hf => absent ⟨f, hf⟩
-    have avoiding := Paths.path_avoids_absent_firewalls edge firewall clear path
+    have avoiding := Waypointing.path_avoids_absent_waypoints edge firewall clear path
     exact conform.2.2.2.1 applies o b present hb avoiding
 
 theorem rejected_direct_edge_strengthening_conflicts {Node : Type}
@@ -92,10 +92,10 @@ def msc_gray_firewall_path_coverage {Node Label : Type}
     (level : Node → Label) (highest : Label) (dominates : Label → Label → Prop)
     (filtersIntendedSameLevel physicallyProtected : Node → Prop) : Prop :=
   (∀ a b, inner a → inner b → level a ≠ level b →
-    ¬ Relation.ReflTransGen (Paths.Avoiding grayEdge grayFirewall) a b) ∧
+    ¬ Relation.ReflTransGen (Waypointing.Avoiding grayEdge grayFirewall) a b) ∧
   (∀ administrator component, management administrator → inner component →
     level component ≠ highest →
-      ¬ Relation.ReflTransGen (Paths.Avoiding grayEdge grayFirewall) administrator component) ∧
+      ¬ Relation.ReflTransGen (Waypointing.Avoiding grayEdge grayFirewall) administrator component) ∧
   (∀ administrator, management administrator → level administrator = highest) ∧
   (∀ component, inner component → dominates highest (level component)) ∧
   (∀ firewall, grayFirewall firewall →
@@ -119,10 +119,10 @@ theorem gray_firewall_paths_from_local_separation {Node Label : Type}
       dominates filtersIntendedSameLevel physicallyProtected := by
   refine ⟨?_, ?_, managementLevel, highestLevel, firewallChecks, firewallPresent⟩
   · intro a b innerA _ different
-    exact Paths.no_firewall_free_crossing grayEdge grayFirewall level edgesChecked
+    exact Waypointing.waypointing_of_edge_invariant grayEdge grayFirewall level edgesChecked
       (innerNotFirewall a innerA) different
   · intro administrator component managed _ different
-    apply Paths.no_firewall_free_crossing grayEdge grayFirewall level edgesChecked
+    apply Waypointing.waypointing_of_edge_invariant grayEdge grayFirewall level edgesChecked
       (managementNotFirewall administrator managed)
     rw [managementLevel administrator managed]
     exact Ne.symm different
