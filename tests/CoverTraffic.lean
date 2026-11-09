@@ -1,4 +1,4 @@
-import TDN.Semantics.CoverTraffic
+import TDN.Models.ConstantRateCoverTraffic
 
 open TDN.CoverTraffic
 

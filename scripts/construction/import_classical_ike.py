@@ -147,10 +147,10 @@ def generate(data, namespace):
     for offer in data["offers"]:
         for suite in offer["suites"]:
             entries.append("⟨256, true, .ecdsaP384sha384, ." + suite["establishment"] + ", ." + suite["integrity"] + "⟩")
-    return '''import TDN.Targets.ClassicalIKE
+    return '''import TDN.Requirements.ClassicalIKE
 
-namespace TDN.Imported.''' + namespace + '''
-open TDN.Targets
+namespace TDN.Deployments.''' + namespace + '''
+open TDN.Requirements
 
 def offered : List AlgorithmSuite := [''' + ", ".join(entries) + ''']
 
@@ -167,7 +167,7 @@ theorem every_selected_recorded_inner_ike_offer_uses_cnsa1
     (suite : AlgorithmSuite) (selected : suite ∈ offered) : CNSA1 suite :=
   negotiated_classical_ike_from_checked_offers offered every_recorded_inner_ike_offer_uses_cnsa1 suite selected
 
-end TDN.Imported.''' + namespace + '\n'
+end TDN.Deployments.''' + namespace + '\n'
 
 
 def main():

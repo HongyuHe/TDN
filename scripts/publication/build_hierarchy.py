@@ -55,12 +55,12 @@ MEANINGS = {
     'rejects_outside_allowlist': 'Shows that a packet matching no allow rule is denied by the default-deny evaluator.',
     'snapshot_loaded_configuration_RG022': 'Checks every loaded IKE version, IKE encryption mode and ESP proposal against the selected RG-022 alternatives.',
     'step_preserves_layers': 'Shows that one operation in the protected-payload model preserves the required protection layers for the destination zone.',
-    'execution_preserves_layers': 'Uses induction to preserve the required protection layers across any finite sequence of modeled operations.',
+    'forwarding_preserves_layers': 'Uses induction to preserve the required protection layers across any finite sequence of modeled operations.',
     'step_preserves_level': 'Shows that one modeled operation leaves the payload’s security level unchanged.',
-    'execution_preserves_level': 'Shows that any finite sequence of modeled operations leaves the payload’s security level unchanged.',
+    'forwarding_preserves_level': 'Shows that any finite sequence of modeled operations leaves the payload’s security level unchanged.',
     'black_has_two_layers': 'Concludes that a modeled payload reaching Black has an Outer layer around an Inner layer, assuming the initial state has the required layer structure.',
     'inner_delivery_same_level': 'Shows that modeled Inner decryption delivers the payload at an endpoint assigned the payload’s security level.',
-    'refinement_lifts_execution': 'Turns a sequence of detailed steps into a sequence of modeled steps, given a proof that every detailed step maps to an allowed modeled step.',
+    'underlay_path_simulates_overlay_path': 'Turns a sequence of detailed steps into a sequence of modeled steps, given a proof that every detailed step maps to an allowed modeled step.',
     'concrete_black_protection': 'Transfers the two-layer Black conclusion to a detailed execution whose steps have been connected to the protected-payload model.',
     'effect_preserves_shape': 'Checks that each safe operation changes the protection-layer list to the shape required by the destination zone.',
     'checked_edge_preserves_layers': 'Uses one edge’s safety proof and its layer operation to preserve the required protection-layer structure.',
@@ -125,7 +125,7 @@ MEANINGS = {
     'gateways': 'The gateway records used by RG-038, including the applicable IP versions, external interface and ordered filter chains.',
     'loadedVPNModePolicies': 'The imported lists of IKE versions, IKE modes and ESP proposals associated with each loaded connection.',
     'HeaderCertificate': 'The sufficient conditions checked on a gateway’s allow rules: permitted protocols, external multicast exclusion and the selected IPv4 header-length condition.',
-    'Guarded': 'The condition that a rule contains the required peer, interface and protection-policy restrictions for the selected boundary.',
+    'RequiresIpsecPolicyMatch': 'Requires a rule to name the inside and outside interfaces and require an IPsec policy match in the corresponding direction.',
     'InboundGuard': 'The required conditions for traffic arriving through the selected protected boundary.',
     'OutboundGuard': 'The required conditions for traffic leaving through the selected protected boundary.',
     'ProtocolGuard': 'Requires the rule to contain a protocol condition naming one of the permitted protocols.',
@@ -136,15 +136,26 @@ MEANINGS = {
     'Avoiding': 'The step relation that uses a graph edge and requires its destination to be outside the specified firewall set.',
     'Safe': 'The local rule for a boundary operation: forwarding stays in the same zone, and adding or removing protection crosses the matching Red/Gray/Black boundary.',
     'Shape': 'The required layer-list shape for a zone: empty in Red, Inner in Gray, and Outer around Inner in Black.',
-    'WellLayered': 'States that a modeled payload has the protection-layer list required by its current Red, Gray or Black zone.',
+    'MatchesZoneEncryptionPolicy': 'States that a modeled payload has the protection-layer list required by its current Red, Gray or Black zone.',
     'StackEffect': 'Describes how one operation leaves, adds to or removes from the protection-layer list.',
-    'Refines': 'Requires every detailed step to map to an allowed step in the protected-payload model.',
+    'SimulatesOverlayStep': 'Requires every detailed step to map to an allowed step in the protected-payload model.',
     'Step': 'The allowed one-step transitions of the protected-payload model, including encryption, transit and decryption.',
     'WithinDeadline': 'Requires the report time to lie between detection and detection plus the allowed delay.',
     'SecurityLevel': 'A security label containing classification, compartments, dissemination restrictions and other controls.',
     'State': 'A modeled payload’s zone, location, security level and protection-layer list.',
     'Network': 'The configured relationships used by the payload model: endpoint levels, Inner and Outer peers, links and permitted mechanism pairings.',
-    'Seal': 'One modeled protection layer, recording its Inner/Outer role, endpoints and selected mechanism.',
+    'TunnelSAStamp': 'Records an IPsec protection-layer identifier, the installed association’s SPI, and its sender and receiver addresses.',
+    'TunnelHeader': 'One protection layer in the Red/Gray/Black architecture model, with its Inner/Outer role, endpoints, and IPsec or MACsec mechanism.',
+    'DataPlaneModel': 'Supplies the forwarding tables, ordered firewall rules, IPsec policies and installed associations, interfaces, bridges, and links used by the packet model.',
+    'IpsecPolicy': 'An IPsec policy with source and destination selectors, tunnel endpoints, priority, and an optional required SPI.',
+    'InstalledSA': 'An installed IPsec security association identified by its local reqid, wire SPI, and tunnel endpoints.',
+    'FibRoute': 'A forwarding entry with ingress and egress interfaces, destination-address bounds, prefix length, metric, and policy-table priority.',
+    'SelectedFibRoute': 'Selects an applicable route by policy-table priority, longest destination prefix, and lowest metric.',
+    'PerHopEncapConditions': 'The conditions on routing, filtering, encapsulation, bridging, and links that preserve the expected protection layers through each permitted step.',
+    'EncapStackConsistent': 'The packet has the expected protection layers for its interface and processing stage.',
+    'ForwardsAlongTrace': 'States that the supplied sequence of permitted packet-processing steps connects the initial and final packet states. The statement applies to any model supplied as its argument.',
+    'EncapHeaderLayer': 'Pairs the tunnel association metadata with the saved inner header so decryption can restore that header.',
+    'matchesPacket': 'Tests one firewall condition against the packet fields.',
     'Layer': 'The two possible protection-layer roles: Inner and Outer.',
     'Zone': 'The region assigned by the model. Architectural interface zones include Red, Gray, Black and local.',
     'Mechanism': 'The two protection mechanisms represented by the model: IPsec and MACsec.',
@@ -152,7 +163,7 @@ MEANINGS = {
     'Edge': 'A modeled boundary step with a source zone, destination zone and operation.',
     'Packet': 'The packet fields used by the filtering model, including addressing, protocol, interfaces and policy information.',
     'Rule': 'One ordered firewall rule, containing its packet conditions and verdict.',
-    'Atom': 'One condition in a firewall rule, such as an address range, protocol, interface or required protection-policy identifier.',
+    'MatchCondition': 'One condition in a firewall rule, such as an address range, protocol, interface or required protection-policy identifier.',
     'Verdict': 'The modeled allow or deny result of a filter rule.',
     'GatewayHeaderPolicy': 'A gateway’s applicability flags, external interface and ordered chains for the header-filtering proof.',
     'VPNModePolicy': 'A gateway identifier together with its lists of offered IKE versions, IKE modes and ESP proposals.',
@@ -199,6 +210,17 @@ def describe(node):
     short = node['short']
     if node.get('description'):
         return node['description']
+    qualified = {
+        'TDN.DataPlaneForwarding.State': 'A packet’s interface, processing stage, frame, and authenticated incoming IPsec policy identifiers.',
+        'TDN.DataPlaneForwarding.Frame': 'The packet header, payload identity, source security domain, saved encapsulation layers, and entry interface.',
+        'TDN.DataPlaneForwarding.Step': 'One permitted routing, filtering, IPsec, bridging, transmission, or delivery operation, with the conditions required for that operation.',
+        'TDN.MultiProtocolForwarding.Config': 'The combined forwarding model: IP processing plus MACsec interfaces, carriers, bridges, physical links, and header processing.',
+        'TDN.MultiProtocolForwarding.State': 'The current interface and processing stage of a possibly nested IPsec/MACsec frame, together with entry and authentication information.',
+        'TDN.MultiProtocolForwarding.Step': 'One permitted operation in the combined IPsec, MACsec, carrier, Ethernet, and IP forwarding model.',
+        'TDN.LayeredFrame.Frame': 'A packet body that can contain nested IPsec, MACsec, and carrier layers, with payload identity and any saved visible headers.',
+    }
+    if node['name'] in qualified:
+        return qualified[node['name']]
     for group in raw['groups']:
         if node['name'] == group['formal']:
             return group['target']
@@ -393,7 +415,7 @@ for group in raw['groups']:
         proof_names.add(name)
         pending.extend(nodes[name]['proofs'])
         specifications.update(n for n in nodes[name]['statementDefinitions']
-                              if n.startswith('TDN.Targets.') and nodes[n]['short'].startswith('msc_') and nodes[n]['kind'] in {'def', 'abbrev'} and nodes[n]['canonicalName'] != nodes[group['formal']]['canonicalName'])
+                              if n.startswith('TDN.Requirements.') and nodes[n]['short'].startswith('msc_') and nodes[n]['kind'] in {'def', 'abbrev'} and nodes[n]['canonicalName'] != nodes[group['formal']]['canonicalName'])
     group['specifications'] = [group['formal']] + sorted(specifications - {group['formal']})
     group['specificationProofs'] = {spec: sorted(name for name in proof_names
         if nodes[name]['canonicalHead'] == nodes[spec]['canonicalName']) for spec in group['specifications']}
@@ -431,13 +453,13 @@ payload = {'groups':raw['groups'],'nodes':details,'layouts':layouts,'root':str(R
     'metadata':raw['metadata'], 'statusLabels':{
     'review_pass':'Complete conditional proof: review passed',
     'deferred':'Complete proof deferred',
-    'outside_selected_scope':'Outside v3.1 proof scope'}}
+    'outside_selected_scope':'Outside v3.2 proof scope'}}
 template = (ASSETS / 'template.html').read_text()
 script = (ASSETS / 'app.js').read_text()
 css = (ASSETS / 'style.css').read_text()
 result = template.replace('/*__STYLE__*/',css).replace('/*__SCRIPT__*/',script).replace('__DATA__',json.dumps(payload,ensure_ascii=False,separators=(',',':')).replace('</','<\/'))
 OUT.write_text(result)
-(HERE / 'theorem-hierarchy/build-validation.json').write_text(json.dumps({'layout_version':LAYOUT_VERSION,'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'artifact_sha256':hashlib.sha256(OUT.read_bytes()).hexdigest(),'groups':len(raw['groups']),'roots':len(roots),'layouts':len(layouts),'visible_declarations':len(visible),'source':'Current compiled v3.1 Lean dependency export','design':'Existing TDN report light palette; compact top-down SVG layout','metadata':raw['metadata']},indent=2)+'\n')
+(HERE / 'theorem-hierarchy/build-validation.json').write_text(json.dumps({'layout_version':LAYOUT_VERSION,'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'artifact_sha256':hashlib.sha256(OUT.read_bytes()).hexdigest(),'groups':len(raw['groups']),'roots':len(roots),'layouts':len(layouts),'visible_declarations':len(visible),'source':'Current compiled v3.2 Lean dependency export','design':'Existing TDN report light palette; compact top-down SVG layout','metadata':raw['metadata']},indent=2)+'\n')
 print(json.dumps({'artifact':str(OUT),'bytes':OUT.stat().st_size,'groups':len(raw['groups']),'layouts':len(layouts),'visible_declarations':len(visible)}))
 
 subprocess.run([sys.executable, str(ROOT / "scripts/publication/export_pages.py"), "--page", "hierarchy"], check=True)

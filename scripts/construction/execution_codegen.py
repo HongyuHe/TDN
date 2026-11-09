@@ -5,28 +5,28 @@ from import_snapshot import lean_list
 
 def render(namespace, devices, ports, routes, links, switches, sources, black_ports, theorem_name):
     head = [
-        "import TDN.Targets.PacketExecution", "import TDN.Semantics.FiniteRoutedExecution", "import TDN.Semantics.ExecutionProvenance", "",
-        "namespace TDN.Imported." + namespace, "", "open Execution", "",
+        "import TDN.Requirements.DoubleEncryptionOnBlackLinks", "import TDN.Models.RouteAwareAclChecks", "import TDN.Models.TunnelSaOriginAttribution", "",
+        "namespace TDN.Deployments." + namespace, "", "open DataPlaneForwarding", "",
         "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "",
         "def devices : List DeviceData := " + lean_list(devices),
         "def ifaces : List IfaceData := " + lean_list(ports),
-        "def routes : List Route := " + tuple_list(routes),
+        "def routes : List FibRoute := " + tuple_list(routes),
         "def links : List (Nat × Nat) := " + tuple_list(links),
         "def switches : List (Nat × Nat) := " + tuple_list(switches),
-        "def config : Environment := dataPlaneConfigFromRecords devices ifaces routes links switches",
+        "def config : DataPlaneModel := dataPlaneModelFromRecords devices ifaces routes links switches",
         "def expectedEncapStack : Nat → List Nat := expectedEncapStackFromRecords ifaces"
     ]
     checks = """
-lemma forward_checks : FiniteRoutedForwardChecks devices ifaces routes := by
-  unfold FiniteRoutedForwardChecks devices ifaces routes
+lemma forward_checks : TableDrivenRoutedForwardChecks devices ifaces routes := by
+  unfold TableDrivenRoutedForwardChecks devices ifaces routes
   decide
 
-lemma peer_tag_checks : FinitePeerTagAgreement devices := by
-  unfold FinitePeerTagAgreement devices StateBindsPolicy SameWireAssociation
+lemma peer_tag_checks : TableDrivenPeerTagAgreement devices := by
+  unfold TableDrivenPeerTagAgreement devices saMatchesPolicy SameWireAssociation
   decide
 
 lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=
-  finite_peer_tag_agreement_sound devices ifaces routes links switches peer_tag_checks
+  table_driven_peer_tag_agreement_sound devices ifaces routes links switches peer_tag_checks
 
 lemma route_owner_checks : ∀ r ∈ routes,
     (ifaceAt ifaces r.egress).owner = (ifaceAt ifaces r.ingress).owner := by
@@ -49,35 +49,35 @@ lemma forward_default_checks : ∀ device ∈ ({} : DeviceData) :: devices,
   unfold devices
   decide
 
-lemma output_checks : FiniteOutputChecks devices ifaces := by
-  unfold FiniteOutputChecks devices ifaces
+lemma output_checks : TableDrivenOutputChecks devices ifaces := by
+  unfold TableDrivenOutputChecks devices ifaces
   decide
 
-lemma outer_route_checks : FiniteOuterRoutes devices ifaces routes := by
-  unfold FiniteOuterRoutes devices ifaces routes
+lemma outer_route_checks : TableDrivenOuterRoutes devices ifaces routes := by
+  unfold TableDrivenOuterRoutes devices ifaces routes
   decide
 
-lemma local_stack_conditions : LocalStackConditions config expectedEncapStack :=
+lemma local_stack_conditions : PerHopEncapConditions config expectedEncapStack :=
   local_stack_conditions_of_routed_finite_checks devices ifaces routes links switches
     route_owner_checks link_checks switch_checks forward_default_checks forward_checks
     output_checks outer_route_checks
 
-theorem every_transmission_has_iface_stack {start finish : Execution.State} {actions : List Action}
-    (run : (lts config).MTr start actions finish) (initial : StackInvariant config expectedEncapStack start)
-    (ready : finish.datapathStage = .ready) : finish.frame.tags = expectedEncapStack finish.iface :=
-  transmitted_stack config expectedEncapStack local_stack_conditions run initial ready
+theorem every_transmission_has_iface_stack {start finish : DataPlaneForwarding.State} {actions : List Action}
+    (run : (lts config).MTr start actions finish) (initial : EncapStackConsistent config expectedEncapStack start)
+    (ready : finish.datapathStage = .egressReady) : finish.frame.encapLayerIds = expectedEncapStack finish.iface :=
+  egress_packet_has_expected_encap_stack config expectedEncapStack local_stack_conditions run initial ready
 """
     tail = [
         "def redSources : List Nat := " + lean_list([str(x) for x in sources]),
         "def blackIfaces : List Nat := " + lean_list([str(x) for x in black_ports]),
-        "lemma sources_checked : ∀ p ∈ redSources, expectedEncapStack p = [] ∧ config.payloadOrigin p := by",
-        "  unfold redSources expectedEncapStack config expectedEncapStackFromRecords dataPlaneConfigFromRecords ifaces; decide",
+        "lemma sources_checked : ∀ p ∈ redSources, expectedEncapStack p = [] ∧ config.canOriginateTraffic p := by",
+        "  unfold redSources expectedEncapStack config expectedEncapStackFromRecords dataPlaneModelFromRecords ifaces; decide",
         "lemma black_ifaces_checked : ∀ p ∈ blackIfaces, expectedEncapStack p = [2, 1] := by",
         "  unfold blackIfaces expectedEncapStack expectedEncapStackFromRecords ifaces; decide",
         "theorem " + theorem_name + " :",
-        "    Targets.msc_protected_red_payload_stack config redSources blackIfaces :=",
-        "  Targets.protected_red_stack_from_local_checks config expectedEncapStack redSources blackIfaces",
+        "    Requirements.red_traffic_is_doubly_encrypted_on_black_links config redSources blackIfaces :=",
+        "  Requirements.protected_red_stack_from_local_checks config expectedEncapStack redSources blackIfaces",
         "    local_stack_conditions sources_checked black_ifaces_checked",
-        "", "end TDN.Imported." + namespace, ""
+        "", "end TDN.Deployments." + namespace, ""
     ]
     return "\n".join(head) + "\n" + checks + "\n" + "\n".join(tail)

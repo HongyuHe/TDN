@@ -105,7 +105,7 @@ def parse_authorization(deployment, effective, matrix):
 
 def generate(data):
     quoted = json.dumps
-    lines = ["import TDN.Semantics.AccessControl", "", "namespace TDN.Imported.FreshServiceAuthorization",
+    lines = ["import TDN.Models.RoleBasedAccessControl", "", "namespace TDN.Deployments.SnapshotServiceAuthorization",
              "", "def roles (fingerprint : String) : Option String :="]
     for fingerprint, role in sorted(data["roles"].items()):
         lines.append("  if fingerprint = " + quoted(fingerprint) + " then some " + quoted(role) + " else")
@@ -149,7 +149,7 @@ def generate(data):
     lines.extend([",\n".join(rows) + "]", "",
                   "theorem retained_http_results_match_model : ∀ pair ∈ observed,",
                   "    AccessControl.authorize roles permissions pair.1 = pair.2 := by decide",
-                  "", "end TDN.Imported.FreshServiceAuthorization", ""])
+                  "", "end TDN.Deployments.SnapshotServiceAuthorization", ""])
     return "\n".join(lines)
 
 

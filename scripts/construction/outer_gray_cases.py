@@ -8,7 +8,7 @@ import struct
 def packet_header(source, destination, source_port, destination_port, payload):
     return {"source": source, "destination": destination, "protocol": "udp", "ingress": "", "egress": "",
             "sourcePort": source_port, "destinationPort": destination_port, "ipv4HeaderWords": 5,
-            "inboundPolicies": [], "outboundPolicies": [], "connectionState": "new", "ipv6NextHeader": 0,
+            "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": [], "connectionState": "new", "ipv6NextHeader": 0,
             "icmpType": 0, "icmpCode": 0, "hopLimit": 64, "etherType": None, "payloadBytes": payload,
             "connectionId": None, "networkBytes": 28 + len(payload), "ipv4FragmentOffset": 0}
 
@@ -73,7 +73,7 @@ def main():
                       if item["sourceLow"] <= result["plaintextBlack"]["header"]["source"] <= item["sourceHigh"] and
                       item["destinationLow"] <= result["plaintextBlack"]["header"]["destination"] <= item["destinationHigh"])
         association = next(item for item in records["nativeDevices"][owner]["states"]
-                           if item["localRequestId"] == policy["id"] and item["sender"] == policy["sender"] and
+                           if item["reqid"] == policy["id"] and item["sender"] == policy["sender"] and
                            item["receiver"] == policy["receiver"])
         outer = {item["id"] for item in records["components"] if item["layer"] == "outer"}
         result["outerGrayInterfaces"] = [item for item in records["interfaces"] if item["device"] in outer and item["zone"] == "gray"]

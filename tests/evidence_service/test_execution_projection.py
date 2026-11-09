@@ -33,9 +33,9 @@ class ExecutionProjectionTests(unittest.TestCase):
 
     def test_retained_configurations_reproduced(self):
         cases = [
-            (BASELINE, SUPPLEMENT, "FreshBaselineExecution", True),
+            (BASELINE, SUPPLEMENT, "ProfileBaseline_DataPlane", True),
             (SNAPSHOTS / "native-shared-four-levels-20261024T015300Z-coverage-v1",
-             SNAPSHOTS / "native-shared-processing-20261024T015500Z", "FreshSharedExecution", False),
+             SNAPSHOTS / "native-shared-processing-20261024T015500Z", "ProfileShared_DataPlane", False),
         ]
         for snapshot, supplement, namespace, epoch_union in cases:
             with self.subTest(namespace=namespace):
@@ -45,7 +45,7 @@ class ExecutionProjectionTests(unittest.TestCase):
                         "links": "links", "switches": "bridges",
                         "redSources": "redSources", "blackIfaces": "blackIfaces"}
                 for original, current in keys.items():
-                    self.assertEqual(result[current], previous["TDN.Imported." + namespace + "." + original])
+                    self.assertEqual(result[current], previous["TDN.Deployments." + namespace + "." + original])
                 self.assertFalse(result["scope"]["claimsSimultaneousEpochs"])
                 self.assertTrue(result["sourceBindings"])
                 observed_mtu = {row["id"]: row["mtu"] for row in result["sourceInterfaces"]}

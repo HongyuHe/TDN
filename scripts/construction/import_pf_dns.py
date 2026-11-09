@@ -149,8 +149,8 @@ def binding(row):
 
 
 def generate(report):
-    lines = ["import TDN.Targets.StatefulDNS", "", "namespace TDN.Imported.FreshFreeBSDDNS",
-             "open Targets.StatefulDNS", ""]
+    lines = ["import TDN.Requirements.StatefulDNS", "", "namespace TDN.Deployments.FreshFreeBSDDNS",
+             "open Requirements.StatefulDNS", ""]
     for i, guest in enumerate(report["guests"]):
         name = "guest" + str(i)
         lines += ["def " + name + "Addresses : List LocalAddress := [" +
@@ -175,7 +175,7 @@ def generate(report):
                       "    (packet : Packet) (request : ConventionalLocalRequest " + name + "Addresses packet) :",
                       "    hookVerdict true [] " + name + "Guards cache packet = .deny :=",
                       "  enabled_egress_denies_local_dns _ _ " + name + "_coverage run packet request", ""]
-    lines += ["end TDN.Imported.FreshFreeBSDDNS", ""]
+    lines += ["end TDN.Deployments.FreshFreeBSDDNS", ""]
     return "\n".join(lines)
 
 

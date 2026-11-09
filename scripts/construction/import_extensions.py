@@ -141,7 +141,7 @@ def generate(output,report_path):
     http=[import_http(key) for key in ["http_crl","http_ocsp"]]
     eap=[import_eap("eap_"+direction+"_v"+str(version)) for direction in ["forward","reverse"] for version in [3,4,5]]
     aw=import_aw();redundancy=import_redundancy()
-    lines=["import TDN.Evidence.SupplementalTypes","import TDN.Semantics.BridgePolicy","namespace TDN.Imported.Extensions","set_option maxRecDepth 100000"]
+    lines=["import TDN.Deployments.SupplementalTypes","import TDN.Semantics.BridgePolicy","namespace TDN.Deployments.Extensions","set_option maxRecDepth 100000"]
     for index,case in enumerate(http):
         client,server=case["bounds"]["client"],case["bounds"]["server"]
         lines.append(f"def httpChain{index} := BridgePolicy.chain {client} {server}")
@@ -155,7 +155,7 @@ def generate(output,report_path):
     lines.append("def redundancyProbes : List Evidence.MechanismProbe := "+lean_list(["⟨"+", ".join([quoted(p["id"]),quoted(p["expected"]),quoted(p["observed"]),str(p["transmitted"]),str(p["received"])])+"⟩" for p in redundancy["probes"]]))
     lines.append("theorem recorded_manual_redundancy_probe_outcomes : redundancyProbes ≠ [] ∧ ∀ p ∈ redundancyProbes, p.expected = p.observed := by unfold redundancyProbes; decide")
     lines.append('theorem outage_and_restoration_witnesses : (∃ p ∈ redundancyProbes, p.observed = "no_reply") ∧ (∃ p ∈ redundancyProbes, p.id = "standby-restored-1" ∧ 0 < p.received) := by unfold redundancyProbes; decide')
-    lines.append("end TDN.Imported.Extensions")
+    lines.append("end TDN.Deployments.Extensions")
     output.write_text("\n\n".join(lines)+"\n")
     report_path.write_text(json.dumps({"http":http,"eap":eap,"aw":aw,"redundancy":redundancy},indent=2)+"\n")
     print(json.dumps({"http":len(http),"eap_partial":len(eap),"aw_samples":len(aw["samples"]),"redundancy_probes":len(redundancy["probes"])}))

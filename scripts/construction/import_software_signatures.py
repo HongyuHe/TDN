@@ -130,10 +130,10 @@ def parse(root):
 
 
 def generate(data):
-    return '''import TDN.Targets.SoftwareSignatures
+    return '''import TDN.Requirements.SoftwareSignatures
 
-namespace TDN.Imported.FreshSoftwareSignatures
-open TDN.Targets
+namespace TDN.Deployments.FreshSoftwareSignatures
+open TDN.Requirements
 
 /-- The sole consumer is a laboratory deployment utility. It is not a replacement
 for the complete CSfC solution-component inventory. -/
@@ -150,7 +150,7 @@ theorem recorded_executable_has_table2_signature_choice :
   software_signature_choice_from_artifact_checks ["deployment-utility"] recordedUses
     (fun _ => False) (by decide) recorded_algorithm_is_approved
 
-end TDN.Imported.FreshSoftwareSignatures
+end TDN.Deployments.FreshSoftwareSignatures
 '''
 
 

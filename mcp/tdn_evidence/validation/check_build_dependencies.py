@@ -3,7 +3,7 @@ from pathlib import Path
 import subprocess,json
 root=Path(__file__).resolve().parents[3];source=root/'TDN/Import/DependencyProbe.lean';data=root/'data/evidence/DependencyProbe.json'; results=[]
 assert not source.exists() and not data.exists()
-source.write_text('import TDN.Import.Command\nnamespace TDN.ImportTests\ntdn_data probe : Nat from "../../data/evidence/DependencyProbe.json" ["value"]\nexample : probe = 1 := by decide\nend TDN.ImportTests\n')
+source.write_text('import TDN.Import.SnapshotLoader\nnamespace TDN.ImportTests\nload_network_records probe : Nat from "../../data/evidence/DependencyProbe.json" ["value"]\nexample : probe = 1 := by decide\nend TDN.ImportTests\n')
 try:
  for value,expected in [(1,0),(2,1),(1,0)]:
   data.write_text(json.dumps({'value':value})+'\n')

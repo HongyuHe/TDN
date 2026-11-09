@@ -76,7 +76,7 @@ def generate(output,report_path,source_key="coherent_same_level",namespace="Same
         result,tx,rx=parsed_wrapped_ping(probe,observations[probe["observation_ids"][0]],bundle,devices)
         probes.append({"id":probe["id"],"source":probe["source_device"],"destination":probe["destination_device"],"logical_left":left,"logical_right":right,"result":result,"transmitted":tx,"received":rx,"source_purpose_annotation":probe["purpose"],"derived_purpose":"same-logical-network delivery" if left==right else ("same-level cross-network refusal" if levels[host_map[probe["source_device"]]["security_level_id"]]==levels[host_map[probe["destination_device"]]["security_level_id"]] else "cross-level cross-network refusal")})
     require({(p["source"],p["destination"]) for p in probes}=={(a,b) for a in host_map for b in host_map if a!=b},"ordered Red host probe-pair coverage incomplete")
-    lines=["import TDN.Evidence.DomainTypes","namespace TDN.Imported."+namespace,"set_option maxRecDepth 100000"]
+    lines=["import TDN.Deployments.DomainTypes","namespace TDN.Deployments."+namespace,"set_option maxRecDepth 100000"]
     lines.append("def peerLevels : List (SecurityLevel × SecurityLevel) := "+lean_list(["("+level_lean(b["left"])+", "+level_lean(b["right"])+")" for b in bindings]))
     lines.append("theorem observed_inner_peers_have_same_full_declared_level : peerLevels ≠ [] ∧ ∀ p ∈ peerLevels, p.1 = p.2 := by unfold peerLevels; decide")
     captured_levels=[levels[n["security_level_id"]] for n in host_map.values()]
@@ -86,7 +86,7 @@ def generate(output,report_path,source_key="coherent_same_level",namespace="Same
     lines.append("def logicalProbes : List (String × String × String) := "+lean_list(["("+quoted(p["logical_left"])+", "+quoted(p["logical_right"])+", "+quoted(p["result"])+")" for p in probes]))
     lines.append("theorem recorded_logical_domain_outcomes : ∀ p ∈ logicalProbes, p.2.2 = (if p.1 = p.2.1 then \"delivered\" else \"no_reply\") := by unfold logicalProbes; decide")
     lines.append("theorem positive_and_negative_witnesses : (∃ p ∈ logicalProbes, p.2.2 = \"delivered\") ∧ (∃ p ∈ logicalProbes, p.1 ≠ p.2.1 ∧ p.2.2 = \"no_reply\") := by unfold logicalProbes; decide")
-    lines.append("end TDN.Imported."+namespace)
+    lines.append("end TDN.Deployments."+namespace)
     output.write_text("\n\n".join(lines)+"\n")
     report_path.write_text(json.dumps({"snapshot_id":snapshot["snapshot_id"],"manifest_sha256":graph["validation"]["source_manifest_sha256"],"declaration_sha256":hashlib.sha256(declaration_path.read_bytes()).hexdigest(),"spec_sha256":config["spec_sha256"],"identity_scope":"Logical network identities come from the hash-bound scenario declaration; present captured metadata must agree, and absent optional network_id fields are not treated as observed identities","bindings":bindings,"probes":probes,"inactive_interfaces":graph["inactive_interfaces"],"scope":"Hash-bound declared level/network meaning and finite runtime peer/probe records; no universal cross-network authentication exclusion or physical port claim","unbound_declarations":[c["configuration_id"] for c in configs if c!=config]},indent=2)+"\n")
     print(json.dumps({"peer_bindings":len(bindings),"probes":len(probes)}))

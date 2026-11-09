@@ -19,10 +19,10 @@ for request in requests["requests"]:
         request["status"]=response["status"]
 (output_path("evidence_requests.json")).write_text(json.dumps(requests,indent=2,ensure_ascii=False)+"\n")
 external={1,2,3,4,5,6,9,21,45,49,51,52,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,74,76}
-formal={31:"TDN.Targets.msc_encryption_component_routing_limits",42:"TDN.Targets.msc_trusted_time_synchronization",43:"TDN.Targets.msc_defaults_dns_and_boot_configuration",22:"TDN.Targets.msc_ike_version_and_encryption_modes",23:"TDN.Targets.msc_vpn_sa_lifetimes_and_reauthentication",25:"TDN.Targets.msc_macsec_encryption_and_key_wrap",28:"TDN.Targets.msc_macsec_protection_parameters",34:"TDN.Targets.msc_outer_firewall_placement",38:"TDN.Targets.msc_ip_header_and_multicast_filtering"}
+formal={31:"TDN.Requirements.msc_encryption_component_routing_limits",42:"TDN.Requirements.msc_trusted_time_synchronization",43:"TDN.Requirements.msc_defaults_dns_and_boot_configuration",22:"TDN.Requirements.msc_ike_version_and_encryption_modes",23:"TDN.Requirements.msc_vpn_sa_lifetimes_and_reauthentication",25:"TDN.Requirements.msc_macsec_encryption_and_key_wrap",28:"TDN.Requirements.msc_macsec_protection_parameters",34:"TDN.Requirements.msc_outer_firewall_placement",38:"TDN.Requirements.msc_ip_header_and_multicast_filtering"}
 generic={
 7:["TDN.black_has_two_layers","TDN.concrete_black_protection","TDN.Boundary.checked_machine_preserves_layers"],
-8:["TDN.execution_preserves_level","TDN.inner_delivery_same_level"],
+8:["TDN.forwarding_preserves_level","TDN.inner_delivery_same_level"],
 13:["TDN.Waypointing.waypointing_of_edge_invariant"],
 23:["TDN.Temporal.deadline_elapsed_bound"],
 29:["TDN.PacketPolicy.forwarding_policy_protects","TDN.Boundary.checked_machine_preserves_layers"],
@@ -141,11 +141,11 @@ for group in data["groups"]:
         group["lean_theorems"] += [c["theorem"] for c in import_report["forwarding_certificates"] if c.get("theorem") and c["chain_id"].startswith(prefix)]
         group["status"]="partial_results"
     if number==34:
-        group["lean_theorems"]=["TDN.Imported.baseline_adjacency_ipv6_20261017T2112Z_topology.snapshot_public_internet_RG034"]
+        group["lean_theorems"]=["TDN.Deployments.baseline_adjacency_ipv6_20261017T2112Z_topology.snapshot_public_internet_RG034"]
         group["status"]="conditional_results"
         group["establishment_scope"]="Candidate complete selected Public-Internet virtual-topology branch; ER-014 hashed applicability declaration pending."
     if number==22:
-        group["lean_theorems"]=["TDN.Imported.baseline_20261017T2101Z.observed_vpn_modes_conform"]
+        group["lean_theorems"]=["TDN.Deployments.baseline_20261017T2101Z.observed_vpn_modes_conform"]
         group["status"]="partial_results"
     for clause in group["clause_progress"]:
         clause["requirement_strength_review"]=clause.pop("force",clause.get("requirement_strength_review"))
@@ -163,14 +163,14 @@ for group in data["groups"]:
                 clause["lean_theorems"]=group["lean_theorems"]
             elif any(identity in clause["text"] for identity in ["MSC-IR-1 ","MSC-OR-1 "]):
                 clause["status"]="snapshot_tunnel_mode_subclause_checked"
-                clause["lean_theorems"]=["TDN.Imported.baseline_20261017T2101Z.observed_ipsec_tunnel_modes"]
+                clause["lean_theorems"]=["TDN.Deployments.baseline_20261017T2101Z.observed_ipsec_tunnel_modes"]
             else:
                 clause["status"]="unproved_no_clause_specific_theorem"
                 clause["lean_theorems"]=[]
             clause["whole_clause_established"]=False
         if number==23 and "MSC-VG-14 " in clause["text"]:
             clause["status"]="observed_esp_state_lifetime_bound_checked"
-            clause["lean_theorems"]=["TDN.Imported.baseline_20261017T2101Z.observed_esp_hard_lifetimes_within_bound"]
+            clause["lean_theorems"]=["TDN.Deployments.baseline_20261017T2101Z.observed_esp_hard_lifetimes_within_bound"]
             clause["whole_clause_established"]=False
 
 loaded=json.loads((output_path("loaded-baseline-import.json")).read_text())
@@ -227,23 +227,23 @@ for group in data["groups"]:
                 clause["reason"]="Gray Firewalls are required in this profile. Arbitrary Gray role connectivity permits intervening ordinary switches; the no-Gray-Firewall alternative remains unselected."
     if number in {7,15,16,25,28,41,54}:
         group["mechanism_evidence"]={"report":"outputs/mechanism-import.json","cases":[{"id":c["id"],"manifest_sha256":c["manifest_sha256"]} for c in mechanisms["cases"]],"scope":"Bounded data-channel mechanisms/settings and parsed probes; no complete authentication, encapsulation-order or universal-forwarding theorem"}
-        group["lean_theorems"]+= ["TDN.Imported.Mechanisms.each_case_has_positive_traffic","TDN.Imported.Mechanisms.recorded_probe_expectations"]
+        group["lean_theorems"]+= ["TDN.Deployments.Mechanisms.each_case_has_positive_traffic","TDN.Deployments.Mechanisms.recorded_probe_expectations"]
         if not group["open_issue_ids"]:group["status"]="partial_results"
-        if number==7:group["lean_theorems"].append("TDN.Imported.Mechanisms.all_four_declared_layer_pairings")
-        if number==41:group["lean_theorems"].append("TDN.Imported.Mechanisms.all_eight_declared_family_choices")
-        if number in {25,28}:group["lean_theorems"].append("TDN.Imported.Mechanisms.recorded_macsec_selected_flags")
+        if number==7:group["lean_theorems"].append("TDN.Deployments.Mechanisms.all_four_declared_layer_pairings")
+        if number==41:group["lean_theorems"].append("TDN.Deployments.Mechanisms.all_eight_declared_family_choices")
+        if number in {25,28}:group["lean_theorems"].append("TDN.Deployments.Mechanisms.recorded_macsec_selected_flags")
         for clause in group["clause_progress"]:
             if number==25 and "MSC-MD-2 " in clause["text"]:
                 clause["status"]="observed_macsec_cipher_subclause_checked"
-                clause["lean_theorems"]=["TDN.Imported.Mechanisms.recorded_macsec_selected_flags"]
+                clause["lean_theorems"]=["TDN.Deployments.Mechanisms.recorded_macsec_selected_flags"]
                 clause["reason"]="All 20 imported MACsec interface observations report GCM-AES-256; AES Key Wrap distribution remains separate."
             if number==28 and any(x in clause["text"] for x in ["MSC-MD-9 ","MSC-MD-10 ","MSC-MD-16 "]):
                 clause["status"]="observed_interface_flags_partial_contribution"
-                clause["lean_theorems"]=["TDN.Imported.Mechanisms.recorded_macsec_selected_flags"]
+                clause["lean_theorems"]=["TDN.Deployments.Mechanisms.recorded_macsec_selected_flags"]
                 clause["reason"]="Observed replay window 0, protect/encrypt and strict validation; all external-port connectivity and MKA settings are not inferred."
     if number in {13,53}:
         group["topology_evolution"]={"before_report":"outputs/shared_before-gray.json","after_reports":["outputs/shared_after-gray.json","outputs/redundant_after-gray.json"],"before_result":"Six structural Gray firewall-free cross-level paths; all sampled Red probe expectations still matched","after_result":"The same conservative Gray graph semantics excludes every cross-level path avoiding Gray Firewalls","physical_claim":False}
-        group["lean_theorems"] += ["TDN.Imported.shared_three_level_20261017T2117Z_gray.concrete_bypass","TDN.Imported.shared_inline_20261017T2128Z_gray.cross_level_waypointing","TDN.Imported.redundant_inline_20261017T2128Z_gray.cross_level_waypointing"]
+        group["lean_theorems"] += ["TDN.Deployments.shared_three_level_20261017T2117Z_gray.concrete_bypass","TDN.Deployments.shared_inline_20261017T2128Z_gray.cross_level_waypointing","TDN.Deployments.redundant_inline_20261017T2128Z_gray.cross_level_waypointing"]
         group["status"]="partial_results"
         if number==13:group["disposition_reason"]="Before-state structural bypass is checked and both repaired graphs have universal Gray separators. The full group still includes prohibited-flow semantics, management-service paths and Outer filtering."
 
@@ -282,18 +282,18 @@ for group in data["groups"]:
     if number in {17,19,20,23,24,25,27,28,33}:
         group["finite_event_evidence"]={"report":"outputs/events-import.json","ike_manifest_sha256":events["ike"]["manifest_sha256"],"mka_manifest_sha256":[e["manifest_sha256"] for e in events["mka"]],"scope":"Selected finite experiments; configured key matching is declared, successful MKA secured/kernel state and useful/negative probes are observed"}
         if number in {17,19,20,23}:
-            group["lean_theorems"].append("TDN.Imported.Events.observed_objective_exchange_sequence")
+            group["lean_theorems"].append("TDN.Deployments.Events.observed_objective_exchange_sequence")
         if number in {17,24,25,27,28}:
-            group["lean_theorems"] += ["TDN.Imported.Events.matching_mka_outcome","TDN.Imported.Events.mismatched_mka_outcome"]
+            group["lean_theorems"] += ["TDN.Deployments.Events.matching_mka_outcome","TDN.Deployments.Events.mismatched_mka_outcome"]
         if number in {19,33}:
             group["finite_header_evidence"]={"report":"outputs/ike-header-import.json","manifest_sha256":ike_headers["manifest_sha256"],"scope":ike_headers["scope"],"assumptions":ike_headers["assumptions"]}
-            group["lean_theorems"].append("TDN.Imported.IKEHeaders.recorded_headers_fit_without_ip_fragmentation")
+            group["lean_theorems"].append("TDN.Deployments.IKEHeaders.recorded_headers_fit_without_ip_fragmentation")
         if not group["open_issue_ids"]:group["status"]="partial_results"
         for clause in group["clause_progress"]:
             text=clause["text"]
             if number==19 and any(term in text for term in ["IKE_INTERMEDIATE","PMTU","fragmentation","ML-KEM-1024","ML-DSA-87"]):
                 clause["status"]="finite_objective_exchange_partial_contribution"
-                clause["lean_theorems"]=["TDN.Imported.Events.observed_objective_exchange_sequence","TDN.Imported.IKEHeaders.recorded_headers_fit_without_ip_fragmentation"]
+                clause["lean_theorems"]=["TDN.Deployments.Events.observed_objective_exchange_sequence","TDN.Deployments.IKEHeaders.recorded_headers_fit_without_ip_fragmentation"]
                 clause["reason"]="Ordered selected exchange algorithms and complete recorded fragment sets are checked; complete RFC/profile conformance and capture completeness remain separate."
             if number==25 and "MSC-MD-1 " in text:
                 clause["reason"]="MKA negotiated secured state with AES-GCM-256 data SAs, but raw evidence does not directly identify the AES Key Wrap operation/key size."

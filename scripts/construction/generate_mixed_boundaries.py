@@ -2,6 +2,7 @@
 import json
 import os
 from pathlib import Path
+from network_names import tunnel_matrix_module, forwarding_lean
 
 from validate_evidence import require
 
@@ -9,9 +10,9 @@ RUN = Path(os.environ["TDN_OUTPUT_DIR"])
 
 
 def main():
-    blocks = ["import TDN.Targets.MixedTunnelBoundaries",
-              "import TDN.Semantics.FiniteMultiProtocolAuthentication",
-              "import TDN.Evidence.FreshMixedDeliverySuite"]
+    blocks = ["import TDN.Requirements.HybridIpsecMacsecTunnelBoundaries",
+              "import TDN.Models.TableDrivenMultiProtocolAuth",
+              "import TDN.Deployments.SnapshotMixedDeliverySuite"]
     metadata = []
     reports = [(p, False) for p in sorted((RUN / "pairing-execution-v7").glob("*.json"))]
     reports += [(p, True) for p in sorted((RUN / "bridged-macsec-execution-v8").glob("*.json"))]
@@ -20,17 +21,17 @@ def main():
         namespace = report["namespace"]
         port_ids = report["port_ids"]
         device_ids = {name: i + 1 for i, name in enumerate(sorted(report["devices"]))}
-        blocks += ["namespace TDN.Imported." + namespace,
-                   "open MultiProtocolExecution LayeredFrame",
+        blocks += ["namespace TDN.Deployments." + namespace,
+                   "open MultiProtocolForwarding LayeredFrame",
                    "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0"]
         for tag in [1, 2]:
             blocks.append(f"""lemma carrier_inbound_checks_{tag} :
-    FiniteCarrierInputChecks devices ifaces carriers {tag} := by
-  unfold FiniteCarrierInputChecks
+    TableDrivenCarrierInputChecks devices ifaces carriers {tag} := by
+  unfold TableDrivenCarrierInputChecks
   decide
 
 lemma carrier_input_preserves_boundary_{tag} : CarrierInputCheck config expectedEncapStack {tag} :=
-  finite_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers {tag}
+  table_driven_carrier_input_checks_sound devices ifaces routes links bridges macIfaces carriers {tag}
     carrier_inbound_checks_{tag}
 """)
         for device in ["IA", "IB", "OA", "OB"]:
@@ -44,37 +45,37 @@ lemma carrier_input_preserves_boundary_{tag} : CarrierInputCheck config expected
             inside = boundary_port("red" if tag == 1 else "gray")
             outside = boundary_port("gray" if tag == 1 else "black")
             name = "mixedBoundary" + device
-            blocks.append(f"""def {name} := Targets.mixedTunnelBoundary config expectedEncapStack
+            blocks.append(f"""def {name} := Requirements.mixedTunnelBoundary config expectedEncapStack
   [{inside}] [{outside}] {tag} {component}
 
 lemma {name}_nonempty_attachments :
     ([{inside}] : List Nat) ≠ [] ∧ ([{outside}] : List Nat) ≠ [] := by decide
 
 lemma {name}_ip_tags : ∀ entry, config.ip.owner entry = {component} →
-    ∀ policy ∈ config.ip.inbound entry, policy.tag = {tag} := by
-  have checked : ∀ policy ∈ (Execution.deviceAt devices {component}).inbound,
+    ∀ policy ∈ config.ip.ingressPolicies entry, policy.tag = {tag} := by
+  have checked : ∀ policy ∈ (DataPlaneForwarding.deviceAt devices {component}).ingressPolicies,
       policy.tag = {tag} := by decide
   intro entry owner policy member
-  change (Execution.ifaceAt ifaces entry).owner = {component} at owner
-  change policy ∈ (Execution.deviceAt devices (Execution.ifaceAt ifaces entry).owner).inbound at member
+  change (DataPlaneForwarding.ifaceAt ifaces entry).owner = {component} at owner
+  change policy ∈ (DataPlaneForwarding.deviceAt devices (DataPlaneForwarding.ifaceAt ifaces entry).owner).ingressPolicies at member
   rw [owner] at member
   exact checked policy member
 
 lemma {name}_mac_tags : ∀ iface ∈ config.macIfaces,
     config.ip.owner iface.physicalIface = {component} →
     ∀ association ∈ iface.receiveAssociations, association.tag = {tag} := by
-  change ∀ iface ∈ macIfaces, (Execution.ifaceAt ifaces iface.physicalIface).owner = {component} →
+  change ∀ iface ∈ macIfaces, (DataPlaneForwarding.ifaceAt ifaces iface.physicalIface).owner = {component} →
     ∀ association ∈ iface.receiveAssociations, association.tag = {tag}
   decide
 
-theorem {name}_no_bypass : Targets.BoundaryNoBypass {name} :=
-  Targets.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [{inside}] [{outside}] {tag} {component}
+theorem {name}_no_bypass : Requirements.BoundaryNoBypass {name} :=
+  Requirements.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [{inside}] [{outside}] {tag} {component}
     mixed_local_conditions carrier_input_preserves_boundary_{tag}
     {name}_ip_tags {name}_mac_tags (by decide) (by decide)
 """)
             direction = "Reverse" if device.endswith("A") else "Forward"
             label = direction + ("VLAN0" if bridged else "")
-            trace_path = RUN / "mixed-traces" / ("Fresh" + namespace + label + ".json")
+            trace_path = RUN / "mixed-traces" / (tunnel_matrix_module(namespace, label) + ".json")
             trace = json.loads(trace_path.read_text())
             first = next(i for i, state in enumerate(trace["states"])
                          if state["phase"] == "received" and state["port"] == outside)
@@ -92,18 +93,18 @@ theorem {name}_no_bypass : Targets.BoundaryNoBypass {name} :=
     ∃ start actions finish, {name}.inboundEntry start ∧
       {name}.system.MTr start actions finish ∧ {name}.inboundExit finish := by
   refine ⟨{label}.usefulState{first}, {actions}, {label}.usefulState{last}, ?_, ?_, ?_⟩
-  · simp only [{name}, Targets.mixedTunnelBoundary]
+  · simp only [{name}, Requirements.mixedTunnelBoundary]
     decide
   · exact {proof}
-  · simp only [{name}, Targets.mixedTunnelBoundary]
+  · simp only [{name}, Requirements.mixedTunnelBoundary]
     decide
 """)
             metadata.append({"configuration": namespace, "device": device, "component": component,
                              "tag": tag, "inside": inside, "outside": outside, "report": str(path),
                              "positive_trace": str(trace_path), "first": first, "last": last,
-                             "proof": "TDN.Imported." + namespace + "." + name + "_no_bypass"})
-        blocks.append("end TDN.Imported." + namespace)
-    Path("TDN/Evidence/FreshMixedTunnelBoundaries.lean").write_text("\n\n".join(blocks) + "\n")
+                             "proof": "TDN.Deployments." + namespace + "." + name + "_no_bypass"})
+        blocks.append("end TDN.Deployments." + namespace)
+    Path("TDN/Deployments/SnapshotMixedTunnelBoundaries.lean").write_text(forwarding_lean("\n\n".join(blocks)) + "\n")
     (RUN / "mixed_tunnel_boundaries.json").write_text(json.dumps({
         "applications": metadata,
         "scope": [

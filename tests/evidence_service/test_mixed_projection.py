@@ -15,14 +15,14 @@ PAIRINGS = ROOT / "data/snapshots/2026-10-24T014455Z/pairings-v7"
 
 class MixedProjectionTests(unittest.TestCase):
     def test_all_six_profiles_preserve_retained_configuration(self):
-        previous = json.loads((ROOT / "data/evidence/FreshPairingConfigs.json").read_text())
+        previous = json.loads((ROOT / "data/evidence/TunnelMatrix_Configs.json").read_text())
         paths = sorted(path for path in PAIRINGS.iterdir() if path.is_dir())
         self.assertEqual(len(paths), 6)
         for path in paths:
             with self.subTest(profile=path.name):
                 _, report = validated_experiment(path)
                 values = execution_values(report)
-                namespace = "TDN.Imported.Pairing" + "".join(piece.capitalize() for piece in path.name.split("-")[1:])
+                namespace = "TDN.Deployments.Pairing" + "".join(piece.capitalize() for piece in path.name.split("-")[1:])
                 for key in ["devices", "ports", "routes", "links", "bridges", "redSources", "grayIfaces", "blackIfaces"]:
                     self.assertEqual(values[key], previous[namespace + "." + ("ifaces" if key == "ports" else key)])
                 macs = copy.deepcopy(values["macIfaces"])

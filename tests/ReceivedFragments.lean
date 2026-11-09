@@ -1,12 +1,12 @@
-import TDN.Evidence.FreshReassembledDomains
-import TDN.Evidence.FreshSharedIsolationWitness
-import TDN.Semantics.StrictResponseProjection
+import TDN.Deployments.SnapshotReassembledDomains
+import TDN.Deployments.ProfileShared_IsolationTrace
+import TDN.Models.BlockedRepliesReduceToForwarding
 
-open TDN Execution
-open TDN.Imported.FreshSharedIsolation
+open TDN DataPlaneForwarding
+open TDN.Deployments.ProfileShared_EnclaveIsolation
 
 -- The trace reaches the actual selected Red endpoint before local input/reassembly.
-def arrival : Targets.FragmentArrival := ⟨witnessState0, witnessState57, witnessActions.take 57⟩
+def arrival : Requirements.FragmentArrival := ⟨witnessState0, witnessState57, witnessActions.take 57⟩
 
 lemma actual_received_prefix :
     (lts config).MTr witnessState0 (witnessActions.take 57) witnessState57 := by
@@ -17,9 +17,9 @@ def goodPiece : Fragmentation.Fragment Nat B := ⟨42, 0, [⟨65, 1, 1⟩]⟩
 def foreignPiece : Fragmentation.Fragment Nat B := ⟨42, 0, [⟨65, 2, 1⟩]⟩
 
 -- Byte value 65 is illustrative. The endpoint/path facts are the imported checked trace.
-example : Targets.ArrivedFragment config redSources 196 arrival goodPiece := by
+example : Requirements.ArrivedFragment config redSources 196 arrival goodPiece := by
   refine ⟨?_, actual_received_prefix, rfl, rfl, rfl, ?_⟩
-  · unfold Targets.RedPayloadOrigin
+  · unfold Requirements.RedPayloadOrigin
     decide
   · intro byte member
     have same : byte = ⟨65, 1, 1⟩ := by simpa [goodPiece] using member
@@ -27,10 +27,10 @@ example : Targets.ArrivedFragment config redSources 196 arrival goodPiece := by
     constructor <;> decide
 
 -- The ordinary fragment key stays unchanged; source-iface provenance rejects a forged domain.
-example : ¬ Targets.ArrivedFragment config redSources 196 arrival foreignPiece := by
+example : ¬ Requirements.ArrivedFragment config redSources 196 arrival foreignPiece := by
   intro arrived
   have impossible := (arrived.2.2.2.2.2 ⟨65, 2, 1⟩ (by simp [foreignPiece])).1
-  have actual : config.recipientDomain arrival.start.iface = some 1 := by decide
+  have actual : config.ifaceSecurityDomain arrival.start.iface = some 1 := by decide
   rw [actual] at impossible
   contradiction
 
@@ -43,4 +43,4 @@ example {S A : Type} (network : Cslib.LTS S A) (responses : KernelResponses.Conf
     {a b : S} {labels : List (KernelResponses.Action A)}
     (run : (KernelResponses.lts network responses).MTr (.network a) labels (.network b)) :
     ∃ actions, network.MTr a actions b :=
-  KernelResponses.strict_response_result_has_network_execution network responses guards run
+  KernelResponses.strict_response_result_has_network_forwarding network responses guards run

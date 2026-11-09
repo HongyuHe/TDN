@@ -16,7 +16,7 @@ import packet_sizing_continuation as continuation
 class PacketSizingRecordsTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.saved = {name: json.loads((ROOT / f"data/evidence/continuation/Sizing{name}.json").read_text())
+        cls.saved = {name: json.loads((ROOT / f"data/evidence/continuation/MtuSizing_{name}.json").read_text())
                      for name in ["Baseline", "Shared"]}
 
     def test_both_complete_raw_state_pools_and_directions_reproduce(self):
@@ -38,7 +38,7 @@ class PacketSizingRecordsTests(unittest.TestCase):
         native = copy.deepcopy(saved["rawNative"])
         owner = saved["installations"][0]["installation"]["device"]
         direction = saved["installations"][0]["installation"]["direction"]
-        native["devices"][owner][direction] = []
+        native["devices"][owner]["ingressPolicies" if direction == "inbound" else "egressPolicies"] = []
         with self.assertRaisesRegex(ValueError, "endpoint/policy binding"):
             records.key_records(native, saved["rawKeysBefore"], saved["rawKeysAfter"], saved["epoch"])
 
@@ -78,7 +78,7 @@ class PacketSizingRecordsTests(unittest.TestCase):
     def test_recorded_continuations_reproduce_mandatory_Outer_outputs(self):
         with tempfile.TemporaryDirectory() as temporary:
             for name in self.saved:
-                source = ROOT / f"data/evidence/continuation/Sizing{name}.json"
+                source = ROOT / f"data/evidence/continuation/MtuSizing_{name}.json"
                 sample = ROOT / f"data/evidence/continuation/Sizing{name}Cases.json"
                 target = Path(temporary) / "continuation.json"
                 result = continuation.build(source, sample, target)
@@ -95,7 +95,7 @@ class PacketSizingRecordsTests(unittest.TestCase):
             sample = ROOT / "data/evidence/continuation/SizingBaselineCases.json"
             saved = copy.deepcopy(self.saved['Baseline'])
             saved['installations'] = [row for row in saved['installations']
-                                      if row['installation']['association']['localRequestId'] != 201]
+                                      if row['installation']['association']['reqid'] != 201]
             source.write_text(json.dumps(saved))
             with self.assertRaisesRegex(ValueError, 'one bound outbound state'):
                 continuation.build(source, sample, target)

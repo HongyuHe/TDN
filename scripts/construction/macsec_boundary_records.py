@@ -101,15 +101,15 @@ def prepare(bundle, source_hash):
         application = list(bytes.fromhex(source["ipv4"]["payloadHex"]))
         if raw_network[ihl + 8:] != application or not application:
             raise ValueError("missing application payload")
-        header = {"source": source["ipv4"]["source"], "destination": source["ipv4"]["destination"], "protocol": "udp", "ingress": "", "egress": "", "sourcePort": source["ipv4"]["sourcePort"], "destinationPort": source["ipv4"]["destinationPort"], "ipv4HeaderWords": ihl // 4, "inboundPolicies": [], "outboundPolicies": [], "connectionState": "new", "hopLimit": source["ipv4"]["ttl"], "payloadBytes": application, "networkBytes": len(raw_network), "ipv4FragmentOffset": 0, "ipv6NextHeader": 0, "icmpType": 0, "icmpCode": 0, "etherType": None, "connectionId": None}
+        header = {"source": source["ipv4"]["source"], "destination": source["ipv4"]["destination"], "protocol": "udp", "ingress": "", "egress": "", "sourcePort": source["ipv4"]["sourcePort"], "destinationPort": source["ipv4"]["destinationPort"], "ipv4HeaderWords": ihl // 4, "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": [], "connectionState": "new", "hopLimit": source["ipv4"]["ttl"], "payloadBytes": application, "networkBytes": len(raw_network), "ipv4FragmentOffset": 0, "ipv6NextHeader": 0, "icmpType": 0, "icmpCode": 0, "etherType": None, "connectionId": None}
         raw_routes = json.loads(observations[case["before"]["A"]["routes"]]["stdout"])
         route_record = only([item for item in raw_routes if item.get("dev") == "mac0" and "table" not in item])
         network = ipaddress.ip_network(route_record["dst"])
         route = {"ingress": port_index["A:red"], "egress": port_index["A:mac0"], "low": int(network.network_address), "high": int(network.broadcast_address), "prefixLength": network.prefixlen, "metric": route_record.get("metric", 0), "tablePriority": 32766}
-        native_devices = [{"forwardRules": [], "inputRules": [], "outputRules": [], "forwardFallback": "allow", "inputFallback": "allow", "outputFallback": "allow", "outbound": [], "inbound": [], "states": [], "localAddresses": [address for name in ports if name.startswith(owner + ":") for address in addresses[name]], "recipientDomain": None} for owner in owners]
+        native_devices = [{"forwardRules": [], "inputRules": [], "outputRules": [], "forwardFallback": "allow", "inputFallback": "allow", "outputFallback": "allow", "outbound": [], "inbound": [], "states": [], "localAddresses": [address for name in ports if name.startswith(owner + ":") for address in addresses[name]], "ifaceSecurityDomain": None} for owner in owners]
         profile = {"interfaces": projected_interfaces, "sender": projected_interfaces[3], "receiver": projected_interfaces[4], "ownerNames": owners,
             "nativeDevices": native_devices,
-            "nativeIfaces": [{"owner": owners.index(name.split(":")[0]), "name": name, "stack": [], "payloadOrigin": name == "R:red"} for name in ports],
+            "nativeIfaces": [{"owner": owners.index(name.split(":")[0]), "name": name, "stack": [], "canOriginateTraffic": name == "R:red"} for name in ports],
             "routes": [route], "links": [[port_index[a], port_index[b]] for a, b in bundle["physicalLinks"] for a, b in [(a, b), (b, a)]],
             "macIfaces": mac_ports, "linkPolicies": policies,
             "sourceCase": {"entryIface": port_index["A:red"], "route": route, "header": header, "application": application, "originDomain": 1, "mac": mac_ports[0], "peerIface": port_index["B:wire"]},

@@ -24,10 +24,10 @@ def parse(bundle):
 
 def generate(data):
     rows = ", ".join("⟨"+json.dumps(i["interface_id"])+", false⟩" for i in data["interfaces"])
-    return """import TDN.Targets.InterfaceDisablement
+    return """import TDN.Requirements.InterfaceDisablement
 
-namespace TDN.Imported.FreshUnusedInterfaces
-open Targets
+namespace TDN.Deployments.FreshUnusedInterfaces
+open Requirements
 
 def interfaces : List UnusedInterfaceState := ["""+rows+"""]
 
@@ -37,7 +37,7 @@ lemma actual_unused_inventory_nonempty : interfaces.length = """+str(len(data["i
 theorem captured_unused_interfaces_are_disabled : ∀ interface ∈ interfaces, interface.enabled = false :=
   unused_interfaces_disabled_from_empty_active_subset interfaces no_active_unused_interface
 
-end TDN.Imported.FreshUnusedInterfaces
+end TDN.Deployments.FreshUnusedInterfaces
 """
 
 

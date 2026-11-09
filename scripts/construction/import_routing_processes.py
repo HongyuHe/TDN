@@ -35,8 +35,8 @@ def selected_processes(data):
 
 def generate(rows):
     q = json.dumps
-    lines = ["import TDN.Targets.RoutingProcesses", "",
-             "namespace TDN.Imported.FreshRoutingProcesses", "open Targets", "",
+    lines = ["import TDN.Requirements.RoutingProcesses", "",
+             "namespace TDN.Deployments.FreshRoutingProcesses", "open Requirements", "",
              "def outerDevices : List String := [" + ", ".join(q(name) for name, _ in rows) + "]",
              "", "def inventory (device : String) : List (ProcessServices.Process ObservedNetworkService) :="]
     for name, processes in rows:
@@ -52,7 +52,7 @@ def generate(rows):
                   "theorem captured_outers_have_no_routing_protocol_service :",
                   "    outer_routing_protocols_disabled outerDevices inventory :=",
                   "  outer_routing_protocols_from_process_inventory outerDevices inventory process_capabilities_checked",
-                  "", "end TDN.Imported.FreshRoutingProcesses", ""])
+                  "", "end TDN.Deployments.FreshRoutingProcesses", ""])
     return "\n".join(lines)
 
 

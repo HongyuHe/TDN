@@ -105,17 +105,17 @@ def parse(path):
             "observations": observations, "negotiated_suite": [256, True, "mldsa87", "mlkem1024", "sha384"]}
 
 
-def generate(cases, namespace="FreshMACsecRuntime"):
+def generate(cases, namespace="SnapshotMacsecRuntimeObservations"):
     ports = [p for case in cases for p in case["ports"]]
     values = [quoted(p["id"]) + ", { controlledPortEnabled := " + str(p["controlledPortEnabled"]).lower() +
               ", protectFrames := " + str(p["protectFrames"]).lower() + ", encryptFrames := " +
               str(p["encryptFrames"]).lower() + ", confidentialityOffset := " + str(p["confidentialityOffset"]) + " }"
               for p in ports]
     active = lean_list(["(" + quoted(p["id"]) + ", " + str(p["sa"]) + ")" for p in ports])
-    source = """import TDN.Targets.Cryptography
-import TDN.Semantics.LinkProtection
+    source = """import TDN.Requirements.Cryptography
+import TDN.Models.MacsecPortProtection
 
-namespace TDN.Imported.FreshMACsecRuntime
+namespace TDN.Deployments.SnapshotMacsecRuntimeObservations
 open LinkProtection
 
 def ifaces : List (String × Config) := """ + lean_list(["(" + v + ")" for v in values]) + """
@@ -159,28 +159,28 @@ theorem observed_sa_allows_data (iface : String × Config) (member : iface ∈ i
   exact ⟨binding, installed, identity,
     runtime_ifaces_permit_encrypted_emission iface member binding.2 body⟩
 
-def negotiatedSuite : Targets.AlgorithmSuite := ⟨256, true, .mldsa87, .mlkem1024, .sha384⟩
-lemma negotiated_suite_cnsa2 : Targets.CNSA2 negotiatedSuite := by
-  unfold Targets.CNSA2 Targets.ApprovedIntegrity negotiatedSuite
+def negotiatedSuite : Requirements.AlgorithmSuite := ⟨256, true, .mldsa87, .mlkem1024, .sha384⟩
+lemma negotiated_suite_cnsa2 : Requirements.CNSA2 negotiatedSuite := by
+  unfold Requirements.CNSA2 Requirements.ApprovedIntegrity negotiatedSuite
   decide
 
 theorem observed_algorithms_satisfy_cnsa_choice :
-    Targets.msc_cnss_algorithm_policy [negotiatedSuite] := by
+    Requirements.msc_cnss_algorithm_policy [negotiatedSuite] := by
   intro suite member
   have same : suite = negotiatedSuite := by simpa using member
   subst suite
   exact Or.inr negotiated_suite_cnsa2
 
-end TDN.Imported.FreshMACsecRuntime
+end TDN.Deployments.SnapshotMacsecRuntimeObservations
 """
     require(re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", namespace), "Invalid namespace")
-    return source.replace("FreshMACsecRuntime", namespace)
+    return source.replace("SnapshotMacsecRuntimeObservations", namespace)
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("bundles", nargs="+")
-    parser.add_argument("--namespace", default="FreshMACsecRuntime")
+    parser.add_argument("--namespace", default="SnapshotMacsecRuntimeObservations")
     parser.add_argument("--output", required=True)
     parser.add_argument("--report", required=True)
     args = parser.parse_args()

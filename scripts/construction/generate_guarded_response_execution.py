@@ -19,11 +19,11 @@ def main():
     count = len(trace["steps"])
     require(count > 0 and len(trace["states"]) == count + 1, "Incomplete useful trace")
     lines = [
-        "import TDN.Semantics.GuardedResponseNetwork",
+        "import TDN.Models.SourceGuardedAutoReplyNetwork",
         "import " + args.guard_module,
         "",
-        "namespace TDN.Imported." + args.namespace,
-        "open Execution",
+        "namespace TDN.Deployments." + args.namespace,
+        "open DataPlaneForwarding",
         "set_option maxRecDepth 100000",
         "set_option maxHeartbeats 0",
         "",
@@ -33,17 +33,15 @@ def main():
         "lemma response_default_checks : ∀ guard ∈ responseSourceGuards,",
         "    (deviceAt devices guard.1).outputFallback = .deny := by decide",
         "",
-        "/-- The copied-byte guarantee covers the explicit pre-encryption processing",
-        "points, including pre-FORWARD errors and local INPUT handling. Prefix-copy",
-        "provenance and kernel hook correspondence are the stated implementation contract. -/",
-        "theorem gateway_response_executions_keep_stack",
-        "    {before after : Execution.State} {actions : List (KernelResponses.Action Execution.Action)}",
+        "",
+        "theorem gateway_response_traces_keep_stack",
+        "    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}",
         "    (run : (KernelResponses.lts (GuardedResponseNetwork.network responseData)",
         "      (GuardedResponseNetwork.responseConfig responseData)).MTr",
         "      (.network before) actions (.network after))",
         "    (initial : GuardedResponseNetwork.Safe responseData before) :",
-        "    StackInvariant config expectedEncapStack after :=",
-        "  GuardedResponseNetwork.all_guarded_response_executions_preserve_stack responseData",
+        "    EncapStackConsistent config expectedEncapStack after :=",
+        "  GuardedResponseNetwork.all_guarded_response_traces_preserve_stack responseData",
         "    local_stack_conditions all_source_output_reply_pairs_checked all_input_interfaces_covered",
         "    response_default_checks run initial",
         ""
@@ -67,7 +65,7 @@ def main():
         "lemma initial_guarded_state_is_safe : GuardedResponseNetwork.Safe responseData witnessState0 := by",
         "  exact ⟨witness_initial_stack, trivial, by decide⟩",
         "",
-        "end TDN.Imported." + args.namespace, ""
+        "end TDN.Deployments." + args.namespace, ""
     ]
     Path(args.output).write_text("\n".join(lines))
 

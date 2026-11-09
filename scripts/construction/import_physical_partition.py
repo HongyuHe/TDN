@@ -111,8 +111,8 @@ def generate(workers):
     for left, right in separated_pairs:
         require(roles.get(left, set()).isdisjoint(roles.get(right, set())),
                 "Required role classes share physical hardware")
-    lines = ["import TDN.Targets.Components", "", "namespace TDN.Imported.FreshPhysicalPartition",
-             "", "def components : List Targets.Component := ["]
+    lines = ["import TDN.Requirements.Components", "", "namespace TDN.Deployments.FreshPhysicalPartition",
+             "", "def components : List Requirements.Component := ["]
     rows = []
     for name, value in sorted(devices.items()):
         if value["role"] == "other":
@@ -122,17 +122,17 @@ def generate(workers):
                     ', osFamily := "Linux", cryptoManufacturer := "", cryptoLibrary := "", ' +
                     'evaluatedConfiguration := "", installedConfiguration := "", modifications := [] }')
     lines.extend([",\n".join(rows) + "]", "",
-                  "def hardwareForRole : Targets.ComponentRole → List String"])
+                  "def hardwareForRole : Requirements.ComponentRole → List String"])
     for role, hardware in sorted(roles.items()):
         lines.append("  | ." + role + " => [" + ", ".join(q(item) for item in sorted(hardware)) + "]")
     lines.extend(['  | _ => []', "",
                   "/-- Unknown product/approval fields are unused by this physical-separation result. -/",
                   "theorem captured_role_pairs_are_physically_distinct :",
-                  "    Targets.msc_physically_distinct_security_components components := by",
-                  "  apply Targets.physical_separation_from_disjoint_role_hardware components hardwareForRole",
+                  "    Requirements.msc_physically_distinct_security_components components := by",
+                  "  apply Requirements.physical_separation_from_disjoint_role_hardware components hardwareForRole",
                   "  · unfold components hardwareForRole; decide",
-                  "  · intro a b; cases a <;> cases b <;> unfold Targets.SeparationRequired hardwareForRole <;> decide",
-                  "", "end TDN.Imported.FreshPhysicalPartition", ""])
+                  "  · intro a b; cases a <;> cases b <;> unfold Requirements.SeparationRequired hardwareForRole <;> decide",
+                  "", "end TDN.Deployments.FreshPhysicalPartition", ""])
     return "\n".join(lines), devices
 
 

@@ -132,7 +132,7 @@ class RoleOntologyContract(unittest.TestCase):
 
     def test_lean_source_drift_is_rejected(self):
         mapping = json.loads((OUT / 'roles/ontology_theory.json').read_text())
-        mapping['source_hashes']['TDN/Targets/ComplianceModel.lean'] = 'stale'
+        mapping['source_hashes']['TDN/Requirements/MscComplianceSchema.lean'] = 'stale'
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory)
             (out / 'roles').mkdir()
@@ -152,7 +152,7 @@ class RoleOntologyContract(unittest.TestCase):
 
     def test_lean_annotations_survive_rdf_export(self):
         base = ONTOLOGY.BASE
-        self.assertIn((ONTOLOGY.ONTOLOGY_IRI, base + 'theoryVersion', 'v3.1', True), self.statements)
+        self.assertIn((ONTOLOGY.ONTOLOGY_IRI, base + 'theoryVersion', 'v' + (ROOT / 'THEORY_VERSION').read_text().strip(), True), self.statements)
         for role_id, record in self.graph['theory']['roles'].items():
             self.assertIn((base + role_id, base + 'leanRepresentation', record['status'], True), self.statements)
             self.assertIn((base + role_id, base + 'leanMapping', record['meaning'], True), self.statements)
@@ -214,7 +214,7 @@ class RoleOntologyContract(unittest.TestCase):
 
     def test_changed_obligation_code_requires_translation_review(self):
         mapping = json.loads((OUT / 'roles/ontology_obligations.json').read_text())
-        mapping['source_hashes']['TDN/Targets/CompleteSpecifications.lean'] = 'stale'
+        mapping['source_hashes']['TDN/Requirements/MasterMscRequirementSpecs.lean'] = 'stale'
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory)
             (out / 'roles').mkdir()

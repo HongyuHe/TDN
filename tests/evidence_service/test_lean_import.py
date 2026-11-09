@@ -13,7 +13,7 @@ class LeanImportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="tdn-lean-import-") as name:
             directory = Path(name)
             (directory / "data.json").write_text(json.dumps(value))
-            code = 'import TDN.Import.Command\nimport TDN.Semantics.FiniteExecution\n' + body
+            code = 'import TDN.Import.SnapshotLoader\nimport TDN.Models.TableDrivenDataPlane\n' + body
             path = directory / "Check.lean"
             path.write_text(code)
             result = subprocess.run(["lake", "env", "lean", str(path)], cwd=ROOT, text=True, capture_output=True, timeout=60)
@@ -21,25 +21,25 @@ class LeanImportTests(unittest.TestCase):
             return result.stdout + result.stderr
 
     def test_relative_path_and_kernel_decide(self):
-        self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [2, 1], "payloadOrigin": False}]},
-                      'tdn_data ifaces : List TDN.Execution.IfaceData from "data.json" ["ifaces"]\nexample : ifaces.length = 1 := by decide\n', True)
+        self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [2, 1], "canOriginateTraffic": False}]},
+                      'load_network_records ifaces : List TDN.DataPlaneForwarding.IfaceData from "data.json" ["ifaces"]\nexample : ifaces.length = 1 := by decide\n', True)
 
     def test_unknown_field_rejected(self):
-        output = self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [], "payloadOrigin": False, "ignored": True}]},
-                              'tdn_data ifaces : List TDN.Execution.IfaceData from "data.json" ["ifaces"]\n', False)
+        output = self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [], "canOriginateTraffic": False, "ignored": True}]},
+                              'load_network_records ifaces : List TDN.DataPlaneForwarding.IfaceData from "data.json" ["ifaces"]\n', False)
         self.assertIn("unrecognized evidence fields", output)
 
     def test_bad_finite_index_rejected(self):
-        output = self.run_lean({"nodes": [0, 4]}, 'tdn_data nodes : List (Fin 4) from "data.json" ["nodes"]\n', False)
+        output = self.run_lean({"nodes": [0, 4]}, 'load_network_records nodes : List (Fin 4) from "data.json" ["nodes"]\n', False)
         self.assertIn("outside Fin 4", output)
 
     def test_changed_data_breaks_local_check(self):
-        self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [], "payloadOrigin": False}]},
-                      'tdn_data ifaces : List TDN.Execution.IfaceData from "data.json" ["ifaces"]\nexample : (ifaces[0]!).stack = [2, 1] := by decide\n', False)
+        self.run_lean({"ifaces": [{"owner": 1, "name": "eth0", "stack": [], "canOriginateTraffic": False}]},
+                      'load_network_records ifaces : List TDN.DataPlaneForwarding.IfaceData from "data.json" ["ifaces"]\nexample : (ifaces[0]!).stack = [2, 1] := by decide\n', False)
 
     def test_parameterized_record_can_be_imported_twice(self):
         self.run_lean({"ranges": [{"low": 1, "high": 8, "label": 3}]},
-                      'import TDN.Semantics.Addressing\ntdn_data first : List (TDN.Addressing.Range Nat) from "data.json" ["ranges"]\ntdn_data second : List (TDN.Addressing.Range Nat) from "data.json" ["ranges"]\nexample : first = second := by decide\n', True)
+                      'import TDN.Models.DisjointAddressRanges\nload_network_records first : List (TDN.Addressing.Range Nat) from "data.json" ["ranges"]\nload_network_records second : List (TDN.Addressing.Range Nat) from "data.json" ["ranges"]\nexample : first = second := by decide\n', True)
 
 
 if __name__ == "__main__":

@@ -43,7 +43,7 @@ open Lean Elab Command
 
 /- Only proof bodies are traversed. A general theorem mentioned solely in a type
 does not establish that the snapshot application uses its proof. -/
-partial def followsGeneralProof (env : Environment) (target : Name)
+partial def followsGeneralProof (env : DataPlaneModel) (target : Name)
     (pending : List Name) (visited : NameSet := {}) : Bool :=
   match pending with
   | [] => false

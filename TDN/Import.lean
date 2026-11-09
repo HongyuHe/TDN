@@ -1,2 +1,2 @@
-import TDN.Import.Command
+import TDN.Import.SnapshotLoader
 import TDN.Import.Network

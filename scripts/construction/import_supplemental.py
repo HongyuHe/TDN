@@ -172,7 +172,7 @@ def generate(output,report_path):
                 cds.append({"case_id":case["id"],"accepted":1,"rejected":1,"received":1,"event":valid,"observation_ids":[r["id"] for r in sends],"log_files":["CDS-service.log","SIEM-service.log"],"scope":"Finite software relay filter event; no approved CDS or complete SIEM claim"})
     require(len(cases)==16 and len({c["id"] for c in cases})==16,"supplemental case inventory differs")
     ca=[parse_ca(source_path("ca_"+mode)) for mode in ["local","enterprise","central"]]
-    lines=["import TDN.Evidence.SupplementalTypes","namespace TDN.Imported.Supplemental","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments.SupplementalTypes","namespace TDN.Deployments.Supplemental","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
     probes=[p for c in cases for p in c["probes"]]
     lines.append("def probes : List Evidence.MechanismProbe := "+lean_list(["⟨"+", ".join([quoted(p["id"]),quoted(p["expected_result"]),quoted(p["observed_result"]),str(p["transmitted"]),str(p["received"])])+"⟩" for p in probes]))
     lines.append("theorem recorded_probe_expectations : probes ≠ [] ∧ ∀ p ∈ probes, p.expected = p.observed := by unfold probes; decide")
@@ -188,7 +188,7 @@ def generate(output,report_path):
     lines.append("theorem recorded_ospf_neighbors_and_routes : ospfCounts ≠ [] ∧ ∀ s ∈ ospfCounts, 0 < s.2.2.1 ∧ 0 < s.2.2.2 := by unfold ospfCounts; decide")
     lines.append("def relayCounts : List (Nat × Nat × Nat) := "+lean_list(["("+", ".join(str(s[k]) for k in ["accepted","rejected","received"])+")" for s in cds]))
     lines.append("theorem recorded_relay_both_branches : relayCounts ≠ [] ∧ ∀ s ∈ relayCounts, 0 < s.1 ∧ 0 < s.2.1 ∧ s.2.2 = s.1 := by unfold relayCounts; decide")
-    lines.append("end TDN.Imported.Supplemental")
+    lines.append("end TDN.Deployments.Supplemental")
     output.write_text("\n\n".join(lines)+"\n")
     report={"cases":cases,"channels":channels,"ntp":ntp,"tls":tls,"ospf":ospf,"cds":cds,"ca":ca,"scope":"Finite supplemental endpoint/mechanism records. Case metadata and executed-code digests are declared provenance; no integrated complete MSC compliance or external approval inferred."}
     report_path.write_text(json.dumps(report,indent=2)+"\n")

@@ -45,15 +45,15 @@ def key_records(bundle, before, after, epoch):
     for name, owner in bundle["deviceIds"].items():
         device = bundle["devices"][owner]
         for state in device["states"]:
-            signature = (state["localRequestId"], state["wireIdentity"], state["sender"], state["receiver"])
+            signature = (state["reqid"], state["spi"], state["sender"], state["receiver"])
             matches = [row for row in first.values() if row["device"] == name and state_signature(row) == signature]
             if len(matches) != 1:
                 raise ValueError("raw SAD state lacks one observed direction")
             row = matches[0]
-            policies = device[row["direction"]]
-            if not any(policy["id"] == state["localRequestId"] and
+            policies = device["ingressPolicies" if row["direction"] == "inbound" else "egressPolicies"]
+            if not any(policy["id"] == state["reqid"] and
                        policy["sender"] == state["sender"] and policy["receiver"] == state["receiver"] and
-                       (policy["templateSPI"] is None or policy["templateSPI"] == state["wireIdentity"]) for policy in policies):
+                       (policy["requiredSpi"] is None or policy["requiredSpi"] == state["spi"]) for policy in policies):
                 raise ValueError("observed SA direction lacks an endpoint/policy binding")
             if row["keyBits"] != 256 or row["saltBytes"] != 4 or row["icvBits"] != 128 or len(row["materials"]) != 1:
                 raise ValueError("unsupported native ESP transform")

@@ -3,6 +3,7 @@ import argparse
 import json
 from import_snapshot import lean_list, quoted
 from pathlib import Path
+from network_names import address_family_module, forwarding_lean
 import subprocess
 import sys
 
@@ -17,12 +18,12 @@ def main():
         commands = [
             [sys.executable, "scripts/construction/import_family_execution.py",
              str(Path(args.bundles) / ("families-" + family)),
-             "--namespace", "Family" + family, "--output", "TDN/Evidence/FreshFamily" + family + ".lean",
+             "--namespace", address_family_module(family), "--output", "TDN/Deployments/" + address_family_module(family) + ".lean",
              "--report", report],
             [sys.executable, "scripts/construction/generate_execution_witness.py", report,
-             "--module", "TDN.Evidence.FreshFamily" + family, "--namespace", "Family" + family,
+             "--module", "TDN.Deployments." + address_family_module(family), "--namespace", address_family_module(family),
              "--source-port", "HA:red", "--destination-port", "HB:red",
-             "--output", "TDN/Evidence/FreshFamily" + family + "Witness.lean",
+             "--output", "TDN/Deployments/" + address_family_module(family) + "_SampleTrace.lean",
              "--trace", str(Path(args.run_dir) / ("family" + family + "-positive-trace.json"))]
         ]
         for command in commands:
@@ -41,9 +42,9 @@ def main():
                 identity = quoted(family + "/" + device + "/" + hook)
                 gates.append("(" + identity + ", " + lean_list([str(value) for value in values]) + ")")
                 priorities.append("(" + identity + ", (" + str(gate["priority"]) + " : Int))")
-    source = """import TDN.Semantics.HeaderPolicy
+    source = """import TDN.Models.IpHeaderAclGuards
 
-namespace TDN.Imported.FreshFamilyImmediateHeaders
+namespace TDN.Deployments.SnapshotFamilyImmediateHeaders
 open PacketPolicy
 
 def gates : List (String × List Nat) := """ + lean_list(gates) + """
@@ -59,8 +60,7 @@ lemma every_gate_precedes_defragmentation : ∀ gate ∈ gatePriorities, gate.2 
   unfold gatePriorities
   decide
 
-/-- The literal header is checked by the imported nft hook at priority -450.
-Its connection to the original wire header uses the separately recorded kernel hook-order contract. -/
+
 theorem admitted_header_before_defragmentation_is_permitted (gate : String × List Nat)
     (member : gate ∈ gates) (packet : Packet) (accepted : Accepts (rules gate.2) packet) :
     packet.ipv6NextHeader ∈ [6, 17, 50, 58] := by
@@ -70,9 +70,9 @@ theorem admitted_header_before_defragmentation_is_permitted (gate : String × Li
   subst rule
   simp [ImmediateHeaderGuard, gate_values_checked gate member]
 
-end TDN.Imported.FreshFamilyImmediateHeaders
+end TDN.Deployments.SnapshotFamilyImmediateHeaders
 """
-    Path("TDN/Evidence/FreshFamilyImmediateHeaders.lean").write_text(source)
+    Path("TDN/Deployments/SnapshotFamilyImmediateHeaders.lean").write_text(source)
 
 
 if __name__ == "__main__":

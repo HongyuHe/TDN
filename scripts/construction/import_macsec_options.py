@@ -95,10 +95,10 @@ def generate(data):
         for d in case["devices"]:
             entries.append("⟨" + ", ".join(str(d[k]).lower() for k in
                             ["clearVlanEnabled", "clearVlanSupported", "xpnEnabled", "xpnSupported"]) + "⟩")
-    return '''import TDN.Targets.Components
+    return '''import TDN.Requirements.Components
 
-namespace TDN.Imported.FreshMACsecOptions
-open TDN.Targets
+namespace TDN.Deployments.FreshMACsecOptions
+open TDN.Requirements
 
 /-- Capability facts describe observed operational support under the recorded
 Linux implementation contract, with all other protection duties kept separate. -/
@@ -112,7 +112,7 @@ theorem selected_options_use_supported_features :
   · decide
   · decide
 
-end TDN.Imported.FreshMACsecOptions
+end TDN.Deployments.FreshMACsecOptions
 '''
 
 

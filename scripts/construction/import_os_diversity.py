@@ -79,8 +79,8 @@ def parse(inner_path, outer_path):
 
 def generate(identities):
     q = json.dumps
-    lines = ["import TDN.Targets.Components", "", "namespace TDN.Imported.FreshOSDiversity", "",
-             "def components : List Targets.Component := ["]
+    lines = ["import TDN.Requirements.Components", "", "namespace TDN.Deployments.FreshOSDiversity", "",
+             "def components : List Requirements.Component := ["]
     rows = []
     for name, identity in sorted(identities.items()):
         rows.append("  { identity := " + q(name) + ', product := ⟨"", "", "", .vpn⟩, role := .' +
@@ -97,7 +97,7 @@ def generate(identities):
                   "ESP/kernel crypto implementation remain separate claims. -/",
                   "theorem observed_IKE_provider_names_differ : ∀ inner ∈ components, ∀ outer ∈ components,",
                   "    inner.role = .inner → outer.role = .outer → inner.cryptoLibrary ≠ outer.cryptoLibrary := by",
-                  "  decide", "", "end TDN.Imported.FreshOSDiversity", ""])
+                  "  decide", "", "end TDN.Deployments.FreshOSDiversity", ""])
     return "\n".join(lines)
 
 

@@ -30,7 +30,7 @@ def association(text):
     parent, child = fields(parent), fields(child)
     require(parent['state'] == 'ESTABLISHED' and parent['version'] == '2' and
             child['state'] == 'INSTALLED' and child['mode'] == 'TUNNEL' and child['protocol'] == 'ESP',
-            'Association is not active IKEv2 tunnel ESP')
+            'IpsecPolicy is not active IKEv2 tunnel ESP')
     require(child['encr-alg'] == 'AES_GCM_16' and child['encr-keysize'] == '256',
             'Unsupported CHILD cryptographic transform')
     for key in ['local-ts', 'remote-ts']:
@@ -145,7 +145,7 @@ def parse(directory):
                     int(child['reqid']), 'tunnel') and binding['localInterface'] == addresses[sa['local-host']],
                     'Kernel association differs from active CHILD_SA')
                 require(binding['materialObservation'] == material_row['id'] and binding['publicStateObservation'] == states['id'] and
-                        binding['statisticsObservation'] == statistics['id'], 'Association source observation differs')
+                        binding['statisticsObservation'] == statistics['id'], 'IpsecPolicy source observation differs')
                 material = binding['materials']
                 require(len(material) == 1 and material[0]['kind'] == 'aead' and material[0]['algorithm'] == 'rfc4106(gcm(aes))' and
                         material[0]['bytes'] == 36 and material[0]['parameters'] == '128' and

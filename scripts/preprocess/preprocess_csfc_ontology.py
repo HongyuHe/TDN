@@ -124,7 +124,7 @@ def obligation_catalog(out, role_ids):
     for path, expected in curated['source_hashes'].items():
         if digest(ROOT / path) != expected:
             raise ValueError('Lean obligations changed; review translations: ' + path)
-    register_path = 'data/publication/v3.1/register.json'
+    register_path = 'data/publication/v3.2/register.json'
     register = read(ROOT / register_path)['groups']
     groups = {g['rg_id']: g for g in register}
     if set(curated['translations']) != set(groups):
@@ -140,19 +140,19 @@ def obligation_catalog(out, role_ids):
         if not translation.strip():
             raise ValueError('Missing obligation translation: ' + rg)
         if group.get('specification'):
-            name = group['specification'].removeprefix('TDN.Targets.Complete.')
-            reference = lean_excerpt('TDN/Targets/CompleteSpecifications.lean', name)
+            name = group['specification'].removeprefix('TDN.Requirements.Msc.')
+            reference = lean_excerpt('TDN/Requirements/MasterMscRequirementSpecs.lean', name)
             references = [reference]
-            for primitive in dict.fromkeys(re.findall(r'\b(?:Primitive_msc_\w+|SecurityLevelConnectivityCore|MACsecEncapsulationCore|RedEgressCore)\b', reference['code'])):
-                references.append(lean_excerpt('TDN/Targets/DirectSpecifications.lean', primitive))
+            for primitive in dict.fromkeys(re.findall(r'\b(?:CoreReq_msc_\w+|SecurityLevelConnectivityCore|MACsecEncapsulationCore|RedEgressCore)\b', reference['code'])):
+                references.append(lean_excerpt('TDN/Requirements/CoreMscRequirements.lean', primitive))
             if rg == 'RG-012':
-                references.append(lean_excerpt('TDN/Targets/AuthenticationIsolation.lean', name))
+                references.append(lean_excerpt('TDN/Requirements/CrossEnclavePkiIsolationSpec.lean', name))
             if rg in {'RG-013', 'RG-034'}:
-                references.append(lean_excerpt('TDN/Targets/Topology.lean', name))
+                references.append(lean_excerpt('TDN/Requirements/MscFirewallWaypointingTheorems.lean', name))
             status = 'Complete model proof reviewed' if group['proof_status'] == 'PASS' else 'Complete proof unfinished'
             formalization = 'Dedicated requirement specification'
         else:
-            references = [lean_excerpt('TDN/Targets/CPDuties.lean', 'CPContext.BaseSourceMeaning', int(rg[3:]))]
+            references = [lean_excerpt('TDN/Requirements/CsfcRoleObligations.lean', 'MscComplianceContext.RequirementGroupSpec', int(rg[3:]))]
             status = {'check': 'Assigned to direct checks', 'external': 'Requires external evidence',
                       'scope': 'Permission or applicability condition'}.get(group['proof_status'], group['proof_status'])
             formalization = 'Shared requirement condition'
@@ -200,7 +200,7 @@ def theory_mapping(out, role_ids):
         if not set(record['references']) <= set(result['references']):
             raise ValueError('Unknown Lean reference for ' + role_id)
         if not set(record['interpretations']) <= set(result['interpretations']):
-            raise ValueError('Unknown v3.1 interpretation for ' + role_id)
+            raise ValueError('Unknown v3.2 interpretation for ' + role_id)
         if record['status'] in {'direct', 'composed'} and not record['references']:
             raise ValueError('Represented role lacks a code reference: ' + role_id)
     return result
@@ -256,7 +256,7 @@ def triples(graph):
     rdf_type, label = NS['rdf'] + 'type', NS['rdfs'] + 'label'
     add(ONTOLOGY_IRI, rdf_type, NS['owl'] + 'Ontology')
     add(ONTOLOGY_IRI, NS['rdfs'] + 'comment', graph['class_semantics'] + ' ' + graph['association_semantics'], True)
-    add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', 'CSfC MSC 1.3.0; TDN role hierarchy 1.1; TDN theory v3.1', True)
+    add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', 'CSfC MSC 1.3.0; TDN role hierarchy 1.1; TDN theory v3.2', True)
     props = ['roleId', 'roleKind', 'sourceUnit', 'sourceText', 'pdfPages', 'basis', 'rationale', 'qualification', 'inputHash', 'theoryVersion', 'leanRepresentation', 'leanMapping', 'leanExpression', 'leanReference', 'theoryInterpretation']
     props += ['associatedRequirement', 'directRequirement', 'inheritedRequirement', 'requirementTranslation', 'requirementCode', 'requirementStatus']
     props += sorted({a['relation'] for a in graph['associations']})
@@ -375,7 +375,7 @@ def markdown(graph):
     nodes = {n['role_id']: n for n in graph['nodes']}
     lines = ['# CSfC role ontology', '', 'The hierarchy organizes all extracted roles and preserves source evidence for each subtype relationship. A role can have multiple parents. The navigation families group related topics for browsing and add no OWL subclass claims.', '', '[Interactive explorer](ontology.html) | [OWL in RDF/XML](ontology.owl) | [Turtle](ontology.ttl) | [Structured graph](ontology.json) | [Curation decisions](ontology_decisions.json)', '', graph['class_semantics'], '', graph['association_semantics'], '', 'OWL uses an open-world interpretation: an absent relationship remains unasserted. The extraction validators separately check that every extracted role and every declared evidence reference is present.', '', 'The transitive parent lists are computed for the exported subclass graph. The pipeline validates its supported serialization and hierarchy; it does not run a general OWL DL reasoner or prove CSfC compliance.', '', '## Counts', '']
     lines += ['- ' + key.replace('_', ' ') + ': ' + str(value) for key, value in graph['counts'].items()]
-    lines += ['', '## Representation in TDN v3.1', '', graph['theory']['mapping_scope'], '',
+    lines += ['', '## Representation in TDN v3.2', '', graph['theory']['mapping_scope'], '',
               '[Curated Lean mappings](ontology_theory.json) records all 76 source roles, code references, chosen interpretations and pinned Lean source hashes.', '',
               '| Role | Representation | Meaning | Code |', '| --- | --- | --- | --- |']
     for node in graph['nodes']:
@@ -395,7 +395,7 @@ def markdown(graph):
         direct = ', '.join(o['rg_id'] for o in node['obligations'] if o['direct']) or 'None recorded'
         inherited = ', '.join(o['rg_id'] for o in node['obligations'] if o['inherited_from']) or 'None'
         lines.append('| ' + node['label'] + ' | ' + direct + ' | ' + inherited + ' |')
-    lines += ['', '## Chosen v3.1 interpretations', '']
+    lines += ['', '## Chosen v3.2 interpretations', '']
     for key, interpretation in graph['theory']['interpretations'].items():
         lines += ['### ' + interpretation['title'], '', interpretation['summary'], '',
                   'Recorded decision: `' + interpretation['source_path'] + ':' + str(interpretation['source_line']) + '`.', '']

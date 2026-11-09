@@ -1,17 +1,17 @@
-import TDN.Evidence.FreshByteResponses
-import TDN.Semantics.EncryptedResponseGuards
-import TDN.Evidence.FreshByteDomains
-import TDN.Evidence.FreshSharedIsolationWitness
-open TDN Execution
-open TDN.Imported.FreshSharedIsolation
+import TDN.Deployments.SnapshotByteReplyChecks
+import TDN.Models.BlockRepliesToLocalCiphertext
+import TDN.Deployments.SnapshotByteEnclaveIsolation
+import TDN.Deployments.ProfileShared_IsolationTrace
+open TDN DataPlaneForwarding
+open TDN.Deployments.ProfileShared_EnclaveIsolation
 
 abbrev B := ReassemblyOrigins.ByteOrigin Nat Nat Nat
 def body : List B := [⟨65, 1, 1⟩, ⟨66, 1, 1⟩]
-def byteSystem : Cslib.LTS (List (ByteFlows.Carrier Execution.State B)) (ByteFlows.Action Execution.Action) := ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
+def byteSystem : Cslib.LTS (List (ByteFlows.Carrier DataPlaneForwarding.State B)) (ByteFlows.Action DataPlaneForwarding.Action) := ByteFlows.lts (lts config) (Requirements.RedByteOrigin config redSources)
   PlaintextAssembly
 
-lemma origin_bytes : ∀ byte ∈ body, Targets.RedByteOrigin config redSources witnessState0 byte := by
-  unfold body Targets.RedByteOrigin Targets.RedPayloadOrigin
+lemma origin_bytes : ∀ byte ∈ body, Requirements.RedByteOrigin config redSources witnessState0 byte := by
+  unfold body Requirements.RedByteOrigin Requirements.RedPayloadOrigin
   decide
 
 lemma prefix_path : (lts config).MTr witnessState0 (witnessActions.take 4) witnessState4 := by
@@ -26,21 +26,21 @@ example : ∃ actions, byteSystem.MTr [] actions [⟨witnessState60, body⟩] :=
   have inject : byteSystem.Tr [] .inject [⟨witnessState0, body⟩] :=
     ByteFlows.Step.inject origin_bytes
   have prefixRun := ByteFlows.network_trace_on_one_carrier (lts config)
-    (Targets.RedByteOrigin config redSources) PlaintextAssembly body prefix_path
+    (Requirements.RedByteOrigin config redSources) PlaintextAssembly body prefix_path
   have splitStep : byteSystem.Tr [⟨witnessState4, body⟩] .split
       [⟨witnessState4, [⟨65, 1, 1⟩]⟩, ⟨witnessState4, [⟨66, 1, 1⟩]⟩] :=
     ByteFlows.Step.split (network := lts config)
-      (origin := Targets.RedByteOrigin (Byte := Nat) config redSources)
+      (origin := Requirements.RedByteOrigin (Byte := Nat) config redSources)
       (canAssemble := PlaintextAssembly) (state := witnessState4) (bytes := body)
       (earlier := []) (later := [])
       (chunks := [[⟨65, 1, 1⟩], [⟨66, 1, 1⟩]]) rfl
   have compatible : PlaintextAssembly witnessState4 witnessState4 := by
-    simp [PlaintextAssembly, witnessState4, Frame.tags]
+    simp [PlaintextAssembly, witnessState4, Frame.encapLayerIds]
   have assemblyStep : byteSystem.Tr
       [⟨witnessState4, [⟨65, 1, 1⟩]⟩, ⟨witnessState4, [⟨66, 1, 1⟩]⟩] .assemble
       [⟨witnessState4, body⟩] := by
     apply ByteFlows.Step.assemble (network := lts config)
-      (origin := Targets.RedByteOrigin (Byte := Nat) config redSources)
+      (origin := Requirements.RedByteOrigin (Byte := Nat) config redSources)
       (canAssemble := PlaintextAssembly) (after := witnessState4)
       (earlier := []) (later := [])
       (packets := [⟨witnessState4, [⟨65, 1, 1⟩]⟩, ⟨witnessState4, [⟨66, 1, 1⟩]⟩])
@@ -49,14 +49,14 @@ example : ∃ actions, byteSystem.MTr [] actions [⟨witnessState60, body⟩] :=
       simp only [List.mem_cons, List.not_mem_nil, or_false] at member
       rcases member with rfl | rfl <;> exact compatible
   have suffixRun := ByteFlows.network_trace_on_one_carrier (lts config)
-    (Targets.RedByteOrigin config redSources) PlaintextAssembly body suffix_path
+    (Requirements.RedByteOrigin config redSources) PlaintextAssembly body suffix_path
   exact ⟨_, Cslib.LTS.MTr.stepL inject
     (Cslib.LTS.MTr.comp _ prefixRun
       (Cslib.LTS.MTr.stepL splitStep (Cslib.LTS.MTr.stepL assemblyStep suffixRun)))⟩
 
 -- Ciphertext is never converted into plaintext by the plaintext assembly operation.
 example : ¬ PlaintextAssembly witnessState10 witnessState4 := by
-  simp [PlaintextAssembly, witnessState10, witnessState4, Frame.tags]
+  simp [PlaintextAssembly, witnessState10, witnessState4, Frame.encapLayerIds]
 
 -- Assembly itself does not inspect domain or packet-identity annotations.
 def noMoves : Cslib.LTS Unit Unit := ⟨fun _ _ _ => False⟩
@@ -73,16 +73,16 @@ example : (ByteFlows.lts noMoves source atSamePlace).Tr
 
 -- The useful path remains available in the combined gateway-response/byte-flow model.
 example : ∃ actions, (ResponseByteFlows.system (lts config)
-    (Targets.nativeKernelResponses config TDN.Imported.FreshSharedExecution.responseGateways)
-    (Targets.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions
+    (Requirements.nativeKernelResponses config TDN.Deployments.ProfileShared_DataPlane.responseGateways)
+    (Requirements.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions
       [⟨.network witnessState60, body⟩] := by
   have path := EncryptedResponseGuards.network_trace_in_response_system (lts config)
-    (Targets.nativeKernelResponses config TDN.Imported.FreshSharedExecution.responseGateways)
-    positive_delivery_execution
+    (Requirements.nativeKernelResponses config TDN.Deployments.ProfileShared_DataPlane.responseGateways)
+    positive_delivery_forwarding
   have lifted := ByteFlows.network_trace_on_one_carrier
     (KernelResponses.lts (lts config)
-      (Targets.nativeKernelResponses config TDN.Imported.FreshSharedExecution.responseGateways))
-    (ResponseByteFlows.source (Targets.RedByteOrigin config redSources))
+      (Requirements.nativeKernelResponses config TDN.Deployments.ProfileShared_DataPlane.responseGateways))
+    (ResponseByteFlows.source (Requirements.RedByteOrigin config redSources))
     (ResponseByteFlows.assembly PlaintextAssembly) body path
   exact ⟨_, Cslib.LTS.MTr.stepL (ByteFlows.Step.inject origin_bytes) lifted⟩
 

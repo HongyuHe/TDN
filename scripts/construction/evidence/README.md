@@ -27,7 +27,7 @@ Every collection needs a fresh snapshot name. Private deployment state goes unde
 
 | Purpose | Current entry points |
 | --- | --- |
-| Native snapshots and process inventory | `collect_native_v2.py`, `native_inventory.py` |
+| Device snapshots and process inventory | `collect_native_v2.py`, `native_inventory.py` |
 | IP families and IPsec/MACsec pairings | `matrix_lab.py` |
 | GRE, MPLS and OSPF variants | `routing_variants_v6.py` |
 | Management, placement and time-source variants | `utility_variants_v3.py` |
@@ -41,15 +41,15 @@ Every collection needs a fresh snapshot name. Private deployment state goes unde
 | Mixed IPsec/MACsec cases with private-input key equality records | `manual_pairing_lab.py`, `pairing_boundary_policy_v7.py`, `pairing_headers_v6.py`, `Dockerfile.protocol-lab` |
 | Management connection initiation and reply records | `management_session_lab.py --output /absolute/fresh/output` inside the isolated protocol-lab container |
 | Active native IPsec keys, CHILD_SAs, and authentication records | `native_ipsec_correlation.py --spec PROFILE --output /absolute/fresh/output` on the worker |
-| Native snapshot surrounded by key and authentication observations | `collect_native_cohort.py --spec PROFILE --output FRESH_PATH --configuration-id ID --run-id RUN` on the worker |
-| Native packet-size boundaries, source errors and fragmentation | `packet_size_lab.py --spec PROFILE --output FRESH_PATH --source DEVICE --destination IP --ports DEVICE:INTERFACE ...` on the worker |
+| Device snapshot surrounded by key and authentication observations | `collect_native_cohort.py --spec PROFILE --output FRESH_PATH --configuration-id ID --run-id RUN` on the worker |
+| Device packet-size boundaries, source errors and fragmentation | `packet_size_lab.py --spec PROFILE --output FRESH_PATH --source DEVICE --destination IP --ports DEVICE:INTERFACE ...` on the worker |
 | Repeated routing, filtering and XFRM processing observations | `collect_processing.py --spec PROFILE --output FRESH_PATH` on the worker |
 | Framed IPsec UDP replies | `ike_reply_rules.py --containers DEVICE ... --output FRESH_PATH`; add `--apply` to install the proposed rules |
 | Objective IKEv2 exchange | `pq_exchange_v4.py`, `ike_headers.py` |
 | Authentication-policy before/after trials | `auth_constraints_v5.py`, `auth_negative.py`, `auth_headers.py` |
-| Native redundancy events | `redundancy_native.py` |
+| Device redundancy events | `redundancy_native.py` |
 | Physical/KVM workstation trials | `boot_aw_vm.py`, `aw_tls_provision_v2.py`, `aw_client.py` |
-| Native profile generation and diagrams | `make_native.py`, `draw_profiles.py` |
+| Device profile generation and diagrams | `make_native.py`, `draw_profiles.py` |
 | Timestamped command records | `run_command.py --output-dir PATH LABEL COMMAND ...` |
 
 The supplemental experiments retain their existing `--root` or `--output` arguments and their documented capability limits. The authentication before/after scripts target the historical Linux profile, while the native replay helper selects the current FRR/OVS profiles. Retained earlier Python revisions are still imported by current helpers. Superseded inventory collectors, intermediate topology generators, and fixed-date collection scripts were removed; Git revision `1a49bb76` preserves those historical versions.

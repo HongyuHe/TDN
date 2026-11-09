@@ -183,7 +183,7 @@ def parse(base):
 def generate(d):
     q = json.dumps
     b = lambda x: str(x).lower()
-    lines = ["import TDN.Targets.RecordedOperations", "", "namespace TDN.Imported.FreshRecordedOperations",
+    lines = ["import TDN.Requirements.RecordedOperations", "", "namespace TDN.Deployments.FreshRecordedOperations",
              "open RecordedOperations", "", "/-- Actual configured assignments, with positive authenticated management attempts. -/",
              "def assignments : List Assignment := [" + ", ".join("⟨" + q(a["component"]) + ", " +
              q(a["workstation"]) + ", " + b(a["inner"]) + "⟩" for a in d["assignments"]) + "]",
@@ -198,7 +198,7 @@ def generate(d):
              "lemma tls_versions_checked : ∀ v ∈ tlsVersions, tlsProtection v = some .tls13 := by",
              "  unfold tlsVersions tlsProtection; decide",
              "theorem observed_management_uses_allowed_protocol (v : String) (member : v ∈ tlsVersions) :",
-             "    ∃ p, tlsProtection v = some p ∧ Targets.ApprovedManagementProtocol p :=",
+             "    ∃ p, tlsProtection v = some p ∧ Requirements.ApprovedManagementProtocol p :=",
              "  ⟨.tls13, tls_versions_checked v member, recognized_tls_is_allowed v .tls13 (tls_versions_checked v member)⟩",
              "", "/-- Use windows are declarations from the recorded experiment; power state is observed. -/",
              "def powerStates : List PowerState := [" + ", ".join("⟨" + b(a) + ", " + b(c) + "⟩" for a, c in d["power"]["states"]) + "]",
@@ -235,7 +235,7 @@ def generate(d):
               "  retained_table_covers_selected_tests selectedTests savedResults resultPath",
               "    (fun id member => (result_lookup_checked id member).1)",
               "    (fun id member => (result_lookup_checked id member).2)",
-              "", "end TDN.Imported.FreshRecordedOperations", ""]
+              "", "end TDN.Deployments.FreshRecordedOperations", ""]
     return "\n".join(lines)
 
 

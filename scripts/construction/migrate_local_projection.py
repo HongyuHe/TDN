@@ -28,7 +28,7 @@ def migrate(root, record):
     directory = root / "data/evidence/continuation"
     canonical = {}
     sources = {}
-    for stem in ["OuterGrayBaseline", "OuterGrayShared", "BoundaryBaseline", "BoundaryShared", "GrayFirewallShared"]:
+    for stem in ["OuterToGray_Baseline", "OuterToGray_Shared", "Perimeter_Baseline", "Perimeter_Shared", "GrayFirewallShared"]:
         path = directory / (stem + ".json")
         saved = json.loads(path.read_text())
         raw = saved.get("rawBundle", saved.get("native", {}).get("rawBundle"))
@@ -52,9 +52,9 @@ def migrate(root, record):
         else:
             for row in interface_rows(saved):
                 if row["id"].startswith("V31B_"):
-                    stem = "OuterGrayBaseline" if path.stem.startswith("OuterGray") else "BoundaryBaseline"
+                    stem = "OuterToGray_Baseline" if path.stem.startswith("OuterGray") else "Perimeter_Baseline"
                 elif row["id"].startswith("V31F_"):
-                    stem = "OuterGrayShared" if path.stem.startswith("OuterGray") else "GrayFirewallShared" if path.stem.startswith("GrayFirewall") else "BoundaryShared"
+                    stem = "OuterToGray_Shared" if path.stem.startswith("OuterGray") else "GrayFirewallShared" if path.stem.startswith("GrayFirewall") else "Perimeter_Shared"
                 else:
                     raise ValueError("typed interface has no recorded phase: " + row["id"])
                 selected = canonical[stem][row["id"]]

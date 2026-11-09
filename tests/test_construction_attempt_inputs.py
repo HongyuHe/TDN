@@ -27,7 +27,7 @@ class AttemptInputsTests(unittest.TestCase):
 
     def test_fixture_and_relative_json_are_captured(self):
         (self.root / "outputs/fixtures/Check.lean").write_text(
-            'tdn_data items : List Nat from "items.json" ["values"]\n')
+            'load_network_records items : List Nat from "items.json" ["values"]\n')
         (self.root / "outputs/fixtures/items.json").write_text('{"values": [1, 2]}')
         selected, missing = MODULE.referenced_inputs(
             self.root, ["lake", "env", "lean", "outputs/fixtures/Check.lean"], [])
@@ -36,8 +36,8 @@ class AttemptInputsTests(unittest.TestCase):
 
     def test_multiline_imports_and_explicit_inputs_are_captured(self):
         (self.root / "outputs/fixtures/Check.lean").write_text(
-            'tdn_data a : List Nat\n  from "a.json" ["a"]\n'
-            'tdn_data b : List Nat from "b.json" ["b"]\n')
+            'load_network_records a : List Nat\n  from "a.json" ["a"]\n'
+            'load_network_records b : List Nat from "b.json" ["b"]\n')
         for name in ["a.json", "b.json", "case.json"]:
             (self.root / "outputs/fixtures" / name).write_text("{}")
         selected, missing = MODULE.referenced_inputs(self.root,
@@ -47,7 +47,7 @@ class AttemptInputsTests(unittest.TestCase):
 
     def test_missing_reference_is_recorded(self):
         (self.root / "outputs/fixtures/Check.lean").write_text(
-            'tdn_data a : Nat from "absent.json" ["a"]\n')
+            'load_network_records a : Nat from "absent.json" ["a"]\n')
         _, missing = MODULE.referenced_inputs(self.root, ["outputs/fixtures/Check.lean"], [])
         self.assertEqual(missing, ["outputs/fixtures/absent.json"])
 

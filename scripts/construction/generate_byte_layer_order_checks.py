@@ -3,14 +3,14 @@ from pathlib import Path
 
 
 def generate():
-    text = """import TDN.Targets.ByteLayerOrder
-import TDN.Evidence.FreshComponentByteResponses
+    text = """import TDN.Requirements.ByteLevelDoubleEncryptionOrder
+import TDN.Deployments.SnapshotComponentByteResponses
 
 """
     for name, count in [("Shared", 4), ("Baseline", 2)]:
-        base = "TDN.Imported.Fresh" + name + "Execution"
-        text += f"""namespace TDN.Imported.Fresh{name}Isolation
-open Execution
+        base = "TDN.Deployments.Profile" + name + "_DataPlane"
+        text += f"""namespace TDN.Deployments.Profile{name}_EnclaveIsolation
+open DataPlaneForwarding
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
@@ -33,30 +33,30 @@ set_option maxHeartbeats 0
         text += "".join(f"  · exact byte_outer_placement{d}\n" for d in range(1, count + 1))
         text += f"""
 theorem every_assembled_black_byte_has_inner_before_outer {{Byte : Type}}
-    {{after : List (ByteFlows.Carrier (KernelResponses.State Execution.State)
+    {{after : List (ByteFlows.Carrier (KernelResponses.State DataPlaneForwarding.State)
       (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}}
-    {{actions : List (ByteFlows.Action (KernelResponses.Action Execution.Action))}}
+    {{actions : List (ByteFlows.Action (KernelResponses.Action DataPlaneForwarding.Action))}}
     (run : (ResponseByteFlows.system (lts config)
       (UniformDomainResponses.responseConfig config {base}.responseGateways uniformResponseOwners)
-      (Targets.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
-    (finish : Execution.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+      (Requirements.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
+    (finish : DataPlaneForwarding.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (packetPresent : ⟨.network finish, bytes⟩ ∈ after)
-    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ {base}.blackIfaces)
+    (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ {base}.blackIfaces)
     (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (bytePresent : byte ∈ bytes) :
-    ∃ start labels, Targets.RedByteOrigin config redSources start byte ∧
-      Targets.BytePathOrderedEncryptions config {base}.responseGateways uniformResponseOwners
+    ∃ start labels, Requirements.RedByteOrigin config redSources start byte ∧
+      Requirements.BytePathOrderedEncryptions config {base}.responseGateways uniformResponseOwners
         (byte.domain + 10) 2 (.network start) labels (.network finish) :=
-  Targets.every_black_byte_has_ordered_encryption_path config redSources domains
+  Requirements.every_black_byte_has_ordered_encryption_path config redSources domains
     {base}.responseGateways uniformResponseOwners {base}.blackIfaces
     byteLayout byteAllowed all_byte_domain_conditions all_byte_source_domains all_byte_source_checks
     tagged_gateway_response_guards all_uniform_domain_responses (fun d => d + 10) 2
     all_byte_black_checks all_byte_outer_placement run finish bytes packetPresent ready black byte bytePresent
 
-end TDN.Imported.Fresh{name}Isolation
+end TDN.Deployments.Profile{name}_EnclaveIsolation
 
 """
     return text
 
 
 if __name__ == "__main__":
-    Path("TDN/Evidence/FreshByteLayerOrder.lean").write_text(generate())
+    Path("TDN/Deployments/SnapshotByteEncryptionOrder.lean").write_text(generate())

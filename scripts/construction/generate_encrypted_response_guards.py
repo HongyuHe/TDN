@@ -15,32 +15,31 @@ def main():
     count = len(trace["steps"])
     if count == 0 or len(trace["states"]) != count + 1:
         raise ValueError("Complete useful execution required")
-    text = """import TDN.Semantics.EncryptedResponseGuards
+    text = """import TDN.Models.BlockRepliesToLocalCiphertext
 import MODULE
 
-namespace TDN.Imported.NAMESPACE
+namespace TDN.Deployments.NAMESPACE
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
 lemma locally_encrypted_response_rules_checked :
-    EncryptedResponseGuards.FiniteDeny devices := by
-  unfold EncryptedResponseGuards.FiniteDeny
+    EncryptedResponseGuards.TableDrivenDeny devices := by
+  unfold EncryptedResponseGuards.TableDrivenDeny
   decide
 
 lemma locally_encrypted_response_denial : EncryptedResponseGuards.LocalDeny config :=
-  EncryptedResponseGuards.finite_deny_sound devices ifaces routes links switches
+  EncryptedResponseGuards.table_driven_deny_sound devices ifaces routes links switches
     locally_encrypted_response_rules_checked
 
-/-- The same captured source guards and OUTPUT rules now cover encrypted
-local error quotes as well as the earlier processing points. -/
+
 theorem gateway_pre_and_post_encryption_responses_keep_stack
-    {before after : Execution.State} {actions : List (KernelResponses.Action Execution.Action)}
+    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
     (run : (KernelResponses.lts (GuardedResponseNetwork.network responseData)
       (EncryptedResponseGuards.combinedConfig responseData)).MTr
       (.network before) actions (.network after))
     (initial : GuardedResponseNetwork.Safe responseData before) :
-    Execution.StackInvariant config expectedEncapStack after :=
-  EncryptedResponseGuards.combined_executions_preserve_stack responseData
+    DataPlaneForwarding.EncapStackConsistent config expectedEncapStack after :=
+  EncryptedResponseGuards.combined_traces_preserve_stack responseData
     local_stack_conditions all_source_output_reply_pairs_checked all_input_interfaces_covered
     response_default_checks locally_encrypted_response_denial run initial
 
@@ -52,7 +51,7 @@ theorem useful_delivery_in_combined_response_system :
   EncryptedResponseGuards.network_trace_in_response_system _ _
     positive_delivery_with_early_source_guards
 
-end TDN.Imported.NAMESPACE
+end TDN.Deployments.NAMESPACE
 """
     Path(args.output).write_text(text.replace("MODULE", args.module).replace("NAMESPACE", args.namespace).replace("FINAL", str(count)))
 

@@ -1,6 +1,6 @@
-import TDN.Targets.Administration
+import TDN.Requirements.ManagementPlaneRequirements
 
-open TDN.Targets
+open TDN.Requirements
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 

@@ -39,18 +39,18 @@ class RegisterTests(unittest.TestCase):
     def completed_fixture(self):
         return {"established": True, "disposition_reason": "Reviewed selected scope",
                 "remaining_construction_work": [], "outstanding_assumptions": [],
-                "formal_definition": "TDN.Targets.example_spec", "general_theorem": "TDN.Targets.general_result",
+                "formal_definition": "TDN.Requirements.example_spec", "general_theorem": "TDN.Requirements.general_result",
                 "clause_progress": [{"source_id": "source-1", "status": "established", "reason": "Checked"}],
-                "checked_applications": [{"name": "TDN.Imported.example_result", "whole_group_claim": True}],
+                "checked_applications": [{"name": "TDN.Deployments.example_result", "whole_group_claim": True}],
                 "completion_certificate": {"scope": "fixture", "implementation_contract": "Explicit model",
                     "covered_source_ids": ["source-1"], "evidence_keys": ["snapshot"],
-                    "application": {"lean_goal": "TDN.Targets.example_spec TDN.Imported.facts",
-                                    "lean_proof": "TDN.Imported.example_result"},
+                    "application": {"lean_goal": "TDN.Requirements.example_spec TDN.Deployments.facts",
+                                    "lean_proof": "TDN.Deployments.example_result"},
                     "requirement_premises_checked": True}}
 
     def test_supported_completed_scope_is_permitted(self):
         result = validate_group_claim(self.completed_fixture(), {"snapshot": {}})
-        self.assertEqual(result, "example : TDN.Targets.example_spec TDN.Imported.facts := TDN.Imported.example_result")
+        self.assertEqual(result, "example : TDN.Requirements.example_spec TDN.Deployments.facts := TDN.Deployments.example_result")
 
     def test_incomplete_clause_cannot_be_completed(self):
         value = self.completed_fixture()

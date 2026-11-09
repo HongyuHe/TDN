@@ -10,7 +10,7 @@ const categories={specification:'Specifications',general:'General proofs',snapsh
 function categoryOf(name){
  if(group.specifications.includes(name))return 'specification';
  const n=data.nodes[name];
- if(isProof(n)&&n.path.startsWith('TDN/Evidence/'))return 'snapshot';
+ if(isProof(n)&&n.path.startsWith('TDN/Deployments/'))return 'snapshot';
  if(isProof(n)&&n.path.startsWith('TDN/'))return 'general';
  return 'support';
 }
@@ -96,7 +96,7 @@ function branchGraph(name){
  if(branchCache.has(cacheKey))return branchCache.get(cacheKey);
  const source=data.layouts[group.id+'|'+name+'|'+mode];
  const positions=new Map(source.nodes.map(n=>[n.id,n]));
- const allowed=n=>!generalOnly||!data.nodes[n].path.startsWith('TDN/Evidence/');
+ const allowed=n=>!generalOnly||!data.nodes[n].path.startsWith('TDN/Deployments/');
  const visited=new Set(),todo=[name];
  while(todo.length){
   const current=todo.pop();if(visited.has(current))continue;
@@ -168,9 +168,9 @@ function renderGraph(refit=true){
  updateHash();
  if(!group.formal){
   layout=null;$('#canvas').innerHTML='';$('#canvas').hidden=true;$('#detail').hidden=true;
-  $('#empty').hidden=false;$('#empty').innerHTML='<p>'+esc(group.reason)+'</p><p>No top-level proof target was selected for this RG in v3.1.</p>';
+  $('#empty').hidden=false;$('#empty').innerHTML='<p>'+esc(group.reason)+'</p><p>No top-level proof target was selected for this RG in v3.2.</p>';
   $('#graph-count').textContent='Outside the 24 selected targets';$('#selection-meaning').textContent=group.reason;
-  $('#related-specification').innerHTML='';$('#collapse').disabled=true;$('#choice-count').textContent='Catalog entry; no v3.1 proof tree.';
+  $('#related-specification').innerHTML='';$('#collapse').disabled=true;$('#choice-count').textContent='Catalog entry; no v3.2 proof tree.';
   $('#locator-status').textContent='Choose a selected RG to explore its declarations.';return;
  }
  $('#canvas').hidden=false;$('#detail').hidden=false;
@@ -265,7 +265,7 @@ function showDetail(name,userInitiated=false,key=null){
  const input=[...new Set([...n.proofs,...n.definitions])].filter(k=>data.nodes[k]);
  const statement=n.statementDefinitions.filter(k=>k!==name&&data.nodes[k]&&!input.includes(k));
  const links=names=>names.map(k=>`<button data-detail-name="${esc(k)}">${esc(data.nodes[k].short)}</button>`).join('');
- const layer=n.path.startsWith('TDN/Semantics/')?'Reusable network semantics':n.path.startsWith('TDN/Targets/')?'CSfC specifications and general proofs':'Imported evidence, local checks, and applications';
+ const layer=n.path.startsWith('TDN/Models/')?'Reusable network semantics':n.path.startsWith('TDN/Requirements/')?'CSfC specifications and general proofs':'Deployments evidence, local checks, and applications';
  const certificate=group.certificates.find(c=>c.application.lean_proof===name);
  const assumptions=certificate?.implementation_contract;
  $('#detail').innerHTML=`<div class="detail-head"><div><p class="kind">${requirementSpecs.has(name)?requirementSpecs.get(name)+' top-level specification (definition)':kindLabel(n)}${n.decide?' with a finite decide check':''}</p><h3>${esc(n.short)}</h3><p class="source">${esc(n.path)}:${n.line}</p></div><a class="open-source" href="${sourceURL(n)}">${data.codeBase?"View on GitHub":"Open in VS Code"} ↗</a></div><p class="layer">${layer}</p><p class="meaning">${esc(n.description)}</p>${group.applications[name]?'<details><summary>Recorded application scope</summary><p>'+esc(group.scopes[name]||group.applications[name])+'</p></details>':''}${assumptions?'<details><summary>Recorded implementation assumptions</summary><ul>'+(Array.isArray(assumptions)?assumptions:[assumptions]).map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul></details>':''}${input.length?'<details><summary>Direct dependencies ('+input.length+')</summary><div class="dependency-buttons">'+links(input)+'</div></details>':''}${statement.length?'<details><summary>Definitions used in the statement</summary><div class="dependency-buttons">'+links(statement)+'</div></details>':''}${n.libraries.length?'<details><summary>Direct library references</summary><p>'+n.libraries.map(x=>'<code>'+esc(x)+'</code>').join(', ')+'</p></details>':''}`;

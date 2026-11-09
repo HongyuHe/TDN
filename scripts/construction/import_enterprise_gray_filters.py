@@ -83,9 +83,9 @@ def parse(root):
 
 def generate(data):
     entries = ["[" + ", ".join(row["forward_rules"]) + "]" for row in data["records"]]
-    return """import TDN.Targets.EnterpriseGrayFiltering
+    return """import TDN.Requirements.SharedEnterpriseGraySpecFiltering
 
-namespace TDN.Imported.FreshEnterpriseGrayFilters
+namespace TDN.Deployments.FreshEnterpriseGrayFilters
 open TDN.PacketPolicy
 
 def forwardChains : List (List Rule) := [""" + ",\n  ".join(entries) + """]
@@ -114,7 +114,7 @@ theorem captured_local_input_accepts_every_packet (chain : List Rule × TDN.Filt
   obtain ⟨empty, default⟩ := input_defaults_are_acceptance chain member
   simp [empty, default, TDN.Filter.evaluate]
 
-end TDN.Imported.FreshEnterpriseGrayFilters
+end TDN.Deployments.FreshEnterpriseGrayFilters
 """
 
 

@@ -3,22 +3,22 @@ from pathlib import Path
 
 
 def generate():
-    text = """import TDN.Targets.ResponseIsolation
-import TDN.Evidence.FreshSharedIsolation
-import TDN.Evidence.FreshBaselineIsolation
-import TDN.Evidence.FreshNativeResponseGuards
+    text = """import TDN.Requirements.KernelReplyEnclaveIsolation
+import TDN.Deployments.ProfileShared_EnclaveIsolation
+import TDN.Deployments.ProfileBaseline_EnclaveIsolation
+import TDN.Deployments.SnapshotDeviceResponseGuards
 
 """
     for name in ["Shared", "Baseline"]:
-        namespace = "Fresh" + name + "Isolation"
-        base = "TDN.Imported.Fresh" + name + "Execution"
-        text += f"""namespace TDN.Imported.{namespace}
-open Execution
+        namespace = "Profile" + name + "_EnclaveIsolation"
+        base = "TDN.Deployments.Profile" + name + "_DataPlane"
+        text += f"""namespace TDN.Deployments.{namespace}
+open DataPlaneForwarding
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma tagged_gateway_response_guards :
-    Targets.GatewayResponseGuards config {base}.responseGateways := by
+    Requirements.GatewayResponseGuards config {base}.responseGateways := by
   have checks : ∀ device ∈ {base}.responseGateways,
       (deviceAt taggedDevices device).outputFallback = .deny ∧
       ∀ rule ∈ (deviceAt taggedDevices device).outputRules, rule.verdict = .allow →
@@ -30,26 +30,26 @@ lemma tagged_gateway_response_guards :
   exact checks (config.owner iface) member
 
 theorem gateway_response_delivery_preserves_full_label
-    {{start finish : Execution.State}}
-    {{actions : List (KernelResponses.Action Execution.Action)}}
+    {{start finish : DataPlaneForwarding.State}}
+    {{actions : List (KernelResponses.Action DataPlaneForwarding.Action)}}
     {{source recipient : Nat}}
-    (origin : Targets.RedPayloadOrigin config redSources start)
-    (sourceLevel : config.recipientDomain start.iface = some source)
+    (origin : Requirements.RedPayloadOrigin config redSources start)
+    (sourceLevel : config.ifaceSecurityDomain start.iface = some source)
     (run : (KernelResponses.lts (lts config)
-      (Targets.nativeKernelResponses config {base}.responseGateways)).MTr
+      (Requirements.nativeKernelResponses config {base}.responseGateways)).MTr
       (.network start) actions (.network finish))
     (delivered : finish.datapathStage = .delivered)
-    (recipientLevel : config.recipientDomain finish.iface = some recipient) :
+    (recipientLevel : config.ifaceSecurityDomain finish.iface = some recipient) :
     fullLevel source = fullLevel recipient := by
-  exact congrArg fullLevel (Targets.same_domain_delivery_with_strict_gateway_responses
+  exact congrArg fullLevel (Requirements.same_domain_delivery_with_strict_gateway_responses
     config redSources {base}.responseGateways snapshot_RG008_IPv4_ESP_delivery
     tagged_gateway_response_guards origin sourceLevel run delivered recipientLevel)
 
-end TDN.Imported.{namespace}
+end TDN.Deployments.{namespace}
 
 """
     return text
 
 
 if __name__ == "__main__":
-    Path("TDN/Evidence/FreshNativeResponseIsolation.lean").write_text(generate())
+    Path("TDN/Deployments/SnapshotDeviceResponseIsolation.lean").write_text(generate())

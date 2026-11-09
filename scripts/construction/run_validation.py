@@ -23,44 +23,44 @@ os.environ["TDN_OUTPUT_DIR"]=args.output_dir
 os.environ["TDN_INPUT_MANIFEST"]=args.input_manifest
 commands=[
     ["python3","scripts/construction/import_provenance.py","--report","outputs/provenance-import.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("baseline")),"--lean-output","TDN/Evidence/Baseline.lean","--report","outputs/baseline-import.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("adjacency")),"--lean-output","TDN/Evidence/Adjacency.lean","--report","outputs/adjacency-import.json"],
-    ["python3","scripts/construction/analyze_topology.py",str(source_path("adjacency")),"--lean-output","TDN/Evidence/Topology.lean","--report","outputs/topology-analysis.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("loaded")),"--lean-output","TDN/Evidence/LoadedBaseline.lean","--report","outputs/loaded-baseline-import.json"],
-    ["python3","scripts/construction/import_mechanisms.py",str(source_path("matrix")),str(source_path("pairings")),"--lean-output","TDN/Evidence/Mechanisms.lean","--report","outputs/mechanism-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("shared_before")),"--lean-output","TDN/Evidence/SharedBefore.lean","--report","outputs/shared_before-gray.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("shared_after")),"--lean-output","TDN/Evidence/SharedAfter.lean","--report","outputs/shared_after-gray.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("redundant_after")),"--lean-output","TDN/Evidence/RedundantAfter.lean","--report","outputs/redundant_after-gray.json"],
-    ["python3","scripts/construction/import_events.py","--lean-output","TDN/Evidence/Events.lean","--report","outputs/events-import.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("shared_before")),"--lean-output","TDN/Evidence/SharedBeforePolicies.lean","--report","outputs/shared_before-policies.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("shared_after")),"--lean-output","TDN/Evidence/SharedAfterPolicies.lean","--report","outputs/shared_after-policies.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("redundant_after")),"--lean-output","TDN/Evidence/RedundantAfterPolicies.lean","--report","outputs/redundant_after-policies.json"],
-    ["python3","scripts/construction/import_headers.py","--lean-output","TDN/Evidence/Headers.lean","--report","outputs/header-import.json"],
-    ["python3","scripts/construction/import_ike_headers.py","--lean-output","TDN/Evidence/IKEHeaders.lean","--report","outputs/ike-header-import.json"],
-    ["python3","scripts/construction/import_domains.py","--lean-output","TDN/Evidence/Domains.lean","--report","outputs/domain-import.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_baseline")),"--lean-output","TDN/Evidence/CoherentBaseline.lean","--report","outputs/coherent_baseline-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_baseline")),"--lean-output","TDN/Evidence/CoherentBaselineGray.lean","--report","outputs/coherent_baseline-gray.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_same_level")),"--lean-output","TDN/Evidence/CoherentSameLevel.lean","--report","outputs/coherent_same_level-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_same_level")),"--lean-output","TDN/Evidence/CoherentSameLevelGray.lean","--report","outputs/coherent_same_level-gray.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_shared")),"--lean-output","TDN/Evidence/CoherentShared.lean","--report","outputs/coherent_shared-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_shared")),"--lean-output","TDN/Evidence/CoherentSharedGray.lean","--report","outputs/coherent_shared-gray.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_redundant")),"--lean-output","TDN/Evidence/CoherentRedundant.lean","--report","outputs/coherent_redundant-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_redundant")),"--lean-output","TDN/Evidence/CoherentRedundantGray.lean","--report","outputs/coherent_redundant-gray.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_management")),"--lean-output","TDN/Evidence/CoherentManagement.lean","--report","outputs/coherent_management-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_management")),"--lean-output","TDN/Evidence/CoherentManagementGray.lean","--report","outputs/coherent_management-gray.json"],
-    ["python3","scripts/construction/bind_domains.py","--lean-output","TDN/Evidence/SameLevelBinding.lean","--report","outputs/same-level-binding.json"],
-    ["python3","scripts/construction/import_management.py","--lean-output","TDN/Evidence/Management.lean","--report","outputs/management-import.json"],
-    ["python3","scripts/construction/import_supplemental.py","--lean-output","TDN/Evidence/Supplemental.lean","--report","outputs/supplemental-import.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("four_shared")),"--lean-output","TDN/Evidence/FourShared.lean","--report","outputs/four_shared-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("four_shared")),"--lean-output","TDN/Evidence/FourSharedGray.lean","--report","outputs/four_shared-gray.json"],
-    ["python3","scripts/construction/bind_domains.py","--source-key","four_shared","--namespace","FourSharedBinding","--lean-output","TDN/Evidence/FourSharedBinding.lean","--report","outputs/four_shared-binding.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("four_redundant")),"--lean-output","TDN/Evidence/FourRedundant.lean","--report","outputs/four_redundant-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("four_redundant")),"--lean-output","TDN/Evidence/FourRedundantGray.lean","--report","outputs/four_redundant-gray.json"],
-    ["python3","scripts/construction/bind_domains.py","--source-key","four_redundant","--namespace","FourRedundantBinding","--lean-output","TDN/Evidence/FourRedundantBinding.lean","--report","outputs/four_redundant-binding.json"],
-    ["python3","scripts/construction/import_authentication.py","--lean-output","TDN/Evidence/Authentication.lean","--report","outputs/authentication-import.json"],
-    ["python3","scripts/construction/import_extensions.py","--lean-output","TDN/Evidence/Extensions.lean","--report","outputs/extensions-import.json"],
-    ["python3","scripts/construction/import_snapshot.py",str(source_path("native_baseline")),"--lean-output","TDN/Evidence/NativeBaseline.lean","--report","outputs/native_baseline-import.json"],
-    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("native_baseline")),"--lean-output","TDN/Evidence/NativeBaselineGray.lean","--report","outputs/native_baseline-gray.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("baseline")),"--lean-output","TDN/Deployments/Baseline.lean","--report","outputs/baseline-import.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("adjacency")),"--lean-output","TDN/Deployments/Adjacency.lean","--report","outputs/adjacency-import.json"],
+    ["python3","scripts/construction/analyze_topology.py",str(source_path("adjacency")),"--lean-output","TDN/Deployments/SnapshotTopologyGraphs.lean","--report","outputs/topology-analysis.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("loaded")),"--lean-output","TDN/Deployments/LoadedBaseline.lean","--report","outputs/loaded-baseline-import.json"],
+    ["python3","scripts/construction/import_mechanisms.py",str(source_path("matrix")),str(source_path("pairings")),"--lean-output","TDN/Deployments/Mechanisms.lean","--report","outputs/mechanism-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("shared_before")),"--lean-output","TDN/Deployments/SharedBefore.lean","--report","outputs/shared_before-gray.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("shared_after")),"--lean-output","TDN/Deployments/SharedAfter.lean","--report","outputs/shared_after-gray.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("redundant_after")),"--lean-output","TDN/Deployments/RedundantAfter.lean","--report","outputs/redundant_after-gray.json"],
+    ["python3","scripts/construction/import_events.py","--lean-output","TDN/Deployments/Events.lean","--report","outputs/events-import.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("shared_before")),"--lean-output","TDN/Deployments/SharedBeforePolicies.lean","--report","outputs/shared_before-policies.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("shared_after")),"--lean-output","TDN/Deployments/SharedAfterPolicies.lean","--report","outputs/shared_after-policies.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("redundant_after")),"--lean-output","TDN/Deployments/RedundantAfterPolicies.lean","--report","outputs/redundant_after-policies.json"],
+    ["python3","scripts/construction/import_headers.py","--lean-output","TDN/Deployments/Headers.lean","--report","outputs/header-import.json"],
+    ["python3","scripts/construction/import_ike_headers.py","--lean-output","TDN/Deployments/IKEHeaders.lean","--report","outputs/ike-header-import.json"],
+    ["python3","scripts/construction/import_domains.py","--lean-output","TDN/Deployments/Domains.lean","--report","outputs/domain-import.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_baseline")),"--lean-output","TDN/Deployments/CoherentBaseline.lean","--report","outputs/coherent_baseline-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_baseline")),"--lean-output","TDN/Deployments/CoherentBaselineGray.lean","--report","outputs/coherent_baseline-gray.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_same_level")),"--lean-output","TDN/Deployments/CoherentSameLevel.lean","--report","outputs/coherent_same_level-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_same_level")),"--lean-output","TDN/Deployments/CoherentSameLevelGray.lean","--report","outputs/coherent_same_level-gray.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_shared")),"--lean-output","TDN/Deployments/CoherentShared.lean","--report","outputs/coherent_shared-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_shared")),"--lean-output","TDN/Deployments/CoherentSharedGray.lean","--report","outputs/coherent_shared-gray.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_redundant")),"--lean-output","TDN/Deployments/CoherentRedundant.lean","--report","outputs/coherent_redundant-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_redundant")),"--lean-output","TDN/Deployments/CoherentRedundantGray.lean","--report","outputs/coherent_redundant-gray.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("coherent_management")),"--lean-output","TDN/Deployments/CoherentManagement.lean","--report","outputs/coherent_management-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("coherent_management")),"--lean-output","TDN/Deployments/CoherentManagementGray.lean","--report","outputs/coherent_management-gray.json"],
+    ["python3","scripts/construction/bind_domains.py","--lean-output","TDN/Deployments/SameLevelBinding.lean","--report","outputs/same-level-binding.json"],
+    ["python3","scripts/construction/import_management.py","--lean-output","TDN/Deployments/Management.lean","--report","outputs/management-import.json"],
+    ["python3","scripts/construction/import_supplemental.py","--lean-output","TDN/Deployments/Supplemental.lean","--report","outputs/supplemental-import.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("four_shared")),"--lean-output","TDN/Deployments/FourShared.lean","--report","outputs/four_shared-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("four_shared")),"--lean-output","TDN/Deployments/FourSharedGray.lean","--report","outputs/four_shared-gray.json"],
+    ["python3","scripts/construction/bind_domains.py","--source-key","four_shared","--namespace","FourSharedBinding","--lean-output","TDN/Deployments/FourSharedBinding.lean","--report","outputs/four_shared-binding.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("four_redundant")),"--lean-output","TDN/Deployments/FourRedundant.lean","--report","outputs/four_redundant-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("four_redundant")),"--lean-output","TDN/Deployments/FourRedundantGray.lean","--report","outputs/four_redundant-gray.json"],
+    ["python3","scripts/construction/bind_domains.py","--source-key","four_redundant","--namespace","FourRedundantBinding","--lean-output","TDN/Deployments/FourRedundantBinding.lean","--report","outputs/four_redundant-binding.json"],
+    ["python3","scripts/construction/import_authentication.py","--lean-output","TDN/Deployments/Authentication.lean","--report","outputs/authentication-import.json"],
+    ["python3","scripts/construction/import_extensions.py","--lean-output","TDN/Deployments/Extensions.lean","--report","outputs/extensions-import.json"],
+    ["python3","scripts/construction/import_snapshot.py",str(source_path("native_baseline")),"--lean-output","TDN/Deployments/NativeBaseline.lean","--report","outputs/native_baseline-import.json"],
+    ["python3","scripts/construction/audit_gray_paths.py",str(source_path("native_baseline")),"--lean-output","TDN/Deployments/NativeBaselineGray.lean","--report","outputs/native_baseline-gray.json"],
     ["lake","build"],
     ["python3","scripts/construction/update_register.py"],
     ["python3","scripts/construction/check_register_claims.py"],
@@ -74,12 +74,12 @@ commands=[
 native_commands=[]
 for key,name in [("native_baseline","NativeBaseline"),("native_same_level","NativeSameLevel"),("native_shared","NativeShared"),("native_redundant","NativeRedundant"),("native_management","NativeManagement")]:
     if key!="native_baseline":
-        native_commands.extend([["python3","scripts/construction/import_snapshot.py",str(source_path(key)),"--lean-output","TDN/Evidence/"+name+".lean","--report","outputs/"+key+"-import.json"],["python3","scripts/construction/audit_gray_paths.py",str(source_path(key)),"--lean-output","TDN/Evidence/"+name+"Gray.lean","--report","outputs/"+key+"-gray.json"]])
-    native_commands.append(["python3","scripts/construction/import_headers.py","--source-key",key,"--chain-module",name,"--namespace",name+"Headers","--lean-output","TDN/Evidence/"+name+"Headers.lean","--report","outputs/"+key+"-headers.json"])
-    native_commands.extend([["python3","scripts/construction/analyze_topology.py",str(source_path(key)),"--scenario-key","native_declaration","--lean-output","TDN/Evidence/"+name+"Topology.lean","--report","outputs/"+key+"-topology.json"],["python3","scripts/construction/bind_domains.py","--source-key",key,"--namespace",name+"Binding","--declaration-key","native_declaration","--lean-output","TDN/Evidence/"+name+"Binding.lean","--report","outputs/"+key+"-binding.json"]])
-native_commands.append(["python3","scripts/construction/import_management.py","--source-key","native_management","--namespace","NativeManagementTLS","--lean-output","TDN/Evidence/NativeManagementTLS.lean","--report","outputs/native_management-tls.json"])
-native_commands.extend([["python3","scripts/construction/import_inventory.py","--lean-output","TDN/Evidence/NativeInventory.lean","--report","outputs/native_inventory-import.json"],["python3","scripts/construction/import_native_events.py","--lean-output","TDN/Evidence/NativeRedundancy.lean","--report","outputs/native_redundancy-import.json"]])
-native_commands.append(["python3","scripts/construction/import_mka_audit.py","--lean-output","TDN/Evidence/MKASource.lean","--report","outputs/mka-source-import.json"])
+        native_commands.extend([["python3","scripts/construction/import_snapshot.py",str(source_path(key)),"--lean-output","TDN/Deployments/"+name+".lean","--report","outputs/"+key+"-import.json"],["python3","scripts/construction/audit_gray_paths.py",str(source_path(key)),"--lean-output","TDN/Deployments/"+name+"Gray.lean","--report","outputs/"+key+"-gray.json"]])
+    native_commands.append(["python3","scripts/construction/import_headers.py","--source-key",key,"--chain-module",name,"--namespace",name+"Headers","--lean-output","TDN/Deployments/"+name+"Headers.lean","--report","outputs/"+key+"-headers.json"])
+    native_commands.extend([["python3","scripts/construction/analyze_topology.py",str(source_path(key)),"--scenario-key","native_declaration","--lean-output","TDN/Deployments/"+name+"Topology.lean","--report","outputs/"+key+"-topology.json"],["python3","scripts/construction/bind_domains.py","--source-key",key,"--namespace",name+"Binding","--declaration-key","native_declaration","--lean-output","TDN/Deployments/"+name+"Binding.lean","--report","outputs/"+key+"-binding.json"]])
+native_commands.append(["python3","scripts/construction/import_management.py","--source-key","native_management","--namespace","NativeManagementTLS","--lean-output","TDN/Deployments/NativeManagementTLS.lean","--report","outputs/native_management-tls.json"])
+native_commands.extend([["python3","scripts/construction/import_inventory.py","--lean-output","TDN/Deployments/NativeInventory.lean","--report","outputs/native_inventory-import.json"],["python3","scripts/construction/import_native_events.py","--lean-output","TDN/Deployments/NativeRedundancy.lean","--report","outputs/native_redundancy-import.json"]])
+native_commands.append(["python3","scripts/construction/import_mka_audit.py","--lean-output","TDN/Deployments/MKASource.lean","--report","outputs/mka-source-import.json"])
 index=commands.index(["lake","build"])
 commands[index:index]=native_commands
 commands.append(["python3","scripts/construction/review_coverage.py"])

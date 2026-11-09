@@ -27,7 +27,7 @@ else:
  name=a.snapshot_name or profile+'-inventory-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
  cmd=[sys.executable,str(HERE/'native_inventory.py'),'--root',str(base),'--profiles',profile,'--output-name',name]
 if os.geteuid()!=0:cmd=['sudo',*cmd]
-print(json.dumps({'command':cmd,'scope':'Native FRR/OVS topology only; supplemental namespace experiments have separate entrypoints.'}),flush=True)
+print(json.dumps({'command':cmd,'scope':'Device FRR/OVS topology only; supplemental namespace experiments have separate entrypoints.'}),flush=True)
 result=subprocess.run(cmd,cwd=TWINET)
 if a.action=='up' and result.returncode==0:
  record={'deployer_sha256':binary_hash,'spec_sha256':hashlib.sha256(spec.read_bytes()).hexdigest(),'started_at':started,'ended_at':datetime.now(timezone.utc).isoformat()}

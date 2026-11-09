@@ -146,9 +146,9 @@ def generate(data):
         values += [str(row["local_is_initiator"]).lower(), str(row["child_pfs"] is not None).lower()]
         entries.append("⟨" + ", ".join(values) + "⟩")
     pairs = ["(" + str(devices[r["device"]]) + ", " + str(devices[r["peer"]]) + ")" for r in data["endpoints"]]
-    return '''import TDN.Semantics.IKEContexts
+    return '''import TDN.Models.IkePeerSessionAgreement
 
-namespace TDN.Imported.FreshSharedIKEContexts
+namespace TDN.Deployments.ProfileShared_IkeSessions
 open IKEContexts
 
 def endpoints : List Endpoint := [\n  ''' + ",\n  ".join(entries) + ''']
@@ -165,7 +165,7 @@ theorem recorded_directional_contexts_agree : ∀ pair ∈ pairs,
   intro pair member
   exact reciprocal_peers_agree_on_directional_record _ _ (all_context_pairs_checked pair member)
 
-end TDN.Imported.FreshSharedIKEContexts
+end TDN.Deployments.ProfileShared_IkeSessions
 '''
 
 

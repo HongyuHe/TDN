@@ -49,7 +49,6 @@ def render(page):
         data['root'] = ''
         hashes = dict(data['metadata']['source_hashes'])
         hashes.update({p: h for p, h in data['metadata']['inputs'].items() if not p.startswith('.lavish/')})
-        html = html.replace('<a href="construction-v3.1-walkthrough.html">Read the v3.1 report</a>', '<a href="/tdn/ontology/">Role ontology</a>')
         html = html.replace('<p>In Lavish, turn Annotate off to use the diagram.</p>', '')
         html = html.replace('<a class="brand" href="#">', '<a class="brand" href="https://github.com/HongyuHe/TDN/tree/' + REVISION + '">')
         assets = list((ROOT / 'scripts/publication/hierarchy').glob('*')) + [ROOT / 'scripts/publication/build_hierarchy.py']
@@ -57,7 +56,7 @@ def render(page):
         data['project_root'] = ''
         hashes = dict(data['theory']['source_hashes'])
         hashes.update({'data/extraction/' + path: value for path, value in data['input_hashes'].items()})
-        interpretation_path = 'data/publication/v3.1/interpretations.md'
+        interpretation_path = 'data/publication/v3.2/interpretations.md'
         lines = (ROOT / interpretation_path).read_text().splitlines()
         for key, record in data['theory']['interpretations'].items():
             record['source_path'] = interpretation_path
@@ -66,7 +65,7 @@ def render(page):
         assets = [ROOT / 'scripts/preprocess/preprocess_csfc_ontology.py', ROOT / 'scripts/preprocess/templates/csfc_role_ontology.html']
         assets += [ROOT / 'data/extraction/roles' / n for n in ['roles.json', 'ontology_decisions.json', 'ontology_theory.json', 'ontology_obligations.json']]
         html = html.replace('</header>', '<a href="/tdn/hierarchy/" style="display:inline-block;margin-top:8px">Theory hierarchy</a></header>', 1)
-    hashes.update(source_files(assets + [Path(__file__)]))
+    hashes.update(source_files(assets + [Path(__file__), ROOT / 'THEORY_VERSION', ROOT / 'lakefile.toml']))
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
     html = pattern.sub(lambda m: m[1] + payload + m[3], html, count=1)
     #* Public pages only contain GitHub source links; the local UI keeps its editor links.
@@ -103,6 +102,9 @@ def validate():
             if not actual.is_file() or digest(actual) != expected:
                 raise ValueError('Stale publication input: ' + path + '. Regenerate ' + name + '.')
         html = (ROOT / record['path']).read_text()
+        version = (ROOT / 'THEORY_VERSION').read_text().strip()
+        if not re.search(r'<title>TDN v' + re.escape(version) + r' \| ', html):
+            raise ValueError('Explorer title differs from THEORY_VERSION: ' + name)
         if CODE_BASE not in html:
             raise ValueError('Missing revision-pinned GitHub links.')
         _, data = embedded(html, PAGES[name][1])

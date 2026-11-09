@@ -168,7 +168,7 @@ def evaluate(records):
                               r["keyWrapAlgorithm"] == "AES Key Wrap" and r["keyWrapBits"] == 256
                               and r["protectionAlgorithm"] == "AES GCM" and r["protectionBits"] == 256))
     check([26], "The recorded EAP suite matches the selected CNSA2 settings.",
-          lambda: get("FinalMACsecRuntime", "negotiatedSuite") ==
+          lambda: get("SnapshotMacsecRuntime", "negotiatedSuite") ==
           {"aesBits": 256, "gcm": True, "signature": "mldsa87", "establishment": "mlkem1024", "integrity": "sha384"})
 
     def routing_processes():
@@ -201,10 +201,10 @@ def evaluate(records):
                               and r["signer"] in r["loadedAuthorities"] and r["trustAnchor"] in r["loadedAuthorities"]))
 
     def branches():
-        rows = get("FreshPlacementClauses", "independentBranches")
-        inner = get("FreshSharedTopology", "innerNodes")
-        outer = get("FreshSharedTopology", "outerNodes")
-        edges = get("FreshSharedTopology", "grayEdges")
+        rows = get("SnapshotPlacementClauses", "independentBranches")
+        inner = get("ProfileShared_Topology", "innerNodes")
+        outer = get("ProfileShared_Topology", "outerNodes")
+        edges = get("ProfileShared_Topology", "grayEdges")
         return (bool(rows) and bool(inner) and {r[0] for r in rows} == set(inner)
                 and all(r[1][0] in outer and bool(r[1][1]) and r[1][1][-1] == r[1][0]
                         and all(n not in inner for n in r[1][1])

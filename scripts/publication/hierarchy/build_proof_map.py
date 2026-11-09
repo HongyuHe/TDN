@@ -21,14 +21,14 @@ def load(path):
     return json.loads(raw)
 
 
-SUBMISSION = Path('data/publication/v3.1')
+SUBMISSION = Path('data/publication/v3.2')
 REGISTER = SUBMISSION / 'register.json'
 compiled = {row['name']: row for row in load(HERE.relative_to(ROOT) / 'lean-dependencies.json')}
 register = load(REGISTER)['groups']
 proof_map = {row['rg_id']: row for row in load(SUBMISSION / 'proof_map.json')}
 applications_register = {row['rg_id']: row for row in load(SUBMISSION / 'applications.json')}
 verdict = load(SUBMISSION / 'verdict.json')
-RUN = Path(verdict.get('source_run', 'data/construction/v3.1-20261031T231942Z'))
+RUN = Path(verdict.get('source_run', 'data/construction/v3.2-20261031T231942Z'))
 extracted = {row['group_id']: row for row in load('data/extraction/requirements/groups.json')['groups']}
 assert verdict['verdict'] == 'PASS' and set(proof_map) == set(verdict['selected_RGs'])
 nodes = {}
@@ -71,7 +71,7 @@ def without_comments(text):
 
 
 #* Source spelling distinguishes lemma from theorem; Lean checks both as theorems.
-declaration = re.compile(r'^(?:@\[[^\]]+\]\s*)?(?:(?:noncomputable|private|protected)\s+)*(theorem|lemma|def|abbrev|structure|inductive|tdn_data)\s+([\w.\u0080-\uffff]+)')
+declaration = re.compile(r'^(?:@\[[^\]]+\]\s*)?(?:(?:noncomputable|private|protected)\s+)*(theorem|lemma|def|abbrev|structure|inductive|load_network_records)\s+([\w.\u0080-\uffff]+)')
 for path in sorted((ROOT / 'TDN').rglob('*.lean')):
     if 'Import' in path.relative_to(ROOT / 'TDN').parts[:-1]:
         continue
@@ -84,8 +84,8 @@ for path in sorted((ROOT / 'TDN').rglob('*.lean')):
     clean = without_comments(original).splitlines()
     relative = str(path.relative_to(ROOT))
     source_hashes[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
-    #* Imported JSON contributes to the compiled declarations shown by the page.
-    for imported in re.findall(r'^tdn_(?:data|snapshot)\b[^\n]*(?:\n[ \t]+[^\n]*)*?\bfrom\s+"([^"\n]+)"', original, re.M):
+    #* Deployments JSON contributes to the compiled declarations shown by the page.
+    for imported in re.findall(r'^load_network_(?:records|snapshot)\b[^\n]*(?:\n[ \t]+[^\n]*)*?\bfrom\s+"([^"\n]+)"', original, re.M):
         evidence = (path.parent / imported).resolve()
         if not evidence.is_relative_to(ROOT) or not evidence.is_file():
             raise ValueError('Missing or external hierarchy evidence input: ' + imported)
@@ -112,7 +112,7 @@ for path in sorted((ROOT / 'TDN').rglob('*.lean')):
         doc = re.search(r'/--((?:(?!/--).)*?)\-/\s*$', prefix, re.S)
         nodes[name] = {
             'name': name, 'short': name.split('.')[-1], 'path': relative, 'line': i + 1,
-            'source': source, 'kind': 'def' if keyword == 'tdn_data' else keyword, 'compiledKind': compiled[name]['kind'],
+            'source': source, 'kind': 'def' if keyword == 'load_network_records' else keyword, 'compiledKind': compiled[name]['kind'],
             'decide': bool(re.search(r'\b(?:(?:native_)?decide|of_decide_eq_true|decide_eq_true)\b', without_comments(source))),
             'doc': ' '.join(doc[1].split()) if doc else '',
             'conclusionHead': compiled[name]['conclusionHead'],
@@ -183,7 +183,7 @@ for name, node in nodes.items():
     node['canonicalName'] = canonical(name)
     node['canonicalHead'] = canonical(node['conclusionHead'])
 
-descriptions = load(ASSETS.relative_to(ROOT) / 'v31-descriptions.json')
+descriptions = load(ASSETS.relative_to(ROOT) / 'v32-descriptions.json')
 for name, meaning in descriptions.items():
     assert name in nodes, name
     nodes[name]['description'] = meaning
@@ -200,7 +200,7 @@ for row in register:
     partial_specs = []
     if formal:
         #* Keep the accepted specification as the root; older narrower definitions remain named clauses.
-        old_name = 'TDN.Targets.' + original['theorem_name']
+        old_name = 'TDN.Requirements.' + original['theorem_name']
         if old_name in nodes and canonical(old_name) != canonical(formal):
             partial_specs.append(old_name)
         for name, node in nodes.items():
@@ -211,9 +211,9 @@ for row in register:
             partial = head in {canonical(n) for n in partial_specs}
             if not full and not partial:
                 continue
-            if node['path'].startswith('TDN/Evidence/'):
+            if node['path'].startswith('TDN/Deployments/'):
                 applications[name] = ('Applies the accepted specification to its stated model under the displayed assumptions.' if full else
-                                      'Establishes the older, narrower specification for its stated model. The complete v3.1 specification remains separate.')
+                                      'Establishes the older, narrower specification for its stated model. The complete v3.2 specification remains separate.')
                 if full:
                     scopes[name] = applications[name]
             else:
@@ -225,15 +225,15 @@ for row in register:
         for name in tagged:
             node = nodes[name]
             head = node['conclusionHead']
-            if head in nodes and head.startswith('TDN.Targets.') and nodes[head]['short'].startswith('msc_'):
+            if head in nodes and head.startswith('TDN.Requirements.') and nodes[head]['short'].startswith('msc_'):
                 if canonical(head) != canonical(formal) and head not in partial_specs:
                     partial_specs.append(head)
-                if node['path'].startswith('TDN/Evidence/'):
-                    applications.setdefault(name, 'Retained RG-specific application. Its conclusion establishes the named clause; the complete v3.1 specification has the status shown above.')
+                if node['path'].startswith('TDN/Deployments/'):
+                    applications.setdefault(name, 'Retained RG-specific application. Its conclusion establishes the named clause; the complete v3.2 specification has the status shown above.')
                 elif name not in generals:
                     generals.append(name)
         for name, node in nodes.items():
-            if node['compiledKind'] == 'theorem' and node['canonicalHead'] in {canonical(n) for n in partial_specs} and not node['path'].startswith('TDN/Evidence/'):
+            if node['compiledKind'] == 'theorem' and node['canonicalHead'] in {canonical(n) for n in partial_specs} and not node['path'].startswith('TDN/Deployments/'):
                 if name not in generals:
                     generals.append(name)
     if reviewed:
@@ -247,7 +247,7 @@ for row in register:
         for item in applications_register[gid]['applications_and_exact_binders']:
             name = item['name']
             assert name in nodes and nodes[name]['compiledKind'] == 'theorem', (gid, name)
-            applications.setdefault(name, 'Checked model application or supporting check recorded in the v3.1 review.')
+            applications.setdefault(name, 'Checked model application or supporting check recorded in the v3.2 review.')
             if canonical(item['conclusion_head'] or '') == canonical(formal):
                 assert reaches(name, general), (gid, 'application does not use general proof', name)
                 complete_applications.append(name)
@@ -265,7 +265,7 @@ for row in register:
         'roots': roots, 'generals': generals, 'applications': applications, 'scopes': scopes,
         'countedGeneral': reviewed['general_theorem'] if reviewed else None,
         'countedApplication': complete_applications[0] if complete_applications else None,
-        'clause': 'Every clause of the accepted v3.1 specification.' if reviewed else 'Complete v3.1 proof deferred.' if formal else 'Outside the 24 selected formal-proof targets.',
+        'clause': 'Every clause of the accepted v3.2 specification.' if reviewed else 'Complete v3.2 proof deferred.' if formal else 'Outside the 24 selected formal-proof targets.',
         'reason': reason, 'remaining': conditions if reviewed else ([reason] if formal else []),
         'evidence': [], 'certificates': [], 'partialSpecifications': partial_specs,
         'completeApplications': complete_applications, 'disposition': row['prior_disposition'],
@@ -292,7 +292,7 @@ summary = {'groups': len(groups), 'formal_definitions': formal_count, 'review_pa
            'complete_model_applications': sum(len(g['completeApplications']) for g in groups),
            'registered_proof_associations': sum(len(g['roots']) for g in groups),
            'source_declarations': len(nodes), 'source_kinds': dict(Counter(n['kind'] for n in nodes.values()))}
-metadata = {'version': 'v3.1', 'run': str(RUN), 'register_path': str(REGISTER),
+metadata = {'version': 'v3.2', 'run': str(RUN), 'register_path': str(REGISTER),
             'generated_at': datetime.now(ZoneInfo('America/New_York')).isoformat(),
             'inputs': inputs, 'source_hashes': source_hashes, 'summary': summary,
             'inactive_source_files': inactive_source_files,

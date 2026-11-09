@@ -28,7 +28,7 @@ def generate(bundle,output,report_path,chain_module="LoadedBaseline",namespace="
     ns=identifier(snapshot["snapshot_id"])
     devices=[d for d in snapshot["devices"] if d["role"] in {"inner","outer"}]
     require(bool(devices),"empty VPN inventory")
-    lines=["import TDN.Evidence."+chain_module,"import TDN.Targets.Headers","namespace TDN.Imported."+namespace,"open TDN.Imported."+ns,"set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments."+chain_module,"import TDN.Requirements.Headers","namespace TDN.Deployments."+namespace,"open TDN.Deployments."+ns,"set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
     definitions=[]
     observations=[]
     chain_ids=[]
@@ -45,12 +45,12 @@ def generate(bundle,output,report_path,chain_module="LoadedBaseline",namespace="
         receive=lean_list(["chain_"+identifier(c["id"]) for c in chains if c["chain"] in {"INPUT","FORWARD"}])
         outer=device["role"]=="outer"
         definitions.append("⟨"+", ".join([quoted(device["id"]),str(outer).lower(),quoted("black" if outer else "gray"),"true","false",str(outer).lower(),all_chains,"[]",receive,"[]"])+"⟩")
-    lines.append("def gateways : List Targets.GatewayHeaderPolicy := "+lean_list(definitions))
-    lines.append("lemma all_header_certificates : ∀ g ∈ gateways, Targets.HeaderCertificate g := by unfold gateways; decide")
-    lines.append("theorem snapshot_RG038 : Targets.msc_ip_header_and_multicast_filtering gateways := Targets.header_certificates_suffice gateways (by unfold gateways; decide) all_header_certificates")
-    lines.append("end TDN.Imported."+namespace)
+    lines.append("def gateways : List Requirements.GatewayHeaderPolicy := "+lean_list(definitions))
+    lines.append("lemma all_header_certificates : ∀ g ∈ gateways, Requirements.HeaderCertificate g := by unfold gateways; decide")
+    lines.append("theorem snapshot_RG038 : Requirements.msc_ip_header_and_multicast_filtering gateways := Requirements.header_certificates_suffice gateways (by unfold gateways; decide) all_header_certificates")
+    lines.append("end TDN.Deployments."+namespace)
     output.write_text("\n\n".join(lines)+"\n")
-    report={"snapshot_id":snapshot["snapshot_id"],"validation":validation,"devices":len(devices),"chain_ids":chain_ids,"ipv6_disabled":observations,"theorem":"TDN.Imported."+namespace+".snapshot_RG038","inactive_interfaces":graph["inactive_interfaces"],"scope":"IPv4-only inventoried IPsec profile, ordered filter-table model with Outer IPv4-options objective; all modeled INPUT/FORWARD/OUTPUT packets quantified, not sampled probes","assumptions":["Raw collector truth and complete inventoried VPN/filter/interface state","iptables token semantics and decoded IP-header correspondence","Linux places applicable IP packets through the represented hooks with no alternative path or later override","Inactive IPv6 applicability follows observed data/loopback/all/default disablement, absent addresses/routes, and separately checked down/unaddressed/unrouted/unattached/unconfigured GRE fallback abstractions","Scope limited to this snapshot/profile; MACsec and active IPv6 profiles need independent instantiation"]}
+    report={"snapshot_id":snapshot["snapshot_id"],"validation":validation,"devices":len(devices),"chain_ids":chain_ids,"ipv6_disabled":observations,"theorem":"TDN.Deployments."+namespace+".snapshot_RG038","inactive_interfaces":graph["inactive_interfaces"],"scope":"IPv4-only inventoried IPsec profile, ordered filter-table model with Outer IPv4-options objective; all modeled INPUT/FORWARD/OUTPUT packets quantified, not sampled probes","assumptions":["Raw collector truth and complete inventoried VPN/filter/interface state","iptables token semantics and decoded IP-header correspondence","Linux places applicable IP packets through the represented hooks with no alternative path or later override","Inactive IPv6 applicability follows observed data/loopback/all/default disablement, absent addresses/routes, and separately checked down/unaddressed/unrouted/unattached/unconfigured GRE fallback abstractions","Scope limited to this snapshot/profile; MACsec and active IPv6 profiles need independent instantiation"]}
     report_path.write_text(json.dumps(report,indent=2)+"\n")
     print(json.dumps({"devices":len(devices),"chains":len(chain_ids)}))
 

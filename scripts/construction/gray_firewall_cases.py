@@ -23,7 +23,7 @@ def with_options(sample):
 
 def main():
     directory = Path('data/evidence/continuation')
-    baseline = json.loads((directory / 'BoundaryBaseline.json').read_text())
+    baseline = json.loads((directory / 'Perimeter_Baseline.json').read_text())
     shared = json.loads((directory / 'GrayFirewallShared.json').read_text())
     records = shared['records']
     pair_index = next(index for index, row in enumerate(records['pairs'])
@@ -72,7 +72,7 @@ def main():
         if len(addresses) > 1:
             raise ValueError('Multiple IPv4 addresses need explicit expansion')
         raw_interfaces.append({**row, 'address': int(ipaddress.ip_address(addresses[0]['local'])) if addresses else None})
-    (directory / 'GrayFirewallSharedProjection.json').write_text(json.dumps(dict(rawInterfaces=raw_interfaces), indent=2, sort_keys=True) + '\n')
+    (directory / 'GrayFirewallSharedInterfaceSlice.json').write_text(json.dumps(dict(rawInterfaces=raw_interfaces), indent=2, sort_keys=True) + '\n')
     print(json.dumps({name: dict(ingress=value['entryIface'], egress=value['route']['egress'])
                       for name, value in result.items() if isinstance(value, dict) and 'entryIface' in value}))
 

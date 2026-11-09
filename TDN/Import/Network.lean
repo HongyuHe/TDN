@@ -1,4 +1,4 @@
-import TDN.Import.Command
+import TDN.Import.SnapshotLoader
 
 /-! Records shared by vendor adapters. A declared role is supplied by the network
 owner; collection does not infer that role from a daemon's name. Routing-daemon
@@ -63,9 +63,9 @@ instance (s : NetworkSnapshot) : Decidable (RoutesHaveSources s) := by
   unfold RoutesHaveSources
   infer_instance
 
-syntax "tdn_snapshot " ident " from " str : command
+syntax "load_network_snapshot " ident " from " str : command
 macro_rules
-  | `(tdn_snapshot $ns:ident from $file:str) => do
+  | `(load_network_snapshot $ns:ident from $file:str) => do
     let name := Lean.mkIdent (ns.getId ++ `snapshot)
-    `(tdn_data $name : TDN.Import.NetworkSnapshot from $file ["snapshot"])
+    `(load_network_records $name : TDN.Import.NetworkSnapshot from $file ["snapshot"])
 end TDN.Import

@@ -14,7 +14,7 @@ from outer_gray_records import project
 class SourceZoneProjectionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.bundle = json.loads((ROOT / "data/evidence/continuation/OuterGrayBaseline.json").read_text())["rawBundle"]
+        cls.bundle = json.loads((ROOT / "data/evidence/continuation/OuterToGray_Baseline.json").read_text())["rawBundle"]
 
     def test_local_interfaces_are_retained_with_exact_zone(self):
         projected = project(self.bundle)

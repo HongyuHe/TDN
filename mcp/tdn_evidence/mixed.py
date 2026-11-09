@@ -22,7 +22,7 @@ def execution_values(report):
     device_ids = {name: i + 1 for i, name in enumerate(sorted(report["devices"]))}
     port_ids = {name: i + 1 for i, name in enumerate(sorted(data["interfaces"]))}
     devices = [empty_device()]
-    ports = [{"owner": 0, "name": "", "stack": [], "payloadOrigin": False}]
+    ports = [{"owner": 0, "name": "", "stack": [], "canOriginateTraffic": False}]
     routes, port_bindings, key_bindings = [], [], []
     for name in device_ids:
         record = empty_device()
@@ -31,13 +31,13 @@ def execution_values(report):
             record[hook.lower() + "Rules"] = [
                 {"atoms": [atom_json(atom) for atom in rule["atoms"]], "verdict": rule["verdict"]}
                 for rule in rules]
-        record["outbound"] = [association_json(row) for row in data["policies"][name]["out"]]
-        record["inbound"] = [association_json(row) for row in data["policies"][name]["in"]]
+        record["egressPolicies"] = [association_json(row) for row in data["policies"][name]["out"]]
+        record["ingressPolicies"] = [association_json(row) for row in data["policies"][name]["in"]]
         record["states"] = [state_json(row) for row in data["states"][name]]
         record["localAddresses"] = sorted({encode_address(a[1])
             for key, interface in data["interfaces"].items() if key.startswith(name + ":")
             for a in interface["addresses"]})
-        record["recipientDomain"] = 1 if report["devices"][name]["role"] == "host" else None
+        record["ifaceSecurityDomain"] = 1 if report["devices"][name]["role"] == "host" else None
         devices.append(record)
     for key, index in port_ids.items():
         device, name = key.split(":", 1)
@@ -56,7 +56,7 @@ def execution_values(report):
             require(device == "BF", "Unclassified mixed-profile port role")
             stack = [2, 1]
         ports.append({"owner": device_ids[device], "name": name, "stack": stack,
-                      "payloadOrigin": role == "host"})
+                      "canOriginateTraffic": role == "host"})
         zones = sorted({link["zone"] for link in report["architecture_links"] if key in link["endpoints"]})
         port_bindings.append({"portId": index, "interfaceId": key, "ownerId": device_ids[device],
             "ownerDeviceId": device, "declaredRole": role, "declaredZones": zones,
@@ -65,7 +65,7 @@ def execution_values(report):
         for key, index in port_ids.items():
             if key.startswith(row["device"] + ":"):
                 routes.append({"ingress": index, "egress": port_ids[row["egress"]],
-                    "low": row["low"], "high": row["high"], "prefixLength": row["prefix"],
+                    "destPrefixLow": row["low"], "destPrefixHigh": row["high"], "prefixLength": row["prefix"],
                     "metric": row["metric"], "tablePriority": row["priority"]})
     mac_ports = []
     for row in data["mac_ports"]:
@@ -126,7 +126,7 @@ def execution_values(report):
         "deviceIds": device_ids, "portIds": port_ids, "ifaceBindings": port_bindings,
         "macsecKeyBindings": key_bindings, "operational": data,
         "addressEpochs": report["address_epochs"], "routeEpochs": report["route_epochs"],
-        "scope": report["scope"], "projectionVersion": "mixed-execution-v1"}
+        "scope": report["scope"], "projectionVersion": "mixed-forwarding-v3.2"}
     if "ipsec_key_epochs" in report:
         result["ipsecKeyBindings"] = [entry | {"deviceId": device_ids[entry["device"]],
             "state": state_json(entry["local_state"]),
@@ -134,7 +134,7 @@ def execution_values(report):
             "portIds": [port_ids[port] for port in entry["local_interfaces"]]}
             for entry in report["ipsec_key_epochs"]["activeBindings"]]
         result["ipsecKeyEpochs"] = report["ipsec_key_epochs"]
-        result["projectionVersion"] = "mixed-execution-v2-key-provisioning"
+        result["projectionVersion"] = "mixed-forwarding-v3.2-key-provisioning"
     return result
 
 

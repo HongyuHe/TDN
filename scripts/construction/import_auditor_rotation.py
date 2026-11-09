@@ -47,9 +47,9 @@ def string_list(values):
 def generate(data):
     def lists(values):
         return "[" + ", ".join(string_list(row) for row in values) + "]"
-    return """import TDN.Targets.AuditorLogManagement
+    return """import TDN.Requirements.AuditorLogManagement
 
-namespace TDN.Imported.FreshAuditorRotation
+namespace TDN.Deployments.FreshAuditorRotation
 open AuditRotation
 set_option maxRecDepth 10000
 set_option maxHeartbeats 0
@@ -75,10 +75,10 @@ earlier record, in order and with multiplicity, in the later captured log files.
 Human review and all other audit-management duties remain separate. -/
 theorem actual_auditor_rotation_preserves_observed_log :
     observedBefore <+: entries capturedAfter :=
-  Targets.observed_audit_prefix_survives_rotation before capturedAfter observedBefore later
+  Requirements.observed_audit_prefix_survives_rotation before capturedAfter observedBefore later
     observed_before_prefix source_ordered_rotation_check
 
-end TDN.Imported.FreshAuditorRotation
+end TDN.Deployments.FreshAuditorRotation
 """
 
 

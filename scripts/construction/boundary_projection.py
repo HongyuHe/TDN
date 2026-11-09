@@ -21,7 +21,7 @@ def main():
             interfaces.append({**interface, "address": int(ipaddress.ip_address(addresses[0]["local"])) if addresses else None})
         result = {"rawInterfaces": interfaces, "source": str(source),
                   "sourceSHA256": hashlib.sha256(source.read_bytes()).hexdigest()}
-        target = source.with_stem(f"BoundaryProjection{profile}")
+        target = source.with_stem(f"Perimeter_InterfaceSlice{profile}")
         target.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
         print(json.dumps({"target": str(target), "interfaces": len(interfaces)}))
 

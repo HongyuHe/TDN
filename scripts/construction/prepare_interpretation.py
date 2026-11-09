@@ -108,8 +108,8 @@ def main():
     (blind / 'input/definitions.json').write_text(json.dumps({'roots': selected_names, 'declarations': list(selected_records.values())}, indent=2, ensure_ascii=False) + '\n')
     sources = {g['source_file'] for g in selected_groups}
     sources.update(args.definition_source)
-    if (work / 'TDN/Targets/ComplianceModel.lean').exists():
-        sources.add('TDN/Targets/ComplianceModel.lean')
+    if (work / 'TDN/Requirements/MscComplianceSchema.lean').exists():
+        sources.add('TDN/Requirements/MscComplianceSchema.lean')
     for source_name in sorted(sources):
         source = work / source_name
         if not source.resolve().is_relative_to((work / 'TDN').resolve()) or source.suffix != '.lean':

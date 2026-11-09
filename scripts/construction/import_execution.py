@@ -237,10 +237,10 @@ def main():
             chain = next(c for c in chains if c["chain"] == hook.upper())
             fields.append(hook + "Rules := " + lean_list([rendered_rule(r) for r in chain["ordered_rules"]]))
             fields.append(hook + "Fallback := ." + {"drop": "deny", "accept": "allow"}[chain["policy"]])
-        fields += ["outbound := " + association_list(policy["out"]), "inbound := " + association_list(policy["in"]), "states := " + tuple_list(states)]
+        fields += ["egressPolicies := " + association_list(policy["out"]), "ingressPolicies := " + association_list(policy["in"]), "states := " + tuple_list(states)]
         addresses = sorted({int(ipaddress.IPv4Address(a["local"])) for i in device_ifaces for a in i["addresses"] if a["family"] == "inet"})
         fields.append("localAddresses := " + lean_list([str(a) for a in addresses]))
-        fields.append("recipientDomain := " + ("some " + str(levels[device["security_level_id"]]) if device["role"] == "host" else "none"))
+        fields.append("ifaceSecurityDomain := " + ("some " + str(levels[device["security_level_id"]]) if device["role"] == "host" else "none"))
         device_records.append("{ " + ", ".join(fields) + " }")
     for interface in interfaces:
         device = next(d for d in devices if d["id"] == interface["device_id"])
@@ -272,12 +272,12 @@ def main():
         ports = [i for i in interfaces if i["device_id"] == device["id"] and i["link_kind"] == "veth"]
         require(ports, "Empty physical bridge membership")
         bridging.extend([[port_index[a["id"]], port_index[b["id"]]] for a in ports for b in ports if a != b])
-    lines = ["import TDN.Targets.PacketExecution", "import TDN.Semantics.ExecutionProvenance", "", "namespace TDN.Imported." + args.namespace, "", "open Execution", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "", "def devices : List DeviceData := " + lean_list(device_records), "", "def ifaces : List IfaceData := " + lean_list(port_records), "", "def routes : List Route := " + tuple_list(routes), "", "def links : List (Nat × Nat) := " + tuple_list(links), "", "def switches : List (Nat × Nat) := " + tuple_list(bridging), "", "def config : Environment := dataPlaneConfigFromRecords devices ifaces routes links switches", "def expectedEncapStack : Nat → List Nat := expectedEncapStackFromRecords ifaces", "", "lemma forward_checks : FiniteForwardChecks devices ifaces := by", "  unfold FiniteForwardChecks devices ifaces", "  decide", "", "end TDN.Imported." + args.namespace, ""]
+    lines = ["import TDN.Requirements.DoubleEncryptionOnBlackLinks", "import TDN.Models.TunnelSaOriginAttribution", "", "namespace TDN.Deployments." + args.namespace, "", "open DataPlaneForwarding", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "", "def devices : List DeviceData := " + lean_list(device_records), "", "def ifaces : List IfaceData := " + lean_list(port_records), "", "def routes : List FibRoute := " + tuple_list(routes), "", "def links : List (Nat × Nat) := " + tuple_list(links), "", "def switches : List (Nat × Nat) := " + tuple_list(bridging), "", "def config : DataPlaneModel := dataPlaneModelFromRecords devices ifaces routes links switches", "def expectedEncapStack : Nat → List Nat := expectedEncapStackFromRecords ifaces", "", "lemma forward_checks : TableDrivenForwardChecks devices ifaces := by", "  unfold TableDrivenForwardChecks devices ifaces", "  decide", "", "end TDN.Deployments." + args.namespace, ""]
     checks = [
-        "lemma peer_tag_checks : FinitePeerTagAgreement devices := by",
-        "  unfold FinitePeerTagAgreement devices StateBindsPolicy SameWireAssociation; decide",
+        "lemma peer_tag_checks : TableDrivenPeerTagAgreement devices := by",
+        "  unfold TableDrivenPeerTagAgreement devices saMatchesPolicy SameWireAssociation; decide",
         "lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=",
-        "  finite_peer_tag_agreement_sound devices ports routes links switches peer_tag_checks",
+        "  table_driven_peer_tag_agreement_sound devices ports routes links switches peer_tag_checks",
         "",
         "lemma route_owner_checks : ∀ r ∈ routes, (ifaceAt ifaces r.egress).owner = (ifaceAt ifaces r.ingress).owner := by",
         "  unfold routes ifaces; decide",
@@ -287,19 +287,19 @@ def main():
         "  unfold switches ifaces devices; decide",
         "lemma forward_default_checks : ∀ device ∈ ({} : DeviceData) :: devices, device.forwardFallback = .deny := by",
         "  unfold devices; decide",
-        "lemma output_checks : FiniteOutputChecks devices ifaces := by",
-        "  unfold FiniteOutputChecks devices ifaces; decide",
-        "lemma outer_route_checks : FiniteOuterRoutes devices ifaces routes := by",
-        "  unfold FiniteOuterRoutes devices ifaces routes; decide",
+        "lemma output_checks : TableDrivenOutputChecks devices ifaces := by",
+        "  unfold TableDrivenOutputChecks devices ifaces; decide",
+        "lemma outer_route_checks : TableDrivenOuterRoutes devices ifaces routes := by",
+        "  unfold TableDrivenOuterRoutes devices ifaces routes; decide",
         "",
-        "lemma local_stack_conditions : LocalStackConditions config expectedEncapStack :=",
+        "lemma local_stack_conditions : PerHopEncapConditions config expectedEncapStack :=",
         "  local_stack_conditions_of_finite_checks devices ports routes links switches",
         "    route_owner_checks link_checks switch_checks forward_default_checks forward_checks output_checks outer_route_checks",
         "",
-        "theorem every_transmission_has_iface_stack {start finish : Execution.State} {actions : List Action}",
-        "    (run : (lts config).MTr start actions finish) (initial : StackInvariant config expectedEncapStack start)",
-        "    (ready : finish.datapathStage = .ready) : finish.frame.tags = expectedEncapStack finish.iface :=",
-        "  transmitted_stack config expectedEncapStack local_stack_conditions run initial ready",
+        "theorem every_transmission_has_iface_stack {start finish : DataPlaneForwarding.State} {actions : List Action}",
+        "    (run : (lts config).MTr start actions finish) (initial : EncapStackConsistent config expectedEncapStack start)",
+        "    (ready : finish.datapathStage = .egressReady) : finish.frame.encapLayerIds = expectedEncapStack finish.iface :=",
+        "  egress_packet_has_expected_encap_stack config expectedEncapStack local_stack_conditions run initial ready",
         ""
     ]
     sources = [str(port_index[i["id"]]) for i in interfaces if i["zone"] == "red" and next(d for d in devices if d["id"] == i["device_id"])["role"] == "host"]
@@ -307,12 +307,12 @@ def main():
     checks += [
         "def redSources : List Nat := " + lean_list(sources),
         "def blackIfaces : List Nat := " + lean_list(black_ports),
-        "lemma sources_checked : ∀ p ∈ redSources, expectedEncapStack p = [] ∧ config.payloadOrigin p := by",
-        "  unfold redSources expectedEncapStack config expectedEncapStackFromRecords dataPlaneConfigFromRecords ifaces; decide",
+        "lemma sources_checked : ∀ p ∈ redSources, expectedEncapStack p = [] ∧ config.canOriginateTraffic p := by",
+        "  unfold redSources expectedEncapStack config expectedEncapStackFromRecords dataPlaneModelFromRecords ifaces; decide",
         "lemma black_ifaces_checked : ∀ p ∈ blackIfaces, expectedEncapStack p = [2, 1] := by",
         "  unfold blackIfaces expectedEncapStack expectedEncapStackFromRecords ifaces; decide",
-        "theorem snapshot_RG007_IPv4_ESP_packet_stack : Targets.msc_protected_red_payload_stack config redSources blackIfaces :=",
-        "  Targets.protected_red_stack_from_local_checks config expectedEncapStack redSources blackIfaces",
+        "theorem snapshot_RG007_IPv4_ESP_packet_stack : Requirements.red_traffic_is_doubly_encrypted_on_black_links config redSources blackIfaces :=",
+        "  Requirements.protected_red_stack_from_local_checks config expectedEncapStack redSources blackIfaces",
         "    local_stack_conditions sources_checked black_ifaces_checked",
         ""
     ]

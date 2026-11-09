@@ -34,7 +34,7 @@ PAPERS = {
         "sections": "§6 differential properties; §7 implementation; §8 experiments; Appendix B OSPF updates",
     },
     "SRE": {
-        "title": "Symbolic Router Execution",
+        "title": "Symbolic Router DataPlaneForwarding",
         "venue": "SIGCOMM 2022",
         "file": "sre_sigcomm22.pdf",
         "url": "https://aaron.gember-jacobson.com/docs/sigcomm2022sre.pdf",

@@ -2,14 +2,14 @@
   "schema_version": "1.0",
   "scope": "Associations connect a role to the current formalized requirement in which it participates. Applicability conditions, selected objectives, external evidence, and whole-network quantifiers remain part of each statement. Child roles inherit associations from every subclass ancestor; documented associations do not transmit obligations. Listing a requirement does not assert that a device or deployment satisfies it.",
   "source_hashes": {
-    "TDN/Targets/CompleteSpecifications.lean": "13285457ac8eba31a50313408edb08c34e02a134b201553c034c767ebbdc19b4",
-    "TDN/Targets/DirectSpecifications.lean": "163c61e6bc1a651c456f27472583429ab3b09c77848565e1258e2b0be45438ff",
-    "TDN/Targets/CPDuties.lean": "293047fbbe979f5dea490cd4c1aa23c82a0909110a94a44517a1ad5d0ab16cfa",
-    "TDN/Targets/AuthenticationIsolation.lean": "0389df58e5511f4d8c34190fc3bec837c0bb069c6258e98326becacb71cb7065",
-    "TDN/Targets/Topology.lean": "1962b194dbd4686c50c23ac79b7699fa1ead7be0d4f426c64b1fbf12dfa229ea",
-    "TDN/Targets/CPDutyRecords.lean": "b3c84c6700cd46766f03237a949d39c11dd04b07aab194d5f4ca3fa5e0fbce61",
-    "TDN/Targets/Administration.lean": "dcfbaec5c39839dc9fac870f542e34421e6c9cc41dbf351180f24c668e629041",
-    "TDN/Targets/TimeSynchronization.lean": "1095fd256cfdd3703f3e3e51ab310dcc9c2588daff3c8fa416b75b5dcd6d8d0f"
+    "TDN/Requirements/MasterMscRequirementSpecs.lean": "c633a63cb49a65edb818d44826c69384a15cd9b4c96266d3727a06b0ab49ee74",
+    "TDN/Requirements/CoreMscRequirements.lean": "a9cdac1d350b6a58f3179db46a5f94cec07e6ae439bfa439b88ed73b46781d60",
+    "TDN/Requirements/CsfcRoleObligations.lean": "a7ddae592e47588e9cd4a574932e0b8c4728644938659bc52169c40a128e265c",
+    "TDN/Requirements/CrossEnclavePkiIsolationSpec.lean": "b2215ad3fe0f334437be321a31f1ea89735fc03772386001d8cee57532410b9d",
+    "TDN/Requirements/MscFirewallWaypointingTheorems.lean": "ae662c2dbc60539e6cb971a4e57d2ca7b57f71ab144946a6bb3d82c9cdb46890",
+    "TDN/Requirements/CsfcRoleObligationRecords.lean": "82e2f58719585c5b02912f786c4d2fdc8a5ba66d2355c8b9177976e11f80ef23",
+    "TDN/Requirements/ManagementPlaneRequirements.lean": "043fd7b2ef364d2ecad297cafef311f1fe9c023ce823a087199deaede1e2873b",
+    "TDN/Requirements/TrustedClockSynchronization.lean": "d8bf74ed1da6a895f63e33c3481a53d9c42d1a75210ad05054382cebc2432519"
   },
   "translations": {
     "RG-001": "The context must contain external confirmations that local and government guidance, CNSS policy, and the duty to report policy conflicts have been met.",
@@ -441,185 +441,185 @@
   "supporting_declarations": {
     "RG-004": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "IndependentComponents"
       }
     ],
     "RG-005": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "PhysicalRoleSeparation"
       }
     ],
     "RG-011": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "CentralManagementConfiguration"
       }
     ],
     "RG-017": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "MutuallyAuthenticatedTunnels"
       }
     ],
     "RG-018": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "IPsecAlgorithmConfiguration"
       }
     ],
     "RG-019": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "IPsecAlgorithmConfiguration"
       }
     ],
     "RG-020": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "CertificateIdentityConfiguration"
       }
     ],
     "RG-022": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "IPsecModesAndLifetimes"
       }
     ],
     "RG-023": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "IPsecModesAndLifetimes"
       }
     ],
     "RG-026": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "EAPAlgorithmConfiguration"
       }
     ],
     "RG-041": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "ControlServiceConfiguration"
       }
     ],
     "RG-043": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "DefaultAndDNSConfiguration"
       }
     ],
     "RG-044": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "ManagementAttachmentConfiguration"
       },
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "ManagementSeparation"
       }
     ],
     "RG-045": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "WorkstationHostConfiguration"
       }
     ],
     "RG-046": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "ManagementTransportConfiguration"
       }
     ],
     "RG-048": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "ProvisioningConfiguration"
       }
     ],
     "RG-050": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "SIEMConfiguration"
       }
     ],
     "RG-062": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "AuditRetentionConfiguration"
       }
     ],
     "RG-067": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "RevocationBeforeDisposal"
       }
     ],
     "RG-073": [
       {
-        "path": "TDN/Targets/CPDutyRecords.lean",
+        "path": "TDN/Requirements/CsfcRoleObligationRecords.lean",
         "name": "SigningConfiguration"
       }
     ],
     "RG-029": [
       {
-        "path": "TDN/Targets/DirectSpecifications.lean",
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
         "name": "TraceNoBypass"
       }
     ],
     "RG-030": [
       {
-        "path": "TDN/Targets/DirectSpecifications.lean",
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
         "name": "TraceNoBypass"
       }
     ],
     "RG-039": [
       {
-        "path": "TDN/Targets/DirectSpecifications.lean",
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
         "name": "OuterGrayRestrictions"
       },
       {
-        "path": "TDN/Targets/DirectSpecifications.lean",
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
         "name": "OuterPolicyAllowance"
       },
       {
-        "path": "TDN/Targets/DirectSpecifications.lean",
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
         "name": "OuterTunnelAllowance"
       },
       {
-        "path": "TDN/Targets/DirectSpecifications.lean",
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
         "name": "OuterManagementInitiation"
       }
     ],
     "RG-040": [
       {
-        "path": "TDN/Targets/DirectSpecifications.lean",
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
         "name": "GrayFirewallRestrictions"
       },
       {
-        "path": "TDN/Targets/DirectSpecifications.lean",
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
         "name": "GrayPolicyAllowance"
       }
     ],
     "RG-047": [
       {
-        "path": "TDN/Targets/Administration.lean",
+        "path": "TDN/Requirements/ManagementPlaneRequirements.lean",
         "name": "msc_administrator_authentication"
       }
     ],
     "RG-042": [
       {
-        "path": "TDN/Targets/TimeSynchronization.lean",
+        "path": "TDN/Requirements/TrustedClockSynchronization.lean",
         "name": "TrustedTimeConfiguration"
       },
       {
-        "path": "TDN/Targets/TimeSynchronization.lean",
+        "path": "TDN/Requirements/TrustedClockSynchronization.lean",
         "name": "TimeConfigurationForClient"
       },
       {
-        "path": "TDN/Targets/TimeSynchronization.lean",
+        "path": "TDN/Requirements/TrustedClockSynchronization.lean",
         "name": "TimeServiceRecord.ValidUse"
       }
     ]

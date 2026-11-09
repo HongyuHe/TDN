@@ -77,14 +77,14 @@ def main():
         layer = relative.parts[1]
         for imported in imports:
             allowed = True
-            if layer == "Semantics" and imported.startswith("TDN."):
-                allowed = imported.startswith("TDN.Semantics.")
-            if layer == "Targets" and imported.startswith("TDN."):
-                allowed = imported.startswith(("TDN.Semantics.", "TDN.Targets."))
+            if layer == "Models" and imported.startswith("TDN."):
+                allowed = imported.startswith("TDN.Models.")
+            if layer == "Requirements" and imported.startswith("TDN."):
+                allowed = imported.startswith(("TDN.Models.", "TDN.Requirements."))
             if not allowed:
                 violations.append({"path": str(relative), "import": imported})
         found = []
-        for match in re.finditer(r"^\s*(?:(?:private|protected|noncomputable)\s+)*(def|theorem|lemma|axiom|tdn_data)\s+([\w.]+)", clean, re.MULTILINE):
+        for match in re.finditer(r"^\s*(?:(?:private|protected|noncomputable)\s+)*(def|theorem|lemma|axiom|load_network_records)\s+([\w.]+)", clean, re.MULTILINE):
             entry = {"kind": match[1], "name": match[2], "path": str(relative),
                      "line": clean.count("\n", 0, match.start(1)) + 1}
             found.append(entry)

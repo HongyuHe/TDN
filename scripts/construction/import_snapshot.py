@@ -135,7 +135,7 @@ def generate(bundle, output, report_path):
     validation=validate_bundle(bundle)
     snapshot=json.loads((bundle/"snapshot.json").read_text())
     ns=identifier(snapshot["snapshot_id"])
-    lines=["import TDN.Evidence.Types","import TDN.Semantics.PacketPolicy",f"namespace TDN.Imported.{ns}","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments.SnapshotFactTypes","import TDN.Models.IpsecAndAclRuleModel",f"namespace TDN.Deployments.{ns}","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
     devices=[]
     for d in snapshot["devices"]:
         status={"not_applicable":"notApplicable"}.get(d["status"],d["status"])
@@ -185,9 +185,9 @@ def generate(bundle, output, report_path):
             record={"installed_policy_coverage":installed_coverage,"chain_id":chain["id"],"passed":passed,"inside":inside,"outside":outside,"nonempty_allow":any(r["verdict"]=="allow" for r in rules),"scope":"Every accepted packet in translated first-match FORWARD chain has a direction-appropriate tunnel-policy match; local/input/output traffic and Linux refinement remain separate."}
             if passed:
                 guard_lemma=chain_name+"_guarded"
-                lines.append("lemma "+guard_lemma+" : ∀ r ∈ "+chain_name+", r.verdict = .allow → PacketPolicy.Guarded r "+quoted(inside)+" "+quoted(outside)+" := by unfold "+chain_name+"; decide")
+                lines.append("lemma "+guard_lemma+" : ∀ r ∈ "+chain_name+", r.verdict = .allow → PacketPolicy.RequiresIpsecPolicyMatch r "+quoted(inside)+" "+quoted(outside)+" := by unfold "+chain_name+"; decide")
                 lines.append("theorem "+chain_name+"_protects (p : PacketPolicy.Packet) (accepted : Filter.evaluate ("+chain_name+".map PacketPolicy.Rule.toFilter) .deny p = .allow) : PacketPolicy.ProtectedForward "+quoted(inside)+" "+quoted(outside)+" p := PacketPolicy.forwarding_policy_protects "+chain_name+" "+quoted(inside)+" "+quoted(outside)+" "+guard_lemma+" p accepted")
-                record["theorem"]="TDN.Imported."+ns+"."+chain_name+"_protects"
+                record["theorem"]="TDN.Deployments."+ns+"."+chain_name+"_protects"
             report["forwarding_certificates"].append(record)
     for tunnel in snapshot["tunnels"]:
         if tunnel["mechanism"]=="IPsec" and isinstance(tunnel.get("policies"),str):
@@ -224,21 +224,21 @@ def generate(bundle, output, report_path):
         configs=[]
         for index,mode in enumerate(mode_records):
             configs.append("⟨"+str(index)+", 2, ."+mode["ike_mode"]+", ."+mode["esp_mode"]+", "+str(mode["esp_hmac"]).lower()+"⟩")
-        lines.append("def observedVPNModes : List Targets.VPNConfig := "+lean_list(configs))
-        lines.append("theorem observed_vpn_modes_conform : Targets.NegotiatedModesConform observedVPNModes := by unfold Targets.NegotiatedModesConform observedVPNModes; decide")
+        lines.append("def observedVPNModes : List Requirements.VPNConfig := "+lean_list(configs))
+        lines.append("theorem observed_vpn_modes_conform : Requirements.NegotiatedModesConform observedVPNModes := by unfold Requirements.NegotiatedModesConform observedVPNModes; decide")
     if any("loaded_public_configuration" in t for t in snapshot["tunnels"]):
         try:
             loaded,bindings=loaded_policies(bundle,snapshot)
-            report["loaded_mode_policy"]={"records":loaded,"bindings":bindings,"configuration_target":"TDN.Imported."+ns+".snapshot_loaded_configuration_RG022","scope":"Complete inventoried VPN gateway connection/CHILD mode configuration after successful exact-file load and reconciled runtime inventory; loader/parser/collector correspondence is explicit trust."}
+            report["loaded_mode_policy"]={"records":loaded,"bindings":bindings,"configuration_target":"TDN.Deployments."+ns+".snapshot_loaded_configuration_RG022","scope":"Complete inventoried VPN gateway connection/CHILD mode configuration after successful exact-file load and reconciled runtime inventory; loader/parser/collector correspondence is explicit trust."}
             values=[]
             for policy in loaded:
                 esp=lean_list(["⟨."+p["mode"]+", "+str(p["hmac"]).lower()+"⟩" for p in policy["esp_proposals"]])
                 values.append("⟨"+quoted(policy["device"]+"/"+policy["connection"])+", [2], "+lean_list(["."+m for m in policy["ike_modes"]])+", "+esp+"⟩")
-            lines.append("def loadedVPNModePolicies : List Targets.VPNModePolicy := "+lean_list(values))
-            lines.append("theorem snapshot_loaded_configuration_RG022 : Targets.msc_ike_version_and_encryption_modes loadedVPNModePolicies := by unfold Targets.msc_ike_version_and_encryption_modes loadedVPNModePolicies; decide")
+            lines.append("def loadedVPNModePolicies : List Requirements.VPNModePolicy := "+lean_list(values))
+            lines.append("theorem snapshot_loaded_configuration_RG022 : Requirements.msc_ike_version_and_encryption_modes loadedVPNModePolicies := by unfold Requirements.msc_ike_version_and_encryption_modes loadedVPNModePolicies; decide")
         except EvidenceError as exc:
             report["loaded_mode_policy"]={"error":str(exc),"configuration_target":None}
-    lines.append("end TDN.Imported."+ns)
+    lines.append("end TDN.Deployments."+ns)
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text("\n\n".join(lines)+"\n")
     report["generated_lean_sha256"]=hashlib.sha256(output.read_bytes()).hexdigest()

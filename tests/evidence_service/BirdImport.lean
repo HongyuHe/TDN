@@ -3,7 +3,7 @@ import TDN.Import
 /-! Live BIRD observations collected through the MCP server on October 31, 2026. -/
 namespace TDN.ImportTests
 
-tdn_snapshot Bird from "../../data/evidence/20261031T165203Z-aa3dae3f2fdc.json"
+load_network_snapshot Bird from "../../data/evidence/20261031T165203Z-aa3dae3f2fdc.json"
 
 lemma every_route_has_observed_source : TDN.Import.RoutesHaveSources Bird.snapshot := by decide
 

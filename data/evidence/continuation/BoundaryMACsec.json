@@ -413,47 +413,47 @@
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183631874
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       },
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183631873,
           183697409
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       },
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183697410
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       }
     ],
@@ -461,37 +461,37 @@
       {
         "name": "R:red",
         "owner": 0,
-        "payloadOrigin": true,
+        "canOriginateTraffic": true,
         "stack": []
       },
       {
         "name": "A:red",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "A:mac0",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "A:wire",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "B:wire",
         "owner": 2,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "B:mac0",
         "owner": 2,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       }
     ],
@@ -629,9 +629,9 @@
     "routes": [
       {
         "egress": 2,
-        "high": 183697411,
+        "destPrefixHigh": 183697411,
         "ingress": 1,
-        "low": 183697408,
+        "destPrefixLow": 183697408,
         "metric": 0,
         "prefixLength": 30,
         "tablePriority": 32766
@@ -691,13 +691,13 @@
         "hopLimit": 64,
         "icmpCode": 0,
         "icmpType": 0,
-        "inboundPolicies": [],
+        "matchedInboundPolicyIds": [],
         "ingress": "",
         "ipv4FragmentOffset": 0,
         "ipv4HeaderWords": 5,
         "ipv6NextHeader": 0,
         "networkBytes": 56,
-        "outboundPolicies": [],
+        "matchedOutboundPolicyIds": [],
         "payloadBytes": [
           84,
           68,
@@ -761,9 +761,9 @@
       "peerIface": 4,
       "route": {
         "egress": 2,
-        "high": 183697411,
+        "destPrefixHigh": 183697411,
         "ingress": 1,
-        "low": 183697408,
+        "destPrefixLow": 183697408,
         "metric": 0,
         "prefixLength": 30,
         "tablePriority": 32766
@@ -21744,47 +21744,47 @@
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183631874
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       },
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183631873,
           183697409
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       },
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183697410
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       }
     ],
@@ -21792,37 +21792,37 @@
       {
         "name": "R:red",
         "owner": 0,
-        "payloadOrigin": true,
+        "canOriginateTraffic": true,
         "stack": []
       },
       {
         "name": "A:red",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "A:mac0",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "A:wire",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "B:wire",
         "owner": 2,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "B:mac0",
         "owner": 2,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       }
     ],
@@ -21928,9 +21928,9 @@
     "routes": [
       {
         "egress": 2,
-        "high": 183697411,
+        "destPrefixHigh": 183697411,
         "ingress": 1,
-        "low": 183697408,
+        "destPrefixLow": 183697408,
         "metric": 0,
         "prefixLength": 30,
         "tablePriority": 32766
@@ -21990,13 +21990,13 @@
         "hopLimit": 64,
         "icmpCode": 0,
         "icmpType": 0,
-        "inboundPolicies": [],
+        "matchedInboundPolicyIds": [],
         "ingress": "",
         "ipv4FragmentOffset": 0,
         "ipv4HeaderWords": 5,
         "ipv6NextHeader": 0,
         "networkBytes": 56,
-        "outboundPolicies": [],
+        "matchedOutboundPolicyIds": [],
         "payloadBytes": [
           84,
           68,
@@ -22060,9 +22060,9 @@
       "peerIface": 4,
       "route": {
         "egress": 2,
-        "high": 183697411,
+        "destPrefixHigh": 183697411,
         "ingress": 1,
-        "low": 183697408,
+        "destPrefixLow": 183697408,
         "metric": 0,
         "prefixLength": 30,
         "tablePriority": 32766
@@ -22590,47 +22590,47 @@
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183631874
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       },
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183631873,
           183697409
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       },
       {
         "forwardFallback": "allow",
         "forwardRules": [],
-        "inbound": [],
+        "ingressPolicies": [],
         "inputFallback": "allow",
         "inputRules": [],
         "localAddresses": [
           183697410
         ],
-        "outbound": [],
+        "egressPolicies": [],
         "outputFallback": "allow",
         "outputRules": [],
-        "recipientDomain": null,
+        "ifaceSecurityDomain": null,
         "states": []
       }
     ],
@@ -22638,37 +22638,37 @@
       {
         "name": "R:red",
         "owner": 0,
-        "payloadOrigin": true,
+        "canOriginateTraffic": true,
         "stack": []
       },
       {
         "name": "A:red",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "A:mac0",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "A:wire",
         "owner": 1,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "B:wire",
         "owner": 2,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       },
       {
         "name": "B:mac0",
         "owner": 2,
-        "payloadOrigin": false,
+        "canOriginateTraffic": false,
         "stack": []
       }
     ],
@@ -22774,9 +22774,9 @@
     "routes": [
       {
         "egress": 2,
-        "high": 183697411,
+        "destPrefixHigh": 183697411,
         "ingress": 1,
-        "low": 183697408,
+        "destPrefixLow": 183697408,
         "metric": 0,
         "prefixLength": 30,
         "tablePriority": 32766
@@ -22836,13 +22836,13 @@
         "hopLimit": 64,
         "icmpCode": 0,
         "icmpType": 0,
-        "inboundPolicies": [],
+        "matchedInboundPolicyIds": [],
         "ingress": "",
         "ipv4FragmentOffset": 0,
         "ipv4HeaderWords": 5,
         "ipv6NextHeader": 0,
         "networkBytes": 56,
-        "outboundPolicies": [],
+        "matchedOutboundPolicyIds": [],
         "payloadBytes": [
           84,
           68,
@@ -22906,9 +22906,9 @@
       "peerIface": 4,
       "route": {
         "egress": 2,
-        "high": 183697411,
+        "destPrefixHigh": 183697411,
         "ingress": 1,
-        "low": 183697408,
+        "destPrefixLow": 183697408,
         "metric": 0,
         "prefixLength": 30,
         "tablePriority": 32766

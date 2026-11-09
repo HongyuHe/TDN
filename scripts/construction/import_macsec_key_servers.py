@@ -62,10 +62,10 @@ def generate(cases):
         values.append("⟨" + ", ".join([json.dumps(left["site"]), json.dumps(right["site"]),
             str(left["priority"]), str(right["priority"]), "some " + json.dumps(case["central_site"]),
             str(min(left["ckn_bytes"], right["ckn_bytes"]))]) + "⟩")
-    return """import TDN.Targets.MACsecKeyServer
+    return """import TDN.Requirements.MACsecKeyServer
 
-namespace TDN.Imported.FinalMACsecKeyServers
-open Targets
+namespace TDN.Deployments.FinalMACsecKeyServers
+open Requirements
 
 /-- The two entries retain the forward and reverse EAP role arrangements. -/
 def settings : List MACsecKeyServerSettings := [""" + ", ".join(values) + """]
@@ -82,7 +82,7 @@ theorem configured_priorities_are_distinct (s : MACsecKeyServerSettings) (member
 
 lemma both_arrangements_present : settings.length = 2 := by decide
 
-end TDN.Imported.FinalMACsecKeyServers
+end TDN.Deployments.FinalMACsecKeyServers
 """
 
 

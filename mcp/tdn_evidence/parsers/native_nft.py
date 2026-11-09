@@ -15,9 +15,9 @@ def read_observation(bundle, observation):
             "Unsuccessful native nft/identity observation")
     data = safe_path(bundle, observation["raw_path"]).read_bytes()
     require(hashlib.sha256(data).hexdigest() == observation["raw_sha256"],
-            "Native nft/identity raw hash differs")
+            "Device nft/identity raw hash differs")
     raw = json.loads(data)
-    require(not raw["stderr"].strip(), "Native nft/identity command reported stderr")
+    require(not raw["stderr"].strip(), "Device nft/identity command reported stderr")
     return json.loads(raw["stdout"])
 
 
@@ -45,7 +45,7 @@ def expected_conditions(rule):
         elif key == "-m":
             if value in ["tcp", "udp"]:
                 require(transport == [value] and any(k in ["--sport", "--dport"] for k, _ in pairs),
-                        "Native transport module lacks its protocol or literal port")
+                        "Device transport module lacks its protocol or literal port")
                 continue
             require(value in ["multiport", "policy", "u32", "conntrack", "length", "bpf", "icmp", "icmp6"],
                     "Unsupported native compatibility matcher")
@@ -53,7 +53,7 @@ def expected_conditions(rule):
         elif key in ["--sport", "--dport"]:
             require(len(transport) == 1 and transport[0] in ["tcp", "udp"] and
                     ("-m", transport[0]) in pairs and value.isdigit() and 0 <= int(value) <= 65535,
-                    "Native port matcher lacks its transport module or literal value")
+                    "Device port matcher lacks its transport module or literal value")
             conditions.append((key, int(value)))
         else:
             require(key in ["--dports", "--sports", "--dir", "--pol", "--reqid", "--mode", "--u32", "--ctstate", "--length", "--bytecode", "--icmp-type", "--icmpv6-type"],
@@ -63,7 +63,7 @@ def expected_conditions(rule):
 
 def actual_conditions(expressions, action):
     require(expressions and expressions[-1] == {action: None},
-            "Native nft terminal verdict differs")
+            "Device nft terminal verdict differs")
     conditions = []
     payload_protocols = set()
     for expression in expressions[:-1]:
@@ -104,7 +104,7 @@ def actual_conditions(expressions, action):
         require(len(payload_protocols) == 1, "Mixed native transport payload protocols")
         protocol = next(iter(payload_protocols))
         explicit = [value for key, value in conditions if key == "-p"]
-        require(not explicit or explicit == [protocol], "Native transport protocol conditions disagree")
+        require(not explicit or explicit == [protocol], "Device transport protocol conditions disagree")
         if not explicit:
             conditions.append(("-p", protocol))
     return Counter(conditions)
@@ -171,7 +171,7 @@ def check_native_nft(bundle, snapshot):
     devices = {device["id"]: device for device in snapshot["devices"]}
     require(len(devices) == len(snapshot["devices"]) and
             len({device["host_id"] for device in devices.values()}) == 1,
-            "Native PID correspondence requires one explicit host inventory")
+            "Device PID correspondence requires one explicit host inventory")
     inspections = [o for o in snapshot["observations"] if o["kind"] == "container-inspect"]
     hooks = [o for o in snapshot["observations"] if o["kind"] == "nft-hooks"]
     require(len(inspections) == len(hooks) == len(devices), "Incomplete native nft/identity inventory")
@@ -180,18 +180,18 @@ def check_native_nft(bundle, snapshot):
     for observation in inspections:
         command = observation["command"]
         require(len(command) == 5 and command[:4] == ["docker", "inspect", "--format", "{{json .}}"],
-                "Native identity command changed")
+                "Device identity command changed")
         device = command[4]
-        require(device in devices and device not in seen_devices, "Native identity device differs")
+        require(device in devices and device not in seen_devices, "Device identity device differs")
         seen_devices.add(device)
-        require(observation["device_id"] in [None, device], "Native identity metadata device differs")
+        require(observation["device_id"] in [None, device], "Device identity metadata device differs")
         value = read_observation(bundle, observation)
         require(value["Name"] == "/" + device and value["Image"] == devices[device]["image_id"] and
-                value["State"]["Running"] is True, "Native container identity/state differs")
+                value["State"]["Running"] is True, "Device container identity/state differs")
         pid = value["State"]["Pid"]
         require(type(pid) is int and pid > 0 and pid not in by_pid, "Ambiguous native namespace PID")
         by_pid[pid] = (device, observation)
-    require(seen_devices == set(devices), "Native identity coverage differs")
+    require(seen_devices == set(devices), "Device identity coverage differs")
     results = []
     seen_pids = set()
     for observation in hooks:

@@ -43,10 +43,10 @@ def generate(shared, redundant):
             "Actual selected Red hosts require security labels")
     require(all(a in graph["inner"] or b in graph["inner"] or ((a in red) == (b in red))
                 for a, b in graph["edges"]), "Red attachment cut fails")
-    text = """import TDN.Targets.PlacementClauses
-import TDN.Evidence.FreshSharedTopology
+    text = """import TDN.Requirements.FirewallAndEncryptorPlacementSpec
+import TDN.Deployments.ProfileShared_Topology
 
-namespace TDN.Imported.FreshSharedTopology
+namespace TDN.Deployments.ProfileShared_Topology
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 """
@@ -72,7 +72,7 @@ theorem every_inner_has_an_independent_outer_branch (node : Node) (member : node
   obtain ⟨_, destination, chain, last⟩ := branch_checks branch present
   refine ⟨branch.2.1, destination, ?_⟩
   rw [← same]
-  exact Targets.independent_inner_branch_from_chain grayEdge inner branch.2.2 chain last
+  exact Requirements.independent_inner_branch_from_chain grayEdge inner branch.2.2 chain last
 
 """
     text += "def redNodes : List Node := " + str(red) + "\n"
@@ -91,12 +91,12 @@ lemma actual_red_attachment_nonempty : redNodes ≠ [] ∧
 theorem every_virtual_red_egress_crosses_inner (source destination : Node)
     (start : source ∈ redNodes) (outside : isRed destination = false) :
     ¬ Relation.ReflTransGen (Waypointing.Avoiding edge inner) source destination :=
-  Targets.red_egress_crosses_inner_from_attachment_cut edge inner isRed red_attachment_cut
+  Requirements.red_egress_crosses_inner_from_attachment_cut edge inner isRed red_attachment_cut
     (red_start_clear source start) (by simpa [isRed] using start) outside
 
-end TDN.Imported.FreshSharedTopology
+end TDN.Deployments.ProfileShared_Topology
 
-namespace TDN.Imported.FreshRedundantPlacement
+namespace TDN.Deployments.SnapshotRedundantPlacement
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 """
@@ -127,7 +127,7 @@ theorem redundant_outers_preserve_required_firewall_cut (source destination : No
     ¬ Relation.ReflTransGen (Waypointing.Avoiding edge firewall) source destination :=
   Waypointing.waypointing_of_edge_invariant edge firewall side local_cut
     (starts_clear source start) (sides_differ source start destination finish)
-end TDN.Imported.FreshRedundantPlacement
+end TDN.Deployments.SnapshotRedundantPlacement
 """
     report = {"shared_bundle": str(shared), "redundant_bundle": str(redundant),
               "shared_validation": graph["validation"], "redundant_validation": rg["validation"],
@@ -145,7 +145,7 @@ end TDN.Imported.FreshRedundantPlacement
 if __name__ == "__main__":
     text, report = generate(BASE / "native-shared-four-levels-20261024T015300Z-coverage-v1",
                             BASE / "native-redundant-20261024T020100Z")
-    Path("TDN/Evidence/FreshPlacementClauses.lean").write_text(text)
+    Path("TDN/Deployments/SnapshotPlacementClauses.lean").write_text(text)
     (RUN / "fresh-placement-clauses.json").write_text(json.dumps(report, indent=2)+"\n")
     print(json.dumps({"branches": len(report["independent_branches"]), "red_hosts": len(report["red_hosts"]),
                       "redundant_outers": len(report["redundant_outers"])}))

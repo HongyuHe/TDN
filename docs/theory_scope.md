@@ -2,11 +2,11 @@
 
 TDN now concentrates formal proofs on network behavior that requires reasoning across packets, paths, or sequences of operations. The [scope assessment](../specs/proof_scope.json) selected 24 requirement groups for those arguments. The other current positive contributions use direct checks over saved records. All 76 source requirements remain in [the catalog](../specs/requirement_groups.md).
 
-The [machine-readable scope register](../specs/proof_scope.json) records the decision and reason for every RG. Each retained proof entry names its general result and a concrete application. Fourteen of the 24 selected groups now have reviewed proofs of every clause of their instantiated specifications. Ten groups retain supporting results and are deferred by the user. The [current review record](../data/publication/v3.1/verdict.json) gives the accepted scopes and assumptions.
+The [machine-readable scope register](../specs/proof_scope.json) records the decision and reason for every RG. Each retained proof entry names its general result and a concrete application. Fourteen of the 24 selected groups now have reviewed proofs of every clause of their instantiated specifications. Ten groups retain supporting results and are deferred by the user. The [current review record](../data/publication/v3.2/verdict.json) gives the accepted scopes and assumptions.
 
 ## Current construction result
 
-The accepted groups are RG-012, RG-013, RG-014, RG-021, RG-027, RG-032, RG-033, RG-034, RG-035, RG-037, RG-038, RG-039, RG-040 and RG-047. Each result has a reusable general theorem and checked applications. The theorem states the required assumptions explicitly; snapshot-specific records and finite checks live in `TDN/Evidence`.
+The accepted groups are RG-012, RG-013, RG-014, RG-021, RG-027, RG-032, RG-033, RG-034, RG-035, RG-037, RG-038, RG-039, RG-040 and RG-047. Each result has a reusable general theorem and checked applications. The theorem states the required assumptions explicitly; snapshot-specific records and finite checks live in `TDN/Deployments`.
 
 The November 4 continuation completed four groups. RG-035 connects boundary filters to native processing and physical-frame observations. RG-039 proves the Outer Gray-interface allowlist. RG-040 proves the Gray Firewall allowlist and cross-level denial. RG-033 connects packet preparation, native processing and emitted sizes to the configured interface limits. Earlier applications were rechecked after shared model changes.
 
@@ -16,7 +16,7 @@ The ten deferred groups are RG-007, RG-008, RG-015, RG-024, RG-028, RG-029, RG-0
 
 `msc_packet_size_configuration` contains five requirements. The execution model must cover the deployment. Its size calculations must correspond to the represented packets. Transmissions at Inner Gray interfaces, Outer Black interfaces and applicable Gray Firewall external interfaces must avoid further fragmentation. Every required interface must have a sizing record. Those records must satisfy the selected IPv4 or IPv6 configuration conditions and any selected Inner objective.
 
-`complete_canonical_IPsec_packet_sizing` proves those five requirements from explicit conditions. Source processing converts application data into packets and accounts for fragmentation or stream segmentation. Native processing follows the recorded routes, ordered filters, IPsec policies, installed associations and bridge rules. The recorded forwarding guards block oversized packets after reassembly, before ESP adds its headers and encryption overhead. General proofs track the resulting size bounds through every finite execution. The emitted-byte model then accounts for the headers and encryption overhead at transmission.
+`complete_canonical_IPsec_packet_sizing` proves those five requirements from explicit conditions. Source processing converts application data into packets and accounts for fragmentation or stream segmentation. Device processing follows the recorded routes, ordered filters, IPsec policies, installed associations and bridge rules. The recorded forwarding guards block oversized packets after reassembly, before ESP adds its headers and encryption overhead. General proofs track the resulting size bounds through every finite execution. The emitted-byte model then accounts for the headers and encryption overhead at transmission.
 
 The baseline application has four Red source entries and 12 required external interfaces. The shared application has eight Red source entries and 26 required external interfaces. Both import their complete interface and processing records. Finite Lean checks validate source attachments, unique identities, bridge endpoints, tunnel bindings, interface coverage and size limits. Those checks supply the general theorem's conditions. Separate checked examples follow nonempty HTTP traffic through the recorded processing rules to both an Inner Gray wire and an Outer Black wire. A stored `encodedSize` value is an upper bound set to the interface ceiling; the separate transmission proof establishes that actual represented bytes fit that ceiling.
 
@@ -39,29 +39,29 @@ Each decision applies to the contribution assessed in the supplied report. RG-02
 
 | RG | Requirement area | General result |
 | --- | --- | --- |
-| RG-007 | Two independent encryption layers and allowed tunnel pairings | `TDN.Targets.every_black_byte_has_ordered_encryption_path` |
-| RG-008 | Connectivity restricted to the same security level | `TDN.Targets.delivered_domain_from_local_checks` |
-| RG-012 | Separate authentication and management for security levels | `TDN.Targets.Complete.key_and_management_separation_from_scoped_inventory` |
-| RG-013 | Gray Firewalls on all paths needing level separation | `TDN.Targets.Complete.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms` |
-| RG-014 | Gray addressing supports security-level filtering | `TDN.Targets.Complete.gray_addressing_from_ip_and_link_endpoint_rules` |
-| RG-015 | MACsec encapsulation and standalone encapsulator obligations | `TDN.Targets.carrier_step_wraps_the_exact_input_body` |
-| RG-021 | VPN private-key access confinement | `TDN.Targets.Complete.vpn_private_key_confinement_from_interface_steps` |
+| RG-007 | Two independent encryption layers and allowed tunnel pairings | `TDN.Requirements.every_black_byte_has_ordered_encryption_path` |
+| RG-008 | Connectivity restricted to the same security level | `TDN.Requirements.delivered_domain_from_local_checks` |
+| RG-012 | Separate authentication and management for security levels | `TDN.Requirements.Msc.key_and_management_separation_from_scoped_inventory` |
+| RG-013 | Gray Firewalls on all paths needing level separation | `TDN.Requirements.Msc.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms` |
+| RG-014 | Gray addressing supports security-level filtering | `TDN.Requirements.Msc.gray_addressing_from_ip_and_link_endpoint_rules` |
+| RG-015 | MACsec encapsulation and standalone encapsulator obligations | `TDN.Requirements.carrier_step_wraps_the_exact_input_body` |
+| RG-021 | VPN private-key access confinement | `TDN.Requirements.Msc.vpn_private_key_confinement_from_interface_steps` |
 | RG-024 | MACsec authentication alternatives and AS scope | `TDN.KeySources.executions_have_only_authenticated_sources` |
-| RG-027 | MACsec key generation, key-server selection, and rollover | `TDN.Targets.Complete.macsec_key_generation_from_checked_records` |
+| RG-027 | MACsec key generation, key-server selection, and rollover | `TDN.Requirements.Msc.macsec_key_generation_from_checked_records` |
 | RG-028 | MACsec mandatory protection parameters | `TDN.LinkProtection.every_emitted_frame_is_encrypted` |
-| RG-029 | Inner encryption and decryption cannot be bypassed | `TDN.Execution.inbound_crossing_requires_local_decryption` |
-| RG-030 | Outer encryption and decryption cannot be bypassed | `TDN.Execution.inbound_crossing_requires_local_decryption` |
-| RG-032 | TRANSEC under the stated deployment conditions | `TDN.Targets.Complete.transec_conditions_from_checked_installations` |
-| RG-033 | Packet sizing to control fragmentation | `TDN.Targets.Complete.complete_canonical_IPsec_packet_sizing` |
-| RG-034 | Outer Firewall placement for untrusted Black transport | `TDN.Targets.outer_firewall_placement_from_local_checks` |
-| RG-035 | Permitted protocols and peers at encryption and firewall boundaries | `TDN.Targets.Complete.native_boundary_interface_filtering_from_checks` |
-| RG-037 | Outer-component third-party contact restrictions | `TDN.Targets.Complete.third_party_services_from_disabled_features_and_rule_checks` |
-| RG-038 | IP header and multicast filtering | `TDN.Targets.Complete.ip_and_link_header_filtering_from_inventory_and_rule_atoms` |
-| RG-039 | Outer Gray-interface allowlist and default denial | `TDN.Targets.Complete.outer_gray_IPsec_policy_from_native_checks` |
-| RG-040 | Gray Firewall allowlist and cross-level denial | `TDN.Targets.Complete.gray_firewall_allowlist_from_native_IPsec_checks` |
-| RG-047 | Administrator authentication and individual credentials | `TDN.Targets.Complete.administrator_authentication_from_local_admission_and_credential_checks` |
-| RG-054 | Interoperable components across communicating sites | `TDN.Targets.successful_ethernet_peer_restores_header` |
-| RG-056 | Approved physical paths out of Red Networks | `TDN.Targets.red_egress_crosses_inner_from_attachment_cut` |
+| RG-029 | Inner encryption and decryption cannot be bypassed | `TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption` |
+| RG-030 | Outer encryption and decryption cannot be bypassed | `TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption` |
+| RG-032 | TRANSEC under the stated deployment conditions | `TDN.Requirements.Msc.transec_conditions_from_checked_installations` |
+| RG-033 | Packet sizing to control fragmentation | `TDN.Requirements.Msc.complete_canonical_IPsec_packet_sizing` |
+| RG-034 | Outer Firewall placement for untrusted Black transport | `TDN.Requirements.outer_firewall_placement_from_local_checks` |
+| RG-035 | Permitted protocols and peers at encryption and firewall boundaries | `TDN.Requirements.Msc.device_boundary_interface_filtering_from_checks` |
+| RG-037 | Outer-component third-party contact restrictions | `TDN.Requirements.Msc.third_party_services_from_disabled_features_and_rule_checks` |
+| RG-038 | IP header and multicast filtering | `TDN.Requirements.Msc.ip_and_link_header_filtering_from_inventory_and_rule_atoms` |
+| RG-039 | Outer Gray-interface allowlist and default denial | `TDN.Requirements.Msc.outer_gray_IPsec_policy_from_native_checks` |
+| RG-040 | Gray Firewall allowlist and cross-level denial | `TDN.Requirements.Msc.gray_firewall_allowlist_from_native_IPsec_checks` |
+| RG-047 | Administrator authentication and individual credentials | `TDN.Requirements.Msc.administrator_authentication_from_local_admission_and_credential_checks` |
+| RG-054 | Interoperable components across communicating sites | `TDN.Requirements.successful_ethernet_peer_restores_header` |
+| RG-056 | Approved physical paths out of Red Networks | `TDN.Requirements.red_egress_crosses_inner_from_attachment_cut` |
 | RG-074 | Redundant component and load-balancing permission | `TDN.Waypointing.waypointing_of_edge_invariant` |
 
 The snapshot application for each row is listed in `specs/proof_scope.json`. The selected model and evidence assumptions remain part of each result. In particular, the proofs do not establish cryptographic secrecy or universal correspondence with Linux merely by compiling.

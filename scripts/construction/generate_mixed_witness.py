@@ -4,6 +4,7 @@ from collections import deque
 from copy import deepcopy
 import json
 from pathlib import Path
+from network_names import forwarding_lean
 
 from generate_execution_witness import atom_holds, bound, matches, packet_lean, selected
 from import_execution import association_list, tuple_list
@@ -25,7 +26,7 @@ def base_header(source, destination, protocol, sport=0, dport=0):
             "ingress": "", "egress": "", "sourcePort": sport, "destinationPort": dport,
             "ipv4HeaderWords": 5 if source < 2**32 else 0,
             "ipv6NextHeader": 0 if source < 2**32 else (50 if protocol == "esp" else 17),
-            "inboundPolicies": [], "outboundPolicies": [], "connectionState": ""}
+            "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": [], "connectionState": ""}
 
 
 def visible(body):
@@ -60,7 +61,7 @@ def state_lean(state):
            lean_list([str(v) for v in state["authenticated"]]) + ', tracking := "NEW" }'
 
 
-CHECK = "(by (try simp only [config, MultiProtocolExecution.dataPlaneConfigFromRecords, Execution.dataPlaneConfigFromRecords, Execution.SelectedRoute, Execution.Route.matches, Execution.accepts, Execution.StateBindsPolicy, SameMACWireIdentity]); all_goals decide)"
+CHECK = "(by (try simp only [config, MultiProtocolForwarding.dataPlaneModelFromRecords, DataPlaneForwarding.dataPlaneModelFromRecords, DataPlaneForwarding.SelectedFibRoute, DataPlaneForwarding.FibRoute.matches, DataPlaneForwarding.accepts, DataPlaneForwarding.saMatchesPolicy, SameMACWireIdentity]); all_goals decide)"
 
 
 def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=None):
@@ -95,8 +96,8 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
 
         def accepts(hook):
             p = header | {"ingress": interface(s["entered"]), "egress": interface(port),
-                          "inboundPolicies": s["authenticated"],
-                          "outboundPolicies": [a[0] for a in selected(data["policies"][device]["out"], header)],
+                          "matchedInboundPolicyIds": s["authenticated"],
+                          "matchedOutboundPolicyIds": [a[0] for a in selected(data["policies"][device]["out"], header)],
                           "connectionState": "NEW"}
             for family in ["4", "6"]:
                 for rule in data["hooks"][device][family][hook]["parsed_rules"]:
@@ -115,25 +116,25 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                        route["prefix"], route["metric"], route["priority"]]
                 constructor, next_phase = {"localOutput": ("routeLocalOutput", "outputRouted"),
                     "ingress": ("route", "routed"), "encapsulated": ("routeOuterPacket", "ready")}[phase]
-                yield emit("route", "MultiProtocolExecution.Step." + constructor + " " + tup(row) +
+                yield emit("route", "MultiProtocolForwarding.Step." + constructor + " " + tup(row) +
                            " rfl rfl " + CHECK + " rfl", port=row[1], phase=next_phase)
             if phase == "ingress" and header["destination"] in addresses(device) and accepts("INPUT"):
-                yield emit("inputFilter", "MultiProtocolExecution.Step.inputFilter rfl rfl " + CHECK + " " + CHECK,
+                yield emit("inputFilter", "MultiProtocolForwarding.Step.inputFilter rfl rfl " + CHECK + " " + CHECK,
                            phase="localInput")
         if phase in ["routed", "outputRouted"] and header:
             hook = "FORWARD" if phase == "routed" else "OUTPUT"
             constructor = "forwardFilter" if phase == "routed" else "outputFilter"
             if accepts(hook):
-                yield emit(constructor, "MultiProtocolExecution.Step." + constructor + " rfl rfl " + CHECK, phase="filtered")
+                yield emit(constructor, "MultiProtocolForwarding.Step." + constructor + " rfl rfl " + CHECK, phase="filtered")
         if phase == "filtered" and header:
             policies = selected(data["policies"][device]["out"], header)
             if not policies:
-                yield emit("passWithoutTransform", "MultiProtocolExecution.Step.passWithoutTransform rfl rfl " + CHECK, phase="ready")
+                yield emit("forwardWithoutEncap", "MultiProtocolForwarding.Step.forwardWithoutEncap rfl rfl " + CHECK, phase="ready")
             for policy in policies:
                 for association in data["states"][device]:
                     if bound(policy, association):
                         seal = [policy[1], association[1], association[2], association[3]]
-                        yield emit("encryptIPsec", "MultiProtocolExecution.Step.encryptIPsec " + policy_lean(policy) + " " +
+                        yield emit("encryptIPsec", "MultiProtocolForwarding.Step.encryptIPsec " + policy_lean(policy) + " " +
                                    tup(association) + " rfl rfl " + " ".join([CHECK]*3),
                                    phase="encapsulated", body={"kind": "ipsec", "seal": seal, "body": body})
         if phase == "received":
@@ -145,17 +146,17 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                     for association in data["states"][device]:
                         seal = [policy[1], association[1], association[2], association[3]]
                         if bound(policy, association) and seal == body["seal"] and matches(policy, visible(body["body"])):
-                            yield emit("decryptIPsec", "MultiProtocolExecution.Step.decryptIPsec " + policy_lean(policy) + " " +
+                            yield emit("decryptIPsec", "MultiProtocolForwarding.Step.decryptIPsec " + policy_lean(policy) + " " +
                                 tup(association) + " " + body_lean(body["body"]) + " " +
                                 packet_lean(visible(body["body"])) + " rfl rfl " +
                                 " ".join([CHECK]*3) + ' rfl ' + CHECK + ' "NEW"',
                                 phase="ingress", body=body["body"], entered=port, authenticated=[policy[0]])
             if body["kind"] == "ethernet" and report["devices"][device]["role"] == "host":
-                yield emit("deliver", "MultiProtocolExecution.Step.deliverEthernet " + packet_lean(body["header"]) +
+                yield emit("deliver", "MultiProtocolForwarding.Step.deliverEthernet " + packet_lean(body["header"]) +
                            " 1 rfl rfl rfl", phase="delivered")
         if phase == "localInput":
             if body["kind"] == "datagram" and report["devices"][device]["role"] == "host":
-                yield emit("deliver", "MultiProtocolExecution.Step.deliver 1 rfl rfl rfl", phase="delivered")
+                yield emit("deliver", "MultiProtocolForwarding.Step.deliver 1 rfl rfl rfl", phase="delivered")
             if body["kind"] == "carrier":
                 ep = body["endpoint"]
                 for index, carrier in enumerate(data["carriers"]):
@@ -163,7 +164,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                                 carrier["destination_port"], carrier["source_port"], carrier["local_session"]]
                     if carrier["device"] == device and ep == expected:
                         expression = "(carriers[" + str(index) + "]'(by decide))"
-                        yield emit("decapsulate", "MultiProtocolExecution.Step.decapsulate " + expression + " " +
+                        yield emit("decapsulate", "MultiProtocolForwarding.Step.decapsulate " + expression + " " +
                                    body_lean(body["body"]) + " " + CHECK + " rfl rfl rfl",
                                    port=ids[device + ":" + carrier["interface"]], phase="received",
                                    body=body["body"], authenticated=[])
@@ -171,18 +172,18 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
             for a, b in data["bridges"]:
                 if ids[a] == port:
                     constructor = "bridge" if phase == "received" else "bridgeOutput"
-                    yield emit("bridge", "MultiProtocolExecution.Step." + constructor + " " + str(ids[b]) + " rfl " + CHECK,
+                    yield emit("bridge", "MultiProtocolForwarding.Step." + constructor + " " + str(ids[b]) + " rfl " + CHECK,
                                port=ids[b], phase="ready")
         if phase == "ready":
             for a, b in data["links"]:
                 if ids[a] == port:
-                    yield emit("linkTransmit", "MultiProtocolExecution.Step.linkTransmit " + str(ids[b]) + " rfl " + CHECK,
+                    yield emit("linkTransmit", "MultiProtocolForwarding.Step.linkTransmit " + str(ids[b]) + " rfl " + CHECK,
                                port=ids[b], phase="received", authenticated=[])
             for index, mac in enumerate(data["mac_ports"]):
                 if ids[mac["device"] + ":" + mac["logical"]] == port:
                     assoc = [mac["tag"], mac["tx_sci"], mac["tx_an"], 0]
                     expression = "(macIfaces[" + str(index) + "]'(by decide))"
-                    yield emit("encryptMACsec", "MultiProtocolExecution.Step.encryptMACsec " + expression + " " + tup(assoc) +
+                    yield emit("encryptMACsec", "MultiProtocolForwarding.Step.encryptMACsec " + expression + " " + tup(assoc) +
                                " " + CHECK + " rfl rfl ⟨rfl, rfl⟩",
                                port=ids[mac["device"] + ":" + mac["physical"]],
                                body={"kind": "macsec", "association": assoc, "body": body})
@@ -194,7 +195,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                     require(len(anchors) == 1, "Carrier routing anchor")
                     ep = [encode_address(carrier["source"]), encode_address(carrier["destination"]),
                           carrier["source_port"], carrier["destination_port"], carrier["peer_session"]]
-                    yield emit("encapsulate", "MultiProtocolExecution.Step.encapsulate (carriers[" + str(index) + "]'(by decide)) " +
+                    yield emit("encapsulate", "MultiProtocolForwarding.Step.encapsulate (carriers[" + str(index) + "]'(by decide)) " +
                                CHECK + " rfl rfl", port=anchors[0], entered=anchors[0],
                                authenticated=[], phase="localOutput",
                                body={"kind": "carrier", "endpoint": ep, "body": body})
@@ -204,7 +205,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                     assoc = [mac["tag"], mac["rx_sci"], mac["rx_an"], 0]
                     if assoc[1:3] == body["association"][1:3]:
                         expression = "(macIfaces[" + str(index) + "]'(by decide))"
-                        yield emit("decryptMACsec", "MultiProtocolExecution.Step.decryptMACsec " + expression + " " +
+                        yield emit("decryptMACsec", "MultiProtocolForwarding.Step.decryptMACsec " + expression + " " +
                                    tup(assoc) + " " + tup(body["association"]) + " " +
                                    body_lean(body["body"]) + " " + CHECK + " rfl rfl rfl " +
                                    CHECK + " " + CHECK, port=ids[mac["device"] + ":" + mac["logical"]],
@@ -284,34 +285,34 @@ def render(report, module, ethernet=False, tags=None, reverse=False, label=""):
     source, destination = ("HB:red", "HA:red") if reverse else ("HA:red", "HB:red")
     states, actions, proofs = search(report, source, destination, ethernet=ethernet, tags=tags)
     bridge_checks = bridge_observations(report, states, actions)
-    ns = "TDN.Imported." + report["namespace"] + ("." + label if label else "")
+    ns = "TDN.Deployments." + report["namespace"] + ("." + label if label else "")
     lines = ["import " + module, "", "namespace " + ns,
-             "open MultiProtocolExecution LayeredFrame", "set_option maxRecDepth 1000000",
+             "open MultiProtocolForwarding LayeredFrame", "set_option maxRecDepth 1000000",
              "set_option maxHeartbeats 0", "set_option linter.unusedSimpArgs false", ""]
     for i, state in enumerate(states):
-        lines.append("def usefulState" + str(i) + " : MultiProtocolExecution.State := " + state_lean(state))
+        lines.append("def usefulState" + str(i) + " : MultiProtocolForwarding.State := " + state_lean(state))
     for i, (action, proof) in enumerate(zip(actions, proofs)):
-        lines += ["", "lemma usefulStep" + str(i) + " : MultiProtocolExecution.Step config usefulState" + str(i) +
+        lines += ["", "lemma usefulStep" + str(i) + " : MultiProtocolForwarding.Step config usefulState" + str(i) +
                   " ." + action + " usefulState" + str(i+1) + " := by", "  exact " + proof]
     for check in bridge_checks:
         index = check["step"]
         lines += ["", "def bridgeRules" + str(index) + " : List PacketPolicy.Rule := " + render_rules(check["rules"]),
                   "def bridgePacket" + str(index) + " : PacketPolicy.Packet := " + packet_lean(check["packet"]),
-                  "lemma positive_bridge_filter" + str(index) + " : Execution.accepts bridgeRules" + str(index) +
+                  "lemma positive_bridge_filter" + str(index) + " : DataPlaneForwarding.accepts bridgeRules" + str(index) +
                   " .deny bridgePacket" + str(index) + " := by",
-                  "  unfold Execution.accepts bridgeRules" + str(index) + " bridgePacket" + str(index) + "; decide"]
-    lines += ["", "def usefulActions : List MultiProtocolExecution.Action := " +
+                  "  unfold DataPlaneForwarding.accepts bridgeRules" + str(index) + " bridgePacket" + str(index) + "; decide"]
+    lines += ["", "def usefulActions : List MultiProtocolForwarding.Action := " +
               lean_list(["." + action for action in actions]), "",
               "theorem positive_mixed_delivery : (lts config).MTr usefulState0 usefulActions usefulState" +
               str(len(actions)) + " := by", "  exact " +
               "".join("Cslib.LTS.MTr.stepL usefulStep" + str(i) + " (" for i in range(len(actions))) +
               "Cslib.LTS.MTr.refl" + ")"*len(actions), "",
-              "lemma useful_red_origin : Targets.MixedRedOrigin redSources usefulState0 := by",
-              "  simp [Targets.MixedRedOrigin, usefulState0, redSources]",
+              "lemma useful_red_origin : Requirements.MixedRedOrigin redSources usefulState0 := by",
+              "  simp [Requirements.MixedRedOrigin, usefulState0, redSources]",
               "", "lemma useful_plaintext_delivery : usefulState" + str(len(actions)) + ".datapathStage = .delivered ∧",
               "    usefulState" + str(len(actions)) + ".frame.body.protectionLayers = [] := ⟨rfl, rfl⟩",
               "end " + ns, ""]
-    return "\n".join(lines), {"states": states, "actions": actions, "bridge_checks": bridge_checks,
+    return forwarding_lean("\n".join(lines)), {"states": states, "actions": actions, "bridge_checks": bridge_checks,
                               "scope": "Checked model delivery establishes useful behavior in the recorded model. Live probes independently establish actual payload delivery; drop-only omitted bridge checks require separate positive correspondence."}
 
 

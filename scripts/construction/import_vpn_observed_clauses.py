@@ -81,10 +81,10 @@ def generate(data):
     certs = ", ".join("⟨"+q(c["device"])+", "+q(c["fingerprint"])+"⟩" for c in data["certificates"])
     policies = ", ".join("⟨"+", ".join(q(p[k]) for k in ["device","peer","local_certificate","required_peer_identity"])+", true⟩" for p in data["policies"])
     values = ", ".join(str(r["hard_seconds"]) for r in data["lifetimes"])
-    return """import TDN.Targets.VPNObservedClauses
+    return """import TDN.Requirements.VPNObservedClauses
 
-namespace TDN.Imported.FreshVPNObservedClauses
-open Targets
+namespace TDN.Deployments.FreshVPNObservedClauses
+open Requirements
 
 def certificates : List LoadedDeviceCertificate := ["""+certs+"""]
 def policies : List CertificateAuthenticationPolicy := ["""+policies+"""]
@@ -116,7 +116,7 @@ theorem admitted_selected_peers_require_mutual_certificate_verification
 
 lemma nonempty_selected_certificates_and_lifetimes : certificates.length = 8 ∧ espHardSeconds.length = 20 := by decide
 
-end TDN.Imported.FreshVPNObservedClauses
+end TDN.Deployments.FreshVPNObservedClauses
 """
 
 

@@ -19,19 +19,19 @@ def main():
     owners = [report["device_ids"][name] for name in names]
     if not owners:
         raise ValueError("No remaining component inventory")
-    text = """import TDN.Semantics.UniformResponseRegions
-import TDN.Semantics.HistoricalResponses
+    text = """import TDN.Models.UniformStackDeviceReplies
+import TDN.Models.DelayedPacketReplySafety
 import MODULE
 
-namespace TDN.Imported.NAMESPACE
+namespace TDN.Deployments.NAMESPACE
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 
 def uniformResponseOwners : List Nat := OWNERS
 
 lemma uniform_response_regions_checked :
-    UniformResponseRegions.FiniteUniform devices ifaces uniformResponseOwners := by
-  unfold UniformResponseRegions.FiniteUniform
+    UniformResponseRegions.TableDrivenUniform devices ifaces uniformResponseOwners := by
+  unfold UniformResponseRegions.TableDrivenUniform
   decide
 
 lemma response_component_inventory_complete :
@@ -39,13 +39,13 @@ lemma response_component_inventory_complete :
       ∃ guard ∈ responseSourceGuards, iface.owner = guard.1 := by decide
 
 theorem all_component_copied_responses_keep_stack
-    {before after : Execution.State} {actions : List (KernelResponses.Action Execution.Action)}
+    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
     (run : (KernelResponses.lts (GuardedResponseNetwork.network responseData)
       (UniformResponseRegions.responseConfig responseData uniformResponseOwners)).MTr
       (.network before) actions (.network after))
     (initial : GuardedResponseNetwork.Safe responseData before) :
-    Execution.StackInvariant config expectedEncapStack after :=
-  UniformResponseRegions.all_component_response_executions_preserve_stack responseData
+    DataPlaneForwarding.EncapStackConsistent config expectedEncapStack after :=
+  UniformResponseRegions.all_component_response_traces_preserve_stack responseData
     uniformResponseOwners local_stack_conditions all_source_output_reply_pairs_checked
     all_input_interfaces_covered response_default_checks locally_encrypted_response_denial
     uniform_response_regions_checked run initial
@@ -62,16 +62,15 @@ def responseHistoryConfig :=
   HistoricalResponses.responseConfig
     (UniformResponseRegions.responseConfig responseData uniformResponseOwners)
 
-/-- Delayed error handling may select any saved packet context. All retained
-contexts satisfy the same fixed-configuration local emission checks. -/
+
 theorem all_retained_packet_responses_keep_stack
-    {before after : HistoricalResponses.State Execution.State}
-    {actions : List (KernelResponses.Action (HistoricalResponses.Action Execution.Action))}
+    {before after : HistoricalResponses.State DataPlaneForwarding.State}
+    {actions : List (KernelResponses.Action (HistoricalResponses.Action DataPlaneForwarding.Action))}
     (run : (KernelResponses.lts
       (HistoricalResponses.lts (GuardedResponseNetwork.network responseData))
       responseHistoryConfig).MTr (.network before) actions (.network after))
     (initial : HistoricalResponses.Safe (GuardedResponseNetwork.Safe responseData) before) :
-    Execution.StackInvariant config expectedEncapStack after.current :=
+    DataPlaneForwarding.EncapStackConsistent config expectedEncapStack after.current :=
   (HistoricalResponses.all_historical_responses_preserve_safety
     (GuardedResponseNetwork.network responseData)
     (UniformResponseRegions.responseConfig responseData uniformResponseOwners)
@@ -92,7 +91,7 @@ theorem useful_delivery_with_retained_packet_contexts :
     (GuardedResponseNetwork.network responseData) positive_delivery_with_early_source_guards []
   exact ⟨saved, EncryptedResponseGuards.network_trace_in_response_system _ _ run⟩
 
-end TDN.Imported.NAMESPACE
+end TDN.Deployments.NAMESPACE
 """
     Path(args.output).write_text(text.replace("MODULE", args.module).replace("NAMESPACE", args.namespace)
                                  .replace("OWNERS", str(owners)).replace("FINAL", str(count)))

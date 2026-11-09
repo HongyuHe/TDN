@@ -1,4 +1,4 @@
-import TDN.Semantics.ReassemblyOrigins
+import TDN.Models.ReassemblyBufferDomainSafety
 open TDN ReassemblyOrigins
 
 abbrev B := ByteOrigin Nat Nat Nat

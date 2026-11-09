@@ -89,18 +89,18 @@ def main():
     a = p.parse_args()
     d = parse(a.clocks, a.setup)
     Path(a.report).write_text(json.dumps(d, indent=2)+"\n")
-    Path(a.output).write_text("""import TDN.Targets.ServicePlacement
+    Path(a.output).write_text("""import TDN.Requirements.ServicePlacement
 
-namespace TDN.Imported.FreshRedTimePlacement
+namespace TDN.Deployments.FreshRedTimePlacement
 
 def networkZone (bridge : String) : Zone := if bridge = "nd3b0" then .red else .black
 def insideBridge : String := "nd3b0"
 def serviceBridge : String := "nd3b0"
 
 theorem actual_time_source_is_on_selected_red_network : networkZone serviceBridge = .red :=
-  Targets.service_location_from_shared_bridge networkZone insideBridge serviceBridge (by decide) (by decide)
+  Requirements.service_location_from_shared_bridge networkZone insideBridge serviceBridge (by decide) (by decide)
 
-end TDN.Imported.FreshRedTimePlacement
+end TDN.Deployments.FreshRedTimePlacement
 """)
     print(json.dumps({"client": d["client"], "source": d["source"], "bridge": d["source_bridge"]}))
 

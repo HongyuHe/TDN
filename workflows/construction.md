@@ -1,5 +1,7 @@
 # Evidence-driven construction of CSfC theories
 
+The current theory is v3.2. Its organization and names follow [the v3.2 migration guide](../docs/refactoring_v3.2.md). The construction and review history below belongs to v3.1; the refactor preserves those results and stopping decisions.
+
 The user narrowed the current stopping point on November 4, 2026: finish and validate RG-033, update the affected documentation, role ontology, and theorem hierarchy, then stop. RG-035, RG-039, and RG-040 have passed the continuation's complete-candidate reviews. Preserve those results and the earlier ten accepted groups. Defer RG-007, RG-008, RG-015, RG-024, RG-028, RG-029, RG-030, RG-054, RG-056, and RG-074 until a later instruction. Their unfinished status must remain visible. The current stop requires a complete RG-033 PASS and documentation updates; it does not claim completion of all 24 selected groups.
 
 The narrowed continuation completed RG-033 in its third complete-candidate review. Fourteen selected groups now have accepted complete model applications, and ten remain deferred. The [completion record](../data/construction/v3.1-20261104-continuation/completion_assessment.md) preserves the reviews, assumptions, final validation and documentation updates. No further construction is active.
@@ -134,7 +136,7 @@ The Constructor Agent follows the same collection sequence for each evidence req
 2. Call `query_evidence(collection, capability, device, offset, limit)` as needed. Follow `next_offset` until all relevant records have been retrieved. Check coverage and `devices_without_observation`; a returned page alone does not establish a complete inventory.
 3. Inspect `evidence://COLLECTION/manifest` and the relevant `raw/OBSERVATION` and `stderr/OBSERVATION` resources. Retain source references, collection intervals, exit codes, parser versions, and hashes. Preserve failed and unsupported observations in the request record.
 4. Check the state needed by the obligation. For steady-state claims, inspect the relevant routes, filters, tunnel state, and available consistency rechecks. Repeated equal observations support the recorded stability check. Collection completion alone establishes neither protocol convergence nor an atomic snapshot across workers.
-5. Call `prepare_lean_bundle(collection, view)` for a supported view. Record its output path, hash, and supported type or record keys. Import JSON with `tdn_data` or `tdn_snapshot`, then run the local Lean checks required by the general theorem.
+5. Call `prepare_lean_bundle(collection, view)` for a supported view. Record its output path, hash, and supported type or record keys. Import JSON with `load_network_records` or `load_network_snapshot`, then run the local Lean checks required by the general theorem.
 
 Every query and export must identify its collection. A query reads the saved capture and does not silently refresh the network. After a deployment change, start a new collection and retain the previous one so that failed and repaired cases remain distinguishable.
 
@@ -172,7 +174,7 @@ Organize the theory into three parts with dependencies in one direction:
 2. **CSfC specifications and general proofs:** Define document-specific roles, architectural constraints, requirement specifications, and reusable proofs that supporting conditions imply those specifications. These modules may import the general library, but must not import concrete snapshots. Inner/Outer and Red/Gray/Black definitions that embody the MSC architecture belong here unless a justified general formulation is introduced.
 3. **Network-specific evidence and checks:** Import concrete devices, configurations, topologies, and observations. Generate witnesses, check the premises required by the general proofs, and apply the CSfC theorems. Concrete device names, snapshot paths, and topology lists belong here.
 
-The existing `TDN/Semantics`, `TDN/Targets`, and `TDN/Evidence` directories provide starting locations for these three parts. Refactor their contents and introduce submodules where needed to enforce the stated responsibilities. Verify import dependencies. Generality must be reflected in the declarations and their assumptions, not only in directory names.
+The existing `TDN/Models`, `TDN/Requirements`, and `TDN/Deployments` directories provide starting locations for these three parts. Refactor their contents and introduce submodules where needed to enforce the stated responsibilities. Verify import dependencies. Generality must be reflected in the declarations and their assumptions, not only in directory names.
 
 Build reusable components as the requirements demand them. Reuse suitable definitions and proved results from Mathlib and CSLib, with compatible versions pinned. Avoid building an expansive networking library before addressing the obligations. Keep general network results independent of CSfC clauses, and keep reusable CSfC results independent of deployment names and snapshots.
 

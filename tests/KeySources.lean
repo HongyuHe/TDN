@@ -1,4 +1,4 @@
-import TDN.Targets.MACsecFallback
+import TDN.Requirements.MacsecNoCleartextFallbackSpec
 
 open TDN.KeySources
 

@@ -1,11 +1,11 @@
-import TDN.Evidence.FreshMixedByteProtection
+import TDN.Deployments.SnapshotMixedByteProtection
 
-open TDN MultiProtocolExecution
-open TDN.Imported.PairingInnerMacsecOuterIpsec
-open TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN0
+open TDN MultiProtocolForwarding
+open TDN.Deployments.PairingInnerMacsecOuterIpsec
+open TDN.Deployments.PairingInnerMacsecOuterIpsec.ForwardVLAN0
 
-private def source (state : MultiProtocolExecution.State) (_ : Nat) : Prop :=
-  Targets.MixedRedOrigin redSources state
+private def source (state : MultiProtocolForwarding.State) (_ : Nat) : Prop :=
+  Requirements.MixedRedOrigin redSources state
 
 /-- Two received plaintext fragments may be interleaved/reordered and assembled.
 No equality of origin packet identifiers participates in these steps. -/
@@ -41,7 +41,7 @@ example : ¬ PlainByteAssembly usefulState4 usefulState4 := by
   simp [usefulState4, LayeredFrame.Body.protectionLayers] at empty
 
 example :
-    (byteSystem config (Targets.MixedByteOrigin redSources)).MTr []
+    (byteSystem config (Requirements.MixedByteOrigin redSources)).MTr []
       (ByteFlows.Action.inject :: usefulActions.map ByteFlows.Action.network)
       [⟨usefulState30, ([1, 2, 3] : List Nat)⟩] :=
   positive_three_byte_delivery

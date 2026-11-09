@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def candidates():
-    for path in sorted((ROOT / "TDN/Evidence").glob("*.lean")):
+    for path in sorted((ROOT / "TDN/Deployments").glob("*.lean")):
         text = path.read_text()
         namespace = re.search(r"^namespace ([\w.]+)", text, re.M)
         if not namespace:
@@ -41,18 +41,18 @@ def main():
     parser.add_argument("--export", action="store_true")
     parser.add_argument("--apply", action="store_true")
     args = parser.parse_args()
-    if any("tdn_data " in p.read_text() for p in (ROOT / "TDN/Evidence").glob("*.lean")):
+    if any("load_network_records " in p.read_text() for p in (ROOT / "TDN/Deployments").glob("*.lean")):
         raise SystemExit("The active sources are already migrated. Re-export from an isolated checkout of v3.")
     directory = ROOT / "data/evidence"
     directory.mkdir(parents=True, exist_ok=True)
     items = list(candidates())
     if args.export:
-        lines = ["import TDN", "import TDN.Import.Command", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "set_option maxErrors 10000"]
+        lines = ["import TDN", "import TDN.Import.SnapshotLoader", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "set_option maxErrors 10000"]
         for path, declarations in items:
             output = directory / (path.stem + ".json")
             output.unlink(missing_ok=True)
             for declaration in declarations:
-                lines.append(f'tdn_export {declaration["qualified"]} to "{output}" ["{declaration["qualified"]}"]')
+                lines.append(f'export_network_records {declaration["qualified"]} to "{output}" ["{declaration["qualified"]}"]')
         temp = Path(tempfile.mkdtemp(prefix="tdn-migrate-")) / "Export.lean"
         temp.write_text("\n".join(lines) + "\n")
         print(str(temp), flush=True)
@@ -69,9 +69,9 @@ def main():
                        "remaining": [d["name"] for d in declarations if d["qualified"] not in exported]})
         if args.apply and selected:
             for declaration in reversed(selected):
-                command = f'tdn_data {declaration["name"]} : {declaration["type"]} from "../../data/evidence/{path.stem}.json" ["{declaration["qualified"]}"]\n'
+                command = f'load_network_records {declaration["name"]} : {declaration["type"]} from "../../data/evidence/{path.stem}.json" ["{declaration["qualified"]}"]\n'
                 text = text[:declaration["start"]] + command + text[declaration["end"]:]
-            text = "import TDN.Import.Command\n" + text
+            text = "import TDN.Import.SnapshotLoader\n" + text
             path.write_text(text)
     (directory / "migration.json").write_text(json.dumps(report, indent=2) + "\n")
     print("modules", len(report), "records", sum(r["exported"] for r in report), "unexported", sum(len(r["remaining"]) for r in report))

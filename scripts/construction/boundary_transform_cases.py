@@ -51,9 +51,9 @@ def case(records, prefix, kind, level, service_port=8080):
     policies = [p for p in device['outbound'] if p['sourceLow'] <= source <= p['sourceHigh'] and
                 p['destinationLow'] <= destination <= p['destinationHigh']]
     policy = min(policies, key=lambda p: p['priority'])
-    associations = [s for s in device['states'] if s['localRequestId'] == policy['id'] and
+    associations = [s for s in device['states'] if s['reqid'] == policy['id'] and
                     s['sender'] == policy['sender'] and s['receiver'] == policy['receiver'] and
-                    (policy['templateSPI'] is None or s['wireIdentity'] == policy['templateSPI'])]
+                    (policy['requiredSpi'] is None or s['spi'] == policy['requiredSpi'])]
     if len(associations) != 1:
         raise ValueError('Expected one installed bound outbound SA')
     association = associations[0]
@@ -62,7 +62,7 @@ def case(records, prefix, kind, level, service_port=8080):
     length = 20 + len(transport) + len(payload)
     header = {'source': source, 'destination': destination, 'protocol': protocol, 'ingress': '', 'egress': '',
               'sourcePort': source_port, 'destinationPort': destination_port, 'ipv4HeaderWords': 5,
-              'inboundPolicies': [], 'outboundPolicies': [], 'connectionState': 'new',
+              'matchedInboundPolicyIds': [], 'matchedOutboundPolicyIds': [], 'connectionState': 'new',
               'hopLimit': 64, 'payloadBytes': payload if protocol == 'tcp' else None,
               'networkBytes': length, 'ipv4FragmentOffset': 0 if protocol == 'tcp' else None,
               'ipv6NextHeader': 0, 'icmpType': 0, 'icmpCode': 0, 'etherType': None, 'connectionId': None}

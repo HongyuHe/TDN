@@ -56,8 +56,8 @@ def state_blocks(text, address_encoder=None):
 def empty_device():
     return {"forwardRules": [], "inputRules": [], "outputRules": [],
             "forwardFallback": "deny", "inputFallback": "deny", "outputFallback": "deny",
-            "outbound": [], "inbound": [], "states": [], "localAddresses": [],
-            "recipientDomain": None}
+            "egressPolicies": [], "ingressPolicies": [], "states": [], "localAddresses": [],
+            "ifaceSecurityDomain": None}
 
 
 def rule_json(rule):
@@ -68,14 +68,14 @@ def rule_json(rule):
 
 def association_json(row):
     fields = ["id", "tag", "sender", "receiver", "sourceLow", "sourceHigh",
-              "destinationLow", "destinationHigh", "priority", "templateSPI"]
+              "destinationLow", "destinationHigh", "priority", "requiredSpi"]
     require(len(row) == len(fields), "Unexpected association record")
     return dict(zip(fields, row))
 
 
 def state_json(row):
     require(len(row) == 4, "Unexpected security association record")
-    return dict(zip(["localRequestId", "wireIdentity", "sender", "receiver"], row))
+    return dict(zip(["reqid", "spi", "sender", "receiver"], row))
 
 
 def binding_records(snapshot, device_ids, port_ids, devices, policies, states):
@@ -101,7 +101,7 @@ def binding_records(snapshot, device_ids, port_ids, devices, policies, states):
             sources.append({"portId": record["portId"], "interfaceId": interface["id"],
                 "deviceId": owner["id"], "networkId": owner.get("network_id"),
                 "site": owner.get("site"), "securityLevelId": owner.get("security_level_id"),
-                "originDomain": devices[device_ids[owner["id"]]]["recipientDomain"],
+                "originDomain": devices[device_ids[owner["id"]]]["ifaceSecurityDomain"],
                 "kind": "declared-red-data-attachment", "observationIds": interface["observation_ids"]})
     tunnels = []
     for tunnel in snapshot["tunnels"]:
@@ -303,12 +303,12 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
             chain = next(c for c in chains if c["chain"] == hook.upper())
             fields[hook + "Rules"] = [rule_json(rule) for rule in chain["ordered_rules"]]
             fields[hook + "Fallback"] = {"drop": "deny", "accept": "allow"}[chain["policy"]]
-        fields["outbound"] = [association_json(row) for row in policy["out"]]
-        fields["inbound"] = [association_json(row) for row in policy["in"]]
+        fields["egressPolicies"] = [association_json(row) for row in policy["out"]]
+        fields["ingressPolicies"] = [association_json(row) for row in policy["in"]]
         fields["states"] = [state_json(row) for row in states]
         fields["localAddresses"] = sorted({int(ipaddress.IPv4Address(a["local"]))
             for interface in device_ifaces for a in interface["addresses"] if a["family"] == "inet"})
-        fields["recipientDomain"] = levels[device["security_level_id"]] if device["role"] == "host" else None
+        fields["ifaceSecurityDomain"] = levels[device["security_level_id"]] if device["role"] == "host" else None
         device_records.append(fields)
     for interface in interfaces:
         device = next(d for d in devices if d["id"] == interface["device_id"])
@@ -319,7 +319,7 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
         stack = {"red": [], "gray": [1], "black": [2, 1]}[zone]
         origin = device["role"] == "host" and interface["zone"] == "red"
         port_records.append({"owner": device_index[interface["device_id"]],
-            "name": interface["name"], "stack": stack, "payloadOrigin": origin})
+            "name": interface["name"], "stack": stack, "canOriginateTraffic": origin})
     links = []
     bridging = []
     for link in snapshot["links"]:
@@ -345,7 +345,7 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
                next(d for d in devices if d["id"] == i["device_id"])["role"] == "host"]
     black = [port_index[i["id"]] for i in interfaces if i["zone"] == "black"]
     gray = [port_index[i["id"]] for i in interfaces if i["zone"] == "gray"]
-    route_fields = ["ingress", "egress", "low", "high", "prefixLength", "metric", "tablePriority"]
+    route_fields = ["ingress", "egress", "destPrefixLow", "destPrefixHigh", "prefixLength", "metric", "tablePriority"]
     bindings = binding_records(snapshot, device_index, port_index, device_records,
                               policy_summary, states_by_device)
     return {

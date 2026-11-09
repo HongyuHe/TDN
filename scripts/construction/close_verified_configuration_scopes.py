@@ -45,8 +45,8 @@ def main():
     primary = certificate(
         "All eight VPN gateways and every loaded connection/CHILD in native baseline NB at the retained configuration load/runtime interval. Both IKE and ESP select the GCM objective alternatives.",
         ["current:complete-baseline-vpn-modes"],
-        spec + " TDN.Imported.FreshBaselineVPNModes.policies",
-        "TDN.Imported.FreshBaselineVPNModes.complete_loaded_mode_configuration",
+        spec + " TDN.Deployments.FreshBaselineVPNModes.policies",
+        "TDN.Deployments.FreshBaselineVPNModes.complete_loaded_mode_configuration",
         contract, ["Arbitrary later reconfiguration and whole-solution compliance are outside this fixed configuration claim."])
     primary["covered_source_ids"] = []
     for clause in group["clause_progress"]:
@@ -60,18 +60,18 @@ def main():
             primary["covered_source_ids"].append(clause["source_id"])
         clause["formalization_work_remaining"] = ""
         clause["current_scoped_applications"] = [
-            "TDN.Imported.FreshBaselineVPNModes.complete_loaded_mode_configuration",
-            "TDN.Imported.FreshSharedVPNModes.complete_loaded_mode_configuration"]
+            "TDN.Deployments.FreshBaselineVPNModes.complete_loaded_mode_configuration",
+            "TDN.Deployments.FreshSharedVPNModes.complete_loaded_mode_configuration"]
     group["status"] = "established_selected_configuration"
     group["established"] = True
     group["target_specification_established_in_scope"] = True
-    group["general_theorem"] = "TDN.Targets.vpn_mode_policies_from_complete_local_checks"
+    group["general_theorem"] = "TDN.Requirements.vpn_mode_policies_from_complete_local_checks"
     group["completion_certificate"] = primary
     group["scoped_specification_certificates"] = [certificate(
         "All ten VPN gateways and every loaded connection/CHILD in the native four-level shared snapshot. Both IKE and ESP select GCM objective alternatives.",
         ["current:complete-shared-vpn-modes"],
-        spec + " TDN.Imported.FreshSharedVPNModes.policies",
-        "TDN.Imported.FreshSharedVPNModes.complete_loaded_mode_configuration",
+        spec + " TDN.Deployments.FreshSharedVPNModes.policies",
+        "TDN.Deployments.FreshSharedVPNModes.complete_loaded_mode_configuration",
         contract, ["Other deployments and later reconfiguration need their own complete inventory application."])]
     group["remaining_construction_work"] = []
     group["outstanding_assumptions"] = []
@@ -93,8 +93,8 @@ def main():
         "bundles": [{"path": bundle, "manifest_sha256": digest(Path(bundle) / "manifest.json")} for bundle in bundles]}
     physical["scoped_specification_certificates"] = [certificate(
         "Physical separation for the complete selected multiworker security-component inventory, with Inner Firewall unselected.",
-        [key], physical["formal_definition"] + " TDN.Imported.FreshPhysicalPartition.components",
-        "TDN.Imported.FreshPhysicalPartition.captured_role_pairs_are_physically_distinct",
+        [key], physical["formal_definition"] + " TDN.Deployments.FreshPhysicalPartition.components",
+        "TDN.Deployments.FreshPhysicalPartition.captured_role_pairs_are_physically_distinct",
         data["remaining_assumptions"],
         ["Components List qualifiers in narrative passages are separately accounted under RG003 and remain unfulfilled for the custom stack.",
          "The closed physical-separation specification does not establish product approval, OS diversity, facility protection or physical NIC separation."])]

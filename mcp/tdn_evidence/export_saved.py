@@ -22,7 +22,7 @@ def export_saved(directory, destination):
     if destination.exists() and destination.read_bytes() != raw:
         raise ValueError("Existing saved export differs")
     destination.write_bytes(raw)
-    return {"path": str(destination), "sha256": hashlib.sha256(raw).hexdigest(), "type": "TDN.Evidence.Snapshot", "key": "snapshot"}
+    return {"path": str(destination), "sha256": hashlib.sha256(raw).hexdigest(), "type": "TDN.Deployments.Snapshot", "key": "snapshot"}
 
 
 def export_projection(directory, destination, view, execution_supplement=None,
@@ -50,7 +50,7 @@ def export_projection(directory, destination, view, execution_supplement=None,
             raise ValueError("multi_protocol_execution requires saved_execution_supplements for this snapshot; configure its hash-bound processing observations")
         from .parsers.execution import parse_execution
         values = parse_execution(directory, execution_supplement, include_recorded_sa_epochs)
-        values["projectionVersion"] = "native-ipv4-execution-v3-port-mtu"
+        values["projectionVersion"] = "ipsec-forwarding-v3.2-interface-mtu"
     elif view == "bridge_processing":
         from .bridge_processing import project_bridge_processing, VERSION
         values = project_bridge_processing(directory, snapshot)

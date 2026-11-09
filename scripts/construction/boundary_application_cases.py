@@ -14,7 +14,7 @@ def firewall_case(records, owner, entry_name, source, destination, direction):
     payload = [1, 2, 3, 4, 0, 0, 0, 1]
     header = {"source": source, "destination": destination, "protocol": "esp",
               "ingress": "", "egress": "", "sourcePort": 0, "destinationPort": 0,
-              "ipv4HeaderWords": 5, "inboundPolicies": [], "outboundPolicies": [],
+              "ipv4HeaderWords": 5, "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": [],
               "connectionState": "new", "hopLimit": 64, "payloadBytes": None,
               "networkBytes": 28, "ipv4FragmentOffset": None, "ipv6NextHeader": 0,
               "icmpType": 0, "icmpCode": 0, "etherType": None, "connectionId": None}

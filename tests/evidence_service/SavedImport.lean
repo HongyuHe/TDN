@@ -1,24 +1,24 @@
-import TDN.Import.Command
-import TDN.Evidence.Types
-import TDN.Semantics.PacketPolicy
+import TDN.Import.SnapshotLoader
+import TDN.Deployments.SnapshotFactTypes
+import TDN.Models.IpsecAndAclRuleModel
 
 namespace TDN.ImportTests
 
-tdn_data captured : TDN.Evidence.Snapshot
+load_network_records captured : TDN.Deployments.Snapshot
   from "../../data/evidence/v3-baseline.json" ["snapshot"]
 
-tdn_data grayEdges : List (Nat × Nat)
+load_network_records grayEdges : List (Nat × Nat)
   from "../../data/evidence/v3-baseline-topology.json" ["grayEdges"]
-tdn_data grayFirewalls : List Nat
+load_network_records grayFirewalls : List Nat
   from "../../data/evidence/v3-baseline-topology.json" ["grayFirewalls"]
-tdn_data grayRegions : List Nat
+load_network_records grayRegions : List Nat
   from "../../data/evidence/v3-baseline-topology.json" ["grayRegions"]
 
-tdn_data innerForward : List TDN.PacketPolicy.Rule
+load_network_records innerForward : List TDN.PacketPolicy.Rule
   from "../../data/evidence/v3-baseline-packet_filters.json" ["NB_I_A1:filters4:FORWARD"]
 
-lemma saved_inventory_has_sources : TDN.Evidence.HasProvenance captured := by
-  unfold TDN.Evidence.HasProvenance captured
+lemma saved_inventory_has_sources : TDN.Deployments.HasProvenance captured := by
+  unfold TDN.Deployments.HasProvenance captured
   decide
 
 lemma every_nonfirewall_gray_edge_keeps_region :

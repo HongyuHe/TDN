@@ -67,10 +67,10 @@ def parse(cases):
 def generate(data):
     entries = ["(" + str(row["component_id"]) + ', ProvisioningExecutor.worker "experiment-worker")' for row in data["records"]]
     orders = ["(" + ", ".join(map(str, row["orders"])) + ")" for row in data["records"]]
-    return """import TDN.Targets.Provisioning
+    return """import TDN.Requirements.Provisioning
 
-namespace TDN.Imported.FreshProvisioningLocations
-open Targets
+namespace TDN.Deployments.FreshProvisioningLocations
+open Requirements
 
 def observedExecutors : List (Nat × ProvisioningExecutor) := [""" + ", ".join(entries) + """]
 def observedOrder : List (Nat × Nat × Nat) := [""" + ", ".join(orders) + """]
@@ -91,7 +91,7 @@ theorem recorded_worker_generation_does_not_admit_component_request
   exact worker_generation_cannot_supply_component_request generation request "experiment-worker"
     (location.trans (generation_is_external row member)) kind
 
-end TDN.Imported.FreshProvisioningLocations
+end TDN.Deployments.FreshProvisioningLocations
 """
 
 

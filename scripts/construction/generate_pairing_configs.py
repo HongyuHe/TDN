@@ -28,11 +28,11 @@ def render(report, namespace):
         devices.append("{ inputRules := " + render_rules(hooks["INPUT"]) +
                        ", outputRules := " + render_rules(hooks["OUTPUT"]) +
                        ", forwardRules := " + render_rules(hooks["FORWARD"]) +
-                       ", outbound := " + association_list(data["policies"][name]["out"]) +
-                       ", inbound := " + association_list(data["policies"][name]["in"]) +
+                       ", egressPolicies := " + association_list(data["policies"][name]["out"]) +
+                       ", ingressPolicies := " + association_list(data["policies"][name]["in"]) +
                        ", states := " + tuple_list(data["states"][name]) +
                        ", localAddresses := " + lean_list([str(a) for a in addresses]) +
-                       ", recipientDomain := " + ("some 1" if report["devices"][name]["role"] == "host" else "none") + " }")
+                       ", ifaceSecurityDomain := " + ("some 1" if report["devices"][name]["role"] == "host" else "none") + " }")
     for key in port_ids:
         device, name = key.split(":")
         role = report["devices"][device]["role"]
@@ -50,7 +50,7 @@ def render(report, namespace):
             require(device == "BF", "Unclassified role stack")
             stack = [2, 1]
         ports.append("{ owner := " + str(device_ids[device]) + ", name := " + quoted(name) +
-                     ", stack := " + lean_list([str(tag) for tag in stack]) + ", payloadOrigin := " + ("true" if report["devices"][device]["role"] == "host" else "false") + " }")
+                     ", stack := " + lean_list([str(tag) for tag in stack]) + ", canOriginateTraffic := " + ("true" if report["devices"][device]["role"] == "host" else "false") + " }")
     for row in data["routes"]:
         for key, index in port_ids.items():
             if key.startswith(row["device"] + ":"):
@@ -83,18 +83,18 @@ def render(report, namespace):
     black = sorted({port_ids[endpoint] for link in report["architecture_links"] if link["zone"] == "black"
                     for endpoint in link["endpoints"]})
     return "\n".join([
-        "namespace TDN.Imported." + namespace,
-        "open MultiProtocolExecution LayeredFrame", "set_option maxRecDepth 1000000",
+        "namespace TDN.Deployments." + namespace,
+        "open MultiProtocolForwarding LayeredFrame", "set_option maxRecDepth 1000000",
         "set_option maxHeartbeats 0",
-        "def devices : List Execution.DeviceData := " + lean_list(devices),
-        "def ifaces : List Execution.IfaceData := " + lean_list(ports),
-        "def routes : List Execution.Route := " + tuple_list(routes),
+        "def devices : List DataPlaneForwarding.DeviceData := " + lean_list(devices),
+        "def ifaces : List DataPlaneForwarding.IfaceData := " + lean_list(ports),
+        "def routes : List DataPlaneForwarding.FibRoute := " + tuple_list(routes),
         "def links : List (Nat × Nat) := " + tuple_list(links),
         "def bridges : List (Nat × Nat) := " + tuple_list(bridges),
         "def macIfaces : List MACIface := " + lean_list(macs),
         "def carriers : List CarrierIface := " + lean_list(carriers),
-        "def config : Config := MultiProtocolExecution.dataPlaneConfigFromRecords devices ifaces routes links bridges macIfaces carriers",
-        "def expectedEncapStack := Execution.expectedEncapStackFromRecords ifaces",
+        "def config : Config := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers",
+        "def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords ifaces",
         "def redSources : List Nat := " + lean_list([str(n) for n in sources]),
         "def grayIfaces : List Nat := " + lean_list([str(n) for n in gray]),
         "def blackIfaces : List Nat := " + lean_list([str(n) for n in black]), "",
@@ -113,11 +113,11 @@ def render(report, namespace):
         "  refine ⟨association, fun body => ⟨installed, ?_⟩⟩",
         "  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt",
         "    association.keyGeneration body", "",
-        "theorem payload_preserved_by_every_mixed_execution {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}",
+        "theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}",
         "    (run : (lts config).MTr start actions finish) :",
         "    finish.frame.payload = start.frame.payload ∧ finish.frame.originDomain = start.frame.originDomain :=",
-        "  all_executions_preserve_payload config run",
-        "end TDN.Imported." + namespace, ""]), port_ids
+        "  all_traces_preserve_payload config run",
+        "end TDN.Deployments." + namespace, ""]), port_ids
 
 
 if __name__ == "__main__":
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--reports", type=Path, required=True)
     args = parser.parse_args()
-    output = ["import TDN.Targets.MultiProtocolPackets", "import TDN.Semantics.FiniteMultiProtocol", ""]
+    output = ["import TDN.Requirements.MultiProtocolPacketDefinitions", "import TDN.Models.TableDrivenMultiProtocolDataPlane", ""]
     args.reports.mkdir(parents=True, exist_ok=True)
     for path in sorted(args.bundles.iterdir()):
         if not path.is_dir():

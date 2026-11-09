@@ -3,14 +3,14 @@ from pathlib import Path
 
 
 def generate():
-    text = """import TDN.Targets.ByteDomainDelivery
-import TDN.Evidence.FreshSharedIsolation
-import TDN.Evidence.FreshBaselineIsolation
+    text = """import TDN.Requirements.ByteLevelEnclaveIsolation
+import TDN.Deployments.ProfileShared_EnclaveIsolation
+import TDN.Deployments.ProfileBaseline_EnclaveIsolation
 
 """
     for name, count in [("Shared", 4), ("Baseline", 2)]:
-        namespace = "Fresh" + name + "Isolation"
-        text += "namespace TDN.Imported." + namespace + "\nopen Execution\n\n"
+        namespace = "Profile" + name + "_EnclaveIsolation"
+        text += "namespace TDN.Deployments." + namespace + "\nopen DataPlaneForwarding\n\n"
         text += "def byteLayout : Nat → Nat → List Nat\n"
         text += "".join("  | " + str(d) + " => domainLayout" + str(d) + "\n" for d in range(1, count + 1))
         text += "  | _ => domainLayout1\n\n"
@@ -26,42 +26,40 @@ import TDN.Evidence.FreshBaselineIsolation
         text += "".join("  · exact local_domain_conditions" + str(d) + "\n" for d in range(1, count + 1))
         text += """
 lemma all_byte_source_checks : ∀ d ∈ domains, ∀ iface ∈ redSources,
-    config.recipientDomain iface = some d →
-    byteLayout d iface = [] ∧ config.payloadOrigin iface ∧ byteAllowed d iface := by
+    config.ifaceSecurityDomain iface = some d →
+    byteLayout d iface = [] ∧ config.canOriginateTraffic iface ∧ byteAllowed d iface := by
 """ + cases
         text += "".join("  · exact source_checks" + str(d) + "\n" for d in range(1, count + 1))
         text += """
 lemma all_byte_recipient_checks : ∀ d ∈ domains, ∀ iface, byteAllowed d iface →
-    config.recipientDomain iface = none ∨ config.recipientDomain iface = some d := by
+    config.ifaceSecurityDomain iface = none ∨ config.ifaceSecurityDomain iface = some d := by
 """ + cases
         text += "".join("  · exact recipient_checks" + str(d) + "\n" for d in range(1, count + 1))
         text += """
 lemma all_byte_source_domains : ∀ iface ∈ redSources, ∀ d,
-    config.recipientDomain iface = some d → d ∈ domains := by
+    config.ifaceSecurityDomain iface = some d → d ∈ domains := by
   intro iface member d assigned
   have present := source_domains_checked iface member
   rw [assigned] at present
   simpa using present
 
-/-- Every source byte retains its full domain label through arbitrary simultaneous
-packet execution, splitting and intermediate plaintext reassembly. Actual kernel
-reassembly/hook and authenticated-envelope correspondence remain explicit. -/
+
 theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
-    {after : List (ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action Execution.Action)}
-    (run : (ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
+    {after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
+    {actions : List (ByteFlows.Action DataPlaneForwarding.Action)}
+    (run : (ByteFlows.lts (lts config) (Requirements.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
-    (packet : ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (packet : ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : packet ∈ after) (delivered : packet.state.datapathStage = .delivered)
-    (recipientDomain : Nat) (recipient : config.recipientDomain packet.state.iface = some recipientDomain) :
-    ∀ byte ∈ packet.bytes, fullLevel byte.domain = fullLevel recipientDomain := by
-  have checked := Targets.assembled_packet_delivery_preserves_each_byte_domain
+    (destinationDomain : Nat) (recipient : config.ifaceSecurityDomain packet.state.iface = some destinationDomain) :
+    ∀ byte ∈ packet.bytes, fullLevel byte.domain = fullLevel destinationDomain := by
+  have checked := Requirements.assembled_packet_delivery_preserves_each_byte_domain
     config redSources domains byteLayout byteAllowed all_byte_domain_conditions all_byte_source_domains
-    all_byte_source_checks all_byte_recipient_checks run packet present delivered recipientDomain recipient
+    all_byte_source_checks all_byte_recipient_checks run packet present delivered destinationDomain recipient
   exact fun byte member => congrArg fullLevel (checked byte member)
 
 """
-        base = "TDN.Imported.Fresh" + name + "Execution"
+        base = "TDN.Deployments.Profile" + name + "_DataPlane"
         text += f"""
 lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ {base}.blackIfaces,
     byteLayout d iface = [2, d + 10] := by
@@ -73,23 +71,23 @@ lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ {base}.blackIface
 """
         text += f"""
 theorem every_assembled_black_byte_has_both_layers {{Byte : Type}}
-    {{after : List (ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}}
-    {{actions : List (ByteFlows.Action Execution.Action)}}
-    (run : (ByteFlows.lts (lts config) (Targets.RedByteOrigin config redSources)
+    {{after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}}
+    {{actions : List (ByteFlows.Action DataPlaneForwarding.Action)}}
+    (run : (ByteFlows.lts (lts config) (Requirements.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
-    (packet : ByteFlows.Carrier Execution.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
-    (present : packet ∈ after) (ready : packet.state.datapathStage = .ready)
+    (packet : ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (present : packet ∈ after) (ready : packet.state.datapathStage = .egressReady)
     (black : packet.state.iface ∈ {base}.blackIfaces) :
-    ∀ byte ∈ packet.bytes, packet.state.frame.tags = [2, byte.domain + 10] :=
-  Targets.assembled_packet_at_black_keeps_each_byte_protected config redSources domains
+    ∀ byte ∈ packet.bytes, packet.state.frame.encapLayerIds = [2, byte.domain + 10] :=
+  Requirements.assembled_packet_at_black_keeps_each_byte_protected config redSources domains
     {base}.blackIfaces byteLayout byteAllowed (fun d => d + 10) 2
     all_byte_domain_conditions all_byte_source_domains all_byte_source_checks
     all_byte_black_checks run packet present ready black
 
 """
-        text += "end TDN.Imported." + namespace + "\n\n"
+        text += "end TDN.Deployments." + namespace + "\n\n"
     return text
 
 
 if __name__ == "__main__":
-    Path("TDN/Evidence/FreshByteDomains.lean").write_text(generate())
+    Path("TDN/Deployments/SnapshotByteEnclaveIsolation.lean").write_text(generate())

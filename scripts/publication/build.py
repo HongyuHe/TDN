@@ -11,6 +11,7 @@ def main():
     (ROOT / '.lavish/theorem-hierarchy').mkdir(parents=True, exist_ok=True)
     commands = [
         ['lake', 'build', 'TDN'],
+        [sys.executable, 'scripts/publication/update_model_catalog.py'],
         ['lake', 'env', 'lean', 'scripts/publication/hierarchy/ExportDependencies.lean'],
         [sys.executable, 'scripts/publication/hierarchy/build_proof_map.py'],
         [sys.executable, 'scripts/publication/build_hierarchy.py'],

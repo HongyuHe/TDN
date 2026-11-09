@@ -104,7 +104,7 @@ def import_case(root):
 def generate(roots,output,report_path):
     cases=[import_case(p.parent) for root in roots for p in sorted(root.glob("*/manifest.json"))]
     require(cases and len({c["id"] for c in cases})==len(cases),"empty/duplicate mechanism cases")
-    lines=["import TDN.Evidence.MechanismTypes","namespace TDN.Imported.Mechanisms","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments.MechanismTypes","namespace TDN.Deployments.Mechanisms","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
     values=[]
     for case in cases:
         family="none" if case["families"] is None else "some ("+", ".join(map(str,case["families"]))+")"
@@ -120,7 +120,7 @@ def generate(roots,output,report_path):
     values=["⟨"+", ".join([quoted(s["case_id"]),quoted(s["device"]),quoted(s["phase"]),quoted(s["interface"]),quoted(s["cipher"]),str(s["protect"]).lower(),str(s["encrypt"]).lower(),quoted(s["validation"]),str(s["replay_protect"]).lower(),str(s["replay_window"])])+"⟩" for s in settings]
     lines.append("def macsecSettings : List Evidence.MACsecChannelSetting := "+lean_list(values))
     lines.append("theorem recorded_macsec_selected_flags : Evidence.MACsecSelectedFlags macsecSettings := by unfold Evidence.MACsecSelectedFlags macsecSettings; decide")
-    lines.append("end TDN.Imported.Mechanisms")
+    lines.append("end TDN.Deployments.Mechanisms")
     output.write_text("\n\n".join(lines)+"\n")
     report={"case_count":len(cases),"probe_count":sum(len(c["probes"]) for c in cases),"macsec_setting_count":len(settings),"cases":cases,"full_groups_established":[],"authentication_claim":False,"universal_forwarding_claim":False}
     report_path.write_text(json.dumps(report,indent=2)+"\n")

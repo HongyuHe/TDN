@@ -13,7 +13,7 @@ The fresh development retains all 76 original targets and every indexed source c
 
 ## Established group scopes
 
-RG-022 checks every proposal in complete loaded IKE connection inventories. The property preserves IKEv2 and the permitted CBC/GCM alternatives. Native FRR/OVS infrastructure and historical Linux profiles have separate instances. Public files, exact-file load confirmations and runtime connection identities are bound by hashes. The loader/runtime correspondence remains an explicit assumption because the runtime interface does not export every proposal suite.
+RG-022 checks every proposal in complete loaded IKE connection inventories. The property preserves IKEv2 and the permitted CBC/GCM alternatives. Device FRR/OVS infrastructure and historical Linux profiles have separate instances. Public files, exact-file load confirmations and runtime connection identities are bound by hashes. The loader/runtime correspondence remains an explicit assumption because the runtime interface does not export every proposal suite.
 
 RG-034 checks the declared emulated-Public-Internet branch in one historical topology and five native profiles. Every modeled Outer-to-Black path traverses an Outer Firewall, with oriented inside/outside placement and an explicit Gray path to a required Gray Firewall. The native declaration binds exact snapshot and spec hashes. OVS UUID memberships, raw interface identity and FRR control/forwarding namespace correspondence are checked before graph construction. The graph conservatively connects supported switch ifaces and contracts each device. The graph proof does not certify OpenFlow execution, physical independence, live Internet attachment or future state.
 
@@ -25,7 +25,7 @@ Every establishment in `theorem_register.json` names its precise theorem, platfo
 
 The library proves generic first-match/default-deny arguments, arbitrary finite path separators, layer-preservation contracts, boundary arguments and bounded deadline arithmetic. Concrete FORWARD certificates constrain accepted packets to directional tunnel-policy metadata. The full Linux forwarding/cryptographic refinement needed to lift those certificates to universal nested encryption remains unproved. A successful sample probe cannot fill that gap.
 
-Five native profiles provide exact declared security-level and logical-network bindings, 148 directed Red-host probe outcomes, and observed Inner peer-level facts. Same classification words do not collapse dissemination controls or different logical Red networks. The four-level profiles include Top Secret, Secret US-only and Secret Coalition, plus a separate Unclassified domain. Native independent management contributes 28 TLS application attempts across 14 managed components. Optional management remains separately scoped.
+Five native profiles provide exact declared security-level and logical-network bindings, 148 directed Red-host probe outcomes, and observed Inner peer-level facts. Same classification words do not collapse dissemination controls or different logical Red networks. The four-level profiles include Top Secret, Secret US-only and Secret Coalition, plus a separate Unclassified domain. Device independent management contributes 28 TLS application attempts across 14 managed components. Optional management remains separately scoped.
 
 The supplemental suite includes eight address-family combinations, five encryption/encapsulation pairings, routing and management experiments, three CA arrangements, HTTP CRL/OCSP status checks, and host/KVM administration trials. Manual-SA mechanism runs retain test-key and authentication limitations. Good/revoked HTTP status checks concern endpoint behavior; complete VPN revocation enforcement remains unproved. HTTP exception proofs bound two parsed default-deny bridge chains, while negative curl timeouts remain non-causal observations.
 
@@ -59,7 +59,7 @@ reading="""# Construction reading order
 1. Read `CONSTRUCTION_REPORT.md` for scoped group results, partial clauses, conditional arguments and finite observations.
 2. Read `theorem_register.json` for all 76 original statements, source passages, alternatives, conditions, per-clause progress, establishment scopes and remaining work. Nine encompassing propositions are encoded; 67 remain unencoded as whole targets.
 3. Read `coverage-review.json` for all 57 representative-case dispositions and their current evidence associations. Read `evidence_requests.json` for the 19 scoped outcomes and rejected evidence.
-4. Read `architecture.md` and `EVOLUTION.md`, then inspect `TDN/Targets`, `TDN/Semantics` and generated `TDN/Evidence` modules.
+4. Read `architecture.md` and `EVOLUTION.md`, then inspect `TDN/Requirements`, `TDN/Models` and generated `TDN/Deployments` modules.
 5. Inspect each claim's import report and manifest/observation dependencies, followed by the completed validation JSON and `validated-source-manifest.json`.
 
 ## Reproduction
@@ -83,7 +83,7 @@ The current native keys are native_baseline, native_same_level, native_shared, n
 
 ## Assumptions and foundations
 
-Read assumptions at the exact theorem scope. Native OVS/FRR correspondence supports conservative topology statements. It does not prove forwarding-program execution. Source labels and Public-Internet intent are declared, and physical/organizational authority is external. The full concrete layer/refinement obligation remains open. Optional management never gates management-free data-path results.
+Read assumptions at the exact theorem scope. Device OVS/FRR correspondence supports conservative topology statements. It does not prove forwarding-program execution. Source labels and Public-Internet intent are declared, and physical/organizational authority is external. The full concrete layer/refinement obligation remains open. Optional management never gates management-free data-path results.
 
 Lean is pinned to leanprover/lean4:v4.34.1. Mathlib is pinned to d13f23b723b8a846827a245b89c10fc7d3f11612 with transitive dependencies in lake-manifest.json. The library reuses Mathlib reflexive-transitive closure and induction, finite sets, list reasoning, finite types and decision procedures. CSLib supplied no needed compatible component for the implemented network-specific arguments; the development avoids an unused dependency and makes no exhaustive claim about CSLib's available results.
 """

@@ -121,7 +121,7 @@ def associations(text):
             sci = int(channel[2], 16)
         association = re.match(r"\s+([0-3]): PN ([0-9]+), state (on|off), key ([0-9a-f]{32})$", line)
         if association:
-            require(direction is not None, "Association has no channel")
+            require(direction is not None, "IpsecPolicy has no channel")
             records.append({"direction": direction, "sci": sci, "an": int(association[1]),
                             "pn": int(association[2]), "active": association[3] == "on",
                             "publicKeyIdentifier": association[4]})

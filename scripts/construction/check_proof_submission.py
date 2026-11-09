@@ -84,7 +84,7 @@ def main():
             module = declaration.get("module")
             if module is None:
                 failures.append(rg_id + ": missing defining module for " + dependency)
-            elif module.startswith("TDN.Evidence"):
+            elif module.startswith("TDN.Deployments"):
                 evidence_dependencies.append({"name": dependency, "module": module})
             pending.extend(declaration["type_dependencies"] + declaration["body_dependencies"])
         if evidence_dependencies:

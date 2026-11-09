@@ -107,10 +107,10 @@ def generate(data):
     replayWindow := 0, feasibleReplayWindow := fun n => n < 2 ^ 32,
     confidentialityOffset := 0, mustSecure := true,
     dataPort := ⟨true, true, true, 0⟩ }""")
-    return """import TDN.Targets.Protocol
+    return """import TDN.Requirements.Protocol
 
-namespace TDN.Imported.FinalMACsecProtection
-open Targets
+namespace TDN.Deployments.FinalMACsecProtection
+open Requirements
 def devices : List MACsecProtection := [
 """ + ",\n".join(rows) + """
 ]
@@ -124,7 +124,7 @@ theorem selected_protection_configuration : msc_macsec_protection_parameters dev
 
 lemma runtime_inventory_nonempty : devices.length = """ + str(len(rows)) + """ := by decide
 
-end TDN.Imported.FinalMACsecProtection
+end TDN.Deployments.FinalMACsecProtection
 """
 
 

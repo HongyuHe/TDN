@@ -146,7 +146,7 @@ def generate(output,report_path):
     events,records,digest=read_bundle(source_path("auth_negative"),"csfc-auth-negative/v1")
     trial=negative_trial(records)
     trial.update({"bundle":str(source_path("auth_negative")),"manifest_sha256":digest})
-    lines=["import TDN.Evidence.SupplementalTypes","namespace TDN.Imported.Authentication","set_option maxRecDepth 100000"]
+    lines=["import TDN.Deployments.SupplementalTypes","namespace TDN.Deployments.Authentication","set_option maxRecDepth 100000"]
     lines.append("def credentials : List (String × String × String × String) := "+lean_list(["("+", ".join(quoted(d[k]) for k in ["device","curve","local_constraint","remote_constraint"])+")" for d in after["devices"]]))
     lines.append('theorem observed_credentials_and_configured_hash_constraints : credentials ≠ [] ∧ ∀ c ∈ credentials, c.2.1 = "secp384r1" ∧ c.2.2.1 = "ecdsa-384-sha384" ∧ c.2.2.2 = "ecdsa-384-sha384" := by unfold credentials; decide')
     lines.append("def selectedSignatures : List (String × String) := "+lean_list(["("+quoted(e["local_signature"])+", "+quoted(e["remote_signature"])+")" for e in after["exchanges"]]))
@@ -155,7 +155,7 @@ def generate(output,report_path):
     lines.append('theorem observed_capabilities_distinguish_request_and_response : advertisedCapabilities ≠ [] ∧ ∀ a ∈ advertisedCapabilities, a.2 = (if a.1 then [2,3,4,5] else [3]) := by unfold advertisedCapabilities; decide')
     lines.append("def trial : String × String × String × Nat := ("+", ".join([quoted(trial["negative_signature"]),quoted(trial["rejection_cause"]),quoted(trial["restored_signature"]),str(trial["restored_replies"])])+")")
     lines.append('theorem recorded_sha256_refusal_and_sha384_recovery : trial.1 = "ECDSA_WITH_SHA256_DER" ∧ trial.2.1 = "signature scheme not acceptable" ∧ trial.2.2.1 = "ECDSA_WITH_SHA384_DER" ∧ 0 < trial.2.2.2 := by unfold trial; decide')
-    lines.append("end TDN.Imported.Authentication")
+    lines.append("end TDN.Deployments.Authentication")
     output.write_text("\n\n".join(lines)+"\n")
     report_path.write_text(json.dumps({"before":before,"after":after,"negative_trial":trial,"scope":"Partial RG-017/019/020 algorithm/authentication contributions; no complete CNSA profile or all-curve enforcement claim","assumptions":["Truth and completeness of supplied public records","Exact-file loader association; VICI does not expose full signature constraints","Negative tail-log event association within the isolated test interval"]},indent=2)+"\n")
     print(json.dumps({"credentials":len(after["devices"]),"selected_exchanges":len(after["exchanges"]),"negative_trial":"cause_checked"}))

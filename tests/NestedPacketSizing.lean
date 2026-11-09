@@ -1,6 +1,6 @@
-import TDN.Targets.NestedPacketSizing
+import TDN.Requirements.DoubleEncapMtuCalculation
 
-open TDN.Targets.NestedSizing
+open TDN.Requirements.NestedSizing
 
 def esp := TDN.PacketLength.alignedWireLength 4 2 52
 
@@ -18,7 +18,7 @@ example : ∀ size, size ≤ 1100 → lengthAt esp esp .gray size ≤ 1200 := by
     (TDN.PacketLength.aligned_wire_length_monotone 4 2 52) .gray bound).trans (by decide)
 
 /-- The encompassing requirement uses the length present at each actual stage. -/
-def stagedInner : TDN.Targets.PacketSizing where
+def stagedInner : TDN.Requirements.PacketSizing where
   interface := 0
   role := .innerExternal
   family := .ipv4
@@ -33,8 +33,8 @@ def stagedInner : TDN.Targets.PacketSizing where
   outerEncodedSize := fun n => esp (esp n)
   blackEncodedSize := fun n => esp (esp n)
 
-example : TDN.Targets.FitsSelectedPath stagedInner := by
-  apply TDN.Targets.packet_sizes_fit_from_monotone_encoding
+example : TDN.Requirements.FitsSelectedPath stagedInner := by
+  apply TDN.Requirements.packet_sizes_fit_from_monotone_encoding
   · exact TDN.PacketLength.aligned_wire_length_monotone 4 2 52
   · exact fun _ _ h => TDN.PacketLength.aligned_wire_length_monotone 4 2 52
       (TDN.PacketLength.aligned_wire_length_monotone 4 2 52 h)

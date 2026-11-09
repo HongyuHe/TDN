@@ -2,6 +2,7 @@
 import argparse
 import json
 from pathlib import Path
+from network_names import tunnel_matrix_module
 from generate_mixed_witness import render
 from validate_evidence import require
 
@@ -30,15 +31,15 @@ def main():
                             row["payload_sha256"] == observation["expected_payload_sha256"]
                             for row in observation["matches"]), "Opaque payload control differs")
                     tags = [protocol * 65536 + tci for protocol, tci in observation["expected_tags"]]
-                module = "TDN.Evidence.FreshBridgedMACsecChecks" if ethernet else "TDN.Evidence.FreshPairingStackChecks"
+                module = "TDN.Deployments.SnapshotBridgedMacsecChecks" if ethernet else "TDN.Deployments.TunnelMatrix_EncapStackChecks"
                 content, trace = render(report, module, ethernet, tags, reverse, label)
-                name = "Fresh" + report["namespace"] + label
-                Path("TDN/Evidence/" + name + ".lean").write_text(content)
+                name = tunnel_matrix_module(report["namespace"], label)
+                Path("TDN/Deployments/" + name + ".lean").write_text(content)
                 trace["observation"] = observation
                 (args.traces / (name + ".json")).write_text(json.dumps(trace, indent=2) + "\n")
-                modules.append("TDN.Evidence." + name)
+                modules.append("TDN.Deployments." + name)
                 print(name, len(trace["actions"]))
-    Path("TDN/Evidence/FreshMixedDeliverySuite.lean").write_text(
+    Path("TDN/Deployments/SnapshotMixedDeliverySuite.lean").write_text(
         "\n".join("import " + module for module in modules) + "\n")
 
 

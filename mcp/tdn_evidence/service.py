@@ -52,7 +52,7 @@ class EvidenceService:
         if set(self.settings.saved_experiments) & set(self.settings.saved_snapshots):
             raise ValueError("Saved experiment and snapshot identifiers must be distinct")
         if set(self.settings.saved_execution_supplements) - set(self.settings.saved_snapshots):
-            raise ValueError("Execution supplement refers to an unknown saved snapshot")
+            raise ValueError("DataPlaneForwarding supplement refers to an unknown saved snapshot")
         if set(self.settings.execution_epoch_union) - set(self.settings.saved_execution_supplements):
             raise ValueError("An execution epoch union requires a configured supplement")
         for module in self.settings.adapter_modules:

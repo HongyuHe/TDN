@@ -31,22 +31,22 @@ def generate(data, namespace):
         entries.append("⟨" + quoted(row["device"] + "/" + row["connection"]) + ", " +
                        lean_list([str(v) for v in row["ike_versions"]]) + ", " +
                        lean_list(["." + mode for mode in row["ike_modes"]]) + ", " + esp + "⟩")
-    return """import TDN.Targets.Protocol
+    return """import TDN.Requirements.Protocol
 
-namespace TDN.Imported.""" + namespace + """
+namespace TDN.Deployments.""" + namespace + """
 
-def policies : List Targets.VPNModePolicy := """ + lean_list(entries) + """
+def policies : List Requirements.VPNModePolicy := """ + lean_list(entries) + """
 
 lemma nonempty_gateway_inventory : policies ≠ [] := by decide
 
 theorem complete_loaded_mode_configuration :
-    Targets.msc_ike_version_and_encryption_modes policies := by
-  apply Targets.vpn_mode_policies_from_complete_local_checks
+    Requirements.msc_ike_version_and_encryption_modes policies := by
+  apply Requirements.vpn_mode_policies_from_complete_local_checks
   · decide
   · decide
   · decide
 
-end TDN.Imported.""" + namespace + "\n"
+end TDN.Deployments.""" + namespace + "\n"
 
 
 def main():

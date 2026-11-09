@@ -182,10 +182,10 @@ def parse(base):
 def generate(data):
     def entries(rows):
         return "[" + ", ".join("⟨" + ", ".join([str(row["offset"]), str(row["next"]), str(row["bytes"]), json.dumps(row["sha256"])]) + "⟩" for row in rows) + "]"
-    return """import TDN.Targets.AuditOffload
+    return """import TDN.Requirements.AuditOffload
 
-namespace TDN.Imported.FreshAuditOffload
-open OffloadJournal Targets
+namespace TDN.Deployments.FreshAuditOffload
+open OffloadJournal Requirements
 
 def sourceBytes : Nat := """ + str(data["source_bytes"]) + """
 def beforeRestart : List Batch := """ + entries(data["before"]["records"]) + """
@@ -204,7 +204,7 @@ theorem observed_service_restart_keeps_copy : RecordedAuditCopy sourceBytes afte
   observed_restart_preserves_audit_copy sourceBytes beforeRestart afterRestart
     all_recorded_source_positions_copied local_restart_identity
 
-end TDN.Imported.FreshAuditOffload
+end TDN.Deployments.FreshAuditOffload
 """
 
 

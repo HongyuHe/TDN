@@ -83,9 +83,9 @@ def generate(report):
         entries.append("{ name := " + quoted(row["device"]) + ", family := " + str(row["family"]) +
                        ", earlierRules := " + render_rules(row["earlier_rules"]) +
                        ", guards := [" + rules + "] }")
-    return """import TDN.Targets.Operations
+    return """import TDN.Requirements.Operations
 
-namespace TDN.Imported.FreshDNSHardening
+namespace TDN.Deployments.FreshDNSHardening
 open PacketPolicy
 
 structure DNSDevice where
@@ -114,23 +114,23 @@ lemma ipv6_has_no_earlier_rules : ∀ device ∈ devices, device.family = 6 → 
 
 lemma guarded_dns_is_denied (device : DNSDevice) (member : device ∈ devices)
     (suffix : List (Filter.Rule Packet)) (fallback : Filter.Verdict)
-    (packet : Packet) (dns : Targets.ConventionalDNS packet) :
+    (packet : Packet) (dns : Requirements.ConventionalDNS packet) :
     Filter.evaluate (device.guards.map Rule.toFilter ++ suffix) fallback packet = .deny := by
-  apply Targets.dns_egress_disabled_of_deny_prefix
+  apply Requirements.dns_egress_disabled_of_deny_prefix
   · rw [all_prefixes device member]
     simp
   · intro candidate request
     rw [all_prefixes device member]
     rcases request with ⟨iface, protocol | protocol⟩
     · refine ⟨{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, by simp, ?_⟩
-      simp [Rule.toFilter, Atom.holds, iface, protocol]
+      simp [Rule.toFilter, MatchCondition.matchesPacket, iface, protocol]
     · refine ⟨{ atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }, by simp, ?_⟩
-      simp [Rule.toFilter, Atom.holds, iface, protocol]
+      simp [Rule.toFilter, MatchCondition.matchesPacket, iface, protocol]
   · exact dns
 
 theorem every_new_conventional_dns_request_is_denied (device : DNSDevice)
     (member : device ∈ devices) (suffix : List (Filter.Rule Packet))
-    (fallback : Filter.Verdict) (packet : Packet) (dns : Targets.ConventionalDNS packet)
+    (fallback : Filter.Verdict) (packet : Packet) (dns : Requirements.ConventionalDNS packet)
     (newRequest : packet.connectionState = "NEW") :
     Filter.evaluate (device.earlierRules.map Rule.toFilter ++
       (device.guards.map Rule.toFilter ++ suffix)) fallback packet = .deny := by
@@ -142,18 +142,18 @@ theorem every_new_conventional_dns_request_is_denied (device : DNSDevice)
     | false => rfl
     | true =>
       have state := PacketPolicy.matching_atom equal (earlier_state_guards device member original listed)
-      simp [Atom.holds, newRequest] at state
+      simp [MatchCondition.matchesPacket, newRequest] at state
 
 theorem every_ipv6_conventional_dns_packet_is_denied (device : DNSDevice)
     (member : device ∈ devices) (ipv6 : device.family = 6)
     (suffix : List (Filter.Rule Packet)) (fallback : Filter.Verdict)
-    (packet : Packet) (dns : Targets.ConventionalDNS packet) :
+    (packet : Packet) (dns : Requirements.ConventionalDNS packet) :
     Filter.evaluate (device.earlierRules.map Rule.toFilter ++
       (device.guards.map Rule.toFilter ++ suffix)) fallback packet = .deny := by
   rw [ipv6_has_no_earlier_rules device member ipv6]
   exact guarded_dns_is_denied device member suffix fallback packet dns
 
-end TDN.Imported.FreshDNSHardening
+end TDN.Deployments.FreshDNSHardening
 """
 
 

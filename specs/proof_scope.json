@@ -79,8 +79,8 @@
       "boundary": "The current model proof needs its implementation assumptions. It does not establish cryptographic secrecy by itself.",
       "clause": "Ordered Inner and Outer encryption for protected Red payload reaching Black in the selected native model.",
       "source_line": 478,
-      "general": "TDN.Targets.every_black_byte_has_ordered_encryption_path",
-      "application": "TDN.Imported.FreshSharedIsolation.every_assembled_black_byte_has_inner_before_outer",
+      "general": "TDN.Requirements.every_black_byte_has_ordered_encryption_path",
+      "application": "TDN.Deployments.ProfileShared_EnclaveIsolation.every_assembled_black_byte_has_inner_before_outer",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -92,8 +92,8 @@
       "boundary": "Connect addresses, routing, filtering, cryptographic actions, and recipient ports. Retain actual delivery tests as checks on the model.",
       "clause": "Plaintext delivery excludes different security-level Red endpoints in the selected native model.",
       "source_line": 603,
-      "general": "TDN.Targets.delivered_domain_from_local_checks",
-      "application": "TDN.Imported.FreshSharedIsolation.snapshot_RG008_full_label_delivery",
+      "general": "TDN.Requirements.delivered_domain_from_local_checks",
+      "application": "TDN.Deployments.ProfileShared_EnclaveIsolation.snapshot_RG008_full_label_delivery",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -138,8 +138,8 @@
       "boundary": "Use direct checks for CA/CAK separation. Do not infer human or management separation from credential names.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 907,
-      "general": "TDN.Targets.Complete.key_and_management_separation_from_scoped_inventory",
-      "application": "TDN.Imported.CompleteAuthenticationIsolation.baseline_configured_pair_model_RG012",
+      "general": "TDN.Requirements.Msc.key_and_management_separation_from_scoped_inventory",
+      "application": "TDN.Deployments.SnapshotProof_PkiIsolation.baseline_configured_pair_model_RG012",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -152,8 +152,8 @@
       "boundary": "An exhaustive graph algorithm is also rigorous. Proving that the checked conditions imply the all-path claim once supports TDN's reusable certificate design.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 1020,
-      "general": "TDN.Targets.Complete.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms",
-      "application": "TDN.Imported.CompleteGrayFirewall.complete_model_RG013",
+      "general": "TDN.Requirements.Msc.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms",
+      "application": "TDN.Deployments.SnapshotProof_GrayFirewall.complete_model_RG013",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -166,8 +166,8 @@
       "boundary": "Use the documented interpretation for the contradictory same-level wording. The assessment does not resolve the source conflict anew.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 1174,
-      "general": "TDN.Targets.Complete.gray_addressing_from_ip_and_link_endpoint_rules",
-      "application": "TDN.Imported.CompleteAddressing.full_routed_RG014",
+      "general": "TDN.Requirements.Msc.gray_addressing_from_ip_and_link_endpoint_rules",
+      "application": "TDN.Deployments.SnapshotProof_Addressing.full_routed_RG014",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -180,8 +180,8 @@
       "boundary": "Treat standalone-device inventory and approval duties as separate checks or external records.",
       "clause": "Selected Inner MACsec carrier clause: the actual path adds L2TP around the existing MACsec body before Outer ESP.",
       "source_line": 1218,
-      "general": "TDN.Targets.carrier_step_wraps_the_exact_input_body",
-      "application": "TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN0.actual_carrier_precedes_outer_encryption",
+      "general": "TDN.Requirements.carrier_step_wraps_the_exact_input_body",
+      "application": "TDN.Deployments.PairingInnerMacsecOuterIpsec.ForwardVLAN0.actual_carrier_precedes_outer_encryption",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -248,8 +248,8 @@
       "boundary": "The current application concerns the modeled private-key endpoint. Other interfaces, path normalization, and indirect disclosure still need coverage before claiming complete key confinement.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 1846,
-      "general": "TDN.Targets.Complete.vpn_private_key_confinement_from_interface_steps",
-      "application": "TDN.Imported.KeyInterfaceChecks.useful_run",
+      "general": "TDN.Requirements.Msc.vpn_private_key_confinement_from_interface_steps",
+      "application": "TDN.Deployments.KeyStoreConfinementChecks.useful_run",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -285,7 +285,7 @@
       "clause": "p020:u008.s003 authenticated-exchange origin of EAP-derived CAKs.",
       "source_line": 1984,
       "general": "TDN.KeySources.executions_have_only_authenticated_sources",
-      "application": "TDN.Imported.FinalMACsecKeySources.eap_ifaces_have_no_pre_shared_fallback",
+      "application": "TDN.Deployments.SnapshotMacsecKeySources.eap_ifaces_have_no_pre_shared_fallback",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -319,8 +319,8 @@
       "boundary": "Check CKN length and key-server values directly. Approved key generation and central-site policy need their own evidence.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 2234,
-      "general": "TDN.Targets.Complete.macsec_key_generation_from_checked_records",
-      "application": "TDN.Imported.CompleteMACsecKeyGeneration.complete_RG027_under_named_approvals",
+      "general": "TDN.Requirements.Msc.macsec_key_generation_from_checked_records",
+      "application": "TDN.Deployments.SnapshotProof_MacsecKeyGen.complete_RG027_under_named_approvals",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -334,7 +334,7 @@
       "clause": "MD10/12/16: controlled-port data emissions are encrypted with zero confidentiality offset.",
       "source_line": 2296,
       "general": "TDN.LinkProtection.every_emitted_frame_is_encrypted",
-      "application": "TDN.Imported.FinalMACsecRuntime.every_runtime_data_emission_is_encrypted",
+      "application": "TDN.Deployments.SnapshotMacsecRuntime.every_runtime_data_emission_is_encrypted",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -346,8 +346,8 @@
       "boundary": "Tunnel-mode fields are direct checks. Do not equate a rule's IPsec match with an established encryption operation without the connecting model.",
       "clause": "IR5: arbitrary inbound component traversal requires actual local Inner decryption.",
       "source_line": 2359,
-      "general": "TDN.Execution.inbound_crossing_requires_local_decryption",
-      "application": "TDN.Imported.Family444.boundaryIA_no_bypass",
+      "general": "TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption",
+      "application": "TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4.boundaryIA_no_bypass",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -359,8 +359,8 @@
       "boundary": "The current inbound result is partial; outbound protection and all exception cases need their own supporting conditions.",
       "clause": "OR5: arbitrary inbound component traversal requires actual local Outer decryption.",
       "source_line": 2440,
-      "general": "TDN.Execution.inbound_crossing_requires_local_decryption",
-      "application": "TDN.Imported.Family444.boundaryOA_no_bypass",
+      "general": "TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption",
+      "application": "TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4.boundaryOA_no_bypass",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -383,8 +383,8 @@
       "boundary": "The schedule contract and absence of a general timing-leakage guarantee must remain explicit. Ordinary MSC deployments need not include an unselected cover mechanism.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 2588,
-      "general": "TDN.Targets.Complete.transec_conditions_from_checked_installations",
-      "application": "TDN.Imported.CompleteTransec.retained_complete_RG032",
+      "general": "TDN.Requirements.Msc.transec_conditions_from_checked_installations",
+      "application": "TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality.retained_complete_RG032",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -397,8 +397,8 @@
       "boundary": "Measurements validate overhead assumptions. PMTU dynamics and fragmentation beyond the bounded source model need additional treatment.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 2632,
-      "general": "TDN.Targets.Complete.complete_canonical_IPsec_packet_sizing",
-      "application": "TDN.Imported.SizingBaseline.complete_recorded_packet_size_configuration",
+      "general": "TDN.Requirements.Msc.complete_canonical_IPsec_packet_sizing",
+      "application": "TDN.Deployments.MtuSizing_Baseline.complete_recorded_packet_size_configuration",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -411,8 +411,8 @@
       "boundary": "Preserve the source applicability condition and the distinction between observed topology and all real forwarding behavior.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 2678,
-      "general": "TDN.Targets.outer_firewall_placement_from_local_checks",
-      "application": "TDN.Imported.CompleteTopology.Baseline.configured_graph_RG034",
+      "general": "TDN.Requirements.outer_firewall_placement_from_local_checks",
+      "application": "TDN.Deployments.SnapshotProof_TopologyWaypointing.Baseline.configured_graph_RG034",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -425,8 +425,8 @@
       "boundary": "The current OR10 result covers local output only. Forwarding and other interfaces require additional conditions.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 2749,
-      "general": "TDN.Targets.Complete.native_boundary_interface_filtering_from_checks",
-      "application": "TDN.Imported.BoundaryBaseline.complete_native_boundary_policy",
+      "general": "TDN.Requirements.Msc.device_boundary_interface_filtering_from_checks",
+      "application": "TDN.Deployments.Perimeter_Baseline.complete_native_boundary_policy",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -450,8 +450,8 @@
       "boundary": "Keep the current local-output scope. Forwarded traffic and other contact mechanisms need separate coverage.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 2897,
-      "general": "TDN.Targets.Complete.third_party_services_from_disabled_features_and_rule_checks",
-      "application": "TDN.Imported.CompleteThirdPartyApplications.blocking_model_RG037",
+      "general": "TDN.Requirements.Msc.third_party_services_from_disabled_features_and_rule_checks",
+      "application": "TDN.Deployments.SnapshotProof_ThirdPartyServices.blocking_model_RG037",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -464,8 +464,8 @@
       "boundary": "Protocol-number settings are direct inputs. The current immediate-header result does not cover every protocol-parsing behavior.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 2938,
-      "general": "TDN.Targets.Complete.ip_and_link_header_filtering_from_inventory_and_rule_atoms",
-      "application": "TDN.Imported.CompleteHeaderFiltering.routed_ipv4_RG038",
+      "general": "TDN.Requirements.Msc.ip_and_link_header_filtering_from_inventory_and_rule_atoms",
+      "application": "TDN.Deployments.SnapshotProof_HeaderFiltering.routed_ipv4_RG038",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -478,8 +478,8 @@
       "boundary": "Retain each exception's source and scope. The current selected FORWARD result does not cover all local management behavior.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 2995,
-      "general": "TDN.Targets.Complete.outer_gray_IPsec_policy_from_native_checks",
-      "application": "TDN.Imported.OuterGrayBaseline.complete_Outer_gray_policy",
+      "general": "TDN.Requirements.Msc.outer_gray_IPsec_policy_from_native_checks",
+      "application": "TDN.Deployments.OuterToGray_Baseline.complete_Outer_gray_policy",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -492,8 +492,8 @@
       "boundary": "Separate classification labels from full security levels according to the recorded interpretation and source scope.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 3070,
-      "general": "TDN.Targets.Complete.gray_firewall_allowlist_from_native_IPsec_checks",
-      "application": "TDN.Imported.BoundaryBaseline.complete_native_Gray_firewall_allowlist",
+      "general": "TDN.Requirements.Msc.gray_firewall_allowlist_from_native_IPsec_checks",
+      "application": "TDN.Deployments.Perimeter_Baseline.complete_native_Gray_firewall_allowlist",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -572,8 +572,8 @@
       "boundary": "The current application covers retained requests. Do not promote its ten successful operations into an implementation-wide future guarantee without the necessary connection. Check unique accounts separately.",
       "clause": "Every clause of the accepted instantiated specification within the recorded model scope and assumptions.",
       "source_line": 3730,
-      "general": "TDN.Targets.Complete.administrator_authentication_from_local_admission_and_credential_checks",
-      "application": "TDN.Imported.CompleteAdministration.retained_complete_RG047",
+      "general": "TDN.Requirements.Msc.administrator_authentication_from_local_admission_and_credential_checks",
+      "application": "TDN.Deployments.SnapshotProof_Administration.retained_complete_RG047",
       "proof_status": "complete_model_specification_review_pass",
       "review_record": "data/publication/v3.1/verdict.json"
     },
@@ -652,8 +652,8 @@
       "boundary": "Ordinary vendor interoperability still needs testing. The useful formal claim concerns modeled payload/header preservation, not blanket product compatibility.",
       "clause": "Peer interoperability: actual forward and reverse useful bridged MACsec/L2TP/ESP paths deliver restored opaque Ethernet headers.",
       "source_line": 4226,
-      "general": "TDN.Targets.successful_ethernet_peer_restores_header",
-      "application": "TDN.Imported.PairingInnerMacsecOuterIpsec.ForwardVLAN0.actual_peer_restores_original_ethernet",
+      "general": "TDN.Requirements.successful_ethernet_peer_restores_header",
+      "application": "TDN.Deployments.PairingInnerMacsecOuterIpsec.ForwardVLAN0.actual_peer_restores_original_ethernet",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -676,8 +676,8 @@
       "boundary": "The current theorem covers virtual topology. Physical links and official approval of alternate protection remain external obligations.",
       "clause": "SR14 structural egress protection: every observed virtual path from eight Red hosts to outside Red crosses an Inner.",
       "source_line": 4328,
-      "general": "TDN.Targets.red_egress_crosses_inner_from_attachment_cut",
-      "application": "TDN.Imported.FreshSharedTopology.every_virtual_red_egress_crosses_inner",
+      "general": "TDN.Requirements.red_egress_crosses_inner_from_attachment_cut",
+      "application": "TDN.Deployments.ProfileShared_Topology.every_virtual_red_egress_crosses_inner",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -877,7 +877,7 @@
       "clause": "Redundant components retain applicable CP placement: four actual redundant Outers have mandatory firewall-separated paths to selected Black transport.",
       "source_line": 5515,
       "general": "TDN.Waypointing.waypointing_of_edge_invariant",
-      "application": "TDN.Imported.FreshRedundantPlacement.redundant_outers_preserve_required_firewall_cut",
+      "application": "TDN.Deployments.SnapshotRedundantPlacement.redundant_outers_preserve_required_firewall_cut",
       "proof_status": "supporting_results_only_deferred_by_user"
     },
     {
@@ -1046,7 +1046,7 @@
   ],
   "restored_modules": [
     {
-      "module": "TDN.Targets.TimeSynchronization",
+      "module": "TDN.Requirements.TrustedClockSynchronization",
       "reason": "v3.1 reintroduced time-service records for the complete requirement specifications. The old removed-module list described the October 31 simplification."
     }
   ]

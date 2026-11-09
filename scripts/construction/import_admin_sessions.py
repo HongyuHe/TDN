@@ -117,8 +117,8 @@ def parse(deployment, effective, matrix):
 def generate(data):
     quote = json.dumps
     principals = {row["fingerprint"]: row["id"] for row in data["principals"]}
-    lines = ["import TDN.Targets.Administration", "", "namespace TDN.Imported.FreshAdministratorSessions",
-             "open Targets", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "",
+    lines = ["import TDN.Requirements.ManagementPlaneRequirements", "", "namespace TDN.Deployments.SnapshotAdminSessions",
+             "open Requirements", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "",
              "/-- Credential identities are modeled here. Human appointments and AW accounts remain external. -/",
              "def accounts : List AdministrativeAccount := [" + ", ".join(
                  "⟨" + str(row["id"]) + ", 0, " + quote(row["fingerprint"]) + ", false, false, 0⟩"
@@ -162,7 +162,7 @@ def generate(data):
               "  · exact admitted_history", "  · decide", "  · simp", "",
               "theorem successful_operations_are_present :",
               "    (events.filter (fun event => event.kind == .operation)).length = " + str(len(data["accepted"])) + " := by decide",
-              "", "end TDN.Imported.FreshAdministratorSessions", ""]
+              "", "end TDN.Deployments.SnapshotAdminSessions", ""]
     return "\n".join(lines)
 
 

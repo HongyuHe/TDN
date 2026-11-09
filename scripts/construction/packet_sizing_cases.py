@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def selected_route(records, ingress, destination):
-    candidates = [row for row in records["routes"] if row["ingress"] == ingress and row["low"] <= destination <= row["high"]]
+    candidates = [row for row in records["routes"] if row["ingress"] == ingress and row["destPrefixLow"] <= destination <= row["destPrefixHigh"]]
     if not candidates:
         raise ValueError("modeled path lacks a route")
     return min(candidates, key=lambda row: (row["tablePriority"], -row["prefixLength"], row["metric"]))
@@ -19,13 +19,13 @@ def build(source, destination):
     flow = saved["sourceFlows"][0]
     route = selected_route(records, flow["iface"], flow["destination"])
     owner = records["nativeIfaces"][route["egress"]]["owner"]
-    policies = [row for row in records["nativeDevices"][owner]["outbound"]
+    policies = [row for row in records["nativeDevices"][owner]["egressPolicies"]
                 if row["sourceLow"] <= flow["source"] <= row["sourceHigh"] and
                 row["destinationLow"] <= flow["destination"] <= row["destinationHigh"]]
     policy = min(policies, key=lambda row: row["priority"])
     sas = [row for row in saved["installations"] if row["installation"]["device"] == owner and
            row["installation"]["direction"] == "outbound" and
-           row["installation"]["association"]["localRequestId"] == policy["id"] and
+           row["installation"]["association"]["reqid"] == policy["id"] and
            row["installation"]["association"]["sender"] == policy["sender"] and
            row["installation"]["association"]["receiver"] == policy["receiver"]]
     if len(sas) != 1:
@@ -61,7 +61,7 @@ def build(source, destination):
                 raise ValueError("captured ESP fragment needs additional reassembly binding")
             spi = int.from_bytes(ip[fields["headerBytes"]:fields["headerBytes"]+4], "big")
             matches = [(index, row) for index, row in enumerate(saved["installations"])
-                       if row["installation"]["association"]["wireIdentity"] == spi and
+                       if row["installation"]["association"]["spi"] == spi and
                        row["installation"]["association"]["sender"] == fields["source"] and
                        row["installation"]["association"]["receiver"] == fields["destination"]]
             outs = [index for index, row in matches if row["installation"]["direction"] == "outbound"]

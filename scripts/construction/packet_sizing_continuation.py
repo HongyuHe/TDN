@@ -11,12 +11,12 @@ from packet_sizing_cases import selected_route
 def outer_header(policy):
     return dict(source=policy['sender'], destination=policy['receiver'], protocol='esp', ingress='', egress='',
                 sourcePort=0, destinationPort=0, ipv4HeaderWords=5, ipv6NextHeader=0,
-                inboundPolicies=[], outboundPolicies=[], connectionState='', hopLimit=64, icmpType=0, icmpCode=0, etherType=None, payloadBytes=None, connectionId=None,
+                matchedInboundPolicyIds=[], matchedOutboundPolicyIds=[], connectionState='', hopLimit=64, icmpType=0, icmpCode=0, etherType=None, payloadBytes=None, connectionId=None,
                 networkBytes=None, ipv4FragmentOffset=None)
 
 
 def matching_policies(device, header):
-    return [row for row in device['outbound']
+    return [row for row in device['egressPolicies']
             if row['sourceLow'] <= header['source'] <= row['sourceHigh'] and
             row['destinationLow'] <= header['destination'] <= row['destinationHigh']]
 
@@ -78,7 +78,7 @@ def build(source, cases, destination):
             policy = min(candidates, key=lambda row: row['priority'])
             states = [row['installation']['association'] for row in saved['installations']
                       if row['installation']['device'] == owner and row['installation']['direction'] == 'outbound'
-                      and row['installation']['association']['localRequestId'] == policy['id']
+                      and row['installation']['association']['reqid'] == policy['id']
                       and row['installation']['association']['sender'] == policy['sender']
                       and row['installation']['association']['receiver'] == policy['receiver']]
             if len(states) != 1:
@@ -90,7 +90,7 @@ def build(source, cases, destination):
             port = outer_route['egress']
             encrypted_outer = True
         else:
-            add('passWithoutTransform')
+            add('forwardWithoutEncap')
         phase = 'ready'
     else:
         raise ValueError('The recorded continuation did not reach Outer output')

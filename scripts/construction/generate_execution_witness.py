@@ -5,6 +5,7 @@ from collections import deque
 import ipaddress
 import json
 from pathlib import Path
+from network_names import forwarding_lean
 from import_snapshot import parse_rule, quoted, lean_list
 from import_execution import association_list, tuple_list
 from validate_evidence import require
@@ -24,8 +25,8 @@ def packet_lean(packet):
 
 
 def frame_lean(frame):
-    envelopes = ["⟨⟨" + ", ".join(str(x) for x in envelope["seal"]) + "⟩, " + packet_lean(envelope["header"]) + "⟩" for envelope in frame["envelopes"]]
-    return "{ payload := 1, originDomain := " + str(frame["originDomain"]) + ", enteredIface := " + str(frame["enteredIface"]) + ", packet := " + packet_lean(frame["packet"]) + ", envelopes := " + lean_list(envelopes) + " }"
+    encapLayers = ["⟨⟨" + ", ".join(str(x) for x in envelope["seal"]) + "⟩, " + packet_lean(envelope["header"]) + "⟩" for envelope in frame["encapLayers"]]
+    return "{ payload := 1, originDomain := " + str(frame["originDomain"]) + ", enteredIface := " + str(frame["enteredIface"]) + ", packet := " + packet_lean(frame["packet"]) + ", encapLayers := " + lean_list(encapLayers) + " }"
 
 
 def matches(association, packet):
@@ -48,7 +49,7 @@ def atom_holds(atom, packet):
     if kind in {"sourcePorts", "destinationPorts", "connectionStates"}:
         return packet[{"sourcePorts": "sourcePort", "destinationPorts": "destinationPort", "connectionStates": "connectionState"}[kind]] in atom["values"]
     if kind in {"inboundPolicy", "outboundPolicy"}:
-        return atom["value"] in packet["inboundPolicies" if kind == "inboundPolicy" else "outboundPolicies"]
+        return atom["value"] in packet["matchedInboundPolicyIds" if kind == "inboundPolicy" else "matchedOutboundPolicyIds"]
     return packet.get(kind, 0) == atom["value"]
 
 
@@ -79,7 +80,7 @@ def main():
     address = lambda interface: encode(next(a["local"] for a in interface["addresses"]
         if a["family"] == ("inet" if red_family == 4 else "inet6") and a.get("scope") != "link"))
     port = report["port_ids"][args.source_port]
-    frame = {"payload": 1, "originDomain": level(devices[source["device_id"]]), "enteredIface": port, "packet": {"source": address(source), "destination": address(destination), "protocol": "icmp" if red_family == 4 else "ipv6-icmp", "ingress": source["name"], "egress": "", "sourcePort": 0, "destinationPort": 0, "ipv4HeaderWords": 5 if red_family == 4 else 0, "ipv6NextHeader": 0 if red_family == 4 else 58, "inboundPolicies": [], "outboundPolicies": [], "connectionState": "NEW", "icmpType": 8 if red_family == 4 else 128, "icmpCode": 0, "hopLimit": 64}, "envelopes": []}
+    frame = {"payload": 1, "originDomain": level(devices[source["device_id"]]), "enteredIface": port, "packet": {"source": address(source), "destination": address(destination), "protocol": "icmp" if red_family == 4 else "ipv6-icmp", "ingress": source["name"], "egress": "", "sourcePort": 0, "destinationPort": 0, "ipv4HeaderWords": 5 if red_family == 4 else 0, "ipv6NextHeader": 0 if red_family == 4 else 58, "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": [], "connectionState": "NEW", "icmpType": 8 if red_family == 4 else 128, "icmpCode": 0, "hopLimit": 64}, "encapLayers": []}
     state = {"port": port, "phase": "localOutput", "frame": frame, "authenticated": []}
     states = [copy.deepcopy(state)]
     steps = []
@@ -109,8 +110,8 @@ def main():
         packet = copy.deepcopy(state["frame"]["packet"])
         current = ports[state["port"]]
         packet["egress"] = current["name"]
-        packet["inboundPolicies"] = state["authenticated"]
-        packet["outboundPolicies"] = [a[0] for a in selected(report["policies"][current["device_id"]]["out"], packet)]
+        packet["matchedInboundPolicyIds"] = state["authenticated"]
+        packet["matchedOutboundPolicyIds"] = [a[0] for a in selected(report["policies"][current["device_id"]]["out"], packet)]
         return packet
 
     def accepts(hook):
@@ -160,14 +161,14 @@ def main():
             candidates = selected(report["policies"][device]["out"], packet)
             if not candidates:
                 state["phase"] = "ready"
-                add("local", "passWithoutTransform", "(by decide)")
+                add("local", "forwardWithoutEncap", "(by decide)")
                 continue
             association = candidates[0]
             sa = next((s for s in report["states"][device] if bound(association, s)), None)
             require(sa is not None, "Required SA missing")
             envelope = {"seal": [association[1], sa[1], sa[2], sa[3]], "header": copy.deepcopy(packet)}
-            state["frame"]["envelopes"].insert(0, envelope)
-            packet.update({"source": association[2], "destination": association[3], "protocol": "esp", "sourcePort": 0, "destinationPort": 0, "inboundPolicies": [], "outboundPolicies": [], "ipv4HeaderWords": 5 if association[2] < 2 ** 32 else 0, "ipv6NextHeader": 0 if association[2] < 2 ** 32 else 50})
+            state["frame"]["encapLayers"].insert(0, envelope)
+            packet.update({"source": association[2], "destination": association[3], "protocol": "esp", "sourcePort": 0, "destinationPort": 0, "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": [], "ipv4HeaderWords": 5 if association[2] < 2 ** 32 else 0, "ipv6NextHeader": 0 if association[2] < 2 ** 32 else 50})
             state["phase"] = "encapsulated"
             add("encrypt", "encrypt", association_list([association])[1:-1] + " " + tuple_list([sa])[1:-1] + " (by decide) (by decide) (by decide)")
         elif phase == "ready":
@@ -179,8 +180,8 @@ def main():
             add("linkTransmit", "linkTransmit", "(by decide)")
         elif phase == "received":
             candidate = None
-            if state["frame"]["envelopes"]:
-                envelope = state["frame"]["envelopes"][0]
+            if state["frame"]["encapLayers"]:
+                envelope = state["frame"]["encapLayers"][0]
                 for association in report["policies"][device]["in"]:
                     for sa in report["states"][device]:
                         if bound(association, sa) and envelope["seal"] == [association[1], sa[1], sa[2], sa[3]] and packet["source"] == association[2] and packet["destination"] == association[3] and packet["protocol"] == "esp" and matches(association, envelope["header"]):
@@ -190,27 +191,27 @@ def main():
             state["frame"]["enteredIface"] = state["port"]
             if candidate:
                 association, sa, envelope = candidate
-                state["frame"]["envelopes"].pop(0)
+                state["frame"]["encapLayers"].pop(0)
                 header = copy.deepcopy(envelope["header"])
                 state["frame"]["packet"] = copy.deepcopy(header)
-                state["frame"]["packet"].update({"ingress": current["name"], "inboundPolicies": [], "outboundPolicies": []})
+                state["frame"]["packet"].update({"ingress": current["name"], "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": []})
                 state["authenticated"] = [association[0]]
-                rest = "[" + ", ".join("⟨⟨" + ", ".join(str(x) for x in e["seal"]) + "⟩, " + packet_lean(e["header"]) + "⟩" for e in state["frame"]["envelopes"]) + "]"
+                rest = "[" + ", ".join("⟨⟨" + ", ".join(str(x) for x in e["seal"]) + "⟩, " + packet_lean(e["header"]) + "⟩" for e in state["frame"]["encapLayers"]) + "]"
                 add("decrypt", "decrypt", association_list([association])[1:-1] + " " + tuple_list([sa])[1:-1] + " (" + packet_lean(header) + ") " + rest + " " + quoted(header["connectionState"]) + " (by decide) (by decide) (by decide) rfl rfl rfl rfl (by decide)")
             else:
-                packet.update({"ingress": current["name"], "inboundPolicies": [], "outboundPolicies": []})
+                packet.update({"ingress": current["name"], "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": []})
                 add("local", "receive", quoted(packet["connectionState"]))
         elif phase == "localInput":
-            require(not state["frame"]["envelopes"], "Delivery is not plaintext")
+            require(not state["frame"]["encapLayers"], "Delivery is not plaintext")
             state["phase"] = "delivered"
             destination_level = level(devices[device])
             add("deliver", "deliver", str(destination_level) + " (by decide) rfl")
         else:
             raise ValueError("Unexpected phase " + phase)
     require(state["phase"] == "delivered" and current["id"] == args.destination_port, "Witness did not reach destination")
-    lines = ["import " + args.module, "", "namespace TDN.Imported." + args.namespace, "open Execution", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "set_option linter.unusedSimpArgs false", ""]
+    lines = ["import " + args.module, "", "namespace TDN.Deployments." + args.namespace, "open DataPlaneForwarding", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "set_option linter.unusedSimpArgs false", ""]
     for index, item in enumerate(states):
-        lines.append("def witnessState" + str(index) + " : Execution.State := ⟨" + str(item["port"]) + ", ." + item["phase"] + ", " + frame_lean(item["frame"]) + ", " + lean_list([str(x) for x in item["authenticated"]]) + "⟩")
+        lines.append("def witnessState" + str(index) + " : DataPlaneForwarding.State := ⟨" + str(item["port"]) + ", ." + item["phase"] + ", " + frame_lean(item["frame"]) + ", " + lean_list([str(x) for x in item["authenticated"]]) + "⟩")
     immediate_checks = []
     for index, item in enumerate(states):
         device_name = ports[item["port"]]["device_id"]
@@ -225,12 +226,12 @@ def main():
         lines += ["", "lemma witness_immediate_header_checks : " +
                   " ∧ ".join(immediate_checks + ["True"]) + " := by decide"]
     for index, step in enumerate(steps):
-        lines += ["", "lemma witnessStep" + str(index) + " : Execution.Step config witnessState" + str(index) + " ." + step["action"] + " witnessState" + str(index + 1) + " := by", "  exact Execution.Step." + step["constructor"] + " " + step["arguments"]]
-    lines += ["", "def witnessActions : List Action := " + lean_list(["." + step["action"] for step in steps]), "", "theorem positive_delivery_execution : (lts config).MTr witnessState0 witnessActions witnessState" + str(len(steps)) + " := by", "  exact " + "(".join(["Cslib.LTS.MTr.stepL witnessStep" + str(i) + " " for i in range(len(steps))]) + "Cslib.LTS.MTr.refl" + ")" * (len(steps) - 1), "", "lemma witness_initial_stack : StackInvariant config expectedEncapStack witnessState0 := by", "  unfold StackInvariant ProcessingInvariant LocalAuthentication encapStackAfterIngress witnessState0 Frame.tags config expectedEncapStack dataPlaneConfigFromRecords expectedEncapStackFromRecords ifaceAt deviceAt ifaces devices", "  decide", "", "end TDN.Imported." + args.namespace, ""]
-    lines = [line.replace("(by decide)", "(by (try simp only [config, dataPlaneConfigFromRecords, SelectedRoute, Route.matches, accepts, StateBindsPolicy]); all_goals decide)") for line in lines]
+        lines += ["", "lemma witnessStep" + str(index) + " : DataPlaneForwarding.Step config witnessState" + str(index) + " ." + step["action"] + " witnessState" + str(index + 1) + " := by", "  exact DataPlaneForwarding.Step." + step["constructor"] + " " + step["arguments"]]
+    lines += ["", "def witnessActions : List Action := " + lean_list(["." + step["action"] for step in steps]), "", "theorem positive_delivery_forwarding : (lts config).MTr witnessState0 witnessActions witnessState" + str(len(steps)) + " := by", "  exact " + "(".join(["Cslib.LTS.MTr.stepL witnessStep" + str(i) + " " for i in range(len(steps))]) + "Cslib.LTS.MTr.refl" + ")" * (len(steps) - 1), "", "lemma witness_initial_stack : EncapStackConsistent config expectedEncapStack witnessState0 := by", "  unfold EncapStackConsistent ProcessingInvariant LocalAuthentication encapStackAfterIngress witnessState0 Frame.encapLayerIds config expectedEncapStack dataPlaneModelFromRecords expectedEncapStackFromRecords ifaceAt deviceAt ifaces devices", "  decide", "", "end TDN.Deployments." + args.namespace, ""]
+    lines = [line.replace("(by decide)", "(by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)") for line in lines]
     start = next(i for i, line in enumerate(lines) if line.startswith("lemma witness_initial_stack"))
     lines[start + 1:start + 3] = ["  exact ⟨⟨⟨rfl, rfl, Or.inl rfl, rfl⟩, rfl⟩, rfl⟩"]
-    Path(args.output).write_text("\n".join(lines))
+    Path(args.output).write_text(forwarding_lean("\n".join(lines)))
     Path(args.trace).write_text(json.dumps({"source": args.source_port, "destination": args.destination_port, "states": states, "steps": steps}, indent=2) + "\n")
     print(json.dumps({"steps": len(steps), "encryption_steps": [i for i, s in enumerate(steps) if s["action"] == "encrypt"], "decryption_steps": [i for i, s in enumerate(steps) if s["action"] == "decrypt"]}))
 

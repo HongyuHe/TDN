@@ -108,15 +108,15 @@ def project(bundle):
                             "ingress": fields["ingress"]["name"], "egress": fields["egress"]["name"],
                             "sourcePort": source_port, "destinationPort": destination_port,
                             "ipv4HeaderWords": fields.get("ipv4HeaderWords", {}).get("words"),
-                            "inboundPolicies": [fields["inboundPolicy"]["requestId"]] if "inboundPolicy" in fields else [],
-                            "outboundPolicies": [fields["outboundPolicy"]["requestId"]] if "outboundPolicy" in fields else [],
+                            "matchedInboundPolicyIds": [fields["inboundPolicy"]["requestId"]] if "inboundPolicy" in fields else [],
+                            "matchedOutboundPolicyIds": [fields["outboundPolicy"]["requestId"]] if "outboundPolicy" in fields else [],
                             "minimumBytes": 0, "maximumBytes": gray_mtu,
                             "requestFraming": "ipsecUDPFramingWithOptions" in framing,
                             "replyFraming": "ipsecUDPReplyFramingWithOptions" in framing}
                     masks.append({"owner": owner, "device": identity, "packet": mask})
     size_bindings = [{"iface": port, "policy": policy, "outerHeaderBytes": 20}
                      for port, native in enumerate(bundle["ports"])
-                     for policy in bundle["devices"][native["owner"]]["outbound"]]
+                     for policy in bundle["devices"][native["owner"]]["egressPolicies"]]
     return {"components": devices, "interfaces": result_interfaces, "ifaceNames": port_names,
             "ownerNames": [names.get(index, "unlisted-device") for index in range(len(bundle["devices"]))],
             "policies": policies, "tunnels": tunnels, "pairs": pairs, "masks": masks,

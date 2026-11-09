@@ -130,10 +130,10 @@ def generate(cases):
             *[str(row[key]) for key in ["before_order", "adjustment_order", "after_order"]],
             *["(" + str(row[key]) + ")" for key in ["before_offset_us", "applied_offset_us", "after_offset_us"]],
             "true"]) + "⟩")
-    return """import TDN.Targets.TimeSynchronization
+    return """import TDN.Requirements.TrustedClockSynchronization
 
-namespace TDN.Imported.FreshClockCorrections
-open ClockSamples Targets
+namespace TDN.Deployments.FreshClockCorrections
+open ClockSamples Requirements
 
 /-- Two separately recorded experiments are preserved in these client identifiers.
 The list does not assert one simultaneous combined deployment snapshot. -/
@@ -149,7 +149,7 @@ theorem each_observed_correction_reduces_offset :
 
 lemma complete_selected_clock_inventory : corrections.length = 4 := by decide
 
-end TDN.Imported.FreshClockCorrections
+end TDN.Deployments.FreshClockCorrections
 """
 
 

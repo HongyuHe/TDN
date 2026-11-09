@@ -11,12 +11,12 @@ def generate():
     text = text.replace("assembled_gateway_response_black_bytes_keep_both_layers", "assembled_component_response_black_bytes_keep_both_layers")
     text = text.replace("bytes_with_plaintext_assembly_and_gateway_responses_keep_domains", "bytes_with_plaintext_assembly_and_component_responses_keep_domains")
     for name, count in [("Shared", 4), ("Baseline", 2)]:
-        base = "TDN.Imported.Fresh" + name + "Execution"
-        text = text.replace(f"Targets.nativeKernelResponses config {base}.responseGateways",
+        base = "TDN.Deployments.Profile" + name + "_DataPlane"
+        text = text.replace(f"Requirements.nativeKernelResponses config {base}.responseGateways",
                             f"UniformDomainResponses.responseConfig config {base}.responseGateways uniformResponseOwners")
         text = text.replace(f"config redSources domains {base}.responseGateways byteLayout byteAllowed",
                             f"config redSources domains {base}.responseGateways uniformResponseOwners byteLayout byteAllowed")
-        header = f"namespace TDN.Imported.Fresh{name}Isolation\nopen Execution\n"
+        header = f"namespace TDN.Deployments.Profile{name}_EnclaveIsolation\nopen DataPlaneForwarding\n"
         extra = f"""
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
@@ -29,7 +29,7 @@ lemma every_retained_owner_has_response_case :
       iface.owner ∈ {base}.responseGateways ∨ iface.owner ∈ uniformResponseOwners := by
   decide
 
-lemma every_active_component_can_generate (state : Execution.State)
+lemma every_active_component_can_generate (state : DataPlaneForwarding.State)
     (active : state.datapathStage ≠ .dropped) :
     (UniformDomainResponses.responseConfig config {base}.responseGateways
       uniformResponseOwners).generates state := by
@@ -39,14 +39,14 @@ lemma every_active_component_can_generate (state : Execution.State)
 """
         for domain in range(1, count + 1):
             extra += f"""lemma uniform_domain_response_checks{domain} :
-    UniformDomainResponses.FiniteUniform taggedDevices domainIfaces{domain}
+    UniformDomainResponses.TableDrivenUniform taggedDevices domainIfaces{domain}
       (allowedRecord {domain}) uniformResponseOwners := by
   decide
 
 lemma uniform_domain_responses{domain} : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout{domain} domainAllowed{domain} owner := by
   intro owner member
-  have checked := UniformDomainResponses.finite_uniform_sound taggedDevices domainIfaces{domain}
+  have checked := UniformDomainResponses.table_driven_uniform_sound taggedDevices domainIfaces{domain}
     {base}.routes {base}.links {base}.switches
     (allowedRecord {domain}) uniformResponseOwners uniform_domain_response_checks{domain} owner member
   rw [config_same{domain}] at checked
@@ -65,4 +65,4 @@ lemma uniform_domain_responses{domain} : ∀ owner ∈ uniformResponseOwners,
 
 
 if __name__ == "__main__":
-    Path("TDN/Evidence/FreshComponentByteResponses.lean").write_text(generate())
+    Path("TDN/Deployments/SnapshotComponentByteResponses.lean").write_text(generate())

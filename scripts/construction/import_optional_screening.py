@@ -115,10 +115,10 @@ def generate(data):
     records = ["⟨" + ", ".join(str(row[k]).lower() for k in
                ["screeningRouter", "locatedOnBlack", "insideSolutionBoundary"]) + "⟩"
                for row in data["controls"]]
-    return """import TDN.Targets.Components
+    return """import TDN.Requirements.Components
 
-namespace TDN.Imported.FreshOptionalScreening
-open Targets
+namespace TDN.Deployments.FreshOptionalScreening
+open Requirements
 
 def controls : List AdditionalControl := [""" + ", ".join(records) + """]
 lemma black_placement : ∀ c ∈ controls, c.screeningRouter = true → c.locatedOnBlack = true := by decide
@@ -130,7 +130,7 @@ theorem selected_optional_control_placement : msc_additional_control_permissions
 theorem actual_screening_inventory : controls.length = 2 ∧
     ∀ c ∈ controls, c.screeningRouter = true := by decide
 
-end TDN.Imported.FreshOptionalScreening
+end TDN.Deployments.FreshOptionalScreening
 """
 
 

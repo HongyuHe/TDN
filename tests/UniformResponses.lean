@@ -1,19 +1,19 @@
-import TDN.Semantics.UniformResponseRegions
-import TDN.Semantics.HistoricalResponses
+import TDN.Models.UniformStackDeviceReplies
+import TDN.Models.DelayedPacketReplySafety
 
 namespace UniformResponseRegression
-open TDN TDN.Execution
+open TDN TDN.DataPlaneForwarding
 
 /-- A component with differently protected interfaces cannot use the uniform shortcut. -/
-example : ¬ UniformResponseRegions.FiniteUniform []
+example : ¬ UniformResponseRegions.TableDrivenUniform []
     [⟨1, "red", [], false⟩, ⟨1, "black", [2, 1], false⟩] [1] := by
-  unfold UniformResponseRegions.FiniteUniform
+  unfold UniformResponseRegions.TableDrivenUniform
   decide
 
 /-- Multiple interfaces in the same region pass without assuming response headers. -/
-example : UniformResponseRegions.FiniteUniform []
+example : UniformResponseRegions.TableDrivenUniform []
     [⟨1, "left", [2, 1], false⟩, ⟨1, "right", [2, 1], false⟩] [1] := by
-  unfold UniformResponseRegions.FiniteUniform
+  unfold UniformResponseRegions.TableDrivenUniform
   decide
 
 /-- Retained context selection uses an actually stored state. -/

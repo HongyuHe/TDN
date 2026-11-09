@@ -91,10 +91,10 @@ def parse(path):
 def generate(data):
     entries = ",\n  ".join("⟨" + json.dumps(e["device"]) + ", " + json.dumps(e["port"]) +
                            ", ." + e["stage"] + ", " + str(e["mtu"]) + "⟩" for e in data["interfaces"])
-    return '''import TDN.Targets.NestedPacketSizing
+    return '''import TDN.Requirements.DoubleEncapMtuCalculation
 
-namespace TDN.Imported.FreshNestedSizing
-open TDN.Targets.NestedSizing
+namespace TDN.Deployments.SnapshotNestedSizing
+open TDN.Requirements.NestedSizing
 
 def espLength := PacketLength.alignedWireLength 4 2 52
 
@@ -116,7 +116,7 @@ theorem every_bounded_red_datagram_fits_each_stage :
     (PacketLength.aligned_wire_length_monotone 4 2 52)
     interfaces redLimit every_maximum_fits
 
-end TDN.Imported.FreshNestedSizing
+end TDN.Deployments.SnapshotNestedSizing
 '''
 
 

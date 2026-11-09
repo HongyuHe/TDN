@@ -126,10 +126,10 @@ def parse(cases, bindings, runtime, source_dir):
 
 def generate(data):
     entries = ["(" + json.dumps(port["device"]) + ", ⟨false, false⟩)" for port in data["ports"]]
-    return """import TDN.Targets.MACsecFallback
+    return """import TDN.Requirements.MacsecNoCleartextFallbackSpec
 
-namespace TDN.Imported.FinalMACsecKeySources
-open KeySources Targets
+namespace TDN.Deployments.SnapshotMacsecKeySources
+open KeySources Requirements
 
 /-- Complete public configurations from both EAP role arrangements. The import
 report records source bindings and the fresh-process/fixed-configuration assumptions. -/
@@ -144,7 +144,7 @@ theorem eap_ifaces_have_no_pre_shared_fallback (iface : String × Config)
 
 lemma all_four_ifaces_present : ifaces.length = 4 := by decide
 
-end TDN.Imported.FinalMACsecKeySources
+end TDN.Deployments.SnapshotMacsecKeySources
 """
 
 

@@ -50,23 +50,23 @@ The current bridge parser accepts an uncontrolled OVS bridge with a single `NORM
 
 ## Load JSON in Lean
 
-Use `tdn_data` when an evidence record should populate an existing TDN type:
+Use `load_network_records` when an evidence record should populate an existing TDN type:
 
 ```lean
-import TDN.Import.Command
-import TDN.Evidence.Types
+import TDN.Import.SnapshotLoader
+import TDN.Deployments.SnapshotFactTypes
 
-tdn_data captured : TDN.Evidence.Snapshot
+load_network_records captured : TDN.Deployments.Snapshot
   from "../../data/evidence/v3-baseline.json" ["snapshot"]
 
-example : TDN.Evidence.HasProvenance captured := by
-  unfold TDN.Evidence.HasProvenance captured
+example : TDN.Deployments.HasProvenance captured := by
+  unfold TDN.Deployments.HasProvenance captured
   decide
 ```
 
 The path is relative to the Lean source file. The string in brackets selects a record in the JSON object. The declared Lean type determines how that record is decoded. The command rejects extra fields, incorrect value types, and invalid finite node indices. Its round-trip check also rejects input that a decoder would silently discard.
 
-Use `tdn_snapshot Bird from "file.json"` for a live observed-route bundle. The command defines `Bird.snapshot` with type `TDN.Import.NetworkSnapshot`. The record preserves devices, observation references, routing-table identifiers, route kinds, address families, destinations, gateways, output interfaces, and metrics. It records a configured architectural role separately as `declaredRole`.
+Use `load_network_snapshot Bird from "file.json"` for a live observed-route bundle. The command defines `Bird.snapshot` with type `TDN.Import.NetworkSnapshot`. The record preserves devices, observation references, routing-table identifiers, route kinds, address families, destinations, gateways, output interfaces, and metrics. It records a configured architectural role separately as `declaredRole`.
 
 A JSON import supplies data. Existing `lemma` and `theorem` declarations still establish their conclusions with checked proofs. The import command does not generate proofs or add axioms. Lean's elaborator runs the decoder and constructs the definition; Lean's kernel checks the resulting term. Parser correctness and faithful collection remain implementation assumptions.
 
@@ -74,23 +74,23 @@ Lake tracks the JSON files under `data/evidence` through its `evidence_data` inp
 
 ## Prepare different kinds of saved evidence
 
-`prepare_lean_bundle("v3-baseline", "inventory")` creates a value of the existing `TDN.Evidence.Snapshot` type. The `packet_filters` view checks the saved rules against their raw firewall output, preserves rule order, and exports `List TDN.PacketPolicy.Rule` values. Unsupported chains cause preparation to fail.
+`prepare_lean_bundle("v3-baseline", "inventory")` creates a value of the existing `TDN.Deployments.Snapshot` type. The `packet_filters` view checks the saved rules against their raw firewall output, preserves rule order, and exports `List TDN.PacketPolicy.Rule` values. Unsupported chains cause preparation to fail.
 
 The `topology` view validates runtime interface and switch relationships before exporting edges. It also computes candidate region labels after removing the relevant firewall vertices. Lean must still check the labels against every remaining edge. The Python calculation supplies a candidate witness; the reusable path theorem relies on the checked edge condition.
 
-The `multi_protocol_execution` view exports the lists used by `MultiProtocolExecution.dataPlaneConfigFromRecords`: device policies, ports, routes, links, bridge forwarding, MACsec ports, and encapsulation settings. Its current parser covers the retained native IPv4 IPsec and OVS profiles. Their MACsec and encapsulation lists are empty. A different mechanism causes the parser to request a matching extension. The export preserves IPsec request IDs, wire SPIs, endpoint addresses, selectors, priorities, firewall rule order, and default verdicts. It also includes the source identifiers, hashes, role assignments, and scope of the interpretation.
+The `multi_protocol_execution` view exports the lists used by `MultiProtocolForwarding.dataPlaneModelFromRecords`: device policies, interfaces, routes, links, bridge forwarding, MACsec interfaces, and encapsulation settings. Its current parser covers the retained native IPv4 IPsec and OVS profiles. Their MACsec and encapsulation lists are empty. A different mechanism causes the parser to request a matching extension. The export preserves IPsec request IDs, wire SPIs, endpoint addresses, selectors, priorities, firewall rule order, and default verdicts. It also includes the source identifiers, hashes, role assignments, and scope of the interpretation.
 
-The native export includes `mtu` in each `ifaceBindings` record. The parser checks that the normalized MTU equals the value in the raw interface observation and retains its observation ID. Version `native-ipv4-execution-v3-iface-mtu` records that addition. An MTU describes the interface's configured packet-size limit; it does not establish that a larger datagram cannot exist after reassembly. Size proofs must account for the selected encryption overhead and the relevant admission rules.
+The native export includes `mtu` in each `ifaceBindings` record. The parser checks that the normalized MTU equals the value in the raw interface observation and retains its observation ID. The v3.2 typed export uses `ipsec-forwarding-v3.2-interface-mtu` as its version identifier. An MTU describes the interface's configured packet-size limit; it does not establish that a larger datagram cannot exist after reassembly. Size proofs must account for the selected encryption overhead and the relevant admission rules.
 
 The `externalDataPort` field selects Inner encryptor interfaces in Gray and Outer encryptor interfaces in Black. Gray firewall sizing requires a separate selection using `declaredRole`, `declaredZone`, and `emulatedAttachment`. RG-033 conservatively includes every attached Gray data interface of each Gray firewall. The application must check that the selection includes every matching interface and preserve the original export fields. The recorded MTU and filter programs then supply the facts used by the sizing proof.
 
-Execution export requires a processing supplement configured in `saved_execution_supplements`. Each entry maps a saved snapshot ID to the directory containing its additional policy-routing, firewall-table, and IPsec observations. The server validates the supplement's hashes and checks its records against the snapshot before exporting. The default configuration includes the retained baseline supplement.
+The IPsec forwarding export requires a processing supplement configured in `saved_execution_supplements`. Each entry maps a saved snapshot ID to the directory containing its additional policy-routing, firewall-table, and IPsec observations. The server validates the supplement's hashes and checks its records against the snapshot before exporting. The default configuration includes the retained baseline supplement.
 
 The optional `execution_epoch_union` list selects snapshots whose export includes every retained IPsec association epoch. That choice supports conservative safety checks across those observed associations. The observations can come from different times, so an execution using associations from several epochs is not evidence of a successful live exchange. Use a coherent captured exchange when proving observed connectivity. Other snapshots use the single selected raw observation for each device.
 
 The `saved_experiments` configuration exposes retained mixed IPsec/MACsec experiments. Each entry has a `path` and `parser: "mixed-protocol-v1"`. The server validates their complete manifests, command bindings, before/after observations, and supported packet operations. Agents can query interfaces, routes, policies, MACsec associations, and carrier sessions, then request the `multi_protocol_execution` view. These experiments retain their supplemental Linux namespace backend in every result.
 
-Mixed exports give each local MACsec association a distinct generation index linked to its observed installed-key identifier. Those indices identify records within the exported configuration. Equal printed key identifiers do not prove equal secret keys. Carrier records explicitly name L2TPv3 over UDP and preserve its endpoints and session identifiers. The view targets the corresponding v3.1 Lean record fields. Operational raw resources expose only the commands bound to the validated capture.
+Mixed exports give each local MACsec association a distinct generation index linked to its observed installed-key identifier. Those indices identify records within the exported configuration. Equal printed key identifiers do not prove equal secret keys. Carrier records explicitly name L2TPv3 over UDP and preserve its endpoints and session identifiers. The view targets the corresponding v3.2 Lean record fields. Operational raw resources expose only the commands bound to the validated capture.
 
 Live collection currently exports typed forwarding inventories. FRR and BIRD configuration text, OVS tables, strongSwan observations, and MACsec channel observations are separately queryable. Their capability descriptions state whether the result has a structured interpretation or preserves the command text. A new live packet-execution configuration still needs the appropriate interpretation and finite checks before it can support the MSC execution theorems.
 
@@ -128,7 +128,7 @@ Saved management experiments use `parser: "management-session-v1"` and the `mana
 
 The management view also retains rejected Outer-side connection attempts and their filter counters. Its session identifier is derived from the capture and initial SYN; the experiment did not capture a numeric kernel connection ID. These observations support reasoning about who initiated a particular exchange. Administrator identity, complete interface coverage, and behavior of future sessions require their own evidence and model connections.
 
-Native IPsec captures use `parser: "native-ipsec-correlation-v1"` and the `native_ipsec_keys` view. The collector privately compares the key and salt material installed at both peers. The parser connects each equality record to the observed kernel association, active CHILD_SA, IKE session, public peer certificate, and daemon authentication log. It requires matching association inventories and installation references in two observation phases. The current parser supports AES-256-GCM tunnel ESP without marks or XFRM interface IDs.
+Device IPsec captures use `parser: "native-ipsec-correlation-v1"` and the `native_ipsec_keys` view. The collector privately compares the key and salt material installed at both peers. The parser connects each equality record to the observed kernel association, active CHILD_SA, IKE session, public peer certificate, and daemon authentication log. It requires matching association inventories and installation references in two observation phases. The current parser supports AES-256-GCM tunnel ESP without marks or XFRM interface IDs.
 
 Each native installation reference combines the device, public association fields, reported kernel installation time, and material hash. That reference identifies the captured installation; it is not a kernel-issued identifier. Private key values remain in collector memory. The exported hashes and equality records depend on the collector's truthful execution. Authentication success comes from strongSwan's records and retains the implementation assumption.
 

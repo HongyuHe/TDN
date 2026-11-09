@@ -92,9 +92,9 @@ def parse(path):
 
 
 def generate(data):
-    return f"""import TDN.Targets.PacketSizing
+    return f"""import TDN.Requirements.TunnelMtuAndFragmentationSpec
 
-namespace TDN.Imported.FreshPMTU
+namespace TDN.Deployments.FreshPMTU
 
 def initialIPLimit : Nat := {data["initial_mtu"]}
 def effectiveIPLimit : Nat := {data["effective_ip_limit"]}
@@ -115,7 +115,7 @@ theorem observed_useful_payload_fits :
     encodedLength (successfulUDPPayload + 40 + 8) ≤ blackMtu :=
   every_datagram_within_discovered_limit_fits _ (by decide)
 
-end TDN.Imported.FreshPMTU
+end TDN.Deployments.FreshPMTU
 """
 
 

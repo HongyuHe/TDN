@@ -4,44 +4,44 @@ import json
 from pathlib import Path
 
 CHECKS = """
-lemma ip_peer_tag_checks : Execution.FinitePeerTagAgreement devices := by
-  unfold Execution.FinitePeerTagAgreement Execution.StateBindsPolicy Execution.SameWireAssociation devices
+lemma ip_peer_tag_checks : DataPlaneForwarding.TableDrivenPeerTagAgreement devices := by
+  unfold DataPlaneForwarding.TableDrivenPeerTagAgreement DataPlaneForwarding.saMatchesPolicy DataPlaneForwarding.SameWireAssociation devices
   decide
 
-lemma ip_peer_wire_tag_agreement : Execution.PeerTagAgreement config.ip :=
-  Execution.finite_peer_tag_agreement_sound devices ifaces routes links [] ip_peer_tag_checks
+lemma ip_peer_wire_tag_agreement : DataPlaneForwarding.PeerTagAgreement config.ip :=
+  DataPlaneForwarding.table_driven_peer_tag_agreement_sound devices ifaces routes links [] ip_peer_tag_checks
 
 theorem reachable_IPsec_seals_have_actual_transmit_provenance
-    {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
-    (source : Targets.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish) :
+    {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+    (source : Requirements.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish) :
     ProducedIPBodies config finish.frame.body := by
-  apply all_executions_preserve_ip_provenance config run
+  apply all_traces_preserve_ip_provenance config run
   rcases source.2.2.2 with ⟨_, header, plain⟩ | ⟨_, header, plain⟩ <;>
     simp [ProducedIPBodies, plain]
 
 lemma route_owner_checks : ∀ route ∈ routes,
-    (Execution.ifaceAt ifaces route.egress).owner = (Execution.ifaceAt ifaces route.ingress).owner := by
+    (DataPlaneForwarding.ifaceAt ifaces route.egress).owner = (DataPlaneForwarding.ifaceAt ifaces route.ingress).owner := by
   unfold routes ifaces; decide
 
 lemma link_stack_checks : ∀ edge ∈ links,
-    (Execution.ifaceAt ifaces edge.1).stack = (Execution.ifaceAt ifaces edge.2).stack := by
+    (DataPlaneForwarding.ifaceAt ifaces edge.1).stack = (DataPlaneForwarding.ifaceAt ifaces edge.2).stack := by
   unfold links ifaces; decide
 
 lemma bridge_stack_checks : ∀ edge ∈ bridges,
-    (Execution.ifaceAt ifaces edge.1).stack = (Execution.ifaceAt ifaces edge.2).stack := by
+    (DataPlaneForwarding.ifaceAt ifaces edge.1).stack = (DataPlaneForwarding.ifaceAt ifaces edge.2).stack := by
   unfold bridges ifaces; decide
 
-lemma forward_checks : Execution.FiniteRoutedForwardChecks devices ifaces routes := by
-  unfold Execution.FiniteRoutedForwardChecks devices ifaces routes; decide
+lemma forward_checks : DataPlaneForwarding.TableDrivenRoutedForwardChecks devices ifaces routes := by
+  unfold DataPlaneForwarding.TableDrivenRoutedForwardChecks devices ifaces routes; decide
 
-lemma output_checks : Execution.FiniteOutputChecks devices ifaces := by
-  unfold Execution.FiniteOutputChecks devices ifaces; decide
+lemma output_checks : DataPlaneForwarding.TableDrivenOutputChecks devices ifaces := by
+  unfold DataPlaneForwarding.TableDrivenOutputChecks devices ifaces; decide
 
-lemma outer_route_checks : Execution.FiniteOuterRoutes devices ifaces routes := by
-  unfold Execution.FiniteOuterRoutes devices ifaces routes; decide
+lemma outer_route_checks : DataPlaneForwarding.TableDrivenOuterRoutes devices ifaces routes := by
+  unfold DataPlaneForwarding.TableDrivenOuterRoutes devices ifaces routes; decide
 
-lemma ip_local_conditions : Execution.LocalStackConditions config.ip expectedEncapStack := by
-  exact Execution.local_stack_conditions_of_routed_finite_checks devices ifaces routes links []
+lemma ip_local_conditions : DataPlaneForwarding.PerHopEncapConditions config.ip expectedEncapStack := by
+  exact DataPlaneForwarding.local_stack_conditions_of_routed_finite_checks devices ifaces routes links []
     route_owner_checks link_stack_checks (by simp)
     (by unfold devices; decide) forward_checks output_checks outer_route_checks
 
@@ -49,8 +49,8 @@ lemma mac_transmit_checks : ∀ iface ∈ macIfaces, MACTransmitCheck ifaces ifa
   unfold macIfaces ifaces; decide
 
 lemma mac_receive_checks : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
-    association.tag :: (Execution.ifaceAt ifaces iface.logicalIface).stack =
-      (Execution.ifaceAt ifaces iface.physicalIface).stack := by
+    association.tag :: (DataPlaneForwarding.ifaceAt ifaces iface.logicalIface).stack =
+      (DataPlaneForwarding.ifaceAt ifaces iface.physicalIface).stack := by
   unfold macIfaces ifaces; decide
 
 lemma mac_role_checks : ∀ sender ∈ macIfaces, ∀ transmitted,
@@ -65,8 +65,8 @@ lemma mac_secure_checks : ∀ iface ∈ macIfaces,
   unfold macIfaces; decide
 
 lemma carrier_output_checks : ∀ carrier ∈ carriers,
-    (Execution.ifaceAt ifaces carrier.virtualIface).stack =
-      (Execution.ifaceAt ifaces carrier.routingIface).stack := by
+    (DataPlaneForwarding.ifaceAt ifaces carrier.virtualIface).stack =
+      (DataPlaneForwarding.ifaceAt ifaces carrier.routingIface).stack := by
   unfold carriers ifaces; decide
 
 lemma carrier_route_checks : CarrierRouteChecks devices ifaces routes carriers := by
@@ -74,8 +74,8 @@ lemma carrier_route_checks : CarrierRouteChecks devices ifaces routes carriers :
 
 lemma carrier_peer_checks : ∀ sender ∈ carriers, ∀ receiver ∈ carriers,
     CarrierPeers sender receiver →
-      (Execution.ifaceAt ifaces sender.virtualIface).stack =
-        (Execution.ifaceAt ifaces receiver.virtualIface).stack := by
+      (DataPlaneForwarding.ifaceAt ifaces sender.virtualIface).stack =
+        (DataPlaneForwarding.ifaceAt ifaces receiver.virtualIface).stack := by
   unfold carriers ifaces CarrierPeers; decide
 
 lemma mixed_local_conditions : LocalConditions config expectedEncapStack :=
@@ -83,62 +83,62 @@ lemma mixed_local_conditions : LocalConditions config expectedEncapStack :=
     ip_local_conditions link_stack_checks bridge_stack_checks mac_transmit_checks mac_receive_checks
     mac_role_checks mac_secure_checks carrier_output_checks carrier_route_checks carrier_peer_checks
 
-lemma red_sources_checked : ∀ iface ∈ redSources, expectedEncapStack iface = [] ∧ config.ip.payloadOrigin iface := by
-  unfold redSources expectedEncapStack config MultiProtocolExecution.dataPlaneConfigFromRecords Execution.dataPlaneConfigFromRecords
-    Execution.expectedEncapStackFromRecords ifaces; decide
+lemma red_sources_checked : ∀ iface ∈ redSources, expectedEncapStack iface = [] ∧ config.ip.canOriginateTraffic iface := by
+  unfold redSources expectedEncapStack config MultiProtocolForwarding.dataPlaneModelFromRecords DataPlaneForwarding.dataPlaneModelFromRecords
+    DataPlaneForwarding.expectedEncapStackFromRecords ifaces; decide
 
 lemma gray_ifaces_checked : ∀ iface ∈ grayIfaces, expectedEncapStack iface = [1] := by
-  unfold grayIfaces expectedEncapStack Execution.expectedEncapStackFromRecords ifaces; decide
+  unfold grayIfaces expectedEncapStack DataPlaneForwarding.expectedEncapStackFromRecords ifaces; decide
 
 lemma black_ifaces_checked : ∀ iface ∈ blackIfaces, expectedEncapStack iface = [2, 1] := by
-  unfold blackIfaces expectedEncapStack Execution.expectedEncapStackFromRecords ifaces; decide
+  unfold blackIfaces expectedEncapStack DataPlaneForwarding.expectedEncapStackFromRecords ifaces; decide
 
 theorem every_red_origin_transmission_has_gray_or_black_protection
-    {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
-    (source : Targets.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish)
-    (ready : finish.datapathStage = .ready) :
+    {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+    (source : Requirements.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish)
+    (ready : finish.datapathStage = .egressReady) :
     (finish.iface ∈ grayIfaces → finish.frame.body.protectionLayers = [1]) ∧
     (finish.iface ∈ blackIfaces → finish.frame.body.protectionLayers = [2, 1]) := by
-  have initial := Targets.mixed_red_initial_invariant config expectedEncapStack redSources red_sources_checked source
-  have preserved := all_executions_preserve_stack config expectedEncapStack mixed_local_conditions run initial
+  have initial := Requirements.mixed_red_initial_invariant config expectedEncapStack redSources red_sources_checked source
+  have preserved := all_traces_preserve_stack config expectedEncapStack mixed_local_conditions run initial
   have layers : finish.frame.body.protectionLayers = expectedEncapStack finish.iface := by
     simpa only [ready] using preserved.2
   exact ⟨fun member => layers.trans (gray_ifaces_checked finish.iface member),
     fun member => layers.trans (black_ifaces_checked finish.iface member)⟩
 
-lemma outer_iface_shapes : ∀ iface ∈ ({} : Execution.IfaceData) :: ifaces,
+lemma outer_iface_shapes : ∀ iface ∈ ({} : DataPlaneForwarding.IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces; decide
 
-theorem actual_inner_encryption_precedes_outer {start finish : MultiProtocolExecution.State}
-    {actions : List MultiProtocolExecution.Action}
-    (source : Targets.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish)
-    (ready : finish.datapathStage = .ready) (black : finish.iface ∈ blackIfaces) :
-    MultiProtocolExecution.OrderedEncryptions config 1 2 start actions finish :=
-  Targets.mixed_black_transmission_has_ordered_encryptions config expectedEncapStack redSources blackIfaces
+theorem actual_inner_encryption_precedes_outer {start finish : MultiProtocolForwarding.State}
+    {actions : List MultiProtocolForwarding.Action}
+    (source : Requirements.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish)
+    (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ blackIfaces) :
+    MultiProtocolForwarding.OrderedEncryptions config 1 2 start actions finish :=
+  Requirements.mixed_black_transmission_has_ordered_encryptions config expectedEncapStack redSources blackIfaces
     mixed_local_conditions red_sources_checked black_ifaces_checked
-    (fun iface => outer_iface_shapes _ (Execution.iface_at_member_or_default ifaces iface))
+    (fun iface => outer_iface_shapes _ (DataPlaneForwarding.iface_at_member_or_default ifaces iface))
     source run ready black
 
-theorem every_mixed_execution_keeps_actual_layers {start finish : MultiProtocolExecution.State} {actions : List MultiProtocolExecution.Action}
+theorem every_mixed_forwarding_keeps_actual_layers {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
     (run : (lts config).MTr start actions finish)
-    (initial : StackInvariant config expectedEncapStack start) :
-    StackInvariant config expectedEncapStack finish :=
-  all_executions_preserve_stack config expectedEncapStack mixed_local_conditions run initial
+    (initial : EncapStackConsistent config expectedEncapStack start) :
+    EncapStackConsistent config expectedEncapStack finish :=
+  all_traces_preserve_stack config expectedEncapStack mixed_local_conditions run initial
 """
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--reports", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--config-module", default="TDN.Evidence.FreshPairingConfigs")
+    parser.add_argument("--config-module", default="TDN.Deployments.TunnelMatrix_Configs")
     args = parser.parse_args()
-    content = ["import " + args.config_module, "import TDN.Semantics.MultiProtocolProvenance", ""]
+    content = ["import " + args.config_module, "import TDN.Models.MultiProtocolSaOriginAttribution", ""]
     for report in sorted(args.reports.glob("*.json")):
         data = json.loads(report.read_text())
         namespace = data["namespace"]
-        content += ["namespace TDN.Imported." + namespace,
-                    "open MultiProtocolExecution LayeredFrame",
+        content += ["namespace TDN.Deployments." + namespace,
+                    "open MultiProtocolForwarding LayeredFrame",
                     "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0",
-                    CHECKS, "end TDN.Imported." + namespace, ""]
+                    CHECKS, "end TDN.Deployments." + namespace, ""]
     args.output.write_text("\n".join(content))

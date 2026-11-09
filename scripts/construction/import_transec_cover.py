@@ -215,8 +215,8 @@ def parse(bundle):
 
 
 def generate(data):
-    lines = ["import TDN.Targets.Transec", "", "namespace TDN.Imported.FreshTransecCover",
-             "open Targets CoverTraffic", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "",
+    lines = ["import TDN.Requirements.TrafficFlowConfidentialitySpec", "", "namespace TDN.Deployments.SnapshotTfcCoverTraffic",
+             "open Requirements CoverTraffic", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "",
              "/-- Parameters come from both recorded sender invocations and their settings readback. -/",
              "def sender : CoverTraffic.Config := ⟨512, 24, 64, 20000000⟩",
              "lemma valid_parameters : sender.Valid := by decide", "",
@@ -228,7 +228,7 @@ def generate(data):
              "    msc_transec_conditions (installations.map CoverInstallation.use) := by",
              "  exact (transec_conditions_from_cover_installations installations (by decide) (by decide)).1", "",
              "/-- Arbitrary arrivals and link failures preserve the size and capacity guarantee. -/",
-             "theorem all_sender_executions_obey_size_and_capacity : ScheduledCoverGuarantee sender :=",
+             "theorem all_sender_traces_obey_size_and_capacity : ScheduledCoverGuarantee sender :=",
              "  scheduled_cover_guarantee_from_parameters sender valid_parameters", ""]
     for endpoint in data["endpoints"]:
         name = endpoint["device"]
@@ -241,7 +241,7 @@ def generate(data):
                   "    ∀ row ∈ attempts" + name + ", row.1 = sender.recordBytes ∧",
                   "      row.2.1 ≤ sender.queueLimit ∧ row.2.2 ≤ " + str(endpoint["max_observed_lag_ns"]) + " := by decide",
                   "lemma recorded_attempt_count" + name + " : attempts" + name + ".length = " + str(len(rows)) + " := by decide", ""]
-    lines += ["end TDN.Imported.FreshTransecCover", ""]
+    lines += ["end TDN.Deployments.SnapshotTfcCoverTraffic", ""]
     return "\n".join(lines)
 
 

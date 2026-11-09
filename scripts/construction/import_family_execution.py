@@ -304,11 +304,11 @@ def main():
         fields = ["forwardRules := " + render_rules(combined["FORWARD"]),
                   "inputRules := " + render_rules(combined["INPUT"]),
                   "outputRules := " + render_rules(combined["OUTPUT"]),
-                  "outbound := " + association_list(policies[name]["out"]),
-                  "inbound := " + association_list(policies[name]["in"]),
+                  "egressPolicies := " + association_list(policies[name]["out"]),
+                  "ingressPolicies := " + association_list(policies[name]["in"]),
                   "states := " + lean_list(["⟨" + ", ".join(map(str, state)) + "⟩" for state in states[name]]),
                   "localAddresses := " + lean_list(list(map(str, local_addresses))),
-                  "recipientDomain := " + ("some 1" if device["role"] == "host" else "none")]
+                  "ifaceSecurityDomain := " + ("some 1" if device["role"] == "host" else "none")]
         records.append("{ " + ", ".join(fields) + " }")
         used += [value["observation_id"] for value in data.values()]
     sources = [port_index[i["id"]] for i in interfaces if i["name"] != "lo" and

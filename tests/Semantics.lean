@@ -25,8 +25,8 @@ def network : Network where
   linked := fun a b => (a = 1 ∧ b = 3) ∨ (a = 3 ∧ b = 4) ∨ (a = 4 ∧ b = 2)
   allowedPair := fun _ _ => True
 
-def inner : Seal := ⟨.inner, 1, 2, .ipsec⟩
-def outer : Seal := ⟨.outer, 3, 4, .ipsec⟩
+def inner : TunnelHeader := ⟨.inner, 1, 2, .ipsec⟩
+def outer : TunnelHeader := ⟨.outer, 3, 4, .ipsec⟩
 def start : State := ⟨.red, 1, level, []⟩
 def graySource : State := ⟨.gray, 1, level, [inner]⟩
 def grayOuter : State := ⟨.gray, 3, level, [inner]⟩

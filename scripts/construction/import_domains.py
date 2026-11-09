@@ -70,7 +70,7 @@ def generate(output,report_path):
         content=safe_path(root,entry["path"]).read_bytes()
         require(hashlib.sha256(content).hexdigest()==entry["sha256"] and len(content)==entry["bytes"],"declaration hash/size mismatch")
     configs=validate_declaration(json.loads(path.read_text()))
-    lines=["import TDN.Evidence.DomainTypes","namespace TDN.Imported.Domains","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments.DomainTypes","namespace TDN.Deployments.Domains","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
     reports=[]
     for config in configs:
         ns=identifier(config["configuration_id"])
@@ -90,7 +90,7 @@ def generate(output,report_path):
             lines.append("theorem declared_additional_unclassified : ∃ l ∈ levels, l.classification = \"UNCLASSIFIED\" := by unfold levels; decide")
         lines.append("end "+ns)
         reports.append({"configuration_id":config["configuration_id"],"spec_sha256":config["spec_sha256"],"network_count":len(config["red_networks"]),"level_count":len(levels),"qualifications":config["qualifications"],"runtime_binding":"pending matching immutable snapshot/spec hash and observed interface inventory"})
-    lines.append("end TDN.Imported.Domains")
+    lines.append("end TDN.Deployments.Domains")
     output.write_text("\n\n".join(lines)+"\n")
     report_path.write_text(json.dumps({"declaration_sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"configurations":reports,"status":"declared semantic/configuration facts only","full_groups_established":[]},indent=2)+"\n")
     print(json.dumps({"declared_configurations":len(configs)}))

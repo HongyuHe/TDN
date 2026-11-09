@@ -1,4 +1,4 @@
-import TDN.Targets.Topology
+import TDN.Requirements.MscFirewallWaypointingTheorems
 
 namespace TDN.Tests.Placement
 abbrev Node := Fin 4
@@ -13,7 +13,7 @@ def side (a : Node) : Nat := if a = 2 then 1 else 0
 
 /-- Nonempty non-Internet model: the connection to Black passes through the firewall. -/
 theorem noninternet_mediated_connection :
-    Targets.msc_outer_firewall_placement true false false edge gray outer firewall black
+    Requirements.msc_outer_firewall_placement true false false edge gray outer firewall black
       (fun _ => False) inner (fun _ _ => False) (fun _ _ => False)
       (Relation.ReflTransGen edge) := by
   refine ⟨by decide, ?_, ?_, ?_, ?_⟩
@@ -33,7 +33,7 @@ theorem noninternet_mediated_connection :
 
 /-- Trusted, non-public transport permits a direct Black connection without a firewall. -/
 theorem trusted_direct_connection :
-    Targets.msc_outer_firewall_placement false false false
+    Requirements.msc_outer_firewall_placement false false false
       (fun a b : Node => a = 0 ∧ b = 2) gray outer (fun _ => False) black
       (fun _ => False) inner (fun _ _ => False) (fun _ _ => False)
       (fun a b => a = 0 ∧ b = 2) := by

@@ -88,7 +88,7 @@ def inventory(root):
 
 def generate(output,report_path):
     report=inventory(source_path("native_process_inventory"))
-    lines=["import TDN.Targets.Operations","namespace TDN.Imported.NativeInventory","set_option maxRecDepth 100000"]
+    lines=["import TDN.Requirements.Operations","namespace TDN.Deployments.NativeInventory","set_option maxRecDepth 100000"]
     dns=[]
     for row in report["rows"]:
         addresses=[]
@@ -96,14 +96,14 @@ def generate(output,report_path):
             address=ipaddress.ip_address(value)
             addresses.append(("Sum.inl" if address.version==4 else "Sum.inr")+" ⟨"+str(int(address))+", by decide⟩")
         dns.append("("+quoted(row["scope"])+", "+lean_list(addresses)+")")
-    lines.append("def resolverConfigurations : List (String × List Targets.DNSAddress) := "+lean_list(dns))
+    lines.append("def resolverConfigurations : List (String × List Requirements.DNSAddress) := "+lean_list(dns))
     lines.append("theorem every_recorded_component_has_specified_dns_server : resolverConfigurations ≠ [] ∧ ∀ c ∈ resolverConfigurations, c.2 ≠ [] := by unfold resolverConfigurations; decide")
     lines.append("def rootAccess : List (String × Bool × Bool) := "+lean_list(["("+quoted(r["scope"])+", "+str(r["root_password_locked"]).lower()+", "+str(r["root_empty_password"]).lower()+")" for r in report["rows"]]))
     lines.append("theorem recorded_root_passwords_locked : rootAccess ≠ [] ∧ ∀ r ∈ rootAccess, r.2.1 = true ∧ r.2.2 = false := by unfold rootAccess; decide")
     lines.append("def routingNames : List String := "+lean_list([quoted(s) for s in ROUTING_NAMES]))
     lines.append("def encryptorProcesses : List (String × List String) := "+lean_list(["("+quoted(r["scope"])+", "+lean_list([quoted(s) for s in r["process_names"]])+")" for r in report["rows"] if r["role"] in {"inner","outer"}]))
     lines.append("theorem no_recorded_encryptor_process_has_known_routing_name : encryptorProcesses ≠ [] ∧ ∀ c ∈ encryptorProcesses, ∀ name ∈ c.2, name ∉ routingNames := by unfold encryptorProcesses routingNames; decide")
-    lines.append("end TDN.Imported.NativeInventory")
+    lines.append("end TDN.Deployments.NativeInventory")
     output.write_text("\n\n".join(lines)+"\n")
     report_path.write_text(json.dumps(report,indent=2)+"\n")
     print(json.dumps({"components":len(report["rows"]),"frr_sidecars":len(report["sidecars"]),"unavailable_commands":len(report["unavailable_commands"])}))

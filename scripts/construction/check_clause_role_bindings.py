@@ -26,7 +26,7 @@ def check():
     return {"gray_firewall_indices": gf, "outer_peers": peers,
             "source_report": str(report_path), "report_sha256": hashlib.sha256(report_path.read_bytes()).hexdigest(),
             "graph_validation": graph["validation"], "ike_context_validation": context["source_manifest_sha256"],
-            "scope": "Role indices and actual reciprocal Outer peer addresses for FreshOuterPeerOutput and FreshGrayAddressClauses. Complete hook semantics and raw filter correspondence remain in the execution import."}
+            "scope": "Role indices and actual reciprocal Outer peer addresses for SnapshotOuterPeerOutput and SnapshotGrayAddressClauses. Complete hook semantics and raw filter correspondence remain in the execution import."}
 
 
 if __name__ == "__main__":

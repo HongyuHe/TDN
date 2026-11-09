@@ -106,7 +106,7 @@ def import_mka(root):
 def generate(output,report_path):
     ike=import_ike(source_path("ikev2"))
     mka=[import_mka(source_path(name)) for name in ["mka_matching","mka_mismatched"]]
-    lines=["import TDN.Evidence.EventTypes","namespace TDN.Imported.Events","set_option maxRecDepth 100000"]
+    lines=["import TDN.Deployments.EventTypes","namespace TDN.Deployments.Events","set_option maxRecDepth 100000"]
     fields=[str(i) for i in ike["positions"]]+[quoted(ike["initial_key_exchange"]),quoted(ike["additional_key_exchange"]),lean_list([quoted(a) for a in ike["signature_algorithms"]]),quoted(ike["esp_cipher"]),lean_list([str(i) for i in ike["initial_message_bytes"]])]+[str(i) for i in ike["fragment_counts"]]+["2",str(ike["useful_replies"])]
     lines.append("def objectiveExchange : Evidence.IKEExchangeObservation := ⟨"+", ".join(fields)+"⟩")
     lines.append("theorem observed_objective_exchange_sequence : Evidence.ObservedObjectiveSequence objectiveExchange := by unfold Evidence.ObservedObjectiveSequence objectiveExchange; decide")
@@ -116,7 +116,7 @@ def generate(output,report_path):
         lines.append("def "+name+" : Evidence.MKAExperiment := ⟨"+str(case["mode"]=="matching").lower()+", "+lean_list(peer_values)+", "+str(case["transmitted"])+", "+str(case["received"])+"⟩")
         prop="ObservedMatchingMKASuccess" if case["mode"]=="matching" else "ObservedMismatchedMKARefusal"
         lines.append("theorem "+case["mode"]+"_mka_outcome : Evidence."+prop+" "+name+" := by unfold Evidence."+prop+" "+name+"; decide")
-    lines.append("end TDN.Imported.Events")
+    lines.append("end TDN.Deployments.Events")
     output.write_text("\n\n".join(lines)+"\n")
     report_path.write_text(json.dumps({"ike":ike,"mka":mka,"full_groups_established":[],"trust":"Collector truth, complete selected records, and log/kernel-state semantics; finite selected experiments only"},indent=2)+"\n")
     print(json.dumps({"ike_exchange":True,"mka_cases":len(mka)}))

@@ -59,7 +59,7 @@ class ConfigurationRecordTests(unittest.TestCase):
         for values in [[], [0], [28801]]:
             records = checks.Records(ROOT)
             records.get("FreshVPNObservedClauses", "espHardSeconds")
-            key = "TDN.Imported.FreshVPNObservedClauses.espHardSeconds"
+            key = "TDN.Deployments.FreshVPNObservedClauses.espHardSeconds"
             records.cache["FreshVPNObservedClauses"][key] = values
             result = next(r for r in checks.evaluate(records)["results"] if "RG-023" in r["groups"])
             self.assertFalse(result["passed"])
@@ -88,7 +88,7 @@ class ConfigurationRecordTests(unittest.TestCase):
                     for field in ["general", "application"]}
         actual = set(re.findall(r"^#check (\S+)", (ROOT / "tests/ProofScope.lean").read_text(), re.M))
         self.assertEqual(actual, expected)
-        for directory, forbidden in [("Semantics", {"Evidence", "Targets"}), ("Targets", {"Evidence"})]:
+        for directory, forbidden in [("Semantics", {"Evidence", "Requirements"}), ("Requirements", {"Evidence"})]:
             for path in ROOT.joinpath("TDN", directory).glob("*.lean"):
                 imports = re.findall(r"^import TDN\.(\w+)", path.read_text(), re.M)
                 self.assertFalse(set(imports) & forbidden, str(path))

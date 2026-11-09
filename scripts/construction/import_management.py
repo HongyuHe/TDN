@@ -62,7 +62,7 @@ def import_management(root):
 
 def generate(output,report_path,source_key="coherent_management",namespace="Management"):
     report=import_management(source_path(source_key))
-    lines=["import TDN.Evidence.SupplementalTypes","namespace TDN.Imported."+namespace,"def samples : List Evidence.TLSSample := "+lean_list([tls_lean(s) for s in report["samples"]]),"theorem recorded_tls_outcomes : Evidence.TLSRecordedOutcomes samples := by unfold Evidence.TLSRecordedOutcomes samples; decide","theorem both_test_branches_present : (∃ s ∈ samples, s.clientCertificate = true) ∧ (∃ s ∈ samples, s.clientCertificate = false) := by unfold samples; decide","end TDN.Imported."+namespace]
+    lines=["import TDN.Deployments.SupplementalTypes","namespace TDN.Deployments."+namespace,"def samples : List Evidence.TLSSample := "+lean_list([tls_lean(s) for s in report["samples"]]),"theorem recorded_tls_outcomes : Evidence.TLSRecordedOutcomes samples := by unfold Evidence.TLSRecordedOutcomes samples; decide","theorem both_test_branches_present : (∃ s ∈ samples, s.clientCertificate = true) ∧ (∃ s ∈ samples, s.clientCertificate = false) := by unfold samples; decide","end TDN.Deployments."+namespace]
     output.write_text("\n\n".join(lines)+"\n")
     report_path.write_text(json.dumps(report,indent=2)+"\n")
     print(json.dumps({"tls_samples":len(report["samples"])}))

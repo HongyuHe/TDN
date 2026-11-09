@@ -12,7 +12,7 @@ The active construction workflow uses the [evidence MCP server](../../mcp/README
 | [Network profiles](../../data/extraction/networks/profiles/README.md) | Five supported MSC topologies, generator inputs, mappings, and diagrams. |
 | `import_*.py` and related parsing helpers | Retained compatibility entry points and parsers used by regression tests and historical evidence reconstruction. |
 
-## Run supervised v3.1 construction
+## Run supervised construction
 
 `start_v31.py` creates a new UTC-stamped run, preserves the current source checkpoint, and prepares a Constructor workspace under `/tmp`. The workspace contains the active theory, permitted source requirements, current campaign evidence, and pinned Lean dependencies. Repository history and the archived theory are excluded. The generated execution wrapper denies access to the original project and Codex directories. Agents must use that wrapper for filesystem commands; the tool service itself is not confined by the wrapper.
 
@@ -24,8 +24,8 @@ The supervisor launches the independent Constructor with GPT-6.1 Sol at `xhigh`.
 
 ```sh
 python3 scripts/construction/prepare_interpretation.py \
-  --run v3.1-TIMESTAMP \
-  --workspace /tmp/tdn-v3.1-TIMESTAMP/constructor \
+  --run v3.2-TIMESTAMP \
+  --workspace /tmp/tdn-v3.2-TIMESTAMP/constructor \
   --round 1
 ```
 
@@ -52,7 +52,7 @@ lake env lean scripts/construction/export_proof_audit.lean
 
 For a completed individual RG, pass `--groups RG-039` to `check_proof_submission.py` and provide a proof map containing that RG. The accepted map still contains all 24 specifications. The default checks all 24 groups. Selecting one group changes the submission scope; it preserves the checks for specification changes, unexpected axioms and dependencies on concrete evidence.
 
-When a completed RG changes a specification's meaning, `prepare_interpretation.py --groups RG-039` limits the blind Interpreter's targets to that group. The supervisor's export still records all 24 definitions for change tracking. Use `--import-module TDN.Targets.CompleteSpecifications` to build the specification modules without rebuilding unrelated snapshot proofs. Additional `--import-module` arguments are supported when the specification map spans several modules. The default imports `TDN` and gives the Interpreter all 24 targets.
+When a completed RG changes a specification's meaning, `prepare_interpretation.py --groups RG-039` limits the blind Interpreter's targets to that group. The supervisor's export still records all 24 definitions for change tracking. Use `--import-module TDN.Requirements.MasterMscRequirementSpecs` to build the specification modules without rebuilding unrelated snapshot proofs. Additional `--import-module` arguments are supported when the specification map spans several modules. The default imports `TDN` and gives the Interpreter all 24 targets.
 
 A frozen candidate can supply its existing compiled definitions through `--compiled-export FILE --compiled-export-sha256 HASH` while the independent validation build runs. The preparation script verifies the hash, preserves the supplied definitions and source hashes, and tests the Interpreter's access restrictions. It does not repeat the build. Acceptance still requires the independent build to export exactly the same definitions; the preparation manifest records that outstanding check.
 
@@ -89,4 +89,4 @@ The retained importers and shared parsing helpers still have proof, MCP, or regr
 
 Unique proof-review records and timestamped network snapshots retain their original paths and hashes. The completed script-relocation rehearsal and superseded untracked evidence values were archived outside the repository during the November 3 cleanup. Current proof inputs remain under `data/evidence/`.
 
-The [publication tools](../publication/README.md) rebuild the hierarchy and ontology and validate their source links. Their retained v3.1 status records are under `data/publication/v3.1/`.
+The [publication tools](../publication/README.md) rebuild the hierarchy and ontology and validate their source links. Their current source mappings are under `data/publication/v3.2/`. The original review decisions remain available under `data/publication/v3.1/`.

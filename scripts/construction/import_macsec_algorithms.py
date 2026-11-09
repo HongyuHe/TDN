@@ -155,12 +155,12 @@ def generate(data):
                        ", " + str(device["protection_bits"]) + "⟩")
     vectors = ["(" + quoted(row["name"]) + ", " + quoted(row["expected"]) + ", " +
                quoted(row["observed"]) + ")" for row in data["finite_vectors"]["results"]]
-    return """import TDN.Targets.Protocol
+    return """import TDN.Requirements.Protocol
 
-namespace TDN.Imported.FinalMACsecAlgorithms
+namespace TDN.Deployments.FinalMACsecAlgorithms
 
 /-- Exact source/runtime bindings and their implementation contract are in the import report. -/
-def devices : List Targets.MACsecAlgorithms := """ + lean_list(entries) + """
+def devices : List Requirements.MACsecAlgorithms := """ + lean_list(entries) + """
 def publicVectorResults : List (String × String × String) := """ + lean_list(vectors) + """
 
 lemma nonempty_devices : devices ≠ [] := by decide
@@ -170,14 +170,14 @@ lemma data_protection_checks : ∀ device ∈ devices,
     device.protectionAlgorithm = "AES GCM" ∧ device.protectionBits = 256 := by decide
 
 theorem selected_runtime_algorithms :
-    Targets.msc_macsec_encryption_and_key_wrap devices :=
-  Targets.macsec_algorithms_from_local_checks devices key_distribution_checks data_protection_checks
+    Requirements.msc_macsec_encryption_and_key_wrap devices :=
+  Requirements.macsec_algorithms_from_local_checks devices key_distribution_checks data_protection_checks
 
 /-- Finite public test outputs, with no universal KDF correctness claim. -/
 theorem twelve_public_vectors_match : publicVectorResults.length = 12 ∧
     ∀ result ∈ publicVectorResults, result.2.1 = result.2.2 := by decide
 
-end TDN.Imported.FinalMACsecAlgorithms
+end TDN.Deployments.FinalMACsecAlgorithms
 """
 
 
