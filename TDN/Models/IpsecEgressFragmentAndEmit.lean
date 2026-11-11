@@ -30,7 +30,7 @@ def bareEmission {Key : Type} (codec : Codec Key) (source : Datagram) (frame : F
   | .ethernet header =>
       { body := .ethernet header, networkHeader := source.networkHeader, transportHeader := [],
         application := source.application, fragments := [] }
-  | .macsec _ _ | .carrier _ _ => source
+  | .macsec _ _ | .macsecPdu _ _ _ _ | .carrier _ _ => source
 
 
 def wireEmission {Key : Type} (codec : Codec Key) (source : Datagram) (frame : Frame) (mtu : Nat) : Datagram :=
@@ -204,6 +204,7 @@ lemma bare_emission_IP_properties {Key : Type} (codec : Codec Key) (source : Dat
     simp only [encodeNetworkHeader, ipv4, ↓reduceIte, encoded_IPv4_flags _ _ _ _ (by decide : 0 < 65536)]
     decide
   | macsec association contents => simp only [body, Body.IPsecOnly] at shape
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp only [body, Body.IPsecOnly] at shape
   | carrier endpoint contents => simp only [body, Body.IPsecOnly] at shape
 
 lemma reachable_visible_representable (source : Datagram) (decoded : source.Decoded)
@@ -236,6 +237,7 @@ lemma reachable_visible_representable (source : Datagram) (decoded : source.Deco
     omega
   | ethernet header => simp only [body, Body.visibleHeader] at nominalVisible; cases nominalVisible
   | macsec association contents => simp only [body, Body.IPsecOnly] at shape
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp only [body, Body.IPsecOnly] at shape
   | carrier endpoint contents => simp only [body, Body.IPsecOnly] at shape
 
 

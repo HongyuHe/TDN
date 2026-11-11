@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:,">
-<title>TDN v3.2 | Role ontology</title>
+<title>TDN __THEORY_VERSION__ | Role ontology</title>
 <style>
 :root{--bg:#f8fafc;--text:#0f172a;--muted:#526277;--panel:#fff;--border:#d8e0eb;--cyan:#087e98;--purple:#6d3cc5;--green:#087950;--amber:#986400;--code:#f1f5f9;--selected:#e6f5f8;color-scheme:light}
 :root[data-theme=dark]{--bg:#020617;--text:#f8fafc;--muted:#a6b3c7;--panel:#0f172a;--border:#334155;--cyan:#67d9e8;--purple:#c4a1ff;--green:#6ee7b7;--amber:#fcd34d;--code:#172337;--selected:#153744;color-scheme:dark}
@@ -17,8 +17,8 @@
 </style>
 </head>
 <body>
-<header class="topbar"><div class="brand">TDN v3.2</div><div class="topbar-actions"><button id="download-owl">Download OWL</button><button id="download-ttl">Download Turtle</button><button id="download-json">Download graph</button><button id="theme" aria-pressed="false">Dark theme</button></div></header>
-<section class="hero"><div><h1>CSfC MSC Role Ontology</h1><p>Explore the document’s role hierarchy and how v3.2 represents each role in Lean. Select a role for its current code links, chosen interpretations, and original source passages.</p></div><div class="stats" aria-label="Ontology counts"><div class="stat"><strong id="role-count"></strong><span>extracted roles</span></div><div class="stat"><strong id="subtype-count"></strong><span>subtype links</span></div><div class="stat"><strong id="association-count"></strong><span>associations</span></div></div></section>
+<header class="topbar"><div class="brand">TDN __THEORY_VERSION__</div><div class="topbar-actions"><button id="download-owl">Download OWL</button><button id="download-ttl">Download Turtle</button><button id="download-json">Download graph</button><button id="theme" aria-pressed="false">Dark theme</button></div></header>
+<section class="hero"><div><h1>CSfC MSC Role Ontology</h1><p>Explore the document’s role hierarchy and how __THEORY_VERSION__ represents each role in Lean. Select a role for its current code links, chosen interpretations, and original source passages.</p></div><div class="stats" aria-label="Ontology counts"><div class="stat"><strong id="role-count"></strong><span>extracted roles</span></div><div class="stat"><strong id="subtype-count"></strong><span>subtype links</span></div><div class="stat"><strong id="association-count"></strong><span>associations</span></div></div></section>
 <noscript><p class="noscript">JavaScript is needed for the interactive explorer. The adjacent ontology.md and ontology.owl files provide the complete hierarchy and source evidence.</p></noscript>
 <main class="workspace">
 <aside class="panel" aria-label="Browse roles"><div class="panel-head"><h2>Find a role</h2></div><div class="search-wrap"><label for="search">Search names, aliases, or role IDs</label><input id="search" type="search" placeholder="Try “inner VPN”"><select id="family" aria-label="Filter by topic"><option value="all">All topics</option></select><select id="representation" aria-label="Filter by Lean representation"><option value="all">All mappings</option></select><p id="result-count" class="small muted" aria-live="polite"></p></div><div id="role-list" class="role-list"></div></aside>
@@ -26,7 +26,7 @@
 <aside class="panel detail" aria-label="Source evidence"><div class="panel-head"><h2>Meaning and evidence</h2><p class="small muted">Current Lean representation and source passages</p></div><div class="detail-body" id="details"></div></aside>
 </main>
 <section class="guide"><div><h3>Read a subtype link</h3><p>“Inner VPN Gateway is a type of VPN Gateway” includes every Inner VPN Gateway in the broader VPN Gateway class. Multiple parents preserve both technology and inner/outer roles.</p></div><div><h3>Keep associations separate</h3><p>Links such as “administers” and “may be realized as” preserve documented relationships. They are annotations in OWL and do not impose a relationship on every member of a class.</p></div><div><details id="limits"><summary>What the ontology leaves unasserted</summary><p>The organizing root and topic filters help navigation. Missing relationships remain unknown. The export asserts no class equivalence, disjointness, deployed device instances, or CSfC compliance.</p><ul id="excluded"></ul></details></div></section>
-<footer class="footer">Updated for TDN v3.2. The mapping checker verifies every role, code reference and pinned Lean source hash. Each role includes associated obligations, inherited parent obligations, current Lean code, English summaries, and recorded proof status. Generated from the CSfC MSC v1.3.0 extraction. The source-backed subtype decisions and their interpretation status remain inspectable. Design follows the TDN walkthrough’s light theme. The hierarchy is available offline in OWL RDF/XML, Turtle, JSON, and Markdown.</footer>
+<footer class="footer">Updated for TDN __THEORY_VERSION__. The mapping checker verifies every role, code reference and pinned Lean source hash. Each role includes associated obligations, inherited parent obligations, current Lean code, English summaries, and recorded proof status. Generated from the CSfC MSC v1.3.0 extraction. The source-backed subtype decisions and their interpretation status remain inspectable. Design follows the TDN walkthrough’s light theme. The hierarchy is available offline in OWL RDF/XML, Turtle, JSON, and Markdown.</footer>
 <script id="ontology-data" type="application/json">__ONTOLOGY_DATA__</script>
 <script>
 'use strict';
@@ -162,7 +162,7 @@ function codeLink(reference){
 function theoryDetail(node){
  const section=el('section',undefined,'theory-detail'),record=node.theory;
  if(!record)return section;
- section.append(el('h3','Representation in TDN v3.2'),el('span',data.theory.status_labels[record.status],'badge'),el('p',record.meaning));
+ section.append(el('h3','Representation in TDN __THEORY_VERSION__'),el('span',data.theory.status_labels[record.status],'badge'),el('p',record.meaning));
  for(const expression of record.expressions)section.append(el('code',expression,'theory-expression'));
  if(record.references.length){
   const list=el('ul',undefined,'details-list');

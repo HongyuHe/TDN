@@ -1,0 +1,108 @@
+[
+  {
+    "stage": "keys-before",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/tools/native_ipsec_correlation.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-shared-four-levels.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/shared-sizing-cohort-001/keys-before"
+    ],
+    "started_at": "2026-11-04T12:21:54.175351+00:00",
+    "ended_at": "2026-11-04T12:22:14.540552+00:00",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "collector_sha256": "c85717963bb6e5f1bc7f2d8958f38f11fe643ac7e3aa66aa14f29c61e9027aa6"
+  },
+  {
+    "stage": "snapshot",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/tools/collect_native_v2.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-shared-four-levels.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/shared-sizing-cohort-001/snapshot",
+      "--configuration-id",
+      "native-shared-four-levels",
+      "--run-id",
+      "v3.1-20261104-continuation",
+      "--platform-interface-names",
+      "gre0,gretap0,erspan0"
+    ],
+    "started_at": "2026-11-04T12:22:14.541181+00:00",
+    "ended_at": "2026-11-04T12:25:21.101633+00:00",
+    "returncode": 0,
+    "stdout": "{\"snapshot_id\": \"snapshot\", \"observations\": 1061, \"failures\": 0, \"converged\": true, \"probes\": 56, \"unexpected_probes\": []}\n",
+    "stderr": "",
+    "collector_sha256": "aa6cd2382560f833dfe81a0d9fd82d8fb35e52dda90890e3922e66dee07c1d81"
+  },
+  {
+    "stage": "processing",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/tools/collect_processing.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-shared-four-levels.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/shared-sizing-cohort-001/processing"
+    ],
+    "started_at": "2026-11-04T12:25:21.102522+00:00",
+    "ended_at": "2026-11-04T12:26:38.643274+00:00",
+    "returncode": 0,
+    "stdout": "{\"records\": 868, \"failures\": []}\n",
+    "stderr": "",
+    "collector_sha256": "c25801722271687cf9b22e5d149e7bc00486f459c3842f20a77c90f335a42518"
+  },
+  {
+    "stage": "sizing",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/tools/packet_size_lab.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-shared-four-levels.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/shared-sizing-cohort-001/sizing",
+      "--source",
+      "V31F_R_A1",
+      "--destination",
+      "10.2.1.10",
+      "--ports",
+      "V31F_R_A1:red",
+      "V31F_I_A1:red",
+      "V31F_I_A1:gray",
+      "V31F_O_A1:gray",
+      "V31F_O_A1:black",
+      "V31F_O_B1:black",
+      "V31F_O_B1:gray",
+      "V31F_I_B1:gray",
+      "V31F_I_B1:red",
+      "V31F_R_B1:red"
+    ],
+    "started_at": "2026-11-04T12:26:38.644341+00:00",
+    "ended_at": "2026-11-04T12:26:58.149733+00:00",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "collector_sha256": "8dc20d553967ca7523fc7f686b6d75d90e8570071e2df76bf10bee32415fdd4b"
+  },
+  {
+    "stage": "keys-after",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/tools/native_ipsec_correlation.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-shared-four-levels.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/shared-sizing-cohort-001/keys-after"
+    ],
+    "started_at": "2026-11-04T12:26:58.150685+00:00",
+    "ended_at": "2026-11-04T12:27:18.608248+00:00",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "collector_sha256": "c85717963bb6e5f1bc7f2d8958f38f11fe643ac7e3aa66aa14f29c61e9027aa6"
+  }
+]

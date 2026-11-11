@@ -1,0 +1,463 @@
+{
+  "schema": "macsec-authentication-v1",
+  "inputs": {
+    "baseProfiles": {
+      "path": "data/evidence/macsecProtection/MacsecProtectionProfiles.json",
+      "pathBase": "project-root",
+      "sha256": "c23c0b3720bea717d374d338f45852cb96f815e3d10d2c79b88ada03c704c2eb"
+    },
+    "completionFieldMap": {
+      "path": "data/evidence/macsecAuthentication/CompletionFieldMap.json",
+      "pathBase": "project-root",
+      "sha256": "c9a0991c7e434c29ec31c4142ab001087126761f86cb6d3dbe1b6eb7e8ae98d2"
+    },
+    "exports": {
+      "forward": {
+        "path": "data/evidence/macsecAuthentication/exports/eap-tls-forward-v32-complete-causal-authentication_complete_history.json",
+        "pathBase": "project-root",
+        "sha256": "ad9cd7843077b270fe841f936adbdc34f18201bbb54b72ddebd1c97b768901d2"
+      },
+      "reverse": {
+        "path": "data/evidence/macsecAuthentication/exports/eap-tls-reverse-v32-complete-causal-authentication_complete_history.json",
+        "pathBase": "project-root",
+        "sha256": "be546a2f320fb6938316c06f5c921e9363aa7b6901d5895e5660a5762e89b442"
+      }
+    }
+  },
+  "captures": {
+    "forward": {
+      "collection": "eap-tls-forward-v32-complete-causal",
+      "export": "exports/eap-tls-forward-v32-complete-causal-authentication_complete_history.json",
+      "exportSha256": "ad9cd7843077b270fe841f936adbdc34f18201bbb54b72ddebd1c97b768901d2",
+      "manifestSha256": "11c7ffa32ab400dd86b62b8d1c02b3f66b087a1ccf66292bd4ba8b04b1163ebf",
+      "retainedRawNodes": [
+        {
+          "position": 0,
+          "device": "AS",
+          "observation": "cmd-0118",
+          "line": 3239
+        },
+        {
+          "position": 1,
+          "device": "AS",
+          "observation": "cmd-0118",
+          "line": 3264
+        },
+        {
+          "position": 2,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2522
+        },
+        {
+          "position": 3,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2534
+        },
+        {
+          "position": 4,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2543
+        },
+        {
+          "position": 5,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2554
+        },
+        {
+          "position": 6,
+          "device": "P1",
+          "observation": "cmd-0116",
+          "line": 1928
+        },
+        {
+          "position": 7,
+          "device": "P1",
+          "observation": "cmd-0116",
+          "line": 1956
+        },
+        {
+          "position": 8,
+          "device": "P1",
+          "observation": "cmd-0116",
+          "line": 1997
+        },
+        {
+          "position": 9,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2584
+        },
+        {
+          "position": 10,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2604
+        },
+        {
+          "position": 11,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2691
+        },
+        {
+          "position": 12,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2720
+        },
+        {
+          "position": 13,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2729
+        },
+        {
+          "position": 14,
+          "device": "P0",
+          "observation": "cmd-0119",
+          "line": 2740
+        },
+        {
+          "position": 15,
+          "device": "P1",
+          "observation": "cmd-0116",
+          "line": 2067
+        },
+        {
+          "position": 16,
+          "device": "P1",
+          "observation": "cmd-0116",
+          "line": 2127
+        },
+        {
+          "position": 17,
+          "device": "P1",
+          "observation": "cmd-0116",
+          "line": 2138
+        }
+      ],
+      "retainedEdges": [
+        {
+          "before": 0,
+          "after": 1,
+          "kind": "process_order"
+        },
+        {
+          "before": 1,
+          "after": 2,
+          "kind": "matching_message"
+        },
+        {
+          "before": 2,
+          "after": 3,
+          "kind": "process_order"
+        },
+        {
+          "before": 3,
+          "after": 4,
+          "kind": "process_order"
+        },
+        {
+          "before": 3,
+          "after": 6,
+          "kind": "matching_message"
+        },
+        {
+          "before": 4,
+          "after": 5,
+          "kind": "process_order"
+        },
+        {
+          "before": 5,
+          "after": 9,
+          "kind": "process_order"
+        },
+        {
+          "before": 9,
+          "after": 10,
+          "kind": "process_order"
+        },
+        {
+          "before": 10,
+          "after": 11,
+          "kind": "process_order"
+        },
+        {
+          "before": 11,
+          "after": 12,
+          "kind": "process_order"
+        },
+        {
+          "before": 12,
+          "after": 13,
+          "kind": "process_order"
+        },
+        {
+          "before": 12,
+          "after": 15,
+          "kind": "matching_message"
+        },
+        {
+          "before": 13,
+          "after": 14,
+          "kind": "process_order"
+        },
+        {
+          "before": 6,
+          "after": 7,
+          "kind": "process_order"
+        },
+        {
+          "before": 7,
+          "after": 8,
+          "kind": "process_order"
+        },
+        {
+          "before": 8,
+          "after": 9,
+          "kind": "matching_message"
+        },
+        {
+          "before": 15,
+          "after": 16,
+          "kind": "process_order"
+        },
+        {
+          "before": 16,
+          "after": 17,
+          "kind": "process_order"
+        }
+      ],
+      "sourceMap": {
+        "path": "data/evidence/macsecAuthentication/CompletionFieldMap.json",
+        "pathBase": "project-root",
+        "sha256": "c9a0991c7e434c29ec31c4142ab001087126761f86cb6d3dbe1b6eb7e8ae98d2"
+      }
+    },
+    "reverse": {
+      "collection": "eap-tls-reverse-v32-complete-causal",
+      "export": "exports/eap-tls-reverse-v32-complete-causal-authentication_complete_history.json",
+      "exportSha256": "be546a2f320fb6938316c06f5c921e9363aa7b6901d5895e5660a5762e89b442",
+      "manifestSha256": "1728dd149095bcb70a0d393b202372c250d4968d19831a31304dc748533686d2",
+      "retainedRawNodes": [
+        {
+          "position": 0,
+          "device": "AS",
+          "observation": "cmd-0104",
+          "line": 3239
+        },
+        {
+          "position": 1,
+          "device": "AS",
+          "observation": "cmd-0104",
+          "line": 3264
+        },
+        {
+          "position": 2,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2522
+        },
+        {
+          "position": 3,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2534
+        },
+        {
+          "position": 4,
+          "device": "P0",
+          "observation": "cmd-0105",
+          "line": 1928
+        },
+        {
+          "position": 5,
+          "device": "P0",
+          "observation": "cmd-0105",
+          "line": 1956
+        },
+        {
+          "position": 6,
+          "device": "P0",
+          "observation": "cmd-0105",
+          "line": 1997
+        },
+        {
+          "position": 7,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2543
+        },
+        {
+          "position": 8,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2554
+        },
+        {
+          "position": 9,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2584
+        },
+        {
+          "position": 10,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2604
+        },
+        {
+          "position": 11,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2691
+        },
+        {
+          "position": 12,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2720
+        },
+        {
+          "position": 13,
+          "device": "P0",
+          "observation": "cmd-0105",
+          "line": 2067
+        },
+        {
+          "position": 14,
+          "device": "P0",
+          "observation": "cmd-0105",
+          "line": 2127
+        },
+        {
+          "position": 15,
+          "device": "P0",
+          "observation": "cmd-0105",
+          "line": 2138
+        },
+        {
+          "position": 16,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2729
+        },
+        {
+          "position": 17,
+          "device": "P1",
+          "observation": "cmd-0102",
+          "line": 2740
+        }
+      ],
+      "retainedEdges": [
+        {
+          "before": 0,
+          "after": 1,
+          "kind": "process_order"
+        },
+        {
+          "before": 1,
+          "after": 2,
+          "kind": "matching_message"
+        },
+        {
+          "before": 4,
+          "after": 5,
+          "kind": "process_order"
+        },
+        {
+          "before": 5,
+          "after": 6,
+          "kind": "process_order"
+        },
+        {
+          "before": 6,
+          "after": 9,
+          "kind": "matching_message"
+        },
+        {
+          "before": 13,
+          "after": 14,
+          "kind": "process_order"
+        },
+        {
+          "before": 14,
+          "after": 15,
+          "kind": "process_order"
+        },
+        {
+          "before": 2,
+          "after": 3,
+          "kind": "process_order"
+        },
+        {
+          "before": 3,
+          "after": 4,
+          "kind": "matching_message"
+        },
+        {
+          "before": 3,
+          "after": 7,
+          "kind": "process_order"
+        },
+        {
+          "before": 7,
+          "after": 8,
+          "kind": "process_order"
+        },
+        {
+          "before": 8,
+          "after": 9,
+          "kind": "process_order"
+        },
+        {
+          "before": 9,
+          "after": 10,
+          "kind": "process_order"
+        },
+        {
+          "before": 10,
+          "after": 11,
+          "kind": "process_order"
+        },
+        {
+          "before": 11,
+          "after": 12,
+          "kind": "process_order"
+        },
+        {
+          "before": 12,
+          "after": 13,
+          "kind": "matching_message"
+        },
+        {
+          "before": 12,
+          "after": 16,
+          "kind": "process_order"
+        },
+        {
+          "before": 16,
+          "after": 17,
+          "kind": "process_order"
+        }
+      ],
+      "sourceMap": {
+        "path": "data/evidence/macsecAuthentication/CompletionFieldMap.json",
+        "pathBase": "project-root",
+        "sha256": "c9a0991c7e434c29ec31c4142ab001087126761f86cb6d3dbe1b6eb7e8ae98d2"
+      }
+    }
+  },
+  "curated": [
+    "Red source addressing, forwarding routes, security/site labels and modeled Ethernet payloads are model fixtures.",
+    "The AS has one modeled Gray management attachment at central-site; interface identity and role follow the captured deployment.",
+    "The reverse transit-router is an unused one-interface attachment with no route or allowed traffic origin. The ten-step trace starts at P0:red, routes to P0's MACsec interface and crosses P0/P1 only.",
+    "SA material is a distinct 32-byte synthetic model value per capture, indexed by the observed opaque SAK SHA-256 reference. No captured secret bytes are claimed.",
+    "TLS and backend primitives are table adapters for the two observed successful exchanges. Crypto implementation correctness remains external.",
+    "Causal edges use process order and exact public message matching. Numeric event positions are a topological enumeration, never clock order."
+  ]
+}

@@ -24,7 +24,7 @@ Use `--render-only` after interface-only changes with unchanged hierarchy data. 
 
 Commit the changed source files and `public/`, then push TDN's `main` branch. TDN's **Check and publish explorers** workflow validates the publication and updates the two pages in the website repository. That commit triggers the website's normal Pages build. An unchanged publication makes no website commit.
 
-An explorer update is complete when the source templates, generated local page, public export, committed code, and deployed website agree. Both page titles and headers use **TDN v3.2**. After publishing, verify that `/tdn/source.json` records the intended TDN commit and that the live pages match the recorded page hashes. Pull the website checkout forward after an automatic publication so its local copies also match. Report any failed publication or deployment as unfinished work.
+An explorer update is complete when the source templates, generated local page, public export, committed code, and deployed website agree. Both page titles and headers use **TDN v3.3**. After publishing, verify that `/tdn/source.json` records the intended TDN commit and that the live pages match the recorded page hashes. Pull the website checkout forward after an automatic publication so its local copies also match. Report any failed publication or deployment as unfinished work.
 
 The workflow uses a dedicated SSH deploy key with access only to the website repository. GitHub stores the private key in TDN's `TDN_WEBSITE_DEPLOY_KEY` Actions secret. The workflow writes only the two explorer pages and `tdn/source.json`. All automatic commits use Hongyu Hè as their sole author. Pull-request checks never receive the key or publish pages. A manual run of the TDN workflow can retry a failed publication.
 
@@ -32,7 +32,7 @@ The publication workflow uses one exact TDN commit and validates the page and so
 
 ## Retained publication inputs
 
-`data/publication/v3.2/` retains the current requirement register, proof mappings, application records, interpretation decisions, and the v3.2 migration map. The fourteen accepted proofs and ten deferred groups retain their v3.1 review decisions and dates. `data/publication/v3.1/` preserves the earlier mappings. The refactor's validation is recorded separately from those reviews. Historical agent logs and intermediate construction files remain outside the publication.
+`data/publication/v3.3/` retains the current requirement register, proof mappings, checked application records and interpretation decisions. Nineteen selected groups have accepted complete model proofs; five remain deferred. The release adds RG-007, RG-024, RG-028, RG-029 and RG-030 to the fourteen previously accepted groups. `data/publication/v3.1/` and `data/publication/v3.2/` preserve the earlier results and dates. Historical agent logs and intermediate construction files remain outside the publication.
 
 `public/manifest.json` records each HTML file's hash and the source hashes checked before deployment. The website writes `/tdn/source.json` with the installed TDN commit and the publication hash. Each page's code links point to GitHub; local review pages retain VS Code links.
 

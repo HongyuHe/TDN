@@ -2,8 +2,8 @@
   "schema_version": "1.2",
   "theory": {
     "schema_version": "1.0",
-    "theory_version": "v3.2",
-    "source_run": "v3.1-20261104-continuation",
+    "theory_version": "v3.3",
+    "source_run": "v3.2-20261111T040601Z-remaining",
     "mapping_scope": "These annotations explain how source roles are represented by the current Lean model. Device kind, encryption layer and interface zone are separate fields. The local zone represents device-internal interfaces. Device roles remain classified separately. Namespace-local addresses belong to their recorded device, including loopback addresses shared by several devices. Source subtype relationships remain unchanged. Role mappings alone do not establish requirement compliance.",
     "status_labels": {
       "direct": "Explicit Lean representation",
@@ -34,49 +34,49 @@
         "path": "TDN/Requirements/MscComplianceSchema.lean",
         "anchor": "structure Deployment where",
         "label": "Deployment",
-        "line": 581
+        "line": 601
       },
       "ordinary": {
         "path": "TDN/Requirements/MscComplianceSchema.lean",
         "anchor": "def Deployment.OrdinaryGray",
         "label": "Deployment.OrdinaryGray",
-        "line": 668
+        "line": 688
       },
       "service": {
         "path": "TDN/Requirements/MscComplianceSchema.lean",
         "anchor": "inductive ServiceKind where",
         "label": "ServiceKind",
-        "line": 519
+        "line": 539
       },
       "management": {
         "path": "TDN/Requirements/MscComplianceSchema.lean",
         "anchor": "structure ManagementServiceInstance where",
         "label": "ManagementServiceInstance",
-        "line": 567
+        "line": 587
       },
       "management_function": {
         "path": "TDN/Requirements/MscComplianceSchema.lean",
         "anchor": "inductive ManagementServiceFunction where",
         "label": "ManagementServiceFunction",
-        "line": 554
+        "line": 574
       },
       "management_domain": {
         "path": "TDN/Requirements/MscComplianceSchema.lean",
         "anchor": "inductive ManagementDomain where",
         "label": "ManagementDomain",
-        "line": 559
+        "line": 579
       },
       "authority": {
         "path": "TDN/Requirements/MscComplianceSchema.lean",
         "anchor": "structure AuthorityFacts where",
         "label": "AuthorityFacts",
-        "line": 510
+        "line": 530
       },
       "exchange": {
         "path": "TDN/Requirements/MscComplianceSchema.lean",
         "anchor": "structure ManagementExchange where",
         "label": "ManagementExchange",
-        "line": 547
+        "line": 567
       },
       "eap_role": {
         "path": "TDN/Requirements/CoreMscRequirements.lean",
@@ -232,7 +232,7 @@
         "path": "TDN/Requirements/CoreMscRequirements.lean",
         "anchor": "def PacketSizingInventory",
         "label": "PacketSizingInventory",
-        "line": 861
+        "line": 869
       },
       "sizing_roles": {
         "path": "TDN/Requirements/TunnelMtuAndFragmentationSpec.lean",
@@ -272,13 +272,13 @@
       "TDN/Requirements/CsfcRoleObligations.lean": "a7ddae592e47588e9cd4a574932e0b8c4728644938659bc52169c40a128e265c",
       "TDN/Requirements/CsfcRoleObligationRecords.lean": "82e2f58719585c5b02912f786c4d2fdc8a5ba66d2355c8b9177976e11f80ef23",
       "TDN/Requirements/MasterMscRequirementSpecs.lean": "c633a63cb49a65edb818d44826c69384a15cd9b4c96266d3727a06b0ab49ee74",
-      "TDN/Requirements/MscComplianceSchema.lean": "2cc3cbd46feaed0d4bf75264604ab4fddd1df1785f3cb59806f83a124dfc313c",
-      "TDN/Requirements/CoreMscRequirements.lean": "a9cdac1d350b6a58f3179db46a5f94cec07e6ae439bfa439b88ed73b46781d60",
+      "TDN/Requirements/MscComplianceSchema.lean": "e9363540ecbd456f7617703aa74fe39926575af1f1dad036a90da4d514348c6f",
+      "TDN/Requirements/CoreMscRequirements.lean": "dc599b8d04847b627555183a6143befc2efbbeed30fd8c4a3db78241f4c53f78",
       "TDN/Requirements/NamespaceLocalIpOwnership.lean": "ea163cda25f066b84f170283ccd1530cf566cbad6ca9049de64b2cb729d6de55",
       "TDN/Requirements/TunnelMtuAndFragmentationSpec.lean": "bfc69ba199f850b2636c266c7b010c3353f35c1eeaf5ee9e6fd739ec4d7f9503",
       "TDN/Requirements/TrustedClockSynchronization.lean": "d8bf74ed1da6a895f63e33c3481a53d9c42d1a75210ad05054382cebc2432519",
       "TDN/Requirements/MscFirewallWaypointingTheorems.lean": "ae662c2dbc60539e6cb971a4e57d2ca7b57f71ab144946a6bb3d82c9cdb46890",
-      "data/publication/v3.2/register.json": "d9fc456b26db9870ca1fc8879f0da83322b8893ecf175962687bbc59807d8d02"
+      "data/publication/v3.3/register.json": "cefc81c60b8e4779c590a14cf5d7fe069159698ba6d11cbc62b36bf6f3d66254"
     },
     "interpretations": {
       "V31-007": {
@@ -1205,7 +1205,7 @@
       },
       "ROLE-high-assurance-encryptor": {
         "status": "unrepresented",
-        "meaning": "The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations.",
+        "meaning": "The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations.",
         "expressions": [],
         "references": [
           "external"
@@ -1214,7 +1214,7 @@
       },
       "ROLE-government-product": {
         "status": "unrepresented",
-        "meaning": "The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations.",
+        "meaning": "The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations.",
         "expressions": [],
         "references": [
           "external"
@@ -1268,14 +1268,14 @@
       },
       "ROLE-auxiliary-network-device": {
         "status": "unrepresented",
-        "meaning": "The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately.",
+        "meaning": "The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately.",
         "expressions": [],
         "references": [],
         "interpretations": []
       },
       "ROLE-perimeter-device": {
         "status": "unrepresented",
-        "meaning": "The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately.",
+        "meaning": "The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately.",
         "expressions": [],
         "references": [],
         "interpretations": []
@@ -1521,7 +1521,7 @@
         "rg_id": "RG-007",
         "title": "Two independent encryption layers and allowed tunnel pairings",
         "translation": "Every modeled trace must use the declared Inner and Outer tunnel pairing for protected Red payloads. Gray transmission carries the Inner layer; Black transmission and reception carry both layers. Inner encryption precedes Outer encryption, and receiving-side decryption removes Outer before Inner. The definition also requires complete model coverage, independent key contexts, suitable peer placement, and the required authentication and architecture services.",
-        "status": "Complete proof unfinished",
+        "status": "Complete model proof reviewed",
         "formalization": "Dedicated requirement specification",
         "references": [
           {
@@ -1539,7 +1539,7 @@
             "kind": "declaration"
           }
         ],
-        "proof_note": "Supporting results remain available. A complete top-level proof has not been accepted."
+        "proof_note": "Every clause of the instantiated specification has a reviewed general proof and checked applications under the recorded assumptions."
       },
       "RG-008": {
         "rg_id": "RG-008",
@@ -1922,7 +1922,7 @@
         "rg_id": "RG-024",
         "title": "MACsec authentication alternatives and AS scope",
         "translation": "Each MACsec device must have a declared authentication choice and peer. A pre-shared CAK must match the peer's CAK. EAP-TLS requires the device, peer, and server certificates, the supported endpoint roles, session evidence, and an Authentication Server attached to one Red or Gray site-and-zone pair. Installed keys and every encryption use must be connected to the required earlier authentication and key setup.",
-        "status": "Complete proof unfinished",
+        "status": "Complete model proof reviewed",
         "formalization": "Dedicated requirement specification",
         "references": [
           {
@@ -1940,7 +1940,7 @@
             "kind": "declaration"
           }
         ],
-        "proof_note": "Supporting results remain available. A complete top-level proof has not been accepted."
+        "proof_note": "Every clause of the instantiated specification has a reviewed general proof and checked applications under the recorded assumptions."
       },
       "RG-025": {
         "rg_id": "RG-025",
@@ -2010,8 +2010,8 @@
       "RG-028": {
         "rg_id": "RG-028",
         "title": "MACsec mandatory protection parameters",
-        "translation": "Every MACsec device has parameters with data-delay protection, a 6000 ms lifetime, a 2000 ms normal hello interval, and a positive active hello interval no greater than 2000 ms. The replay window is 2 or the smallest feasible value; confidentiality offset is 0 and must-secure is enabled. Every relevant non-control transmission carries that device's MACsec tunnel layer.",
-        "status": "Complete proof unfinished",
+        "translation": "Every MACsec device has parameters with data-delay protection, a 6000 ms lifetime, a 2000 ms normal hello interval, and a positive active hello interval no greater than 2000 ms. The replay window is 2 or the smallest feasible value; confidentiality offset is 0 and must-secure is enabled. Every relevant non-control transmission carries that device's MACsec tunnel layer. The protection and confidentiality-offset parameters must agree with the configuration used by packet processing.",
+        "status": "Complete model proof reviewed",
         "formalization": "Dedicated requirement specification",
         "references": [
           {
@@ -2023,19 +2023,26 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 632,
+            "line": 640,
             "label": "CoreReq_msc_macsec_protection_parameters",
-            "code": "def CoreReq_msc_macsec_protection_parameters {S A : Type} (d : Deployment)\n    (model : ForwardingModel S A) (parameters : List MACsecParameters) : Prop :=\n  model.CoversDeployment d ∧\n  (∀ device ∈ d.devices, d.Relevant device.id → device.kind = .macsec →\n    ∃ parameter ∈ parameters, parameter.device = device.id) ∧\n  (∀ parameter ∈ parameters, d.Relevant parameter.device → parameter.dataDelayProtection = true ∧\n    parameter.lifetimeMilliseconds = 6000 ∧ parameter.normalHelloMilliseconds = 2000 ∧\n    0 < parameter.activeHelloMilliseconds ∧ parameter.activeHelloMilliseconds ≤ 2000 ∧\n    (parameter.replayWindow = 2 ∨ (parameter.feasibleReplayWindow parameter.replayWindow ∧\n      ∀ feasible, parameter.feasibleReplayWindow feasible → parameter.replayWindow ≤ feasible)) ∧\n    parameter.confidentialityOffset = 0 ∧ parameter.mustSecure = true) ∧\n  model.AllTraces (fun events => ∀ payload iface layers trafficClass,\n    .transmit payload iface layers trafficClass ∈ events → ¬ model.GenuineControl payload →\n    ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = iface →\n    ∀ device ∈ d.devices, d.Relevant device.id → device.id = interface.device → device.kind = .macsec →\n    device.layer = some .inner ∧ interface.zone = .gray ∨\n      device.layer = some .outer ∧ interface.zone = .black →\n    ∃ tunnel ∈ d.tunnels, tunnel.mechanism = .macsec ∧ tunnel.sender = device.id ∧ tunnel.id ∈ layers)",
+            "code": "def CoreReq_msc_macsec_protection_parameters {S A : Type} (d : Deployment)\n    (model : ForwardingModel S A) (parameters : List MACsecParameters) : Prop :=\n  model.CoversDeployment d ∧ MACsecParametersBound d model parameters ∧\n  (∀ device ∈ d.devices, d.Relevant device.id → device.kind = .macsec →\n    ∃ parameter ∈ parameters, parameter.device = device.id) ∧\n  (∀ parameter ∈ parameters, d.Relevant parameter.device → parameter.dataDelayProtection = true ∧\n    parameter.lifetimeMilliseconds = 6000 ∧ parameter.normalHelloMilliseconds = 2000 ∧\n    0 < parameter.activeHelloMilliseconds ∧ parameter.activeHelloMilliseconds ≤ 2000 ∧\n    (parameter.replayWindow = 2 ∨ (parameter.feasibleReplayWindow parameter.replayWindow ∧\n      ∀ feasible, parameter.feasibleReplayWindow feasible → parameter.replayWindow ≤ feasible)) ∧\n    parameter.confidentialityOffset = 0 ∧ parameter.mustSecure = true) ∧\n  model.AllTraces (fun events => ∀ payload iface layers trafficClass,\n    .transmit payload iface layers trafficClass ∈ events → ¬ model.GenuineControl payload →\n    ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = iface →\n    ∀ device ∈ d.devices, d.Relevant device.id → device.id = interface.device → device.kind = .macsec →\n    device.layer = some .inner ∧ interface.zone = .gray ∨\n      device.layer = some .outer ∧ interface.zone = .black →\n    ∃ tunnel ∈ d.tunnels, tunnel.mechanism = .macsec ∧ tunnel.sender = device.id ∧ tunnel.id ∈ layers)",
+            "kind": "declaration"
+          },
+          {
+            "path": "TDN/Requirements/CoreMscRequirements.lean",
+            "line": 632,
+            "label": "MACsecParametersBound",
+            "code": "def MACsecParametersBound {S A : Type} (d : Deployment)\n    (model : ForwardingModel S A) (parameters : List MACsecParameters) : Prop :=\n  ∀ parameter ∈ parameters, d.Relevant parameter.device →\n    ∀ iface ∈ model.native.configuration.macIfaces,\n      model.native.componentName (model.native.configuration.ip.owner iface.physicalIface) = parameter.device →\n      parameter.mustSecure = (iface.settings.protectFrames && iface.settings.encryptFrames) ∧\n        parameter.confidentialityOffset = iface.settings.confidentialityOffset",
             "kind": "declaration"
           }
         ],
-        "proof_note": "Supporting results remain available. A complete top-level proof has not been accepted."
+        "proof_note": "Every clause of the instantiated specification has a reviewed general proof and checked applications under the recorded assumptions."
       },
       "RG-029": {
         "rg_id": "RG-029",
         "title": "Inner encryption and decryption cannot be bypassed",
         "translation": "The records cover every Inner encryptor and match its mechanism. For every modeled non-control packet crossing from the internal side, Inner encryption occurs before transmission and the transmitted packet carries the Inner layer. Incoming protected traffic is decrypted before passage to the internal side. IPsec uses ESP tunnel mode and an associated IP tunnel. Selected mandatory-access-control objectives must be enabled.",
-        "status": "Complete proof unfinished",
+        "status": "Complete model proof reviewed",
         "formalization": "Dedicated requirement specification",
         "references": [
           {
@@ -2047,26 +2054,26 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 693,
+            "line": 701,
             "label": "CoreReq_msc_inner_tunnel_no_bypass",
             "code": "def CoreReq_msc_inner_tunnel_no_bypass {S A : Type} (d : Deployment) (model : ForwardingModel S A)\n    (components : List EncryptionComponentConfiguration)\n    (outboundMACObjective inboundMACObjective : Bool) : Prop :=\n  ComponentConfigurationCoverage d .inner components ∧ LayerNoBypass d model .inner ∧\n  ∀ component ∈ components, d.Relevant component.id →\n    (component.mechanism = .ipsec → component.espTunnelMode = true ∧ component.associatedIPTunnel = true) ∧\n    (outboundMACObjective = true → component.outboundMACPolicy = true) ∧\n    (inboundMACObjective = true → component.inboundMACPolicy = true)",
             "kind": "declaration"
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 659,
+            "line": 667,
             "label": "TraceNoBypass",
             "code": "def TraceNoBypass (d : Deployment) (genuineControl : PayloadId → Prop)\n    (layer : Layer) (events : List NetworkEvent) : Prop :=\n  (∀ earlier middle later payload ingress receivedLayers receiveClass egress sentLayers sendClass,\n    events = earlier ++ [.receive payload ingress receivedLayers receiveClass] ++ middle ++\n      [.transmit payload egress sentLayers sendClass] ++ later →\n    ¬ genuineControl payload →\n    ∀ input ∈ d.interfaces, ∀ output ∈ d.interfaces,\n      input.id = ingress → output.id = egress → input.device = output.device →\n      d.IsLayer input.device layer →\n      (input.zone = InternalZone layer → output.zone ≠ InternalZone layer →\n        ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.sender = input.device ∧\n          tunnel.id ∈ sentLayers ∧ .encrypt payload tunnel.id ∈ middle) ∧\n      (input.zone = ExternalZone layer → output.zone = InternalZone layer →\n        ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.receiver = input.device ∧\n          tunnel.id ∈ receivedLayers ∧ .decrypt payload tunnel.id ∈ middle)) ∧\n  ∀ earlier later payload iface layers trafficClass,\n    events = earlier ++ [.transmit payload iface layers trafficClass] ++ later →\n    ¬ genuineControl payload →\n    ∀ interface ∈ d.interfaces, interface.id = iface →\n      d.IsLayer interface.device layer → interface.zone = ExternalZone layer →\n      ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.sender = interface.device ∧\n        tunnel.id ∈ layers ∧ .encrypt payload tunnel.id ∈ earlier",
             "kind": "declaration"
           }
         ],
-        "proof_note": "Supporting results remain available. A complete top-level proof has not been accepted."
+        "proof_note": "Every clause of the instantiated specification has a reviewed general proof and checked applications under the recorded assumptions."
       },
       "RG-030": {
         "rg_id": "RG-030",
         "title": "Outer encryption and decryption cannot be bypassed",
         "translation": "The records cover every Outer encryptor and match its mechanism. Every modeled non-control outward transmission carries the Outer layer after Outer encryption, and an inward crossing requires Outer decryption. IPsec uses ESP tunnel mode, and selected mandatory-access-control objectives are enabled. Non-control traffic arriving at an Outer Gray interface already carries exactly one Inner tunnel layer.",
-        "status": "Complete proof unfinished",
+        "status": "Complete model proof reviewed",
         "formalization": "Dedicated requirement specification",
         "references": [
           {
@@ -2078,20 +2085,20 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 702,
+            "line": 710,
             "label": "CoreReq_msc_outer_tunnel_no_bypass",
             "code": "def CoreReq_msc_outer_tunnel_no_bypass {S A : Type} (d : Deployment) (model : ForwardingModel S A)\n    (components : List EncryptionComponentConfiguration)\n    (outboundMACObjective inboundMACObjective : Bool) : Prop :=\n  ComponentConfigurationCoverage d .outer components ∧ LayerNoBypass d model .outer ∧\n  (∀ component ∈ components, d.Relevant component.id →\n    (component.mechanism = .ipsec → component.espTunnelMode = true) ∧\n    (outboundMACObjective = true → component.outboundMACPolicy = true) ∧\n    (inboundMACObjective = true → component.inboundMACPolicy = true)) ∧\n  model.AllTraces (fun events => ∀ payload ingress layers trafficClass,\n    .receive payload ingress layers trafficClass ∈ events → ¬ model.GenuineControl payload →\n    ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = ingress → interface.zone = .gray →\n      d.IsLayer interface.device .outer →\n      ∃ tunnel ∈ d.tunnels, tunnel.layer = .inner ∧ layers = [tunnel.id])",
             "kind": "declaration"
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 659,
+            "line": 667,
             "label": "TraceNoBypass",
             "code": "def TraceNoBypass (d : Deployment) (genuineControl : PayloadId → Prop)\n    (layer : Layer) (events : List NetworkEvent) : Prop :=\n  (∀ earlier middle later payload ingress receivedLayers receiveClass egress sentLayers sendClass,\n    events = earlier ++ [.receive payload ingress receivedLayers receiveClass] ++ middle ++\n      [.transmit payload egress sentLayers sendClass] ++ later →\n    ¬ genuineControl payload →\n    ∀ input ∈ d.interfaces, ∀ output ∈ d.interfaces,\n      input.id = ingress → output.id = egress → input.device = output.device →\n      d.IsLayer input.device layer →\n      (input.zone = InternalZone layer → output.zone ≠ InternalZone layer →\n        ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.sender = input.device ∧\n          tunnel.id ∈ sentLayers ∧ .encrypt payload tunnel.id ∈ middle) ∧\n      (input.zone = ExternalZone layer → output.zone = InternalZone layer →\n        ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.receiver = input.device ∧\n          tunnel.id ∈ receivedLayers ∧ .decrypt payload tunnel.id ∈ middle)) ∧\n  ∀ earlier later payload iface layers trafficClass,\n    events = earlier ++ [.transmit payload iface layers trafficClass] ++ later →\n    ¬ genuineControl payload →\n    ∀ interface ∈ d.interfaces, interface.id = iface →\n      d.IsLayer interface.device layer → interface.zone = ExternalZone layer →\n      ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.sender = interface.device ∧\n        tunnel.id ∈ layers ∧ .encrypt payload tunnel.id ∈ earlier",
             "kind": "declaration"
           }
         ],
-        "proof_note": "Supporting results remain available. A complete top-level proof has not been accepted."
+        "proof_note": "Every clause of the instantiated specification has a reviewed general proof and checked applications under the recorded assumptions."
       },
       "RG-031": {
         "rg_id": "RG-031",
@@ -2126,7 +2133,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 716,
+            "line": 724,
             "label": "CoreReq_msc_transec_conditions",
             "code": "def CoreReq_msc_transec_conditions (installations : List CoverInstallation) : Prop :=\n  TDN.Requirements.msc_transec_conditions (installations.map CoverInstallation.use) ∧\n  (∀ installation ∈ installations, installation.use.enabled = installation.active) ∧\n  ∀ installation ∈ installations,\n    installation.use.publicInternet = true ∨\n      (installation.use.objectiveSelected = true ∧ installation.use.externalMACsec = true ∧\n        installation.use.outerFirewallAttached = true) →\n    installation.active = true ∧ ScheduledCoverGuarantee installation.sender",
             "kind": "declaration"
@@ -2150,7 +2157,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 765,
+            "line": 773,
             "label": "CoreReq_msc_packet_size_configuration",
             "code": "def CoreReq_msc_packet_size_configuration (interfaces : List PacketSizing)\n    (profiles : List FragmentationProfile) : Prop :=\n  ∀ sizing ∈ interfaces,\n    (sizing.role ≠ .other →\n      0 < sizing.externalMtu ∧ 0 < sizing.payloadLimit ∧\n      (sizing.family = .ipv6 → sizing.ipv6PmtuConfigured = true) ∧\n      ∀ bytes, bytes ≤ sizing.payloadLimit → sizing.encodedSize bytes ≤ sizing.externalMtu) ∧\n    (sizing.role = .innerExternal → sizing.innerObjectiveSelected = true →\n      0 < sizing.externalMtu ∧\n      (sizing.family = .ipv6 → sizing.ipv6PmtuConfigured = true) ∧\n      ∃ profile ∈ profiles, profile.interface = sizing.interface ∧\n        profile.afterMtu = sizing.externalMtu ∧\n        (∀ bytes, 0 < bytes → bytes ≤ sizing.payloadLimit →\n          bytes ∈ profile.supportedPayloadSizes ∧\n          sizing.encodedSize bytes = bytes + profile.afterOverhead) ∧\n        profile.Reduces)",
             "kind": "declaration"
@@ -2174,7 +2181,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 878,
+            "line": 886,
             "label": "CoreReq_msc_outer_firewall_placement",
             "code": "def CoreReq_msc_outer_firewall_placement {Node : Type}\n    (untrustedBlack publicInternet grayFirewallRequired : Bool)\n    (edge grayConnection : Node → Node → Prop)\n    (outer firewall black grayFirewall inner : Node → Prop)\n    (insideAttachment outsideAttachment externalBlackConnection : Node → Node → Prop) : Prop :=\n  TDN.Requirements.msc_outer_firewall_placement untrustedBlack publicInternet grayFirewallRequired\n    edge grayConnection outer firewall black grayFirewall inner\n    insideAttachment outsideAttachment externalBlackConnection",
             "kind": "declaration"
@@ -2205,7 +2212,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 898,
+            "line": 906,
             "label": "CoreReq_msc_boundary_interface_filtering",
             "code": "def CoreReq_msc_boundary_interface_filtering (d : Deployment) (outerFirewallRequired : Bool)\n    (firewallInternal : String → Bool) (localOuter : String → String) : Prop :=\n  d.AddressInventoryCoherent ∧ d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧\n  ∀ interface ∈ d.interfaces, d.Relevant interface.device → ∀ device ∈ d.devices, d.Relevant device.id → interface.device = device.id →\n    ((device.layer = some .outer ∧ interface.zone = .black) ∨\n      (device.layer = some .inner ∧ interface.zone = .gray) ∨\n      (device.layer = some .inner ∧ interface.zone = .red) ∨\n      (device.kind = .outerFirewall ∧ outerFirewallRequired = true)) →\n    d.BoundaryPolicyCoverage interface ∧ ∀ direction traffic, d.BoundaryAdmission device interface direction traffic →\n      (device.layer = some .outer → interface.zone = .black →\n        ((device.kind = .vpn → d.IPsecTraffic traffic ∨\n          ApprovedControl d device.id traffic) ∧\n        (device.kind = .macsec → PacketMACsec traffic.packet ∨\n          ApprovedControl d device.id traffic) ∧\n        (direction = .outbound → d.IntendedPacketPeerAt interface.id device.id traffic))) ∧\n      (device.layer = some .inner → interface.zone = .gray →\n        d.PermittedTunnelTraffic traffic ∨ AOApprovedControl d device.id traffic) ∧\n      (device.layer = some .inner → interface.zone = .red →\n        d.redService device.id traffic.packet.source (TransportServicePort traffic.packet true) ∨\n        d.redService device.id traffic.packet.destination (TransportServicePort traffic.packet false)) ∧\n      (device.kind = .outerFirewall → outerFirewallRequired = true →\n        (d.PermittedTunnelTraffic traffic ∨ ApprovedControl d device.id traffic) ∧\n        (direction = .inbound → ¬ ApprovedControl d device.id traffic →\n          if firewallInternal interface.id then\n            LocalOuterAddress d device.id (localOuter device.id) traffic.packet.source\n          else LocalOuterAddress d device.id (localOuter device.id) traffic.packet.destination))",
             "kind": "declaration"
@@ -2246,7 +2253,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 932,
+            "line": 940,
             "label": "CoreReq_msc_outer_third_party_services",
             "code": "def CoreReq_msc_outer_third_party_services (d : Deployment) (objectiveSelected : String → Bool)\n    (features : List ThirdPartyFeature) : Prop :=\n  ∀ feature ∈ features, d.Relevant feature.device → d.IsLayer feature.device .outer → feature.canContactThirdParty = true →\n    if objectiveSelected feature.device then feature.enabled = false else\n      ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.device = feature.device →\n        ∀ traffic, feature.emittedTraffic traffic →\n          ¬ d.Accepts interface.id .outbound traffic",
             "kind": "declaration"
@@ -2270,7 +2277,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 957,
+            "line": 965,
             "label": "CoreReq_msc_ip_header_and_multicast_filtering",
             "code": "def CoreReq_msc_ip_header_and_multicast_filtering (d : Deployment)\n    (dropIPv4OptionsObjective : String → Bool) : Prop :=\n  (∀ device, dropIPv4OptionsObjective device = d.dropIPv4Options device) ∧\n  d.AddressInventoryCoherent ∧ d.ProcessingCoherent ∧ d.LinkPoliciesComplete ∧\n  ∀ interface ∈ d.interfaces, d.Relevant interface.device → ∀ device ∈ d.devices, d.Relevant device.id → interface.device = device.id →\n    HeaderFilterApplies device interface →\n    d.PolicyCoverage interface ∧\n    ∀ traffic, d.Accepts interface.id .inbound traffic →\n      (device.layer = some .outer → interface.zone = .black →\n        traffic.multicast = false ∨ NecessaryApprovedL2Control d interface traffic) ∧\n      (device.kind = .vpn → traffic.ipVersion = some 4 → traffic.ipProtocol ∈ [6, 17, 50, 1]) ∧\n      (device.kind = .vpn → traffic.ipVersion = some 6 →\n        traffic.packet.ipv6NextHeader ∈ [50, 6, 17, 58]) ∧\n      (device.kind = .vpn → device.layer = some .outer → traffic.ipVersion = some 4 →\n        dropIPv4OptionsObjective device.id = true → traffic.packet.ipv4HeaderWords = 5)",
             "kind": "declaration"
@@ -2294,35 +2301,35 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 1004,
+            "line": 1012,
             "label": "CoreReq_msc_outer_gray_interface_policy",
             "code": "def CoreReq_msc_outer_gray_interface_policy (d : Deployment) (cdpOnGray : Bool) : Prop :=\n  d.AddressInventoryCoherent ∧ d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧\n  ∀ interface ∈ d.interfaces, d.Relevant interface.device → d.IsLayer interface.device .outer → interface.zone = .gray →\n    d.PolicyCoverage interface ∧\n    (∀ direction traffic, d.Accepts interface.id direction traffic →\n      OuterGrayRestrictions d interface direction cdpOnGray traffic ∧\n      OuterPolicyAllowance d interface.device cdpOnGray traffic) ∧\n    ∀ direction hook traffic, d.PacketEligibleAt interface direction hook traffic →\n      OuterGrayRestrictions d interface direction cdpOnGray traffic →\n      OuterPolicyAllowance d interface.device cdpOnGray traffic →\n      d.AcceptsAt interface.id direction hook traffic",
             "kind": "declaration"
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 993,
+            "line": 1001,
             "label": "OuterGrayRestrictions",
             "code": "def OuterGrayRestrictions (d : Deployment) (interface : Interface) (direction : Direction)\n    (cdpOnGray : Bool) (traffic : Traffic) : Prop :=\n  d.HeaderEligible interface traffic ∧\n  (traffic.trafficClass = .management → OuterManagementInitiation d traffic) ∧\n  (direction = .inbound → d.reachableSource interface.id traffic.packet.source) ∧\n  (traffic.trafficClass = .protectedData → ¬ RevocationHTTP traffic →\n    d.SameLevelInner traffic ∨\n      (d.grayManagementService interface.device traffic ∧ d.GrayManagementTunnel traffic)) ∧\n  (traffic.service = \"http\" → cdpOnGray = true → d.IsDevice interface.device .vpn →\n    traffic.innerRevocation = true)",
             "kind": "declaration"
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 986,
+            "line": 994,
             "label": "OuterPolicyAllowance",
             "code": "def OuterPolicyAllowance (d : Deployment) (device : String) (cdpOnGray : Bool)\n    (traffic : Traffic) : Prop :=\n  OuterTunnelAllowance d device traffic ∨\n    (cdpOnGray = true ∧ d.IsDevice device .vpn ∧ RevocationHTTP traffic) ∨\n    ((traffic.trafficClass = .management ∨ traffic.trafficClass = .control) ∧\n      d.policyApproved device traffic)",
             "kind": "declaration"
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 978,
+            "line": 986,
             "label": "OuterTunnelAllowance",
             "code": "def OuterTunnelAllowance (d : Deployment) (device : String) (traffic : Traffic) : Prop :=\n  (d.TunnelTraffic traffic ∨ (∃ source destination, d.CarrierInnerPair traffic source destination)) ∧\n    ((d.SameLevelInner traffic ∧ d.AppropriateInnerTunnel traffic) ∨\n      (d.grayManagementService device traffic ∧ d.GrayManagementTunnel traffic))",
             "kind": "declaration"
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 973,
+            "line": 981,
             "label": "OuterManagementInitiation",
             "code": "def OuterManagementInitiation (d : Deployment) (traffic : Traffic) : Prop :=\n  traffic.trafficClass = .management ∧\n    (d.grayWorkstation traffic.originator ∨\n      (d.IsLayer traffic.originator .outer ∧ traffic.service ∈ [\"logging\", \"authentication\"]))",
             "kind": "declaration"
@@ -2346,21 +2353,21 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 1043,
+            "line": 1051,
             "label": "CoreReq_msc_gray_firewall_allowlist",
             "code": "def CoreReq_msc_gray_firewall_allowlist (d : Deployment) (grayFirewallRequired : Bool) : Prop :=\n  d.AddressInventoryCoherent ∧\n  (grayFirewallRequired = true → d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧\n    ∀ interface ∈ d.interfaces, d.Relevant interface.device →\n      d.IsDevice interface.device .grayFirewall → d.PolicyCoverage interface ∧\n        (∀ direction traffic, d.Accepts interface.id direction traffic →\n          GrayFirewallRestrictions d interface direction traffic ∧\n          GrayPolicyAllowance d interface traffic) ∧\n        ∀ direction hook traffic, d.PacketEligibleAt interface direction hook traffic →\n          d.GrayForwardPermission interface hook traffic →\n          GrayFirewallRestrictions d interface direction traffic →\n          GrayPolicyAllowance d interface traffic →\n          d.AcceptsAt interface.id direction hook traffic) ∧\n  ∀ interface ∈ d.interfaces, d.Relevant interface.device → d.IsDevice interface.device .grayFirewall →\n    ∀ direction traffic, DifferentClassificationVPNs d traffic →\n      ¬ d.Accepts interface.id direction traffic",
             "kind": "declaration"
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 1034,
+            "line": 1042,
             "label": "GrayFirewallRestrictions",
             "code": "def GrayFirewallRestrictions (d : Deployment) (interface : Interface) (direction : Direction)\n    (traffic : Traffic) : Prop :=\n  d.HeaderEligible interface traffic ∧\n  (traffic.trafficClass = .management → GrayManagementAllowance d interface traffic) ∧\n  (traffic.trafficClass = .protectedData → ¬ RevocationHTTP traffic → d.SameLevelInner traffic) ∧\n  (direction = .inbound → d.reachableSource interface.id traffic.packet.source) ∧\n  (traffic.service = \"http\" → traffic.innerRevocation = true) ∧\n  ¬ DifferentClassificationVPNs d traffic",
             "kind": "declaration"
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 1021,
+            "line": 1029,
             "label": "GrayPolicyAllowance",
             "code": "def GrayPolicyAllowance (d : Deployment) (interface : Interface) (traffic : Traffic) : Prop :=\n  ((d.TunnelTraffic traffic ∨ (∃ source destination, d.CarrierInnerPair traffic source destination)) ∧\n    d.SameLevelInner traffic ∧ d.AppropriateInnerTunnel traffic) ∨ RevocationHTTP traffic ∨\n    GrayManagementAllowance d interface traffic ∨\n    (traffic.trafficClass = .control ∧ d.policyApproved interface.device traffic)",
             "kind": "declaration"
@@ -2549,7 +2556,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 1060,
+            "line": 1068,
             "label": "CoreReq_msc_administrator_authentication",
             "code": "def CoreReq_msc_administrator_authentication (d : Deployment)\n    (certificateObjective nistObjective : Bool) (events : List AdminEvent)\n    (accounts : List AdministrativeAccount) (sessions : List AdministrativeSession)\n    (awAdministrators : List Nat) : Prop :=\n  TDN.Requirements.msc_administrator_authentication certificateObjective nistObjective\n    events accounts sessions awAdministrators ∧\n  ∀ event ∈ events, event.kind = .authentication →\n    (certificateObjective = true → d.authority.certificateCNSACompliant event.credential) ∧\n    (nistObjective = true → d.authority.authenticationConformsToNIST80063 event.credential)",
             "kind": "declaration"
@@ -2696,7 +2703,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 1162,
+            "line": 1170,
             "label": "CoreReq_msc_site_interoperability",
             "code": "def CoreReq_msc_site_interoperability {S A : Type} (d : Deployment) (model : ForwardingModel S A)\n    (requiredSitePairs : List (String × String)) (selected : List Interoperation)\n    (domain : PayloadDomain) : Prop :=\n  model.CoversDeployment d ∧ RequiredSitePairsBound d requiredSitePairs ∧\n  SiteLayerInteroperationCoverage requiredSitePairs selected ∧\n  InteroperationInventory d selected ∧ InteroperationTransfers d model selected domain",
             "kind": "declaration"
@@ -2737,7 +2744,7 @@
           },
           {
             "path": "TDN/Requirements/CoreMscRequirements.lean",
-            "line": 1169,
+            "line": 1177,
             "label": "RedEgressCore",
             "code": "def RedEgressCore (d : Deployment)\n    (red outside : String → Prop) (conformingMSC aoApprovedProtection : String → Prop) : Prop :=\n  (∀ solution, aoApprovedProtection solution → d.authority.aoApprovedTransitSolution solution) ∧\n  ∀ source destination, red source → outside destination →\n    ¬ Relation.ReflTransGen (Waypointing.Avoiding d.DeviceAdjacent\n      (fun node => conformingMSC node ∨ aoApprovedProtection node)) source destination",
             "kind": "declaration"
@@ -11330,7 +11337,7 @@
       ],
       "theory": {
         "status": "unrepresented",
-        "meaning": "The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations.",
+        "meaning": "The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations.",
         "expressions": [],
         "references": [
           "external"
@@ -11368,7 +11375,7 @@
       ],
       "theory": {
         "status": "unrepresented",
-        "meaning": "The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations.",
+        "meaning": "The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations.",
         "expressions": [],
         "references": [
           "external"
@@ -11512,7 +11519,7 @@
       ],
       "theory": {
         "status": "unrepresented",
-        "meaning": "The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately.",
+        "meaning": "The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately.",
         "expressions": [],
         "references": [],
         "interpretations": []
@@ -11755,7 +11762,7 @@
       ],
       "theory": {
         "status": "unrepresented",
-        "meaning": "The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately.",
+        "meaning": "The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately.",
         "expressions": [],
         "references": [],
         "interpretations": []
@@ -17089,8 +17096,8 @@
     "roles/roles.json": "6a12f5298603f2cfd51af099a48ae761d561e25b60e7b753ab990cb76454d8e5",
     "source/source_index.jsonl": "39b9770a52900512a58e468a83839238d4583e030ac76870fd8f11e4aff2d5dc",
     "roles/ontology_decisions.json": "741710dbf55a3725da0d118d244ebc834e82808de256ec236b7dc32af8809688",
-    "roles/ontology_theory.json": "7f3dd819da23ce32bfd2be5feb32ea4e4ed213a05f4f75f81da5f5c0c80e8c5a",
-    "roles/ontology_obligations.json": "2ffed24d9b64309b7e7ef909d3619c9bcb82325447968a27a78d61d7dde2b258"
+    "roles/ontology_theory.json": "36fa4049f6466765ef6c1385d63ab4bcc500ef8a36ec6c50c78f01a7695ce65e",
+    "roles/ontology_obligations.json": "57313bf2de52a6d59c5a37199f93ca01474117abd5f79652079e5d0ba514166f"
   },
   "counts": {
     "extracted_roles": 76,

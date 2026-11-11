@@ -108,7 +108,7 @@ lemma protect_off_filtered_attempt_has_a_real_native_prefix :
   have plain : MultiProtocolForwarding.Step unprotectedDenied.configuration
       (unprotectedDenied.sourceCase.egressReady unprotectedDenied.configuration) .forwardWithoutEncap unprotectedDenied.physicalReady :=
     .unprotectedMACsec unprotectedDenied.sourceCase.mac (by exact of_decide_eq_true rfl)
-      rfl rfl rfl (Or.inl rfl)
+      rfl rfl rfl rfl
   exact (Cslib.LTS.MTr.append_iff _).mpr
     ⟨unprotectedDenied.sourceCase.egressReady unprotectedDenied.configuration, routed, .stepL plain .refl⟩
 

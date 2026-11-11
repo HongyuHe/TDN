@@ -21,6 +21,7 @@ PUBLIC = re.compile(r"^(\d+\.\d+): TDN_PUBLIC type=(\w+) size=(\d+) hex=([0-9a-f
 TLS_MESSAGE = re.compile(r"^(\d+\.\d+): TDN_TLS_MESSAGE ssl=(\S+) direction=(read|write) type=(\d+)$")
 RADIUS_ACCEPT = re.compile(r"^(\d+\.\d+): TDN_RADIUS_ACCEPT interface=(\S+) peer=([0-9a-f:]+) identifier=(\d+) verified=1$")
 MKA_SEND = re.compile(r"^(\d+\.\d+): TDN_MKA_SEND interface=(\S+) result=(-?\d+)$")
+COMPLETION_SEND = re.compile(r"^(\d+\.\d+): TDN_(RADIUS_RESPONSE|EAP_SUCCESS)_SEND result=(-?\d+) size=(\d+)$")
 
 
 def micros(value):
@@ -49,7 +50,8 @@ def parsed_events(text, device, observation):
         elif match := PUBLIC.fullmatch(line):
             at, kind, size, encoded = match.groups()
             require(kind in {"EAP_SESSION", "TLS_HANDSHAKE", "RADIUS_REQUEST", "RADIUS_RESPONSE",
-                             "MKA_SEND", "MKA_RECEIVE", "MKA_AUTHENTICATED"},
+                             "MKA_SEND", "MKA_RECEIVE", "MKA_AUTHENTICATED",
+                             "RADIUS_RESPONSE_SEND", "EAP_SUCCESS_SEND", "EAP_SUCCESS_RECEIVE"},
                     "Unexpected public record type")
             require(len(encoded) == 2 * int(size), "Public record length mismatch")
             record = {"kind": "public_record", "recordType": kind, "bytes": int(size), "hex": encoded}
@@ -63,6 +65,10 @@ def parsed_events(text, device, observation):
         elif match := MKA_SEND.fullmatch(line):
             at, interface, result = match.groups()
             record = {"kind": "mka_send_result", "interface": interface, "result": int(result)}
+        elif match := COMPLETION_SEND.fullmatch(line):
+            at, message, result, size = match.groups()
+            record = {"kind": "completion_send_result", "messageType": message,
+                      "result": int(result), "bytes": int(size)}
         elif "TDN_" in line and "hexdump" not in line:
             raise ValueError("Unknown or malformed instrumented event")
         if record is not None:

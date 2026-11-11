@@ -56,6 +56,12 @@ def Config.macsecFrame (configuration : Config) (frame : Frame)
   | none => { frame with body := .macsec association frame.body }
   | some _ => frame.pushHeader (.macsec association frame.body) none
 
+def Config.macsecPduFrame (configuration : Config) (frame : Frame)
+    (association : MACsecAssociation) (encryptFrames : Bool) (confidentialityOffset : Nat) : Frame :=
+  match configuration.headerProcessing with
+  | none => { frame with body := .macsecPdu association encryptFrames confidentialityOffset frame.body }
+  | some _ => frame.pushHeader (.macsecPdu association encryptFrames confidentialityOffset frame.body) none
+
 def Config.carrierFrame (configuration : Config) (iface : Nat) (frame : Frame)
     (carrier : Carrier) : Frame :=
   match configuration.headerProcessing with
@@ -86,7 +92,7 @@ structure State where
 
 inductive Action where
   | receive | route | forwardFilter | inputFilter | outputFilter
-  | encryptIPsec | decryptIPsec | encryptMACsec | decryptMACsec
+  | encryptIPsec | decryptIPsec | encryptMACsec | decryptMACsec | protectMACsec | validateMACsec
   | encapsulate | decapsulate | linkTransmit | bridge | forwardWithoutEncap | deliver | drop
   deriving DecidableEq, Repr
 
@@ -178,9 +184,16 @@ inductive Step (c : Config) : State → Action → State → Prop
       (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .egressReady)
       (logical : s.iface = iface.logicalIface)
       (enabled : iface.settings.controlledPortEnabled = true)
-      (unprotected : iface.settings.protectFrames = false ∨
-        iface.settings.encryptFrames = false ∨ iface.settings.confidentialityOffset ≠ 0) :
+      (unprotected : iface.settings.protectFrames = false) :
       Step c s .forwardWithoutEncap { s with initialEntry := false, iface := iface.physicalIface }
+  | protectMACsec {s : State} (iface : MACIface) (association : MACsecAssociation)
+      (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .egressReady)
+      (logical : s.iface = iface.logicalIface)
+      (enabled : iface.settings.controlledPortEnabled = true)
+      (protection : iface.settings.protectFrames = true)
+      (installed : iface.transmitAssociation = some association)
+      (limited : iface.settings.encryptFrames = false ∨ iface.settings.confidentialityOffset ≠ 0) :
+      Step c s .protectMACsec { s with initialEntry := false, iface := iface.physicalIface, frame := c.macsecPduFrame s.frame association iface.settings.encryptFrames iface.settings.confidentialityOffset }
   | decryptMACsec {s : State} (iface : MACIface) (association transmitted : MACsecAssociation) (body : Body)
       (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .received)
       (physical : s.iface = iface.physicalIface)
@@ -188,6 +201,15 @@ inductive Step (c : Config) : State → Action → State → Prop
       (installed : association ∈ iface.receiveAssociations)
       (spi : SameMACWireIdentity transmitted association) :
       Step c s .decryptMACsec { s with initialEntry := false, iface := iface.logicalIface, frame := c.restoredFrame s.frame body, authenticated := [] }
+  | validateMACsec {s : State} (iface : MACIface)
+      (association transmitted : MACsecAssociation) (encryptFrames : Bool)
+      (confidentialityOffset : Nat) (body : Body)
+      (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .received)
+      (physical : s.iface = iface.physicalIface)
+      (framed : s.frame.body = .macsecPdu transmitted encryptFrames confidentialityOffset body)
+      (installed : association ∈ iface.receiveAssociations)
+      (spi : SameMACWireIdentity transmitted association) :
+      Step c s .validateMACsec { s with initialEntry := false, iface := iface.logicalIface, frame := c.restoredFrame s.frame body, authenticated := [] }
   | uncheckedMACsec {s : State} (iface : MACIface)
       (configured : iface ∈ c.macIfaces) (datapathStage : s.datapathStage = .received)
       (physical : s.iface = iface.physicalIface) (unchecked : iface.validateStrict = false) :
@@ -216,7 +238,7 @@ lemma step_preserves_payload {c : Config} {before after : State} {action : Actio
     after.frame.originDomain = before.frame.originDomain := by
   cases mode : c.headerProcessing <;> cases step <;>
     simp [Config.forwardedFrame, Config.ipsecFrame, Config.macsecFrame,
-      Config.carrierFrame, Config.restoredFrame, mode, Frame.pushHeader, Frame.popHeader]
+      Config.carrierFrame, Config.macsecPduFrame, Config.restoredFrame, mode, Frame.pushHeader, Frame.popHeader]
 
 theorem all_traces_preserve_payload (c : Config)
     {before after : State} {actions : List Action}
@@ -254,7 +276,8 @@ def Config.LinkStepAdmitted (c : Config) (before : State) (action : Action) (aft
     (c.LinkPath after.iface → c.LinkAdmitted after.iface false after.frame) ∧
     (c.LinkPath before.iface ∨ c.LinkPath after.iface →
       c.linkEncoding before.iface before.frame = c.linkEncoding after.iface after.frame)) ∧
-  (action = .decryptMACsec → c.LinkAdmitted before.iface false before.frame) ∧
+  ((action = .decryptMACsec ∨ action = .validateMACsec) →
+    c.LinkAdmitted before.iface false before.frame) ∧
   (action = .bridge →
     c.LinkAdmitted before.iface false before.frame ∧
     c.LinkAdmitted after.iface true after.frame) ∧
@@ -303,6 +326,13 @@ open LayeredFrame
     (association : MACsecAssociation) :
     (c.macsecFrame frame association).body = .macsec association frame.body := by
   unfold Config.macsecFrame
+  cases c.headerProcessing <;> rfl
+
+@[simp] lemma Config.macsec_pdu_frame_body (c : Config) (frame : Frame)
+    (association : MACsecAssociation) (encryptFrames : Bool) (confidentialityOffset : Nat) :
+    (c.macsecPduFrame frame association encryptFrames confidentialityOffset).body =
+      .macsecPdu association encryptFrames confidentialityOffset frame.body := by
+  unfold Config.macsecPduFrame
   cases c.headerProcessing <;> rfl
 
 @[simp] lemma Config.carrierFrame_body (c : Config) (iface : Nat) (frame : Frame)

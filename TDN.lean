@@ -107,3 +107,12 @@ import TDN.Deployments.NamespaceLocalIpChecks
 import TDN.Deployments.MtuSizing_BaselineSampleFrames
 import TDN.Deployments.MtuSizing_SharedSampleFrames
 import TDN.Requirements.MultiHopMtuPreservation
+
+import TDN.Deployments.MacsecProtection_FramingCounterexamples
+
+import TDN.Deployments.SnapshotProof_MacsecAuthentication
+import TDN.Deployments.InnerTunnelNoBypass_BlockedTrafficTests
+
+import TDN.Deployments.SnapshotProof_OuterTunnelNoBypass
+
+import TDN.Deployments.SnapshotProof_NestedProtection

@@ -62,8 +62,8 @@ theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
   refine ⟨Reverse.usefulState31, [.decryptIPsec, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState35, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState31, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep31, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
     decide
@@ -100,8 +100,8 @@ theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
   refine ⟨Forward.usefulState31, [.decryptIPsec, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState35, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState31, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep31, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
     decide
@@ -138,8 +138,8 @@ theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
   refine ⟨Reverse.usefulState26, [.decryptIPsec, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState30, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState26, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
     decide
@@ -176,8 +176,8 @@ theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
   refine ⟨Forward.usefulState26, [.decryptIPsec, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState30, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState26, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
     decide
@@ -242,8 +242,8 @@ theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
   refine ⟨Reverse.usefulState24, [.decryptIPsec, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState28, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState24, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
     decide
@@ -280,8 +280,8 @@ theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
   refine ⟨Forward.usefulState24, [.decryptIPsec, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState28, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState24, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
     decide
@@ -318,8 +318,8 @@ theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
   refine ⟨Reverse.usefulState18, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState23, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState18, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep18, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
     decide
@@ -356,8 +356,8 @@ theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
   refine ⟨Forward.usefulState18, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState23, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState18, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep18, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
     decide
@@ -422,8 +422,8 @@ theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
   refine ⟨Reverse.usefulState32, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState37, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState32, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
     decide
@@ -460,8 +460,8 @@ theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
   refine ⟨Forward.usefulState32, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState37, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState32, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
     decide
@@ -498,8 +498,8 @@ theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
   refine ⟨Reverse.usefulState27, [.decryptIPsec, .inputFilter, .decapsulate, .bridge], Reverse.usefulState31, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState27, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep30, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
     decide
@@ -536,8 +536,8 @@ theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
   refine ⟨Forward.usefulState27, [.decryptIPsec, .inputFilter, .decapsulate, .bridge], Forward.usefulState31, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState27, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep30, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
     decide
@@ -602,8 +602,8 @@ theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
   refine ⟨Reverse.usefulState42, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState47, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState42, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep42, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep43, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep44, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep45, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep46, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
     decide
@@ -640,8 +640,8 @@ theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
   refine ⟨Forward.usefulState42, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState47, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState42, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep42, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep43, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep44, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep45, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep46, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
     decide
@@ -678,8 +678,8 @@ theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
   refine ⟨Reverse.usefulState32, [.decryptIPsec, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState36, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState32, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
     decide
@@ -716,8 +716,8 @@ theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
   refine ⟨Forward.usefulState32, [.decryptIPsec, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState36, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState32, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep32, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep33, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep34, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
     decide
@@ -782,8 +782,8 @@ theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
   refine ⟨Reverse.usefulState25, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState30, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState25, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
     decide
@@ -820,8 +820,8 @@ theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
   refine ⟨Forward.usefulState25, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState30, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState25, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep29, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
     decide
@@ -858,8 +858,8 @@ theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
   refine ⟨Reverse.usefulState19, [.decryptMACsec, .receive, .inputFilter, .decapsulate, .bridge], Reverse.usefulState24, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState19, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep23, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
     decide
@@ -896,8 +896,8 @@ theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
   refine ⟨Forward.usefulState19, [.decryptMACsec, .receive, .inputFilter, .decapsulate, .bridge], Forward.usefulState24, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState19, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep19, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep20, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep23, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
     decide
@@ -962,8 +962,8 @@ theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
   refine ⟨Reverse.usefulState35, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState40, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState35, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep37, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep38, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep39, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
     decide
@@ -1000,8 +1000,8 @@ theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
   refine ⟨Forward.usefulState35, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState40, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState35, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep35, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep36, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep37, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep38, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep39, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
     decide
@@ -1038,8 +1038,8 @@ theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
   refine ⟨Reverse.usefulState24, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Reverse.usefulState29, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Reverse.usefulState24, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Reverse.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
     decide
@@ -1076,8 +1076,8 @@ theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
   refine ⟨Forward.usefulState24, [.decryptMACsec, .receive, .route, .forwardFilter, .forwardWithoutEncap], Forward.usefulState29, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [Forward.usefulState24, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨Forward.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep25, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨Forward.usefulStep28, by decide, by decide⟩ (Cslib.LTS.MTr.refl)))))
   · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
     decide
@@ -1142,8 +1142,8 @@ theorem mixedBoundaryIA_positive_inbound :
     ∃ start actions finish, mixedBoundaryIA.inboundEntry start ∧
       mixedBoundaryIA.system.MTr start actions finish ∧ mixedBoundaryIA.inboundExit finish := by
   refine ⟨ReverseVLAN0.usefulState26, [.decryptMACsec, .bridge], ReverseVLAN0.usefulState28, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [ReverseVLAN0.usefulState26, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))
   · simp only [mixedBoundaryIA, Requirements.mixedTunnelBoundary]
     decide
@@ -1180,8 +1180,8 @@ theorem mixedBoundaryIB_positive_inbound :
     ∃ start actions finish, mixedBoundaryIB.inboundEntry start ∧
       mixedBoundaryIB.system.MTr start actions finish ∧ mixedBoundaryIB.inboundExit finish := by
   refine ⟨ForwardVLAN0.usefulState26, [.decryptMACsec, .bridge], ForwardVLAN0.usefulState28, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [ForwardVLAN0.usefulState26, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep26, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep27, by decide, by decide⟩ (Cslib.LTS.MTr.refl))
   · simp only [mixedBoundaryIB, Requirements.mixedTunnelBoundary]
     decide
@@ -1218,8 +1218,8 @@ theorem mixedBoundaryOA_positive_inbound :
     ∃ start actions finish, mixedBoundaryOA.inboundEntry start ∧
       mixedBoundaryOA.system.MTr start actions finish ∧ mixedBoundaryOA.inboundExit finish := by
   refine ⟨ReverseVLAN0.usefulState21, [.decryptIPsec, .inputFilter, .decapsulate, .bridge], ReverseVLAN0.usefulState25, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [ReverseVLAN0.usefulState21, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep23, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ReverseVLAN0.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOA, Requirements.mixedTunnelBoundary]
     decide
@@ -1256,8 +1256,8 @@ theorem mixedBoundaryOB_positive_inbound :
     ∃ start actions finish, mixedBoundaryOB.inboundEntry start ∧
       mixedBoundaryOB.system.MTr start actions finish ∧ mixedBoundaryOB.inboundExit finish := by
   refine ⟨ForwardVLAN0.usefulState21, [.decryptIPsec, .inputFilter, .decapsulate, .bridge], ForwardVLAN0.usefulState25, ?_, ?_, ?_⟩
-  · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
-    decide
+  · refine ⟨rfl, by decide, rfl, ?_, rfl⟩
+    simp only [ForwardVLAN0.usefulState21, MultiProtocolForwarding.CarrierBodies] <;> decide
   · exact Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep21, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep22, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep23, by decide, by decide⟩ (Cslib.LTS.MTr.stepL ⟨ForwardVLAN0.usefulStep24, by decide, by decide⟩ (Cslib.LTS.MTr.refl))))
   · simp only [mixedBoundaryOB, Requirements.mixedTunnelBoundary]
     decide

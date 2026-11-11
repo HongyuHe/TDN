@@ -1,29 +1,29 @@
 # Requirement groups and their Lean formalizations
 
-Every group in [requirement_groups.md](requirement_groups.md) appears once in the two tables below: [24 RGs targeted for proof](#24-rgs-targeted-for-proof) and [52 remaining RGs](#52-remaining-rgs). The links point to the current v3.2 code and its source lines, checked on November 8, 2026.
+Every group in [requirement_groups.md](requirement_groups.md) appears once in the two tables below: [24 RGs targeted for proof](#24-rgs-targeted-for-proof) and [52 remaining RGs](#52-remaining-rgs). The links point to the current v3.3 code and its source lines, checked on November 11, 2026.
 
-The active theory has **24 dedicated top-level specifications** in [MasterMscRequirementSpecs.lean](../TDN/Requirements/MasterMscRequirementSpecs.lean). All 24 belong to the namespace `TDN.Requirements.Msc`. Fourteen have passed complete-candidate proof review, and ten remain deferred. The other **52 groups are represented by cases in the shared [MscComplianceContext.RequirementGroupSpec](../TDN/Requirements/CsfcRoleObligations.lean#L209) definition**. Those cases retain configuration conditions, external-evidence requirements, or permission conditions. They are not separate complete-specification declarations.
+The active theory has **24 dedicated top-level specifications** in [MasterMscRequirementSpecs.lean](../TDN/Requirements/MasterMscRequirementSpecs.lean). All 24 belong to the namespace `TDN.Requirements.Msc`. Nineteen have passed complete-candidate proof review, and five remain deferred. The other **52 groups are represented by cases in the shared [MscComplianceContext.RequirementGroupSpec](../TDN/Requirements/CsfcRoleObligations.lean#L209) definition**. Those cases retain configuration conditions, external-evidence requirements, or permission conditions. They are not separate complete-specification declarations.
 
 A specification states a proposition that a network must satisfy. A supporting theorem proves that proposition under stated assumptions. The tables link to the specification or shared condition. “Review passed” means the recorded model applications have complete proofs under their explicit assumptions. “Proof deferred” means the dedicated specification exists, but its complete proof remains unfinished. The treatment of the other groups follows [proof_scope.json](proof_scope.json); their shared cases do not imply that every original requirement clause has been proved or fully represented.
 
 ## 24 RGs targeted for proof
 
-These groups are the proof targets selected in [proof_scope.json](proof_scope.json). Each has a dedicated specification in `TDN.Requirements.Msc`. Fourteen have passed review, and ten remain deferred. The RG links open the original requirement groups.
+These groups are the proof targets selected in [proof_scope.json](proof_scope.json). Each has a dedicated specification in `TDN.Requirements.Msc`. Nineteen have passed review, and five remain deferred. The RG links open the original requirement groups.
 
 | RG | Requirement group | Current formalization in Lean | Proof status or workflow treatment |
 | --- | --- | --- | --- |
-| [RG-007](requirement_groups.md#rg-007) | Two independent encryption layers and allowed tunnel pairings | [msc_nested_layer_protection](../TDN/Requirements/MasterMscRequirementSpecs.lean#L6) | Proof deferred |
+| [RG-007](requirement_groups.md#rg-007) | Two independent encryption layers and allowed tunnel pairings | [msc_nested_layer_protection](../TDN/Requirements/MasterMscRequirementSpecs.lean#L6) | Review passed |
 | [RG-008](requirement_groups.md#rg-008) | Connectivity restricted to the same security level | [msc_security_level_connectivity](../TDN/Requirements/MasterMscRequirementSpecs.lean#L10) | Proof deferred |
 | [RG-012](requirement_groups.md#rg-012) | Separate authentication and management for security levels | [msc_security_level_key_and_management_separation](../TDN/Requirements/MasterMscRequirementSpecs.lean#L17) | Review passed |
 | [RG-013](requirement_groups.md#rg-013) | Gray Firewalls on all paths needing level separation | [msc_gray_firewall_path_coverage](../TDN/Requirements/MasterMscRequirementSpecs.lean#L20) | Review passed |
 | [RG-014](requirement_groups.md#rg-014) | Gray addressing supports security-level filtering | [msc_gray_addressing_for_level_filtering](../TDN/Requirements/MasterMscRequirementSpecs.lean#L23) | Review passed |
 | [RG-015](requirement_groups.md#rg-015) | MACsec encapsulation and standalone encapsulator obligations | [msc_macsec_encapsulation](../TDN/Requirements/MasterMscRequirementSpecs.lean#L27) | Proof deferred |
 | [RG-021](requirement_groups.md#rg-021) | VPN private-key access confinement | [msc_vpn_private_key_confinement](../TDN/Requirements/MasterMscRequirementSpecs.lean#L33) | Review passed |
-| [RG-024](requirement_groups.md#rg-024) | MACsec authentication alternatives and AS scope | [msc_macsec_authentication_choice_and_as](../TDN/Requirements/MasterMscRequirementSpecs.lean#L38) | Proof deferred |
+| [RG-024](requirement_groups.md#rg-024) | MACsec authentication alternatives and AS scope | [msc_macsec_authentication_choice_and_as](../TDN/Requirements/MasterMscRequirementSpecs.lean#L38) | Review passed |
 | [RG-027](requirement_groups.md#rg-027) | MACsec key generation, key-server selection, and rollover | [msc_macsec_key_generation_and_server](../TDN/Requirements/MasterMscRequirementSpecs.lean#L43) | Review passed |
-| [RG-028](requirement_groups.md#rg-028) | MACsec mandatory protection parameters | [msc_macsec_protection_parameters](../TDN/Requirements/MasterMscRequirementSpecs.lean#L49) | Proof deferred |
-| [RG-029](requirement_groups.md#rg-029) | Inner encryption and decryption cannot be bypassed | [msc_inner_tunnel_no_bypass](../TDN/Requirements/MasterMscRequirementSpecs.lean#L53) | Proof deferred |
-| [RG-030](requirement_groups.md#rg-030) | Outer encryption and decryption cannot be bypassed | [msc_outer_tunnel_no_bypass](../TDN/Requirements/MasterMscRequirementSpecs.lean#L59) | Proof deferred |
+| [RG-028](requirement_groups.md#rg-028) | MACsec mandatory protection parameters | [msc_macsec_protection_parameters](../TDN/Requirements/MasterMscRequirementSpecs.lean#L49) | Review passed |
+| [RG-029](requirement_groups.md#rg-029) | Inner encryption and decryption cannot be bypassed | [msc_inner_tunnel_no_bypass](../TDN/Requirements/MasterMscRequirementSpecs.lean#L53) | Review passed |
+| [RG-030](requirement_groups.md#rg-030) | Outer encryption and decryption cannot be bypassed | [msc_outer_tunnel_no_bypass](../TDN/Requirements/MasterMscRequirementSpecs.lean#L59) | Review passed |
 | [RG-032](requirement_groups.md#rg-032) | TRANSEC under the stated deployment conditions | [msc_transec_conditions](../TDN/Requirements/MasterMscRequirementSpecs.lean#L65) | Review passed |
 | [RG-033](requirement_groups.md#rg-033) | Packet sizing to control fragmentation | [msc_packet_size_configuration](../TDN/Requirements/MasterMscRequirementSpecs.lean#L67) | Review passed |
 | [RG-034](requirement_groups.md#rg-034) | Outer Firewall placement for untrusted Black transport | [msc_outer_firewall_placement](../TDN/Requirements/MasterMscRequirementSpecs.lean#L73) | Review passed |
@@ -106,7 +106,7 @@ RG-070 currently maps to [case 70 returning `True`](../TDN/Requirements/CsfcRole
 
 The shared cases are assembled by [AllApplicableDuties](../TDN/Requirements/CsfcRoleObligations.lean#L424), which also requires a known subject, complete supporting inventories, and the applicable Enterprise Gray conditions. The complete definitions for RG-008, RG-015, RG-056, and RG-074 use that broader obligation machinery. For those groups, follow the dedicated specification in the first table to see the full formalized statement.
 
-Older definitions with similar short names remain elsewhere in `TDN/Requirements`. The first table selects the current `TDN.Requirements.Msc` specification whenever one exists, matching the [publication register](../data/publication/v3.2/register.json). Its [proof map](../data/publication/v3.2/proof_map.json) names the accepted general theorems and model applications.
+Older definitions with similar short names remain elsewhere in `TDN/Requirements`. The first table selects the current `TDN.Requirements.Msc` specification whenever one exists, matching the [publication register](../data/publication/v3.3/register.json). Its [proof map](../data/publication/v3.3/proof_map.json) names the accepted general theorems and model applications.
 
 ## Maintenance
 

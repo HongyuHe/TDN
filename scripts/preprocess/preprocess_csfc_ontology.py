@@ -13,6 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'data/extraction'
+VERSION = 'v' + (ROOT / 'THEORY_VERSION').read_text().strip()
 BASE = 'urn:tdn:csfc:msc:roles:'
 ONTOLOGY_IRI = 'urn:tdn:csfc:msc:roles'
 NS = {'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'owl': 'http://www.w3.org/2002/07/owl#', 'skos': 'http://www.w3.org/2004/02/skos/core#', 'tdn': BASE}
@@ -124,7 +125,7 @@ def obligation_catalog(out, role_ids):
     for path, expected in curated['source_hashes'].items():
         if digest(ROOT / path) != expected:
             raise ValueError('Lean obligations changed; review translations: ' + path)
-    register_path = 'data/publication/v3.2/register.json'
+    register_path = f'data/publication/{VERSION}/register.json'
     register = read(ROOT / register_path)['groups']
     groups = {g['rg_id']: g for g in register}
     if set(curated['translations']) != set(groups):
@@ -179,6 +180,8 @@ def inherited_obligations(role_id, parents, direct):
 
 def theory_mapping(out, role_ids):
     mapping = read(out / 'roles/ontology_theory.json')
+    if mapping['theory_version'] != VERSION:
+        raise ValueError('Review the ontology mappings for TDN ' + VERSION)
     if set(mapping['roles']) != role_ids:
         raise ValueError('Theory mappings must cover every extracted role exactly.')
     for filename, expected in mapping['source_hashes'].items():
@@ -200,7 +203,7 @@ def theory_mapping(out, role_ids):
         if not set(record['references']) <= set(result['references']):
             raise ValueError('Unknown Lean reference for ' + role_id)
         if not set(record['interpretations']) <= set(result['interpretations']):
-            raise ValueError('Unknown v3.2 interpretation for ' + role_id)
+            raise ValueError('Unknown theory interpretation for ' + role_id)
         if record['status'] in {'direct', 'composed'} and not record['references']:
             raise ValueError('Represented role lacks a code reference: ' + role_id)
     return result
@@ -256,7 +259,7 @@ def triples(graph):
     rdf_type, label = NS['rdf'] + 'type', NS['rdfs'] + 'label'
     add(ONTOLOGY_IRI, rdf_type, NS['owl'] + 'Ontology')
     add(ONTOLOGY_IRI, NS['rdfs'] + 'comment', graph['class_semantics'] + ' ' + graph['association_semantics'], True)
-    add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', 'CSfC MSC 1.3.0; TDN role hierarchy 1.1; TDN theory v3.2', True)
+    add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', f'CSfC MSC 1.3.0; TDN role hierarchy 1.1; TDN theory {VERSION}', True)
     props = ['roleId', 'roleKind', 'sourceUnit', 'sourceText', 'pdfPages', 'basis', 'rationale', 'qualification', 'inputHash', 'theoryVersion', 'leanRepresentation', 'leanMapping', 'leanExpression', 'leanReference', 'theoryInterpretation']
     props += ['associatedRequirement', 'directRequirement', 'inheritedRequirement', 'requirementTranslation', 'requirementCode', 'requirementStatus']
     props += sorted({a['relation'] for a in graph['associations']})
@@ -375,7 +378,7 @@ def markdown(graph):
     nodes = {n['role_id']: n for n in graph['nodes']}
     lines = ['# CSfC role ontology', '', 'The hierarchy organizes all extracted roles and preserves source evidence for each subtype relationship. A role can have multiple parents. The navigation families group related topics for browsing and add no OWL subclass claims.', '', '[Interactive explorer](ontology.html) | [OWL in RDF/XML](ontology.owl) | [Turtle](ontology.ttl) | [Structured graph](ontology.json) | [Curation decisions](ontology_decisions.json)', '', graph['class_semantics'], '', graph['association_semantics'], '', 'OWL uses an open-world interpretation: an absent relationship remains unasserted. The extraction validators separately check that every extracted role and every declared evidence reference is present.', '', 'The transitive parent lists are computed for the exported subclass graph. The pipeline validates its supported serialization and hierarchy; it does not run a general OWL DL reasoner or prove CSfC compliance.', '', '## Counts', '']
     lines += ['- ' + key.replace('_', ' ') + ': ' + str(value) for key, value in graph['counts'].items()]
-    lines += ['', '## Representation in TDN v3.2', '', graph['theory']['mapping_scope'], '',
+    lines += ['', '## Representation in TDN ' + VERSION, '', graph['theory']['mapping_scope'], '',
               '[Curated Lean mappings](ontology_theory.json) records all 76 source roles, code references, chosen interpretations and pinned Lean source hashes.', '',
               '| Role | Representation | Meaning | Code |', '| --- | --- | --- | --- |']
     for node in graph['nodes']:
@@ -395,7 +398,7 @@ def markdown(graph):
         direct = ', '.join(o['rg_id'] for o in node['obligations'] if o['direct']) or 'None recorded'
         inherited = ', '.join(o['rg_id'] for o in node['obligations'] if o['inherited_from']) or 'None'
         lines.append('| ' + node['label'] + ' | ' + direct + ' | ' + inherited + ' |')
-    lines += ['', '## Chosen v3.2 interpretations', '']
+    lines += ['', '## Chosen ' + VERSION + ' interpretations', '']
     for key, interpretation in graph['theory']['interpretations'].items():
         lines += ['### ' + interpretation['title'], '', interpretation['summary'], '',
                   'Recorded decision: `' + interpretation['source_path'] + ':' + str(interpretation['source_line']) + '`.', '']
@@ -433,7 +436,7 @@ def expected_outputs(out=OUT):
     xml, ttl = rdf_xml(statements), turtle(statements)
     payload = {**graph, 'project_root': str(ROOT), 'downloads': {'owl': xml, 'turtle': ttl}}
     embedded = json.dumps(payload, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
-    template = TEMPLATE.read_text()
+    template = TEMPLATE.read_text().replace('__THEORY_VERSION__', VERSION)
     if template.count('__ONTOLOGY_DATA__') != 1:
         raise ValueError('The HTML template must contain one data placeholder.')
     outputs = {'ontology.json': json.dumps(graph, ensure_ascii=False, indent=2) + '\n', 'ontology.owl': xml, 'ontology.ttl': ttl, 'ontology.md': markdown(graph), 'ontology.html': template.replace('__ONTOLOGY_DATA__', embedded)}

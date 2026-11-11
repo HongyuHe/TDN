@@ -24,8 +24,8 @@ The supervisor launches the independent Constructor with GPT-6.1 Sol at `xhigh`.
 
 ```sh
 python3 scripts/construction/prepare_interpretation.py \
-  --run v3.2-TIMESTAMP \
-  --workspace /tmp/tdn-v3.2-TIMESTAMP/constructor \
+  --run v3.3-TIMESTAMP \
+  --workspace /tmp/tdn-v3.3-TIMESTAMP/constructor \
   --round 1
 ```
 
@@ -89,4 +89,4 @@ The retained importers and shared parsing helpers still have proof, MCP, or regr
 
 Unique proof-review records and timestamped network snapshots retain their original paths and hashes. The completed script-relocation rehearsal and superseded untracked evidence values were archived outside the repository during the November 3 cleanup. Current proof inputs remain under `data/evidence/`.
 
-The [publication tools](../publication/README.md) rebuild the hierarchy and ontology and validate their source links. Their current source mappings are under `data/publication/v3.2/`. The original review decisions remain available under `data/publication/v3.1/`.
+The [publication tools](../publication/README.md) rebuild the hierarchy and ontology and validate their source links. Their current source mappings are under `data/publication/v3.3/`. The earlier review decisions remain available under `data/publication/v3.1/` and `data/publication/v3.2/`.

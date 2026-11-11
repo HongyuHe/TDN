@@ -1,0 +1,55 @@
+{
+  "schema": "macsec-provisioning/v1",
+  "installations": [
+    {
+      "observation_id": "cmd-0064",
+      "device": "OA",
+      "logical_interface": "macsec0",
+      "direction": "tx",
+      "association_number": 0,
+      "installed_key_id": "01",
+      "key_bytes": 32,
+      "key_sha256": "a041d57825094e81d55d38b2ec8eff939d45a8d7c6df90205bd04f84195e8ab8",
+      "equal_to_installations": []
+    },
+    {
+      "observation_id": "cmd-0067",
+      "device": "OB",
+      "logical_interface": "macsec0",
+      "direction": "tx",
+      "association_number": 0,
+      "installed_key_id": "02",
+      "key_bytes": 32,
+      "key_sha256": "2a201cc20e508bdf5c70d2294a04d1167891a06073efabb4351630ebac9639ab",
+      "equal_to_installations": []
+    },
+    {
+      "observation_id": "cmd-0069",
+      "device": "OA",
+      "logical_interface": "macsec0",
+      "direction": "rx",
+      "association_number": 0,
+      "installed_key_id": "02",
+      "key_bytes": 32,
+      "key_sha256": "2a201cc20e508bdf5c70d2294a04d1167891a06073efabb4351630ebac9639ab",
+      "equal_to_installations": [
+        "cmd-0067"
+      ]
+    },
+    {
+      "observation_id": "cmd-0072",
+      "device": "OB",
+      "logical_interface": "macsec0",
+      "direction": "rx",
+      "association_number": 0,
+      "installed_key_id": "01",
+      "key_bytes": 32,
+      "key_sha256": "a041d57825094e81d55d38b2ec8eff939d45a8d7c6df90205bd04f84195e8ab8",
+      "equal_to_installations": [
+        "cmd-0064"
+      ]
+    }
+  ],
+  "equality_method": "Direct comparison of private successful installation inputs in collector memory; only equality links and SHA-256 references are exported",
+  "scope": "Manual SAK provisioning; does not establish MKA, certificate authentication, or approved key generation"
+}

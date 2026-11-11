@@ -1,0 +1,969 @@
+{
+  "direct": {
+    "ownerNames": [
+      "t32maac6bb-a",
+      "t32maac6bb-b"
+    ],
+    "deviceData": [
+      {
+        "forwardRules": [],
+        "inputRules": [],
+        "outputRules": [],
+        "forwardFallback": "allow",
+        "inputFallback": "allow",
+        "outputFallback": "allow",
+        "egressPolicies": [],
+        "ingressPolicies": [],
+        "states": [],
+        "localAddresses": [
+          173735937
+        ],
+        "ifaceSecurityDomain": 0
+      },
+      {
+        "forwardRules": [],
+        "inputRules": [],
+        "outputRules": [],
+        "forwardFallback": "allow",
+        "inputFallback": "allow",
+        "outputFallback": "allow",
+        "egressPolicies": [],
+        "ingressPolicies": [],
+        "states": [],
+        "localAddresses": [
+          173735938
+        ],
+        "ifaceSecurityDomain": 1
+      }
+    ],
+    "ifaceData": [
+      {
+        "owner": 0,
+        "name": "t32maac6bb-a:macsec0",
+        "stack": [],
+        "canOriginateTraffic": true
+      },
+      {
+        "owner": 0,
+        "name": "t32maac6bb-a:eth0",
+        "stack": [
+          1
+        ],
+        "canOriginateTraffic": false
+      },
+      {
+        "owner": 1,
+        "name": "t32maac6bb-b:macsec0",
+        "stack": [],
+        "canOriginateTraffic": true
+      },
+      {
+        "owner": 1,
+        "name": "t32maac6bb-b:eth0",
+        "stack": [
+          1
+        ],
+        "canOriginateTraffic": false
+      }
+    ],
+    "devices": [
+      {
+        "id": "t32maac6bb-a",
+        "site": "site-0",
+        "kind": "macsec",
+        "layer": "inner",
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "infrastructure": true
+      },
+      {
+        "id": "t32maac6bb-b",
+        "site": "site-1",
+        "kind": "macsec",
+        "layer": "inner",
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "infrastructure": true
+      }
+    ],
+    "interfaces": [
+      {
+        "id": "t32maac6bb-a:macsec0",
+        "device": "t32maac6bb-a",
+        "zone": "red",
+        "address": 173735937,
+        "namespaceAddresses": [],
+        "linkAddress": 125628824203533,
+        "physical": false,
+        "externalData": false,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "t32maac6bb-a:eth0",
+        "device": "t32maac6bb-a",
+        "zone": "gray",
+        "address": null,
+        "namespaceAddresses": [],
+        "linkAddress": 125628824203533,
+        "physical": true,
+        "externalData": true,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "t32maac6bb-b:macsec0",
+        "device": "t32maac6bb-b",
+        "zone": "red",
+        "address": 173735938,
+        "namespaceAddresses": [],
+        "linkAddress": 7151812887152,
+        "physical": false,
+        "externalData": false,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "t32maac6bb-b:eth0",
+        "device": "t32maac6bb-b",
+        "zone": "gray",
+        "address": null,
+        "namespaceAddresses": [],
+        "linkAddress": 7151812887152,
+        "physical": true,
+        "externalData": true,
+        "managementNetwork": false,
+        "mtu": 1500
+      }
+    ],
+    "routes": [
+      {
+        "ingress": 0,
+        "egress": 0,
+        "destPrefixLow": 0,
+        "destPrefixHigh": 680564733841876926926749214863536422912,
+        "prefixLength": 0,
+        "metric": 0,
+        "tablePriority": 32766
+      },
+      {
+        "ingress": 2,
+        "egress": 2,
+        "destPrefixLow": 0,
+        "destPrefixHigh": 680564733841876926926749214863536422912,
+        "prefixLength": 0,
+        "metric": 0,
+        "tablePriority": 32766
+      }
+    ],
+    "links": [
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "macIfaces": [
+      {
+        "logicalIface": 0,
+        "physicalIface": 1,
+        "settings": {
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0
+        },
+        "transmitAssociation": {
+          "tag": 1,
+          "sci": 8233210623002738689,
+          "associationNumber": 0,
+          "keyGeneration": 1
+        },
+        "receiveAssociations": [
+          {
+            "tag": 1,
+            "sci": 468701209372393473,
+            "associationNumber": 0,
+            "keyGeneration": 2
+          }
+        ],
+        "validateStrict": true
+      },
+      {
+        "logicalIface": 2,
+        "physicalIface": 3,
+        "settings": {
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0
+        },
+        "transmitAssociation": {
+          "tag": 1,
+          "sci": 468701209372393473,
+          "associationNumber": 0,
+          "keyGeneration": 2
+        },
+        "receiveAssociations": [
+          {
+            "tag": 1,
+            "sci": 8233210623002738689,
+            "associationNumber": 0,
+            "keyGeneration": 1
+          }
+        ],
+        "validateStrict": true
+      }
+    ],
+    "mkaPeers": [
+      {
+        "sourceIface": 1,
+        "destinationIface": 3,
+        "actorSCI": 8233210623002738689,
+        "tunnel": "t32maac6bb-a-to-t32maac6bb-b"
+      },
+      {
+        "sourceIface": 3,
+        "destinationIface": 1,
+        "actorSCI": 468701209372393473,
+        "tunnel": "t32maac6bb-b-to-t32maac6bb-a"
+      }
+    ],
+    "tunnels": [
+      {
+        "id": "t32maac6bb-a-to-t32maac6bb-b",
+        "layer": "inner",
+        "mechanism": "macsec",
+        "sender": "t32maac6bb-a",
+        "receiver": "t32maac6bb-b",
+        "keyContext": "model-key-1",
+        "espTunnelMode": false,
+        "associatedIPTunnel": false
+      },
+      {
+        "id": "t32maac6bb-b-to-t32maac6bb-a",
+        "layer": "inner",
+        "mechanism": "macsec",
+        "sender": "t32maac6bb-b",
+        "receiver": "t32maac6bb-a",
+        "keyContext": "model-key-2",
+        "espTunnelMode": false,
+        "associatedIPTunnel": false
+      }
+    ],
+    "macFrames": [
+      [
+        {
+          "tag": 1,
+          "sci": 8233210623002738689,
+          "associationNumber": 0,
+          "keyGeneration": 1
+        },
+        {
+          "header": {
+            "source": 125628824203533,
+            "destination": 7151812887152,
+            "etherType": 35045,
+            "vlanTags": []
+          },
+          "headerBytes": [
+            6,
+            129,
+            41,
+            68,
+            66,
+            112,
+            114,
+            66,
+            61,
+            112,
+            177,
+            13,
+            136,
+            229
+          ],
+          "payload": [
+            44,
+            0,
+            0,
+            0,
+            0,
+            0,
+            114,
+            66,
+            61,
+            112,
+            177,
+            13,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        {
+          "tag": 1,
+          "sci": 468701209372393473,
+          "associationNumber": 0,
+          "keyGeneration": 2
+        },
+        {
+          "header": {
+            "source": 7151812887152,
+            "destination": 125628824203533,
+            "etherType": 35045,
+            "vlanTags": []
+          },
+          "headerBytes": [
+            114,
+            66,
+            61,
+            112,
+            177,
+            13,
+            6,
+            129,
+            41,
+            68,
+            66,
+            112,
+            136,
+            229
+          ],
+          "payload": [
+            44,
+            0,
+            0,
+            0,
+            0,
+            0,
+            6,
+            129,
+            41,
+            68,
+            66,
+            112,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    ],
+    "sourceIfaces": [
+      0,
+      2
+    ],
+    "sourceAddresses": [
+      173735937,
+      173735938
+    ],
+    "networks": [
+      {
+        "id": "red-0",
+        "site": "site-0",
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "innerComponents": [
+          "t32maac6bb-a"
+        ]
+      },
+      {
+        "id": "red-1",
+        "site": "site-1",
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "innerComponents": [
+          "t32maac6bb-b"
+        ]
+      }
+    ]
+  },
+  "routed": {
+    "ownerNames": [
+      "t32maac6bb-a",
+      "t32maac6bb-b",
+      "model-red-router"
+    ],
+    "deviceData": [
+      {
+        "forwardRules": [],
+        "inputRules": [],
+        "outputRules": [],
+        "forwardFallback": "allow",
+        "inputFallback": "allow",
+        "outputFallback": "allow",
+        "egressPolicies": [],
+        "ingressPolicies": [],
+        "states": [],
+        "localAddresses": [
+          173735937
+        ],
+        "ifaceSecurityDomain": 0
+      },
+      {
+        "forwardRules": [],
+        "inputRules": [],
+        "outputRules": [],
+        "forwardFallback": "allow",
+        "inputFallback": "allow",
+        "outputFallback": "allow",
+        "egressPolicies": [],
+        "ingressPolicies": [],
+        "states": [],
+        "localAddresses": [
+          173735938
+        ],
+        "ifaceSecurityDomain": 1
+      },
+      {
+        "forwardRules": [],
+        "inputRules": [],
+        "outputRules": [],
+        "forwardFallback": "allow",
+        "inputFallback": "allow",
+        "outputFallback": "allow",
+        "egressPolicies": [],
+        "ingressPolicies": [],
+        "states": [],
+        "localAddresses": [],
+        "ifaceSecurityDomain": null
+      }
+    ],
+    "ifaceData": [
+      {
+        "owner": 0,
+        "name": "t32maac6bb-a:red",
+        "stack": [],
+        "canOriginateTraffic": true
+      },
+      {
+        "owner": 0,
+        "name": "t32maac6bb-a:macsec0",
+        "stack": [],
+        "canOriginateTraffic": false
+      },
+      {
+        "owner": 0,
+        "name": "t32maac6bb-a:eth0",
+        "stack": [
+          1
+        ],
+        "canOriginateTraffic": false
+      },
+      {
+        "owner": 1,
+        "name": "t32maac6bb-b:red",
+        "stack": [],
+        "canOriginateTraffic": true
+      },
+      {
+        "owner": 1,
+        "name": "t32maac6bb-b:macsec0",
+        "stack": [],
+        "canOriginateTraffic": false
+      },
+      {
+        "owner": 1,
+        "name": "t32maac6bb-b:eth0",
+        "stack": [
+          1
+        ],
+        "canOriginateTraffic": false
+      },
+      {
+        "owner": 2,
+        "name": "model-red-router:red",
+        "stack": [],
+        "canOriginateTraffic": false
+      }
+    ],
+    "devices": [
+      {
+        "id": "t32maac6bb-a",
+        "site": "site-0",
+        "kind": "macsec",
+        "layer": "inner",
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "infrastructure": true
+      },
+      {
+        "id": "t32maac6bb-b",
+        "site": "site-1",
+        "kind": "macsec",
+        "layer": "inner",
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "infrastructure": true
+      },
+      {
+        "id": "model-red-router",
+        "site": "site-2",
+        "kind": "ordinaryGrayRouter",
+        "layer": null,
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "infrastructure": true
+      }
+    ],
+    "interfaces": [
+      {
+        "id": "t32maac6bb-a:red",
+        "device": "t32maac6bb-a",
+        "zone": "red",
+        "address": 173735937,
+        "namespaceAddresses": [],
+        "linkAddress": 125628824203533,
+        "physical": true,
+        "externalData": false,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "t32maac6bb-a:macsec0",
+        "device": "t32maac6bb-a",
+        "zone": "gray",
+        "address": null,
+        "namespaceAddresses": [],
+        "linkAddress": 125628824203533,
+        "physical": false,
+        "externalData": false,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "t32maac6bb-a:eth0",
+        "device": "t32maac6bb-a",
+        "zone": "gray",
+        "address": null,
+        "namespaceAddresses": [],
+        "linkAddress": 125628824203533,
+        "physical": true,
+        "externalData": true,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "t32maac6bb-b:red",
+        "device": "t32maac6bb-b",
+        "zone": "red",
+        "address": 173735938,
+        "namespaceAddresses": [],
+        "linkAddress": 7151812887152,
+        "physical": true,
+        "externalData": false,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "t32maac6bb-b:macsec0",
+        "device": "t32maac6bb-b",
+        "zone": "gray",
+        "address": null,
+        "namespaceAddresses": [],
+        "linkAddress": 7151812887152,
+        "physical": false,
+        "externalData": false,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "t32maac6bb-b:eth0",
+        "device": "t32maac6bb-b",
+        "zone": "gray",
+        "address": null,
+        "namespaceAddresses": [],
+        "linkAddress": 7151812887152,
+        "physical": true,
+        "externalData": true,
+        "managementNetwork": false,
+        "mtu": 1500
+      },
+      {
+        "id": "model-red-router:red",
+        "device": "model-red-router",
+        "zone": "red",
+        "address": null,
+        "namespaceAddresses": [],
+        "linkAddress": 2,
+        "physical": true,
+        "externalData": false,
+        "managementNetwork": false,
+        "mtu": 1500
+      }
+    ],
+    "routes": [
+      {
+        "ingress": 0,
+        "egress": 1,
+        "destPrefixLow": 0,
+        "destPrefixHigh": 680564733841876926926749214863536422912,
+        "prefixLength": 0,
+        "metric": 0,
+        "tablePriority": 32766
+      },
+      {
+        "ingress": 1,
+        "egress": 0,
+        "destPrefixLow": 0,
+        "destPrefixHigh": 680564733841876926926749214863536422912,
+        "prefixLength": 0,
+        "metric": 0,
+        "tablePriority": 32766
+      },
+      {
+        "ingress": 3,
+        "egress": 4,
+        "destPrefixLow": 0,
+        "destPrefixHigh": 680564733841876926926749214863536422912,
+        "prefixLength": 0,
+        "metric": 0,
+        "tablePriority": 32766
+      },
+      {
+        "ingress": 4,
+        "egress": 3,
+        "destPrefixLow": 0,
+        "destPrefixHigh": 680564733841876926926749214863536422912,
+        "prefixLength": 0,
+        "metric": 0,
+        "tablePriority": 32766
+      }
+    ],
+    "links": [
+      [
+        2,
+        5
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        0,
+        6
+      ]
+    ],
+    "macIfaces": [
+      {
+        "logicalIface": 1,
+        "physicalIface": 2,
+        "settings": {
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0
+        },
+        "transmitAssociation": {
+          "tag": 1,
+          "sci": 8233210623002738689,
+          "associationNumber": 0,
+          "keyGeneration": 1
+        },
+        "receiveAssociations": [
+          {
+            "tag": 1,
+            "sci": 468701209372393473,
+            "associationNumber": 0,
+            "keyGeneration": 2
+          }
+        ],
+        "validateStrict": true
+      },
+      {
+        "logicalIface": 4,
+        "physicalIface": 5,
+        "settings": {
+          "controlledPortEnabled": true,
+          "protectFrames": true,
+          "encryptFrames": true,
+          "confidentialityOffset": 0
+        },
+        "transmitAssociation": {
+          "tag": 1,
+          "sci": 468701209372393473,
+          "associationNumber": 0,
+          "keyGeneration": 2
+        },
+        "receiveAssociations": [
+          {
+            "tag": 1,
+            "sci": 8233210623002738689,
+            "associationNumber": 0,
+            "keyGeneration": 1
+          }
+        ],
+        "validateStrict": true
+      }
+    ],
+    "mkaPeers": [
+      {
+        "sourceIface": 2,
+        "destinationIface": 5,
+        "actorSCI": 8233210623002738689,
+        "tunnel": "t32maac6bb-a-to-t32maac6bb-b"
+      },
+      {
+        "sourceIface": 5,
+        "destinationIface": 2,
+        "actorSCI": 468701209372393473,
+        "tunnel": "t32maac6bb-b-to-t32maac6bb-a"
+      }
+    ],
+    "tunnels": [
+      {
+        "id": "t32maac6bb-a-to-t32maac6bb-b",
+        "layer": "inner",
+        "mechanism": "macsec",
+        "sender": "t32maac6bb-a",
+        "receiver": "t32maac6bb-b",
+        "keyContext": "model-key-1",
+        "espTunnelMode": false,
+        "associatedIPTunnel": false
+      },
+      {
+        "id": "t32maac6bb-b-to-t32maac6bb-a",
+        "layer": "inner",
+        "mechanism": "macsec",
+        "sender": "t32maac6bb-b",
+        "receiver": "t32maac6bb-a",
+        "keyContext": "model-key-2",
+        "espTunnelMode": false,
+        "associatedIPTunnel": false
+      }
+    ],
+    "macFrames": [
+      [
+        {
+          "tag": 1,
+          "sci": 8233210623002738689,
+          "associationNumber": 0,
+          "keyGeneration": 1
+        },
+        {
+          "header": {
+            "source": 125628824203533,
+            "destination": 7151812887152,
+            "etherType": 35045,
+            "vlanTags": []
+          },
+          "headerBytes": [
+            6,
+            129,
+            41,
+            68,
+            66,
+            112,
+            114,
+            66,
+            61,
+            112,
+            177,
+            13,
+            136,
+            229
+          ],
+          "payload": [
+            44,
+            0,
+            0,
+            0,
+            0,
+            0,
+            114,
+            66,
+            61,
+            112,
+            177,
+            13,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        {
+          "tag": 1,
+          "sci": 468701209372393473,
+          "associationNumber": 0,
+          "keyGeneration": 2
+        },
+        {
+          "header": {
+            "source": 7151812887152,
+            "destination": 125628824203533,
+            "etherType": 35045,
+            "vlanTags": []
+          },
+          "headerBytes": [
+            114,
+            66,
+            61,
+            112,
+            177,
+            13,
+            6,
+            129,
+            41,
+            68,
+            66,
+            112,
+            136,
+            229
+          ],
+          "payload": [
+            44,
+            0,
+            0,
+            0,
+            0,
+            0,
+            6,
+            129,
+            41,
+            68,
+            66,
+            112,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    ],
+    "sourceIfaces": [
+      0,
+      3
+    ],
+    "sourceAddresses": [
+      173735937,
+      173735938
+    ],
+    "networks": [
+      {
+        "id": "red-0",
+        "site": "site-0",
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "innerComponents": [
+          "t32maac6bb-a"
+        ]
+      },
+      {
+        "id": "red-1",
+        "site": "site-1",
+        "level": {
+          "classification": "model-test",
+          "compartments": [],
+          "dissemination": [],
+          "otherControls": []
+        },
+        "innerComponents": [
+          "t32maac6bb-b"
+        ]
+      }
+    ]
+  }
+}

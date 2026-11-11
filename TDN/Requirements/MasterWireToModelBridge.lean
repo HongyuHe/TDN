@@ -82,6 +82,7 @@ theorem standard_reachable_wire_encoding {S A Key : Type}
       | datagram header => simp [Frame.visibleHeader, body, Body.visibleHeader] at visible
       | ipsec association contents => simp [Frame.visibleHeader, body, Body.visibleHeader] at visible
       | macsec association contents => simp [body, Body.IPsecOnly] at shape
+      | macsecPdu association encryptFrames confidentialityOffset contents => simp [body, Body.IPsecOnly] at shape
       | carrier endpoint contents => simp [body, Body.IPsecOnly] at shape
       | ethernet header =>
         have bounded := ethernet header body
@@ -105,6 +106,7 @@ theorem standard_reachable_wire_encoding {S A Key : Type}
       | datagram header => simp [Frame.visibleHeader, body, Body.visibleHeader] at visible
       | ipsec association contents => simp [Frame.visibleHeader, body, Body.visibleHeader] at visible
       | macsec association contents => simp [body, Body.IPsecOnly] at shape
+      | macsecPdu association encryptFrames confidentialityOffset contents => simp [body, Body.IPsecOnly] at shape
       | carrier endpoint contents => simp [body, Body.IPsecOnly] at shape
       | ethernet header =>
         have sourceBody : source.body = .ethernet header := by
@@ -120,6 +122,9 @@ theorem standard_reachable_wire_encoding {S A Key : Type}
           | macsec association contents =>
             have impossible := valid.1
             simp [Datagram.Decoded, sourceCase] at impossible
+          | macsecPdu association encryptFrames confidentialityOffset contents =>
+            have impossible := valid.1
+            simp [Datagram.Decoded, sourceCase] at impossible
           | carrier endpoint contents =>
             have impossible := valid.1
             simp [Datagram.Decoded, sourceCase] at impossible
@@ -132,6 +137,6 @@ theorem standard_reachable_wire_encoding {S A Key : Type}
           simpa only [bareEmission, body] using decoded.2
         · intro original same
           exact Body.ethernet.inj same
-        · simp [body, Body.isEthernetCiphertext]
+        · simp [body, Body.isMACsecPdu]
 
 end TDN.Requirements.StandardDataPlaneBridge

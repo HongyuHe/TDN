@@ -65,6 +65,20 @@ lemma Frame.push_macsec_headers {frame : Frame} (coherent : frame.HeadersCoheren
     (frame.pushHeader (.macsec association frame.body) none).HeadersCoherent :=
   ⟨rfl, frame.activeHeader, frame.hiddenHeaders, rfl, coherent⟩
 
+lemma Frame.push_macsec_pdu_headers {frame : Frame} (coherent : frame.HeadersCoherent)
+    (association : MACsecAssociation) (encryptFrames : Bool) (confidentialityOffset : Nat) :
+    (frame.pushHeader (.macsecPdu association encryptFrames confidentialityOffset frame.body) none).HeadersCoherent :=
+  ⟨rfl, frame.activeHeader, frame.hiddenHeaders, rfl, coherent⟩
+
+lemma Frame.pop_macsec_pdu_headers {frame : Frame} (coherent : frame.HeadersCoherent)
+    (association : MACsecAssociation) (encryptFrames : Bool) (confidentialityOffset : Nat)
+    (body : Body) (shape : frame.body = .macsecPdu association encryptFrames confidentialityOffset body) :
+    (frame.popHeader body).HeadersCoherent := by
+  change frame.body.HeadersCoherent frame.activeHeader frame.hiddenHeaders at coherent
+  rw [shape] at coherent
+  obtain ⟨_, inner, rest, hidden, coherent⟩ := coherent
+  simpa [Frame.HeadersCoherent, Frame.popHeader, hidden] using coherent
+
 lemma Frame.pop_ipsec_headers {frame : Frame} (coherent : frame.HeadersCoherent)
     (association : DataPlaneForwarding.TunnelSAStamp) (body : Body) (shape : frame.body = .ipsec association body) :
     (frame.popHeader body).HeadersCoherent := by
@@ -139,6 +153,12 @@ lemma step_preserves_headers {c : Config} (processing : HeaderProcessing)
   | bridgeOutput => exact coherent
   | encryptMACsec iface association =>
     simpa [Config.macsecFrame, mode] using Frame.push_macsec_headers coherent association
+  | protectMACsec iface association =>
+    simpa [Config.macsecPduFrame, mode] using
+      Frame.push_macsec_pdu_headers coherent association iface.settings.encryptFrames iface.settings.confidentialityOffset
+  | validateMACsec iface association transmitted encryptFrames confidentialityOffset body configured datapathStage physical framed =>
+    simpa [Config.restoredFrame, mode] using
+      Frame.pop_macsec_pdu_headers coherent transmitted encryptFrames confidentialityOffset body framed
   | unprotectedMACsec => exact coherent
   | decryptMACsec iface association transmitted body configured datapathStage physical encrypted =>
     simpa [Config.restoredFrame, mode] using
@@ -199,6 +219,7 @@ lemma decoded_source_headers (datagram : Datagram) (decoded : datagram.Decoded) 
   | ethernet header => exact ⟨rfl, rfl⟩
   | ipsec => simp [Datagram.Decoded, shape] at decoded
   | macsec => simp [Datagram.Decoded, shape] at decoded
+  | macsecPdu => simp [Datagram.Decoded, shape] at decoded
   | carrier => simp [Datagram.Decoded, shape] at decoded
 
 end TDN.PacketSource

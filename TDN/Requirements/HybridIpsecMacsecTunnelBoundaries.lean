@@ -13,7 +13,7 @@ def mixedTunnelBoundary (c : MultiProtocolForwarding.Config) (expectedEncapStack
     MultiProtocolForwarding.EncapStackConsistent c expectedEncapStack state
   outboundExit := fun state => state.datapathStage = .egressReady ∧ state.iface ∈ outside
   inboundEntry := fun state => state.datapathStage = .received ∧ state.iface ∈ outside ∧
-    state.authenticated = []
+    state.authenticated = [] ∧ MultiProtocolForwarding.EncapStackConsistent c expectedEncapStack state
   inboundExit := fun state => state.datapathStage = .egressReady ∧ state.iface ∈ inside
   outboundProtected := fun state => tag ∈ state.frame.body.protectionLayers
   inboundDecryptionOccurred := fun before actions after =>
@@ -46,10 +46,10 @@ theorem mixed_tunnel_boundary_from_local_checks (c : MultiProtocolForwarding.Con
     rw [stack]
     exact outsideCheck finish.iface outsideMember
   · intro start finish actions entry run exitIface
-    obtain ⟨received, member, empty⟩ := entry
+    obtain ⟨received, member, empty, wellformed⟩ := entry
     obtain ⟨ready, insideMember⟩ := exitIface
     exact inbound_crossing_has_actual_boundary_decryption c expectedEncapStack tag component conditions
-      carrierCheck ipTags macTags run received empty (outsideCheck start.iface member)
+      carrierCheck ipTags macTags run received empty wellformed (outsideCheck start.iface member)
       ready (insideCheck finish.iface insideMember)
   · intro start finish actions entry run bypass
     obtain ⟨received, member, invariant⟩ := entry

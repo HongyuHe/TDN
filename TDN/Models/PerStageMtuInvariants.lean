@@ -14,7 +14,7 @@ def BodySizeBudget (plaintextLimit : Nat → Nat) : Body → Prop
       BodySizeBudget plaintextLimit contents ∧ ∃ bytes,
         networkLength contents = some bytes ∧ bytes ≤ plaintextLimit association.tag ∧
         PacketLength.alignedWireLength 4 2 52 (plaintextLimit association.tag) ≤ 65535
-  | .macsec _ _ | .carrier _ _ => False
+  | .macsec _ _ | .macsecPdu _ _ _ _ | .carrier _ _ => False
 
 lemma body_budget_has_length {limit : Nat → Nat} {body : Body}
     (budget : BodySizeBudget limit body) (header : PacketPolicy.Packet)
@@ -43,6 +43,7 @@ lemma body_budget_has_length {limit : Nat → Nat} {body : Body}
       unfold PacketLength.alignedWireLength
       omega
   | macsec association contents => cases budget
+  | macsecPdu association encryptFrames confidentialityOffset contents => cases budget
   | carrier endpoint contents => cases budget
 
 lemma decoded_source_body_budget (source : Datagram) (decoded : source.Decoded)
@@ -56,6 +57,7 @@ lemma decoded_source_body_budget (source : Datagram) (decoded : source.Decoded)
   | ethernet header => trivial
   | ipsec association contents => simp [Datagram.Decoded, body] at decoded
   | macsec association contents => simp [Datagram.Decoded, body] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
   | carrier endpoint contents => simp [Datagram.Decoded, body] at decoded
 
 
@@ -319,6 +321,8 @@ theorem device_step_preserves_size_budget {configuration : Config} {required : N
   | bridgeOutput next datapathStage member =>
     exact ⟨bodyBudget, size_ready_if_not_required _ _ _ _ (checks.bridgeTarget _ _ member)⟩
   | encryptMACsec iface association configured => simp only [checks.noMAC, List.not_mem_nil] at configured
+  | protectMACsec iface association configured => simp only [checks.noMAC, List.not_mem_nil] at configured
+  | validateMACsec iface association transmitted encryptFrames confidentialityOffset contents configured => simp only [checks.noMAC, List.not_mem_nil] at configured
   | unprotectedMACsec iface configured => simp only [checks.noMAC, List.not_mem_nil] at configured
   | decryptMACsec iface association transmitted contents configured => simp only [checks.noMAC, List.not_mem_nil] at configured
   | uncheckedMACsec iface configured => simp only [checks.noMAC, List.not_mem_nil] at configured

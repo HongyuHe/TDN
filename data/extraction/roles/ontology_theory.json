@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "theory_version": "v3.2",
-  "source_run": "v3.1-20261104-continuation",
+  "theory_version": "v3.3",
+  "source_run": "v3.2-20261111T040601Z-remaining",
   "mapping_scope": "These annotations explain how source roles are represented by the current Lean model. Device kind, encryption layer and interface zone are separate fields. The local zone represents device-internal interfaces. Device roles remain classified separately. Namespace-local addresses belong to their recorded device, including loopback addresses shared by several devices. Source subtype relationships remain unchanged. Role mappings alone do not establish requirement compliance.",
   "status_labels": {
     "direct": "Explicit Lean representation",
@@ -32,49 +32,49 @@
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "structure Deployment where",
       "label": "Deployment",
-      "line": 581
+      "line": 601
     },
     "ordinary": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "def Deployment.OrdinaryGray",
       "label": "Deployment.OrdinaryGray",
-      "line": 668
+      "line": 688
     },
     "service": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "inductive ServiceKind where",
       "label": "ServiceKind",
-      "line": 519
+      "line": 539
     },
     "management": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "structure ManagementServiceInstance where",
       "label": "ManagementServiceInstance",
-      "line": 567
+      "line": 587
     },
     "management_function": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "inductive ManagementServiceFunction where",
       "label": "ManagementServiceFunction",
-      "line": 554
+      "line": 574
     },
     "management_domain": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "inductive ManagementDomain where",
       "label": "ManagementDomain",
-      "line": 559
+      "line": 579
     },
     "authority": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "structure AuthorityFacts where",
       "label": "AuthorityFacts",
-      "line": 510
+      "line": 530
     },
     "exchange": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "structure ManagementExchange where",
       "label": "ManagementExchange",
-      "line": 547
+      "line": 567
     },
     "eap_role": {
       "path": "TDN/Requirements/CoreMscRequirements.lean",
@@ -230,7 +230,7 @@
       "path": "TDN/Requirements/CoreMscRequirements.lean",
       "anchor": "def PacketSizingInventory",
       "label": "PacketSizingInventory",
-      "line": 861
+      "line": 869
     },
     "sizing_roles": {
       "path": "TDN/Requirements/TunnelMtuAndFragmentationSpec.lean",
@@ -270,8 +270,8 @@
     "TDN/Requirements/CsfcRoleObligations.lean": "a7ddae592e47588e9cd4a574932e0b8c4728644938659bc52169c40a128e265c",
     "TDN/Requirements/CsfcRoleObligationRecords.lean": "82e2f58719585c5b02912f786c4d2fdc8a5ba66d2355c8b9177976e11f80ef23",
     "TDN/Requirements/MasterMscRequirementSpecs.lean": "c633a63cb49a65edb818d44826c69384a15cd9b4c96266d3727a06b0ab49ee74",
-    "TDN/Requirements/MscComplianceSchema.lean": "2cc3cbd46feaed0d4bf75264604ab4fddd1df1785f3cb59806f83a124dfc313c",
-    "TDN/Requirements/CoreMscRequirements.lean": "a9cdac1d350b6a58f3179db46a5f94cec07e6ae439bfa439b88ed73b46781d60",
+    "TDN/Requirements/MscComplianceSchema.lean": "e9363540ecbd456f7617703aa74fe39926575af1f1dad036a90da4d514348c6f",
+    "TDN/Requirements/CoreMscRequirements.lean": "dc599b8d04847b627555183a6143befc2efbbeed30fd8c4a3db78241f4c53f78",
     "TDN/Requirements/NamespaceLocalIpOwnership.lean": "ea163cda25f066b84f170283ccd1530cf566cbad6ca9049de64b2cb729d6de55",
     "TDN/Requirements/TunnelMtuAndFragmentationSpec.lean": "bfc69ba199f850b2636c266c7b010c3353f35c1eeaf5ee9e6fd739ec4d7f9503",
     "TDN/Requirements/TrustedClockSynchronization.lean": "d8bf74ed1da6a895f63e33c3481a53d9c42d1a75210ad05054382cebc2432519"
@@ -1201,7 +1201,7 @@
     },
     "ROLE-high-assurance-encryptor": {
       "status": "unrepresented",
-      "meaning": "The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations.",
+      "meaning": "The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations.",
       "expressions": [],
       "references": [
         "external"
@@ -1210,7 +1210,7 @@
     },
     "ROLE-government-product": {
       "status": "unrepresented",
-      "meaning": "The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations.",
+      "meaning": "The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations.",
       "expressions": [],
       "references": [
         "external"
@@ -1264,14 +1264,14 @@
     },
     "ROLE-auxiliary-network-device": {
       "status": "unrepresented",
-      "meaning": "The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately.",
+      "meaning": "The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately.",
       "expressions": [],
       "references": [],
       "interpretations": []
     },
     "ROLE-perimeter-device": {
       "status": "unrepresented",
-      "meaning": "The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately.",
+      "meaning": "The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately.",
       "expressions": [],
       "references": [],
       "interpretations": []

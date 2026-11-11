@@ -79,9 +79,10 @@
       "boundary": "The current model proof needs its implementation assumptions. It does not establish cryptographic secrecy by itself.",
       "clause": "Ordered Inner and Outer encryption for protected Red payload reaching Black in the selected native model.",
       "source_line": 478,
-      "general": "TDN.Requirements.every_black_byte_has_ordered_encryption_path",
-      "application": "TDN.Deployments.ProfileShared_EnclaveIsolation.every_assembled_black_byte_has_inner_before_outer",
-      "proof_status": "supporting_results_only_deferred_by_user"
+      "general": "TDN.Requirements.Msc.nested_layer_protection_from_local_checks",
+      "application": "TDN.Deployments.NestedProtection_Baseline.snapshot_RG007_ipsec_nested_layer_protection",
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-008",
@@ -140,8 +141,8 @@
       "source_line": 907,
       "general": "TDN.Requirements.Msc.key_and_management_separation_from_scoped_inventory",
       "application": "TDN.Deployments.SnapshotProof_PkiIsolation.baseline_configured_pair_model_RG012",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-013",
@@ -154,8 +155,8 @@
       "source_line": 1020,
       "general": "TDN.Requirements.Msc.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms",
       "application": "TDN.Deployments.SnapshotProof_GrayFirewall.complete_model_RG013",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-014",
@@ -168,8 +169,8 @@
       "source_line": 1174,
       "general": "TDN.Requirements.Msc.gray_addressing_from_ip_and_link_endpoint_rules",
       "application": "TDN.Deployments.SnapshotProof_Addressing.full_routed_RG014",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-015",
@@ -250,8 +251,8 @@
       "source_line": 1846,
       "general": "TDN.Requirements.Msc.vpn_private_key_confinement_from_interface_steps",
       "application": "TDN.Deployments.KeyStoreConfinementChecks.useful_run",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-022",
@@ -284,9 +285,10 @@
       "boundary": "AS placement and supplicant/authenticator inventory are direct checks. The proof remains conditional on the implementation-to-model connection.",
       "clause": "p020:u008.s003 authenticated-exchange origin of EAP-derived CAKs.",
       "source_line": 1984,
-      "general": "TDN.KeySources.executions_have_only_authenticated_sources",
-      "application": "TDN.Deployments.SnapshotMacsecKeySources.eap_ifaces_have_no_pre_shared_fallback",
-      "proof_status": "supporting_results_only_deferred_by_user"
+      "general": "TDN.Requirements.Msc.macsec_authentication_from_local_checks",
+      "application": "TDN.Deployments.MacsecAuthentication.snapshot_RG024_forward_eap_tls_authentication",
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-025",
@@ -321,8 +323,8 @@
       "source_line": 2234,
       "general": "TDN.Requirements.Msc.macsec_key_generation_from_checked_records",
       "application": "TDN.Deployments.SnapshotProof_MacsecKeyGen.complete_RG027_under_named_approvals",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-028",
@@ -333,9 +335,10 @@
       "boundary": "Timeout, replay-window, and offset parameters remain small checks. The current result does not prove every replay or MKA timing property.",
       "clause": "MD10/12/16: controlled-port data emissions are encrypted with zero confidentiality offset.",
       "source_line": 2296,
-      "general": "TDN.LinkProtection.every_emitted_frame_is_encrypted",
-      "application": "TDN.Deployments.SnapshotMacsecRuntime.every_runtime_data_emission_is_encrypted",
-      "proof_status": "supporting_results_only_deferred_by_user"
+      "general": "TDN.Requirements.Msc.macsec_protection_from_local_checks",
+      "application": "TDN.Deployments.MacsecProtection.snapshot_RG028_direct_macsec_protection_parameters",
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-029",
@@ -346,9 +349,10 @@
       "boundary": "Tunnel-mode fields are direct checks. Do not equate a rule's IPsec match with an established encryption operation without the connecting model.",
       "clause": "IR5: arbitrary inbound component traversal requires actual local Inner decryption.",
       "source_line": 2359,
-      "general": "TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption",
-      "application": "TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4.boundaryIA_no_bypass",
-      "proof_status": "supporting_results_only_deferred_by_user"
+      "general": "TDN.Requirements.Msc.inner_tunnel_no_bypass_from_outbound_and_inbound_checks",
+      "application": "TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_ipsec_inner_tunnel_no_bypass",
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-030",
@@ -359,9 +363,10 @@
       "boundary": "The current inbound result is partial; outbound protection and all exception cases need their own supporting conditions.",
       "clause": "OR5: arbitrary inbound component traversal requires actual local Outer decryption.",
       "source_line": 2440,
-      "general": "TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption",
-      "application": "TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4.boundaryOA_no_bypass",
-      "proof_status": "supporting_results_only_deferred_by_user"
+      "general": "TDN.Requirements.Msc.outer_tunnel_no_bypass_from_local_checks",
+      "application": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_outer_tunnel_no_bypass",
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-031",
@@ -385,8 +390,8 @@
       "source_line": 2588,
       "general": "TDN.Requirements.Msc.transec_conditions_from_checked_installations",
       "application": "TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality.retained_complete_RG032",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-033",
@@ -399,8 +404,8 @@
       "source_line": 2632,
       "general": "TDN.Requirements.Msc.complete_canonical_IPsec_packet_sizing",
       "application": "TDN.Deployments.MtuSizing_Baseline.complete_recorded_packet_size_configuration",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-034",
@@ -413,8 +418,8 @@
       "source_line": 2678,
       "general": "TDN.Requirements.outer_firewall_placement_from_local_checks",
       "application": "TDN.Deployments.SnapshotProof_TopologyWaypointing.Baseline.configured_graph_RG034",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-035",
@@ -427,8 +432,8 @@
       "source_line": 2749,
       "general": "TDN.Requirements.Msc.device_boundary_interface_filtering_from_checks",
       "application": "TDN.Deployments.Perimeter_Baseline.complete_native_boundary_policy",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-036",
@@ -452,8 +457,8 @@
       "source_line": 2897,
       "general": "TDN.Requirements.Msc.third_party_services_from_disabled_features_and_rule_checks",
       "application": "TDN.Deployments.SnapshotProof_ThirdPartyServices.blocking_model_RG037",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-038",
@@ -466,8 +471,8 @@
       "source_line": 2938,
       "general": "TDN.Requirements.Msc.ip_and_link_header_filtering_from_inventory_and_rule_atoms",
       "application": "TDN.Deployments.SnapshotProof_HeaderFiltering.routed_ipv4_RG038",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-039",
@@ -480,8 +485,8 @@
       "source_line": 2995,
       "general": "TDN.Requirements.Msc.outer_gray_IPsec_policy_from_native_checks",
       "application": "TDN.Deployments.OuterToGray_Baseline.complete_Outer_gray_policy",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-040",
@@ -494,8 +499,8 @@
       "source_line": 3070,
       "general": "TDN.Requirements.Msc.gray_firewall_allowlist_from_native_IPsec_checks",
       "application": "TDN.Deployments.Perimeter_Baseline.complete_native_Gray_firewall_allowlist",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-041",
@@ -574,8 +579,8 @@
       "source_line": 3730,
       "general": "TDN.Requirements.Msc.administrator_authentication_from_local_admission_and_credential_checks",
       "application": "TDN.Deployments.SnapshotProof_Administration.retained_complete_RG047",
-      "proof_status": "complete_model_specification_review_pass",
-      "review_record": "data/publication/v3.1/verdict.json"
+      "proof_status": "complete_model_specification_review_PASS",
+      "review_record": "data/publication/v3.3/verdict.json"
     },
     {
       "id": "RG-048",

@@ -3,6 +3,24 @@ from . import mixed
 
 
 def adapter(name):
+    if name == "mixed-deployment-inventory-v1":
+        from . import mixed_inventory
+        return mixed_inventory
+    if name == "native-authentication-services-v1":
+        from . import native_authentication_services
+        return native_authentication_services
+    if name == "security-level-assignment-v1":
+        from . import security_assignments
+        return security_assignments
+    if name == "mixed-observations-v1":
+        from . import mixed_observations
+        return mixed_observations
+    if name == "eap-complete-causal-v1":
+        from . import eap_completion
+        return eap_completion
+    if name == "mka-parameters-v1":
+        from . import mka_parameters
+        return mka_parameters
     if name == "macsec-boundary-v1":
         from . import macsec_boundary
         return macsec_boundary

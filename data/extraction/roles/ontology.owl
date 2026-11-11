@@ -1136,26 +1136,26 @@
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology" />
     <rdfs:comment>A class describes entities matching an extracted role or realization concept. Classes may overlap and may have multiple parents. No device existence, class disjointness, or class equivalence is asserted. Non-subtype links are OWL annotation assertions between class IRIs. They preserve source context without imposing object-property restrictions or asserting a relationship for every class member.</rdfs:comment>
-    <owl:versionInfo>CSfC MSC 1.3.0; TDN role hierarchy 1.1; TDN theory v3.2</owl:versionInfo>
-    <tdn:inputHash>TDN/Requirements/CoreMscRequirements.lean sha256:a9cdac1d350b6a58f3179db46a5f94cec07e6ae439bfa439b88ed73b46781d60</tdn:inputHash>
+    <owl:versionInfo>CSfC MSC 1.3.0; TDN role hierarchy 1.1; TDN theory v3.3</owl:versionInfo>
+    <tdn:inputHash>TDN/Requirements/CoreMscRequirements.lean sha256:dc599b8d04847b627555183a6143befc2efbbeed30fd8c4a3db78241f4c53f78</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/CrossEnclavePkiIsolationSpec.lean sha256:b2215ad3fe0f334437be321a31f1ea89735fc03772386001d8cee57532410b9d</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/CsfcRoleObligationRecords.lean sha256:82e2f58719585c5b02912f786c4d2fdc8a5ba66d2355c8b9177976e11f80ef23</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/CsfcRoleObligations.lean sha256:a7ddae592e47588e9cd4a574932e0b8c4728644938659bc52169c40a128e265c</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/ManagementPlaneRequirements.lean sha256:043fd7b2ef364d2ecad297cafef311f1fe9c023ce823a087199deaede1e2873b</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/MasterMscRequirementSpecs.lean sha256:c633a63cb49a65edb818d44826c69384a15cd9b4c96266d3727a06b0ab49ee74</tdn:inputHash>
-    <tdn:inputHash>TDN/Requirements/MscComplianceSchema.lean sha256:2cc3cbd46feaed0d4bf75264604ab4fddd1df1785f3cb59806f83a124dfc313c</tdn:inputHash>
+    <tdn:inputHash>TDN/Requirements/MscComplianceSchema.lean sha256:e9363540ecbd456f7617703aa74fe39926575af1f1dad036a90da4d514348c6f</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/MscFirewallWaypointingTheorems.lean sha256:ae662c2dbc60539e6cb971a4e57d2ca7b57f71ab144946a6bb3d82c9cdb46890</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/NamespaceLocalIpOwnership.lean sha256:ea163cda25f066b84f170283ccd1530cf566cbad6ca9049de64b2cb729d6de55</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/TrustedClockSynchronization.lean sha256:d8bf74ed1da6a895f63e33c3481a53d9c42d1a75210ad05054382cebc2432519</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/TunnelMtuAndFragmentationSpec.lean sha256:bfc69ba199f850b2636c266c7b010c3353f35c1eeaf5ee9e6fd739ec4d7f9503</tdn:inputHash>
     <tdn:inputHash>TDN/Requirements/TwoLayerOverlayArchitecture.lean sha256:45a9f17bfde04506b6c5791f94af74e962cc9cb92645396f074e3c2ec467a82f</tdn:inputHash>
-    <tdn:inputHash>data/publication/v3.2/register.json sha256:d9fc456b26db9870ca1fc8879f0da83322b8893ecf175962687bbc59807d8d02</tdn:inputHash>
+    <tdn:inputHash>data/publication/v3.3/register.json sha256:cefc81c60b8e4779c590a14cf5d7fe069159698ba6d11cbc62b36bf6f3d66254</tdn:inputHash>
     <tdn:inputHash>roles/ontology_decisions.json sha256:741710dbf55a3725da0d118d244ebc834e82808de256ec236b7dc32af8809688</tdn:inputHash>
-    <tdn:inputHash>roles/ontology_obligations.json sha256:2ffed24d9b64309b7e7ef909d3619c9bcb82325447968a27a78d61d7dde2b258</tdn:inputHash>
-    <tdn:inputHash>roles/ontology_theory.json sha256:7f3dd819da23ce32bfd2be5feb32ea4e4ed213a05f4f75f81da5f5c0c80e8c5a</tdn:inputHash>
+    <tdn:inputHash>roles/ontology_obligations.json sha256:57313bf2de52a6d59c5a37199f93ca01474117abd5f79652079e5d0ba514166f</tdn:inputHash>
+    <tdn:inputHash>roles/ontology_theory.json sha256:36fa4049f6466765ef6c1385d63ab4bcc500ef8a36ec6c50c78f01a7695ce65e</tdn:inputHash>
     <tdn:inputHash>roles/roles.json sha256:6a12f5298603f2cfd51af099a48ae761d561e25b60e7b753ab990cb76454d8e5</tdn:inputHash>
     <tdn:inputHash>source/source_index.jsonl sha256:39b9770a52900512a58e468a83839238d4583e030ac76870fd8f11e4aff2d5dc</tdn:inputHash>
-    <tdn:theoryVersion>v3.2</tdn:theoryVersion>
+    <tdn:theoryVersion>v3.3</tdn:theoryVersion>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:ExtractedRole">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class" />
@@ -1276,7 +1276,7 @@ def CoreReq_msc_nested_layer_protection {S A : Type} (d : Deployment) (model : F
 def msc_nested_layer_protection {S A : Type} (d : Deployment) (model : ForwardingModel S A)
     (flows : List Flow) (flowOf : S → List A → S → PayloadId → Flow) (independentKeys : String → String → Prop) : Prop :=
   CoreReq_msc_nested_layer_protection { d with focus := none } model flows flowOf independentKeys</tdn:requirementCode>
-    <tdn:requirementStatus>Complete proof unfinished</tdn:requirementStatus>
+    <tdn:requirementStatus>Complete model proof reviewed</tdn:requirementStatus>
     <tdn:requirementTranslation>Every modeled trace must use the declared Inner and Outer tunnel pairing for protected Red payloads. Gray transmission carries the Inner layer; Black transmission and reception carry both layers. Inner encryption precedes Outer encryption, and receiving-side decryption removes Outer before Inner. The definition also requires complete model coverage, independent key contexts, suitable peer placement, and the required authentication and architecture services.</tdn:requirementTranslation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-008">
@@ -1690,7 +1690,7 @@ def msc_macsec_authentication_choice_and_as {S A : Type} (d : Deployment)
     (model : ForwardingModel S A) (primitive : TLSPrimitive)
     (authentication : List MACsecAuthentication) : Prop :=
   CoreReq_msc_macsec_authentication_choice_and_as { d with focus := none } model primitive authentication</tdn:requirementCode>
-    <tdn:requirementStatus>Complete proof unfinished</tdn:requirementStatus>
+    <tdn:requirementStatus>Complete model proof reviewed</tdn:requirementStatus>
     <tdn:requirementTranslation>Each MACsec device must have a declared authentication choice and peer. A pre-shared CAK must match the peer's CAK. EAP-TLS requires the device, peer, and server certificates, the supported endpoint roles, session evidence, and an Authentication Server attached to one Red or Gray site-and-zone pair. Installed keys and every encryption use must be connected to the required earlier authentication and key setup.</tdn:requirementTranslation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-025">
@@ -1757,9 +1757,17 @@ def msc_macsec_key_generation_and_server (d : Deployment) (keys : List MACsecKey
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-028">
     <rdfs:label>MACsec mandatory protection parameters</rdfs:label>
     <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:632
+def MACsecParametersBound {S A : Type} (d : Deployment)
+    (model : ForwardingModel S A) (parameters : List MACsecParameters) : Prop :=
+  ∀ parameter ∈ parameters, d.Relevant parameter.device →
+    ∀ iface ∈ model.native.configuration.macIfaces,
+      model.native.componentName (model.native.configuration.ip.owner iface.physicalIface) = parameter.device →
+      parameter.mustSecure = (iface.settings.protectFrames &amp;&amp; iface.settings.encryptFrames) ∧
+        parameter.confidentialityOffset = iface.settings.confidentialityOffset</tdn:requirementCode>
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:640
 def CoreReq_msc_macsec_protection_parameters {S A : Type} (d : Deployment)
     (model : ForwardingModel S A) (parameters : List MACsecParameters) : Prop :=
-  model.CoversDeployment d ∧
+  model.CoversDeployment d ∧ MACsecParametersBound d model parameters ∧
   (∀ device ∈ d.devices, d.Relevant device.id → device.kind = .macsec →
     ∃ parameter ∈ parameters, parameter.device = device.id) ∧
   (∀ parameter ∈ parameters, d.Relevant parameter.device → parameter.dataDelayProtection = true ∧
@@ -1779,12 +1787,12 @@ def CoreReq_msc_macsec_protection_parameters {S A : Type} (d : Deployment)
 def msc_macsec_protection_parameters {S A : Type} (d : Deployment)
     (model : ForwardingModel S A) (parameters : List MACsecParameters) : Prop :=
   CoreReq_msc_macsec_protection_parameters { d with focus := none } model parameters</tdn:requirementCode>
-    <tdn:requirementStatus>Complete proof unfinished</tdn:requirementStatus>
-    <tdn:requirementTranslation>Every MACsec device has parameters with data-delay protection, a 6000 ms lifetime, a 2000 ms normal hello interval, and a positive active hello interval no greater than 2000 ms. The replay window is 2 or the smallest feasible value; confidentiality offset is 0 and must-secure is enabled. Every relevant non-control transmission carries that device's MACsec tunnel layer.</tdn:requirementTranslation>
+    <tdn:requirementStatus>Complete model proof reviewed</tdn:requirementStatus>
+    <tdn:requirementTranslation>Every MACsec device has parameters with data-delay protection, a 6000 ms lifetime, a 2000 ms normal hello interval, and a positive active hello interval no greater than 2000 ms. The replay window is 2 or the smallest feasible value; confidentiality offset is 0 and must-secure is enabled. Every relevant non-control transmission carries that device's MACsec tunnel layer. The protection and confidentiality-offset parameters must agree with the configuration used by packet processing.</tdn:requirementTranslation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-029">
     <rdfs:label>Inner encryption and decryption cannot be bypassed</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:659
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:667
 def TraceNoBypass (d : Deployment) (genuineControl : PayloadId → Prop)
     (layer : Layer) (events : List NetworkEvent) : Prop :=
   (∀ earlier middle later payload ingress receivedLayers receiveClass egress sentLayers sendClass,
@@ -1807,7 +1815,7 @@ def TraceNoBypass (d : Deployment) (genuineControl : PayloadId → Prop)
       d.IsLayer interface.device layer → interface.zone = ExternalZone layer →
       ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.sender = interface.device ∧
         tunnel.id ∈ layers ∧ .encrypt payload tunnel.id ∈ earlier</tdn:requirementCode>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:693
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:701
 def CoreReq_msc_inner_tunnel_no_bypass {S A : Type} (d : Deployment) (model : ForwardingModel S A)
     (components : List EncryptionComponentConfiguration)
     (outboundMACObjective inboundMACObjective : Bool) : Prop :=
@@ -1822,12 +1830,12 @@ def msc_inner_tunnel_no_bypass {S A : Type} (d : Deployment) (model : Forwarding
     (outboundMACObjective inboundMACObjective : Bool) : Prop :=
   CoreReq_msc_inner_tunnel_no_bypass { d with focus := none } model components
     outboundMACObjective inboundMACObjective</tdn:requirementCode>
-    <tdn:requirementStatus>Complete proof unfinished</tdn:requirementStatus>
+    <tdn:requirementStatus>Complete model proof reviewed</tdn:requirementStatus>
     <tdn:requirementTranslation>The records cover every Inner encryptor and match its mechanism. For every modeled non-control packet crossing from the internal side, Inner encryption occurs before transmission and the transmitted packet carries the Inner layer. Incoming protected traffic is decrypted before passage to the internal side. IPsec uses ESP tunnel mode and an associated IP tunnel. Selected mandatory-access-control objectives must be enabled.</tdn:requirementTranslation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-030">
     <rdfs:label>Outer encryption and decryption cannot be bypassed</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:659
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:667
 def TraceNoBypass (d : Deployment) (genuineControl : PayloadId → Prop)
     (layer : Layer) (events : List NetworkEvent) : Prop :=
   (∀ earlier middle later payload ingress receivedLayers receiveClass egress sentLayers sendClass,
@@ -1850,7 +1858,7 @@ def TraceNoBypass (d : Deployment) (genuineControl : PayloadId → Prop)
       d.IsLayer interface.device layer → interface.zone = ExternalZone layer →
       ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.sender = interface.device ∧
         tunnel.id ∈ layers ∧ .encrypt payload tunnel.id ∈ earlier</tdn:requirementCode>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:702
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:710
 def CoreReq_msc_outer_tunnel_no_bypass {S A : Type} (d : Deployment) (model : ForwardingModel S A)
     (components : List EncryptionComponentConfiguration)
     (outboundMACObjective inboundMACObjective : Bool) : Prop :=
@@ -1870,7 +1878,7 @@ def msc_outer_tunnel_no_bypass {S A : Type} (d : Deployment) (model : Forwarding
     (outboundMACObjective inboundMACObjective : Bool) : Prop :=
   CoreReq_msc_outer_tunnel_no_bypass { d with focus := none } model components
     outboundMACObjective inboundMACObjective</tdn:requirementCode>
-    <tdn:requirementStatus>Complete proof unfinished</tdn:requirementStatus>
+    <tdn:requirementStatus>Complete model proof reviewed</tdn:requirementStatus>
     <tdn:requirementTranslation>The records cover every Outer encryptor and match its mechanism. Every modeled non-control outward transmission carries the Outer layer after Outer encryption, and an inward crossing requires Outer decryption. IPsec uses ESP tunnel mode, and selected mandatory-access-control objectives are enabled. Non-control traffic arriving at an Outer Gray interface already carries exactly one Inner tunnel layer.</tdn:requirementTranslation>
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-031">
@@ -1885,7 +1893,7 @@ def msc_outer_tunnel_no_bypass {S A : Type} (d : Deployment) (model : Forwarding
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-032">
     <rdfs:label>TRANSEC under the stated deployment conditions</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:716
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:724
 def CoreReq_msc_transec_conditions (installations : List CoverInstallation) : Prop :=
   TDN.Requirements.msc_transec_conditions (installations.map CoverInstallation.use) ∧
   (∀ installation ∈ installations, installation.use.enabled = installation.active) ∧
@@ -1901,7 +1909,7 @@ def msc_transec_conditions := CoreReq_msc_transec_conditions</tdn:requirementCod
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-033">
     <rdfs:label>Packet sizing to control fragmentation</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:765
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:773
 def CoreReq_msc_packet_size_configuration (interfaces : List PacketSizing)
     (profiles : List FragmentationProfile) : Prop :=
   ∀ sizing ∈ interfaces,
@@ -1929,7 +1937,7 @@ def msc_packet_size_configuration {S A : Type} (d : Deployment) (model : Forward
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-034">
     <rdfs:label>Outer Firewall placement for untrusted Black transport</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:878
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:886
 def CoreReq_msc_outer_firewall_placement {Node : Type}
     (untrustedBlack publicInternet grayFirewallRequired : Bool)
     (edge grayConnection : Node → Node → Prop)
@@ -1963,7 +1971,7 @@ def msc_outer_firewall_placement {Node : Type}
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-035">
     <rdfs:label>Permitted protocols and peers at encryption and firewall boundaries</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:898
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:906
 def CoreReq_msc_boundary_interface_filtering (d : Deployment) (outerFirewallRequired : Bool)
     (firewallInternal : String → Bool) (localOuter : String → String) : Prop :=
   d.AddressInventoryCoherent ∧ d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧
@@ -2008,7 +2016,7 @@ def msc_boundary_interface_filtering (d : Deployment) (outerFirewallRequired : B
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-037">
     <rdfs:label>Outer-component third-party contact restrictions</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:932
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:940
 def CoreReq_msc_outer_third_party_services (d : Deployment) (objectiveSelected : String → Bool)
     (features : List ThirdPartyFeature) : Prop :=
   ∀ feature ∈ features, d.Relevant feature.device → d.IsLayer feature.device .outer → feature.canContactThirdParty = true →
@@ -2025,7 +2033,7 @@ def msc_outer_third_party_services (d : Deployment) (objectiveSelected : String 
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-038">
     <rdfs:label>IP header and multicast filtering</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:957
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:965
 def CoreReq_msc_ip_header_and_multicast_filtering (d : Deployment)
     (dropIPv4OptionsObjective : String → Bool) : Prop :=
   (∀ device, dropIPv4OptionsObjective device = d.dropIPv4Options device) ∧
@@ -2050,7 +2058,18 @@ def msc_ip_header_and_multicast_filtering (d : Deployment)
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-039">
     <rdfs:label>Outer Gray-interface allowlist and default denial</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1004
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1001
+def OuterGrayRestrictions (d : Deployment) (interface : Interface) (direction : Direction)
+    (cdpOnGray : Bool) (traffic : Traffic) : Prop :=
+  d.HeaderEligible interface traffic ∧
+  (traffic.trafficClass = .management → OuterManagementInitiation d traffic) ∧
+  (direction = .inbound → d.reachableSource interface.id traffic.packet.source) ∧
+  (traffic.trafficClass = .protectedData → ¬ RevocationHTTP traffic →
+    d.SameLevelInner traffic ∨
+      (d.grayManagementService interface.device traffic ∧ d.GrayManagementTunnel traffic)) ∧
+  (traffic.service = "http" → cdpOnGray = true → d.IsDevice interface.device .vpn →
+    traffic.innerRevocation = true)</tdn:requirementCode>
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1012
 def CoreReq_msc_outer_gray_interface_policy (d : Deployment) (cdpOnGray : Bool) : Prop :=
   d.AddressInventoryCoherent ∧ d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧
   ∀ interface ∈ d.interfaces, d.Relevant interface.device → d.IsLayer interface.device .outer → interface.zone = .gray →
@@ -2062,34 +2081,23 @@ def CoreReq_msc_outer_gray_interface_policy (d : Deployment) (cdpOnGray : Bool) 
       OuterGrayRestrictions d interface direction cdpOnGray traffic →
       OuterPolicyAllowance d interface.device cdpOnGray traffic →
       d.AcceptsAt interface.id direction hook traffic</tdn:requirementCode>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:973
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:981
 def OuterManagementInitiation (d : Deployment) (traffic : Traffic) : Prop :=
   traffic.trafficClass = .management ∧
     (d.grayWorkstation traffic.originator ∨
       (d.IsLayer traffic.originator .outer ∧ traffic.service ∈ ["logging", "authentication"]))</tdn:requirementCode>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:978
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:986
 def OuterTunnelAllowance (d : Deployment) (device : String) (traffic : Traffic) : Prop :=
   (d.TunnelTraffic traffic ∨ (∃ source destination, d.CarrierInnerPair traffic source destination)) ∧
     ((d.SameLevelInner traffic ∧ d.AppropriateInnerTunnel traffic) ∨
       (d.grayManagementService device traffic ∧ d.GrayManagementTunnel traffic))</tdn:requirementCode>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:986
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:994
 def OuterPolicyAllowance (d : Deployment) (device : String) (cdpOnGray : Bool)
     (traffic : Traffic) : Prop :=
   OuterTunnelAllowance d device traffic ∨
     (cdpOnGray = true ∧ d.IsDevice device .vpn ∧ RevocationHTTP traffic) ∨
     ((traffic.trafficClass = .management ∨ traffic.trafficClass = .control) ∧
       d.policyApproved device traffic)</tdn:requirementCode>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:993
-def OuterGrayRestrictions (d : Deployment) (interface : Interface) (direction : Direction)
-    (cdpOnGray : Bool) (traffic : Traffic) : Prop :=
-  d.HeaderEligible interface traffic ∧
-  (traffic.trafficClass = .management → OuterManagementInitiation d traffic) ∧
-  (direction = .inbound → d.reachableSource interface.id traffic.packet.source) ∧
-  (traffic.trafficClass = .protectedData → ¬ RevocationHTTP traffic →
-    d.SameLevelInner traffic ∨
-      (d.grayManagementService interface.device traffic ∧ d.GrayManagementTunnel traffic)) ∧
-  (traffic.service = "http" → cdpOnGray = true → d.IsDevice interface.device .vpn →
-    traffic.innerRevocation = true)</tdn:requirementCode>
     <tdn:requirementCode>TDN/Requirements/MasterMscRequirementSpecs.lean:88
 def msc_outer_gray_interface_policy (d : Deployment) (cdpOnGray : Bool) : Prop :=
   CoreReq_msc_outer_gray_interface_policy { d with focus := none } cdpOnGray</tdn:requirementCode>
@@ -2098,13 +2106,13 @@ def msc_outer_gray_interface_policy (d : Deployment) (cdpOnGray : Bool) : Prop :
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-040">
     <rdfs:label>Gray Firewall allowlist and cross-level denial</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1021
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1029
 def GrayPolicyAllowance (d : Deployment) (interface : Interface) (traffic : Traffic) : Prop :=
   ((d.TunnelTraffic traffic ∨ (∃ source destination, d.CarrierInnerPair traffic source destination)) ∧
     d.SameLevelInner traffic ∧ d.AppropriateInnerTunnel traffic) ∨ RevocationHTTP traffic ∨
     GrayManagementAllowance d interface traffic ∨
     (traffic.trafficClass = .control ∧ d.policyApproved interface.device traffic)</tdn:requirementCode>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1034
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1042
 def GrayFirewallRestrictions (d : Deployment) (interface : Interface) (direction : Direction)
     (traffic : Traffic) : Prop :=
   d.HeaderEligible interface traffic ∧
@@ -2113,7 +2121,7 @@ def GrayFirewallRestrictions (d : Deployment) (interface : Interface) (direction
   (direction = .inbound → d.reachableSource interface.id traffic.packet.source) ∧
   (traffic.service = "http" → traffic.innerRevocation = true) ∧
   ¬ DifferentClassificationVPNs d traffic</tdn:requirementCode>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1043
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1051
 def CoreReq_msc_gray_firewall_allowlist (d : Deployment) (grayFirewallRequired : Bool) : Prop :=
   d.AddressInventoryCoherent ∧
   (grayFirewallRequired = true → d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧
@@ -2295,7 +2303,7 @@ def ManagementTransportConfiguration (record : ComponentDutyRecord) : Prop :=
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-047">
     <rdfs:label>Administrator authentication and individual credentials</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1060
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1068
 def CoreReq_msc_administrator_authentication (d : Deployment)
     (certificateObjective nistObjective : Bool) (events : List AdminEvent)
     (accounts : List AdministrativeAccount) (sessions : List AdministrativeSession)
@@ -2429,7 +2437,7 @@ def SIEMConfiguration (records : TechnicalDutyRecords) (d : Deployment) : Prop :
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-054">
     <rdfs:label>Interoperable components across communicating sites</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1162
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1170
 def CoreReq_msc_site_interoperability {S A : Type} (d : Deployment) (model : ForwardingModel S A)
     (requiredSitePairs : List (String × String)) (selected : List Interoperation)
     (domain : PayloadDomain) : Prop :=
@@ -2456,7 +2464,7 @@ def msc_site_interoperability {S A : Type} (d : Deployment) (model : ForwardingM
   </rdf:Description>
   <rdf:Description rdf:about="urn:tdn:csfc:msc:roles:RG-056">
     <rdfs:label>Approved physical paths out of Red Networks</rdfs:label>
-    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1169
+    <tdn:requirementCode>TDN/Requirements/CoreMscRequirements.lean:1177
 def RedEgressCore (d : Deployment)
     (red outside : String → Prop) (conformingMSC aoApprovedProtection : String → Prop) : Prop :=
   (∀ solution, aoApprovedProtection solution → d.authority.aoApprovedTransitSolution solution) ∧
@@ -2765,8 +2773,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ServiceKind.authentication</tdn:leanExpression>
     <tdn:leanMapping>Authentication is a registered service function hosted by a component. The hosting device may also have the authenticationServer kind.</tdn:leanMapping>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
-    <tdn:leanReference>ServiceKind at TDN/Requirements/MscComplianceSchema.lean:519</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
+    <tdn:leanReference>ServiceKind at TDN/Requirements/MscComplianceSchema.lean:539</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-authentication-service</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -2801,7 +2809,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <skos:altLabel>auxiliary network devices</skos:altLabel>
     <tdn:associatedRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-068" />
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-068" />
-    <tdn:leanMapping>The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately.</tdn:leanMapping>
+    <tdn:leanMapping>The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately.</tdn:leanMapping>
     <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-auxiliary-network-device</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -2966,7 +2974,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Deployment.keyManagementCA</tdn:leanExpression>
     <tdn:leanExpression>Device.kind = .certificationAuthority</tdn:leanExpression>
     <tdn:leanMapping>Certification Authorities have a dedicated device kind and are associated with authenticated components through key-management records.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>InnerAuthentication at TDN/Requirements/CrossEnclavePkiIsolationSpec.lean:11</tdn:leanReference>
     <tdn:leanRepresentation>direct</tdn:leanRepresentation>
@@ -3022,7 +3030,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ManagementServiceFunction.revocation</tdn:leanExpression>
     <tdn:leanMapping>Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders.</tdn:leanMapping>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
     <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Requirements/MasterMscRequirementSpecs.lean:20</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:provides_revocation_information_to rdf:resource="urn:tdn:csfc:msc:roles:ROLE-vpn-gateway" />
@@ -3096,7 +3104,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ServiceKind.control</tdn:leanExpression>
     <tdn:leanExpression>ServiceRegistration</tdn:leanExpression>
     <tdn:leanMapping>Control service registrations identify protocol and port. Their kind is recorded separately from the hosting device.</tdn:leanMapping>
-    <tdn:leanReference>ServiceKind at TDN/Requirements/MscComplianceSchema.lean:519</tdn:leanReference>
+    <tdn:leanReference>ServiceKind at TDN/Requirements/MscComplianceSchema.lean:539</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-control-plane-service</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -3127,8 +3135,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-043" />
     <tdn:leanExpression>ManagementServiceFunction.nameResolution</tdn:leanExpression>
     <tdn:leanMapping>DNS service use is represented by the name-resolution management function and configuration records. DeviceKind has no separate DNS-server constructor.</tdn:leanMapping>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:567</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:587</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-dns-server</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -3249,7 +3257,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Flow.Valid at TDN/Requirements/CoreMscRequirements.lean:21</tdn:leanReference>
-    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:861</tdn:leanReference>
+    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:869</tdn:leanReference>
     <tdn:leanReference>SizingInterface at TDN/Requirements/TunnelMtuAndFragmentationSpec.lean:6</tdn:leanReference>
     <tdn:leanReference>msc_packet_size_configuration at TDN/Requirements/MasterMscRequirementSpecs.lean:67</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
@@ -3656,7 +3664,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <skos:altLabel>NSA-certified product</skos:altLabel>
     <tdn:associatedRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-056" />
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-056" />
-    <tdn:leanMapping>The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations.</tdn:leanMapping>
+    <tdn:leanMapping>The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations.</tdn:leanMapping>
     <tdn:leanReference>ExternalFacts at TDN/Requirements/CsfcRoleObligationRecords.lean:57</tdn:leanReference>
     <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-government-product</tdn:roleId>
@@ -3731,7 +3739,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Device.kind = .workstation</tdn:leanExpression>
     <tdn:leanExpression>Interface.zone = .gray</tdn:leanExpression>
     <tdn:leanMapping>A Gray workstation combines the workstation kind with a Gray management attachment. The deployment also provides the grayWorkstation predicate.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Interface at TDN/Requirements/MscComplianceSchema.lean:26</tdn:leanReference>
     <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Requirements/MasterMscRequirementSpecs.lean:20</tdn:leanReference>
@@ -3814,9 +3822,9 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:inheritedRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-074" />
     <tdn:leanExpression>Device.kind = .grayFirewall</tdn:leanExpression>
     <tdn:leanMapping>The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records. Its applicable external interfaces also appear in the packet-size inventory.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
-    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:861</tdn:leanReference>
+    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:869</tdn:leanReference>
     <tdn:leanReference>SizingInterface at TDN/Requirements/TunnelMtuAndFragmentationSpec.lean:6</tdn:leanReference>
     <tdn:leanReference>msc_gray_firewall_allowlist at TDN/Requirements/MasterMscRequirementSpecs.lean:91</tdn:leanReference>
     <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Requirements/MasterMscRequirementSpecs.lean:20</tdn:leanReference>
@@ -3901,9 +3909,9 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-044" />
     <tdn:leanExpression>ManagementServiceInstance.domain = .gray</tdn:leanExpression>
     <tdn:leanMapping>Each management service records its function, hosting device, process, interface, and Gray management domain.</tdn:leanMapping>
-    <tdn:leanReference>ManagementDomain at TDN/Requirements/MscComplianceSchema.lean:559</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:567</tdn:leanReference>
+    <tdn:leanReference>ManagementDomain at TDN/Requirements/MscComplianceSchema.lean:579</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:587</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-gray-management</tdn:roleId>
     <tdn:roleKind>aggregate_component_service_role</tdn:roleKind>
@@ -3950,7 +3958,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Deployment.OrdinaryGray</tdn:leanExpression>
     <tdn:leanExpression>Device.kind = .ordinaryGrayRouter</tdn:leanExpression>
     <tdn:leanMapping>An ordinary Gray router has the router kind, no encryption layer and no infrastructure flag. It has at least one Gray interface; every other interface is Gray or local. Local includes device-internal interfaces such as loopback.</tdn:leanMapping>
-    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Requirements/MscComplianceSchema.lean:668</tdn:leanReference>
+    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Requirements/MscComplianceSchema.lean:688</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Zone at TDN/Requirements/TwoLayerOverlayArchitecture.lean:40</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
@@ -3979,7 +3987,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanMapping>The SIEM kind combines with a Gray interface or management-service domain. The zone is recorded separately from the device kind.</tdn:leanMapping>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Interface at TDN/Requirements/MscComplianceSchema.lean:26</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:567</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:587</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-gray-siem</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -3996,7 +4004,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <rdfs:subClassOf rdf:resource="urn:tdn:csfc:msc:roles:ExtractedRole" />
     <tdn:associatedRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-056" />
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-056" />
-    <tdn:leanMapping>The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations.</tdn:leanMapping>
+    <tdn:leanMapping>The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations.</tdn:leanMapping>
     <tdn:leanReference>ExternalFacts at TDN/Requirements/CsfcRoleObligationRecords.lean:57</tdn:leanReference>
     <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-high-assurance-encryptor</tdn:roleId>
@@ -4103,7 +4111,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Deployment.keyManagementCA</tdn:leanExpression>
     <tdn:leanExpression>Device.kind = .certificationAuthority</tdn:leanExpression>
     <tdn:leanMapping>The CA serves Inner components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>InnerAuthentication at TDN/Requirements/CrossEnclavePkiIsolationSpec.lean:11</tdn:leanReference>
@@ -4203,7 +4211,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanMapping>The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. Its Gray-facing interfaces appear in the packet-size inventory with the Inner external role.</tdn:leanMapping>
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>Flow.Valid at TDN/Requirements/CoreMscRequirements.lean:21</tdn:leanReference>
-    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:861</tdn:leanReference>
+    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:869</tdn:leanReference>
     <tdn:leanReference>SizingInterface at TDN/Requirements/TunnelMtuAndFragmentationSpec.lean:6</tdn:leanReference>
     <tdn:leanReference>msc_boundary_interface_filtering at TDN/Requirements/MasterMscRequirementSpecs.lean:75</tdn:leanReference>
     <tdn:leanReference>msc_nested_layer_protection at TDN/Requirements/MasterMscRequirementSpecs.lean:6</tdn:leanReference>
@@ -4335,7 +4343,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:inheritedRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-055" />
     <tdn:leanExpression>Device.kind = .innerFirewall</tdn:leanExpression>
     <tdn:leanMapping>The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-inner-firewall</tdn:roleId>
@@ -4454,7 +4462,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Flow.Valid at TDN/Requirements/CoreMscRequirements.lean:21</tdn:leanReference>
-    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:861</tdn:leanReference>
+    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:869</tdn:leanReference>
     <tdn:leanReference>SizingInterface at TDN/Requirements/TunnelMtuAndFragmentationSpec.lean:6</tdn:leanReference>
     <tdn:leanReference>msc_boundary_interface_filtering at TDN/Requirements/MasterMscRequirementSpecs.lean:75</tdn:leanReference>
     <tdn:leanReference>msc_packet_size_configuration at TDN/Requirements/MasterMscRequirementSpecs.lean:67</tdn:leanReference>
@@ -4568,7 +4576,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Flow.Valid at TDN/Requirements/CoreMscRequirements.lean:21</tdn:leanReference>
-    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:861</tdn:leanReference>
+    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:869</tdn:leanReference>
     <tdn:leanReference>SizingInterface at TDN/Requirements/TunnelMtuAndFragmentationSpec.lean:6</tdn:leanReference>
     <tdn:leanReference>msc_boundary_interface_filtering at TDN/Requirements/MasterMscRequirementSpecs.lean:75</tdn:leanReference>
     <tdn:leanReference>msc_packet_size_configuration at TDN/Requirements/MasterMscRequirementSpecs.lean:67</tdn:leanReference>
@@ -4638,8 +4646,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ManagementServiceFunction.certification</tdn:leanExpression>
     <tdn:leanExpression>ManagementServiceFunction.keyGeneration</tdn:leanExpression>
     <tdn:leanMapping>Key management combines CA and key-generation device records, service functions, and component-to-service relations.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-key-management-component</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -4802,8 +4810,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Deployment.keyManagementGenerator</tdn:leanExpression>
     <tdn:leanExpression>Device.kind = .keyGenerationSolution</tdn:leanExpression>
     <tdn:leanMapping>The key-generation solution has a device kind. Approved-generator status is supplied as an explicit authority fact.</tdn:leanMapping>
-    <tdn:leanReference>AuthorityFacts at TDN/Requirements/MscComplianceSchema.lean:510</tdn:leanReference>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>AuthorityFacts at TDN/Requirements/MscComplianceSchema.lean:530</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>msc_macsec_key_generation_and_server at TDN/Requirements/MasterMscRequirementSpecs.lean:43</tdn:leanReference>
     <tdn:leanRepresentation>direct</tdn:leanRepresentation>
@@ -4862,7 +4870,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ManagementExchange</tdn:leanExpression>
     <tdn:leanMapping>Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds.</tdn:leanMapping>
     <tdn:leanReference>AdministrativeAccount at TDN/Requirements/ManagementPlaneRequirements.lean:20</tdn:leanReference>
-    <tdn:leanReference>ManagementExchange at TDN/Requirements/MscComplianceSchema.lean:547</tdn:leanReference>
+    <tdn:leanReference>ManagementExchange at TDN/Requirements/MscComplianceSchema.lean:567</tdn:leanReference>
     <tdn:leanReference>msc_administrator_authentication at TDN/Requirements/MasterMscRequirementSpecs.lean:94</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-locally-managed-device</tdn:roleId>
@@ -4884,8 +4892,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ManagementServiceFunction.monitoring</tdn:leanExpression>
     <tdn:leanExpression>ServiceKind.logging</tdn:leanExpression>
     <tdn:leanMapping>Logging and monitoring registrations represent the service role. A repository-specific device kind is not required by the model.</tdn:leanMapping>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
-    <tdn:leanReference>ServiceKind at TDN/Requirements/MscComplianceSchema.lean:519</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
+    <tdn:leanReference>ServiceKind at TDN/Requirements/MscComplianceSchema.lean:539</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-log-repository</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -5082,8 +5090,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Deployment.managementServices</tdn:leanExpression>
     <tdn:leanExpression>ManagementServiceInstance</tdn:leanExpression>
     <tdn:leanMapping>Management roles are represented through service instances and component attachments. There is no single management-component device kind.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:567</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:587</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-management-component</tdn:roleId>
     <tdn:roleKind>aggregate_component_service_role</tdn:roleKind>
@@ -5119,7 +5127,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ManagementServiceFunction.administration</tdn:leanExpression>
     <tdn:leanMapping>The source role may be realized by workstation or administration services. V3.1 has no separate network-administration-device kind.</tdn:leanMapping>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-network-administration-device</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -5159,7 +5167,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ManagementServiceFunction.revocation</tdn:leanExpression>
     <tdn:leanMapping>Both roles are represented through the broader revocationService kind and revocation service information. DeviceKind does not distinguish CDP from OCSP responders.</tdn:leanMapping>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
     <tdn:leanReference>msc_gray_firewall_path_coverage at TDN/Requirements/MasterMscRequirementSpecs.lean:20</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-ocsp-responder</tdn:roleId>
@@ -5191,7 +5199,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Deployment.keyManagementCA</tdn:leanExpression>
     <tdn:leanExpression>Device.kind = .certificationAuthority</tdn:leanExpression>
     <tdn:leanMapping>The CA serves Outer components through keyManagementCA relations. The component’s encryption layer identifies the CA’s architectural use.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>InnerAuthentication at TDN/Requirements/CrossEnclavePkiIsolationSpec.lean:11</tdn:leanReference>
@@ -5296,7 +5304,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanMapping>The encryption layer identifies the component’s position in the protection sequence. Its mechanism remains a separate device kind. Its Black-facing interfaces appear in the packet-size inventory with the encryption external role.</tdn:leanMapping>
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>Flow.Valid at TDN/Requirements/CoreMscRequirements.lean:21</tdn:leanReference>
-    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:861</tdn:leanReference>
+    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:869</tdn:leanReference>
     <tdn:leanReference>SizingInterface at TDN/Requirements/TunnelMtuAndFragmentationSpec.lean:6</tdn:leanReference>
     <tdn:leanReference>msc_boundary_interface_filtering at TDN/Requirements/MasterMscRequirementSpecs.lean:75</tdn:leanReference>
     <tdn:leanReference>msc_nested_layer_protection at TDN/Requirements/MasterMscRequirementSpecs.lean:6</tdn:leanReference>
@@ -5497,7 +5505,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:inheritedRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-074" />
     <tdn:leanExpression>Device.kind = .outerFirewall</tdn:leanExpression>
     <tdn:leanMapping>The firewall’s architectural role has a dedicated device kind. Actual filtering comes from the deployment’s policy and processing records.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>msc_boundary_interface_filtering at TDN/Requirements/MasterMscRequirementSpecs.lean:75</tdn:leanReference>
     <tdn:leanRepresentation>direct</tdn:leanRepresentation>
@@ -5633,7 +5641,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Flow.Valid at TDN/Requirements/CoreMscRequirements.lean:21</tdn:leanReference>
-    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:861</tdn:leanReference>
+    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:869</tdn:leanReference>
     <tdn:leanReference>SizingInterface at TDN/Requirements/TunnelMtuAndFragmentationSpec.lean:6</tdn:leanReference>
     <tdn:leanReference>msc_boundary_interface_filtering at TDN/Requirements/MasterMscRequirementSpecs.lean:75</tdn:leanReference>
     <tdn:leanReference>msc_outer_gray_interface_policy at TDN/Requirements/MasterMscRequirementSpecs.lean:88</tdn:leanReference>
@@ -5748,7 +5756,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanReference>Device at TDN/Requirements/MscComplianceSchema.lean:18</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Flow.Valid at TDN/Requirements/CoreMscRequirements.lean:21</tdn:leanReference>
-    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:861</tdn:leanReference>
+    <tdn:leanReference>PacketSizingInventory at TDN/Requirements/CoreMscRequirements.lean:869</tdn:leanReference>
     <tdn:leanReference>SizingInterface at TDN/Requirements/TunnelMtuAndFragmentationSpec.lean:6</tdn:leanReference>
     <tdn:leanReference>msc_boundary_interface_filtering at TDN/Requirements/MasterMscRequirementSpecs.lean:75</tdn:leanReference>
     <tdn:leanReference>msc_outer_gray_interface_policy at TDN/Requirements/MasterMscRequirementSpecs.lean:88</tdn:leanReference>
@@ -5790,7 +5798,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <skos:altLabel>perimeter device</skos:altLabel>
     <tdn:associatedRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-055" />
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-055" />
-    <tdn:leanMapping>The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately.</tdn:leanMapping>
+    <tdn:leanMapping>The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately.</tdn:leanMapping>
     <tdn:leanRepresentation>unrepresented</tdn:leanRepresentation>
     <tdn:roleId>ROLE-perimeter-device</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -5898,7 +5906,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Interface.managementNetwork</tdn:leanExpression>
     <tdn:leanExpression>Interface.zone = .red</tdn:leanExpression>
     <tdn:leanMapping>A Red workstation combines the workstation kind with a Red management attachment. Zone information belongs to its interfaces and deployment attachments.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Interface at TDN/Requirements/MscComplianceSchema.lean:26</tdn:leanReference>
     <tdn:leanReference>msc_administrator_authentication at TDN/Requirements/MasterMscRequirementSpecs.lean:94</tdn:leanReference>
@@ -5936,9 +5944,9 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-044" />
     <tdn:leanExpression>ManagementServiceInstance.domain = .red</tdn:leanExpression>
     <tdn:leanMapping>Each management service records its function, hosting device, process, interface, and Red management domain.</tdn:leanMapping>
-    <tdn:leanReference>ManagementDomain at TDN/Requirements/MscComplianceSchema.lean:559</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:567</tdn:leanReference>
+    <tdn:leanReference>ManagementDomain at TDN/Requirements/MscComplianceSchema.lean:579</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:587</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-red-management</tdn:roleId>
     <tdn:roleKind>aggregate_component_service_role</tdn:roleKind>
@@ -5990,7 +5998,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanMapping>The SIEM kind combines with a Red interface or management-service domain. The zone is recorded separately from the device kind.</tdn:leanMapping>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Interface at TDN/Requirements/MscComplianceSchema.lean:26</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:567</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceInstance at TDN/Requirements/MscComplianceSchema.lean:587</tdn:leanReference>
     <tdn:leanRepresentation>composed</tdn:leanRepresentation>
     <tdn:roleId>ROLE-red-siem</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -6034,7 +6042,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>ManagementExchange</tdn:leanExpression>
     <tdn:leanMapping>Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds.</tdn:leanMapping>
     <tdn:leanReference>AdministrativeAccount at TDN/Requirements/ManagementPlaneRequirements.lean:20</tdn:leanReference>
-    <tdn:leanReference>ManagementExchange at TDN/Requirements/MscComplianceSchema.lean:547</tdn:leanReference>
+    <tdn:leanReference>ManagementExchange at TDN/Requirements/MscComplianceSchema.lean:567</tdn:leanReference>
     <tdn:leanReference>msc_administrator_authentication at TDN/Requirements/MasterMscRequirementSpecs.lean:94</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-remotely-managed-device</tdn:roleId>
@@ -6084,8 +6092,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>DeviceKind.ordinaryGrayRouter</tdn:leanExpression>
     <tdn:leanExpression>DeviceKind.screeningRouter</tdn:leanExpression>
     <tdn:leanMapping>The model distinguishes ordinary Gray routers and screening routers. General packet routing is represented by processing records; there is no unrestricted router DeviceKind.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
-    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Requirements/MscComplianceSchema.lean:668</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
+    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Requirements/MscComplianceSchema.lean:688</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-router</tdn:roleId>
@@ -6135,8 +6143,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Device.kind = .siem</tdn:leanExpression>
     <tdn:leanMapping>SIEM has a dedicated device kind. Monitoring and logging registrations describe its service use.</tdn:leanMapping>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
-    <tdn:leanReference>ServiceKind at TDN/Requirements/MscComplianceSchema.lean:519</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
+    <tdn:leanReference>ServiceKind at TDN/Requirements/MscComplianceSchema.lean:539</tdn:leanReference>
     <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-siem</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -6329,8 +6337,8 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:leanExpression>Deployment.OrdinaryGray</tdn:leanExpression>
     <tdn:leanExpression>DeviceKind.ordinaryGraySwitch</tdn:leanExpression>
     <tdn:leanMapping>An ordinary Gray switch has a dedicated kind, no encryption layer and no infrastructure flag. It has at least one Gray interface and only Gray or local interfaces. Other switching behavior is represented through packet-processing records.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
-    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Requirements/MscComplianceSchema.lean:668</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
+    <tdn:leanReference>Deployment.OrdinaryGray at TDN/Requirements/MscComplianceSchema.lean:688</tdn:leanReference>
     <tdn:leanReference>DeviceKind at TDN/Requirements/MscComplianceSchema.lean:11</tdn:leanReference>
     <tdn:leanReference>Zone at TDN/Requirements/TwoLayerOverlayArchitecture.lean:40</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
@@ -6378,7 +6386,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:associatedRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-037" />
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-037" />
     <tdn:leanMapping>Third-party behavior is represented by feature and emitted-traffic records. The remote server is not a dedicated device kind.</tdn:leanMapping>
-    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:581</tdn:leanReference>
+    <tdn:leanReference>Deployment at TDN/Requirements/MscComplianceSchema.lean:601</tdn:leanReference>
     <tdn:leanRepresentation>context</tdn:leanRepresentation>
     <tdn:roleId>ROLE-third-party-server</tdn:roleId>
     <tdn:roleKind>device_or_service_role</tdn:roleKind>
@@ -6424,7 +6432,7 @@ def msc_redundant_component_permission {S A : Type} (context : MscComplianceCont
     <tdn:directRequirement rdf:resource="urn:tdn:csfc:msc:roles:RG-042" />
     <tdn:leanExpression>TimeSourceEndpoint</tdn:leanExpression>
     <tdn:leanMapping>A time-source endpoint records the actual source component and interface. Placement and client synchronization use the time model.</tdn:leanMapping>
-    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:554</tdn:leanReference>
+    <tdn:leanReference>ManagementServiceFunction at TDN/Requirements/MscComplianceSchema.lean:574</tdn:leanReference>
     <tdn:leanReference>TimeSourceEndpoint at TDN/Requirements/TrustedClockSynchronization.lean:40</tdn:leanReference>
     <tdn:leanRepresentation>direct</tdn:leanRepresentation>
     <tdn:roleId>ROLE-trusted-time-source</tdn:roleId>

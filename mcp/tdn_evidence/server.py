@@ -16,9 +16,11 @@ def create_server(config):
         return service.list_networks()
 
     @mcp.tool(structured_output=True)
-    def describe_capabilities(network: str | None = None) -> dict[str, Any]:
-        """List supported device observations and the interpretation each parser provides."""
-        return service.describe_capabilities(network)
+    def describe_capabilities(network: str | None = None, collection: str | None = None) -> dict[str, Any]:
+        """Describe a live network or saved collection. Omit both to list the live adapter catalog."""
+        if network is not None and collection is not None:
+            raise ValueError("Specify either network or collection, not both")
+        return service.describe_capabilities(collection if collection is not None else network)
 
     @mcp.tool(structured_output=True)
     def collect_evidence(network: str, capabilities: list[str] | None = None) -> dict[str, Any]:

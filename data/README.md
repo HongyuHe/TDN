@@ -7,7 +7,7 @@ Git keeps source-linked requirements and selected network observations needed to
 - `snapshots/2026-10-24T014455Z/` contains observations from the selected construction campaign. Raw output, collector source, and manifests stay together so their hashes can be checked. A captured service log can be evidence; ordinary build logs and image archives are excluded.
 - `construction/2026-10-24T014455Z/` retains selected interpretations, source mappings, derived evidence records, and completion assessments. Agent workspaces, checkpoints, event streams, work queues, and intermediate status outputs stay local.
 
-`publication/v3.1/` retains the accepted v3.1 specifications, proof-review mappings, and selected interpretation decisions used by the public explorers.
+`publication/v3.3/` retains the current specification register, proof-review mappings, checked application records and interpretation decisions used by the public explorers. The v3.1 and v3.2 directories preserve their historical records. Selected evidence under `evidence/` includes the source exports needed to reproduce the current proof inputs.
 
 The active requirement decisions live in `specs/proof_scope.json`. Historical construction assessments describe their recorded revisions. The complete historical importer suite also uses local archived inputs that are outside the core checkout.
 

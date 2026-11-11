@@ -172,6 +172,7 @@ theorem standard_root_properties (source : Datagram) (decoded : source.Decoded)
       rfl, by rfl, by rfl⟩
   | ipsec association contents => simp [Datagram.Decoded, body] at decoded
   | macsec association contents => simp [Datagram.Decoded, body] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
   | carrier endpoint contents => simp [Datagram.Decoded, body] at decoded
 
 end TDN.PacketSource

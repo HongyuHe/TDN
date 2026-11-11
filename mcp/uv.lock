@@ -661,12 +661,14 @@ name = "tdn-evidence-service"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "cryptography" },
     { name = "mcp" },
     { name = "pydantic" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "cryptography", specifier = ">=44,<51" },
     { name = "mcp", specifier = ">=1.26,<2" },
     { name = "pydantic", specifier = ">=2.11,<3" },
 ]

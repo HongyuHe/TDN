@@ -1,0 +1,76 @@
+[
+  {
+    "stage": "keys-before",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/native_ipsec_correlation.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-ipsec-baseline.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/baseline-red-cohort-001/keys-before"
+    ],
+    "started_at": "2026-11-04T08:51:33.713437+00:00",
+    "ended_at": "2026-11-04T08:51:49.596550+00:00",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "collector_sha256": "c85717963bb6e5f1bc7f2d8958f38f11fe643ac7e3aa66aa14f29c61e9027aa6"
+  },
+  {
+    "stage": "snapshot",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/collect_native_v2.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-ipsec-baseline.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/baseline-red-cohort-001/snapshot",
+      "--configuration-id",
+      "V31B-red-cohort",
+      "--run-id",
+      "v3.1-20261104-continuation",
+      "--platform-interface-names",
+      "gre0,gretap0,erspan0"
+    ],
+    "started_at": "2026-11-04T08:51:49.597291+00:00",
+    "ended_at": "2026-11-04T08:53:04.655078+00:00",
+    "returncode": 0,
+    "stdout": "{\"snapshot_id\": \"snapshot\", \"observations\": 759, \"failures\": 0, \"converged\": true, \"probes\": 12, \"unexpected_probes\": []}\n",
+    "stderr": "",
+    "collector_sha256": "aa6cd2382560f833dfe81a0d9fd82d8fb35e52dda90890e3922e66dee07c1d81"
+  },
+  {
+    "stage": "processing",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/collect_processing.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-ipsec-baseline.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/baseline-red-cohort-001/processing"
+    ],
+    "started_at": "2026-11-04T08:53:04.656196+00:00",
+    "ended_at": "2026-11-04T08:54:01.829834+00:00",
+    "returncode": 0,
+    "stdout": "{\"records\": 644, \"failures\": []}\n",
+    "stderr": "",
+    "collector_sha256": "c25801722271687cf9b22e5d149e7bc00486f459c3842f20a77c90f335a42518"
+  },
+  {
+    "stage": "keys-after",
+    "command": [
+      "/usr/bin/python3",
+      "/users/hy/tdn-v31-remaining-evidence/native_ipsec_correlation.py",
+      "--spec",
+      "/users/hy/tdn-v31-native-20261101/profiles/native-ipsec-baseline.json",
+      "--output",
+      "/users/hy/tdn-v31-remaining-evidence/baseline-red-cohort-001/keys-after"
+    ],
+    "started_at": "2026-11-04T08:54:01.830892+00:00",
+    "ended_at": "2026-11-04T08:54:18.029900+00:00",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "collector_sha256": "c85717963bb6e5f1bc7f2d8958f38f11fe643ac7e3aa66aa14f29c61e9027aa6"
+  }
+]

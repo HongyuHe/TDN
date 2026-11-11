@@ -38,7 +38,7 @@ lemma next_header_bound (body : Body) : nextHeader body < 256 := by
 def networkLength : Body → Option Nat
   | .datagram header => header.networkBytes
   | .ipsec _ contents => (networkLength contents).map (PacketLength.alignedWireLength 4 2 52)
-  | .ethernet _ | .macsec _ _ | .carrier _ _ => none
+  | .ethernet _ | .macsec _ _ | .macsecPdu _ _ _ _ | .carrier _ _ => none
 
 
 def leafNetwork (source : Datagram) (nominal actual : PacketPolicy.Packet) : List UInt8 :=
@@ -57,7 +57,7 @@ def encodeBody (codec : Codec Key) (source : Datagram) (payload : List UInt8) :
         association.association parameters.sequence parameters.iv inner (nextHeader contents)
       let header := active.getD (outerHeader association.sender association.receiver "esp" 0 0)
       encodeNetworkHeader header protectedBytes.length 0 0 ++ protectedBytes
-  | .macsec _ _, _, _ | .carrier _ _, _, _ => []
+  | .macsec _ _, _, _ | .macsecPdu _ _ _ _, _, _ | .carrier _ _, _, _ => []
 
 
 def decodeBody (codec : Codec Key) (source : Datagram) :
@@ -72,7 +72,7 @@ def decodeBody (codec : Codec Key) (source : Datagram) :
         if decoded.2 = nextHeader contents then
           decodeBody codec source contents (hidden.head?.getD none) (hidden.drop 1) decoded.1
         else none
-  | .macsec _ _, _, _, _ | .carrier _ _, _, _, _ => none
+  | .macsec _ _, _, _, _ | .macsecPdu _ _ _ _, _, _, _ | .carrier _ _, _, _, _ => none
 
 
 def encodeFrame (codec : Codec Key) (source : Datagram) (payload : List UInt8) (frame : Frame) :
@@ -108,6 +108,7 @@ theorem initial_body_serialization (codec : Codec Key) (source : Datagram) (deco
     simp only [encodeBody, Datagram.Raw, Datagram.Data, decoded.1, List.nil_append]
   | ipsec association contents => simp [Datagram.Decoded, body] at decoded
   | macsec association contents => simp [Datagram.Decoded, body] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
   | carrier endpoint contents => simp [Datagram.Decoded, body] at decoded
 
 
@@ -121,6 +122,7 @@ lemma source_IP_body_from_original (source : Datagram) (decoded : source.Decoded
   | ethernet nominal => simp [Body.originalHeader, sourceCase] at same
   | ipsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
   | macsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, sourceCase] at decoded
   | carrier endpoint contents => simp [Datagram.Decoded, sourceCase] at decoded
 
 lemma ESP_network_length_at_least_inner (bytes : Nat) :
@@ -149,6 +151,7 @@ theorem decode_encoded_body (codec : Codec Key) (source : Datagram) (payload : L
       | ethernet header => simp [Body.originalHeader, sourceCase] at originalIP
       | ipsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
       | macsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
+      | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, sourceCase] at decoded
       | carrier endpoint contents => simp [Datagram.Decoded, sourceCase] at decoded
     have width := (forwarded_network_header_matches source nominal (active.getD nominal)
       sourceBody decoded coherent.1).1
@@ -184,6 +187,7 @@ theorem decode_encoded_body (codec : Codec Key) (source : Datagram) (payload : L
     simp only [Option.bind_some, ↓reduceIte]
     exact recurse
   | macsec association contents ih => exact False.elim shape
+  | macsecPdu association encryptFrames confidentialityOffset contents => exact False.elim shape
   | carrier endpoint contents ih => exact False.elim shape
 
 
@@ -241,6 +245,7 @@ theorem encoded_body_network_length (codec : Codec Key) (source : Datagram)
     refine ⟨?_, recurse.2.trans (ESP_network_length_at_least_inner encodedContents.length)⟩
     simp only [networkLength, innerLength, Option.map_some, Body.visibleHeader]
   | macsec association contents ih => exact False.elim shape
+  | macsecPdu association encryptFrames confidentialityOffset contents => exact False.elim shape
   | carrier endpoint contents ih => exact False.elim shape
 
 

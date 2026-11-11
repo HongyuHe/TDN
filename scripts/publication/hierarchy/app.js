@@ -55,7 +55,7 @@ let activeID=initial.get('target')||'RG-034';
 if(!data.groups.some(g=>g.id===activeID))activeID='RG-034';
 const coverage=data.metadata.summary;
 $('#coverage-summary').textContent=`${coverage.formal_definitions} selected specifications: ${coverage.review_pass_groups} complete proofs passed review; ${coverage.deferred_groups} deferred. The other ${coverage.outside_selected_groups} RGs remain catalog entries.`;
-$('#source-summary').textContent=`V3.1: ${coverage.formal_definitions} accepted specifications, ${coverage.review_pass_groups} reviewed complete general proofs, and ${coverage.deferred_groups} deferred targets. Status comes from the recorded complete-candidate reviews. Dependencies and source links were refreshed from the current Lean development. ${coverage.complete_model_applications} registered complete model applications use the reviewed general proofs. Applying those results to a live deployment requires the stated observation and implementation assumptions.`;
+$('#source-summary').textContent=`TDN ${data.metadata.version}: ${coverage.formal_definitions} accepted specifications, ${coverage.review_pass_groups} reviewed complete general proofs, and ${coverage.deferred_groups} deferred targets. Status comes from the recorded complete-candidate reviews. Dependencies and source links were refreshed from the current Lean development. ${coverage.complete_model_applications} registered complete model applications use the reviewed general proofs. Applying those results to a live deployment requires the stated observation and implementation assumptions.`;
 function renderTargets(){
  const query=$('#search').value.toLowerCase();
  const matches=data.groups.filter(g=>[g.id,g.title,g.target,g.targetName,...g.choices].join(' ').toLowerCase().includes(query));
@@ -168,9 +168,9 @@ function renderGraph(refit=true){
  updateHash();
  if(!group.formal){
   layout=null;$('#canvas').innerHTML='';$('#canvas').hidden=true;$('#detail').hidden=true;
-  $('#empty').hidden=false;$('#empty').innerHTML='<p>'+esc(group.reason)+'</p><p>No top-level proof target was selected for this RG in v3.2.</p>';
+  $('#empty').hidden=false;$('#empty').innerHTML='<p>'+esc(group.reason)+'</p><p>No top-level proof target was selected for this RG.</p>';
   $('#graph-count').textContent='Outside the 24 selected targets';$('#selection-meaning').textContent=group.reason;
-  $('#related-specification').innerHTML='';$('#collapse').disabled=true;$('#choice-count').textContent='Catalog entry; no v3.2 proof tree.';
+  $('#related-specification').innerHTML='';$('#collapse').disabled=true;$('#choice-count').textContent='Catalog entry; no selected proof tree.';
   $('#locator-status').textContent='Choose a selected RG to explore its declarations.';return;
  }
  $('#canvas').hidden=false;$('#detail').hidden=false;

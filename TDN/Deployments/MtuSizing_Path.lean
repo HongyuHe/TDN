@@ -116,7 +116,7 @@ theorem non_link_native_step_is_accepted {S A : Type} (binding : DeviceExecution
     (ordinary : action = .receive ∨ action = .route ∨ action = .forwardFilter ∨ action = .encryptIPsec)
     (header : binding.configuration.HeaderStepAdmitted before action) :
     binding.AcceptedStep before action after := by
-  refine ⟨step, ?_, ?_, ?_, header⟩
+  refine ⟨step, ?_, ?_, ?_, header, ?_⟩
   all_goals rcases ordinary with rfl | rfl | rfl | rfl <;> simp [Config.LinkStepAdmitted]
 
 
@@ -245,10 +245,10 @@ theorem SizingPath.source_to_required_wire {Key : Type} (sample : SizingPath) (r
     · exact (notBridge (next,_) linked).2 rfl
     · cases impossible
   have wire : binding.AcceptedStep (sample.egressReady records) .linkTransmit (sample.wired records) := by
-    refine ⟨.linkTransmit sample.nextIface rfl checked.2.2.2.2.2.2.2.2, ?_, ?_, ?_, ?_⟩
+    refine ⟨.linkTransmit sample.nextIface rfl checked.2.2.2.2.2.2.2.2, ?_, ?_, ?_, ?_, ?_⟩
     · intro impossible; cases impossible
     · intro impossible; cases impossible
-    · refine ⟨?_, (by intro impossible; cases impossible), (by intro impossible; cases impossible),
+    · refine ⟨?_, (by rintro (impossible | impossible) <;> cases impossible), (by intro impossible; cases impossible),
         (by intro impossible; cases impossible)⟩
       intro _
       refine ⟨fun path => False.elim (noBefore path), ?_, fun _ => rfl⟩
@@ -261,6 +261,7 @@ theorem SizingPath.source_to_required_wire {Key : Type} (sample : SizingPath) (r
         · cases impossible
       · refine ⟨IPsecFrameEncoding.linkEncoding codec (sample.egressReady records).frame, rfl, description,
           openLinkPolicy, openPolicy, rfl⟩
+    · intro impossible; cases impossible
     · intro impossible; cases impossible
   obtain ⟨action, after, tr, operation, _⟩ := covered.2.2.1 before .linkTransmit (sample.wired records)
     (by

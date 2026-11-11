@@ -57,6 +57,7 @@ theorem plain_IP_payload_is_source_bytes {S A : Type}
   | ethernet source => simp [Body.originalHeader, body] at original
   | ipsec association contents => simp [PacketSource.Datagram.Decoded, body] at decoded
   | macsec association contents => simp [PacketSource.Datagram.Decoded, body] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [PacketSource.Datagram.Decoded, body] at decoded
   | carrier endpoint contents => simp [PacketSource.Datagram.Decoded, body] at decoded
 
 theorem plain_Ethernet_has_source_serialization {S A : Type}
@@ -89,6 +90,7 @@ theorem plain_Ethernet_has_source_serialization {S A : Type}
     exact payload
   | ipsec association contents => simp [PacketSource.Datagram.Decoded, body] at decoded
   | macsec association contents => simp [PacketSource.Datagram.Decoded, body] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [PacketSource.Datagram.Decoded, body] at decoded
   | carrier endpoint contents => simp [PacketSource.Datagram.Decoded, body] at decoded
 
 

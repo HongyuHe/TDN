@@ -7,7 +7,7 @@ open LayeredFrame
 def ProducedIPBodies (c : Config) : Body → Prop
   | .datagram _ | .ethernet _ => True
   | .ipsec token body => DataPlaneForwarding.ProducedSeal c.ip token ∧ ProducedIPBodies c body
-  | .macsec _ body | .carrier _ body => ProducedIPBodies c body
+  | .macsec _ body | .macsecPdu _ _ _ body | .carrier _ body => ProducedIPBodies c body
 
 lemma unwrap_preserves_ip_provenance (c : Config)
     (localAddress remote sourcePort destinationPort localSession : Nat) {protocol networkProtocol : String} (before after : Body)
@@ -25,7 +25,7 @@ lemma step_preserves_ip_provenance {c : Config} {before after : State} {action :
     (step : Step c before action after) (valid : ProducedIPBodies c before.frame.body) :
     ProducedIPBodies c after.frame.body := by
   cases step <;>
-    simp only [Config.forwardedFrame_body, Config.ipsecFrame_body, Config.macsecFrame_body,
+    simp only [Config.forwardedFrame_body, Config.ipsecFrame_body, Config.macsecFrame_body, Config.macsec_pdu_frame_body,
       Config.carrierFrame_body, Config.restoredFrame_body] <;> try exact valid
   case encryptIPsec policy association datapathStage visible selected installed bound =>
     exact ⟨⟨before.iface, policy, (DataPlaneForwarding.matched_policy_is_configured selected).1,
@@ -35,6 +35,8 @@ lemma step_preserves_ip_provenance {c : Config} {before after : State} {action :
     exact valid.2
   case decryptMACsec iface association transmitted body configured datapathStage physical encrypted installed spi =>
     simpa only [encrypted, ProducedIPBodies] using valid
+  case validateMACsec iface association transmitted encryptFrames offset body configured datapathStage physical framed installed spi =>
+    simpa only [framed, ProducedIPBodies] using valid
   case decapsulate iface body configured datapathStage owner unwrapped =>
     exact unwrap_preserves_ip_provenance c _ _ _ _ _ _ _ valid unwrapped
 

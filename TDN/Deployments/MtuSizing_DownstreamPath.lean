@@ -155,7 +155,7 @@ theorem SizingMove.accepted {Key : Type} (move : SizingMove) (records : Records)
     (prototype records installations entries roles policies epoch codec material).AcceptedStep
       before move.operation (move.after records before) := by
   refine ⟨move.step records installations policies codec before checked, ?_, ?_, ?_,
-    move.header_admitted records installations policies codec before checked⟩
+    move.header_admitted records installations policies codec before checked, ?_⟩
   · intro impossible
     simp only [SizingMove.Check, impossible] at checked
   · intro impossible
@@ -172,8 +172,8 @@ theorem SizingMove.accepted {Key : Type} (move : SizingMove) (records : Records)
         change some (IPsecFrameEncoding.linkEncoding codec before.frame) =
           some (IPsecFrameEncoding.linkEncoding codec (move.after records before).frame)
         rw [sameFrame]
-    · intro impossible
-      simp only [SizingMove.Check, impossible] at checked
+    · rintro (impossible | impossible) <;>
+        simp only [SizingMove.Check, impossible] at checked
     · intro bridge
       obtain ⟨first, last⟩ := linkChecked (Or.inr bridge)
       have linked := checked
@@ -187,6 +187,8 @@ theorem SizingMove.accepted {Key : Type} (move : SizingMove) (records : Records)
           (Or.inr (Or.inl ⟨before.iface, Or.inr (by change (before.iface, (move.after records before).iface) ∈ records.bridges; simpa only [SizingMove.after, bridge] using linked.2)⟩))
     · intro impossible
       simp only [SizingMove.Check, impossible] at checked
+  · intro impossible
+    simp only [SizingMove.Check, impossible] at checked
 
 
 def sizingFinish (records : Records) (before : MultiProtocolForwarding.State) : List SizingMove → MultiProtocolForwarding.State

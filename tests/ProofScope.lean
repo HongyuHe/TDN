@@ -2,8 +2,8 @@ import TDN
 
 /- Every retained RG mapping resolves in the active theory. -/
 
-#check TDN.Requirements.every_black_byte_has_ordered_encryption_path
-#check TDN.Deployments.ProfileShared_EnclaveIsolation.every_assembled_black_byte_has_inner_before_outer
+#check TDN.Requirements.Msc.nested_layer_protection_from_local_checks
+#check TDN.Deployments.NestedProtection_Baseline.snapshot_RG007_ipsec_nested_layer_protection
 
 #check TDN.Requirements.delivered_domain_from_local_checks
 #check TDN.Deployments.ProfileShared_EnclaveIsolation.snapshot_RG008_full_label_delivery
@@ -23,20 +23,20 @@ import TDN
 #check TDN.Requirements.Msc.vpn_private_key_confinement_from_interface_steps
 #check TDN.Deployments.KeyStoreConfinementChecks.useful_run
 
-#check TDN.KeySources.executions_have_only_authenticated_sources
-#check TDN.Deployments.SnapshotMacsecKeySources.eap_ifaces_have_no_pre_shared_fallback
+#check TDN.Requirements.Msc.macsec_authentication_from_local_checks
+#check TDN.Deployments.MacsecAuthentication.snapshot_RG024_forward_eap_tls_authentication
 
 #check TDN.Requirements.Msc.macsec_key_generation_from_checked_records
 #check TDN.Deployments.SnapshotProof_MacsecKeyGen.complete_RG027_under_named_approvals
 
-#check TDN.LinkProtection.every_emitted_frame_is_encrypted
-#check TDN.Deployments.SnapshotMacsecRuntime.every_runtime_data_emission_is_encrypted
+#check TDN.Requirements.Msc.macsec_protection_from_local_checks
+#check TDN.Deployments.MacsecProtection.snapshot_RG028_direct_macsec_protection_parameters
 
-#check TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption
-#check TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4.boundaryIA_no_bypass
+#check TDN.Requirements.Msc.inner_tunnel_no_bypass_from_outbound_and_inbound_checks
+#check TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_ipsec_inner_tunnel_no_bypass
 
-#check TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption
-#check TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4.boundaryOA_no_bypass
+#check TDN.Requirements.Msc.outer_tunnel_no_bypass_from_local_checks
+#check TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_outer_tunnel_no_bypass
 
 #check TDN.Requirements.Msc.transec_conditions_from_checked_installations
 #check TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality.retained_complete_RG032

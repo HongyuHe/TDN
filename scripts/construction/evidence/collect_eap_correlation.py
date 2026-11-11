@@ -12,10 +12,10 @@ from eap_correlation_lab import Lab
 
 SCRIPT_SHA256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
-def collect_cases(base, shared, hostap_root, label):
+def collect_cases(base, shared, hostap_root, label, namespace_prefix="tv31e-"):
     for reverse in [False,True]:
         name="eap-tls-"+("reverse" if reverse else "forward")+"-"+label
-        lab=Lab(base/"exports",name);lab.prefix="tv31e-";lab.code_hashes["collect_eap_correlation.py"]=SCRIPT_SHA256;procs=[];handles=[];error=None
+        lab=Lab(base/"exports",name);lab.prefix=namespace_prefix;lab.code_hashes["collect_eap_correlation.py"]=SCRIPT_SHA256;procs=[];handles=[];error=None
         private=base/"private"/name;private.mkdir(parents=True,exist_ok=False);private.chmod(0o700)
         openssl_config=private/'openssl.cnf'
         openssl_config.write_text('openssl_conf = openssl_init\n[openssl_init]\nssl_conf = ssl_configuration\n[ssl_configuration]\nsystem_default = tls_system_default\n[tls_system_default]\nMinProtocol = TLSv1.3\nMaxProtocol = TLSv1.3\nCiphersuites = TLS_AES_256_GCM_SHA384\nGroups = MLKEM1024\n')
@@ -39,6 +39,7 @@ def collect_cases(base, shared, hostap_root, label):
             for capture_node in ["P0","P1"]:
                 packet_program="import socket,json,time;s=socket.socket(socket.AF_PACKET,socket.SOCK_RAW,socket.htons(3));s.bind(('eth0',0));s.settimeout(60)\nwhile True:\n b,info=s.recvfrom(65535)\n if len(b)>=18 and b[12:14] in [bytes.fromhex('888e'),bytes.fromhex('88e5')]:print(json.dumps({'at':time.time(),'source':b[6:12].hex(),'destination':b[:6].hex(),'ethertype':b[12:14].hex(),'length':len(b),'eapol_type':b[15] if b[12:14]==bytes.fromhex('888e') else None,'macsec_pn':int.from_bytes(b[16:20],'big') if b[12:14]==bytes.fromhex('88e5') and len(b)>=20 else None,'macsec_an':b[14]&3 if b[12:14]==bytes.fromhex('88e5') else None,'macsec_sci':b[20:28].hex() if b[12:14]==bytes.fromhex('88e5') and len(b)>=28 and b[14]&32 else None,'pkttype':info[2]}),flush=True)\n"
                 packet_program = packet_program.replace("'pkttype':info[2]", "'pkttype':info[2],'mka_hex':b.hex() if b[12:14]==bytes.fromhex('888e') and b[15]==5 else None")
+                packet_program = packet_program.replace("'pkttype':info[2]", "'pkttype':info[2],'eap_success_hex':b[14:22].hex() if len(b)>=22 and b[12:14]==bytes.fromhex('888e') and b[15]==0 and b[16:19]==bytes.fromhex('000403') and b[20:22]==bytes.fromhex('0004') else None")
                 h=(private/(capture_node+"-headers.log")).open("w");handles.append(h)
                 proc=__import__("subprocess").Popen(["ip","netns","exec",lab.prefix+capture_node,"python3","-u","-c",packet_program],stdout=h,stderr=h);procs.append(proc)
             for n in [auth,supp,"AS"]:lab.run(["sysctl","-qw","net.ipv4.ip_forward=0"],n)
@@ -121,13 +122,16 @@ def main():
     parser.add_argument("--root", required=True)
     parser.add_argument("--hostap-dir", default="hostap-v2")
     parser.add_argument("--label", default="v31-shared-pki")
+    parser.add_argument("--namespace-prefix", default="tv31e-")
     args = parser.parse_args()
     base = Path(args.root)
     shared = base / "private" / "shared-role-credentials"
     shared.mkdir(parents=True, exist_ok=False)
     shared.chmod(0o700)
     try:
-        collect_cases(base, shared, base / args.hostap_dir, args.label)
+        if not args.namespace_prefix.isascii() or not args.namespace_prefix.replace("-", "").isalnum() or len(args.namespace_prefix) > 10:
+            raise ValueError("Use an ASCII namespace prefix of at most ten letters, digits, or hyphens")
+        collect_cases(base, shared, base / args.hostap_dir, args.label, args.namespace_prefix)
     finally:
         shutil.rmtree(shared)
 

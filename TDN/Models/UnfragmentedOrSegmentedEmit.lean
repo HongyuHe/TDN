@@ -62,6 +62,7 @@ lemma Datagram.decoded_header_is_unfragmented (datagram : Datagram)
   | ethernet packet => simp [Datagram.UnfragmentedHeader, body]
   | ipsec association body => simp [Datagram.Decoded, body] at decoded
   | macsec association body => simp [Datagram.Decoded, body] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
   | carrier endpoint body => simp [Datagram.Decoded, body] at decoded
 
 theorem Datagram.whole_packet_reassembles_from_header (datagram : Datagram) (mtu : Nat)
@@ -85,6 +86,7 @@ theorem Datagram.whole_packet_reassembles_from_header (datagram : Datagram) (mtu
     | ethernet packet => simp [Datagram.asWhole, Datagram.wholeFragment, body]
     | ipsec association contents => simp [Datagram.UnfragmentedHeader, body] at header
     | macsec association contents => simp [Datagram.UnfragmentedHeader, body] at header
+    | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.UnfragmentedHeader, body] at header
     | carrier endpoint contents => simp [Datagram.UnfragmentedHeader, body] at header
 
 theorem Datagram.whole_packet_reassembles (datagram : Datagram) (mtu : Nat)
@@ -109,6 +111,7 @@ theorem Datagram.whole_packet_reassembles (datagram : Datagram) (mtu : Nat)
       simp [Datagram.asWhole, Datagram.wholeFragment, body]
     | ipsec association body => simp [Datagram.Decoded, body] at decoded
     | macsec association body => simp [Datagram.Decoded, body] at decoded
+    | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
     | carrier endpoint body => simp [Datagram.Decoded, body] at decoded
 
 def Datagram.fragmentOnlyWhenNeeded (datagram : Datagram) (mtu : Nat) : Datagram :=

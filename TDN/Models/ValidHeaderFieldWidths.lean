@@ -18,6 +18,7 @@ lemma Datagram.valid_source_hop_bound {datagram : Datagram} {request : Request}
   | ethernet actual => simp [Datagram.HeaderFrom, shape, body] at headerFrom
   | ipsec association contents => simp [Datagram.HeaderFrom, shape, body] at headerFrom
   | macsec association contents => simp [Datagram.HeaderFrom, shape, body] at headerFrom
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.HeaderFrom, shape, body] at headerFrom
   | carrier endpoint contents => simp [Datagram.HeaderFrom, shape, body] at headerFrom
 
 lemma Datagram.valid_source_header_representable {datagram : Datagram} {request : Request}
@@ -58,6 +59,7 @@ lemma Datagram.valid_source_header_representable {datagram : Datagram} {request 
   | ethernet actual => simp [Datagram.HeaderFrom, shape, body] at headerFrom
   | ipsec association contents => simp [Datagram.HeaderFrom, shape, body] at headerFrom
   | macsec association contents => simp [Datagram.HeaderFrom, shape, body] at headerFrom
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.HeaderFrom, shape, body] at headerFrom
   | carrier endpoint contents => simp [Datagram.HeaderFrom, shape, body] at headerFrom
 
 end TDN.PacketSource

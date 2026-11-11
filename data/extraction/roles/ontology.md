@@ -25,7 +25,7 @@ The transitive parent lists are computed for the exported subclass graph. The pi
 - contextual roles: 21
 - unrepresented roles: 14
 
-## Representation in TDN v3.2
+## Representation in TDN v3.3
 
 These annotations explain how source roles are represented by the current Lean model. Device kind, encryption layer and interface zone are separate fields. The local zone represents device-internal interfaces. Device roles remain classified separately. Namespace-local addresses belong to their recorded device, including loopback addresses shared by several devices. Source subtype relationships remain unchanged. Role mappings alone do not establish requirement compliance.
 
@@ -91,16 +91,16 @@ These annotations explain how source roles are represented by the current Lean m
 | Control plane network service | Combination of Lean fields | Control service registrations identify protocol and port. Their kind is recorded separately from the hosting device. | [ServiceKind](../../../TDN/Requirements/MscComplianceSchema.lean) |
 | Third-party server | Related model only | Third-party behavior is represented by feature and emitted-traffic records. The remote server is not a dedicated device kind. | [Deployment](../../../TDN/Requirements/MscComplianceSchema.lean) |
 | End user device | Related model only | Red network records and modeled payload origins identify source and destination networks. DeviceKind has no separate end-user-host constructor. | [RedNetworkIdentity](../../../TDN/Requirements/TwoLayerOverlayArchitecture.lean) |
-| High Assurance encryptor | No distinct representation | The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations. | [ExternalFacts](../../../TDN/Requirements/CsfcRoleObligationRecords.lean) |
-| NSA-certified Government-off-the-Shelf product | No distinct representation | The extracted assurance/product category is not a distinct device kind in v3.2. Product eligibility and external assurance remain separate evidence obligations. | [ExternalFacts](../../../TDN/Requirements/CsfcRoleObligationRecords.lean) |
+| High Assurance encryptor | No distinct representation | The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations. | [ExternalFacts](../../../TDN/Requirements/CsfcRoleObligationRecords.lean) |
+| NSA-certified Government-off-the-Shelf product | No distinct representation | The extracted assurance/product category is not a distinct device kind in the current theory. Product eligibility and external assurance remain separate evidence obligations. | [ExternalFacts](../../../TDN/Requirements/CsfcRoleObligationRecords.lean) |
 | Locally Managed Device | Related model only | Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds. | [AdministrativeAccount](../../../TDN/Requirements/ManagementPlaneRequirements.lean), [ManagementExchange](../../../TDN/Requirements/MscComplianceSchema.lean), [msc_administrator_authentication](../../../TDN/Requirements/MasterMscRequirementSpecs.lean) |
 | Remotely Managed Device | Related model only | Administrative operation and connection records describe management access. V3.1 does not divide devices into local-management and remote-management kinds. | [AdministrativeAccount](../../../TDN/Requirements/ManagementPlaneRequirements.lean), [ManagementExchange](../../../TDN/Requirements/MscComplianceSchema.lean), [msc_administrator_authentication](../../../TDN/Requirements/MasterMscRequirementSpecs.lean) |
-| Auxiliary network device | No distinct representation | The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately. |  |
+| Auxiliary network device | No distinct representation | The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately. |  |
 | Infrastructure authentication service | Combination of Lean fields | Authentication is a registered service function hosted by a component. The hosting device may also have the authenticationServer kind. | [ManagementServiceFunction](../../../TDN/Requirements/MscComplianceSchema.lean), [ServiceKind](../../../TDN/Requirements/MscComplianceSchema.lean), [DeviceKind](../../../TDN/Requirements/MscComplianceSchema.lean) |
 | Network administration device | Related model only | The source role may be realized by workstation or administration services. V3.1 has no separate network-administration-device kind. | [DeviceKind](../../../TDN/Requirements/MscComplianceSchema.lean), [ManagementServiceFunction](../../../TDN/Requirements/MscComplianceSchema.lean) |
 | Infrastructure component | Explicit Lean representation | The device record has an infrastructure flag. Flow.Valid requires both encryption endpoints to carry that flag. | [Device](../../../TDN/Requirements/MscComplianceSchema.lean), [Flow.Valid](../../../TDN/Requirements/CoreMscRequirements.lean) |
 | Network device | Related model only | Device is the general inventory record for all modeled device kinds. Source role membership beyond that inventory remains contextual. | [Device](../../../TDN/Requirements/MscComplianceSchema.lean) |
-| Perimeter device | No distinct representation | The broad source grouping has no dedicated v3.2 role predicate. Specific member functions must be mapped separately. |  |
+| Perimeter device | No distinct representation | The broad source grouping has no dedicated role predicate. Specific member functions must be mapped separately. |  |
 | Key and certificate management component | Combination of Lean fields | Key management combines CA and key-generation device records, service functions, and component-to-service relations. | [Deployment](../../../TDN/Requirements/MscComplianceSchema.lean), [ManagementServiceFunction](../../../TDN/Requirements/MscComplianceSchema.lean) |
 | Trust Anchor CA | Related model only | The authentication model records certificate issuers and trusted issuer identifiers. It does not encode the full CA hierarchy or every distinction among these source roles. | [InnerAuthentication](../../../TDN/Requirements/CrossEnclavePkiIsolationSpec.lean), [DeviceKind](../../../TDN/Requirements/MscComplianceSchema.lean) |
 | Approved password generator | No distinct representation | Password-generator approval is an external configuration/authority requirement. V3.1 has no separate password-generator behavior model. | [ExternalFacts](../../../TDN/Requirements/CsfcRoleObligationRecords.lean) |
@@ -197,7 +197,7 @@ The explorer shows each selected role’s obligations below its name. Every entr
 | IKEv2 initiator | RG-017, RG-019, RG-020, RG-022, RG-023 | None |
 | IKEv2 responder | RG-017, RG-019, RG-020, RG-022, RG-023 | None |
 
-## Chosen v3.2 interpretations
+## Chosen v3.3 interpretations
 
 ### V31-007: data-plane protection, tunnel endpoints, and services
 

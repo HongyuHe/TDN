@@ -629,9 +629,17 @@ structure MACsecParameters where
   confidentialityOffset : Nat
   mustSecure : Bool
 
+def MACsecParametersBound {S A : Type} (d : Deployment)
+    (model : ForwardingModel S A) (parameters : List MACsecParameters) : Prop :=
+  ∀ parameter ∈ parameters, d.Relevant parameter.device →
+    ∀ iface ∈ model.native.configuration.macIfaces,
+      model.native.componentName (model.native.configuration.ip.owner iface.physicalIface) = parameter.device →
+      parameter.mustSecure = (iface.settings.protectFrames && iface.settings.encryptFrames) ∧
+        parameter.confidentialityOffset = iface.settings.confidentialityOffset
+
 def CoreReq_msc_macsec_protection_parameters {S A : Type} (d : Deployment)
     (model : ForwardingModel S A) (parameters : List MACsecParameters) : Prop :=
-  model.CoversDeployment d ∧
+  model.CoversDeployment d ∧ MACsecParametersBound d model parameters ∧
   (∀ device ∈ d.devices, d.Relevant device.id → device.kind = .macsec →
     ∃ parameter ∈ parameters, parameter.device = device.id) ∧
   (∀ parameter ∈ parameters, d.Relevant parameter.device → parameter.dataDelayProtection = true ∧
@@ -817,7 +825,7 @@ def WireSizeModel.WireEncoding {S A : Type} (sizes : WireSizeModel S)
       ∃ header, emission.body = .ethernet header ∧
         PacketSource.EthernetHeaderMatches header emission.networkHeader ∧
         (∀ original, native.frame.body = .ethernet original → header = original) ∧
-        (native.frame.body.isEthernetCiphertext = true → header.etherType = 35045)
+        (native.frame.body.isMACsecPdu = true → header.etherType = 35045)
 
 def WireSizeModel.SourceEncoding {S A : Type} (sizes : WireSizeModel S)
     (model : ForwardingModel S A) : Prop :=

@@ -61,6 +61,7 @@ theorem standard_admitted_wire_budget {S A Key : Type}
     | datagram header => simp [Frame.visibleHeader, body, Body.visibleHeader] at visible
     | ipsec association contents => simp [Frame.visibleHeader, body, Body.visibleHeader] at visible
     | macsec association contents => simp [body, Body.IPsecOnly] at shape
+    | macsecPdu association encryptFrames confidentialityOffset contents => simp [body, Body.IPsecOnly] at shape
     | carrier endpoint contents => simp [body, Body.IPsecOnly] at shape
     | ethernet header =>
       have bounded := standard_reachable_Ethernet_size prototype ifaces d history required mtu plaintextLimit

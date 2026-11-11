@@ -47,21 +47,22 @@ end TDN.Requirements.Msc
 namespace TDN.Requirements.Msc
 open LayeredFrame
 
-def MACsecWireFrameChecks (encoded : LinkAdmission.Frame) (association : MACsecAssociation) : Prop :=
+def MACsecFullFrameChecks (encoded : LinkAdmission.Frame) (association : MACsecAssociation) : Prop :=
   encoded.Decoded ∧ encoded.header.etherType = 35045 ∧
     LinkAdmission.MACsecFraming association encoded.payload ∧
     (PacketSource.field encoded.payload 0 1 / 32 % 2 = 0 →
-      encoded.header.source = association.sci / 65536)
+      encoded.header.source = association.sci / 65536) ∧
+    PacketSource.field encoded.payload 0 1 / 8 % 2 = 1
 
 instance (encoded : LinkAdmission.Frame) (association : MACsecAssociation) :
-    Decidable (MACsecWireFrameChecks encoded association) := by
-  unfold MACsecWireFrameChecks LinkAdmission.MACsecFraming
+    Decidable (MACsecFullFrameChecks encoded association) := by
+  unfold MACsecFullFrameChecks LinkAdmission.MACsecFraming
   infer_instance
 
 lemma checked_MACsec_wire_frame_describes_native (encoded : LinkAdmission.Frame)
     (native : LayeredFrame.Frame) (association : MACsecAssociation) (inner : Body)
     (body : native.body = .macsec association inner)
-    (checks : MACsecWireFrameChecks encoded association) : encoded.Describes native := by
+    (checks : MACsecFullFrameChecks encoded association) : encoded.Describes native := by
   apply checked_MACsec_frame_describes_native encoded native association inner body
   exact checks
 

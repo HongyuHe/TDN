@@ -1,0 +1,186 @@
+{
+  "schema": "security-level-assignment/v1",
+  "declaredAt": "2026-11-11T12:08:54.660218+00:00",
+  "authority": "supervisor-selected-experimental-policy",
+  "evidenceStatus": "declared",
+  "realClassificationApproval": false,
+  "reason": "Assign all four SecurityLevel dimensions explicitly for RG008 model applications against retained baseline/shared network identities. The existing profile level distinguishes the experiment case; missing compartment fields are not observations of empty sets.",
+  "authorization": "User-authorized theory construction and supporting experiment configuration; supervisor selects laboratory policy only.",
+  "profiles": [
+    {
+      "id": "baseline",
+      "configurationId": "native-v31b",
+      "snapshotId": "snapshot",
+      "sourceCohort": "data/snapshots/2026-11-04-mtu-cohorts/baseline-red-cohort-001/snapshot",
+      "assignments": [
+        {
+          "innerDevice": "V31B_I_A1",
+          "network": "V31B_I_A1/red-network",
+          "site": "A",
+          "profileLevel": "S1",
+          "assignedLevel": {
+            "classification": "S1",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31B_I_A2",
+          "network": "V31B_I_A2/red-network",
+          "site": "A",
+          "profileLevel": "S2",
+          "assignedLevel": {
+            "classification": "S2",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31B_I_B1",
+          "network": "V31B_I_B1/red-network",
+          "site": "B",
+          "profileLevel": "S1",
+          "assignedLevel": {
+            "classification": "S1",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31B_I_B2",
+          "network": "V31B_I_B2/red-network",
+          "site": "B",
+          "profileLevel": "S2",
+          "assignedLevel": {
+            "classification": "S2",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          }
+        }
+      ],
+      "specSha256": "0602c4db84817aa71bd4f342772e158b5ad02196863f389cde3074d2566b6297",
+      "snapshotSha256": "4ddeb420a523943ff35e16c0b0bdd8f368ee1a9eeada0fb9ba45d4827f29e142"
+    },
+    {
+      "id": "shared",
+      "configurationId": "native-v31f",
+      "snapshotId": "snapshot",
+      "sourceCohort": "data/snapshots/2026-11-04-mtu-cohorts/shared-sizing-cohort-001/snapshot",
+      "assignments": [
+        {
+          "innerDevice": "V31F_I_A1",
+          "network": "V31F_I_A1/red-network",
+          "site": "A",
+          "profileLevel": "TOP_SECRET",
+          "assignedLevel": {
+            "classification": "top_secret",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31F_I_A2",
+          "network": "V31F_I_A2/red-network",
+          "site": "A",
+          "profileLevel": "SECRET_US_ONLY",
+          "assignedLevel": {
+            "classification": "secret",
+            "compartments": [],
+            "dissemination": [
+              "US_ONLY"
+            ],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31F_I_B1",
+          "network": "V31F_I_B1/red-network",
+          "site": "B",
+          "profileLevel": "TOP_SECRET",
+          "assignedLevel": {
+            "classification": "top_secret",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31F_I_B2",
+          "network": "V31F_I_B2/red-network",
+          "site": "B",
+          "profileLevel": "SECRET_US_ONLY",
+          "assignedLevel": {
+            "classification": "secret",
+            "compartments": [],
+            "dissemination": [
+              "US_ONLY"
+            ],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31F_I_A3",
+          "network": "V31F_I_A3/red-network",
+          "site": "A",
+          "profileLevel": "SECRET_COALITION",
+          "assignedLevel": {
+            "classification": "secret",
+            "compartments": [],
+            "dissemination": [
+              "COALITION"
+            ],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31F_I_B3",
+          "network": "V31F_I_B3/red-network",
+          "site": "B",
+          "profileLevel": "SECRET_COALITION",
+          "assignedLevel": {
+            "classification": "secret",
+            "compartments": [],
+            "dissemination": [
+              "COALITION"
+            ],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31F_I_A4",
+          "network": "V31F_I_A4/red-network",
+          "site": "A",
+          "profileLevel": "UNCLASSIFIED",
+          "assignedLevel": {
+            "classification": "unclassified",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          }
+        },
+        {
+          "innerDevice": "V31F_I_B4",
+          "network": "V31F_I_B4/red-network",
+          "site": "B",
+          "profileLevel": "UNCLASSIFIED",
+          "assignedLevel": {
+            "classification": "unclassified",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          }
+        }
+      ],
+      "specSha256": "20b0b43e75b0c5e9f59f6ec57882c26aad807d6eda62a32989b0c14d4a1eb074",
+      "snapshotSha256": "d215cbd050e687eb07e18a27594e8456b6cc8663b0454830aadf76caaa5dcebc"
+    }
+  ],
+  "revision": 2,
+  "supersedesSha256": "ada0fed6d447caf99960e62b104ad9650fd573c75da54516a6f7c94ab2c051d8",
+  "classificationEncoding": "Shared profile classifications use top_secret, secret and the accepted SecurityLevelConnectivityCore reserved label unclassified; original profileLevel strings remain unchanged."
+}

@@ -143,7 +143,7 @@ lemma protection_disabled_native_transmit_has_physical_view (configuration : Con
   let received : MultiProtocolForwarding.State :=
     { physical with initialEntry := false, iface := peer, datapathStage := .received, authenticated := [] }
   have transform : MultiProtocolForwarding.Step configuration before .forwardWithoutEncap physical :=
-    .unprotectedMACsec iface configured ready logical enabled (Or.inl disabled)
+    .unprotectedMACsec iface configured ready logical enabled disabled
   have wire : MultiProtocolForwarding.Step configuration physical .linkTransmit received :=
     .linkTransmit peer ready linked
   exact ⟨physical, received, transform, wire, rfl, rfl,

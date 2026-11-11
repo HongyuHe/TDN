@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "payloadHex": "0000000000000000000000000000000000200000000000000000001c",
+      "expectedReceived": true,
+      "received": true,
+      "senderObservation": "cmd-0496",
+      "receiverObservation": "cmd-0497",
+      "senderReturncode": 0
+    },
+    {
+      "payloadHex": "ff",
+      "expectedReceived": false,
+      "received": false,
+      "senderObservation": "cmd-0498",
+      "receiverObservation": "cmd-0499",
+      "senderReturncode": 1
+    }
+  ],
+  "scope": "Actual same-level peer UDP framing admission; manual SAs still make no IKE authentication claim."
+}

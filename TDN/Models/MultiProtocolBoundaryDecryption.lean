@@ -69,7 +69,8 @@ def UndecryptedRegion (c : Config) (expectedEncapStack : Nat → List Nat) (tag 
 lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → List Nat} {tag : Nat}
     (conditions : LocalConditions c expectedEncapStack) (carrierCheck : CarrierInputCheck c expectedEncapStack tag)
     {before after : State} {action : Action} (step : Step c before action after)
-    (notDecrypt : ¬ IsDecryption action) (invariant : UndecryptedRegion c expectedEncapStack tag before) :
+    (notDecrypt : ¬ IsDecryption action) (wellformed : CarrierBodies c expectedEncapStack before.frame.body)
+    (invariant : UndecryptedRegion c expectedEncapStack tag before) :
     UndecryptedRegion c expectedEncapStack tag after := by
   have mode := conditions.legacyHeaders
   cases step with
@@ -186,10 +187,14 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
     exact ⟨invariant.1, List.mem_cons_of_mem _ member⟩
   | @unprotectedMACsec iface configured datapathStage logical enabled unprotected =>
     obtain ⟨protect, encrypt, zero, _⟩ := conditions.macSecure iface configured
-    rcases unprotected with impossible | impossible | impossible
-    · simp [protect] at impossible
+    simp [protect] at unprotected
+  | @protectMACsec iface association configured datapathStage logical enabled protection installed limited =>
+    obtain ⟨_, encrypt, zero, _⟩ := conditions.macSecure iface configured
+    rcases limited with impossible | impossible
     · simp [encrypt] at impossible
     · exact False.elim (impossible zero)
+  | @validateMACsec iface association transmitted encryptFrames offset body configured datapathStage physical framed installed spi =>
+    simp [framed, CarrierBodies] at wellformed
   | decryptMACsec => exact False.elim (notDecrypt (Or.inr rfl))
   | @uncheckedMACsec iface configured datapathStage physical unchecked =>
     have strict := (conditions.macSecure iface configured).2.2.2
@@ -238,6 +243,7 @@ theorem inbound_crossing_has_actual_boundary_decryption
     (run : (RestrictedExecution.within (lts c)
       (fun state => c.ip.owner state.iface = component)).MTr before actions after)
     (received : before.datapathStage = .received) (empty : before.authenticated = [])
+    (wellformed : EncapStackConsistent c expectedEncapStack before)
     (outside : tag ∈ expectedEncapStack before.iface) (ready : after.datapathStage = .egressReady)
     (inside : tag ∉ expectedEncapStack after.iface) :
     TraceEvents.Contains (lts c) before actions after
@@ -253,7 +259,9 @@ theorem inbound_crossing_has_actual_boundary_decryption
       (UndecryptedRegion c expectedEncapStack tag) run initial final
   have label : IsDecryption action := by
     by_contra absent
-    exact bad (nondecryption_preserves_region conditions carrierCheck step.1 absent good)
+    have safe := all_traces_preserve_stack c expectedEncapStack conditions
+      (RestrictedExecution.project_trace _ _ first) wellformed
+    exact bad (nondecryption_preserves_region conditions carrierCheck step.1 absent safe.1 good)
   have boundary : BoundaryDecryption c tag left action right := by
     have actual := step.1
     have owner := step.2.1

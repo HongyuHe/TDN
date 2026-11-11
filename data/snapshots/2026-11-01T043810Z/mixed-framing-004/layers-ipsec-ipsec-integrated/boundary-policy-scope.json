@@ -1,0 +1,10 @@
+{
+  "runtime_backend": "supplemental Linux namespaces/static manual SAs",
+  "defaults": "Every nonhost namespace has INPUT/OUTPUT/FORWARD DROP for IPv4 and IPv6. Existing explicit Black ESP forwarding permits remain.",
+  "Inner_IPsec": "Interface and Red-subnet source/destination bounds plus matching reqid100 policy. Local ESP only on Gray with exact peer addresses. No Red ICMP/UDP500 exception.",
+  "Inner_MACsec": "Forwarded Red subnet pairs cross macsec0 only. Actual controlled-port encryption settings remain independently checked. Bridge forwarding allows only MACsec EtherType from the known Inner MAC in the required direction.",
+  "Outer_IPsec": "Forwarded exact Inner-ESP or encapsulator UDP1701 endpoints require reqid200 policy. Integrated L2TP is a local UDP endpoint and requires its matching incoming/outgoing Outer policy. Outer ESP is bound to its Black peer addresses/direction.",
+  "Outer_MACsec": "Actual macsec0 is the sole protected forwarding port. The bridge Black boundary allows only known-source MACsec frames in the exact port direction.",
+  "Control_scope": "Static manual SA fixtures need no IKE/EAPOL control exception. L2TP UDP1701 is bound to its actual component endpoints and interface directions. ARP neighbor exchange inside MACsec remains encrypted. No arbitrary Red packet is exempt by protocol alone.",
+  "Additional_peer_IKE": "Exact same-level Inner IPv4 UDP500/4500 allowance uses canonical IKEv2/UDP-ESP framing. Outer IPsec forwarding retains reqid200. Actual peer admission is tested; no IKE authentication claim."
+}

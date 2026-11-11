@@ -35,6 +35,8 @@ lemma step_preserves_iface_inventory {configuration : Config} {ifaces : List Nat
   | bridge next _ linked => exact (conditions.bridgeEndpoints _ next linked).2
   | bridgeOutput next _ linked => exact (conditions.bridgeEndpoints _ next linked).2
   | encryptMACsec iface _ configured _ _ _ => exact (conditions.macEndpoints iface configured).2
+  | protectMACsec iface _ configured => exact (conditions.macEndpoints iface configured).2
+  | validateMACsec iface _ _ _ _ _ configured => exact (conditions.macEndpoints iface configured).1
   | unprotectedMACsec iface configured _ _ _ _ => exact (conditions.macEndpoints iface configured).2
   | decryptMACsec iface _ _ _ configured _ _ _ _ _ =>
     exact (conditions.macEndpoints iface configured).1

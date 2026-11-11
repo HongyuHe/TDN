@@ -36,6 +36,7 @@ lemma standard_initial_size_budget {S A : Type}
       cases length
     | ipsec association contents => simp [Datagram.Decoded, body] at decoded
     | macsec association contents => simp [Datagram.Decoded, body] at decoded
+    | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
     | carrier endpoint contents => simp [Datagram.Decoded, body] at decoded
   | control component protocol =>
     cases body : datagram.body with
@@ -54,6 +55,7 @@ lemma standard_initial_size_budget {S A : Type}
       cases length
     | ipsec association contents => simp [Datagram.Decoded, body] at decoded
     | macsec association contents => simp [Datagram.Decoded, body] at decoded
+    | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
     | carrier endpoint contents => simp [Datagram.Decoded, body] at decoded
 
 

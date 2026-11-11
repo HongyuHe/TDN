@@ -12,10 +12,12 @@ import textwrap
 ROOT = Path(__file__).resolve().parents[2]
 HERE = ROOT / '.lavish'
 ASSETS = ROOT / 'scripts/publication/hierarchy'
+VERSION = 'v' + (ROOT / 'THEORY_VERSION').read_text().strip()
 SOURCE = HERE / 'theorem-hierarchy/proof-map.json'
 OUT = HERE / 'theorem-hierarchy.html'
 LAYOUT_VERSION = 3
 raw = json.loads(SOURCE.read_text())
+assert raw['metadata']['version'] == VERSION, 'Rebuild the proof map for the current theory version.'
 nodes = raw['nodes']
 
 #* Descriptions explain the declaration's actual role; the boxes retain its Lean name.
@@ -453,13 +455,13 @@ payload = {'groups':raw['groups'],'nodes':details,'layouts':layouts,'root':str(R
     'metadata':raw['metadata'], 'statusLabels':{
     'review_pass':'Complete conditional proof: review passed',
     'deferred':'Complete proof deferred',
-    'outside_selected_scope':'Outside v3.2 proof scope'}}
-template = (ASSETS / 'template.html').read_text()
+    'outside_selected_scope':'Outside selected proof scope'}}
+template = (ASSETS / 'template.html').read_text().replace('__THEORY_VERSION__', VERSION)
 script = (ASSETS / 'app.js').read_text()
 css = (ASSETS / 'style.css').read_text()
 result = template.replace('/*__STYLE__*/',css).replace('/*__SCRIPT__*/',script).replace('__DATA__',json.dumps(payload,ensure_ascii=False,separators=(',',':')).replace('</','<\/'))
 OUT.write_text(result)
-(HERE / 'theorem-hierarchy/build-validation.json').write_text(json.dumps({'layout_version':LAYOUT_VERSION,'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'artifact_sha256':hashlib.sha256(OUT.read_bytes()).hexdigest(),'groups':len(raw['groups']),'roots':len(roots),'layouts':len(layouts),'visible_declarations':len(visible),'source':'Current compiled v3.2 Lean dependency export','design':'Existing TDN report light palette; compact top-down SVG layout','metadata':raw['metadata']},indent=2)+'\n')
+(HERE / 'theorem-hierarchy/build-validation.json').write_text(json.dumps({'layout_version':LAYOUT_VERSION,'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'artifact_sha256':hashlib.sha256(OUT.read_bytes()).hexdigest(),'groups':len(raw['groups']),'roots':len(roots),'layouts':len(layouts),'visible_declarations':len(visible),'source':'Current compiled ' + VERSION + ' Lean dependency export','design':'Existing TDN report light palette; compact top-down SVG layout','metadata':raw['metadata']},indent=2)+'\n')
 print(json.dumps({'artifact':str(OUT),'bytes':OUT.stat().st_size,'groups':len(raw['groups']),'layouts':len(layouts),'visible_declarations':len(visible)}))
 
 subprocess.run([sys.executable, str(ROOT / "scripts/publication/export_pages.py"), "--page", "hierarchy"], check=True)

@@ -53,7 +53,7 @@ lemma protect_off_native_MACsec_and_wire_steps :
     MultiProtocolForwarding.Step unprotectedAllowed.configuration unprotectedAllowed.physicalReady .linkTransmit unprotectedAllowed.wired := by
   constructor
   · exact .unprotectedMACsec unprotectedAllowed.sourceCase.mac
-      (by exact of_decide_eq_true rfl) rfl rfl rfl (Or.inl rfl)
+      (by exact of_decide_eq_true rfl) rfl rfl rfl rfl
   · exact .linkTransmit unprotectedAllowed.sourceCase.peerIface rfl (by exact of_decide_eq_true rfl)
 
 theorem captured_protected_payload_follows_native_route_MACsec_and_wire :

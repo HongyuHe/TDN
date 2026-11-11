@@ -1,10 +1,16 @@
 # Evidence-driven construction of CSfC theories
 
-The current theory is v3.2. Its organization and names follow [the v3.2 migration guide](../docs/refactoring_v3.2.md). The construction and review history below belongs to v3.1; the refactor preserves those results and stopping decisions.
+The current theory is v3.3. Nineteen of the 24 selected requirement groups have passed complete-candidate review under their recorded model assumptions. The current results are recorded in [the publication verdict](../data/publication/v3.3/verdict.json).
 
-The user narrowed the current stopping point on November 4, 2026: finish and validate RG-033, update the affected documentation, role ontology, and theorem hierarchy, then stop. RG-035, RG-039, and RG-040 have passed the continuation's complete-candidate reviews. Preserve those results and the earlier ten accepted groups. Defer RG-007, RG-008, RG-015, RG-024, RG-028, RG-029, RG-030, RG-054, RG-056, and RG-074 until a later instruction. Their unfinished status must remain visible. The current stop requires a complete RG-033 PASS and documentation updates; it does not claim completion of all 24 selected groups.
+The user narrowed the November 10 continuation to RG-007 and requested stopping once it passed review, followed by a v3.3 release. RG-007 passed its second complete-candidate review. The same continuation also completed RG-024, RG-028, RG-029 and RG-030 before the scope was narrowed. Proof construction is stopped. RG-008, RG-015, RG-054, RG-056 and RG-074 remain deferred until a new instruction. Their supporting results remain available.
 
-The narrowed continuation completed RG-033 in its third complete-candidate review. Fourteen selected groups now have accepted complete model applications, and ten remain deferred. The [completion record](../data/construction/v3.1-20261104-continuation/completion_assessment.md) preserves the reviews, assumptions, final validation and documentation updates. No further construction is active.
+The continuation used an independent GPT-6.1 Sol Constructor with Extra High reasoning in an isolated workspace. Its records are preserved under `data/construction/v3.2-20261111T040601Z-remaining/`, reflecting the version at the start of the run. Complete one RG’s general proof and meaningful model applications before supervisor validation. Focused compiler feedback is allowed during construction; broad validation and complete-candidate review wait until that RG is ready. Follow `docs/naming.md` for every new or changed declaration. Preserve accepted specification meanings; run a fresh blind interpretation when a meaning changes. The per-RG review limit and completion criteria below remain in force for any later authorized continuation.
+
+The following paragraphs preserve earlier stopping decisions and review history.
+
+The user narrowed the stopping point on November 4, 2026: finish and validate RG-033, update the affected documentation, role ontology, and theorem hierarchy, then stop. RG-035, RG-039, and RG-040 have passed the continuation's complete-candidate reviews. Preserve those results and the earlier ten accepted groups. Defer RG-007, RG-008, RG-015, RG-024, RG-028, RG-029, RG-030, RG-054, RG-056, and RG-074 until a later instruction. Their unfinished status must remain visible. That stopping point required a complete RG-033 PASS and documentation updates; it does not claim completion of all 24 selected groups.
+
+The narrowed continuation completed RG-033 in its third complete-candidate review. Fourteen selected groups now have accepted complete model applications, and ten remain deferred. The [completion record](../data/construction/v3.1-20261104-continuation/completion_assessment.md) preserves the reviews, assumptions, final validation and documentation updates. Construction stopped at that earlier milestone.
 
 The user resumed v3.1 construction on November 4, 2026 for the fourteen unfinished groups: RG-007, RG-008, RG-015, RG-024, RG-028, RG-029, RG-030, RG-033, RG-035, RG-039, RG-040, RG-054, RG-056 and RG-074. Preserve the ten groups that passed the earlier review: RG-012, RG-013, RG-014, RG-021, RG-027, RG-032, RG-034, RG-037, RG-038 and RG-047. The [earlier review record](../data/construction/v3.1-20261031T231942Z/proof/round-002/supervisor-review.md) remains unchanged. Record the continuation separately under a new UTC-stamped run directory.
 
@@ -243,9 +249,11 @@ The Constructor Agent maps the request to a supported MCP capability and calls t
 
 Preserve failed checks and before/after evidence when repairing a deployment. The Constructor Agent must re-import the new evidence and rerun affected proofs. Include positive behavior checks where needed to ensure a safety result is not achieved merely by disabling all useful traffic.
 
-## 7. Validate v3.1 proof construction and record every round
+## 7. Validate complete requirement groups and record every round
 
-For the current user-authorized stop, apply the complete-candidate criteria to RG-033 and recheck previously accepted results affected by its changes. After RG-033 passes, rebuild the current publication data and validate the updated documentation, ontology, and hierarchy. Record the ten deferred groups explicitly. The full 24-group criteria below remain the objective for a later authorized continuation.
+For the resumed v3.2 construction, apply the complete-candidate criteria separately to each of the ten groups listed at the start of this workflow. Review a group after its general proof and meaningful model applications are finished. Recheck accepted results when changed dependencies could affect them. Preserve the result of every review, then advance to the next unfinished group within the authorized scope. The earlier instruction to stop after RG-033 is historical and has been superseded by this continuation.
+
+At final integration, build the complete active development and refresh the affected documentation, ontology, hierarchy, and public exports. Apply the 24-group criteria below to the fourteen preserved groups and the ten resumed groups together. A group that reaches its review limit remains explicitly incomplete.
 
 The Constructor Agent alternates proof construction with MCP queries, collection requests, and checked imports. It can work on independent obligations while a capture runs or the coordinator prepares a deployment. Each round names the unresolved clause, the requested evidence or change, the result, and the proof or direct check that uses it.
 

@@ -56,7 +56,8 @@ def render(page):
         data['project_root'] = ''
         hashes = dict(data['theory']['source_hashes'])
         hashes.update({'data/extraction/' + path: value for path, value in data['input_hashes'].items()})
-        interpretation_path = 'data/publication/v3.2/interpretations.md'
+        version = (ROOT / 'THEORY_VERSION').read_text().strip()
+        interpretation_path = f'data/publication/v{version}/interpretations.md'
         lines = (ROOT / interpretation_path).read_text().splitlines()
         for key, record in data['theory']['interpretations'].items():
             record['source_path'] = interpretation_path

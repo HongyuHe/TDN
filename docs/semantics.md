@@ -2,7 +2,7 @@
 
 `TDN/Models` provides network models and general proofs that can be applied to different configurations and snapshots. The modules describe packet processing, topology, filtering, encryption layers, authentication, fragmentation, generated replies, authenticated operations and cover traffic. A caller supplies the relevant configuration and proves the theorem's premises for that configuration.
 
-The catalog covers all 111 active Lean files in `TDN/Models`. It indexes 1066 explicitly named declarations and 79 explicit instances. Each index links to its source line. Constructors, structure-field projections, and automatically derived declarations are represented by their parent types.
+The catalog covers all 112 active Lean files in `TDN/Models`. It indexes 1078 explicitly named declarations and 81 explicit instances. Each index links to its source line. Constructors, structure-field projections, and automatically derived declarations are represented by their parent types.
 
 Each module section explains its purpose, principal results, and conditions for reuse. The expandable declaration index in each section links every named declaration to its source line. The source links are relative to the repository so they remain usable in another checkout and on GitHub.
 
@@ -46,7 +46,7 @@ A **projection** maps a detailed state to the information retained by a simpler 
 
 ## Organization and dependencies
 
-The modules separate general arguments from the finite data used to apply them. None of the 111 modules imports a snapshot, an instance module, or a document-specific target. Every direct project import stays within `TDN.Models`. Some modules describe broadly reusable mathematics; others describe a specific supported network mechanism or configuration pattern, such as authenticated fragment assembly.
+The modules separate general arguments from the finite data used to apply them. None of the 112 modules imports a snapshot, an instance module, or a document-specific target. Every direct project import stays within `TDN.Models`. Some modules describe broadly reusable mathematics; others describe a specific supported network mechanism or configuration pattern, such as authenticated fragment assembly.
 
 | Topic | Starting modules | What a caller supplies |
 | --- | --- | --- |
@@ -809,9 +809,9 @@ Source: [NestedTunnelFrame.lean](../TDN/Models/NestedTunnelFrame.lean). Namespac
 
 `NestedTunnelFrame` represents nested IPsec, MACsec, and carrier encapsulation. [`Body`](../TDN/Models/NestedTunnelFrame.lean#L38) can contain an IP datagram, an Ethernet frame, or another body wrapped in one of those three mechanisms. `visibleHeader` returns the currently routable IP header. `protectionLayers` collects only the IPsec and MACsec tags; a carrier wrapper preserves that list.
 
-[`MACsecAssociation`](../TDN/Models/NestedTunnelFrame.lean#L6) records a tag, SCI, association number, and a local key-generation identifier. [`SameMACWireIdentity`](../TDN/Models/NestedTunnelFrame.lean#L14) compares SCI and association number. [`Carrier`](../TDN/Models/NestedTunnelFrame.lean#L21) records addresses, ports, and the peer session. [`unwrapCarrier`](../TDN/Models/NestedTunnelFrame.lean#L97) checks the receiving address, remote address, ports, and local session before removing the wrapper.
+[`MACsecAssociation`](../TDN/Models/NestedTunnelFrame.lean#L6) records a tag, SCI, association number, and a local key-generation identifier. [`SameMACWireIdentity`](../TDN/Models/NestedTunnelFrame.lean#L14) compares SCI and association number. [`Carrier`](../TDN/Models/NestedTunnelFrame.lean#L21) records addresses, ports, and the peer session. [`unwrapCarrier`](../TDN/Models/NestedTunnelFrame.lean#L99) checks the receiving address, remote address, ports, and local session before removing the wrapper.
 
-The lemmas establish the expected header visibility and layer order. [`successful_carrier_unwrap_preserves_layers`](../TDN/Models/NestedTunnelFrame.lean#L108) proves that successful removal of a carrier changes no encryption layers. Cryptographic operations remain represented by typed wrappers.
+The lemmas establish the expected header visibility and layer order. [`successful_carrier_unwrap_preserves_layers`](../TDN/Models/NestedTunnelFrame.lean#L110) proves that successful removal of a carrier changes no encryption layers. Cryptographic operations remain represented by typed wrappers.
 
 Direct imports: [DataPlaneForwarding](#dataplaneforwarding), [MacsecPortProtection](#macsecportprotection).
 
@@ -825,28 +825,28 @@ Direct imports: [DataPlaneForwarding](#dataplaneforwarding), [MacsecPortProtecti
 | `structure` | [`Carrier`](../TDN/Models/NestedTunnelFrame.lean#L21) |
 | `structure` | [`EthernetHeader`](../TDN/Models/NestedTunnelFrame.lean#L31) |
 | `inductive` | [`Body`](../TDN/Models/NestedTunnelFrame.lean#L38) |
-| `structure` | [`Frame`](../TDN/Models/NestedTunnelFrame.lean#L45) |
-| `def` | [`outerHeader`](../TDN/Models/NestedTunnelFrame.lean#L52) |
-| `def` | [`Body.visibleHeader`](../TDN/Models/NestedTunnelFrame.lean#L59) |
-| `def` | [`Body.protectionLayers`](../TDN/Models/NestedTunnelFrame.lean#L67) |
-| `def` | [`Body.originalHeader`](../TDN/Models/NestedTunnelFrame.lean#L73) |
-| `def` | [`Body.originalEthernet`](../TDN/Models/NestedTunnelFrame.lean#L78) |
-| `def` | [`Body.isEthernetCiphertext`](../TDN/Models/NestedTunnelFrame.lean#L83) |
-| `lemma` | [`macsec_has_no_routable_inner_header`](../TDN/Models/NestedTunnelFrame.lean#L87) |
-| `lemma` | [`carrier_preserves_protection_layers`](../TDN/Models/NestedTunnelFrame.lean#L90) |
-| `lemma` | [`nested_outer_inner_order`](../TDN/Models/NestedTunnelFrame.lean#L93) |
-| `def` | [`unwrapCarrier`](../TDN/Models/NestedTunnelFrame.lean#L97) |
-| `theorem` | [`successful_carrier_unwrap_preserves_layers`](../TDN/Models/NestedTunnelFrame.lean#L108) |
-| `def` | [`Frame.visibleHeader`](../TDN/Models/NestedTunnelFrame.lean#L123) |
-| `def` | [`Frame.pushHeader`](../TDN/Models/NestedTunnelFrame.lean#L128) |
-| `def` | [`Frame.popHeader`](../TDN/Models/NestedTunnelFrame.lean#L133) |
-| `def` | [`Frame.forwarded`](../TDN/Models/NestedTunnelFrame.lean#L138) |
-| `lemma` | [`Frame.forwarded_payload`](../TDN/Models/NestedTunnelFrame.lean#L147) |
-| `lemma` | [`Frame.forwarded_origin`](../TDN/Models/NestedTunnelFrame.lean#L151) |
-| `def` | [`HeaderIdentity`](../TDN/Models/NestedTunnelFrame.lean#L160) |
-| `def` | [`Body.HeadersCoherent`](../TDN/Models/NestedTunnelFrame.lean#L163) |
-| `def` | [`Frame.HeadersCoherent`](../TDN/Models/NestedTunnelFrame.lean#L182) |
-| `lemma` | [`Frame.forwarded_body`](../TDN/Models/NestedTunnelFrame.lean#L189) |
+| `structure` | [`Frame`](../TDN/Models/NestedTunnelFrame.lean#L47) |
+| `def` | [`outerHeader`](../TDN/Models/NestedTunnelFrame.lean#L54) |
+| `def` | [`Body.visibleHeader`](../TDN/Models/NestedTunnelFrame.lean#L61) |
+| `def` | [`Body.protectionLayers`](../TDN/Models/NestedTunnelFrame.lean#L69) |
+| `def` | [`Body.originalHeader`](../TDN/Models/NestedTunnelFrame.lean#L75) |
+| `def` | [`Body.originalEthernet`](../TDN/Models/NestedTunnelFrame.lean#L80) |
+| `def` | [`Body.isMACsecPdu`](../TDN/Models/NestedTunnelFrame.lean#L85) |
+| `lemma` | [`macsec_has_no_routable_inner_header`](../TDN/Models/NestedTunnelFrame.lean#L89) |
+| `lemma` | [`carrier_preserves_protection_layers`](../TDN/Models/NestedTunnelFrame.lean#L92) |
+| `lemma` | [`nested_outer_inner_order`](../TDN/Models/NestedTunnelFrame.lean#L95) |
+| `def` | [`unwrapCarrier`](../TDN/Models/NestedTunnelFrame.lean#L99) |
+| `theorem` | [`successful_carrier_unwrap_preserves_layers`](../TDN/Models/NestedTunnelFrame.lean#L110) |
+| `def` | [`Frame.visibleHeader`](../TDN/Models/NestedTunnelFrame.lean#L125) |
+| `def` | [`Frame.pushHeader`](../TDN/Models/NestedTunnelFrame.lean#L130) |
+| `def` | [`Frame.popHeader`](../TDN/Models/NestedTunnelFrame.lean#L135) |
+| `def` | [`Frame.forwarded`](../TDN/Models/NestedTunnelFrame.lean#L140) |
+| `lemma` | [`Frame.forwarded_payload`](../TDN/Models/NestedTunnelFrame.lean#L149) |
+| `lemma` | [`Frame.forwarded_origin`](../TDN/Models/NestedTunnelFrame.lean#L153) |
+| `def` | [`HeaderIdentity`](../TDN/Models/NestedTunnelFrame.lean#L162) |
+| `def` | [`Body.HeadersCoherent`](../TDN/Models/NestedTunnelFrame.lean#L165) |
+| `def` | [`Frame.HeadersCoherent`](../TDN/Models/NestedTunnelFrame.lean#L184) |
+| `lemma` | [`Frame.forwarded_body`](../TDN/Models/NestedTunnelFrame.lean#L191) |
 
 Explicit instances:
 
@@ -860,14 +860,16 @@ Source: [MultiProtocolForwarding.lean](../TDN/Models/MultiProtocolForwarding.lea
 
 `MultiProtocolForwarding` combines IP processing with MACsec interfaces, carrier endpoints, bridges, and physical links. `Config.ip` reuses `DataPlaneForwarding.DataPlaneModel`. [`MACIface`](../TDN/Models/MultiProtocolForwarding.lean#L7) links logical and physical interfaces to transmit/receive associations and protection settings. [`CarrierIface`](../TDN/Models/MultiProtocolForwarding.lean#L16) links a virtual interface to a routing interface and session information.
 
-[`Step`](../TDN/Models/MultiProtocolForwarding.lean#L101) models IPsec encryption/decryption, MACsec encryption/decryption, carrier encapsulation/decapsulation, IP filtering and routing, bridging, delivery, and dropping. It also includes unprotected MACsec transmission and unchecked reception when their settings permit those behaviors. [`fullMACsecTransmit`](../TDN/Models/MultiProtocolForwarding.lean#L96) identifies successful full-frame encryption. [`all_traces_preserve_payload`](../TDN/Models/MultiProtocolForwarding.lean#L221) preserves payload identity and origin domain across all modeled steps.
+[`Step`](../TDN/Models/MultiProtocolForwarding.lean#L107) models IPsec encryption/decryption, MACsec encryption/decryption, carrier encapsulation/decapsulation, IP filtering and routing, bridging, delivery, and dropping. It also includes unprotected MACsec transmission and unchecked reception when their settings permit those behaviors. [`fullMACsecTransmit`](../TDN/Models/MultiProtocolForwarding.lean#L102) identifies successful full-frame encryption. [`all_traces_preserve_payload`](../TDN/Models/MultiProtocolForwarding.lean#L243) preserves payload identity and origin domain across all modeled steps.
+
+`protectMACsec` covers integrity-only protection and encryption with a nonzero confidentiality offset. Its resulting `macsecPdu` records those settings and the association. `validateMACsec` admits that frame through a matching receive association. Full encryption uses `encryptMACsec` and the separate `macsec` frame constructor. The distinction lets a requirement proof require the full encryption operation while still accounting for configurations that provide reduced protection.
 
 Applications supply the device records and topology. The stronger security results require the settings and local conditions checked in the next modules.
 
 Direct imports: [NestedTunnelFrame](#nestedtunnelframe).
 
 <details>
-<summary>All 31 named declarations in MultiProtocolForwarding</summary>
+<summary>All 33 named declarations in MultiProtocolForwarding</summary>
 
 | Kind | Declaration |
 | --- | --- |
@@ -878,30 +880,60 @@ Direct imports: [NestedTunnelFrame](#nestedtunnelframe).
 | `def` | [`Config.forwardedFrame`](../TDN/Models/MultiProtocolForwarding.lean#L39) |
 | `def` | [`Config.ipsecFrame`](../TDN/Models/MultiProtocolForwarding.lean#L44) |
 | `def` | [`Config.macsecFrame`](../TDN/Models/MultiProtocolForwarding.lean#L53) |
-| `def` | [`Config.carrierFrame`](../TDN/Models/MultiProtocolForwarding.lean#L59) |
-| `def` | [`Config.restoredFrame`](../TDN/Models/MultiProtocolForwarding.lean#L68) |
-| `def` | [`Config.visibleHeader`](../TDN/Models/MultiProtocolForwarding.lean#L73) |
-| `structure` | [`State`](../TDN/Models/MultiProtocolForwarding.lean#L78) |
-| `inductive` | [`Action`](../TDN/Models/MultiProtocolForwarding.lean#L87) |
-| `def` | [`policyHeader`](../TDN/Models/MultiProtocolForwarding.lean#L93) |
-| `def` | [`fullMACsecTransmit`](../TDN/Models/MultiProtocolForwarding.lean#L96) |
-| `inductive` | [`Step`](../TDN/Models/MultiProtocolForwarding.lean#L101) |
-| `def` | [`lts`](../TDN/Models/MultiProtocolForwarding.lean#L207) |
-| `def` | [`ForwardsAlongTrace`](../TDN/Models/MultiProtocolForwarding.lean#L209) |
-| `lemma` | [`step_preserves_payload`](../TDN/Models/MultiProtocolForwarding.lean#L213) |
-| `theorem` | [`all_traces_preserve_payload`](../TDN/Models/MultiProtocolForwarding.lean#L221) |
-| `def` | [`Config.LinkPath`](../TDN/Models/MultiProtocolForwarding.lean#L239) |
-| `def` | [`Config.LinkAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L244) |
-| `def` | [`Config.LinkStepAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L251) |
-| `def` | [`Config.ForwardableHeader`](../TDN/Models/MultiProtocolForwarding.lean#L269) |
-| `def` | [`Config.HeaderStepAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L272) |
-| `def` | [`Config.HeaderGenerationKnown`](../TDN/Models/MultiProtocolForwarding.lean#L276) |
-| `def` | [`Config.LinkEncodingComplete`](../TDN/Models/MultiProtocolForwarding.lean#L282) |
-| `lemma` | [`Config.forwardedFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L292) |
-| `lemma` | [`Config.ipsecFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L296) |
-| `lemma` | [`Config.macsecFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L302) |
-| `lemma` | [`Config.carrierFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L308) |
-| `lemma` | [`Config.restoredFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L314) |
+| `def` | [`Config.macsecPduFrame`](../TDN/Models/MultiProtocolForwarding.lean#L59) |
+| `def` | [`Config.carrierFrame`](../TDN/Models/MultiProtocolForwarding.lean#L65) |
+| `def` | [`Config.restoredFrame`](../TDN/Models/MultiProtocolForwarding.lean#L74) |
+| `def` | [`Config.visibleHeader`](../TDN/Models/MultiProtocolForwarding.lean#L79) |
+| `structure` | [`State`](../TDN/Models/MultiProtocolForwarding.lean#L84) |
+| `inductive` | [`Action`](../TDN/Models/MultiProtocolForwarding.lean#L93) |
+| `def` | [`policyHeader`](../TDN/Models/MultiProtocolForwarding.lean#L99) |
+| `def` | [`fullMACsecTransmit`](../TDN/Models/MultiProtocolForwarding.lean#L102) |
+| `inductive` | [`Step`](../TDN/Models/MultiProtocolForwarding.lean#L107) |
+| `def` | [`lts`](../TDN/Models/MultiProtocolForwarding.lean#L229) |
+| `def` | [`ForwardsAlongTrace`](../TDN/Models/MultiProtocolForwarding.lean#L231) |
+| `lemma` | [`step_preserves_payload`](../TDN/Models/MultiProtocolForwarding.lean#L235) |
+| `theorem` | [`all_traces_preserve_payload`](../TDN/Models/MultiProtocolForwarding.lean#L243) |
+| `def` | [`Config.LinkPath`](../TDN/Models/MultiProtocolForwarding.lean#L261) |
+| `def` | [`Config.LinkAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L266) |
+| `def` | [`Config.LinkStepAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L273) |
+| `def` | [`Config.ForwardableHeader`](../TDN/Models/MultiProtocolForwarding.lean#L292) |
+| `def` | [`Config.HeaderStepAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L295) |
+| `def` | [`Config.HeaderGenerationKnown`](../TDN/Models/MultiProtocolForwarding.lean#L299) |
+| `def` | [`Config.LinkEncodingComplete`](../TDN/Models/MultiProtocolForwarding.lean#L305) |
+| `lemma` | [`Config.forwardedFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L315) |
+| `lemma` | [`Config.ipsecFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L319) |
+| `lemma` | [`Config.macsecFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L325) |
+| `lemma` | [`Config.macsec_pdu_frame_body`](../TDN/Models/MultiProtocolForwarding.lean#L331) |
+| `lemma` | [`Config.carrierFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L338) |
+| `lemma` | [`Config.restoredFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L344) |
+
+</details>
+
+### MacsecExternalOutputProtection
+
+Source: [MacsecExternalOutputProtection.lean](../TDN/Models/MacsecExternalOutputProtection.lean). Namespace: `TDN.MultiProtocolForwarding`.
+
+`MacsecExternalOutputProtection` proves that packets ready to leave a protected physical interface carry the configured MACsec encryption layer. `MACsecOutputChecks` requires full-frame encryption, a zero confidentiality offset, and a unique logical-to-physical interface assignment. It also checks that routes and bridge forwarding cannot send packets directly to a MACsec physical interface. Packets must reach that interface through the modeled MACsec operation.
+
+`step_preserves_macsec_output_protection` checks every packet-processing operation against those conditions. `forwarding_preserves_macsec_output_protection` applies CSLib's invariant theorem to extend the result to every finite trace from a valid initial state. Each deployment supplies its interface settings, routes, bridge relation and initial-state proof. The general argument is independent of device names and counts.
+
+`MACsecWireChecks` adds conditions for received physical frames. Logical and physical interfaces must remain separate, links into MACsec physical interfaces must come from MACsec senders, and the configuration must have no carrier encapsulators. Under those conditions, `step_preserves_physical_macsec_frames` preserves a full-MACsec frame on each protected physical interface. The no-carrier condition limits the configurations to which that additional result applies.
+
+Direct imports: [MultiProtocolForwarding](#multiprotocolforwarding).
+
+<details>
+<summary>All 8 named declarations in MacsecExternalOutputProtection</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`MACsecOutputChecks`](../TDN/Models/MacsecExternalOutputProtection.lean#L6) |
+| `def` | [`MACsecOutputProtected`](../TDN/Models/MacsecExternalOutputProtection.lean#L17) |
+| `lemma` | [`step_preserves_macsec_output_protection`](../TDN/Models/MacsecExternalOutputProtection.lean#L26) |
+| `lemma` | [`link_transmit_uses_ready_output`](../TDN/Models/MacsecExternalOutputProtection.lean#L75) |
+| `theorem` | [`forwarding_preserves_macsec_output_protection`](../TDN/Models/MacsecExternalOutputProtection.lean#L81) |
+| `structure` | [`MACsecWireChecks`](../TDN/Models/MacsecExternalOutputProtection.lean#L89) |
+| `def` | [`PhysicalMACsecFrames`](../TDN/Models/MacsecExternalOutputProtection.lean#L98) |
+| `lemma` | [`step_preserves_physical_macsec_frames`](../TDN/Models/MacsecExternalOutputProtection.lean#L103) |
 
 </details>
 
@@ -909,9 +941,9 @@ Direct imports: [NestedTunnelFrame](#nestedtunnelframe).
 
 Source: [MultiProtocolEncapPreservation.lean](../TDN/Models/MultiProtocolEncapPreservation.lean). Namespace: `TDN.MultiProtocolForwarding`.
 
-`MultiProtocolEncapPreservation` extends expected-stack reasoning to nested IPsec, MACsec, and carrier bodies. [`CarrierBodies`](../TDN/Models/MultiProtocolEncapPreservation.lean#L31) records how a body relates to configured transmitters and carrier endpoints. [`CarrierPeers`](../TDN/Models/MultiProtocolEncapPreservation.lean#L40) checks reciprocal addresses, ports, and directional session matching. [`EncapStackConsistent`](../TDN/Models/MultiProtocolEncapPreservation.lean#L78) combines those relationships with the conditions for each processing phase.
+`MultiProtocolEncapPreservation` extends expected-stack reasoning to nested IPsec, MACsec, and carrier bodies. [`CarrierBodies`](../TDN/Models/MultiProtocolEncapPreservation.lean#L31) records how a body relates to configured transmitters and carrier endpoints. [`CarrierPeers`](../TDN/Models/MultiProtocolEncapPreservation.lean#L41) checks reciprocal addresses, ports, and directional session matching. [`EncapStackConsistent`](../TDN/Models/MultiProtocolEncapPreservation.lean#L79) combines those relationships with the conditions for each processing phase.
 
-[`LocalConditions`](../TDN/Models/MultiProtocolEncapPreservation.lean#L49) includes the IP stack conditions, stack-preserving links and bridges, MACsec transmit/receive tag placement, peer-tag agreement, protection/encryption enabled with zero confidentiality offset, strict receive validation, and carrier route/peer conditions. [`all_traces_preserve_stack`](../TDN/Models/MultiProtocolEncapPreservation.lean#L343) proves preservation across any finite mixed-protocol execution once those premises and the initial invariant hold.
+[`LocalConditions`](../TDN/Models/MultiProtocolEncapPreservation.lean#L50) includes the IP stack conditions, stack-preserving links and bridges, MACsec transmit/receive tag placement, peer-tag agreement, protection/encryption enabled with zero confidentiality offset, strict receive validation, and carrier route/peer conditions. [`all_traces_preserve_stack`](../TDN/Models/MultiProtocolEncapPreservation.lean#L348) proves preservation across any finite mixed-protocol execution once those premises and the initial invariant hold.
 
 The constructor-by-constructor proof excludes insecure MACsec steps through the required settings. A new protocol wrapper needs its own behavior and preservation argument.
 
@@ -928,16 +960,16 @@ Direct imports: [MultiProtocolForwarding](#multiprotocolforwarding), [EncapStack
 | `def` | [`LocalHeader`](../TDN/Models/MultiProtocolEncapPreservation.lean#L20) |
 | `def` | [`AcceptedHook`](../TDN/Models/MultiProtocolEncapPreservation.lean#L24) |
 | `def` | [`CarrierBodies`](../TDN/Models/MultiProtocolEncapPreservation.lean#L31) |
-| `def` | [`CarrierPeers`](../TDN/Models/MultiProtocolEncapPreservation.lean#L40) |
-| `structure` | [`LocalConditions`](../TDN/Models/MultiProtocolEncapPreservation.lean#L49) |
-| `def` | [`EncapStackConsistent`](../TDN/Models/MultiProtocolEncapPreservation.lean#L78) |
-| `def` | [`ipFrame`](../TDN/Models/MultiProtocolEncapPreservation.lean#L98) |
-| `lemma` | [`selected_route_metadata`](../TDN/Models/MultiProtocolEncapPreservation.lean#L103) |
-| `lemma` | [`hook_stack_effect_from_metadata`](../TDN/Models/MultiProtocolEncapPreservation.lean#L108) |
-| `lemma` | [`hook_stack_effect`](../TDN/Models/MultiProtocolEncapPreservation.lean#L140) |
-| `lemma` | [`unwrap_carrier_preserves_record`](../TDN/Models/MultiProtocolEncapPreservation.lean#L150) |
-| `lemma` | [`step_preserves_stack`](../TDN/Models/MultiProtocolEncapPreservation.lean#L168) |
-| `theorem` | [`all_traces_preserve_stack`](../TDN/Models/MultiProtocolEncapPreservation.lean#L343) |
+| `def` | [`CarrierPeers`](../TDN/Models/MultiProtocolEncapPreservation.lean#L41) |
+| `structure` | [`LocalConditions`](../TDN/Models/MultiProtocolEncapPreservation.lean#L50) |
+| `def` | [`EncapStackConsistent`](../TDN/Models/MultiProtocolEncapPreservation.lean#L79) |
+| `def` | [`ipFrame`](../TDN/Models/MultiProtocolEncapPreservation.lean#L99) |
+| `lemma` | [`selected_route_metadata`](../TDN/Models/MultiProtocolEncapPreservation.lean#L104) |
+| `lemma` | [`hook_stack_effect_from_metadata`](../TDN/Models/MultiProtocolEncapPreservation.lean#L109) |
+| `lemma` | [`hook_stack_effect`](../TDN/Models/MultiProtocolEncapPreservation.lean#L141) |
+| `lemma` | [`unwrap_carrier_preserves_record`](../TDN/Models/MultiProtocolEncapPreservation.lean#L151) |
+| `lemma` | [`step_preserves_stack`](../TDN/Models/MultiProtocolEncapPreservation.lean#L169) |
+| `theorem` | [`all_traces_preserve_stack`](../TDN/Models/MultiProtocolEncapPreservation.lean#L348) |
 
 </details>
 
@@ -975,7 +1007,7 @@ Source: [MultiProtocolSaOriginAttribution.lean](../TDN/Models/MultiProtocolSaOri
 
 `MultiProtocolSaOriginAttribution` tracks configured IPsec origins inside bodies that may also contain MACsec or carrier wrappers. [`ProducedIPBodies`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L7) recursively requires every IPsec seal to come from a configured policy and installed state.
 
-[`all_traces_preserve_ip_provenance`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L41) preserves that property. [`wire_matching_ipsec_decryption_is_admitted`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L48) proves that a receiving IPsec decryption step is available when the wire identity matches, sender/receiver tag agreement holds, the inbound policy and state are installed and bound, and the recovered header satisfies the selectors. The theorem concerns the IPsec portion of the mixed model; MACsec settings and tag relationships have their own premises.
+[`all_traces_preserve_ip_provenance`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L43) preserves that property. [`wire_matching_ipsec_decryption_is_admitted`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L50) proves that a receiving IPsec decryption step is available when the wire identity matches, sender/receiver tag agreement holds, the inbound policy and state are installed and bound, and the recovered header satisfies the selectors. The theorem concerns the IPsec portion of the mixed model; MACsec settings and tag relationships have their own premises.
 
 Direct imports: [MultiProtocolForwarding](#multiprotocolforwarding), [TunnelSaOriginAttribution](#tunnelsaoriginattribution).
 
@@ -987,8 +1019,8 @@ Direct imports: [MultiProtocolForwarding](#multiprotocolforwarding), [TunnelSaOr
 | `def` | [`ProducedIPBodies`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L7) |
 | `lemma` | [`unwrap_preserves_ip_provenance`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L12) |
 | `lemma` | [`step_preserves_ip_provenance`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L24) |
-| `theorem` | [`all_traces_preserve_ip_provenance`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L41) |
-| `theorem` | [`wire_matching_ipsec_decryption_is_admitted`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L48) |
+| `theorem` | [`all_traces_preserve_ip_provenance`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L43) |
+| `theorem` | [`wire_matching_ipsec_decryption_is_admitted`](../TDN/Models/MultiProtocolSaOriginAttribution.lean#L50) |
 
 </details>
 
@@ -1029,7 +1061,7 @@ Source: [MultiProtocolBoundaryDecryption.lean](../TDN/Models/MultiProtocolBounda
 
 `MultiProtocolBoundaryDecryption` proves required boundary decryption when a component may use IPsec, MACsec, and carriers. [`CarrierInputCheck`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L20) prevents accepted carrier input from removing a required boundary tag merely by moving to a virtual interface. [`UndecryptedRegion`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L41) tracks the corresponding condition through processing phases.
 
-[`inbound_crossing_has_actual_boundary_decryption`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L230) locates an IPsec or MACsec decryption inside the chosen component. Its premises include the mixed local conditions, the carrier input check, policy/tag restrictions for the component, and an execution confined to that component from a protected-side received state to an unprotected-side ready state. [`BoundaryDecryption`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L220) records the relevant policy or MACsec association and the layer removal.
+[`inbound_crossing_has_actual_boundary_decryption`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L235) locates an IPsec or MACsec decryption inside the chosen component. Its premises include the mixed local conditions, the carrier input check, policy/tag restrictions for the component, and an execution confined to that component from a protected-side received state to an unprotected-side ready state. [`BoundaryDecryption`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L225) records the relevant policy or MACsec association and the layer removal.
 
 Direct imports: [MultiProtocolEncryptionEvents](#multiprotocolencryptionevents), [SubgraphScopedTraces](#subgraphscopedtraces).
 
@@ -1044,8 +1076,8 @@ Direct imports: [MultiProtocolEncryptionEvents](#multiprotocolencryptionevents),
 | `lemma` | [`successful_unwrap_has_receiving_header`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L28) |
 | `def` | [`UndecryptedRegion`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L41) |
 | `lemma` | [`nondecryption_preserves_region`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L69) |
-| `def` | [`BoundaryDecryption`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L220) |
-| `theorem` | [`inbound_crossing_has_actual_boundary_decryption`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L230) |
+| `def` | [`BoundaryDecryption`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L225) |
+| `theorem` | [`inbound_crossing_has_actual_boundary_decryption`](../TDN/Models/MultiProtocolBoundaryDecryption.lean#L235) |
 
 </details>
 
@@ -2174,7 +2206,7 @@ Preserves a plain Ethernet payload size bound across the supported native steps.
 | `structure` | [`EthernetMTUChecks`](../TDN/Models/L2BridgeMtuPreservation.lean#L12) |
 | `lemma` | [`Ethernet_no_visible`](../TDN/Models/L2BridgeMtuPreservation.lean#L16) |
 | `theorem` | [`device_step_preserves_Ethernet_size`](../TDN/Models/L2BridgeMtuPreservation.lean#L22) |
-| `lemma` | [`Ethernet_reassembly_size`](../TDN/Models/L2BridgeMtuPreservation.lean#L67) |
+| `lemma` | [`Ethernet_reassembly_size`](../TDN/Models/L2BridgeMtuPreservation.lean#L69) |
 
 </details>
 
@@ -2259,7 +2291,7 @@ Maintains the expected encryption layers as packets move through routing, filter
 | `lemma` | [`selected_associations_same_header`](../TDN/Models/HeaderAwareEncapPreservation.lean#L78) |
 | `lemma` | [`headered_hook_stack_effect`](../TDN/Models/HeaderAwareEncapPreservation.lean#L85) |
 | `lemma` | [`headered_step_preserves_stack`](../TDN/Models/HeaderAwareEncapPreservation.lean#L106) |
-| `theorem` | [`headered_traces_preserve_stack`](../TDN/Models/HeaderAwareEncapPreservation.lean#L290) |
+| `theorem` | [`headered_traces_preserve_stack`](../TDN/Models/HeaderAwareEncapPreservation.lean#L294) |
 
 </details>
 
@@ -2355,10 +2387,10 @@ Serializes and decodes nested IPsec bodies while preserving their original paylo
 | `def` | [`decodeFrame`](../TDN/Models/RecursiveEspWireCodec.lean#L82) |
 | `lemma` | [`known_outer_header_size`](../TDN/Models/RecursiveEspWireCodec.lean#L87) |
 | `theorem` | [`initial_body_serialization`](../TDN/Models/RecursiveEspWireCodec.lean#L100) |
-| `lemma` | [`source_IP_body_from_original`](../TDN/Models/RecursiveEspWireCodec.lean#L114) |
-| `lemma` | [`ESP_network_length_at_least_inner`](../TDN/Models/RecursiveEspWireCodec.lean#L126) |
-| `theorem` | [`decode_encoded_body`](../TDN/Models/RecursiveEspWireCodec.lean#L133) |
-| `theorem` | [`encoded_body_network_length`](../TDN/Models/RecursiveEspWireCodec.lean#L190) |
+| `lemma` | [`source_IP_body_from_original`](../TDN/Models/RecursiveEspWireCodec.lean#L115) |
+| `lemma` | [`ESP_network_length_at_least_inner`](../TDN/Models/RecursiveEspWireCodec.lean#L128) |
+| `theorem` | [`decode_encoded_body`](../TDN/Models/RecursiveEspWireCodec.lean#L135) |
+| `theorem` | [`encoded_body_network_length`](../TDN/Models/RecursiveEspWireCodec.lean#L194) |
 
 </details>
 
@@ -2470,8 +2502,8 @@ Constructs the emitted datagram from the current plain or nested IPsec packet bo
 | `lemma` | [`wire_fitting_fragment_count`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L83) |
 | `lemma` | [`forwarded_header_unfragmented`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L103) |
 | `lemma` | [`bare_emission_IP_properties`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L119) |
-| `lemma` | [`reachable_visible_representable`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L209) |
-| `theorem` | [`wire_IP_reassembles`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L242) |
+| `lemma` | [`reachable_visible_representable`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L210) |
+| `theorem` | [`wire_IP_reassembles`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L244) |
 
 </details>
 
@@ -2558,16 +2590,18 @@ Represents ordered link-layer filtering at a named input or output interface. A 
 | `def` | [`Frame.Decoded`](../TDN/Models/L2FrameFilter.lean#L32) |
 | `def` | [`MACsecFraming`](../TDN/Models/L2FrameFilter.lean#L35) |
 | `def` | [`Frame.DescribesBody`](../TDN/Models/L2FrameFilter.lean#L45) |
-| `def` | [`lookup`](../TDN/Models/L2FrameFilter.lean#L55) |
-| `def` | [`Admitted`](../TDN/Models/L2FrameFilter.lean#L58) |
-| `def` | [`payloadCode`](../TDN/Models/L2FrameFilter.lean#L73) |
-| `def` | [`Frame.Describes`](../TDN/Models/L2FrameFilter.lean#L76) |
+| `def` | [`lookup`](../TDN/Models/L2FrameFilter.lean#L70) |
+| `def` | [`Admitted`](../TDN/Models/L2FrameFilter.lean#L73) |
+| `def` | [`payloadCode`](../TDN/Models/L2FrameFilter.lean#L88) |
+| `def` | [`Frame.Describes`](../TDN/Models/L2FrameFilter.lean#L91) |
 
 Explicit instances:
 
 - [Instance at line 41](../TDN/Models/L2FrameFilter.lean#L41)
-- [Instance at line 63](../TDN/Models/L2FrameFilter.lean#L63)
-- [Instance at line 68](../TDN/Models/L2FrameFilter.lean#L68)
+- [Instance at line 61](../TDN/Models/L2FrameFilter.lean#L61)
+- [Instance at line 66](../TDN/Models/L2FrameFilter.lean#L66)
+- [Instance at line 78](../TDN/Models/L2FrameFilter.lean#L78)
+- [Instance at line 83](../TDN/Models/L2FrameFilter.lean#L83)
 
 </details>
 
@@ -2598,7 +2632,7 @@ Source: [MultiProtocolHeaderCoherence.lean](../TDN/Models/MultiProtocolHeaderCoh
 Tracks the visible and hidden headers through forwarding, IPsec, MACsec and carrier operations. The step lemma proves header consistency for one operation, and the execution theorem extends that result to any finite run. Generated header bounds and initial header consistency remain required inputs.
 
 <details>
-<summary>All 18 named declarations in MultiProtocolHeaderCoherence</summary>
+<summary>All 20 named declarations in MultiProtocolHeaderCoherence</summary>
 
 | Kind | Declaration |
 | --- | --- |
@@ -2610,16 +2644,18 @@ Tracks the visible and hidden headers through forwarding, IPsec, MACsec and carr
 | `lemma` | [`Frame.push_ipsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L49) |
 | `lemma` | [`Frame.push_carrier_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L56) |
 | `lemma` | [`Frame.push_macsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L63) |
-| `lemma` | [`Frame.pop_ipsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L68) |
-| `lemma` | [`Frame.pop_macsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L76) |
-| `lemma` | [`Frame.pop_carrier_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L84) |
-| `lemma` | [`unwrap_carrier_has_body`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L92) |
-| `def` | [`HeaderBounds`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L110) |
-| `lemma` | [`step_preserves_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L113) |
-| `theorem` | [`all_traces_preserve_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L156) |
-| `lemma` | [`field_byte_bound`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L170) |
-| `lemma` | [`matched_network_hop_bound`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L181) |
-| `lemma` | [`decoded_source_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L192) |
+| `lemma` | [`Frame.push_macsec_pdu_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L68) |
+| `lemma` | [`Frame.pop_macsec_pdu_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L73) |
+| `lemma` | [`Frame.pop_ipsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L82) |
+| `lemma` | [`Frame.pop_macsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L90) |
+| `lemma` | [`Frame.pop_carrier_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L98) |
+| `lemma` | [`unwrap_carrier_has_body`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L106) |
+| `def` | [`HeaderBounds`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L124) |
+| `lemma` | [`step_preserves_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L127) |
+| `theorem` | [`all_traces_preserve_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L176) |
+| `lemma` | [`field_byte_bound`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L190) |
+| `lemma` | [`matched_network_hop_bound`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L201) |
+| `lemma` | [`decoded_source_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L212) |
 
 </details>
 
@@ -2653,7 +2689,7 @@ Keeps every reachable packet state within an explicit interface inventory. Local
 | --- | --- |
 | `structure` | [`IfaceConditions`](../TDN/Models/InterfaceInventoryClosure.lean#L5) |
 | `lemma` | [`step_preserves_iface_inventory`](../TDN/Models/InterfaceInventoryClosure.lean#L16) |
-| `theorem` | [`all_traces_stay_in_iface_inventory`](../TDN/Models/InterfaceInventoryClosure.lean#L46) |
+| `theorem` | [`all_traces_stay_in_iface_inventory`](../TDN/Models/InterfaceInventoryClosure.lean#L48) |
 
 </details>
 
@@ -2711,17 +2747,17 @@ States the size conditions needed at each packet-processing phase. Its main theo
 | --- | --- |
 | `def` | [`BodySizeBudget`](../TDN/Models/PerStageMtuInvariants.lean#L9) |
 | `lemma` | [`body_budget_has_length`](../TDN/Models/PerStageMtuInvariants.lean#L19) |
-| `lemma` | [`decoded_source_body_budget`](../TDN/Models/PerStageMtuInvariants.lean#L48) |
-| `def` | [`AuthenticationSizeBound`](../TDN/Models/PerStageMtuInvariants.lean#L62) |
-| `def` | [`FilteredSizeBound`](../TDN/Models/PerStageMtuInvariants.lean#L67) |
-| `def` | [`SizeRouted`](../TDN/Models/PerStageMtuInvariants.lean#L75) |
-| `def` | [`ReadySizeBound`](../TDN/Models/PerStageMtuInvariants.lean#L80) |
-| `def` | [`SizeInvariant`](../TDN/Models/PerStageMtuInvariants.lean#L86) |
-| `structure` | [`SizeChecks`](../TDN/Models/PerStageMtuInvariants.lean#L105) |
-| `lemma` | [`filtered_size_from_checks`](../TDN/Models/PerStageMtuInvariants.lean#L138) |
-| `lemma` | [`authentication_bound_empty`](../TDN/Models/PerStageMtuInvariants.lean#L191) |
-| `lemma` | [`size_ready_if_not_required`](../TDN/Models/PerStageMtuInvariants.lean#L196) |
-| `theorem` | [`device_step_preserves_size_budget`](../TDN/Models/PerStageMtuInvariants.lean#L204) |
+| `lemma` | [`decoded_source_body_budget`](../TDN/Models/PerStageMtuInvariants.lean#L49) |
+| `def` | [`AuthenticationSizeBound`](../TDN/Models/PerStageMtuInvariants.lean#L64) |
+| `def` | [`FilteredSizeBound`](../TDN/Models/PerStageMtuInvariants.lean#L69) |
+| `def` | [`SizeRouted`](../TDN/Models/PerStageMtuInvariants.lean#L77) |
+| `def` | [`ReadySizeBound`](../TDN/Models/PerStageMtuInvariants.lean#L82) |
+| `def` | [`SizeInvariant`](../TDN/Models/PerStageMtuInvariants.lean#L88) |
+| `structure` | [`SizeChecks`](../TDN/Models/PerStageMtuInvariants.lean#L107) |
+| `lemma` | [`filtered_size_from_checks`](../TDN/Models/PerStageMtuInvariants.lean#L140) |
+| `lemma` | [`authentication_bound_empty`](../TDN/Models/PerStageMtuInvariants.lean#L193) |
+| `lemma` | [`size_ready_if_not_required`](../TDN/Models/PerStageMtuInvariants.lean#L198) |
+| `theorem` | [`device_step_preserves_size_budget`](../TDN/Models/PerStageMtuInvariants.lean#L206) |
 
 </details>
 
@@ -3088,7 +3124,7 @@ Proves that a valid emitted datagram requires fields that fit their packet encod
 | Kind | Declaration |
 | --- | --- |
 | `lemma` | [`Datagram.valid_source_hop_bound`](../TDN/Models/ValidHeaderFieldWidths.lean#L5) |
-| `lemma` | [`Datagram.valid_source_header_representable`](../TDN/Models/ValidHeaderFieldWidths.lean#L23) |
+| `lemma` | [`Datagram.valid_source_header_representable`](../TDN/Models/ValidHeaderFieldWidths.lean#L24) |
 
 </details>
 
@@ -3142,12 +3178,12 @@ Implements the modeled source processor for supported IP and Ethernet requests. 
 | --- | --- |
 | `def` | [`processSource`](../TDN/Models/OriginEndpointTransmitter.lean#L10) |
 | `theorem` | [`source_processing_valid_for_representable_headers`](../TDN/Models/OriginEndpointTransmitter.lean#L26) |
-| `def` | [`sourceProcessing`](../TDN/Models/OriginEndpointTransmitter.lean#L95) |
-| `lemma` | [`Request.template_headers_representable`](../TDN/Models/OriginEndpointTransmitter.lean#L98) |
-| `theorem` | [`source_processing_valid`](../TDN/Models/OriginEndpointTransmitter.lean#L106) |
-| `lemma` | [`source_IP_emission_shape`](../TDN/Models/OriginEndpointTransmitter.lean#L113) |
-| `lemma` | [`source_Ethernet_emission_shape`](../TDN/Models/OriginEndpointTransmitter.lean#L132) |
-| `lemma` | [`source_IP_datagrams_have_source_headers`](../TDN/Models/OriginEndpointTransmitter.lean#L148) |
+| `def` | [`sourceProcessing`](../TDN/Models/OriginEndpointTransmitter.lean#L96) |
+| `lemma` | [`Request.template_headers_representable`](../TDN/Models/OriginEndpointTransmitter.lean#L99) |
+| `theorem` | [`source_processing_valid`](../TDN/Models/OriginEndpointTransmitter.lean#L107) |
+| `lemma` | [`source_IP_emission_shape`](../TDN/Models/OriginEndpointTransmitter.lean#L114) |
+| `lemma` | [`source_Ethernet_emission_shape`](../TDN/Models/OriginEndpointTransmitter.lean#L133) |
+| `lemma` | [`source_IP_datagrams_have_source_headers`](../TDN/Models/OriginEndpointTransmitter.lean#L149) |
 
 Explicit instances:
 
@@ -3242,12 +3278,12 @@ Emits a datagram as one fragment when it fits and constructs fragments when nece
 | `lemma` | [`Datagram.whole_fragment_pieces_valid`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L40) |
 | `def` | [`Datagram.UnfragmentedHeader`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L47) |
 | `lemma` | [`Datagram.decoded_header_is_unfragmented`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L55) |
-| `theorem` | [`Datagram.whole_packet_reassembles_from_header`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L67) |
-| `theorem` | [`Datagram.whole_packet_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L90) |
-| `def` | [`Datagram.fragmentOnlyWhenNeeded`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L114) |
-| `lemma` | [`Datagram.needed_fragmentation_preserves_raw`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L117) |
-| `lemma` | [`Datagram.fitting_packet_uses_one_fragment`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L122) |
-| `theorem` | [`Datagram.fragment_only_when_needed_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L127) |
+| `theorem` | [`Datagram.whole_packet_reassembles_from_header`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L68) |
+| `theorem` | [`Datagram.whole_packet_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L92) |
+| `def` | [`Datagram.fragmentOnlyWhenNeeded`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L117) |
+| `lemma` | [`Datagram.needed_fragmentation_preserves_raw`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L120) |
+| `lemma` | [`Datagram.fitting_packet_uses_one_fragment`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L125) |
+| `theorem` | [`Datagram.fragment_only_when_needed_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L130) |
 
 </details>
 

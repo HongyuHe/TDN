@@ -283,7 +283,7 @@ def DeviceExecutionBinding.LayerIds {S A : Type} (binding : DeviceExecutionBindi
   | .datagram _ | .ethernet _ => []
   | .ipsec authentication body => binding.ipsecTunnel authentication :: binding.LayerIds body
   | .macsec association body => binding.macsecTunnel association :: binding.LayerIds body
-  | .carrier _ body => binding.LayerIds body
+  | .carrier _ body | .macsecPdu _ _ _ body => binding.LayerIds body
 
 def DeviceExecutionBinding.SessionTunnel {S A : Type} (binding : DeviceExecutionBinding S A) :
     ProtectionSession → String
@@ -293,7 +293,8 @@ def DeviceExecutionBinding.SessionTunnel {S A : Type} (binding : DeviceExecution
 def BodySessions : LayeredFrame.Body → List ProtectionSession
   | .datagram _ | .ethernet _ => []
   | .ipsec authentication body => .ipsec authentication :: BodySessions body
-  | .macsec association body => .macsec association :: BodySessions body
+  | .macsec association body | .macsecPdu association _ _ body =>
+      .macsec association :: BodySessions body
   | .carrier _ body => BodySessions body
 
 def DeviceExecutionBinding.OperationEvents {S A : Type} (binding : DeviceExecutionBinding S A)
@@ -321,6 +322,12 @@ def DeviceExecutionBinding.OperationEvents {S A : Type} (binding : DeviceExecuti
             .protect payload (binding.macsecTunnel association) (.macsec association),
             .encrypt payload (binding.macsecTunnel association)]
       | _ => []
+  | .protectMACsec =>
+      match last.frame.body with
+      | .macsecPdu association _ _ _ =>
+          [.useSAK payload (binding.macsecTunnel association) (binding.keyName association.keyGeneration),
+            .protect payload (binding.macsecTunnel association) (.macsec association)]
+      | _ => []
   | .decryptIPsec =>
       match first.frame.body with
       | .ipsec authentication _ =>
@@ -332,6 +339,11 @@ def DeviceExecutionBinding.OperationEvents {S A : Type} (binding : DeviceExecuti
       | .macsec association _ =>
           [.unprotect payload (binding.macsecTunnel association) (.macsec association),
             .decrypt payload (binding.macsecTunnel association)]
+      | _ => []
+  | .validateMACsec =>
+      match first.frame.body with
+      | .macsecPdu association _ _ _ =>
+          [.unprotect payload (binding.macsecTunnel association) (.macsec association)]
       | _ => []
   | .linkTransmit =>
       [.sessionTransmit payload (binding.ifaceName first.iface) (BodySessions first.frame.body),
@@ -450,7 +462,15 @@ def DeviceExecutionBinding.AcceptedStep {S A : Type} (binding : DeviceExecutionB
         receiver.InboundSeal binding before.iface wireSeal ∧
         IPsecKeyMaterialMatches binding.ipsecKeyMaterial source receiver) ∧
   binding.configuration.LinkStepAdmitted before action after ∧
-  binding.configuration.HeaderStepAdmitted before action
+  binding.configuration.HeaderStepAdmitted before action ∧
+  (action = .validateMACsec →
+    ∃ iface ∈ binding.configuration.macIfaces, ∃ installed ∈ iface.receiveAssociations,
+      ∃ transmitted encryptFrames confidentialityOffset body,
+        before.iface = iface.physicalIface ∧ after.iface = iface.logicalIface ∧
+        before.frame.body = .macsecPdu transmitted encryptFrames confidentialityOffset body ∧
+        after.frame.body = body ∧
+        LayeredFrame.SameMACWireIdentity transmitted installed ∧
+        MACsecKeyMaterialMatches binding.macsecKeyMaterial transmitted installed)
 
 def ForwardingModel.Faithful {S A : Type} (model : ForwardingModel S A) : Prop :=
   ∀ before action after, model.system.Tr before action after →

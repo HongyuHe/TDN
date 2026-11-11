@@ -6,7 +6,7 @@ def Body.IPsecOnly (known : DataPlaneForwarding.TunnelSAStamp → Prop) : Body �
   | .datagram _ | .ethernet _ => True
   | .ipsec association body => known association ∧ body.IPsecOnly known ∧
       body.visibleHeader.isSome = true
-  | .macsec _ _ | .carrier _ _ => False
+  | .macsec _ _ | .macsecPdu _ _ _ _ | .carrier _ _ => False
 
 end TDN.LayeredFrame
 
@@ -54,6 +54,8 @@ lemma step_preserves_IPsec_body_shape {configuration : Config}
   | bridge => exact shape
   | bridgeOutput => exact shape
   | encryptMACsec iface association configured => simp only [noMAC, List.not_mem_nil] at configured
+  | protectMACsec iface association configured => simp only [noMAC, List.not_mem_nil] at configured
+  | validateMACsec iface association transmitted encryptFrames confidentialityOffset contents configured => simp only [noMAC, List.not_mem_nil] at configured
   | unprotectedMACsec iface configured => simp only [noMAC, List.not_mem_nil] at configured
   | decryptMACsec iface association transmitted contents configured =>
     simp only [noMAC, List.not_mem_nil] at configured

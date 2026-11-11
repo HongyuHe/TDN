@@ -54,6 +54,12 @@ lemma DeviceExecutionBinding.operation_events_are_network {S A : Type}
   case decryptMACsec =>
     dsimp only [DeviceExecutionBinding.OperationEvents]
     split <;> rfl
+  case protectMACsec =>
+    dsimp only [DeviceExecutionBinding.OperationEvents]
+    split <;> rfl
+  case validateMACsec =>
+    dsimp only [DeviceExecutionBinding.OperationEvents]
+    split <;> rfl
   case encapsulate =>
     dsimp only [DeviceExecutionBinding.OperationEvents]
     split <;> rfl

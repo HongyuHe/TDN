@@ -49,8 +49,23 @@ def Frame.DescribesBody (frame : Frame) (body : LayeredFrame.Body) : Prop :=
   | .macsec association _ =>
       frame.header.etherType = 35045 ∧ MACsecFraming association frame.payload ∧
       (PacketSource.field frame.payload 0 1 / 32 % 2 = 0 →
-        frame.header.source = association.sci / 65536)
+        frame.header.source = association.sci / 65536) ∧
+      PacketSource.field frame.payload 0 1 / 8 % 2 = 1
+  | .macsecPdu association encryptFrames _ _ =>
+      frame.header.etherType = 35045 ∧ MACsecFraming association frame.payload ∧
+      (PacketSource.field frame.payload 0 1 / 32 % 2 = 0 →
+        frame.header.source = association.sci / 65536) ∧
+      PacketSource.field frame.payload 0 1 / 8 % 2 = if encryptFrames then 1 else 0
   | _ => False
+
+instance (association : LayeredFrame.MACsecAssociation) (bytes : List UInt8) :
+    Decidable (MACsecFraming association bytes) := by
+  unfold MACsecFraming
+  infer_instance
+
+instance (frame : Frame) (body : LayeredFrame.Body) : Decidable (frame.DescribesBody body) := by
+  unfold Frame.DescribesBody
+  cases body <;> dsimp <;> infer_instance
 
 def lookup (policies : List (Nat × IfacePolicy)) (iface : Nat) : Option IfacePolicy :=
   (policies.find? (fun entry => entry.1 == iface)).map Prod.snd

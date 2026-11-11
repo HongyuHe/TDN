@@ -53,6 +53,8 @@ theorem device_step_preserves_Ethernet_size {configuration : Config}
   | bridge next datapathStage member => exact (invariant header plain).trans (links.bridge _ _ member)
   | bridgeOutput next datapathStage member => exact (invariant header plain).trans (links.bridge _ _ member)
   | encryptMACsec iface association configured => simp only [checks.noMAC, List.not_mem_nil] at configured
+  | protectMACsec iface association configured => simp only [checks.noMAC, List.not_mem_nil] at configured
+  | validateMACsec iface association transmitted encryptFrames confidentialityOffset contents configured => simp only [checks.noMAC, List.not_mem_nil] at configured
   | unprotectedMACsec iface configured => simp only [checks.noMAC, List.not_mem_nil] at configured
   | decryptMACsec iface association transmitted contents configured => simp only [checks.noMAC, List.not_mem_nil] at configured
   | uncheckedMACsec iface configured => simp only [checks.noMAC, List.not_mem_nil] at configured

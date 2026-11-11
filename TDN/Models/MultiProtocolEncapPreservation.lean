@@ -30,6 +30,7 @@ def AcceptedHook (c : Config) (s : State) (header : PacketPolicy.Packet) : Prop 
 
 def CarrierBodies (c : Config) (expectedEncapStack : Nat → List Nat) : Body → Prop
   | .datagram _ | .ethernet _ => True
+  | .macsecPdu _ _ _ _ => False
   | .ipsec _ body => CarrierBodies c expectedEncapStack body
   | .macsec association body => CarrierBodies c expectedEncapStack body ∧
       ∃ iface ∈ c.macIfaces, iface.transmitAssociation = some association
@@ -296,10 +297,14 @@ lemma step_preserves_stack {c : Config} {expectedEncapStack : Nat → List Nat}
       (by simpa [logical] using conditions.macTransmit iface configured association emits.1)
   | @unprotectedMACsec iface configured datapathStage logical enabled unprotected =>
     obtain ⟨protect, encrypt, zero, _⟩ := conditions.macSecure iface configured
-    rcases unprotected with impossible | impossible | impossible
-    · simp [protect] at impossible
+    simp [protect] at unprotected
+  | @protectMACsec iface association configured datapathStage logical enabled protection installed limited =>
+    obtain ⟨_, encrypt, zero, _⟩ := conditions.macSecure iface configured
+    rcases limited with impossible | impossible
     · simp [encrypt] at impossible
     · exact False.elim (impossible zero)
+  | @validateMACsec iface association transmitted encryptFrames confidentialityOffset body configured datapathStage physical framed installed spi =>
+    simp [framed, CarrierBodies] at wellformed
   | @decryptMACsec iface association transmitted body configured datapathStage physical encrypted installed spi =>
     simp only [Config.restoredFrame, mode]
 

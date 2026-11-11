@@ -86,12 +86,14 @@ theorem encoded_link_describes_reachable_IPsec_frame {Key : Type} (codec : Codec
             omega
       | ethernet header => simp [body, Body.visibleHeader] at nominalVisible
       | macsec association contents => simp [body, Body.IPsecOnly] at shape
+      | macsecPdu association encryptFrames confidentialityOffset contents => simp [body, Body.IPsecOnly] at shape
       | carrier endpoint contents => simp [body, Body.IPsecOnly] at shape
   | none =>
     cases body : frame.body with
     | datagram header => simp [Frame.visibleHeader, body, Body.visibleHeader] at visible
     | ipsec association contents => simp [Frame.visibleHeader, body, Body.visibleHeader] at visible
     | macsec association contents => simp [body, Body.IPsecOnly] at shape
+    | macsecPdu association encryptFrames confidentialityOffset contents => simp [body, Body.IPsecOnly] at shape
     | carrier endpoint contents => simp [body, Body.IPsecOnly] at shape
     | ethernet header =>
       have sourceBody : (canonicalRoot frame).body = .ethernet header := by
@@ -103,6 +105,7 @@ theorem encoded_link_describes_reachable_IPsec_frame {Key : Type} (codec : Codec
         | datagram nominal => simp [body, sourceCase, Body.originalEthernet] at originalEthernet
         | ipsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
         | macsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
+        | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, sourceCase] at decoded
         | carrier endpoint contents => simp [Datagram.Decoded, sourceCase] at decoded
       rw [Datagram.Decoded, sourceBody] at decoded
       simp only [LinkAdmission.Frame.Describes, visible, linkEncoding, body, Body.originalEthernet,

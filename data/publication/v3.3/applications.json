@@ -1,0 +1,2657 @@
+[
+  {
+    "rg_id": "RG-007",
+    "reuse_accounting": "The same configuration-independent general theorem is applied to both recorded configurations.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.snapshot_RG007_ipsec_nested_layer_protection",
+        "conclusion_head": "TDN.Requirements.Msc.msc_nested_layer_protection",
+        "conclusion": "TDN.Requirements.Msc.msc_nested_layer_protection\n  (TDN.Deployments.NestedProtection_Baseline.authenticationDeployment primitive)\n  (TDN.Deployments.NestedProtection_Baseline.authenticationForwarding primitive)\n  TDN.Deployments.NestedProtection_Baseline.flows\n  (fun start x x_1 payload => TDN.Deployments.NestedProtection_Baseline.flowAt start payload) independentKeys",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          },
+          {
+            "type": "String → String → Prop",
+            "name": "independentKeys",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.NestedProtection_Baseline.IndependentLayerKeys independentKeys",
+            "name": "independent",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_nested_layer_protection",
+        "conclusion_head": "TDN.Requirements.Msc.msc_nested_layer_protection",
+        "conclusion": "TDN.Requirements.Msc.msc_nested_layer_protection TDN.Deployments.NestedProtection_Mixed.deployment\n  TDN.Deployments.NestedProtection_Mixed.forwarding TDN.Deployments.NestedProtection_Mixed.flows\n  (fun start x x_1 payload => TDN.Deployments.NestedProtection_Mixed.flowAt start payload) independentKeys",
+        "binders": [
+          {
+            "type": "String → String → Prop",
+            "name": "independentKeys",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.NestedProtection_Mixed.IndependentLayerKeys independentKeys",
+            "name": "independent",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.snapshot_RG007_ipsec_nonempty_payload_delivered",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions finish,\n  (TDN.Deployments.NestedProtection_Baseline.authenticationForwarding primitive).initial start ∧\n    (TDN.Deployments.NestedProtection_Baseline.authenticationForwarding primitive).system.MTr start actions finish ∧\n      finish.native.datapathStage = TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        finish.native.iface = 142 ∧\n          finish.native.frame.originDomain = 1 ∧\n            finish.native.frame.payload ≠ 0 ∧ finish.native.frame.body.protectionLayers = []",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_forward_payload_delivered",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions finish,\n  TDN.Deployments.NestedProtection_Mixed.forwarding.initial start ∧\n    TDN.Deployments.NestedProtection_Mixed.forwarding.system.MTr start actions finish ∧\n      finish.native.datapathStage = TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        finish.native.iface = (TDN.Deployments.NestedProtection_Mixed.samplePath 0).destinationIface ∧\n          finish.native.frame.originDomain = (TDN.Deployments.NestedProtection_Mixed.samplePath 0).sourceFlow.domain ∧\n            finish.native.frame.payload ≠ 0 ∧ finish.native.frame.body.protectionLayers = []",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_reverse_payload_delivered",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions finish,\n  TDN.Deployments.NestedProtection_Mixed.forwarding.initial start ∧\n    TDN.Deployments.NestedProtection_Mixed.forwarding.system.MTr start actions finish ∧\n      finish.native.datapathStage = TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        finish.native.iface = (TDN.Deployments.NestedProtection_Mixed.samplePath 1).destinationIface ∧\n          finish.native.frame.originDomain = (TDN.Deployments.NestedProtection_Mixed.samplePath 1).sourceFlow.domain ∧\n            finish.native.frame.payload ≠ 0 ∧ finish.native.frame.body.protectionLayers = []",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.snapshot_RG007_missing_key_independence_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_nested_layer_protection\n    (TDN.Deployments.NestedProtection_Baseline.authenticationDeployment primitive)\n    (TDN.Deployments.NestedProtection_Baseline.authenticationForwarding primitive)\n    TDN.Deployments.NestedProtection_Baseline.flows\n    (fun start x x_1 payload => TDN.Deployments.NestedProtection_Baseline.flowAt start payload) fun x x_1 => False",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.missing_ca_authority_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Deployments.NestedProtection_Baseline.missingAuthority.Check\n    \"75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615\"",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.outer_tunnel_cannot_fill_inner_role",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Deployments.NestedProtection_Baseline.FlowIPsecInventory\n    TDN.Deployments.NestedProtection_Baseline.swappedInnerTunnel",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_missing_key_independence_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_nested_layer_protection TDN.Deployments.NestedProtection_Mixed.deployment\n    TDN.Deployments.NestedProtection_Mixed.forwarding TDN.Deployments.NestedProtection_Mixed.flows\n    (fun start x x_1 payload => TDN.Deployments.NestedProtection_Mixed.flowAt start payload) fun x x_1 => False",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.mismatched_macsec_sci_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.LayeredFrame.SameMACWireIdentity (TDN.Deployments.NestedProtection_Mixed.sampleMove 0 10).transmitted\n    (TDN.Deployments.NestedProtection_Mixed.sampleMove 1 14).receiveAssociation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.opposite_direction_macsec_key_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Compliance.MACsecKeyMaterialMatches TDN.Deployments.NestedProtection_Mixed.records.macsecMaterial\n    (TDN.Deployments.NestedProtection_Mixed.sampleMove 0 10).transmitted\n    (TDN.Deployments.NestedProtection_Mixed.sampleMove 1 14).receiveAssociation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.mixed_paths_use_both_protection_layers",
+        "conclusion_head": "And",
+        "conclusion": "path.moves.length = 28 ∧\n  (path.state 12).frame.body.protectionLayers = [2, 1] ∧\n    (List.filter (fun move => move.operation == TDN.MultiProtocolForwarding.Action.encryptIPsec) path.moves).length =\n        1 ∧\n      (List.filter (fun move => move.operation == TDN.MultiProtocolForwarding.Action.encryptMACsec) path.moves).length =\n          1 ∧\n        (List.filter (fun move => move.operation == TDN.MultiProtocolForwarding.Action.decryptMACsec)\n                path.moves).length =\n            1 ∧\n          (List.filter (fun move => move.operation == TDN.MultiProtocolForwarding.Action.decryptIPsec)\n                path.moves).length =\n            1",
+        "binders": [
+          {
+            "type": "TDN.Deployments.NestedProtection_Mixed.ProtectionPath",
+            "name": "path",
+            "is_proposition": false
+          },
+          {
+            "type": "path ∈ TDN.Deployments.NestedProtection_Mixed.protectionPaths",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.sample_path_delivery_endpoints",
+        "conclusion_head": "And",
+        "conclusion": "(path.state path.moves.length).datapathStage = TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n  (path.state path.moves.length).iface = path.destinationIface ∧\n    TDN.Deployments.NestedProtection_Mixed.configuration.ip.ifaceSecurityDomain path.destinationIface =\n        some path.destinationDomain ∧\n      TDN.Deployments.NestedProtection_Mixed.records.redNetwork path.destinationDomain = path.destinationNetwork ∧\n        (path.state path.moves.length).frame.originDomain = path.sourceFlow.domain ∧\n          (path.state path.moves.length).frame.payload ≠ 0 ∧\n            (path.state path.moves.length).frame.body.protectionLayers = []",
+        "binders": [
+          {
+            "type": "TDN.Deployments.NestedProtection_Mixed.ProtectionPath",
+            "name": "path",
+            "is_proposition": false
+          },
+          {
+            "type": "path ∈ TDN.Deployments.NestedProtection_Mixed.protectionPaths",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.split_bridge_policies_match_captured_chain",
+        "conclusion_head": "Iff",
+        "conclusion": "TDN.Deployments.NestedProtection_Mixed.SplitBridgeAdmitted first last frame ↔\n  (TDN.Deployments.NestedProtection_Mixed.capturedBridgeChain\n        (TDN.Deployments.NestedProtection_Mixed.configuration.ip.owner first)).Accepts\n    (frame.Packet (TDN.Deployments.NestedProtection_Mixed.configuration.ip.interfaceName first)\n      (TDN.Deployments.NestedProtection_Mixed.configuration.ip.interfaceName last))",
+        "binders": [
+          {
+            "type": "ℕ",
+            "name": "first",
+            "is_proposition": false
+          },
+          {
+            "type": "ℕ",
+            "name": "last",
+            "is_proposition": false
+          },
+          {
+            "type": "(first, last) ∈ TDN.Deployments.NestedProtection_Mixed.records.bridges",
+            "name": "edge",
+            "is_proposition": true
+          },
+          {
+            "type": "TDN.LinkAdmission.Frame",
+            "name": "frame",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.recorded_authentication_checks",
+        "conclusion_head": "TDN.Deployments.NestedProtection.PublicAuthenticationBinding.Check",
+        "conclusion": "record.Check \"75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615\"",
+        "binders": [
+          {
+            "type": "TDN.Deployments.NestedProtection.PublicAuthenticationBinding",
+            "name": "record",
+            "is_proposition": false
+          },
+          {
+            "type": "record ∈ TDN.Deployments.NestedProtection_Baseline.authenticationBindings",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.recorded_authentication_coverage",
+        "conclusion_head": "And",
+        "conclusion": "(∀ component ∈ TDN.Deployments.NestedProtection_Baseline.records.components,\n    component.layer = some TDN.Layer.inner ∨ component.layer = some TDN.Layer.outer →\n      ∃ record ∈ TDN.Deployments.NestedProtection_Baseline.authenticationBindings,\n        record.device = component.id ∧\n          record.phase = \"phase-0\" ∧\n            record.certificateAuthenticated = true ∧ record.preSharedCAKAuthenticated = false) ∧\n  (∀ record ∈ TDN.Deployments.NestedProtection_Baseline.authenticationBindings,\n      ∃ component ∈ TDN.Deployments.NestedProtection_Baseline.records.components,\n        component.id = record.device ∧\n          (component.layer = some TDN.Layer.inner ∨ component.layer = some TDN.Layer.outer)) ∧\n    ∀ record ∈ TDN.Deployments.NestedProtection_Baseline.authenticationBindings,\n      record.phase = \"phase-1\" →\n        ∃ earlier ∈ TDN.Deployments.NestedProtection_Baseline.authenticationBindings,\n          earlier.phase = \"phase-0\" ∧\n            earlier.device = record.device ∧\n              earlier.ikeUniqueId = record.ikeUniqueId ∧\n                earlier.childUniqueId = record.childUniqueId ∧\n                  earlier.caObservation = record.caObservation ∧ earlier.leafObservation = record.leafObservation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.namespace_address_records_checked",
+        "conclusion_head": "TDN.Requirements.NamespaceAddressChecks",
+        "conclusion": "TDN.Requirements.NamespaceAddressChecks TDN.Deployments.NestedProtection_Mixed.records.interfaces\n  TDN.Deployments.NestedProtection_Mixed.records.componentName TDN.Deployments.NestedProtection_Mixed.records.deviceData",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.imported_local_addresses_are_unchanged",
+        "conclusion_head": "Iff",
+        "conclusion": "TDN.Deployments.NestedProtection_Mixed.configuration.ip.localAddress iface address ↔\n  address ∈\n    (TDN.DataPlaneForwarding.deviceAt TDN.Deployments.NestedProtection_Mixed.records.deviceData\n        (TDN.Deployments.NestedProtection_Mixed.configuration.ip.owner iface)).localAddresses",
+        "binders": [
+          {
+            "type": "ℕ",
+            "name": "iface",
+            "is_proposition": false
+          },
+          {
+            "type": "ℕ",
+            "name": "address",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.NestedProtection_Mixed.configuration.ip.owner iface <\n  TDN.Deployments.NestedProtection_Mixed.records.deviceData.length",
+            "name": "present",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.endpoint_network_ids_checked",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.NestedProtection_Mixed.configuration.ip.ifaceSecurityDomain entry.hostIface = some entry.originDomain ∧\n  TDN.Deployments.NestedProtection_Mixed.records.redNetwork entry.originDomain = entry.network",
+        "binders": [
+          {
+            "type": "TDN.Deployments.MtuSizing_Records.SourceEntry",
+            "name": "entry",
+            "is_proposition": false
+          },
+          {
+            "type": "entry ∈ TDN.Deployments.NestedProtection_Mixed.records.entries",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.recorded_layer_key_contexts_are_nonempty",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Deployments.NestedProtection_Baseline.flowKeyContexts selected).1 ≠ \"\" ∧\n  (TDN.Deployments.NestedProtection_Baseline.flowKeyContexts selected).2 ≠ \"\"",
+        "binders": [
+          {
+            "type": "TDN.Requirements.Msc.IPsecFlowEndpoints",
+            "name": "selected",
+            "is_proposition": false
+          },
+          {
+            "type": "selected ∈ TDN.Deployments.NestedProtection_Baseline.contexts",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.recorded_layer_key_contexts_are_nonempty",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Deployments.NestedProtection_Mixed.flowKeyContexts selected).1 ≠ \"\" ∧\n  (TDN.Deployments.NestedProtection_Mixed.flowKeyContexts selected).2 ≠ \"\"",
+        "binders": [
+          {
+            "type": "TDN.Requirements.Msc.MixedFlowEndpoints",
+            "name": "selected",
+            "is_proposition": false
+          },
+          {
+            "type": "selected ∈ TDN.Deployments.NestedProtection_Mixed.contexts",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_with_captured_bridge_policy",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Requirements.Msc.msc_nested_layer_protection TDN.Deployments.NestedProtection_Mixed.deployment\n    TDN.Deployments.NestedProtection_Mixed.forwarding TDN.Deployments.NestedProtection_Mixed.flows\n    (fun start x x_1 payload => TDN.Deployments.NestedProtection_Mixed.flowAt start payload) independentKeys ∧\n  ∀ (first last : ℕ),\n    (first, last) ∈ TDN.Deployments.NestedProtection_Mixed.records.bridges →\n      ∀ (frame : TDN.LinkAdmission.Frame),\n        TDN.Deployments.NestedProtection_Mixed.SplitBridgeAdmitted first last frame ↔\n          (TDN.Deployments.NestedProtection_Mixed.capturedBridgeChain\n                (TDN.Deployments.NestedProtection_Mixed.configuration.ip.owner first)).Accepts\n            (frame.Packet (TDN.Deployments.NestedProtection_Mixed.configuration.ip.interfaceName first)\n              (TDN.Deployments.NestedProtection_Mixed.configuration.ip.interfaceName last))",
+        "binders": [
+          {
+            "type": "String → String → Prop",
+            "name": "independentKeys",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.NestedProtection_Mixed.IndependentLayerKeys independentKeys",
+            "name": "independent",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "TDN.Deployments.NestedProtection_Baseline.snapshot_RG007_ipsec_nested_layer_protection: ESPWire.GCMPrimitive IPsecKeyMaterial: Cryptographic implementation interface with its existing laws.",
+      "TDN.Deployments.NestedProtection_Baseline.snapshot_RG007_ipsec_nested_layer_protection: NestedProtection_Baseline.IndependentLayerKeys independentKeys: External independent-key relation on exact imported Inner/Outer contexts.",
+      "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_nested_layer_protection: NestedProtection_Mixed.IndependentLayerKeys independentKeys: External independent-key relation on exact imported Inner IPsec/Outer MACsec contexts.",
+      "Actual implementations follow the active packet-processing model; parser and capture correspondence is trusted.",
+      "Native ESP wire encoding remains parameterized by the accepted GCMPrimitive implementation interface.",
+      "Model key representatives preserve imported material-reference equality and valid lengths; no real private key bytes or cryptographic independence proof is recovered.",
+      "Both source universes include all admitted Red traffic at a fixed recorded installed-key epoch. Local device-generated management/control sources and rekey transitions are outside these claims. Captured essential protocol/session observations remain retained and are not classified as optional administration.",
+      "Mixed link encoding uses constructed MACsec header representatives for actual SCI/AN/encrypted-bit admission. No ciphertext transformation, PN freshness, replay or complete packet-byte capture claim is made.",
+      "Each whole application requires the explicitly supplied independentKeys relation for its exact bound Inner/Outer key contexts. Distinct names, hashes and deterministic representatives do not discharge independence.",
+      "Public CA signatures and loaded-chain checks occur in the source-bound MCP parser outside Lean. The model records logical CA identities, not running services, current certificate validity, CRL checks, official approval or reproducible binary verification."
+    ],
+    "scope": "Every clause of the instantiated specification, within the recorded model and explicit implementation assumptions.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-012",
+    "reuse_accounting": "Unchanged imported baseline/shared configured-pair applications and constructed management-PSK case.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_PkiIsolation.baseline_configured_pair_model_RG012",
+        "conclusion_head": "TDN.Requirements.Msc.msc_security_level_key_and_management_separation",
+        "conclusion": "TDN.Requirements.Msc.msc_security_level_key_and_management_separation false\n  TDN.Deployments.ProfileBaseline_PkiTrust.peers\n  (TDN.Requirements.Msc.EstablishedInnerPair TDN.Deployments.SnapshotProof_PkiIsolation.baselinePairs)",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_PkiIsolation.shared_configured_pair_model_RG012",
+        "conclusion_head": "TDN.Requirements.Msc.msc_security_level_key_and_management_separation",
+        "conclusion": "TDN.Requirements.Msc.msc_security_level_key_and_management_separation false TDN.Deployments.ProfileShared_PkiTrust.peers\n  (TDN.Requirements.Msc.EstablishedInnerPair TDN.Deployments.SnapshotProof_PkiIsolation.sharedPairs)",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_PkiIsolation.managed_psk_model_RG012",
+        "conclusion_head": "TDN.Requirements.Msc.msc_security_level_key_and_management_separation",
+        "conclusion": "TDN.Requirements.Msc.msc_security_level_key_and_management_separation true\n  TDN.Deployments.SnapshotProof_PkiIsolation.pskPeers\n  (TDN.Requirements.Msc.EstablishedInnerPair TDN.Deployments.SnapshotProof_PkiIsolation.pskPairs)",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Bind the complete actual established-pair set and credential inventory to the chosen observation epoch and authentication mechanism."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-013",
+    "reuse_accounting": "Original six-device managed star and new five-device management-free chain; positive packet admission and explicit topology/role difference.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.complete_model_RG013",
+        "conclusion_head": "TDN.Requirements.Msc.msc_gray_firewall_path_coverage",
+        "conclusion": "TDN.Requirements.Msc.msc_gray_firewall_path_coverage\n  (TDN.Deployments.SnapshotProof_GrayFirewall.deployment base processing)\n  TDN.Deployments.SnapshotProof_GrayFirewall.topology",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          },
+          {
+            "type": "base.authority.protectsAsClassified \"node-G\"",
+            "name": "physicalFact",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.same_level_inner_traffic_is_admitted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Deployments.SnapshotProof_GrayFirewall.deployment base processing).Accepts \"port-G\"\n  TDN.Compliance.Direction.inbound\n  ((TDN.Deployments.SnapshotProof_GrayFirewall.deployment base processing).Observe\n    TDN.Deployments.SnapshotProof_GrayFirewall.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.wrong_level_inner_traffic_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Deployments.SnapshotProof_GrayFirewall.deployment base processing).Accepts \"port-G\"\n    TDN.Compliance.Direction.inbound\n    ((TDN.Deployments.SnapshotProof_GrayFirewall.deployment base processing).Observe\n      (have __src := TDN.Deployments.SnapshotProof_GrayFirewall.packet;\n      { source := __src.source, destination := 40, protocol := __src.protocol, ingress := __src.ingress,\n        egress := __src.egress, sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n        ipv4HeaderWords := __src.ipv4HeaderWords, matchedInboundPolicyIds := __src.matchedInboundPolicyIds,\n        matchedOutboundPolicyIds := __src.matchedOutboundPolicyIds, connectionState := __src.connectionState,\n        ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n        hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n        connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n        ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.lower_level_workstation_traffic_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Deployments.SnapshotProof_GrayFirewall.deployment base processing).Accepts \"port-G\"\n    TDN.Compliance.Direction.outbound\n    ((TDN.Deployments.SnapshotProof_GrayFirewall.deployment base processing).Observe\n      (have __src := TDN.Deployments.SnapshotProof_GrayFirewall.packet;\n      { source := 100, destination := 10, protocol := __src.protocol, ingress := __src.ingress, egress := __src.egress,\n        sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n        ipv4HeaderWords := __src.ipv4HeaderWords, matchedInboundPolicyIds := __src.matchedInboundPolicyIds,\n        matchedOutboundPolicyIds := __src.matchedOutboundPolicyIds, connectionState := __src.connectionState,\n        ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n        hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n        connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n        ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.cross_level_path_really_exists",
+        "conclusion_head": "Relation.ReflTransGen",
+        "conclusion": "Relation.ReflTransGen TDN.Deployments.SnapshotProof_GrayFirewall.topology.edge \"node-IA\" \"node-IC\"",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.direct_cross_level_bypass_fails_local_edge_check",
+        "conclusion_head": "Not",
+        "conclusion": "¬∀ edge ∈ TDN.Deployments.SnapshotProof_GrayFirewall.edges ++ [(\"node-IA\", \"node-IC\")],\n    ¬TDN.Deployments.SnapshotProof_GrayFirewall.topology.grayFirewall edge.1 →\n      ¬TDN.Deployments.SnapshotProof_GrayFirewall.topology.grayFirewall edge.2 →\n        TDN.Deployments.SnapshotProof_GrayFirewall.topology.level edge.1 =\n          TDN.Deployments.SnapshotProof_GrayFirewall.topology.level edge.2",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewallReuse.management_free_chain_model_RG013",
+        "conclusion_head": "TDN.Requirements.Msc.msc_gray_firewall_path_coverage",
+        "conclusion": "TDN.Requirements.Msc.msc_gray_firewall_path_coverage\n  (TDN.Deployments.SnapshotProof_GrayFirewallReuse.deployment base processing)\n  TDN.Deployments.SnapshotProof_GrayFirewallReuse.topology",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          },
+          {
+            "type": "base.authority.protectsAsClassified \"node-G\"",
+            "name": "physicalFact",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewallReuse.management_free_and_topology_differs",
+        "conclusion_head": "And",
+        "conclusion": "(∀ device ∈ TDN.Deployments.SnapshotProof_GrayFirewallReuse.devices,\n    device.kind ≠ TDN.Compliance.DeviceKind.workstation) ∧\n  (\"node-IA\", \"node-IB\") ∈ TDN.Deployments.SnapshotProof_GrayFirewallReuse.edges ∧\n    (\"node-IA\", \"node-G\") ∉ TDN.Deployments.SnapshotProof_GrayFirewallReuse.edges",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewallReuse.same_level_chain_packet_is_admitted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Deployments.SnapshotProof_GrayFirewallReuse.deployment base processing).Accepts \"port-O\"\n  TDN.Compliance.Direction.outbound\n  ((TDN.Deployments.SnapshotProof_GrayFirewallReuse.deployment base processing).Observe\n    (have __src := TDN.Deployments.SnapshotProof_GrayFirewall.packet;\n    { source := __src.source, destination := __src.destination, protocol := __src.protocol, ingress := \"port-O\",\n      egress := \"port-O\", sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n      ipv4HeaderWords := __src.ipv4HeaderWords, matchedInboundPolicyIds := __src.matchedInboundPolicyIds,\n      matchedOutboundPolicyIds := __src.matchedOutboundPolicyIds, connectionState := __src.connectionState,\n      ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n      hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n      connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n      ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Declared model checks are fulfilled; physical classified protection is an explicit parameter.",
+      "A deployed complete device/graph/program binding and physical protection record are not yet supplied for this root."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-014",
+    "reuse_accounting": "Routed IP and bridge/Ethernet complete instances now both invoke the designated common unchanged general theorem.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_Addressing.full_routed_RG014",
+        "conclusion_head": "TDN.Requirements.Msc.msc_gray_addressing_for_level_filtering",
+        "conclusion": "TDN.Requirements.Msc.msc_gray_addressing_for_level_filtering\n  (TDN.Deployments.SnapshotProof_Addressing.deployment base processing) TDN.Deployments.SnapshotProof_Addressing.ranges\n  TDN.Deployments.SnapshotProof_Addressing.pairs",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_Addressing.intended_protected_packet_is_accepted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Deployments.SnapshotProof_Addressing.deployment base processing).Accepts \"port-O\" TDN.Compliance.Direction.outbound\n  ((TDN.Deployments.SnapshotProof_Addressing.deployment base processing).Observe\n    TDN.Deployments.SnapshotProof_Addressing.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_Addressing.cross_level_packet_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Deployments.SnapshotProof_Addressing.deployment base processing).Accepts \"port-O\"\n    TDN.Compliance.Direction.outbound\n    ((TDN.Deployments.SnapshotProof_Addressing.deployment base processing).Observe\n      (have __src := TDN.Deployments.SnapshotProof_Addressing.packet;\n      { source := __src.source, destination := 40, protocol := __src.protocol, ingress := __src.ingress,\n        egress := __src.egress, sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n        ipv4HeaderWords := __src.ipv4HeaderWords, matchedInboundPolicyIds := __src.matchedInboundPolicyIds,\n        matchedOutboundPolicyIds := __src.matchedOutboundPolicyIds, connectionState := __src.connectionState,\n        ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n        hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n        connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n        ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkAddressing.complete_link_model_RG014",
+        "conclusion_head": "TDN.Requirements.Msc.msc_gray_addressing_for_level_filtering",
+        "conclusion": "TDN.Requirements.Msc.msc_gray_addressing_for_level_filtering\n  (TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing)\n  TDN.Deployments.SnapshotProof_LinkAddressing.ranges TDN.Deployments.SnapshotProof_LinkAddressing.pairs",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkAddressing.same_level_Ethernet_is_fully_admitted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing).Accepts \"port-O\"\n  TDN.Compliance.Direction.outbound\n  ((TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing).Observe\n    TDN.Deployments.SnapshotProof_LinkAddressing.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkAddressing.link_addresses_bind_intended_Inner_peers",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing).PacketOwner\n      TDN.Deployments.SnapshotProof_LinkAddressing.packet 101 =\n    some \"INNER-A\" ∧\n  (TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing).PacketOwner\n        TDN.Deployments.SnapshotProof_LinkAddressing.packet 202 =\n      some \"INNER-B\" ∧\n    (TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing).SameLevelInner\n      ((TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing).Observe\n        TDN.Deployments.SnapshotProof_LinkAddressing.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkAddressing.cross_level_Ethernet_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing).Accepts \"port-O\"\n    TDN.Compliance.Direction.outbound\n    ((TDN.Deployments.SnapshotProof_LinkAddressing.deployment base processing).Observe\n      (have __src := TDN.Deployments.SnapshotProof_LinkAddressing.packet;\n      { source := __src.source, destination := 404, protocol := __src.protocol, ingress := __src.ingress,\n        egress := __src.egress, sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n        ipv4HeaderWords := __src.ipv4HeaderWords, matchedInboundPolicyIds := __src.matchedInboundPolicyIds,\n        matchedOutboundPolicyIds := __src.matchedOutboundPolicyIds, connectionState := __src.connectionState,\n        ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode,\n        hopLimit := __src.hopLimit, etherType := __src.etherType, payloadBytes := __src.payloadBytes,\n        connectionId := __src.connectionId, networkBytes := __src.networkBytes,\n        ipv4FragmentOffset := __src.ipv4FragmentOffset }))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Checked routed and link model instances are available. Full runtime inventory/range/program correspondence must be supplied for each deployed application."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-021",
+    "reuse_accounting": "Two complete nonempty models: provision/sign, and provision/protected-copy/digest. Exact projections and policy inventory checked; successful uses reachable.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.KeyStoreConfinementChecks.useful_run",
+        "conclusion_head": "Cslib.LTS.MTr",
+        "conclusion": "(TDN.KeyInterface.system TDN.Deployments.KeyStoreConfinementChecks.confidential\n      TDN.Deployments.KeyStoreConfinementChecks.permitted).MTr\n  [] TDN.Deployments.KeyStoreConfinementChecks.usefulActions\n  [TDN.Deployments.KeyStoreConfinementChecks.copiedObject, TDN.Deployments.KeyStoreConfinementChecks.tokenObject]",
+        "binders": [],
+        "axioms": [
+          "propext"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_KeyConfinement.signing_model_RG021",
+        "conclusion_head": "TDN.Requirements.Msc.msc_vpn_private_key_confinement",
+        "conclusion": "TDN.Requirements.Msc.msc_vpn_private_key_confinement (TDN.Deployments.SnapshotProof_KeyConfinement.deployment base)\n  (TDN.Deployments.SnapshotProof_KeyConfinement.model native false) TDN.Deployments.SnapshotProof_KeyConfinement.keys\n  (fun x => true) TDN.Deployments.SnapshotProof_KeyConfinement.policies",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.SnapshotProof_KeyConfinement.Device",
+            "name": "native",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_KeyConfinement.copied_digest_model_RG021",
+        "conclusion_head": "TDN.Requirements.Msc.msc_vpn_private_key_confinement",
+        "conclusion": "TDN.Requirements.Msc.msc_vpn_private_key_confinement (TDN.Deployments.SnapshotProof_KeyConfinement.deployment base)\n  (TDN.Deployments.SnapshotProof_KeyConfinement.model native true) TDN.Deployments.SnapshotProof_KeyConfinement.keys\n  (fun x => true) TDN.Deployments.SnapshotProof_KeyConfinement.policies",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.SnapshotProof_KeyConfinement.Device",
+            "name": "native",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_KeyConfinement.setup_run",
+        "conclusion_head": "Cslib.LTS.MTr",
+        "conclusion": "(TDN.KeyInterface.system (TDN.Requirements.Msc.protectedGatewayKey TDN.Deployments.SnapshotProof_KeyConfinement.keys)\n      fun identity principal => principal ∈ TDN.Deployments.SnapshotProof_KeyConfinement.readers identity).MTr\n  [] (TDN.Deployments.SnapshotProof_KeyConfinement.setup copyFirst)\n  (TDN.Deployments.SnapshotProof_KeyConfinement.store copyFirst)",
+        "binders": [
+          {
+            "type": "Bool",
+            "name": "copyFirst",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_KeyConfinement.event_projection",
+        "conclusion_head": "Eq",
+        "conclusion": "List.flatMap TDN.Requirements.Msc.privateEvent (TDN.Deployments.SnapshotProof_KeyConfinement.events action) =\n  TDN.KeyInterface.Action.events action",
+        "binders": [
+          {
+            "type": "TDN.Requirements.Msc.KeyAction",
+            "name": "action",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_KeyConfinement.signing_is_reachable",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Deployments.SnapshotProof_KeyConfinement.model native false).initial\n    [TDN.Deployments.SnapshotProof_KeyConfinement.token] ∧\n  (TDN.Deployments.SnapshotProof_KeyConfinement.model native false).system.MTr\n      [TDN.Deployments.SnapshotProof_KeyConfinement.token]\n      [TDN.KeyInterface.Action.sign TDN.Deployments.SnapshotProof_KeyConfinement.token \"gateway\"]\n      [TDN.Deployments.SnapshotProof_KeyConfinement.token] ∧\n    TDN.Compliance.NetworkEvent.privateKeyRead \"gateway\" \"private.key\" \"gateway\" ∈\n      (TDN.Deployments.SnapshotProof_KeyConfinement.model native false).TraceEvents\n        [TDN.KeyInterface.Action.sign TDN.Deployments.SnapshotProof_KeyConfinement.token \"gateway\"]",
+        "binders": [
+          {
+            "type": "TDN.Deployments.SnapshotProof_KeyConfinement.Device",
+            "name": "native",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_KeyConfinement.copied_digest_is_reachable",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Deployments.SnapshotProof_KeyConfinement.model native true).initial\n    [TDN.Deployments.SnapshotProof_KeyConfinement.copied, TDN.Deployments.SnapshotProof_KeyConfinement.token] ∧\n  (TDN.Deployments.SnapshotProof_KeyConfinement.model native true).system.MTr\n      [TDN.Deployments.SnapshotProof_KeyConfinement.copied, TDN.Deployments.SnapshotProof_KeyConfinement.token]\n      [TDN.KeyInterface.Action.digest TDN.Deployments.SnapshotProof_KeyConfinement.copied \"gateway\"]\n      [TDN.Deployments.SnapshotProof_KeyConfinement.copied, TDN.Deployments.SnapshotProof_KeyConfinement.token] ∧\n    TDN.Compliance.NetworkEvent.privateKeyRead \"gateway\" \"private.key\" \"gateway\" ∈\n      (TDN.Deployments.SnapshotProof_KeyConfinement.model native true).TraceEvents\n        [TDN.KeyInterface.Action.digest TDN.Deployments.SnapshotProof_KeyConfinement.copied \"gateway\"]",
+        "binders": [
+          {
+            "type": "TDN.Deployments.SnapshotProof_KeyConfinement.Device",
+            "name": "native",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "K02 complete API/interface, setup, object-lineage and source/runtime correspondence is in progress.",
+      "K01 has an actual readable file-backed path and supplies no protected-interface refinement.",
+      "Host/hypervisor exclusion, software implementation correspondence and observation truth stay explicit."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-024",
+    "reuse_accounting": "The same configuration-independent general theorem is applied to both recorded configurations.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.snapshot_RG024_forward_eap_tls_authentication",
+        "conclusion_head": "TDN.Requirements.Msc.msc_macsec_authentication_choice_and_as",
+        "conclusion": "TDN.Requirements.Msc.msc_macsec_authentication_choice_and_as TDN.Deployments.MacsecAuthentication.forward.deployment\n  TDN.Deployments.MacsecAuthentication.forward.model TDN.Deployments.MacsecAuthentication.tlsPrimitive\n  TDN.Deployments.MacsecAuthentication.forward.authentication",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.snapshot_RG024_reverse_eap_tls_authentication",
+        "conclusion_head": "TDN.Requirements.Msc.msc_macsec_authentication_choice_and_as",
+        "conclusion": "TDN.Requirements.Msc.msc_macsec_authentication_choice_and_as TDN.Deployments.MacsecAuthentication.reverse.deployment\n  TDN.Deployments.MacsecAuthentication.reverse.model TDN.Deployments.MacsecAuthentication.tlsPrimitive\n  TDN.Deployments.MacsecAuthentication.reverse.authentication",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.snapshot_RG024_forward_nonempty_delivery",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions finish,\n  TDN.Deployments.MacsecAuthentication.forward.model.initial start ∧\n    TDN.Deployments.MacsecAuthentication.forward.model.system.MTr start actions finish ∧\n      (TDN.Deployments.MacsecAuthentication.forward.model.native.state finish).datapathStage =\n          TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        (TDN.Deployments.MacsecAuthentication.forward.model.native.state finish).frame.payload =\n            TDN.LinkAdmission.payloadCode [7, 8] ∧\n          (TDN.Deployments.MacsecAuthentication.forward.model.native.state finish).frame.body =\n            TDN.Deployments.MacsecAuthentication.forward.trafficDatagram.body",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.snapshot_RG024_reverse_nonempty_delivery",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions finish,\n  TDN.Deployments.MacsecAuthentication.reverse.model.initial start ∧\n    TDN.Deployments.MacsecAuthentication.reverse.model.system.MTr start actions finish ∧\n      (TDN.Deployments.MacsecAuthentication.reverse.model.native.state finish).datapathStage =\n          TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        (TDN.Deployments.MacsecAuthentication.reverse.model.native.state finish).frame.payload =\n            TDN.LinkAdmission.payloadCode [7, 8] ∧\n          (TDN.Deployments.MacsecAuthentication.reverse.model.native.state finish).frame.body =\n            TDN.Deployments.MacsecAuthentication.reverse.trafficDatagram.body",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.profile_as_attachment_matches_interfaces",
+        "conclusion_head": "Iff",
+        "conclusion": "capture.deployment.networkAttachment \"AS\" site zone ↔\n  ∃ device ∈ capture.profile.devices,\n    device.id = \"AS\" ∧\n      device.site = site ∧\n        ∃ iface ∈ capture.profile.interfaces, iface.device = device.id ∧ iface.physical = true ∧ iface.zone = zone",
+        "binders": [
+          {
+            "type": "TDN.Deployments.MacsecAuthentication.CaptureData",
+            "name": "capture",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.MacsecAuthentication.SupportedCapture capture",
+            "name": "supported",
+            "is_proposition": true
+          },
+          {
+            "type": "String",
+            "name": "site",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Zone",
+            "name": "zone",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.role_reversed_sessions_are_distinct",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.MacsecAuthentication.forward.session ≠ TDN.Deployments.MacsecAuthentication.reverse.session ∧\n  TDN.Deployments.MacsecAuthentication.forward.masterSessionKey ≠\n      TDN.Deployments.MacsecAuthentication.reverse.masterSessionKey ∧\n    TDN.Deployments.MacsecAuthentication.forward.cak ≠ TDN.Deployments.MacsecAuthentication.reverse.cak ∧\n      TDN.Deployments.MacsecAuthentication.forward.sak ≠ TDN.Deployments.MacsecAuthentication.reverse.sak",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.cross_session_backend_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.EAPSessionBinding TDN.Deployments.MacsecAuthentication.tlsPrimitive\n    (TDN.Deployments.MacsecAuthentication.forward.authenticationFor \"P0\" \"P1\")\n    TDN.Deployments.MacsecAuthentication.reverse.exchange",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.cross_capture_sak_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Deployments.MacsecAuthentication.crossedKeySetup.InstallationChecked\n    TDN.Deployments.MacsecAuthentication.forward.model",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.changed_transcript_with_same_session_is_rejected",
+        "conclusion_head": "Eq",
+        "conclusion": "TDN.Deployments.MacsecAuthentication.tlsPrimitive.mutuallyAuthenticate\n    TDN.Deployments.MacsecAuthentication.changedTranscriptInput =\n  none",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecAuthentication.changed_backend_record_with_same_session_is_rejected",
+        "conclusion_head": "Eq",
+        "conclusion": "TDN.Deployments.MacsecAuthentication.tlsPrimitive.authenticateBackendDelivery\n    TDN.Deployments.MacsecAuthentication.changedBackendInput =\n  none",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Exact finite TLS/backend success adapter reflects the two captured implementation observations; cryptographic and live implementation correctness remain external.",
+      "Synthetic per-run 32-byte model SA material is consistently indexed by the observed opaque SAK reference; actual captured key bytes are redacted.",
+      "Routes, source packets, site/zone labels, unused reverse one-interface attachment and abstract wire payloads are curated model fixtures.",
+      "The valid finite history describes one static installed epoch; arbitrary live rekey conformance is not proved.",
+      "Capture honesty and parser correspondence to actual protocol actions.",
+      "Single-site/single-zone AS placement is a checked model attachment interpretation, not physical site assurance.",
+      "Instrumented hostap, TLS/backend validation, MSK-to-CAK derivation and MACsec cryptographic implementation correctness."
+    ],
+    "scope": "Every clause of the instantiated specification, within the recorded model and explicit implementation assumptions.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-027",
+    "reuse_accounting": "Generated noncentral key provisioning versus EAP-derived central-site key/server selection. Actual approval and KDF correspondence remain separately named.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_MacsecKeyGen.complete_RG027_under_named_approvals",
+        "conclusion_head": "TDN.Requirements.Msc.msc_macsec_key_generation_and_server",
+        "conclusion": "TDN.Requirements.Msc.msc_macsec_key_generation_and_server (TDN.Deployments.SnapshotProof_MacsecKeyGen.configured d)\n  [TDN.Deployments.SnapshotProof_MacsecKeyGen.key] [TDN.Deployments.SnapshotProof_MacsecKeyGen.pair]\n  [TDN.Deployments.SnapshotProof_MacsecKeyGen.provisioning] fun x x_1 => False",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "d",
+            "is_proposition": false
+          },
+          {
+            "type": "d.authority.nsaApprovedGenerator \"KGS\"",
+            "name": "generator",
+            "is_proposition": true
+          },
+          {
+            "type": "d.authority.securityAdministrator \"security-admin\"",
+            "name": "administrator",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_MacsecKeyGen.eap_derivation_record_checked",
+        "conclusion_head": "Eq",
+        "conclusion": "TDN.Requirements.Msc.keyGenerationChecked (TDN.Deployments.SnapshotProof_MacsecKeyGen.configured d)\n    [have __src := TDN.Deployments.SnapshotProof_MacsecKeyGen.key;\n      { cak := __src.cak, cakOrigin := TDN.Requirements.Msc.KeyOrigin.eapDerived \"MSK\", ckn := __src.ckn,\n        cknGenerator := __src.cknGenerator, fallbackEnabled := __src.fallbackEnabled }]\n    [TDN.Deployments.SnapshotProof_MacsecKeyGen.pair] []\n    (have __src := TDN.Deployments.SnapshotProof_MacsecKeyGen.records;\n    { generators := __src.generators, administrators := __src.administrators,\n      eapDerivations := [(\"CAK-A-B\", \"KGS\")] }) =\n  true",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "d",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_AssuranceReuse.central_EAP_model_RG027",
+        "conclusion_head": "TDN.Requirements.Msc.msc_macsec_key_generation_and_server",
+        "conclusion": "TDN.Requirements.Msc.msc_macsec_key_generation_and_server\n  (TDN.Deployments.SnapshotProof_AssuranceReuse.centralDeployment base)\n  [TDN.Deployments.SnapshotProof_AssuranceReuse.centralKey] [TDN.Deployments.SnapshotProof_AssuranceReuse.centralPair]\n  [] derivation",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "String → String → Prop",
+            "name": "derivation",
+            "is_proposition": false
+          },
+          {
+            "type": "base.authority.nsaApprovedGenerator \"KGS\"",
+            "name": "generator",
+            "is_proposition": true
+          },
+          {
+            "type": "derivation \"CAK-A-B\" \"KGS\"",
+            "name": "boundDerivation",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_AssuranceReuse.central_server_and_EAP_origin_are_actual",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.SnapshotProof_AssuranceReuse.centralPair.secondValue = 0 ∧\n  TDN.Deployments.SnapshotProof_AssuranceReuse.centralPair.centralSite = some \"central-site\" ∧\n    TDN.Deployments.SnapshotProof_AssuranceReuse.centralKey.cakOrigin =\n      TDN.Requirements.Msc.KeyOrigin.eapDerived \"MSK-session-central\"",
+        "binders": [],
+        "axioms": []
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_AssuranceReuse.wrong_central_server_is_rejected",
+        "conclusion_head": "Eq",
+        "conclusion": "TDN.Requirements.Msc.keyGenerationChecked (TDN.Deployments.SnapshotProof_AssuranceReuse.centralDeployment base)\n    [TDN.Deployments.SnapshotProof_AssuranceReuse.centralKey]\n    [have __src := TDN.Deployments.SnapshotProof_AssuranceReuse.centralPair;\n      { first := __src.first, second := __src.second, firstValue := 0, secondValue := 1,\n        centralSite := __src.centralSite }]\n    [] TDN.Deployments.SnapshotProof_AssuranceReuse.centralRecords =\n  false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Import complete actual CKN/generator/provisioning/server-priority records with endpoint and epoch correspondence.",
+      "Establish individually named NSA generator approval and security-administrator authority facts for the chosen application.",
+      "Bind EAP-derived CAKs to actual MSK/KDF inputs and an approved generator; finite name equality is insufficient."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-028",
+    "reuse_accounting": "The same configuration-independent general theorem is applied to both recorded configurations.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.MacsecProtection.snapshot_RG028_direct_macsec_protection_parameters",
+        "conclusion_head": "TDN.Requirements.Msc.msc_macsec_protection_parameters",
+        "conclusion": "TDN.Requirements.Msc.msc_macsec_protection_parameters TDN.Deployments.MacsecProtection.direct.deployment\n  TDN.Deployments.MacsecProtection.direct.model TDN.Deployments.MacsecProtection.parameters",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.snapshot_RG028_routed_macsec_protection_parameters",
+        "conclusion_head": "TDN.Requirements.Msc.msc_macsec_protection_parameters",
+        "conclusion": "TDN.Requirements.Msc.msc_macsec_protection_parameters TDN.Deployments.MacsecProtection.routed.deployment\n  TDN.Deployments.MacsecProtection.routed.model TDN.Deployments.MacsecProtection.parameters",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.snapshot_RG028_direct_nonempty_delivery",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions finish,\n  TDN.Deployments.MacsecProtection.direct.model.initial start ∧\n    TDN.Deployments.MacsecProtection.direct.model.system.MTr start actions finish ∧\n      (TDN.Deployments.MacsecProtection.direct.model.native.state finish).datapathStage =\n          TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        (TDN.Deployments.MacsecProtection.direct.model.native.state finish).frame.payload =\n            TDN.LinkAdmission.payloadCode [7, 8] ∧\n          (TDN.Deployments.MacsecProtection.direct.model.native.state finish).frame.body =\n            TDN.Deployments.MacsecProtection.direct.trafficDatagram.body",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.snapshot_RG028_routed_nonempty_delivery",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions finish,\n  TDN.Deployments.MacsecProtection.routed.model.initial start ∧\n    TDN.Deployments.MacsecProtection.routed.model.system.MTr start actions finish ∧\n      (TDN.Deployments.MacsecProtection.routed.model.native.state finish).datapathStage =\n          TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        (TDN.Deployments.MacsecProtection.routed.model.native.state finish).frame.payload =\n            TDN.LinkAdmission.payloadCode [7, 8] ∧\n          (TDN.Deployments.MacsecProtection.routed.model.native.state finish).frame.body =\n            TDN.Deployments.MacsecProtection.routed.trafficDatagram.body",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.captured_integrity_pdu_is_not_full_confidentiality",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.MacsecProtection.integrityFrame.DescribesBody\n    (TDN.LayeredFrame.Body.macsecPdu TDN.Deployments.MacsecProtection.capturedAssociation false 0 body) ∧\n  ¬TDN.Deployments.MacsecProtection.integrityFrame.DescribesBody\n      (TDN.LayeredFrame.Body.macsec TDN.Deployments.MacsecProtection.capturedAssociation body)",
+        "binders": [
+          {
+            "type": "TDN.LayeredFrame.Body",
+            "name": "body",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.nonzero_offset_transmit_is_reduced_confidentiality",
+        "conclusion_head": "And",
+        "conclusion": "TDN.MultiProtocolForwarding.Step TDN.Deployments.MacsecProtection.offsetConfiguration\n    TDN.Deployments.MacsecProtection.sampleReady TDN.MultiProtocolForwarding.Action.protectMACsec\n    TDN.Deployments.MacsecProtection.offsetOutput ∧\n  TDN.Deployments.MacsecProtection.offsetOutput.frame.body.isMACsecPdu = true ∧\n    TDN.Deployments.MacsecProtection.offsetOutput.frame.body.protectionLayers = [] ∧\n      TDN.LinkProtection.transmit TDN.Deployments.MacsecProtection.offsetIface.settings (some 1)\n            TDN.Deployments.MacsecProtection.sampleEthernet =\n          some (TDN.LinkProtection.WireFrame.encrypted 1 30 TDN.Deployments.MacsecProtection.sampleEthernet) ∧\n        ¬TDN.LinkProtection.FullyEncrypted\n            (TDN.LinkProtection.WireFrame.encrypted 1 30 TDN.Deployments.MacsecProtection.sampleEthernet)",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.disconnected_parameter_records_fail_whole_requirement",
+        "conclusion_head": "And",
+        "conclusion": "¬TDN.Requirements.Msc.msc_macsec_protection_parameters\n      TDN.Deployments.MacsecProtection.integrityAdvertisedSecure.deployment\n      TDN.Deployments.MacsecProtection.integrityAdvertisedSecure.model TDN.Deployments.MacsecProtection.parameters ∧\n  ¬TDN.Requirements.Msc.msc_macsec_protection_parameters\n      TDN.Deployments.MacsecProtection.offsetAdvertisedZero.deployment\n      TDN.Deployments.MacsecProtection.offsetAdvertisedZero.model TDN.Deployments.MacsecProtection.parameters",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.absent_tx_sa_blocks_macsec_pdu_creation",
+        "conclusion_head": "And",
+        "conclusion": "(¬∃ after,\n      TDN.MultiProtocolForwarding.Step TDN.Deployments.MacsecProtection.noSaConfiguration\n        TDN.Deployments.MacsecProtection.sampleReady TDN.MultiProtocolForwarding.Action.protectMACsec after) ∧\n  ¬∃ after,\n      TDN.MultiProtocolForwarding.Step TDN.Deployments.MacsecProtection.noSaConfiguration\n        TDN.Deployments.MacsecProtection.sampleReady TDN.MultiProtocolForwarding.Action.encryptMACsec after",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.reduced_receive_with_matching_keys_is_accepted",
+        "conclusion_head": "TDN.Compliance.DeviceExecutionBinding.AcceptedStep",
+        "conclusion": "(TDN.Deployments.MacsecProtection.reducedReceiveBinding\n      TDN.Deployments.MacsecProtection.capturedAssociation).AcceptedStep\n  TDN.Deployments.MacsecProtection.reducedReceived TDN.MultiProtocolForwarding.Action.validateMACsec\n  TDN.Deployments.MacsecProtection.reducedRestored",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.reduced_receive_with_wrong_key_is_rejected",
+        "conclusion_head": "And",
+        "conclusion": "TDN.LayeredFrame.SameMACWireIdentity TDN.Deployments.MacsecProtection.capturedAssociation\n    TDN.Deployments.MacsecProtection.wrongKeyAssociation ∧\n  TDN.MultiProtocolForwarding.Step\n      (TDN.Deployments.MacsecProtection.reducedReceiveConfiguration\n        TDN.Deployments.MacsecProtection.wrongKeyAssociation)\n      TDN.Deployments.MacsecProtection.reducedReceived TDN.MultiProtocolForwarding.Action.validateMACsec\n      TDN.Deployments.MacsecProtection.reducedRestored ∧\n    ¬(TDN.Deployments.MacsecProtection.reducedReceiveBinding\n            TDN.Deployments.MacsecProtection.wrongKeyAssociation).AcceptedStep\n        TDN.Deployments.MacsecProtection.reducedReceived TDN.MultiProtocolForwarding.Action.validateMACsec\n        TDN.Deployments.MacsecProtection.reducedRestored",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.reduced_transmit_records_sa_use_without_full_encryption",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.MacsecProtection.direct.prototype.OperationEvents TDN.Deployments.MacsecProtection.sampleReady\n      TDN.MultiProtocolForwarding.Action.protectMACsec\n      (TDN.Deployments.MacsecProtection.reducedEventOutput encryptFrames offset) =\n    [TDN.Compliance.NetworkEvent.useSAK { originDomain := 0, value := TDN.LinkAdmission.payloadCode [7, 8] }\n        (TDN.Deployments.MacsecProtection.direct.macsecTunnel TDN.Deployments.MacsecProtection.capturedAssociation)\n        (TDN.Deployments.MacsecProtection.direct.prototype.keyName\n          TDN.Deployments.MacsecProtection.capturedAssociation.keyGeneration),\n      TDN.Compliance.NetworkEvent.protect { originDomain := 0, value := TDN.LinkAdmission.payloadCode [7, 8] }\n        (TDN.Deployments.MacsecProtection.direct.macsecTunnel TDN.Deployments.MacsecProtection.capturedAssociation)\n        (TDN.Compliance.ProtectionSession.macsec TDN.Deployments.MacsecProtection.capturedAssociation)] ∧\n  TDN.Compliance.BodySessions (TDN.Deployments.MacsecProtection.reducedEventOutput encryptFrames offset).frame.body =\n      [TDN.Compliance.ProtectionSession.macsec TDN.Deployments.MacsecProtection.capturedAssociation] ∧\n    TDN.Deployments.MacsecProtection.direct.prototype.LayerIds\n        (TDN.Deployments.MacsecProtection.reducedEventOutput encryptFrames offset).frame.body =\n      []",
+        "binders": [
+          {
+            "type": "Bool",
+            "name": "encryptFrames",
+            "is_proposition": false
+          },
+          {
+            "type": "ℕ",
+            "name": "offset",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.reduced_receive_records_validation_without_full_decryption",
+        "conclusion_head": "Eq",
+        "conclusion": "TDN.Deployments.MacsecProtection.direct.prototype.OperationEvents TDN.Deployments.MacsecProtection.reducedReceived\n    TDN.MultiProtocolForwarding.Action.validateMACsec TDN.Deployments.MacsecProtection.reducedRestored =\n  [TDN.Compliance.NetworkEvent.unprotect { originDomain := 0, value := TDN.LinkAdmission.payloadCode [7, 8] }\n      (TDN.Deployments.MacsecProtection.direct.macsecTunnel TDN.Deployments.MacsecProtection.capturedAssociation)\n      (TDN.Compliance.ProtectionSession.macsec TDN.Deployments.MacsecProtection.capturedAssociation)]",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MacsecProtection.reduced_wire_transmit_records_sa_session",
+        "conclusion_head": "Eq",
+        "conclusion": "TDN.Deployments.MacsecProtection.direct.prototype.OperationEvents\n    (TDN.Deployments.MacsecProtection.reducedEventOutput encryptFrames offset)\n    TDN.MultiProtocolForwarding.Action.linkTransmit\n    (TDN.Deployments.MacsecProtection.reducedEventOutput encryptFrames offset) =\n  [TDN.Compliance.NetworkEvent.sessionTransmit { originDomain := 0, value := TDN.LinkAdmission.payloadCode [7, 8] }\n      (TDN.Deployments.MacsecProtection.direct.ifaceName 1)\n      [TDN.Compliance.ProtectionSession.macsec TDN.Deployments.MacsecProtection.capturedAssociation],\n    TDN.Compliance.NetworkEvent.transmit { originDomain := 0, value := TDN.LinkAdmission.payloadCode [7, 8] }\n      (TDN.Deployments.MacsecProtection.direct.ifaceName 1) [] TDN.Compliance.TrafficClass.protectedData,\n    TDN.Compliance.NetworkEvent.receive { originDomain := 0, value := TDN.LinkAdmission.payloadCode [7, 8] }\n      (TDN.Deployments.MacsecProtection.direct.ifaceName 1) [] TDN.Compliance.TrafficClass.protectedData,\n    TDN.Compliance.NetworkEvent.sessionReceive { originDomain := 0, value := TDN.LinkAdmission.payloadCode [7, 8] }\n      (TDN.Deployments.MacsecProtection.direct.ifaceName 1)\n      [TDN.Compliance.ProtectionSession.macsec TDN.Deployments.MacsecProtection.capturedAssociation]]",
+        "binders": [
+          {
+            "type": "Bool",
+            "name": "encryptFrames",
+            "is_proposition": false
+          },
+          {
+            "type": "ℕ",
+            "name": "offset",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "The profiles are explicitly generated model fixtures. Mapping arbitrary real implementations to the model is not established.",
+      "The link codec checks structural MACsec framing and the SecTAG E bit; AES-GCM, ICV validity and full ciphertext correspondence are outside the model fixture claim.",
+      "The positive timer observations apply to the identified instrumented hostap build; they do not establish conformance of unmodified hostap.",
+      "Captured observations and public configuration are taken as faithfully collected.",
+      "The build-directory source supports policy interpretation but is not a reproducible-build proof.",
+      "Nonzero-offset behavior is a theoretical model application; installed tooling did not expose that setting."
+    ],
+    "scope": "Every clause of the instantiated specification, within the recorded model and explicit implementation assumptions.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-029",
+    "reuse_accounting": "The same configuration-independent general theorem is applied to both recorded configurations.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_ipsec_inner_tunnel_no_bypass",
+        "conclusion_head": "TDN.Requirements.Msc.msc_inner_tunnel_no_bypass",
+        "conclusion": "TDN.Requirements.Msc.msc_inner_tunnel_no_bypass\n  (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedDeployment primitive)\n  (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedForwarding primitive)\n  TDN.Deployments.InnerTunnelNoBypass_IPsec.components false false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Macsec.snapshot_RG029_macsec_inner_tunnel_no_bypass",
+        "conclusion_head": "TDN.Requirements.Msc.msc_inner_tunnel_no_bypass",
+        "conclusion": "TDN.Requirements.Msc.msc_inner_tunnel_no_bypass TDN.Deployments.InnerTunnelNoBypass_Macsec.deployment\n  TDN.Deployments.InnerTunnelNoBypass_Macsec.forwarding TDN.Deployments.InnerTunnelNoBypass_Macsec.components false\n  false",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_ipsec_nonempty_payload_delivered",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions last,\n  (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedForwarding primitive).initial start ∧\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedForwarding primitive).system.MTr start actions last ∧\n      last.native.datapathStage = TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        last.native.iface = 142 ∧\n          last.native.frame.originDomain = 1 ∧\n            last.native.frame.payload ≠ 0 ∧ last.native.frame.body.protectionLayers = []",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Macsec.snapshot_RG029_macsec_nonempty_payload_delivered",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions finish,\n  TDN.Deployments.InnerTunnelNoBypass_Macsec.forwarding.initial start ∧\n    TDN.Deployments.InnerTunnelNoBypass_Macsec.forwarding.system.MTr start actions finish ∧\n      (TDN.Deployments.InnerTunnelNoBypass_Macsec.forwarding.native.state finish).datapathStage =\n          TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        (TDN.Deployments.InnerTunnelNoBypass_Macsec.forwarding.native.state finish).frame.payload =\n            TDN.LinkAdmission.payloadCode [7, 8] ∧\n          (TDN.Deployments.InnerTunnelNoBypass_Macsec.forwarding.native.state finish).frame.body =\n            TDN.Deployments.InnerTunnelNoBypass_Macsec.records.trafficDatagram.body",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_ipsec_plaintext_gray_input_blocked",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ after,\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedForwarding primitive).native.AcceptedStep\n      TDN.Deployments.InnerTunnelNoBypass_IPsec.unauthenticatedGrayInput\n      TDN.MultiProtocolForwarding.Action.forwardFilter after",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_ipsec_uninstalled_spi_blocked",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ after,\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedForwarding primitive).native.AcceptedStep\n      TDN.Deployments.InnerTunnelNoBypass_IPsec.uninstalledGrayInput TDN.MultiProtocolForwarding.Action.decryptIPsec\n      after",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Macsec.snapshot_RG029_outbound_mac_objective_rejects_missing_policy",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_inner_tunnel_no_bypass TDN.Deployments.InnerTunnelNoBypass_Macsec.deployment\n    TDN.Deployments.InnerTunnelNoBypass_Macsec.forwarding TDN.Deployments.InnerTunnelNoBypass_Macsec.components true\n    false",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Macsec.snapshot_RG029_inbound_mac_objective_rejects_missing_policy",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_inner_tunnel_no_bypass TDN.Deployments.InnerTunnelNoBypass_Macsec.deployment\n    TDN.Deployments.InnerTunnelNoBypass_Macsec.forwarding TDN.Deployments.InnerTunnelNoBypass_Macsec.components false\n    true",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_IPsec.tunnel_interpretation_is_bound",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ record ∈ TDN.Deployments.InnerTunnelNoBypass_IPsec.tunnelModeBindings,\n  record.tunnel = tunnel.id ∧\n    record.mode = \"tunnel\" ∧\n      record.protocol = \"esp\" ∧\n        record.Check ∧\n          (TDN.Requirements.Msc.associatedIPTunnelView tunnel).associatedIPTunnel = true ∧\n            (TDN.Requirements.Msc.associatedIPTunnelView tunnel).sender = tunnel.sender ∧\n              (TDN.Requirements.Msc.associatedIPTunnelView tunnel).receiver = tunnel.receiver",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Tunnel",
+            "name": "tunnel",
+            "is_proposition": false
+          },
+          {
+            "type": "tunnel ∈ TDN.Deployments.InnerTunnelNoBypass_IPsec.records.tunnels",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          },
+          {
+            "type": "tunnel.mechanism = TDN.Mechanism.ipsec",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_IPsec.ipsec_frame_has_bound_outer_header",
+        "conclusion_head": "Eq",
+        "conclusion": "(TDN.Deployments.InnerTunnelNoBypass_IPsec.configuration primitive).visibleHeader\n    ((TDN.Deployments.InnerTunnelNoBypass_IPsec.configuration primitive).ipsecFrame iface before association) =\n  some\n    (have __src := TDN.LayeredFrame.outerHeader association.sender association.receiver \"esp\" 0 0;\n    { source := __src.source, destination := __src.destination, protocol := __src.protocol, ingress := __src.ingress,\n      egress := __src.egress, sourcePort := __src.sourcePort, destinationPort := __src.destinationPort,\n      ipv4HeaderWords := __src.ipv4HeaderWords, matchedInboundPolicyIds := __src.matchedInboundPolicyIds,\n      matchedOutboundPolicyIds := __src.matchedOutboundPolicyIds, connectionState := __src.connectionState,\n      ipv6NextHeader := __src.ipv6NextHeader, icmpType := __src.icmpType, icmpCode := __src.icmpCode, hopLimit := 64,\n      etherType := __src.etherType, payloadBytes := __src.payloadBytes, connectionId := __src.connectionId,\n      networkBytes := __src.networkBytes, ipv4FragmentOffset := __src.ipv4FragmentOffset })",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          },
+          {
+            "type": "ℕ",
+            "name": "iface",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.LayeredFrame.Frame",
+            "name": "before",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.DataPlaneForwarding.TunnelSAStamp",
+            "name": "association",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_observed_mode_mismatch_blocks_application",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_inner_tunnel_no_bypass\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedDeployment primitive)\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedForwarding primitive)\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.componentsWithObservedBinding\n      TDN.Deployments.InnerTunnelNoBypass_IPsec.mismatchedModeBinding)\n    false false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_observed_endpoint_mismatch_blocks_application",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_inner_tunnel_no_bypass\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedDeployment primitive)\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.interpretedForwarding primitive)\n    (TDN.Deployments.InnerTunnelNoBypass_IPsec.componentsWithObservedBinding\n      TDN.Deployments.InnerTunnelNoBypass_IPsec.mismatchedEndpointBinding)\n    false false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "TDN.Deployments.InnerTunnelNoBypass_IPsec.snapshot_RG029_ipsec_inner_tunnel_no_bypass: ESPWire.GCMPrimitive IPsecKeyMaterial: Explicit cryptographic implementation interface with encrypt/decrypt/length laws; does not assume no-bypass.",
+      "IPsec AES-GCM implementation and its primitive laws are supplied through the explicit GCMPrimitive interface.",
+      "Deterministic valid-length model key material is indexed by retained captured material references; real key bytes remain redacted.",
+      "The IPsec packet-source model describes a fixed installed-SA epoch with Red application traffic. The broader MtuSizing local management/control source model remains unclaimed.",
+      "Single-sample ESP sequence/IV parameters do not establish freshness or anti-replay security.",
+      "Capture honesty and parser/source interpretation correspondence.",
+      "Actual kernel/IPsec/MACsec implementations conform to the abstract accepted processing steps.",
+      "Approved I-RG029-IP-TUNNEL recognizes intrinsic ESP tunnel-mode IP encapsulation; source context/RFC/evidence are retained."
+    ],
+    "scope": "Every clause of the instantiated specification, within the recorded model and explicit implementation assumptions.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-030",
+    "reuse_accounting": "The same configuration-independent general theorem is applied to both recorded configurations.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_outer_tunnel_no_bypass",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_tunnel_no_bypass",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_tunnel_no_bypass\n  (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedDeployment primitive)\n  (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive)\n  TDN.Deployments.OuterTunnelNoBypass_Baseline.components false false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_outer_tunnel_no_bypass",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_tunnel_no_bypass",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_tunnel_no_bypass\n  (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedDeployment primitive)\n  (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive)\n  TDN.Deployments.OuterTunnelNoBypass_Shared.components false false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_nonempty_payload_delivered",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions last,\n  (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive).initial start ∧\n    (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive).system.MTr start actions last ∧\n      last.native.datapathStage = TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        last.native.iface = 142 ∧\n          last.native.frame.originDomain = 1 ∧\n            last.native.frame.payload ≠ 0 ∧ last.native.frame.body.protectionLayers = []",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_unauthenticated_black_input_blocked",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ after,\n    (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive).native.AcceptedStep\n      TDN.Deployments.OuterTunnelNoBypass_Baseline.unauthenticatedBlackInput\n      TDN.MultiProtocolForwarding.Action.forwardFilter after",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_missing_outer_policy_blocked",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ after,\n    (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive).native.AcceptedStep\n      TDN.Deployments.OuterTunnelNoBypass_Baseline.noOuterPolicyOutput TDN.MultiProtocolForwarding.Action.forwardFilter\n      after",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_outbound_objective_rejects_missing_policy",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_outer_tunnel_no_bypass\n    (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedDeployment primitive)\n    (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive)\n    TDN.Deployments.OuterTunnelNoBypass_Baseline.components true false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_inbound_objective_rejects_missing_policy",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_outer_tunnel_no_bypass\n    (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedDeployment primitive)\n    (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive)\n    TDN.Deployments.OuterTunnelNoBypass_Baseline.components false true",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_unprotected_gray_receive_unreachable",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ start actions finish,\n    (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive).initial start ∧\n      (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive).system.MTr start actions finish ∧\n        TDN.Compliance.NetworkEvent.receive { originDomain := 1, value := 1 }\n            (TDN.Deployments.OuterTunnelNoBypass_Baseline.records.ifaceName 106) []\n            TDN.Compliance.TrafficClass.protectedData ∈\n          (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive).history.Events ++\n            List.flatMap (TDN.Deployments.OuterTunnelNoBypass_Baseline.interpretedForwarding primitive).events actions",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_nonempty_payload_delivered",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ start actions last,\n  (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).initial start ∧\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).system.MTr start actions last ∧\n      last.native.datapathStage = TDN.DataPlaneForwarding.DatapathStage.delivered ∧\n        last.native.iface = 196 ∧\n          last.native.frame.originDomain = 1 ∧\n            last.native.frame.payload ≠ 0 ∧ last.native.frame.body.protectionLayers = []",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_unauthenticated_black_input_blocked",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ after,\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).native.AcceptedStep\n      TDN.Deployments.OuterTunnelNoBypass_Shared.unauthenticatedBlackInput\n      TDN.MultiProtocolForwarding.Action.forwardFilter after",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_missing_outer_policy_blocked",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ after,\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).native.AcceptedStep\n      TDN.Deployments.OuterTunnelNoBypass_Shared.noOuterPolicyOutput TDN.MultiProtocolForwarding.Action.forwardFilter\n      after",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_outbound_objective_rejects_missing_policy",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_outer_tunnel_no_bypass\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedDeployment primitive)\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive)\n    TDN.Deployments.OuterTunnelNoBypass_Shared.components true false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_inbound_objective_rejects_missing_policy",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_outer_tunnel_no_bypass\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedDeployment primitive)\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive)\n    TDN.Deployments.OuterTunnelNoBypass_Shared.components false true",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_unprotected_gray_receive_unreachable",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ start actions finish,\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).initial start ∧\n      (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).system.MTr start actions finish ∧\n        TDN.Compliance.NetworkEvent.receive { originDomain := 1, value := 1 }\n            (TDN.Deployments.OuterTunnelNoBypass_Shared.records.ifaceName 156) []\n            TDN.Compliance.TrafficClass.protectedData ∈\n          (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).history.Events ++\n            List.flatMap (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).events actions",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_mode_mismatch_blocks_application",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_outer_tunnel_no_bypass\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedDeployment primitive)\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive)\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.componentsWithObservedBinding\n      TDN.Deployments.OuterTunnelNoBypass_Shared.mismatchedOuterModeBinding)\n    false false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_endpoint_mismatch_blocks_application",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_outer_tunnel_no_bypass\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedDeployment primitive)\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive)\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.componentsWithObservedBinding\n      TDN.Deployments.OuterTunnelNoBypass_Shared.mismatchedOuterEndpointBinding)\n    false false",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_multiple_inner_layers_receive_unreachable",
+        "conclusion_head": "Not",
+        "conclusion": "¬∃ start actions finish,\n    (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).initial start ∧\n      (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).system.MTr start actions finish ∧\n        TDN.Compliance.NetworkEvent.receive { originDomain := 1, value := 1 }\n            (TDN.Deployments.OuterTunnelNoBypass_Shared.records.ifaceName 156)\n            [TDN.Deployments.OuterTunnelNoBypass_Shared.records.tunnels[0].id,\n              TDN.Deployments.OuterTunnelNoBypass_Shared.records.tunnels[2].id]\n            TDN.Compliance.TrafficClass.protectedData ∈\n          (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).history.Events ++\n            List.flatMap (TDN.Deployments.OuterTunnelNoBypass_Shared.interpretedForwarding primitive).events actions",
+        "binders": [
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.gray_receive_test_tunnels_are_inner",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.OuterTunnelNoBypass_Shared.records.tunnels[0].layer = TDN.Layer.inner ∧\n  TDN.Deployments.OuterTunnelNoBypass_Shared.records.tunnels[2].layer = TDN.Layer.inner ∧\n    TDN.Deployments.OuterTunnelNoBypass_Shared.records.tunnels[0].id ≠\n      TDN.Deployments.OuterTunnelNoBypass_Shared.records.tunnels[2].id",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_RG030_baseline_outer_tunnel_no_bypass: ESPWire.GCMPrimitive IPsecKeyMaterial: Explicit implementation interface, not an assumed no-bypass result.",
+      "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_RG030_shared_outer_tunnel_no_bypass: ESPWire.GCMPrimitive IPsecKeyMaterial: Explicit implementation interface, not an assumed no-bypass result.",
+      "Each whole application is parameterized by ESPWire.GCMPrimitive IPsecKeyMaterial with its encrypt/decrypt/length laws.",
+      "Deterministic valid-length model key material is indexed by each retained epoch's captured opaque material references; real keys are redacted.",
+      "Both packet models admit all recorded Red source requests at a fixed installed-SA epoch. Broader local management/control generation and rekey transitions remain outside the claimed source scope.",
+      "Sample sequence/IV fixtures establish neither freshness nor replay security.",
+      "Capture honesty and parser/source interpretation correspondence.",
+      "Actual kernel/IPsec implementations conform to the accepted abstract packet-processing steps.",
+      "The approved intrinsic ESP tunnel/IP encapsulation interpretation I-RG029-IP-TUNNEL is retained consistently."
+    ],
+    "scope": "Fixed installed-SA epoch, complete declared Red-source models; baseline and shared Outer topology. Real implementation correspondence is explicit.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-032",
+    "reuse_accounting": "Unchanged retained scheduled cover sender and materially different public-Internet model.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality.retained_complete_RG032",
+        "conclusion_head": "TDN.Requirements.Msc.msc_transec_conditions",
+        "conclusion": "TDN.Requirements.Msc.msc_transec_conditions TDN.Deployments.SnapshotTfcCoverTraffic.installations",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality.alternate_complete_RG032",
+        "conclusion_head": "TDN.Requirements.Msc.msc_transec_conditions",
+        "conclusion": "TDN.Requirements.Msc.msc_transec_conditions\n  [TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality.alternateInstallation]",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Full sender implementation correspondence beyond the retained finite observations.",
+      "Architecture/public-Internet/objective/firewall flags retain their separate source and configuration binding."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-033",
+    "reuse_accounting": "The same general theorem is applied to the baseline and shared network records.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.MtuSizing_Baseline.complete_recorded_packet_size_configuration",
+        "conclusion_head": "TDN.Requirements.Msc.msc_packet_size_configuration",
+        "conclusion": "TDN.Requirements.Msc.msc_packet_size_configuration\n  (TDN.Deployments.MtuSizing_Baseline.deployment material primitive parameters base)\n  (TDN.Deployments.MtuSizing_Baseline.execution material primitive parameters base)\n  (TDN.Requirements.StandardDataPlaneBridge.sizedWireModel\n    (TDN.Deployments.MtuSizing_Baseline.codec material primitive parameters)\n    (TDN.Deployments.MtuSizing_Records.sourceMtu TDN.Deployments.MtuSizing_Baseline.roles)\n    (TDN.Deployments.MtuSizing_Records.sourceMtu TDN.Deployments.MtuSizing_Baseline.roles))\n  (TDN.Deployments.MtuSizing_Records.settings TDN.Deployments.MtuSizing_Baseline.roles) []",
+        "binders": [
+          {
+            "type": "String → TDN.Compliance.IPsecKeyMaterial",
+            "name": "material",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.DataPlaneForwarding.TunnelSAStamp → TDN.IPsecFrameEncoding.Parameters",
+            "name": "parameters",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.MtuSizing_Records.PrivateMaterialAssurance TDN.Deployments.MtuSizing_Baseline.installations material",
+            "name": "privateMaterial",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.MtuSizing_Shared.complete_recorded_packet_size_configuration",
+        "conclusion_head": "TDN.Requirements.Msc.msc_packet_size_configuration",
+        "conclusion": "TDN.Requirements.Msc.msc_packet_size_configuration\n  (TDN.Deployments.MtuSizing_Shared.deployment material primitive parameters base)\n  (TDN.Deployments.MtuSizing_Shared.execution material primitive parameters base)\n  (TDN.Requirements.StandardDataPlaneBridge.sizedWireModel\n    (TDN.Deployments.MtuSizing_Shared.codec material primitive parameters)\n    (TDN.Deployments.MtuSizing_Records.sourceMtu TDN.Deployments.MtuSizing_Shared.roles)\n    (TDN.Deployments.MtuSizing_Records.sourceMtu TDN.Deployments.MtuSizing_Shared.roles))\n  (TDN.Deployments.MtuSizing_Records.settings TDN.Deployments.MtuSizing_Shared.roles) []",
+        "binders": [
+          {
+            "type": "String → TDN.Compliance.IPsecKeyMaterial",
+            "name": "material",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.ESPWire.GCMPrimitive TDN.Compliance.IPsecKeyMaterial",
+            "name": "primitive",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.DataPlaneForwarding.TunnelSAStamp → TDN.IPsecFrameEncoding.Parameters",
+            "name": "parameters",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.Deployments.MtuSizing_Records.PrivateMaterialAssurance TDN.Deployments.MtuSizing_Shared.installations material",
+            "name": "privateMaterial",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Whole instantiated RG033 specification for the recorded baseline and shared IPv4/IPsec configurations. Mandatory sizing covers Inner Gray, Outer Black and applicable Gray Firewall external interfaces. Optional IR2 reduction is unselected. Private-material validity, encryption-function laws and faithful Linux execution remain explicit assumptions."
+    ],
+    "scope": "Whole instantiated RG033 specification for the recorded baseline and shared IPv4/IPsec configurations. Mandatory sizing covers Inner Gray, Outer Black and applicable Gray Firewall external interfaces. Optional IR2 reduction is unselected. Private-material validity, encryption-function laws and faithful Linux execution remain explicit assumptions.",
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-033/round-003/verdict.json",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-034",
+    "reuse_accounting": "Unchanged imported baseline/shared graphs and explicit bypass negative.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_TopologyWaypointing.Baseline.configured_graph_RG034",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_firewall_placement",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_firewall_placement true true true\n  TDN.Deployments.native_baseline_20261017T2237Z_topology.edge\n  (Relation.ReflTransGen TDN.Deployments.native_baseline_20261017T2237Z_topology.grayEdge)\n  (fun node => node ∈ TDN.Deployments.native_baseline_20261017T2237Z_topology.outerNodes)\n  TDN.Deployments.native_baseline_20261017T2237Z_topology.firewall\n  (fun node => node ∈ TDN.Deployments.native_baseline_20261017T2237Z_topology.blackNodes)\n  TDN.Deployments.native_baseline_20261017T2237Z_topology.grayFirewall\n  (fun node => node ∈ TDN.Deployments.native_baseline_20261017T2237Z_topology.innerNodes)\n  (fun a b => (a, b) ∈ TDN.Deployments.native_baseline_20261017T2237Z_topology.insideAttachments)\n  (fun a b => (a, b) ∈ TDN.Deployments.native_baseline_20261017T2237Z_topology.outsideAttachments) fun x x_1 => False",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_TopologyWaypointing.Shared.configured_graph_RG034",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_firewall_placement",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_firewall_placement true true true\n  TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.edge\n  (Relation.ReflTransGen TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.grayEdge)\n  (fun node => node ∈ TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.outerNodes)\n  TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.firewall\n  (fun node => node ∈ TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.blackNodes)\n  TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.grayFirewall\n  (fun node => node ∈ TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.innerNodes)\n  (fun a b => (a, b) ∈ TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.insideAttachments)\n  (fun a b => (a, b) ∈ TDN.Deployments.native_shared_four_levels_20261017T2240Z_scope_v2_topology.outsideAttachments)\n  fun x x_1 => False",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.full_firewall_path",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_firewall_placement",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_firewall_placement true true false\n  TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.edge\n  TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.grayConnection\n  TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.outer\n  TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.firewall\n  TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.black (fun x => False)\n  TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.inner\n  TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.inside\n  TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.outside fun x x_1 => False",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Bind generic edge/Gray-connection/attachment predicates and complete node roles to the exact supported observed topology."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-035",
+    "reuse_accounting": "The same general theorem is applied to the baseline and shared network records.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.Perimeter_Baseline.complete_native_boundary_policy",
+        "conclusion_head": "TDN.Requirements.Msc.msc_boundary_interface_filtering",
+        "conclusion": "TDN.Requirements.Msc.msc_boundary_interface_filtering (TDN.Deployments.Perimeter_Baseline.deployment base) true\n  (fun name => TDN.Deployments.Perimeter_Baseline.firewallInternal.contains name)\n  (TDN.Deployments.Perimeter_DeviceModel.localOuter TDN.Deployments.Perimeter_Baseline.firewalls)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.Perimeter_Shared.complete_native_boundary_policy",
+        "conclusion_head": "TDN.Requirements.Msc.msc_boundary_interface_filtering",
+        "conclusion": "TDN.Requirements.Msc.msc_boundary_interface_filtering (TDN.Deployments.Perimeter_Shared.deployment base) true\n  (fun name => TDN.Deployments.Perimeter_Shared.firewallInternal.contains name)\n  (TDN.Deployments.Perimeter_DeviceModel.localOuter TDN.Deployments.Perimeter_Shared.firewalls)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Whole instantiated RG035 specification for two IPv4/IPsec deployments; physical MACsec coverage and counterexamples separately checked. Other unfinished RGs remain pending."
+    ],
+    "scope": "Whole instantiated RG035 specification for two IPv4/IPsec deployments; physical MACsec coverage and counterexamples separately checked. Other unfinished RGs remain pending.",
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-035/round-002/verdict.json",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-037",
+    "reuse_accounting": "Nonempty threshold-blocked enabled feature and selected-objective disabled feature. Modeled vendor emission and unrelated admitted packet exist; both mutations reject.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_ThirdPartyServices.blocking_model_RG037",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_third_party_services",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_third_party_services\n  (TDN.Deployments.SnapshotProof_ThirdPartyServices.deployment base processing) (fun x => false)\n  [TDN.Deployments.SnapshotProof_ThirdPartyServices.feature true]",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_ThirdPartyServices.disabled_model_RG037",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_third_party_services",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_third_party_services\n  (TDN.Deployments.SnapshotProof_ThirdPartyServices.deployment base processing) (fun x => true)\n  [TDN.Deployments.SnapshotProof_ThirdPartyServices.feature false]",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_ThirdPartyServices.nonempty_feature_has_actual_emission",
+        "conclusion_head": "Exists",
+        "conclusion": "∃ item ∈ [TDN.Deployments.SnapshotProof_ThirdPartyServices.feature true],\n  item.canContactThirdParty = true ∧\n    item.emittedTraffic\n      ((TDN.Deployments.SnapshotProof_ThirdPartyServices.deployment base processing).Observe\n        TDN.Deployments.SnapshotProof_ThirdPartyServices.vendorPacket)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_ThirdPartyServices.unrelated_protected_packet_is_admitted",
+        "conclusion_head": "TDN.Compliance.Deployment.Accepts",
+        "conclusion": "(TDN.Deployments.SnapshotProof_ThirdPartyServices.deployment base processing).Accepts \"port-O\"\n  TDN.Compliance.Direction.outbound\n  ((TDN.Deployments.SnapshotProof_ThirdPartyServices.deployment base processing).Observe\n    TDN.Deployments.SnapshotProof_Addressing.packet)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_ThirdPartyServices.vendor_packet_is_blocked",
+        "conclusion_head": "Not",
+        "conclusion": "¬(TDN.Deployments.SnapshotProof_ThirdPartyServices.deployment base processing).Accepts \"port-O\"\n    TDN.Compliance.Direction.outbound\n    ((TDN.Deployments.SnapshotProof_ThirdPartyServices.deployment base processing).Observe\n      TDN.Deployments.SnapshotProof_ThirdPartyServices.vendorPacket)",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_ThirdPartyServices.admitting_vendor_rule_violates_exclusion",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.SnapshotProof_ThirdPartyServices.badRule.toFilter.accepts\n      TDN.Deployments.SnapshotProof_ThirdPartyServices.vendorPacket =\n    true ∧\n  ¬TDN.Deployments.SnapshotProof_ThirdPartyServices.badRule.toFilter.accepts\n        TDN.Deployments.SnapshotProof_ThirdPartyServices.vendorPacket =\n      false",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_ThirdPartyServices.objective_enabled_mutation_fails",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.Msc.msc_outer_third_party_services\n    (TDN.Deployments.SnapshotProof_ThirdPartyServices.deployment base processing) (fun x => true)\n    [TDN.Deployments.SnapshotProof_ThirdPartyServices.feature true]",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Complete third-party-feature inventory and emitted-packet characterization.",
+      "Actual per-rule exclusion checks or selected feature-disable configuration.",
+      "The current sufficient theorem's IP-feature premise must be checked; an Ethernet-emitting feature needs a separate link-operation proof."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-038",
+    "reuse_accounting": "Unchanged routed and exact imported L2 program applications including full MKA/bootstrap and installed-data admission.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_HeaderFiltering.routed_ipv4_RG038",
+        "conclusion_head": "TDN.Requirements.Msc.msc_ip_header_and_multicast_filtering",
+        "conclusion": "TDN.Requirements.Msc.msc_ip_header_and_multicast_filtering\n  (TDN.Deployments.SnapshotProof_HeaderFiltering.deployment base processing) fun x => false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_link_program_model_RG038",
+        "conclusion_head": "TDN.Requirements.Msc.msc_ip_header_and_multicast_filtering",
+        "conclusion": "TDN.Requirements.Msc.msc_ip_header_and_multicast_filtering\n  (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.deployment base processing) fun x => false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_positive_MKA_and_data",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Deployments.SnapshotProof_LinkHeaderFiltering.program 1).Accepts\n    (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.mka.Packet \"\" \"A/wire\") ∧\n  (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.program 2).Accepts\n      (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.mka.Packet \"B/wire\" \"\") ∧\n    (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.program 1).Accepts\n        (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.dataFrame.Packet \"\" \"A/wire\") ∧\n      (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.program 2).Accepts\n        (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.dataFrame.Packet \"B/wire\" \"\")",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_negative_group_actor_length_and_vlan",
+        "conclusion_head": "Not",
+        "conclusion": "¬policy.Accepts (frame.Packet \"wire\" \"wire\")",
+        "binders": [
+          {
+            "type": "TDN.LinkAdmission.Program",
+            "name": "policy",
+            "is_proposition": false
+          },
+          {
+            "type": "policy ∈ TDN.Deployments.SnapshotProof_LinkHeaderFiltering.programs",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          },
+          {
+            "type": "TDN.LinkAdmission.Frame",
+            "name": "frame",
+            "is_proposition": false
+          },
+          {
+            "type": "frame ∈\n  [TDN.Deployments.SnapshotProof_LinkHeaderFiltering.groupData,\n    TDN.Deployments.SnapshotProof_LinkHeaderFiltering.wrongActor,\n    TDN.Deployments.SnapshotProof_LinkHeaderFiltering.wrongLength,\n    TDN.Deployments.SnapshotProof_LinkHeaderFiltering.taggedMKA,\n    TDN.Deployments.SnapshotProof_LinkHeaderFiltering.taggedData]",
+            "name": "a._@._internal._hyg.0",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_bootstrap_MKA_is_fully_admitted",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Deployments.SnapshotProof_LinkHeaderFiltering.deployment base processing).Accepts \"A/wire\"\n    TDN.Compliance.Direction.outbound\n    ((TDN.Deployments.SnapshotProof_LinkHeaderFiltering.deployment base processing).Observe\n      (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.mka.Packet \"\" \"A/wire\")) ∧\n  (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.deployment base processing).Accepts \"B/wire\"\n    TDN.Compliance.Direction.inbound\n    ((TDN.Deployments.SnapshotProof_LinkHeaderFiltering.deployment base processing).Observe\n      (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.mka.Packet \"B/wire\" \"\"))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_installed_program_model_RG038",
+        "conclusion_head": "TDN.Requirements.Msc.msc_ip_header_and_multicast_filtering",
+        "conclusion": "TDN.Requirements.Msc.msc_ip_header_and_multicast_filtering\n  (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.installedDeployment base processing) fun x => false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_installed_data_is_fully_admitted",
+        "conclusion_head": "And",
+        "conclusion": "(TDN.Deployments.SnapshotProof_LinkHeaderFiltering.installedDeployment base processing).Accepts \"A/wire\"\n    TDN.Compliance.Direction.outbound\n    ((TDN.Deployments.SnapshotProof_LinkHeaderFiltering.installedDeployment base processing).Observe\n      (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.dataFrame.Packet \"\" \"A/wire\")) ∧\n  (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.installedDeployment base processing).Accepts \"B/wire\"\n    TDN.Compliance.Direction.inbound\n    ((TDN.Deployments.SnapshotProof_LinkHeaderFiltering.installedDeployment base processing).Observe\n      (TDN.Deployments.SnapshotProof_LinkHeaderFiltering.dataFrame.Packet \"B/wire\" \"\"))",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "TDN.PacketProcessing.Inventory",
+            "name": "processing",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.local_association_indices_are_distinct",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.txA.keyGeneration ≠\n    TDN.Deployments.SnapshotProof_LinkHeaderFiltering.rxB.keyGeneration ∧\n  TDN.Deployments.SnapshotProof_LinkHeaderFiltering.txB.keyGeneration ≠\n    TDN.Deployments.SnapshotProof_LinkHeaderFiltering.rxA.keyGeneration",
+        "binders": [],
+        "axioms": []
+      }
+    ],
+    "deployed_application_conditions": [
+      "Complete actual device/interface/service inventory and raw hook/length projection for each claimed deployment.",
+      "Bind selected model inventory to the exact experiment scope; logical addresses, unused interfaces and transport/test-injector namespaces are not claimed covered by the four-port model.",
+      "Actual organization approval/necessity of the deployed MKA control protocol.",
+      "Exact nft/Linux parsing and admission implementation correspondence within the recorded untagged-veth/offload scope."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-039",
+    "reuse_accounting": "The same general theorem is applied to the baseline and shared network records.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.OuterToGray_Baseline.complete_Outer_gray_policy",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_gray_interface_policy",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_gray_interface_policy (TDN.Deployments.OuterToGray_Baseline.records.deployment base)\n  false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.OuterToGray_Shared.complete_Outer_gray_policy",
+        "conclusion_head": "TDN.Requirements.Msc.msc_outer_gray_interface_policy",
+        "conclusion": "TDN.Requirements.Msc.msc_outer_gray_interface_policy (TDN.Deployments.OuterToGray_Shared.records.deployment base) false",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "IPv4 IPsec VPN deployments satisfying explicit local conditions; cdpOnGray=false; optional management absent."
+    ],
+    "scope": "IPv4 IPsec VPN deployments satisfying explicit local conditions; cdpOnGray=false; optional management absent.",
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-039/round-002/verdict.json",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-040",
+    "reuse_accounting": "The same general theorem is applied to the baseline and shared network records.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.Perimeter_Baseline.complete_native_Gray_firewall_allowlist",
+        "conclusion_head": "TDN.Requirements.Msc.msc_gray_firewall_allowlist",
+        "conclusion": "TDN.Requirements.Msc.msc_gray_firewall_allowlist (TDN.Deployments.Perimeter_Baseline.deployment base) true",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.GrayFirewallShared.complete_native_Gray_firewall_allowlist",
+        "conclusion_head": "TDN.Requirements.Msc.msc_gray_firewall_allowlist",
+        "conclusion": "TDN.Requirements.Msc.msc_gray_firewall_allowlist (TDN.Deployments.GrayFirewallShared.deployment base) true",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Whole instantiated RG040 specification for baseline and shared IPv4/IPsec deployments; all other unfinished groups remain pending."
+    ],
+    "scope": "Whole instantiated RG040 specification for baseline and shared IPv4/IPsec deployments; all other unfinished groups remain pending.",
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-040/round-001/verdict.json",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  },
+  {
+    "rg_id": "RG-047",
+    "reuse_accounting": "Retained finite service history plus selected-assurance model with an actual nonempty declared AW roster and performed operation.",
+    "applications_and_exact_binders": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_Administration.retained_complete_RG047",
+        "conclusion_head": "TDN.Requirements.Msc.msc_administrator_authentication",
+        "conclusion": "TDN.Requirements.Msc.msc_administrator_authentication d false false TDN.Deployments.SnapshotAdminSessions.events\n  TDN.Deployments.SnapshotAdminSessions.accounts TDN.Deployments.SnapshotAdminSessions.sessions []",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "d",
+            "is_proposition": false
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_Administration.live_channel_authentication_matches",
+        "conclusion_head": "TDN.Requirements.MatchingAdministratorAuthentication",
+        "conclusion": "TDN.Requirements.MatchingAdministratorAuthentication false false\n  [TDN.Deployments.SnapshotProof_Administration.operation, TDN.Deployments.SnapshotProof_Administration.authentication]\n  [TDN.Deployments.SnapshotProof_Administration.account] [TDN.Deployments.SnapshotProof_Administration.session]\n  TDN.Deployments.SnapshotProof_Administration.authentication TDN.Deployments.SnapshotProof_Administration.operation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_AssuranceReuse.selected_assurance_AW_model_RG047",
+        "conclusion_head": "TDN.Requirements.Msc.msc_administrator_authentication",
+        "conclusion": "TDN.Requirements.Msc.msc_administrator_authentication base true true TDN.Deployments.SnapshotProof_AssuranceReuse.events\n  [TDN.Deployments.SnapshotProof_AssuranceReuse.account] [TDN.Deployments.SnapshotProof_AssuranceReuse.session] [7]",
+        "binders": [
+          {
+            "type": "TDN.Compliance.Deployment",
+            "name": "base",
+            "is_proposition": false
+          },
+          {
+            "type": "base.authority.certificateCNSACompliant \"AW-person-7-certificate\"",
+            "name": "certificate",
+            "is_proposition": true
+          },
+          {
+            "type": "base.authority.authenticationConformsToNIST80063 \"AW-person-7-certificate\"",
+            "name": "nist",
+            "is_proposition": true
+          }
+        ],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_AssuranceReuse.assurance_admission_run",
+        "conclusion_head": "Cslib.LTS.MTr",
+        "conclusion": "(TDN.Admission.lts (fun event => event.kind = TDN.Requirements.AdminEventKind.operation)\n      (TDN.Requirements.MatchingAdministratorAuthentication true true\n        TDN.Deployments.SnapshotProof_AssuranceReuse.events [TDN.Deployments.SnapshotProof_AssuranceReuse.account]\n        [TDN.Deployments.SnapshotProof_AssuranceReuse.session])).MTr\n  []\n  [TDN.Deployments.SnapshotProof_AssuranceReuse.authentication, TDN.Deployments.SnapshotProof_AssuranceReuse.operation]\n  TDN.Deployments.SnapshotProof_AssuranceReuse.events",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_AssuranceReuse.nonempty_AW_and_performed_operation",
+        "conclusion_head": "And",
+        "conclusion": "TDN.Deployments.SnapshotProof_AssuranceReuse.account.workstationAccount = true ∧\n  TDN.Deployments.SnapshotProof_AssuranceReuse.operation ∈ TDN.Deployments.SnapshotProof_AssuranceReuse.events ∧\n    TDN.Requirements.MatchingAdministratorAuthentication true true TDN.Deployments.SnapshotProof_AssuranceReuse.events\n      [TDN.Deployments.SnapshotProof_AssuranceReuse.account] [TDN.Deployments.SnapshotProof_AssuranceReuse.session]\n      TDN.Deployments.SnapshotProof_AssuranceReuse.authentication TDN.Deployments.SnapshotProof_AssuranceReuse.operation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_AssuranceReuse.missing_selected_assurance_is_rejected",
+        "conclusion_head": "Not",
+        "conclusion": "¬TDN.Requirements.MatchingAdministratorAuthentication true true TDN.Deployments.SnapshotProof_AssuranceReuse.events\n    [TDN.Deployments.SnapshotProof_AssuranceReuse.account] [TDN.Deployments.SnapshotProof_AssuranceReuse.session]\n    (have __src := TDN.Deployments.SnapshotProof_AssuranceReuse.authentication;\n    { kind := __src.kind, person := __src.person, component := __src.component, order := __src.order,\n      credential := __src.credential, certificateCNSA := false, nist80063 := __src.nist80063,\n      session := __src.session })\n    TDN.Deployments.SnapshotProof_AssuranceReuse.operation",
+        "binders": [],
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ]
+      }
+    ],
+    "deployed_application_conditions": [
+      "Bind the complete actual performed operation/authentication/channel lifecycle inventory and Unix-account/credential records to the finite admission model.",
+      "Check complete AW administrator roster and credential ownership correspondence; human appointment/identity remains a separately named external fact where required.",
+      "Selected CNSA/NIST authority assurances are external facts and are not proved by optional-false fixtures."
+    ],
+    "scope": "Declared checked models; imported captures support only identified fields. No full live deployment conformance claim.",
+    "current_kernel_audit": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/independent-review/proof-audit.json"
+  }
+]

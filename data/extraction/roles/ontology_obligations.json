@@ -3,7 +3,7 @@
   "scope": "Associations connect a role to the current formalized requirement in which it participates. Applicability conditions, selected objectives, external evidence, and whole-network quantifiers remain part of each statement. Child roles inherit associations from every subclass ancestor; documented associations do not transmit obligations. Listing a requirement does not assert that a device or deployment satisfies it.",
   "source_hashes": {
     "TDN/Requirements/MasterMscRequirementSpecs.lean": "c633a63cb49a65edb818d44826c69384a15cd9b4c96266d3727a06b0ab49ee74",
-    "TDN/Requirements/CoreMscRequirements.lean": "a9cdac1d350b6a58f3179db46a5f94cec07e6ae439bfa439b88ed73b46781d60",
+    "TDN/Requirements/CoreMscRequirements.lean": "dc599b8d04847b627555183a6143befc2efbbeed30fd8c4a3db78241f4c53f78",
     "TDN/Requirements/CsfcRoleObligations.lean": "a7ddae592e47588e9cd4a574932e0b8c4728644938659bc52169c40a128e265c",
     "TDN/Requirements/CrossEnclavePkiIsolationSpec.lean": "b2215ad3fe0f334437be321a31f1ea89735fc03772386001d8cee57532410b9d",
     "TDN/Requirements/MscFirewallWaypointingTheorems.lean": "ae662c2dbc60539e6cb971a4e57d2ca7b57f71ab144946a6bb3d82c9cdb46890",
@@ -39,7 +39,7 @@
     "RG-025": "MACsec encryption uses 256-bit GCM-AES or GCM-AES-XPN, and key wrapping uses 256-bit AES-Key-Wrap.",
     "RG-026": "Certificate-authenticated MACsec devices and Authentication Servers offer a nonempty set of EAP-TLS suites, all satisfying the selected CNSA profile. Selecting CNSA 2 requires TLS 1.3.",
     "RG-027": "Relevant MACsec keys use the required key-name length and approved generation records, with fallback disabled. Generated CAKs must be obtained by an authorized administrator before application to both peers; EAP-derived CAKs need the required generator evidence. Every MACsec tunnel has a key and peer-pair record. The peers have complementary key-server values, and a centrally managed pair gives value 0 to a peer at the central site.",
-    "RG-028": "Every MACsec device has parameters with data-delay protection, a 6000 ms lifetime, a 2000 ms normal hello interval, and a positive active hello interval no greater than 2000 ms. The replay window is 2 or the smallest feasible value; confidentiality offset is 0 and must-secure is enabled. Every relevant non-control transmission carries that device's MACsec tunnel layer.",
+    "RG-028": "Every MACsec device has parameters with data-delay protection, a 6000 ms lifetime, a 2000 ms normal hello interval, and a positive active hello interval no greater than 2000 ms. The replay window is 2 or the smallest feasible value; confidentiality offset is 0 and must-secure is enabled. Every relevant non-control transmission carries that device's MACsec tunnel layer. The protection and confidentiality-offset parameters must agree with the configuration used by packet processing.",
     "RG-029": "The records cover every Inner encryptor and match its mechanism. For every modeled non-control packet crossing from the internal side, Inner encryption occurs before transmission and the transmitted packet carries the Inner layer. Incoming protected traffic is decrypted before passage to the internal side. IPsec uses ESP tunnel mode and an associated IP tunnel. Selected mandatory-access-control objectives must be enabled.",
     "RG-030": "The records cover every Outer encryptor and match its mechanism. Every modeled non-control outward transmission carries the Outer layer after Outer encryption, and an inward crossing requires Outer decryption. IPsec uses ESP tunnel mode, and selected mandatory-access-control objectives are enabled. Non-control traffic arriving at an Outer Gray interface already carries exactly one Inner tunnel layer.",
     "RG-031": "Outer encryptors must not use a dynamic routing protocol. An Inner routing use must serve its own tunnel lookup or have that same component as both source and destination.",
@@ -621,6 +621,12 @@
       {
         "path": "TDN/Requirements/TrustedClockSynchronization.lean",
         "name": "TimeServiceRecord.ValidUse"
+      }
+    ],
+    "RG-028": [
+      {
+        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "name": "MACsecParametersBound"
       }
     ]
   }

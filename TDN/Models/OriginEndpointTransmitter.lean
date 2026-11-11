@@ -88,6 +88,7 @@ theorem source_processing_valid_for_representable_headers (request : Request) (m
             rfl
       | ipsec association contents => simp only [Request.TemplateValid, body] at valid
       | macsec association contents => simp only [Request.TemplateValid, body] at valid
+      | macsecPdu association encryptFrames confidentialityOffset contents => simp only [Request.TemplateValid, body] at valid
       | carrier endpoint contents => simp only [Request.TemplateValid, body] at valid
     next noRoom => exact ⟨valid, by omega⟩
   next unsupported => exact unsupported

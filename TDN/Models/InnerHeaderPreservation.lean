@@ -20,7 +20,7 @@ lemma step_preserves_original_header {c : Config} {before after : State} {action
     (step : Step c before action after) :
     after.frame.body.originalHeader = before.frame.body.originalHeader := by
   cases step <;> simp only [Config.forwardedFrame_body, Config.ipsecFrame_body,
-    Config.macsecFrame_body, Config.carrierFrame_body, Config.restoredFrame_body] <;> try rfl
+    Config.macsecFrame_body, Config.macsec_pdu_frame_body, Config.carrierFrame_body, Config.restoredFrame_body] <;> try rfl
   all_goals try simp_all only [Body.originalHeader]
   all_goals exact unwrap_preserves_original_header _ _ _ _ _ _ _ ‹_›
 

@@ -1,0 +1,4716 @@
+{
+  "associations": [
+    {
+      "child": {
+        "bytes-in": "5096",
+        "bytes-out": "5096",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1222",
+        "life-time": "2378",
+        "local-ts": "[10.1.1.0/24]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "4",
+        "packets-out": "4",
+        "protocol": "ESP",
+        "rekey-time": "1444",
+        "remote-ts": "[10.2.1.0/24]",
+        "reqid": "101",
+        "spi-in": "c70150c9",
+        "spi-out": "c91855e0",
+        "state": "INSTALLED",
+        "uniqueid": "142",
+        "use-in": "848",
+        "use-out": "847"
+      },
+      "destination": "10.200.1.2",
+      "destinationSelectors": [
+        "10.2.1.0/24"
+      ],
+      "device": "V31B_I_A1",
+      "direction": "outbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_I_B1:1",
+      "icvBits": 128,
+      "id": "phase-1:V31B_I_A1:0",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "8895b7de9d1f4f28707fb7610e2d712ed0f22b5f43da4fea2a6260b422ccd3c2",
+      "installedAtUTC": "2026-11-04 08:31:21",
+      "keyBits": 256,
+      "localInterface": "gray",
+      "mark": null,
+      "materialObservation": "obs-0111",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "3bd96b103fabbcb1092eebc546a602899023c6a76154a61c03362e7121f157cc"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_I_B1",
+      "protocol": "esp",
+      "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc91855e0 reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x0, oseq 0x4, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0106",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 101,
+      "saltBytes": 4,
+      "source": "10.100.1.2",
+      "sourceSelectors": [
+        "10.1.1.0/24"
+      ],
+      "spi": 3373815264,
+      "statisticsObservation": "obs-0107"
+    },
+    {
+      "child": {
+        "bytes-in": "5096",
+        "bytes-out": "5096",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1222",
+        "life-time": "2378",
+        "local-ts": "[10.1.1.0/24]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "4",
+        "packets-out": "4",
+        "protocol": "ESP",
+        "rekey-time": "1444",
+        "remote-ts": "[10.2.1.0/24]",
+        "reqid": "101",
+        "spi-in": "c70150c9",
+        "spi-out": "c91855e0",
+        "state": "INSTALLED",
+        "uniqueid": "142",
+        "use-in": "848",
+        "use-out": "847"
+      },
+      "destination": "10.100.1.2",
+      "destinationSelectors": [
+        "10.1.1.0/24"
+      ],
+      "device": "V31B_I_A1",
+      "direction": "inbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_I_B1:0",
+      "icvBits": 128,
+      "id": "phase-1:V31B_I_A1:1",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "7b7a605608662f7ef8b61595f8387610829ecf548176b1b3be8d797b16d5b039",
+      "installedAtUTC": "2026-11-04 08:31:21",
+      "keyBits": 256,
+      "localInterface": "gray",
+      "mark": null,
+      "materialObservation": "obs-0111",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "bd1ee397e55419f4301a06b090062fa4c52655063a26ee7fb74124ee8b382f01"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_I_B1",
+      "protocol": "esp",
+      "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc70150c9 reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x4, oseq 0x0, bitmap 0x0000000f\n",
+      "publicStateObservation": "obs-0106",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 101,
+      "saltBytes": 4,
+      "source": "10.200.1.2",
+      "sourceSelectors": [
+        "10.2.1.0/24"
+      ],
+      "spi": 3338752201,
+      "statisticsObservation": "obs-0107"
+    },
+    {
+      "child": {
+        "bytes-in": "32509",
+        "bytes-out": "32521",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1874",
+        "life-time": "1726",
+        "local-ts": "[10.100.1.2/32]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "321",
+        "packets-out": "321",
+        "protocol": "ESP",
+        "rekey-time": "709",
+        "remote-ts": "[10.200.1.2/32]",
+        "reqid": "201",
+        "spi-in": "cfe78566",
+        "spi-out": "c6d89647",
+        "state": "INSTALLED",
+        "uniqueid": "143",
+        "use-in": "9",
+        "use-out": "9"
+      },
+      "destination": "172.20.21.1",
+      "destinationSelectors": [
+        "10.200.1.2/32"
+      ],
+      "device": "V31B_O_A1",
+      "direction": "outbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_O_B1:1",
+      "icvBits": 128,
+      "id": "phase-1:V31B_O_A1:0",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "9e6cab4da3a426715d679e4d5aac270217c24391ae5881f3a1688fa0b478b0d6",
+      "installedAtUTC": "2026-11-04 08:20:29",
+      "keyBits": 256,
+      "localInterface": "black",
+      "mark": null,
+      "materialObservation": "obs-0119",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "de5c71102ddddda736da3c399f17a37f1ed19e6ec4254b29e51046f21b1e45f0"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_O_B1",
+      "protocol": "esp",
+      "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc6d89647 reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:35\n\tanti-replay context: seq 0x0, oseq 0x141, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0114",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 201,
+      "saltBytes": 4,
+      "source": "172.20.11.1",
+      "sourceSelectors": [
+        "10.100.1.2/32"
+      ],
+      "spi": 3336083015,
+      "statisticsObservation": "obs-0115"
+    },
+    {
+      "child": {
+        "bytes-in": "32509",
+        "bytes-out": "32521",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1874",
+        "life-time": "1726",
+        "local-ts": "[10.100.1.2/32]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "321",
+        "packets-out": "321",
+        "protocol": "ESP",
+        "rekey-time": "709",
+        "remote-ts": "[10.200.1.2/32]",
+        "reqid": "201",
+        "spi-in": "cfe78566",
+        "spi-out": "c6d89647",
+        "state": "INSTALLED",
+        "uniqueid": "143",
+        "use-in": "9",
+        "use-out": "9"
+      },
+      "destination": "172.20.11.1",
+      "destinationSelectors": [
+        "10.100.1.2/32"
+      ],
+      "device": "V31B_O_A1",
+      "direction": "inbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_O_B1:0",
+      "icvBits": 128,
+      "id": "phase-1:V31B_O_A1:1",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "bc715bcd618f33fb57c75656e5b802e99ffe3aecd5d97075954cae5b9c8a85a6",
+      "installedAtUTC": "2026-11-04 08:20:29",
+      "keyBits": 256,
+      "localInterface": "black",
+      "mark": null,
+      "materialObservation": "obs-0119",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "49a732778572e3d41921306e6051f20be176acc271f594295a9b205be68df3a0"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_O_B1",
+      "protocol": "esp",
+      "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcfe78566 reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:35\n\tanti-replay context: seq 0x141, oseq 0x0, bitmap 0xffffffff\n",
+      "publicStateObservation": "obs-0114",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 201,
+      "saltBytes": 4,
+      "source": "172.20.21.1",
+      "sourceSelectors": [
+        "10.200.1.2/32"
+      ],
+      "spi": 3488056678,
+      "statisticsObservation": "obs-0115"
+    },
+    {
+      "child": {
+        "bytes-in": "0",
+        "bytes-out": "0",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1224",
+        "life-time": "2376",
+        "local-ts": "[10.1.2.0/24]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "0",
+        "packets-out": "0",
+        "protocol": "ESP",
+        "rekey-time": "1442",
+        "remote-ts": "[10.2.2.0/24]",
+        "reqid": "102",
+        "spi-in": "c9474760",
+        "spi-out": "c78944ea",
+        "state": "INSTALLED",
+        "uniqueid": "142"
+      },
+      "destination": "10.200.2.2",
+      "destinationSelectors": [
+        "10.2.2.0/24"
+      ],
+      "device": "V31B_I_A2",
+      "direction": "outbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_I_B2:1",
+      "icvBits": 128,
+      "id": "phase-1:V31B_I_A2:0",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "d245c50c21c17ddbb28a9101bca631cffe30bfee9558a8c720272966ee529ef5",
+      "installedAtUTC": "2026-11-04 08:31:21",
+      "keyBits": 256,
+      "localInterface": "gray",
+      "mark": null,
+      "materialObservation": "obs-0127",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "0c7859eedc28100712085b5895a80d301ed2d4fa00da770a1500454237812942"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_I_B2",
+      "protocol": "esp",
+      "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc78944ea reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0122",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 102,
+      "saltBytes": 4,
+      "source": "10.100.2.2",
+      "sourceSelectors": [
+        "10.1.2.0/24"
+      ],
+      "spi": 3347662058,
+      "statisticsObservation": "obs-0123"
+    },
+    {
+      "child": {
+        "bytes-in": "0",
+        "bytes-out": "0",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1224",
+        "life-time": "2376",
+        "local-ts": "[10.1.2.0/24]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "0",
+        "packets-out": "0",
+        "protocol": "ESP",
+        "rekey-time": "1442",
+        "remote-ts": "[10.2.2.0/24]",
+        "reqid": "102",
+        "spi-in": "c9474760",
+        "spi-out": "c78944ea",
+        "state": "INSTALLED",
+        "uniqueid": "142"
+      },
+      "destination": "10.100.2.2",
+      "destinationSelectors": [
+        "10.1.2.0/24"
+      ],
+      "device": "V31B_I_A2",
+      "direction": "inbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_I_B2:0",
+      "icvBits": 128,
+      "id": "phase-1:V31B_I_A2:1",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "46ec0b9ea5d19fd20730aeaee1d839e64f5025c287d6591a04295da5bd2bfe62",
+      "installedAtUTC": "2026-11-04 08:31:21",
+      "keyBits": 256,
+      "localInterface": "gray",
+      "mark": null,
+      "materialObservation": "obs-0127",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "5f4837e5d7abec6ba53db11dea6fefc8a6678f5064520832141a628df37c5692"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_I_B2",
+      "protocol": "esp",
+      "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xc9474760 reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0122",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 102,
+      "saltBytes": 4,
+      "source": "10.200.2.2",
+      "sourceSelectors": [
+        "10.2.2.0/24"
+      ],
+      "spi": 3376891744,
+      "statisticsObservation": "obs-0123"
+    },
+    {
+      "child": {
+        "bytes-in": "26594",
+        "bytes-out": "26606",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1744",
+        "life-time": "1856",
+        "local-ts": "[10.100.2.2/32]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "310",
+        "packets-out": "310",
+        "protocol": "ESP",
+        "rekey-time": "924",
+        "remote-ts": "[10.200.2.2/32]",
+        "reqid": "202",
+        "spi-in": "cd4ba8f2",
+        "spi-out": "c9bc5645",
+        "state": "INSTALLED",
+        "uniqueid": "138",
+        "use-in": "4",
+        "use-out": "4"
+      },
+      "destination": "172.20.22.1",
+      "destinationSelectors": [
+        "10.200.2.2/32"
+      ],
+      "device": "V31B_O_A2",
+      "direction": "outbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_O_B2:1",
+      "icvBits": 128,
+      "id": "phase-1:V31B_O_A2:0",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "7dc13552012afa93c4959bea8b51574fef040eb03c010494b3ced557a50140dc",
+      "installedAtUTC": "2026-11-04 08:22:40",
+      "keyBits": 256,
+      "localInterface": "black",
+      "mark": null,
+      "materialObservation": "obs-0135",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "715c2bd966424524f01ec5c8fbd8b72fdb28774329cddde74b5ad4f1322ad1df"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_O_B2",
+      "protocol": "esp",
+      "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc9bc5645 reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x0, oseq 0x136, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0130",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 202,
+      "saltBytes": 4,
+      "source": "172.20.12.1",
+      "sourceSelectors": [
+        "10.100.2.2/32"
+      ],
+      "spi": 3384563269,
+      "statisticsObservation": "obs-0131"
+    },
+    {
+      "child": {
+        "bytes-in": "26594",
+        "bytes-out": "26606",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1744",
+        "life-time": "1856",
+        "local-ts": "[10.100.2.2/32]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "310",
+        "packets-out": "310",
+        "protocol": "ESP",
+        "rekey-time": "924",
+        "remote-ts": "[10.200.2.2/32]",
+        "reqid": "202",
+        "spi-in": "cd4ba8f2",
+        "spi-out": "c9bc5645",
+        "state": "INSTALLED",
+        "uniqueid": "138",
+        "use-in": "4",
+        "use-out": "4"
+      },
+      "destination": "172.20.12.1",
+      "destinationSelectors": [
+        "10.100.2.2/32"
+      ],
+      "device": "V31B_O_A2",
+      "direction": "inbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_O_B2:0",
+      "icvBits": 128,
+      "id": "phase-1:V31B_O_A2:1",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "80500660f30bacb663f4f4177ef102ef673f1494d35f572ccabbb8f18c0299b6",
+      "installedAtUTC": "2026-11-04 08:22:40",
+      "keyBits": 256,
+      "localInterface": "black",
+      "mark": null,
+      "materialObservation": "obs-0135",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "53bbfded3dc3d3c8af4ef6837d4f61809efdd9c7e4e3448d64680d13794470bc"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_O_B2",
+      "protocol": "esp",
+      "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xcd4ba8f2 reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x136, oseq 0x0, bitmap 0xffffffff\n",
+      "publicStateObservation": "obs-0130",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 202,
+      "saltBytes": 4,
+      "source": "172.20.22.1",
+      "sourceSelectors": [
+        "10.200.2.2/32"
+      ],
+      "spi": 3444287730,
+      "statisticsObservation": "obs-0131"
+    },
+    {
+      "child": {
+        "bytes-in": "5096",
+        "bytes-out": "5096",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1225",
+        "life-time": "2375",
+        "local-ts": "[10.2.1.0/24]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "4",
+        "packets-out": "4",
+        "protocol": "ESP",
+        "rekey-time": "1525",
+        "remote-ts": "[10.1.1.0/24]",
+        "reqid": "101",
+        "spi-in": "c91855e0",
+        "spi-out": "c70150c9",
+        "state": "INSTALLED",
+        "uniqueid": "142",
+        "use-in": "851",
+        "use-out": "851"
+      },
+      "destination": "10.100.1.2",
+      "destinationSelectors": [
+        "10.1.1.0/24"
+      ],
+      "device": "V31B_I_B1",
+      "direction": "outbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_I_A1:1",
+      "icvBits": 128,
+      "id": "phase-1:V31B_I_B1:0",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "5d57d498090963c38cdb536e992d9d22fb358161af6858f2c366104fa38f1999",
+      "installedAtUTC": "2026-11-04 08:31:21",
+      "keyBits": 256,
+      "localInterface": "gray",
+      "mark": null,
+      "materialObservation": "obs-0143",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "bd1ee397e55419f4301a06b090062fa4c52655063a26ee7fb74124ee8b382f01"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_I_A1",
+      "protocol": "esp",
+      "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc70150c9 reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x0, oseq 0x4, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0138",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 101,
+      "saltBytes": 4,
+      "source": "10.200.1.2",
+      "sourceSelectors": [
+        "10.2.1.0/24"
+      ],
+      "spi": 3338752201,
+      "statisticsObservation": "obs-0139"
+    },
+    {
+      "child": {
+        "bytes-in": "5096",
+        "bytes-out": "5096",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1225",
+        "life-time": "2375",
+        "local-ts": "[10.2.1.0/24]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "4",
+        "packets-out": "4",
+        "protocol": "ESP",
+        "rekey-time": "1525",
+        "remote-ts": "[10.1.1.0/24]",
+        "reqid": "101",
+        "spi-in": "c91855e0",
+        "spi-out": "c70150c9",
+        "state": "INSTALLED",
+        "uniqueid": "142",
+        "use-in": "851",
+        "use-out": "851"
+      },
+      "destination": "10.200.1.2",
+      "destinationSelectors": [
+        "10.2.1.0/24"
+      ],
+      "device": "V31B_I_B1",
+      "direction": "inbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_I_A1:0",
+      "icvBits": 128,
+      "id": "phase-1:V31B_I_B1:1",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "ffb89d2671c23f5879ccfe26deb42c06a9b5547f1ff3c14d2c000f41a617e20f",
+      "installedAtUTC": "2026-11-04 08:31:21",
+      "keyBits": 256,
+      "localInterface": "gray",
+      "mark": null,
+      "materialObservation": "obs-0143",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "3bd96b103fabbcb1092eebc546a602899023c6a76154a61c03362e7121f157cc"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_I_A1",
+      "protocol": "esp",
+      "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc91855e0 reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x4, oseq 0x0, bitmap 0x0000000f\n",
+      "publicStateObservation": "obs-0138",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 101,
+      "saltBytes": 4,
+      "source": "10.100.1.2",
+      "sourceSelectors": [
+        "10.1.1.0/24"
+      ],
+      "spi": 3373815264,
+      "statisticsObservation": "obs-0139"
+    },
+    {
+      "child": {
+        "bytes-in": "32691",
+        "bytes-out": "32679",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1877",
+        "life-time": "1723",
+        "local-ts": "[10.200.1.2/32]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "323",
+        "packets-out": "323",
+        "protocol": "ESP",
+        "rekey-time": "928",
+        "remote-ts": "[10.100.1.2/32]",
+        "reqid": "201",
+        "spi-in": "c6d89647",
+        "spi-out": "cfe78566",
+        "state": "INSTALLED",
+        "uniqueid": "147",
+        "use-in": "1",
+        "use-out": "1"
+      },
+      "destination": "172.20.11.1",
+      "destinationSelectors": [
+        "10.100.1.2/32"
+      ],
+      "device": "V31B_O_B1",
+      "direction": "outbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_O_A1:1",
+      "icvBits": 128,
+      "id": "phase-1:V31B_O_B1:0",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "2b0eb6aa2b60fedf039398718a3d978dd63c6b2701fd34190027a26cf26a1a29",
+      "installedAtUTC": "2026-11-04 08:20:29",
+      "keyBits": 256,
+      "localInterface": "black",
+      "mark": null,
+      "materialObservation": "obs-0151",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "49a732778572e3d41921306e6051f20be176acc271f594295a9b205be68df3a0"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_O_A1",
+      "protocol": "esp",
+      "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcfe78566 reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:45\n\tanti-replay context: seq 0x0, oseq 0x143, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0146",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 201,
+      "saltBytes": 4,
+      "source": "172.20.21.1",
+      "sourceSelectors": [
+        "10.200.1.2/32"
+      ],
+      "spi": 3488056678,
+      "statisticsObservation": "obs-0147"
+    },
+    {
+      "child": {
+        "bytes-in": "32691",
+        "bytes-out": "32679",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1877",
+        "life-time": "1723",
+        "local-ts": "[10.200.1.2/32]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "323",
+        "packets-out": "323",
+        "protocol": "ESP",
+        "rekey-time": "928",
+        "remote-ts": "[10.100.1.2/32]",
+        "reqid": "201",
+        "spi-in": "c6d89647",
+        "spi-out": "cfe78566",
+        "state": "INSTALLED",
+        "uniqueid": "147",
+        "use-in": "1",
+        "use-out": "1"
+      },
+      "destination": "172.20.21.1",
+      "destinationSelectors": [
+        "10.200.1.2/32"
+      ],
+      "device": "V31B_O_B1",
+      "direction": "inbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_O_A1:0",
+      "icvBits": 128,
+      "id": "phase-1:V31B_O_B1:1",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "a881cf8855dd125991232bf080735ba7b4dc2ae13dc1af836917ef5c64bde8f4",
+      "installedAtUTC": "2026-11-04 08:20:29",
+      "keyBits": 256,
+      "localInterface": "black",
+      "mark": null,
+      "materialObservation": "obs-0151",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "de5c71102ddddda736da3c399f17a37f1ed19e6ec4254b29e51046f21b1e45f0"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_O_A1",
+      "protocol": "esp",
+      "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc6d89647 reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:45\n\tanti-replay context: seq 0x143, oseq 0x0, bitmap 0xffffffff\n",
+      "publicStateObservation": "obs-0146",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 201,
+      "saltBytes": 4,
+      "source": "172.20.11.1",
+      "sourceSelectors": [
+        "10.100.1.2/32"
+      ],
+      "spi": 3336083015,
+      "statisticsObservation": "obs-0147"
+    },
+    {
+      "child": {
+        "bytes-in": "0",
+        "bytes-out": "0",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1226",
+        "life-time": "2374",
+        "local-ts": "[10.2.2.0/24]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "0",
+        "packets-out": "0",
+        "protocol": "ESP",
+        "rekey-time": "1524",
+        "remote-ts": "[10.1.2.0/24]",
+        "reqid": "102",
+        "spi-in": "c78944ea",
+        "spi-out": "c9474760",
+        "state": "INSTALLED",
+        "uniqueid": "142"
+      },
+      "destination": "10.100.2.2",
+      "destinationSelectors": [
+        "10.1.2.0/24"
+      ],
+      "device": "V31B_I_B2",
+      "direction": "outbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_I_A2:1",
+      "icvBits": 128,
+      "id": "phase-1:V31B_I_B2:0",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "4be26e59feae99d84c8ed11029415f35363b55bc9eb8522679d2177efde27f37",
+      "installedAtUTC": "2026-11-04 08:31:21",
+      "keyBits": 256,
+      "localInterface": "gray",
+      "mark": null,
+      "materialObservation": "obs-0159",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "5f4837e5d7abec6ba53db11dea6fefc8a6678f5064520832141a628df37c5692"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_I_A2",
+      "protocol": "esp",
+      "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xc9474760 reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0154",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 102,
+      "saltBytes": 4,
+      "source": "10.200.2.2",
+      "sourceSelectors": [
+        "10.2.2.0/24"
+      ],
+      "spi": 3376891744,
+      "statisticsObservation": "obs-0155"
+    },
+    {
+      "child": {
+        "bytes-in": "0",
+        "bytes-out": "0",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1226",
+        "life-time": "2374",
+        "local-ts": "[10.2.2.0/24]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "0",
+        "packets-out": "0",
+        "protocol": "ESP",
+        "rekey-time": "1524",
+        "remote-ts": "[10.1.2.0/24]",
+        "reqid": "102",
+        "spi-in": "c78944ea",
+        "spi-out": "c9474760",
+        "state": "INSTALLED",
+        "uniqueid": "142"
+      },
+      "destination": "10.200.2.2",
+      "destinationSelectors": [
+        "10.2.2.0/24"
+      ],
+      "device": "V31B_I_B2",
+      "direction": "inbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_I_A2:0",
+      "icvBits": 128,
+      "id": "phase-1:V31B_I_B2:1",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "a9762320a96685b0bf3267baa20b153a43640a4929013fe7d5bd69f40a0f4445",
+      "installedAtUTC": "2026-11-04 08:31:21",
+      "keyBits": 256,
+      "localInterface": "gray",
+      "mark": null,
+      "materialObservation": "obs-0159",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "0c7859eedc28100712085b5895a80d301ed2d4fa00da770a1500454237812942"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_I_A2",
+      "protocol": "esp",
+      "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc78944ea reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0154",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 102,
+      "saltBytes": 4,
+      "source": "10.100.2.2",
+      "sourceSelectors": [
+        "10.1.2.0/24"
+      ],
+      "spi": 3347662058,
+      "statisticsObservation": "obs-0155"
+    },
+    {
+      "child": {
+        "bytes-in": "26606",
+        "bytes-out": "26594",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1747",
+        "life-time": "1853",
+        "local-ts": "[10.200.2.2/32]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "310",
+        "packets-out": "310",
+        "protocol": "ESP",
+        "rekey-time": "921",
+        "remote-ts": "[10.100.2.2/32]",
+        "reqid": "202",
+        "spi-in": "c9bc5645",
+        "spi-out": "cd4ba8f2",
+        "state": "INSTALLED",
+        "uniqueid": "138",
+        "use-in": "7",
+        "use-out": "7"
+      },
+      "destination": "172.20.12.1",
+      "destinationSelectors": [
+        "10.100.2.2/32"
+      ],
+      "device": "V31B_O_B2",
+      "direction": "outbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_O_A2:1",
+      "icvBits": 128,
+      "id": "phase-1:V31B_O_B2:0",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "46d452342a7a116cc2542e4adb0a326c121ecfc8a6403ea44d7eabb57d02e329",
+      "installedAtUTC": "2026-11-04 08:22:40",
+      "keyBits": 256,
+      "localInterface": "black",
+      "mark": null,
+      "materialObservation": "obs-0167",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "53bbfded3dc3d3c8af4ef6837d4f61809efdd9c7e4e3448d64680d13794470bc"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_O_A2",
+      "protocol": "esp",
+      "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xcd4ba8f2 reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x0, oseq 0x136, bitmap 0x00000000\n",
+      "publicStateObservation": "obs-0162",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 202,
+      "saltBytes": 4,
+      "source": "172.20.22.1",
+      "sourceSelectors": [
+        "10.200.2.2/32"
+      ],
+      "spi": 3444287730,
+      "statisticsObservation": "obs-0163"
+    },
+    {
+      "child": {
+        "bytes-in": "26606",
+        "bytes-out": "26594",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "install-time": "1747",
+        "life-time": "1853",
+        "local-ts": "[10.200.2.2/32]",
+        "mode": "TUNNEL",
+        "name": "protected",
+        "packets-in": "310",
+        "packets-out": "310",
+        "protocol": "ESP",
+        "rekey-time": "921",
+        "remote-ts": "[10.100.2.2/32]",
+        "reqid": "202",
+        "spi-in": "c9bc5645",
+        "spi-out": "cd4ba8f2",
+        "state": "INSTALLED",
+        "uniqueid": "138",
+        "use-in": "7",
+        "use-out": "7"
+      },
+      "destination": "172.20.22.1",
+      "destinationSelectors": [
+        "10.200.2.2/32"
+      ],
+      "device": "V31B_O_B2",
+      "direction": "inbound",
+      "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+      "equalTo": "phase-1:V31B_O_A2:0",
+      "icvBits": 128,
+      "id": "phase-1:V31B_O_B2:1",
+      "ifId": null,
+      "ikeUniqueId": "27",
+      "installationReference": "539f717dfe15ccb87bc9f39744fe66f534a63c99a867ea02825f4453bb4c4ef1",
+      "installedAtUTC": "2026-11-04 08:22:40",
+      "keyBits": 256,
+      "localInterface": "black",
+      "mark": null,
+      "materialObservation": "obs-0167",
+      "materials": [
+        {
+          "algorithm": "rfc4106(gcm(aes))",
+          "bytes": 36,
+          "kind": "aead",
+          "parameters": "128",
+          "sha256": "715c2bd966424524f01ec5c8fbd8b72fdb28774329cddde74b5ad4f1322ad1df"
+        }
+      ],
+      "mode": "tunnel",
+      "peerDevice": "V31B_O_A2",
+      "protocol": "esp",
+      "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc9bc5645 reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x136, oseq 0x0, bitmap 0xffffffff\n",
+      "publicStateObservation": "obs-0162",
+      "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+      "reqid": 202,
+      "saltBytes": 4,
+      "source": "172.20.12.1",
+      "sourceSelectors": [
+        "10.100.2.2/32"
+      ],
+      "spi": 3384563269,
+      "statisticsObservation": "obs-0163"
+    }
+  ],
+  "authentication": [
+    {
+      "device": "V31B_I_A1",
+      "ike": {
+        "child": {
+          "bytes-in": "5096",
+          "bytes-out": "5096",
+          "dh-group": "ECP_384",
+          "encr-alg": "AES_GCM_16",
+          "encr-keysize": "256",
+          "install-time": "1213",
+          "life-time": "2387",
+          "local-ts": "[10.1.1.0/24]",
+          "mode": "TUNNEL",
+          "name": "protected",
+          "packets-in": "4",
+          "packets-out": "4",
+          "protocol": "ESP",
+          "rekey-time": "1453",
+          "remote-ts": "[10.2.1.0/24]",
+          "reqid": "101",
+          "spi-in": "c70150c9",
+          "spi-out": "c91855e0",
+          "state": "INSTALLED",
+          "uniqueid": "142",
+          "use-in": "839",
+          "use-out": "838"
+        },
+        "childName": "protected-142",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "established": "9020",
+        "initiator-spi": "8c6ee2e366d96c90",
+        "local-host": "10.100.1.2",
+        "local-id": "V31B_I_A1.msc.test",
+        "local-port": "500",
+        "name": "msc",
+        "prf-alg": "PRF_HMAC_SHA2_384",
+        "reauth-time": "1271",
+        "remote-host": "10.200.1.2",
+        "remote-id": "V31B_I_B1.msc.test",
+        "remote-port": "500",
+        "responder-spi": "e987326f0b4e3d2f",
+        "state": "ESTABLISHED",
+        "uniqueid": "27",
+        "version": "2"
+      },
+      "localCertificate": {
+        "der": "308201f53082017aa003020102020f747b505d716481160e253f968f0b57300a06082a8648ce3d040303301e311c301a060355040313135477696e6574204d534320696e6e65722d7331301e170d3236313130313031353834385a170d3236313230313032353834385a301d311b301906035504030c12563331425f495f41312e6d73632e746573743076301006072a8648ce3d020106052b8104002203620004b772b5348b510b10006270595ee953174af78e0d2a7688ea11753580a11800bdff86674f81d18f034e5c03ddd1ca5bcdfbeb19595c6a7a3958039bbb9425cb3f8f6049f9bb25ddfefb58d8148f0fd53caf037ec3b004bd666c57488ba22295c4a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801406a9ccfb946c727c5b9611e2f0425bafd54cc6d3301d0603551d11041630148212563331425f495f41312e6d73632e74657374300a06082a8648ce3d0403030369003066023100d8d2457423895e039f83710dab5f5ca7d43467c1e210b500da7f215c2e6f6223e407b7fcb6523e6b61e0a4a2c0bdba8f0231008c2acb85e6e862773c830fb0cbe881131b4c594c753f14361b4f25eb6bbfca51085c004054ce4ceeb8f5148ff62359f1",
+        "observation": "obs-0009",
+        "sha256": "6a25b88b322ea97ae3c49f917ba07ccc9c96e801d2afe5010746e34b8dde8c6f"
+      },
+      "logObservation": "obs-0012",
+      "peerCertificate": {
+        "der": "308201f43082017ba003020102021000e861842d9b42aef2168b9168da4fce300a06082a8648ce3d040303301e311c301a060355040313135477696e6574204d534320696e6e65722d7331301e170d3236313130313031353930315a170d3236313230313032353930315a301d311b301906035504030c12563331425f495f42312e6d73632e746573743076301006072a8648ce3d020106052b81040022036200044f683632b955b8b95fe50fbe420b996a46ebcda3b5a5668ce221522266539b88d75fbfb3f4c8f79d1a3c164d7d370a44630fca5522e61653161a6dbd016f04ae06615214f6462a380c08cb40c6073073bfeb9dd6db958cd3edde8e2954e3eae5a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801406a9ccfb946c727c5b9611e2f0425bafd54cc6d3301d0603551d11041630148212563331425f495f42312e6d73632e74657374300a06082a8648ce3d0403030367003064023008285267ad75a77b7e5670da4ab175b253fe5623eec522f8d31ac6ffbc665d3be8f04877ab9c45867690958de94a184602307dcfc163fe4525f8a34936596d2e40d38bc4f9037c103b4ead5ac609ea1eed69ba7ae155d95e6d874feec68d4fd1637f",
+        "observation": "obs-0061",
+        "sha256": "47fdeccbe4302e20c783e6f9f931a418b2d62567f23dd0984414de400168f38c"
+      },
+      "peerDevice": "V31B_I_B1",
+      "saObservation": "obs-0001",
+      "scope": "Daemon-reported successful certificate authentication and its active CHILD_SA; no independent cryptographic verification."
+    },
+    {
+      "device": "V31B_O_A1",
+      "ike": {
+        "child": {
+          "bytes-in": "32339",
+          "bytes-out": "32351",
+          "dh-group": "ECP_384",
+          "encr-alg": "AES_GCM_16",
+          "encr-keysize": "256",
+          "install-time": "1865",
+          "life-time": "1735",
+          "local-ts": "[10.100.1.2/32]",
+          "mode": "TUNNEL",
+          "name": "protected",
+          "packets-in": "319",
+          "packets-out": "319",
+          "protocol": "ESP",
+          "rekey-time": "718",
+          "remote-ts": "[10.200.1.2/32]",
+          "reqid": "201",
+          "spi-in": "cfe78566",
+          "spi-out": "c6d89647",
+          "state": "INSTALLED",
+          "uniqueid": "143",
+          "use-in": "10",
+          "use-out": "10"
+        },
+        "childName": "protected-143",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "established": "9344",
+        "initiator": "yes",
+        "initiator-spi": "9f553554887a6552",
+        "local-host": "172.20.11.1",
+        "local-id": "V31B_O_A1.msc.test",
+        "local-port": "500",
+        "name": "msc",
+        "prf-alg": "PRF_HMAC_SHA2_384",
+        "reauth-time": "1099",
+        "remote-host": "172.20.21.1",
+        "remote-id": "V31B_O_B1.msc.test",
+        "remote-port": "500",
+        "responder-spi": "c09762d2bfaa2db7",
+        "state": "ESTABLISHED",
+        "uniqueid": "27",
+        "version": "2"
+      },
+      "localCertificate": {
+        "der": "308201f330820178a0030201020210009d6241ae093ce653ec2cf67553a02c300a06082a8648ce3d040303301b31193017060355040313105477696e6574204d5343206f75746572301e170d3236313130313031353835315a170d3236313230313032353835315a301d311b301906035504030c12563331425f4f5f41312e6d73632e746573743076301006072a8648ce3d020106052b810400220362000475d70d1b23014db3db2f3dd32b3cfcbe5dead7450fa0315c7ef2af3facf0732c660efd02cc5b3de8e1c4118586d350f0fc0ea8b8e49667556302ac6b09c87b1822cff439ea64a6c454a8da4ca2db3cbef0285757589933f7edb7ef8991400f06a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801413020236992a848e3bac4a380c3ce18f4d84bbd6301d0603551d11041630148212563331425f4f5f41312e6d73632e74657374300a06082a8648ce3d0403030369003066023100adfeaa22520b3815a94fb5a7a33ec0906c04335a041f064e20476232609e7a4d9eacb0636bc1096f1ca86a6885d0afd602310084684e408ea8b369bcf5e1fe982be99e1d38a7a9ccda442bb1c8d8ffdd1d899c52c64f2282ed0c679a25ecf2426ef4a6",
+        "observation": "obs-0022",
+        "sha256": "4580d937da1f9dc341002c159aff9d81e1b0f756c822503211490e936b3a11b1"
+      },
+      "logObservation": "obs-0025",
+      "peerCertificate": {
+        "der": "308201f130820177a003020102020f3ef0e9e096979346b9a494a020da65300a06082a8648ce3d040303301b31193017060355040313105477696e6574204d5343206f75746572301e170d3236313130313031353930345a170d3236313230313032353930345a301d311b301906035504030c12563331425f4f5f42312e6d73632e746573743076301006072a8648ce3d020106052b810400220362000464443431f35f43c471ff57e23e136ba82ecc5cd53f4f128b5d79ee75ef4f8feb3eda756dedbee43c6d4e343ef355cf578b472f2ed96301025c07f912d3b333be6caa25337dceffd3845595a5415f06470258f8292e025eab4a767b36576b4065a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801413020236992a848e3bac4a380c3ce18f4d84bbd6301d0603551d11041630148212563331425f4f5f42312e6d73632e74657374300a06082a8648ce3d0403030368003065023052bd1a022d88a38d2246b08d5291daa293c5a3a2f0a382364347f88c955e573522b64cb1df3cc922d6ea9ecd9345659e023100e32c4ca92d1dbaaa0b0bcb3734aa2dd7a0f5506f6f4ccfe321294cc02e500c0a6a35aea8c2b55457112ed4ea064f4018",
+        "observation": "obs-0074",
+        "sha256": "7394ae666bf53a6c365d72b4c0c23d76ce76dc9441443f4a36203826e3f29ca9"
+      },
+      "peerDevice": "V31B_O_B1",
+      "saObservation": "obs-0014",
+      "scope": "Daemon-reported successful certificate authentication and its active CHILD_SA; no independent cryptographic verification."
+    },
+    {
+      "device": "V31B_I_A2",
+      "ike": {
+        "child": {
+          "bytes-in": "0",
+          "bytes-out": "0",
+          "dh-group": "ECP_384",
+          "encr-alg": "AES_GCM_16",
+          "encr-keysize": "256",
+          "install-time": "1215",
+          "life-time": "2385",
+          "local-ts": "[10.1.2.0/24]",
+          "mode": "TUNNEL",
+          "name": "protected",
+          "packets-in": "0",
+          "packets-out": "0",
+          "protocol": "ESP",
+          "rekey-time": "1451",
+          "remote-ts": "[10.2.2.0/24]",
+          "reqid": "102",
+          "spi-in": "c9474760",
+          "spi-out": "c78944ea",
+          "state": "INSTALLED",
+          "uniqueid": "142"
+        },
+        "childName": "protected-142",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "established": "9022",
+        "initiator-spi": "c927faafad9fa856",
+        "local-host": "10.100.2.2",
+        "local-id": "V31B_I_A2.msc.test",
+        "local-port": "500",
+        "name": "msc",
+        "prf-alg": "PRF_HMAC_SHA2_384",
+        "reauth-time": "1269",
+        "remote-host": "10.200.2.2",
+        "remote-id": "V31B_I_B2.msc.test",
+        "remote-port": "500",
+        "responder-spi": "e7db9fdd5dc1a571",
+        "state": "ESTABLISHED",
+        "uniqueid": "27",
+        "version": "2"
+      },
+      "localCertificate": {
+        "der": "308201f63082017ba003020102021000c2a807e5341046527a21b195718f92300a06082a8648ce3d040303301e311c301a060355040313135477696e6574204d534320696e6e65722d7332301e170d3236313130313031353835345a170d3236313230313032353835345a301d311b301906035504030c12563331425f495f41322e6d73632e746573743076301006072a8648ce3d020106052b8104002203620004b0670683f36beb7947f6793fc8960fc7b6724250627cb493023d4180e12da7c7d4eab67fcf02c9a7fef20cd5e7ad5f00ae140cb7aa051dee520f9b5688a51d5eebd027d0e1c9e84d6440372178bc3f0c3c5d585579f43f78fb41d31f34ce63a2a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d23041830168014587eca497a4e5570b3e19cc70a3c3493605ffeae301d0603551d11041630148212563331425f495f41322e6d73632e74657374300a06082a8648ce3d0403030369003066023100bfa3baae6eb05911995c5df5a91c7ee7caa1582495b775382dd6defaf123783f27e80cbb964103fc22c60a5d1635e3070231008ade7f0acb57d94a69e76e58d9b25c0745280010cb3f96a5a0b5d4a619b424d8d04985358723cd99beab60ab59fcc83b",
+        "observation": "obs-0035",
+        "sha256": "53e2e900f987a4d1cf3fba60f2c37f5019a867ffce56cd2cd44d270c7f12d757"
+      },
+      "logObservation": "obs-0038",
+      "peerCertificate": {
+        "der": "308201f53082017aa003020102020f54bcd83c0af897c1675547ead23110300a06082a8648ce3d040303301e311c301a060355040313135477696e6574204d534320696e6e65722d7332301e170d3236313130313031353930375a170d3236313230313032353930375a301d311b301906035504030c12563331425f495f42322e6d73632e746573743076301006072a8648ce3d020106052b810400220362000481e4e6ed861a6729b820182384303edd74e790b449b4848ac0ec51844635155d02dccec6dac0b21ff727fa526c83978fed86db5908445dceac4c592e715b58593ae90b8327a91c94990aabc7fd3ad4a74b4944148d5780082cc8728acb200314a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d23041830168014587eca497a4e5570b3e19cc70a3c3493605ffeae301d0603551d11041630148212563331425f495f42322e6d73632e74657374300a06082a8648ce3d0403030369003066023100c1cb4e88f7667a61885ce9f7e5cbf1fe1d0275cf6252ebfc8f986de9348024a68da6514e8992f7f576fc83e951fa469d023100a934a9b4a59341af72484ce9eda50364660fbe76c2a52561bc63f48003081cd12330f6ee0148f809579d2925e4416edd",
+        "observation": "obs-0087",
+        "sha256": "fc362ed0060f96086cf849dfec47bed44a65897b889af4ef50b77632a35322ae"
+      },
+      "peerDevice": "V31B_I_B2",
+      "saObservation": "obs-0027",
+      "scope": "Daemon-reported successful certificate authentication and its active CHILD_SA; no independent cryptographic verification."
+    },
+    {
+      "device": "V31B_O_A2",
+      "ike": {
+        "child": {
+          "bytes-in": "26509",
+          "bytes-out": "26521",
+          "dh-group": "ECP_384",
+          "encr-alg": "AES_GCM_16",
+          "encr-keysize": "256",
+          "install-time": "1736",
+          "life-time": "1864",
+          "local-ts": "[10.100.2.2/32]",
+          "mode": "TUNNEL",
+          "name": "protected",
+          "packets-in": "309",
+          "packets-out": "309",
+          "protocol": "ESP",
+          "rekey-time": "932",
+          "remote-ts": "[10.200.2.2/32]",
+          "reqid": "202",
+          "spi-in": "cd4ba8f2",
+          "spi-out": "c9bc5645",
+          "state": "INSTALLED",
+          "uniqueid": "138",
+          "use-in": "6",
+          "use-out": "6"
+        },
+        "childName": "protected-138",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "established": "6665",
+        "initiator-spi": "195ae129e7a40de0",
+        "local-host": "172.20.12.1",
+        "local-id": "V31B_O_A2.msc.test",
+        "local-port": "500",
+        "name": "msc",
+        "prf-alg": "PRF_HMAC_SHA2_384",
+        "reauth-time": "3798",
+        "remote-host": "172.20.22.1",
+        "remote-id": "V31B_O_B2.msc.test",
+        "remote-port": "500",
+        "responder-spi": "094a89964873a68b",
+        "state": "ESTABLISHED",
+        "uniqueid": "27",
+        "version": "2"
+      },
+      "localCertificate": {
+        "der": "308201f330820178a003020102021000cbaf8735908d816421bad53064af9b300a06082a8648ce3d040303301b31193017060355040313105477696e6574204d5343206f75746572301e170d3236313130313031353835375a170d3236313230313032353835375a301d311b301906035504030c12563331425f4f5f41322e6d73632e746573743076301006072a8648ce3d020106052b8104002203620004e03f5ca7536ba0b6c8dfeb4e35c3e5827fa8695881c385435cab4ad2d53977890439c64dfaede6f5fb218d37288cc14580ded0ea75a95e24affb5b63e59859f5ce15c0a97b336cbe38fbf4e97c85c0475fff49264351b1a24c9526c16fb41bafa37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801413020236992a848e3bac4a380c3ce18f4d84bbd6301d0603551d11041630148212563331425f4f5f41322e6d73632e74657374300a06082a8648ce3d040303036900306602310081cd2ec23789e7858135f2e2aceb6d73d3471b34e8f78554b20f88c76bdb31aa44c627c674330fcc7e188b30d78c2095023100b270c1d1b53913612235a3ef63b93cefc9da1f8ab3f26bd503d9a77477a733e5b1a2702a50219a606674bf57a0cc7936",
+        "observation": "obs-0048",
+        "sha256": "8a79f85e9b596c6712804f92e7ea4f8bc2f7d2916820aa2607522eb60ae7921d"
+      },
+      "logObservation": "obs-0051",
+      "peerCertificate": {
+        "der": "308201f130820177a003020102020f7f0b8827f50b6f2f4580240fe6c285300a06082a8648ce3d040303301b31193017060355040313105477696e6574204d5343206f75746572301e170d3236313130313031353931305a170d3236313230313032353931305a301d311b301906035504030c12563331425f4f5f42322e6d73632e746573743076301006072a8648ce3d020106052b8104002203620004064ef26db04bffe0e3b0193840ada6ee6690930ea6c4d8dcc9a9886eb8a6ff67381731c35db796fdc289e7ee4154ac1caf9a834054e1a8d87474c3f5d31cd4dc9808940c9a8547239378012696ab7b7b18749f7d5baad8925431d317faf05816a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801413020236992a848e3bac4a380c3ce18f4d84bbd6301d0603551d11041630148212563331425f4f5f42322e6d73632e74657374300a06082a8648ce3d0403030368003065023057c880d3aff266babb1907f47226c04ab5ab3529f1f2acf5706c043ecb32fe54cacd239c125d6488aea40fe850451e0d023100f7c3c1b3bb9df96a20f77b3d3f7175dba6ae9a09b1af877864799a0cad3d928e78848935a256ef5a85243dee09b776ca",
+        "observation": "obs-0100",
+        "sha256": "682f39a7e13b022eac2d3e201df8e4d7384d20789e8a53f18a46f0e37d19ab67"
+      },
+      "peerDevice": "V31B_O_B2",
+      "saObservation": "obs-0040",
+      "scope": "Daemon-reported successful certificate authentication and its active CHILD_SA; no independent cryptographic verification."
+    },
+    {
+      "device": "V31B_I_B1",
+      "ike": {
+        "child": {
+          "bytes-in": "5096",
+          "bytes-out": "5096",
+          "dh-group": "ECP_384",
+          "encr-alg": "AES_GCM_16",
+          "encr-keysize": "256",
+          "install-time": "1217",
+          "life-time": "2383",
+          "local-ts": "[10.2.1.0/24]",
+          "mode": "TUNNEL",
+          "name": "protected",
+          "packets-in": "4",
+          "packets-out": "4",
+          "protocol": "ESP",
+          "rekey-time": "1533",
+          "remote-ts": "[10.1.1.0/24]",
+          "reqid": "101",
+          "spi-in": "c91855e0",
+          "spi-out": "c70150c9",
+          "state": "INSTALLED",
+          "uniqueid": "142",
+          "use-in": "843",
+          "use-out": "843"
+        },
+        "childName": "protected-142",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "established": "9024",
+        "initiator": "yes",
+        "initiator-spi": "8c6ee2e366d96c90",
+        "local-host": "10.200.1.2",
+        "local-id": "V31B_I_B1.msc.test",
+        "local-port": "500",
+        "name": "msc",
+        "prf-alg": "PRF_HMAC_SHA2_384",
+        "reauth-time": "1300",
+        "remote-host": "10.100.1.2",
+        "remote-id": "V31B_I_A1.msc.test",
+        "remote-port": "500",
+        "responder-spi": "e987326f0b4e3d2f",
+        "state": "ESTABLISHED",
+        "uniqueid": "27",
+        "version": "2"
+      },
+      "localCertificate": {
+        "der": "308201f43082017ba003020102021000e861842d9b42aef2168b9168da4fce300a06082a8648ce3d040303301e311c301a060355040313135477696e6574204d534320696e6e65722d7331301e170d3236313130313031353930315a170d3236313230313032353930315a301d311b301906035504030c12563331425f495f42312e6d73632e746573743076301006072a8648ce3d020106052b81040022036200044f683632b955b8b95fe50fbe420b996a46ebcda3b5a5668ce221522266539b88d75fbfb3f4c8f79d1a3c164d7d370a44630fca5522e61653161a6dbd016f04ae06615214f6462a380c08cb40c6073073bfeb9dd6db958cd3edde8e2954e3eae5a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801406a9ccfb946c727c5b9611e2f0425bafd54cc6d3301d0603551d11041630148212563331425f495f42312e6d73632e74657374300a06082a8648ce3d0403030367003064023008285267ad75a77b7e5670da4ab175b253fe5623eec522f8d31ac6ffbc665d3be8f04877ab9c45867690958de94a184602307dcfc163fe4525f8a34936596d2e40d38bc4f9037c103b4ead5ac609ea1eed69ba7ae155d95e6d874feec68d4fd1637f",
+        "observation": "obs-0061",
+        "sha256": "47fdeccbe4302e20c783e6f9f931a418b2d62567f23dd0984414de400168f38c"
+      },
+      "logObservation": "obs-0064",
+      "peerCertificate": {
+        "der": "308201f53082017aa003020102020f747b505d716481160e253f968f0b57300a06082a8648ce3d040303301e311c301a060355040313135477696e6574204d534320696e6e65722d7331301e170d3236313130313031353834385a170d3236313230313032353834385a301d311b301906035504030c12563331425f495f41312e6d73632e746573743076301006072a8648ce3d020106052b8104002203620004b772b5348b510b10006270595ee953174af78e0d2a7688ea11753580a11800bdff86674f81d18f034e5c03ddd1ca5bcdfbeb19595c6a7a3958039bbb9425cb3f8f6049f9bb25ddfefb58d8148f0fd53caf037ec3b004bd666c57488ba22295c4a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801406a9ccfb946c727c5b9611e2f0425bafd54cc6d3301d0603551d11041630148212563331425f495f41312e6d73632e74657374300a06082a8648ce3d0403030369003066023100d8d2457423895e039f83710dab5f5ca7d43467c1e210b500da7f215c2e6f6223e407b7fcb6523e6b61e0a4a2c0bdba8f0231008c2acb85e6e862773c830fb0cbe881131b4c594c753f14361b4f25eb6bbfca51085c004054ce4ceeb8f5148ff62359f1",
+        "observation": "obs-0009",
+        "sha256": "6a25b88b322ea97ae3c49f917ba07ccc9c96e801d2afe5010746e34b8dde8c6f"
+      },
+      "peerDevice": "V31B_I_A1",
+      "saObservation": "obs-0053",
+      "scope": "Daemon-reported successful certificate authentication and its active CHILD_SA; no independent cryptographic verification."
+    },
+    {
+      "device": "V31B_O_B1",
+      "ike": {
+        "child": {
+          "bytes-in": "32521",
+          "bytes-out": "32509",
+          "dh-group": "ECP_384",
+          "encr-alg": "AES_GCM_16",
+          "encr-keysize": "256",
+          "install-time": "1870",
+          "life-time": "1730",
+          "local-ts": "[10.200.1.2/32]",
+          "mode": "TUNNEL",
+          "name": "protected",
+          "packets-in": "321",
+          "packets-out": "321",
+          "protocol": "ESP",
+          "rekey-time": "935",
+          "remote-ts": "[10.100.1.2/32]",
+          "reqid": "201",
+          "spi-in": "c6d89647",
+          "spi-out": "cfe78566",
+          "state": "INSTALLED",
+          "uniqueid": "147",
+          "use-in": "4",
+          "use-out": "4"
+        },
+        "childName": "protected-147",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "established": "9349",
+        "initiator-spi": "9f553554887a6552",
+        "local-host": "172.20.21.1",
+        "local-id": "V31B_O_B1.msc.test",
+        "local-port": "500",
+        "name": "msc",
+        "prf-alg": "PRF_HMAC_SHA2_384",
+        "reauth-time": "997",
+        "remote-host": "172.20.11.1",
+        "remote-id": "V31B_O_A1.msc.test",
+        "remote-port": "500",
+        "responder-spi": "c09762d2bfaa2db7",
+        "state": "ESTABLISHED",
+        "uniqueid": "27",
+        "version": "2"
+      },
+      "localCertificate": {
+        "der": "308201f130820177a003020102020f3ef0e9e096979346b9a494a020da65300a06082a8648ce3d040303301b31193017060355040313105477696e6574204d5343206f75746572301e170d3236313130313031353930345a170d3236313230313032353930345a301d311b301906035504030c12563331425f4f5f42312e6d73632e746573743076301006072a8648ce3d020106052b810400220362000464443431f35f43c471ff57e23e136ba82ecc5cd53f4f128b5d79ee75ef4f8feb3eda756dedbee43c6d4e343ef355cf578b472f2ed96301025c07f912d3b333be6caa25337dceffd3845595a5415f06470258f8292e025eab4a767b36576b4065a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801413020236992a848e3bac4a380c3ce18f4d84bbd6301d0603551d11041630148212563331425f4f5f42312e6d73632e74657374300a06082a8648ce3d0403030368003065023052bd1a022d88a38d2246b08d5291daa293c5a3a2f0a382364347f88c955e573522b64cb1df3cc922d6ea9ecd9345659e023100e32c4ca92d1dbaaa0b0bcb3734aa2dd7a0f5506f6f4ccfe321294cc02e500c0a6a35aea8c2b55457112ed4ea064f4018",
+        "observation": "obs-0074",
+        "sha256": "7394ae666bf53a6c365d72b4c0c23d76ce76dc9441443f4a36203826e3f29ca9"
+      },
+      "logObservation": "obs-0077",
+      "peerCertificate": {
+        "der": "308201f330820178a0030201020210009d6241ae093ce653ec2cf67553a02c300a06082a8648ce3d040303301b31193017060355040313105477696e6574204d5343206f75746572301e170d3236313130313031353835315a170d3236313230313032353835315a301d311b301906035504030c12563331425f4f5f41312e6d73632e746573743076301006072a8648ce3d020106052b810400220362000475d70d1b23014db3db2f3dd32b3cfcbe5dead7450fa0315c7ef2af3facf0732c660efd02cc5b3de8e1c4118586d350f0fc0ea8b8e49667556302ac6b09c87b1822cff439ea64a6c454a8da4ca2db3cbef0285757589933f7edb7ef8991400f06a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801413020236992a848e3bac4a380c3ce18f4d84bbd6301d0603551d11041630148212563331425f4f5f41312e6d73632e74657374300a06082a8648ce3d0403030369003066023100adfeaa22520b3815a94fb5a7a33ec0906c04335a041f064e20476232609e7a4d9eacb0636bc1096f1ca86a6885d0afd602310084684e408ea8b369bcf5e1fe982be99e1d38a7a9ccda442bb1c8d8ffdd1d899c52c64f2282ed0c679a25ecf2426ef4a6",
+        "observation": "obs-0022",
+        "sha256": "4580d937da1f9dc341002c159aff9d81e1b0f756c822503211490e936b3a11b1"
+      },
+      "peerDevice": "V31B_O_A1",
+      "saObservation": "obs-0066",
+      "scope": "Daemon-reported successful certificate authentication and its active CHILD_SA; no independent cryptographic verification."
+    },
+    {
+      "device": "V31B_I_B2",
+      "ike": {
+        "child": {
+          "bytes-in": "0",
+          "bytes-out": "0",
+          "dh-group": "ECP_384",
+          "encr-alg": "AES_GCM_16",
+          "encr-keysize": "256",
+          "install-time": "1220",
+          "life-time": "2380",
+          "local-ts": "[10.2.2.0/24]",
+          "mode": "TUNNEL",
+          "name": "protected",
+          "packets-in": "0",
+          "packets-out": "0",
+          "protocol": "ESP",
+          "rekey-time": "1530",
+          "remote-ts": "[10.1.2.0/24]",
+          "reqid": "102",
+          "spi-in": "c78944ea",
+          "spi-out": "c9474760",
+          "state": "INSTALLED",
+          "uniqueid": "142"
+        },
+        "childName": "protected-142",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "established": "9027",
+        "initiator": "yes",
+        "initiator-spi": "c927faafad9fa856",
+        "local-host": "10.200.2.2",
+        "local-id": "V31B_I_B2.msc.test",
+        "local-port": "500",
+        "name": "msc",
+        "prf-alg": "PRF_HMAC_SHA2_384",
+        "reauth-time": "1297",
+        "remote-host": "10.100.2.2",
+        "remote-id": "V31B_I_A2.msc.test",
+        "remote-port": "500",
+        "responder-spi": "e7db9fdd5dc1a571",
+        "state": "ESTABLISHED",
+        "uniqueid": "27",
+        "version": "2"
+      },
+      "localCertificate": {
+        "der": "308201f53082017aa003020102020f54bcd83c0af897c1675547ead23110300a06082a8648ce3d040303301e311c301a060355040313135477696e6574204d534320696e6e65722d7332301e170d3236313130313031353930375a170d3236313230313032353930375a301d311b301906035504030c12563331425f495f42322e6d73632e746573743076301006072a8648ce3d020106052b810400220362000481e4e6ed861a6729b820182384303edd74e790b449b4848ac0ec51844635155d02dccec6dac0b21ff727fa526c83978fed86db5908445dceac4c592e715b58593ae90b8327a91c94990aabc7fd3ad4a74b4944148d5780082cc8728acb200314a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d23041830168014587eca497a4e5570b3e19cc70a3c3493605ffeae301d0603551d11041630148212563331425f495f42322e6d73632e74657374300a06082a8648ce3d0403030369003066023100c1cb4e88f7667a61885ce9f7e5cbf1fe1d0275cf6252ebfc8f986de9348024a68da6514e8992f7f576fc83e951fa469d023100a934a9b4a59341af72484ce9eda50364660fbe76c2a52561bc63f48003081cd12330f6ee0148f809579d2925e4416edd",
+        "observation": "obs-0087",
+        "sha256": "fc362ed0060f96086cf849dfec47bed44a65897b889af4ef50b77632a35322ae"
+      },
+      "logObservation": "obs-0090",
+      "peerCertificate": {
+        "der": "308201f63082017ba003020102021000c2a807e5341046527a21b195718f92300a06082a8648ce3d040303301e311c301a060355040313135477696e6574204d534320696e6e65722d7332301e170d3236313130313031353835345a170d3236313230313032353835345a301d311b301906035504030c12563331425f495f41322e6d73632e746573743076301006072a8648ce3d020106052b8104002203620004b0670683f36beb7947f6793fc8960fc7b6724250627cb493023d4180e12da7c7d4eab67fcf02c9a7fef20cd5e7ad5f00ae140cb7aa051dee520f9b5688a51d5eebd027d0e1c9e84d6440372178bc3f0c3c5d585579f43f78fb41d31f34ce63a2a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d23041830168014587eca497a4e5570b3e19cc70a3c3493605ffeae301d0603551d11041630148212563331425f495f41322e6d73632e74657374300a06082a8648ce3d0403030369003066023100bfa3baae6eb05911995c5df5a91c7ee7caa1582495b775382dd6defaf123783f27e80cbb964103fc22c60a5d1635e3070231008ade7f0acb57d94a69e76e58d9b25c0745280010cb3f96a5a0b5d4a619b424d8d04985358723cd99beab60ab59fcc83b",
+        "observation": "obs-0035",
+        "sha256": "53e2e900f987a4d1cf3fba60f2c37f5019a867ffce56cd2cd44d270c7f12d757"
+      },
+      "peerDevice": "V31B_I_A2",
+      "saObservation": "obs-0079",
+      "scope": "Daemon-reported successful certificate authentication and its active CHILD_SA; no independent cryptographic verification."
+    },
+    {
+      "device": "V31B_O_B2",
+      "ike": {
+        "child": {
+          "bytes-in": "26606",
+          "bytes-out": "26594",
+          "dh-group": "ECP_384",
+          "encr-alg": "AES_GCM_16",
+          "encr-keysize": "256",
+          "install-time": "1741",
+          "life-time": "1859",
+          "local-ts": "[10.200.2.2/32]",
+          "mode": "TUNNEL",
+          "name": "protected",
+          "packets-in": "310",
+          "packets-out": "310",
+          "protocol": "ESP",
+          "rekey-time": "927",
+          "remote-ts": "[10.100.2.2/32]",
+          "reqid": "202",
+          "spi-in": "c9bc5645",
+          "spi-out": "cd4ba8f2",
+          "state": "INSTALLED",
+          "uniqueid": "138",
+          "use-in": "1",
+          "use-out": "1"
+        },
+        "childName": "protected-138",
+        "dh-group": "ECP_384",
+        "encr-alg": "AES_GCM_16",
+        "encr-keysize": "256",
+        "established": "6670",
+        "initiator": "yes",
+        "initiator-spi": "195ae129e7a40de0",
+        "local-host": "172.20.22.1",
+        "local-id": "V31B_O_B2.msc.test",
+        "local-port": "500",
+        "name": "msc",
+        "prf-alg": "PRF_HMAC_SHA2_384",
+        "reauth-time": "3793",
+        "remote-host": "172.20.12.1",
+        "remote-id": "V31B_O_A2.msc.test",
+        "remote-port": "500",
+        "responder-spi": "094a89964873a68b",
+        "state": "ESTABLISHED",
+        "uniqueid": "27",
+        "version": "2"
+      },
+      "localCertificate": {
+        "der": "308201f130820177a003020102020f7f0b8827f50b6f2f4580240fe6c285300a06082a8648ce3d040303301b31193017060355040313105477696e6574204d5343206f75746572301e170d3236313130313031353931305a170d3236313230313032353931305a301d311b301906035504030c12563331425f4f5f42322e6d73632e746573743076301006072a8648ce3d020106052b8104002203620004064ef26db04bffe0e3b0193840ada6ee6690930ea6c4d8dcc9a9886eb8a6ff67381731c35db796fdc289e7ee4154ac1caf9a834054e1a8d87474c3f5d31cd4dc9808940c9a8547239378012696ab7b7b18749f7d5baad8925431d317faf05816a37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801413020236992a848e3bac4a380c3ce18f4d84bbd6301d0603551d11041630148212563331425f4f5f42322e6d73632e74657374300a06082a8648ce3d0403030368003065023057c880d3aff266babb1907f47226c04ab5ab3529f1f2acf5706c043ecb32fe54cacd239c125d6488aea40fe850451e0d023100f7c3c1b3bb9df96a20f77b3d3f7175dba6ae9a09b1af877864799a0cad3d928e78848935a256ef5a85243dee09b776ca",
+        "observation": "obs-0100",
+        "sha256": "682f39a7e13b022eac2d3e201df8e4d7384d20789e8a53f18a46f0e37d19ab67"
+      },
+      "logObservation": "obs-0103",
+      "peerCertificate": {
+        "der": "308201f330820178a003020102021000cbaf8735908d816421bad53064af9b300a06082a8648ce3d040303301b31193017060355040313105477696e6574204d5343206f75746572301e170d3236313130313031353835375a170d3236313230313032353835375a301d311b301906035504030c12563331425f4f5f41322e6d73632e746573743076301006072a8648ce3d020106052b8104002203620004e03f5ca7536ba0b6c8dfeb4e35c3e5827fa8695881c385435cab4ad2d53977890439c64dfaede6f5fb218d37288cc14580ded0ea75a95e24affb5b63e59859f5ce15c0a97b336cbe38fbf4e97c85c0475fff49264351b1a24c9526c16fb41bafa37f307d300e0603551d0f0101ff040403020780301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff04023000301f0603551d2304183016801413020236992a848e3bac4a380c3ce18f4d84bbd6301d0603551d11041630148212563331425f4f5f41322e6d73632e74657374300a06082a8648ce3d040303036900306602310081cd2ec23789e7858135f2e2aceb6d73d3471b34e8f78554b20f88c76bdb31aa44c627c674330fcc7e188b30d78c2095023100b270c1d1b53913612235a3ef63b93cefc9da1f8ab3f26bd503d9a77477a733e5b1a2702a50219a606674bf57a0cc7936",
+        "observation": "obs-0048",
+        "sha256": "8a79f85e9b596c6712804f92e7ea4f8bc2f7d2916820aa2607522eb60ae7921d"
+      },
+      "peerDevice": "V31B_O_A2",
+      "saObservation": "obs-0092",
+      "scope": "Daemon-reported successful certificate authentication and its active CHILD_SA; no independent cryptographic verification."
+    }
+  ],
+  "devices": [
+    {
+      "id": "V31B_I_A1",
+      "interfaces": [
+        {
+          "address": "10.1.1.1/24",
+          "mtu": 1320,
+          "name": "red",
+          "zone": "red"
+        },
+        {
+          "address": "10.100.1.2/24",
+          "mtu": 1400,
+          "name": "gray",
+          "zone": "gray"
+        }
+      ],
+      "level": "S1",
+      "role": "inner",
+      "routes": [
+        {
+          "prefix": "10.2.1.0/24",
+          "via": "10.100.1.1"
+        },
+        {
+          "prefix": "10.200.1.2/32",
+          "via": "10.100.1.1"
+        },
+        {
+          "prefix": "10.100.2.0/24",
+          "via": "10.100.1.254"
+        }
+      ],
+      "site": "A",
+      "tunnel": {
+        "inside": "red",
+        "local": "10.100.1.2",
+        "local_ts": "10.1.1.0/24",
+        "outside": "gray",
+        "peer": "V31B_I_B1",
+        "remote": "10.200.1.2",
+        "remote_ts": "10.2.1.0/24",
+        "reqid": 101,
+        "trust": "inner-s1"
+      }
+    },
+    {
+      "id": "V31B_O_A1",
+      "interfaces": [
+        {
+          "address": "10.100.1.1/24",
+          "mtu": 1400,
+          "name": "gray",
+          "zone": "gray"
+        },
+        {
+          "address": "172.20.11.1/30",
+          "mtu": 1500,
+          "name": "black",
+          "zone": "black"
+        }
+      ],
+      "level": "S1",
+      "role": "outer",
+      "routes": [
+        {
+          "prefix": "10.200.1.2/32",
+          "via": "172.20.11.2"
+        },
+        {
+          "prefix": "172.20.21.1/32",
+          "via": "172.20.11.2"
+        }
+      ],
+      "site": "A",
+      "tunnel": {
+        "inside": "gray",
+        "local": "172.20.11.1",
+        "local_ts": "10.100.1.2/32",
+        "outside": "black",
+        "peer": "V31B_O_B1",
+        "remote": "172.20.21.1",
+        "remote_ts": "10.200.1.2/32",
+        "reqid": 201,
+        "trust": "outer"
+      }
+    },
+    {
+      "id": "V31B_I_A2",
+      "interfaces": [
+        {
+          "address": "10.1.2.1/24",
+          "mtu": 1320,
+          "name": "red",
+          "zone": "red"
+        },
+        {
+          "address": "10.100.2.2/24",
+          "mtu": 1400,
+          "name": "gray",
+          "zone": "gray"
+        }
+      ],
+      "level": "S2",
+      "role": "inner",
+      "routes": [
+        {
+          "prefix": "10.2.2.0/24",
+          "via": "10.100.2.1"
+        },
+        {
+          "prefix": "10.200.2.2/32",
+          "via": "10.100.2.1"
+        },
+        {
+          "prefix": "10.100.1.0/24",
+          "via": "10.100.2.254"
+        }
+      ],
+      "site": "A",
+      "tunnel": {
+        "inside": "red",
+        "local": "10.100.2.2",
+        "local_ts": "10.1.2.0/24",
+        "outside": "gray",
+        "peer": "V31B_I_B2",
+        "remote": "10.200.2.2",
+        "remote_ts": "10.2.2.0/24",
+        "reqid": 102,
+        "trust": "inner-s2"
+      }
+    },
+    {
+      "id": "V31B_O_A2",
+      "interfaces": [
+        {
+          "address": "10.100.2.1/24",
+          "mtu": 1400,
+          "name": "gray",
+          "zone": "gray"
+        },
+        {
+          "address": "172.20.12.1/30",
+          "mtu": 1500,
+          "name": "black",
+          "zone": "black"
+        }
+      ],
+      "level": "S2",
+      "role": "outer",
+      "routes": [
+        {
+          "prefix": "10.200.2.2/32",
+          "via": "172.20.12.2"
+        },
+        {
+          "prefix": "172.20.22.1/32",
+          "via": "172.20.12.2"
+        }
+      ],
+      "site": "A",
+      "tunnel": {
+        "inside": "gray",
+        "local": "172.20.12.1",
+        "local_ts": "10.100.2.2/32",
+        "outside": "black",
+        "peer": "V31B_O_B2",
+        "remote": "172.20.22.1",
+        "remote_ts": "10.200.2.2/32",
+        "reqid": 202,
+        "trust": "outer"
+      }
+    },
+    {
+      "id": "V31B_I_B1",
+      "interfaces": [
+        {
+          "address": "10.2.1.1/24",
+          "mtu": 1320,
+          "name": "red",
+          "zone": "red"
+        },
+        {
+          "address": "10.200.1.2/24",
+          "mtu": 1400,
+          "name": "gray",
+          "zone": "gray"
+        }
+      ],
+      "level": "S1",
+      "role": "inner",
+      "routes": [
+        {
+          "prefix": "10.1.1.0/24",
+          "via": "10.200.1.1"
+        },
+        {
+          "prefix": "10.100.1.2/32",
+          "via": "10.200.1.1"
+        },
+        {
+          "prefix": "10.200.2.0/24",
+          "via": "10.200.1.254"
+        }
+      ],
+      "site": "B",
+      "tunnel": {
+        "inside": "red",
+        "local": "10.200.1.2",
+        "local_ts": "10.2.1.0/24",
+        "outside": "gray",
+        "peer": "V31B_I_A1",
+        "remote": "10.100.1.2",
+        "remote_ts": "10.1.1.0/24",
+        "reqid": 101,
+        "trust": "inner-s1"
+      }
+    },
+    {
+      "id": "V31B_O_B1",
+      "interfaces": [
+        {
+          "address": "10.200.1.1/24",
+          "mtu": 1400,
+          "name": "gray",
+          "zone": "gray"
+        },
+        {
+          "address": "172.20.21.1/30",
+          "mtu": 1500,
+          "name": "black",
+          "zone": "black"
+        }
+      ],
+      "level": "S1",
+      "role": "outer",
+      "routes": [
+        {
+          "prefix": "10.100.1.2/32",
+          "via": "172.20.21.2"
+        },
+        {
+          "prefix": "172.20.11.1/32",
+          "via": "172.20.21.2"
+        }
+      ],
+      "site": "B",
+      "tunnel": {
+        "inside": "gray",
+        "local": "172.20.21.1",
+        "local_ts": "10.200.1.2/32",
+        "outside": "black",
+        "peer": "V31B_O_A1",
+        "remote": "172.20.11.1",
+        "remote_ts": "10.100.1.2/32",
+        "reqid": 201,
+        "trust": "outer"
+      }
+    },
+    {
+      "id": "V31B_I_B2",
+      "interfaces": [
+        {
+          "address": "10.2.2.1/24",
+          "mtu": 1320,
+          "name": "red",
+          "zone": "red"
+        },
+        {
+          "address": "10.200.2.2/24",
+          "mtu": 1400,
+          "name": "gray",
+          "zone": "gray"
+        }
+      ],
+      "level": "S2",
+      "role": "inner",
+      "routes": [
+        {
+          "prefix": "10.1.2.0/24",
+          "via": "10.200.2.1"
+        },
+        {
+          "prefix": "10.100.2.2/32",
+          "via": "10.200.2.1"
+        },
+        {
+          "prefix": "10.200.1.0/24",
+          "via": "10.200.2.254"
+        }
+      ],
+      "site": "B",
+      "tunnel": {
+        "inside": "red",
+        "local": "10.200.2.2",
+        "local_ts": "10.2.2.0/24",
+        "outside": "gray",
+        "peer": "V31B_I_A2",
+        "remote": "10.100.2.2",
+        "remote_ts": "10.1.2.0/24",
+        "reqid": 102,
+        "trust": "inner-s2"
+      }
+    },
+    {
+      "id": "V31B_O_B2",
+      "interfaces": [
+        {
+          "address": "10.200.2.1/24",
+          "mtu": 1400,
+          "name": "gray",
+          "zone": "gray"
+        },
+        {
+          "address": "172.20.22.1/30",
+          "mtu": 1500,
+          "name": "black",
+          "zone": "black"
+        }
+      ],
+      "level": "S2",
+      "role": "outer",
+      "routes": [
+        {
+          "prefix": "10.100.2.2/32",
+          "via": "172.20.22.2"
+        },
+        {
+          "prefix": "172.20.12.1/32",
+          "via": "172.20.22.2"
+        }
+      ],
+      "site": "B",
+      "tunnel": {
+        "inside": "gray",
+        "local": "172.20.22.1",
+        "local_ts": "10.200.2.2/32",
+        "outside": "black",
+        "peer": "V31B_O_A2",
+        "remote": "172.20.12.1",
+        "remote_ts": "10.100.2.2/32",
+        "reqid": 202,
+        "trust": "outer"
+      }
+    }
+  ],
+  "interfaces": [
+    {
+      "addresses": [
+        {
+          "family": "inet",
+          "label": "lo",
+          "local": "127.0.0.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 8,
+          "scope": "host",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_A1",
+      "name": "lo",
+      "observation": "obs-0000"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_A1",
+      "name": "gre0",
+      "observation": "obs-0000"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_A1",
+      "name": "gretap0",
+      "observation": "obs-0000"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_A1",
+      "name": "erspan0",
+      "observation": "obs-0000"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.1.1.255",
+          "family": "inet",
+          "label": "red",
+          "local": "10.1.1.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_A1",
+      "name": "red",
+      "observation": "obs-0000"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.100.1.255",
+          "family": "inet",
+          "label": "gray",
+          "local": "10.100.1.2",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_A1",
+      "name": "gray",
+      "observation": "obs-0000"
+    },
+    {
+      "addresses": [
+        {
+          "family": "inet",
+          "label": "lo",
+          "local": "127.0.0.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 8,
+          "scope": "host",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_A1",
+      "name": "lo",
+      "observation": "obs-0013"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_A1",
+      "name": "gre0",
+      "observation": "obs-0013"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_A1",
+      "name": "gretap0",
+      "observation": "obs-0013"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_A1",
+      "name": "erspan0",
+      "observation": "obs-0013"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.100.1.255",
+          "family": "inet",
+          "label": "gray",
+          "local": "10.100.1.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_A1",
+      "name": "gray",
+      "observation": "obs-0013"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "172.20.11.3",
+          "family": "inet",
+          "label": "black",
+          "local": "172.20.11.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 30,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_A1",
+      "name": "black",
+      "observation": "obs-0013"
+    },
+    {
+      "addresses": [
+        {
+          "family": "inet",
+          "label": "lo",
+          "local": "127.0.0.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 8,
+          "scope": "host",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_A2",
+      "name": "lo",
+      "observation": "obs-0026"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_A2",
+      "name": "gre0",
+      "observation": "obs-0026"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_A2",
+      "name": "gretap0",
+      "observation": "obs-0026"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_A2",
+      "name": "erspan0",
+      "observation": "obs-0026"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.1.2.255",
+          "family": "inet",
+          "label": "red",
+          "local": "10.1.2.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_A2",
+      "name": "red",
+      "observation": "obs-0026"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.100.2.255",
+          "family": "inet",
+          "label": "gray",
+          "local": "10.100.2.2",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_A2",
+      "name": "gray",
+      "observation": "obs-0026"
+    },
+    {
+      "addresses": [
+        {
+          "family": "inet",
+          "label": "lo",
+          "local": "127.0.0.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 8,
+          "scope": "host",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_A2",
+      "name": "lo",
+      "observation": "obs-0039"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_A2",
+      "name": "gre0",
+      "observation": "obs-0039"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_A2",
+      "name": "gretap0",
+      "observation": "obs-0039"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_A2",
+      "name": "erspan0",
+      "observation": "obs-0039"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.100.2.255",
+          "family": "inet",
+          "label": "gray",
+          "local": "10.100.2.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_A2",
+      "name": "gray",
+      "observation": "obs-0039"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "172.20.12.3",
+          "family": "inet",
+          "label": "black",
+          "local": "172.20.12.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 30,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_A2",
+      "name": "black",
+      "observation": "obs-0039"
+    },
+    {
+      "addresses": [
+        {
+          "family": "inet",
+          "label": "lo",
+          "local": "127.0.0.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 8,
+          "scope": "host",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_B1",
+      "name": "lo",
+      "observation": "obs-0052"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_B1",
+      "name": "gre0",
+      "observation": "obs-0052"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_B1",
+      "name": "gretap0",
+      "observation": "obs-0052"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_B1",
+      "name": "erspan0",
+      "observation": "obs-0052"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.2.1.255",
+          "family": "inet",
+          "label": "red",
+          "local": "10.2.1.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_B1",
+      "name": "red",
+      "observation": "obs-0052"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.200.1.255",
+          "family": "inet",
+          "label": "gray",
+          "local": "10.200.1.2",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_B1",
+      "name": "gray",
+      "observation": "obs-0052"
+    },
+    {
+      "addresses": [
+        {
+          "family": "inet",
+          "label": "lo",
+          "local": "127.0.0.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 8,
+          "scope": "host",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_B1",
+      "name": "lo",
+      "observation": "obs-0065"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_B1",
+      "name": "gre0",
+      "observation": "obs-0065"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_B1",
+      "name": "gretap0",
+      "observation": "obs-0065"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_B1",
+      "name": "erspan0",
+      "observation": "obs-0065"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.200.1.255",
+          "family": "inet",
+          "label": "gray",
+          "local": "10.200.1.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_B1",
+      "name": "gray",
+      "observation": "obs-0065"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "172.20.21.3",
+          "family": "inet",
+          "label": "black",
+          "local": "172.20.21.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 30,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_B1",
+      "name": "black",
+      "observation": "obs-0065"
+    },
+    {
+      "addresses": [
+        {
+          "family": "inet",
+          "label": "lo",
+          "local": "127.0.0.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 8,
+          "scope": "host",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_B2",
+      "name": "lo",
+      "observation": "obs-0078"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_B2",
+      "name": "gre0",
+      "observation": "obs-0078"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_B2",
+      "name": "gretap0",
+      "observation": "obs-0078"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_I_B2",
+      "name": "erspan0",
+      "observation": "obs-0078"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.2.2.255",
+          "family": "inet",
+          "label": "red",
+          "local": "10.2.2.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_B2",
+      "name": "red",
+      "observation": "obs-0078"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.200.2.255",
+          "family": "inet",
+          "label": "gray",
+          "local": "10.200.2.2",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_I_B2",
+      "name": "gray",
+      "observation": "obs-0078"
+    },
+    {
+      "addresses": [
+        {
+          "family": "inet",
+          "label": "lo",
+          "local": "127.0.0.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 8,
+          "scope": "host",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_B2",
+      "name": "lo",
+      "observation": "obs-0091"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_B2",
+      "name": "gre0",
+      "observation": "obs-0091"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_B2",
+      "name": "gretap0",
+      "observation": "obs-0091"
+    },
+    {
+      "addresses": [],
+      "device": "V31B_O_B2",
+      "name": "erspan0",
+      "observation": "obs-0091"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "10.200.2.255",
+          "family": "inet",
+          "label": "gray",
+          "local": "10.200.2.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 24,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_B2",
+      "name": "gray",
+      "observation": "obs-0091"
+    },
+    {
+      "addresses": [
+        {
+          "broadcast": "172.20.22.3",
+          "family": "inet",
+          "label": "black",
+          "local": "172.20.22.1",
+          "preferred_life_time": 4294967295,
+          "prefixlen": 30,
+          "scope": "global",
+          "valid_life_time": 4294967295
+        }
+      ],
+      "device": "V31B_O_B2",
+      "name": "black",
+      "observation": "obs-0091"
+    }
+  ],
+  "manifestSha256": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+  "phases": [
+    {
+      "associations": [
+        {
+          "child": {
+            "bytes-in": "5096",
+            "bytes-out": "5096",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1213",
+            "life-time": "2387",
+            "local-ts": "[10.1.1.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "4",
+            "packets-out": "4",
+            "protocol": "ESP",
+            "rekey-time": "1453",
+            "remote-ts": "[10.2.1.0/24]",
+            "reqid": "101",
+            "spi-in": "c70150c9",
+            "spi-out": "c91855e0",
+            "state": "INSTALLED",
+            "uniqueid": "142",
+            "use-in": "839",
+            "use-out": "838"
+          },
+          "destination": "10.200.1.2",
+          "destinationSelectors": [
+            "10.2.1.0/24"
+          ],
+          "device": "V31B_I_A1",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_I_B1:1",
+          "icvBits": 128,
+          "id": "phase-0:V31B_I_A1:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "8895b7de9d1f4f28707fb7610e2d712ed0f22b5f43da4fea2a6260b422ccd3c2",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0007",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "3bd96b103fabbcb1092eebc546a602899023c6a76154a61c03362e7121f157cc"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_B1",
+          "protocol": "esp",
+          "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc91855e0 reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x0, oseq 0x4, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0002",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 101,
+          "saltBytes": 4,
+          "source": "10.100.1.2",
+          "sourceSelectors": [
+            "10.1.1.0/24"
+          ],
+          "spi": 3373815264,
+          "statisticsObservation": "obs-0003"
+        },
+        {
+          "child": {
+            "bytes-in": "5096",
+            "bytes-out": "5096",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1213",
+            "life-time": "2387",
+            "local-ts": "[10.1.1.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "4",
+            "packets-out": "4",
+            "protocol": "ESP",
+            "rekey-time": "1453",
+            "remote-ts": "[10.2.1.0/24]",
+            "reqid": "101",
+            "spi-in": "c70150c9",
+            "spi-out": "c91855e0",
+            "state": "INSTALLED",
+            "uniqueid": "142",
+            "use-in": "839",
+            "use-out": "838"
+          },
+          "destination": "10.100.1.2",
+          "destinationSelectors": [
+            "10.1.1.0/24"
+          ],
+          "device": "V31B_I_A1",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_I_B1:0",
+          "icvBits": 128,
+          "id": "phase-0:V31B_I_A1:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "7b7a605608662f7ef8b61595f8387610829ecf548176b1b3be8d797b16d5b039",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0007",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "bd1ee397e55419f4301a06b090062fa4c52655063a26ee7fb74124ee8b382f01"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_B1",
+          "protocol": "esp",
+          "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc70150c9 reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x4, oseq 0x0, bitmap 0x0000000f\n",
+          "publicStateObservation": "obs-0002",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 101,
+          "saltBytes": 4,
+          "source": "10.200.1.2",
+          "sourceSelectors": [
+            "10.2.1.0/24"
+          ],
+          "spi": 3338752201,
+          "statisticsObservation": "obs-0003"
+        },
+        {
+          "child": {
+            "bytes-in": "32339",
+            "bytes-out": "32351",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1865",
+            "life-time": "1735",
+            "local-ts": "[10.100.1.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "319",
+            "packets-out": "319",
+            "protocol": "ESP",
+            "rekey-time": "718",
+            "remote-ts": "[10.200.1.2/32]",
+            "reqid": "201",
+            "spi-in": "cfe78566",
+            "spi-out": "c6d89647",
+            "state": "INSTALLED",
+            "uniqueid": "143",
+            "use-in": "10",
+            "use-out": "10"
+          },
+          "destination": "172.20.21.1",
+          "destinationSelectors": [
+            "10.200.1.2/32"
+          ],
+          "device": "V31B_O_A1",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_O_B1:1",
+          "icvBits": 128,
+          "id": "phase-0:V31B_O_A1:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "9e6cab4da3a426715d679e4d5aac270217c24391ae5881f3a1688fa0b478b0d6",
+          "installedAtUTC": "2026-11-04 08:20:29",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0020",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "de5c71102ddddda736da3c399f17a37f1ed19e6ec4254b29e51046f21b1e45f0"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_B1",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc6d89647 reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:35\n\tanti-replay context: seq 0x0, oseq 0x141, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0015",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 201,
+          "saltBytes": 4,
+          "source": "172.20.11.1",
+          "sourceSelectors": [
+            "10.100.1.2/32"
+          ],
+          "spi": 3336083015,
+          "statisticsObservation": "obs-0016"
+        },
+        {
+          "child": {
+            "bytes-in": "32339",
+            "bytes-out": "32351",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1865",
+            "life-time": "1735",
+            "local-ts": "[10.100.1.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "319",
+            "packets-out": "319",
+            "protocol": "ESP",
+            "rekey-time": "718",
+            "remote-ts": "[10.200.1.2/32]",
+            "reqid": "201",
+            "spi-in": "cfe78566",
+            "spi-out": "c6d89647",
+            "state": "INSTALLED",
+            "uniqueid": "143",
+            "use-in": "10",
+            "use-out": "10"
+          },
+          "destination": "172.20.11.1",
+          "destinationSelectors": [
+            "10.100.1.2/32"
+          ],
+          "device": "V31B_O_A1",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_O_B1:0",
+          "icvBits": 128,
+          "id": "phase-0:V31B_O_A1:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "bc715bcd618f33fb57c75656e5b802e99ffe3aecd5d97075954cae5b9c8a85a6",
+          "installedAtUTC": "2026-11-04 08:20:29",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0020",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "49a732778572e3d41921306e6051f20be176acc271f594295a9b205be68df3a0"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_B1",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcfe78566 reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:35\n\tanti-replay context: seq 0x141, oseq 0x0, bitmap 0xffffffff\n",
+          "publicStateObservation": "obs-0015",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 201,
+          "saltBytes": 4,
+          "source": "172.20.21.1",
+          "sourceSelectors": [
+            "10.200.1.2/32"
+          ],
+          "spi": 3488056678,
+          "statisticsObservation": "obs-0016"
+        },
+        {
+          "child": {
+            "bytes-in": "0",
+            "bytes-out": "0",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1215",
+            "life-time": "2385",
+            "local-ts": "[10.1.2.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "0",
+            "packets-out": "0",
+            "protocol": "ESP",
+            "rekey-time": "1451",
+            "remote-ts": "[10.2.2.0/24]",
+            "reqid": "102",
+            "spi-in": "c9474760",
+            "spi-out": "c78944ea",
+            "state": "INSTALLED",
+            "uniqueid": "142"
+          },
+          "destination": "10.200.2.2",
+          "destinationSelectors": [
+            "10.2.2.0/24"
+          ],
+          "device": "V31B_I_A2",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_I_B2:1",
+          "icvBits": 128,
+          "id": "phase-0:V31B_I_A2:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "d245c50c21c17ddbb28a9101bca631cffe30bfee9558a8c720272966ee529ef5",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0033",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "0c7859eedc28100712085b5895a80d301ed2d4fa00da770a1500454237812942"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_B2",
+          "protocol": "esp",
+          "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc78944ea reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0028",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 102,
+          "saltBytes": 4,
+          "source": "10.100.2.2",
+          "sourceSelectors": [
+            "10.1.2.0/24"
+          ],
+          "spi": 3347662058,
+          "statisticsObservation": "obs-0029"
+        },
+        {
+          "child": {
+            "bytes-in": "0",
+            "bytes-out": "0",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1215",
+            "life-time": "2385",
+            "local-ts": "[10.1.2.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "0",
+            "packets-out": "0",
+            "protocol": "ESP",
+            "rekey-time": "1451",
+            "remote-ts": "[10.2.2.0/24]",
+            "reqid": "102",
+            "spi-in": "c9474760",
+            "spi-out": "c78944ea",
+            "state": "INSTALLED",
+            "uniqueid": "142"
+          },
+          "destination": "10.100.2.2",
+          "destinationSelectors": [
+            "10.1.2.0/24"
+          ],
+          "device": "V31B_I_A2",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_I_B2:0",
+          "icvBits": 128,
+          "id": "phase-0:V31B_I_A2:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "46ec0b9ea5d19fd20730aeaee1d839e64f5025c287d6591a04295da5bd2bfe62",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0033",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "5f4837e5d7abec6ba53db11dea6fefc8a6678f5064520832141a628df37c5692"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_B2",
+          "protocol": "esp",
+          "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xc9474760 reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0028",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 102,
+          "saltBytes": 4,
+          "source": "10.200.2.2",
+          "sourceSelectors": [
+            "10.2.2.0/24"
+          ],
+          "spi": 3376891744,
+          "statisticsObservation": "obs-0029"
+        },
+        {
+          "child": {
+            "bytes-in": "26509",
+            "bytes-out": "26521",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1736",
+            "life-time": "1864",
+            "local-ts": "[10.100.2.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "309",
+            "packets-out": "309",
+            "protocol": "ESP",
+            "rekey-time": "932",
+            "remote-ts": "[10.200.2.2/32]",
+            "reqid": "202",
+            "spi-in": "cd4ba8f2",
+            "spi-out": "c9bc5645",
+            "state": "INSTALLED",
+            "uniqueid": "138",
+            "use-in": "6",
+            "use-out": "6"
+          },
+          "destination": "172.20.22.1",
+          "destinationSelectors": [
+            "10.200.2.2/32"
+          ],
+          "device": "V31B_O_A2",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_O_B2:1",
+          "icvBits": 128,
+          "id": "phase-0:V31B_O_A2:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "7dc13552012afa93c4959bea8b51574fef040eb03c010494b3ced557a50140dc",
+          "installedAtUTC": "2026-11-04 08:22:40",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0046",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "715c2bd966424524f01ec5c8fbd8b72fdb28774329cddde74b5ad4f1322ad1df"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_B2",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc9bc5645 reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:31\n\tanti-replay context: seq 0x0, oseq 0x135, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0041",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 202,
+          "saltBytes": 4,
+          "source": "172.20.12.1",
+          "sourceSelectors": [
+            "10.100.2.2/32"
+          ],
+          "spi": 3384563269,
+          "statisticsObservation": "obs-0042"
+        },
+        {
+          "child": {
+            "bytes-in": "26509",
+            "bytes-out": "26521",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1736",
+            "life-time": "1864",
+            "local-ts": "[10.100.2.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "309",
+            "packets-out": "309",
+            "protocol": "ESP",
+            "rekey-time": "932",
+            "remote-ts": "[10.200.2.2/32]",
+            "reqid": "202",
+            "spi-in": "cd4ba8f2",
+            "spi-out": "c9bc5645",
+            "state": "INSTALLED",
+            "uniqueid": "138",
+            "use-in": "6",
+            "use-out": "6"
+          },
+          "destination": "172.20.12.1",
+          "destinationSelectors": [
+            "10.100.2.2/32"
+          ],
+          "device": "V31B_O_A2",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_O_B2:0",
+          "icvBits": 128,
+          "id": "phase-0:V31B_O_A2:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "80500660f30bacb663f4f4177ef102ef673f1494d35f572ccabbb8f18c0299b6",
+          "installedAtUTC": "2026-11-04 08:22:40",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0046",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "53bbfded3dc3d3c8af4ef6837d4f61809efdd9c7e4e3448d64680d13794470bc"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_B2",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xcd4ba8f2 reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:31\n\tanti-replay context: seq 0x135, oseq 0x0, bitmap 0xffffffff\n",
+          "publicStateObservation": "obs-0041",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 202,
+          "saltBytes": 4,
+          "source": "172.20.22.1",
+          "sourceSelectors": [
+            "10.200.2.2/32"
+          ],
+          "spi": 3444287730,
+          "statisticsObservation": "obs-0042"
+        },
+        {
+          "child": {
+            "bytes-in": "5096",
+            "bytes-out": "5096",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1217",
+            "life-time": "2383",
+            "local-ts": "[10.2.1.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "4",
+            "packets-out": "4",
+            "protocol": "ESP",
+            "rekey-time": "1533",
+            "remote-ts": "[10.1.1.0/24]",
+            "reqid": "101",
+            "spi-in": "c91855e0",
+            "spi-out": "c70150c9",
+            "state": "INSTALLED",
+            "uniqueid": "142",
+            "use-in": "843",
+            "use-out": "843"
+          },
+          "destination": "10.100.1.2",
+          "destinationSelectors": [
+            "10.1.1.0/24"
+          ],
+          "device": "V31B_I_B1",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_I_A1:1",
+          "icvBits": 128,
+          "id": "phase-0:V31B_I_B1:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "5d57d498090963c38cdb536e992d9d22fb358161af6858f2c366104fa38f1999",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0059",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "bd1ee397e55419f4301a06b090062fa4c52655063a26ee7fb74124ee8b382f01"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_A1",
+          "protocol": "esp",
+          "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc70150c9 reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x0, oseq 0x4, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0054",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 101,
+          "saltBytes": 4,
+          "source": "10.200.1.2",
+          "sourceSelectors": [
+            "10.2.1.0/24"
+          ],
+          "spi": 3338752201,
+          "statisticsObservation": "obs-0055"
+        },
+        {
+          "child": {
+            "bytes-in": "5096",
+            "bytes-out": "5096",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1217",
+            "life-time": "2383",
+            "local-ts": "[10.2.1.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "4",
+            "packets-out": "4",
+            "protocol": "ESP",
+            "rekey-time": "1533",
+            "remote-ts": "[10.1.1.0/24]",
+            "reqid": "101",
+            "spi-in": "c91855e0",
+            "spi-out": "c70150c9",
+            "state": "INSTALLED",
+            "uniqueid": "142",
+            "use-in": "843",
+            "use-out": "843"
+          },
+          "destination": "10.200.1.2",
+          "destinationSelectors": [
+            "10.2.1.0/24"
+          ],
+          "device": "V31B_I_B1",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_I_A1:0",
+          "icvBits": 128,
+          "id": "phase-0:V31B_I_B1:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "ffb89d2671c23f5879ccfe26deb42c06a9b5547f1ff3c14d2c000f41a617e20f",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0059",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "3bd96b103fabbcb1092eebc546a602899023c6a76154a61c03362e7121f157cc"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_A1",
+          "protocol": "esp",
+          "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc91855e0 reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x4, oseq 0x0, bitmap 0x0000000f\n",
+          "publicStateObservation": "obs-0054",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 101,
+          "saltBytes": 4,
+          "source": "10.100.1.2",
+          "sourceSelectors": [
+            "10.1.1.0/24"
+          ],
+          "spi": 3373815264,
+          "statisticsObservation": "obs-0055"
+        },
+        {
+          "child": {
+            "bytes-in": "32521",
+            "bytes-out": "32509",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1870",
+            "life-time": "1730",
+            "local-ts": "[10.200.1.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "321",
+            "packets-out": "321",
+            "protocol": "ESP",
+            "rekey-time": "935",
+            "remote-ts": "[10.100.1.2/32]",
+            "reqid": "201",
+            "spi-in": "c6d89647",
+            "spi-out": "cfe78566",
+            "state": "INSTALLED",
+            "uniqueid": "147",
+            "use-in": "4",
+            "use-out": "4"
+          },
+          "destination": "172.20.11.1",
+          "destinationSelectors": [
+            "10.100.1.2/32"
+          ],
+          "device": "V31B_O_B1",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_O_A1:1",
+          "icvBits": 128,
+          "id": "phase-0:V31B_O_B1:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "2b0eb6aa2b60fedf039398718a3d978dd63c6b2701fd34190027a26cf26a1a29",
+          "installedAtUTC": "2026-11-04 08:20:29",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0072",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "49a732778572e3d41921306e6051f20be176acc271f594295a9b205be68df3a0"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_A1",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcfe78566 reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:35\n\tanti-replay context: seq 0x0, oseq 0x141, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0067",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 201,
+          "saltBytes": 4,
+          "source": "172.20.21.1",
+          "sourceSelectors": [
+            "10.200.1.2/32"
+          ],
+          "spi": 3488056678,
+          "statisticsObservation": "obs-0068"
+        },
+        {
+          "child": {
+            "bytes-in": "32521",
+            "bytes-out": "32509",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1870",
+            "life-time": "1730",
+            "local-ts": "[10.200.1.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "321",
+            "packets-out": "321",
+            "protocol": "ESP",
+            "rekey-time": "935",
+            "remote-ts": "[10.100.1.2/32]",
+            "reqid": "201",
+            "spi-in": "c6d89647",
+            "spi-out": "cfe78566",
+            "state": "INSTALLED",
+            "uniqueid": "147",
+            "use-in": "4",
+            "use-out": "4"
+          },
+          "destination": "172.20.21.1",
+          "destinationSelectors": [
+            "10.200.1.2/32"
+          ],
+          "device": "V31B_O_B1",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_O_A1:0",
+          "icvBits": 128,
+          "id": "phase-0:V31B_O_B1:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "a881cf8855dd125991232bf080735ba7b4dc2ae13dc1af836917ef5c64bde8f4",
+          "installedAtUTC": "2026-11-04 08:20:29",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0072",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "de5c71102ddddda736da3c399f17a37f1ed19e6ec4254b29e51046f21b1e45f0"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_A1",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc6d89647 reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:35\n\tanti-replay context: seq 0x141, oseq 0x0, bitmap 0xffffffff\n",
+          "publicStateObservation": "obs-0067",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 201,
+          "saltBytes": 4,
+          "source": "172.20.11.1",
+          "sourceSelectors": [
+            "10.100.1.2/32"
+          ],
+          "spi": 3336083015,
+          "statisticsObservation": "obs-0068"
+        },
+        {
+          "child": {
+            "bytes-in": "0",
+            "bytes-out": "0",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1220",
+            "life-time": "2380",
+            "local-ts": "[10.2.2.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "0",
+            "packets-out": "0",
+            "protocol": "ESP",
+            "rekey-time": "1530",
+            "remote-ts": "[10.1.2.0/24]",
+            "reqid": "102",
+            "spi-in": "c78944ea",
+            "spi-out": "c9474760",
+            "state": "INSTALLED",
+            "uniqueid": "142"
+          },
+          "destination": "10.100.2.2",
+          "destinationSelectors": [
+            "10.1.2.0/24"
+          ],
+          "device": "V31B_I_B2",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_I_A2:1",
+          "icvBits": 128,
+          "id": "phase-0:V31B_I_B2:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "4be26e59feae99d84c8ed11029415f35363b55bc9eb8522679d2177efde27f37",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0085",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "5f4837e5d7abec6ba53db11dea6fefc8a6678f5064520832141a628df37c5692"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_A2",
+          "protocol": "esp",
+          "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xc9474760 reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0080",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 102,
+          "saltBytes": 4,
+          "source": "10.200.2.2",
+          "sourceSelectors": [
+            "10.2.2.0/24"
+          ],
+          "spi": 3376891744,
+          "statisticsObservation": "obs-0081"
+        },
+        {
+          "child": {
+            "bytes-in": "0",
+            "bytes-out": "0",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1220",
+            "life-time": "2380",
+            "local-ts": "[10.2.2.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "0",
+            "packets-out": "0",
+            "protocol": "ESP",
+            "rekey-time": "1530",
+            "remote-ts": "[10.1.2.0/24]",
+            "reqid": "102",
+            "spi-in": "c78944ea",
+            "spi-out": "c9474760",
+            "state": "INSTALLED",
+            "uniqueid": "142"
+          },
+          "destination": "10.200.2.2",
+          "destinationSelectors": [
+            "10.2.2.0/24"
+          ],
+          "device": "V31B_I_B2",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_I_A2:0",
+          "icvBits": 128,
+          "id": "phase-0:V31B_I_B2:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "a9762320a96685b0bf3267baa20b153a43640a4929013fe7d5bd69f40a0f4445",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0085",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "0c7859eedc28100712085b5895a80d301ed2d4fa00da770a1500454237812942"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_A2",
+          "protocol": "esp",
+          "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc78944ea reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0080",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 102,
+          "saltBytes": 4,
+          "source": "10.100.2.2",
+          "sourceSelectors": [
+            "10.1.2.0/24"
+          ],
+          "spi": 3347662058,
+          "statisticsObservation": "obs-0081"
+        },
+        {
+          "child": {
+            "bytes-in": "26606",
+            "bytes-out": "26594",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1741",
+            "life-time": "1859",
+            "local-ts": "[10.200.2.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "310",
+            "packets-out": "310",
+            "protocol": "ESP",
+            "rekey-time": "927",
+            "remote-ts": "[10.100.2.2/32]",
+            "reqid": "202",
+            "spi-in": "c9bc5645",
+            "spi-out": "cd4ba8f2",
+            "state": "INSTALLED",
+            "uniqueid": "138",
+            "use-in": "1",
+            "use-out": "1"
+          },
+          "destination": "172.20.12.1",
+          "destinationSelectors": [
+            "10.100.2.2/32"
+          ],
+          "device": "V31B_O_B2",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_O_A2:1",
+          "icvBits": 128,
+          "id": "phase-0:V31B_O_B2:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "46d452342a7a116cc2542e4adb0a326c121ecfc8a6403ea44d7eabb57d02e329",
+          "installedAtUTC": "2026-11-04 08:22:40",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0098",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "53bbfded3dc3d3c8af4ef6837d4f61809efdd9c7e4e3448d64680d13794470bc"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_A2",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xcd4ba8f2 reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x0, oseq 0x136, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0093",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 202,
+          "saltBytes": 4,
+          "source": "172.20.22.1",
+          "sourceSelectors": [
+            "10.200.2.2/32"
+          ],
+          "spi": 3444287730,
+          "statisticsObservation": "obs-0094"
+        },
+        {
+          "child": {
+            "bytes-in": "26606",
+            "bytes-out": "26594",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1741",
+            "life-time": "1859",
+            "local-ts": "[10.200.2.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "310",
+            "packets-out": "310",
+            "protocol": "ESP",
+            "rekey-time": "927",
+            "remote-ts": "[10.100.2.2/32]",
+            "reqid": "202",
+            "spi-in": "c9bc5645",
+            "spi-out": "cd4ba8f2",
+            "state": "INSTALLED",
+            "uniqueid": "138",
+            "use-in": "1",
+            "use-out": "1"
+          },
+          "destination": "172.20.22.1",
+          "destinationSelectors": [
+            "10.200.2.2/32"
+          ],
+          "device": "V31B_O_B2",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-0:V31B_O_A2:0",
+          "icvBits": 128,
+          "id": "phase-0:V31B_O_B2:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "539f717dfe15ccb87bc9f39744fe66f534a63c99a867ea02825f4453bb4c4ef1",
+          "installedAtUTC": "2026-11-04 08:22:40",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0098",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "715c2bd966424524f01ec5c8fbd8b72fdb28774329cddde74b5ad4f1322ad1df"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_A2",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc9bc5645 reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x136, oseq 0x0, bitmap 0xffffffff\n",
+          "publicStateObservation": "obs-0093",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 202,
+          "saltBytes": 4,
+          "source": "172.20.12.1",
+          "sourceSelectors": [
+            "10.100.2.2/32"
+          ],
+          "spi": 3384563269,
+          "statisticsObservation": "obs-0094"
+        }
+      ],
+      "endedAt": "2026-11-04T08:51:43.073684+00:00",
+      "id": "phase-0",
+      "startedAt": "2026-11-04T08:51:33.767627+00:00"
+    },
+    {
+      "associations": [
+        {
+          "child": {
+            "bytes-in": "5096",
+            "bytes-out": "5096",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1222",
+            "life-time": "2378",
+            "local-ts": "[10.1.1.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "4",
+            "packets-out": "4",
+            "protocol": "ESP",
+            "rekey-time": "1444",
+            "remote-ts": "[10.2.1.0/24]",
+            "reqid": "101",
+            "spi-in": "c70150c9",
+            "spi-out": "c91855e0",
+            "state": "INSTALLED",
+            "uniqueid": "142",
+            "use-in": "848",
+            "use-out": "847"
+          },
+          "destination": "10.200.1.2",
+          "destinationSelectors": [
+            "10.2.1.0/24"
+          ],
+          "device": "V31B_I_A1",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_I_B1:1",
+          "icvBits": 128,
+          "id": "phase-1:V31B_I_A1:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "8895b7de9d1f4f28707fb7610e2d712ed0f22b5f43da4fea2a6260b422ccd3c2",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0111",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "3bd96b103fabbcb1092eebc546a602899023c6a76154a61c03362e7121f157cc"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_B1",
+          "protocol": "esp",
+          "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc91855e0 reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x0, oseq 0x4, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0106",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 101,
+          "saltBytes": 4,
+          "source": "10.100.1.2",
+          "sourceSelectors": [
+            "10.1.1.0/24"
+          ],
+          "spi": 3373815264,
+          "statisticsObservation": "obs-0107"
+        },
+        {
+          "child": {
+            "bytes-in": "5096",
+            "bytes-out": "5096",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1222",
+            "life-time": "2378",
+            "local-ts": "[10.1.1.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "4",
+            "packets-out": "4",
+            "protocol": "ESP",
+            "rekey-time": "1444",
+            "remote-ts": "[10.2.1.0/24]",
+            "reqid": "101",
+            "spi-in": "c70150c9",
+            "spi-out": "c91855e0",
+            "state": "INSTALLED",
+            "uniqueid": "142",
+            "use-in": "848",
+            "use-out": "847"
+          },
+          "destination": "10.100.1.2",
+          "destinationSelectors": [
+            "10.1.1.0/24"
+          ],
+          "device": "V31B_I_A1",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_I_B1:0",
+          "icvBits": 128,
+          "id": "phase-1:V31B_I_A1:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "7b7a605608662f7ef8b61595f8387610829ecf548176b1b3be8d797b16d5b039",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0111",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "bd1ee397e55419f4301a06b090062fa4c52655063a26ee7fb74124ee8b382f01"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_B1",
+          "protocol": "esp",
+          "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc70150c9 reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x4, oseq 0x0, bitmap 0x0000000f\n",
+          "publicStateObservation": "obs-0106",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 101,
+          "saltBytes": 4,
+          "source": "10.200.1.2",
+          "sourceSelectors": [
+            "10.2.1.0/24"
+          ],
+          "spi": 3338752201,
+          "statisticsObservation": "obs-0107"
+        },
+        {
+          "child": {
+            "bytes-in": "32509",
+            "bytes-out": "32521",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1874",
+            "life-time": "1726",
+            "local-ts": "[10.100.1.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "321",
+            "packets-out": "321",
+            "protocol": "ESP",
+            "rekey-time": "709",
+            "remote-ts": "[10.200.1.2/32]",
+            "reqid": "201",
+            "spi-in": "cfe78566",
+            "spi-out": "c6d89647",
+            "state": "INSTALLED",
+            "uniqueid": "143",
+            "use-in": "9",
+            "use-out": "9"
+          },
+          "destination": "172.20.21.1",
+          "destinationSelectors": [
+            "10.200.1.2/32"
+          ],
+          "device": "V31B_O_A1",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_O_B1:1",
+          "icvBits": 128,
+          "id": "phase-1:V31B_O_A1:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "9e6cab4da3a426715d679e4d5aac270217c24391ae5881f3a1688fa0b478b0d6",
+          "installedAtUTC": "2026-11-04 08:20:29",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0119",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "de5c71102ddddda736da3c399f17a37f1ed19e6ec4254b29e51046f21b1e45f0"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_B1",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc6d89647 reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:35\n\tanti-replay context: seq 0x0, oseq 0x141, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0114",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 201,
+          "saltBytes": 4,
+          "source": "172.20.11.1",
+          "sourceSelectors": [
+            "10.100.1.2/32"
+          ],
+          "spi": 3336083015,
+          "statisticsObservation": "obs-0115"
+        },
+        {
+          "child": {
+            "bytes-in": "32509",
+            "bytes-out": "32521",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1874",
+            "life-time": "1726",
+            "local-ts": "[10.100.1.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "321",
+            "packets-out": "321",
+            "protocol": "ESP",
+            "rekey-time": "709",
+            "remote-ts": "[10.200.1.2/32]",
+            "reqid": "201",
+            "spi-in": "cfe78566",
+            "spi-out": "c6d89647",
+            "state": "INSTALLED",
+            "uniqueid": "143",
+            "use-in": "9",
+            "use-out": "9"
+          },
+          "destination": "172.20.11.1",
+          "destinationSelectors": [
+            "10.100.1.2/32"
+          ],
+          "device": "V31B_O_A1",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_O_B1:0",
+          "icvBits": 128,
+          "id": "phase-1:V31B_O_A1:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "bc715bcd618f33fb57c75656e5b802e99ffe3aecd5d97075954cae5b9c8a85a6",
+          "installedAtUTC": "2026-11-04 08:20:29",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0119",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "49a732778572e3d41921306e6051f20be176acc271f594295a9b205be68df3a0"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_B1",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcfe78566 reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:35\n\tanti-replay context: seq 0x141, oseq 0x0, bitmap 0xffffffff\n",
+          "publicStateObservation": "obs-0114",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 201,
+          "saltBytes": 4,
+          "source": "172.20.21.1",
+          "sourceSelectors": [
+            "10.200.1.2/32"
+          ],
+          "spi": 3488056678,
+          "statisticsObservation": "obs-0115"
+        },
+        {
+          "child": {
+            "bytes-in": "0",
+            "bytes-out": "0",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1224",
+            "life-time": "2376",
+            "local-ts": "[10.1.2.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "0",
+            "packets-out": "0",
+            "protocol": "ESP",
+            "rekey-time": "1442",
+            "remote-ts": "[10.2.2.0/24]",
+            "reqid": "102",
+            "spi-in": "c9474760",
+            "spi-out": "c78944ea",
+            "state": "INSTALLED",
+            "uniqueid": "142"
+          },
+          "destination": "10.200.2.2",
+          "destinationSelectors": [
+            "10.2.2.0/24"
+          ],
+          "device": "V31B_I_A2",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_I_B2:1",
+          "icvBits": 128,
+          "id": "phase-1:V31B_I_A2:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "d245c50c21c17ddbb28a9101bca631cffe30bfee9558a8c720272966ee529ef5",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0127",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "0c7859eedc28100712085b5895a80d301ed2d4fa00da770a1500454237812942"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_B2",
+          "protocol": "esp",
+          "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc78944ea reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0122",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 102,
+          "saltBytes": 4,
+          "source": "10.100.2.2",
+          "sourceSelectors": [
+            "10.1.2.0/24"
+          ],
+          "spi": 3347662058,
+          "statisticsObservation": "obs-0123"
+        },
+        {
+          "child": {
+            "bytes-in": "0",
+            "bytes-out": "0",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1224",
+            "life-time": "2376",
+            "local-ts": "[10.1.2.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "0",
+            "packets-out": "0",
+            "protocol": "ESP",
+            "rekey-time": "1442",
+            "remote-ts": "[10.2.2.0/24]",
+            "reqid": "102",
+            "spi-in": "c9474760",
+            "spi-out": "c78944ea",
+            "state": "INSTALLED",
+            "uniqueid": "142"
+          },
+          "destination": "10.100.2.2",
+          "destinationSelectors": [
+            "10.1.2.0/24"
+          ],
+          "device": "V31B_I_A2",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_I_B2:0",
+          "icvBits": 128,
+          "id": "phase-1:V31B_I_A2:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "46ec0b9ea5d19fd20730aeaee1d839e64f5025c287d6591a04295da5bd2bfe62",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0127",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "5f4837e5d7abec6ba53db11dea6fefc8a6678f5064520832141a628df37c5692"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_B2",
+          "protocol": "esp",
+          "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xc9474760 reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0122",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 102,
+          "saltBytes": 4,
+          "source": "10.200.2.2",
+          "sourceSelectors": [
+            "10.2.2.0/24"
+          ],
+          "spi": 3376891744,
+          "statisticsObservation": "obs-0123"
+        },
+        {
+          "child": {
+            "bytes-in": "26594",
+            "bytes-out": "26606",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1744",
+            "life-time": "1856",
+            "local-ts": "[10.100.2.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "310",
+            "packets-out": "310",
+            "protocol": "ESP",
+            "rekey-time": "924",
+            "remote-ts": "[10.200.2.2/32]",
+            "reqid": "202",
+            "spi-in": "cd4ba8f2",
+            "spi-out": "c9bc5645",
+            "state": "INSTALLED",
+            "uniqueid": "138",
+            "use-in": "4",
+            "use-out": "4"
+          },
+          "destination": "172.20.22.1",
+          "destinationSelectors": [
+            "10.200.2.2/32"
+          ],
+          "device": "V31B_O_A2",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_O_B2:1",
+          "icvBits": 128,
+          "id": "phase-1:V31B_O_A2:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "7dc13552012afa93c4959bea8b51574fef040eb03c010494b3ced557a50140dc",
+          "installedAtUTC": "2026-11-04 08:22:40",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0135",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "715c2bd966424524f01ec5c8fbd8b72fdb28774329cddde74b5ad4f1322ad1df"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_B2",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc9bc5645 reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x0, oseq 0x136, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0130",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 202,
+          "saltBytes": 4,
+          "source": "172.20.12.1",
+          "sourceSelectors": [
+            "10.100.2.2/32"
+          ],
+          "spi": 3384563269,
+          "statisticsObservation": "obs-0131"
+        },
+        {
+          "child": {
+            "bytes-in": "26594",
+            "bytes-out": "26606",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1744",
+            "life-time": "1856",
+            "local-ts": "[10.100.2.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "310",
+            "packets-out": "310",
+            "protocol": "ESP",
+            "rekey-time": "924",
+            "remote-ts": "[10.200.2.2/32]",
+            "reqid": "202",
+            "spi-in": "cd4ba8f2",
+            "spi-out": "c9bc5645",
+            "state": "INSTALLED",
+            "uniqueid": "138",
+            "use-in": "4",
+            "use-out": "4"
+          },
+          "destination": "172.20.12.1",
+          "destinationSelectors": [
+            "10.100.2.2/32"
+          ],
+          "device": "V31B_O_A2",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_O_B2:0",
+          "icvBits": 128,
+          "id": "phase-1:V31B_O_A2:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "80500660f30bacb663f4f4177ef102ef673f1494d35f572ccabbb8f18c0299b6",
+          "installedAtUTC": "2026-11-04 08:22:40",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0135",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "53bbfded3dc3d3c8af4ef6837d4f61809efdd9c7e4e3448d64680d13794470bc"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_B2",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xcd4ba8f2 reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x136, oseq 0x0, bitmap 0xffffffff\n",
+          "publicStateObservation": "obs-0130",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 202,
+          "saltBytes": 4,
+          "source": "172.20.22.1",
+          "sourceSelectors": [
+            "10.200.2.2/32"
+          ],
+          "spi": 3444287730,
+          "statisticsObservation": "obs-0131"
+        },
+        {
+          "child": {
+            "bytes-in": "5096",
+            "bytes-out": "5096",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1225",
+            "life-time": "2375",
+            "local-ts": "[10.2.1.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "4",
+            "packets-out": "4",
+            "protocol": "ESP",
+            "rekey-time": "1525",
+            "remote-ts": "[10.1.1.0/24]",
+            "reqid": "101",
+            "spi-in": "c91855e0",
+            "spi-out": "c70150c9",
+            "state": "INSTALLED",
+            "uniqueid": "142",
+            "use-in": "851",
+            "use-out": "851"
+          },
+          "destination": "10.100.1.2",
+          "destinationSelectors": [
+            "10.1.1.0/24"
+          ],
+          "device": "V31B_I_B1",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_I_A1:1",
+          "icvBits": 128,
+          "id": "phase-1:V31B_I_B1:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "5d57d498090963c38cdb536e992d9d22fb358161af6858f2c366104fa38f1999",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0143",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "bd1ee397e55419f4301a06b090062fa4c52655063a26ee7fb74124ee8b382f01"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_A1",
+          "protocol": "esp",
+          "publicBlock": "src 10.200.1.2 dst 10.100.1.2\n\tproto esp spi 0xc70150c9 reqid 101 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x0, oseq 0x4, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0138",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 101,
+          "saltBytes": 4,
+          "source": "10.200.1.2",
+          "sourceSelectors": [
+            "10.2.1.0/24"
+          ],
+          "spi": 3338752201,
+          "statisticsObservation": "obs-0139"
+        },
+        {
+          "child": {
+            "bytes-in": "5096",
+            "bytes-out": "5096",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1225",
+            "life-time": "2375",
+            "local-ts": "[10.2.1.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "4",
+            "packets-out": "4",
+            "protocol": "ESP",
+            "rekey-time": "1525",
+            "remote-ts": "[10.1.1.0/24]",
+            "reqid": "101",
+            "spi-in": "c91855e0",
+            "spi-out": "c70150c9",
+            "state": "INSTALLED",
+            "uniqueid": "142",
+            "use-in": "851",
+            "use-out": "851"
+          },
+          "destination": "10.200.1.2",
+          "destinationSelectors": [
+            "10.2.1.0/24"
+          ],
+          "device": "V31B_I_B1",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_I_A1:0",
+          "icvBits": 128,
+          "id": "phase-1:V31B_I_B1:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "ffb89d2671c23f5879ccfe26deb42c06a9b5547f1ff3c14d2c000f41a617e20f",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0143",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "3bd96b103fabbcb1092eebc546a602899023c6a76154a61c03362e7121f157cc"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_A1",
+          "protocol": "esp",
+          "publicBlock": "src 10.100.1.2 dst 10.200.1.2\n\tproto esp spi 0xc91855e0 reqid 101 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:37:35\n\tanti-replay context: seq 0x4, oseq 0x0, bitmap 0x0000000f\n",
+          "publicStateObservation": "obs-0138",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 101,
+          "saltBytes": 4,
+          "source": "10.100.1.2",
+          "sourceSelectors": [
+            "10.1.1.0/24"
+          ],
+          "spi": 3373815264,
+          "statisticsObservation": "obs-0139"
+        },
+        {
+          "child": {
+            "bytes-in": "32691",
+            "bytes-out": "32679",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1877",
+            "life-time": "1723",
+            "local-ts": "[10.200.1.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "323",
+            "packets-out": "323",
+            "protocol": "ESP",
+            "rekey-time": "928",
+            "remote-ts": "[10.100.1.2/32]",
+            "reqid": "201",
+            "spi-in": "c6d89647",
+            "spi-out": "cfe78566",
+            "state": "INSTALLED",
+            "uniqueid": "147",
+            "use-in": "1",
+            "use-out": "1"
+          },
+          "destination": "172.20.11.1",
+          "destinationSelectors": [
+            "10.100.1.2/32"
+          ],
+          "device": "V31B_O_B1",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_O_A1:1",
+          "icvBits": 128,
+          "id": "phase-1:V31B_O_B1:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "2b0eb6aa2b60fedf039398718a3d978dd63c6b2701fd34190027a26cf26a1a29",
+          "installedAtUTC": "2026-11-04 08:20:29",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0151",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "49a732778572e3d41921306e6051f20be176acc271f594295a9b205be68df3a0"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_A1",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.21.1 dst 172.20.11.1\n\tproto esp spi 0xcfe78566 reqid 201 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:45\n\tanti-replay context: seq 0x0, oseq 0x143, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0146",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 201,
+          "saltBytes": 4,
+          "source": "172.20.21.1",
+          "sourceSelectors": [
+            "10.200.1.2/32"
+          ],
+          "spi": 3488056678,
+          "statisticsObservation": "obs-0147"
+        },
+        {
+          "child": {
+            "bytes-in": "32691",
+            "bytes-out": "32679",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1877",
+            "life-time": "1723",
+            "local-ts": "[10.200.1.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "323",
+            "packets-out": "323",
+            "protocol": "ESP",
+            "rekey-time": "928",
+            "remote-ts": "[10.100.1.2/32]",
+            "reqid": "201",
+            "spi-in": "c6d89647",
+            "spi-out": "cfe78566",
+            "state": "INSTALLED",
+            "uniqueid": "147",
+            "use-in": "1",
+            "use-out": "1"
+          },
+          "destination": "172.20.21.1",
+          "destinationSelectors": [
+            "10.200.1.2/32"
+          ],
+          "device": "V31B_O_B1",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_O_A1:0",
+          "icvBits": 128,
+          "id": "phase-1:V31B_O_B1:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "a881cf8855dd125991232bf080735ba7b4dc2ae13dc1af836917ef5c64bde8f4",
+          "installedAtUTC": "2026-11-04 08:20:29",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0151",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "de5c71102ddddda736da3c399f17a37f1ed19e6ec4254b29e51046f21b1e45f0"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_A1",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.11.1 dst 172.20.21.1\n\tproto esp spi 0xc6d89647 reqid 201 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:45\n\tanti-replay context: seq 0x143, oseq 0x0, bitmap 0xffffffff\n",
+          "publicStateObservation": "obs-0146",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 201,
+          "saltBytes": 4,
+          "source": "172.20.11.1",
+          "sourceSelectors": [
+            "10.100.1.2/32"
+          ],
+          "spi": 3336083015,
+          "statisticsObservation": "obs-0147"
+        },
+        {
+          "child": {
+            "bytes-in": "0",
+            "bytes-out": "0",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1226",
+            "life-time": "2374",
+            "local-ts": "[10.2.2.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "0",
+            "packets-out": "0",
+            "protocol": "ESP",
+            "rekey-time": "1524",
+            "remote-ts": "[10.1.2.0/24]",
+            "reqid": "102",
+            "spi-in": "c78944ea",
+            "spi-out": "c9474760",
+            "state": "INSTALLED",
+            "uniqueid": "142"
+          },
+          "destination": "10.100.2.2",
+          "destinationSelectors": [
+            "10.1.2.0/24"
+          ],
+          "device": "V31B_I_B2",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_I_A2:1",
+          "icvBits": 128,
+          "id": "phase-1:V31B_I_B2:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "4be26e59feae99d84c8ed11029415f35363b55bc9eb8522679d2177efde27f37",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0159",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "5f4837e5d7abec6ba53db11dea6fefc8a6678f5064520832141a628df37c5692"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_A2",
+          "protocol": "esp",
+          "publicBlock": "src 10.200.2.2 dst 10.100.2.2\n\tproto esp spi 0xc9474760 reqid 102 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0154",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 102,
+          "saltBytes": 4,
+          "source": "10.200.2.2",
+          "sourceSelectors": [
+            "10.2.2.0/24"
+          ],
+          "spi": 3376891744,
+          "statisticsObservation": "obs-0155"
+        },
+        {
+          "child": {
+            "bytes-in": "0",
+            "bytes-out": "0",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1226",
+            "life-time": "2374",
+            "local-ts": "[10.2.2.0/24]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "0",
+            "packets-out": "0",
+            "protocol": "ESP",
+            "rekey-time": "1524",
+            "remote-ts": "[10.1.2.0/24]",
+            "reqid": "102",
+            "spi-in": "c78944ea",
+            "spi-out": "c9474760",
+            "state": "INSTALLED",
+            "uniqueid": "142"
+          },
+          "destination": "10.200.2.2",
+          "destinationSelectors": [
+            "10.2.2.0/24"
+          ],
+          "device": "V31B_I_B2",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_I_A2:0",
+          "icvBits": 128,
+          "id": "phase-1:V31B_I_B2:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "a9762320a96685b0bf3267baa20b153a43640a4929013fe7d5bd69f40a0f4445",
+          "installedAtUTC": "2026-11-04 08:31:21",
+          "keyBits": 256,
+          "localInterface": "gray",
+          "mark": null,
+          "materialObservation": "obs-0159",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "0c7859eedc28100712085b5895a80d301ed2d4fa00da770a1500454237812942"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_I_A2",
+          "protocol": "esp",
+          "publicBlock": "src 10.100.2.2 dst 10.200.2.2\n\tproto esp spi 0xc78944ea reqid 102 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tanti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0154",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 102,
+          "saltBytes": 4,
+          "source": "10.100.2.2",
+          "sourceSelectors": [
+            "10.1.2.0/24"
+          ],
+          "spi": 3347662058,
+          "statisticsObservation": "obs-0155"
+        },
+        {
+          "child": {
+            "bytes-in": "26606",
+            "bytes-out": "26594",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1747",
+            "life-time": "1853",
+            "local-ts": "[10.200.2.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "310",
+            "packets-out": "310",
+            "protocol": "ESP",
+            "rekey-time": "921",
+            "remote-ts": "[10.100.2.2/32]",
+            "reqid": "202",
+            "spi-in": "c9bc5645",
+            "spi-out": "cd4ba8f2",
+            "state": "INSTALLED",
+            "uniqueid": "138",
+            "use-in": "7",
+            "use-out": "7"
+          },
+          "destination": "172.20.12.1",
+          "destinationSelectors": [
+            "10.100.2.2/32"
+          ],
+          "device": "V31B_O_B2",
+          "direction": "outbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_O_A2:1",
+          "icvBits": 128,
+          "id": "phase-1:V31B_O_B2:0",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "46d452342a7a116cc2542e4adb0a326c121ecfc8a6403ea44d7eabb57d02e329",
+          "installedAtUTC": "2026-11-04 08:22:40",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0167",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "53bbfded3dc3d3c8af4ef6837d4f61809efdd9c7e4e3448d64680d13794470bc"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_A2",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.22.1 dst 172.20.12.1\n\tproto esp spi 0xcd4ba8f2 reqid 202 mode tunnel\n\treplay-window 0 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x0, oseq 0x136, bitmap 0x00000000\n",
+          "publicStateObservation": "obs-0162",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 202,
+          "saltBytes": 4,
+          "source": "172.20.22.1",
+          "sourceSelectors": [
+            "10.200.2.2/32"
+          ],
+          "spi": 3444287730,
+          "statisticsObservation": "obs-0163"
+        },
+        {
+          "child": {
+            "bytes-in": "26606",
+            "bytes-out": "26594",
+            "dh-group": "ECP_384",
+            "encr-alg": "AES_GCM_16",
+            "encr-keysize": "256",
+            "install-time": "1747",
+            "life-time": "1853",
+            "local-ts": "[10.200.2.2/32]",
+            "mode": "TUNNEL",
+            "name": "protected",
+            "packets-in": "310",
+            "packets-out": "310",
+            "protocol": "ESP",
+            "rekey-time": "921",
+            "remote-ts": "[10.100.2.2/32]",
+            "reqid": "202",
+            "spi-in": "c9bc5645",
+            "spi-out": "cd4ba8f2",
+            "state": "INSTALLED",
+            "uniqueid": "138",
+            "use-in": "7",
+            "use-out": "7"
+          },
+          "destination": "172.20.22.1",
+          "destinationSelectors": [
+            "10.200.2.2/32"
+          ],
+          "device": "V31B_O_B2",
+          "direction": "inbound",
+          "epoch": "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615",
+          "equalTo": "phase-1:V31B_O_A2:0",
+          "icvBits": 128,
+          "id": "phase-1:V31B_O_B2:1",
+          "ifId": null,
+          "ikeUniqueId": "27",
+          "installationReference": "539f717dfe15ccb87bc9f39744fe66f534a63c99a867ea02825f4453bb4c4ef1",
+          "installedAtUTC": "2026-11-04 08:22:40",
+          "keyBits": 256,
+          "localInterface": "black",
+          "mark": null,
+          "materialObservation": "obs-0167",
+          "materials": [
+            {
+              "algorithm": "rfc4106(gcm(aes))",
+              "bytes": 36,
+              "kind": "aead",
+              "parameters": "128",
+              "sha256": "715c2bd966424524f01ec5c8fbd8b72fdb28774329cddde74b5ad4f1322ad1df"
+            }
+          ],
+          "mode": "tunnel",
+          "peerDevice": "V31B_O_A2",
+          "protocol": "esp",
+          "publicBlock": "src 172.20.12.1 dst 172.20.22.1\n\tproto esp spi 0xc9bc5645 reqid 202 mode tunnel\n\treplay-window 32 flag af-unspec\n\taead rfc4106(gcm(aes)) [PRIVATE_MATERIAL_REDACTED] 128\n\tlastused 2026-11-04 08:51:41\n\tanti-replay context: seq 0x136, oseq 0x0, bitmap 0xffffffff\n",
+          "publicStateObservation": "obs-0162",
+          "referenceOrigin": "Derived from device, public association, reported kernel add time and private material hash.",
+          "reqid": 202,
+          "saltBytes": 4,
+          "source": "172.20.12.1",
+          "sourceSelectors": [
+            "10.100.2.2/32"
+          ],
+          "spi": 3384563269,
+          "statisticsObservation": "obs-0163"
+        }
+      ],
+      "endedAt": "2026-11-04T08:51:48.749740+00:00",
+      "id": "phase-1",
+      "startedAt": "2026-11-04T08:51:43.273769+00:00"
+    }
+  ],
+  "projectionVersion": "native-ipsec-correlation-v1",
+  "rawObservationIds": [
+    "obs-0000",
+    "obs-0001",
+    "obs-0002",
+    "obs-0003",
+    "obs-0007",
+    "obs-0008",
+    "obs-0009",
+    "obs-0012",
+    "obs-0013",
+    "obs-0014",
+    "obs-0015",
+    "obs-0016",
+    "obs-0020",
+    "obs-0021",
+    "obs-0022",
+    "obs-0025",
+    "obs-0026",
+    "obs-0027",
+    "obs-0028",
+    "obs-0029",
+    "obs-0033",
+    "obs-0034",
+    "obs-0035",
+    "obs-0038",
+    "obs-0039",
+    "obs-0040",
+    "obs-0041",
+    "obs-0042",
+    "obs-0046",
+    "obs-0047",
+    "obs-0048",
+    "obs-0051",
+    "obs-0052",
+    "obs-0053",
+    "obs-0054",
+    "obs-0055",
+    "obs-0059",
+    "obs-0060",
+    "obs-0061",
+    "obs-0064",
+    "obs-0065",
+    "obs-0066",
+    "obs-0067",
+    "obs-0068",
+    "obs-0072",
+    "obs-0073",
+    "obs-0074",
+    "obs-0077",
+    "obs-0078",
+    "obs-0079",
+    "obs-0080",
+    "obs-0081",
+    "obs-0085",
+    "obs-0086",
+    "obs-0087",
+    "obs-0090",
+    "obs-0091",
+    "obs-0092",
+    "obs-0093",
+    "obs-0094",
+    "obs-0098",
+    "obs-0099",
+    "obs-0100",
+    "obs-0103",
+    "obs-0104",
+    "obs-0105",
+    "obs-0106",
+    "obs-0107",
+    "obs-0111",
+    "obs-0112",
+    "obs-0113",
+    "obs-0114",
+    "obs-0115",
+    "obs-0119",
+    "obs-0120",
+    "obs-0121",
+    "obs-0122",
+    "obs-0123",
+    "obs-0127",
+    "obs-0128",
+    "obs-0129",
+    "obs-0130",
+    "obs-0131",
+    "obs-0135",
+    "obs-0136",
+    "obs-0137",
+    "obs-0138",
+    "obs-0139",
+    "obs-0143",
+    "obs-0144",
+    "obs-0145",
+    "obs-0146",
+    "obs-0147",
+    "obs-0151",
+    "obs-0152",
+    "obs-0153",
+    "obs-0154",
+    "obs-0155",
+    "obs-0159",
+    "obs-0160",
+    "obs-0161",
+    "obs-0162",
+    "obs-0163",
+    "obs-0167"
+  ],
+  "scope": [
+    "Two sequential observations of active authenticated IPsec associations and private peer-key equality",
+    "Same identities, material references and reported add times were present before and after collection.",
+    "Sequential equality checks do not prove atomicity or exclude an unobserved change between reads.",
+    "Private equality is a collector observation. Public hashes preserve its correlation; hashes alone do not prove key equality."
+  ]
+}

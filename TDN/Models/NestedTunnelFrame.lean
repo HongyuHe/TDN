@@ -40,6 +40,8 @@ inductive Body where
   | ethernet (header : EthernetHeader)
   | ipsec (authentication : DataPlaneForwarding.TunnelSAStamp) (body : Body)
   | macsec (association : MACsecAssociation) (body : Body)
+  | macsecPdu (association : MACsecAssociation) (encryptFrames : Bool)
+      (confidentialityOffset : Nat) (body : Body)
   | carrier (endpoint : Carrier) (body : Body)
 
 structure Frame where
@@ -60,7 +62,7 @@ def Body.visibleHeader : Body → Option PacketPolicy.Packet
   | .datagram header => some header
   | .ethernet _ => none
   | .ipsec authentication _ => some (outerHeader authentication.sender authentication.receiver "esp" 0 0)
-  | .macsec _ _ => none
+  | .macsec _ _ | .macsecPdu _ _ _ _ => none
   | .carrier endpoint _ => some (outerHeader endpoint.source endpoint.destination endpoint.networkProtocol
       endpoint.sourcePort endpoint.destinationPort)
 
@@ -68,20 +70,20 @@ def Body.protectionLayers : Body → List Nat
   | .datagram _ | .ethernet _ => []
   | .ipsec authentication body => authentication.tag :: body.protectionLayers
   | .macsec association body => association.tag :: body.protectionLayers
-  | .carrier _ body => body.protectionLayers
+  | .carrier _ body | .macsecPdu _ _ _ body => body.protectionLayers
 
 def Body.originalHeader : Body → Option PacketPolicy.Packet
   | .datagram header => some header
   | .ethernet _ => none
-  | .ipsec _ body | .macsec _ body | .carrier _ body => body.originalHeader
+  | .ipsec _ body | .macsec _ body | .macsecPdu _ _ _ body | .carrier _ body => body.originalHeader
 
 def Body.originalEthernet : Body → Option EthernetHeader
   | .datagram _ => none
   | .ethernet header => some header
-  | .ipsec _ body | .macsec _ body | .carrier _ body => body.originalEthernet
+  | .ipsec _ body | .macsec _ body | .macsecPdu _ _ _ body | .carrier _ body => body.originalEthernet
 
-def Body.isEthernetCiphertext : Body → Bool
-  | .macsec _ _ => true
+def Body.isMACsecPdu : Body → Bool
+  | .macsec _ _ | .macsecPdu _ _ _ _ => true
   | _ => false
 
 lemma macsec_has_no_routable_inner_header (association : MACsecAssociation) (body : Body) :
@@ -175,7 +177,7 @@ def Body.HeadersCoherent : Body → Option PacketPolicy.Packet →
         (outerHeader endpoint.source endpoint.destination endpoint.networkProtocol
           endpoint.sourcePort endpoint.destinationPort) ∧
       ∃ inner rest, hidden = inner :: rest ∧ body.HeadersCoherent inner rest
-  | .macsec _ body, active, hidden =>
+  | .macsec _ body, active, hidden | .macsecPdu _ _ _ body, active, hidden =>
       active = none ∧
       ∃ inner rest, hidden = inner :: rest ∧ body.HeadersCoherent inner rest
 

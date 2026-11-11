@@ -2,15 +2,27 @@
 
 TDN now concentrates formal proofs on network behavior that requires reasoning across packets, paths, or sequences of operations. The [scope assessment](../specs/proof_scope.json) selected 24 requirement groups for those arguments. The other current positive contributions use direct checks over saved records. All 76 source requirements remain in [the catalog](../specs/requirement_groups.md).
 
-The [machine-readable scope register](../specs/proof_scope.json) records the decision and reason for every RG. Each retained proof entry names its general result and a concrete application. Fourteen of the 24 selected groups now have reviewed proofs of every clause of their instantiated specifications. Ten groups retain supporting results and are deferred by the user. The [current review record](../data/publication/v3.2/verdict.json) gives the accepted scopes and assumptions.
+The [machine-readable scope register](../specs/proof_scope.json) records the decision and reason for every RG. Each retained proof entry names its general result and a concrete application. Nineteen of the 24 selected groups now have reviewed proofs of every clause of their instantiated specifications. Five groups retain supporting results and are deferred by the user. The [current review record](../data/publication/v3.3/verdict.json) gives the accepted scopes and assumptions.
 
 ## Current construction result
 
-The accepted groups are RG-012, RG-013, RG-014, RG-021, RG-027, RG-032, RG-033, RG-034, RG-035, RG-037, RG-038, RG-039, RG-040 and RG-047. Each result has a reusable general theorem and checked applications. The theorem states the required assumptions explicitly; snapshot-specific records and finite checks live in `TDN/Deployments`.
+The accepted groups are RG-007, RG-012, RG-013, RG-014, RG-021, RG-024, RG-027, RG-028, RG-029, RG-030, RG-032, RG-033, RG-034, RG-035, RG-037, RG-038, RG-039, RG-040 and RG-047. Each result has a reusable general theorem and checked applications. The theorem states the required assumptions explicitly; snapshot-specific records and finite checks live in `TDN/Deployments`.
 
 The November 4 continuation completed four groups. RG-035 connects boundary filters to native processing and physical-frame observations. RG-039 proves the Outer Gray-interface allowlist. RG-040 proves the Gray Firewall allowlist and cross-level denial. RG-033 connects packet preparation, native processing and emitted sizes to the configured interface limits. Earlier applications were rechecked after shared model changes.
 
-The ten deferred groups are RG-007, RG-008, RG-015, RG-024, RG-028, RG-029, RG-030, RG-054, RG-056 and RG-074. Their existing lemmas remain available. The user requested stopping after RG-033 and the documentation update; deferral does not classify those requirements as fundamentally unprovable.
+The five deferred groups are RG-008, RG-015, RG-054, RG-056 and RG-074. Their existing lemmas remain available. The user requested stopping after RG-007 passed review and releasing v3.3. Deferral does not classify those requirements as fundamentally unprovable.
+
+### How RG-007 connects two protection layers to packet processing
+
+`msc_nested_layer_protection` requires the declared Inner and Outer tunnel pairing throughout a protected Red payload’s execution. Gray transmission carries the Inner layer. Black transmission and reception carry Outer around Inner. Inner encryption precedes Outer encryption. Successful cross-Black delivery reaches the selected destination after Outer decryption and then Inner decryption. The specification also includes model coverage, endpoint placement, authentication-service conditions and independent key contexts.
+
+`nested_layer_protection_from_local_checks` proves those clauses from initial-state and individual-step conditions. The proof tracks named tunnels through every finite sequence of device operations. General arguments about adding and removing protection layers establish the required encryption and decryption order. The theorem contains no concrete device names or snapshot dependencies.
+
+Two checked applications use the same theorem. The native IPsec application covers every Red packet request allowed by the imported source records on four networks. The mixed application covers both Red networks with Inner IPsec and Outer MACsec. Imported routes, filters, directional SAs, interface identities and public authentication records provide the local facts. Separate successful executions carry nonempty traffic through 44 native steps and 28 mixed steps in each direction. A further mixed theorem connects the full specification to the captured two-sided bridge policy for every represented frame.
+
+The applications require an explicit relation stating that the two layers use independent keys. Distinct key identifiers do not prove cryptographic independence. The native application also takes the stated GCM implementation interface. Both models hold the captured installed associations fixed and cover admitted Red payloads. Public certificate validation, faithful collection and correspondence with Linux remain explicit assumptions. Optional administration does not gate these packet proofs.
+
+The v3.3 continuation also completed MACsec authentication under RG-024, mandatory MACsec protection under RG-028, Inner no-bypass behavior under RG-029 and Outer no-bypass behavior under RG-030. Their general theorems and exact application assumptions are retained in the current publication records.
 
 ### How RG-033 connects packet sizes to evidence
 
@@ -39,18 +51,18 @@ Each decision applies to the contribution assessed in the supplied report. RG-02
 
 | RG | Requirement area | General result |
 | --- | --- | --- |
-| RG-007 | Two independent encryption layers and allowed tunnel pairings | `TDN.Requirements.every_black_byte_has_ordered_encryption_path` |
+| RG-007 | Two independent encryption layers and allowed tunnel pairings | `TDN.Requirements.Msc.nested_layer_protection_from_local_checks` |
 | RG-008 | Connectivity restricted to the same security level | `TDN.Requirements.delivered_domain_from_local_checks` |
 | RG-012 | Separate authentication and management for security levels | `TDN.Requirements.Msc.key_and_management_separation_from_scoped_inventory` |
 | RG-013 | Gray Firewalls on all paths needing level separation | `TDN.Requirements.Msc.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms` |
 | RG-014 | Gray addressing supports security-level filtering | `TDN.Requirements.Msc.gray_addressing_from_ip_and_link_endpoint_rules` |
 | RG-015 | MACsec encapsulation and standalone encapsulator obligations | `TDN.Requirements.carrier_step_wraps_the_exact_input_body` |
 | RG-021 | VPN private-key access confinement | `TDN.Requirements.Msc.vpn_private_key_confinement_from_interface_steps` |
-| RG-024 | MACsec authentication alternatives and AS scope | `TDN.KeySources.executions_have_only_authenticated_sources` |
+| RG-024 | MACsec authentication alternatives and AS scope | `TDN.Requirements.Msc.macsec_authentication_from_local_checks` |
 | RG-027 | MACsec key generation, key-server selection, and rollover | `TDN.Requirements.Msc.macsec_key_generation_from_checked_records` |
-| RG-028 | MACsec mandatory protection parameters | `TDN.LinkProtection.every_emitted_frame_is_encrypted` |
-| RG-029 | Inner encryption and decryption cannot be bypassed | `TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption` |
-| RG-030 | Outer encryption and decryption cannot be bypassed | `TDN.DataPlaneForwarding.inbound_crossing_requires_local_decryption` |
+| RG-028 | MACsec mandatory protection parameters | `TDN.Requirements.Msc.macsec_protection_from_local_checks` |
+| RG-029 | Inner encryption and decryption cannot be bypassed | `TDN.Requirements.Msc.inner_tunnel_no_bypass_from_outbound_and_inbound_checks` |
+| RG-030 | Outer encryption and decryption cannot be bypassed | `TDN.Requirements.Msc.outer_tunnel_no_bypass_from_local_checks` |
 | RG-032 | TRANSEC under the stated deployment conditions | `TDN.Requirements.Msc.transec_conditions_from_checked_installations` |
 | RG-033 | Packet sizing to control fragmentation | `TDN.Requirements.Msc.complete_canonical_IPsec_packet_sizing` |
 | RG-034 | Outer Firewall placement for untrusted Black transport | `TDN.Requirements.outer_firewall_placement_from_local_checks` |

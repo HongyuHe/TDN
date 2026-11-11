@@ -1,0 +1,19 @@
+ap_scan=0
+eapol_version=3
+network={
+ key_mgmt=IEEE8021X
+ eap=TLS
+ phase1="tls_disable_tlsv1_0=1 tls_disable_tlsv1_1=1 tls_disable_tlsv1_2=1 tls_disable_tlsv1_3=0"
+ openssl_ciphers="DEFAULT"
+ identity="p0.msc.test"
+ ca_cert="/users/hy/tdn-v32-eap-20261111T0558Z/private/eap-tls-reverse-v32-complete-causal/ca.pem"
+ client_cert="/users/hy/tdn-v32-eap-20261111T0558Z/private/eap-tls-reverse-v32-complete-causal/peer.pem"
+ private_key="/users/hy/tdn-v32-eap-20261111T0558Z/private/eap-tls-reverse-v32-complete-causal/peer.key"
+ domain_match="as.msc.test"
+ eapol_flags=0
+ macsec_policy=1
+ macsec_csindex=1
+ macsec_replay_protect=1
+ macsec_replay_window=0
+ mka_priority=1
+}
