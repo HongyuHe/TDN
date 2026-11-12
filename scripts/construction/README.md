@@ -81,6 +81,10 @@ lake env lean scripts/construction/audit_axioms.lean
 
 The [scope guide](../../docs/theory_scope.md) and [76-group scope register](../../specs/proof_scope.json) describe the current theory. The direct-check command validates the migrated configuration and recorded-operation clauses without generating Lean code. Its JSON output includes the checked claims and input hashes.
 
+## Generate indexed checking certificates
+
+`route_certificates.py` and `acl_certificates.py` generate JSON witnesses for the shared Gray-firewall checks. Lean verifies each witness and binds the indexed tables to the captured records. Both commands accept `--check` to detect stale output. The [library guide](../../docs/library.md#indexed-evidence-certificates) explains the checking algorithms and their proof obligations.
+
 ## Historical tools and records
 
 Superseded scripts that rewrote the v2/v3 status registers, fixed-date collection command sequences, intermediate topology generators, and replaced inventory collectors were removed from the active tree. The earlier generation recipes and source files remain available in Git at revision `1a49bb76`. Use that revision to reproduce an old workflow exactly.

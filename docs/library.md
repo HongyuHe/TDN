@@ -2,7 +2,7 @@
 
 `TDN/Models` provides network models and general proofs that can be applied to different configurations and snapshots. The modules describe packet processing, topology, filtering, encryption layers, authentication, fragmentation, generated replies, authenticated operations and cover traffic. A caller supplies the relevant configuration and proves the theorem's premises for that configuration.
 
-The catalog covers all 112 active Lean files in `TDN/Models`. It indexes 1078 explicitly named declarations and 81 explicit instances. Each index links to its source line. Constructors, structure-field projections, and automatically derived declarations are represented by their parent types.
+The catalog covers all 115 active Lean files in `TDN/Models`. It indexes 1107 explicitly named declarations and 85 explicit instances. Each index links to its source line. Constructors, structure-field projections, and automatically derived declarations are represented by their parent types.
 
 Each module section explains its purpose, principal results, and conditions for reuse. The expandable declaration index in each section links every named declaration to its source line. The source links are relative to the repository so they remain usable in another checkout and on GitHub.
 
@@ -3284,6 +3284,97 @@ Emits a datagram as one fragment when it fits and constructs fragments when nece
 | `lemma` | [`Datagram.needed_fragmentation_preserves_raw`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L120) |
 | `lemma` | [`Datagram.fitting_packet_uses_one_fragment`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L125) |
 | `theorem` | [`Datagram.fragment_only_when_needed_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L130) |
+
+</details>
+
+## Indexed evidence certificates
+
+The certificate modules move repeated route and ACL searches into the generator. Lean checks the proposed record indices and proves that the resulting conclusions follow from the original captured tables. The [construction tools](../scripts/construction/README.md#generate-indexed-checking-certificates) generate and check those witnesses.
+
+### IndexedWitnessTree
+
+Source: [TDN/Models/IndexedWitnessTree.lean](../TDN/Models/IndexedWitnessTree.lean)
+
+`WitnessTree` stores records in a binary tree. `lookup_mem` proves that a successful indexed lookup returns an actual leaf. `checkWith_sound` checks a witness for every leaf and rejects missing branches. A balanced tree supports a lookup in a number of steps proportional to the logarithm of its leaf count.
+
+`NatIndex` follows the bits of a numeric key. `OrderedIndex` compares a key with the value stored at each branch. These structures select proposed witnesses. The calling checker verifies the retrieved record, so an incorrectly constructed index cannot justify an incorrect result.
+
+<details>
+<summary>All 10 named declarations in IndexedWitnessTree</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `inductive` | [`WitnessTree`](../TDN/Models/IndexedWitnessTree.lean#L8) |
+| `def` | [`values`](../TDN/Models/IndexedWitnessTree.lean#L16) |
+| `def` | [`lookup`](../TDN/Models/IndexedWitnessTree.lean#L21) |
+| `lemma` | [`lookup_mem`](../TDN/Models/IndexedWitnessTree.lean#L27) |
+| `def` | [`checkWith`](../TDN/Models/IndexedWitnessTree.lean#L42) |
+| `theorem` | [`checkWith_sound`](../TDN/Models/IndexedWitnessTree.lean#L49) |
+| `inductive` | [`NatIndex`](../TDN/Models/IndexedWitnessTree.lean#L73) |
+| `def` | [`NatIndex.lookup`](../TDN/Models/IndexedWitnessTree.lean#L78) |
+| `inductive` | [`OrderedIndex`](../TDN/Models/IndexedWitnessTree.lean#L86) |
+| `def` | [`OrderedIndex.lookup`](../TDN/Models/IndexedWitnessTree.lean#L91) |
+
+</details>
+
+### FibRouteCertificates
+
+Source: [TDN/Models/FibRouteCertificates.lean](../TDN/Models/FibRouteCertificates.lean)
+
+`RouteCertificate` supplies the selected routes for one destination address. Every matching captured route is compared with a proposed best route for its incoming interface. Every equal-priority alternative must be retained. Retained records also have checked indices into the original table.
+
+`table_driven_route_certificate_sound` proves that the retained routes are exactly those permitted by `SelectedFibRoute`. The theorem preserves routing-table priority, longest-prefix matching, metric comparisons, and equal-cost alternatives. A new snapshot supplies new records and indices while reusing the same proof.
+
+<details>
+<summary>All 9 named declarations in FibRouteCertificates</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`routePriorityAllows`](../TDN/Models/FibRouteCertificates.lean#L8) |
+| `lemma` | [`route_priority_transitive`](../TDN/Models/FibRouteCertificates.lean#L17) |
+| `structure` | [`RouteCertificate`](../TDN/Models/FibRouteCertificates.lean#L36) |
+| `def` | [`RouteCertificate.best`](../TDN/Models/FibRouteCertificates.lean#L44) |
+| `def` | [`RouteCertificate.Covers`](../TDN/Models/FibRouteCertificates.lean#L48) |
+| `def` | [`RouteCertificate.Retains`](../TDN/Models/FibRouteCertificates.lean#L62) |
+| `def` | [`RouteCertificate.check`](../TDN/Models/FibRouteCertificates.lean#L73) |
+| `lemma` | [`route_certificate_covers`](../TDN/Models/FibRouteCertificates.lean#L77) |
+| `theorem` | [`table_driven_route_certificate_sound`](../TDN/Models/FibRouteCertificates.lean#L98) |
+
+Explicit instances:
+
+- [Instance at line 13](../TDN/Models/FibRouteCertificates.lean#L13)
+- [Instance at line 57](../TDN/Models/FibRouteCertificates.lean#L57)
+- [Instance at line 68](../TDN/Models/FibRouteCertificates.lean#L68)
+
+</details>
+
+### AclPermitCertificates
+
+Source: [TDN/Models/AclPermitCertificates.lean](../TDN/Models/AclPermitCertificates.lean)
+
+`AclRuleIndex` divides an ordered ACL into earlier rules and a remaining tree containing only allow rules. An `AclPermitWitness` names an allow rule and one rejecting condition for each earlier deny rule. The caller establishes that the indexed rules reconstruct the captured ACL.
+
+`table_driven_acl_certificate_sound` derives `IsPermittedByAclChain` after checking the selected allow rule and every earlier deny rule. The proof preserves first-match behavior. The selected-rule lookup uses a balanced tree; checking earlier deny rules remains necessary.
+
+<details>
+<summary>All 10 named declarations in AclPermitCertificates</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `structure` | [`AclRuleIndex`](../TDN/Models/AclPermitCertificates.lean#L8) |
+| `structure` | [`AclPermitWitness`](../TDN/Models/AclPermitCertificates.lean#L13) |
+| `def` | [`AclRuleIndex.rules`](../TDN/Models/AclPermitCertificates.lean#L18) |
+| `def` | [`AclRuleIndex.Valid`](../TDN/Models/AclPermitCertificates.lean#L20) |
+| `def` | [`checkAclPrefix`](../TDN/Models/AclPermitCertificates.lean#L25) |
+| `lemma` | [`checked_acl_prefix_is_safe`](../TDN/Models/AclPermitCertificates.lean#L33) |
+| `lemma` | [`allow_only_rules_permit`](../TDN/Models/AclPermitCertificates.lean#L52) |
+| `lemma` | [`safe_prefix_preserves_permit`](../TDN/Models/AclPermitCertificates.lean#L66) |
+| `def` | [`checkAclPermit`](../TDN/Models/AclPermitCertificates.lean#L75) |
+| `theorem` | [`table_driven_acl_certificate_sound`](../TDN/Models/AclPermitCertificates.lean#L81) |
+
+Explicit instances:
+
+- [Instance at line 23](../TDN/Models/AclPermitCertificates.lean#L23)
 
 </details>
 

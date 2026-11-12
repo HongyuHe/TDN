@@ -60,5 +60,15 @@
   "TDN.Deployments.NestedProtection_Mixed.recorded_protection_paths_checked": "Uses decide to check both imported delivery paths against the actual route, filter, key and link conditions. Each path contains 28 device operations.",
   "TDN.Deployments.NestedProtection_Baseline.snapshot_RG007_ipsec_nonempty_payload_delivered": "Checks a complete 44-step model execution carrying a nonempty payload through both IPsec layers to the recorded remote Red host.",
   "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_forward_payload_delivered": "Checks a complete 28-step model execution from the first Red network to the second through Inner IPsec and Outer MACsec protection.",
-  "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_reverse_payload_delivered": "Checks the reverse 28-step model execution. Its SA, SCI and key comparisons use the records for that direction."
+  "TDN.Deployments.NestedProtection_Mixed.snapshot_RG007_mixed_reverse_payload_delivered": "Checks the reverse 28-step model execution. Its SA, SCI and key comparisons use the records for that direction.",
+  "TDN.Certificates.WitnessTree.lookup_mem": "A successful tree lookup identifies a record that occurs in the original tree. The witness follows explicit left/right choices.",
+  "TDN.Certificates.WitnessTree.checkWith_sound": "A passing check establishes the requested condition for every data leaf. Missing witness branches fail the check.",
+  "TDN.DataPlaneForwarding.table_driven_route_certificate_sound": "The retained routes are exactly those selected by the original FIB for the supplied destination. Lean checks the proposed best routes, original-record indices, and all equal-priority alternatives.",
+  "TDN.PacketPolicy.table_driven_acl_certificate_sound": "The chosen allow rule covers the packet class, and every earlier deny rule has a checked condition excluding that class. The result establishes the existing ordered-ACL allowance.",
+  "TDN.Requirements.Msc.gray_forward_checks_from_route_certificates": "Reuses checked route selection and ACL witnesses to establish the original Gray forwarding conditions. The snapshot supplies the data and indices.",
+  "TDN.Deployments.GrayFirewallShared.route_tree_matches_capture": "Checks that the indexed route tree contains exactly the captured route list, in the same order.",
+  "TDN.Deployments.GrayFirewallShared.route_certificates_checked": "Checks every route certificate against the complete captured route tree.",
+  "TDN.Deployments.GrayFirewallShared.acl_table_is_captured": "Checks that each captured Gray FORWARD policy maps to identical indexed rules for its interface and direction.",
+  "TDN.Deployments.GrayFirewallShared.Gray_interfaces_checked": "Checks all interface obligations using the verified route certificates for peer-source reachability.",
+  "TDN.Deployments.GrayFirewallShared.Gray_permissions_checked": "Checks the forwarding allowances for every Gray interface, using indexed route and ACL witnesses."
 }

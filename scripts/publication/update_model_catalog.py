@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[2]
-CATALOG = ROOT / 'docs/semantics.md'
+CATALOG = ROOT / 'docs/library.md'
 DECLARATION = re.compile(
     r'^(?:@\[[^\]]*\]\s*)?(?:(?:private|protected|noncomputable)\s+)*'
     r'(def|abbrev|structure|inductive|theorem|lemma)\s+([\w.]+)')
@@ -46,6 +46,8 @@ def refresh():
     if covered != expected:
         raise ValueError(f'Unindexed modules: {expected - covered}')
     text = ''.join(blocks)
+    text = re.sub(r'The catalog covers all \d+ active Lean files',
+                  f'The catalog covers all {len(covered)} active Lean files', text)
     text = re.sub(r'It indexes \d+ explicitly named declarations and \d+ explicit instances\.',
                   f'It indexes {declaration_count} explicitly named declarations and {instance_count} explicit instances.', text)
     CATALOG.write_text(text)

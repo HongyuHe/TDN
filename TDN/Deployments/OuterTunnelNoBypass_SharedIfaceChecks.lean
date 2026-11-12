@@ -151,6 +151,20 @@ lemma inbound_tunnel_bindings : ∀ iface ∈ externalIfaces,
     ∃ tunnel ∈ declaredTunnels, tunnel.id = ipsecTunnel records (policy.seal association) ∧
       tunnel.layer = .outer ∧ tunnel.receiver = records.componentName (capturedConfiguration.ip.owner iface) := by decide
 
+lemma route_egress_ifaces_present :
+    ∀ route ∈ records.routes, route.egress ∈ records.inventory.ifaces := by
+  have bounds : ∀ route ∈ records.routes, route.egress < records.nativeIfaces.length := by decide
+  intro route member
+  exact List.mem_range.mpr (bounds route member)
+
+lemma iface_outbound_tunnel_bindings : ∀ iface ∈ records.inventory.ifaces,
+    ∀ interface ∈ records.interfaces, interface.id = records.ifaceName iface → OuterDevice interface.device →
+    ∀ policy ∈ capturedConfiguration.ip.egressPolicies iface,
+    ∀ association ∈ capturedConfiguration.ip.egressSAs iface,
+    DataPlaneForwarding.saMatchesPolicy association policy →
+      ∃ tunnel ∈ declaredTunnels, tunnel.layer = .outer ∧ tunnel.sender = interface.device ∧
+        tunnel.id = ipsecTunnel records (policy.seal association) := by decide
+
 lemma outbound_tunnel_bindings : ∀ route ∈ records.routes,
     ∀ policy ∈ capturedConfiguration.ip.egressPolicies route.egress,
     ∀ association ∈ capturedConfiguration.ip.egressSAs route.egress,
@@ -158,7 +172,10 @@ lemma outbound_tunnel_bindings : ∀ route ∈ records.routes,
     route.destPrefixLow ≤ association.receiver → association.receiver ≤ route.destPrefixHigh →
     ∀ interface ∈ records.interfaces, interface.id = records.ifaceName route.egress → OuterDevice interface.device →
       ∃ tunnel ∈ declaredTunnels, tunnel.layer = .outer ∧ tunnel.sender = interface.device ∧
-        tunnel.id = ipsecTunnel records (policy.seal association) := by decide
+        tunnel.id = ipsecTunnel records (policy.seal association) := by
+  intro route member policy policyMember association associationMember matching _ _ interface listed name outer
+  exact iface_outbound_tunnel_bindings route.egress (route_egress_ifaces_present route member)
+    interface listed name outer policy policyMember association associationMember matching
 
 lemma external_receive_components : ∀ interface ∈ records.interfaces, OuterDevice interface.device →
     interface.zone = .black → receiveComponent ⟨0,0⟩ interface.id = some interface.device := by decide

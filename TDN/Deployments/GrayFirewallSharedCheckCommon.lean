@@ -1,10 +1,13 @@
 import TDN.Deployments.GrayFirewallSharedInventory
+import TDN.Deployments.GrayFirewallSharedRouteCertificates
+import TDN.Deployments.GrayFirewallSharedAclCertificates
+import TDN.Requirements.GrayFirewallIndexedForwardChecks
 import TDN.Deployments.GrayFirewallIptablesChecks
 
 namespace TDN.Deployments.GrayFirewallShared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel GrayFirewallIptablesChecks
-set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
+set_option maxRecDepth 100000
+set_option maxHeartbeats 4000000
 set_option synthInstance.maxSize 8192
 
 instance instDecidableSharedGrayPeer (base : Deployment) : DecidableRel (deployment base).intendedPeer := by
@@ -14,15 +17,13 @@ instance instDecidableSharedGrayPeer (base : Deployment) : DecidableRel (deploym
 
 instance instDecidableSharedGraySource (base : Deployment) (name : String) :
     DecidablePred ((deployment base).reachableSource name) := by
-  change DecidablePred (records.reachableSource name)
-  infer_instance
-
-def Gray_checked_indices : List Nat := [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
-
-lemma Gray_unselected_not_firewall (base : Deployment) :
-    ∀ index : Fin records.interfaces.length, index.val ∉ Gray_checked_indices →
-      ¬ (deployment base).IsDevice (records.interfaces[index.val]).device .grayFirewall := by
-  exact of_decide_eq_true rfl
+  intro address
+  change Decidable (records.reachableSource name address)
+  match found : certificateFor address with
+  | none => infer_instance
+  | some certificate =>
+    exact decidable_of_iff (reachableSourceFromSelected name address)
+      (reachable_source_from_selected_iff name address certificate found)
 
 lemma Gray_core_pairs_checked (base : Deployment) :
     ∀ record ∈ records.pairs, record.Bound (deployment base) := by

@@ -6,7 +6,7 @@ The [project overview](../README.md) describes TDN's motivation and approach. Th
 
 | Location | Purpose |
 | --- | --- |
-| [TDN/Models](../TDN/Models/) | Reusable network models and proofs. The [library guide](semantics.md) explains their assumptions and declarations. |
+| [TDN/Models](../TDN/Models/) | Reusable network models and proofs. The [library guide](library.md) explains their assumptions and declarations. |
 | [TDN/Requirements](../TDN/Requirements/) | Formal requirements and general proofs of requirements or individual clauses. |
 | [TDN/Deployments](../TDN/Deployments/) | Imported data, local checks, and applications of general theorems to concrete networks. |
 | [Requirement groups](../specs/requirement_groups.md) | Extracted requirements with source quotations and interpretation notes. |

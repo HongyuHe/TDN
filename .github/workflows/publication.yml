@@ -21,6 +21,8 @@ jobs:
       - uses: actions/checkout@v5
       - name: Check publication inputs and GitHub source locations
         run: python3 scripts/publication/export_pages.py --check
+      - name: Check indexed certificate generation
+        run: python3 -m unittest discover -s scripts/construction -p test_route_certificates.py
       - name: Check the publication installer
         run: python3 -m unittest discover -s tests -p test_publication.py
 
