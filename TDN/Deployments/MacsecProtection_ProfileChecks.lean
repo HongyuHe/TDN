@@ -9,7 +9,7 @@ lemma profile_processing_coherent (records : ProfileRecords) (supported : Suppor
     records.deployment.ProcessingCoherent := by
   apply processing_coherence_from_record_checks records.deployment records.inventory rfl
   · apply decide_eq_true
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   · rfl
   · rfl
 
@@ -19,8 +19,8 @@ lemma profile_processing_bound (records : ProfileRecords) (supported : Supported
     rfl, rfl, rfl, rfl, rfl, ?_, ?_, ?_, ?_⟩
   · simp [Deployment.UDPBindingsCoherent, ProfileRecords.deployment]
   · simp [ProfileRecords.deployment]
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
   · simp [ProfileRecords.inventory]
 
 lemma profile_interface_links (records : ProfileRecords) (supported : SupportedProfile records) :
@@ -28,7 +28,7 @@ lemma profile_interface_links (records : ProfileRecords) (supported : SupportedP
   have checked : ∀ edge ∈ records.links,
       (∃ interface ∈ records.interfaces, interface.id = records.ifaceName edge.1) ∧
       (∃ interface ∈ records.interfaces, interface.id = records.ifaceName edge.2) := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   intro first second connected
   obtain ⟨edge, member, firstName, secondName⟩ := connected
   simpa only [ProfileRecords.deployment, firstName, secondName] using checked edge member
@@ -50,39 +50,39 @@ lemma profile_link_policies (records : ProfileRecords) (supported : SupportedPro
   · rcases supported with rfl | rfl <;>
       simp [Deployment.LinkPath, ProfileRecords.inventory, ProfileRecords.configuration,
         dataPlaneModelFromRecords, direct, routed]
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
 
 lemma profile_iface_conditions (records : ProfileRecords) (supported : SupportedProfile records) :
     IfaceConditions records.configuration (List.range records.ifaceData.length) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · intro first second connected
     change (first, second) ∈ records.links at connected
     have checked : ∀ edge ∈ records.links,
         edge.1 ∈ List.range records.ifaceData.length ∧ edge.2 ∈ List.range records.ifaceData.length := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     exact checked _ connected
   · simp [ProfileRecords.configuration, dataPlaneModelFromRecords]
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · simp [ProfileRecords.configuration, dataPlaneModelFromRecords]
 
 lemma profile_output_checks (records : ProfileRecords) (supported : SupportedProfile records) :
     MACsecOutputChecks records.configuration := by
   refine ⟨?_, ?_, ?_, ?_⟩
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
   · simp [ProfileRecords.configuration, dataPlaneModelFromRecords]
 
 lemma profile_wire_checks (records : ProfileRecords) (supported : SupportedProfile records) :
     MACsecWireChecks records.configuration := by
   refine ⟨profile_output_checks records supported, ?_, ?_, rfl⟩
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · intro first second connected receiver member same
     change (first, second) ∈ records.links at connected
     have checked : ∀ edge ∈ records.links, ∀ peer ∈ records.macIfaces,
         peer.physicalIface = edge.2 → ∃ sender ∈ records.macIfaces, sender.physicalIface = edge.1 := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     exact checked _ connected receiver member same
 
 lemma profile_link_encoding (records : ProfileRecords) (supported : SupportedProfile records)
@@ -97,7 +97,7 @@ lemma profile_link_encoding (records : ProfileRecords) (supported : SupportedPro
           (records.macFrames.find? (fun entry => entry.1 == association)).map Prod.snd = some encoded.2 ∧
           encoded.2.DescribesBody (.macsec association body) := by
       dsimp only [LinkAdmission.Frame.DescribesBody]
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     obtain ⟨encoded, member, same, found, describes⟩ := checked sender member association (by simp [installed])
     refine ⟨encoded.2, ?_, ?_⟩
     · simpa [ProfileRecords.configuration, shape] using found
@@ -128,7 +128,7 @@ lemma profile_initial_wire_safe (records : ProfileRecords) (supported : Supporte
   have sourceIface := profile_source_iface records supported request allowed
   have physicalSeparation : ∀ source ∈ records.sourceIfaces, ∀ mac ∈ records.macIfaces,
       source ≠ mac.physicalIface := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   rw [same]
   refine ⟨?_, ?_⟩
   · simp [MACsecOutputProtected, DeviceExecutionBinding.SourceState, binding,

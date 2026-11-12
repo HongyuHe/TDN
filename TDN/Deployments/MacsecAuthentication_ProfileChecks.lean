@@ -10,7 +10,7 @@ lemma profile_processing_coherent (capture : CaptureData) (supported : Supported
     capture.deployment.ProcessingCoherent := by
   apply processing_coherence_from_record_checks capture.deployment capture.profile.inventory rfl
   · apply decide_eq_true
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   · rfl
   · rfl
 
@@ -20,8 +20,8 @@ lemma profile_processing_bound (capture : CaptureData) (supported : SupportedCap
     rfl, rfl, rfl, rfl, rfl, ?_, ?_, ?_, ?_⟩
   · simp [Deployment.UDPBindingsCoherent, CaptureData.deployment, MacsecProtection.ProfileRecords.deployment]
   · simp [CaptureData.deployment, MacsecProtection.ProfileRecords.deployment]
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
   · simp [MacsecProtection.ProfileRecords.inventory]
 
 lemma profile_interface_links (capture : CaptureData) (supported : SupportedCapture capture) :
@@ -29,7 +29,7 @@ lemma profile_interface_links (capture : CaptureData) (supported : SupportedCapt
   have checked : ∀ edge ∈ capture.profile.links,
       (∃ interface ∈ capture.profile.interfaces, interface.id = capture.profile.ifaceName edge.1) ∧
       (∃ interface ∈ capture.profile.interfaces, interface.id = capture.profile.ifaceName edge.2) := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   intro first second connected
   obtain ⟨edge, member, firstName, secondName⟩ := connected
   simpa only [CaptureData.deployment, MacsecProtection.ProfileRecords.deployment, firstName, secondName] using checked edge member
@@ -51,39 +51,39 @@ lemma profile_link_policies (capture : CaptureData) (supported : SupportedCaptur
   · rcases supported with rfl | rfl <;>
       simp [Deployment.LinkPath, MacsecProtection.ProfileRecords.inventory, MacsecProtection.ProfileRecords.configuration,
         dataPlaneModelFromRecords, forward, reverse]
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
 
 lemma profile_iface_conditions (capture : CaptureData) (supported : SupportedCapture capture) :
     IfaceConditions capture.profile.configuration (List.range capture.profile.ifaceData.length) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · intro first second connected
     change (first, second) ∈ capture.profile.links at connected
     have checked : ∀ edge ∈ capture.profile.links,
         edge.1 ∈ List.range capture.profile.ifaceData.length ∧ edge.2 ∈ List.range capture.profile.ifaceData.length := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     exact checked _ connected
   · simp [MacsecProtection.ProfileRecords.configuration, dataPlaneModelFromRecords]
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · simp [MacsecProtection.ProfileRecords.configuration, dataPlaneModelFromRecords]
 
 lemma profile_output_checks (capture : CaptureData) (supported : SupportedCapture capture) :
     MACsecOutputChecks capture.profile.configuration := by
   refine ⟨?_, ?_, ?_, ?_⟩
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
   · simp [MacsecProtection.ProfileRecords.configuration, dataPlaneModelFromRecords]
 
 lemma profile_wire_checks (capture : CaptureData) (supported : SupportedCapture capture) :
     MACsecWireChecks capture.profile.configuration := by
   refine ⟨profile_output_checks capture supported, ?_, ?_, rfl⟩
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · intro first second connected receiver member same
     change (first, second) ∈ capture.profile.links at connected
     have checked : ∀ edge ∈ capture.profile.links, ∀ peer ∈ capture.profile.macIfaces,
         peer.physicalIface = edge.2 → ∃ sender ∈ capture.profile.macIfaces, sender.physicalIface = edge.1 := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     exact checked _ connected receiver member same
 
 lemma profile_link_encoding (capture : CaptureData) (supported : SupportedCapture capture)
@@ -98,7 +98,7 @@ lemma profile_link_encoding (capture : CaptureData) (supported : SupportedCaptur
           (capture.profile.macFrames.find? (fun entry => entry.1 == association)).map Prod.snd = some encoded.2 ∧
           encoded.2.DescribesBody (.macsec association body) := by
       dsimp only [LinkAdmission.Frame.DescribesBody]
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     obtain ⟨encoded, member, same, found, describes⟩ := checked sender member association (by simp [installed])
     refine ⟨encoded.2, ?_, ?_⟩
     · simpa [MacsecProtection.ProfileRecords.configuration, shape] using found
@@ -115,18 +115,18 @@ lemma profile_source_iface (capture : CaptureData) (supported : SupportedCapture
   change capture.profile.sourceEntry request.iface = some _ ∧ _ at origin
   have indexed : ∀ index ∈ [0, 1],
       (capture.profile.sourceIfaces[index]?.getD 0) ∈ capture.profile.sourceIfaces := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have atSource := origin.1
   unfold MacsecProtection.ProfileRecords.sourceEntry at atSource
   split at atSource
   next first =>
     rw [first]
-    exact indexed 0 (by decide)
+    exact indexed 0 (by native_decide)
   next absent =>
     split at atSource
     next second =>
       rw [second]
-      exact indexed 1 (by decide)
+      exact indexed 1 (by native_decide)
     next absent => cases atSource
 
 lemma profile_initial_wire_safe (capture : CaptureData) (supported : SupportedCapture capture)
@@ -137,7 +137,7 @@ lemma profile_initial_wire_safe (capture : CaptureData) (supported : SupportedCa
   have sourceIface := profile_source_iface capture supported request allowed
   have physicalSeparation : ∀ source ∈ capture.profile.sourceIfaces, ∀ mac ∈ capture.profile.macIfaces,
       source ≠ mac.physicalIface := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   rw [same]
   refine ⟨?_, ?_⟩
   · simp [MACsecOutputProtected, DeviceExecutionBinding.SourceState, binding,

@@ -36,7 +36,7 @@ lemma uniform_response_regions_checked :
 
 lemma response_component_inventory_complete :
     ∀ iface ∈ ifaces, iface.owner ∈ uniformResponseOwners ∨
-      ∃ guard ∈ responseSourceGuards, iface.owner = guard.1 := by decide
+      ∃ guard ∈ responseSourceGuards, iface.owner = guard.1 := by native_decide
 
 theorem all_component_copied_responses_keep_stack
     {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}

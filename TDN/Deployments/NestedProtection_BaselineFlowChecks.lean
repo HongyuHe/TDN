@@ -12,9 +12,8 @@ lemma recorded_plain_links : ∀ selected ∈ contexts, ∀ edge ∈ records.lin
     (selected.SourceSide (capturedConfiguration.ip.owner edge.1) ↔ selected.SourceSide (capturedConfiguration.ip.owner edge.2)) ∧
     (selected.DestinationSide (capturedConfiguration.ip.owner edge.1) ↔ selected.DestinationSide (capturedConfiguration.ip.owner edge.2)) := by
   unfold IPsecFlowEndpoints.SourceSide IPsecFlowEndpoints.DestinationSide
-  decide
-
-lemma recorded_plain_bridges : ∀ edge ∈ records.bridges, expectedEncapStack edge.1 ≠ [] := by decide
+  native_decide
+lemma recorded_plain_bridges : ∀ edge ∈ records.bridges, expectedEncapStack edge.1 ≠ [] := by native_decide
 
 lemma flow_tunnel_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
     (selected : IPsecFlowEndpoints) (member : selected ∈ contexts) :
@@ -50,7 +49,7 @@ lemma step_preserves_selected_flow (primitive : ESPWire.GCMPrimitive IPsecKeyMat
     selected.AllowedStamp (selected.PlainAllowed (configuration primitive).ip.owner) expectedEncapStack
     (flow_tunnel_checks primitive selected member)
     (OuterTunnelNoBypass_Baseline.headered_stack_conditions (OuterTunnelNoBypass_Baseline.codec primitive))
-    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩) step safe
+    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩) step safe
 
 lemma recorded_source_contexts : ∀ entry ∈ entries,
     contextFor entry.originDomain ∈ contexts ∧
@@ -58,14 +57,13 @@ lemma recorded_source_contexts : ∀ entry ∈ entries,
     (contextFor entry.originDomain).originDomain = entry.originDomain ∧
     (contextFor entry.originDomain).SourceSide (capturedConfiguration.ip.owner entry.iface) := by
   unfold IPsecFlowEndpoints.SourceSide
-  decide
-
+  native_decide
 lemma recorded_context_networks : ∀ selected ∈ contexts,
-    ∃ network ∈ networks, selected.flow.sourceNetwork = network.id := by decide
+    ∃ network ∈ networks, selected.flow.sourceNetwork = network.id := by native_decide
 
 lemma source_encap_stacks (iface : Nat) (network : String)
     (source : sourceEntry entries iface = some network) : expectedEncapStack iface = [] := by
-  have checked : ∀ entry ∈ entries, expectedEncapStack entry.iface = [] := by decide
+  have checked : ∀ entry ∈ entries, expectedEncapStack entry.iface = [] := by native_decide
   obtain ⟨entry, member, same, _⟩ := source_entry_is_recorded entries iface network source
   rw [← same]
   exact checked entry member

@@ -136,13 +136,13 @@ report records source bindings and the fresh-process/fixed-configuration assumpt
 def ifaces : List (String × Config) := [""" + ", ".join(entries) + """]
 
 lemma no_configured_pre_shared_pair : ∀ iface ∈ ifaces,
-    iface.2.preSharedEnabled = false := by decide
+    iface.2.preSharedEnabled = false := by native_decide
 
 theorem eap_ifaces_have_no_pre_shared_fallback (iface : String × Config)
     (member : iface ∈ ifaces) : no_pre_shared_fallback_in_eap_mode iface.2 :=
   eap_key_sources_disable_pre_shared_fallback iface.2 (no_configured_pre_shared_pair iface member)
 
-lemma all_four_ifaces_present : ifaces.length = 4 := by decide
+lemma all_four_ifaces_present : ifaces.length = 4 := by native_decide
 
 end TDN.Deployments.SnapshotMacsecKeySources
 """

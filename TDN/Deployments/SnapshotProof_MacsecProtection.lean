@@ -13,7 +13,7 @@ lemma profile_external_iface_checks (records : ProfileRecords) (supported : Supp
         device.layer = some .outer ∧ interface.zone = .black) →
       ∃ mac ∈ records.macIfaces, mac.physicalIface = edge.1 ∧
         records.componentName (records.configuration.ip.owner mac.physicalIface) = device.id := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   intro iface next linked interface member name device configured owner kind external
   exact checked (iface, next) linked interface member name device configured owner kind external
 
@@ -31,18 +31,17 @@ lemma observed_public_configuration_requests_encryption :
       record.configuredIntegrityOnly = some 0 ∧ record.protectFrames = true ∧
       record.encryptFrames = true ∧ record.controlledPortEnabled = true ∧
       record.receiveValidation = "strict" := by
-  decide
-
+  native_decide
 lemma profile_parameter_inventory (records : ProfileRecords) (supported : SupportedProfile records) :
     ∀ device ∈ records.deployment.devices, device.kind = .macsec →
       ∃ parameter ∈ parameters, parameter.device = device.id := by
-  rcases supported with rfl | rfl <;> decide
+  rcases supported with rfl | rfl <;> native_decide
 
 lemma profile_parameters_bound (records : ProfileRecords) (supported : SupportedProfile records) :
     MACsecParametersBound records.deployment records.model parameters := by
   unfold MACsecParametersBound
   simp only [Deployment.Relevant, ProfileRecords.deployment]
-  rcases supported with rfl | rfl <;> decide
+  rcases supported with rfl | rfl <;> native_decide
 
 theorem profile_macsec_protection_parameters (records : ProfileRecords) (supported : SupportedProfile records) :
     msc_macsec_protection_parameters records.deployment records.model parameters := by

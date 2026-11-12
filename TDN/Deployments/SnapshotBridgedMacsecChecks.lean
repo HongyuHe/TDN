@@ -8,8 +8,7 @@ set_option maxHeartbeats 0
 
 lemma ip_peer_tag_checks : DataPlaneForwarding.TableDrivenPeerTagAgreement devices := by
   unfold DataPlaneForwarding.TableDrivenPeerTagAgreement DataPlaneForwarding.saMatchesPolicy DataPlaneForwarding.SameWireAssociation devices
-  decide
-
+  native_decide
 lemma ip_peer_wire_tag_agreement : DataPlaneForwarding.PeerTagAgreement config.ip :=
   DataPlaneForwarding.table_driven_peer_tag_agreement_sound devices ifaces routes links [] ip_peer_tag_checks
 
@@ -23,37 +22,37 @@ theorem reachable_IPsec_seals_have_actual_transmit_provenance
 
 lemma route_owner_checks : ∀ route ∈ routes,
     (DataPlaneForwarding.ifaceAt ifaces route.egress).owner = (DataPlaneForwarding.ifaceAt ifaces route.ingress).owner := by
-  unfold routes ifaces; decide
+  unfold routes ifaces; native_decide
 
 lemma link_stack_checks : ∀ edge ∈ links,
     (DataPlaneForwarding.ifaceAt ifaces edge.1).stack = (DataPlaneForwarding.ifaceAt ifaces edge.2).stack := by
-  unfold links ifaces; decide
+  unfold links ifaces; native_decide
 
 lemma bridge_stack_checks : ∀ edge ∈ bridges,
     (DataPlaneForwarding.ifaceAt ifaces edge.1).stack = (DataPlaneForwarding.ifaceAt ifaces edge.2).stack := by
-  unfold bridges ifaces; decide
+  unfold bridges ifaces; native_decide
 
 lemma forward_checks : DataPlaneForwarding.TableDrivenRoutedForwardChecks devices ifaces routes := by
-  unfold DataPlaneForwarding.TableDrivenRoutedForwardChecks devices ifaces routes; decide
+  unfold DataPlaneForwarding.TableDrivenRoutedForwardChecks devices ifaces routes; native_decide
 
 lemma output_checks : DataPlaneForwarding.TableDrivenOutputChecks devices ifaces := by
-  unfold DataPlaneForwarding.TableDrivenOutputChecks devices ifaces; decide
+  unfold DataPlaneForwarding.TableDrivenOutputChecks devices ifaces; native_decide
 
 lemma outer_route_checks : DataPlaneForwarding.TableDrivenOuterRoutes devices ifaces routes := by
-  unfold DataPlaneForwarding.TableDrivenOuterRoutes devices ifaces routes; decide
+  unfold DataPlaneForwarding.TableDrivenOuterRoutes devices ifaces routes; native_decide
 
 lemma ip_local_conditions : DataPlaneForwarding.PerHopEncapConditions config.ip expectedEncapStack := by
   exact DataPlaneForwarding.local_stack_conditions_of_routed_finite_checks devices ifaces routes links []
     route_owner_checks link_stack_checks (by simp)
-    (by unfold devices; decide) forward_checks output_checks outer_route_checks
+    (by unfold devices; native_decide) forward_checks output_checks outer_route_checks
 
 lemma mac_transmit_checks : ∀ iface ∈ macIfaces, MACTransmitCheck ifaces iface := by
-  unfold macIfaces ifaces; decide
+  unfold macIfaces ifaces; native_decide
 
 lemma mac_receive_checks : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
     association.tag :: (DataPlaneForwarding.ifaceAt ifaces iface.logicalIface).stack =
       (DataPlaneForwarding.ifaceAt ifaces iface.physicalIface).stack := by
-  unfold macIfaces ifaces; decide
+  unfold macIfaces ifaces; native_decide
 
 lemma mac_role_checks : ∀ sender ∈ macIfaces, ∀ transmitted,
     sender.transmitAssociation = some transmitted → ∀ receiver ∈ macIfaces,
@@ -64,21 +63,21 @@ lemma mac_role_checks : ∀ sender ∈ macIfaces, ∀ transmitted,
 lemma mac_secure_checks : ∀ iface ∈ macIfaces,
     iface.settings.protectFrames = true ∧ iface.settings.encryptFrames = true ∧
     iface.settings.confidentialityOffset = 0 ∧ iface.validateStrict = true := by
-  unfold macIfaces; decide
+  unfold macIfaces; native_decide
 
 lemma carrier_output_checks : ∀ carrier ∈ carriers,
     (DataPlaneForwarding.ifaceAt ifaces carrier.virtualIface).stack =
       (DataPlaneForwarding.ifaceAt ifaces carrier.routingIface).stack := by
-  unfold carriers ifaces; decide
+  unfold carriers ifaces; native_decide
 
 lemma carrier_route_checks : CarrierRouteChecks devices ifaces routes carriers := by
-  unfold CarrierRouteChecks devices ifaces routes carriers; decide
+  unfold CarrierRouteChecks devices ifaces routes carriers; native_decide
 
 lemma carrier_peer_checks : ∀ sender ∈ carriers, ∀ receiver ∈ carriers,
     CarrierPeers sender receiver →
       (DataPlaneForwarding.ifaceAt ifaces sender.virtualIface).stack =
         (DataPlaneForwarding.ifaceAt ifaces receiver.virtualIface).stack := by
-  unfold carriers ifaces CarrierPeers; decide
+  unfold carriers ifaces CarrierPeers; native_decide
 
 lemma mixed_local_conditions : LocalConditions config expectedEncapStack :=
   local_conditions_from_finite_checks devices ifaces routes links bridges macIfaces carriers
@@ -87,13 +86,13 @@ lemma mixed_local_conditions : LocalConditions config expectedEncapStack :=
 
 lemma red_sources_checked : ∀ iface ∈ redSources, expectedEncapStack iface = [] ∧ config.ip.canOriginateTraffic iface := by
   unfold redSources expectedEncapStack config MultiProtocolForwarding.dataPlaneModelFromRecords DataPlaneForwarding.dataPlaneModelFromRecords
-    DataPlaneForwarding.expectedEncapStackFromRecords ifaces; decide
+    DataPlaneForwarding.expectedEncapStackFromRecords ifaces; native_decide
 
 lemma gray_ifaces_checked : ∀ iface ∈ grayIfaces, expectedEncapStack iface = [1] := by
-  unfold grayIfaces expectedEncapStack DataPlaneForwarding.expectedEncapStackFromRecords ifaces; decide
+  unfold grayIfaces expectedEncapStack DataPlaneForwarding.expectedEncapStackFromRecords ifaces; native_decide
 
 lemma black_ifaces_checked : ∀ iface ∈ blackIfaces, expectedEncapStack iface = [2, 1] := by
-  unfold blackIfaces expectedEncapStack DataPlaneForwarding.expectedEncapStackFromRecords ifaces; decide
+  unfold blackIfaces expectedEncapStack DataPlaneForwarding.expectedEncapStackFromRecords ifaces; native_decide
 
 theorem every_red_origin_transmission_has_gray_or_black_protection
     {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
@@ -110,7 +109,7 @@ theorem every_red_origin_transmission_has_gray_or_black_protection
 
 lemma outer_iface_shapes : ∀ iface ∈ ({} : DataPlaneForwarding.IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
-  unfold ifaces; decide
+  unfold ifaces; native_decide
 
 theorem actual_inner_encryption_precedes_outer {start finish : MultiProtocolForwarding.State}
     {actions : List MultiProtocolForwarding.Action}

@@ -10,7 +10,7 @@ lemma captured_physical_encodings :
       records.configuration.linkEncoding records.physicalReady.iface records.physicalReady.frame =
         some records.physicalFrame ∧
       records.configuration.linkEncoding records.wired.iface records.wired.frame = some records.physicalFrame := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma permitted_native_wire_admission (records : Records)
     (wire : MultiProtocolForwarding.Step records.configuration records.physicalReady .linkTransmit records.wired)
@@ -41,7 +41,7 @@ theorem physical_egress_drop_prevents_an_admitted_native_wire_step :
     ¬ unprotectedDenied.configuration.LinkStepAdmitted unprotectedDenied.physicalReady .linkTransmit unprotectedDenied.wired := by
   intro admission
   have path : unprotectedDenied.configuration.LinkPath unprotectedDenied.physicalReady.iface :=
-    Or.inl ⟨unprotectedDenied.sourceCase.mac, by exact of_decide_eq_true rfl, rfl⟩
+    Or.inl ⟨unprotectedDenied.sourceCase.mac, by native_decide, rfl⟩
   obtain ⟨encoded, encoding, _, allowed⟩ := (admission.1 rfl).1 path
   have actual : unprotectedDenied.configuration.linkEncoding unprotectedDenied.physicalReady.iface
       unprotectedDenied.physicalReady.frame = some unprotectedDenied.physicalFrame := rfl
@@ -49,7 +49,7 @@ theorem physical_egress_drop_prevents_an_admitted_native_wire_step :
   subst encoded
   have rejects : ¬ LinkAdmission.Admitted unprotectedDenied.configuration.linkPolicies
       unprotectedDenied.sourceCase.mac.physicalIface true (unprotectedDenied.packet .outbound) := by
-    exact of_decide_eq_true rfl
+    native_decide
   exact rejects allowed
 
 end TDN.Deployments.BoundaryMACsec

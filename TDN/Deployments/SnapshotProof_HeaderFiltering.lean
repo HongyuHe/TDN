@@ -77,24 +77,21 @@ lemma gre_is_rejected (base : Deployment) (processing : PacketProcessing.Invento
 lemma multicast_range_fails_guard :
     ¬ RuleUnicastGuard
       ⟨[.sourceRange 0 100, .destinationRange (224 * 2^24) (239 * 2^24), .protocol "esp"], .allow⟩ := by
-  decide
-
+  native_decide
 lemma unknown_protocol_fails_guard :
     ¬ RuleHeaderGuard ⟨[.sourceRange 0 100, .destinationRange 0 100, .protocol "gre"], .allow⟩ := by
-  decide
-
+  native_decide
 def ipv6Rule : PacketPolicy.Rule :=
   ⟨[.sourceRange (2^128) (2^128 + 100), .destinationRange (2^128) (2^128 + 100),
     .protocol "ipv6", .ipv6NextHeaders [50, 6, 17, 58]], .allow⟩
 
-lemma ipv6_rule_checked : RuleHeaderGuard ipv6Rule ∧ RuleUnicastGuard ipv6Rule := by decide
+lemma ipv6_rule_checked : RuleHeaderGuard ipv6Rule ∧ RuleUnicastGuard ipv6Rule := by native_decide
 
 lemma unapproved_ipv6_header_fails_guard :
     ¬ RuleHeaderGuard
       ⟨[.sourceRange (2^128) (2^128 + 100), .destinationRange (2^128) (2^128 + 100),
         .protocol "ipv6", .ipv6NextHeaders [50, 43]], .allow⟩ := by
-  decide
-
+  native_decide
 lemma selected_options_need_actual_atom (base : Deployment) (processing : PacketProcessing.Inventory) :
     headerPoliciesChecked { deployment base processing with dropIPv4Options := fun _ => true } = false := by
   rfl

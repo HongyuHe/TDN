@@ -4,18 +4,18 @@ open TDN.Requirements.NestedSizing
 
 def esp := TDN.PacketLength.alignedWireLength 4 2 52
 
-example : lengthAt esp esp .gray 1100 = 1156 := by decide
-example : lengthAt esp esp .black 1100 = 1212 := by decide
+example : lengthAt esp esp .gray 1100 = 1156 := by native_decide
+example : lengthAt esp esp .black 1100 = 1212 := by native_decide
 
 /-- An Outer limit that fits only the Inner packet must fail the Black check. -/
-example : ¬ lengthAt esp esp .black 1100 ≤ 1200 := by decide
+example : ¬ lengthAt esp esp .black 1100 ≤ 1200 := by native_decide
 
 /-- Gray limits apply to the once-protected packet, not the Black packet. -/
 example : ∀ size, size ≤ 1100 → lengthAt esp esp .gray size ≤ 1200 := by
   intro size bound
   exact (length_at_monotone esp esp
     (TDN.PacketLength.aligned_wire_length_monotone 4 2 52)
-    (TDN.PacketLength.aligned_wire_length_monotone 4 2 52) .gray bound).trans (by decide)
+    (TDN.PacketLength.aligned_wire_length_monotone 4 2 52) .gray bound).trans (by native_decide)
 
 /-- The encompassing requirement uses the length present at each actual stage. -/
 def stagedInner : TDN.Requirements.PacketSizing where
@@ -42,7 +42,7 @@ example : TDN.Requirements.FitsSelectedPath stagedInner := by
       (TDN.PacketLength.aligned_wire_length_monotone 4 2 52 h)
   · intro impossible
     cases impossible
-  · decide
-  · decide
+  · native_decide
+  · native_decide
   · intro _
-    decide
+    native_decide

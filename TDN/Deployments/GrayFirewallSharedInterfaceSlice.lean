@@ -10,17 +10,17 @@ load_network_records rawInterfaces : List Interface from "../../data/evidence/co
 
 lemma every_raw_interface_identifier_is_preserved :
     rawInterfaces.map Interface.id = records.interfaces.map Interface.id := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma every_Gray_and_Black_interface_is_preserved :
     rawInterfaces.filter (fun interface => interface.zone == .gray || interface.zone == .black) =
       records.interfaces.filter (fun interface => interface.zone == .gray || interface.zone == .black) := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma every_attached_Red_interface_is_preserved :
     rawInterfaces.filter (fun interface => interface.zone == .red && interface.physical) =
       records.interfaces.filter (fun interface => interface.zone == .red && interface.physical) := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 def rawLocalConfiguration : MultiProtocolForwarding.Config :=
   records.configuration.withLocalAddresses (fun iface address =>

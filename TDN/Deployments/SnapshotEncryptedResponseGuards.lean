@@ -8,8 +8,7 @@ set_option maxHeartbeats 0
 lemma locally_encrypted_response_rules_checked :
     EncryptedResponseGuards.TableDrivenDeny devices := by
   unfold EncryptedResponseGuards.TableDrivenDeny
-  decide
-
+  native_decide
 lemma locally_encrypted_response_denial : EncryptedResponseGuards.LocalDeny config :=
   EncryptedResponseGuards.table_driven_deny_sound devices ifaces routes links switches
     locally_encrypted_response_rules_checked

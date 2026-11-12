@@ -35,7 +35,7 @@ def main():
             blocks.append(f"def {name} := Requirements.operationalTunnelBoundary config expectedEncapStack [{inside}] [{outside}] {tag} {component}")
             blocks.append(f"""lemma {name}_inbound_tags : ∀ iface, config.owner iface = {component} →
     ∀ a ∈ config.ingressPolicies iface, a.tag = {tag} := by
-  have checked : ∀ a ∈ (deviceAt devices {component}).ingressPolicies, a.tag = {tag} := by decide
+  have checked : ∀ a ∈ (deviceAt devices {component}).ingressPolicies, a.tag = {tag} := by native_decide
   intro iface owner a member
   change (ifaceAt ifaces iface).owner = {component} at owner
   change a ∈ (deviceAt devices (ifaceAt ifaces iface).owner).ingressPolicies at member
@@ -44,7 +44,7 @@ def main():
 
 theorem {name}_no_bypass : Requirements.BoundaryNoBypass {name} :=
   Requirements.tunnel_boundary_from_local_stack_checks config expectedEncapStack [{inside}] [{outside}] {tag} {component}
-    local_stack_conditions {name}_inbound_tags (by decide) (by decide)
+    local_stack_conditions {name}_inbound_tags (by native_decide) (by native_decide)
 """)
             outbound = device[-1] == "A"
             first_port, last_port = (inside, outside) if outbound else (outside, inside)
@@ -56,7 +56,7 @@ theorem {name}_no_bypass : Requirements.BoundaryNoBypass {name} :=
             proof = "Cslib.LTS.MTr.refl"
             for index in reversed(range(first, last)):
                 proof = ("Cslib.LTS.MTr.stepL ⟨witnessStep" + str(index) +
-                         ", by decide, by decide⟩ (" + proof + ")")
+                         ", by native_decide, by native_decide⟩ (" + proof + ")")
             direction = "outbound" if outbound else "inbound"
             blocks.append(f"""theorem {name}_positive_{direction} :
     ∃ start actions finish, {name}.{direction}Entry start ∧

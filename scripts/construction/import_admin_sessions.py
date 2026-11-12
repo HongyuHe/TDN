@@ -161,7 +161,7 @@ def generate(data):
               "  apply administrator_authentication_from_admitted_operations false false events actions accounts sessions [] (fun _ => 0)",
               "  · exact admitted_history", "  · decide", "  · simp", "",
               "theorem successful_operations_are_present :",
-              "    (events.filter (fun event => event.kind == .operation)).length = " + str(len(data["accepted"])) + " := by decide",
+              "    (events.filter (fun event => event.kind == .operation)).length = " + str(len(data["accepted"])) + " := by native_decide",
               "", "end TDN.Deployments.SnapshotAdminSessions", ""]
     return "\n".join(lines)
 

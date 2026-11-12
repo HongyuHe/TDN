@@ -108,7 +108,7 @@ lake env lean scripts/construction/audit_axioms.lean
 
 The direct-check command prints JSON and exits unsuccessfully if any comparison fails or an input is missing. Empty inventories fail the migrated comparisons. Regression tests exercise changed cipher settings, invalid lifetimes, shared AW assignments, weakened DNS rules, journal gaps and truncation, and changed evidence hashes.
 
-The all-theorem audit rejects dependencies beyond Lean’s standard logical axioms. `tests/ProofScope.lean` checks all retained general results and applications. A static import check also rejects references to retired modules, even if an old compiled file remains in a local build cache.
+The all-theorem audit accepts Lean’s standard logical axioms and re-evaluated closed `native_decide` results. The [trust policy](proof_trust.md) includes Lean’s compiler and runtime, the C compiler, and LLVM when used. Other axioms are rejected. `tests/ProofScope.lean` checks all retained general results and applications. A static import check also rejects references to retired modules, even if an old compiled file remains in a local build cache.
 
 ## Historical validation of the October 31 simplification
 

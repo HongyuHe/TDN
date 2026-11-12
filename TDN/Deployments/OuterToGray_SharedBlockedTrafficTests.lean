@@ -1,3 +1,4 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.OuterToGray_SharedCases
 import TDN.Deployments.OuterToGray_Counterexamples
 
@@ -21,12 +22,12 @@ load_network_records erspanIface : Nat from "../../data/evidence/continuation/Ou
 lemma plaintext_Black_context_remains_supported (base : Deployment) :
     (records.deployment base).SupportedAt plaintextBlack.interface .outbound (plaintextBlack.context records)
       ((records.deployment base).Observe (plaintextBlack.packet records)) :=
-  checked_plain_forward_case_is_supported plaintextBlack records base .outbound (by exact of_decide_eq_true rfl)
+  checked_plain_forward_case_is_supported plaintextBlack records base .outbound (by unfold_check_parameters; native_decide)
 
 lemma plaintext_Black_is_required_to_decrypt (base : Deployment) :
     (records.deployment base).InboundIPsecRequired records.inventory plaintextBlack.entryIface
       (plaintextBlack.context records).header := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma plaintext_Black_context_fails_positive_prerequisite (base : Deployment) :
     ¬ (records.deployment base).ContextIngressEligible (plaintextBlack.context records)
@@ -38,7 +39,7 @@ lemma plaintext_Black_is_denied_by_raw_Gray_forward_program :
     Filter.evaluate ((records.configuration.ip.forwardRules plaintextBlack.route.egress).map PacketPolicy.Rule.toFilter)
       (records.configuration.ip.forwardFallback plaintextBlack.route.egress)
       (plaintextBlack.packet records) = .deny := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 def authenticatedReturn : PacketPolicy.Packet :=
   { plaintextBlack.packet records with matchedInboundPolicyIds := [inboundPolicy.id] }
@@ -46,13 +47,13 @@ def authenticatedReturn : PacketPolicy.Packet :=
 lemma authenticated_return_is_allowed_by_raw_program :
     DataPlaneForwarding.accepts (records.configuration.ip.forwardRules plaintextBlack.route.egress)
       (records.configuration.ip.forwardFallback plaintextBlack.route.egress) authenticatedReturn := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma authenticated_return_is_not_Gray_inbound_at_any_native_iface :
     ∀ iface ∈ records.inventory.ifaces, records.ifaceName iface = plaintextBlack.interface.id →
       ¬ PacketAtHook (records.configuration.ip.interfaceName iface) .inbound .forward authenticatedReturn := by
   unfold PacketAtHook HookDirection
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma authenticated_return_cannot_be_misattributed_to_Gray_inbound (base : Deployment) :
     ¬ (records.deployment base).HookContext plaintextBlack.interface.id .inbound .forward authenticatedReturn := by
@@ -95,32 +96,32 @@ def decryptedContext (iface : Nat) : PacketProcessing.Context :=
 
 lemma encrypted_entry_headers_are_coherent (iface : Nat) :
     (encryptedEntry iface).frame.HeadersCoherent := by
-  refine ⟨⟨rfl, by change 64 ≤ 255; decide⟩, none, [], rfl, ?_⟩
-  exact ⟨⟨rfl, by change 64 ≤ 255; decide⟩, rfl⟩
+  refine ⟨⟨rfl, by change 64 ≤ 255; native_decide⟩, none, [], rfl, ?_⟩
+  exact ⟨⟨rfl, by change 64 ≤ 255; native_decide⟩, rfl⟩
 
 lemma configured_outer_decryption (iface : Nat)
     (configured : inboundPolicy ∈ records.configuration.ip.ingressPolicies iface)
     (installed : inboundAssociation ∈ records.configuration.ip.ingressSAs iface) :
     MultiProtocolForwarding.Step records.configuration (encryptedEntry iface) .decryptIPsec (decryptedEntry iface) :=
   .decryptIPsec inboundPolicy inboundAssociation plaintextBlack.entry.frame.body plaintextBlack.header
-    rfl rfl configured installed (by exact of_decide_eq_true rfl) rfl (by exact of_decide_eq_true rfl) "new"
+    rfl rfl configured installed (by native_decide) rfl (by native_decide) "new"
 
 lemma loopback_admits_encrypted_envelope_at_INPUT :
     PacketProcessing.InputAdmitted records.configuration (encryptedEntry loopbackIface) := by
   refine ⟨encryptedHeader, rfl, ?_⟩
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma Black_admits_encrypted_envelope_at_INPUT :
     PacketProcessing.InputAdmitted records.configuration (encryptedEntry plaintextBlack.entryIface) := by
   refine ⟨encryptedHeader, rfl, ?_⟩
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma erspan_rejects_encrypted_envelope_at_INPUT :
     ¬ PacketProcessing.InputAdmitted records.configuration (encryptedEntry erspanIface) := by
   rintro ⟨header, visible, admitted⟩
   have same : header = encryptedHeader := Option.some.inj visible.symm
   subst header
-  exact (by exact of_decide_eq_true rfl :
+  exact (by native_decide :
     ¬ DataPlaneForwarding.accepts (records.configuration.ip.inputRules erspanIface)
       (records.configuration.ip.inputFallback erspanIface)
       (PacketProcessing.inputPacket records.configuration (encryptedEntry erspanIface) encryptedHeader)) admitted
@@ -129,34 +130,34 @@ lemma loopback_remote_envelope_has_no_native_arrival (base : Deployment) :
     ¬ (records.deployment base).DeviceArrivalEligible records.inventory (encryptedEntry loopbackIface) := by
   rw [device_arrival_iff_visible_source _ _ _ encryptedHeader rfl]
   unfold Deployment.LocalSourceAddress
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma erspan_remote_envelope_has_no_native_arrival (base : Deployment) :
     ¬ (records.deployment base).DeviceArrivalEligible records.inventory (encryptedEntry erspanIface) := by
   rw [device_arrival_iff_visible_source _ _ _ encryptedHeader rfl]
   unfold Deployment.LocalSourceAddress
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Black_envelope_has_native_arrival (base : Deployment) :
     (records.deployment base).DeviceArrivalEligible records.inventory (encryptedEntry plaintextBlack.entryIface) := by
   apply Or.inl
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma invented_loopback_decryption_and_route :
     MultiProtocolForwarding.Step records.configuration (encryptedEntry loopbackIface) .decryptIPsec (decryptedEntry loopbackIface) ∧
       MultiProtocolForwarding.Step records.configuration (decryptedEntry loopbackIface) .route (decryptedRouted loopbackIface) := by
-  refine ⟨configured_outer_decryption loopbackIface (by exact of_decide_eq_true rfl)
-    (by exact of_decide_eq_true rfl), ?_⟩
-  exact .route (decryptedRoute loopbackIface) rfl rfl (by exact of_decide_eq_true rfl) rfl
+  refine ⟨configured_outer_decryption loopbackIface (by native_decide)
+    (by native_decide), ?_⟩
+  exact .route (decryptedRoute loopbackIface) rfl rfl (by native_decide) rfl
 
 lemma actual_Black_decryption_and_route :
     MultiProtocolForwarding.Step records.configuration (encryptedEntry plaintextBlack.entryIface) .decryptIPsec
         (decryptedEntry plaintextBlack.entryIface) ∧
       MultiProtocolForwarding.Step records.configuration (decryptedEntry plaintextBlack.entryIface) .route
         (decryptedRouted plaintextBlack.entryIface) := by
-  refine ⟨configured_outer_decryption plaintextBlack.entryIface (by exact of_decide_eq_true rfl)
-    (by exact of_decide_eq_true rfl), ?_⟩
-  exact .route (decryptedRoute plaintextBlack.entryIface) rfl rfl (by exact of_decide_eq_true rfl) rfl
+  refine ⟨configured_outer_decryption plaintextBlack.entryIface (by native_decide)
+    (by native_decide), ?_⟩
+  exact .route (decryptedRoute plaintextBlack.entryIface) rfl rfl (by native_decide) rfl
 
 lemma actual_Black_context_satisfies_ingress_prerequisites (base : Deployment) :
     (records.deployment base).ContextIngressEligible (decryptedContext plaintextBlack.entryIface)

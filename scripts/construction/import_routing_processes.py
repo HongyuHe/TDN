@@ -43,7 +43,7 @@ def generate(rows):
         values = ", ".join("⟨" + str(pid) + ", [." + service + "]⟩" for pid, service in processes)
         lines.append("  if device = " + q(name) + " then [" + values + "] else")
     lines.extend(["  []", "",
-                  "lemma complete_outer_count : outerDevices.length = " + str(len(rows)) + " := by decide",
+                  "lemma complete_outer_count : outerDevices.length = " + str(len(rows)) + " := by native_decide",
                   "lemma process_capabilities_checked : ∀ device ∈ outerDevices, ∀ process ∈ inventory device,",
                   "    ObservedNetworkService.routingProtocol ∉ process.services := by",
                   "  simp [outerDevices, inventory]", "",

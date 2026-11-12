@@ -18,8 +18,7 @@ lemma unauthenticated_gray_input_denied :
       (policyHeader { records.configuration with networkBytes := fun body _ => IPsecFrameEncoding.networkLength body }
         unauthenticatedGrayInput deliveryPath.header) := by
   unfold DataPlaneForwarding.accepts
-  decide
-
+  native_decide
 theorem snapshot_RG029_ipsec_plaintext_gray_input_blocked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ ∃ after, (interpretedForwarding primitive).native.AcceptedStep
       unauthenticatedGrayInput .forwardFilter after := by
@@ -41,7 +40,7 @@ def uninstalledGrayInput : MultiProtocolForwarding.State :=
       (deliveryPath.policy.seal uninstalledAssociation), authenticated := [] }
 
 lemma ingress_association_spi_nonzero :
-    ∀ association ∈ capturedConfiguration.ip.ingressSAs 69, association.spi ≠ 0 := by decide
+    ∀ association ∈ capturedConfiguration.ip.ingressSAs 69, association.spi ≠ 0 := by native_decide
 
 theorem snapshot_RG029_ipsec_uninstalled_spi_blocked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ ∃ after, (interpretedForwarding primitive).native.AcceptedStep
@@ -71,9 +70,9 @@ def mismatchedEndpointBinding : TunnelModeBinding :=
 def componentsWithObservedBinding (record : TunnelModeBinding) : List EncryptionComponentConfiguration :=
   components.map (fun component => if component.id = record.component.id then record.component else component)
 
-lemma mismatched_mode_binding_is_rejected : ¬ mismatchedModeBinding.Check := by decide
+lemma mismatched_mode_binding_is_rejected : ¬ mismatchedModeBinding.Check := by native_decide
 
-lemma mismatched_endpoint_binding_is_rejected : ¬ mismatchedEndpointBinding.Check := by decide
+lemma mismatched_endpoint_binding_is_rejected : ¬ mismatchedEndpointBinding.Check := by native_decide
 
 theorem snapshot_RG029_observed_mode_mismatch_blocks_application (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ msc_inner_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive)
@@ -107,13 +106,11 @@ open Compliance Requirements Requirements.Msc
 lemma outbound_mac_objective_has_unconfigured_component :
     ∃ component ∈ components, deployment.Relevant component.id ∧ component.outboundMACPolicy = false := by
   unfold Deployment.Relevant
-  decide
-
+  native_decide
 lemma inbound_mac_objective_has_unconfigured_component :
     ∃ component ∈ components, deployment.Relevant component.id ∧ component.inboundMACPolicy = false := by
   unfold Deployment.Relevant
-  decide
-
+  native_decide
 theorem snapshot_RG029_outbound_mac_objective_rejects_missing_policy :
     ¬ msc_inner_tunnel_no_bypass deployment forwarding components true false := by
   intro accepted

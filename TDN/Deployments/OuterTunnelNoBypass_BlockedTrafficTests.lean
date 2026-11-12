@@ -21,7 +21,7 @@ def noOuterPolicyOutput : MultiProtocolForwarding.State :=
   { unauthenticatedBlackInput with iface := 104, enteredIface := 106 }
 
 lemma no_outer_policy_match :
-    DataPlaneForwarding.lookupSpdPolicies (capturedConfiguration.ip.egressPolicies 104) noOuterPolicyHeader = [] := by decide
+    DataPlaneForwarding.lookupSpdPolicies (capturedConfiguration.ip.egressPolicies 104) noOuterPolicyHeader = [] := by native_decide
 
 theorem snapshot_RG030_baseline_unauthenticated_black_input_blocked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ ∃ after, (interpretedForwarding primitive).native.AcceptedStep
@@ -34,7 +34,7 @@ theorem snapshot_RG030_baseline_unauthenticated_black_input_blocked (primitive :
     subst same
     exact unauthenticated_external_ingress_across_cannot_forward (configuration primitive)
       unauthenticatedBlackInput noOuterPolicyHeader "black"
-      (outer_forward_chain primitive _ (by change OuterOwner (capturedConfiguration.ip.owner 106); decide)) rfl rfl permitted
+      (outer_forward_chain primitive _ (by change OuterOwner (capturedConfiguration.ip.owner 106); native_decide)) rfl rfl permitted
 
 theorem snapshot_RG030_baseline_missing_outer_policy_blocked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ ∃ after, (interpretedForwarding primitive).native.AcceptedStep
@@ -47,13 +47,13 @@ theorem snapshot_RG030_baseline_missing_outer_policy_blocked (primitive : ESPWir
     subst same
     exact (accepted_external_output_across_requires_policy (configuration primitive)
       noOuterPolicyOutput noOuterPolicyHeader "black"
-      (outer_forward_chain primitive _ (by change OuterOwner (capturedConfiguration.ip.owner 104); decide)) rfl permitted) no_outer_policy_match
+      (outer_forward_chain primitive _ (by change OuterOwner (capturedConfiguration.ip.owner 104); native_decide)) rfl permitted) no_outer_policy_match
 
 lemma component_without_outbound_policy :
-    ∃ component ∈ components, component.outboundMACPolicy = false := by decide
+    ∃ component ∈ components, component.outboundMACPolicy = false := by native_decide
 
 lemma component_without_inbound_policy :
-    ∃ component ∈ components, component.inboundMACPolicy = false := by decide
+    ∃ component ∈ components, component.inboundMACPolicy = false := by native_decide
 
 theorem snapshot_RG030_baseline_outbound_objective_rejects_missing_policy (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ msc_outer_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive) components true false := by
@@ -83,8 +83,8 @@ theorem snapshot_RG030_baseline_unprotected_gray_receive_unreachable (primitive 
   obtain ⟨tunnel, stored, inner, singleton⟩ :=
     (snapshot_RG030_baseline_outer_tunnel_no_bypass primitive).2.2.2 start actions finish initial run
       ⟨1,1⟩ (records.ifaceName 106) [] .protectedData received data records.interfaces[106]
-      (by change records.interfaces[106] ∈ records.interfaces; decide) (Or.inl rfl)
-      (by decide) (by decide) (by change OuterDevice records.interfaces[106].device; decide)
+      (by change records.interfaces[106] ∈ records.interfaces; native_decide) (Or.inl rfl)
+      (by native_decide) (by native_decide) (by change OuterDevice records.interfaces[106].device; native_decide)
   cases singleton
 
 end TDN.Deployments.OuterTunnelNoBypass_Baseline
@@ -109,7 +109,7 @@ def noOuterPolicyOutput : MultiProtocolForwarding.State :=
   { unauthenticatedBlackInput with iface := 154, enteredIface := 156 }
 
 lemma no_outer_policy_match :
-    DataPlaneForwarding.lookupSpdPolicies (capturedConfiguration.ip.egressPolicies 154) noOuterPolicyHeader = [] := by decide
+    DataPlaneForwarding.lookupSpdPolicies (capturedConfiguration.ip.egressPolicies 154) noOuterPolicyHeader = [] := by native_decide
 
 theorem snapshot_RG030_shared_unauthenticated_black_input_blocked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ ∃ after, (interpretedForwarding primitive).native.AcceptedStep
@@ -122,7 +122,7 @@ theorem snapshot_RG030_shared_unauthenticated_black_input_blocked (primitive : E
     subst same
     exact unauthenticated_external_ingress_across_cannot_forward (configuration primitive)
       unauthenticatedBlackInput noOuterPolicyHeader "black"
-      (outer_forward_chain primitive _ (by change OuterOwner (capturedConfiguration.ip.owner 156); decide)) rfl rfl permitted
+      (outer_forward_chain primitive _ (by change OuterOwner (capturedConfiguration.ip.owner 156); native_decide)) rfl rfl permitted
 
 theorem snapshot_RG030_shared_missing_outer_policy_blocked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ ∃ after, (interpretedForwarding primitive).native.AcceptedStep
@@ -135,13 +135,13 @@ theorem snapshot_RG030_shared_missing_outer_policy_blocked (primitive : ESPWire.
     subst same
     exact (accepted_external_output_across_requires_policy (configuration primitive)
       noOuterPolicyOutput noOuterPolicyHeader "black"
-      (outer_forward_chain primitive _ (by change OuterOwner (capturedConfiguration.ip.owner 154); decide)) rfl permitted) no_outer_policy_match
+      (outer_forward_chain primitive _ (by change OuterOwner (capturedConfiguration.ip.owner 154); native_decide)) rfl permitted) no_outer_policy_match
 
 lemma component_without_outbound_policy :
-    ∃ component ∈ components, component.outboundMACPolicy = false := by decide
+    ∃ component ∈ components, component.outboundMACPolicy = false := by native_decide
 
 lemma component_without_inbound_policy :
-    ∃ component ∈ components, component.inboundMACPolicy = false := by decide
+    ∃ component ∈ components, component.inboundMACPolicy = false := by native_decide
 
 theorem snapshot_RG030_shared_outbound_objective_rejects_missing_policy (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ msc_outer_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive) components true false := by
@@ -171,8 +171,8 @@ theorem snapshot_RG030_shared_unprotected_gray_receive_unreachable (primitive : 
   obtain ⟨tunnel, stored, inner, singleton⟩ :=
     (snapshot_RG030_shared_outer_tunnel_no_bypass primitive).2.2.2 start actions finish initial run
       ⟨1,1⟩ (records.ifaceName 156) [] .protectedData received data records.interfaces[156]
-      (by change records.interfaces[156] ∈ records.interfaces; decide) (Or.inl rfl)
-      (by decide) (by decide) (by change OuterDevice records.interfaces[156].device; decide)
+      (by change records.interfaces[156] ∈ records.interfaces; native_decide) (Or.inl rfl)
+      (by native_decide) (by native_decide) (by change OuterDevice records.interfaces[156].device; native_decide)
   cases singleton
 
 lemma invalid_observed_binding_disables_component (record : TunnelModeBinding) (invalid : ¬ record.Check) :
@@ -189,9 +189,9 @@ def mismatchedOuterEndpointBinding : TunnelModeBinding :=
 def componentsWithObservedBinding (record : TunnelModeBinding) : List EncryptionComponentConfiguration :=
   components.map (fun component => if component.id = record.component.id then record.component else component)
 
-lemma mismatched_outer_mode_binding_is_rejected : ¬ mismatchedOuterModeBinding.Check := by decide
+lemma mismatched_outer_mode_binding_is_rejected : ¬ mismatchedOuterModeBinding.Check := by native_decide
 
-lemma mismatched_outer_endpoint_binding_is_rejected : ¬ mismatchedOuterEndpointBinding.Check := by decide
+lemma mismatched_outer_endpoint_binding_is_rejected : ¬ mismatchedOuterEndpointBinding.Check := by native_decide
 
 theorem snapshot_RG030_shared_mode_mismatch_blocks_application (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ msc_outer_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive)
@@ -219,7 +219,7 @@ theorem snapshot_RG030_shared_endpoint_mismatch_blocks_application (primitive : 
 
 lemma gray_receive_test_tunnels_are_inner :
     records.tunnels[0].layer = .inner ∧ records.tunnels[2].layer = .inner ∧
-    records.tunnels[0].id ≠ records.tunnels[2].id := by decide
+    records.tunnels[0].id ≠ records.tunnels[2].id := by native_decide
 
 theorem snapshot_RG030_shared_multiple_inner_layers_receive_unreachable (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ¬ ∃ start actions finish, (interpretedForwarding primitive).initial start ∧
@@ -233,8 +233,8 @@ theorem snapshot_RG030_shared_multiple_inner_layers_receive_unreachable (primiti
   obtain ⟨tunnel, stored, inner, singleton⟩ :=
     (snapshot_RG030_shared_outer_tunnel_no_bypass primitive).2.2.2 start actions finish initial run
       ⟨1,1⟩ (records.ifaceName 156) [records.tunnels[0].id, records.tunnels[2].id] .protectedData received data records.interfaces[156]
-      (by change records.interfaces[156] ∈ records.interfaces; decide) (Or.inl rfl)
-      (by decide) (by decide) (by change OuterDevice records.interfaces[156].device; decide)
+      (by change records.interfaces[156] ∈ records.interfaces; native_decide) (Or.inl rfl)
+      (by native_decide) (by native_decide) (by change OuterDevice records.interfaces[156].device; native_decide)
   have lengths := congrArg List.length singleton
   simp at lengths
 

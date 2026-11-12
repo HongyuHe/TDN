@@ -104,7 +104,7 @@ def interfaces : List InterfaceLimit := [
 def redLimit : Nat := ''' + str(data["maximum"]) + '''
 
 lemma every_maximum_fits : ∀ entry ∈ interfaces,
-    lengthAt espLength espLength entry.stage redLimit ≤ entry.mtu := by decide
+    lengthAt espLength espLength entry.stage redLimit ≤ entry.mtu := by native_decide
 
 /-- The identical proof applies to every imported interface and every smaller
 Red IP datagram under the fixed two-layer encoding contract. -/

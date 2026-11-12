@@ -1,7 +1,10 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.Perimeter_BaselineInventory
 import TDN.Deployments.Perimeter_BaselineRules
 import TDN.Deployments.Perimeter_BaselineControlChecks
 import TDN.Requirements.DevicePerimeterAclProof
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.Perimeter_Baseline
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
@@ -15,12 +18,12 @@ theorem complete_native_boundary_policy (base : Deployment) :
   have coherent : (deployment base).ProcessingCoherent :=
     records.processing_coherent_from_structure base (device_structure_checked base)
       interface_iface_selection_checked device_program_atoms_checked
-  have udp : (deployment base).UDPBindingsCoherent := of_decide_eq_true rfl
+  have udp : (deployment base).UDPBindingsCoherent := by unfold_check_parameters; native_decide
   have indices := device_policies_have_checked_indices (deployment base) records.inventory
     records.ifaceIndex rfl interface_ids_unique
   apply device_boundary_interface_filtering_from_checks (deployment base) rfl records.inventory rfl
     ⟨fun _ => 64, fun _ => 64⟩ rfl
-    (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩)
+    (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩)
     true (fun name => firewallInternal.contains name) (localOuter firewalls) redEndpoints peers controls
     rfl (control_observations_checked base) address coherent udp indices
     (every_declared_Red_endpoint_is_bound records services redEndpoints base controls)

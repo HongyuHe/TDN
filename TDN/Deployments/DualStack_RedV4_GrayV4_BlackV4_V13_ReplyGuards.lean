@@ -8,10 +8,10 @@ namespace TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4_V13
 load_network_records responseSourceGuards : List (Nat × List PacketPolicy.Rule) from "../../data/evidence/DualStack_RedV4_GrayV4_BlackV4_V13_ReplyGuards.json" ["TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4_V13.responseSourceGuards"]
 
 lemma all_input_interfaces_covered :
-    SourceResponseGuards.TableDrivenGuardCoverage ifaces responseSourceGuards := by decide
+    SourceResponseGuards.TableDrivenGuardCoverage ifaces responseSourceGuards := by native_decide
 
 lemma all_source_output_reply_pairs_checked :
-    SourceResponseGuards.TableDrivenReplyChecks devices ifaces responseSourceGuards := by decide
+    SourceResponseGuards.TableDrivenReplyChecks devices ifaces responseSourceGuards := by native_decide
 
 theorem source_output_reply_layers
     {guard : Nat × List PacketPolicy.Rule} (guardMember : guard ∈ responseSourceGuards)
@@ -41,13 +41,13 @@ theorem source_output_reply_layers
       all_input_interfaces_covered guardMember entryMember entryOwner inputExternal original inputName address)
     inputAccepted outputAccepted returnsToSource protocol
 
-lemma positive_source_guard_4 : Filter.evaluate ((responseSourceGuards[0]'(by decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState4.frame.packet with ingress := "red", matchedInboundPolicyIds := witnessState4.authenticated }) = .allow := by decide
-lemma positive_source_guard_5 : Filter.evaluate ((responseSourceGuards[0]'(by decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState5.frame.packet with ingress := "red", matchedInboundPolicyIds := witnessState5.authenticated }) = .allow := by decide
-lemma positive_source_guard_10 : Filter.evaluate ((responseSourceGuards[2]'(by decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState10.frame.packet with ingress := "gray", matchedInboundPolicyIds := witnessState10.authenticated }) = .allow := by decide
-lemma positive_source_guard_11 : Filter.evaluate ((responseSourceGuards[2]'(by decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState11.frame.packet with ingress := "gray", matchedInboundPolicyIds := witnessState11.authenticated }) = .allow := by decide
-lemma positive_source_guard_26 : Filter.evaluate ((responseSourceGuards[3]'(by decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState26.frame.packet with ingress := "black", matchedInboundPolicyIds := witnessState26.authenticated }) = .allow := by decide
-lemma positive_source_guard_27 : Filter.evaluate ((responseSourceGuards[3]'(by decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState27.frame.packet with ingress := "black", matchedInboundPolicyIds := witnessState27.authenticated }) = .allow := by decide
-lemma positive_source_guard_31 : Filter.evaluate ((responseSourceGuards[1]'(by decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState31.frame.packet with ingress := "gray", matchedInboundPolicyIds := witnessState31.authenticated }) = .allow := by decide
-lemma positive_source_guard_32 : Filter.evaluate ((responseSourceGuards[1]'(by decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState32.frame.packet with ingress := "gray", matchedInboundPolicyIds := witnessState32.authenticated }) = .allow := by decide
+lemma positive_source_guard_4 : Filter.evaluate ((responseSourceGuards[0]'(by native_decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState4.frame.packet with ingress := "red", matchedInboundPolicyIds := witnessState4.authenticated }) = .allow := by native_decide
+lemma positive_source_guard_5 : Filter.evaluate ((responseSourceGuards[0]'(by native_decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState5.frame.packet with ingress := "red", matchedInboundPolicyIds := witnessState5.authenticated }) = .allow := by native_decide
+lemma positive_source_guard_10 : Filter.evaluate ((responseSourceGuards[2]'(by native_decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState10.frame.packet with ingress := "gray", matchedInboundPolicyIds := witnessState10.authenticated }) = .allow := by native_decide
+lemma positive_source_guard_11 : Filter.evaluate ((responseSourceGuards[2]'(by native_decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState11.frame.packet with ingress := "gray", matchedInboundPolicyIds := witnessState11.authenticated }) = .allow := by native_decide
+lemma positive_source_guard_26 : Filter.evaluate ((responseSourceGuards[3]'(by native_decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState26.frame.packet with ingress := "black", matchedInboundPolicyIds := witnessState26.authenticated }) = .allow := by native_decide
+lemma positive_source_guard_27 : Filter.evaluate ((responseSourceGuards[3]'(by native_decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState27.frame.packet with ingress := "black", matchedInboundPolicyIds := witnessState27.authenticated }) = .allow := by native_decide
+lemma positive_source_guard_31 : Filter.evaluate ((responseSourceGuards[1]'(by native_decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState31.frame.packet with ingress := "gray", matchedInboundPolicyIds := witnessState31.authenticated }) = .allow := by native_decide
+lemma positive_source_guard_32 : Filter.evaluate ((responseSourceGuards[1]'(by native_decide)).2.map PacketPolicy.Rule.toFilter) .allow ({ witnessState32.frame.packet with ingress := "gray", matchedInboundPolicyIds := witnessState32.authenticated }) = .allow := by native_decide
 
 end TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4_V13

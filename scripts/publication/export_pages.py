@@ -48,6 +48,7 @@ def render(page):
     if page == 'hierarchy':
         data['root'] = ''
         hashes = dict(data['metadata']['source_hashes'])
+        hashes.update(source_files([ROOT / 'docs/proof_trust.md']))
         hashes.update({p: h for p, h in data['metadata']['inputs'].items() if not p.startswith('.lavish/')})
         html = html.replace('<p>In Lavish, turn Annotate off to use the diagram.</p>', '')
         html = html.replace('<a class="brand" href="#">', '<a class="brand" href="https://github.com/HongyuHe/TDN/tree/' + REVISION + '">')

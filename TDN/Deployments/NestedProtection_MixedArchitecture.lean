@@ -28,8 +28,7 @@ def FlowInventory (selected : MixedFlowEndpoints) : Prop :=
 
 lemma recorded_flow_inventory : ∀ selected ∈ contexts, FlowInventory selected := by
   unfold FlowInventory
-  decide
-
+  native_decide
 def flowKeyContexts (selected : MixedFlowEndpoints) : String × String :=
   (((records.tunnels.find? (fun tunnel => tunnel.id == selected.flow.innerTunnel)).map Tunnel.keyContext).getD "",
     ((records.tunnels.find? (fun tunnel => tunnel.id == selected.flow.outerTunnel)).map Tunnel.keyContext).getD "")
@@ -39,7 +38,7 @@ def IndependentLayerKeys (independent : String → String → Prop) : Prop :=
 
 lemma recorded_key_contexts : ∀ selected ∈ contexts, ∀ inner ∈ records.tunnels, ∀ outer ∈ records.tunnels,
     inner.id = selected.flow.innerTunnel → outer.id = selected.flow.outerTunnel →
-    flowKeyContexts selected = (inner.keyContext, outer.keyContext) := by decide
+    flowKeyContexts selected = (inner.keyContext, outer.keyContext) := by native_decide
 
 lemma flows_valid (independentKeys : String → String → Prop)
     (independent : IndependentLayerKeys independentKeys) :
@@ -53,11 +52,11 @@ lemma flows_valid (independentKeys : String → String → Prop)
   refine ⟨inner, innerMember, outer, outerMember, innerName, outerName, innerLayer, outerLayer,
     keys, endpoints, networks, ?_⟩
   intro macsec
-  exact ⟨"A", "B", by decide, fun device member relevant layer => sites macsec device member layer⟩
+  exact ⟨"A", "B", by native_decide, fun device member relevant layer => sites macsec device member layer⟩
 
 lemma recorded_authentication_flags : ∀ component ∈ records.components,
     deployment.certificateAuthenticated component.id = false ∧
-    deployment.preSharedCAKAuthenticated component.id = false := by decide
+    deployment.preSharedCAKAuthenticated component.id = false := by native_decide
 
 lemma architecture_services : ArchitectureServices deployment := by
   refine ⟨⟨?_, ?_⟩, ?_⟩
@@ -68,12 +67,12 @@ lemma architecture_services : ArchitectureServices deployment := by
     have disabled := (recorded_authentication_flags component member).2
     simp [disabled] at authenticated
   · have sameLevel : ∀ first ∈ records.components, ∀ second ∈ records.components,
-        first.level = second.level := by decide
+        first.level = second.level := by native_decide
     intro first firstMember second secondMember innerFirst innerSecond different common
     exact False.elim (different (sameLevel first firstMember second secondMember))
 
 lemma endpoint_network_ids_checked : ∀ entry ∈ records.entries,
     configuration.ip.ifaceSecurityDomain entry.hostIface = some entry.originDomain ∧
-    records.redNetwork entry.originDomain = entry.network := by decide
+    records.redNetwork entry.originDomain = entry.network := by native_decide
 
 end TDN.Deployments.NestedProtection_Mixed

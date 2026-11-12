@@ -1,5 +1,9 @@
+import TDN.Deployments.NativeCheckDefaults
+import TDN.Import.NativeDecide
 import TDN.Deployments.Perimeter_TransformCases
 import TDN.Deployments.Perimeter_BaselineData
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.Perimeter_RegisteredTransformBaseline
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_TransformCases
@@ -11,13 +15,13 @@ load_network_records inner : ProtectedForwardCase from "../../data/evidence/cont
 load_network_records outer : ProtectedForwardCase from "../../data/evidence/continuation/Perimeter_RegisteredTransformBaseline.json" ["outer"]
 
 lemma interface_ids_unique : InterfaceIDsUnique Perimeter_Baseline.records.interfaces := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma inner_checks (base : Deployment) : inner.Checks Perimeter_Baseline.records (Perimeter_Baseline.deployment base) := by
-  exact of_decide_eq_true rfl
+  close_check_with emptyDeploymentForChecks; native_decide
 
 lemma outer_checks (base : Deployment) : outer.Checks Perimeter_Baseline.records (Perimeter_Baseline.deployment base) := by
-  exact of_decide_eq_true rfl
+  close_check_with emptyDeploymentForChecks; native_decide
 
 theorem device_Inner_HTTP_reaches_protected_Gray_wire (base : Deployment) :
     (Perimeter_Baseline.deployment base).DeviceBoundaryAccepts inner.forward.interface.id .outbound

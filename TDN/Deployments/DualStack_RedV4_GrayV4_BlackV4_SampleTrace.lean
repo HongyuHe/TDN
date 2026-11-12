@@ -89,121 +89,121 @@ load_network_records witnessState38 : DataPlaneForwarding.State from "../../data
 load_network_records witnessState39 : DataPlaneForwarding.State from "../../data/evidence/spec006-fragment-offset/spec005-size-field/spec004-wire-fields/DualStack_RedV4_GrayV4_BlackV4_SampleTrace.json" ["TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4.witnessState39"]
 
 lemma witnessStep0 : DataPlaneForwarding.Step config witnessState0 .route witnessState1 := by
-  exact DataPlaneForwarding.Step.routeLocalOutput ⟨7, 7, 167903232, 167903487, 24, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.routeLocalOutput ⟨7, 7, 167903232, 167903487, 24, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep1 : DataPlaneForwarding.Step config witnessState1 .filter witnessState2 := by
-  exact DataPlaneForwarding.Step.outputFilter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.outputFilter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep2 : DataPlaneForwarding.Step config witnessState2 .internalProcessing witnessState3 := by
-  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep3 : DataPlaneForwarding.Step config witnessState3 .linkTransmit witnessState4 := by
-  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep4 : DataPlaneForwarding.Step config witnessState4 .internalProcessing witnessState5 := by
   exact DataPlaneForwarding.Step.receive "NEW"
 
 lemma witnessStep5 : DataPlaneForwarding.Step config witnessState5 .route witnessState6 := by
-  exact DataPlaneForwarding.Step.route ⟨12, 10, 167903232, 167903487, 24, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.route ⟨12, 10, 167903232, 167903487, 24, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep6 : DataPlaneForwarding.Step config witnessState6 .filter witnessState7 := by
-  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep7 : DataPlaneForwarding.Step config witnessState7 .encrypt witnessState8 := by
-  exact DataPlaneForwarding.Step.encrypt ⟨100, 1, 168493057, 169148417, 167837696, 167837951, 167903232, 167903487, 0, none⟩ ⟨100, 1001, 168493057, 169148417⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.encrypt ⟨100, 1, 168493057, 169148417, 167837696, 167837951, 167903232, 167903487, 0, none⟩ ⟨100, 1001, 168493057, 169148417⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep8 : DataPlaneForwarding.Step config witnessState8 .route witnessState9 := by
-  exact DataPlaneForwarding.Step.routeOuterPacket ⟨10, 10, 169148417, 169148417, 32, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.routeOuterPacket ⟨10, 10, 169148417, 169148417, 32, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep9 : DataPlaneForwarding.Step config witnessState9 .linkTransmit witnessState10 := by
-  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep10 : DataPlaneForwarding.Step config witnessState10 .internalProcessing witnessState11 := by
   exact DataPlaneForwarding.Step.receive "NEW"
 
 lemma witnessStep11 : DataPlaneForwarding.Step config witnessState11 .route witnessState12 := by
-  exact DataPlaneForwarding.Step.route ⟨17, 16, 169148417, 169148417, 32, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.route ⟨17, 16, 169148417, 169148417, 32, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep12 : DataPlaneForwarding.Step config witnessState12 .filter witnessState13 := by
-  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep13 : DataPlaneForwarding.Step config witnessState13 .encrypt witnessState14 := by
-  exact DataPlaneForwarding.Step.encrypt ⟨200, 2, 3221225985, 3221226241, 168493057, 168493057, 169148417, 169148417, 0, none⟩ ⟨200, 2001, 3221225985, 3221226241⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.encrypt ⟨200, 2, 3221225985, 3221226241, 168493057, 168493057, 169148417, 169148417, 0, none⟩ ⟨200, 2001, 3221225985, 3221226241⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep14 : DataPlaneForwarding.Step config witnessState14 .route witnessState15 := by
-  exact DataPlaneForwarding.Step.routeOuterPacket ⟨16, 16, 3221226241, 3221226241, 32, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.routeOuterPacket ⟨16, 16, 3221226241, 3221226241, 32, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep15 : DataPlaneForwarding.Step config witnessState15 .linkTransmit witnessState16 := by
-  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep16 : DataPlaneForwarding.Step config witnessState16 .internalProcessing witnessState17 := by
   exact DataPlaneForwarding.Step.receive "NEW"
 
 lemma witnessStep17 : DataPlaneForwarding.Step config witnessState17 .route witnessState18 := by
-  exact DataPlaneForwarding.Step.route ⟨0, 2, 3221226240, 3221226243, 30, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.route ⟨0, 2, 3221226240, 3221226243, 30, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep18 : DataPlaneForwarding.Step config witnessState18 .filter witnessState19 := by
-  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep19 : DataPlaneForwarding.Step config witnessState19 .internalProcessing witnessState20 := by
-  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep20 : DataPlaneForwarding.Step config witnessState20 .linkTransmit witnessState21 := by
-  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep21 : DataPlaneForwarding.Step config witnessState21 .internalProcessing witnessState22 := by
   exact DataPlaneForwarding.Step.receive "NEW"
 
 lemma witnessStep22 : DataPlaneForwarding.Step config witnessState22 .route witnessState23 := by
-  exact DataPlaneForwarding.Step.route ⟨5, 3, 3221226240, 3221226243, 30, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.route ⟨5, 3, 3221226240, 3221226243, 30, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep23 : DataPlaneForwarding.Step config witnessState23 .filter witnessState24 := by
-  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep24 : DataPlaneForwarding.Step config witnessState24 .internalProcessing witnessState25 := by
-  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep25 : DataPlaneForwarding.Step config witnessState25 .linkTransmit witnessState26 := by
-  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep26 : DataPlaneForwarding.Step config witnessState26 .decrypt witnessState27 := by
-  exact DataPlaneForwarding.Step.decrypt ⟨200, 2, 3221225985, 3221226241, 168493057, 168493057, 169148417, 169148417, 0, none⟩ ⟨200, 2001, 3221225985, 3221226241⟩ ({ source := 168493057, destination := 169148417, protocol := "esp", ingress := "gray", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" }) [⟨⟨1, 1001, 168493057, 169148417⟩, { source := 167837698, destination := 167903234, protocol := "icmp", ingress := "red", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" }⟩] "NEW" (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl rfl rfl rfl (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.decrypt ⟨200, 2, 3221225985, 3221226241, 168493057, 168493057, 169148417, 169148417, 0, none⟩ ⟨200, 2001, 3221225985, 3221226241⟩ ({ source := 168493057, destination := 169148417, protocol := "esp", ingress := "gray", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" }) [⟨⟨1, 1001, 168493057, 169148417⟩, { source := 167837698, destination := 167903234, protocol := "icmp", ingress := "red", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" }⟩] "NEW" (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl rfl rfl rfl (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep27 : DataPlaneForwarding.Step config witnessState27 .route witnessState28 := by
-  exact DataPlaneForwarding.Step.route ⟨19, 20, 169148416, 169148419, 30, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.route ⟨19, 20, 169148416, 169148419, 30, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep28 : DataPlaneForwarding.Step config witnessState28 .filter witnessState29 := by
-  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep29 : DataPlaneForwarding.Step config witnessState29 .internalProcessing witnessState30 := by
-  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep30 : DataPlaneForwarding.Step config witnessState30 .linkTransmit witnessState31 := by
-  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep31 : DataPlaneForwarding.Step config witnessState31 .decrypt witnessState32 := by
-  exact DataPlaneForwarding.Step.decrypt ⟨100, 1, 168493057, 169148417, 167837696, 167837951, 167903232, 167903487, 0, none⟩ ⟨100, 1001, 168493057, 169148417⟩ ({ source := 167837698, destination := 167903234, protocol := "icmp", ingress := "red", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" }) [] "NEW" (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl rfl rfl rfl (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.decrypt ⟨100, 1, 168493057, 169148417, 167837696, 167837951, 167903232, 167903487, 0, none⟩ ⟨100, 1001, 168493057, 169148417⟩ ({ source := 167837698, destination := 167903234, protocol := "icmp", ingress := "red", egress := "", sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5, ipv6NextHeader := 0, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" }) [] "NEW" (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl rfl rfl rfl (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep32 : DataPlaneForwarding.Step config witnessState32 .route witnessState33 := by
-  exact DataPlaneForwarding.Step.route ⟨13, 15, 167903232, 167903487, 24, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.route ⟨13, 15, 167903232, 167903487, 24, 0, 32766⟩ (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 lemma witnessStep33 : DataPlaneForwarding.Step config witnessState33 .filter witnessState34 := by
-  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.filter (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep34 : DataPlaneForwarding.Step config witnessState34 .internalProcessing witnessState35 := by
-  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.forwardWithoutEncap (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep35 : DataPlaneForwarding.Step config witnessState35 .linkTransmit witnessState36 := by
-  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.linkTransmit (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep36 : DataPlaneForwarding.Step config witnessState36 .internalProcessing witnessState37 := by
   exact DataPlaneForwarding.Step.receive "NEW"
 
 lemma witnessStep37 : DataPlaneForwarding.Step config witnessState37 .internalProcessing witnessState38 := by
-  exact DataPlaneForwarding.Step.deliverToLocalHost (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)
+  exact DataPlaneForwarding.Step.deliverToLocalHost (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)
 
 lemma witnessStep38 : DataPlaneForwarding.Step config witnessState38 .deliver witnessState39 := by
-  exact DataPlaneForwarding.Step.deliver 1 (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide) rfl
+  exact DataPlaneForwarding.Step.deliver 1 (by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide) rfl
 
 load_network_records witnessActions : List Action from "../../data/evidence/spec006-fragment-offset/spec005-size-field/spec004-wire-fields/DualStack_RedV4_GrayV4_BlackV4_SampleTrace.json" ["TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4.witnessActions"]
 

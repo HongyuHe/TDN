@@ -31,8 +31,8 @@ open Requirements
 
 def interfaces : List UnusedInterfaceState := ["""+rows+"""]
 
-lemma no_active_unused_interface : interfaces.filter (fun interface => interface.enabled) = [] := by decide
-lemma actual_unused_inventory_nonempty : interfaces.length = """+str(len(data["interfaces"]))+""" := by decide
+lemma no_active_unused_interface : interfaces.filter (fun interface => interface.enabled) = [] := by native_decide
+lemma actual_unused_inventory_nonempty : interfaces.length = """+str(len(data["interfaces"]))+""" := by native_decide
 
 theorem captured_unused_interfaces_are_disabled : ∀ interface ∈ interfaces, interface.enabled = false :=
   unused_interfaces_disabled_from_empty_active_subset interfaces no_active_unused_interface

@@ -11,9 +11,8 @@ lemma recorded_plain_links : ∀ selected ∈ contexts, ∀ edge ∈ records.lin
     (selected.SourceSide (configuration.ip.owner edge.1) ↔ selected.SourceSide (configuration.ip.owner edge.2)) ∧
     (selected.DestinationSide (configuration.ip.owner edge.1) ↔ selected.DestinationSide (configuration.ip.owner edge.2)) := by
   unfold MixedFlowEndpoints.SourceSide MixedFlowEndpoints.DestinationSide
-  decide
-
-lemma recorded_plain_bridges : ∀ edge ∈ records.bridges, expectedEncapStack edge.1 ≠ [] := by decide
+  native_decide
+lemma recorded_plain_bridges : ∀ edge ∈ records.bridges, expectedEncapStack edge.1 ≠ [] := by native_decide
 
 lemma flow_tunnel_checks (selected : MixedFlowEndpoints) (member : selected ∈ contexts) :
     MixedFlowTunnelChecks deviceBinding selected.flow selected.RemoteHeader
@@ -34,12 +33,12 @@ lemma flow_tunnel_checks (selected : MixedFlowEndpoints) (member : selected ∈ 
     exact False.elim (recorded_plain_bridges (first,last) linked empty)
   · exact mixed_flow_routes_preserve_direction deviceBinding selected expectedEncapStack
       (flow_policy_checks selected member) ⟨fun _ => 64, fun _ => 64⟩ rfl
-  · have checked : ∀ selected ∈ contexts, ∀ edge ∈ records.bridges, edge.2 ≠ selected.destinationLogicalIface := by decide
+  · have checked : ∀ selected ∈ contexts, ∀ edge ∈ records.bridges, edge.2 ≠ selected.destinationLogicalIface := by native_decide
     intro first last bridge
     exact checked selected member (first,last) bridge
   · intro iface configured
     rw [(flow_policy_checks selected member).macLogicalStack iface configured]
-    decide
+    native_decide
   · exact mixed_flow_outgoing_policy_named deviceBinding selected expectedEncapStack
       (flow_policy_checks selected member) ⟨fun _ => 64, fun _ => 64⟩ rfl
   · exact mixed_flow_incoming_plain_destination deviceBinding selected expectedEncapStack (flow_policy_checks selected member)
@@ -58,7 +57,7 @@ lemma step_preserves_selected_flow (selected : MixedFlowEndpoints) (member : sel
     (· = selected.innerStamp) (· = selected.outerAssociation)
     (selected.PlainAllowed configuration.ip.owner) expectedEncapStack selected.destinationLogicalIface
     (flow_tunnel_checks selected member) headered_stack_conditions
-    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩) step safe
+    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩) step safe
 
 lemma recorded_source_contexts : ∀ entry ∈ records.entries,
     contextFor entry.originDomain ∈ contexts ∧
@@ -66,14 +65,13 @@ lemma recorded_source_contexts : ∀ entry ∈ records.entries,
     (contextFor entry.originDomain).originDomain = entry.originDomain ∧
     (contextFor entry.originDomain).SourceSide (configuration.ip.owner entry.iface) := by
   unfold MixedFlowEndpoints.SourceSide
-  decide
-
+  native_decide
 lemma recorded_context_networks : ∀ selected ∈ contexts,
-    ∃ network ∈ records.networks, selected.flow.sourceNetwork = network.id := by decide
+    ∃ network ∈ records.networks, selected.flow.sourceNetwork = network.id := by native_decide
 
 lemma source_encap_stacks (iface : Nat) (network : String)
     (source : sourceEntry records.entries iface = some network) : expectedEncapStack iface = [] := by
-  have checked : ∀ entry ∈ records.entries, expectedEncapStack entry.iface = [] := by decide
+  have checked : ∀ entry ∈ records.entries, expectedEncapStack entry.iface = [] := by native_decide
   obtain ⟨entry, member, same, _⟩ := source_entry_is_recorded records.entries iface network source
   rw [← same]
   exact checked entry member

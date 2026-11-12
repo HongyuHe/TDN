@@ -27,27 +27,25 @@ load_network_records contexts : List IPsecFlowEndpoints from "../../data/evidenc
 def flows : List Flow := contexts.map IPsecFlowEndpoints.flow
 
 def contextFor (originDomain : Nat) : IPsecFlowEndpoints :=
-  (contexts.find? (fun selected => selected.originDomain == originDomain)).getD (contexts.head (by decide))
+  (contexts.find? (fun selected => selected.originDomain == originDomain)).getD (contexts.head (by native_decide))
 
 lemma recorded_flow_parameters : ∀ selected ∈ contexts,
     selected.innerStamp.tag = 1 ∧ selected.outerStamp.tag = 2 ∧
     ipsecTunnel records selected.innerStamp = selected.flow.innerTunnel ∧
-    ipsecTunnel records selected.outerStamp = selected.flow.outerTunnel := by decide
+    ipsecTunnel records selected.outerStamp = selected.flow.outerTunnel := by native_decide
 
 lemma recorded_outgoing_policies : ∀ selected ∈ contexts,
     ∀ iface ∈ records.inventory.ifaces, ∀ policy ∈ capturedConfiguration.ip.egressPolicies iface,
     ∀ association ∈ capturedConfiguration.ip.egressSAs iface, DataPlaneForwarding.saMatchesPolicy association policy →
       (expectedEncapStack iface).head? = some policy.tag → selected.OutgoingPolicy (capturedConfiguration.ip.owner iface) (expectedEncapStack iface) policy association := by
   unfold IPsecFlowEndpoints.OutgoingPolicy IPsecFlowEndpoints.SourceSide IPsecFlowEndpoints.DestinationSide
-  decide
-
+  native_decide
 lemma recorded_incoming_policies : ∀ selected ∈ contexts,
     ∀ iface ∈ records.inventory.ifaces, ∀ policy ∈ capturedConfiguration.ip.ingressPolicies iface,
     ∀ association ∈ capturedConfiguration.ip.ingressSAs iface, DataPlaneForwarding.saMatchesPolicy association policy →
       (expectedEncapStack iface).head? = some policy.tag → selected.IncomingPolicy (capturedConfiguration.ip.owner iface) (expectedEncapStack iface) policy association := by
   unfold IPsecFlowEndpoints.IncomingPolicy IPsecFlowEndpoints.DestinationSide
-  decide
-
+  native_decide
 lemma policy_iface_is_recorded (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy)
     (member : policy ∈ capturedConfiguration.ip.egressPolicies iface ∨ policy ∈ capturedConfiguration.ip.ingressPolicies iface) :
     iface ∈ records.inventory.ifaces := by
@@ -59,7 +57,7 @@ lemma policy_iface_is_recorded (iface : Nat) (policy : DataPlaneForwarding.Ipsec
     policy ∈ (DataPlaneForwarding.deviceAt records.nativeDevices
       (DataPlaneForwarding.ifaceAt records.nativeIfaces iface).owner).ingressPolicies at member
   have empty : (DataPlaneForwarding.deviceAt records.nativeDevices 0).egressPolicies = [] ∧
-      (DataPlaneForwarding.deviceAt records.nativeDevices 0).ingressPolicies = [] := by decide
+      (DataPlaneForwarding.deviceAt records.nativeDevices 0).ingressPolicies = [] := by native_decide
   simp only [DataPlaneForwarding.ifaceAt, missing, Option.getD_none] at member
   simp only [show ({} : DataPlaneForwarding.IfaceData).owner = 0 from rfl, empty.1, empty.2,
     List.not_mem_nil, or_self] at member

@@ -16,7 +16,7 @@ lemma tagged_gateway_response_guards :
         KernelResponses.SafeResponseRule rule := by
     simp only [TDN.Deployments.ProfileShared_DataPlane.responseGateways, taggedDevices,
       TDN.Deployments.ProfileShared_DataPlane.devices, ownerTag, ownerDomain]
-    decide
+    native_decide
   intro iface member
   exact checks (config.owner iface) member
 
@@ -51,7 +51,7 @@ lemma tagged_gateway_response_guards :
         KernelResponses.SafeResponseRule rule := by
     simp only [TDN.Deployments.ProfileBaseline_DataPlane.responseGateways, taggedDevices,
       TDN.Deployments.ProfileBaseline_DataPlane.devices, ownerTag, ownerDomain]
-    decide
+    native_decide
   intro iface member
   exact checks (config.owner iface) member
 

@@ -1,5 +1,8 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.Perimeter_SharedData
 import TDN.Deployments.Perimeter_ForwardCases
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.Perimeter_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel Perimeter_ForwardCases
@@ -21,48 +24,48 @@ lemma local_hook_checks (base : Deployment) :
       ForwardHookChecks firewallOutsideOutput records (deployment base) .outbound ∧
       ForwardHookChecks firewallOutsideInput records (deployment base) .inbound ∧
       ForwardHookChecks firewallWrongSource records (deployment base) .inbound := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma redHTTP_ordered_allowance (base : Deployment) :
     ∀ policy ∈ (deployment base).policies, policy.interface = redHTTP.interface.id →
       policy.direction = .inbound → policy.hook = .forward →
         Filter.evaluate (policy.rules.map PacketPolicy.Rule.toFilter)
           policy.defaultVerdict (redHTTP.packet records) = .allow := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma firewallInside_ordered_allowance (base : Deployment) :
     ∀ policy ∈ (deployment base).policies, policy.interface = firewallInside.interface.id →
       policy.direction = .inbound → policy.hook = .forward →
         Filter.evaluate (policy.rules.map PacketPolicy.Rule.toFilter)
           policy.defaultVerdict (firewallInside.packet records) = .allow := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma firewallOutsideOutput_ordered_allowance (base : Deployment) :
     ∀ policy ∈ (deployment base).policies, policy.interface = firewallOutsideOutput.interface.id →
       policy.direction = .outbound → policy.hook = .forward →
         Filter.evaluate (policy.rules.map PacketPolicy.Rule.toFilter)
           policy.defaultVerdict (firewallOutsideOutput.packet records) = .allow := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma firewallOutsideInput_ordered_allowance (base : Deployment) :
     ∀ policy ∈ (deployment base).policies, policy.interface = firewallOutsideInput.interface.id →
       policy.direction = .inbound → policy.hook = .forward →
         Filter.evaluate (policy.rules.map PacketPolicy.Rule.toFilter)
           policy.defaultVerdict (firewallOutsideInput.packet records) = .allow := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma redWrongPort_ordered_denial (base : Deployment) :
     ∀ policy ∈ (deployment base).policies, policy.interface = redWrongPort.interface.id →
       policy.direction = .inbound → policy.hook = .forward →
         Filter.evaluate (policy.rules.map PacketPolicy.Rule.toFilter)
           policy.defaultVerdict (redWrongPort.packet records) = .deny := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma firewallWrongSource_ordered_denial (base : Deployment) :
     ∀ policy ∈ (deployment base).policies, policy.interface = firewallWrongSource.interface.id →
       policy.direction = .inbound → policy.hook = .forward →
         Filter.evaluate (policy.rules.map PacketPolicy.Rule.toFilter)
           policy.defaultVerdict (firewallWrongSource.packet records) = .deny := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 end TDN.Deployments.Perimeter_Shared

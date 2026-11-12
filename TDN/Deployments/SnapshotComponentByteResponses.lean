@@ -14,8 +14,7 @@ def uniformResponseOwners : List Nat :=
 lemma every_retained_owner_has_response_case :
     ∀ iface ∈ ({} : IfaceData) :: TDN.Deployments.ProfileShared_DataPlane.ifaces,
       iface.owner ∈ TDN.Deployments.ProfileShared_DataPlane.responseGateways ∨ iface.owner ∈ uniformResponseOwners := by
-  decide
-
+  native_decide
 lemma every_active_component_can_generate (state : DataPlaneForwarding.State)
     (active : state.datapathStage ≠ .dropped) :
     (UniformDomainResponses.responseConfig config TDN.Deployments.ProfileShared_DataPlane.responseGateways
@@ -26,8 +25,7 @@ lemma every_active_component_can_generate (state : DataPlaneForwarding.State)
 lemma uniform_domain_response_checks1 :
     UniformDomainResponses.TableDrivenUniform taggedDevices domainIfaces1
       (allowedRecord 1) uniformResponseOwners := by
-  decide
-
+  native_decide
 lemma uniform_domain_responses1 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout1 domainAllowed1 owner := by
   intro owner member
@@ -40,8 +38,7 @@ lemma uniform_domain_responses1 : ∀ owner ∈ uniformResponseOwners,
 lemma uniform_domain_response_checks2 :
     UniformDomainResponses.TableDrivenUniform taggedDevices domainIfaces2
       (allowedRecord 2) uniformResponseOwners := by
-  decide
-
+  native_decide
 lemma uniform_domain_responses2 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout2 domainAllowed2 owner := by
   intro owner member
@@ -54,8 +51,7 @@ lemma uniform_domain_responses2 : ∀ owner ∈ uniformResponseOwners,
 lemma uniform_domain_response_checks3 :
     UniformDomainResponses.TableDrivenUniform taggedDevices domainIfaces3
       (allowedRecord 3) uniformResponseOwners := by
-  decide
-
+  native_decide
 lemma uniform_domain_responses3 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout3 domainAllowed3 owner := by
   intro owner member
@@ -68,8 +64,7 @@ lemma uniform_domain_responses3 : ∀ owner ∈ uniformResponseOwners,
 lemma uniform_domain_response_checks4 :
     UniformDomainResponses.TableDrivenUniform taggedDevices domainIfaces4
       (allowedRecord 4) uniformResponseOwners := by
-  decide
-
+  native_decide
 lemma uniform_domain_responses4 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout4 domainAllowed4 owner := by
   intro owner member
@@ -160,8 +155,7 @@ def uniformResponseOwners : List Nat :=
 lemma every_retained_owner_has_response_case :
     ∀ iface ∈ ({} : IfaceData) :: TDN.Deployments.ProfileBaseline_DataPlane.ifaces,
       iface.owner ∈ TDN.Deployments.ProfileBaseline_DataPlane.responseGateways ∨ iface.owner ∈ uniformResponseOwners := by
-  decide
-
+  native_decide
 lemma every_active_component_can_generate (state : DataPlaneForwarding.State)
     (active : state.datapathStage ≠ .dropped) :
     (UniformDomainResponses.responseConfig config TDN.Deployments.ProfileBaseline_DataPlane.responseGateways
@@ -172,8 +166,7 @@ lemma every_active_component_can_generate (state : DataPlaneForwarding.State)
 lemma uniform_domain_response_checks1 :
     UniformDomainResponses.TableDrivenUniform taggedDevices domainIfaces1
       (allowedRecord 1) uniformResponseOwners := by
-  decide
-
+  native_decide
 lemma uniform_domain_responses1 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout1 domainAllowed1 owner := by
   intro owner member
@@ -186,8 +179,7 @@ lemma uniform_domain_responses1 : ∀ owner ∈ uniformResponseOwners,
 lemma uniform_domain_response_checks2 :
     UniformDomainResponses.TableDrivenUniform taggedDevices domainIfaces2
       (allowedRecord 2) uniformResponseOwners := by
-  decide
-
+  native_decide
 lemma uniform_domain_responses2 : ∀ owner ∈ uniformResponseOwners,
     UniformDomainResponses.Uniform config domainLayout2 domainAllowed2 owner := by
   intro owner member

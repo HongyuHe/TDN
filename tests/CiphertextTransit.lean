@@ -6,12 +6,12 @@ open TDN.Deployments.ProfileShared_DataPlane
 
 private theorem blackTransit : (transit config).MTr witnessState33
     [.linkTransmit, .internalProcessing, .route, .filter, .internalProcessing, .linkTransmit] witnessState39 := by
-  exact .stepL ⟨witnessStep33, by decide⟩
-    (.stepL ⟨witnessStep34, by decide⟩
-      (.stepL ⟨witnessStep35, by decide⟩
-        (.stepL ⟨witnessStep36, by decide⟩
-          (.stepL ⟨witnessStep37, by decide⟩
-            (.stepL ⟨witnessStep38, by decide⟩ .refl)))))
+  exact .stepL ⟨witnessStep33, by native_decide⟩
+    (.stepL ⟨witnessStep34, by native_decide⟩
+      (.stepL ⟨witnessStep35, by native_decide⟩
+        (.stepL ⟨witnessStep36, by native_decide⟩
+          (.stepL ⟨witnessStep37, by native_decide⟩
+            (.stepL ⟨witnessStep38, by native_decide⟩ .refl)))))
 
 /-- The actual Black router/firewall path inspects the same visible ESP packet
 for every replacement of the hidden payload and envelope metadata. -/

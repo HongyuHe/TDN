@@ -29,12 +29,11 @@ lemma byte_reaches_black : ∃ actions, (ResponseByteFlows.system (lts config)
   subst byte
   change Requirements.RedByteOrigin config redSources witnessState0 tracked
   unfold Requirements.RedByteOrigin Requirements.RedPayloadOrigin
-  decide
-
+  native_decide
 example : ∃ start labels, Requirements.RedByteOrigin config redSources start tracked ∧
     Requirements.BytePathOrderedEncryptions config
       TDN.Deployments.ProfileShared_DataPlane.responseGateways uniformResponseOwners
       11 2 (.network start) labels (.network witnessState33) := by
   obtain ⟨actions, run⟩ := byte_reaches_black
   exact every_assembled_black_byte_has_inner_before_outer run witnessState33 [tracked]
-    (by simp) rfl (by decide) tracked (by simp)
+    (by simp) rfl (by native_decide) tracked (by simp)

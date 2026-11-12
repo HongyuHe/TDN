@@ -210,14 +210,14 @@ def generate(d):
              "  · unfold UnusedIsOff powerStates; decide",
              "  · exact ((Relation.ReflTransGen.single power_transitions_checked.1).tail",
              "      power_transitions_checked.2.1).tail power_transitions_checked.2.2",
-             "lemma final_guest_is_unused : (powerStates[3]!).inUse = false := by decide",
+             "lemma final_guest_is_unused : (powerStates[3]!).inUse = false := by native_decide",
              "theorem final_guest_is_off : (powerStates[3]!).poweredOn = false :=",
              "  recorded_use_finishes_powered_off final_guest_is_unused", ""]
     for role, name in [("Auditor", "auditor"), ("SecurityAdministrator", "administrator")]:
         r = next(r for r in d["responses"] if r["role"] == role)
         lines += ["def " + name + "Response : ConfigurationResponse := ⟨" + q(role) + ", 200, " + q(r["settings"]) + "⟩",
                   "def " + name + "Configuration : List String := " + q(r["settings"]),
-                  "lemma " + name + "_readback_checked : " + name + "Response.settings = " + name + "Configuration := by decide",
+                  "lemma " + name + "_readback_checked : " + name + "Response.settings = " + name + "Configuration := by native_decide",
                   "theorem " + name + "_obtained_configuration : AvailableThrough " + name + "Response " + q(role) + " " + name + "Configuration :=",
                   "  successful_readback_makes_settings_available _ _ _ rfl rfl " + name + "_readback_checked", ""]
     lines += ["def issuances : List Issuance := [" + ",\n  ".join("⟨" + ", ".join([q(r[k]) for k in ["request", "signed_request", "certificate", "configured_certificate"]] + [str(n) for n in r["order"]] + [q(r["issuer"]), q(r["root"]), q(r["loaded_authorities"])]) + "⟩" for r in d["issuances"]) + "]",

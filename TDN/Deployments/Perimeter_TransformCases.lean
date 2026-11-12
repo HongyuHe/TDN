@@ -92,7 +92,7 @@ lemma fresh_observed_packet_is_supported (deployment : Deployment) (packet : Pac
   intro _ established
   change packet.connectionState = "established" at established
   rw [fresh] at established
-  exact False.elim ((by decide : ("new" : String) ≠ "established") established)
+  exact False.elim ((by native_decide : ("new" : String) ≠ "established") established)
 
 theorem checked_case_reaches_configured_wire_header (sample : ProtectedForwardCase)
     (records : Records) (deployment : Deployment) (present : deployment.processing = some records.inventory)

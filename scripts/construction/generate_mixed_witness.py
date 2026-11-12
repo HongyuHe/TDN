@@ -61,7 +61,7 @@ def state_lean(state):
            lean_list([str(v) for v in state["authenticated"]]) + ', tracking := "NEW" }'
 
 
-CHECK = "(by (try simp only [config, MultiProtocolForwarding.dataPlaneModelFromRecords, DataPlaneForwarding.dataPlaneModelFromRecords, DataPlaneForwarding.SelectedFibRoute, DataPlaneForwarding.FibRoute.matches, DataPlaneForwarding.accepts, DataPlaneForwarding.saMatchesPolicy, SameMACWireIdentity]); all_goals decide)"
+CHECK = "(by (try simp only [config, MultiProtocolForwarding.dataPlaneModelFromRecords, DataPlaneForwarding.dataPlaneModelFromRecords, DataPlaneForwarding.SelectedFibRoute, DataPlaneForwarding.FibRoute.matches, DataPlaneForwarding.accepts, DataPlaneForwarding.saMatchesPolicy, SameMACWireIdentity]); all_goals native_decide)"
 
 
 def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=None):
@@ -163,7 +163,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                     expected = [encode_address(carrier["destination"]), encode_address(carrier["source"]),
                                 carrier["destination_port"], carrier["source_port"], carrier["local_session"]]
                     if carrier["device"] == device and ep == expected:
-                        expression = "(carriers[" + str(index) + "]'(by decide))"
+                        expression = "(carriers[" + str(index) + "]'(by native_decide))"
                         yield emit("decapsulate", "MultiProtocolForwarding.Step.decapsulate " + expression + " " +
                                    body_lean(body["body"]) + " " + CHECK + " rfl rfl rfl",
                                    port=ids[device + ":" + carrier["interface"]], phase="received",
@@ -182,7 +182,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
             for index, mac in enumerate(data["mac_ports"]):
                 if ids[mac["device"] + ":" + mac["logical"]] == port:
                     assoc = [mac["tag"], mac["tx_sci"], mac["tx_an"], 0]
-                    expression = "(macIfaces[" + str(index) + "]'(by decide))"
+                    expression = "(macIfaces[" + str(index) + "]'(by native_decide))"
                     yield emit("encryptMACsec", "MultiProtocolForwarding.Step.encryptMACsec " + expression + " " + tup(assoc) +
                                " " + CHECK + " rfl rfl ⟨rfl, rfl⟩",
                                port=ids[mac["device"] + ":" + mac["physical"]],
@@ -195,7 +195,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                     require(len(anchors) == 1, "Carrier routing anchor")
                     ep = [encode_address(carrier["source"]), encode_address(carrier["destination"]),
                           carrier["source_port"], carrier["destination_port"], carrier["peer_session"]]
-                    yield emit("encapsulate", "MultiProtocolForwarding.Step.encapsulate (carriers[" + str(index) + "]'(by decide)) " +
+                    yield emit("encapsulate", "MultiProtocolForwarding.Step.encapsulate (carriers[" + str(index) + "]'(by native_decide)) " +
                                CHECK + " rfl rfl", port=anchors[0], entered=anchors[0],
                                authenticated=[], phase="localOutput",
                                body={"kind": "carrier", "endpoint": ep, "body": body})
@@ -204,7 +204,7 @@ def search(report, source="HA:red", destination="HB:red", ethernet=False, tags=N
                 if ids[mac["device"] + ":" + mac["physical"]] == port:
                     assoc = [mac["tag"], mac["rx_sci"], mac["rx_an"], 0]
                     if assoc[1:3] == body["association"][1:3]:
-                        expression = "(macIfaces[" + str(index) + "]'(by decide))"
+                        expression = "(macIfaces[" + str(index) + "]'(by native_decide))"
                         yield emit("decryptMACsec", "MultiProtocolForwarding.Step.decryptMACsec " + expression + " " +
                                    tup(assoc) + " " + tup(body["association"]) + " " +
                                    body_lean(body["body"]) + " " + CHECK + " rfl rfl rfl " +

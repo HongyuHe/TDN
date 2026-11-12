@@ -70,10 +70,10 @@ lemma Outer_gray_forward_coverage_checked (base : Deployment) :
     (Outer_gray_forward_masks_checked base interface member outer gray direction allowedDirection)
 
 lemma no_workstations : ∀ device ∈ records.components, device.kind ≠ .workstation := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma all_inner_tunnels_IPsec :
     ∀ tunnel ∈ records.tunnels, tunnel.layer = .inner → tunnel.mechanism = .ipsec := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 end TDN.Deployments.OuterToGray_Shared

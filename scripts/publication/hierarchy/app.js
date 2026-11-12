@@ -3,6 +3,7 @@ const data=JSON.parse(document.querySelector('#hierarchy-data').textContent);
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sourceURL=n=>data.codeBase ? `${data.codeBase}/${n.path}#L${n.line}` : `vscode://file${data.root}/${n.path}:${n.line}`;
+$('#trust-policy').href=sourceURL({path:'docs/proof_trust.md',line:1});
 const isProof=n=>['theorem','lemma'].includes(n.kind);
 const requirementSpecs=new Map(data.groups.filter(g=>g.formal).map(g=>[g.formal,g.id]));
 const kindLabel=n=>({def:'Definition',abbrev:'Abbreviation',structure:'Record type',inductive:'Inductive type',lemma:'Lemma',theorem:'Theorem'}[n.kind]||n.kind);
@@ -191,9 +192,9 @@ function renderGraph(refit=true){
   const n=data.nodes[p.id],cls=requirementSpecs.has(p.id)?'rg-spec':isProof(n)?n.kind:'definition';
   const nodeKind=requirementSpecs.has(p.id)?`${requirementSpecs.get(p.id)} top-level specification`:kindLabel(n);
   const action=p.expandable?`; click to ${p.open?'collapse':'expand'} dependencies`:'';
-  const title=`${nodeKind}: ${n.name}${n.decide?'; contains a finite decide check':''}${action}`;
+  const title=`${nodeKind}: ${n.name}${n.decide?'; contains a finite check':''}${action}`;
   svg+=`<g id="node-${i}" class="diagram-node ${cls}" data-name="${esc(p.id)}" data-key="${esc(p.key)}" data-branch="${!!p.branch}" data-rank="${p.rank}" role="button" tabindex="0" ${p.expandable?`aria-expanded="${p.open}"`:''} aria-label="${esc(title)}"><title>${esc(title)}</title><rect x="${p.x-p.w/2}" y="${p.y-p.h/2}" width="${p.w}" height="${p.h}" rx="7"/>`;
-  if(n.decide)svg+=`<circle class="decide-marker" cx="${p.x+p.w/2-7}" cy="${p.y-p.h/2+7}" r="5"><title>Contains a finite decide check</title></circle>`;
+  if(n.decide)svg+=`<circle class="decide-marker" cx="${p.x+p.w/2-7}" cy="${p.y-p.h/2+7}" r="5"><title>Contains a finite check</title></circle>`;
   p.lines.forEach((line,j)=>{svg+=`<text x="${p.x}" y="${p.y+(j-(p.lines.length-1)/2)*15.4}" text-anchor="middle" dominant-baseline="central">${esc(line)}</text>`;});
   svg+='</g>';
  });
@@ -268,7 +269,7 @@ function showDetail(name,userInitiated=false,key=null){
  const layer=n.path.startsWith('TDN/Models/')?'Reusable network semantics':n.path.startsWith('TDN/Requirements/')?'CSfC specifications and general proofs':'Deployments evidence, local checks, and applications';
  const certificate=group.certificates.find(c=>c.application.lean_proof===name);
  const assumptions=certificate?.implementation_contract;
- $('#detail').innerHTML=`<div class="detail-head"><div><p class="kind">${requirementSpecs.has(name)?requirementSpecs.get(name)+' top-level specification (definition)':kindLabel(n)}${n.decide?' with a finite decide check':''}</p><h3>${esc(n.short)}</h3><p class="source">${esc(n.path)}:${n.line}</p></div><a class="open-source" href="${sourceURL(n)}">${data.codeBase?"View on GitHub":"Open in VS Code"} ↗</a></div><p class="layer">${layer}</p><p class="meaning">${esc(n.description)}</p>${group.applications[name]?'<details><summary>Recorded application scope</summary><p>'+esc(group.scopes[name]||group.applications[name])+'</p></details>':''}${assumptions?'<details><summary>Recorded implementation assumptions</summary><ul>'+(Array.isArray(assumptions)?assumptions:[assumptions]).map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul></details>':''}${input.length?'<details><summary>Direct dependencies ('+input.length+')</summary><div class="dependency-buttons">'+links(input)+'</div></details>':''}${statement.length?'<details><summary>Definitions used in the statement</summary><div class="dependency-buttons">'+links(statement)+'</div></details>':''}${n.libraries.length?'<details><summary>Direct library references</summary><p>'+n.libraries.map(x=>'<code>'+esc(x)+'</code>').join(', ')+'</p></details>':''}`;
+ $('#detail').innerHTML=`<div class="detail-head"><div><p class="kind">${requirementSpecs.has(name)?requirementSpecs.get(name)+' top-level specification (definition)':kindLabel(n)}${n.decide?' with a finite check':''}</p><h3>${esc(n.short)}</h3><p class="source">${esc(n.path)}:${n.line}</p></div><a class="open-source" href="${sourceURL(n)}">${data.codeBase?"View on GitHub":"Open in VS Code"} ↗</a></div><p class="layer">${layer}</p><p class="meaning">${esc(n.description)}</p>${group.applications[name]?'<details><summary>Recorded application scope</summary><p>'+esc(group.scopes[name]||group.applications[name])+'</p></details>':''}${assumptions?'<details><summary>Recorded implementation assumptions</summary><ul>'+(Array.isArray(assumptions)?assumptions:[assumptions]).map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul></details>':''}${input.length?'<details><summary>Direct dependencies ('+input.length+')</summary><div class="dependency-buttons">'+links(input)+'</div></details>':''}${statement.length?'<details><summary>Definitions used in the statement</summary><div class="dependency-buttons">'+links(statement)+'</div></details>':''}${n.libraries.length?'<details><summary>Direct library references</summary><p>'+n.libraries.map(x=>'<code>'+esc(x)+'</code>').join(', ')+'</p></details>':''}`;
  $('#detail').querySelectorAll('[data-detail-name]').forEach(b=>b.onclick=()=>showDetail(b.dataset.detailName,true));
  if(group.choices.includes(name)&&name!==root){
   const button=document.createElement('button');button.textContent='Locate its second-layer box';button.className='explore-item';button.onclick=()=>inspect(name);$('#detail').appendChild(button);

@@ -75,8 +75,7 @@ def badRule : PacketPolicy.Rule :=
 lemma admitting_vendor_rule_violates_exclusion :
     badRule.toFilter.accepts vendorPacket = true ∧
     ¬ badRule.toFilter.accepts vendorPacket = false := by
-  decide
-
+  native_decide
 lemma objective_enabled_mutation_fails (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     ¬ msc_outer_third_party_services (deployment base processing) (fun _ => true) [feature true] := by

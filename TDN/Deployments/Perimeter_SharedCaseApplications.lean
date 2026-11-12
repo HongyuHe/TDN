@@ -54,6 +54,6 @@ theorem firewallWrongSource_has_real_context_and_is_denied (base : Deployment) :
 lemma concrete_inventories_are_nonempty :
     services ≠ [] ∧ redEndpoints ≠ [] ∧ peers ≠ [] ∧ controls ≠ [] ∧
       records.interfaces ≠ [] ∧ records.inventory.ifaces ≠ [] := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 end TDN.Deployments.Perimeter_Shared

@@ -136,14 +136,14 @@ def main():
                 if local and devices[device]["role"] == "host":
                     require(accepts("INPUT"), "Destination INPUT denies witness")
                     state["phase"] = "localInput"
-                    add("local", "«local»", "(by decide) (by decide)")
+                    add("local", "«local»", "(by native_decide) (by native_decide)")
                     continue
                 switches = [edge for edge in report["switches"] if edge[0] == state["port"]]
                 switch = min(switches, key=lambda edge: distance_to_address(edge[1], next_hop or packet["destination"])) if switches else None
                 if switch:
                     state["port"] = switch[1]
                     state["phase"] = "ready"
-                    add("bridge", "bridge", "(by decide)")
+                    add("bridge", "bridge", "(by native_decide)")
                     continue
             routes = [r for r in report["routes"] if r[0] == state["port"] and r[2] <= packet["destination"] <= r[3]]
             require(routes, "No witness route at " + current["id"] + " to " + str(packet["destination"]))
@@ -152,16 +152,16 @@ def main():
             next_hop = report["route_gateways"][route_index] or packet["destination"]
             state["port"] = route[1]
             state["phase"] = {"localOutput": "outputRouted", "ingress": "routed", "encapsulated": "ready"}[phase]
-            add("route", {"localOutput": "routeLocalOutput", "ingress": "route", "encapsulated": "routeOuterPacket"}[phase], "⟨" + ", ".join(str(v) for v in route) + "⟩ (by decide) rfl")
+            add("route", {"localOutput": "routeLocalOutput", "ingress": "route", "encapsulated": "routeOuterPacket"}[phase], "⟨" + ", ".join(str(v) for v in route) + "⟩ (by native_decide) rfl")
         elif phase in {"routed", "outputRouted"}:
             require(accepts("FORWARD" if phase == "routed" else "OUTPUT"), "Filter denies witness at " + current["id"])
             state["phase"] = "filtered"
-            add("filter", "filter" if phase == "routed" else "outputFilter", "(by decide)")
+            add("filter", "filter" if phase == "routed" else "outputFilter", "(by native_decide)")
         elif phase == "filtered":
             candidates = selected(report["policies"][device]["out"], packet)
             if not candidates:
                 state["phase"] = "ready"
-                add("local", "forwardWithoutEncap", "(by decide)")
+                add("local", "forwardWithoutEncap", "(by native_decide)")
                 continue
             association = candidates[0]
             sa = next((s for s in report["states"][device] if bound(association, s)), None)
@@ -170,14 +170,14 @@ def main():
             state["frame"]["encapLayers"].insert(0, envelope)
             packet.update({"source": association[2], "destination": association[3], "protocol": "esp", "sourcePort": 0, "destinationPort": 0, "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": [], "ipv4HeaderWords": 5 if association[2] < 2 ** 32 else 0, "ipv6NextHeader": 0 if association[2] < 2 ** 32 else 50})
             state["phase"] = "encapsulated"
-            add("encrypt", "encrypt", association_list([association])[1:-1] + " " + tuple_list([sa])[1:-1] + " (by decide) (by decide) (by decide)")
+            add("encrypt", "encrypt", association_list([association])[1:-1] + " " + tuple_list([sa])[1:-1] + " (by native_decide) (by native_decide) (by native_decide)")
         elif phase == "ready":
             edge = next((edge for edge in report["links"] if edge[0] == state["port"]), None)
             require(edge is not None, "No witness wire")
             state["port"] = edge[1]
             state["phase"] = "received"
             state["authenticated"] = []
-            add("linkTransmit", "linkTransmit", "(by decide)")
+            add("linkTransmit", "linkTransmit", "(by native_decide)")
         elif phase == "received":
             candidate = None
             if state["frame"]["encapLayers"]:
@@ -197,7 +197,7 @@ def main():
                 state["frame"]["packet"].update({"ingress": current["name"], "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": []})
                 state["authenticated"] = [association[0]]
                 rest = "[" + ", ".join("⟨⟨" + ", ".join(str(x) for x in e["seal"]) + "⟩, " + packet_lean(e["header"]) + "⟩" for e in state["frame"]["encapLayers"]) + "]"
-                add("decrypt", "decrypt", association_list([association])[1:-1] + " " + tuple_list([sa])[1:-1] + " (" + packet_lean(header) + ") " + rest + " " + quoted(header["connectionState"]) + " (by decide) (by decide) (by decide) rfl rfl rfl rfl (by decide)")
+                add("decrypt", "decrypt", association_list([association])[1:-1] + " " + tuple_list([sa])[1:-1] + " (" + packet_lean(header) + ") " + rest + " " + quoted(header["connectionState"]) + " (by native_decide) (by native_decide) (by native_decide) rfl rfl rfl rfl (by native_decide)")
             else:
                 packet.update({"ingress": current["name"], "matchedInboundPolicyIds": [], "matchedOutboundPolicyIds": []})
                 add("local", "receive", quoted(packet["connectionState"]))
@@ -205,7 +205,7 @@ def main():
             require(not state["frame"]["encapLayers"], "Delivery is not plaintext")
             state["phase"] = "delivered"
             destination_level = level(devices[device])
-            add("deliver", "deliver", str(destination_level) + " (by decide) rfl")
+            add("deliver", "deliver", str(destination_level) + " (by native_decide) rfl")
         else:
             raise ValueError("Unexpected phase " + phase)
     require(state["phase"] == "delivered" and current["id"] == args.destination_port, "Witness did not reach destination")
@@ -224,11 +224,11 @@ def main():
                                         lean_list([str(value) for value in gate]))
     if immediate_checks:
         lines += ["", "lemma witness_immediate_header_checks : " +
-                  " ∧ ".join(immediate_checks + ["True"]) + " := by decide"]
+                  " ∧ ".join(immediate_checks + ["True"]) + " := by native_decide"]
     for index, step in enumerate(steps):
         lines += ["", "lemma witnessStep" + str(index) + " : DataPlaneForwarding.Step config witnessState" + str(index) + " ." + step["action"] + " witnessState" + str(index + 1) + " := by", "  exact DataPlaneForwarding.Step." + step["constructor"] + " " + step["arguments"]]
     lines += ["", "def witnessActions : List Action := " + lean_list(["." + step["action"] for step in steps]), "", "theorem positive_delivery_forwarding : (lts config).MTr witnessState0 witnessActions witnessState" + str(len(steps)) + " := by", "  exact " + "(".join(["Cslib.LTS.MTr.stepL witnessStep" + str(i) + " " for i in range(len(steps))]) + "Cslib.LTS.MTr.refl" + ")" * (len(steps) - 1), "", "lemma witness_initial_stack : EncapStackConsistent config expectedEncapStack witnessState0 := by", "  unfold EncapStackConsistent ProcessingInvariant LocalAuthentication encapStackAfterIngress witnessState0 Frame.encapLayerIds config expectedEncapStack dataPlaneModelFromRecords expectedEncapStackFromRecords ifaceAt deviceAt ifaces devices", "  decide", "", "end TDN.Deployments." + args.namespace, ""]
-    lines = [line.replace("(by decide)", "(by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals decide)") for line in lines]
+    lines = [line.replace("(by native_decide)", "(by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)") for line in lines]
     start = next(i for i, line in enumerate(lines) if line.startswith("lemma witness_initial_stack"))
     lines[start + 1:start + 3] = ["  exact ⟨⟨⟨rfl, rfl, Or.inl rfl, rfl⟩, rfl⟩, rfl⟩"]
     Path(args.output).write_text(forwarding_lean("\n".join(lines)))

@@ -127,7 +127,7 @@ def main():
         ""
     ]
     declarations = [
-        "  (try simp only [" + ", ".join(line.removeprefix("  unfold ").removesuffix("; decide").split()) + "]); all_goals decide"
+        "  (try simp only [" + ", ".join(line.removeprefix("  unfold ").removesuffix("; decide").split()) + "]); all_goals native_decide"
         if line.startswith("  unfold ") and line.endswith("; decide") else line
         for line in declarations
     ]

@@ -26,8 +26,8 @@ lemma material_valid : PrivateMaterialAssurance installations material := by
   · rfl
 
 def wireParameters (_ : DataPlaneForwarding.TunnelSAStamp) : IPsecFrameEncoding.Parameters :=
-  { sequence := 1, iv := List.replicate 8 0, sequencePositive := by decide,
-    sequenceFits := by decide, ivLength := by simp }
+  { sequence := 1, iv := List.replicate 8 0, sequencePositive := by native_decide,
+    sequenceFits := by native_decide, ivLength := by simp }
 
 def codec (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :=
   OuterTunnelNoBypass_BaselineNetwork.codec material primitive wireParameters
@@ -86,7 +86,7 @@ lemma allowed_source_has_original_red_origin (primitive : ESPWire.GCMPrimitive I
   have source := allowed.2.2
   change sourceEntry entries request.iface = some (redNetwork request.originDomain) ∧ _ at source
   obtain ⟨network, member, name⟩ := source.2
-  have names : ∀ network ∈ networks, network.id ≠ "" := by decide
+  have names : ∀ network ∈ networks, network.id ≠ "" := by native_decide
   have nonempty : redNetwork request.originDomain ≠ "" := by rw [← name]; exact names network member
   unfold sourceOrigin
   cases selected : entries.find? (fun entry => entry.originDomain == request.originDomain) with
@@ -143,7 +143,7 @@ theorem deployment_covered (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
       OuterTunnelNoBypass_BaselineNetwork.captured_route_egresses OuterTunnelNoBypass_BaselineNetwork.captured_physical_endpoints OuterTunnelNoBypass_BaselineNetwork.captured_bridge_endpoints)
     (codec primitive) (requiredSizing roles) (sourceMtu roles) plaintextLimit authenticationLimit
     budgets.1 ⟨fun _ => 64, fun _ => 64⟩ rfl
-    (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩)
+    (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩)
     (fun _ _ => rfl) rfl (source_mtu_minimum roles OuterTunnelNoBypass_BaselineNetwork.captured_mtu_checks) rfl
     (allowed_source_iface primitive) (network_sources primitive)
 

@@ -121,14 +121,14 @@ namespace TDN.Deployments.FreshOptionalScreening
 open Requirements
 
 def controls : List AdditionalControl := [""" + ", ".join(records) + """]
-lemma black_placement : ∀ c ∈ controls, c.screeningRouter = true → c.locatedOnBlack = true := by decide
-lemma boundary_placement : ∀ c ∈ controls, c.screeningRouter = true → c.insideSolutionBoundary = false := by decide
+lemma black_placement : ∀ c ∈ controls, c.screeningRouter = true → c.locatedOnBlack = true := by native_decide
+lemma boundary_placement : ∀ c ∈ controls, c.screeningRouter = true → c.insideSolutionBoundary = false := by native_decide
 
 theorem selected_optional_control_placement : msc_additional_control_permissions controls :=
   additional_controls_from_black_screening_placement controls black_placement boundary_placement
 
 theorem actual_screening_inventory : controls.length = 2 ∧
-    ∀ c ∈ controls, c.screeningRouter = true := by decide
+    ∀ c ∈ controls, c.screeningRouter = true := by native_decide
 
 end TDN.Deployments.FreshOptionalScreening
 """

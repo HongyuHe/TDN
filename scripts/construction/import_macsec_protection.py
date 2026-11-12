@@ -122,7 +122,7 @@ theorem selected_protection_configuration : msc_macsec_protection_parameters dev
   · simp [devices]
   · simp [devices]
 
-lemma runtime_inventory_nonempty : devices.length = """ + str(len(rows)) + """ := by decide
+lemma runtime_inventory_nonempty : devices.length = """ + str(len(rows)) + """ := by native_decide
 
 end TDN.Deployments.FinalMACsecProtection
 """

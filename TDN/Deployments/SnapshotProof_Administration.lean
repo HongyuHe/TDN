@@ -12,7 +12,7 @@ lemma retained_complete_RG047 (d : Deployment) :
     d false false SnapshotAdminSessions.events SnapshotAdminSessions.actions
     SnapshotAdminSessions.accounts SnapshotAdminSessions.sessions [] (fun _ => 0)
   · exact SnapshotAdminSessions.admitted_history
-  · decide
+  · native_decide
   · simp
   · simp
   · simp
@@ -61,7 +61,7 @@ lemma shared_workstation_credential_rejected (d : Deployment) :
       [account, { account with person := 8 }] [] [] := by
   intro valid
   have separates := valid.1.2.2.2 account (by simp) (by rfl)
-    { account with person := 8 } (by simp) (by rfl) (by decide)
+    { account with person := 8 } (by simp) (by rfl) (by native_decide)
   exact separates rfl
 
 end TDN.Deployments.SnapshotProof_Administration

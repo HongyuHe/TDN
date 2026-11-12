@@ -94,7 +94,7 @@ def generate(output,report_path):
         addresses=[]
         for value in row["dns_servers"]:
             address=ipaddress.ip_address(value)
-            addresses.append(("Sum.inl" if address.version==4 else "Sum.inr")+" ⟨"+str(int(address))+", by decide⟩")
+            addresses.append(("Sum.inl" if address.version==4 else "Sum.inr")+" ⟨"+str(int(address))+", by native_decide⟩")
         dns.append("("+quoted(row["scope"])+", "+lean_list(addresses)+")")
     lines.append("def resolverConfigurations : List (String × List Requirements.DNSAddress) := "+lean_list(dns))
     lines.append("theorem every_recorded_component_has_specified_dns_server : resolverConfigurations ≠ [] ∧ ∀ c ∈ resolverConfigurations, c.2 ≠ [] := by unfold resolverConfigurations; decide")

@@ -74,9 +74,9 @@ theorem full_routed_RG014 (base : Deployment) (processing : PacketProcessing.Inv
   · funext component
     simp [deployment, grayWorkstationRole, Deployment.IsDevice, devices]
   · rfl
-  · decide
+  · native_decide
   · unfold Addressing.Separated ranges
-    decide
+    native_decide
   · simp [pairs, ranges, Addressing.Owns, Addressing.Contains]
   · intro iface member gray innerLayer
     simp only [deployment, interfaces, List.mem_cons, List.not_mem_nil, or_false] at member

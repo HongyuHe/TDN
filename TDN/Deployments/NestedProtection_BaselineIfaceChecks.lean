@@ -11,8 +11,8 @@ set_option maxHeartbeats 0
 lemma named_iface_is_recorded (iface : Nat) (interface : Interface)
     (listed : interface ∈ records.interfaces) (name : records.ifaceName iface = interface.id) :
     iface ∈ records.inventory.ifaces := by
-  have lengths : records.ifaceNames.length = records.nativeIfaces.length := by decide
-  have names : ∀ interface ∈ records.interfaces, interface.id ≠ "unlisted-port" := by decide
+  have lengths : records.ifaceNames.length = records.nativeIfaces.length := by native_decide
+  have names : ∀ interface ∈ records.interfaces, interface.id ≠ "unlisted-port" := by native_decide
   by_contra absent
   have bound : records.nativeIfaces.length ≤ iface := Nat.le_of_not_gt (fun present => absent (List.mem_range.mpr present))
   have missing : records.ifaceNames[iface]? = none := List.getElem?_eq_none (by omega)
@@ -26,7 +26,7 @@ lemma recipient_iface_is_recorded (iface domain : Nat)
   have missing : records.nativeIfaces[iface]? = none := List.getElem?_eq_none bound
   change (DataPlaneForwarding.deviceAt records.nativeDevices
     (DataPlaneForwarding.ifaceAt records.nativeIfaces iface).owner).ifaceSecurityDomain = some domain at recipient
-  have empty : (DataPlaneForwarding.deviceAt records.nativeDevices 0).ifaceSecurityDomain = none := by decide
+  have empty : (DataPlaneForwarding.deviceAt records.nativeDevices 0).ifaceSecurityDomain = none := by native_decide
   simp only [DataPlaneForwarding.ifaceAt, missing, Option.getD_none] at recipient
   rw [empty] at recipient
   cases recipient

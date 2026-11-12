@@ -97,6 +97,8 @@ def main():
                         "compiled_dependency_count": len(seen),
                         "conclusion_head_matches_without_unfolding": root.get("conclusion_head") == expected_spec})
     report = {"at": datetime.now(timezone.utc).isoformat(),
+              "native_decision_count": audit.get("native_decision_count", 0),
+              "trusted_computation": audit.get("trusted_computation", "foundational axioms only"),
               "scope": "Structural audit only. Supervisor must inspect clause coverage, assumptions, applicability and meaningful applications.",
               "selected_groups": sorted(selected),
               "input_sha256": {key: digest(value) for key, value in vars(args).items() if key not in ["output", "groups"]},

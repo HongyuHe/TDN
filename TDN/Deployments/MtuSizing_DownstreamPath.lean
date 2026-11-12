@@ -251,7 +251,7 @@ theorem sizing_continuation_reaches {Key : Type} (records : Records)
     have description := StandardDataPlaneBridge.standard_reachable_link_frame_describes binding records.inventory.ifaces d {}
       codec (requiredSizing roles) (sourceMtu roles) plaintextLimit authenticationLimit budgets.1 emissions
       ⟨fun _ => 64, fun _ => 64⟩ rfl
-      (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩) initialized run
+      (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩) initialized run
     have accepted := move.accepted records installations entries roles policies epoch codec material
       first.native stepChecked linkChecked description
     obtain ⟨action, after, tr, operation, same⟩ := covered.2.2.1 first move.operation (move.after records first.native) accepted
@@ -315,7 +315,7 @@ theorem sizing_continuation_transmits {Key : Type} (records : Records)
   have description := StandardDataPlaneBridge.standard_reachable_link_frame_describes binding records.inventory.ifaces d {}
     codec (requiredSizing roles) (sourceMtu roles) plaintextLimit authenticationLimit budgets.1 emissions
     ⟨fun _ => 64, fun _ => 64⟩ rfl
-    (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩) initialized reached
+    (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩) initialized reached
   have accepted := transmission.accepted records installations entries roles policies epoch codec material before.native
     (by rw [same]; exact transmissionChecked) (by rw [same]; exact linkChecked) description
   obtain ⟨action, after, tr, operation, _⟩ := covered.2.2.1 before transmission.operation

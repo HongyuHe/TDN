@@ -10,10 +10,10 @@ set_option maxHeartbeats 4000000
 load_network_records routeTree : WitnessTree FibRoute from "../../data/evidence/certificates/GrayFirewallSharedRoutes.json" ["routes"]
 load_network_records routeCertificates : List RouteCertificate from "../../data/evidence/certificates/GrayFirewallSharedRoutes.json" ["certificates"]
 
-lemma route_tree_matches_capture : routeTree.values = records.routes := by decide
+lemma route_tree_matches_capture : routeTree.values = records.routes := by native_decide
 
 lemma route_certificates_checked :
-    ∀ certificate ∈ routeCertificates, certificate.check routeTree = true := by decide
+    ∀ certificate ∈ routeCertificates, certificate.check routeTree = true := by native_decide
 
 def certificateFor (address : Nat) : Option RouteCertificate :=
   routeCertificates.find? (fun certificate => certificate.destination == address)
@@ -56,7 +56,7 @@ lemma reachable_source_from_selected_iff (interface : String) (address : Nat)
       (selected_routes_exact address certificate found route _ rfl).mp chosen, ingress, egress⟩
 
 lemma peer_destinations_have_certificates :
-    ∀ record ∈ records.pairs, (certificateFor record.endpoints.destinationAddress).isSome = true := by decide
+    ∀ record ∈ records.pairs, (certificateFor record.endpoints.destinationAddress).isSome = true := by native_decide
 
 lemma peer_selected_routes_covered :
     ∀ record ∈ records.pairs, ∀ route,

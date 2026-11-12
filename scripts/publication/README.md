@@ -22,7 +22,7 @@ python3 scripts/publication/export_pages.py --check
 
 Use `--render-only` after interface-only changes with unchanged hierarchy data. Changes to Lean declarations require the complete build. Changes to the ontology's Lean mappings require reviewing the pinned source hashes in `data/extraction/roles/ontology_theory.json` before rebuilding.
 
-Commit the changed source files and `public/`, then push TDN's `main` branch. TDN's **Check and publish explorers** workflow validates the publication and updates the two pages in the website repository. That commit triggers the website's normal Pages build. An unchanged publication makes no website commit.
+With the user's permission, commit the changed source files and `public/`, then push TDN's `main` branch. TDN's **Check and publish explorers** workflow validates the publication and updates the two pages in the website repository. That commit triggers the website's normal Pages build. An unchanged publication at the same TDN revision makes no website commit. A changed revision refreshes the GitHub links, including after a history rewrite.
 
 An explorer update is complete when the source templates, generated local page, public export, committed code, and deployed website agree. Both page titles and headers use **TDN v3.3**. After publishing, verify that `/tdn/source.json` records the intended TDN commit and that the live pages match the recorded page hashes. Pull the website checkout forward after an automatic publication so its local copies also match. Report any failed publication or deployment as unfinished work.
 

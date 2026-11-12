@@ -25,7 +25,8 @@ Lean declarations serve the following roles:
 | `lemma` | A checked supporting result, such as preservation by one step, a finite record check, or the assembly of local assumptions. |
 | `theorem` | A checked principal result offered by the module, such as a reusable execution guarantee, a requirement result, or its application to a snapshot. |
 | `Decidable P` | A method that determines whether proposition `P` holds and supplies a proof of the outcome. The finite-check modules provide instances for their supported conditions. |
-| `by decide` | Ask Lean to use the available decision method to prove a concrete proposition. It operates on Lean values that have already been imported or defined. |
+| `by native_decide` | Run a concrete decision procedure through Lean’s compiled evaluator. The compiler and runtime join the trusted computing base. See [the trust policy](proof_trust.md). |
+| `by decide` | Evaluate a decision procedure through Lean reduction. Small symbolic-library checks can still use that method. |
 | `∀ x, ...` | The condition holds for every `x` of the stated type. |
 | `∃ x, ...` | Some `x` satisfies the condition. Applying the result may reveal that witness. |
 | `P → Q` | Given a proof of `P`, the result supplies a proof of `Q`. |
@@ -36,7 +37,7 @@ Lean declarations serve the following roles:
 | `system.TrInv property` | Every permitted step preserves `property`. |
 | `Relation.ReflTransGen edge a b` | A path of zero or more edges connects `a` to `b`. |
 
-A principal theorem retains that role when another theorem uses it. For example, `forwarding_preserves_encap_stack` is a reusable result supported by the lemma `hop_preserves_encap_stack`. Concrete evidence uses lemmas for edge checks, initial states, and local conditions, then theorems for the resulting network property. The choice of keyword depends on the result's role; a proof using `by decide` can establish either a supporting fact or a final result. Lean checks both kinds of proof in the same way.
+A principal theorem retains that role when another theorem uses it. For example, `forwarding_preserves_encap_stack` is a reusable result supported by the lemma `hop_preserves_encap_stack`. Concrete evidence uses lemmas for edge checks, initial states, and local conditions, then theorems for the resulting network property. The choice of keyword depends on the result's role; a proof using `by native_decide` can establish either a supporting fact or a final result. Lean checks both kinds of proof in the same way.
 
 The word **stack** means the ordered list of encryption-layer identifiers in a modeled packet. The first tag is the outermost layer. For example, `[2, 11]` describes Outer layer `2` surrounding Inner layer `11`. The tags identify protection layers in the proof. Actual addresses, protocol fields, and SPIs have separate fields.
 
@@ -97,12 +98,12 @@ def side (node : Fin 4) : Nat := if node = 3 then 1 else 0
 lemma checked_edges : ∀ a b : Fin 4,
     edge a b → ¬ firewall a → ¬ firewall b → side a = side b := by
   unfold edge firewall
-  decide
+  native_decide
 
 theorem no_bypass :
     ¬ Relation.ReflTransGen (TDN.Waypointing.Avoiding edge firewall) 0 3 := by
   exact TDN.Waypointing.waypointing_of_edge_invariant edge firewall side checked_edges
-    (by unfold firewall; decide) (by decide)
+    (by unfold firewall; native_decide) (by native_decide)
 
 end NetworkModelsGuide
 ```
@@ -143,7 +144,7 @@ A new network application starts by choosing the behavior needed for its require
 1. Import the relevant modules and state the desired property for a configuration parameter.
 2. Populate the supported device, interface, policy, route, and observation records from the new network. Preserve every choice covered by the model, including equally selected policies or routes.
 3. Supply supporting information such as expected interface encapsulation stacks, domain membership, graph labels, or concrete paths. Keep the meaning of those values explicit.
-4. Prove the required checks over the records. Use `by decide` for supported concrete finite propositions. If a check fails, inspect the configuration, translation, and chosen sufficient conditions before changing any general theorem.
+4. Prove the required checks over the records. Use `by native_decide` for supported closed, computable propositions. If a check fails, inspect the configuration, translation, and chosen sufficient conditions before changing any general theorem.
 5. Apply the appropriate soundness theorem to obtain the general local premises. Apply the path or execution theorem to derive the required consequence.
 6. When the requirement includes useful communication, provide a separate accepted packet or delivery trace. A safety theorem can also hold for a configuration that drops all traffic.
 
@@ -490,7 +491,7 @@ Source: [TableDrivenDataPlane.lean](../TDN/Models/TableDrivenDataPlane.lean). Na
 
 [`possibleAuthentications`](../TDN/Models/TableDrivenDataPlane.lean#L64) enumerates the empty authentication list and the singleton lists allowed by the inbound policies and interface stack. [`TableDrivenForwardChecks`](../TDN/Models/TableDrivenDataPlane.lean#L94), [`TableDrivenOutputChecks`](../TDN/Models/TableDrivenDataPlane.lean#L135), and [`TableDrivenOuterRoutes`](../TDN/Models/TableDrivenDataPlane.lean#L168) state checks over finite records. The soundness theorems prove that those checks imply the corresponding obligations for arbitrary modeled packets. [`local_stack_conditions_of_finite_checks`](../TDN/Models/TableDrivenDataPlane.lean#L202) assembles the results into [`PerHopEncapConditions`](../TDN/Models/EncapStackPreservation.lean#L32).
 
-The checks include default records because the general configuration accepts any natural-number interface index. Snapshot applications can prove the finite propositions with `by decide`, then reuse the general soundness theorems.
+The checks include default records because the general configuration accepts any natural-number interface index. Snapshot applications can prove the finite propositions with `by native_decide`, then reuse the general soundness theorems.
 
 Direct imports: [PerHopForwardingChecks](#perhopforwardingchecks).
 

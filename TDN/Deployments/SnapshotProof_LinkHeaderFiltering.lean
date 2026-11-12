@@ -1,5 +1,9 @@
+import TDN.Deployments.NativeCheckDefaults
+import TDN.Import.NativeDecide
 import TDN.Requirements.EthernetAndVlanHeaderFiltering
 import TDN.Import.SnapshotLoader
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.SnapshotProof_LinkHeaderFiltering
 open Compliance Requirements Requirements.Msc
@@ -80,7 +84,7 @@ instance (base : Deployment) (processing : PacketProcessing.Inventory) :
 
 lemma link_header_records_checked (base : Deployment) (processing : PacketProcessing.Inventory) :
     LinkHeaderPolicyChecks (deployment base processing) (inventory processing) := by
-  exact of_decide_eq_true rfl
+  close_check_with emptyDeploymentForChecks; close_check_with emptyInventoryForChecks; native_decide
 
 theorem captured_link_program_model_RG038 (base : Deployment) (processing : PacketProcessing.Inventory) :
     msc_ip_header_and_multicast_filtering (deployment base processing) (fun _ => false) := by
@@ -100,7 +104,7 @@ theorem captured_link_program_model_RG038 (base : Deployment) (processing : Pack
   · rfl
   · unfold LinkPolicyRecordChecks Deployment.LinkPath
     dsimp [inventory, macIface]
-    decide
+    native_decide
   · exact link_header_records_checked base processing
   · intro interface member endpoint endpointMember name packet framing destination
     change ((deployment base processing).Observe packet).trafficClass = .control
@@ -112,11 +116,11 @@ lemma captured_positive_MKA_and_data :
     (program 1).Accepts (mka.Packet "" "A/wire") ∧
     (program 2).Accepts (mka.Packet "B/wire" "") ∧
     (program 1).Accepts (dataFrame.Packet "" "A/wire") ∧
-    (program 2).Accepts (dataFrame.Packet "B/wire" "") := by decide
+    (program 2).Accepts (dataFrame.Packet "B/wire" "") := by native_decide
 
 lemma captured_negative_group_actor_length_and_vlan :
     ∀ policy ∈ programs, ∀ frame ∈ [groupData, wrongActor, wrongLength, taggedMKA, taggedData],
-      ¬ policy.Accepts (frame.Packet "wire" "wire") := by decide
+      ¬ policy.Accepts (frame.Packet "wire" "wire") := by native_decide
 
 end TDN.Deployments.SnapshotProof_LinkHeaderFiltering
 
@@ -132,7 +136,7 @@ lemma captured_bootstrap_MKA_is_fully_admitted
   have framing : ∀ ingress egress,
       PacketMKA (mka.Packet ingress egress) := by
     intro ingress egress
-    exact (show PacketMKA (mka.Packet "" "") from by decide)
+    exact (show PacketMKA (mka.Packet "" "") from by native_decide)
   have supported : ∀ ingress egress,
       (deployment base processing).Supported
         ((deployment base processing).Observe (mka.Packet ingress egress)) := by
@@ -141,7 +145,7 @@ lemma captured_bootstrap_MKA_is_fully_admitted
     change (deployment base processing).ManagementMetadataBound (mka.Packet ingress egress)
     unfold Deployment.ManagementMetadataBound
     have control : PacketClass (mka.Packet ingress egress) = .control := by
-      exact (show PacketClass (mka.Packet "" "") = .control from by decide)
+      exact (show PacketClass (mka.Packet "" "") = .control from by native_decide)
     simp [control]
   constructor
   · refine ⟨.link, supported "" "A/wire", ?_, ?_⟩
@@ -154,7 +158,7 @@ lemma captured_bootstrap_MKA_is_fully_admitted
         ⟨program 0, program 1⟩, rfl, ?_⟩
       · refine ⟨framing "" "A/wire", ⟨0, 1, 144115398529318913, "AB"⟩,
           by simp [inventory, peers], rfl, mka.payload, rfl, ?_, ?_, ?_⟩
-        all_goals exact of_decide_eq_true rfl
+        all_goals unfold_check_parameters; native_decide
       · exact captured_positive_MKA_and_data.1
   · refine ⟨.link, supported "B/wire" "", ?_, ?_⟩
     · refine ⟨inventory processing, rfl, 1, by simp [inventory], rfl,
@@ -166,7 +170,7 @@ lemma captured_bootstrap_MKA_is_fully_admitted
         ⟨program 2, program 3⟩, rfl, ?_⟩
       · refine ⟨framing "B/wire" "", ⟨0, 1, 144115398529318913, "AB"⟩,
           by simp [inventory, peers], rfl, mka.payload, rfl, ?_, ?_, ?_⟩
-        all_goals exact of_decide_eq_true rfl
+        all_goals unfold_check_parameters; native_decide
       · exact captured_positive_MKA_and_data.2.1
 
 end TDN.Deployments.SnapshotProof_LinkHeaderFiltering
@@ -215,8 +219,8 @@ theorem captured_installed_program_model_RG038
   · rfl
   · unfold LinkPolicyRecordChecks Deployment.LinkPath
     dsimp [installedInventory, inventory, macIface]
-    decide
-  · exact of_decide_eq_true rfl
+    native_decide
+  · close_check_with emptyDeploymentForChecks; close_check_with emptyInventoryForChecks; native_decide
   · intro interface member endpoint endpointMember name packet framing destination
     change ((installedDeployment base processing).Observe packet).trafficClass = .control
     have records : MKAObservationRecords (installedDeployment base processing) endpoint.actorSCI := by
@@ -231,7 +235,7 @@ lemma captured_installed_data_is_fully_admitted
       ((installedDeployment base processing).Observe (dataFrame.Packet "B/wire" "")) := by
   have macsec : ∀ ingress egress, PacketMACsec (dataFrame.Packet ingress egress) := by
     intro ingress egress
-    exact (show PacketMACsec (dataFrame.Packet "" "") from by decide)
+    exact (show PacketMACsec (dataFrame.Packet "" "") from by native_decide)
   have supported : ∀ ingress egress,
       (installedDeployment base processing).Supported
         ((installedDeployment base processing).Observe (dataFrame.Packet ingress egress)) := by
@@ -240,7 +244,7 @@ lemma captured_installed_data_is_fully_admitted
     change (installedDeployment base processing).ManagementMetadataBound (dataFrame.Packet ingress egress)
     unfold Deployment.ManagementMetadataBound
     have dataClass : PacketClass (dataFrame.Packet ingress egress) = .protectedData := by
-      exact (show PacketClass (dataFrame.Packet "" "") = .protectedData from by decide)
+      exact (show PacketClass (dataFrame.Packet "" "") = .protectedData from by native_decide)
     simp [dataClass]
   constructor
   · refine ⟨.link, supported "" "A/wire", ?_, ?_⟩
@@ -255,7 +259,7 @@ lemma captured_installed_data_is_fully_admitted
       · refine ⟨macsec "" "A/wire",
           { macIface 0 2 with transmitAssociation := some txA, receiveAssociations := [rxA] },
           by simp [installedInventory], rfl, txA, dataFrame.payload, rfl, ?_, ?_, ?_⟩
-        all_goals exact of_decide_eq_true rfl
+        all_goals unfold_check_parameters; native_decide
       · exact captured_positive_MKA_and_data.2.2.1
   · refine ⟨.link, supported "B/wire" "", ?_, ?_⟩
     · refine ⟨installedInventory processing, rfl, 1, by simp [installedInventory, inventory], rfl,
@@ -269,10 +273,10 @@ lemma captured_installed_data_is_fully_admitted
       · refine ⟨macsec "B/wire" "",
           { macIface 1 3 with transmitAssociation := some txB, receiveAssociations := [rxB] },
           by simp [installedInventory], rfl, rxB, dataFrame.payload, rfl, ?_, ?_, ?_⟩
-        all_goals exact of_decide_eq_true rfl
+        all_goals unfold_check_parameters; native_decide
       · exact captured_positive_MKA_and_data.2.2.2
 
 lemma local_association_indices_are_distinct :
-    txA.keyGeneration ≠ rxB.keyGeneration ∧ txB.keyGeneration ≠ rxA.keyGeneration := by decide
+    txA.keyGeneration ≠ rxB.keyGeneration ∧ txB.keyGeneration ≠ rxA.keyGeneration := by native_decide
 
 end TDN.Deployments.SnapshotProof_LinkHeaderFiltering

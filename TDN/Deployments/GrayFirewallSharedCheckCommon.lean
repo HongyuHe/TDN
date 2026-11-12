@@ -1,3 +1,4 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.GrayFirewallSharedInventory
 import TDN.Deployments.GrayFirewallSharedRouteCertificates
 import TDN.Deployments.GrayFirewallSharedAclCertificates
@@ -27,38 +28,38 @@ instance instDecidableSharedGraySource (base : Deployment) (name : String) :
 
 lemma Gray_core_pairs_checked (base : Deployment) :
     ∀ record ∈ records.pairs, record.Bound (deployment base) := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Gray_core_unique_devices_checked (base : Deployment) :
     ∀ first ∈ (deployment base).devices, ∀ second ∈ (deployment base).devices, first.id = second.id → first = second := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Gray_core_observations_checked (base : Deployment) :
     GrayIPsecObservationChecks (deployment base) := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Gray_core_revocation_checked (base : Deployment) :
     GrayRevocationServiceAbsent (deployment base) := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Gray_core_inner_mechanisms_checked (base : Deployment) :
     ∀ tunnel ∈ (deployment base).tunnels, tunnel.layer = .inner → tunnel.mechanism = .ipsec := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Gray_core_address_coverage_checked (base : Deployment) :
     InnerIPsecAddressCoverage (deployment base) records.pairs := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Gray_core_native_names_checked (base : Deployment) :
     DeviceNamesUniqueByComponent records.inventory := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma Gray_core_address_bounds_checked (base : Deployment) :
     ∀ record ∈ records.pairs, 0 < record.endpoints.sourceAddress ∧ record.endpoints.sourceAddress < 2^32 ∧ record.endpoints.destinationAddress < 2^32 := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma Gray_core_control_inventory_checked (base : Deployment) :
     GrayControlInventoryDisjoint (deployment base) controls := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 end TDN.Deployments.GrayFirewallShared

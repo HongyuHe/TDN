@@ -154,7 +154,7 @@ open TDN.Requirements
 
 def offered : List AlgorithmSuite := [''' + ", ".join(entries) + ''']
 
-lemma recorded_offer_inventory_nonempty : offered ≠ [] := by decide
+lemma recorded_offer_inventory_nonempty : offered ≠ [] := by native_decide
 
 theorem every_recorded_inner_ike_offer_uses_cnsa1 : ∀ suite ∈ offered, CNSA1 suite := by
   apply classical_ike_choices_from_local_checks

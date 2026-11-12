@@ -5,7 +5,7 @@ namespace TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality
 open Requirements Requirements.Msc CoverTraffic
 
 lemma retained_installation_checks :
-    SnapshotTfcCoverTraffic.installations.all coverInstallationChecked = true := by decide
+    SnapshotTfcCoverTraffic.installations.all coverInstallationChecked = true := by native_decide
 
 theorem retained_complete_RG032 :
     Requirements.Msc.msc_transec_conditions SnapshotTfcCoverTraffic.installations :=
@@ -18,7 +18,7 @@ def alternateInstallation : CoverInstallation :=
     active := true }
 
 lemma alternate_installation_check :
-    [alternateInstallation].all coverInstallationChecked = true := by decide
+    [alternateInstallation].all coverInstallationChecked = true := by native_decide
 
 theorem alternate_complete_RG032 :
     Requirements.Msc.msc_transec_conditions [alternateInstallation] :=
@@ -52,10 +52,10 @@ lemma real_payload_has_nonempty_forwarding :
       attempts := [⟨0, paddedBytes SnapshotTfcCoverTraffic.sender (payload ready.queue), true⟩]
       deadlineNs := nextDeadline SnapshotTfcCoverTraffic.sender 0 0
       sequence := 1 }
-  refine ⟨[.arrival [1, 2, 3], .tick 0 0 true], done, ?_, by decide, by decide⟩
+  refine ⟨[.arrival [1, 2, 3], .tick 0 0 true], done, ?_, by native_decide, by native_decide⟩
   exact Cslib.LTS.MTr.stepL (Step.arrive (initial 0) [1, 2, 3])
     (Cslib.LTS.MTr.stepL
-      (Step.tick ready 0 0 true (by decide) (by decide) (by decide))
+      (Step.tick ready 0 0 true (by native_decide) (by native_decide) (by native_decide))
       (Cslib.LTS.MTr.refl))
 
 end TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality

@@ -191,9 +191,9 @@ def sourceBytes : Nat := """ + str(data["source_bytes"]) + """
 def beforeRestart : List Batch := """ + entries(data["before"]["records"]) + """
 def afterRestart : List Batch := """ + entries(data["after"]["records"]) + """
 
-lemma local_range_checks : Contiguous 0 beforeRestart := by decide
-lemma local_complete_cursor : finish 0 beforeRestart = sourceBytes := by decide
-lemma local_restart_identity : afterRestart = beforeRestart := by decide
+lemma local_range_checks : Contiguous 0 beforeRestart := by native_decide
+lemma local_complete_cursor : finish 0 beforeRestart = sourceBytes := by native_decide
+lemma local_restart_identity : afterRestart = beforeRestart := by native_decide
 
 /-- Three local range checks cover every byte position in the frozen source copy. -/
 theorem all_recorded_source_positions_copied : RecordedAuditCopy sourceBytes beforeRestart :=

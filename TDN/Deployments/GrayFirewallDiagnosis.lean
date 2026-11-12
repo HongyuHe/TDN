@@ -1,3 +1,5 @@
+import TDN.Deployments.NativeCheckDefaults
+import TDN.Import.NativeDecide
 import TDN.Deployments.DeviceForwardingEligibility
 import TDN.Deployments.Perimeter_BaselineData
 import TDN.Deployments.Perimeter_SharedData
@@ -13,6 +15,30 @@ set_option maxHeartbeats 0
 set_option synthInstance.maxSize 2048
 
 deriving instance DecidableEq for Device
+
+local instance (base : Deployment) :
+    DecidableRel (Perimeter_Shared.deployment base).intendedPeer := by
+  intro source destination
+  change Decidable (∃ tunnel ∈ Perimeter_Shared.records.tunnels,
+    tunnel.sender = source ∧ tunnel.receiver = destination)
+  infer_instance
+
+local instance (base : Deployment) :
+    DecidableRel (Perimeter_Baseline.deployment base).intendedPeer := by
+  intro source destination
+  change Decidable (∃ tunnel ∈ Perimeter_Baseline.records.tunnels,
+    tunnel.sender = source ∧ tunnel.receiver = destination)
+  infer_instance
+
+local instance (base : Deployment) (interface : String) :
+    DecidablePred ((Perimeter_Shared.deployment base).reachableSource interface) := by
+  change DecidablePred (Perimeter_Shared.records.reachableSource interface)
+  infer_instance
+
+local instance (base : Deployment) (interface : String) :
+    DecidablePred ((Perimeter_Baseline.deployment base).reachableSource interface) := by
+  change DecidablePred (Perimeter_Baseline.records.reachableSource interface)
+  infer_instance
 
 instance instDecidableRegisteredReachableSourceForDiagnosis
     (records : Records) (services : List ServiceRegistration)
@@ -64,14 +90,14 @@ lemma shared_address_inventory (base : Deployment) :
     (Perimeter_Shared.deployment base).AddressInventoryCoherent := by
   apply address_inventory_from_checked_records (Perimeter_Shared.deployment base) rfl
   apply gray_workstation_role_is_empty (Perimeter_Shared.deployment base)
-  · exact of_decide_eq_true rfl
+  · unfold_check_parameters; native_decide
   · rfl
 
 lemma baseline_address_inventory (base : Deployment) :
     (Perimeter_Baseline.deployment base).AddressInventoryCoherent := by
   apply address_inventory_from_checked_records (Perimeter_Baseline.deployment base) rfl
   apply gray_workstation_role_is_empty (Perimeter_Baseline.deployment base)
-  · exact of_decide_eq_true rfl
+  · unfold_check_parameters; native_decide
   · rfl
 
 theorem shared_IKE_reply_is_eligible (base : Deployment) :
@@ -79,45 +105,37 @@ theorem shared_IKE_reply_is_eligible (base : Deployment) :
       ((Perimeter_Shared.deployment base).Observe (sharedReply.packet Perimeter_Shared.records)) := by
   apply checked_forward_context_is_eligible sharedReply Perimeter_Shared.records
     (Perimeter_Shared.deployment base) rfl rfl .inbound
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 theorem shared_IKE_reply_has_required_allowance (base : Deployment) :
     GrayFirewallRestrictions (Perimeter_Shared.deployment base) sharedReply.interface .inbound
         ((Perimeter_Shared.deployment base).Observe (sharedReply.packet Perimeter_Shared.records)) ∧
       GrayPolicyAllowance (Perimeter_Shared.deployment base) sharedReply.interface
         ((Perimeter_Shared.deployment base).Observe (sharedReply.packet Perimeter_Shared.records)) := by
-  letI : DecidableRel (Perimeter_Shared.deployment base).intendedPeer := by
-    intro source destination
-    change Decidable (∃ tunnel ∈ Perimeter_Shared.records.tunnels,
-      tunnel.sender = source ∧ tunnel.receiver = destination)
-    infer_instance
-  letI : DecidablePred ((Perimeter_Shared.deployment base).reachableSource sharedReply.interface.id) := by
-    change DecidablePred (Perimeter_Shared.records.reachableSource sharedReply.interface.id)
-    infer_instance
   apply checked_form_satisfies_requirement sharedReply Perimeter_Shared.records
     (Perimeter_Shared.deployment base) "g1" .inbound sharedPair sharedGuard
     (shared_address_inventory base) rfl
-  exact of_decide_eq_true rfl
+  close_check_with emptyDeploymentForChecks; native_decide
 
 theorem shared_IKE_reply_is_denied (base : Deployment) :
     ¬ (Perimeter_Shared.deployment base).AcceptsAt sharedReply.interface.id .inbound .forward
       ((Perimeter_Shared.deployment base).Observe (sharedReply.packet Perimeter_Shared.records)) := by
   apply checked_forward_hook_is_denied
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 theorem baseline_same_interface_ESP_is_eligible (base : Deployment) :
     (Perimeter_Baseline.deployment base).PacketEligibleAt baselineESP.interface .inbound .forward
       ((Perimeter_Baseline.deployment base).Observe (baselineESP.packet Perimeter_Baseline.records)) := by
   apply checked_forward_context_is_eligible baselineESP Perimeter_Baseline.records
     (Perimeter_Baseline.deployment base) rfl rfl .inbound
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 theorem baseline_same_interface_ESP_fails_required_source_check (base : Deployment) :
     ¬ (Perimeter_Baseline.deployment base).reachableSource baselineESP.interface.id
       (baselineESP.packet Perimeter_Baseline.records).source := by
   change ¬ Perimeter_Baseline.records.reachableSource baselineESP.interface.id
     (baselineESP.packet Perimeter_Baseline.records).source
-  exact of_decide_eq_true rfl
+  native_decide
 
 theorem baseline_same_interface_ESP_fails_inbound_restrictions (base : Deployment) :
     ¬ GrayFirewallRestrictions (Perimeter_Baseline.deployment base) baselineESP.interface .inbound
@@ -129,7 +147,7 @@ theorem baseline_same_interface_ESP_is_denied (base : Deployment) :
     ¬ (Perimeter_Baseline.deployment base).AcceptsAt baselineESP.interface.id .inbound .forward
       ((Perimeter_Baseline.deployment base).Observe (baselineESP.packet Perimeter_Baseline.records)) := by
   apply checked_forward_hook_is_denied
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 
 theorem baseline_same_interface_ESP_is_outbound_eligible (base : Deployment) :
@@ -137,40 +155,32 @@ theorem baseline_same_interface_ESP_is_outbound_eligible (base : Deployment) :
       ((Perimeter_Baseline.deployment base).Observe (baselineESP.packet Perimeter_Baseline.records)) := by
   apply checked_forward_context_is_eligible baselineESP Perimeter_Baseline.records
     (Perimeter_Baseline.deployment base) rfl rfl .outbound
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 theorem baseline_same_interface_ESP_has_current_outbound_allowance (base : Deployment) :
     GrayFirewallRestrictions (Perimeter_Baseline.deployment base) baselineESP.interface .outbound
         ((Perimeter_Baseline.deployment base).Observe (baselineESP.packet Perimeter_Baseline.records)) ∧
       GrayPolicyAllowance (Perimeter_Baseline.deployment base) baselineESP.interface
         ((Perimeter_Baseline.deployment base).Observe (baselineESP.packet Perimeter_Baseline.records)) := by
-  letI : DecidableRel (Perimeter_Baseline.deployment base).intendedPeer := by
-    intro source destination
-    change Decidable (∃ tunnel ∈ Perimeter_Baseline.records.tunnels,
-      tunnel.sender = source ∧ tunnel.receiver = destination)
-    infer_instance
-  letI : DecidablePred ((Perimeter_Baseline.deployment base).reachableSource baselineESP.interface.id) := by
-    change DecidablePred (Perimeter_Baseline.records.reachableSource baselineESP.interface.id)
-    infer_instance
   apply checked_form_satisfies_requirement baselineESP Perimeter_Baseline.records
     (Perimeter_Baseline.deployment base) "s1" .outbound baselinePair baselineGuard
     (baseline_address_inventory base) rfl
-  exact of_decide_eq_true rfl
+  close_check_with emptyDeploymentForChecks; native_decide
 
 theorem baseline_same_interface_ESP_is_outbound_denied (base : Deployment) :
     ¬ (Perimeter_Baseline.deployment base).AcceptsAt baselineESP.interface.id .outbound .forward
       ((Perimeter_Baseline.deployment base).Observe (baselineESP.packet Perimeter_Baseline.records)) := by
   apply checked_forward_hook_is_denied
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 
 theorem before_repair_shared_reply_fixture_refutes_complete_spec (base : Deployment) :
     ¬ msc_gray_firewall_allowlist_before_forward_source_check (Perimeter_Shared.deployment base) true := by
   apply missing_required_Gray_allowance_refutes_complete_spec (Perimeter_Shared.deployment base)
     rfl sharedReply.interface
-  · exact of_decide_eq_true rfl
+  · close_check_with emptyDeploymentForChecks; native_decide
   · unfold Deployment.IsDevice
-    exact of_decide_eq_true rfl
+    unfold_check_parameters; native_decide
   · exact shared_IKE_reply_is_eligible base
   · exact (shared_IKE_reply_has_required_allowance base).1
   · exact (shared_IKE_reply_has_required_allowance base).2
@@ -180,9 +190,9 @@ theorem before_repair_baseline_outbound_fixture_refutes_complete_spec (base : De
     ¬ msc_gray_firewall_allowlist_before_forward_source_check (Perimeter_Baseline.deployment base) true := by
   apply missing_required_Gray_allowance_refutes_complete_spec (Perimeter_Baseline.deployment base)
     rfl baselineESP.interface
-  · exact of_decide_eq_true rfl
+  · close_check_with emptyDeploymentForChecks; native_decide
   · unfold Deployment.IsDevice
-    exact of_decide_eq_true rfl
+    unfold_check_parameters; native_decide
   · exact baseline_same_interface_ESP_is_outbound_eligible base
   · exact (baseline_same_interface_ESP_has_current_outbound_allowance base).1
   · exact (baseline_same_interface_ESP_has_current_outbound_allowance base).2
@@ -192,12 +202,8 @@ theorem before_repair_baseline_outbound_fixture_refutes_complete_spec (base : De
 theorem shared_reply_retains_actual_incoming_source_permission (base : Deployment) :
     (Perimeter_Shared.deployment base).GrayForwardPermission sharedReply.interface .forward
       ((Perimeter_Shared.deployment base).Observe (sharedReply.packet Perimeter_Shared.records)) := by
-  letI : ∀ interface, DecidablePred ((Perimeter_Shared.deployment base).reachableSource interface) := by
-    intro interface
-    change DecidablePred (Perimeter_Shared.records.reachableSource interface)
-    infer_instance
   intro _
-  exact of_decide_eq_true rfl
+  close_check_with emptyDeploymentForChecks; native_decide
 
 theorem baseline_bad_source_has_no_forward_permission (base : Deployment) :
     ¬ (Perimeter_Baseline.deployment base).GrayForwardPermission baselineESP.interface .forward
@@ -208,7 +214,7 @@ theorem baseline_bad_source_has_no_forward_permission (base : Deployment) :
     infer_instance
   have excluded : ¬ (Perimeter_Baseline.deployment base).ForwardIngressSourceAllowed
       baselineESP.interface.device (baselineESP.packet Perimeter_Baseline.records) := by
-    exact of_decide_eq_true rfl
+    unfold_check_parameters; native_decide
   intro permission
   exact excluded (permission rfl)
 

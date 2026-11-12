@@ -10,7 +10,7 @@ set_option maxHeartbeats 2000000
 lemma reverse_handshake_input_differs : reverse.tlsInput ≠ forward.tlsInput := by
   intro same
   have session := congrArg TLSHandshakeInput.session same
-  exact (by decide : reverse.tlsInput.session ≠ forward.tlsInput.session) session
+  exact (by native_decide : reverse.tlsInput.session ≠ forward.tlsInput.session) session
 
 lemma forward_handshake_is_accepted :
     tlsPrimitive.mutuallyAuthenticate forward.tlsInput = some forward.exchange.verified := by
@@ -38,7 +38,7 @@ lemma reverse_backend_is_accepted :
   have different : reverse.backendInput ≠ forward.backendInput := by
     intro same
     have session := congrArg EAPBackendInput.session same
-    exact (by decide : reverse.backendInput.session ≠ forward.backendInput.session) session
+    exact (by native_decide : reverse.backendInput.session ≠ forward.backendInput.session) session
   change (@ite (Option EAPBackendVerified) (reverse.backendInput = forward.backendInput) (Classical.propDecidable _)
     (some forward.backend.verified) (@ite (Option EAPBackendVerified) (reverse.backendInput = reverse.backendInput)
       (Classical.propDecidable _) (some reverse.backend.verified) none)) = _
@@ -52,7 +52,7 @@ lemma capture_exchange_is_successful (capture : CaptureData) (supported : Suppor
     · exact reverse_handshake_is_accepted
   refine ⟨?_, ?_, ?_, ?_, accepted, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, ?_, ?_⟩
   all_goals rcases supported with rfl | rfl
-  all_goals first | decide | { unfold Trust.MutuallyAdmits Trust.Admits; decide }
+  all_goals first | native_decide | { unfold Trust.MutuallyAdmits Trust.Admits; native_decide }
 
 lemma capture_backend_is_successful (capture : CaptureData) (supported : SupportedCapture capture) :
     capture.backend.Successful tlsPrimitive := by
@@ -61,7 +61,7 @@ lemma capture_backend_is_successful (capture : CaptureData) (supported : Support
     · exact forward_backend_is_accepted
     · exact reverse_backend_is_accepted
   refine ⟨?_, ?_, ?_, accepted, rfl, rfl, rfl, rfl, rfl⟩
-  all_goals rcases supported with rfl | rfl <;> decide
+  all_goals rcases supported with rfl | rfl <;> native_decide
 
 lemma capture_cak_is_derived (capture : CaptureData) (supported : SupportedCapture capture) :
     tlsPrimitive.deriveCAK capture.masterSessionKey = capture.cak := by
@@ -69,7 +69,7 @@ lemma capture_cak_is_derived (capture : CaptureData) (supported : SupportedCaptu
   · change (if forward.masterSessionKey = forward.masterSessionKey then forward.cak
       else if forward.masterSessionKey = reverse.masterSessionKey then reverse.cak else "") = _
     rw [if_pos rfl]
-  · have different : reverse.masterSessionKey ≠ forward.masterSessionKey := by decide
+  · have different : reverse.masterSessionKey ≠ forward.masterSessionKey := by native_decide
     change (if reverse.masterSessionKey = forward.masterSessionKey then forward.cak
       else if reverse.masterSessionKey = reverse.masterSessionKey then reverse.cak else "") = _
     rw [if_neg different, if_pos rfl]
@@ -85,10 +85,10 @@ lemma profile_selected_exchange (capture : CaptureData) (supported : SupportedCa
     all_goals
       refine ⟨rfl, ?_⟩
       first
-      | refine Or.inl ⟨by decide, by decide, successful, by decide, by decide, by decide,
-          by decide, by decide, by decide, rfl⟩
-      | refine Or.inr ⟨by decide, by decide, successful, by decide, by decide, by decide,
-          by decide, by decide, by decide, rfl⟩
+      | refine Or.inl ⟨by native_decide, by native_decide, successful, by native_decide, by native_decide, by native_decide,
+          by native_decide, by native_decide, by native_decide, rfl⟩
+      | refine Or.inr ⟨by native_decide, by native_decide, successful, by native_decide, by native_decide, by native_decide,
+          by native_decide, by native_decide, by native_decide, rfl⟩
 
 lemma profile_session_binding (capture : CaptureData) (supported : SupportedCapture capture) :
     ∀ selected ∈ capture.authentication, EAPSessionBinding tlsPrimitive selected capture.exchange := by
@@ -116,10 +116,10 @@ lemma profile_endpoint_roles (capture : CaptureData) (supported : SupportedCaptu
       all_goals
         refine ⟨by decide, ?_⟩
         first
-        | exact ⟨forward.exchange, List.mem_cons_self, by decide, by decide, rfl, by decide, by decide,
-            by decide, by decide, capture_exchange_is_successful forward (Or.inl rfl)⟩
-        | exact ⟨reverse.exchange, List.mem_cons.mpr (Or.inr List.mem_cons_self), by decide, by decide,
-            rfl, by decide, by decide, by decide, by decide,
+        | exact ⟨forward.exchange, List.mem_cons_self, by native_decide, by native_decide, rfl, by native_decide, by native_decide,
+            by native_decide, by native_decide, capture_exchange_is_successful forward (Or.inl rfl)⟩
+        | exact ⟨reverse.exchange, List.mem_cons.mpr (Or.inr List.mem_cons_self), by native_decide, by native_decide,
+            rfl, by native_decide, by native_decide, by native_decide, by native_decide,
             capture_exchange_is_successful reverse (Or.inr rfl)⟩
 
 lemma unlisted_handshake_input_is_rejected (input : TLSHandshakeInput)

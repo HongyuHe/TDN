@@ -75,19 +75,19 @@ lemma profile_traffic_is_source (records : ProfileRecords) (supported : Supporte
     records.model.native.sourceProcessing.process records.trafficRequest =
       .emitted [records.trafficDatagram] := by
   rcases supported with rfl | rfl
-  · refine ⟨⟨Or.inl ⟨trafficHeader, rfl⟩, rfl, rfl, direct.networks[0], by decide, rfl⟩, rfl⟩
-  · refine ⟨⟨Or.inl ⟨trafficHeader, rfl⟩, rfl, rfl, routed.networks[0], by decide, rfl⟩, rfl⟩
+  · refine ⟨⟨Or.inl ⟨trafficHeader, rfl⟩, rfl, rfl, direct.networks[0], by native_decide, rfl⟩, rfl⟩
+  · refine ⟨⟨Or.inl ⟨trafficHeader, rfl⟩, rfl, rfl, routed.networks[0], by native_decide, rfl⟩, rfl⟩
 
 lemma profile_traffic_steps (records : ProfileRecords) (supported : SupportedProfile records) :
     (⟨records.model.native.AcceptedStep⟩ : Cslib.LTS _ _).MTr records.trafficStart
       [.receive, .route, .forwardFilter, .forwardWithoutEncap, .encryptMACsec,
         .linkTransmit, .decryptMACsec, .receive, .inputFilter, .deliver] records.trafficDelivered := by
   have senderMember : records.sender ∈ records.configuration.macIfaces := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have receiverMember : records.receiver ∈ records.configuration.macIfaces := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have associationInstalled : records.association ∈ records.receiver.receiveAssociations := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have firstVisible : records.configuration.visibleHeader records.trafficStart.frame =
       some (PacketSource.sourceHeader records.trafficRequest trafficHeader [7, 8]) := by
     rcases supported with rfl | rfl <;> rfl
@@ -102,7 +102,7 @@ lemma profile_traffic_steps (records : ProfileRecords) (supported : SupportedPro
   have routeStep : MultiProtocolForwarding.Step records.configuration records.trafficEntered .route records.trafficRouted := by
     apply MultiProtocolForwarding.Step.route (s := records.trafficEntered) records.trafficRoute rfl firstVisible
     · rcases supported with rfl | rfl <;>
-        unfold DataPlaneForwarding.SelectedFibRoute DataPlaneForwarding.FibRoute.matches <;> decide
+        unfold DataPlaneForwarding.SelectedFibRoute DataPlaneForwarding.FibRoute.matches <;> native_decide
     · rfl
   have filterStep : MultiProtocolForwarding.Step records.configuration records.trafficRouted .forwardFilter records.trafficFiltered := by
     apply MultiProtocolForwarding.Step.forwardFilter rfl nextVisible
@@ -115,7 +115,7 @@ lemma profile_traffic_steps (records : ProfileRecords) (supported : SupportedPro
   have linkStep : MultiProtocolForwarding.Step records.configuration records.trafficEncrypted .linkTransmit records.trafficReceived := by
     apply MultiProtocolForwarding.Step.linkTransmit records.receiver.physicalIface rfl
     change (_, _) ∈ records.links
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have decryptStep : MultiProtocolForwarding.Step records.configuration records.trafficReceived .decryptMACsec records.trafficDecrypted :=
     .decryptMACsec records.receiver records.association records.association _ receiverMember rfl rfl rfl
       associationInstalled ⟨rfl, rfl⟩
@@ -124,8 +124,8 @@ lemma profile_traffic_steps (records : ProfileRecords) (supported : SupportedPro
   have inputStep : MultiProtocolForwarding.Step records.configuration records.trafficPeerEntered .inputFilter records.trafficLocalInput := by
     apply MultiProtocolForwarding.Step.inputFilter (s := records.trafficPeerEntered) rfl peerVisible
     · rcases supported with rfl | rfl
-      · exact ⟨direct.interfaces[2], by decide, rfl, Or.inl rfl⟩
-      · exact ⟨routed.interfaces[3], by decide, rfl, Or.inl rfl⟩
+      · exact ⟨direct.interfaces[2], by native_decide, rfl, Or.inl rfl⟩
+      · exact ⟨routed.interfaces[3], by native_decide, rfl, Or.inl rfl⟩
     · rcases supported with rfl | rfl <;> rfl
   have deliveredStep : MultiProtocolForwarding.Step records.configuration records.trafficLocalInput .deliver records.trafficDelivered := by
     apply MultiProtocolForwarding.Step.deliver 1 rfl
@@ -138,7 +138,7 @@ lemma profile_traffic_steps (records : ProfileRecords) (supported : SupportedPro
     · rcases supported with rfl | rfl <;> rfl
     · change LinkAdmission.Frame.DescribesBody _ (.macsec records.association _) ∧ _
       constructor
-      · rcases supported with rfl | rfl <;> dsimp only [LinkAdmission.Frame.DescribesBody] <;> decide
+      · rcases supported with rfl | rfl <;> dsimp only [LinkAdmission.Frame.DescribesBody] <;> native_decide
       · intro header impossible
         cases impossible
     · rcases member with rfl | rfl <;> rcases supported with rfl | rfl
@@ -161,7 +161,7 @@ lemma profile_traffic_steps (records : ProfileRecords) (supported : SupportedPro
       Option.some.inj (visible.symm.trans firstVisible)
     subst header
     change 1 < 64
-    decide
+    native_decide
   refine .stepL ⟨filterStep, by simp, by simp, by simp [Config.LinkStepAdmitted], by simp [Config.HeaderStepAdmitted], by simp⟩ ?_
   refine .stepL ⟨readyStep, by simp, by simp, by simp [Config.LinkStepAdmitted], by simp [Config.HeaderStepAdmitted], by simp⟩ ?_
   refine .stepL ⟨encryptStep, by simp, by simp, by simp [Config.LinkStepAdmitted], by simp [Config.HeaderStepAdmitted], by simp⟩ ?_

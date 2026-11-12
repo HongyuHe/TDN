@@ -20,7 +20,7 @@ instance (records : Records) : Decidable (SourceChecks records) := by
 
 lemma captured_source_checks :
     ∀ records ∈ [protectedCase, unprotectedAllowed, unprotectedDenied], SourceChecks records := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma checked_source_frames_bind_native_entry_and_logical_output (records : Records)
     (checks : SourceChecks records) :

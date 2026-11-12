@@ -47,10 +47,10 @@ instance tunnelModeCheckDecidable (record : TunnelModeBinding) : Decidable recor
   unfold TunnelModeBinding.Check Interface.HasLocalAddress
   infer_instance
 
-lemma tunnel_mode_bindings_checked : ∀ record ∈ tunnelModeBindings, record.Check := by decide
+lemma tunnel_mode_bindings_checked : ∀ record ∈ tunnelModeBindings, record.Check := by native_decide
 
 lemma ipsec_tunnels_have_mode_bindings : ∀ tunnel ∈ records.tunnels, tunnel.mechanism = .ipsec →
-    ∃ record ∈ tunnelModeBindings, record.tunnel = tunnel.id := by decide
+    ∃ record ∈ tunnelModeBindings, record.tunnel = tunnel.id := by native_decide
 
 def TunnelModeBinding.component (record : TunnelModeBinding) : EncryptionComponentConfiguration :=
   { id := records.componentName record.owner, mechanism := .ipsec,

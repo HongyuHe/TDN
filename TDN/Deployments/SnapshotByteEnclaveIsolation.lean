@@ -78,16 +78,16 @@ lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ TDN.Deployments.P
   rcases member with rfl | rfl | rfl | rfl
   · simp only [TDN.Deployments.ProfileShared_DataPlane.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
-    all_goals decide
+    all_goals native_decide
   · simp only [TDN.Deployments.ProfileShared_DataPlane.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
-    all_goals decide
+    all_goals native_decide
   · simp only [TDN.Deployments.ProfileShared_DataPlane.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
-    all_goals decide
+    all_goals native_decide
   · simp only [TDN.Deployments.ProfileShared_DataPlane.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
-    all_goals decide
+    all_goals native_decide
 
 theorem every_assembled_black_byte_has_both_layers {Byte : Type}
     {after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
@@ -171,10 +171,10 @@ lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ TDN.Deployments.P
   rcases member with rfl | rfl
   · simp only [TDN.Deployments.ProfileBaseline_DataPlane.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
-    all_goals decide
+    all_goals native_decide
   · simp only [TDN.Deployments.ProfileBaseline_DataPlane.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
-    all_goals decide
+    all_goals native_decide
 
 theorem every_assembled_black_byte_has_both_layers {Byte : Type}
     {after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}

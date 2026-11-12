@@ -7,7 +7,7 @@ set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
 
 lemma source_mtu_minimum (iface : Nat) : 1280 ≤ records.sourceMtu iface := by
-  have checked : ∀ interface ∈ records.interfaces, 1280 ≤ interface.mtu.getD 1500 := by decide
+  have checked : ∀ interface ∈ records.interfaces, 1280 ≤ interface.mtu.getD 1500 := by native_decide
   cases found : records.interfaces.find? (fun interface => interface.id == records.ifaceName iface) with
   | none => simp [Records.sourceMtu, found]
   | some interface => simpa only [Records.sourceMtu, found, Option.bind_some] using checked interface (List.mem_of_find?_eq_some found)
@@ -26,7 +26,7 @@ lemma network_sources : ∀ network ∈ deployment.networks, ∃ request datagra
   have checked : ∀ network ∈ records.networks, ∃ flow ∈ records.sourceFlows,
       sourceEntry records.entries flow.iface = some network.id ∧
       records.redNetwork flow.domain = network.id ∧
-      EmittedOutcome (PacketSource.processSource (records.sourceMtu flow.iface) flow.request) := by decide
+      EmittedOutcome (PacketSource.processSource (records.sourceMtu flow.iface) flow.request) := by native_decide
   intro network member
   obtain ⟨flow, listed, entry, origin, emits⟩ := checked network member
   cases outcome : PacketSource.processSource (records.sourceMtu flow.iface) flow.request with
@@ -54,7 +54,7 @@ lemma link_encoding_complete (selected : MixedFlowEndpoints) (member : selected 
       (records.macFrames.find? (fun entry => entry.1 == selected.outerAssociation)).map Prod.snd = some encoded.2 ∧
       encoded.2.DescribesBody (.macsec selected.outerAssociation contents) := by
     dsimp only [LinkAdmission.Frame.DescribesBody]
-    decide
+    native_decide
   obtain ⟨encoded, stored, same, found, describes⟩ := checked selected member
   refine ⟨encoded.2, ?_, ?_⟩
   · simpa only [Records.configuration, body, selectedAssociation] using found

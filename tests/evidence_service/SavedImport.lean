@@ -19,12 +19,11 @@ load_network_records innerForward : List TDN.PacketPolicy.Rule
 
 lemma saved_inventory_has_sources : TDN.Deployments.HasProvenance captured := by
   unfold TDN.Deployments.HasProvenance captured
-  decide
-
+  native_decide
 lemma every_nonfirewall_gray_edge_keeps_region :
     ∀ edge ∈ grayEdges, edge.1 ∉ grayFirewalls → edge.2 ∉ grayFirewalls →
-      grayRegions[edge.1]? = grayRegions[edge.2]? := by decide
+      grayRegions[edge.1]? = grayRegions[edge.2]? := by native_decide
 
-lemma imported_filter_is_nonempty : innerForward ≠ [] := by decide
+lemma imported_filter_is_nonempty : innerForward ≠ [] := by native_decide
 
 end TDN.ImportTests

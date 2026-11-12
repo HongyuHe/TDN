@@ -23,7 +23,7 @@ lemma ingress_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
       rw [ownerSame]
       exact entered.1
     exact unauthenticated_external_ingress_cannot_forward (configuration primitive) state header "red" "gray"
-      (by decide) (inner_forward_chain primitive state.iface inner) entered.2 unauthenticated
+      (by native_decide) (inner_forward_chain primitive state.iface inner) entered.2 unauthenticated
   · intro payload iface component policy association selected configured installed bound
     obtain ⟨member, owner⟩ := receive_target_index payload iface component selected
     obtain ⟨tunnel, present, identity, selectedLayer, receiver⟩ :=
@@ -35,7 +35,7 @@ lemma outbound_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
       expectedStack innerOwner ⟨fun _ => 64, fun _ => 64⟩ := by
   refine ⟨headered_stack_conditions (codec primitive), rfl, ?_, ?_, ?_, source_layouts, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro iface
-    exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩
+    exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩
   · refine ⟨rfl, rfl, route_owners, ?_⟩
     intro first last connected
     exact bridge_outputs_outside_inner (first,last) connected
@@ -75,7 +75,7 @@ lemma component_coverage (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
   have checked : ∀ device ∈ records.components, device.layer = some .inner →
       ∃ component ∈ components, component.id = device.id ∧
         ((device.kind = .vpn ∧ component.mechanism = .ipsec) ∨
-          (device.kind = .macsec ∧ component.mechanism = .macsec)) := by decide
+          (device.kind = .macsec ∧ component.mechanism = .macsec)) := by native_decide
   intro device member relevant layer
   exact checked device member layer
 

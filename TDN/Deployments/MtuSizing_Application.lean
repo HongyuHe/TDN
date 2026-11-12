@@ -97,7 +97,7 @@ theorem complete_recorded_packet_sizing {Key : Type} (records : Records)
       privateMaterial nonempty devicesUnique interfacesUnique tunnelsUnique)
     (by simp [ObservedHistory.Valid]) ifaceChecks codec (requiredSizing roles) (sourceMtu roles) (sourceMtu roles)
     plaintextLimit authenticationLimit budgets.1 budgets.2 ⟨fun _ => 64, fun _ => 64⟩ rfl
-    (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩)
+    (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩)
     (fun _ _ => rfl) rfl (source_mtu_minimum roles mtuChecked) rfl
     (allowed_source_iface_is_recorded records installations entries roles policies epoch codec material networks
       attachments services base sourceBindings)

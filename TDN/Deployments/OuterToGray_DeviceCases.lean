@@ -79,7 +79,7 @@ lemma observed_packet_is_supported (records : Records) (base : Deployment) (pack
   intro _ established
   change packet.connectionState = "established" at established
   rw [fresh] at established
-  exact False.elim ((by decide : ("new" : String) ≠ "established") established)
+  exact False.elim ((by native_decide : ("new" : String) ≠ "established") established)
 
 lemma checked_forward_case_is_eligible_and_accepted (sample : ForwardCase) (records : Records)
     (base : Deployment) (unique : InterfaceIDsUnique records.interfaces)

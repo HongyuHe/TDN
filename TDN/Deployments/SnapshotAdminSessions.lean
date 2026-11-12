@@ -144,10 +144,10 @@ theorem recorded_service_authentication :
     msc_administrator_authentication false false events accounts sessions [] := by
   apply administrator_authentication_from_admitted_operations false false events actions accounts sessions [] (fun _ => 0)
   · exact admitted_history
-  · decide
+  · native_decide
   · simp
 
 theorem successful_operations_are_present :
-    (events.filter (fun event => event.kind == .operation)).length = 10 := by decide
+    (events.filter (fun event => event.kind == .operation)).length = 10 := by native_decide
 
 end TDN.Deployments.SnapshotAdminSessions

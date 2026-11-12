@@ -10,10 +10,10 @@ def rules (device : Nat) : List PacketPolicy.Rule :=
   (DataPlaneForwarding.deviceAt ProfileShared_DataPlane.devices device).outputRules
 
 lemma actual_defaults : ∀ row ∈ outerPeers,
-    (DataPlaneForwarding.deviceAt ProfileShared_DataPlane.devices row.1).outputFallback = .deny := by decide
+    (DataPlaneForwarding.deviceAt ProfileShared_DataPlane.devices row.1).outputFallback = .deny := by native_decide
 
 lemma peer_rule_checks : ∀ row ∈ outerPeers, ∀ rule ∈ rules row.1,
-    rule.verdict = .allow → Requirements.PeerOutputGuard row.2 rule := by decide
+    rule.verdict = .allow → Requirements.PeerOutputGuard row.2 rule := by native_decide
 
 theorem every_external_local_output_targets_the_actual_peer (row : Nat × Nat)
     (member : row ∈ outerPeers) (packet : PacketPolicy.Packet)

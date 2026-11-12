@@ -126,7 +126,7 @@ theorem complete_model_RG013 (base : Deployment) (processing : PacketProcessing.
   · change ∀ first ∈ devices, ∀ second ∈ devices, first.id = second.id → first = second
     simp [devices]
   · change ∀ device ∈ devices, device.layer = some .inner → device.kind ≠ .grayFirewall
-    decide
+    native_decide
   · simp [edges, topology]
   · intro device member manager
     simp only [deployment, devices, List.mem_cons, List.not_mem_nil, or_false] at member
@@ -224,6 +224,6 @@ lemma direct_cross_level_bypass_fails_local_edge_check :
   have impossible := checked ("node-IA", "node-IC") (by simp)
     (by simp [topology]) (by simp [topology])
   change low = high at impossible
-  cases (by decide : low ≠ high) impossible
+  cases (by native_decide : low ≠ high) impossible
 
 end TDN.Deployments.SnapshotProof_GrayFirewall

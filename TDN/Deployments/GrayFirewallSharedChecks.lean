@@ -1,3 +1,4 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.GrayFirewallSharedCheckCommon
 
 namespace TDN.Deployments.GrayFirewallShared
@@ -21,7 +22,7 @@ lemma Gray_core_checked (base : Deployment) :
 lemma Gray_interfaces_checked (base : Deployment) :
     ∀ interface ∈ records.interfaces,
       GrayInterfaceChecks (deployment base) records.inventory records.pairs interface := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Gray_permissions_checked (base : Deployment) :
     ∀ interface ∈ records.interfaces,
@@ -30,7 +31,7 @@ lemma Gray_permissions_checked (base : Deployment) :
       (deployment base).IsDevice interface.device .grayFirewall →
       ∀ direction ∈ [Direction.inbound, .outbound],
         GrayIndexedForwardChecks (deployment base) records.inventory records.pairs selectedRoutes indexedAclPermit
-          interface direction := by exact of_decide_eq_true rfl
+          interface direction := by unfold_check_parameters; native_decide
   intro interface listed role direction member
   exact gray_forward_checks_from_route_certificates _ _ _ _ peer_selected_routes_covered indexedAclPermit _ _
     (indexed_acl_permit_sound base interface listed role direction member)

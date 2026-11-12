@@ -9,11 +9,11 @@ set_option synthInstance.maxSize 2048
 
 lemma processing_coherent : deployment.ProcessingCoherent := by
   apply processing_coherence_from_record_checks deployment records.inventory rfl
-  · decide
+  · native_decide
   · rfl
   · rfl
 
-lemma public_sa_inventory_checks : PublicSAInventoryChecks configuration records.epoch records.installations := by decide
+lemma public_sa_inventory_checks : PublicSAInventoryChecks configuration records.epoch records.installations := by native_decide
 
 lemma ipsec_material_valid : ∀ record ∈ records.installations,
     (records.ipsecMaterial record.materialReference).Valid := by
@@ -24,8 +24,8 @@ lemma processing_bound : deviceBinding.ProcessingBound deployment := by
   refine ⟨processing_coherent, ?_, records.inventory, rfl, rfl, rfl, rfl, rfl, ?_, ?_, ?_, ?_⟩
   · simp [Deployment.UDPBindingsCoherent, Records.deployment]
   · simp [Records.deployment]
-  · decide
-  · decide
+  · native_decide
+  · native_decide
   · intro size sizeMember installation installed direction owner bound
     obtain ⟨record, member, rfl⟩ := List.mem_map.mp installed
     refine ⟨records.ipsecMaterial record.materialReference,
@@ -34,22 +34,22 @@ lemma processing_bound : deviceBinding.ProcessingBound deployment := by
 
 lemma iface_conditions : IfaceConditions configuration ifaces := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
-  · decide
+  · native_decide
   · intro first last linked
     change (first,last) ∈ records.links at linked
-    have checked : ∀ edge ∈ records.links, edge.1 ∈ ifaces ∧ edge.2 ∈ ifaces := by decide
+    have checked : ∀ edge ∈ records.links, edge.1 ∈ ifaces ∧ edge.2 ∈ ifaces := by native_decide
     exact checked _ linked
   · intro first last linked
     change (first,last) ∈ records.bridges at linked
-    have checked : ∀ edge ∈ records.bridges, edge.1 ∈ ifaces ∧ edge.2 ∈ ifaces := by decide
+    have checked : ∀ edge ∈ records.bridges, edge.1 ∈ ifaces ∧ edge.2 ∈ ifaces := by native_decide
     exact checked _ linked
-  · decide
+  · native_decide
   · simp [Records.configuration, dataPlaneModelFromRecords]
 
 lemma interface_links : deployment.InterfaceLinksWellFormed := by
   have checked : ∀ edge ∈ records.links,
       (∃ interface ∈ records.interfaces, interface.id = records.ifaceName edge.1) ∧
-      (∃ interface ∈ records.interfaces, interface.id = records.ifaceName edge.2) := by decide
+      (∃ interface ∈ records.interfaces, interface.id = records.ifaceName edge.2) := by native_decide
   intro first last connected
   obtain ⟨edge, member, firstName, lastName⟩ := connected
   simpa only [Records.deployment, firstName, lastName] using checked edge member
@@ -60,27 +60,26 @@ lemma link_policies : deployment.LinkPoliciesComplete := by
         (LinkAdmission.lookup configuration.linkPolicies iface).isSome = true := by
       unfold Deployment.LinkPath
       dsimp only [Records.inventory, Records.configuration, dataPlaneModelFromRecords]
-      decide
+      native_decide
     intro iface member path
     exact Option.isSome_iff_exists.mp (checked iface member path)
   · unfold Deployment.LinkPath
     dsimp only [Records.inventory, Records.configuration, dataPlaneModelFromRecords]
-    decide
-  · decide
-
+    native_decide
+  · native_decide
 lemma recorded_source_bindings :
     (∀ entry ∈ records.entries, entry.iface ∈ ifaces ∧ ∃ network ∈ records.networks, network.id = entry.network) ∧
     ∀ iface ∈ List.range records.ifaceData.length, ∀ network ∈ records.networks,
       sourceEntry records.entries iface = some network.id ↔
       ∃ interface ∈ records.interfaces, interface.id = records.ifaceName iface ∧ interface.zone = .red ∧
-        interface.managementNetwork = false ∧ interface.device ∈ network.innerComponents := by decide
+        interface.managementNetwork = false ∧ interface.device ∈ network.innerComponents := by native_decide
 
 lemma named_iface_is_recorded (interface : Interface) (member : interface ∈ records.interfaces)
     (iface : Nat) (name : interface.id = records.ifaceName iface) : iface < records.ifaceData.length := by
   by_contra absent
-  have sameLength : records.ifaceNames.length = records.ifaceData.length := by decide
+  have sameLength : records.ifaceNames.length = records.ifaceData.length := by native_decide
   have missing : records.ifaceNames[iface]? = none := List.getElem?_eq_none (by omega)
-  have nonempty : ∀ interface ∈ records.interfaces, interface.id ≠ "unlisted-iface" := by decide
+  have nonempty : ∀ interface ∈ records.interfaces, interface.id ≠ "unlisted-iface" := by native_decide
   exact nonempty interface member (name.trans (by simp only [Records.ifaceName, missing, Option.getD_none]))
 
 lemma source_entries : ∀ iface network, deviceBinding.sourceEntry iface = some network ↔
@@ -109,7 +108,7 @@ lemma macsec_key_inventory : deviceBinding.MACsecKeyInventory := by
       ∀ association ∈ iface.transmitAssociation.toList ++ iface.receiveAssociations,
       ∃ reference ∈ records.macMaterials, reference.1 = association ∧
         records.macsecMaterial association = some (List.replicate 32
-          (UInt8.ofNat ((records.macMaterials.map Prod.snd).idxOf reference.2 + 1))) := by decide
+          (UInt8.ofNat ((records.macMaterials.map Prod.snd).idxOf reference.2 + 1))) := by native_decide
   intro iface member association installed
   have present : association ∈ iface.transmitAssociation.toList ++ iface.receiveAssociations := by
     rcases installed with sent | received
@@ -126,19 +125,19 @@ lemma static_bindings : DeviceDeploymentBindings deviceBinding ifaces deployment
   refine ⟨processing_bound, interface_links, link_policies, ?_, macsec_key_inventory,
     ipsec_key_inventory, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, source_entries, ?_, ?_⟩
   · exact ⟨records.inventory, rfl, ⟨fun _ => 64, fun _ => 64⟩, rfl,
-      fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; decide⟩
-  · decide
+      fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; native_decide⟩
+  · native_decide
   · intro tunnel member
     exact ⟨tunnel, member, rfl, rfl⟩
-  · decide
-  · decide
-  · decide
+  · native_decide
+  · native_decide
+  · native_decide
   · have checked : ∀ interface ∈ records.interfaces, ∃ iface ∈ ifaces,
-        records.ifaceName iface = interface.id ∧ records.componentName (configuration.ip.owner iface) = interface.device := by decide
+        records.ifaceName iface = interface.id ∧ records.componentName (configuration.ip.owner iface) = interface.device := by native_decide
     intro interface member
     obtain ⟨iface, present, name, owner⟩ := checked interface member
     exact ⟨iface, name, owner⟩
-  · decide
+  · native_decide
   · intro first last linked
     exact ⟨(first,last), linked, rfl, rfl⟩
   · have checked : ∀ iface ∈ records.macIfaces,
@@ -148,7 +147,7 @@ lemma static_bindings : DeviceDeploymentBindings deviceBinding ifaces deployment
         tunnel.sender = records.componentName (configuration.ip.owner iface.physicalIface) ∧
         ∀ peer ∈ records.macIfaces,
           (∃ installed ∈ peer.receiveAssociations, SameMACWireIdentity association installed) →
-          tunnel.receiver = records.componentName (configuration.ip.owner peer.physicalIface) := by decide
+          tunnel.receiver = records.componentName (configuration.ip.owner peer.physicalIface) := by native_decide
     intro iface member association installed
     exact checked iface member association (by simp [installed])
   · have checked : ∀ record ∈ records.installations, ∀ policy ∈
@@ -159,7 +158,7 @@ lemma static_bindings : DeviceDeploymentBindings deviceBinding ifaces deployment
         ∃ tunnel ∈ records.tunnels, tunnel.id = records.ipsecTunnel (policy.seal record.installation.association) ∧
         tunnel.mechanism = .ipsec ∧
         deployment.AddressOwner record.installation.association.sender = some tunnel.sender ∧
-        deployment.AddressOwner record.installation.association.receiver = some tunnel.receiver := by decide
+        deployment.AddressOwner record.installation.association.receiver = some tunnel.receiver := by native_decide
     intro iface association policy installed bound
     rcases installed with ⟨stateMember, policyMember⟩ | ⟨stateMember, policyMember⟩
     · obtain ⟨record, member, owner, direction, same⟩ := (directional_state_member ..).mp stateMember

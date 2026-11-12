@@ -140,14 +140,14 @@ The list does not assert one simultaneous combined deployment snapshot. -/
 def corrections : List Correction := [""" + ",\n  ".join(values) + """]
 
 /-- One millisecond is the selected measurement threshold, not a CP timing bound. -/
-lemma corrected_samples : ∀ r ∈ corrections, CorrectedAtSample 1000 r := by decide
-lemma initially_displaced : ∀ r ∈ corrections, 1000 < r.beforeOffsetUs.natAbs := by decide
+lemma corrected_samples : ∀ r ∈ corrections, CorrectedAtSample 1000 r := by native_decide
+lemma initially_displaced : ∀ r ∈ corrections, 1000 < r.beforeOffsetUs.natAbs := by native_decide
 
 theorem each_observed_correction_reduces_offset :
     ∀ r ∈ corrections, r.afterOffsetUs.natAbs < r.beforeOffsetUs.natAbs :=
   all_checked_clock_corrections_improve_offset corrections 1000 corrected_samples initially_displaced
 
-lemma complete_selected_clock_inventory : corrections.length = 4 := by decide
+lemma complete_selected_clock_inventory : corrections.length = 4 := by native_decide
 
 end TDN.Deployments.FreshClockCorrections
 """

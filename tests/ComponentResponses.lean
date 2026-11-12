@@ -17,22 +17,20 @@ lemma host_reply_route : responses.selectedRoute witnessState60 replyHeader 196 
   change SelectedFibRoute TDN.Deployments.ProfileShared_DataPlane.routes
     ⟨196, 196, 0, 4294967295, 0, 0, 32766⟩ replyHeader
   unfold SelectedFibRoute FibRoute.matches
-  decide
-
+  native_decide
 lemma host_reply_emit : (KernelResponses.lts (lts config) responses).Tr
     (.routed witnessState60 .echo replyHeader 196) .emit
     (.network (responses.emit witnessState60 replyHeader 196)) := by
   apply KernelResponses.Step.emit
-  · decide
-  · decide
-
+  · native_decide
+  · native_decide
 -- A delivered packet may generate and emit an actual permitted host reply.
 example : (KernelResponses.lts (lts config) responses).MTr
     (.network witnessState60) [.generate, .route, .emit]
     (.network (responses.emit witnessState60 replyHeader 196)) := by
   apply Cslib.LTS.MTr.stepL
     (KernelResponses.Step.generate witnessState60 .echo replyHeader
-      (every_active_component_can_generate witnessState60 (by decide)) (Or.inl rfl))
+      (every_active_component_can_generate witnessState60 (by native_decide)) (Or.inl rfl))
   apply Cslib.LTS.MTr.stepL (KernelResponses.Step.route _ _ _ _ host_reply_route)
   exact Cslib.LTS.MTr.stepL host_reply_emit Cslib.LTS.MTr.refl
 
@@ -47,4 +45,4 @@ example : DomainInvariant config domainLayout1 domainAllowed1
       { witnessState31.frame.packet with protocol := "icmp" } 5) := by
   change witnessState31.frame.encapLayerIds = domainLayout1 5 ∧ domainAllowed1 5
   unfold domainAllowed1
-  decide
+  native_decide

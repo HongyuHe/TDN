@@ -76,19 +76,19 @@ lemma profile_traffic_is_source (capture : CaptureData) (supported : SupportedCa
     capture.model.native.sourceProcessing.process capture.trafficRequest =
       .emitted [capture.trafficDatagram] := by
   rcases supported with rfl | rfl
-  · refine ⟨⟨Or.inl ⟨trafficHeader, rfl⟩, rfl, rfl, forward.profile.networks[0], by decide, rfl⟩, rfl⟩
-  · refine ⟨⟨Or.inl ⟨trafficHeader, rfl⟩, rfl, rfl, reverse.profile.networks[0], by decide, rfl⟩, rfl⟩
+  · refine ⟨⟨Or.inl ⟨trafficHeader, rfl⟩, rfl, rfl, forward.profile.networks[0], by native_decide, rfl⟩, rfl⟩
+  · refine ⟨⟨Or.inl ⟨trafficHeader, rfl⟩, rfl, rfl, reverse.profile.networks[0], by native_decide, rfl⟩, rfl⟩
 
 lemma profile_traffic_steps (capture : CaptureData) (supported : SupportedCapture capture) :
     (⟨capture.model.native.AcceptedStep⟩ : Cslib.LTS _ _).MTr capture.trafficStart
       [.receive, .route, .forwardFilter, .forwardWithoutEncap, .encryptMACsec,
         .linkTransmit, .decryptMACsec, .receive, .inputFilter, .deliver] capture.trafficDelivered := by
   have senderMember : capture.sender ∈ capture.profile.configuration.macIfaces := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have receiverMember : capture.receiver ∈ capture.profile.configuration.macIfaces := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have associationInstalled : capture.association ∈ capture.receiver.receiveAssociations := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have firstVisible : capture.profile.configuration.visibleHeader capture.trafficStart.frame =
       some (PacketSource.sourceHeader capture.trafficRequest trafficHeader [7, 8]) := by
     rcases supported with rfl | rfl <;> rfl
@@ -103,7 +103,7 @@ lemma profile_traffic_steps (capture : CaptureData) (supported : SupportedCaptur
   have routeStep : MultiProtocolForwarding.Step capture.profile.configuration capture.trafficEntered .route capture.trafficRouted := by
     apply MultiProtocolForwarding.Step.route (s := capture.trafficEntered) capture.trafficRoute rfl firstVisible
     · rcases supported with rfl | rfl <;>
-        unfold DataPlaneForwarding.SelectedFibRoute DataPlaneForwarding.FibRoute.matches <;> decide
+        unfold DataPlaneForwarding.SelectedFibRoute DataPlaneForwarding.FibRoute.matches <;> native_decide
     · rfl
   have filterStep : MultiProtocolForwarding.Step capture.profile.configuration capture.trafficRouted .forwardFilter capture.trafficFiltered := by
     apply MultiProtocolForwarding.Step.forwardFilter rfl nextVisible
@@ -116,7 +116,7 @@ lemma profile_traffic_steps (capture : CaptureData) (supported : SupportedCaptur
   have linkStep : MultiProtocolForwarding.Step capture.profile.configuration capture.trafficEncrypted .linkTransmit capture.trafficReceived := by
     apply MultiProtocolForwarding.Step.linkTransmit capture.receiver.physicalIface rfl
     change (_, _) ∈ capture.profile.links
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have decryptStep : MultiProtocolForwarding.Step capture.profile.configuration capture.trafficReceived .decryptMACsec capture.trafficDecrypted :=
     .decryptMACsec capture.receiver capture.association capture.association _ receiverMember rfl rfl rfl
       associationInstalled ⟨rfl, rfl⟩
@@ -125,8 +125,8 @@ lemma profile_traffic_steps (capture : CaptureData) (supported : SupportedCaptur
   have inputStep : MultiProtocolForwarding.Step capture.profile.configuration capture.trafficPeerEntered .inputFilter capture.trafficLocalInput := by
     apply MultiProtocolForwarding.Step.inputFilter (s := capture.trafficPeerEntered) rfl peerVisible
     · rcases supported with rfl | rfl
-      · exact ⟨forward.profile.interfaces[2], by decide, rfl, Or.inl rfl⟩
-      · exact ⟨reverse.profile.interfaces[3], by decide, rfl, Or.inl rfl⟩
+      · exact ⟨forward.profile.interfaces[2], by native_decide, rfl, Or.inl rfl⟩
+      · exact ⟨reverse.profile.interfaces[3], by native_decide, rfl, Or.inl rfl⟩
     · rcases supported with rfl | rfl <;> rfl
   have deliveredStep : MultiProtocolForwarding.Step capture.profile.configuration capture.trafficLocalInput .deliver capture.trafficDelivered := by
     apply MultiProtocolForwarding.Step.deliver 1 rfl
@@ -139,7 +139,7 @@ lemma profile_traffic_steps (capture : CaptureData) (supported : SupportedCaptur
     · rcases supported with rfl | rfl <;> rfl
     · change LinkAdmission.Frame.DescribesBody _ (.macsec capture.association _) ∧ _
       constructor
-      · rcases supported with rfl | rfl <;> dsimp only [LinkAdmission.Frame.DescribesBody] <;> decide
+      · rcases supported with rfl | rfl <;> dsimp only [LinkAdmission.Frame.DescribesBody] <;> native_decide
       · intro header impossible
         cases impossible
     · rcases member with rfl | rfl <;> rcases supported with rfl | rfl
@@ -149,7 +149,7 @@ lemma profile_traffic_steps (capture : CaptureData) (supported : SupportedCaptur
   have decryptKeys : MACsecKeyMaterialMatches capture.model.native.macsecKeyMaterial
       capture.association capture.association := by
     refine ⟨capture.material, Or.inr ?_, rfl, rfl⟩
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have plainDeliver : capture.profile.configuration.LinkStepAdmitted capture.trafficLocalInput .deliver
       capture.trafficDelivered := by
     have visible : capture.trafficLocalInput.frame.visibleHeader =
@@ -163,7 +163,7 @@ lemma profile_traffic_steps (capture : CaptureData) (supported : SupportedCaptur
       Option.some.inj (visible.symm.trans firstVisible)
     subst header
     change 1 < 64
-    decide
+    native_decide
   refine .stepL ⟨filterStep, by simp, by simp, by simp [Config.LinkStepAdmitted], by simp [Config.HeaderStepAdmitted], by simp⟩ ?_
   refine .stepL ⟨readyStep, by simp, by simp, by simp [Config.LinkStepAdmitted], by simp [Config.HeaderStepAdmitted], by simp⟩ ?_
   refine .stepL ⟨encryptStep, by simp, by simp, by simp [Config.LinkStepAdmitted], by simp [Config.HeaderStepAdmitted], by simp⟩ ?_

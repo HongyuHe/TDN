@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -12,6 +13,10 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('publication', ROOT / 'scripts/publication/export_pages.py')
 publication = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(publication)
+sync_spec = importlib.util.spec_from_file_location('website_sync', ROOT / 'scripts/publication/sync_website.py')
+website_sync = importlib.util.module_from_spec(sync_spec)
+with patch.dict(sys.modules, {'export_pages': publication}):
+    sync_spec.loader.exec_module(website_sync)
 
 
 class PublicationTests(unittest.TestCase):
@@ -58,6 +63,51 @@ class PublicationTests(unittest.TestCase):
                 publication.install(Path(temp), 'main')
             with self.assertRaisesRegex(ValueError, 'checked-out TDN'):
                 publication.install(Path(temp), '0' * 40)
+
+    def test_unchanged_pages_refresh_links_after_revision_changes(self):
+        self.check_website_sync(previous_revision='1' * 40, expect_install=True)
+
+    def test_unchanged_pages_at_current_revision_need_no_commit(self):
+        self.check_website_sync(previous_revision='2' * 40, expect_install=False)
+
+    def check_website_sync(self, previous_revision, expect_install):
+        revision = '2' * 40
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp).resolve()
+            public = root / 'public'
+            website = root / 'website'
+            target = website / 'tdn'
+            manifest = {'pages': {}}
+            for name in publication.PAGES:
+                relative = f'public/{name}/index.html'
+                source = root / relative
+                source.parent.mkdir(parents=True)
+                source.write_text('Source revision: ' + publication.REVISION)
+                output = target / name / 'index.html'
+                output.parent.mkdir(parents=True)
+                output.write_text(source.read_text().replace(publication.REVISION, previous_revision))
+                manifest['pages'][name] = {'path': relative}
+            (public / 'manifest.json').write_text(json.dumps(manifest))
+            (target / 'source.json').write_text(json.dumps({
+                'revision': previous_revision,
+                'publication_sha256': publication.digest(public / 'manifest.json'),
+            }))
+            with (
+                patch.object(website_sync, 'ROOT', root),
+                patch.object(website_sync, 'PUBLIC', public),
+                patch.object(website_sync, 'validate', return_value=manifest),
+                patch.object(website_sync, 'install') as install,
+                patch.object(website_sync.subprocess, 'check_output', return_value=revision),
+                patch.object(website_sync.subprocess, 'run') as run,
+                patch.object(sys, 'argv', ['sync_website.py', str(website)]),
+            ):
+                website_sync.main()
+            if expect_install:
+                install.assert_called_once_with(target, revision)
+                self.assertEqual(run.call_args.args[0], ['git', 'push', 'origin', 'HEAD:master'])
+            else:
+                install.assert_not_called()
+                run.assert_not_called()
 
 
 if __name__ == '__main__':

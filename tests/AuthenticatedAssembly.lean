@@ -37,7 +37,7 @@ example : (system produces authenticates).MTr start
   have accept : Step produces authenticates receivedBoth .accept finish :=
     .accept (header := 99) (packet := ⟨99, [10, 20, 30]⟩)
       (by simp [ReassemblyOrigins.assemble, receivedBoth, first, second, Fragmentation.Contiguous])
-      (by unfold authenticates; decide)
+      (by unfold authenticates; native_decide)
   exact .stepL publish (.stepL receiveFirst (.stepL receiveSecond (.stepL accept .refl)))
 
 /-- Ordinary header and offset checks permit a mixed ciphertext. No such complete
@@ -49,8 +49,7 @@ example : ReassemblyOrigins.assemble 99
 
 example : ¬ authenticates [message, other] ⟨7, [10, 50, 60], [101, 102]⟩ := by
   unfold authenticates
-  decide
-
+  native_decide
 /-- Two different producer/domain annotations can match the same decoded bytes.
 Neither a decoder nor the proof is allowed to discard the second possibility. -/
 example : Matches Eq Prod.fst message decoded ∧ Matches Eq Prod.fst other decoded := by

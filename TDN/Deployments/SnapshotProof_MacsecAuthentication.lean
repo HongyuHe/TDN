@@ -41,12 +41,12 @@ lemma profile_as_attachment_matches_interfaces (capture : CaptureData) (supporte
       ∃ device ∈ capture.profile.devices, device.id = "AS" ∧ device.site = site ∧
         ∃ iface ∈ capture.profile.interfaces, iface.device = device.id ∧ iface.physical = true ∧ iface.zone = zone := by
   have devices : ∀ device ∈ capture.profile.devices, device.id = "AS" → device.site = "central-site" := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have interfaces : ∀ iface ∈ capture.profile.interfaces, iface.device = "AS" → iface.zone = .gray := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   have attached : ∃ device ∈ capture.profile.devices, device.id = "AS" ∧ device.site = "central-site" ∧
       ∃ iface ∈ capture.profile.interfaces, iface.device = device.id ∧ iface.physical = true ∧ iface.zone = .gray := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   intro site zone
   constructor
   · intro bound
@@ -59,24 +59,24 @@ lemma profile_as_attachment_matches_interfaces (capture : CaptureData) (supporte
 
 lemma role_reversed_sessions_are_distinct :
     forward.session ≠ reverse.session ∧ forward.masterSessionKey ≠ reverse.masterSessionKey ∧
-      forward.cak ≠ reverse.cak ∧ forward.sak ≠ reverse.sak := by decide
+      forward.cak ≠ reverse.cak ∧ forward.sak ≠ reverse.sak := by native_decide
 
 lemma cross_session_backend_is_rejected :
     ¬ EAPSessionBinding tlsPrimitive (forward.authenticationFor "P0" "P1") reverse.exchange := by
   intro binding
   have same := binding.2.2.1
-  have different : forward.backendInput.session ≠ reverse.tlsInput.session := by decide
+  have different : forward.backendInput.session ≠ reverse.tlsInput.session := by native_decide
   exact different same
 
 def crossedKeySetup : MACsecSetupRecord :=
-  let first := forward.setupRecords[0]'(by decide)
+  let first := forward.setupRecords[0]'(by native_decide)
   { first with installation := { first.installation with keyReference := reverse.sak } }
 
 lemma cross_capture_sak_is_rejected : ¬ crossedKeySetup.InstallationChecked forward.model := by
   intro checked
   have key := checked.2.2.2.2.2.1
   change forward.sak = reverse.sak at key
-  exact (by decide : forward.sak ≠ reverse.sak) key
+  exact (by native_decide : forward.sak ≠ reverse.sak) key
 
 def changedTranscriptInput : TLSHandshakeInput := {forward.tlsInput with transcript := []}
 
@@ -85,10 +85,10 @@ lemma changed_transcript_with_same_session_is_rejected :
   apply unlisted_handshake_input_is_rejected
   · intro same
     have transcript := congrArg TLSHandshakeInput.transcript same
-    exact (by decide : forward.tlsInput.transcript ≠ []) transcript.symm
+    exact (by native_decide : forward.tlsInput.transcript ≠ []) transcript.symm
   · intro same
     have session := congrArg TLSHandshakeInput.session same
-    exact (by decide : forward.tlsInput.session ≠ reverse.tlsInput.session) session
+    exact (by native_decide : forward.tlsInput.session ≠ reverse.tlsInput.session) session
 
 def changedBackendInput : EAPBackendInput := {forward.backendInput with protectedRecord := []}
 
@@ -97,9 +97,9 @@ lemma changed_backend_record_with_same_session_is_rejected :
   apply unlisted_backend_input_is_rejected
   · intro same
     have record := congrArg EAPBackendInput.protectedRecord same
-    exact (by decide : forward.backendInput.protectedRecord ≠ []) record.symm
+    exact (by native_decide : forward.backendInput.protectedRecord ≠ []) record.symm
   · intro same
     have session := congrArg EAPBackendInput.session same
-    exact (by decide : forward.backendInput.session ≠ reverse.backendInput.session) session
+    exact (by native_decide : forward.backendInput.session ≠ reverse.backendInput.session) session
 
 end TDN.Deployments.MacsecAuthentication

@@ -15,6 +15,6 @@ lemma recorded_firewalls_are_attached_to_their_local_Outers :
           records.inventory.componentName (records.inventory.configuration.ip.owner second) = binding.outer ∧
           records.inventory.configuration.ip.interfaceName second = "black" ∧
           records.inventory.configuration.physicalLink first second := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 end TDN.Deployments.Perimeter_Shared

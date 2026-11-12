@@ -1,5 +1,8 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.Perimeter_SharedData
 import TDN.Requirements.PerimeterDeviceAclChecks
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.Perimeter_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
@@ -9,7 +12,7 @@ set_option maxHeartbeats 0
 
 lemma control_observations_checked (base : Deployment) :
     BoundaryControlObservationChecks (deployment base) controls := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma firewall_rules_checked (base : Deployment) :
     ∀ interface ∈ (deployment base).interfaces,
@@ -18,6 +21,6 @@ lemma firewall_rules_checked (base : Deployment) :
           (deployment base).IsLayer (localOuter firewalls device.id) .outer ∧
             BoundaryFirewallChecks (deployment base) records.inventory controls interface
               (localOuter firewalls device.id) (firewallInternal.contains interface.id) := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 end TDN.Deployments.Perimeter_Shared

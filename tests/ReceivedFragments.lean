@@ -20,17 +20,17 @@ def foreignPiece : Fragmentation.Fragment Nat B := ⟨42, 0, [⟨65, 2, 1⟩]⟩
 example : Requirements.ArrivedFragment config redSources 196 arrival goodPiece := by
   refine ⟨?_, actual_received_prefix, rfl, rfl, rfl, ?_⟩
   · unfold Requirements.RedPayloadOrigin
-    decide
+    native_decide
   · intro byte member
     have same : byte = ⟨65, 1, 1⟩ := by simpa [goodPiece] using member
     subst byte
-    constructor <;> decide
+    constructor <;> native_decide
 
 -- The ordinary fragment key stays unchanged; source-iface provenance rejects a forged domain.
 example : ¬ Requirements.ArrivedFragment config redSources 196 arrival foreignPiece := by
   intro arrived
   have impossible := (arrived.2.2.2.2.2 ⟨65, 2, 1⟩ (by simp [foreignPiece])).1
-  have actual : config.ifaceSecurityDomain arrival.start.iface = some 1 := by decide
+  have actual : config.ifaceSecurityDomain arrival.start.iface = some 1 := by native_decide
   rw [actual] at impossible
   contradiction
 

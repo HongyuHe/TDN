@@ -1,5 +1,8 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.Perimeter_SharedData
 import TDN.Requirements.PerimeterDeviceAclChecks
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.Perimeter_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
@@ -16,6 +19,6 @@ lemma encryption_rules_checked (base : Deployment) :
           BoundaryPeerChecks (deployment base) records.inventory interface peers) ∧
         ((device.layer = some .inner ∧ interface.zone = .red) →
           BoundaryRedChecks (deployment base) records.inventory interface redEndpoints) := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 end TDN.Deployments.Perimeter_Shared

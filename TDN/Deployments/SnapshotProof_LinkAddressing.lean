@@ -51,9 +51,9 @@ theorem complete_link_model_RG014 (base : Deployment) (processing : PacketProces
     simp [deployment, SnapshotProof_Addressing.deployment, grayWorkstationRole,
       Deployment.IsDevice, SnapshotProof_Addressing.devices]
   · rfl
-  · decide
+  · native_decide
   · unfold Addressing.Separated ranges
-    decide
+    native_decide
   · simp [pairs, ranges, SnapshotProof_Addressing.pairs, SnapshotProof_Addressing.ranges,
       Addressing.Owns, Addressing.Contains]
   · intro iface member gray inner
@@ -99,8 +99,7 @@ lemma same_level_Ethernet_is_fully_admitted (base : Deployment)
   · refine ⟨inventory processing, rfl, 3, by simp [inventory, SnapshotProof_Addressing.inventory], rfl,
       ⟨linkProgram, linkProgram⟩, rfl, ?_⟩
     change linkProgram.Accepts packet
-    decide
-
+    native_decide
 lemma link_addresses_bind_intended_Inner_peers (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     (deployment base processing).PacketOwner packet 101 = some "INNER-A" ∧

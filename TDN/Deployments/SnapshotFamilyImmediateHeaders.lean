@@ -12,12 +12,10 @@ def rules (values : List Nat) : List Rule := [⟨[.ipv6NextHeaders values], .all
 
 lemma gate_values_checked : ∀ gate ∈ gates, gate.2 = [6, 17, 50, 58] := by
   unfold gates
-  decide
-
+  native_decide
 lemma every_gate_precedes_defragmentation : ∀ gate ∈ gatePriorities, gate.2 < (-400 : Int) := by
   unfold gatePriorities
-  decide
-
+  native_decide
 theorem admitted_header_before_defragmentation_is_permitted (gate : String × List Nat)
     (member : gate ∈ gates) (packet : Packet) (accepted : Accepts (rules gate.2) packet) :
     packet.ipv6NextHeader ∈ [6, 17, 50, 58] := by

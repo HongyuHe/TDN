@@ -41,7 +41,7 @@ lemma complete_two_key_inventory :
       ∀ record ∈ records, record.privateKeyCountBefore = 1 ∧
         record.privateKeyCountAfter = 1 ∧ record.attributesUnchanged = true ∧
         record.generated = true ∧ record.«local» = true ∧
-        record.certificateSPKIMatches = true ∧ record.observationIds ≠ [] := by decide
+        record.certificateSPKIMatches = true ∧ record.observationIds ≠ [] := by native_decide
 
 lemma checked_protected_attributes :
     ∀ record ∈ records,
@@ -49,7 +49,7 @@ lemma checked_protected_attributes :
       record.extractable = false ∧ record.neverExtractable = true ∧
       record.copyable = false ∧ record.modifiable = false ∧
       record.decrypt = false ∧ record.derive = false ∧
-      record.sign = true ∧ record.unwrap = false := by decide
+      record.sign = true ∧ record.unwrap = false := by native_decide
 
 lemma checked_actual_operation_results :
     ∀ record ∈ records, record.signatureVerified = true ∧
@@ -58,13 +58,12 @@ lemma checked_actual_operation_results :
       ("make-nonsensitive", 27) ∈ record.attempts ∧
       ("copy-private-key", 27) ∈ record.attempts ∧
       ("wrap-private-key", 106) ∈ record.attempts ∧
-      ("wrong-pin-login", 160) ∈ record.attempts := by decide
+      ("wrong-pin-login", 160) ∈ record.attempts := by native_decide
 
 lemma initial_objects_restricted :
     ∀ object ∈ objects, object.Restricted := by
   unfold objects KeyInterface.Object.Restricted
-  decide
-
+  native_decide
 lemma initial_store_safe (confidential : Requirements.Msc.GatewayKey → Prop) :
     KeyInterface.StoreSafe confidential objects := by
   intro object member _

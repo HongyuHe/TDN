@@ -67,7 +67,7 @@ lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ {base}.blackIface
         for d in range(1, count + 1):
             text += f"""  · simp only [{base}.blackIfaces, List.mem_cons, List.not_mem_nil,
       or_false, forall_eq, or_imp, forall_and]
-    all_goals decide
+    all_goals native_decide
 """
         text += f"""
 theorem every_assembled_black_byte_has_both_layers {{Byte : Type}}

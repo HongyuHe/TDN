@@ -13,7 +13,7 @@ lemma table_driven_gateway_response_guards : ∀ device ∈ responseGateways,
     (deviceAt devices device).outputFallback = .deny ∧
     ∀ rule ∈ (deviceAt devices device).outputRules, rule.verdict = .allow →
       KernelResponses.SafeResponseRule rule := by
-  unfold responseGateways devices; decide
+  unfold responseGateways devices; native_decide
 lemma gateway_response_guards : Requirements.GatewayResponseGuards config responseGateways := by
   intro iface member
   exact table_driven_gateway_response_guards (config.owner iface) member
@@ -37,7 +37,7 @@ lemma table_driven_gateway_response_guards : ∀ device ∈ responseGateways,
     (deviceAt devices device).outputFallback = .deny ∧
     ∀ rule ∈ (deviceAt devices device).outputRules, rule.verdict = .allow →
       KernelResponses.SafeResponseRule rule := by
-  unfold responseGateways devices; decide
+  unfold responseGateways devices; native_decide
 lemma gateway_response_guards : Requirements.GatewayResponseGuards config responseGateways := by
   intro iface member
   exact table_driven_gateway_response_guards (config.owner iface) member

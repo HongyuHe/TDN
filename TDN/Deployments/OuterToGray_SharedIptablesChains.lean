@@ -1,3 +1,4 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.OuterToGray_SharedData
 
 namespace TDN.Deployments.OuterToGray_Shared
@@ -5,6 +6,7 @@ open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel
 
 set_option maxRecDepth 1000000
 set_option maxHeartbeats 0
+set_option synthInstance.maxSize 16384
 
 lemma Outer_gray_allow_rules_checked (base : Deployment) :
     ∀ interface ∈ (records.deployment base).interfaces,
@@ -14,6 +16,6 @@ lemma Outer_gray_allow_rules_checked (base : Deployment) :
             policy.defaultVerdict = .deny ∧ ∀ rule ∈ policy.rules, rule.verdict = .allow →
               OuterGrayRuleChecks (records.deployment base) interface
                 (records.inventory.configuration.ip.interfaceName iface) policy.direction records.pairs rule := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 end TDN.Deployments.OuterToGray_Shared

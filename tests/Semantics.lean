@@ -9,14 +9,13 @@ def coalitionLevel : SecurityLevel := ⟨"Secret", {"Compartment-A"}, {"Coalitio
 def otherControlLevel : SecurityLevel := ⟨"Secret", {"Compartment-A"}, {"US-only"}, {"Export-control"}⟩
 def redOne : RedNetworkIdentity := ⟨"network-one", "A", level, {"I-1"}⟩
 def redTwo : RedNetworkIdentity := ⟨"network-two", "A", level, {"I-2"}⟩
-example : level.classification = coalitionLevel.classification ∧ level ≠ coalitionLevel := by decide
-example : level ≠ otherControlLevel := by decide
-example : redOne.level = redTwo.level ∧ redOne.id ≠ redTwo.id := by decide
+example : level.classification = coalitionLevel.classification ∧ level ≠ coalitionLevel := by native_decide
+example : level ≠ otherControlLevel := by native_decide
+example : redOne.level = redTwo.level ∧ redOne.id ≠ redTwo.id := by native_decide
 example : DedicatedInnerAssignments [redOne, redTwo] := by
   unfold DedicatedInnerAssignments redOne redTwo
-  decide
-
-theorem full_labels_differ : level ≠ otherCompartment := by decide
+  native_decide
+theorem full_labels_differ : level ≠ otherCompartment := by native_decide
 
 def network : Network where
   innerLevel := fun _ => level
@@ -69,10 +68,10 @@ theorem ordered_deny_precedes_allow :
     evaluate ([⟨fun _ : Nat => true, .deny⟩, ⟨fun _ => true, .allow⟩]) .deny 7 = .deny := rfl
 
 example : ¬ PacketPolicy.ImmediateHeaderGuard [6, 17, 50, 58]
-    ⟨[], .allow⟩ := by decide
+    ⟨[], .allow⟩ := by native_decide
 example : ¬ PacketPolicy.UnicastGuard "black" 3758096384 4026531839
-    ⟨[.ingress "black", .destinationRange 0 4294967295], .allow⟩ := by decide
+    ⟨[.ingress "black", .destinationRange 0 4294967295], .allow⟩ := by native_decide
 example : ¬ PacketPolicy.ProtocolGuard ["tcp", "udp", "esp", "icmp"]
-    ⟨[.protocol "gre"], .allow⟩ := by decide
+    ⟨[.protocol "gre"], .allow⟩ := by native_decide
 
 end TDN.Tests

@@ -33,11 +33,10 @@ lemma recorded_plain_link_exclusions : ∀ selected ∈ contexts, ∀ iface ∈ 
     ¬ selected.SourceSide (configuration.ip.owner iface) ∧
       ¬ selected.DestinationSide (configuration.ip.owner iface) := by
   unfold MixedFlowEndpoints.SourceSide MixedFlowEndpoints.DestinationSide
-  decide
-
+  native_decide
 lemma recorded_link_route_selectors : ∀ selected ∈ contexts, ∀ route ∈ records.routes,
     route.egress ∈ linkIfaces → selected.innerStamp.receiver < route.destPrefixLow ∨
-      route.destPrefixHigh < selected.innerStamp.receiver := by decide
+      route.destPrefixHigh < selected.innerStamp.receiver := by native_decide
 
 lemma routed_frame_avoids_link_path (selected : MixedFlowEndpoints) (member : selected ∈ contexts)
     (frame : LayeredFrame.Frame) (header : PacketPolicy.Packet) (route : DataPlaneForwarding.FibRoute)
@@ -79,17 +78,17 @@ lemma routed_frame_avoids_link_path (selected : MixedFlowEndpoints) (member : se
 lemma flow_link_checks (selected : MixedFlowEndpoints) (member : selected ∈ contexts) :
     MixedFlowLinkChecks deviceBinding selected expectedEncapStack := by
   refine ⟨rfl, ?_, ?_, ?_, ?_, routed_frame_avoids_link_path selected member⟩
-  · decide
-  · have checked : ∀ iface ∈ linkIfaces, expectedEncapStack iface = [2,1] := by decide
+  · native_decide
+  · have checked : ∀ iface ∈ linkIfaces, expectedEncapStack iface = [2,1] := by native_decide
     intro iface path
     exact checked iface (link_path_is_recorded iface path)
-  · have checked : ∀ iface ∈ records.macIfaces, iface.logicalIface ∉ linkIfaces := by decide
+  · have checked : ∀ iface ∈ records.macIfaces, iface.logicalIface ∉ linkIfaces := by native_decide
     intro iface listed path
     exact checked iface listed (link_path_is_recorded _ path)
-  · have checked : ∀ edge ∈ records.links, edge.2 ∈ linkIfaces → edge.1 ∈ linkIfaces := by decide
+  · have checked : ∀ edge ∈ records.links, edge.2 ∈ linkIfaces → edge.1 ∈ linkIfaces := by native_decide
     intro first last linked path
     exact recorded_iface_is_link_path first (checked (first,last) linked (link_path_is_recorded last path))
 
-lemma source_entries_avoid_link_path : ∀ entry ∈ records.entries, entry.iface ∉ linkIfaces := by decide
+lemma source_entries_avoid_link_path : ∀ entry ∈ records.entries, entry.iface ∉ linkIfaces := by native_decide
 
 end TDN.Deployments.NestedProtection_Mixed

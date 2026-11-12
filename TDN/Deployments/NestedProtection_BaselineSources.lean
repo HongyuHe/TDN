@@ -18,8 +18,8 @@ lemma source_request_context (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
   change sourceEntry entries request.iface = some (OuterTunnelNoBypass_Baseline.redNetwork request.originDomain) ∧ _ at entry
   obtain ⟨record, member, same, network⟩ := source_entry_is_recorded entries request.iface _ entry.1
   have unique : ∀ first ∈ entries, ∀ second ∈ entries,
-      first.network = second.network → first.originDomain = second.originDomain := by decide
-  have named : ∀ record ∈ entries, record.network ≠ "" := by decide
+      first.network = second.network → first.originDomain = second.originDomain := by native_decide
+  have named : ∀ record ∈ entries, record.network ≠ "" := by native_decide
   have domain : request.originDomain = record.originDomain := by
     unfold OuterTunnelNoBypass_Baseline.redNetwork at network
     cases found : entries.find? (fun candidate => candidate.originDomain == request.originDomain) with
@@ -90,7 +90,7 @@ lemma step_preserves_forwarding_invariant (primitive : ESPWire.GCMPrimitive IPse
   · exact step_preserves_local_input_destination nativeStep safe.2.2.2
 
 lemma recorded_context_origins : ∀ selected ∈ contexts,
-    OuterTunnelNoBypass_Baseline.redNetwork selected.originDomain = selected.flow.sourceNetwork := by decide
+    OuterTunnelNoBypass_Baseline.redNetwork selected.originDomain = selected.flow.sourceNetwork := by native_decide
 
 lemma flow_events_checked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
     {before after : StandardDataPlaneBridge.State records.inventory.ifaces} {action : StandardDataPlaneBridge.Action records.inventory.ifaces}

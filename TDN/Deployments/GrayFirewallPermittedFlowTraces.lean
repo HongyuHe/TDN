@@ -1,3 +1,4 @@
+import TDN.Deployments.NativeCheckDefaults
 import TDN.Deployments.GrayFirewallBaseline
 import TDN.Deployments.GrayFirewallShared
 import TDN.Deployments.GrayFirewallCasesData
@@ -16,7 +17,7 @@ lemma positive_samples_checked (base : Deployment) :
     PositiveChecks esp GrayFirewallShared.records (GrayFirewallShared.deployment base) ∧
     PositiveChecks udpESP GrayFirewallShared.records (GrayFirewallShared.deployment base) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
-  all_goals exact of_decide_eq_true rfl
+  all_goals close_check_with emptyDeploymentForChecks; native_decide
 
 theorem shared_framed_IKE_reply_is_eligible_and_accepted (base : Deployment) :
     (GrayFirewallShared.deployment base).PacketEligibleAt reply.interface .inbound .forward
@@ -80,13 +81,13 @@ theorem baseline_cross_classification_is_eligible_and_denied (base : Deployment)
   refine ⟨?_, ?_, ?_, ?_⟩
   · apply checked_forward_context_is_eligible baselineCross Perimeter_Baseline.records
       (Perimeter_Baseline.deployment base) rfl rfl .inbound
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
   · intro _
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
   · apply checked_classification_pair _ _ baselineCrossSource baselineCrossDestination
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
   · apply checked_forward_hook_is_denied
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
 
 theorem shared_cross_classification_is_eligible_and_denied (base : Deployment) :
     (GrayFirewallShared.deployment base).PacketEligibleAt sharedCross.interface .inbound .forward
@@ -100,13 +101,13 @@ theorem shared_cross_classification_is_eligible_and_denied (base : Deployment) :
   refine ⟨?_, ?_, ?_, ?_⟩
   · apply checked_forward_context_is_eligible sharedCross GrayFirewallShared.records
       (GrayFirewallShared.deployment base) rfl rfl .inbound
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
   · intro _
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
   · apply checked_classification_pair _ _ sharedCrossSource sharedCrossDestination
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
   · apply checked_forward_hook_is_denied
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
 
 theorem shared_malformed_IKE_is_eligible_and_denied (base : Deployment) :
     (GrayFirewallShared.deployment base).PacketEligibleAt malformedIKE.interface .inbound .forward
@@ -116,8 +117,8 @@ theorem shared_malformed_IKE_is_eligible_and_denied (base : Deployment) :
   constructor
   · apply checked_forward_context_is_eligible malformedIKE GrayFirewallShared.records
       (GrayFirewallShared.deployment base) rfl rfl .inbound
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
   · apply checked_forward_hook_is_denied
-    exact of_decide_eq_true rfl
+    close_check_with emptyDeploymentForChecks; native_decide
 
 end TDN.Deployments.GrayFirewallCases

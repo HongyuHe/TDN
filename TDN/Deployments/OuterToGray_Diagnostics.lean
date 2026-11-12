@@ -20,22 +20,22 @@ def reply : PacketPolicy.Packet :=
 def serviceCollision : PacketPolicy.Packet :=
   { reply with sourcePort := 1812, destinationPort := 500 }
 
-lemma reply_is_IKE : PacketIKE reply := by decide
+lemma reply_is_IKE : PacketIKE reply := by native_decide
 
 lemma reply_is_denied_by_Outer_A1_forward_program :
     Filter.evaluate ((DataPlaneForwarding.deviceAt devices 16).forwardRules.map PacketPolicy.Rule.toFilter)
-      (DataPlaneForwarding.deviceAt devices 16).forwardFallback reply = .deny := by decide
+      (DataPlaneForwarding.deviceAt devices 16).forwardFallback reply = .deny := by native_decide
 
-lemma service_collision_is_IKE : PacketIKE serviceCollision := by decide
+lemma service_collision_is_IKE : PacketIKE serviceCollision := by native_decide
 
 lemma service_collision_is_admitted_by_Outer_A1_forward_program :
     Filter.evaluate ((DataPlaneForwarding.deviceAt devices 16).forwardRules.map PacketPolicy.Rule.toFilter)
-      (DataPlaneForwarding.deviceAt devices 16).forwardFallback serviceCollision = .allow := by decide
+      (DataPlaneForwarding.deviceAt devices 16).forwardFallback serviceCollision = .allow := by native_decide
 
 lemma service_collision_previously_guessed_authentication :
-    PacketPortService serviceCollision = "authentication" := by decide
+    PacketPortService serviceCollision = "authentication" := by native_decide
 
 lemma service_collision_is_classified_as_IKE_control :
-    PacketService serviceCollision = "ike" ∧ PacketClass serviceCollision = .control := by decide
+    PacketService serviceCollision = "ike" ∧ PacketClass serviceCollision = .control := by native_decide
 
 end TDN.Deployments.OuterToGray_Diagnostics

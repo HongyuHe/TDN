@@ -31,7 +31,7 @@ def main():
         "  ⟨devices, ifaces, routes, links, switches, responseSourceGuards⟩",
         "",
         "lemma response_default_checks : ∀ guard ∈ responseSourceGuards,",
-        "    (deviceAt devices guard.1).outputFallback = .deny := by decide",
+        "    (deviceAt devices guard.1).outputFallback = .deny := by native_decide",
         "",
         "",
         "theorem gateway_response_traces_keep_stack",
@@ -51,7 +51,7 @@ def main():
             "lemma guardedWitnessStep" + str(index) + " :",
             "    (GuardedResponseNetwork.network responseData).Tr witnessState" + str(index) +
             " ." + trace["steps"][index]["action"] + " witnessState" + str(index + 1) + " := by",
-            "  exact ⟨witnessStep" + str(index) + ", by decide⟩", ""
+            "  exact ⟨witnessStep" + str(index) + ", by native_decide⟩", ""
         ]
     proof = "Cslib.LTS.MTr.refl"
     for index in reversed(range(count)):
@@ -63,7 +63,7 @@ def main():
         "  exact " + proof,
         "",
         "lemma initial_guarded_state_is_safe : GuardedResponseNetwork.Safe responseData witnessState0 := by",
-        "  exact ⟨witness_initial_stack, trivial, by decide⟩",
+        "  exact ⟨witness_initial_stack, trivial, by native_decide⟩",
         "",
         "end TDN.Deployments." + args.namespace, ""
     ]

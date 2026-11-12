@@ -63,12 +63,12 @@ def later : List String := """+string_list(data["later_observed_active"])+"""
 def capturedAfter : Store String := ⟨"""+lists(data["after_archives"])+", "+string_list(data["later_observed_active"])+"""⟩
 
 lemma actual_observation_nonempty : observedBefore.length = 8 ∧
-    (entries before).length = 10 ∧ later.length = 14 := by decide
+    (entries before).length = 10 ∧ later.length = 14 := by native_decide
 
-lemma observed_before_prefix : observedBefore <+: entries before := by decide
+lemma observed_before_prefix : observedBefore <+: entries before := by native_decide
 
 lemma source_ordered_rotation_check :
-    capturedAfter = appendEntries (rotate before) later := by decide
+    capturedAfter = appendEntries (rotate before) later := by native_decide
 
 /-- The actual Auditor-managed rotation preserves every independently retrieved
 earlier record, in order and with multiplicity, in the later captured log files.

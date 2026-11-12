@@ -141,7 +141,7 @@ theorem SizingPath.accepted_prefix {Key : Type} (sample : SizingPath) (records :
       exact Option.some.inj visible.symm
     subst header
     change 1 < 64
-    decide
+    native_decide
   have filter : binding.AcceptedStep (sample.routed records) .forwardFilter (sample.filtered records) := by
     apply non_link_native_step_is_accepted binding _ _ _ (.forwardFilter (s := sample.routed records) (header := { sample.header with hopLimit := 63 }) rfl rfl allowed)
       (Or.inr (Or.inr (Or.inl rfl)))
@@ -234,7 +234,7 @@ theorem SizingPath.source_to_required_wire {Key : Type} (sample : SizingPath) (r
   have description := StandardDataPlaneBridge.standard_reachable_link_frame_describes binding records.inventory.ifaces d {}
     codec (requiredSizing roles) (sourceMtu roles) plaintextLimit authenticationLimit budgets.1 emissions
     ⟨fun _ => 64, fun _ => 64⟩ rfl
-    (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩) initialized run
+    (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩) initialized run
   change (IPsecFrameEncoding.linkEncoding codec before.native.frame).Describes before.native.frame at description
   change before.native = sample.egressReady records at sameBefore
   rw [sameBefore] at description
@@ -275,7 +275,6 @@ theorem SizingPath.source_to_required_wire {Key : Type} (sample : SizingPath) (r
   · rw [sameBefore]
     change PayloadCode sample.flow.request.application ≠ 0
     change PayloadCode ([71, 69, 84, 32, 47, 32, 72, 84, 84, 80] : List UInt8) ≠ 0
-    decide
-
+    native_decide
 end TDN.Deployments.MtuSizing_Records
 

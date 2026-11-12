@@ -37,13 +37,13 @@ def ProtectionPath.start (path : ProtectionPath) : MultiProtocolForwarding.State
   deviceBinding.SourceState path.sourceFlow.request path.datagram
 
 def ProtectionMove.installation (move : ProtectionMove) : PublicSARecord :=
-  records.installations[move.saIndex]?.getD (records.installations.head (by decide))
+  records.installations[move.saIndex]?.getD (records.installations.head (by native_decide))
 
 def ProtectionMove.sourceInstallation (move : ProtectionMove) : PublicSARecord :=
-  records.installations[move.sourceIndex]?.getD (records.installations.head (by decide))
+  records.installations[move.sourceIndex]?.getD (records.installations.head (by native_decide))
 
 def ProtectionMove.macIface (move : ProtectionMove) : MACIface :=
-  records.macIfaces[move.macIndex]?.getD (records.macIfaces.head (by decide))
+  records.macIfaces[move.macIndex]?.getD (records.macIfaces.head (by native_decide))
 
 def ProtectionMove.transmitted (move : ProtectionMove) : MACsecAssociation :=
   move.macIface.transmitAssociation.getD ⟨0,0,0,0⟩
@@ -52,7 +52,7 @@ def ProtectionMove.receiveAssociation (move : ProtectionMove) : MACsecAssociatio
   move.macIface.receiveAssociations[move.rxIndex]?.getD ⟨0,0,0,0⟩
 
 def ProtectionMove.route (move : ProtectionMove) : DataPlaneForwarding.FibRoute :=
-  records.routes[move.index]?.getD (records.routes.head (by decide))
+  records.routes[move.index]?.getD (records.routes.head (by native_decide))
 
 def currentHeader (before : MultiProtocolForwarding.State) : PacketPolicy.Packet :=
   (configuration.visibleHeader before.frame).getD
@@ -92,13 +92,13 @@ def ProtectionPath.state (path : ProtectionPath) (index : Nat) : MultiProtocolFo
   (path.moves.take index).foldl (fun state move => move.after state) path.start
 
 def samplePath (index : Nat) : ProtectionPath :=
-  protectionPaths[index]?.getD (protectionPaths.head (by decide))
+  protectionPaths[index]?.getD (protectionPaths.head (by native_decide))
 
 def sampleMove (path step : Nat) : ProtectionMove :=
   (samplePath path).moves[step]?.getD ⟨.drop,0,0,0,0,0,0⟩
 
 lemma namespace_address_records_checked :
-    NamespaceAddressChecks records.interfaces records.componentName records.deviceData := by decide
+    NamespaceAddressChecks records.interfaces records.componentName records.deviceData := by native_decide
 
 lemma imported_local_addresses_are_unchanged (iface address : Nat)
     (present : configuration.ip.owner iface < records.deviceData.length) :

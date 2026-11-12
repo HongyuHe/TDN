@@ -17,8 +17,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -50,8 +49,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -83,8 +81,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -116,8 +113,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -149,8 +145,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -182,8 +177,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -215,8 +209,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -248,8 +241,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -281,8 +273,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)
@@ -314,8 +305,7 @@ set_option maxHeartbeats 0
 lemma outer_iface_shapes : ∀ iface ∈ ({} : IfaceData) :: ifaces,
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem actual_inner_encryption_precedes_outer {start finish : DataPlaneForwarding.State}
     {actions : List Action} (origin : Requirements.RedPayloadOrigin config redSources start)
     (run : (lts config).MTr start actions finish)

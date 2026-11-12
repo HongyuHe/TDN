@@ -163,11 +163,11 @@ namespace TDN.Deployments.FinalMACsecAlgorithms
 def devices : List Requirements.MACsecAlgorithms := """ + lean_list(entries) + """
 def publicVectorResults : List (String × String × String) := """ + lean_list(vectors) + """
 
-lemma nonempty_devices : devices ≠ [] := by decide
+lemma nonempty_devices : devices ≠ [] := by native_decide
 lemma key_distribution_checks : ∀ device ∈ devices,
-    device.keyWrapAlgorithm = "AES Key Wrap" ∧ device.keyWrapBits = 256 := by decide
+    device.keyWrapAlgorithm = "AES Key Wrap" ∧ device.keyWrapBits = 256 := by native_decide
 lemma data_protection_checks : ∀ device ∈ devices,
-    device.protectionAlgorithm = "AES GCM" ∧ device.protectionBits = 256 := by decide
+    device.protectionAlgorithm = "AES GCM" ∧ device.protectionBits = 256 := by native_decide
 
 theorem selected_runtime_algorithms :
     Requirements.msc_macsec_encryption_and_key_wrap devices :=
@@ -175,7 +175,7 @@ theorem selected_runtime_algorithms :
 
 /-- Finite public test outputs, with no universal KDF correctness claim. -/
 theorem twelve_public_vectors_match : publicVectorResults.length = 12 ∧
-    ∀ result ∈ publicVectorResults, result.2.1 = result.2.2 := by decide
+    ∀ result ∈ publicVectorResults, result.2.1 = result.2.2 := by native_decide
 
 end TDN.Deployments.FinalMACsecAlgorithms
 """

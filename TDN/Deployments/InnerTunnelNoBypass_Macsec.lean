@@ -38,7 +38,7 @@ lemma initial_frames (state : MultiProtocolForwarding.State)
   have origin := initial.2.2.2
   change state.datapathStage = .received ∧ forwarding.native.sourceEntry state.iface = some _ ∧ _ at origin
   have separation : ∀ source ∈ ([0, 2] : List Nat), ∀ mac ∈ records.macIfaces,
-      source ≠ mac.physicalIface := by decide
+      source ≠ mac.physicalIface := by native_decide
   refine ⟨by simp [MACsecOutputProtected, origin.1], ?_⟩
   intro mac configured same
   have source := source_ifaces state.iface _ origin.2.1
@@ -51,7 +51,7 @@ lemma gate_checks : MACsecIngressGateChecks forwarding.native deployment .inner 
   · change ∀ first last, ¬ ((first, last) ∈ ([] : List (Nat × Nat)))
     simp
   · change ∀ iface ∈ records.macIfaces, iface.validateStrict = true
-    decide
+    native_decide
   · intro payload iface network entry
     rcases source_ifaces iface network entry with rfl | rfl <;> rfl
   · intro payload iface component selected
@@ -60,8 +60,8 @@ lemma gate_checks : MACsecIngressGateChecks forwarding.native deployment .inner 
     · interval_cases iface
       all_goals
         first
-        | exact ⟨records.macIfaces[0], by decide, rfl⟩
-        | exact ⟨records.macIfaces[1], by decide, rfl⟩
+        | exact ⟨records.macIfaces[0], by native_decide, rfl⟩
+        | exact ⟨records.macIfaces[1], by native_decide, rfl⟩
         | simp [receiveTarget, ProfileRecords.ifaceName, DataPlaneForwarding.ifaceAt, records, direct] at selected
     · have missing : records.ifaceData[iface]? = none := by
         apply List.getElem?_eq_none
@@ -82,7 +82,7 @@ lemma gate_checks : MACsecIngressGateChecks forwarding.native deployment .inner 
         SameMACWireIdentity transmitted association →
         ∃ tunnel ∈ deployment.tunnels, tunnel.id = forwarding.native.macsecTunnel transmitted ∧
           tunnel.layer = .inner ∧ receiveTarget ⟨0, 0⟩ (records.ifaceName receiver.physicalIface) = some tunnel.receiver := by
-      decide
+      native_decide
     obtain ⟨tunnel, member, name, layer, target⟩ :=
       checked sender senderMember transmitted (by simp [installed]) receiver receiverMember association associationMember wire
     exact ⟨tunnel, member, name, layer, Option.some.inj (target.symm.trans selected)⟩
@@ -95,7 +95,7 @@ lemma outbound_checks : MACsecLayerBoundaryChecks forwarding.native deployment .
         interface.id = records.ifaceName edge.2 → deployment.IsLayer interface.device .inner →
         interface.zone ≠ InternalZone .inner := by
       unfold Deployment.IsLayer
-      decide
+      native_decide
     exact checked (first, last) linked
   · intro first last linked interface stored name layer
     change (first, last) ∈ records.links at linked
@@ -106,7 +106,7 @@ lemma outbound_checks : MACsecLayerBoundaryChecks forwarding.native deployment .
           ∃ tunnel ∈ deployment.tunnels, tunnel.layer = .inner ∧ tunnel.sender = interface.device ∧
             tunnel.id = forwarding.native.macsecTunnel association := by
       unfold Deployment.IsLayer
-      decide
+      native_decide
     obtain ⟨outside, mac, member, physical, tunnels⟩ := checked (first,last) linked interface stored name layer
     exact ⟨outside, mac, member, physical, fun association installed => tunnels association (by simp [installed])⟩
 
@@ -114,21 +114,19 @@ lemma target_binding : InboundGateReceiversBound deployment forwarding.GenuineCo
   have checked : ∀ interface ∈ deployment.interfaces, deployment.IsLayer interface.device .inner →
       interface.zone = ExternalZone .inner → receiveTarget ⟨0,0⟩ interface.id = some interface.device := by
     unfold Deployment.IsLayer
-    decide
+    native_decide
   intro payload data interface stored layer external
   exact checked interface stored layer external
 
 lemma component_coverage : ComponentConfigurationCoverage deployment .inner components := by
   unfold ComponentConfigurationCoverage Deployment.Relevant
-  decide
-
+  native_decide
 lemma component_parameters : ∀ component ∈ components, deployment.Relevant component.id →
     (component.mechanism = .ipsec → component.espTunnelMode = true ∧ component.associatedIPTunnel = true) ∧
     (false = true → component.outboundMACPolicy = true) ∧
     (false = true → component.inboundMACPolicy = true) := by
   unfold Deployment.Relevant
-  decide
-
+  native_decide
 theorem snapshot_RG029_macsec_inner_tunnel_no_bypass :
     msc_inner_tunnel_no_bypass deployment forwarding components false false := by
   have covered := profile_deployment_is_covered records (Or.inl rfl)

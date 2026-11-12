@@ -54,9 +54,9 @@ lemma selected_receive_component (payload : PayloadId) (name component : String)
 
 lemma iface_name_forces_index (known : Nat) (member : known ∈ records.inventory.ifaces)
     (iface : Nat) (same : records.ifaceName iface = records.ifaceName known) : iface = known := by
-  have length : records.ifaceNames.length = records.nativeIfaces.length := by decide
-  have unique : records.ifaceNames.Nodup := by decide
-  have listed : ∀ index ∈ records.inventory.ifaces, records.ifaceName index ≠ "unlisted-port" := by decide
+  have length : records.ifaceNames.length = records.nativeIfaces.length := by native_decide
+  have unique : records.ifaceNames.Nodup := by native_decide
+  have listed : ∀ index ∈ records.inventory.ifaces, records.ifaceName index ≠ "unlisted-port" := by native_decide
   by_cases present : iface < records.nativeIfaces.length
   · exact indexed_iface_names_unique records.ifaceNames records.nativeIfaces.length length unique
       iface (List.mem_range.mpr present) known member same
@@ -64,7 +64,7 @@ lemma iface_name_forces_index (known : Nat) (member : known ∈ records.inventor
     have absent : records.ifaceName iface = "unlisted-port" := by simp [Records.ifaceName, missing]
     exact False.elim (listed known member (same.symm.trans absent))
 
-lemma external_iface_present : ∀ iface ∈ externalIfaces, iface ∈ records.inventory.ifaces := by decide
+lemma external_iface_present : ∀ iface ∈ externalIfaces, iface ∈ records.inventory.ifaces := by native_decide
 
 lemma receive_component_iface (payload : PayloadId) (iface : Nat) (component : String)
     (selected : receiveComponent payload (records.ifaceName iface) = some component) :
@@ -77,8 +77,8 @@ lemma receive_component_iface (payload : PayloadId) (iface : Nat) (component : S
 lemma outer_owner_name_forces_index (known : Nat) (member : known ∈ outerOwners)
     (owner : Nat) (same : records.componentName owner = records.componentName known) : owner = known := by
   have checked : ∀ first ∈ List.range records.ownerNames.length, ∀ second ∈ outerOwners,
-      records.componentName first = records.componentName second → first = second := by decide
-  have listed : ∀ second ∈ outerOwners, records.componentName second ≠ "unlisted-device" := by decide
+      records.componentName first = records.componentName second → first = second := by native_decide
+  have listed : ∀ second ∈ outerOwners, records.componentName second ≠ "unlisted-device" := by native_decide
   by_cases present : owner < records.ownerNames.length
   · exact checked owner (List.mem_range.mpr present) known member same
   · have missing : records.ownerNames[owner]? = none := List.getElem?_eq_none (by omega)
@@ -86,13 +86,13 @@ lemma outer_owner_name_forces_index (known : Nat) (member : known ∈ outerOwner
     exact False.elim (listed known member (same.symm.trans absent))
 
 lemma external_iface_owner : ∀ iface ∈ externalIfaces, OuterOwner (capturedConfiguration.ip.owner iface) ∧
-    capturedConfiguration.ip.interfaceName iface = "black" := by decide
+    capturedConfiguration.ip.interfaceName iface = "black" := by native_decide
 
 lemma protected_forward_chains : ∀ owner ∈ outerOwners,
     (DataPlaneForwarding.deviceAt records.nativeDevices owner).forwardFallback = .deny ∧
     ∀ rule ∈ (DataPlaneForwarding.deviceAt records.nativeDevices owner).forwardRules,
       rule.verdict = .allow → ∃ inside ∈ ["gray", "gray2", "gray3", "gray4"],
-        inside ≠ "black" ∧ PacketPolicy.RequiresIpsecPolicyMatch rule inside "black" := by decide
+        inside ≠ "black" ∧ PacketPolicy.RequiresIpsecPolicyMatch rule inside "black" := by native_decide
 
 lemma outer_forward_chain (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) (iface : Nat)
     (owner : OuterOwner ((configuration primitive).ip.owner iface)) :
@@ -104,7 +104,7 @@ lemma outer_forward_chain (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) (i
   exact ⟨inside, different, guarded⟩
 
 lemma source_encap_stacks : ∀ iface network, sourceEntry entries iface = some network → expectedEncapStack iface = [] := by
-  have checked : ∀ entry ∈ entries, expectedEncapStack entry.iface = [] := by decide
+  have checked : ∀ entry ∈ entries, expectedEncapStack entry.iface = [] := by native_decide
   intro iface network selected
   obtain ⟨entry, member, same, _⟩ := source_entry_is_recorded entries iface network selected
   rw [← same]
@@ -112,48 +112,48 @@ lemma source_encap_stacks : ∀ iface network, sourceEntry entries iface = some 
 
 lemma source_receive_components : ∀ payload iface network, sourceEntry entries iface = some network →
     receiveComponent payload (records.ifaceName iface) = none := by
-  have checked : ∀ entry ∈ entries, receiveComponent ⟨0,0⟩ (records.ifaceName entry.iface) = none := by decide
+  have checked : ∀ entry ∈ entries, receiveComponent ⟨0,0⟩ (records.ifaceName entry.iface) = none := by native_decide
   intro payload iface network selected
   obtain ⟨entry, member, same, _⟩ := source_entry_is_recorded entries iface network selected
   rw [← same]
   exact checked entry member
 
 lemma interface_owner_alignment : ∀ iface ∈ records.inventory.ifaces, ∀ interface ∈ records.interfaces,
-    interface.id = records.ifaceName iface → OuterDevice interface.device → OuterOwner (capturedConfiguration.ip.owner iface) := by decide
+    interface.id = records.ifaceName iface → OuterDevice interface.device → OuterOwner (capturedConfiguration.ip.owner iface) := by native_decide
 
 lemma interface_is_listed (interface : Interface) (member : interface ∈ records.interfaces)
     (iface : Nat) (same : interface.id = records.ifaceName iface) : iface ∈ records.inventory.ifaces := by
-  apply interface_name_forces_iface records interface (by decide) _ iface same
-  have checked : ∀ interface ∈ records.interfaces, interface.id ≠ "unlisted-port" := by decide
+  apply interface_name_forces_iface records interface (by native_decide) _ iface same
+  have checked : ∀ interface ∈ records.interfaces, interface.id ≠ "unlisted-port" := by native_decide
   exact checked interface member
 
 lemma outer_physical_input_stacks : ∀ edge ∈ records.links, ∀ interface ∈ records.interfaces,
     interface.id = records.ifaceName edge.2 → OuterDevice interface.device → interface.zone = .gray →
-    expectedEncapStack edge.2 = [1] := by decide
+    expectedEncapStack edge.2 = [1] := by native_decide
 
 lemma outer_physical_output_stacks : ∀ edge ∈ records.links, ∀ interface ∈ records.interfaces,
     interface.id = records.ifaceName edge.1 → OuterDevice interface.device → interface.zone = .gray →
-    expectedEncapStack edge.1 = [1] := by decide
+    expectedEncapStack edge.1 = [1] := by native_decide
 
 lemma outer_external_outputs : ∀ edge ∈ records.links, ∀ interface ∈ records.interfaces,
     interface.id = records.ifaceName edge.1 → OuterDevice interface.device → interface.zone ≠ .gray →
-    capturedConfiguration.ip.interfaceName edge.1 = "black" ∧ OuterOwner (capturedConfiguration.ip.owner edge.1) := by decide
+    capturedConfiguration.ip.interfaceName edge.1 = "black" ∧ OuterOwner (capturedConfiguration.ip.owner edge.1) := by native_decide
 
-lemma bridge_outputs_outside_outer : ∀ edge ∈ records.bridges, ¬ OuterOwner (capturedConfiguration.ip.owner edge.2) := by decide
+lemma bridge_outputs_outside_outer : ∀ edge ∈ records.bridges, ¬ OuterOwner (capturedConfiguration.ip.owner edge.2) := by native_decide
 
 lemma bridge_receive_components : ∀ edge ∈ records.bridges,
-    receiveComponent ⟨0,0⟩ (records.ifaceName edge.1) = none := by decide
+    receiveComponent ⟨0,0⟩ (records.ifaceName edge.1) = none := by native_decide
 
 lemma inbound_tunnel_bindings : ∀ iface ∈ externalIfaces,
     ∀ policy ∈ capturedConfiguration.ip.ingressPolicies iface,
     ∀ association ∈ capturedConfiguration.ip.ingressSAs iface,
     DataPlaneForwarding.saMatchesPolicy association policy →
     ∃ tunnel ∈ declaredTunnels, tunnel.id = ipsecTunnel records (policy.seal association) ∧
-      tunnel.layer = .outer ∧ tunnel.receiver = records.componentName (capturedConfiguration.ip.owner iface) := by decide
+      tunnel.layer = .outer ∧ tunnel.receiver = records.componentName (capturedConfiguration.ip.owner iface) := by native_decide
 
 lemma route_egress_ifaces_present :
     ∀ route ∈ records.routes, route.egress ∈ records.inventory.ifaces := by
-  have bounds : ∀ route ∈ records.routes, route.egress < records.nativeIfaces.length := by decide
+  have bounds : ∀ route ∈ records.routes, route.egress < records.nativeIfaces.length := by native_decide
   intro route member
   exact List.mem_range.mpr (bounds route member)
 
@@ -163,7 +163,7 @@ lemma iface_outbound_tunnel_bindings : ∀ iface ∈ records.inventory.ifaces,
     ∀ association ∈ capturedConfiguration.ip.egressSAs iface,
     DataPlaneForwarding.saMatchesPolicy association policy →
       ∃ tunnel ∈ declaredTunnels, tunnel.layer = .outer ∧ tunnel.sender = interface.device ∧
-        tunnel.id = ipsecTunnel records (policy.seal association) := by decide
+        tunnel.id = ipsecTunnel records (policy.seal association) := by native_decide
 
 lemma outbound_tunnel_bindings : ∀ route ∈ records.routes,
     ∀ policy ∈ capturedConfiguration.ip.egressPolicies route.egress,
@@ -178,13 +178,13 @@ lemma outbound_tunnel_bindings : ∀ route ∈ records.routes,
     interface listed name outer policy policyMember association associationMember matching
 
 lemma external_receive_components : ∀ interface ∈ records.interfaces, OuterDevice interface.device →
-    interface.zone = .black → receiveComponent ⟨0,0⟩ interface.id = some interface.device := by decide
+    interface.zone = .black → receiveComponent ⟨0,0⟩ interface.id = some interface.device := by native_decide
 
 lemma source_not_outer_gray : ∀ iface network, sourceEntry entries iface = some network →
     ∀ interface ∈ records.interfaces, interface.id = records.ifaceName iface →
       OuterDevice interface.device → interface.zone ≠ .gray := by
   have checked : ∀ entry ∈ entries, ∀ interface ∈ records.interfaces,
-      interface.id = records.ifaceName entry.iface → OuterDevice interface.device → interface.zone ≠ .gray := by decide
+      interface.id = records.ifaceName entry.iface → OuterDevice interface.device → interface.zone ≠ .gray := by native_decide
   intro iface network selected interface member name outer
   obtain ⟨entry, stored, same, _⟩ := source_entry_is_recorded entries iface network selected
   rw [← same] at name
@@ -194,9 +194,9 @@ lemma configured_layer_bindings : ∀ device ∈ records.nativeDevices, ∀ poli
     ∀ record ∈ installations, record.installation.direction = .outbound →
     DataPlaneForwarding.saMatchesPolicy record.installation.association policy →
     ∃ tunnel ∈ declaredTunnels, tunnel.id = ipsecTunnel records (policy.seal record.installation.association) ∧
-      protectionLayerTag tunnel.layer = policy.tag := by decide
+      protectionLayerTag tunnel.layer = policy.tag := by native_decide
 
 lemma tunnel_layer_names_unique : ∀ first ∈ declaredTunnels, ∀ second ∈ declaredTunnels,
-    first.id = second.id → first.layer = second.layer := by decide
+    first.id = second.id → first.layer = second.layer := by native_decide
 
 end TDN.Deployments.OuterTunnelNoBypass_Shared

@@ -8,6 +8,6 @@ set_option maxHeartbeats 0
 
 lemma interface_iface_selection_checked :
     ∀ interface ∈ records.interfaces, records.ifaceIndex interface ∈ records.inventory.ifaces ∧
-      records.inventory.ifaceName (records.ifaceIndex interface) = interface.id := by exact of_decide_eq_true rfl
+      records.inventory.ifaceName (records.ifaceIndex interface) = interface.id := by native_decide
 
 end TDN.Deployments.OuterToGray_Shared

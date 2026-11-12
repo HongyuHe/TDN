@@ -10,20 +10,20 @@ set_option maxHeartbeats 8000000
 load_network_records deliveryPath : SizingPath from "../../data/evidence/outerTunnelNoBypass/BaselineIPsecDelivery.json" ["path"]
 load_network_records deliveryMoves : List DeliveryMove from "../../data/evidence/outerTunnelNoBypass/BaselineIPsecDelivery.json" ["moves"]
 
-lemma delivery_path_checked : deliveryPathChecked deliveryPath.start deliveryMoves := by decide
+lemma delivery_path_checked : deliveryPathChecked deliveryPath.start deliveryMoves := by native_decide
 
-lemma delivery_source_checked : deliveryPath.SourceChecks records entries roles networks := by decide
+lemma delivery_source_checked : deliveryPath.SourceChecks records entries roles networks := by native_decide
 
 lemma delivery_path_has_two_tunnel_layers :
     (deliveryMoves.filter (fun move => move.step.operation == .encryptIPsec)).length = 2 ∧
     (deliveryMoves.filter (fun move => move.step.operation == .decryptIPsec)).length = 2 ∧
-    deliveryMoves.length = 44 := by decide
+    deliveryMoves.length = 44 := by native_decide
 
 lemma delivery_path_reaches_red_host :
     (deliveryFinish deliveryPath.start deliveryMoves).datapathStage = .delivered ∧
     (deliveryFinish deliveryPath.start deliveryMoves).iface = 142 ∧
     (deliveryFinish deliveryPath.start deliveryMoves).frame.originDomain = 1 ∧
-    (deliveryFinish deliveryPath.start deliveryMoves).frame.body.protectionLayers = [] := by decide
+    (deliveryFinish deliveryPath.start deliveryMoves).frame.body.protectionLayers = [] := by native_decide
 
 theorem snapshot_RG029_ipsec_nonempty_payload_delivered (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ∃ start actions last, (interpretedForwarding primitive).initial start ∧
@@ -56,8 +56,7 @@ theorem snapshot_RG029_ipsec_nonempty_payload_delivered (primitive : ESPWire.GCM
   refine ⟨start, actions, last, initialized, run, result.1, result.2.1, result.2.2.1, ?_, result.2.2.2⟩
   rw [payload]
   change PayloadCode ([71,69,84,32,47,32,72,84,84,80] : List UInt8) ≠ 0
-  decide
-
+  native_decide
 lemma red_endpoint_network_ids_checked :
     ∀ entry ∈ entries, records.configuration.ip.ifaceSecurityDomain entry.hostIface = some entry.originDomain ∧
       ((entries.find? (fun selected => selected.originDomain == entry.originDomain)).map SourceEntry.network) = some entry.network := by
@@ -67,6 +66,6 @@ lemma red_endpoint_network_ids_checked :
 
 lemma delivery_recipient_network_id_checked :
     records.configuration.ip.ifaceSecurityDomain 142 = some 3 ∧
-      redNetwork 3 = "V31B_I_B1/red-network" := by decide
+      redNetwork 3 = "V31B_I_B1/red-network" := by native_decide
 
 end TDN.Deployments.InnerTunnelNoBypass_IPsec

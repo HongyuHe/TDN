@@ -8,17 +8,13 @@ set_option maxHeartbeats 0
 
 lemma captured_SA_inventory_checks :
     PublicSAInventoryChecks (directionalConfiguration records installations) epoch installations := by
-  decide
-
+  native_decide
 lemma captured_raw_state_pool_checks : CapturedStatePoolChecks installations records.nativeDevices := by
-  decide
-
+  native_decide
 lemma captured_direction_policy_checks :
     RecordedDirectionPolicyChecks (directionalConfiguration records installations) installations := by
-  decide
-
+  native_decide
 lemma captured_namespace_addresses :
     NamespaceAddressChecks records.interfaces records.componentName records.nativeDevices := by
-  decide
-
+  native_decide
 end TDN.Deployments.MtuSizing_Shared

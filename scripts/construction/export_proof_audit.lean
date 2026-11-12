@@ -1,9 +1,12 @@
 import TDN
+import TDN.Import.NativeDecide
 import Lean
 import Lean.Util.CollectAxioms
 
 set_option pp.deepTerms true
 set_option pp.maxSteps 5000000
+set_option maxHeartbeats 20000000
+set_option maxRecDepth 100000
 
 open Lean Elab Command Meta
 
@@ -18,7 +21,9 @@ run_cmd do
     if trimmed.isEmpty then none else some trimmed.toName
   if roots.isEmpty then throwError "At least one proof name is required"
   let environment ← getEnv
-  let allowedAxioms := #[``propext, ``Classical.choice, ``Quot.sound]
+  let allowedAxioms := TDN.ProofTrust.foundationalAxioms
+  let mut nativeChecks : NameSet := {}
+  let mut rejected : NameSet := {}
   let mut rootRecords : Array Json := #[]
   let mut failures : Array String := #[]
   for name in roots do
@@ -26,7 +31,14 @@ run_cmd do
       | throwError "Unknown proof: {name}"
     unless information.isTheorem do throwError "Expected a theorem: {name}"
     let axioms ← collectAxioms name
-    if axioms.any (fun axiomName => !allowedAxioms.contains axiomName) then
+    for axiomName in axioms do
+      if allowedAxioms.contains axiomName || nativeChecks.contains axiomName || rejected.contains axiomName then
+        continue
+      if ← liftTermElabM <| TDN.ProofTrust.verifyNativeDecision axiomName then
+        nativeChecks := nativeChecks.insert axiomName
+      else
+        rejected := rejected.insert axiomName
+    if axioms.any rejected.contains then
       failures := failures.push name.toString
     let (binders, conclusion, conclusionHead) ← liftTermElabM <|
       forallTelescope information.type fun parameters conclusion => do
@@ -91,6 +103,8 @@ run_cmd do
   liftIO <| IO.FS.writeFile outputPath <| (Json.mkObj [
     ("roots", toJson rootRecords),
     ("declarations", toJson records),
+    ("native_decision_count", toJson nativeChecks.size),
+    ("trusted_computation", toJson "Lean native_decide with re-evaluated closed decisions; see docs/proof_trust.md"),
     ("unexpected_axiom_roots", toJson failures)]).pretty ++ "\n"
   if !failures.isEmpty then throwError "Unexpected axioms in {failures}"
   logInfo m!"Audited {roots.length} proofs and {records.size} TDN declarations."

@@ -49,7 +49,7 @@ lemma outbound_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
       expectedEncapStack OuterOwner ⟨fun _ => 64, fun _ => 64⟩ := by
   refine ⟨encap_layer_checks primitive, source_not_outer_gray, headered_stack_conditions (codec primitive), rfl, ?_, ?_, ?_, source_encap_stacks, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro iface
-    exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩
+    exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩
   · refine ⟨rfl, rfl, route_owners, ?_⟩
     intro first last connected
     exact bridge_outputs_outside_outer (first,last) connected
@@ -89,7 +89,7 @@ lemma component_coverage (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
   have checked : ∀ device ∈ records.components, device.layer = some .outer →
       ∃ component ∈ components, component.id = device.id ∧
         ((device.kind = .vpn ∧ component.mechanism = .ipsec) ∨
-          (device.kind = .macsec ∧ component.mechanism = .macsec)) := by decide
+          (device.kind = .macsec ∧ component.mechanism = .macsec)) := by native_decide
   intro device member relevant layer
   exact checked device member layer
 

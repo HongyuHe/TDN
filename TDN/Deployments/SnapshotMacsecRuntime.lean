@@ -10,13 +10,11 @@ load_network_records installedAssociations : List (String × Nat) from "../../da
 lemma installed_association_coverage : ∀ iface ∈ ifaces,
     ∃ binding ∈ installedAssociations, binding.1 = iface.1 := by
   unfold ifaces installedAssociations
-  decide
-
+  native_decide
 lemma local_settings : ∀ iface ∈ ifaces, iface.2.protectFrames = true ∧
     iface.2.encryptFrames = true ∧ iface.2.confidentialityOffset = 0 := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem every_runtime_data_emission_is_encrypted (iface : String × Config)
     (member : iface ∈ ifaces) (association : Option Nat) (body : Nat) (wire : WireFrame Nat)
     (emitted : transmit iface.2 association body = some wire) : FullyEncrypted wire := by
@@ -29,8 +27,7 @@ theorem every_runtime_data_iface_blocks_absent_sa (iface : String × Config)
 
 lemma runtime_ifaces_enabled : ∀ iface ∈ ifaces, iface.2.controlledPortEnabled = true := by
   unfold ifaces
-  decide
-
+  native_decide
 theorem runtime_ifaces_permit_encrypted_emission (iface : String × Config)
     (member : iface ∈ ifaces) (association body : Nat) :
     transmit iface.2 (some association) body =

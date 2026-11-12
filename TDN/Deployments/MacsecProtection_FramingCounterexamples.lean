@@ -16,13 +16,11 @@ theorem captured_integrity_pdu_is_not_full_confidentiality (body : Body) :
     integrityFrame.DescribesBody (.macsecPdu capturedAssociation false 0 body) ∧
       ¬ integrityFrame.DescribesBody (.macsec capturedAssociation body) := by
   dsimp only [LinkAdmission.Frame.DescribesBody]
-  decide
-
+  native_decide
 theorem captured_encrypted_pdu_has_full_confidentiality_framing (body : Body) :
     encryptedFrame.DescribesBody (.macsec capturedAssociation body) := by
   dsimp only [LinkAdmission.Frame.DescribesBody]
-  decide
-
+  native_decide
 def integrityIface : MACIface :=
   ⟨0, 1, ⟨true, true, false, 0⟩, some capturedAssociation, [], true⟩
 
@@ -43,7 +41,7 @@ theorem integrity_only_transmit_keeps_macsec_framing :
       integrityOutput.frame.body.isMACsecPdu = true ∧
       integrityOutput.frame.body.protectionLayers = [] ∧
       integrityOutput.frame.body.originalEthernet = some sampleEthernet := by
-  refine ⟨.protectMACsec integrityIface capturedAssociation (by decide) rfl rfl rfl rfl rfl
+  refine ⟨.protectMACsec integrityIface capturedAssociation (by native_decide) rfl rfl rfl rfl rfl
     (Or.inl rfl), rfl, rfl, rfl⟩
 
 def offsetIface : MACIface :=
@@ -63,8 +61,8 @@ theorem nonzero_offset_transmit_is_reduced_confidentiality :
       LinkProtection.transmit offsetIface.settings (some 1) sampleEthernet =
         some (.encrypted 1 30 sampleEthernet) ∧
       ¬ LinkProtection.FullyEncrypted (.encrypted 1 30 sampleEthernet) := by
-  exact ⟨.protectMACsec offsetIface capturedAssociation (by decide) rfl rfl rfl rfl rfl
-    (Or.inr (by decide)), rfl, rfl, rfl, by change ¬30 = 0; decide⟩
+  exact ⟨.protectMACsec offsetIface capturedAssociation (by native_decide) rfl rfl rfl rfl rfl
+    (Or.inr (by native_decide)), rfl, rfl, rfl, by change ¬30 = 0; native_decide⟩
 
 theorem protection_disabled_and_sa_absent_have_distinct_results :
     LinkProtection.transmit ⟨true, false, true, 0⟩ none sampleEthernet = some (.plain sampleEthernet) ∧
@@ -82,7 +80,7 @@ theorem disabled_protection_does_not_add_a_macsec_pdu :
     MultiProtocolForwarding.Step disabledConfiguration sampleReady .forwardWithoutEncap
       { sampleReady with initialEntry := false, iface := 1 } ∧
       sampleReady.frame.body.isMACsecPdu = false := by
-  exact ⟨.unprotectedMACsec disabledIface (by decide) rfl rfl rfl rfl, rfl⟩
+  exact ⟨.unprotectedMACsec disabledIface (by native_decide) rfl rfl rfl rfl, rfl⟩
 
 def integrityAdvertisedSecure : ProfileRecords :=
   { direct with
@@ -98,7 +96,7 @@ theorem advertised_must_secure_is_bound_to_device_encryption :
     ¬ MACsecParametersBound integrityAdvertisedSecure.deployment integrityAdvertisedSecure.model parameters := by
   intro bound
   have mismatch := bound parameters[0] (by simp [parameters, observedParameters]) (Or.inl rfl)
-    integrityAdvertisedSecure.sender (by decide) rfl
+    integrityAdvertisedSecure.sender (by native_decide) rfl
   have impossible : true = false := mismatch.1
   cases impossible
 
@@ -106,7 +104,7 @@ theorem advertised_zero_offset_is_bound_to_device_offset :
     ¬ MACsecParametersBound offsetAdvertisedZero.deployment offsetAdvertisedZero.model parameters := by
   intro bound
   have mismatch := bound parameters[0] (by simp [parameters, observedParameters]) (Or.inl rfl)
-    offsetAdvertisedZero.sender (by decide) rfl
+    offsetAdvertisedZero.sender (by native_decide) rfl
   have impossible : 0 = 30 := mismatch.2
   cases impossible
 
@@ -222,7 +220,7 @@ theorem reduced_receive_with_wrong_key_is_rejected :
       some (List.replicate 16 (UInt8.ofNat 2)) := transmittedKey.trans installedKey.symm
   have impossible : (List.replicate 16 (UInt8.ofNat 1)) =
       List.replicate 16 (UInt8.ofNat 2) := Option.some.inj mismatch
-  have unequal : (List.replicate 16 (UInt8.ofNat 1)) ≠ List.replicate 16 (UInt8.ofNat 2) := by decide
+  have unequal : (List.replicate 16 (UInt8.ofNat 1)) ≠ List.replicate 16 (UInt8.ofNat 2) := by native_decide
   exact unequal impossible
 
 def reducedEventOutput (encryptFrames : Bool) (offset : Nat) : MultiProtocolForwarding.State :=

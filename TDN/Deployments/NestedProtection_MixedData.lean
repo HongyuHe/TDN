@@ -160,7 +160,7 @@ def expectedEncapStack (iface : Nat) : List Nat :=
   (DataPlaneForwarding.ifaceAt records.ifaceData iface).stack
 
 def contextFor (domain : Nat) : MixedFlowEndpoints :=
-  (contexts.find? (fun selected => selected.originDomain == domain)).getD (contexts.head (by decide))
+  (contexts.find? (fun selected => selected.originDomain == domain)).getD (contexts.head (by native_decide))
 
 def forwarding := StandardDataPlaneBridge.model deviceBinding ifaces deployment {}
 

@@ -1,6 +1,9 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.GrayFirewallSharedRouteCertificates
 import TDN.Deployments.GrayFirewallIptablesChecks
 import TDN.Models.AclPermitCertificates
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.GrayFirewallShared
 open Compliance Certificates PacketPolicy OuterToGray_DeviceModel
@@ -29,14 +32,14 @@ def indexedAclPermit (interface : Interface) (direction : Direction) (mask : Acl
     | none => false
     | some witness => checkAclPermit table.index mask witness
 
-lemma acl_tables_valid : ∀ table ∈ aclTables.values, table.index.Valid := by decide
+lemma acl_tables_valid : ∀ table ∈ aclTables.values, table.index.Valid := by native_decide
 
 lemma acl_table_is_captured (base : Deployment) :
     ∀ interface ∈ records.interfaces, (deployment base).IsDevice interface.device .grayFirewall →
     ∀ direction ∈ [Direction.inbound, .outbound], ∀ policy ∈ records.policies,
       policy.interface = interface.id → policy.direction = direction → policy.hook = .forward →
       ∃ table, aclTableFor interface direction = some table ∧ table.index.rules = policy.rules := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma indexed_acl_permit_sound (base : Deployment) (interface : Interface)
     (member : interface ∈ records.interfaces)

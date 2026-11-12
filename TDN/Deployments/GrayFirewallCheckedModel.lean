@@ -1,5 +1,8 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.GrayFirewallIptablesChecks
 import TDN.Requirements.OuterToGrayDevicePolicyBridge
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.GrayFirewallCheckedModel
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel GrayFirewallIptablesChecks
@@ -29,11 +32,12 @@ lemma registered_model_from_finite_Gray_checks (records : Records)
   have workstations := gray_workstation_role_is_empty d observations.2 rfl
   have coherent : d.ProcessingCoherent :=
     records.processing_coherent_from_structure base structureChecked interfaceSelection atoms
-  have udp : d.UDPBindingsCoherent := by exact of_decide_eq_true rfl
+  have udp : d.UDPBindingsCoherent := by
+    simp [Deployment.UDPBindingsCoherent, d, registeredDeployment, Records.deployment]
   have indices := device_policies_have_checked_indices d records.inventory records.ifaceIndex rfl ids
   apply gray_firewall_allowlist_from_native_IPsec_checks d rfl records.inventory rfl
     ⟨fun _ => 64, fun _ => 64⟩ rfl
-    (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩)
+    (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩)
     records.pairs address workstations coherent udp indices bindings identifiers observations revocation
     rfl rfl mechanisms coverage unique ipv4
   · intro interface member role

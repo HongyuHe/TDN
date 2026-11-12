@@ -14,7 +14,7 @@ lemma captured_routes_and_source_payload_are_nonempty :
       records.sourceCase.RoutingChecks records.configuration ∧
       records.sourceCase.application ≠ [] ∧ records.inventory.ifaces ≠ [] ∧
       records.macIfaces ≠ [] ∧ records.linkPolicies ≠ [] := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma captured_frames_describe_actual_native_output :
     protectedCase.physicalFrame.Describes protectedCase.physicalReady.frame ∧
@@ -24,16 +24,16 @@ lemma captured_frames_describe_actual_native_output :
   · apply checked_MACsec_wire_frame_describes_native _ _
       (protectedCase.sourceCase.mac.transmitAssociation.getD ⟨0, 0, 0, 0⟩)
       (protectedCase.sourceCase.egressReady protectedCase.configuration).frame.body rfl
-    exact of_decide_eq_true rfl
+    native_decide
   · constructor
     · apply checked_IP_frame_describes_native _ _ unprotectedAllowed.sourceCase.forwardedHeader rfl
         unprotectedAllowed.logicalNetwork unprotectedAllowed.logicalTransport unprotectedAllowed.sourceCase.application
-      · exact of_decide_eq_true rfl
+      · native_decide
       · rfl
       · rfl
     · apply checked_IP_frame_describes_native _ _ unprotectedDenied.sourceCase.forwardedHeader rfl
         unprotectedDenied.logicalNetwork unprotectedDenied.logicalTransport unprotectedDenied.sourceCase.application
-      · exact of_decide_eq_true rfl
+      · native_decide
       · rfl
       · rfl
 
@@ -44,8 +44,8 @@ lemma protected_native_MACsec_and_wire_steps :
   constructor
   · exact .encryptMACsec protectedCase.sourceCase.mac
       (protectedCase.sourceCase.mac.transmitAssociation.getD ⟨0, 0, 0, 0⟩)
-      (by exact of_decide_eq_true rfl) rfl rfl ⟨rfl, rfl⟩
-  · exact .linkTransmit protectedCase.sourceCase.peerIface rfl (by exact of_decide_eq_true rfl)
+      (by native_decide) rfl rfl ⟨rfl, rfl⟩
+  · exact .linkTransmit protectedCase.sourceCase.peerIface rfl (by native_decide)
 
 lemma protect_off_native_MACsec_and_wire_steps :
     MultiProtocolForwarding.Step unprotectedAllowed.configuration
@@ -53,8 +53,8 @@ lemma protect_off_native_MACsec_and_wire_steps :
     MultiProtocolForwarding.Step unprotectedAllowed.configuration unprotectedAllowed.physicalReady .linkTransmit unprotectedAllowed.wired := by
   constructor
   · exact .unprotectedMACsec unprotectedAllowed.sourceCase.mac
-      (by exact of_decide_eq_true rfl) rfl rfl rfl rfl
-  · exact .linkTransmit unprotectedAllowed.sourceCase.peerIface rfl (by exact of_decide_eq_true rfl)
+      (by native_decide) rfl rfl rfl rfl
+  · exact .linkTransmit unprotectedAllowed.sourceCase.peerIface rfl (by native_decide)
 
 theorem captured_protected_payload_follows_native_route_MACsec_and_wire :
     (lts protectedCase.configuration).MTr protectedCase.sourceCase.entry
@@ -102,7 +102,7 @@ instance (records : Records) : Decidable (PhysicalChecks records) := by
 
 lemma captured_permitted_physical_programs_and_bindings :
     PhysicalChecks protectedCase ∧ PhysicalChecks unprotectedAllowed := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma observed_physical_packet_is_supported (records : Records) (base : Deployment)
     (direction : Direction) :
@@ -110,7 +110,7 @@ lemma observed_physical_packet_is_supported (records : Records) (base : Deployme
   refine ⟨rfl, ?_⟩
   intro _ established
   change ("" : String) = "established" at established
-  exact False.elim ((by decide : ("" : String) ≠ "established") established)
+  exact False.elim ((by native_decide : ("" : String) ≠ "established") established)
 
 lemma device_physical_program_acceptance (records : Records) (base : Deployment)
     (wire : MultiProtocolForwarding.Step records.configuration records.physicalReady .linkTransmit records.wired)

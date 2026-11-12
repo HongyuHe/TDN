@@ -35,10 +35,10 @@ set_option maxRecDepth 10000
 set_option maxHeartbeats 2000000
 
 lemma all_input_interfaces_covered :
-    SourceResponseGuards.TableDrivenGuardCoverage ifaces responseSourceGuards := by decide
+    SourceResponseGuards.TableDrivenGuardCoverage ifaces responseSourceGuards := by native_decide
 
 lemma all_source_output_reply_pairs_checked :
-    SourceResponseGuards.TableDrivenReplyChecks devices ifaces responseSourceGuards := by decide
+    SourceResponseGuards.TableDrivenReplyChecks devices ifaces responseSourceGuards := by native_decide
 
 
 theorem source_output_reply_layers
@@ -83,10 +83,10 @@ end TDN.Deployments.""" + args.namespace + "\n"
             if state["phase"] not in {"received", "ingress"} or device not in guard_index:
                 continue
             state_name = "witnessState" + str(index)
-            rules = "(responseSourceGuards[" + str(guard_index[device]) + "]'(by decide)).2"
+            rules = "(responseSourceGuards[" + str(guard_index[device]) + "]'(by native_decide)).2"
             packet = "{ " + state_name + ".frame.packet with ingress := " + json.dumps(interface["name"]) + ", matchedInboundPolicyIds := " + state_name + ".authenticated }"
             checks.append("lemma positive_source_guard_" + str(index) + " : Filter.evaluate (" +
-                          rules + ".map PacketPolicy.Rule.toFilter) .allow (" + packet + ") = .allow := by decide")
+                          rules + ".map PacketPolicy.Rule.toFilter) .allow (" + packet + ") = .allow := by native_decide")
         text = "import " + args.witness_module + "\n" + text
         text = text.replace("end TDN.Deployments." + args.namespace,
                             "\n".join(checks) + "\n\nend TDN.Deployments." + args.namespace)

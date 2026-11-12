@@ -76,10 +76,10 @@ def observedExecutors : List (Nat × ProvisioningExecutor) := [""" + ", ".join(e
 def observedOrder : List (Nat × Nat × Nat) := [""" + ", ".join(orders) + """]
 
 lemma generation_request_signing_order : ∀ row ∈ observedOrder,
-    row.1 < row.2.1 ∧ row.2.1 < row.2.2 := by decide
+    row.1 < row.2.1 ∧ row.2.1 < row.2.2 := by native_decide
 
 lemma generation_is_external : ∀ row ∈ observedExecutors,
-    row.2 = .worker "experiment-worker" := by decide
+    row.2 = .worker "experiment-worker" := by native_decide
 
 /-- These observations cannot discharge the component-owned generation premise.
 The theorem preserves the failed requirement instead of relabeling the worker. -/

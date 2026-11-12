@@ -1,4 +1,8 @@
+import TDN.Deployments.NativeCheckDefaults
+import TDN.Import.NativeDecide
 import TDN.Deployments.OuterToGray_BaselineChecks
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.Perimeter_HookCounterexamples
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel
@@ -26,19 +30,19 @@ def records := OuterToGray_Baseline.records
 lemma inner_plaintext_is_raw_forward_admitted :
     Filter.evaluate (innerPolicy.rules.map PacketPolicy.Rule.toFilter)
       innerPolicy.defaultVerdict innerPacket = .allow := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma inner_plaintext_is_supported (base : Deployment) :
     (records.deployment base).Supported ((records.deployment base).Observe innerPacket) := by
   refine ⟨rfl, ?_⟩
   intro _ established
-  exact False.elim ((by decide : ("new" : String) ≠ "established") established)
+  exact False.elim ((by native_decide : ("new" : String) ≠ "established") established)
 
 lemma inner_plaintext_has_actual_Gray_outbound_context (base : Deployment) :
     (records.deployment base).HookContext innerInterface.id .outbound .forward innerPacket := by
   refine ⟨records.inventory, rfl, innerIface, ?_, rfl, innerInterface, ?_, rfl, rfl, ?_⟩
-  · exact of_decide_eq_true rfl
-  · exact of_decide_eq_true rfl
+  · native_decide
+  · close_check_with emptyDeploymentForChecks; native_decide
   · exact ⟨Or.inr (Or.inr (Or.inl rfl)), rfl⟩
 
 lemma inner_plaintext_is_accepted_at_Gray_forward_hook (base : Deployment) :
@@ -47,17 +51,17 @@ lemma inner_plaintext_is_accepted_at_Gray_forward_hook (base : Deployment) :
   refine ⟨inner_plaintext_is_supported base,
     inner_plaintext_has_actual_Gray_outbound_context base, ?_⟩
   refine ⟨innerPolicy, ?_, rfl, rfl, rfl, ?_, inner_plaintext_is_raw_forward_admitted⟩
-  · exact of_decide_eq_true rfl
-  · exact of_decide_eq_true rfl
+  · close_check_with emptyDeploymentForChecks; native_decide
+  · unfold_check_parameters; native_decide
 
 lemma inner_plaintext_is_not_permitted_boundary_tunnel (base : Deployment) :
     ¬ (records.deployment base).PermittedTunnelTraffic
       ((records.deployment base).Observe innerPacket) := by
   have protocol : ¬ IPsecProtocol ((records.deployment base).Observe innerPacket) := by
     change ¬ (innerPacket.protocol = "esp" ∨ PacketIKE innerPacket ∨ PacketUDPESP innerPacket)
-    exact of_decide_eq_true rfl
-  have mka : ¬ PacketMKA innerPacket := by exact of_decide_eq_true rfl
-  have macsec : ¬ PacketMACsec innerPacket := by exact of_decide_eq_true rfl
+    native_decide
+  have mka : ¬ PacketMKA innerPacket := by native_decide
+  have macsec : ¬ PacketMACsec innerPacket := by native_decide
   rintro (((ip | udp) | linkMKA | linkMACsec) | ⟨source, destination, binding, member, _⟩)
   · exact protocol ip
   · rcases udp with ⟨binding, member, _⟩ | ⟨binding, member, _⟩ | ⟨binding, member, _⟩
@@ -69,19 +73,19 @@ lemma inner_plaintext_is_not_permitted_boundary_tunnel (base : Deployment) :
 lemma outer_pre_encryption_is_raw_forward_admitted :
     Filter.evaluate (outerPolicy.rules.map PacketPolicy.Rule.toFilter)
       outerPolicy.defaultVerdict outerPacket = .allow := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma outer_pre_encryption_is_supported (base : Deployment) :
     (records.deployment base).Supported ((records.deployment base).Observe outerPacket) := by
   refine ⟨rfl, ?_⟩
   intro _ established
-  exact False.elim ((by decide : ("new" : String) ≠ "established") established)
+  exact False.elim ((by native_decide : ("new" : String) ≠ "established") established)
 
 lemma outer_pre_encryption_has_actual_Black_outbound_context (base : Deployment) :
     (records.deployment base).HookContext outerInterface.id .outbound .forward outerPacket := by
   refine ⟨records.inventory, rfl, outerIface, ?_, rfl, outerInterface, ?_, rfl, rfl, ?_⟩
-  · exact of_decide_eq_true rfl
-  · exact of_decide_eq_true rfl
+  · native_decide
+  · close_check_with emptyDeploymentForChecks; native_decide
   · exact ⟨Or.inr (Or.inr (Or.inl rfl)), rfl⟩
 
 lemma outer_pre_encryption_is_accepted_at_Black_forward_hook (base : Deployment) :
@@ -90,8 +94,8 @@ lemma outer_pre_encryption_is_accepted_at_Black_forward_hook (base : Deployment)
   refine ⟨outer_pre_encryption_is_supported base,
     outer_pre_encryption_has_actual_Black_outbound_context base, ?_⟩
   refine ⟨outerPolicy, ?_, rfl, rfl, rfl, ?_, outer_pre_encryption_is_raw_forward_admitted⟩
-  · exact of_decide_eq_true rfl
-  · exact of_decide_eq_true rfl
+  · close_check_with emptyDeploymentForChecks; native_decide
+  · unfold_check_parameters; native_decide
 
 lemma outer_pre_encryption_destination_is_Inner (base : Deployment) :
     ((records.deployment base).Observe outerPacket).destinationDevice = some "V31B_I_B1" := by
@@ -106,7 +110,7 @@ lemma outer_pre_encryption_destination_is_not_intended_Outer_peer (base : Deploy
         Option.some.inj (assigned.symm.trans (outer_pre_encryption_destination_is_Inner base))
       subst destination
       exact (show ¬ (records.deployment base).intendedPeer outerDevice.id "V31B_I_B1" from
-        by exact of_decide_eq_true rfl) intended
+        by unfold_check_parameters; native_decide) intended
     · cases member
   · obtain ⟨endpoint, member, _⟩ := mka
     cases member
@@ -145,8 +149,8 @@ theorem prior_boundary_spec_rejects_the_valid_pre_encryption_hook
     ¬ prior_msc_boundary_interface_filtering (records.deployment base) required internal localOuter := by
   intro complete
   have statement := complete.2.2.2 innerInterface
-    (by exact of_decide_eq_true rfl) (Or.inl rfl) innerDevice
-    (by exact of_decide_eq_true rfl) (Or.inl rfl) rfl
+    (by close_check_with emptyDeploymentForChecks; native_decide) (Or.inl rfl) innerDevice
+    (by close_check_with emptyDeploymentForChecks; native_decide) (Or.inl rfl) rfl
     (Or.inr (Or.inl ⟨rfl, rfl⟩))
   have allowed := (statement.2 .outbound ((records.deployment base).Observe innerPacket)
     ⟨.forward, inner_plaintext_is_accepted_at_Gray_forward_hook base⟩).2.1 rfl rfl
@@ -157,25 +161,25 @@ theorem prior_boundary_spec_rejects_the_valid_pre_encryption_hook
 lemma wrong_service_port_is_raw_forward_admitted :
     Filter.evaluate (innerPolicy.rules.map PacketPolicy.Rule.toFilter)
       innerPolicy.defaultVerdict wrongPortPacket = .allow := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma wrong_service_port_has_actual_selected_reqid :
     wrongPortPacket.matchedOutboundPolicyIds =
       (DataPlaneForwarding.lookupSpdPolicies (records.configuration.ip.egressPolicies innerIface)
         wrongPortPacket).map DataPlaneForwarding.IpsecPolicy.id := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma wrong_service_port_is_supported (base : Deployment) :
     (records.deployment base).Supported ((records.deployment base).Observe wrongPortPacket) := by
   refine ⟨rfl, ?_⟩
   intro _ established
-  exact False.elim ((by decide : ("new" : String) ≠ "established") established)
+  exact False.elim ((by native_decide : ("new" : String) ≠ "established") established)
 
 lemma wrong_service_port_has_actual_Gray_outbound_context (base : Deployment) :
     (records.deployment base).HookContext innerInterface.id .outbound .forward wrongPortPacket := by
   refine ⟨records.inventory, rfl, innerIface, ?_, rfl, innerInterface, ?_, rfl, rfl, ?_⟩
-  · exact of_decide_eq_true rfl
-  · exact of_decide_eq_true rfl
+  · native_decide
+  · close_check_with emptyDeploymentForChecks; native_decide
   · exact ⟨Or.inr (Or.inr (Or.inl rfl)), rfl⟩
 
 lemma wrong_service_port_is_accepted_at_Gray_forward_hook (base : Deployment) :
@@ -184,7 +188,7 @@ lemma wrong_service_port_is_accepted_at_Gray_forward_hook (base : Deployment) :
   refine ⟨wrong_service_port_is_supported base,
     wrong_service_port_has_actual_Gray_outbound_context base, ?_⟩
   refine ⟨innerPolicy, ?_, rfl, rfl, rfl, ?_, wrong_service_port_is_raw_forward_admitted⟩
-  · exact of_decide_eq_true rfl
-  · exact of_decide_eq_true rfl
+  · close_check_with emptyDeploymentForChecks; native_decide
+  · unfold_check_parameters; native_decide
 
 end TDN.Deployments.Perimeter_HookCounterexamples

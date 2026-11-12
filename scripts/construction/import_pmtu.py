@@ -104,8 +104,8 @@ def successfulUDPPayload : Nat := {data["successful_udp_payload"]}
 /-- Complete inner IP length maps to outer IPv6 ESP length under minimal padding. -/
 def encodedLength := PacketLength.alignedWireLength 4 2 72
 
-lemma discovered_limit_is_smaller : effectiveIPLimit < initialIPLimit := by decide
-lemma maximum_fits : encodedLength effectiveIPLimit ≤ blackMtu := by decide
+lemma discovered_limit_is_smaller : effectiveIPLimit < initialIPLimit := by native_decide
+lemma maximum_fits : encodedLength effectiveIPLimit ≤ blackMtu := by native_decide
 
 theorem every_datagram_within_discovered_limit_fits (bytes : Nat)
     (bounded : bytes ≤ effectiveIPLimit) : encodedLength bytes ≤ blackMtu :=
@@ -113,7 +113,7 @@ theorem every_datagram_within_discovered_limit_fits (bytes : Nat)
 
 theorem observed_useful_payload_fits :
     encodedLength (successfulUDPPayload + 40 + 8) ≤ blackMtu :=
-  every_datagram_within_discovered_limit_fits _ (by decide)
+  every_datagram_within_discovered_limit_fits _ (by native_decide)
 
 end TDN.Deployments.FreshPMTU
 """

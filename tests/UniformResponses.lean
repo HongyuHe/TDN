@@ -8,14 +8,12 @@ open TDN TDN.DataPlaneForwarding
 example : ¬ UniformResponseRegions.TableDrivenUniform []
     [⟨1, "red", [], false⟩, ⟨1, "black", [2, 1], false⟩] [1] := by
   unfold UniformResponseRegions.TableDrivenUniform
-  decide
-
+  native_decide
 /-- Multiple interfaces in the same region pass without assuming response headers. -/
 example : UniformResponseRegions.TableDrivenUniform []
     [⟨1, "left", [2, 1], false⟩, ⟨1, "right", [2, 1], false⟩] [1] := by
   unfold UniformResponseRegions.TableDrivenUniform
-  decide
-
+  native_decide
 /-- Retained context selection uses an actually stored state. -/
 example (network : Cslib.LTS Nat Unit) :
     HistoricalResponses.Step network ⟨20, [7, 10]⟩ .selectRetained ⟨7, [7, 10]⟩ :=

@@ -29,8 +29,7 @@ instance deliveryMoveKeyCheckDecidable (move : DeliveryMove) (before : MultiProt
 
 lemma material_references_consistent : MaterialReferencesConsistent installations := by
   unfold MaterialReferencesConsistent
-  decide
-
+  native_decide
 lemma DeliveryMove.keys_from_check (move : DeliveryMove) (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
     (before : MultiProtocolForwarding.State) (checked : move.KeyCheck before) : move.Keys primitive before := by
   intro operation
@@ -110,7 +109,7 @@ lemma delivery_path_reaches (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
       records.inventory.ifaces (interpretedDeployment primitive) {} (codec primitive)
       (requiredSizing roles) (sourceMtu roles) plaintextLimit authenticationLimit budgets.1 emissions
       ⟨fun _ => 64, fun _ => 64⟩ rfl
-      (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩) initialized run
+      (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩) initialized run
     have accepted := move.accepted primitive first.native stepChecked
       (move.keys_from_check primitive first.native keyChecked) linkChecked description
     obtain ⟨action, after, tr, operation, same⟩ := (interpreted_deployment_covered primitive).2.2.1 first

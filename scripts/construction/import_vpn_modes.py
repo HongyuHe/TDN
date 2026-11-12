@@ -37,7 +37,7 @@ namespace TDN.Deployments.""" + namespace + """
 
 def policies : List Requirements.VPNModePolicy := """ + lean_list(entries) + """
 
-lemma nonempty_gateway_inventory : policies ≠ [] := by decide
+lemma nonempty_gateway_inventory : policies ≠ [] := by native_decide
 
 theorem complete_loaded_mode_configuration :
     Requirements.msc_ike_version_and_encryption_modes policies := by

@@ -98,7 +98,7 @@ def insideBridge : String := "nd3b0"
 def serviceBridge : String := "nd3b0"
 
 theorem actual_time_source_is_on_selected_red_network : networkZone serviceBridge = .red :=
-  Requirements.service_location_from_shared_bridge networkZone insideBridge serviceBridge (by decide) (by decide)
+  Requirements.service_location_from_shared_bridge networkZone insideBridge serviceBridge (by native_decide) (by native_decide)
 
 end TDN.Deployments.FreshRedTimePlacement
 """)

@@ -30,8 +30,7 @@ lemma authentication_forwarding_unchanged (primitive : ESPWire.GCMPrimitive IPse
 lemma recorded_authentication_checks : ∀ record ∈ authenticationBindings,
     record.Check "75a63aeafea285095f33115e41f545507ee5492b5df464de35c6b0e9e2ee5615" := by
   unfold PublicAuthenticationBinding.Check CertificateAuthoritySetting.Check
-  decide
-
+  native_decide
 lemma recorded_authentication_coverage :
     (∀ component ∈ records.components, component.layer = some .inner ∨ component.layer = some .outer →
       ∃ record ∈ authenticationBindings, record.device = component.id ∧ record.phase = "phase-0" ∧
@@ -41,16 +40,16 @@ lemma recorded_authentication_coverage :
     (∀ record ∈ authenticationBindings, record.phase = "phase-1" →
       ∃ earlier ∈ authenticationBindings, earlier.phase = "phase-0" ∧ earlier.device = record.device ∧
         earlier.ikeUniqueId = record.ikeUniqueId ∧ earlier.childUniqueId = record.childUniqueId ∧
-        earlier.caObservation = record.caObservation ∧ earlier.leafObservation = record.leafObservation) := by decide
+        earlier.caObservation = record.caObservation ∧ earlier.leafObservation = record.leafObservation) := by native_decide
 
 lemma other_devices_do_not_report_certificate_authentication : ∀ component ∈ records.components,
     component.layer ≠ some .inner → component.layer ≠ some .outer →
     ((authenticationSettings.find? (fun setting => setting.component == component.id)).map
-      CertificateAuthoritySetting.certificateAuthenticated).getD false = false := by decide
+      CertificateAuthoritySetting.certificateAuthenticated).getD false = false := by native_decide
 
 lemma logical_authorities_do_not_report_peer_authentication : ∀ setting ∈ authenticationSettings,
     ((authenticationSettings.find? (fun peer => peer.component == setting.authorityDevice.id)).map
-      CertificateAuthoritySetting.certificateAuthenticated).getD false = false := by decide
+      CertificateAuthoritySetting.certificateAuthenticated).getD false = false := by native_decide
 
 lemma authentication_architecture_services (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     ArchitectureServices (authenticationDeployment primitive) := by
@@ -88,7 +87,7 @@ lemma authentication_architecture_services (primitive : ESPWire.GCMPrimitive IPs
         cases authenticated
     · exact services.2
   · intro first firstMember second secondMember innerFirst innerSecond levels shared
-    have firewall : ∃ firewall ∈ records.components, firewall.kind = .grayFirewall := by decide
+    have firewall : ∃ firewall ∈ records.components, firewall.kind = .grayFirewall := by native_decide
     obtain ⟨firewall, member, kind⟩ := firewall
     exact ⟨firewall, List.mem_append_left _ member, kind⟩
 
@@ -98,8 +97,7 @@ lemma authentication_devices_unique (primitive : ESPWire.GCMPrimitive IPsecKeyMa
   change ∀ first ∈ records.components ++ authenticationSettings.map CertificateAuthoritySetting.authorityDevice,
     ∀ second ∈ records.components ++ authenticationSettings.map CertificateAuthoritySetting.authorityDevice,
       first.id = second.id → first = second
-  decide
-
+  native_decide
 lemma authentication_static_bindings (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     DeviceDeploymentBindings (deviceBinding primitive) records.inventory.ifaces (authenticationDeployment primitive) := by
   have original := OuterTunnelNoBypass_Baseline.static_bindings primitive
@@ -131,7 +129,7 @@ theorem authentication_deployment_covered (primitive : ESPWire.GCMPrimitive IPse
       OuterTunnelNoBypass_BaselineNetwork.captured_bridge_endpoints)
     (OuterTunnelNoBypass_Baseline.codec primitive) (requiredSizing OuterTunnelNoBypass_Baseline.roles)
     (sourceMtu OuterTunnelNoBypass_Baseline.roles) plaintextLimit authenticationLimit budgets.1
-    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩)
+    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩)
     (fun _ _ => rfl) rfl
     (source_mtu_minimum OuterTunnelNoBypass_Baseline.roles OuterTunnelNoBypass_BaselineNetwork.captured_mtu_checks) rfl
     (OuterTunnelNoBypass_Baseline.allowed_source_iface primitive)
@@ -172,8 +170,7 @@ def FlowIPsecInventory (selected : IPsecFlowEndpoints) : Prop :=
 set_option synthInstance.maxSize 2048 in
 lemma recorded_flow_validity : ∀ selected ∈ contexts, FlowIPsecInventory selected := by
   unfold FlowIPsecInventory
-  decide
-
+  native_decide
 lemma flows_valid (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) (independentKeys : String → String → Prop)
     (independent : IndependentLayerKeys independentKeys) :
     ∀ flow ∈ flows, flow.Valid (authenticationDeployment primitive) independentKeys := by

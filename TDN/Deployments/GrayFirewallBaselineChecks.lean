@@ -1,3 +1,4 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.Perimeter_BaselineInventory
 import TDN.Deployments.GrayFirewallIptablesChecks
 
@@ -20,16 +21,16 @@ instance instDecidableBaselineGraySource (base : Deployment) (name : String) :
 lemma Gray_core_checked (base : Deployment) :
     GrayCoreChecks (deployment base) records.inventory records.pairs controls := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  all_goals exact of_decide_eq_true rfl
+  all_goals unfold_check_parameters; native_decide
 
 lemma Gray_interfaces_checked (base : Deployment) :
     ∀ interface ∈ records.interfaces,
       GrayInterfaceChecks (deployment base) records.inventory records.pairs interface := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma Gray_permissions_checked (base : Deployment) :
     ∀ interface ∈ records.interfaces,
       GrayPermitChecks (deployment base) records.inventory records.pairs interface := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 end TDN.Deployments.Perimeter_Baseline

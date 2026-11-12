@@ -20,7 +20,7 @@ set_option maxHeartbeats 0
     (domainLayout{domain} iface).head? = some 2 →
       domainLayout{domain} iface = [2, {domain + 10}] := by
   have checked : ∀ record ∈ ({{}} : IfaceData) :: domainIfaces{domain},
-      record.stack.head? = some 2 → record.stack = [2, {domain + 10}] := by decide
+      record.stack.head? = some 2 → record.stack = [2, {domain + 10}] := by native_decide
   intro iface head
   exact checked (ifaceAt domainIfaces{domain} iface) (iface_at_member_or_default domainIfaces{domain} iface) head
 

@@ -10,7 +10,7 @@ lemma byte_outer_placement1 : ∀ iface,
     (domainLayout1 iface).head? = some 2 →
       domainLayout1 iface = [2, 11] := by
   have checked : ∀ record ∈ ({} : IfaceData) :: domainIfaces1,
-      record.stack.head? = some 2 → record.stack = [2, 11] := by decide
+      record.stack.head? = some 2 → record.stack = [2, 11] := by native_decide
   intro iface head
   exact checked (ifaceAt domainIfaces1 iface) (iface_at_member_or_default domainIfaces1 iface) head
 
@@ -18,7 +18,7 @@ lemma byte_outer_placement2 : ∀ iface,
     (domainLayout2 iface).head? = some 2 →
       domainLayout2 iface = [2, 12] := by
   have checked : ∀ record ∈ ({} : IfaceData) :: domainIfaces2,
-      record.stack.head? = some 2 → record.stack = [2, 12] := by decide
+      record.stack.head? = some 2 → record.stack = [2, 12] := by native_decide
   intro iface head
   exact checked (ifaceAt domainIfaces2 iface) (iface_at_member_or_default domainIfaces2 iface) head
 
@@ -26,7 +26,7 @@ lemma byte_outer_placement3 : ∀ iface,
     (domainLayout3 iface).head? = some 2 →
       domainLayout3 iface = [2, 13] := by
   have checked : ∀ record ∈ ({} : IfaceData) :: domainIfaces3,
-      record.stack.head? = some 2 → record.stack = [2, 13] := by decide
+      record.stack.head? = some 2 → record.stack = [2, 13] := by native_decide
   intro iface head
   exact checked (ifaceAt domainIfaces3 iface) (iface_at_member_or_default domainIfaces3 iface) head
 
@@ -34,7 +34,7 @@ lemma byte_outer_placement4 : ∀ iface,
     (domainLayout4 iface).head? = some 2 →
       domainLayout4 iface = [2, 14] := by
   have checked : ∀ record ∈ ({} : IfaceData) :: domainIfaces4,
-      record.stack.head? = some 2 → record.stack = [2, 14] := by decide
+      record.stack.head? = some 2 → record.stack = [2, 14] := by native_decide
   intro iface head
   exact checked (ifaceAt domainIfaces4 iface) (iface_at_member_or_default domainIfaces4 iface) head
 
@@ -79,7 +79,7 @@ lemma byte_outer_placement1 : ∀ iface,
     (domainLayout1 iface).head? = some 2 →
       domainLayout1 iface = [2, 11] := by
   have checked : ∀ record ∈ ({} : IfaceData) :: domainIfaces1,
-      record.stack.head? = some 2 → record.stack = [2, 11] := by decide
+      record.stack.head? = some 2 → record.stack = [2, 11] := by native_decide
   intro iface head
   exact checked (ifaceAt domainIfaces1 iface) (iface_at_member_or_default domainIfaces1 iface) head
 
@@ -87,7 +87,7 @@ lemma byte_outer_placement2 : ∀ iface,
     (domainLayout2 iface).head? = some 2 →
       domainLayout2 iface = [2, 12] := by
   have checked : ∀ record ∈ ({} : IfaceData) :: domainIfaces2,
-      record.stack.head? = some 2 → record.stack = [2, 12] := by decide
+      record.stack.head? = some 2 → record.stack = [2, 12] := by native_decide
   intro iface head
   exact checked (ifaceAt domainIfaces2 iface) (iface_at_member_or_default domainIfaces2 iface) head
 

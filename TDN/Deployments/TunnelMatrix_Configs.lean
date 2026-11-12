@@ -36,7 +36,7 @@ lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
 
 lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
     ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
-  unfold macIfaces; decide
+  unfold macIfaces; native_decide
 
 theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
     (member : iface ∈ macIfaces) :
@@ -86,7 +86,7 @@ lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
 
 lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
     ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
-  unfold macIfaces; decide
+  unfold macIfaces; native_decide
 
 theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
     (member : iface ∈ macIfaces) :
@@ -136,7 +136,7 @@ lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
 
 lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
     ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
-  unfold macIfaces; decide
+  unfold macIfaces; native_decide
 
 theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
     (member : iface ∈ macIfaces) :
@@ -186,7 +186,7 @@ lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
 
 lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
     ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
-  unfold macIfaces; decide
+  unfold macIfaces; native_decide
 
 theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
     (member : iface ∈ macIfaces) :
@@ -236,7 +236,7 @@ lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
 
 lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
     ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
-  unfold macIfaces; decide
+  unfold macIfaces; native_decide
 
 theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
     (member : iface ∈ macIfaces) :
@@ -286,7 +286,7 @@ lemma mac_configuration_checked : ∀ iface ∈ macIfaces,
 
 lemma receive_peer_bindings : ∀ iface ∈ macIfaces, ∀ association ∈ iface.receiveAssociations,
     ∃ peer ∈ macIfaces, peer.transmitAssociation = some association := by
-  unfold macIfaces; decide
+  unfold macIfaces; native_decide
 
 theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
     (member : iface ∈ macIfaces) :

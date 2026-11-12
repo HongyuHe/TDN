@@ -98,7 +98,7 @@ theorem management_free_chain_model_RG013 (base : Deployment)
   · change ∀ first ∈ devices, ∀ second ∈ devices, first.id = second.id → first = second
     simp [devices]
   · change ∀ device ∈ devices, device.layer = some .inner → device.kind ≠ .grayFirewall
-    decide
+    native_decide
   · simp [edges, topology, SnapshotProof_GrayFirewall.topology]
   · intro device member manager
     simp [GrayManagement, topology, SnapshotProof_GrayFirewall.topology] at manager
@@ -132,8 +132,7 @@ theorem management_free_chain_model_RG013 (base : Deployment)
 lemma management_free_and_topology_differs :
     (∀ device ∈ devices, device.kind ≠ .workstation) ∧
     ("node-IA", "node-IB") ∈ edges ∧ ("node-IA", "node-G") ∉ edges := by
-  decide
-
+  native_decide
 lemma same_level_chain_packet_is_admitted (base : Deployment)
     (processing : PacketProcessing.Inventory) :
     (deployment base processing).Accepts "port-O" .outbound

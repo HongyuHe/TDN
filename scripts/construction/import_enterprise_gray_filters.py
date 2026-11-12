@@ -103,7 +103,7 @@ theorem selected_forwarding_requires_an_explicit_allow (rules : List Rule)
   exact ⟨original, present, matched, allowed⟩
 
 lemma input_defaults_are_acceptance : ∀ chain ∈ inputChains,
-    chain.1 = [] ∧ chain.2 = .allow := by decide
+    chain.1 = [] ∧ chain.2 = .allow := by native_decide
 
 /-- The complete saved INPUT chains accept in this selected filter model.
 The observation identifies missing local-chain enforcement without inventing a

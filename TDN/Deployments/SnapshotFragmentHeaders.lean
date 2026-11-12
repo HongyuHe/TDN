@@ -10,8 +10,7 @@ set_option maxHeartbeats 0
 lemma device_all_hooks_only_allow : ∀ device ∈ ({} : DeviceData) :: taggedDevices,
     ∀ rules ∈ [device.inputRules, device.forwardRules, device.outputRules],
       ∀ rule ∈ rules, rule.verdict = .allow := by
-  decide
-
+  native_decide
 theorem noninitial_input_accepted_by_header_completion (iface : Nat)
     (packet : PacketPolicy.Packet)
     (accepted : Filter.evaluate ((config.inputRules iface).map FragmentHeaders.rule)
@@ -52,8 +51,7 @@ set_option maxHeartbeats 0
 lemma device_all_hooks_only_allow : ∀ device ∈ ({} : DeviceData) :: taggedDevices,
     ∀ rules ∈ [device.inputRules, device.forwardRules, device.outputRules],
       ∀ rule ∈ rules, rule.verdict = .allow := by
-  decide
-
+  native_decide
 theorem noninitial_input_accepted_by_header_completion (iface : Nat)
     (packet : PacketPolicy.Packet)
     (accepted : Filter.evaluate ((config.inputRules iface).map FragmentHeaders.rule)

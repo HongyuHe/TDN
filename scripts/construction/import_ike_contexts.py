@@ -157,8 +157,8 @@ def pairs : List (Nat × Nat) := [''' + ", ".join(pairs) + ''']
 def endpoint (index : Nat) : Endpoint :=
   endpoints[index]?.getD ⟨0, "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false⟩
 
-lemma all_context_pairs_checked : ∀ pair ∈ pairs, Peer (endpoint pair.1) (endpoint pair.2) := by decide
-lemma complete_gateway_count : endpoints.length = ''' + str(len(entries)) + ''' := by decide
+lemma all_context_pairs_checked : ∀ pair ∈ pairs, Peer (endpoint pair.1) (endpoint pair.2) := by native_decide
+lemma complete_gateway_count : endpoints.length = ''' + str(len(entries)) + ''' := by native_decide
 
 theorem recorded_directional_contexts_agree : ∀ pair ∈ pairs,
     sendName (endpoint pair.1) = receiveName (endpoint pair.2) := by

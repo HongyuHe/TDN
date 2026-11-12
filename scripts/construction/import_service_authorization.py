@@ -137,9 +137,9 @@ def generate(data):
         "    role accepted AuditorOperation",
         "  simp [permissions, AuditorOperation]",
         "", "theorem auditor_filter_change_denied :",
-        '    AccessControl.authorize roles permissions ⟨auditor, "POST", "/filter"⟩ = false := by decide',
+        '    AccessControl.authorize roles permissions ⟨auditor, "POST", "/filter"⟩ = false := by native_decide',
         "", "theorem administrator_filter_change_permitted :",
-        '    AccessControl.authorize roles permissions ⟨security_admin, "POST", "/filter"⟩ = true := by decide',
+        '    AccessControl.authorize roles permissions ⟨security_admin, "POST", "/filter"⟩ = true := by native_decide',
         "", "def observed : List (AccessControl.Request × Bool) := ["
     ])
     rows = []
@@ -148,7 +148,7 @@ def generate(data):
                     "⟩, " + str(row["allowed"]).lower() + ")")
     lines.extend([",\n".join(rows) + "]", "",
                   "theorem retained_http_results_match_model : ∀ pair ∈ observed,",
-                  "    AccessControl.authorize roles permissions pair.1 = pair.2 := by decide",
+                  "    AccessControl.authorize roles permissions pair.1 = pair.2 := by native_decide",
                   "", "end TDN.Deployments.SnapshotServiceAuthorization", ""])
     return "\n".join(lines)
 

@@ -11,10 +11,10 @@ load_network_records inner : ProtectedForwardCase from "../../data/evidence/cont
 load_network_records outer : ProtectedForwardCase from "../../data/evidence/continuation/Perimeter_TransformShared.json" ["outer"]
 
 lemma inner_checks (base : Deployment) : inner.Checks OuterToGray_Shared.records (OuterToGray_Shared.records.deployment base) := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma outer_checks (base : Deployment) : outer.Checks OuterToGray_Shared.records (OuterToGray_Shared.records.deployment base) := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 theorem device_Inner_HTTP_reaches_protected_Gray_wire (base : Deployment) :
     (OuterToGray_Shared.records.deployment base).DeviceBoundaryAccepts inner.forward.interface.id .outbound

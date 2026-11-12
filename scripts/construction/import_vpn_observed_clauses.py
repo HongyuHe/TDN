@@ -90,8 +90,8 @@ def certificates : List LoadedDeviceCertificate := ["""+certs+"""]
 def policies : List CertificateAuthenticationPolicy := ["""+policies+"""]
 def espHardSeconds : List Nat := ["""+values+"""]
 
-lemma fingerprints_unique : (certificates.map LoadedDeviceCertificate.fingerprint).Nodup := by decide
-lemma peer_verification_required : ∀ policy ∈ policies, policy.requiresPeerCertificate = true := by decide
+lemma fingerprints_unique : (certificates.map LoadedDeviceCertificate.fingerprint).Nodup := by native_decide
+lemma peer_verification_required : ∀ policy ∈ policies, policy.requiresPeerCertificate = true := by native_decide
 lemma esp_lifetimes_positive_and_bounded : ∀ seconds ∈ espHardSeconds, PositiveESPLifetime seconds := by
   unfold PositiveESPLifetime
   decide
@@ -114,7 +114,7 @@ theorem admitted_selected_peers_require_mutual_certificate_verification
     (peer_verification_required left hl) (peer_verification_required right hr)
     leftVerifiedRight rightVerifiedLeft leftAccepted rightAccepted
 
-lemma nonempty_selected_certificates_and_lifetimes : certificates.length = 8 ∧ espHardSeconds.length = 20 := by decide
+lemma nonempty_selected_certificates_and_lifetimes : certificates.length = 8 ∧ espHardSeconds.length = 20 := by native_decide
 
 end TDN.Deployments.FreshVPNObservedClauses
 """

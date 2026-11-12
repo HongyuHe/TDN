@@ -8,29 +8,26 @@ set_option maxHeartbeats 0
 
 lemma route_owners : ∀ route ∈ records.routes,
     (DataPlaneForwarding.ifaceAt records.ifaceData route.egress).owner =
-      (DataPlaneForwarding.ifaceAt records.ifaceData route.ingress).owner := by decide
+      (DataPlaneForwarding.ifaceAt records.ifaceData route.ingress).owner := by native_decide
 
 lemma physical_stacks : ∀ edge ∈ records.links,
-    expectedEncapStack edge.1 = expectedEncapStack edge.2 := by decide
+    expectedEncapStack edge.1 = expectedEncapStack edge.2 := by native_decide
 
 lemma bridge_stacks : ∀ edge ∈ records.bridges,
-    expectedEncapStack edge.1 = expectedEncapStack edge.2 := by decide
+    expectedEncapStack edge.1 = expectedEncapStack edge.2 := by native_decide
 
 lemma forward_defaults : ∀ device ∈ ({} : DataPlaneForwarding.DeviceData) :: records.deviceData,
-    device.forwardFallback = .deny := by decide
+    device.forwardFallback = .deny := by native_decide
 
 lemma forward_rules : DataPlaneForwarding.TableDrivenRoutedForwardChecks records.deviceData records.ifaceData records.routes := by
   unfold DataPlaneForwarding.TableDrivenRoutedForwardChecks
-  decide
-
+  native_decide
 lemma output_rules : DataPlaneForwarding.TableDrivenOutputChecks records.deviceData records.ifaceData := by
   unfold DataPlaneForwarding.TableDrivenOutputChecks
-  decide
-
+  native_decide
 lemma outer_routes : DataPlaneForwarding.TableDrivenOuterRoutes records.deviceData records.ifaceData records.routes := by
   unfold DataPlaneForwarding.TableDrivenOuterRoutes
-  decide
-
+  native_decide
 lemma table_stack_conditions : DataPlaneForwarding.PerHopEncapConditions
     (DataPlaneForwarding.dataPlaneModelFromRecords records.deviceData records.ifaceData records.routes records.links [])
     expectedEncapStack :=
@@ -45,24 +42,24 @@ lemma headered_stack_conditions : HeaderedLocalConditions configuration expected
     exact physical_stacks (first,last) linked
   · intro first last connected
     exact bridge_stacks (first,last) connected
-  · have checked : ∀ iface ∈ records.macIfaces, MACTransmitCheck records.ifaceData iface := by decide
+  · have checked : ∀ iface ∈ records.macIfaces, MACTransmitCheck records.ifaceData iface := by native_decide
     intro iface member association installed
     have fact := checked iface member
     simpa only [MACTransmitCheck, installed, expectedEncapStack] using fact
-  · decide
+  · native_decide
   · have checked : ∀ sender ∈ records.macIfaces,
         ∀ transmitted ∈ sender.transmitAssociation.toList, ∀ receiver ∈ records.macIfaces,
         ∀ association ∈ receiver.receiveAssociations, SameMACWireIdentity transmitted association →
-          transmitted.tag = association.tag := by decide
+          transmitted.tag = association.tag := by native_decide
     intro sender member transmitted installed receiver present association received same
     exact checked sender member transmitted (by simp [installed]) receiver present association received same
-  · decide
+  · native_decide
   all_goals simp [withoutHeaderProcessing, Records.configuration, dataPlaneModelFromRecords]
 
 lemma recorded_flow_parameters : ∀ selected ∈ contexts,
     selected.innerStamp.tag = 1 ∧ selected.outerAssociation.tag = 2 ∧
     records.ipsecTunnel selected.innerStamp = selected.flow.innerTunnel ∧
-    records.macsecTunnel selected.outerAssociation = selected.flow.outerTunnel := by decide
+    records.macsecTunnel selected.outerAssociation = selected.flow.outerTunnel := by native_decide
 
 lemma recorded_outgoing_policies : ∀ selected ∈ contexts,
     ∀ iface ∈ ifaces, ∀ policy ∈ configuration.ip.egressPolicies iface,
@@ -70,16 +67,14 @@ lemma recorded_outgoing_policies : ∀ selected ∈ contexts,
       (expectedEncapStack iface).head? = some policy.tag →
       selected.OutgoingPolicy (configuration.ip.owner iface) (expectedEncapStack iface) policy association := by
   unfold MixedFlowEndpoints.OutgoingPolicy MixedFlowEndpoints.SourceSide MixedFlowEndpoints.DestinationSide
-  decide
-
+  native_decide
 lemma recorded_incoming_policies : ∀ selected ∈ contexts,
     ∀ iface ∈ ifaces, ∀ policy ∈ configuration.ip.ingressPolicies iface,
     ∀ association ∈ configuration.ip.ingressSAs iface, DataPlaneForwarding.saMatchesPolicy association policy →
       (expectedEncapStack iface).head? = some policy.tag →
       selected.IncomingPolicy (configuration.ip.owner iface) (expectedEncapStack iface) policy association := by
   unfold MixedFlowEndpoints.IncomingPolicy MixedFlowEndpoints.DestinationSide
-  decide
-
+  native_decide
 lemma policy_iface_is_recorded (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy)
     (member : policy ∈ configuration.ip.egressPolicies iface ∨ policy ∈ configuration.ip.ingressPolicies iface) :
     iface ∈ ifaces := by
@@ -97,7 +92,7 @@ lemma policy_iface_is_recorded (iface : Nat) (policy : DataPlaneForwarding.Ipsec
       change (DataPlaneForwarding.ifaceAt records.ifaceData iface).owner = 0
       simp only [DataPlaneForwarding.ifaceAt, missing, Option.getD_none]
   have empty : (DataPlaneForwarding.deviceAt records.deviceData 0).egressPolicies = [] ∧
-      (DataPlaneForwarding.deviceAt records.deviceData 0).ingressPolicies = [] := by decide
+      (DataPlaneForwarding.deviceAt records.deviceData 0).ingressPolicies = [] := by native_decide
   change policy ∈ (DataPlaneForwarding.deviceAt records.deviceData (configuration.ip.owner iface)).egressPolicies ∨
     policy ∈ (DataPlaneForwarding.deviceAt records.deviceData (configuration.ip.owner iface)).ingressPolicies at member
   simp only [ownerZero, empty.1, empty.2, List.not_mem_nil, or_self] at member
@@ -114,13 +109,12 @@ lemma flow_policy_checks (selected : MixedFlowEndpoints) (member : selected ∈ 
       policy configured association installed bound head
   · have checked : ∀ selected ∈ contexts, ∀ route ∈ records.routes,
         route.egress = selected.destinationLogicalIface → selected.innerStamp.receiver < route.destPrefixLow ∨
-          route.destPrefixHigh < selected.innerStamp.receiver := by decide
+          route.destPrefixHigh < selected.innerStamp.receiver := by native_decide
     exact checked selected member
   · have checked : ∀ selected ∈ contexts, ∀ iface ∈ records.macIfaces,
         ∀ association ∈ iface.transmitAssociation.toList,
-        iface.logicalIface = selected.destinationLogicalIface ∨ association = selected.outerAssociation := by decide
+        iface.logicalIface = selected.destinationLogicalIface ∨ association = selected.outerAssociation := by native_decide
     intro iface configured association installed
     exact checked selected member iface configured association (by simp [installed])
-  · decide
-
+  · native_decide
 end TDN.Deployments.NestedProtection_Mixed

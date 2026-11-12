@@ -1,4 +1,7 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.Perimeter_MacsecCases
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.BoundaryMACsec
 open Compliance Requirements Requirements.Msc MultiProtocolForwarding
@@ -48,7 +51,7 @@ lemma prior_link_capability_omits_actual_protect_off_plaintext (base : Deploymen
   subst inventory
   have unique : ∀ iface ∈ unprotectedAllowed.inventory.ifaces,
       unprotectedAllowed.ifaceName iface = unprotectedAllowed.sender.id → iface = 3 := by
-    exact of_decide_eq_true rfl
+    native_decide
   have same := unique iface member name
   subst iface
   rcases capable with ethernet | mka | macsec
@@ -56,9 +59,9 @@ lemma prior_link_capability_omits_actual_protect_off_plaintext (base : Deploymen
         unprotectedAllowed.inventory 3 .outbound := by
       simp [PriorLinkTransit, Records.inventory, Records.configuration, dataPlaneModelFromRecords]
     exact absent ethernet.2
-  · have notMKA : ¬ PacketMKA (unprotectedAllowed.packet .outbound) := by decide
+  · have notMKA : ¬ PacketMKA (unprotectedAllowed.packet .outbound) := by native_decide
     exact notMKA mka.1
-  · have notMACsec : ¬ PacketMACsec (unprotectedAllowed.packet .outbound) := by decide
+  · have notMACsec : ¬ PacketMACsec (unprotectedAllowed.packet .outbound) := by native_decide
     exact notMACsec macsec.1
 
 lemma first_ready_observation_stops_before_actual_protect_off_output :
@@ -77,7 +80,7 @@ lemma recorded_physical_parent_recognition_retains_actual_plaintext (base : Depl
   have parents : ∀ interface ∈ [unprotectedAllowed.sender, unprotectedAllowed.receiver],
       ∀ iface ∈ unprotectedAllowed.inventory.ifaces, unprotectedAllowed.ifaceName iface = interface.id →
         ∃ mac ∈ unprotectedAllowed.configuration.macIfaces, mac.physicalIface = iface := by
-    exact of_decide_eq_true rfl
+    native_decide
   constructor
   · exact physical_MACsec_boundary_admission_is_link_admission _ _ rfl _
       (parents _ (by simp)) _ _ (protection_disabled_plaintext_is_observed_at_both_boundaries base).1
@@ -96,7 +99,7 @@ theorem actual_protect_off_capture_violates_PF4 (base : Deployment)
     ((unprotectedAllowed.deployment base).Observe (unprotectedAllowed.packet .outbound))
   · change (unprotectedAllowed.deployment base).BoundaryAccepts unprotectedAllowed.sender.id .outbound _
     exact Or.inr (Or.inr (protection_disabled_plaintext_is_observed_at_both_boundaries base).1)
-  · exact of_decide_eq_true rfl
+  · unfold_check_parameters; native_decide
   · simp [ApprovedControl, Records.deployment]
 
 lemma protect_off_filtered_attempt_has_a_real_native_prefix :
@@ -107,7 +110,7 @@ lemma protect_off_filtered_attempt_has_a_real_native_prefix :
     (captured_routes_and_source_payload_are_nonempty unprotectedDenied (by simp)).1).1
   have plain : MultiProtocolForwarding.Step unprotectedDenied.configuration
       (unprotectedDenied.sourceCase.egressReady unprotectedDenied.configuration) .forwardWithoutEncap unprotectedDenied.physicalReady :=
-    .unprotectedMACsec unprotectedDenied.sourceCase.mac (by exact of_decide_eq_true rfl)
+    .unprotectedMACsec unprotectedDenied.sourceCase.mac (by native_decide)
       rfl rfl rfl rfl
   exact (Cslib.LTS.MTr.append_iff _).mpr
     ⟨unprotectedDenied.sourceCase.egressReady unprotectedDenied.configuration, routed, .stepL plain .refl⟩
@@ -116,6 +119,6 @@ theorem physical_egress_filter_rejects_the_plaintext_attempt (base : Deployment)
     ¬ (unprotectedDenied.deployment base).PhysicalBoundaryAccepts unprotectedDenied.sender.id .outbound
       ((unprotectedDenied.deployment base).Observe (unprotectedDenied.packet .outbound)) := by
   apply rejected_physical_program_excludes_boundary_admission _ unprotectedDenied.inventory rfl
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 end TDN.Deployments.BoundaryMACsec

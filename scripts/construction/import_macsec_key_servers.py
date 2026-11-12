@@ -70,7 +70,7 @@ open Requirements
 /-- The two entries retain the forward and reverse EAP role arrangements. -/
 def settings : List MACsecKeyServerSettings := [""" + ", ".join(values) + """]
 
-lemma local_settings : ∀ s ∈ settings, s.Checked := by decide
+lemma local_settings : ∀ s ∈ settings, s.Checked := by native_decide
 
 theorem configured_server_matches_central_site (s : MACsecKeyServerSettings)
     (member : s ∈ settings) (central : String) (present : s.centralSite = some central) :
@@ -80,7 +80,7 @@ theorem configured_server_matches_central_site (s : MACsecKeyServerSettings)
 theorem configured_priorities_are_distinct (s : MACsecKeyServerSettings) (member : s ∈ settings) :
     s.leftPriority ≠ s.rightPriority := checked_pair_has_distinct_priorities (local_settings s member)
 
-lemma both_arrangements_present : settings.length = 2 := by decide
+lemma both_arrangements_present : settings.length = 2 := by native_decide
 
 end TDN.Deployments.FinalMACsecKeyServers
 """

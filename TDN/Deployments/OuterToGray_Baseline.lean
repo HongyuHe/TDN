@@ -1,5 +1,8 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.OuterToGray_BaselineChecks
 import TDN.Deployments.OuterToGray_BaselineBlockedTrafficTests
+
+set_option synthInstance.maxSize 16384
 
 namespace TDN.Deployments.OuterToGray_Baseline
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel
@@ -9,9 +12,9 @@ theorem complete_Outer_gray_policy (base : Deployment) :
   have workstationRole := gray_workstation_role_is_empty (records.deployment base) no_workstations rfl
   have coherence := records.processing_coherent_from_structure base (device_structure_checked base)
     interface_iface_selection_checked device_program_atoms_checked
-  have udpCoherence : (records.deployment base).UDPBindingsCoherent := of_decide_eq_true rfl
+  have udpCoherence : (records.deployment base).UDPBindingsCoherent := by unfold_check_parameters; native_decide
   exact outer_gray_IPsec_policy_from_native_checks (records.deployment base) records.inventory rfl
-    ⟨fun _ => 64, fun _ => 64⟩ rfl (by intro iface; exact ⟨by change 64 ≤ 255; decide, by change 64 ≤ 255; decide⟩) records.pairs
+    ⟨fun _ => 64, fun _ => 64⟩ rfl (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩) records.pairs
     (address_inventory_checked base) workstationRole coherence udpCoherence
     (records.policy_indices_from_unique_interfaces base interface_ids_unique)
     (inner_pair_bindings_checked base) ⟨rfl, no_workstations⟩ rfl rfl all_inner_tunnels_IPsec

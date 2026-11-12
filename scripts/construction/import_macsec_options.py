@@ -104,7 +104,7 @@ open TDN.Requirements
 Linux implementation contract, with all other protection duties kept separate. -/
 def options : List MACsecOptions := [''' + ", ".join(entries) + ''']
 
-lemma all_selected_ports_present : options.length = 6 := by decide
+lemma all_selected_ports_present : options.length = 6 := by native_decide
 
 theorem selected_options_use_supported_features :
     msc_macsec_optional_clear_vlan_and_xpn options := by

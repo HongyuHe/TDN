@@ -21,8 +21,8 @@ lemma source_request_context (request : PacketSource.Request)
   change sourceEntry records.entries request.iface = some (records.redNetwork request.originDomain) ∧ _ at entry
   obtain ⟨record, member, same, network⟩ := source_entry_is_recorded records.entries request.iface _ entry.1
   have unique : ∀ first ∈ records.entries, ∀ second ∈ records.entries,
-      first.network = second.network → first.originDomain = second.originDomain := by decide
-  have named : ∀ record ∈ records.entries, record.network ≠ "" := by decide
+      first.network = second.network → first.originDomain = second.originDomain := by native_decide
+  have named : ∀ record ∈ records.entries, record.network ≠ "" := by native_decide
   have domain : request.originDomain = record.originDomain := by
     unfold Records.redNetwork at network
     cases found : records.entries.find? (fun candidate => candidate.originDomain == request.originDomain) with
@@ -100,7 +100,7 @@ lemma step_preserves_forwarding_invariant     {before after : StandardDataPlaneB
       (step_preserves_selected_flow _ safe.1 nativeStep safe.2.2.1) safe.2.2.2.2
 
 lemma recorded_context_origins : ∀ selected ∈ contexts,
-    records.redNetwork selected.originDomain = selected.flow.sourceNetwork := by decide
+    records.redNetwork selected.originDomain = selected.flow.sourceNetwork := by native_decide
 
 lemma flow_events_checked     {before after : StandardDataPlaneBridge.State ifaces} {action : StandardDataPlaneBridge.Action ifaces}
     (safe : ForwardingInvariant before)

@@ -16,29 +16,26 @@ def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords reco
 
 lemma route_owners : ∀ route ∈ records.routes,
     (DataPlaneForwarding.ifaceAt records.nativeIfaces route.egress).owner =
-      (DataPlaneForwarding.ifaceAt records.nativeIfaces route.ingress).owner := by decide
+      (DataPlaneForwarding.ifaceAt records.nativeIfaces route.ingress).owner := by native_decide
 
 lemma physical_stacks : ∀ edge ∈ records.links,
-    expectedEncapStack edge.1 = expectedEncapStack edge.2 := by decide
+    expectedEncapStack edge.1 = expectedEncapStack edge.2 := by native_decide
 
 lemma bridge_stacks : ∀ edge ∈ records.bridges,
-    expectedEncapStack edge.1 = expectedEncapStack edge.2 := by decide
+    expectedEncapStack edge.1 = expectedEncapStack edge.2 := by native_decide
 
 lemma forward_defaults : ∀ device ∈ ({} : DataPlaneForwarding.DeviceData) :: records.nativeDevices,
-    device.forwardFallback = .deny := by decide
+    device.forwardFallback = .deny := by native_decide
 
 lemma forward_rules : DataPlaneForwarding.TableDrivenRoutedForwardChecks records.nativeDevices records.nativeIfaces records.routes := by
   unfold DataPlaneForwarding.TableDrivenRoutedForwardChecks
-  decide
-
+  native_decide
 lemma output_rules : DataPlaneForwarding.TableDrivenOutputChecks records.nativeDevices records.nativeIfaces := by
   unfold DataPlaneForwarding.TableDrivenOutputChecks
-  decide
-
+  native_decide
 lemma outer_routes : DataPlaneForwarding.TableDrivenOuterRoutes records.nativeDevices records.nativeIfaces records.routes := by
   unfold DataPlaneForwarding.TableDrivenOuterRoutes
-  decide
-
+  native_decide
 lemma table_stack_conditions : DataPlaneForwarding.PerHopEncapConditions
     (DataPlaneForwarding.dataPlaneModelFromRecords records.nativeDevices records.nativeIfaces records.routes records.links [])
     expectedEncapStack :=

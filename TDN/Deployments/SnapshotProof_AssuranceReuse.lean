@@ -40,8 +40,7 @@ theorem central_EAP_model_RG027 (base : Deployment)
 lemma central_server_and_EAP_origin_are_actual :
     centralPair.secondValue = 0 ∧ centralPair.centralSite = some "central-site" ∧
     centralKey.cakOrigin = .eapDerived "MSK-session-central" := by
-  decide
-
+  native_decide
 lemma wrong_central_server_is_rejected (base : Deployment) :
     keyGenerationChecked (centralDeployment base) [centralKey]
       [{centralPair with firstValue := 0, secondValue := 1}] [] centralRecords = false := by
@@ -79,8 +78,8 @@ theorem selected_assurance_AW_model_RG047 (base : Deployment)
   apply administrator_authentication_from_local_admission_and_credential_checks
     base true true events [authentication, operation] [account] [session] [7] (fun _ => 7)
   · exact assurance_admission_run
-  · decide
-  · decide
+  · native_decide
+  · native_decide
   · simpa [events, authentication, operation] using certificate
   · simpa [events, authentication, operation] using nist
 

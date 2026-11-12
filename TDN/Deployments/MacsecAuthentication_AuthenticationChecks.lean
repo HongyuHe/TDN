@@ -17,7 +17,7 @@ deriving instance DecidableEq for MACsecSetupRecord
 lemma profile_history_valid (capture : CaptureData) (supported : SupportedCapture capture) :
     capture.history.Valid := by
   apply observed_history_checks_sound
-  rcases supported with rfl | rfl <;> decide
+  rcases supported with rfl | rfl <;> native_decide
 
 lemma profile_setup_checks (capture : CaptureData) (supported : SupportedCapture capture) :
     MACsecSetupChecks {capture.deployment with focus := none} capture.model tlsPrimitive
@@ -27,19 +27,19 @@ lemma profile_setup_checks (capture : CaptureData) (supported : SupportedCapture
     all_goals
       intro record member
       first
-      | change record ∈ [forward.setupRecords[0]'(by decide), forward.setupRecords[1]'(by decide)] at member
-      | change record ∈ [reverse.setupRecords[0]'(by decide), reverse.setupRecords[1]'(by decide)] at member
+      | change record ∈ [forward.setupRecords[0]'(by native_decide), forward.setupRecords[1]'(by native_decide)] at member
+      | change record ∈ [reverse.setupRecords[0]'(by native_decide), reverse.setupRecords[1]'(by native_decide)] at member
       simp only [List.mem_cons, List.not_mem_nil, or_false] at member
       rcases member with rfl | rfl
       all_goals
-        refine ⟨by decide, by decide, ?_⟩
+        refine ⟨by native_decide, by native_decide, ?_⟩
         dsimp only [MACsecSetupRecord.AuthenticationChecked, CaptureData.authentication,
           CaptureData.deployment, MacsecProtection.ProfileRecords.deployment]
-        refine ⟨by decide, by decide, by decide, by decide, by decide,
-          by decide, by decide, by decide, by decide, by decide, ?_⟩
+        refine ⟨by native_decide, by native_decide, by native_decide, by native_decide, by native_decide,
+          by native_decide, by native_decide, by native_decide, by native_decide, by native_decide, ?_⟩
         dsimp only [MACsecSetupRecord.EAPChecked, CaptureData.authenticationFor]
-        refine ⟨?_, by decide, by decide, by decide, by decide, by decide,
-          by decide, by decide, by decide, by decide, by decide⟩
+        refine ⟨?_, by native_decide, by native_decide, by native_decide, by native_decide, by native_decide,
+          by native_decide, by native_decide, by native_decide, by native_decide, by native_decide⟩
         first
         | apply profile_session_binding forward (Or.inl rfl)
         | apply profile_session_binding reverse (Or.inr rfl)
@@ -50,7 +50,7 @@ lemma profile_setup_checks (capture : CaptureData) (supported : SupportedCapture
         ∃ record ∈ capture.setupRecords,
           record.installation.device = capture.profile.configuration.ip.owner iface.physicalIface ∧
           record.installation.association = association := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     intro iface member
     cases transmitted : iface.transmitAssociation with
     | none => trivial
@@ -59,7 +59,7 @@ lemma profile_setup_checks (capture : CaptureData) (supported : SupportedCapture
 lemma profile_authentication_inventory (capture : CaptureData) (supported : SupportedCapture capture) :
     ∀ device ∈ capture.deployment.devices, device.kind = .macsec →
       ∃ selected ∈ capture.authentication, selected.device = device.id := by
-  rcases supported with rfl | rfl <;> decide
+  rcases supported with rfl | rfl <;> native_decide
 
 lemma profile_authentication_settings (capture : CaptureData) (supported : SupportedCapture capture) :
     ∀ selected ∈ capture.authentication,
@@ -76,26 +76,25 @@ lemma profile_authentication_settings (capture : CaptureData) (supported : Suppo
     simp only [CaptureData.authentication, List.mem_cons, List.not_mem_nil, or_false] at member
     rcases member with rfl | rfl
     all_goals
-      refine ⟨by unfold Deployment.IsDevice; decide, by unfold Deployment.IsDevice; decide,
-        by decide, by decide, by decide, by decide, ?_⟩
-      refine ⟨by unfold Deployment.IsDevice; decide, rfl, by decide, by decide, by decide, roles, ?_, ?_, ?_, ?_⟩
+      refine ⟨by unfold Deployment.IsDevice; native_decide, by unfold Deployment.IsDevice; native_decide,
+        by native_decide, by native_decide, by native_decide, by native_decide, ?_⟩
+      refine ⟨by unfold Deployment.IsDevice; native_decide, rfl, by native_decide, by native_decide, by native_decide, roles, ?_, ?_, ?_, ?_⟩
       · exact ⟨_, exchangeMember, binding⟩
       · intro site zone
         simp [CaptureData.authenticationFor, CaptureData.deployment]
-      · exact ⟨"central-site", .gray, by decide, by decide⟩
-      · decide
-
+      · exact ⟨"central-site", .gray, by native_decide, by native_decide⟩
+      · native_decide
 lemma profile_tunnel_names_unique (capture : CaptureData) (supported : SupportedCapture capture) :
     TunnelNamesUnique {capture.deployment with focus := none} := by
   unfold TunnelNamesUnique
-  rcases supported with rfl | rfl <;> decide
+  rcases supported with rfl | rfl <;> native_decide
 
 lemma profile_macsec_names_separate (capture : CaptureData) (supported : SupportedCapture capture) :
     MACsecTunnelNamesSeparate {capture.deployment with focus := none} capture.model.native := by
   intro tunnel member mechanism authentication
   change "no-IPsec" ≠ tunnel.id
   have checked : ∀ tunnel ∈ capture.profile.tunnels, "no-IPsec" ≠ tunnel.id := by
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   exact checked tunnel member
 
 end TDN.Deployments.MacsecAuthentication

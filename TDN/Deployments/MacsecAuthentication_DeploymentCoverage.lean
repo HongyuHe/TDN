@@ -59,26 +59,26 @@ lemma profile_static_bindings (capture : CaptureData) (supported : SupportedCapt
     profile_interface_links capture supported, profile_link_policies capture supported,
     ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_,
     profile_source_entries capture supported, ?_, ?_⟩
-  · exact ⟨capture.profile.inventory, rfl, ⟨fun _ => 64, fun _ => 64⟩, rfl, fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; decide⟩
+  · exact ⟨capture.profile.inventory, rfl, ⟨fun _ => 64, fun _ => 64⟩, rfl, fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; native_decide⟩
   · intro iface member association installed
     refine ⟨capture.material, rfl, Or.inr ?_⟩
-    rcases supported with rfl | rfl <;> decide
+    rcases supported with rfl | rfl <;> native_decide
   · simp [DeviceExecutionBinding.IPsecKeyInventory, CaptureData.prototype, MacsecProtection.ProfileRecords.prototype, MacsecProtection.ProfileRecords.configuration]
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · intro tunnel member
     exact ⟨tunnel, member, rfl, rfl⟩
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
   · have checked : ∀ interface ∈ capture.profile.interfaces,
         ∃ iface ∈ List.range capture.profile.ifaceData.length,
           capture.profile.ifaceName iface = interface.id ∧
           capture.profile.componentName (capture.profile.configuration.ip.owner iface) = interface.device := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     intro interface member
     obtain ⟨iface, present, same, owner⟩ := checked interface member
     exact ⟨iface, same, owner⟩
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · intro first last connected
     exact ⟨(first, last), connected, rfl, rfl⟩
   · have checked : ∀ iface ∈ capture.profile.macIfaces,
@@ -90,7 +90,7 @@ lemma profile_static_bindings (capture : CaptureData) (supported : SupportedCapt
           ∀ peer ∈ capture.profile.macIfaces,
             (∃ installed ∈ peer.receiveAssociations, SameMACWireIdentity association installed) →
             tunnel.receiver = capture.profile.componentName (capture.profile.configuration.ip.owner peer.physicalIface) := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     intro iface member association installed
     exact checked iface member association (by simp [installed])
   · simp [CaptureData.prototype, MacsecProtection.ProfileRecords.prototype, MacsecProtection.ProfileRecords.configuration]
@@ -119,8 +119,8 @@ lemma profile_network_sources (capture : CaptureData) (supported : SupportedCapt
       intro network member
       simp only [forward, reverse, List.mem_cons, List.not_mem_nil, or_false] at member
       rcases member with rfl | rfl
-      · exact ⟨0, by decide, rfl, rfl, rfl⟩
-      · exact ⟨1, by decide, rfl, rfl, rfl⟩
+      · exact ⟨0, by native_decide, rfl, rfl, rfl⟩
+      · exact ⟨1, by native_decide, rfl, rfl, rfl⟩
   intro network member
   obtain ⟨index, chosen, entry, origin, emitted⟩ := checked network member
   refine ⟨capture.sampleRequest index, [sampleDatagram], ?_, by simp [CaptureData.sampleRequest], origin, emitted⟩
@@ -138,13 +138,13 @@ theorem profile_empty_history_model_is_covered (capture : CaptureData) (supporte
   apply macsec_model_covers_deployment capture.prototype (List.range capture.profile.ifaceData.length)
     capture.deployment (profile_static_bindings capture supported)
     (profile_iface_conditions capture supported) (profile_wire_checks capture supported)
-    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => by change 64 ≤ 255 ∧ 64 ≤ 255; decide)
+    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => by change 64 ≤ 255 ∧ 64 ≤ 255; native_decide)
     (profile_initial_wire_safe capture supported) (profile_link_encoding capture supported)
-    (fun _ => 1500) rfl (fun _ => by change 1280 ≤ 1500; decide) rfl
+    (fun _ => 1500) rfl (fun _ => by change 1280 ≤ 1500; native_decide) rfl
   · intro request allowed
     have member := profile_source_iface capture supported request allowed
     have checked : ∀ source ∈ capture.profile.sourceIfaces, source ∈ List.range capture.profile.ifaceData.length := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     exact checked request.iface member
   · exact profile_network_sources capture supported
 

@@ -16,33 +16,31 @@ def valid : RouteCertificate :=
     coverage := .branch (.leaf []) (.branch (.leaf [false]) (.leaf [true]))
     origins := .branch (.leaf [true, false]) (.leaf [true, true]) }
 
-example : valid.check routes = true := by decide
-example : ({ valid with coverage := .empty }).check routes = false := by decide
-example : ({ valid with origins := .empty }).check routes = false := by decide
-example : ({ valid with winners := .empty }).check routes = false := by decide
-example : ({ valid with winners := .node (some [false]) .empty .empty }).check routes = false := by decide
-example : ({ valid with winners := .node (some [true, true, false]) .empty .empty }).check routes = false := by decide
-example : ({ valid with retained := .leaf preferred }).check routes = false := by decide
-example : ({ valid with retained := .branch (.leaf preferred) (.leaf fallback) }).check routes = false := by decide
-example : ({ valid with destination := 64 }).check routes = false := by decide
-example : ({ valid with origins := .branch (.leaf [true, true]) (.leaf [true, false]) }).check routes = false := by decide
+example : valid.check routes = true := by native_decide
+example : ({ valid with coverage := .empty }).check routes = false := by native_decide
+example : ({ valid with origins := .empty }).check routes = false := by native_decide
+example : ({ valid with winners := .empty }).check routes = false := by native_decide
+example : ({ valid with winners := .node (some [false]) .empty .empty }).check routes = false := by native_decide
+example : ({ valid with winners := .node (some [true, true, false]) .empty .empty }).check routes = false := by native_decide
+example : ({ valid with retained := .leaf preferred }).check routes = false := by native_decide
+example : ({ valid with retained := .branch (.leaf preferred) (.leaf fallback) }).check routes = false := by native_decide
+example : ({ valid with destination := 64 }).check routes = false := by native_decide
+example : ({ valid with origins := .branch (.leaf [true, true]) (.leaf [true, false]) }).check routes = false := by native_decide
 example : valid.check (.branch (.leaf { fallback with tablePriority := 1 })
-    (.branch (.leaf preferred) (.leaf equalCost))) = false := by decide
+    (.branch (.leaf preferred) (.leaf equalCost))) = false := by native_decide
 example : valid.check (.branch (.leaf fallback)
-    (.branch (.leaf { preferred with metric := 4 }) (.leaf equalCost))) = false := by decide
+    (.branch (.leaf { preferred with metric := 4 }) (.leaf equalCost))) = false := by native_decide
 example : valid.check (.branch (.leaf fallback)
-    (.branch (.leaf preferred) (.leaf { equalCost with ingress := 1 }))) = false := by decide
+    (.branch (.leaf preferred) (.leaf { equalCost with ingress := 1 }))) = false := by native_decide
 
 example (packet : PacketPolicy.Packet) (destination : packet.destination = 42) :
     SelectedFibRoute routes.values equalCost packet := by
-  apply (table_driven_route_certificate_sound routes valid (by decide) equalCost packet destination).mpr
-  decide
-
+  apply (table_driven_route_certificate_sound routes valid (by native_decide) equalCost packet destination).mpr
+  native_decide
 example (packet : PacketPolicy.Packet) (destination : packet.destination = 42) :
     ¬ SelectedFibRoute routes.values fallback packet := by
-  rw [table_driven_route_certificate_sound routes valid (by decide) fallback packet destination]
-  decide
-
+  rw [table_driven_route_certificate_sound routes valid (by native_decide) fallback packet destination]
+  native_decide
 example (routes : WitnessTree FibRoute) (certificate : RouteCertificate)
     (checked : certificate.check routes = true) (packet : PacketPolicy.Packet)
     (destination : packet.destination = certificate.destination) :

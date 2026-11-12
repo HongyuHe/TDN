@@ -16,7 +16,7 @@ theorem configured_graph_RG034 :
       (fun a b => (a, b) ∈ outsideAttachments) (fun _ _ => False) :=
   snapshot_public_internet_RG034
 
-lemma nonempty_outer_inventory : outerNodes ≠ [] := by decide
+lemma nonempty_outer_inventory : outerNodes ≠ [] := by native_decide
 
 end Baseline
 
@@ -32,7 +32,7 @@ theorem configured_graph_RG034 :
       (fun a b => (a, b) ∈ outsideAttachments) (fun _ _ => False) :=
   snapshot_public_internet_RG034
 
-lemma nonempty_outer_inventory : outerNodes ≠ [] := by decide
+lemma nonempty_outer_inventory : outerNodes ≠ [] := by native_decide
 
 end Shared
 
@@ -57,31 +57,30 @@ lemma full_firewall_path :
     apply Relation.ReflTransGen.single
     have checked : ∀ a b : Node, inside a b ∨ outside a b ∨ False → edge a b := by
       unfold inside outside edge
-      decide
+      native_decide
     exact checked a b attachment
   · change ∀ o, outer o → ∃ f b, firewall f ∧ black b ∧ inside o f ∧ outside f b
     unfold outer firewall black inside outside
-    decide
+    native_decide
   · change ∀ o, outer o → ∃ i, inner i ∧ grayConnection o i
     unfold outer inner grayConnection
-    decide
+    native_decide
   · intro _
     unfold edge firewall side
-    decide
+    native_decide
   · intro _
     unfold outer firewall
-    decide
+    native_decide
   · intro _
     unfold outer black side
-    decide
-
+    native_decide
 lemma bypass_edge_rejected :
     ¬ Requirements.Msc.msc_outer_firewall_placement true true false
       (fun a b => edge a b ∨ (a = 0 ∧ b = 2)) grayConnection
       outer firewall black (fun _ => False) inner inside outside (fun _ _ => False) := by
   intro conform
   exact conform.2.2.2.1 rfl 0 2 rfl rfl
-    (Relation.ReflTransGen.single ⟨Or.inr ⟨rfl, rfl⟩, by unfold firewall; decide⟩)
+    (Relation.ReflTransGen.single ⟨Or.inr ⟨rfl, rfl⟩, by unfold firewall; native_decide⟩)
 
 end BypassCheck
 end TDN.Deployments.SnapshotProof_TopologyWaypointing

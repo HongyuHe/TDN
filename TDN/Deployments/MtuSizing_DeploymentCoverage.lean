@@ -159,7 +159,7 @@ theorem captured_deployment_bindings {Key : Type} (records : Records)
     · intro entry member
       exact ⟨(bridgeChecks.2.1 entry member).1, Or.inr (Or.inl (bridgeChecks.2.1 entry member).2)⟩
   · exact ⟨completeInventory records installations policies codec, rfl, ⟨⟨fun _ => 64, fun _ => 64⟩,
-      rfl, fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; decide⟩⟩
+      rfl, fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; native_decide⟩⟩
   · intro mac member
     cases member
   · exact public_SA_inventory_sound _ installations epoch material rfl rfl (fun _ => rfl) (fun _ => rfl)

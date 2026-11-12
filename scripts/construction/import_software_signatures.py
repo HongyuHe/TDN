@@ -148,7 +148,7 @@ theorem recorded_executable_has_table2_signature_choice :
     msc_software_firmware_signature_choice true ["deployment-utility"]
       (signaturesForComponent recordedUses) (fun _ => False) :=
   software_signature_choice_from_artifact_checks ["deployment-utility"] recordedUses
-    (fun _ => False) (by decide) recorded_algorithm_is_approved
+    (fun _ => False) (by native_decide) recorded_algorithm_is_approved
 
 end TDN.Deployments.FreshSoftwareSignatures
 '''

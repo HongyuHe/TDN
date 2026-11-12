@@ -107,7 +107,7 @@ set_option maxHeartbeats 0
     text += "def side (node : Node) : Nat := " + str(rg["outer_sides"]) + "[node.val]!\n"
     text += """def edge (a b : Node) : Prop := (a,b) ∈ edges
 def firewall (node : Node) : Prop := node ∈ firewallNodes
-lemma actual_redundant_inventory : outerNodes.length = 4 := by decide
+lemma actual_redundant_inventory : outerNodes.length = 4 := by native_decide
 lemma local_cut : ∀ a b, edge a b → ¬ firewall a → ¬ firewall b → side a = side b := by
   unfold edge edges firewall firewallNodes side
   decide

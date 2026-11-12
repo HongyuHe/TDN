@@ -1,3 +1,4 @@
+import TDN.Import.NativeDecide
 import TDN.Deployments.OuterToGray_SharedData
 import TDN.Deployments.OuterToGray_DeviceCases
 import TDN.Models.SwapLocalAddressBindings
@@ -18,17 +19,17 @@ load_network_records rawInterfaces : List Interface from "../../data/evidence/co
 lemma every_Gray_interface_is_preserved :
     rawInterfaces.filter (fun interface => interface.zone == .gray) =
       records.interfaces.filter (fun interface => interface.zone == .gray) := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma every_raw_interface_identifier_is_preserved :
     rawInterfaces.map Interface.id = records.interfaces.map Interface.id := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 lemma reply_case_checked (base : Deployment) : replyCase.Checks records base := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 lemma collision_case_checked (base : Deployment) : collisionCase.Checks records base := by
-  exact of_decide_eq_true rfl
+  unfold_check_parameters; native_decide
 
 theorem framed_reply_is_eligible_and_accepted (base : Deployment)
     (unique : InterfaceIDsUnique records.interfaces) :
@@ -68,7 +69,7 @@ theorem raw_local_addresses_preserve_encrypted_INPUT (state : MultiProtocolForwa
 
 lemma every_native_link_has_recorded_endpoints :
     ∀ edge ∈ records.links, edge.1 ∈ records.inventory.ifaces ∧ edge.2 ∈ records.inventory.ifaces := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 theorem every_captured_wire_arrival_has_native_path (base : Deployment)
     (before after : MultiProtocolForwarding.State)

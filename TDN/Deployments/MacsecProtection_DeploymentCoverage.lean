@@ -54,25 +54,25 @@ lemma profile_static_bindings (records : ProfileRecords) (supported : SupportedP
     profile_interface_links records supported, profile_link_policies records supported,
     ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_,
     profile_source_entries records supported, ?_, ?_⟩
-  · exact ⟨records.inventory, rfl, ⟨fun _ => 64, fun _ => 64⟩, rfl, fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; decide⟩
+  · exact ⟨records.inventory, rfl, ⟨fun _ => 64, fun _ => 64⟩, rfl, fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; native_decide⟩
   · intro iface member association installed
     exact ⟨List.replicate 16 (UInt8.ofNat association.keyGeneration), rfl, Or.inl (by simp)⟩
   · simp [DeviceExecutionBinding.IPsecKeyInventory, ProfileRecords.prototype, ProfileRecords.configuration]
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · intro tunnel member
     exact ⟨tunnel, member, rfl, rfl⟩
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
+  · rcases supported with rfl | rfl <;> native_decide
   · have checked : ∀ interface ∈ records.interfaces,
         ∃ iface ∈ List.range records.ifaceData.length,
           records.ifaceName iface = interface.id ∧
           records.componentName (records.configuration.ip.owner iface) = interface.device := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     intro interface member
     obtain ⟨iface, present, same, owner⟩ := checked interface member
     exact ⟨iface, same, owner⟩
-  · rcases supported with rfl | rfl <;> decide
+  · rcases supported with rfl | rfl <;> native_decide
   · intro first last connected
     exact ⟨(first, last), connected, rfl, rfl⟩
   · have checked : ∀ iface ∈ records.macIfaces,
@@ -84,7 +84,7 @@ lemma profile_static_bindings (records : ProfileRecords) (supported : SupportedP
           ∀ peer ∈ records.macIfaces,
             (∃ installed ∈ peer.receiveAssociations, SameMACWireIdentity association installed) →
             tunnel.receiver = records.componentName (records.configuration.ip.owner peer.physicalIface) := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     intro iface member association installed
     exact checked iface member association (by simp [installed])
   · simp [ProfileRecords.prototype, ProfileRecords.configuration]
@@ -113,8 +113,8 @@ lemma profile_network_sources (records : ProfileRecords) (supported : SupportedP
       intro network member
       simp only [direct, routed, List.mem_cons, List.not_mem_nil, or_false] at member
       rcases member with rfl | rfl
-      · exact ⟨0, by decide, rfl, rfl, rfl⟩
-      · exact ⟨1, by decide, rfl, rfl, rfl⟩
+      · exact ⟨0, by native_decide, rfl, rfl, rfl⟩
+      · exact ⟨1, by native_decide, rfl, rfl, rfl⟩
   intro network member
   obtain ⟨index, chosen, entry, origin, emitted⟩ := checked network member
   refine ⟨records.sampleRequest index, [sampleDatagram], ?_, by simp [ProfileRecords.sampleRequest], origin, emitted⟩
@@ -131,13 +131,13 @@ theorem profile_deployment_is_covered (records : ProfileRecords) (supported : Su
   apply macsec_model_covers_deployment records.prototype (List.range records.ifaceData.length)
     records.deployment (profile_static_bindings records supported)
     (profile_iface_conditions records supported) (profile_wire_checks records supported)
-    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => by change 64 ≤ 255 ∧ 64 ≤ 255; decide)
+    ⟨fun _ => 64, fun _ => 64⟩ rfl (fun _ => by change 64 ≤ 255 ∧ 64 ≤ 255; native_decide)
     (profile_initial_wire_safe records supported) (profile_link_encoding records supported)
-    (fun _ => 1500) rfl (fun _ => by change 1280 ≤ 1500; decide) rfl
+    (fun _ => 1500) rfl (fun _ => by change 1280 ≤ 1500; native_decide) rfl
   · intro request allowed
     have member := profile_source_iface records supported request allowed
     have checked : ∀ source ∈ records.sourceIfaces, source ∈ List.range records.ifaceData.length := by
-      rcases supported with rfl | rfl <;> decide
+      rcases supported with rfl | rfl <;> native_decide
     exact checked request.iface member
   · exact profile_network_sources records supported
 

@@ -49,12 +49,12 @@ lemma carrier_input_preserves_boundary_{tag} : CarrierInputCheck config expected
   [{inside}] [{outside}] {tag} {component}
 
 lemma {name}_nonempty_attachments :
-    ([{inside}] : List Nat) ≠ [] ∧ ([{outside}] : List Nat) ≠ [] := by decide
+    ([{inside}] : List Nat) ≠ [] ∧ ([{outside}] : List Nat) ≠ [] := by native_decide
 
 lemma {name}_ip_tags : ∀ entry, config.ip.owner entry = {component} →
     ∀ policy ∈ config.ip.ingressPolicies entry, policy.tag = {tag} := by
   have checked : ∀ policy ∈ (DataPlaneForwarding.deviceAt devices {component}).ingressPolicies,
-      policy.tag = {tag} := by decide
+      policy.tag = {tag} := by native_decide
   intro entry owner policy member
   change (DataPlaneForwarding.ifaceAt ifaces entry).owner = {component} at owner
   change policy ∈ (DataPlaneForwarding.deviceAt devices (DataPlaneForwarding.ifaceAt ifaces entry).owner).ingressPolicies at member
@@ -71,7 +71,7 @@ lemma {name}_mac_tags : ∀ iface ∈ config.macIfaces,
 theorem {name}_no_bypass : Requirements.BoundaryNoBypass {name} :=
   Requirements.mixed_tunnel_boundary_from_local_checks config expectedEncapStack [{inside}] [{outside}] {tag} {component}
     mixed_local_conditions carrier_input_preserves_boundary_{tag}
-    {name}_ip_tags {name}_mac_tags (by decide) (by decide)
+    {name}_ip_tags {name}_mac_tags (by native_decide) (by native_decide)
 """)
             direction = "Reverse" if device.endswith("A") else "Forward"
             label = direction + ("VLAN0" if bridged else "")
@@ -88,7 +88,7 @@ theorem {name}_no_bypass : Requirements.BoundaryNoBypass {name} :=
             proof = "Cslib.LTS.MTr.refl"
             for index in reversed(range(first, last)):
                 proof = ("Cslib.LTS.MTr.stepL ⟨" + label + ".usefulStep" + str(index) +
-                         ", by decide, by decide⟩ (" + proof + ")")
+                         ", by native_decide, by native_decide⟩ (" + proof + ")")
             blocks.append(f"""theorem {name}_positive_inbound :
     ∃ start actions finish, {name}.inboundEntry start ∧
       {name}.system.MTr start actions finish ∧ {name}.inboundExit finish := by

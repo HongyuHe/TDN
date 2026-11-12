@@ -11,7 +11,7 @@ load_network_records interfaces : List InterfaceLimit from "../../data/evidence/
 load_network_records redLimit : Nat from "../../data/evidence/SnapshotNestedSizing.json" ["TDN.Deployments.SnapshotNestedSizing.redLimit"]
 
 lemma every_maximum_fits : ∀ entry ∈ interfaces,
-    lengthAt espLength espLength entry.stage redLimit ≤ entry.mtu := by decide
+    lengthAt espLength espLength entry.stage redLimit ≤ entry.mtu := by native_decide
 
 theorem every_bounded_red_datagram_fits_each_stage :
     ∀ bytes, bytes ≤ redLimit → ∀ entry ∈ interfaces,

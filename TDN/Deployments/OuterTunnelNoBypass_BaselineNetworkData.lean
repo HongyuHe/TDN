@@ -33,6 +33,6 @@ lemma red_endpoint_network_ids_checked :
     ∀ entry ∈ entries, ∀ iface ∈ records.inventory.ifaces,
       (DataPlaneForwarding.ifaceAt records.nativeIfaces iface).owner =
         (DataPlaneForwarding.ifaceAt records.nativeIfaces entry.hostIface).owner →
-      records.configuration.ip.ifaceSecurityDomain iface = some entry.originDomain := by decide
+      records.configuration.ip.ifaceSecurityDomain iface = some entry.originDomain := by native_decide
 
 end TDN.Deployments.OuterTunnelNoBypass_BaselineNetwork

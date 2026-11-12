@@ -40,7 +40,7 @@ uv run --frozen --project mcp python scripts/construction/mcp_session.py \
 
 The November 4 continuation submits one complete RG at a time. The Constructor uses focused compiler feedback during development and postpones broad validation until the RG's general proof and applications are ready. Full clause coverage, kernel checks, meaningful assumptions, and reusable general proofs are required for PASS. Interpretation review resumes only when a specification's meaning changes. All new records stay under the new run directory.
 
-`export_proof_audit.lean` reads a newline-separated list of fully qualified theorem names from `TDN_PROOF_NAMES`. After a successful build, it writes their compiled assumptions, conclusions, transitive TDN dependencies, and axioms to the path in `TDN_PROOF_AUDIT`. The command rejects missing names, definitions supplied as proofs, and axioms beyond Lean's three permitted foundational axioms. The supervisor still reviews whether the assumptions justify the source requirements and whether concrete observations establish them.
+`export_proof_audit.lean` reads a newline-separated list of fully qualified theorem names from `TDN_PROOF_NAMES`. After a successful build, it writes their compiled assumptions, conclusions, transitive TDN dependencies, and axioms to the path in `TDN_PROOF_AUDIT`. The command rejects missing names, definitions supplied as proofs, and axioms outside the [proof trust policy](../../docs/proof_trust.md). Closed `native_decide` assertions are re-evaluated and counted in the audit output. The supervisor still reviews whether the assumptions justify the source requirements and whether concrete observations establish them.
 
 ```sh
 TDN_PROOF_NAMES=outputs/proof-names.txt \

@@ -10,17 +10,17 @@ set_option maxHeartbeats 0
 lemma recorded_iface_zones : ∀ edge ∈ records.links, ∀ iface ∈ [edge.1, edge.2],
     ∀ interface ∈ records.interfaces, records.ifaceName iface = interface.id →
       (interface.zone = .gray → expectedEncapStack iface = [1]) ∧
-      (interface.zone = .black → expectedEncapStack iface = [2,1]) := by decide
+      (interface.zone = .black → expectedEncapStack iface = [2,1]) := by native_decide
 
 lemma recorded_sources_are_red : ∀ entry ∈ records.entries, ∀ interface ∈ records.interfaces,
-    records.ifaceName entry.iface = interface.id → interface.zone ≠ .black := by decide
+    records.ifaceName entry.iface = interface.id → interface.zone ≠ .black := by native_decide
 
 lemma recorded_recipient_addresses : ∀ selected ∈ contexts, ∀ iface ∈ ifaces,
     configuration.ip.ifaceSecurityDomain iface ≠ none →
     ∀ interface ∈ records.interfaces, interface.device = records.componentName (configuration.ip.owner iface) →
     ∀ address ∈ interface.address.toList ++ interface.namespaceAddresses,
     selected.remoteLow ≤ address → address ≤ selected.remoteHigh →
-      (configuration.ip.ifaceSecurityDomain iface).map records.redNetwork = some selected.flow.destinationNetwork := by decide
+      (configuration.ip.ifaceSecurityDomain iface).map records.redNetwork = some selected.flow.destinationNetwork := by native_decide
 
 lemma recipient_iface_is_recorded (iface domain : Nat)
     (recipient : configuration.ip.ifaceSecurityDomain iface = some domain) : iface ∈ ifaces := by
@@ -38,7 +38,7 @@ lemma recipient_iface_is_recorded (iface domain : Nat)
       change (DataPlaneForwarding.ifaceAt records.ifaceData iface).owner = 0
       simp only [DataPlaneForwarding.ifaceAt, missing, Option.getD_none]
   change (DataPlaneForwarding.deviceAt records.deviceData (configuration.ip.owner iface)).ifaceSecurityDomain = some domain at recipient
-  have empty : (DataPlaneForwarding.deviceAt records.deviceData 0).ifaceSecurityDomain = none := by decide
+  have empty : (DataPlaneForwarding.deviceAt records.deviceData 0).ifaceSecurityDomain = none := by native_decide
   rw [ownerZero, empty] at recipient
   cases recipient
 

@@ -12,8 +12,7 @@ def byteSystem : Cslib.LTS (List (ByteFlows.Carrier DataPlaneForwarding.State B)
 
 lemma origin_bytes : ∀ byte ∈ body, Requirements.RedByteOrigin config redSources witnessState0 byte := by
   unfold body Requirements.RedByteOrigin Requirements.RedPayloadOrigin
-  decide
-
+  native_decide
 lemma prefix_path : (lts config).MTr witnessState0 (witnessActions.take 4) witnessState4 := by
   exact Cslib.LTS.MTr.stepL witnessStep0 (Cslib.LTS.MTr.stepL witnessStep1 (Cslib.LTS.MTr.stepL witnessStep2 (Cslib.LTS.MTr.stepL witnessStep3 (Cslib.LTS.MTr.refl))))
 

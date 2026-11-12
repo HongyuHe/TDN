@@ -12,7 +12,7 @@ lemma address_inventory_checked (base : Deployment) :
     addressRecordsChecked (deployment base) = true := by rfl
 
 lemma no_workstations : ∀ device ∈ records.components, device.kind ≠ .workstation := by
-  exact of_decide_eq_true rfl
+  native_decide
 
 
 end TDN.Deployments.Perimeter_Shared

@@ -21,12 +21,11 @@ def grayFirewallRules (device : Nat) : List PacketPolicy.Rule :=
   (DataPlaneForwarding.deviceAt ProfileShared_DataPlane.devices device).forwardRules
 
 lemma gray_firewall_defaults : ∀ device ∈ grayFirewallDevices,
-    (DataPlaneForwarding.deviceAt ProfileShared_DataPlane.devices device).forwardFallback = .deny := by decide
+    (DataPlaneForwarding.deviceAt ProfileShared_DataPlane.devices device).forwardFallback = .deny := by native_decide
 
 lemma gray_firewall_peer_rules : ∀ device ∈ grayFirewallDevices,
     ∀ rule ∈ grayFirewallRules device, rule.verdict = .allow → Requirements.RuleNamesPair pairs rule := by
-  decide
-
+  native_decide
 theorem gray_firewall_rejects_cross_level_addresses (device : Nat)
     (member : device ∈ grayFirewallDevices) (packet : PacketPolicy.Packet)
     (sourceLevel destinationLevel : SecurityLevel)
@@ -47,6 +46,5 @@ theorem both_gray_firewalls_allow_selected_peer_esp :
     PacketPolicy.Accepts (grayFirewallRules 3)
       { source := 180879618, destination := 174326018, ingress := "s1", egress := "g1", protocol := "esp", sourcePort := 0, destinationPort := 0,
         ipv4HeaderWords := 5, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" } := by
-  decide
-
+  native_decide
 end TDN.Deployments.ProfileShared_Addressing

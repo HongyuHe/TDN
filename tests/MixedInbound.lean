@@ -21,23 +21,20 @@ def authenticated : List DataPlaneForwarding.DeviceData :=
 /-- A carrier can otherwise move an arbitrary unauthenticated body across the cut. -/
 example : ¬ TableDrivenCarrierInputChecks unguarded ifaces [carrier] 2 := by
   unfold TableDrivenCarrierInputChecks
-  decide
-
+  native_decide
 /-- The real receive-policy guard blocks the unauthenticated carrier path. -/
 example : TableDrivenCarrierInputChecks authenticated ifaces [carrier] 2 := by
   unfold TableDrivenCarrierInputChecks
-  decide
-
+  native_decide
 /-- A permissive fallback cannot be hidden by an empty rule inventory. -/
 example : ¬ TableDrivenCarrierInputChecks [{ inputFallback := .allow }] ifaces [carrier] 2 := by
   unfold TableDrivenCarrierInputChecks
-  decide
-
+  native_decide
 def receivedAssociation : MACsecAssociation := ⟨1, 100, 0, 7⟩
 def transmittedAssociation : MACsecAssociation := ⟨99, 100, 0, 123⟩
 
 /-- SCI/AN agree even when arbitrary local generation and role annotations differ. -/
-example : SameMACWireIdentity transmittedAssociation receivedAssociation := by decide
+example : SameMACWireIdentity transmittedAssociation receivedAssociation := by native_decide
 
 def macIface : MACIface :=
   { logicalIface := 1, physicalIface := 0, settings := ⟨true, true, true, 0⟩,
@@ -55,6 +52,6 @@ def received : MultiProtocolForwarding.State :=
 example : MultiProtocolForwarding.Step config received .decryptMACsec
     { received with iface := 1, frame := { received.frame with body := body }, authenticated := [] } :=
   MultiProtocolForwarding.Step.decryptMACsec macIface receivedAssociation transmittedAssociation body
-    (by decide) rfl rfl rfl (by decide) (by decide)
+    (by native_decide) rfl rfl rfl (by native_decide) (by native_decide)
 
 end MixedInboundRegression

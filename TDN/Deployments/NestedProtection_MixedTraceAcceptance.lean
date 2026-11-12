@@ -166,7 +166,7 @@ lemma protection_path_checks_supply_device_trace (before : MultiProtocolForwardi
     exact .stepL (move.accepted_step before step macKeys ipsecKeys links headers)
       (ih (move.after before) remaining)
 
-lemma recorded_protection_paths_checked : ∀ path ∈ protectionPaths, ProtectionPathChecks path.start path.moves := by decide
+lemma recorded_protection_paths_checked : ∀ path ∈ protectionPaths, ProtectionPathChecks path.start path.moves := by native_decide
 
 lemma sample_path_0_device_trace :
     (⟨deviceBinding.AcceptedStep⟩ : Cslib.LTS _ _).MTr ((samplePath 0).state 0)
