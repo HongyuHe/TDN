@@ -29,10 +29,9 @@ import """ + args.module + """
 
 namespace TDN.Deployments.""" + args.namespace + """
 
-def responseSourceGuards : List (Nat × List PacketPolicy.Rule) := """ + lean_list(values) + """
+def responseSourceGuards : List (Nat × List PacketPolicy.PacketAclRule) := """ + lean_list(values) + """
 
 set_option maxRecDepth 10000
-set_option maxHeartbeats 2000000
 
 lemma all_input_interfaces_covered :
     SourceResponseGuards.TableDrivenGuardCoverage ifaces responseSourceGuards := by native_decide
@@ -42,7 +41,7 @@ lemma all_source_output_reply_pairs_checked :
 
 
 theorem source_output_reply_layers
-    {guard : Nat × List PacketPolicy.Rule} (guardMember : guard ∈ responseSourceGuards)
+    {guard : Nat × List PacketPolicy.PacketAclRule} (guardMember : guard ∈ responseSourceGuards)
     {entry output : DataPlaneForwarding.IfaceData} (entryMember : entry ∈ ifaces)
     (entryOwner : entry.owner = guard.1) (inputExternal : entry.name ≠ "lo")
     (outputMember : output ∈ ifaces) (owner : output.owner = entry.owner)
@@ -55,9 +54,9 @@ theorem source_output_reply_layers
     (selectorBound : ∀ id ∈ auth, ∃ association ∈ (DataPlaneForwarding.deviceAt devices entry.owner).ingressPolicies,
       association.id = id ∧ association.matches original = true)
     (address : SourceResponseGuards.ValidSourceAddress original.source)
-    (inputAccepted : Filter.evaluate (guard.2.map PacketPolicy.Rule.toFilter) .allow original = .allow)
+    (inputAccepted : Filter.evaluate (guard.2.map PacketPolicy.PacketAclRule.toFilter) .allow original = .allow)
     (outputAccepted : Filter.evaluate
-      ((DataPlaneForwarding.deviceAt devices output.owner).outputRules.map PacketPolicy.Rule.toFilter) .deny reply = .allow)
+      ((DataPlaneForwarding.deviceAt devices output.owner).outputRules.map PacketPolicy.PacketAclRule.toFilter) .deny reply = .allow)
     (returnsToSource : reply.destination = original.source)
     (protocol : KernelResponses.ResponseProtocol reply.protocol) :
     (if auth = [] then entry.stack else entry.stack.tail) = output.stack :=
@@ -86,7 +85,7 @@ end TDN.Deployments.""" + args.namespace + "\n"
             rules = "(responseSourceGuards[" + str(guard_index[device]) + "]'(by native_decide)).2"
             packet = "{ " + state_name + ".frame.packet with ingress := " + json.dumps(interface["name"]) + ", matchedInboundPolicyIds := " + state_name + ".authenticated }"
             checks.append("lemma positive_source_guard_" + str(index) + " : Filter.evaluate (" +
-                          rules + ".map PacketPolicy.Rule.toFilter) .allow (" + packet + ") = .allow := by native_decide")
+                          rules + ".map PacketPolicy.PacketAclRule.toFilter) .allow (" + packet + ") = .allow := by native_decide")
         text = "import " + args.witness_module + "\n" + text
         text = text.replace("end TDN.Deployments." + args.namespace,
                             "\n".join(checks) + "\n\nend TDN.Deployments." + args.namespace)

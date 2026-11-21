@@ -1,6 +1,6 @@
 import TDN.Models.AuthenticatedCiphertextReassembly
 
-open TDN AuthenticatedAssembly
+open TDN AuthenticatedReassembly
 
 private abbrev Annotation := List Nat × Nat
 private def message : Message Nat Nat Nat Annotation := ⟨7, 11, [10, 20, 30], ([101, 102], 1)⟩
@@ -12,13 +12,13 @@ private def authenticates (published : List (Message Nat Nat Nat Annotation))
     (result : Decoded Nat Nat (List Nat)) : Prop :=
   published.any (fun record => decide (record.context = result.context ∧
     record.wire = result.wire ∧ record.annotation.1 = result.plaintext)) = true
-private def first : Fragmentation.Fragment Nat Nat := ⟨99, 0, [10]⟩
-private def second : Fragmentation.Fragment Nat Nat := ⟨99, 1, [20, 30]⟩
-private def start : State Nat Nat Nat Nat Annotation (List Nat) := ⟨[], [], []⟩
-private def emitted : State Nat Nat Nat Nat Annotation (List Nat) := ⟨[message], [], []⟩
-private def receivedFirst : State Nat Nat Nat Nat Annotation (List Nat) := ⟨[message], [first], []⟩
-private def receivedBoth : State Nat Nat Nat Nat Annotation (List Nat) := ⟨[message], [first, second], []⟩
-private def finish : State Nat Nat Nat Nat Annotation (List Nat) := ⟨[message], [], [decoded]⟩
+private def first : Fragmentation.PayloadFragment Nat Nat := ⟨99, 0, [10]⟩
+private def second : Fragmentation.PayloadFragment Nat Nat := ⟨99, 1, [20, 30]⟩
+private def start : ReassemblyState Nat Nat Nat Nat Annotation (List Nat) := ⟨[], [], []⟩
+private def emitted : ReassemblyState Nat Nat Nat Nat Annotation (List Nat) := ⟨[message], [], []⟩
+private def receivedFirst : ReassemblyState Nat Nat Nat Nat Annotation (List Nat) := ⟨[message], [first], []⟩
+private def receivedBoth : ReassemblyState Nat Nat Nat Nat Annotation (List Nat) := ⟨[message], [first, second], []⟩
+private def finish : ReassemblyState Nat Nat Nat Nat Annotation (List Nat) := ⟨[message], [], [decoded]⟩
 
 example : AuthenticationSound Eq Prod.fst authenticates := by
   intro published result verified
@@ -30,11 +30,11 @@ example : AuthenticationSound Eq Prod.fst authenticates := by
 
 example : (system produces authenticates).MTr start
     [.publish, .receive, .receive, .accept] finish := by
-  have publish : Step produces authenticates start .publish emitted :=
+  have publish : ReassemblyStep produces authenticates start .publish emitted :=
     .publish (Or.inl rfl)
-  have receiveFirst : Step produces authenticates emitted .receive receivedFirst := .receive
-  have receiveSecond : Step produces authenticates receivedFirst .receive receivedBoth := .receive
-  have accept : Step produces authenticates receivedBoth .accept finish :=
+  have receiveFirst : ReassemblyStep produces authenticates emitted .receive receivedFirst := .receive
+  have receiveSecond : ReassemblyStep produces authenticates receivedFirst .receive receivedBoth := .receive
+  have accept : ReassemblyStep produces authenticates receivedBoth .accept finish :=
     .accept (header := 99) (packet := ⟨99, [10, 20, 30]⟩)
       (by simp [ReassemblyOrigins.assemble, receivedBoth, first, second, Fragmentation.Contiguous])
       (by unfold authenticates; native_decide)
@@ -43,7 +43,7 @@ example : (system produces authenticates).MTr start
 /-- Ordinary header and offset checks permit a mixed ciphertext. No such complete
 codeword exists in the illustrative ideal authentication relation. -/
 example : ReassemblyOrigins.assemble 99
-    [first, (⟨99, 1, [50, 60]⟩ : Fragmentation.Fragment Nat Nat)] =
+    [first, (⟨99, 1, [50, 60]⟩ : Fragmentation.PayloadFragment Nat Nat)] =
     some ⟨99, [10, 50, 60]⟩ := by
   simp [ReassemblyOrigins.assemble, first, Fragmentation.Contiguous]
 

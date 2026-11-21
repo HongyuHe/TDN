@@ -32,6 +32,8 @@ def main():
     p.add_argument("--confirm-loaded-config",action="store_true")
     p.add_argument("--platform-interface-names",default="")
     p.add_argument("--probe-expectations")
+    p.add_argument("--skip-active-probes",action="store_true",
+                   help="Collect configuration/state without host ping or management TLS probes")
     a=p.parse_args()
     spec=json.loads(Path(a.spec).read_text())
     probe_policy=json.loads(Path(a.probe_expectations).read_text()) if a.probe_expectations else {}
@@ -187,8 +189,11 @@ def main():
             sas,so=observe(did,"sas",["swanctl","--list-sas"])
             conns,co=observe(did,"connections",["swanctl","--list-conns"])
             certs,ce=observe(did,"public-certificates",["swanctl","--list-certs","--utc"])
-            snapshot["tunnels"].append(fact(did+":tunnel",did,peer_device_id=t["peer"],layer=d["role"],mechanism="IPsec",endpoints={"local":t["local"],"remote":t["remote"]},traffic_selectors={"local":t["local_ts"],"remote":t["remote_ts"]},mode="tunnel",algorithms={"raw_sas":sas},authentication={"configured":"pubkey","observed_connections":conns},replay_protection={"raw_states":rows["states"][0]},lifetimes={"raw_connections":conns},observed_state=sas,policies=rows["policies"][0],statistics=rows["states"][0],encapsulation=None,loaded_public_configuration=public_config,loaded_configuration_sha256=digest(public_config.encode()),load_confirmation=load_result,all_runtime_connections=raw_conns,observation_ids=[pc["id"],rc["id"],so["id"],co["id"],rows["states"][1]["id"],rows["policies"][1]["id"]]))
-            snapshot["credentials"].append(fact(did+":credentials",did,layer=d["role"],authentication_kind="certificate",public_certificate_listing=certs,chain_validation="unavailable from listing alone",revocation_evidence="local CRL details in public listing",observation_ids=[ce["id"]]))
+            auth_kind = "psk" if "class=pre-shared key" in raw_conns else "certificate" if "class=public key" in raw_conns else "unknown"
+            modes = re.findall(r"\bmode=(TUNNEL|TRANSPORT)\b", raw_conns)
+            observed_mode = modes[0].lower() if len(set(modes)) == 1 else "unknown"
+            snapshot["tunnels"].append(fact(did+":tunnel",did,peer_device_id=t["peer"],layer=d["role"],mechanism="IPsec",endpoints={"local":t["local"],"remote":t["remote"]},traffic_selectors={"local":t["local_ts"],"remote":t["remote_ts"]},mode=observed_mode,algorithms={"raw_sas":sas},authentication={"configured":auth_kind,"observed_connections":conns},replay_protection={"raw_states":rows["states"][0]},lifetimes={"raw_connections":conns},observed_state=sas,policies=rows["policies"][0],statistics=rows["states"][0],encapsulation=None,loaded_public_configuration=public_config,loaded_configuration_sha256=digest(public_config.encode()),load_confirmation=load_result,all_runtime_connections=raw_conns,observation_ids=[pc["id"],rc["id"],so["id"],co["id"],rows["states"][1]["id"],rows["policies"][1]["id"]]))
+            snapshot["credentials"].append(fact(did+":credentials",did,layer=d["role"],authentication_kind=auth_kind,public_certificate_listing=certs,chain_validation="unavailable from listing alone",revocation_evidence="local CRL details in public listing",observation_ids=[ce["id"]]))
     for j,l in enumerate(spec["links"]):
         aid=l["a"]["device"]+":"+l["a"]["interface"]
         bid=l["b"]["device"]+":"+l["b"]["interface"]
@@ -218,7 +223,7 @@ def main():
                         interface=interfaces.get(iid,{});name=interface.get('name')
                         if name and name!=bridge['name'] and did+':'+name in {i['id'] for i in snapshot['interfaces']}:
                             snapshot['links'].append({'id':'ovs-'+did+'-'+name,'status':'observed','endpoint_interface_ids':[did+':'+name,did+':'+bridge['name']],'relation':'ovs_bridge_membership','physical_claim_supported':False,'ovs_bridge_uuid':bridge['_uuid'][1],'ovs_port_uuid':pid,'ovs_interface_uuid':iid,'observation_ids':[rows['native-ovs-bridge'][1]['id'],rows['native-ovs-port'][1]['id'],rows['native-ovs-interface'][1]['id']]})
-    hosts=[d for d in spec["devices"] if d["role"]=="host"]
+    hosts=[] if a.skip_active_probes else [d for d in spec["devices"] if d["role"]=="host"]
     for src in hosts:
         for dst in hosts:
             if src["id"]==dst["id"]:
@@ -247,7 +252,7 @@ try:
    ss.sendall(b'GET / HTTP/1.0\r\n\r\n');r['response']=ss.recv(4096).decode();r['result']='delivered'
 except Exception as e:r.update({'result':'rejected','error':type(e).__name__+': '+str(e)})
 print(json.dumps(r))"""
-        for d in managed:
+        for d in ([] if a.skip_active_probes else managed):
             aw=next(x for x in spec["devices"] if x["role"]=="admin" and any(i.get("address","").split("/")[0]==d["admin"] for i in x["interfaces"]))
             addr=next(i["address"].split("/")[0] for i in d["interfaces"] if i["name"]=="mgmt")
             for authorized in [True,False]:
@@ -281,6 +286,11 @@ print(json.dumps(r))"""
         if path.is_file():
             files.append({"path":str(path.relative_to(root)),"sha256":digest(path.read_bytes()),"bytes":path.stat().st_size,"category":"raw" if path.parent.name=="raw" else "normalized"})
     manifest={"schema_version":"csfc-evidence/v1","snapshot_id":sid,"run_id":a.run_id,"configuration_id":a.configuration_id,"emulation_id":spec["name"],"source_case_ids":snapshot["scope"]["source_case_ids"],"requirement_group_ids":[],"started_at":started,"ended_at":utc(),"host":platform.node(),"software":{"kernel":platform.release(),"python":platform.python_version()},"code_hashes":{"collector":digest(Path(__file__).read_bytes()),"deployer":a.deployer_sha256},"configuration_hashes":{"spec":digest(Path(a.spec).read_bytes())},"files":files,"collection_failures":failures,"sanitization":{"private_files_read":False,"xfrm_key_export":False},"inventory_complete":{k:{"complete":not failures,"reason":"Explicit expected inventory and every command result retained."} for k in ["devices","interfaces","links","routes","filters","tunnels","credentials","probes","management"]},"convergence":{"before":pre,"after":post,"selected_fields":["IPv4 and IPv6 routes","IPv4 and IPv6 ordered filters","XFRM policies","device ID/image/PID/start state","interface identities and addresses","namespace peer IDs","bridge port and VLAN membership","OVS UUID membership/options/flow/group/meter inventories and FRR running configuration"],"consistent":not changed,"changed":changed,"interpretation":"Finite sequential before/after observation, not atomic. Counter values and bridge countdown timers are excluded from identity comparisons; IDs, configuration, membership and state remain checked."}}
+    if a.skip_active_probes:
+        for category in ["probes", "management"]:
+            manifest["inventory_complete"][category] = {
+                "complete": False,
+                "reason": "Active probes explicitly omitted; configuration and state collection retained."}
     (root/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
     print(json.dumps({"snapshot_id":sid,"observations":len(observations),"failures":len(failures),"converged":not changed,"probes":len(snapshot["probes"]),"unexpected_probes":[q["id"] for q in snapshot["probes"] if q["expected_result"]!=q["observed_result"]]}))
 

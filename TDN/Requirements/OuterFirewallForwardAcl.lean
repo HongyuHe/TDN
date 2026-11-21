@@ -4,13 +4,13 @@ namespace TDN.Requirements.Msc
 open Compliance
 
 def FirewallAddressGuard (d : Deployment) (outer : String) (internal : Bool)
-    (rule : PacketPolicy.Rule) : Prop :=
+    (rule : PacketPolicy.PacketAclRule) : Prop :=
   ∃ interface ∈ d.interfaces, interface.device = outer ∧ interface.zone = .black ∧
     ∃ address, interface.address = some address ∧
       (if internal then .sourceRange address address ∈ rule.atoms
         else .destinationRange address address ∈ rule.atoms)
 
-instance (d : Deployment) (outer : String) (internal : Bool) (rule : PacketPolicy.Rule) :
+instance (d : Deployment) (outer : String) (internal : Bool) (rule : PacketPolicy.PacketAclRule) :
     Decidable (FirewallAddressGuard d outer internal rule) := by
   unfold FirewallAddressGuard
   letI : DecidablePred (fun interface : Interface =>
@@ -34,19 +34,19 @@ instance (d : Deployment) (outer : String) (internal : Bool) (rule : PacketPolic
         exact ⟨interface, member, owner, zone, by simpa [address] using atom⟩)
 
 def FirewallBoundaryRule (d : Deployment) (outer : String) (internal : Bool)
-    (name : String) (direction : Direction) (rule : PacketPolicy.Rule) : Prop :=
+    (name : String) (direction : Direction) (rule : PacketPolicy.PacketAclRule) : Prop :=
   RuleMissesHook name direction rule ∨
     IPsecRule rule ∧ (direction = .inbound → FirewallAddressGuard d outer internal rule)
 
 instance (d : Deployment) (outer : String) (internal : Bool)
-    (name : String) (direction : Direction) (rule : PacketPolicy.Rule) :
+    (name : String) (direction : Direction) (rule : PacketPolicy.PacketAclRule) :
     Decidable (FirewallBoundaryRule d outer internal name direction rule) := by
   unfold FirewallBoundaryRule
   infer_instance
 
 lemma matching_firewall_address_guard (d : Deployment) (firewall outer : String) (internal : Bool)
     (firewallRole : d.IsDevice firewall .outerFirewall) (outerRole : d.IsLayer outer .outer)
-    (rule : PacketPolicy.Rule) (guard : FirewallAddressGuard d outer internal rule)
+    (rule : PacketPolicy.PacketAclRule) (guard : FirewallAddressGuard d outer internal rule)
     (packet : PacketPolicy.Packet) (matched : rule.toFilter.accepts packet = true) :
     if internal then LocalOuterAddress d firewall outer packet.source
       else LocalOuterAddress d firewall outer packet.destination := by
@@ -77,7 +77,7 @@ theorem firewall_admission_from_local_rule_checks (d : Deployment)
         policy.defaultVerdict = .deny ∧ ∀ rule ∈ policy.rules, rule.verdict = .allow →
           FirewallBoundaryRule d outer internal (inventory.configuration.ip.interfaceName iface)
             policy.direction rule)
-    (direction : Direction) (traffic : Traffic) (accepted : d.Accepts interface.id direction traffic) :
+    (direction : Direction) (traffic : Traffic) (accepted : d.PermitsOnInterface interface.id direction traffic) :
     IPsecPacket traffic.packet ∧
       (direction = .inbound →
         if internal then LocalOuterAddress d interface.device outer traffic.packet.source
@@ -96,7 +96,7 @@ theorem firewall_admission_from_local_rule_checks (d : Deployment)
   rw [policyDirection] at guarded
   rcases guarded with misses | ⟨protocol, address⟩
   · exact False.elim (hook_mismatch_cannot_match _ direction hook traffic.packet context rule misses matched)
-  · exact ⟨IPsec_rule_has_IPsec_packet rule traffic.packet protocol matched,
+  · exact ⟨ipsec_rule_has_ipsec_packet rule traffic.packet protocol matched,
       fun inbound => matching_firewall_address_guard d interface.device outer internal
         firewallRole outerRole rule (address inbound) traffic.packet matched⟩
 

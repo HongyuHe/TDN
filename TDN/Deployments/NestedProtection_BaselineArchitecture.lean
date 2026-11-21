@@ -5,7 +5,6 @@ namespace TDN.Deployments.NestedProtection_Baseline
 open Compliance Requirements Requirements.Msc MtuSizing_Records NestedProtection StandardDataPlaneBridge
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 load_network_records authenticationBindings : List PublicAuthenticationBinding from
   "../../data/evidence/nestedProtection/BaselineIPsec.json" ["authenticationBindings"]
@@ -17,14 +16,14 @@ deriving instance DecidableEq for Tunnel
 
 def authenticationSettings := authenticationBindings.map PublicAuthenticationBinding.setting
 
-def authenticationDeployment (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) : Deployment :=
+def authenticationDeployment (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) : Deployment :=
   { certificateAuthorityView authenticationSettings (deployment primitive) with
     innerUsesOuter := fun inner outer => (inner, outer) ∈ innerOuterUses }
 
-def authenticationForwarding (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :=
+def authenticationForwarding (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :=
   StandardDataPlaneBridge.model (deviceBinding primitive) records.inventory.ifaces (authenticationDeployment primitive) {}
 
-lemma authentication_forwarding_unchanged (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+lemma authentication_forwarding_unchanged (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     authenticationForwarding primitive = forwarding primitive := rfl
 
 lemma recorded_authentication_checks : ∀ record ∈ authenticationBindings,
@@ -51,7 +50,7 @@ lemma logical_authorities_do_not_report_peer_authentication : ∀ setting ∈ au
     ((authenticationSettings.find? (fun peer => peer.component == setting.authorityDevice.id)).map
       CertificateAuthoritySetting.certificateAuthenticated).getD false = false := by native_decide
 
-lemma authentication_architecture_services (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+lemma authentication_architecture_services (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     ArchitectureServices (authenticationDeployment primitive) := by
   have settingsChecked : ∀ setting ∈ authenticationSettings, setting.Check := by
     intro setting stored
@@ -91,14 +90,14 @@ lemma authentication_architecture_services (primitive : ESPWire.GCMPrimitive IPs
     obtain ⟨firewall, member, kind⟩ := firewall
     exact ⟨firewall, List.mem_append_left _ member, kind⟩
 
-lemma authentication_devices_unique (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+lemma authentication_devices_unique (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     ∀ first ∈ (authenticationDeployment primitive).devices,
       ∀ second ∈ (authenticationDeployment primitive).devices, first.id = second.id → first = second := by
   change ∀ first ∈ records.components ++ authenticationSettings.map CertificateAuthoritySetting.authorityDevice,
     ∀ second ∈ records.components ++ authenticationSettings.map CertificateAuthoritySetting.authorityDevice,
       first.id = second.id → first = second
   native_decide
-lemma authentication_static_bindings (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+lemma authentication_static_bindings (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     DeviceDeploymentBindings (deviceBinding primitive) records.inventory.ifaces (authenticationDeployment primitive) := by
   have original := OuterTunnelNoBypass_Baseline.static_bindings primitive
   have processing : (deviceBinding primitive).ProcessingBound (authenticationDeployment primitive) := by
@@ -116,7 +115,7 @@ lemma authentication_static_bindings (primitive : ESPWire.GCMPrimitive IPsecKeyM
     original.interfaceIndices, original.ifaceRecords, original.physicalLinks, original.sourceEntries,
     original.macsecTunnels, original.ipsecTunnels⟩
 
-theorem authentication_deployment_covered (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+theorem authentication_deployment_covered (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     (authenticationForwarding primitive).CoversDeployment (authenticationDeployment primitive) := by
   have budgets := size_checks_from_captured_records records installations OuterTunnelNoBypass_Baseline.roles
     OuterTunnelNoBypass_Baseline.linkPolicies (OuterTunnelNoBypass_Baseline.codec primitive)
@@ -135,7 +134,7 @@ theorem authentication_deployment_covered (primitive : ESPWire.GCMPrimitive IPse
     (OuterTunnelNoBypass_Baseline.allowed_source_iface primitive)
     (OuterTunnelNoBypass_Baseline.network_sources primitive)
 
-def flowKeyContexts (selected : IPsecFlowEndpoints) : String × String :=
+def flowKeyContexts (selected : IpsecFlowEndpoints) : String × String :=
   ((((records.tunnels.find? (fun tunnel => tunnel.id == selected.flow.innerTunnel)).map Tunnel.keyContext).getD ""),
     (((records.tunnels.find? (fun tunnel => tunnel.id == selected.flow.outerTunnel)).map Tunnel.keyContext).getD ""))
 
@@ -148,7 +147,7 @@ def architectureInventory : Deployment :=
     networks := networks
     tunnels := records.tunnels }
 
-def FlowIPsecInventory (selected : IPsecFlowEndpoints) : Prop :=
+def FlowIPsecInventory (selected : IpsecFlowEndpoints) : Prop :=
   ∃ inner ∈ architectureInventory.tunnels, ∃ outer ∈ architectureInventory.tunnels,
     inner.id = selected.flow.innerTunnel ∧ outer.id = selected.flow.outerTunnel ∧
     inner.layer = .inner ∧ outer.layer = .outer ∧
@@ -158,20 +157,20 @@ def FlowIPsecInventory (selected : IPsecFlowEndpoints) : Prop :=
       sender.id = tunnel.sender ∧ receiver.id = tunnel.receiver ∧
       sender.infrastructure = true ∧ receiver.infrastructure = true ∧
       sender.layer = some tunnel.layer ∧ receiver.layer = some tunnel.layer ∧ sender.site ≠ receiver.site ∧
-      (tunnel.mechanism = .ipsec → sender.kind = .vpn ∧ receiver.kind = .vpn) ∧
-      (tunnel.mechanism = .macsec → sender.kind = .macsec ∧ receiver.kind = .macsec)) ∧
+      (tunnel.protocol = .ipsec → sender.kind = .vpn ∧ receiver.kind = .vpn) ∧
+      (tunnel.protocol = .macsec → sender.kind = .macsec ∧ receiver.kind = .macsec)) ∧
     (∃ source ∈ architectureInventory.networks, ∃ destination ∈ architectureInventory.networks,
       source.id = selected.flow.sourceNetwork ∧ destination.id = selected.flow.destinationNetwork ∧
       inner.sender ∈ source.innerComponents ∧ inner.receiver ∈ destination.innerComponents ∧
       (∃ sender ∈ architectureInventory.devices, sender.id = outer.sender ∧ sender.site = source.site) ∧
       ∃ receiver ∈ architectureInventory.devices, receiver.id = outer.receiver ∧ receiver.site = destination.site) ∧
-    outer.mechanism = .ipsec
+    outer.protocol = .ipsec
 
 set_option synthInstance.maxSize 2048 in
 lemma recorded_flow_validity : ∀ selected ∈ contexts, FlowIPsecInventory selected := by
   unfold FlowIPsecInventory
   native_decide
-lemma flows_valid (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) (independentKeys : String → String → Prop)
+lemma flows_valid (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) (independentKeys : String → String → Prop)
     (independent : IndependentLayerKeys independentKeys) :
     ∀ flow ∈ flows, flow.Valid (authenticationDeployment primitive) independentKeys := by
   intro flow member

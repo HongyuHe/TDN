@@ -2,7 +2,7 @@ import TDN.Deployments.Perimeter_MacsecSource
 import TDN.Deployments.Perimeter_MacsecCounterexamples
 import TDN.Requirements.PhysicalLinkMtuAdmission
 
-namespace TDN.Deployments.BoundaryMACsec
+namespace TDN.Deployments.BoundaryMacsec
 open Compliance Requirements Requirements.Msc MultiProtocolForwarding
 
 lemma captured_physical_encodings :
@@ -13,7 +13,7 @@ lemma captured_physical_encodings :
   native_decide
 
 lemma permitted_native_wire_admission (records : Records)
-    (wire : MultiProtocolForwarding.Step records.configuration records.physicalReady .linkTransmit records.wired)
+    (wire : MultiProtocolForwarding.TunnelForwardingStep records.configuration records.physicalReady .linkTransmit records.wired)
     (describes : records.physicalFrame.Describes records.physicalReady.frame)
     (encoding : records.configuration.linkEncoding records.physicalReady.iface records.physicalReady.frame =
       some records.physicalFrame ∧
@@ -27,13 +27,13 @@ lemma permitted_native_wire_admission (records : Records)
 
 theorem captured_protected_wire_passes_both_directional_programs :
     protectedCase.configuration.LinkStepAdmitted protectedCase.physicalReady .linkTransmit protectedCase.wired :=
-  permitted_native_wire_admission protectedCase protected_native_MACsec_and_wire_steps.2
+  permitted_native_wire_admission protectedCase protected_native_macsec_and_wire_steps.2
     captured_frames_describe_actual_native_output.1 (captured_physical_encodings protectedCase (by simp))
     captured_permitted_physical_programs_and_bindings.1
 
 theorem captured_protect_off_wire_passes_both_directional_programs :
     unprotectedAllowed.configuration.LinkStepAdmitted unprotectedAllowed.physicalReady .linkTransmit unprotectedAllowed.wired :=
-  permitted_native_wire_admission unprotectedAllowed protect_off_native_MACsec_and_wire_steps.2
+  permitted_native_wire_admission unprotectedAllowed protect_off_native_macsec_and_wire_steps.2
     captured_frames_describe_actual_native_output.2.1 (captured_physical_encodings unprotectedAllowed (by simp))
     captured_permitted_physical_programs_and_bindings.2
 
@@ -52,4 +52,4 @@ theorem physical_egress_drop_prevents_an_admitted_native_wire_step :
     native_decide
   exact rejects allowed
 
-end TDN.Deployments.BoundaryMACsec
+end TDN.Deployments.BoundaryMacsec

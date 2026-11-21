@@ -12,7 +12,6 @@ import TDN.Deployments.SnapshotComponentByteResponses
         text += f"""namespace TDN.Deployments.Profile{name}_EnclaveIsolation
 open DataPlaneForwarding
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 """
         for domain in range(1, count + 1):
@@ -33,13 +32,13 @@ set_option maxHeartbeats 0
         text += "".join(f"  · exact byte_outer_placement{d}\n" for d in range(1, count + 1))
         text += f"""
 theorem every_assembled_black_byte_has_inner_before_outer {{Byte : Type}}
-    {{after : List (ByteFlows.Carrier (KernelResponses.State DataPlaneForwarding.State)
+    {{after : List (ByteFlows.PacketBytes (KernelResponses.ReplyState DataPlaneForwarding.ForwardingState)
       (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}}
-    {{actions : List (ByteFlows.Action (KernelResponses.Action DataPlaneForwarding.Action))}}
+    {{actions : List (ByteFlows.ByteFlowAction (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))}}
     (run : (ResponseByteFlows.system (lts config)
       (UniformDomainResponses.responseConfig config {base}.responseGateways uniformResponseOwners)
       (Requirements.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
-    (finish : DataPlaneForwarding.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (finish : DataPlaneForwarding.ForwardingState) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (packetPresent : ⟨.network finish, bytes⟩ ∈ after)
     (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ {base}.blackIfaces)
     (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (bytePresent : byte ∈ bytes) :

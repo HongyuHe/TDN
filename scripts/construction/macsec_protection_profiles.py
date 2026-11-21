@@ -86,7 +86,7 @@ def build_profiles(source):
             tunnel = names[index] + '-to-' + names[1-index]
             endpoints.append({'sourceIface': physicals[index], 'destinationIface': physicals[1-index],
                 'actorSCI': associations[index]['sci'], 'tunnel': tunnel})
-            tunnels.append({'id': tunnel, 'layer': 'inner', 'mechanism': 'macsec',
+            tunnels.append({'id': tunnel, 'layer': 'inner', 'protocol': 'macsec',
                 'sender': names[index], 'receiver': names[1-index],
                 'keyContext': 'model-key-' + str(index + 1),
                 'espTunnelMode': False, 'associatedIPTunnel': False})

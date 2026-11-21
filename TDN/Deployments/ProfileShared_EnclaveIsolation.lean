@@ -7,7 +7,6 @@ namespace TDN.Deployments.ProfileShared_EnclaveIsolation
 open DataPlaneForwarding
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 set_option linter.unusedSimpArgs false
 
 def ownerDomain : Nat → Option Nat
@@ -66,7 +65,7 @@ load_network_records domains : List Nat from "../../data/evidence/ProfileShared_
 
 lemma peer_tag_checks : TableDrivenPeerTagAgreement taggedDevices := by
   (try simp only [TableDrivenPeerTagAgreement, taggedDevices, TDN.Deployments.ProfileShared_DataPlane.devices, ownerTag, ownerDomain, saMatchesPolicy, SameWireAssociation]); all_goals native_decide
-lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=
+lemma peer_tags_justified_by_wire_s_as : PeerTagAgreement config :=
   table_driven_peer_tag_agreement_sound taggedDevices TDN.Deployments.ProfileShared_DataPlane.ifaces TDN.Deployments.ProfileShared_DataPlane.routes TDN.Deployments.ProfileShared_DataPlane.links TDN.Deployments.ProfileShared_DataPlane.switches peer_tag_checks
 
 def domainIfaces1 : List IfaceData := withEncapStackAnnotations TDN.Deployments.ProfileShared_DataPlane.ifaces (stackFor 1)
@@ -211,7 +210,7 @@ lemma recipient_checks4 : ∀ p, domainAllowed4 p → config.ifaceSecurityDomain
 
 lemma source_domains_checked : ∀ p ∈ redSources, config.ifaceSecurityDomain p ∈ domains.map some := by
   (try simp only [redSources, TDN.Deployments.ProfileShared_DataPlane.redSources, config, dataPlaneModelFromRecords, taggedDevices, ownerTag, ownerDomain, domains, TDN.Deployments.ProfileShared_DataPlane.devices, TDN.Deployments.ProfileShared_DataPlane.ifaces]); all_goals native_decide
-theorem snapshot_RG008_IPv4_ESP_delivery : Requirements.plaintext_delivery_preserves_security_enclave config redSources := by
+theorem snapshot_rg008_ipv4_esp_delivery : Requirements.plaintext_delivery_preserves_security_enclave config redSources := by
   intro start finish actions sourceDomain destinationDomain origin sourceLevel run delivered recipientLevel
   have member : some sourceDomain ∈ domains.map some := by
     rw [← sourceLevel]
@@ -228,11 +227,11 @@ theorem snapshot_RG008_IPv4_ESP_delivery : Requirements.plaintext_delivery_prese
   · exact Requirements.delivered_domain_from_local_checks config domainLayout4 domainAllowed4 redSources 4
       local_domain_conditions4 source_checks4 recipient_checks4 origin sourceLevel run delivered recipientLevel
 
-theorem snapshot_RG008_full_label_delivery {start finish : DataPlaneForwarding.State} {actions : List DataPlaneForwarding.Action} {source recipient : Nat}
+theorem snapshot_rg008_full_label_delivery {start finish : DataPlaneForwarding.ForwardingState} {actions : List DataPlaneForwarding.ForwardingAction} {source recipient : Nat}
     (origin : Requirements.RedPayloadOrigin config redSources start) (sourceLevel : config.ifaceSecurityDomain start.iface = some source)
     (run : (lts config).MTr start actions finish) (delivered : finish.datapathStage = .delivered)
     (recipientLevel : config.ifaceSecurityDomain finish.iface = some recipient) : fullLevel source = fullLevel recipient :=
-  congrArg fullLevel (snapshot_RG008_IPv4_ESP_delivery start finish actions source recipient origin sourceLevel run delivered recipientLevel)
+  congrArg fullLevel (snapshot_rg008_ipv4_esp_delivery start finish actions source recipient origin sourceLevel run delivered recipientLevel)
 
 def expectedEncapStack : Nat → List Nat := domainLayout1
 

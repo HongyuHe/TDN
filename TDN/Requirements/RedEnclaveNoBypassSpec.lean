@@ -1,4 +1,4 @@
-import TDN.Requirements.DevicePerimeterAclSpec
+import TDN.Requirements.MscRequirements
 import TDN.Requirements.OuterToGrayInterfaceAllowlist
 
 namespace TDN.Requirements.Msc
@@ -24,7 +24,7 @@ instance (source : Bool) (expected : Nat) (atom : PacketPolicy.MatchCondition) :
   cases atom <;> unfold ServicePortAtom <;> infer_instance
 
 def RedServiceEndpoint.SideGuard (endpoint : RedServiceEndpoint) (source : Bool)
-    (rule : PacketPolicy.Rule) : Prop :=
+    (rule : PacketPolicy.PacketAclRule) : Prop :=
   .protocol endpoint.protocol ∈ rule.atoms ∧
   (if source then .sourceRange endpoint.address endpoint.address ∈ rule.atoms
     else .destinationRange endpoint.address endpoint.address ∈ rule.atoms) ∧
@@ -32,13 +32,13 @@ def RedServiceEndpoint.SideGuard (endpoint : RedServiceEndpoint) (source : Bool)
     (endpoint.protocol ∈ ["tcp", "udp"] ∧
       ∃ atom ∈ rule.atoms, ServicePortAtom source endpoint.port atom))
 
-instance (endpoint : RedServiceEndpoint) (source : Bool) (rule : PacketPolicy.Rule) :
+instance (endpoint : RedServiceEndpoint) (source : Bool) (rule : PacketPolicy.PacketAclRule) :
     Decidable (endpoint.SideGuard source rule) := by
   unfold RedServiceEndpoint.SideGuard
   infer_instance
 
-lemma matching_Red_service_side (d : Deployment) (endpoint : RedServiceEndpoint)
-    (bound : endpoint.Bound d) (source : Bool) (rule : PacketPolicy.Rule)
+lemma matching_red_service_side (d : Deployment) (endpoint : RedServiceEndpoint)
+    (bound : endpoint.Bound d) (source : Bool) (rule : PacketPolicy.PacketAclRule)
     (guard : endpoint.SideGuard source rule) (packet : PacketPolicy.Packet)
     (matched : rule.toFilter.accepts packet = true) :
     d.redService endpoint.inner
@@ -78,31 +78,31 @@ lemma matching_Red_service_side (d : Deployment) (endpoint : RedServiceEndpoint)
   simpa only [address, port] using bound
 
 def RedBoundaryRule (device nativeName : String) (direction : Direction)
-    (endpoints : List RedServiceEndpoint) (rule : PacketPolicy.Rule) : Prop :=
+    (endpoints : List RedServiceEndpoint) (rule : PacketPolicy.PacketAclRule) : Prop :=
   RuleMissesHook nativeName direction rule ∨
     ∃ endpoint ∈ endpoints, endpoint.inner = device ∧
       (endpoint.SideGuard true rule ∨ endpoint.SideGuard false rule)
 
 instance (device nativeName : String) (direction : Direction)
-    (endpoints : List RedServiceEndpoint) (rule : PacketPolicy.Rule) :
+    (endpoints : List RedServiceEndpoint) (rule : PacketPolicy.PacketAclRule) :
     Decidable (RedBoundaryRule device nativeName direction endpoints rule) := by
   unfold RedBoundaryRule
   infer_instance
 
-lemma matching_Red_boundary_rule (d : Deployment) (device nativeName : String)
+lemma matching_red_boundary_rule (d : Deployment) (device nativeName : String)
     (direction : Direction) (hook : PacketProcessing.Hook)
     (endpoints : List RedServiceEndpoint)
     (bound : ∀ endpoint ∈ endpoints, endpoint.Bound d)
-    (rule : PacketPolicy.Rule) (checks : RedBoundaryRule device nativeName direction endpoints rule)
+    (rule : PacketPolicy.PacketAclRule) (checks : RedBoundaryRule device nativeName direction endpoints rule)
     (packet : PacketPolicy.Packet) (context : PacketAtHook nativeName direction hook packet)
     (matched : rule.toFilter.accepts packet = true) :
     d.redService device packet.source (TransportServicePort packet true) ∨
       d.redService device packet.destination (TransportServicePort packet false) := by
   rcases checks with misses | ⟨endpoint, member, owner, source | destination⟩
   · exact False.elim (hook_mismatch_cannot_match nativeName direction hook packet context rule misses matched)
-  · exact Or.inl (owner ▸ matching_Red_service_side d endpoint (bound endpoint member)
+  · exact Or.inl (owner ▸ matching_red_service_side d endpoint (bound endpoint member)
       true rule source packet matched)
-  · exact Or.inr (owner ▸ matching_Red_service_side d endpoint (bound endpoint member)
+  · exact Or.inr (owner ▸ matching_red_service_side d endpoint (bound endpoint member)
       false rule destination packet matched)
 
 end TDN.Requirements.Msc

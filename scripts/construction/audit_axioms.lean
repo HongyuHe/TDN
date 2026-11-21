@@ -1,5 +1,5 @@
 import TDN
-import TDN.Import.NativeDecide
+import TDN.Import.CompiledDecide
 import Lean.Util.CollectAxioms
 
 set_option maxHeartbeats 20000000

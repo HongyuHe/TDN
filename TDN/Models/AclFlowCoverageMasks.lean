@@ -125,20 +125,20 @@ lemma AclFlowSelector.rejected_atom_fails (mask : AclFlowSelector) (packet : Pac
     have equal := Option.some.inj (selected.symm.trans same)
     omega
 
-def AclFlowSelector.IsPermittedByAclChain (mask : AclFlowSelector) : List Rule → Prop
+def AclFlowSelector.IsPermittedByAclChain (mask : AclFlowSelector) : List PacketAclRule → Prop
   | [] => False
   | rule :: rest =>
       (rule.verdict = .allow ∧ ∀ atom ∈ rule.atoms, mask.Allows atom) ∨
       ((rule.verdict = .allow ∨ ∃ atom ∈ rule.atoms, mask.Rejects atom) ∧ mask.IsPermittedByAclChain rest)
 
-def AclFlowSelector.checkPermittedByAclChain (mask : AclFlowSelector) : List Rule → Bool
+def AclFlowSelector.checkPermittedByAclChain (mask : AclFlowSelector) : List PacketAclRule → Bool
   | [] => false
   | rule :: rest =>
       (decide (rule.verdict = .allow) && rule.atoms.all (fun atom => decide (mask.Allows atom))) ||
       ((decide (rule.verdict = .allow) || rule.atoms.any (fun atom => decide (mask.Rejects atom))) &&
         mask.checkPermittedByAclChain rest)
 
-lemma AclFlowSelector.finiteCovers_correct (mask : AclFlowSelector) (rules : List Rule) :
+lemma AclFlowSelector.finite_covers_correct (mask : AclFlowSelector) (rules : List PacketAclRule) :
     mask.checkPermittedByAclChain rules = true ↔ mask.IsPermittedByAclChain rules := by
   induction rules with
   | nil => simp [AclFlowSelector.checkPermittedByAclChain, AclFlowSelector.IsPermittedByAclChain]
@@ -146,13 +146,13 @@ lemma AclFlowSelector.finiteCovers_correct (mask : AclFlowSelector) (rules : Lis
     simp only [AclFlowSelector.checkPermittedByAclChain, Bool.or_eq_true, Bool.and_eq_true, decide_eq_true_eq,
       List.all_eq_true, List.any_eq_true, ih, AclFlowSelector.IsPermittedByAclChain]
 
-instance (mask : AclFlowSelector) (rules : List Rule) : Decidable (mask.IsPermittedByAclChain rules) :=
-  decidable_of_iff (mask.checkPermittedByAclChain rules = true) (mask.finiteCovers_correct rules)
+instance (mask : AclFlowSelector) (rules : List PacketAclRule) : Decidable (mask.IsPermittedByAclChain rules) :=
+  decidable_of_iff (mask.checkPermittedByAclChain rules = true) (mask.finite_covers_correct rules)
 
-theorem AclFlowSelector.covered_packets_are_allowed (mask : AclFlowSelector) (rules : List Rule)
+theorem AclFlowSelector.covered_packets_are_allowed (mask : AclFlowSelector) (rules : List PacketAclRule)
     (covered : mask.IsPermittedByAclChain rules) (fallback : Filter.Verdict) (packet : Packet)
     (matched : mask.Matches packet) :
-    Filter.evaluate (rules.map Rule.toFilter) fallback packet = .allow := by
+    Filter.evaluate (rules.map PacketAclRule.toFilter) fallback packet = .allow := by
   induction rules with
   | nil => exact False.elim covered
   | cons rule rest ih =>

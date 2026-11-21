@@ -6,13 +6,13 @@ open Compliance
 
 def FirewallControlBoundaryRule (d : Deployment) (controls : List BoundaryControlFlow)
     (device outer : String) (internal : Bool) (name : String)
-    (direction : Direction) (hook : PacketProcessing.Hook) (rule : PacketPolicy.Rule) : Prop :=
+    (direction : Direction) (hook : PacketProcessing.Hook) (rule : PacketPolicy.PacketAclRule) : Prop :=
   FirewallBoundaryRule d outer internal name direction rule ∨
     BoundaryControlRule controls device name direction hook rule
 
 instance (d : Deployment) (controls : List BoundaryControlFlow) (device outer : String)
     (internal : Bool) (name : String) (direction : Direction)
-    (hook : PacketProcessing.Hook) (rule : PacketPolicy.Rule) :
+    (hook : PacketProcessing.Hook) (rule : PacketPolicy.PacketAclRule) :
     Decidable (FirewallControlBoundaryRule d controls device outer internal name direction hook rule) := by
   unfold FirewallControlBoundaryRule
   infer_instance
@@ -32,7 +32,7 @@ theorem firewall_control_admission_from_local_rule_checks (d : Deployment)
         policy.defaultVerdict = .deny ∧ ∀ rule ∈ policy.rules, rule.verdict = .allow →
           FirewallControlBoundaryRule d controls interface.device outer internal
             (inventory.configuration.ip.interfaceName iface) policy.direction policy.hook rule)
-    (direction : Direction) (traffic : Traffic) (accepted : d.Accepts interface.id direction traffic) :
+    (direction : Direction) (traffic : Traffic) (accepted : d.PermitsOnInterface interface.id direction traffic) :
     (IPsecPacket traffic.packet ∧
       (direction = .inbound →
         if internal then LocalOuterAddress d interface.device outer traffic.packet.source
@@ -54,7 +54,7 @@ theorem firewall_control_admission_from_local_rule_checks (d : Deployment)
   ·
     rcases guarded with misses | ⟨protocol, address⟩
     · exact False.elim (hook_mismatch_cannot_match _ direction hook traffic.packet context rule misses matched)
-    · exact Or.inl ⟨IPsec_rule_has_IPsec_packet rule traffic.packet protocol matched,
+    · exact Or.inl ⟨ipsec_rule_has_ipsec_packet rule traffic.packet protocol matched,
         fun inbound => matching_firewall_address_guard d interface.device outer internal
           firewallRole outerRole rule (address inbound) traffic.packet matched⟩
 

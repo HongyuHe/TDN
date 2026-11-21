@@ -2,9 +2,9 @@ import TDN.Models.ReassemblyBufferDomainSafety
 open TDN ReassemblyOrigins
 
 abbrev B := ByteOrigin Nat Nat Nat
-def first : Fragmentation.Fragment Nat B := ⟨42, 0, [⟨65, 1, 101⟩]⟩
-def second : Fragmentation.Fragment Nat B := ⟨42, 1, [⟨66, 1, 202⟩]⟩
-def foreign : Fragmentation.Fragment Nat B := ⟨42, 1, [⟨66, 2, 303⟩]⟩
+def first : Fragmentation.PayloadFragment Nat B := ⟨42, 0, [⟨65, 1, 101⟩]⟩
+def second : Fragmentation.PayloadFragment Nat B := ⟨42, 1, [⟨66, 1, 202⟩]⟩
+def foreign : Fragmentation.PayloadFragment Nat B := ⟨42, 1, [⟨66, 2, 303⟩]⟩
 
 -- Equal ordinary keys and contiguous offsets permit different original packet IDs.
 example : (assemble 42 [first, second]).isSome = true := by native_decide

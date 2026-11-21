@@ -1,11 +1,13 @@
 """Construct vendor-independent JSON values consumed by TDN.Import.Network."""
 import ipaddress
 import json
+from .contracts import installed_route_observations
 from .service import digest, encode
 
 
 def prepare_bundle(directory, manifest):
     observations = manifest["observations"]
+    families = installed_route_observations(manifest)
     routes = []
     coverage = []
     for observation in observations:
@@ -14,11 +16,9 @@ def prepare_bundle(directory, manifest):
                          "started": observation["started"], "finished": observation["finished"],
                          "adapter": observation["adapter"], "capability": observation["capability"],
                          "parserVersion": observation["parser_version"]})
-        if observation["capability"] not in {"fib4", "fib6"} or observation["adapter"] == "recheck":
+        if observation["id"] not in families:
             continue
-        if observation["status"] != "observed":
-            raise ValueError("Cannot export unsupported or failed forwarding observations: " + observation["id"])
-        family = 4 if observation["capability"] == "fib4" else 6
+        family = families[observation["id"]]
         for record in observation["records"]:
             prefix = record["destination"]
             if prefix == "default":
@@ -35,12 +35,6 @@ def prepare_bundle(directory, manifest):
                            "output": record["output"], "table": record["table"], "kind": record["kind"],
                            "protocol": record["protocol"], "metric": record["metric"], "scope": record["scope"],
                            "observationId": observation["id"]})
-    if manifest["consistency"] != "stable-during-recheck":
-        raise ValueError("A Lean bundle requires unchanged rechecked state")
-    for device in manifest["devices"]:
-        for family in ["fib4", "fib6"]:
-            if not any(o["device"] == device["id"] and o["capability"] == family and o["adapter"] != "recheck" and o["status"] == "observed" for o in observations):
-                raise ValueError("Missing forwarding coverage for " + device["id"] + ": " + family)
     bundle = {"schemaVersion": 1, "id": manifest["id"], "network": manifest["network"],
               "manifestSha256": digest((directory / "manifest.json").read_bytes()), "consistency": manifest["consistency"],
               "devices": [{"id": d["id"], "worker": d["worker"], "container": d["container"],

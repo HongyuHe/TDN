@@ -35,6 +35,10 @@ def raw_interface_kind(record,allow_inactive_fallback=False,allow_openvswitch=Fa
     if allow_inactive_fallback and kind in {"gre","gretap","erspan"}:
         return inactive_fallback(record)
     if allow_openvswitch and kind=="openvswitch":return kind
+    if kind == "dummy":
+        require(not any(record.get(k) for k in ["addr_info", "master", "link", "link_index"]),
+                "dummy interface is addressed or attached")
+        return kind
     if kind not in {"veth","bridge"}:
         raise EvidenceError("unsupported raw interface kind: "+str(kind))
     return kind
@@ -116,6 +120,20 @@ def validated_graph(bundle):
             identity=device["id"]+":"+raw_interface["ifname"]
             if identity not in interfaces or interfaces[identity]["link_kind"]!=raw_interface_kind(raw_interface,allow_inactive_fallback=True,allow_openvswitch=identity in native["openvswitch_ids"]):
                 raise EvidenceError("normalized interface kind differs from raw observation")
+            if raw_interface.get("linkinfo", {}).get("info_kind") == "dummy":
+                require(not any(r["device_id"] == device["id"] and r.get("output_interface") == raw_interface["ifname"] for r in snapshot["routes"]),
+                        "dummy interface has a route")
+                require(not any(identity in link["endpoint_interface_ids"] for link in snapshot["links"]),
+                        "dummy interface has a declared link")
+                for family in ["-4", "-6"]:
+                    route_command = ["docker", "exec", device["namespace"], "ip", "-j", family, "route", "show", "table", "all"]
+                    route_observations = [o for o in snapshot["observations"] if o.get("command") == route_command]
+                    require(route_observations and all(o["returncode"] == 0 for o in route_observations),
+                            "dummy interface requires complete raw route observations")
+                    for route_observation in route_observations:
+                        require(not any(r.get("dev") == raw_interface["ifname"] or
+                            any(h.get("dev") == raw_interface["ifname"] for h in r.get("nexthops", []))
+                            for r in json.loads(stdout(route_observation))), "dummy interface has a raw route")
             if raw_interface.get("linkinfo",{}).get("info_kind") in {"gre","gretap","erspan"}:
                 routes=[r for r in snapshot["routes"] if r["device_id"]==device["id"] and r.get("output_interface")==raw_interface["ifname"]]
                 attachments=[l for l in snapshot["links"] if identity in l["endpoint_interface_ids"]]

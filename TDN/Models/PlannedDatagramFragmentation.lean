@@ -21,22 +21,22 @@ lemma partition_of_oversized_packet_has_multiple_chunks (capacity : Nat) (bytes 
     simp only [List.length_cons]
     omega
 
-def Datagram.withPlannedFragments (datagram : Datagram) (encode : FragmentHeaderEncoder)
-    (capacity : Nat) : Datagram :=
+def EncodedDatagram.withPlannedFragments (datagram : EncodedDatagram) (encode : FragmentHeaderEncoder)
+    (capacity : Nat) : EncodedDatagram :=
   { datagram with
     fragments := makeFragments encode datagram.Data.length 0
       (Fragmentation.bytePartition datagram.Data.length capacity datagram.Data) }
 
-@[simp] lemma Datagram.planned_body (datagram : Datagram) (encode : FragmentHeaderEncoder)
+@[simp] lemma EncodedDatagram.planned_body (datagram : EncodedDatagram) (encode : FragmentHeaderEncoder)
     (capacity : Nat) : (datagram.withPlannedFragments encode capacity).body = datagram.body := rfl
 
-@[simp] lemma Datagram.planned_data (datagram : Datagram) (encode : FragmentHeaderEncoder)
+@[simp] lemma EncodedDatagram.planned_data (datagram : EncodedDatagram) (encode : FragmentHeaderEncoder)
     (capacity : Nat) : (datagram.withPlannedFragments encode capacity).Data = datagram.Data := rfl
 
-@[simp] lemma Datagram.planned_raw (datagram : Datagram) (encode : FragmentHeaderEncoder)
+@[simp] lemma EncodedDatagram.planned_raw (datagram : EncodedDatagram) (encode : FragmentHeaderEncoder)
     (capacity : Nat) : (datagram.withPlannedFragments encode capacity).Raw = datagram.Raw := rfl
 
-theorem Datagram.planned_fragments_reassemble (datagram : Datagram)
+theorem EncodedDatagram.planned_fragments_reassemble (datagram : EncodedDatagram)
     (packet : PacketPolicy.Packet) (encode : FragmentHeaderEncoder) (capacity mtu identity : Nat)
     (body : datagram.body = .datagram packet) (room : 0 < capacity)
     (aligned : capacity % 8 = 0) (oversized : capacity < datagram.Data.length)
@@ -53,13 +53,13 @@ theorem Datagram.planned_fragments_reassemble (datagram : Datagram)
   refine ⟨made_fragments_are_valid_pieces encode capacity datagram.Data _ partition, ?_, ?_⟩
   · intro fragment member
     have facts := plan fragment member
-    exact ⟨facts.moreExact, by simpa only [Datagram.planned_body, body] using (header fragment facts).1⟩
+    exact ⟨facts.moreExact, by simpa only [EncodedDatagram.planned_body, body] using (header fragment facts).1⟩
   · have multiple := partition_of_oversized_packet_has_multiple_chunks capacity datagram.Data oversized
     have count : (datagram.withPlannedFragments encode capacity).fragments.length ≠ 1 := by
       change (makeFragments encode datagram.Data.length 0 _).length ≠ 1
       rw [made_fragments_length]
       omega
-    simp only [Datagram.planned_body, body, count, ↓reduceIte]
+    simp only [EncodedDatagram.planned_body, body, count, ↓reduceIte]
     exact ⟨identity, fun fragment member => (header fragment (plan fragment member)).2⟩
 
 end TDN.PacketSource

@@ -112,7 +112,7 @@ lemma policy_coverage_from_checked_indices (d : Deployment)
     hook (by cases hook <;> simp) applicable
 
 lemma accepted_traffic_supported (d : Deployment) (interface : String) (direction : Direction)
-    (traffic : Traffic) (accepted : d.Accepts interface direction traffic) :
+    (traffic : Traffic) (accepted : d.PermitsOnInterface interface direction traffic) :
     d.Supported traffic := by
   obtain ⟨_, supported, _⟩ := accepted
   exact supported

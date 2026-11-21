@@ -1,11 +1,11 @@
-import TDN.Requirements.MasterMscRequirementSpecs
-import TDN.Requirements.DeviceInboundProtectionGate
+import TDN.Requirements.MscRequirements
+import TDN.Requirements.DeviceInboundProtectionGuard
 
 namespace TDN.Requirements.Msc
 open Compliance
 
 def LayerOutboundEventShape (d : Deployment) (genuineControl : PayloadId → Prop)
-    (layer : Layer) : NetworkEvent → Prop
+    (layer : EncryptionLayer) : NetworkEvent → Prop
   | .receive payload iface layers _ =>
       ¬ genuineControl payload → ∀ interface ∈ d.interfaces, interface.id = iface →
         d.IsLayer interface.device layer → interface.zone = InternalZone layer →
@@ -19,19 +19,19 @@ def LayerOutboundEventShape (d : Deployment) (genuineControl : PayloadId → Pro
           ∃ tunnel ∈ d.tunnels, tunnel.layer = layer ∧ tunnel.sender = interface.device ∧ tunnel.id ∈ layers)
   | _ => True
 
-def InboundGateReceiversBound (d : Deployment) (genuineControl : PayloadId → Prop)
-    (layer : Layer) (target : PayloadId → String → Option String) : Prop :=
+def InboundGuardReceiversBound (d : Deployment) (genuineControl : PayloadId → Prop)
+    (layer : EncryptionLayer) (target : PayloadId → String → Option String) : Prop :=
   ∀ payload, ¬ genuineControl payload → ∀ interface ∈ d.interfaces,
     d.IsLayer interface.device layer → interface.zone = ExternalZone layer →
       target payload interface.id = some interface.device
 
-theorem layer_events_have_no_bypass_with_inbound_gate (d : Deployment) (layer : Layer)
+theorem layer_events_have_no_bypass_with_inbound_guard (d : Deployment) (layer : EncryptionLayer)
     (genuineControl : PayloadId → Prop) (target : PayloadId → String → Option String)
     {payload : PayloadId} {events : List NetworkEvent} {finalLayers : List String}
     {finalPending : Option PendingInboundProtection}
     (run : (protectionLayerSystem payload).MTr [] events finalLayers)
-    (gate : (inboundProtectionGate d layer target payload).MTr none events finalPending)
-    (targets : InboundGateReceiversBound d genuineControl layer target)
+    (gate : (inboundProtectionGuard d layer target payload).MTr none events finalPending)
+    (targets : InboundGuardReceiversBound d genuineControl layer target)
     (shapes : ∀ event ∈ events, LayerOutboundEventShape d genuineControl layer event) :
     TraceNoBypass d genuineControl layer events := by
   constructor
@@ -78,7 +78,7 @@ theorem layer_events_have_no_bypass_with_inbound_gate (d : Deployment) (layer : 
       event_layers_addition_has_encrypt initialRun (by simp) encryptedLayer⟩
 
 structure LayerOutboundLocalChecks {S A : Type} (d : Deployment)
-    (model : ForwardingModel S A) (layer : Layer) where
+    (model : ForwardingModel S A) (layer : EncryptionLayer) where
   safe : S → Prop
   initial : ∀ start, model.initial start → safe start
   preserved : ∀ before action after, model.system.Tr before action after → safe before → safe after
@@ -86,8 +86,8 @@ structure LayerOutboundLocalChecks {S A : Type} (d : Deployment)
     ∀ event ∈ model.events action, LayerOutboundEventShape d model.GenuineControl layer event
 
 lemma forwarding_has_outbound_boundary_shapes {S A : Type} (d : Deployment)
-    (model : ForwardingModel S A) (layer : Layer) (checks : LayerOutboundLocalChecks d model layer)
-    {start finish : S} {actions : List A} (run : model.system.MTr start actions finish)
+    (model : ForwardingModel S A) (layer : EncryptionLayer) (checks : LayerOutboundLocalChecks d model layer)
+    {start finish : S} {actions : List A} (run : model.ForwardsAlongTrace start actions finish)
     (safe : checks.safe start) :
     ∀ event ∈ actions.flatMap model.events, LayerOutboundEventShape d model.GenuineControl layer event := by
   induction run with
@@ -99,7 +99,7 @@ lemma forwarding_has_outbound_boundary_shapes {S A : Type} (d : Deployment)
     · exact ih (checks.preserved before action after step safe) event later
 
 lemma setup_history_has_outbound_boundary_shapes (d : Deployment) (history : ObservedHistory)
-    (valid : history.Valid) (genuineControl : PayloadId → Prop) (layer : Layer) :
+    (valid : history.Valid) (genuineControl : PayloadId → Prop) (layer : EncryptionLayer) :
     ∀ event ∈ history.Events, LayerOutboundEventShape d genuineControl layer event := by
   intro event member
   obtain ⟨record, stored, same⟩ := List.mem_map.mp member
@@ -112,24 +112,24 @@ theorem inner_tunnel_no_bypass_from_outbound_and_inbound_checks {S A : Type} (d 
     (model : ForwardingModel S A) (components : List EncryptionComponentConfiguration)
     (outboundMACObjective inboundMACObjective : Bool)
     (target : PayloadId → String → Option String)
-    (covered : model.CoversDeployment { d with focus := none })
-    (outbound : LayerOutboundLocalChecks { d with focus := none } model .inner)
-    (inbound : DeviceInboundGateChecks model.native { d with focus := none } .inner target)
-    (targets : InboundGateReceiversBound { d with focus := none } model.GenuineControl .inner target)
-    (configurations : ComponentConfigurationCoverage { d with focus := none } .inner components)
-    (parameters : ∀ component ∈ components, ({ d with focus := none } : Deployment).Relevant component.id →
-      (component.mechanism = .ipsec → component.espTunnelMode = true ∧ component.associatedIPTunnel = true) ∧
+    (covered : model.CoversDeployment { d with deviceScope := none })
+    (outbound : LayerOutboundLocalChecks { d with deviceScope := none } model .inner)
+    (inbound : DeviceInboundGuardChecks model.deviceDataPlane { d with deviceScope := none } .inner target)
+    (targets : InboundGuardReceiversBound { d with deviceScope := none } model.GenuineControl .inner target)
+    (configurations : ComponentConfigurationCoverage { d with deviceScope := none } .inner components)
+    (parameters : ∀ component ∈ components, ({ d with deviceScope := none } : Deployment).InScope component.id →
+      (component.protocol = .ipsec → component.espTunnelMode = true ∧ component.associatedIPTunnel = true) ∧
       (outboundMACObjective = true → component.outboundMACPolicy = true) ∧
       (inboundMACObjective = true → component.inboundMACPolicy = true)) :
-    msc_inner_tunnel_no_bypass d model components outboundMACObjective inboundMACObjective := by
+    inner_tunnel_no_bypass d model components outboundMACObjective inboundMACObjective := by
   refine ⟨configurations, ⟨covered, ?_⟩, parameters⟩
   intro start actions finish initial run
-  obtain ⟨next, gate⟩ := deployment_events_follow_inbound_gate model _ .inner target covered inbound initial run
-  apply layer_events_have_no_bypass_with_inbound_gate _ .inner model.GenuineControl target
+  obtain ⟨next, gate⟩ := deployment_events_follow_inbound_guard model _ .inner target covered inbound initial run
+  apply layer_events_have_no_bypass_with_inbound_guard _ .inner model.GenuineControl target
     (deployment_events_follow_layers model _ covered initial run) gate targets
   intro event member
   rcases List.mem_append.mp member with setup | forwarding
-  · exact setup_history_has_outbound_boundary_shapes _ model.history covered.2.2.2.2.1 _ .inner event setup
+  · exact setup_history_has_outbound_boundary_shapes _ model.history covered.validHistory _ .inner event setup
   · exact forwarding_has_outbound_boundary_shapes _ model .inner outbound run
       (outbound.initial start initial) event forwarding
 

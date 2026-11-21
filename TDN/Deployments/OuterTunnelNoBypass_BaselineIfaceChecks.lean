@@ -1,23 +1,22 @@
 import TDN.Deployments.OuterTunnelNoBypass_BaselineRedSources
-import TDN.Requirements.IPsecTunnelInterpretationView
+import TDN.Requirements.IpsecTunnelInterpretationView
 import TDN.Requirements.OuterGrayReceiveChecks
 
 namespace TDN.Deployments.OuterTunnelNoBypass_Baseline
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel MtuSizing_Records StandardDataPlaneBridge MultiProtocolForwarding LayeredFrame
 
 set_option maxRecDepth 200000
-set_option maxHeartbeats 4000000
 
-def interpretedDeployment (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :=
+def interpretedDeployment (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :=
   deploymentWithAssociatedIPTunnels (deployment primitive)
 
-def interpretedForwarding (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :=
+def interpretedForwarding (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :=
   StandardDataPlaneBridge.model (deviceBinding primitive) records.inventory.ifaces (interpretedDeployment primitive) {}
 
-lemma interpreted_forwarding_same (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+lemma interpreted_forwarding_same (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     interpretedForwarding primitive = redForwarding primitive := by rfl
 
-theorem interpreted_deployment_covered (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+theorem interpreted_deployment_covered (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     (interpretedForwarding primitive).CoversDeployment (interpretedDeployment primitive) :=
   coverage_with_associated_ip_tunnels (redForwarding primitive) (deployment primitive) (deployment_covered primitive)
 
@@ -94,7 +93,7 @@ lemma protected_forward_chains : ∀ owner ∈ outerOwners,
       rule.verdict = .allow → ∃ inside ∈ ["gray", "gray2", "gray3", "gray4"],
         inside ≠ "black" ∧ PacketPolicy.RequiresIpsecPolicyMatch rule inside "black" := by native_decide
 
-lemma outer_forward_chain (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) (iface : Nat)
+lemma outer_forward_chain (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) (iface : Nat)
     (owner : OuterOwner ((configuration primitive).ip.owner iface)) :
     ForwardChainRequiresIPsecAcross (configuration primitive) iface "black" := by
   have checked := protected_forward_chains _ owner

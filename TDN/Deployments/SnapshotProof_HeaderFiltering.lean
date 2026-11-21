@@ -12,8 +12,8 @@ def deployment (base : Deployment) (processing : PacketProcessing.Inventory) : D
     services := [], managementExchanges := [], managementHistory := [],
     grayWorkstation := fun _ => False, dropIPv4Options := fun _ => false }
 
-theorem routed_ipv4_RG038 (base : Deployment) (processing : PacketProcessing.Inventory) :
-    msc_ip_header_and_multicast_filtering (deployment base processing) (fun _ => false) := by
+theorem routed_ipv4_rg038 (base : Deployment) (processing : PacketProcessing.Inventory) :
+    ip_header_and_multicast_filtering (deployment base processing) (fun _ => false) := by
   apply ip_and_link_header_filtering_from_inventory_and_rule_atoms (deployment base processing)
     (DevicePipelineInventoryChecks.inventory processing) (fun _ => false)
   · intro _
@@ -40,7 +40,7 @@ def packet : PacketPolicy.Packet :=
     matchedOutboundPolicyIds := [], connectionState := "new" }
 
 lemma permitted_esp_is_accepted (base : Deployment) (processing : PacketProcessing.Inventory) :
-    (deployment base processing).Accepts "out" .inbound
+    (deployment base processing).PermitsOnInterface "out" .inbound
       ((deployment base processing).Observe packet) := by
   refine ⟨.input, ⟨rfl, ?_⟩, ?_, ?_⟩
   · change (deployment base processing).ManagementMetadataBound packet
@@ -56,11 +56,11 @@ lemma permitted_esp_is_accepted (base : Deployment) (processing : PacketProcessi
       DevicePipelineInventoryChecks.name, packet, Deployment.Observe]
   · simp [deployment, DevicePipelineInventoryChecks.deployment, DevicePipelineInventoryChecks.policies,
       DevicePipelineInventoryChecks.interfaces, DevicePipelineInventoryChecks.rules,
-      InterfacePolicy.Accepts, PacketPolicy.Rule.toFilter, Filter.evaluate,
+      InterfacePolicy.PermitsTraffic, PacketPolicy.AclAllows, PacketPolicy.PacketAclRule.toFilter, Filter.evaluate,
       PacketPolicy.MatchCondition.matchesPacket, Deployment.Observe, packet]
 
 lemma gre_is_rejected (base : Deployment) (processing : PacketProcessing.Inventory) :
-    ¬ (deployment base processing).Accepts "out" .inbound
+    ¬ (deployment base processing).PermitsOnInterface "out" .inbound
       ((deployment base processing).Observe { packet with protocol := "gre" }) := by
   rintro ⟨hook, _, _, accepts⟩
   cases hook with
@@ -71,7 +71,7 @@ lemma gre_is_rejected (base : Deployment) (processing : PacketProcessing.Invento
   | input | output | forward =>
     simp [deployment, DevicePipelineInventoryChecks.deployment, DevicePipelineInventoryChecks.policies,
       DevicePipelineInventoryChecks.interfaces, DevicePipelineInventoryChecks.rules,
-      InterfacePolicy.Accepts, PacketPolicy.Rule.toFilter, Filter.evaluate,
+      InterfacePolicy.PermitsTraffic, PacketPolicy.AclAllows, PacketPolicy.PacketAclRule.toFilter, Filter.evaluate,
       PacketPolicy.MatchCondition.matchesPacket, Deployment.Observe, packet] at accepts
 
 lemma multicast_range_fails_guard :
@@ -81,7 +81,7 @@ lemma multicast_range_fails_guard :
 lemma unknown_protocol_fails_guard :
     ¬ RuleHeaderGuard ⟨[.sourceRange 0 100, .destinationRange 0 100, .protocol "gre"], .allow⟩ := by
   native_decide
-def ipv6Rule : PacketPolicy.Rule :=
+def ipv6Rule : PacketPolicy.PacketAclRule :=
   ⟨[.sourceRange (2^128) (2^128 + 100), .destinationRange (2^128) (2^128 + 100),
     .protocol "ipv6", .ipv6NextHeaders [50, 6, 17, 58]], .allow⟩
 

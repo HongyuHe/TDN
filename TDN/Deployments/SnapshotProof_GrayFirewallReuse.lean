@@ -21,7 +21,7 @@ def interfaces : List Interface :=
    interface "port-IC" "node-IC" 40, interface "port-G" "node-G" 90,
    interface "port-O" "node-O" 80]
 
-def rules : List PacketPolicy.Rule :=
+def rules : List PacketPolicy.PacketAclRule :=
   [⟨[.sourceRange 10 10, .destinationRange 20 20, .protocol "esp"], .allow⟩,
    ⟨[.sourceRange 20 20, .destinationRange 10 10, .protocol "esp"], .allow⟩]
 
@@ -61,10 +61,10 @@ def pairs : List EndpointPair :=
 def paths : List GrayPathWitness :=
   [⟨"node-G", "node-IB", "node-O", ["node-IB", "node-G"], ["node-G", "node-O"]⟩]
 
-theorem management_free_chain_model_RG013 (base : Deployment)
+theorem management_free_chain_model_rg013 (base : Deployment)
     (processing : PacketProcessing.Inventory)
     (physicalFact : base.authority.protectsAsClassified "node-G") :
-    msc_gray_firewall_path_coverage (deployment base processing) topology := by
+    gray_firewall_path_coverage (deployment base processing) topology := by
   apply gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms
     (deployment base processing) topology (inventory processing) rfl
     (by rfl) ?_ (by rfl) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
@@ -135,7 +135,7 @@ lemma management_free_and_topology_differs :
   native_decide
 lemma same_level_chain_packet_is_admitted (base : Deployment)
     (processing : PacketProcessing.Inventory) :
-    (deployment base processing).Accepts "port-O" .outbound
+    (deployment base processing).PermitsOnInterface "port-O" .outbound
       ((deployment base processing).Observe
         { SnapshotProof_GrayFirewall.packet with ingress := "port-O", egress := "port-O" }) := by
   refine ⟨.forward, ⟨rfl, ?_⟩, ?_, ?_⟩
@@ -149,7 +149,7 @@ lemma same_level_chain_packet_is_admitted (base : Deployment)
     simp [PacketAtHook, HookDirection, inventory, SnapshotProof_GrayFirewall.inventory,
       SnapshotProof_GrayFirewall.ifaceName, SnapshotProof_GrayFirewall.packet, Deployment.Observe]
   · simp [deployment, policies, interfaces, interface, SnapshotProof_GrayFirewall.packet,
-      InterfacePolicy.Accepts, rules, PacketPolicy.Rule.toFilter, Filter.evaluate,
+      InterfacePolicy.PermitsTraffic, PacketPolicy.AclAllows, rules, PacketPolicy.PacketAclRule.toFilter, Filter.evaluate,
       Deployment.Observe, PacketPolicy.MatchCondition.matchesPacket]
 
 end TDN.Deployments.SnapshotProof_GrayFirewallReuse

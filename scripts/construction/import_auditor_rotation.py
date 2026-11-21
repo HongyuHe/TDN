@@ -52,7 +52,6 @@ def generate(data):
 namespace TDN.Deployments.FreshAuditorRotation
 open AuditRotation
 set_option maxRecDepth 10000
-set_option maxHeartbeats 0
 
 /-- Canonical complete event objects, not only selected fields or hash identities. -/
 def observedBefore : List String := """+string_list(data["before_read"])+"""

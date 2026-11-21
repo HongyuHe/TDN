@@ -4,7 +4,7 @@ namespace TDN.Deployments.NamespaceLocalIpChecks
 open Compliance Requirements
 
 def localIface (owner : String) : Interface :=
-  { id := owner ++ ":lo", device := owner, zone := .local, address := none,
+  { id := owner ++ ":lo", device := owner, zone := .hostLocal, address := none,
     namespaceAddresses := [2130706433], physical := false, managementNetwork := false,
     mtu := some 65536 }
 
@@ -56,12 +56,12 @@ lemma corrected_projection_recognizes_recorded_loopback :
   native_decide
 def priorLocalZoneProjection : Interface := { localIface "A" with zone := .red }
 
-lemma prior_local_zone_creates_false_Red_source_obligation :
+lemma prior_local_zone_creates_false_red_source_obligation :
     ¬ ((none : Option String) = some "A/red-network" ↔
       ∃ interface ∈ [priorLocalZoneProjection], interface.id = "A:lo" ∧ interface.zone = .red ∧
         interface.managementNetwork = false ∧ interface.device ∈ (["A"] : List String)) := by
   native_decide
-lemma corrected_local_zone_is_not_a_Red_attachment : (localIface "A").zone ≠ .red := by
+lemma corrected_local_zone_is_not_a_red_attachment : (localIface "A").zone ≠ .red := by
   native_decide
 end TDN.Deployments.NamespaceLocalIpChecks
 

@@ -5,7 +5,6 @@ namespace TDN.Deployments.OuterToGray_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma iface_names_are_nodup : records.ifaceNames.Nodup := by native_decide
 

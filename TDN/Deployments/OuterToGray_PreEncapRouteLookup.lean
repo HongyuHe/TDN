@@ -17,7 +17,7 @@ def Records.RouteFirstMaskLookup (records : Records) (base : Deployment)
     ∀ choice ∈ authenticationChoices records.configuration route.ingress,
       AuthenticationChoiceValid (records.deployment base) records.inventory route.ingress
         record.endpoints.sourceAddress record.endpoints.destinationAddress choice →
-      ∀ form ∈ PacketPolicy.IPsecForm.all, ∃ entry ∈ records.masks,
+      ∀ form ∈ PacketPolicy.IpsecForm.all, ∃ entry ∈ records.masks,
         entry.owner = (DataPlaneForwarding.ifaceAt records.nativeIfaces (records.ifaceIndex interface)).owner ∧
         entry.packet = form.mask record.endpoints.sourceAddress record.endpoints.destinationAddress
           (records.configuration.ip.interfaceName route.ingress)

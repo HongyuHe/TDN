@@ -1,5 +1,5 @@
 import TDN.Requirements.NetworkEventTraceSegments
-import TDN.Models.LocateTransitionStepInTrace
+import TDN.Models.FindStepInForwardingTrace
 
 namespace TDN.Requirements.Msc
 open Compliance

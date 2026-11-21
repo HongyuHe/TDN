@@ -8,7 +8,6 @@ namespace TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4_V13
 open DataPlaneForwarding
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 load_network_records devices : List DeviceData from "../../data/evidence/DualStack_RedV4_GrayV4_BlackV4_V13.json" ["TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4_V13.devices"]
 
@@ -29,7 +28,7 @@ lemma forward_checks : TableDrivenRoutedForwardChecks devices ifaces routes := b
 lemma peer_tag_checks : TableDrivenPeerTagAgreement devices := by
   unfold TableDrivenPeerTagAgreement devices saMatchesPolicy SameWireAssociation
   native_decide
-lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=
+lemma peer_tags_justified_by_wire_s_as : PeerTagAgreement config :=
   table_driven_peer_tag_agreement_sound devices ifaces routes links switches peer_tag_checks
 
 lemma route_owner_checks : ∀ r ∈ routes,
@@ -60,7 +59,7 @@ lemma local_stack_conditions : PerHopEncapConditions config expectedEncapStack :
     route_owner_checks link_checks switch_checks forward_default_checks forward_checks
     output_checks outer_route_checks
 
-theorem every_transmission_has_iface_stack {start finish : DataPlaneForwarding.State} {actions : List Action}
+theorem every_transmission_has_iface_stack {start finish : DataPlaneForwarding.ForwardingState} {actions : List ForwardingAction}
     (run : (lts config).MTr start actions finish) (initial : EncapStackConsistent config expectedEncapStack start)
     (ready : finish.datapathStage = .egressReady) : finish.frame.encapLayerIds = expectedEncapStack finish.iface :=
   egress_packet_has_expected_encap_stack config expectedEncapStack local_stack_conditions run initial ready
@@ -73,7 +72,7 @@ lemma sources_checked : ∀ p ∈ redSources, expectedEncapStack p = [] ∧ conf
   unfold redSources expectedEncapStack config expectedEncapStackFromRecords dataPlaneModelFromRecords ifaces; native_decide
 lemma black_ifaces_checked : ∀ p ∈ blackIfaces, expectedEncapStack p = [2, 1] := by
   unfold blackIfaces expectedEncapStack expectedEncapStackFromRecords ifaces; native_decide
-theorem snapshot_IPv4_IPv6_ESP_packet_stack :
+theorem snapshot_ipv4_ipv6_esp_packet_stack :
     Requirements.red_traffic_is_doubly_encrypted_on_black_links config redSources blackIfaces :=
   Requirements.protected_red_stack_from_local_checks config expectedEncapStack redSources blackIfaces
     local_stack_conditions sources_checked black_ifaces_checked

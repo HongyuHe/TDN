@@ -4,10 +4,13 @@ import json
 from pathlib import Path
 
 
-def validated_snapshot(directory):
+def validated_snapshot(directory, view=None):
+    from .contracts import check_saved
     from .parsers.snapshot import validate_bundle
+    snapshot = json.loads((directory / "snapshot.json").read_text())
+    check_saved(view, snapshot)
     validation = validate_bundle(directory)
-    return json.loads((directory / "manifest.json").read_text()), json.loads((directory / "snapshot.json").read_text()), validation
+    return json.loads((directory / "manifest.json").read_text()), snapshot, validation
 
 
 def query_snapshot(directory, category, device, offset, limit):

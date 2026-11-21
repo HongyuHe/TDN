@@ -6,7 +6,7 @@ namespace TDN.PacketSource
 abbrev FragmentHeaderEncoder := Nat → List UInt8 → Bool → List UInt8
 
 def makeFragments (encode : FragmentHeaderEncoder) (total offset : Nat) :
-    List (List UInt8) → List Fragment
+    List (List UInt8) → List EncodedFragment
   | [] => []
   | bytes :: rest =>
       let more := decide (offset + bytes.length < total)
@@ -15,14 +15,14 @@ def makeFragments (encode : FragmentHeaderEncoder) (total offset : Nat) :
 
 lemma made_fragments_as_pieces (encode : FragmentHeaderEncoder) (total offset : Nat)
     (chunks : List (List UInt8)) :
-    (makeFragments encode total offset chunks).map Fragment.AsPiece =
+    (makeFragments encode total offset chunks).map EncodedFragment.AsPiece =
       Fragmentation.makePieces () offset chunks := by
   induction chunks generalizing offset with
   | nil => rfl
   | cons bytes rest ih => simp only [makeFragments, List.map_cons, Fragmentation.makePieces, ih]; rfl
 
 structure FragmentPlanFacts (encode : FragmentHeaderEncoder) (total capacity : Nat)
-    (fragment : Fragment) : Prop where
+    (fragment : EncodedFragment) : Prop where
   offsetAligned : fragment.offset % 8 = 0
   inRange : fragment.offset + fragment.data.length ≤ total
   dataBound : fragment.data.length ≤ capacity
@@ -86,7 +86,7 @@ theorem made_fragments_are_valid_pieces (encode : FragmentHeaderEncoder) (capaci
     (bytes : List UInt8) (chunks : List (List UInt8))
     (partition : Fragmentation.BoundedPartition capacity bytes chunks) :
     Fragmentation.ValidPieces ⟨(), bytes⟩
-      ((makeFragments encode bytes.length 0 chunks).map Fragment.AsPiece) := by
+      ((makeFragments encode bytes.length 0 chunks).map EncodedFragment.AsPiece) := by
   rw [made_fragments_as_pieces]
   exact Fragmentation.arbitrary_partition_is_valid ⟨(), bytes⟩ chunks
     partition.chunks_nonempty partition.restores_bytes

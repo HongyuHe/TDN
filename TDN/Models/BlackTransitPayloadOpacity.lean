@@ -2,17 +2,17 @@ import TDN.Models.EnclaveIsolationInvariants
 
 namespace TDN.DataPlaneForwarding
 
-def TransitAction (action : Action) : Prop :=
+def TransitAction (action : ForwardingAction) : Prop :=
   action ≠ .encrypt ∧ action ≠ .decrypt ∧ action ≠ .deliver
 
-instance (action : Action) : Decidable (TransitAction action) := by
+instance (action : ForwardingAction) : Decidable (TransitAction action) := by
   unfold TransitAction
   infer_instance
 
-def transit (c : DataPlaneModel) : Cslib.LTS State Action where
-  Tr before action after := Step c before action after ∧ TransitAction action
+def transit (c : DataPlaneModel) : Cslib.LTS ForwardingState ForwardingAction where
+  Tr before action after := ForwardingStep c before action after ∧ TransitAction action
 
-def withHiddenContent (payload domain : Nat) (encapLayers : List EncapHeaderLayer) (state : State) : State :=
+def withHiddenContent (payload domain : Nat) (encapLayers : List EncapHeaderLayer) (state : ForwardingState) : ForwardingState :=
   { state with
     frame := { state.frame with
       payload := payload
@@ -21,9 +21,9 @@ def withHiddenContent (payload domain : Nat) (encapLayers : List EncapHeaderLaye
 
 lemma transit_step_ignores_hidden_content (c : DataPlaneModel)
     (payload domain : Nat) (encapLayers : List EncapHeaderLayer)
-    {before after : State} {action : Action}
+    {before after : ForwardingState} {action : ForwardingAction}
     (step : (transit c).Tr before action after) :
-    Step c (withHiddenContent payload domain encapLayers before) action
+    ForwardingStep c (withHiddenContent payload domain encapLayers before) action
       (withHiddenContent payload domain encapLayers after) := by
   obtain ⟨operation, allowed⟩ := step
   cases operation with
@@ -44,7 +44,7 @@ lemma transit_step_ignores_hidden_content (c : DataPlaneModel)
 
 theorem transit_path_ignores_hidden_content (c : DataPlaneModel)
     (payload domain : Nat) (encapLayers : List EncapHeaderLayer)
-    {before after : State} {actions : List Action}
+    {before after : ForwardingState} {actions : List ForwardingAction}
     (run : (transit c).MTr before actions after) :
     (lts c).MTr (withHiddenContent payload domain encapLayers before) actions
       (withHiddenContent payload domain encapLayers after) := by
@@ -57,7 +57,7 @@ theorem recovered_content_follows_checked_transit (c : DataPlaneModel)
     (expectedEncapStack : Nat → List Nat) (allowed : Nat → Prop)
     (conditions : LocalDomainConditions c expectedEncapStack allowed)
     (payload domain : Nat) (encapLayers : List EncapHeaderLayer)
-    {before after : State} {actions : List Action}
+    {before after : ForwardingState} {actions : List ForwardingAction}
     (run : (transit c).MTr before actions after)
     (initial : DomainInvariant c expectedEncapStack allowed
       (withHiddenContent payload domain encapLayers before)) :

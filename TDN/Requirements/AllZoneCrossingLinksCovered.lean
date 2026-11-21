@@ -12,24 +12,24 @@ lemma recorded_link_path_is_native (d : Deployment) (inventory : PacketProcessin
     exact Or.inr (Or.inl ⟨next, connected⟩)
   · exact Or.inr (Or.inr carrier)
 
-lemma physical_boundary_packet_has_actual_hook (configuration : Config) (iface : Nat)
-    (direction : Direction) (encoded : LinkAdmission.Frame) :
+lemma physical_boundary_packet_has_actual_hook (configuration : TunnelForwardingModel) (iface : Nat)
+    (direction : Direction) (encoded : LinkAdmission.EthernetFrame) :
     PacketAtHook (configuration.ip.interfaceName iface) direction .link
       (PhysicalBoundaryPacket configuration iface direction encoded) := by
   cases direction <;> simp [PacketAtHook, HookDirection, PhysicalBoundaryPacket,
-    LinkAdmission.Frame.Packet]
+    LinkAdmission.EthernetFrame.Packet]
 
 lemma admitted_native_wire_has_outbound_physical_observation (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (interface : Interface) (member : interface ∈ d.interfaces)
-    (before after : MultiProtocolForwarding.State)
+    (before after : MultiProtocolForwarding.TunnelForwardingState)
     (ifaceMember : before.iface ∈ inventory.ifaces)
     (path : d.LinkPath inventory before.iface)
     (name : inventory.ifaceName before.iface = interface.id)
     (nativeName : inventory.configuration.ip.interfaceName before.iface = interface.id)
     (owner : interface.device = inventory.componentName
       (inventory.configuration.ip.owner before.iface))
-    (wire : MultiProtocolForwarding.Step inventory.configuration before .linkTransmit after)
+    (wire : MultiProtocolForwarding.TunnelForwardingStep inventory.configuration before .linkTransmit after)
     (admission : inventory.configuration.LinkStepAdmitted before .linkTransmit after)
     (supported : ∀ encoded,
       inventory.configuration.linkEncoding before.iface before.frame = some encoded →
@@ -50,14 +50,14 @@ lemma admitted_native_wire_has_outbound_physical_observation (d : Deployment)
 lemma admitted_native_wire_has_inbound_physical_observation (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (interface : Interface) (member : interface ∈ d.interfaces)
-    (before after : MultiProtocolForwarding.State)
+    (before after : MultiProtocolForwarding.TunnelForwardingState)
     (ifaceMember : after.iface ∈ inventory.ifaces)
     (path : d.LinkPath inventory after.iface)
     (name : inventory.ifaceName after.iface = interface.id)
     (nativeName : inventory.configuration.ip.interfaceName after.iface = interface.id)
     (owner : interface.device = inventory.componentName
       (inventory.configuration.ip.owner after.iface))
-    (wire : MultiProtocolForwarding.Step inventory.configuration before .linkTransmit after)
+    (wire : MultiProtocolForwarding.TunnelForwardingStep inventory.configuration before .linkTransmit after)
     (admission : inventory.configuration.LinkStepAdmitted before .linkTransmit after)
     (supported : ∀ encoded,
       inventory.configuration.linkEncoding after.iface after.frame = some encoded →
@@ -115,68 +115,68 @@ end TDN.Requirements.Msc
 namespace TDN.Requirements.Msc
 open Compliance MultiProtocolForwarding
 
-lemma physical_view_records_actual_native_wire (configuration : Config)
-    (direction : Direction) (iface : Nat) (encoded : LinkAdmission.Frame)
+lemma physical_view_records_actual_native_wire (configuration : TunnelForwardingModel)
+    (direction : Direction) (iface : Nat) (encoded : LinkAdmission.EthernetFrame)
     (view : PhysicalBoundaryView configuration direction iface encoded) :
-    ∃ before after, MultiProtocolForwarding.Step configuration before .linkTransmit after ∧
+    ∃ before after, MultiProtocolForwarding.TunnelForwardingStep configuration before .linkTransmit after ∧
       if direction = .outbound then iface = before.iface ∧ encoded.Describes before.frame
       else iface = after.iface ∧ encoded.Describes after.frame := by
   cases view with
   | outbound before after encoded wire describes => exact ⟨before, after, wire, rfl, describes⟩
   | inbound before after encoded wire describes => exact ⟨before, after, wire, rfl, describes⟩
 
-lemma protection_disabled_native_transmit_has_physical_view (configuration : Config)
+lemma protection_disabled_native_transmit_has_physical_view (configuration : TunnelForwardingModel)
     (iface : MACIface) (configured : iface ∈ configuration.macIfaces)
-    (before : MultiProtocolForwarding.State) (ready : before.datapathStage = .egressReady)
+    (before : MultiProtocolForwarding.TunnelForwardingState) (ready : before.datapathStage = .egressReady)
     (logical : before.iface = iface.logicalIface)
     (enabled : iface.settings.controlledPortEnabled = true)
     (disabled : iface.settings.protectFrames = false)
     (peer : Nat) (linked : configuration.physicalLink iface.physicalIface peer)
-    (encoded : LinkAdmission.Frame) (describes : encoded.Describes before.frame) :
+    (encoded : LinkAdmission.EthernetFrame) (describes : encoded.Describes before.frame) :
     ∃ physical received,
-      MultiProtocolForwarding.Step configuration before .forwardWithoutEncap physical ∧
-      MultiProtocolForwarding.Step configuration physical .linkTransmit received ∧
+      MultiProtocolForwarding.TunnelForwardingStep configuration before .forwardWithoutEncap physical ∧
+      MultiProtocolForwarding.TunnelForwardingStep configuration physical .linkTransmit received ∧
       physical.iface = iface.physicalIface ∧ physical.frame = before.frame ∧
       PhysicalBoundaryView configuration .outbound iface.physicalIface encoded := by
-  let physical : MultiProtocolForwarding.State :=
+  let physical : MultiProtocolForwarding.TunnelForwardingState :=
     { before with initialEntry := false, iface := iface.physicalIface }
-  let received : MultiProtocolForwarding.State :=
+  let received : MultiProtocolForwarding.TunnelForwardingState :=
     { physical with initialEntry := false, iface := peer, datapathStage := .received, authenticated := [] }
-  have transform : MultiProtocolForwarding.Step configuration before .forwardWithoutEncap physical :=
+  have transform : MultiProtocolForwarding.TunnelForwardingStep configuration before .forwardWithoutEncap physical :=
     .unprotectedMACsec iface configured ready logical enabled disabled
-  have wire : MultiProtocolForwarding.Step configuration physical .linkTransmit received :=
+  have wire : MultiProtocolForwarding.TunnelForwardingStep configuration physical .linkTransmit received :=
     .linkTransmit peer ready linked
   exact ⟨physical, received, transform, wire, rfl, rfl,
     .outbound physical received encoded wire describes⟩
 
-lemma protected_native_transmit_has_physical_view (configuration : Config)
-    (iface : MACIface) (association : LayeredFrame.MACsecAssociation)
+lemma protected_native_transmit_has_physical_view (configuration : TunnelForwardingModel)
+    (iface : MACIface) (association : LayeredFrame.MacsecAssociation)
     (configured : iface ∈ configuration.macIfaces)
-    (before : MultiProtocolForwarding.State) (ready : before.datapathStage = .egressReady)
+    (before : MultiProtocolForwarding.TunnelForwardingState) (ready : before.datapathStage = .egressReady)
     (logical : before.iface = iface.logicalIface)
     (emits : fullMACsecTransmit iface association before.frame.body)
     (peer : Nat) (linked : configuration.physicalLink iface.physicalIface peer)
-    (encoded : LinkAdmission.Frame)
+    (encoded : LinkAdmission.EthernetFrame)
     (describes : encoded.Describes (configuration.macsecFrame before.frame association)) :
     ∃ physical received,
-      MultiProtocolForwarding.Step configuration before .encryptMACsec physical ∧
-      MultiProtocolForwarding.Step configuration physical .linkTransmit received ∧
+      MultiProtocolForwarding.TunnelForwardingStep configuration before .encryptMACsec physical ∧
+      MultiProtocolForwarding.TunnelForwardingStep configuration physical .linkTransmit received ∧
       physical.iface = iface.physicalIface ∧
       physical.frame.body = .macsec association before.frame.body ∧
       PhysicalBoundaryView configuration .outbound iface.physicalIface encoded := by
-  let physical : MultiProtocolForwarding.State :=
+  let physical : MultiProtocolForwarding.TunnelForwardingState :=
     { before with
       initialEntry := false
       iface := iface.physicalIface
       frame := configuration.macsecFrame before.frame association }
-  let received : MultiProtocolForwarding.State :=
+  let received : MultiProtocolForwarding.TunnelForwardingState :=
     { physical with initialEntry := false, iface := peer, datapathStage := .received, authenticated := [] }
-  have transform : MultiProtocolForwarding.Step configuration before .encryptMACsec physical :=
+  have transform : MultiProtocolForwarding.TunnelForwardingStep configuration before .encryptMACsec physical :=
     .encryptMACsec iface association configured ready logical emits
-  have wire : MultiProtocolForwarding.Step configuration physical .linkTransmit received :=
+  have wire : MultiProtocolForwarding.TunnelForwardingStep configuration physical .linkTransmit received :=
     .linkTransmit peer ready linked
   exact ⟨physical, received, transform, wire, rfl,
-    Config.macsecFrame_body configuration before.frame association,
+    TunnelForwardingModel.macsec_frame_body configuration before.frame association,
     .outbound physical received encoded wire describes⟩
 
 end TDN.Requirements.Msc
@@ -211,7 +211,7 @@ lemma routed_interface_has_boundary_policy_coverage (d : Deployment)
 lemma previous_boundary_acceptance_is_retained (d : Deployment) (interface : String)
     (direction : Direction) (traffic : Traffic)
     (previous : d.DeviceBoundaryAccepts interface direction traffic ∨
-      d.AcceptsAt interface direction .link traffic) : d.BoundaryAccepts interface direction traffic := by
+      d.PermitsAtHook interface direction .link traffic) : d.BoundaryAccepts interface direction traffic := by
   rcases previous with native | link
   · exact Or.inl native
   · exact Or.inr (Or.inl link)
@@ -220,7 +220,7 @@ lemma boundary_acceptance_without_physical_observation_is_unchanged (d : Deploym
     (interface : String) (direction : Direction) (traffic : Traffic)
     (absent : ¬ d.PhysicalBoundaryAccepts interface direction traffic) :
     d.BoundaryAccepts interface direction traffic ↔
-      d.DeviceBoundaryAccepts interface direction traffic ∨ d.AcceptsAt interface direction .link traffic := by
+      d.DeviceBoundaryAccepts interface direction traffic ∨ d.PermitsAtHook interface direction .link traffic := by
   constructor
   · rintro (native | link | physical)
     · exact Or.inl native
@@ -233,14 +233,14 @@ end TDN.Requirements.Msc
 namespace TDN.Requirements.Msc
 open Compliance
 
-lemma physical_MACsec_boundary_admission_is_link_admission (d : Deployment)
+lemma physical_macsec_boundary_admission_is_link_admission (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (interface : String)
     (parents : ∀ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface →
       ∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = iface)
     (direction : Direction) (traffic : Traffic)
     (admitted : d.PhysicalBoundaryAccepts interface direction traffic) :
-    d.AcceptsAt interface direction .link traffic := by
+    d.PermitsAtHook interface direction .link traffic := by
   obtain ⟨actual, same, iface, member, path, name, nativeName, record, recordMember,
     recordName, owner, encoded, view, packet, supported, allowed⟩ := admitted
   have identity : actual = inventory := Option.some.inj (same.symm.trans present)

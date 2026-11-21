@@ -16,7 +16,7 @@ class SourceZoneProjectionTests(unittest.TestCase):
     def setUpClass(cls):
         cls.bundle = json.loads((ROOT / "data/evidence/continuation/OuterToGray_Baseline.json").read_text())["rawBundle"]
 
-    def test_local_interfaces_are_retained_with_exact_zone(self):
+    def test_local_interfaces_map_to_host_local_and_keep_their_attachment(self):
         projected = project(self.bundle)
         interfaces = {row["id"]: row for row in projected["interfaces"]}
         raw = {row["interfaceId"]: row for row in self.bundle["ifaceBindings"]}
@@ -26,7 +26,8 @@ class SourceZoneProjectionTests(unittest.TestCase):
         self.assertTrue(any(row["linkKind"] == "loopback" for row in local))
         self.assertTrue(any(not row["observedUp"] for row in local))
         for row in raw.values():
-            self.assertEqual(interfaces[row["interfaceId"]]["zone"], row["declaredZone"])
+            expected_zone = "hostLocal" if row["declaredZone"] == "local" else row["declaredZone"]
+            self.assertEqual(interfaces[row["interfaceId"]]["zone"], expected_zone)
             self.assertEqual(interfaces[row["interfaceId"]]["physical"], row["emulatedAttachment"])
         self.assertEqual(projected["nativeIfaces"], self.bundle["ports"])
         self.assertEqual(projected["nativeDevices"], self.bundle["devices"])

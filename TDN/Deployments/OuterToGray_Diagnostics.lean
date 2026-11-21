@@ -1,6 +1,6 @@
 import TDN.Import.SnapshotLoader
 import TDN.Models.DataPlaneForwarding
-import TDN.Requirements.MasterMscRequirementSpecs
+import TDN.Requirements.MscRequirements
 
 namespace TDN.Deployments.OuterToGray_Diagnostics
 open Compliance
@@ -20,22 +20,22 @@ def reply : PacketPolicy.Packet :=
 def serviceCollision : PacketPolicy.Packet :=
   { reply with sourcePort := 1812, destinationPort := 500 }
 
-lemma reply_is_IKE : PacketIKE reply := by native_decide
+lemma reply_is_ike : PacketIKE reply := by native_decide
 
-lemma reply_is_denied_by_Outer_A1_forward_program :
-    Filter.evaluate ((DataPlaneForwarding.deviceAt devices 16).forwardRules.map PacketPolicy.Rule.toFilter)
+lemma reply_is_denied_by_outer_a1_forward_program :
+    Filter.evaluate ((DataPlaneForwarding.deviceAt devices 16).forwardRules.map PacketPolicy.PacketAclRule.toFilter)
       (DataPlaneForwarding.deviceAt devices 16).forwardFallback reply = .deny := by native_decide
 
-lemma service_collision_is_IKE : PacketIKE serviceCollision := by native_decide
+lemma service_collision_is_ike : PacketIKE serviceCollision := by native_decide
 
-lemma service_collision_is_admitted_by_Outer_A1_forward_program :
-    Filter.evaluate ((DataPlaneForwarding.deviceAt devices 16).forwardRules.map PacketPolicy.Rule.toFilter)
+lemma service_collision_is_admitted_by_outer_a1_forward_program :
+    Filter.evaluate ((DataPlaneForwarding.deviceAt devices 16).forwardRules.map PacketPolicy.PacketAclRule.toFilter)
       (DataPlaneForwarding.deviceAt devices 16).forwardFallback serviceCollision = .allow := by native_decide
 
 lemma service_collision_previously_guessed_authentication :
     PacketPortService serviceCollision = "authentication" := by native_decide
 
-lemma service_collision_is_classified_as_IKE_control :
+lemma service_collision_is_classified_as_ike_control :
     PacketService serviceCollision = "ike" ∧ PacketClass serviceCollision = .control := by native_decide
 
 end TDN.Deployments.OuterToGray_Diagnostics

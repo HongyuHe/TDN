@@ -1,9 +1,9 @@
-import TDN.Import.NativeDecide
-import TDN.Deployments.Perimeter_MacsecCases
+import TDN.Import.CompiledDecide
+import TDN.Deployments.Perimeter_MacsecTestVectors
 
 set_option synthInstance.maxSize 16384
 
-namespace TDN.Deployments.BoundaryMACsec
+namespace TDN.Deployments.BoundaryMacsec
 open Compliance Requirements Requirements.Msc MultiProtocolForwarding
 
 def PriorLinkTransit (_d : Deployment) (inventory : PacketProcessing.Inventory)
@@ -69,30 +69,30 @@ lemma first_ready_observation_stops_before_actual_protect_off_output :
       (unprotectedAllowed.sourceCase.egressReady unprotectedAllowed.configuration) unprotectedAllowed.physicalReady := by
   intro run
   have same := first_ready_run_from_ready_is_identity unprotectedAllowed.configuration rfl run
-  have ifaces : (2 : Nat) = 3 := congrArg MultiProtocolForwarding.State.iface same
+  have ifaces : (2 : Nat) = 3 := congrArg MultiProtocolForwarding.TunnelForwardingState.iface same
   omega
 
 lemma recorded_physical_parent_recognition_retains_actual_plaintext (base : Deployment) :
-    (unprotectedAllowed.deployment base).AcceptsAt unprotectedAllowed.sender.id .outbound .link
+    (unprotectedAllowed.deployment base).PermitsAtHook unprotectedAllowed.sender.id .outbound .link
       ((unprotectedAllowed.deployment base).Observe (unprotectedAllowed.packet .outbound)) ∧
-    (unprotectedAllowed.deployment base).AcceptsAt unprotectedAllowed.receiver.id .inbound .link
+    (unprotectedAllowed.deployment base).PermitsAtHook unprotectedAllowed.receiver.id .inbound .link
       ((unprotectedAllowed.deployment base).Observe (unprotectedAllowed.packet .inbound)) := by
   have parents : ∀ interface ∈ [unprotectedAllowed.sender, unprotectedAllowed.receiver],
       ∀ iface ∈ unprotectedAllowed.inventory.ifaces, unprotectedAllowed.ifaceName iface = interface.id →
         ∃ mac ∈ unprotectedAllowed.configuration.macIfaces, mac.physicalIface = iface := by
     native_decide
   constructor
-  · exact physical_MACsec_boundary_admission_is_link_admission _ _ rfl _
+  · exact physical_macsec_boundary_admission_is_link_admission _ _ rfl _
       (parents _ (by simp)) _ _ (protection_disabled_plaintext_is_observed_at_both_boundaries base).1
-  · exact physical_MACsec_boundary_admission_is_link_admission _ _ rfl _
+  · exact physical_macsec_boundary_admission_is_link_admission _ _ rfl _
       (parents _ (by simp)) _ _ (protection_disabled_plaintext_is_observed_at_both_boundaries base).2
 
 def senderDevice : Device := devices[1]
 
-theorem actual_protect_off_capture_violates_PF4 (base : Deployment)
+theorem actual_protect_off_capture_violates_pf4 (base : Deployment)
     (required : Bool) (internal : String → Bool) (localOuter : String → String) :
-    ¬ msc_boundary_interface_filtering (unprotectedAllowed.deployment base) required internal localOuter := by
-  apply admitted_plaintext_at_MACsec_boundary_violates_requirement
+    ¬ boundary_interface_filtering (unprotectedAllowed.deployment base) required internal localOuter := by
+  apply admitted_plaintext_at_macsec_boundary_violates_requirement
     (unprotectedAllowed.deployment base) rfl unprotectedAllowed.sender
     (captured_permitted_physical_programs_and_bindings.2.2.2.2.1) senderDevice
     (by simp [Records.deployment, devices, senderDevice]) rfl rfl rfl rfl .outbound
@@ -105,10 +105,10 @@ theorem actual_protect_off_capture_violates_PF4 (base : Deployment)
 lemma protect_off_filtered_attempt_has_a_real_native_prefix :
     (lts unprotectedDenied.configuration).MTr unprotectedDenied.sourceCase.entry
       [.receive, .route, .forwardFilter, .forwardWithoutEncap, .forwardWithoutEncap] unprotectedDenied.physicalReady := by
-  have routed := (routed_MACsec_case_reaches_logical_output unprotectedDenied.sourceCase
+  have routed := (routed_macsec_case_reaches_logical_output unprotectedDenied.sourceCase
     unprotectedDenied.configuration ⟨fun _ => 64, fun _ => 64⟩ rfl
     (captured_routes_and_source_payload_are_nonempty unprotectedDenied (by simp)).1).1
-  have plain : MultiProtocolForwarding.Step unprotectedDenied.configuration
+  have plain : MultiProtocolForwarding.TunnelForwardingStep unprotectedDenied.configuration
       (unprotectedDenied.sourceCase.egressReady unprotectedDenied.configuration) .forwardWithoutEncap unprotectedDenied.physicalReady :=
     .unprotectedMACsec unprotectedDenied.sourceCase.mac (by native_decide)
       rfl rfl rfl rfl
@@ -121,4 +121,4 @@ theorem physical_egress_filter_rejects_the_plaintext_attempt (base : Deployment)
   apply rejected_physical_program_excludes_boundary_admission _ unprotectedDenied.inventory rfl
   unfold_check_parameters; native_decide
 
-end TDN.Deployments.BoundaryMACsec
+end TDN.Deployments.BoundaryMacsec

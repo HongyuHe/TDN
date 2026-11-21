@@ -19,7 +19,7 @@ The [project overview](../README.md) describes TDN's motivation and approach. Th
 | [data/extraction](../data/extraction/README.md) | Requirements, examples, and device roles linked to their source passages. |
 | [Emulation profiles](../data/extraction/networks/profiles/README.md) | Network configurations, device mappings, and topology diagrams. |
 | [data/snapshots](../data/snapshots/) | Timestamped observations and manifests. |
-| [Publication records](../data/publication/v3.2/) | Retained review results, proof mappings, and interpretation decisions. |
+| [Publication records](../data/publication/v3.4/) | Retained review results, proof mappings, and interpretation decisions. |
 
 The [Lean entry point](../TDN.lean) imports the active theory. The [construction workflow](../workflows/construction.md) describes how agents formalize requirements, obtain evidence, and review proofs.
 

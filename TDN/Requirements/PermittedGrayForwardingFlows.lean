@@ -58,7 +58,7 @@ lemma forward_permission_records_the_actual_incoming_source_check (d : Deploymen
 
 
 lemma forward_context_records_incoming_iface_and_filter_header
-    (configuration : MultiProtocolForwarding.Config) (context : PacketProcessing.Context)
+    (configuration : MultiProtocolForwarding.TunnelForwardingModel) (context : PacketProcessing.Context)
     (hook : context.hook = .forward) :
     (context.Packet configuration).ingress =
         configuration.ip.interfaceName context.state.enteredIface ∧

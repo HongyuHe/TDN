@@ -2,12 +2,12 @@ import TDN.Models.NetfilterToRoutingLemmas
 
 namespace TDN.MultiProtocolForwarding
 
-lemma coherent_IPsec_visible_fields {frame : LayeredFrame.Frame}
-    {envelope : DataPlaneForwarding.TunnelSAStamp} {body : LayeredFrame.Body} {header : PacketPolicy.Packet}
+lemma coherent_ipsec_visible_fields {frame : LayeredFrame.TunnelFrame}
+    {envelope : DataPlaneForwarding.TunnelSaStamp} {body : LayeredFrame.Body} {header : PacketPolicy.Packet}
     (coherent : frame.HeadersCoherent) (shape : frame.body = .ipsec envelope body)
     (visible : frame.visibleHeader = some header) :
     header.source = envelope.sender ∧ header.destination = envelope.receiver ∧ header.protocol = "esp" := by
-  obtain ⟨nominal, bodyVisible, identity⟩ := LayeredFrame.Frame.coherent_visible coherent header visible
+  obtain ⟨nominal, bodyVisible, identity⟩ := LayeredFrame.TunnelFrame.coherent_visible coherent header visible
   have same : nominal = LayeredFrame.outerHeader envelope.sender envelope.receiver "esp" 0 0 := by
     rw [shape, LayeredFrame.Body.visibleHeader] at bodyVisible
     exact Option.some.inj bodyVisible.symm
@@ -17,7 +17,7 @@ lemma coherent_IPsec_visible_fields {frame : LayeredFrame.Frame}
   · simpa [LayeredFrame.outerHeader] using congrArg (fun packet : PacketPolicy.Packet => packet.destination) identity.1
   · simpa [LayeredFrame.outerHeader] using congrArg (fun packet : PacketPolicy.Packet => packet.protocol) identity.1
 
-def IPsecInputAtom (configuration : Config) (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy) :
+def IPsecInputAtom (configuration : TunnelForwardingModel) (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy) :
     PacketPolicy.MatchCondition → Prop
   | .sourceRange low high => low ≤ policy.sender ∧ policy.sender ≤ high
   | .destinationRange low high => low ≤ policy.receiver ∧ policy.receiver ≤ high
@@ -26,36 +26,36 @@ def IPsecInputAtom (configuration : Config) (iface : Nat) (policy : DataPlaneFor
   | .egress name => name = ""
   | _ => True
 
-instance (configuration : Config) (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy)
+instance (configuration : TunnelForwardingModel) (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy)
     (atom : PacketPolicy.MatchCondition) : Decidable (IPsecInputAtom configuration iface policy atom) := by
   cases atom <;> unfold IPsecInputAtom <;> infer_instance
 
-def IPsecInputPossible (configuration : Config) (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy) : Prop :=
+def IPsecInputPossible (configuration : TunnelForwardingModel) (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy) : Prop :=
   configuration.ip.inputFallback iface = .allow ∨
     ∃ rule ∈ configuration.ip.inputRules iface, rule.verdict = .allow ∧
       ∀ atom ∈ rule.atoms, IPsecInputAtom configuration iface policy atom
 
-instance (configuration : Config) (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy) :
+instance (configuration : TunnelForwardingModel) (iface : Nat) (policy : DataPlaneForwarding.IpsecPolicy) :
     Decidable (IPsecInputPossible configuration iface policy) := by
   unfold IPsecInputPossible
   infer_instance
 
-lemma admitted_decryption_has_possible_rule {configuration : Config} {entry : State}
-    (policy : DataPlaneForwarding.IpsecPolicy) (association : DataPlaneForwarding.InstalledSA)
+lemma admitted_decryption_has_possible_rule {configuration : TunnelForwardingModel} {entry : TunnelForwardingState}
+    (policy : DataPlaneForwarding.IpsecPolicy) (association : DataPlaneForwarding.InstalledSa)
     (body : LayeredFrame.Body) (coherent : entry.frame.HeadersCoherent)
     (encrypted : entry.frame.body = .ipsec (policy.seal association) body)
     (bound : DataPlaneForwarding.saMatchesPolicy association policy)
     (admitted : PacketProcessing.InputAdmitted configuration entry) :
     IPsecInputPossible configuration entry.iface policy := by
   obtain ⟨header, visible, accepts⟩ := admitted
-  have fields := coherent_IPsec_visible_fields coherent encrypted visible
+  have fields := coherent_ipsec_visible_fields coherent encrypted visible
   have source : header.source = policy.sender := fields.1.trans bound.2.1
   have destination : header.destination = policy.receiver := fields.2.1.trans bound.2.2.1
   by_cases fallback : configuration.ip.inputFallback entry.iface = .allow
   · exact Or.inl fallback
   · have denying : configuration.ip.inputFallback entry.iface = .deny := by
       cases value : configuration.ip.inputFallback entry.iface <;> simp_all
-    rw [DataPlaneForwarding.accepts, denying] at accepts
+    rw [PacketPolicy.AclAllows, denying] at accepts
     obtain ⟨matchedRule, member, matched, allow⟩ := Filter.allowed_has_matching_allow _ _ accepts
     obtain ⟨rule, ruleMember, rfl⟩ := List.mem_map.mp member
     refine Or.inr ⟨rule, ruleMember, allow, ?_⟩
@@ -72,7 +72,7 @@ lemma admitted_decryption_has_possible_rule {configuration : Config} {entry : St
       exact same.symm.trans fields.2.2
     case egress name => exact holds.symm
 
-lemma coherent_same_body_has_same_visible_source {first second : LayeredFrame.Frame}
+lemma coherent_same_body_has_same_visible_source {first second : LayeredFrame.TunnelFrame}
     {firstHeader secondHeader : PacketPolicy.Packet}
     (body : first.body = second.body) (firstCoherent : first.HeadersCoherent)
     (secondCoherent : second.HeadersCoherent)
@@ -80,9 +80,9 @@ lemma coherent_same_body_has_same_visible_source {first second : LayeredFrame.Fr
     (secondVisible : second.visibleHeader = some secondHeader) :
     firstHeader.source = secondHeader.source := by
   obtain ⟨firstNominal, firstBody, firstIdentity⟩ :=
-    LayeredFrame.Frame.coherent_visible firstCoherent firstHeader firstVisible
+    LayeredFrame.TunnelFrame.coherent_visible firstCoherent firstHeader firstVisible
   obtain ⟨secondNominal, secondBody, secondIdentity⟩ :=
-    LayeredFrame.Frame.coherent_visible secondCoherent secondHeader secondVisible
+    LayeredFrame.TunnelFrame.coherent_visible secondCoherent secondHeader secondVisible
   have same : firstNominal = secondNominal := by
     rw [body, secondBody] at firstBody
     exact Option.some.inj firstBody.symm
@@ -93,12 +93,12 @@ lemma coherent_same_body_has_same_visible_source {first second : LayeredFrame.Fr
     simpa only using congrArg (fun packet : PacketPolicy.Packet => packet.source) secondIdentity.1
   exact left.trans right.symm
 
-lemma ingress_route_detailed_authentication {configuration : Config} (processing : HeaderProcessing)
+lemma ingress_route_detailed_authentication {configuration : TunnelForwardingModel} (processing : HeaderProcessing)
     (mode : configuration.headerProcessing = some processing) (bounds : HeaderBounds processing)
-    {entry entered final : State} {header : PacketPolicy.Packet}
+    {entry entered final : TunnelForwardingState} {header : PacketPolicy.Packet}
     (coherent : entry.frame.HeadersCoherent)
     (ingress : PacketProcessing.Ingress configuration entry entered)
-    (routed : Step configuration entered .route final)
+    (routed : TunnelForwardingStep configuration entered .route final)
     (visible : final.frame.visibleHeader = some header) :
     final.enteredIface = entry.iface ∧
       ((final.authenticated = [] ∧
@@ -119,14 +119,14 @@ lemma ingress_route_detailed_authentication {configuration : Config} (processing
     exact coherent_same_body_has_same_visible_source preserved.1.symm coherent finalCoherent incomingVisible visible
   · cases decrypted with
     | decryptIPsec policy association body nominal datapathStage encrypted configured installed bound bodyVisible selected tracking =>
-      have actualStep := Step.decryptIPsec policy association body nominal datapathStage encrypted configured installed bound
+      have actualStep := TunnelForwardingStep.decryptIPsec policy association body nominal datapathStage encrypted configured installed bound
         bodyVisible selected tracking
       have enteredCoherent := step_preserves_headers processing mode bounds actualStep coherent
       have finalCoherent := step_preserves_headers processing mode bounds routed enteredCoherent
       obtain ⟨actualNominal, finalBodyVisible, identity⟩ :=
-        LayeredFrame.Frame.coherent_visible finalCoherent header visible
+        LayeredFrame.TunnelFrame.coherent_visible finalCoherent header visible
       have finalBody : final.frame.body = body := by
-        simpa only [Config.restoredFrame, mode, LayeredFrame.Frame.popHeader] using preserved.1
+        simpa only [TunnelForwardingModel.restoredFrame, mode, LayeredFrame.TunnelFrame.popHeader] using preserved.1
       have sameNominal : actualNominal = nominal := by
         rw [finalBody, bodyVisible] at finalBodyVisible
         exact Option.some.inj finalBodyVisible.symm
@@ -139,7 +139,7 @@ lemma ingress_route_detailed_authentication {configuration : Config} (processing
         (association_matches_depends_on_addresses policy header nominal source destination).trans selected,
         preserved.2.2.1, ?_, ?_⟩
       · intro incoming incomingVisible
-        exact (coherent_IPsec_visible_fields coherent encrypted incomingVisible).1.trans bound.2.1
+        exact (coherent_ipsec_visible_fields coherent encrypted incomingVisible).1.trans bound.2.1
       · exact admitted_decryption_has_possible_rule policy association body coherent encrypted bound
 
 end TDN.MultiProtocolForwarding

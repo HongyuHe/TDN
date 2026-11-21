@@ -24,6 +24,6 @@ example : ¬ TableDrivenDeny [{ egressPolicies := [association], outputFallback 
   native_decide
 /-- The actual positive path reaches the new post-encryption generation class. -/
 example : LocallyEncrypted Deployments.DualStack_RedV4_GrayV4_BlackV4_V13.config Deployments.DualStack_RedV4_GrayV4_BlackV4_V13.witnessState8 :=
-  encryption_step_is_local Deployments.DualStack_RedV4_GrayV4_BlackV4_V13.witnessStep7
+  encryption_step_is_local Deployments.DualStack_RedV4_GrayV4_BlackV4_V13.witness_step7
 
 end EncryptedResponseRegression

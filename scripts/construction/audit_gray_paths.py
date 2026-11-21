@@ -38,7 +38,7 @@ def audit(bundle,output,report_path):
     ns=identifier(graph["snapshot"]["snapshot_id"])+"_gray"
     levels=sorted({d["security_level_id"] for d in devices if d["security_level_id"] is not None})
     level_ids=[0 if d["security_level_id"] is None else levels.index(d["security_level_id"])+1 for d in devices]
-    lines=["import TDN.Models.Waypointing","namespace TDN.Deployments."+ns,"set_option maxRecDepth 100000","set_option maxHeartbeats 0","abbrev Node := Fin "+str(len(devices))]
+    lines=["import TDN.Models.Waypointing","namespace TDN.Deployments."+ns,"set_option maxRecDepth 100000","abbrev Node := Fin "+str(len(devices))]
     lines.append("def edges : List (Node × Node) := "+lean_list(["("+str(a)+", "+str(b)+")" for a,b in sorted(edges)]))
     lines.append("def innerNodes : List Node := "+lean_list([str(i) for i in inner]))
     lines.append("def firewallNodes : List Node := "+lean_list([str(i) for i in firewalls]))

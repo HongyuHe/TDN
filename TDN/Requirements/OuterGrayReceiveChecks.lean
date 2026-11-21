@@ -1,4 +1,4 @@
-import TDN.Requirements.IPsecOuterBoundaryChecks
+import TDN.Requirements.IpsecOuterBoundaryChecks
 
 namespace TDN.Requirements.Msc
 open Compliance MultiProtocolForwarding LayeredFrame
@@ -10,7 +10,7 @@ lemma non_network_event_has_gray_receive_shape (d : Deployment) (genuineControl 
 
 lemma ipsec_source_events_have_gray_receive_shape {S A : Type} (binding : DeviceExecutionBinding S A)
     (d : Deployment) (stack : Nat → List Nat) (outer : Nat → Prop) (processing : HeaderProcessing)
-    (checks : IPsecOuterBoundaryChecks binding d stack outer processing)
+    (checks : IpsecOuterBoundaryChecks binding d stack outer processing)
     (genuineControl : PayloadId → Prop) (before : S) :
     ∀ event ∈ binding.SourceEvents before, OuterGrayReceiveShape d genuineControl event := by
   dsimp only [DeviceExecutionBinding.SourceEvents]
@@ -33,7 +33,7 @@ lemma ipsec_source_events_have_gray_receive_shape {S A : Type} (binding : Device
 
 lemma nontransmit_operation_events_have_gray_receive_shape {S A : Type} (binding : DeviceExecutionBinding S A)
     (d : Deployment) (genuineControl : PayloadId → Prop) (before after : S)
-    (operation : MultiProtocolForwarding.Action) (other : operation ≠ .linkTransmit) :
+    (operation : MultiProtocolForwarding.TunnelForwardingAction) (other : operation ≠ .linkTransmit) :
     ∀ event ∈ binding.OperationEvents before operation after, OuterGrayReceiveShape d genuineControl event := by
   cases operation <;> simp_all only [DeviceExecutionBinding.OperationEvents]
   all_goals repeat' first
@@ -42,9 +42,9 @@ lemma nontransmit_operation_events_have_gray_receive_shape {S A : Type} (binding
 
 lemma ipsec_operation_events_have_gray_receive_shape {S A : Type} (binding : DeviceExecutionBinding S A)
     (d : Deployment) (stack : Nat → List Nat) (outer : Nat → Prop) (processing : HeaderProcessing)
-    (checks : IPsecOuterBoundaryChecks binding d stack outer processing) (genuineControl : PayloadId → Prop)
-    {before after : MultiProtocolForwarding.State} {operation : MultiProtocolForwarding.Action}
-    (step : MultiProtocolForwarding.Step binding.configuration before operation after)
+    (checks : IpsecOuterBoundaryChecks binding d stack outer processing) (genuineControl : PayloadId → Prop)
+    {before after : MultiProtocolForwarding.TunnelForwardingState} {operation : MultiProtocolForwarding.TunnelForwardingAction}
+    (step : MultiProtocolForwarding.TunnelForwardingStep binding.configuration before operation after)
     (safe : IPsecOuterBoundaryStateSafe binding d binding.configuration stack outer before) :
     ∀ event ∈ (binding.withProjection id (fun action => some action)).OperationEvents before operation after,
       OuterGrayReceiveShape d genuineControl event := by
@@ -53,8 +53,8 @@ lemma ipsec_operation_events_have_gray_receive_shape {S A : Type} (binding : Dev
     have safeAfter := ipsec_outer_boundary_state_preserved binding d stack outer processing checks step safe
     cases step with
     | linkTransmit next ready linked =>
-      have names : ∀ body, (binding.withProjection (id : MultiProtocolForwarding.State → MultiProtocolForwarding.State)
-          (fun action : MultiProtocolForwarding.Action => some action)).LayerIds body = binding.LayerIds body :=
+      have names : ∀ body, (binding.withProjection (id : MultiProtocolForwarding.TunnelForwardingState → MultiProtocolForwarding.TunnelForwardingState)
+          (fun action : MultiProtocolForwarding.TunnelForwardingAction => some action)).LayerIds body = binding.LayerIds body :=
         layer_ids_with_tunnel_names binding _ _
       dsimp only [DeviceExecutionBinding.withProjection] at names
       intro event member
@@ -75,38 +75,38 @@ lemma ipsec_operation_events_have_gray_receive_shape {S A : Type} (binding : Dev
 def ipsecOuterGrayReceiveChecks {S A : Type} (model : ForwardingModel S A) (d : Deployment)
     (stack : Nat → List Nat) (outer : Nat → Prop) (processing : HeaderProcessing)
     (covered : model.CoversDeployment d)
-    (checks : IPsecOuterBoundaryChecks model.native d stack outer processing) : OuterGrayReceiveLocalChecks d model := by
-  refine ⟨fun state => IPsecOuterBoundaryStateSafe model.native d model.native.configuration stack outer (model.native.state state), ?_, ?_, ?_⟩
+    (checks : IpsecOuterBoundaryChecks model.deviceDataPlane d stack outer processing) : OuterGrayReceiveLocalChecks d model := by
+  refine ⟨fun state => IPsecOuterBoundaryStateSafe model.deviceDataPlane d model.deviceDataPlane.configuration stack outer (model.deviceDataPlane.state state), ?_, ?_, ?_⟩
   · intro state initial
-    exact ipsec_outer_boundary_state_initialized model.native d stack outer processing checks _
+    exact ipsec_outer_boundary_state_initialized model.deviceDataPlane d stack outer processing checks _
       (covered.2.2.2.1.2.2.2.1 state initial).1
   · intro before action after step safe
     have faithful := covered.2.1 before action after step
-    cases selected : model.native.action action with
+    cases selected : model.deviceDataPlane.action action with
     | none => rw [selected] at faithful; rw [← faithful.1]; exact safe
     | some operation =>
       rw [selected] at faithful
-      exact ipsec_outer_boundary_state_preserved model.native d stack outer processing checks faithful.1.1 safe
+      exact ipsec_outer_boundary_state_preserved model.deviceDataPlane d stack outer processing checks faithful.1.1 safe
   · intro before action after step safe event member
     by_cases network : event.NetworkOperation = true
     · have recorded := List.mem_filter.mpr ⟨member, network⟩
       have faithful := covered.2.1 before action after step
-      cases selected : model.native.action action with
+      cases selected : model.deviceDataPlane.action action with
       | none => rw [selected] at faithful; rw [faithful.2] at recorded; simp at recorded
       | some operation =>
         rw [selected] at faithful
         rw [faithful.2, DeviceExecutionBinding.RequiredEvents] at recorded
         rcases List.mem_append.mp recorded with source | operationEvent
-        · exact ipsec_source_events_have_gray_receive_shape model.native d stack outer processing checks _ before event source
-        · have localEvents := ipsec_operation_events_have_gray_receive_shape model.native d stack outer processing checks
+        · exact ipsec_source_events_have_gray_receive_shape model.deviceDataPlane d stack outer processing checks _ before event source
+        · have localEvents := ipsec_operation_events_have_gray_receive_shape model.deviceDataPlane d stack outer processing checks
             model.GenuineControl faithful.1.1 safe
-          have projected : (model.native.withProjection id (fun action => some action)).OperationEvents
-              (model.native.state before) operation (model.native.state after) =
-              model.native.OperationEvents before operation after := by
-            have names : ∀ body, (model.native.withProjection
-                (id : MultiProtocolForwarding.State → MultiProtocolForwarding.State)
-                (fun action : MultiProtocolForwarding.Action => some action)).LayerIds body =
-                model.native.LayerIds body := layer_ids_with_tunnel_names model.native _ _
+          have projected : (model.deviceDataPlane.withProjection id (fun action => some action)).OperationEvents
+              (model.deviceDataPlane.state before) operation (model.deviceDataPlane.state after) =
+              model.deviceDataPlane.OperationEvents before operation after := by
+            have names : ∀ body, (model.deviceDataPlane.withProjection
+                (id : MultiProtocolForwarding.TunnelForwardingState → MultiProtocolForwarding.TunnelForwardingState)
+                (fun action : MultiProtocolForwarding.TunnelForwardingAction => some action)).LayerIds body =
+                model.deviceDataPlane.LayerIds body := layer_ids_with_tunnel_names model.deviceDataPlane _ _
             dsimp only [DeviceExecutionBinding.withProjection] at names
             simp only [DeviceExecutionBinding.OperationEvents, DeviceExecutionBinding.withProjection, id_eq, names]
           rw [projected] at localEvents

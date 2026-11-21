@@ -6,23 +6,23 @@ open Compliance DeriveEndpointInputOutputRules
 def GrayFirewallPolicyWithForwardSourceCheck (d : Deployment) (required : Bool) : Prop :=
   d.AddressInventoryCoherent ∧
   (required = true → d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧
-    ∀ interface ∈ d.interfaces, d.Relevant interface.device →
+    ∀ interface ∈ d.interfaces, d.InScope interface.device →
       d.IsDevice interface.device .grayFirewall → d.PolicyCoverage interface ∧
-        (∀ direction traffic, d.Accepts interface.id direction traffic →
+        (∀ direction traffic, d.PermitsOnInterface interface.id direction traffic →
           GrayFirewallRestrictions d interface direction traffic ∧ GrayPolicyAllowance d interface traffic) ∧
         ∀ direction hook traffic, d.PacketEligibleAt interface direction hook traffic →
           d.GrayForwardPermission interface hook traffic →
           GrayFirewallRestrictions d interface direction traffic → GrayPolicyAllowance d interface traffic →
-          d.AcceptsAt interface.id direction hook traffic) ∧
-  ∀ interface ∈ d.interfaces, d.Relevant interface.device → d.IsDevice interface.device .grayFirewall →
-    ∀ direction traffic, DifferentClassificationVPNs d traffic → ¬ d.Accepts interface.id direction traffic
+          d.PermitsAtHook interface.id direction hook traffic) ∧
+  ∀ interface ∈ d.interfaces, d.InScope interface.device → d.IsDevice interface.device .grayFirewall →
+    ∀ direction traffic, DifferentClassificationVPNs d traffic → ¬ d.PermitsOnInterface interface.id direction traffic
 
-theorem gray_firewall_allowlist_from_native_IPsec_checks (d : Deployment)
-    (unfocused : d.focus = none)
+theorem gray_firewall_allowlist_from_native_ipsec_checks (d : Deployment)
+    (unfocused : d.deviceScope = none)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (processing : MultiProtocolForwarding.HeaderProcessing)
     (mode : inventory.configuration.headerProcessing = some processing)
-    (bounds : MultiProtocolForwarding.HeaderBounds processing) (pairs : List InnerIPsecPair)
+    (bounds : MultiProtocolForwarding.HeaderBounds processing) (pairs : List InnerIpsecPair)
     (addressChecked : addressRecordsChecked d = true)
     (workstations : d.grayWorkstation = grayWorkstationRole d)
     (coherent : d.ProcessingCoherent) (udpCoherent : d.UDPBindingsCoherent)
@@ -31,7 +31,7 @@ theorem gray_firewall_allowlist_from_native_IPsec_checks (d : Deployment)
     (identifiers : ∀ first ∈ d.devices, ∀ second ∈ d.devices, first.id = second.id → first = second)
     (observations : GrayIPsecObservationChecks d) (revocation : GrayRevocationServiceAbsent d)
     (udp : d.udpBindings = []) (carrier : d.carrierBindings = [])
-    (mechanisms : ∀ tunnel ∈ d.tunnels, tunnel.layer = .inner → tunnel.mechanism = .ipsec)
+    (mechanisms : ∀ tunnel ∈ d.tunnels, tunnel.layer = .inner → tunnel.protocol = .ipsec)
     (coverage : InnerIPsecAddressCoverage d pairs)
     (unique : DeviceNamesUniqueByComponent inventory)
     (ipv4 : ∀ record ∈ pairs, 0 < record.endpoints.sourceAddress ∧
@@ -62,20 +62,20 @@ theorem gray_firewall_allowlist_from_native_IPsec_checks (d : Deployment)
       InterfaceMtuBound d interface (interface.mtu.getD 0))
     (forward : ∀ interface ∈ d.interfaces, d.IsDevice interface.device .grayFirewall →
       ∀ direction, GrayForwardChecks d inventory pairs interface direction)
-    (required : Bool) : msc_gray_firewall_allowlist d required := by
-  have cleared : { d with focus := none } = d := by
+    (required : Bool) : gray_firewall_allowlist d required := by
+  have cleared : { d with deviceScope := none } = d := by
     cases d
     cases unfocused
     rfl
-  unfold msc_gray_firewall_allowlist
+  unfold gray_firewall_allowlist
   rw [cleared]
   change GrayFirewallPolicyWithForwardSourceCheck d required
   have address := address_inventory_from_checked_records d addressChecked workstations
   have safe (interface : Interface) (member : interface ∈ d.interfaces)
       (role : d.IsDevice interface.device .grayFirewall) (direction : Direction) (traffic : Traffic)
-      (accepted : d.Accepts interface.id direction traffic) :
+      (accepted : d.PermitsOnInterface interface.id direction traffic) :
       GrayFirewallRestrictions d interface direction traffic ∧ GrayPolicyAllowance d interface traffic :=
-    admitted_Gray_firewall_IPsec_packet_is_safe d inventory present interface pairs bindings identifiers
+    admitted_gray_firewall_ipsec_packet_is_safe d inventory present interface pairs bindings identifiers
       (roles interface member role) carrier address observations (routed interface member role)
       (rules interface member role) direction traffic accepted
   refine ⟨address, ?_, ?_⟩
@@ -94,7 +94,7 @@ theorem gray_firewall_allowlist_from_native_IPsec_checks (d : Deployment)
     have notLink : hook ≠ .link := applies.2.1
     simp only [notLink, ↓reduceIte]
     refine ⟨policy, policyMember, name, policyDirection, policyHook, only, ?_⟩
-    exact eligible_Gray_IPsec_packet_is_allowed d inventory present processing mode bounds pairs udp carrier
+    exact eligible_gray_ipsec_packet_is_allowed d inventory present processing mode bounds pairs udp carrier
       mechanisms coverage revocation unique interface (separation interface member role) ipv4
       (noApproved interface member role) (noManagement interface member role) (noInbound interface member role)
       (routed interface member role) (mtus interface member role) direction

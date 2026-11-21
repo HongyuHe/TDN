@@ -2,7 +2,7 @@ import TDN.Models.DataPlaneForwarding
 
 namespace TDN.DataPlaneForwarding
 
-def Frame.encapLayerIds (frame : Frame) : List Nat :=
+def IpsecFrame.encapLayerIds (frame : IpsecFrame) : List Nat :=
   frame.encapLayers.map (fun e => e.authentication.tag)
 
 def encapStackAfterIngress (expectedEncapStack : Nat → List Nat) (entry : Nat) (authenticated : List Nat) :
@@ -13,19 +13,19 @@ def LocalAuthentication (c : DataPlaneModel) (expectedEncapStack : Nat → List 
   authenticated = [] ∨ ∃ a ∈ c.ingressPolicies entry, authenticated = [a.id] ∧
     ∃ rest, expectedEncapStack entry = a.tag :: rest
 
-def ProcessingInvariant (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (s : State) : Prop :=
+def ProcessingInvariant (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (s : ForwardingState) : Prop :=
   s.frame.encapLayerIds = encapStackAfterIngress expectedEncapStack s.frame.enteredIface s.authenticated ∧
   s.frame.packet.ingress = c.interfaceName s.frame.enteredIface ∧
   LocalAuthentication c expectedEncapStack s.frame.enteredIface s.authenticated ∧
   c.owner s.iface = c.owner s.frame.enteredIface
 
-def AcceptedHook (c : DataPlaneModel) (s : State) : Prop :=
-  accepts (c.forwardRules s.iface) (c.forwardFallback s.iface)
+def AcceptedHook (c : DataPlaneModel) (s : ForwardingState) : Prop :=
+  TDN.PacketPolicy.AclAllows (c.forwardRules s.iface) (c.forwardFallback s.iface)
     (policyPacket c s.iface s.frame s.authenticated) ∨
-  (s.authenticated = [] ∧ c.canOriginateTraffic s.frame.enteredIface ∧ accepts (c.outputRules s.iface) (c.outputFallback s.iface)
+  (s.authenticated = [] ∧ c.canOriginateTraffic s.frame.enteredIface ∧ TDN.PacketPolicy.AclAllows (c.outputRules s.iface) (c.outputFallback s.iface)
     (policyPacket c s.iface s.frame []))
 
-def RoutedFrame (c : DataPlaneModel) (iface : Nat) (frame : Frame) : Prop :=
+def RoutedFrame (c : DataPlaneModel) (iface : Nat) (frame : IpsecFrame) : Prop :=
   ∃ r, SelectedFibRoute c.routes r frame.packet ∧
     r.ingress = frame.enteredIface ∧ r.egress = iface
 
@@ -40,7 +40,7 @@ structure PerHopEncapConditions (c : DataPlaneModel) (expectedEncapStack : Nat �
     frame.packet.ingress = c.interfaceName frame.enteredIface →
     LocalAuthentication c expectedEncapStack frame.enteredIface authenticated →
     c.owner iface = c.owner frame.enteredIface →
-    accepts (c.forwardRules iface) (c.forwardFallback iface)
+    TDN.PacketPolicy.AclAllows (c.forwardRules iface) (c.forwardFallback iface)
       (policyPacket c iface frame authenticated) →
     (lookupSpdPolicies (c.egressPolicies iface) frame.packet = [] →
       encapStackAfterIngress expectedEncapStack frame.enteredIface authenticated = expectedEncapStack iface) ∧
@@ -49,7 +49,7 @@ structure PerHopEncapConditions (c : DataPlaneModel) (expectedEncapStack : Nat �
   output : ∀ iface frame, RoutedFrame c iface frame → c.canOriginateTraffic frame.enteredIface →
     frame.packet.ingress = c.interfaceName frame.enteredIface →
     c.owner iface = c.owner frame.enteredIface →
-    accepts (c.outputRules iface) (c.outputFallback iface) (policyPacket c iface frame []) →
+    TDN.PacketPolicy.AclAllows (c.outputRules iface) (c.outputFallback iface) (policyPacket c iface frame []) →
     (lookupSpdPolicies (c.egressPolicies iface) frame.packet = [] →
       encapStackAfterIngress expectedEncapStack frame.enteredIface [] = expectedEncapStack iface) ∧
     (∀ a ∈ lookupSpdPolicies (c.egressPolicies iface) frame.packet,
@@ -58,7 +58,7 @@ structure PerHopEncapConditions (c : DataPlaneModel) (expectedEncapStack : Nat �
     SelectedFibRoute c.routes r (encrypt a sa frame).packet → r.ingress = iface →
     expectedEncapStack iface = expectedEncapStack r.egress
 
-def EncapStackConsistent (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (s : State) : Prop :=
+def EncapStackConsistent (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (s : ForwardingState) : Prop :=
   match s.datapathStage with
   | .received => s.frame.encapLayerIds = expectedEncapStack s.iface
   | .ingress => ProcessingInvariant c expectedEncapStack s ∧ s.frame.enteredIface = s.iface
@@ -77,7 +77,7 @@ def EncapStackConsistent (c : DataPlaneModel) (expectedEncapStack : Nat → List
   | .dropped => True
 
 lemma accepted_hook_stack_effect {c : DataPlaneModel} {expectedEncapStack : Nat → List Nat}
-    (conditions : PerHopEncapConditions c expectedEncapStack) {s : State}
+    (conditions : PerHopEncapConditions c expectedEncapStack) {s : ForwardingState}
     (processing : ProcessingInvariant c expectedEncapStack s) (accepted : AcceptedHook c s)
     (routed : RoutedFrame c s.iface s.frame) :
     (lookupSpdPolicies (c.egressPolicies s.iface) s.frame.packet = [] →
@@ -89,8 +89,8 @@ lemma accepted_hook_stack_effect {c : DataPlaneModel} {expectedEncapStack : Nat 
   · simpa [empty] using conditions.output s.iface s.frame routed origin processing.2.1 processing.2.2.2 output
 
 lemma hop_preserves_encap_stack {c : DataPlaneModel} {expectedEncapStack : Nat → List Nat}
-    (conditions : PerHopEncapConditions c expectedEncapStack) {a b : State} {action : Action}
-    (step : Step c a action b) (before : EncapStackConsistent c expectedEncapStack a) :
+    (conditions : PerHopEncapConditions c expectedEncapStack) {a b : ForwardingState} {action : ForwardingAction}
+    (step : ForwardingStep c a action b) (before : EncapStackConsistent c expectedEncapStack a) :
     EncapStackConsistent c expectedEncapStack b := by
   cases step with
   | receive =>
@@ -130,10 +130,10 @@ lemma hop_preserves_encap_stack {c : DataPlaneModel} {expectedEncapStack : Nat �
   | @decrypt iface frame association sa header rest tracking configured installed bound received
       outerSource outerDestination esp selected =>
     have stackTail := congrArg List.tail before
-    simp only [Frame.encapLayerIds, received, List.map_cons, List.tail_cons] at stackTail
+    simp only [IpsecFrame.encapLayerIds, received, List.map_cons, List.tail_cons] at stackTail
     refine ⟨⟨?_, rfl, Or.inr ⟨association, configured, rfl, rest.map (fun e => e.authentication.tag), ?_⟩, rfl⟩, rfl⟩
-    · simpa [Frame.encapLayerIds, encapStackAfterIngress] using stackTail
-    · simpa [Frame.encapLayerIds, received, IpsecPolicy.seal] using before.symm
+    · simpa [IpsecFrame.encapLayerIds, encapStackAfterIngress] using stackTail
+    · simpa [IpsecFrame.encapLayerIds, received, IpsecPolicy.seal] using before.symm
   | @linkTransmit a b frame authenticated linked =>
     exact before.trans (conditions.link a b linked)
   | deliverToLocalHost => exact before.1
@@ -141,7 +141,7 @@ lemma hop_preserves_encap_stack {c : DataPlaneModel} {expectedEncapStack : Nat �
   | drop => trivial
 
 theorem forwarding_preserves_encap_stack (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat)
-    (conditions : PerHopEncapConditions c expectedEncapStack) {a b : State} {actions : List Action}
+    (conditions : PerHopEncapConditions c expectedEncapStack) {a b : ForwardingState} {actions : List ForwardingAction}
     (execution : (lts c).MTr a actions b) (initial : EncapStackConsistent c expectedEncapStack a) :
     EncapStackConsistent c expectedEncapStack b := by
   have localProof : (lts c).TrInv (EncapStackConsistent c expectedEncapStack) := by
@@ -150,7 +150,7 @@ theorem forwarding_preserves_encap_stack (c : DataPlaneModel) (expectedEncapStac
   exact Cslib.LTS.mtrInv_of_trInv localProof a actions b execution initial
 
 theorem egress_packet_has_expected_encap_stack (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat)
-    (conditions : PerHopEncapConditions c expectedEncapStack) {a b : State} {actions : List Action}
+    (conditions : PerHopEncapConditions c expectedEncapStack) {a b : ForwardingState} {actions : List ForwardingAction}
     (execution : (lts c).MTr a actions b) (initial : EncapStackConsistent c expectedEncapStack a)
     (ready : b.datapathStage = .egressReady) :
     b.frame.encapLayerIds = expectedEncapStack b.iface := by

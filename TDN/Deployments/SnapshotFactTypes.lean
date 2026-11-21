@@ -30,7 +30,7 @@ structure TunnelFact where
   device : String
   peer : String
   layer : String
-  mechanism : String
+  protocol : String
   mode : String
   status : Status
   observationIds : List String

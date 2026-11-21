@@ -2,14 +2,14 @@ import Cslib.Foundations.Semantics.LTS.Basic
 
 namespace TDN.Admission
 
-inductive Step {Event : Type} (trigger : Event → Prop) (prerequisite : Event → Event → Prop) :
+inductive AdmissionStep {Event : Type} (trigger : Event → Prop) (prerequisite : Event → Event → Prop) :
     List Event → Event → List Event → Prop
   | record (history : List Event) (event : Event)
       (guard : trigger event → ∃ prior ∈ history, prerequisite prior event) :
-      Step trigger prerequisite history event (event :: history)
+      AdmissionStep trigger prerequisite history event (event :: history)
 
 def lts {Event : Type} (trigger : Event → Prop) (prerequisite : Event → Event → Prop) :
-    Cslib.LTS (List Event) Event := ⟨Step trigger prerequisite⟩
+    Cslib.LTS (List Event) Event := ⟨AdmissionStep trigger prerequisite⟩
 
 def HasPrerequisites {Event : Type} (trigger : Event → Prop) (prerequisite : Event → Event → Prop)
     (history : List Event) : Prop :=
@@ -17,7 +17,7 @@ def HasPrerequisites {Event : Type} (trigger : Event → Prop) (prerequisite : E
 
 lemma step_preserves_prerequisites {Event : Type} {trigger : Event → Prop}
     {prerequisite : Event → Event → Prop} {before after : List Event} {event : Event}
-    (step : Step trigger prerequisite before event after)
+    (step : AdmissionStep trigger prerequisite before event after)
     (valid : HasPrerequisites trigger prerequisite before) :
     HasPrerequisites trigger prerequisite after := by
   cases step with

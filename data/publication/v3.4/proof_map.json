@@ -1,0 +1,524 @@
+[
+  {
+    "rg_id": "RG-007",
+    "general_theorem": "TDN.Requirements.Msc.nested_layer_protection_from_local_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.snapshot_rg007_ipsec_nested_layer_protection",
+        "source_file": "TDN/Deployments/NestedProtection_BaselineSources.lean",
+        "status": "Whole application with explicit ESP implementation interface and layer-key independence contract.",
+        "profile": "Recovered November4 baseline; every admitted Red request on all four networks; certificate-authenticated fixed IKE/CHILD sessions and logical CA records."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.snapshot_rg007_hybrid_ipsec_macsec_nested_layer_protection",
+        "source_file": "TDN/Deployments/NestedProtection_HybridIpsecMacsec.lean",
+        "status": "Whole application with explicit layer-key independence contract.",
+        "profile": "Full retained IPsec-Inner/MACsec-Outer inventory; both Red source networks; manually provisioned fixed SA/SAK epoch."
+      }
+    ],
+    "new_supporting_applications": [
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.snapshot_rg007_ipsec_nonempty_payload_delivered",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.snapshot_rg007_hybrid_ipsec_macsec_forward_payload_delivered",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.snapshot_rg007_hybrid_ipsec_macsec_reverse_payload_delivered",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.snapshot_rg007_missing_key_independence_rejected",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.missing_ca_authority_is_rejected",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.outer_tunnel_cannot_fill_inner_role",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.snapshot_rg007_hybrid_ipsec_macsec_missing_key_independence_rejected",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.mismatched_macsec_sci_is_rejected",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.opposite_direction_macsec_key_is_rejected",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.hybrid_ipsec_macsec_paths_use_both_protection_layers",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.sample_path_delivery_endpoints",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.split_bridge_policies_match_captured_chain",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.recorded_authentication_checks",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.recorded_authentication_coverage",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.namespace_address_records_checked",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.imported_local_addresses_are_unchanged",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.endpoint_network_ids_checked",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_Baseline.recorded_layer_key_contexts_are_nonempty",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.recorded_layer_key_contexts_are_nonempty",
+        "status": "Kernel-checked positive, rejection or source-correspondence fact; see clause_map.md and audit-roots.json."
+      },
+      {
+        "name": "TDN.Deployments.NestedProtection_HybridIpsecMacsec.snapshot_rg007_hybrid_ipsec_macsec_with_captured_bridge_policy",
+        "source_file": "TDN/Deployments/SnapshotProof_NestedProtection.lean",
+        "status": "Conjoins the complete mixed specification with the all-frame captured BF bridge-chain correspondence, so both proofs occur in its compiled dependency chain."
+      }
+    ],
+    "open_application_conditions": [
+      "TDN.Deployments.NestedProtection_Baseline.snapshot_rg007_ipsec_nested_layer_protection: ESPWire.GCMPrimitive IpsecKeyMaterial: Cryptographic implementation interface with its existing laws.",
+      "TDN.Deployments.NestedProtection_Baseline.snapshot_rg007_ipsec_nested_layer_protection: NestedProtection_Baseline.IndependentLayerKeys independentKeys: External independent-key relation on exact imported Inner/Outer contexts.",
+      "TDN.Deployments.NestedProtection_HybridIpsecMacsec.snapshot_rg007_hybrid_ipsec_macsec_nested_layer_protection: NestedProtection_HybridIpsecMacsec.IndependentLayerKeys independentKeys: External independent-key relation on exact imported Inner IPsec/Outer MACsec contexts.",
+      "Actual implementations follow the active packet-processing model; parser and capture correspondence is trusted.",
+      "Native ESP wire encoding remains parameterized by the accepted GCMPrimitive implementation interface.",
+      "Model key representatives preserve imported material-reference equality and valid lengths; no real private key bytes or cryptographic independence proof is recovered.",
+      "Both source universes include all admitted Red traffic at a fixed recorded installed-key epoch. Local device-generated management/control sources and rekey transitions are outside these claims. Captured essential protocol/session observations remain retained and are not classified as optional administration.",
+      "Mixed link encoding uses constructed MACsec header representatives for actual SCI/AN/encrypted-bit admission. No ciphertext transformation, PN freshness, replay or complete packet-byte capture claim is made.",
+      "Each whole application requires the explicitly supplied independentKeys relation for its exact bound Inner/Outer key contexts. Distinct names, hashes and deterministic representatives do not discharge independence.",
+      "Public CA signatures and loaded-chain checks occur in the source-bound MCP parser outside Lean. The model records logical CA identities, not running services, current certificate validity, CRL checks, official approval or reproducible binary verification."
+    ],
+    "review_record": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-007/round-002/verdict.json",
+    "implementation_assumptions": [
+      "Actual implementations follow the active packet-processing model; parser and capture correspondence is trusted.",
+      "Native ESP wire encoding remains parameterized by the accepted GCMPrimitive implementation interface.",
+      "Model key representatives preserve imported material-reference equality and valid lengths; no real private key bytes or cryptographic independence proof is recovered.",
+      "Both source universes include all admitted Red traffic at a fixed recorded installed-key epoch. Local device-generated management/control sources and rekey transitions are outside these claims. Captured essential protocol/session observations remain retained and are not classified as optional administration.",
+      "Mixed link encoding uses constructed MACsec header representatives for actual SCI/AN/encrypted-bit admission. No ciphertext transformation, PN freshness, replay or complete packet-byte capture claim is made."
+    ],
+    "external_assumptions": [
+      "Each whole application requires the explicitly supplied independentKeys relation for its exact bound Inner/Outer key contexts. Distinct names, hashes and deterministic representatives do not discharge independence.",
+      "Public CA signatures and loaded-chain checks occur in the source-bound MCP parser outside Lean. The model records logical CA identities, not running services, current certificate validity, CRL checks, official approval or reproducible binary verification."
+    ]
+  },
+  {
+    "rg_id": "RG-008",
+    "general_theorem": "TDN.Requirements.Msc.security_level_connectivity_from_forwarding",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.SecurityLevelConnectivity_Baseline.snapshot_rg008_baseline_security_level_connectivity",
+        "source_file": "TDN/Deployments/SecurityLevelConnectivity_Baseline.lean",
+        "status": "Complete RG-008 for the two-level baseline under the recorded forwarding model and laboratory policy.",
+        "profile": "November 4 two-level IPv4/IPsec baseline, A and B."
+      }
+    ],
+    "new_supporting_applications": [
+      {
+        "name": "TDN.Deployments.SecurityLevelConnectivity_Baseline.snapshot_rg008_baseline_has_evidence_matched_context",
+        "status": "Constructs a baseline context matching all 23 placements, Red endpoints, authenticated and installed peers, and required pairs. The whole requirement holds."
+      },
+      {
+        "name": "TDN.Deployments.SecurityLevelConnectivity_Shared.snapshot_rg008_shared_scoped_connectivity",
+        "status": "All forwarding and peer clauses hold for the four-level shared deployment, including eight directed deliveries and isolation for every admitted trace."
+      },
+      {
+        "name": "TDN.Deployments.SecurityLevelConnectivity_Shared.snapshot_rg008_shared_references_closed",
+        "status": "Checks the shared experiment’s declared list of referenced protection solutions."
+      },
+      {
+        "name": "TDN.Deployments.SecurityLevelConnectivity_Shared.snapshot_rg008_shared_physical_separation_failure",
+        "status": "Whole RG-008 is false for every shared context matching the observed physical hosts. The unclassified Inner and an Outer occupy one worker."
+      },
+      {
+        "name": "TDN.Deployments.SecurityLevelConnectivity_Shared.snapshot_rg008_shared_has_evidence_matched_context",
+        "status": "Constructs a shared context matching all 31 placements and its captured peers and probes. The complete requirement is false."
+      }
+    ],
+    "open_application_conditions": [
+      "The result covers the November 4 IPv4/IPsec forwarding records and November 11 laboratory security labels. The source must enter through a recorded Red interface. ESP uses the model’s AES-GCM contract. Each experiment declares zero referenced protection solutions.",
+      "For another included unclassified network, the independent applicable Red-network duties must be established. Each solution claimed to provide protection needs evidence for its own duties.",
+      "The two-level baseline satisfies RG-008. The four-level shared deployment preserves security levels but violates physical separation for an included unclassified network."
+    ],
+    "review_record": "data/publication/v3.4/review-rg008-2026-11-21.json"
+  },
+  {
+    "rg_id": "RG-013",
+    "general_theorem": "TDN.Requirements.Msc.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.complete_model_rg013",
+        "status": "Kernel-checked nonempty six-device model, three Inner components at two levels, one Gray Firewall, one Outer and one high-level workstation. Conditional on explicit physical-protection fact; no deployed-network conformance claim."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.same_level_inner_traffic_is_admitted",
+        "status": "Full Deployment.PermitsOnInterface, including Supported and matching forward program."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.wrong_level_inner_traffic_is_rejected",
+        "status": "Full admission rejection of cross-level Inner packet."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.lower_level_workstation_traffic_is_rejected",
+        "status": "Full admission rejection of highest-level workstation packet to lower Inner."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.cross_level_path_really_exists",
+        "status": "An actual graph path connects different levels through the firewall."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewall.direct_cross_level_bypass_fails_local_edge_check",
+        "status": "Adding a direct cross-level edge falsifies the reusable local edge premise."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_GrayFirewallReuse.management_free_chain_model_rg013",
+        "status": "Five devices, management-free roles and same-level chain topology; named physical-protection premise remains explicit."
+      }
+    ],
+    "open_application_conditions": [
+      "Declared model checks are fulfilled; physical classified protection is an explicit parameter.",
+      "A deployed complete device/graph/program binding and physical protection record are not yet supplied for this root."
+    ],
+    "new_supporting_applications": [
+      "TDN.Deployments.SnapshotProof_GrayFirewallReuse.management_free_and_topology_differs",
+      "TDN.Deployments.SnapshotProof_GrayFirewallReuse.same_level_chain_packet_is_admitted"
+    ]
+  },
+  {
+    "rg_id": "RG-029",
+    "general_theorem": "TDN.Requirements.Msc.inner_tunnel_no_bypass_from_outbound_and_inbound_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Ipsec.snapshot_rg029_ipsec_inner_tunnel_no_bypass",
+        "source_file": "TDN/Deployments/InnerTunnelNoBypass_Ipsec.lean",
+        "status": "Proves every clause of the selected specification for the recorded model under the displayed assumptions.",
+        "profile": "Complete baseline configuration at recovered November4 SA epoch; all four Red networks and all admitted Red requests; isolated consistent ESP/IP-tunnel interpretation view."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Macsec.snapshot_rg029_macsec_inner_tunnel_no_bypass",
+        "source_file": "TDN/Deployments/InnerTunnelNoBypass_Macsec.lean",
+        "status": "Proves every clause of the selected specification for the recorded model under the displayed assumptions.",
+        "profile": "Accepted two-peer full-protection MACsec profile; physical Gray link and logical Red interfaces."
+      }
+    ],
+    "new_supporting_applications": [
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Ipsec.snapshot_rg029_ipsec_nonempty_payload_delivered",
+        "status": "Generated 44-step nonempty TCP delivery crosses two encryption and two decryption operations and reaches destination Red host."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Macsec.snapshot_rg029_macsec_nonempty_payload_delivered",
+        "status": "Accepted ten-step IPv4 delivery of nonempty bytes [7,8]."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Ipsec.snapshot_rg029_ipsec_plaintext_gray_input_blocked",
+        "status": "Constructed unauthenticated Gray ingress cannot pass the actual Inner FORWARD chain."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Ipsec.snapshot_rg029_ipsec_uninstalled_spi_blocked",
+        "status": "Constructed SPI zero cannot use the installed Inner receive SA."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Macsec.snapshot_rg029_outbound_mac_objective_rejects_missing_policy",
+        "status": "Selecting outbound mandatory MAC objective without policy rejects the whole specification."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Macsec.snapshot_rg029_inbound_mac_objective_rejects_missing_policy",
+        "status": "Separate inbound mandatory MAC objective branch rejects missing policy."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Ipsec.tunnel_interpretation_is_bound",
+        "status": "Every IPsec tunnel has a checked same-cohort mode/SA/source/receiver binding; non-IPsec records are unchanged."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Ipsec.ipsec_frame_has_bound_outer_header",
+        "status": "Modeled ESP tunnel output constructs the SA source and destination in its outer IP header."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Ipsec.snapshot_rg029_observed_mode_mismatch_blocks_application",
+        "status": "Replacing the first observed mode with transport disables component flags and rejects the whole specification."
+      },
+      {
+        "name": "TDN.Deployments.InnerTunnelNoBypass_Ipsec.snapshot_rg029_observed_endpoint_mismatch_blocks_application",
+        "status": "Changing the first observed SA source endpoint disables component flags and rejects the whole specification."
+      }
+    ],
+    "open_application_conditions": [
+      "TDN.Deployments.InnerTunnelNoBypass_Ipsec.snapshot_rg029_ipsec_inner_tunnel_no_bypass: ESPWire.GCMPrimitive IpsecKeyMaterial: Explicit cryptographic implementation interface with encrypt/decrypt/length laws; does not assume no-bypass.",
+      "IPsec AES-GCM implementation and its primitive laws are supplied through the explicit GCMPrimitive interface.",
+      "Deterministic valid-length model key material is indexed by retained captured material references; real key bytes remain redacted.",
+      "The IPsec packet-source model describes a fixed installed-SA epoch with Red application traffic. The broader MtuSizing local management/control source model remains unclaimed.",
+      "Single-sample ESP sequence/IV parameters do not establish freshness or anti-replay security.",
+      "Capture honesty and parser/source interpretation correspondence.",
+      "Actual kernel/IPsec/MACsec implementations conform to the abstract accepted processing steps.",
+      "Approved I-RG029-IP-TUNNEL recognizes intrinsic ESP tunnel-mode IP encapsulation; source context/RFC/evidence are retained."
+    ],
+    "review_record": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-029/round-002/verdict.json",
+    "implementation_assumptions": [
+      "IPsec AES-GCM implementation and its primitive laws are supplied through the explicit GCMPrimitive interface.",
+      "Deterministic valid-length model key material is indexed by retained captured material references; real key bytes remain redacted.",
+      "The IPsec packet-source model describes a fixed installed-SA epoch with Red application traffic. The broader MtuSizing local management/control source model remains unclaimed.",
+      "Single-sample ESP sequence/IV parameters do not establish freshness or anti-replay security."
+    ],
+    "external_assumptions": [
+      "Capture honesty and parser/source interpretation correspondence.",
+      "Actual kernel/IPsec/MACsec implementations conform to the abstract accepted processing steps.",
+      "Approved I-RG029-IP-TUNNEL recognizes intrinsic ESP tunnel-mode IP encapsulation; source context/RFC/evidence are retained."
+    ]
+  },
+  {
+    "rg_id": "RG-030",
+    "general_theorem": "TDN.Requirements.Msc.outer_tunnel_no_bypass_from_local_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_rg030_baseline_outer_tunnel_no_bypass",
+        "source_file": "TDN/Deployments/OuterTunnelNoBypass_Baseline.lean",
+        "status": "Proves every clause of the selected specification for the recorded model under the displayed assumptions.",
+        "profile": "All four Red networks and four dedicated Outer VPNs; full recovered November4 configuration and SA epoch."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_outer_tunnel_no_bypass",
+        "source_file": "TDN/Deployments/OuterTunnelNoBypass_Shared.lean",
+        "status": "Proves every clause of the selected specification for the recorded model under the displayed assumptions.",
+        "profile": "All eight Red networks and two shared Outer VPNs with four Gray iface names each; separate recovered November4 configuration/SA epoch."
+      }
+    ],
+    "new_supporting_applications": [
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_rg030_baseline_nonempty_payload_delivered",
+        "status": "Nonempty modeled TCP delivery reaches the imported physical Red destination through two encryption and two decryption operations."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_rg030_baseline_unauthenticated_black_input_blocked",
+        "status": "Unauthenticated Black ingress cannot pass the checked Outer FORWARD rule chains."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_rg030_baseline_missing_outer_policy_blocked",
+        "status": "A Black output without an outbound SPD match cannot pass the Outer FORWARD chain."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_rg030_baseline_outbound_objective_rejects_missing_policy",
+        "status": "Selecting the outbound mandatory MAC objective rejects absent policy."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_rg030_baseline_inbound_objective_rejects_missing_policy",
+        "status": "Selecting the distinct inbound mandatory MAC objective rejects absent policy."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_rg030_baseline_unprotected_gray_receive_unreachable",
+        "status": "All traces exclude an empty-layer non-control receive at a relevant Outer Gray iface."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_nonempty_payload_delivered",
+        "status": "Nonempty modeled TCP delivery reaches the imported physical Red destination through two encryption and two decryption operations."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_unauthenticated_black_input_blocked",
+        "status": "Unauthenticated Black ingress cannot pass the checked Outer FORWARD rule chains."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_missing_outer_policy_blocked",
+        "status": "A Black output without an outbound SPD match cannot pass the Outer FORWARD chain."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_outbound_objective_rejects_missing_policy",
+        "status": "Selecting the outbound mandatory MAC objective rejects absent policy."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_inbound_objective_rejects_missing_policy",
+        "status": "Selecting the distinct inbound mandatory MAC objective rejects absent policy."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_unprotected_gray_receive_unreachable",
+        "status": "All traces exclude an empty-layer non-control receive at a relevant Outer Gray iface."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_mode_mismatch_blocks_application",
+        "status": "Whole-specification or actual-trace rejection result."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_endpoint_mismatch_blocks_application",
+        "status": "Whole-specification or actual-trace rejection result."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_multiple_inner_layers_receive_unreachable",
+        "status": "Whole-specification or actual-trace rejection result."
+      },
+      {
+        "name": "TDN.Deployments.OuterTunnelNoBypass_Shared.gray_receive_test_tunnels_are_inner",
+        "source_file": "TDN/Deployments/OuterTunnelNoBypass_BlockedTrafficTests.lean",
+        "status": "Kernel-checked fact: tunnel records0 and2 both have Inner role and distinct IDs."
+      }
+    ],
+    "open_application_conditions": [
+      "TDN.Deployments.OuterTunnelNoBypass_Baseline.snapshot_rg030_baseline_outer_tunnel_no_bypass: ESPWire.GCMPrimitive IpsecKeyMaterial: Explicit implementation interface, not an assumed no-bypass result.",
+      "TDN.Deployments.OuterTunnelNoBypass_Shared.snapshot_rg030_shared_outer_tunnel_no_bypass: ESPWire.GCMPrimitive IpsecKeyMaterial: Explicit implementation interface, not an assumed no-bypass result.",
+      "Each whole application is parameterized by ESPWire.GCMPrimitive IpsecKeyMaterial with its encrypt/decrypt/length laws.",
+      "Deterministic valid-length model key material is indexed by each retained epoch's captured opaque material references; real keys are redacted.",
+      "Both packet models admit all recorded Red source requests at a fixed installed-SA epoch. Broader local management/control generation and rekey transitions remain outside the claimed source scope.",
+      "Sample sequence/IV fixtures establish neither freshness nor replay security.",
+      "Capture honesty and parser/source interpretation correspondence.",
+      "Actual kernel/IPsec implementations conform to the accepted abstract packet-processing steps.",
+      "The approved intrinsic ESP tunnel/IP encapsulation interpretation I-RG029-IP-TUNNEL is retained consistently."
+    ],
+    "review_record": "data/construction/v3.2-20261111T040601Z-remaining/proof/RG-030/round-002/verdict.json",
+    "implementation_assumptions": [
+      "Each whole application is parameterized by ESPWire.GCMPrimitive IpsecKeyMaterial with its encrypt/decrypt/length laws.",
+      "Deterministic valid-length model key material is indexed by each retained epoch's captured opaque material references; real keys are redacted.",
+      "Both packet models admit all recorded Red source requests at a fixed installed-SA epoch. Broader local management/control generation and rekey transitions remain outside the claimed source scope.",
+      "Sample sequence/IV fixtures establish neither freshness nor replay security."
+    ],
+    "external_assumptions": [
+      "Capture honesty and parser/source interpretation correspondence.",
+      "Actual kernel/IPsec implementations conform to the accepted abstract packet-processing steps.",
+      "The approved intrinsic ESP tunnel/IP encapsulation interpretation I-RG029-IP-TUNNEL is retained consistently."
+    ]
+  },
+  {
+    "rg_id": "RG-034",
+    "general_theorem": "TDN.Requirements.outer_firewall_placement_from_local_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_TopologyWaypointing.Baseline.configured_graph_rg034",
+        "status": "Kernel-checked complete imported graph instance; actual complete topology correspondence remains explicit."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_TopologyWaypointing.Shared.configured_graph_rg034",
+        "status": "Kernel-checked complete imported graph instance; actual complete topology correspondence remains explicit."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_TopologyWaypointing.BypassCheck.full_firewall_path",
+        "status": "Kernel-checked constructed model fixture with bypass rejection."
+      }
+    ],
+    "open_application_conditions": [
+      "Bind generic edge/Gray-connection/attachment predicates and complete node roles to the exact supported observed topology."
+    ],
+    "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-035",
+    "general_theorem": "TDN.Requirements.Msc.device_boundary_interface_filtering_from_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.Perimeter_Baseline.complete_native_boundary_policy",
+        "status": "Complete model application accepted in the recorded review."
+      },
+      {
+        "name": "TDN.Deployments.Perimeter_Shared.complete_native_boundary_policy",
+        "status": "Complete model application accepted in the recorded review."
+      }
+    ],
+    "open_application_conditions": [
+      "Whole instantiated RG035 specification for two IPv4/IPsec deployments; physical MACsec coverage and counterexamples separately checked. Other unfinished RGs remain pending."
+    ],
+    "new_supporting_applications": [],
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-035/round-002/verdict.json",
+    "additional_general_theorem": "TDN.Requirements.Msc.macsec_boundary_interface_filtering_from_link_rule_checks"
+  },
+  {
+    "rg_id": "RG-038",
+    "general_theorem": "TDN.Requirements.Msc.ip_and_link_header_filtering_from_inventory_and_rule_atoms",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.SnapshotProof_HeaderFiltering.routed_ipv4_rg038",
+        "status": "Kernel-checked nonempty routed model, now invokes same IP+L2 complete theorem."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_link_program_model_rg038",
+        "status": "Kernel-checked declared Outer-MACsec model using four imported exact nft programs. Model inventory/approval assignments are explicit; no complete deployed-conformance claim."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_positive_mka_and_data",
+        "status": "Kernel-checked Program.PermitsPacket only. Full Deployment.PermitsOnInterface is separately established below."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_negative_group_actor_length_and_vlan",
+        "status": "Captured group data, wrong actor, wrong length, tagged MKA/data rejected by all imported programs."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_bootstrap_mka_is_fully_admitted",
+        "status": "Full Deployment.PermitsOnInterface at A outbound and B inbound, with Supported and actual endpoint LinkCapable, no installed data SA."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_installed_program_model_rg038",
+        "status": "Complete RG038 declared installed-state model invokes the same IP/L2 general theorem. Actual local TX/RX SCI/AN records imported."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.captured_installed_data_is_fully_admitted",
+        "status": "Full Deployment.PermitsOnInterface for the captured encrypted unicast at A outbound and B inbound, including Supported, installed-association LinkCapable and actual program."
+      },
+      {
+        "name": "TDN.Deployments.SnapshotProof_LinkHeaderFiltering.local_association_indices_are_distinct",
+        "status": "Distinct local model generation indices retained. No secret-key equality, decryption transfer or common atomic epoch inferred from labels."
+      }
+    ],
+    "open_application_conditions": [
+      "Complete actual device/interface/service inventory and raw hook/length projection for each claimed deployment.",
+      "Bind selected model inventory to the exact experiment scope; logical addresses, unused interfaces and transport/test-injector namespaces are not claimed covered by the four-port model.",
+      "Actual organization approval/necessity of the deployed MKA control protocol.",
+      "Exact nft/Linux parsing and admission implementation correspondence within the recorded untagged-veth/offload scope."
+    ],
+    "new_supporting_applications": []
+  },
+  {
+    "rg_id": "RG-039",
+    "general_theorem": "TDN.Requirements.Msc.outer_gray_ipsec_policy_from_native_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.OuterToGray_Baseline.complete_outer_gray_policy",
+        "status": "Complete model application accepted in the recorded review."
+      },
+      {
+        "name": "TDN.Deployments.OuterToGray_Shared.complete_outer_gray_policy",
+        "status": "Complete model application accepted in the recorded review."
+      }
+    ],
+    "open_application_conditions": [
+      "IPv4 IPsec VPN deployments satisfying explicit local conditions; cdpOnGray=false; optional management absent."
+    ],
+    "new_supporting_applications": [],
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-039/round-002/verdict.json"
+  },
+  {
+    "rg_id": "RG-040",
+    "general_theorem": "TDN.Requirements.Msc.gray_firewall_allowlist_from_native_ipsec_checks",
+    "concrete_applications": [
+      {
+        "name": "TDN.Deployments.Perimeter_Baseline.complete_native_gray_firewall_allowlist",
+        "status": "Complete model application accepted in the recorded review."
+      },
+      {
+        "name": "TDN.Deployments.GrayFirewall_Shared.complete_native_gray_firewall_allowlist",
+        "status": "Complete model application accepted in the recorded review."
+      }
+    ],
+    "open_application_conditions": [
+      "Whole instantiated RG040 specification for baseline and shared IPv4/IPsec deployments; all other unfinished groups remain pending."
+    ],
+    "new_supporting_applications": [],
+    "review_record": "data/construction/v3.1-20261104-continuation/proof/RG-040/round-001/verdict.json"
+  }
+]

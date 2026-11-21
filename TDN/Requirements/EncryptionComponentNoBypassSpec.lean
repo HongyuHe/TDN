@@ -6,8 +6,8 @@ namespace TDN.Requirements
 open DataPlaneForwarding
 
 def operationalTunnelBoundary (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat)
-    (inside outside : List Nat) (tag component : Nat) : TunnelBoundaryView DataPlaneForwarding.State Action where
-  system := RestrictedExecution.within (lts c) (fun s => c.owner s.iface = component)
+    (inside outside : List Nat) (tag component : Nat) : TunnelBoundaryView DataPlaneForwarding.ForwardingState ForwardingAction where
+  system := SubgraphScopedTraces.within (lts c) (fun s => c.owner s.iface = component)
   outboundEntry := fun s => s.datapathStage = .received ∧ s.iface ∈ inside ∧ s.frame.encapLayerIds = expectedEncapStack s.iface
   outboundExit := fun s => s.datapathStage = .egressReady ∧ s.iface ∈ outside
   inboundEntry := fun s => s.datapathStage = .received ∧ s.iface ∈ outside ∧ s.authenticated = []
@@ -27,7 +27,7 @@ theorem tunnel_boundary_from_local_stack_checks (c : DataPlaneModel) (expectedEn
     (insideCheck : ∀ iface ∈ inside, tag ∉ expectedEncapStack iface)
     (outsideCheck : ∀ iface ∈ outside, tag ∈ expectedEncapStack iface) :
     BoundaryNoBypass (operationalTunnelBoundary c expectedEncapStack inside outside tag component) := by
-  have initial : ∀ s : DataPlaneForwarding.State, s.datapathStage = .received → s.frame.encapLayerIds = expectedEncapStack s.iface →
+  have initial : ∀ s : DataPlaneForwarding.ForwardingState, s.datapathStage = .received → s.frame.encapLayerIds = expectedEncapStack s.iface →
       EncapStackConsistent c expectedEncapStack s := by
     intro s datapathStage shape
     simpa [EncapStackConsistent, datapathStage] using shape
@@ -35,7 +35,7 @@ theorem tunnel_boundary_from_local_stack_checks (c : DataPlaneModel) (expectedEn
   · intro start finish actions entry run exitIface
     obtain ⟨datapathStage, member, shape⟩ := entry
     obtain ⟨ready, outsideMember⟩ := exitIface
-    have projected := RestrictedExecution.project_trace (lts c) (fun s => c.owner s.iface = component) run
+    have projected := SubgraphScopedTraces.project_trace (lts c) (fun s => c.owner s.iface = component) run
     have stack := egress_packet_has_expected_encap_stack c expectedEncapStack conditions projected (initial start datapathStage shape) ready
     change tag ∈ finish.frame.encapLayerIds
     rw [stack]
@@ -49,7 +49,7 @@ theorem tunnel_boundary_from_local_stack_checks (c : DataPlaneModel) (expectedEn
   · intro start finish actions entry run bypass
     obtain ⟨datapathStage, member, shape⟩ := entry
     obtain ⟨ready, outsideMember, missing⟩ := bypass
-    have projected := RestrictedExecution.project_trace (lts c) (fun s => c.owner s.iface = component) run
+    have projected := SubgraphScopedTraces.project_trace (lts c) (fun s => c.owner s.iface = component) run
     have stack := egress_packet_has_expected_encap_stack c expectedEncapStack conditions projected (initial start datapathStage shape) ready
     rw [stack] at missing
     exact missing (outsideCheck finish.iface outsideMember)
@@ -63,10 +63,10 @@ theorem inner_tunnel_requirements_from_local_checks
     (components : List EncryptionComponentConfiguration)
     (outboundMACObjective inboundMACObjective : Bool)
     (settings : ∀ item ∈ components,
-      (item.mechanism = .ipsec → item.espTunnelMode = true ∧ item.associatedIPTunnel = true) ∧
+      (item.protocol = .ipsec → item.espTunnelMode = true ∧ item.associatedIPTunnel = true) ∧
       (outboundMACObjective = true → item.outboundMACPolicy = true) ∧
       (inboundMACObjective = true → item.inboundMACPolicy = true)) :
-    msc_inner_tunnel_no_bypass
+    state_level_inner_no_bypass
       (operationalTunnelBoundary c expectedEncapStack inside outside 1 component)
       components outboundMACObjective inboundMACObjective :=
   ⟨tunnel_boundary_from_local_stack_checks c expectedEncapStack inside outside 1 component
@@ -81,10 +81,10 @@ theorem outer_tunnel_requirements_from_local_checks
     (components : List EncryptionComponentConfiguration)
     (outboundMACObjective inboundMACObjective : Bool)
     (settings : ∀ item ∈ components,
-      (item.mechanism = .ipsec → item.espTunnelMode = true) ∧
+      (item.protocol = .ipsec → item.espTunnelMode = true) ∧
       (outboundMACObjective = true → item.outboundMACPolicy = true) ∧
       (inboundMACObjective = true → item.inboundMACPolicy = true)) :
-    msc_outer_tunnel_no_bypass
+    state_level_outer_no_bypass
       (operationalTunnelBoundary c expectedEncapStack inside outside 2 component)
       components outboundMACObjective inboundMACObjective
       (operationalTunnelBoundary c expectedEncapStack inside outside 2 component).outboundEntry

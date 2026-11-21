@@ -6,7 +6,6 @@ import TDN.Deployments.SnapshotDeviceResponseGuards
 namespace TDN.Deployments.ProfileShared_EnclaveIsolation
 open DataPlaneForwarding
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma tagged_gateway_response_guards :
     Requirements.GatewayResponseGuards config TDN.Deployments.ProfileShared_DataPlane.responseGateways := by
@@ -21,8 +20,8 @@ lemma tagged_gateway_response_guards :
   exact checks (config.owner iface) member
 
 theorem gateway_response_delivery_preserves_full_label
-    {start finish : DataPlaneForwarding.State}
-    {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {start finish : DataPlaneForwarding.ForwardingState}
+    {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     {source recipient : Nat}
     (origin : Requirements.RedPayloadOrigin config redSources start)
     (sourceLevel : config.ifaceSecurityDomain start.iface = some source)
@@ -33,7 +32,7 @@ theorem gateway_response_delivery_preserves_full_label
     (recipientLevel : config.ifaceSecurityDomain finish.iface = some recipient) :
     fullLevel source = fullLevel recipient := by
   exact congrArg fullLevel (Requirements.same_domain_delivery_with_strict_gateway_responses
-    config redSources TDN.Deployments.ProfileShared_DataPlane.responseGateways snapshot_RG008_IPv4_ESP_delivery
+    config redSources TDN.Deployments.ProfileShared_DataPlane.responseGateways snapshot_rg008_ipv4_esp_delivery
     tagged_gateway_response_guards origin sourceLevel run delivered recipientLevel)
 
 end TDN.Deployments.ProfileShared_EnclaveIsolation
@@ -41,7 +40,6 @@ end TDN.Deployments.ProfileShared_EnclaveIsolation
 namespace TDN.Deployments.ProfileBaseline_EnclaveIsolation
 open DataPlaneForwarding
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma tagged_gateway_response_guards :
     Requirements.GatewayResponseGuards config TDN.Deployments.ProfileBaseline_DataPlane.responseGateways := by
@@ -56,8 +54,8 @@ lemma tagged_gateway_response_guards :
   exact checks (config.owner iface) member
 
 theorem gateway_response_delivery_preserves_full_label
-    {start finish : DataPlaneForwarding.State}
-    {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {start finish : DataPlaneForwarding.ForwardingState}
+    {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     {source recipient : Nat}
     (origin : Requirements.RedPayloadOrigin config redSources start)
     (sourceLevel : config.ifaceSecurityDomain start.iface = some source)
@@ -68,7 +66,7 @@ theorem gateway_response_delivery_preserves_full_label
     (recipientLevel : config.ifaceSecurityDomain finish.iface = some recipient) :
     fullLevel source = fullLevel recipient := by
   exact congrArg fullLevel (Requirements.same_domain_delivery_with_strict_gateway_responses
-    config redSources TDN.Deployments.ProfileBaseline_DataPlane.responseGateways snapshot_RG008_IPv4_ESP_delivery
+    config redSources TDN.Deployments.ProfileBaseline_DataPlane.responseGateways snapshot_rg008_ipv4_esp_delivery
     tagged_gateway_response_guards origin sourceLevel run delivered recipientLevel)
 
 end TDN.Deployments.ProfileBaseline_EnclaveIsolation

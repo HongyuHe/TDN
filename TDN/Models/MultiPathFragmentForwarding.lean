@@ -4,10 +4,10 @@ namespace TDN.Fragmentation
 
 inductive DistributedState (Logical Header Byte : Type) where
   | whole (logical : Logical)
-  | pieces (located : List (Logical × Fragment Header Byte))
+  | pieces (located : List (Logical × PayloadFragment Header Byte))
 
 inductive DistributedStep {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte) :
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte) :
     DistributedState Logical Header Byte → Option Action →
     DistributedState Logical Header Byte → Prop where
   | packet {before after action} (step : system.Tr before action after) :
@@ -26,19 +26,19 @@ inductive DistributedStep {Logical Header Byte Action : Type}
         none (.whole state)
 
 def distributed {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte) :
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte) :
     Cslib.LTS (DistributedState Logical Header Byte) (Option Action) where
   Tr := DistributedStep system encode
 
 def DistributedInvariant {Logical Header Byte : Type}
-    (encode : Logical → Datagram Header Byte) (invariant : Logical → Prop) :
+    (encode : Logical → PayloadDatagram Header Byte) (invariant : Logical → Prop) :
     DistributedState Logical Header Byte → Prop
   | .whole state => invariant state
   | .pieces located => ∀ entry ∈ located,
       invariant entry.1 ∧ entry.2.header = (encode entry.1).header
 
 lemma distributed_step_preserves {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte)
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte)
     (invariant : Logical → Prop) (preserved : system.TrInv invariant) :
     (distributed system encode).TrInv (DistributedInvariant encode invariant) := by
   intro before action after step valid
@@ -62,7 +62,7 @@ lemma distributed_step_preserves {Logical Header Byte Action : Type}
     exact (valid (state, piece) (List.mem_map.mpr ⟨piece, member, rfl⟩)).1
 
 theorem distributed_forwarding_preserves {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte)
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte)
     (invariant : Logical → Prop) (preserved : system.TrInv invariant)
     {before after : DistributedState Logical Header Byte} {actions : List (Option Action)}
     (run : (distributed system encode).MTr before actions after)

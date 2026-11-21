@@ -64,30 +64,30 @@ def DecodeOutcome.Valid (outcome : DecodeOutcome) (raw : RawPacket)
   | .fragment => raw.Fragment packet
   | .malformed => ¬ raw.Complete packet ∧ ¬ raw.Fragment packet
 
-def Ingress (configuration : MultiProtocolForwarding.Config)
-    (before after : MultiProtocolForwarding.State) : Prop :=
-  MultiProtocolForwarding.Step configuration before .receive after ∨
-  MultiProtocolForwarding.Step configuration before .decryptIPsec after
+def Ingress (configuration : MultiProtocolForwarding.TunnelForwardingModel)
+    (before after : MultiProtocolForwarding.TunnelForwardingState) : Prop :=
+  MultiProtocolForwarding.TunnelForwardingStep configuration before .receive after ∨
+  MultiProtocolForwarding.TunnelForwardingStep configuration before .decryptIPsec after
 
-def inputPacket (configuration : MultiProtocolForwarding.Config)
-    (state : MultiProtocolForwarding.State) (header : PacketPolicy.Packet) : PacketPolicy.Packet :=
+def inputPacket (configuration : MultiProtocolForwarding.TunnelForwardingModel)
+    (state : MultiProtocolForwarding.TunnelForwardingState) (header : PacketPolicy.Packet) : PacketPolicy.Packet :=
   { MultiProtocolForwarding.policyHeader configuration state header with
     ingress := configuration.ip.interfaceName state.iface, egress := "", matchedOutboundPolicyIds := [] }
 
-def InputAdmitted (configuration : MultiProtocolForwarding.Config)
-    (state : MultiProtocolForwarding.State) : Prop :=
+def InputAdmitted (configuration : MultiProtocolForwarding.TunnelForwardingModel)
+    (state : MultiProtocolForwarding.TunnelForwardingState) : Prop :=
   ∃ header, state.frame.visibleHeader = some header ∧
-    DataPlaneForwarding.accepts (configuration.ip.inputRules state.iface)
+    PacketPolicy.AclAllows (configuration.ip.inputRules state.iface)
       (configuration.ip.inputFallback state.iface) (inputPacket configuration state header)
 
 structure Context where
-  entry : MultiProtocolForwarding.State
-  state : MultiProtocolForwarding.State
+  entry : MultiProtocolForwarding.TunnelForwardingState
+  state : MultiProtocolForwarding.TunnelForwardingState
   header : PacketPolicy.Packet
   raw : RawPacket
   hook : Hook
 
-def Context.Packet (context : Context) (configuration : MultiProtocolForwarding.Config) :
+def Context.Packet (context : Context) (configuration : MultiProtocolForwarding.TunnelForwardingModel) :
     PacketPolicy.Packet :=
   let header := MultiProtocolForwarding.policyHeader configuration context.state context.header
   match context.hook with
@@ -95,7 +95,7 @@ def Context.Packet (context : Context) (configuration : MultiProtocolForwarding.
   | .output => { header with ingress := "", matchedInboundPolicyIds := [] }
   | _ => header
 
-def Context.AtHook (context : Context) (configuration : MultiProtocolForwarding.Config) : Prop :=
+def Context.AtHook (context : Context) (configuration : MultiProtocolForwarding.TunnelForwardingModel) : Prop :=
   context.state.frame.visibleHeader = some context.header ∧
   match context.hook with
   | .input =>
@@ -105,13 +105,13 @@ def Context.AtHook (context : Context) (configuration : MultiProtocolForwarding.
       ∃ entered route, Ingress configuration context.entry entered ∧
         (∀ incoming, configuration.visibleHeader entered.frame = some incoming →
           configuration.ForwardableHeader incoming) ∧
-        MultiProtocolForwarding.Step configuration entered .route context.state ∧
+        MultiProtocolForwarding.TunnelForwardingStep configuration entered .route context.state ∧
         entered.datapathStage = .ingress ∧ context.state.datapathStage = .routed ∧
         DataPlaneForwarding.SelectedFibRoute configuration.ip.routes route context.header ∧
         route.ingress = entered.iface ∧ route.egress = context.state.iface
   | .output =>
       context.entry.datapathStage = .localOutput ∧
-      MultiProtocolForwarding.Step configuration context.entry .route context.state ∧
+      MultiProtocolForwarding.TunnelForwardingStep configuration context.entry .route context.state ∧
       context.state.datapathStage = .outputRouted
   | .link => False
 
@@ -149,11 +149,11 @@ instance (codec : CarrierEncoding) : Decidable codec.Valid := by
   infer_instance
 
 structure CarrierBinding where
-  endpoint : LayeredFrame.Carrier
+  endpoint : LayeredFrame.EthernetTunnelHeader
   encoding : CarrierEncoding
   sourceEncapsulator : String
   destinationEncapsulator : String
-  association : LayeredFrame.MACsecAssociation
+  association : LayeredFrame.MacsecAssociation
 
 
 structure MKAEndpoint where
@@ -163,33 +163,33 @@ structure MKAEndpoint where
   tunnel : String
   deriving DecidableEq
 
-structure IPsecSizeBinding where
+structure IpsecSizeBinding where
   iface : Nat
   policy : DataPlaneForwarding.IpsecPolicy
   outerHeaderBytes : Nat := 20
   deriving DecidableEq
 
-def IPsecSizeBinding.EncodedSize (binding : IPsecSizeBinding) (bytes : Nat) : Nat :=
+def IpsecSizeBinding.EncodedSize (binding : IpsecSizeBinding) (bytes : Nat) : Nat :=
   (binding.outerHeaderBytes + 32) + 4 * ((bytes + 2 + 3) / 4)
 
-def IPsecSizeBinding.Valid (binding : IPsecSizeBinding) : Prop :=
+def IpsecSizeBinding.Valid (binding : IpsecSizeBinding) : Prop :=
   (binding.policy.sender < 2^32 ∧ binding.policy.receiver < 2^32 ∧ binding.outerHeaderBytes = 20) ∨
   (2^128 ≤ binding.policy.sender ∧ binding.policy.sender < 2^129 ∧
     2^128 ≤ binding.policy.receiver ∧ binding.policy.receiver < 2^129 ∧
     binding.outerHeaderBytes = 40)
 
-instance (binding : IPsecSizeBinding) : Decidable binding.Valid := by
-  unfold IPsecSizeBinding.Valid
+instance (binding : IpsecSizeBinding) : Decidable binding.Valid := by
+  unfold IpsecSizeBinding.Valid
   infer_instance
 
 structure Inventory where
   ifaces : List Nat
-  configuration : MultiProtocolForwarding.Config
+  configuration : MultiProtocolForwarding.TunnelForwardingModel
   ifaceName : Nat → String
   componentName : Nat → String
   mkaPeers : List MKAEndpoint
-  ipsecSizes : List IPsecSizeBinding := []
-  macsecTunnel : LayeredFrame.MACsecAssociation → String
+  ipsecSizes : List IpsecSizeBinding := []
+  macsecTunnel : LayeredFrame.MacsecAssociation → String
 
 inductive UDPMode where
   | ike | ikeNATT | espNATT | keepalive

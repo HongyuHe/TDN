@@ -27,7 +27,7 @@ run_cmd do
   let env ← getEnv
   let mut rows : Array Json := #[]
   for (name, info) in env.constants.toList do
-    if name.toString.startsWith "TDN." then
+    if name.toString.startsWith "TDN." || name.toString.startsWith "_private.TDN." then
       let kind := match info with
         | .thmInfo _ => "theorem"
         | .defnInfo _ => "definition"
@@ -37,7 +37,11 @@ run_cmd do
       let valueDeps := match info.value? (allowOpaque := true) with
         | some value => value.getUsedConstants.map Name.toString
         | none => #[]
-      rows := rows.push <| Json.mkObj [
+      let privateSource := match privateToUserName? name, env.getModuleIdxFor? name with
+        | some user, some index =>
+          [("sourceName", toJson user.toString), ("module", toJson env.header.moduleNames[index.toNat]!.toString)]
+        | _, _ => []
+      rows := rows.push <| Json.mkObj <| privateSource ++ [
         ("name", toJson name.toString),
         ("kind", toJson kind),
         ("aliasOf", toJson (match info.value? with

@@ -23,7 +23,7 @@ def interfaces : List Interface :=
    interface "port-IC" "node-IC" 40, interface "port-G" "node-G" 90,
    interface "port-O" "node-O" 80, interface "port-M" "node-M" 100 true]
 
-def rules : List PacketPolicy.Rule :=
+def rules : List PacketPolicy.PacketAclRule :=
   [⟨[.sourceRange 10 10, .destinationRange 20 20, .protocol "esp"], .allow⟩,
    ⟨[.sourceRange 20 20, .destinationRange 10 10, .protocol "esp"], .allow⟩,
    ⟨[.sourceRange 100 100, .destinationRange 80 80, .protocol "tcp"], .allow⟩]
@@ -87,9 +87,9 @@ def pairs : List EndpointPair :=
 def paths : List GrayPathWitness :=
   [⟨"node-G", "node-IA", "node-O", ["node-IA", "node-G"], ["node-G", "node-O"]⟩]
 
-theorem complete_model_RG013 (base : Deployment) (processing : PacketProcessing.Inventory)
+theorem complete_model_rg013 (base : Deployment) (processing : PacketProcessing.Inventory)
     (physicalFact : base.authority.protectsAsClassified "node-G") :
-    msc_gray_firewall_path_coverage (deployment base processing) topology := by
+    gray_firewall_path_coverage (deployment base processing) topology := by
   apply gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms
     (deployment base processing) topology (inventory processing) rfl
     (by rfl) ?_ (by rfl) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
@@ -167,7 +167,7 @@ def packet : PacketPolicy.Packet :=
 
 lemma same_level_inner_traffic_is_admitted (base : Deployment)
     (processing : PacketProcessing.Inventory) :
-    (deployment base processing).Accepts "port-G" .inbound
+    (deployment base processing).PermitsOnInterface "port-G" .inbound
       ((deployment base processing).Observe packet) := by
   refine ⟨.forward, ⟨rfl, ?_⟩, ?_, ?_⟩
   · change (deployment base processing).ManagementMetadataBound packet
@@ -176,12 +176,12 @@ lemma same_level_inner_traffic_is_admitted (base : Deployment)
   · refine ⟨inventory processing, rfl, 3, by simp [inventory], rfl,
       interface "port-G" "node-G" 90, by simp [deployment, interfaces], rfl, rfl, ?_⟩
     simp [PacketAtHook, HookDirection, inventory, ifaceName, packet, Deployment.Observe]
-  · simp [deployment, policies, interfaces, interface, InterfacePolicy.Accepts, rules,
-      PacketPolicy.Rule.toFilter, Filter.evaluate, packet, Deployment.Observe, PacketPolicy.MatchCondition.matchesPacket]
+  · simp [deployment, policies, interfaces, interface, InterfacePolicy.PermitsTraffic, PacketPolicy.AclAllows, rules,
+      PacketPolicy.PacketAclRule.toFilter, Filter.evaluate, packet, Deployment.Observe, PacketPolicy.MatchCondition.matchesPacket]
 
 lemma wrong_level_inner_traffic_is_rejected (base : Deployment)
     (processing : PacketProcessing.Inventory) :
-    ¬ (deployment base processing).Accepts "port-G" .inbound
+    ¬ (deployment base processing).PermitsOnInterface "port-G" .inbound
       ((deployment base processing).Observe {packet with destination := 40}) := by
   rintro ⟨hook, _, _, admitted⟩
   cases hook with
@@ -190,13 +190,13 @@ lemma wrong_level_inner_traffic_is_rejected (base : Deployment)
       (inventory processing) rfl "port-G"
       (by intro _ _ _; simp [DeriveDataPlaneFromDeviceRecords.RoutedIface, inventory]) .inbound _ admitted
   | input | output | forward =>
-    simp [deployment, policies, interfaces, interface, InterfacePolicy.Accepts, rules,
-      PacketPolicy.Rule.toFilter, Filter.evaluate, packet, Deployment.Observe,
+    simp [deployment, policies, interfaces, interface, InterfacePolicy.PermitsTraffic, PacketPolicy.AclAllows, rules,
+      PacketPolicy.PacketAclRule.toFilter, Filter.evaluate, packet, Deployment.Observe,
       PacketPolicy.MatchCondition.matchesPacket] at admitted
 
 lemma lower_level_workstation_traffic_is_rejected (base : Deployment)
     (processing : PacketProcessing.Inventory) :
-    ¬ (deployment base processing).Accepts "port-G" .outbound
+    ¬ (deployment base processing).PermitsOnInterface "port-G" .outbound
       ((deployment base processing).Observe {packet with source := 100, destination := 10}) := by
   rintro ⟨hook, _, _, admitted⟩
   cases hook with
@@ -205,8 +205,8 @@ lemma lower_level_workstation_traffic_is_rejected (base : Deployment)
       (inventory processing) rfl "port-G"
       (by intro _ _ _; simp [DeriveDataPlaneFromDeviceRecords.RoutedIface, inventory]) .outbound _ admitted
   | input | output | forward =>
-    simp [deployment, policies, interfaces, interface, InterfacePolicy.Accepts, rules,
-      PacketPolicy.Rule.toFilter, Filter.evaluate, packet, Deployment.Observe,
+    simp [deployment, policies, interfaces, interface, InterfacePolicy.PermitsTraffic, PacketPolicy.AclAllows, rules,
+      PacketPolicy.PacketAclRule.toFilter, Filter.evaluate, packet, Deployment.Observe,
       PacketPolicy.MatchCondition.matchesPacket] at admitted
 
 lemma cross_level_path_really_exists :

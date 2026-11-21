@@ -28,7 +28,7 @@ def generate(bundle,output,report_path,chain_module="LoadedBaseline",namespace="
     ns=identifier(snapshot["snapshot_id"])
     devices=[d for d in snapshot["devices"] if d["role"] in {"inner","outer"}]
     require(bool(devices),"empty VPN inventory")
-    lines=["import TDN.Deployments."+chain_module,"import TDN.Requirements.Headers","namespace TDN.Deployments."+namespace,"open TDN.Deployments."+ns,"set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments."+chain_module,"import TDN.Requirements.Headers","namespace TDN.Deployments."+namespace,"open TDN.Deployments."+ns,"set_option maxRecDepth 100000"]
     definitions=[]
     observations=[]
     chain_ids=[]

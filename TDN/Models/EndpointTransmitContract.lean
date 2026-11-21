@@ -9,7 +9,7 @@ structure EmissionConditions (processing : Processing) : Prop where
     request.MtuOverhead < processing.sourceMtu request.iface
   nonempty : ∀ request datagrams, processing.process request = .emitted datagrams → datagrams ≠ []
   application : ∀ request datagrams, processing.process request = .emitted datagrams →
-    (datagrams.map Datagram.application).flatten = request.application
+    (datagrams.map EncodedDatagram.application).flatten = request.application
   decoded : ∀ request datagrams, processing.process request = .emitted datagrams →
     ∀ datagram ∈ datagrams, datagram.Decoded
   headers : ∀ request datagrams, processing.process request = .emitted datagrams →
@@ -48,9 +48,9 @@ structure ErrorConditions (processing : Processing) : Prop where
       request.PacketSize ≤ request.ProtocolLimit
 
 lemma emitted_datagram_valid {processing : Processing} (conditions : EmissionConditions processing)
-    {request : Request} {datagrams : List Datagram}
+    {request : Request} {datagrams : List EncodedDatagram}
     (emitted : processing.process request = .emitted datagrams)
-    {datagram : Datagram} (member : datagram ∈ datagrams) :
+    {datagram : EncodedDatagram} (member : datagram ∈ datagrams) :
     datagram.ValidFor request (processing.sourceMtu request.iface) := by
   refine ⟨conditions.decoded request datagrams emitted datagram member,
     conditions.headers request datagrams emitted datagram member,

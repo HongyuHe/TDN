@@ -47,7 +47,7 @@ def project(bundle):
         if zone not in ["red", "gray", "black", "local"]:
             raise ValueError("unknown declared interface zone: " + str(zone))
         result_interfaces.append({"id": original["id"], "device": original["device_id"],
-                                  "zone": zone, "address": addresses[0] if addresses else None,
+                                  "zone": "hostLocal" if zone == "local" else zone, "address": addresses[0] if addresses else None,
                                   "namespaceAddresses": namespace_addresses,
                                   "linkAddress": None, "physical": binding["emulatedAttachment"],
                                   "externalData": binding["externalDataPort"],
@@ -70,7 +70,7 @@ def project(bundle):
         seen_tunnels.add(binding["tunnelId"])
         sender, receiver = binding["senderDeviceId"], binding["receiverDeviceId"]
         current_layer = sources[sender]["role"]
-        tunnels.append({"id": binding["tunnelId"], "layer": current_layer, "mechanism": "ipsec",
+        tunnels.append({"id": binding["tunnelId"], "layer": current_layer, "protocol": "ipsec",
                         "sender": sender, "receiver": receiver,
                         "keyContext": "observed-session/" + binding["tunnelId"],
                         "espTunnelMode": True, "associatedIPTunnel": False})

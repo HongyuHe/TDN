@@ -2,48 +2,48 @@ import TDN.Models.PerStageMtuInvariants
 import TDN.Models.PayloadToNatEncoding
 
 namespace TDN.MultiProtocolForwarding
-open LayeredFrame PacketSource IPsecFrameEncoding
+open LayeredFrame PacketSource IpsecFrameEncoding
 
 
-def EthernetSizeBound (mtu : Nat → Nat) (state : State) : Prop :=
+def EthernetSizeBound (mtu : Nat → Nat) (state : TunnelForwardingState) : Prop :=
   ∀ header, state.frame.body = .ethernet header →
     (LinkAdmission.decodePayload state.frame.payload).length ≤ mtu state.iface
 
-structure EthernetMTUChecks (configuration : Config) (mtu : Nat → Nat) : Prop where
+structure EthernetMtuChecks (configuration : TunnelForwardingModel) (mtu : Nat → Nat) : Prop where
   physical : ∀ first last, configuration.physicalLink first last → mtu first ≤ mtu last
   bridge : ∀ first last, configuration.bridge first last → mtu first ≤ mtu last
 
-lemma Ethernet_no_visible (configuration : Config) (frame : Frame) (header : EthernetHeader)
+lemma ethernet_no_visible (configuration : TunnelForwardingModel) (frame : TunnelFrame) (header : EthernetHeader)
     (body : frame.body = .ethernet header) : configuration.visibleHeader frame = none := by
   cases mode : configuration.headerProcessing <;>
-    simp only [Config.visibleHeader, mode, Frame.visibleHeader, body, Body.visibleHeader]
+    simp only [TunnelForwardingModel.visibleHeader, mode, TunnelFrame.visibleHeader, body, Body.visibleHeader]
 
 
-theorem device_step_preserves_Ethernet_size {configuration : Config}
+theorem device_step_preserves_ethernet_size {configuration : TunnelForwardingModel}
     {required : Nat → Bool} {mtu plaintextLimit authenticationLimit : Nat → Nat}
     (checks : SizeChecks configuration required mtu plaintextLimit authenticationLimit)
-    (links : EthernetMTUChecks configuration mtu)
-    {before after : State} {action : Action} (step : Step configuration before action after)
+    (links : EthernetMtuChecks configuration mtu)
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction} (step : TunnelForwardingStep configuration before action after)
     (invariant : EthernetSizeBound mtu before) : EthernetSizeBound mtu after := by
   intro header plain
   cases step with
   | receive => exact invariant header plain
   | route route datapathStage visible chosen entry =>
-    have previous : before.frame.body = .ethernet header := by simpa only [Config.forwardedFrame_body] using plain
-    rw [Ethernet_no_visible configuration before.frame header previous] at visible
+    have previous : before.frame.body = .ethernet header := by simpa only [TunnelForwardingModel.forwarded_frame_body] using plain
+    rw [ethernet_no_visible configuration before.frame header previous] at visible
     cases visible
   | routeLocalOutput route datapathStage visible chosen entry =>
-    rw [Ethernet_no_visible configuration before.frame header plain] at visible
+    rw [ethernet_no_visible configuration before.frame header plain] at visible
     cases visible
   | forwardFilter => exact invariant header plain
   | outputFilter => exact invariant header plain
-  | encryptIPsec => simp only [Config.ipsecFrame_body] at plain; cases plain
+  | encryptIPsec => simp only [TunnelForwardingModel.ipsec_frame_body] at plain; cases plain
   | routeOuterPacket route datapathStage visible chosen entry =>
-    rw [Ethernet_no_visible configuration before.frame header plain] at visible
+    rw [ethernet_no_visible configuration before.frame header plain] at visible
     cases visible
   | forwardWithoutEncap => exact invariant header plain
   | decryptIPsec policy association contents packet datapathStage encrypted configured installed bound visible selected tracking =>
-    have contentBody : contents = .ethernet header := by simpa only [Config.restoredFrame_body] using plain
+    have contentBody : contents = .ethernet header := by simpa only [TunnelForwardingModel.restored_frame_body] using plain
     rw [contentBody, Body.visibleHeader] at visible
     cases visible
   | inputFilter => exact invariant header plain
@@ -66,7 +66,7 @@ end TDN.MultiProtocolForwarding
 
 namespace TDN.PacketSource
 
-lemma Ethernet_reassembly_size (datagram : Datagram) (header : LayeredFrame.EthernetHeader)
+lemma ethernet_reassembly_size (datagram : EncodedDatagram) (header : LayeredFrame.EthernetHeader)
     (body : datagram.body = .ethernet header) (mtu : Nat) (reassembles : datagram.Reassembles mtu)
     (decoded : datagram.Decoded) : datagram.application.length ≤ mtu := by
   have lengths : datagram.fragments.length = 1 := by
@@ -78,9 +78,9 @@ lemma Ethernet_reassembly_size (datagram : Datagram) (header : LayeredFrame.Ethe
   have data := reassembles.1.2.2.2
   rw [fragments] at data
   have payload : fragment.data = datagram.application := by
-    rw [Datagram.Decoded, body] at decoded
-    simpa only [List.map_singleton, List.flatten_singleton, Fragment.AsPiece, Datagram.Data,
+    rw [EncodedDatagram.Decoded, body] at decoded
+    simpa only [List.map_singleton, List.flatten_singleton, EncodedFragment.AsPiece, EncodedDatagram.Data,
       decoded.1, List.nil_append] using data
-  simpa only [Fragment.MtuBytes, body, payload] using bounded
+  simpa only [EncodedFragment.MtuBytes, body, payload] using bounded
 
 end TDN.PacketSource

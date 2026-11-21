@@ -8,7 +8,7 @@ def carrierReceiveHeader (iface : CarrierIface) : PacketPolicy.Packet :=
   outerHeader iface.transmit.destination iface.transmit.source iface.transmit.networkProtocol
     iface.transmit.destinationPort iface.transmit.sourcePort
 
-def carrierInputPacket (c : Config) (entry : Nat) (tracking : String)
+def carrierInputPacket (c : TunnelForwardingModel) (entry : Nat) (tracking : String)
     (networkBytes : Option Nat) (iface : CarrierIface) : PacketPolicy.Packet :=
   { carrierReceiveHeader iface with
     ingress := c.ip.interfaceName entry, egress := c.ip.interfaceName entry,
@@ -17,11 +17,11 @@ def carrierInputPacket (c : Config) (entry : Nat) (tracking : String)
       (carrierReceiveHeader iface)).map DataPlaneForwarding.IpsecPolicy.id,
     connectionState := tracking, networkBytes := networkBytes }
 
-def CarrierInputCheck (c : Config) (expectedEncapStack : Nat → List Nat) (tag : Nat) : Prop :=
+def CarrierInputCheck (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat) (tag : Nat) : Prop :=
   ∀ iface ∈ c.carriers, ∀ entry tracking networkBytes,
     c.ip.owner entry = c.ip.owner iface.routingIface →
     tag ∈ expectedEncapStack entry →
-    DataPlaneForwarding.accepts (c.ip.inputRules entry) (c.ip.inputFallback entry)
+    PacketPolicy.AclAllows (c.ip.inputRules entry) (c.ip.inputFallback entry)
       (carrierInputPacket c entry tracking networkBytes iface) →
     tag ∈ expectedEncapStack iface.virtualIface
 
@@ -38,7 +38,7 @@ lemma successful_unwrap_has_receiving_header (iface : CarrierIface) (before afte
       simp only [Body.visibleHeader, carrierReceiveHeader, destination, source, sourcePort, destinationPort, networkProtocol]
     next missed => cases unwrapped
 
-def UndecryptedRegion (c : Config) (expectedEncapStack : Nat → List Nat) (tag : Nat) (s : State) : Prop :=
+def UndecryptedRegion (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat) (tag : Nat) (s : TunnelForwardingState) : Prop :=
   s.authenticated = [] ∧
   match s.datapathStage with
   | .received | .egressReady => tag ∈ expectedEncapStack s.iface
@@ -62,26 +62,26 @@ def UndecryptedRegion (c : Config) (expectedEncapStack : Nat → List Nat) (tag 
         (expectedEncapStack s.iface).head? = some policy.tag
   | .localInput => ∃ header, s.frame.body.visibleHeader = some header ∧
       s.enteredIface = s.iface ∧ tag ∈ expectedEncapStack s.enteredIface ∧
-      DataPlaneForwarding.accepts (c.ip.inputRules s.iface) (c.ip.inputFallback s.iface)
+      PacketPolicy.AclAllows (c.ip.inputRules s.iface) (c.ip.inputFallback s.iface)
         (policyHeader c s header)
   | .delivered | .dropped => True
 
-lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → List Nat} {tag : Nat}
+lemma nondecryption_preserves_region {c : TunnelForwardingModel} {expectedEncapStack : Nat → List Nat} {tag : Nat}
     (conditions : LocalConditions c expectedEncapStack) (carrierCheck : CarrierInputCheck c expectedEncapStack tag)
-    {before after : State} {action : Action} (step : Step c before action after)
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction} (step : TunnelForwardingStep c before action after)
     (notDecrypt : ¬ IsDecryption action) (wellformed : CarrierBodies c expectedEncapStack before.frame.body)
     (invariant : UndecryptedRegion c expectedEncapStack tag before) :
     UndecryptedRegion c expectedEncapStack tag after := by
   have mode := conditions.legacyHeaders
   cases step with
   | @receive header datapathStage visible tracking =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     exact ⟨trivial, header, visible, trivial, trivial, invariant.2⟩
   | @route header route datapathStage visible chosen entry =>
-    simp only [Config.visibleHeader, mode] at visible
-    simp only [Config.forwardedFrame, mode]
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.forwardedFrame, mode]
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, h, hv, owner, entered, member⟩ := invariant
@@ -91,7 +91,7 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
       (fun impossible => by cases impossible), member⟩
     exact (conditions.ip.routeOwner route chosen.1).trans (entry ▸ owner)
   | @routeLocalOutput header route datapathStage visible chosen entry =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, h, hv, owner, entered, origin, member⟩ := invariant
@@ -101,7 +101,7 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
       (fun _ => origin), member⟩
     exact (conditions.ip.routeOwner route chosen.1).trans (entry ▸ owner)
   | @forwardFilter header datapathStage visible accepted =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, h, hv, owner, routed, origin, member⟩ := invariant
@@ -109,7 +109,7 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
     subst h
     exact ⟨empty, header, visible, owner, routed, Or.inl accepted, member⟩
   | @outputFilter header datapathStage visible accepted =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, h, hv, owner, routed, origin, member⟩ := invariant
@@ -117,8 +117,8 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
     subst h
     exact ⟨empty, header, visible, owner, routed, Or.inr ⟨empty, origin trivial, accepted⟩, member⟩
   | @encryptIPsec header policy association datapathStage visible selected installed bound =>
-    simp only [Config.visibleHeader, mode] at visible
-    simp only [Config.ipsecFrame, mode]
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.ipsecFrame, mode]
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, h, hv, owner, routed, accepted, member⟩ := invariant
@@ -133,7 +133,7 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
     · rw [← equal]; exact List.mem_cons_of_mem _ member
     · rw [← equal]; rfl
   | @routeOuterPacket header route datapathStage visible chosen entry =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, member, policy, configured, association, body, bound, encrypted, head⟩ := invariant
@@ -147,7 +147,7 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
     exact ⟨empty, (conditions.ip.routeOuterPacket before.iface policy configured head association
       (ipFrame c before header) route selectedView entry) ▸ member⟩
   | @forwardWithoutEncap header datapathStage visible noPolicy =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, h, hv, owner, routed, accepted, member⟩ := invariant
@@ -160,7 +160,7 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
     exact ⟨empty, equal ▸ member⟩
   | decryptIPsec => exact False.elim (notDecrypt (Or.inl rfl))
   | @inputFilter header datapathStage visible addressed accepted =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, h, hv, owner, entered, member⟩ := invariant
@@ -179,7 +179,7 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     exact ⟨invariant.1, (conditions.bridge before.iface next member) ▸ invariant.2⟩
   | @encryptMACsec iface association configured datapathStage logical emits =>
-    simp only [Config.macsecFrame, mode]
+    simp only [TunnelForwardingModel.macsecFrame, mode]
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     have member : tag ∈ expectedEncapStack iface.logicalIface := logical ▸ invariant.2
@@ -200,21 +200,21 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
     have strict := (conditions.macSecure iface configured).2.2.2
     simp [strict] at unchecked
   | @encapsulate iface configured datapathStage virtualIface =>
-    simp only [Config.carrierFrame, mode]
+    simp only [TunnelForwardingModel.carrierFrame, mode]
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     refine ⟨trivial, carrierHeader iface, rfl, trivial, trivial, ?_, ?_⟩
     · exact Or.inr ⟨iface, configured, rfl, rfl⟩
     · exact (conditions.carrierOutput iface configured) ▸ (virtualIface ▸ invariant.2)
   | @decapsulate iface body configured datapathStage owner unwrapped =>
-    simp only [Config.restoredFrame, mode]
+    simp only [TunnelForwardingModel.restoredFrame, mode]
 
     simp only [UndecryptedRegion, datapathStage] at invariant ⊢
     obtain ⟨empty, header, visible, entered, member, accepted⟩ := invariant
     have same : header = carrierReceiveHeader iface :=
       Option.some.inj (visible.symm.trans (successful_unwrap_has_receiving_header iface _ _ unwrapped))
     subst header
-    have input : DataPlaneForwarding.accepts (c.ip.inputRules before.iface) (c.ip.inputFallback before.iface)
+    have input : PacketPolicy.AclAllows (c.ip.inputRules before.iface) (c.ip.inputFallback before.iface)
         (carrierInputPacket c before.iface before.tracking
           (c.networkBytes before.frame.body before.frame.payload) iface) := by
       simpa only [policyHeader, carrierInputPacket, entered, empty] using accepted
@@ -222,8 +222,8 @@ lemma nondecryption_preserves_region {c : Config} {expectedEncapStack : Nat → 
       (c.networkBytes before.frame.body before.frame.payload) owner (entered ▸ member) input⟩
   | drop => exact ⟨invariant.1, trivial⟩
 
-def BoundaryDecryption (c : Config) (tag : Nat) (left : State)
-    (action : Action) (right : State) : Prop :=
+def BoundaryDecryption (c : TunnelForwardingModel) (tag : Nat) (left : TunnelForwardingState)
+    (action : TunnelForwardingAction) (right : TunnelForwardingState) : Prop :=
   (action = .decryptIPsec ∧ ∃ policy ∈ c.ip.ingressPolicies left.iface,
     policy.tag = tag ∧ left.frame.body.protectionLayers = tag :: right.frame.body.protectionLayers) ∨
   (action = .decryptMACsec ∧ ∃ iface ∈ c.macIfaces,
@@ -233,14 +233,14 @@ def BoundaryDecryption (c : Config) (tag : Nat) (left : State)
         right.frame.body = body ∧ SameMACWireIdentity transmitted association)
 
 theorem inbound_crossing_has_actual_boundary_decryption
-    (c : Config) (expectedEncapStack : Nat → List Nat) (tag component : Nat)
+    (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat) (tag component : Nat)
     (conditions : LocalConditions c expectedEncapStack) (carrierCheck : CarrierInputCheck c expectedEncapStack tag)
     (ipTags : ∀ entry, c.ip.owner entry = component →
       ∀ policy ∈ c.ip.ingressPolicies entry, policy.tag = tag)
     (macTags : ∀ iface ∈ c.macIfaces, c.ip.owner iface.physicalIface = component →
       ∀ association ∈ iface.receiveAssociations, association.tag = tag)
-    {before after : State} {actions : List Action}
-    (run : (RestrictedExecution.within (lts c)
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction}
+    (run : (SubgraphScopedTraces.within (lts c)
       (fun state => c.ip.owner state.iface = component)).MTr before actions after)
     (received : before.datapathStage = .received) (empty : before.authenticated = [])
     (wellformed : EncapStackConsistent c expectedEncapStack before)
@@ -260,7 +260,7 @@ theorem inbound_crossing_has_actual_boundary_decryption
   have label : IsDecryption action := by
     by_contra absent
     have safe := all_traces_preserve_stack c expectedEncapStack conditions
-      (RestrictedExecution.project_trace _ _ first) wellformed
+      (SubgraphScopedTraces.project_trace _ _ first) wellformed
     exact bad (nondecryption_preserves_region conditions carrierCheck step.1 absent safe.1 good)
   have boundary : BoundaryDecryption c tag left action right := by
     have actual := step.1
@@ -275,8 +275,8 @@ theorem inbound_crossing_has_actual_boundary_decryption
         transmitted, body, encrypted, (by simp), spi⟩
       exact macTags iface configured (physical ▸ owner) association installed
   exact ⟨earlier, later, left, action, right, sequence,
-    RestrictedExecution.project_trace _ _ first, step.1,
-    RestrictedExecution.project_trace _ _ last, boundary, step.2.1,
-    (all_traces_preserve_payload c (RestrictedExecution.project_trace _ _ first)).1⟩
+    SubgraphScopedTraces.project_trace _ _ first, step.1,
+    SubgraphScopedTraces.project_trace _ _ last, boundary, step.2.1,
+    (all_traces_preserve_payload c (SubgraphScopedTraces.project_trace _ _ first)).1⟩
 
 end TDN.MultiProtocolForwarding

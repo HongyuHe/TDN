@@ -1,5 +1,5 @@
 import TDN
-import TDN.Import.NativeDecide
+import TDN.Import.CompiledDecide
 import Lean
 import Lean.Util.CollectAxioms
 

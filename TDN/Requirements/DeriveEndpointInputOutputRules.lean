@@ -20,16 +20,16 @@ def EthernetTypeAtom : PacketPolicy.MatchCondition → Prop
 instance (atom : PacketPolicy.MatchCondition) : Decidable (EthernetTypeAtom atom) := by
   cases atom <;> unfold EthernetTypeAtom <;> infer_instance
 
-def AddressView.RuleGuard (view : AddressView) (rule : PacketPolicy.Rule) : Prop :=
+def AddressView.RuleGuard (view : AddressView) (rule : PacketPolicy.PacketAclRule) : Prop :=
   match view with
   | .internet => DeriveDataPlaneFromDeviceRecords.RuleIPGuard rule
   | .link => .protocol "ethernet" ∈ rule.atoms ∧ ∃ atom ∈ rule.atoms, EthernetTypeAtom atom
 
-instance (view : AddressView) (rule : PacketPolicy.Rule) :
+instance (view : AddressView) (rule : PacketPolicy.PacketAclRule) :
     Decidable (view.RuleGuard rule) := by
   cases view <;> unfold AddressView.RuleGuard <;> infer_instance
 
-lemma matching_rule_selects_address_view (view : AddressView) (rule : PacketPolicy.Rule)
+lemma matching_rule_selects_address_view (view : AddressView) (rule : PacketPolicy.PacketAclRule)
     (guard : view.RuleGuard rule) (packet : PacketPolicy.Packet)
     (matched : rule.toFilter.accepts packet = true) (interface : Interface) :
     interface.PacketAddress packet = view.read interface := by
@@ -93,7 +93,7 @@ instance (d : Deployment) (nodes : String → Prop) [DecidablePred nodes]
   cases atom <;> unfold RangeExclusionAtom <;> infer_instance
 
 def RuleEndpointGuard (d : Deployment) (nodes : String → Prop)
-    (pairs : List EndpointPair) (rule : PacketPolicy.Rule) : Prop :=
+    (pairs : List EndpointPair) (rule : PacketPolicy.PacketAclRule) : Prop :=
   (∃ pair ∈ pairs, pair.view.RuleGuard rule ∧
     .sourceRange pair.sourceAddress pair.sourceAddress ∈ rule.atoms ∧
     .destinationRange pair.destinationAddress pair.destinationAddress ∈ rule.atoms) ∨
@@ -101,7 +101,7 @@ def RuleEndpointGuard (d : Deployment) (nodes : String → Prop)
     ∃ atom ∈ rule.atoms, RangeExclusionAtom d nodes view atom
 
 instance (d : Deployment) (nodes : String → Prop) [DecidablePred nodes]
-    (pairs : List EndpointPair) (rule : PacketPolicy.Rule) :
+    (pairs : List EndpointPair) (rule : PacketPolicy.PacketAclRule) :
     Decidable (RuleEndpointGuard d nodes pairs rule) := by
   unfold RuleEndpointGuard
   infer_instance
@@ -124,7 +124,7 @@ lemma address_inventory_owner_uniqueness (d : Deployment)
 
 lemma matched_bound_pair_recovers_metadata (d : Deployment)
     (coherent : d.AddressInventoryCoherent) (pair : EndpointPair) (bound : pair.Bound d)
-    (rule : PacketPolicy.Rule) (guard : pair.view.RuleGuard rule)
+    (rule : PacketPolicy.PacketAclRule) (guard : pair.view.RuleGuard rule)
     (sourceAtom : .sourceRange pair.sourceAddress pair.sourceAddress ∈ rule.atoms)
     (destinationAtom : .destinationRange pair.destinationAddress pair.destinationAddress ∈ rule.atoms)
     (traffic : Traffic) (supported : d.Supported traffic)
@@ -160,7 +160,7 @@ lemma matched_bound_pair_recovers_metadata (d : Deployment)
           (congrArg some destinationOwner))
 
 lemma exclusion_cannot_match_node_endpoints (d : Deployment) (nodes : String → Prop)
-    (view : AddressView) (rule : PacketPolicy.Rule) (guard : view.RuleGuard rule)
+    (view : AddressView) (rule : PacketPolicy.PacketAclRule) (guard : view.RuleGuard rule)
     (traffic : Traffic) (supported : d.Supported traffic)
     (source destination : String)
     (sourceMetadata : traffic.sourceDevice = some source)
@@ -196,7 +196,7 @@ lemma guarded_rule_preserves_endpoint_relation (d : Deployment)
     (coherent : d.AddressInventoryCoherent) (nodes : String → Prop)
     (relation : String → String → Prop) (pairs : List EndpointPair)
     (bindings : ∀ pair ∈ pairs, pair.Bound d ∧ relation pair.source pair.destination)
-    (rule : PacketPolicy.Rule) (guard : RuleEndpointGuard d nodes pairs rule)
+    (rule : PacketPolicy.PacketAclRule) (guard : RuleEndpointGuard d nodes pairs rule)
     (traffic : Traffic) (supported : d.Supported traffic)
     (source destination : String)
     (sourceMetadata : traffic.sourceDevice = some source)
@@ -233,8 +233,8 @@ def admissionPrograms (d : Deployment) (inventory : PacketProcessing.Inventory) 
 lemma admitted_packet_has_inventory_program (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (interface : String) (direction : Direction) (traffic : Traffic)
-    (accepted : d.Accepts interface direction traffic) :
-    ∃ program ∈ admissionPrograms d inventory interface, program.Accepts traffic.packet := by
+    (accepted : d.PermitsOnInterface interface direction traffic) :
+    ∃ program ∈ admissionPrograms d inventory interface, program.PermitsPacket traffic.packet := by
   obtain ⟨hook, _, _, admission⟩ := accepted
   by_cases link : hook = .link
   · subst hook
@@ -252,29 +252,29 @@ lemma admitted_packet_has_inventory_program (d : Deployment)
     refine ⟨⟨policy.rules, policy.defaultVerdict⟩, ?_, admits⟩
     exact List.mem_append_left _ (List.mem_map.mpr ⟨policy, List.mem_filter.mpr ⟨member, by simpa using name⟩, rfl⟩)
 
-def ProgramRuleChecks (guard : PacketPolicy.Rule → Prop) (program : LinkAdmission.Program) : Prop :=
+def ProgramRuleChecks (guard : PacketPolicy.PacketAclRule → Prop) (program : LinkAdmission.Program) : Prop :=
   program.fallback = .deny ∧ ∀ rule ∈ program.rules, rule.verdict = .allow → guard rule
 
-instance (guard : PacketPolicy.Rule → Prop) [DecidablePred guard]
+instance (guard : PacketPolicy.PacketAclRule → Prop) [DecidablePred guard]
     (program : LinkAdmission.Program) : Decidable (ProgramRuleChecks guard program) := by
   unfold ProgramRuleChecks
   infer_instance
 
 lemma admitted_packet_has_checked_rule (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
-    (guard : PacketPolicy.Rule → Prop) (interface : String)
+    (guard : PacketPolicy.PacketAclRule → Prop) (interface : String)
     (checks : ∀ program ∈ admissionPrograms d inventory interface, ProgramRuleChecks guard program)
     (direction : Direction) (traffic : Traffic)
-    (accepted : d.Accepts interface direction traffic) :
+    (accepted : d.PermitsOnInterface interface direction traffic) :
     ∃ rule, guard rule ∧ rule.toFilter.accepts traffic.packet = true := by
   obtain ⟨program, member, admits⟩ :=
     admitted_packet_has_inventory_program d inventory present interface direction traffic accepted
   have checked := checks program member
-  change Filter.evaluate (program.rules.map PacketPolicy.Rule.toFilter) program.fallback
+  change Filter.evaluate (program.rules.map PacketPolicy.PacketAclRule.toFilter) program.fallback
     traffic.packet = .allow at admits
   rw [checked.1] at admits
   obtain ⟨rule, ruleMember, matched, allow⟩ := Filter.allowed_has_matching_allow
-    (program.rules.map PacketPolicy.Rule.toFilter) traffic.packet admits
+    (program.rules.map PacketPolicy.PacketAclRule.toFilter) traffic.packet admits
   obtain ⟨source, sourceMember, same⟩ := List.mem_map.mp ruleMember
   subst rule
   exact ⟨source, checked.2 source sourceMember allow, matched⟩
@@ -285,7 +285,7 @@ lemma accepted_endpoints_have_named_pair (d : Deployment)
     (checks : ∀ program ∈ admissionPrograms d inventory interface,
       ProgramRuleChecks (RuleEndpointGuard d nodes pairs) program)
     (direction : Direction) (traffic : Traffic)
-    (accepted : d.Accepts interface direction traffic)
+    (accepted : d.PermitsOnInterface interface direction traffic)
     (source destination : String)
     (sourceMetadata : traffic.sourceDevice = some source)
     (destinationMetadata : traffic.destinationDevice = some destination)
@@ -312,7 +312,7 @@ lemma accepted_endpoints_preserve_local_relation (d : Deployment)
     (checks : ∀ program ∈ admissionPrograms d inventory interface,
       ProgramRuleChecks (RuleEndpointGuard d nodes pairs) program)
     (direction : Direction) (traffic : Traffic)
-    (accepted : d.Accepts interface direction traffic)
+    (accepted : d.PermitsOnInterface interface direction traffic)
     (source destination : String)
     (sourceMetadata : traffic.sourceDevice = some source)
     (destinationMetadata : traffic.destinationDevice = some destination)
@@ -338,7 +338,7 @@ def SameLevelComponents (d : Deployment) (source destination : String) : Prop :=
 lemma matched_same_level_pair_is_inner_traffic (d : Deployment)
     (coherent : d.AddressInventoryCoherent) (pair : EndpointPair) (bound : pair.Bound d)
     (peers : SameLevelComponents d pair.source pair.destination)
-    (rule : PacketPolicy.Rule) (guard : pair.view.RuleGuard rule)
+    (rule : PacketPolicy.PacketAclRule) (guard : pair.view.RuleGuard rule)
     (sourceAtom : .sourceRange pair.sourceAddress pair.sourceAddress ∈ rule.atoms)
     (destinationAtom : .destinationRange pair.destinationAddress pair.destinationAddress ∈ rule.atoms)
     (traffic : Traffic) (supported : d.Supported traffic)

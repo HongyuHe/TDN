@@ -4,7 +4,7 @@ import TDN.Models.UnifiedIpv4Ipv6AddressKey
 
 namespace TDN.DataPlaneForwarding
 
-structure TunnelSAStamp where
+structure TunnelSaStamp where
   tag : Nat
   association : Nat
   sender : Nat
@@ -12,10 +12,10 @@ structure TunnelSAStamp where
   deriving DecidableEq, Repr
 
 structure EncapHeaderLayer where
-  authentication : TunnelSAStamp
+  authentication : TunnelSaStamp
   header : PacketPolicy.Packet
 
-structure Frame where
+structure IpsecFrame where
   payload : Nat
   originDomain : Nat
   packet : PacketPolicy.Packet
@@ -26,7 +26,7 @@ def payloadAddresses (packet : PacketPolicy.Packet) : List EncapHeaderLayer → 
   | [] => (packet.source, packet.destination)
   | envelope :: rest => payloadAddresses envelope.header rest
 
-def Frame.addresses (frame : Frame) : Nat × Nat :=
+def IpsecFrame.addresses (frame : IpsecFrame) : Nat × Nat :=
   payloadAddresses frame.packet frame.encapLayers
 
 lemma payload_addresses_ignore_metadata {a b : PacketPolicy.Packet} (encapLayers : List EncapHeaderLayer)
@@ -41,10 +41,10 @@ inductive DatapathStage where
   | filtered | encapsulated | egressReady | localInput | delivered | dropped
   deriving DecidableEq, Repr
 
-structure State where
+structure ForwardingState where
   iface : Nat
   datapathStage : DatapathStage
-  frame : Frame
+  frame : IpsecFrame
   authenticated : List Nat
 
 structure IpsecPolicy where
@@ -60,19 +60,19 @@ structure IpsecPolicy where
   requiredSpi : Option Nat := none
   deriving DecidableEq, Repr
 
-structure InstalledSA where
+structure InstalledSa where
   reqid : Nat
   spi : Nat
   sender : Nat
   receiver : Nat
   deriving DecidableEq, Repr
 
-def saMatchesPolicy (state : InstalledSA) (policy : IpsecPolicy) : Prop :=
+def saMatchesPolicy (state : InstalledSa) (policy : IpsecPolicy) : Prop :=
   state.reqid = policy.id ∧ state.sender = policy.sender ∧
   state.receiver = policy.receiver ∧
   (policy.requiredSpi = none ∨ policy.requiredSpi = some state.spi)
 
-def IpsecPolicy.seal (a : IpsecPolicy) (state : InstalledSA) : TunnelSAStamp :=
+def IpsecPolicy.seal (a : IpsecPolicy) (state : InstalledSa) : TunnelSaStamp :=
   ⟨a.tag, state.spi, state.sender, state.receiver⟩
 
 def IpsecPolicy.matches (a : IpsecPolicy) (p : PacketPolicy.Packet) : Bool :=
@@ -84,7 +84,7 @@ def lookupSpdPolicies (associations : List IpsecPolicy) (p : PacketPolicy.Packet
   associations.filter fun a => a.matches p &&
     associations.all (fun b => !b.matches p || decide (a.priority ≤ b.priority))
 
-inductive Action where
+inductive ForwardingAction where
   | route | filter | encrypt | decrypt | linkTransmit | bridge | internalProcessing | deliver | drop
   deriving DecidableEq, Repr
 
@@ -109,16 +109,16 @@ def SelectedFibRoute (routes : List FibRoute) (r : FibRoute) (p : PacketPolicy.P
 
 structure DataPlaneModel where
   routes : List FibRoute
-  forwardRules : Nat → List PacketPolicy.Rule
-  inputRules : Nat → List PacketPolicy.Rule
-  outputRules : Nat → List PacketPolicy.Rule
+  forwardRules : Nat → List PacketPolicy.PacketAclRule
+  inputRules : Nat → List PacketPolicy.PacketAclRule
+  outputRules : Nat → List PacketPolicy.PacketAclRule
   forwardFallback : Nat → Filter.Verdict
   inputFallback : Nat → Filter.Verdict
   outputFallback : Nat → Filter.Verdict
   egressPolicies : Nat → List IpsecPolicy
   ingressPolicies : Nat → List IpsecPolicy
-  egressSAs : Nat → List InstalledSA
-  ingressSAs : Nat → List InstalledSA
+  egressSAs : Nat → List InstalledSa
+  ingressSAs : Nat → List InstalledSa
   interfaceName : Nat → String
   owner : Nat → Nat
   link : Nat → Nat → Prop
@@ -127,18 +127,14 @@ structure DataPlaneModel where
   ifaceSecurityDomain : Nat → Option Nat
   canOriginateTraffic : Nat → Prop
 
-def policyPacket (c : DataPlaneModel) (iface : Nat) (f : Frame) (authenticated : List Nat) :
+def policyPacket (c : DataPlaneModel) (iface : Nat) (f : IpsecFrame) (authenticated : List Nat) :
     PacketPolicy.Packet :=
   { f.packet with
     egress := c.interfaceName iface
     matchedInboundPolicyIds := authenticated
     matchedOutboundPolicyIds := (lookupSpdPolicies (c.egressPolicies iface) f.packet).map IpsecPolicy.id }
 
-def accepts (rules : List PacketPolicy.Rule) (fallback : Filter.Verdict)
-    (packet : PacketPolicy.Packet) : Prop :=
-  Filter.evaluate (rules.map PacketPolicy.Rule.toFilter) fallback packet = .allow
-
-def encrypt (a : IpsecPolicy) (sa : InstalledSA) (f : Frame) : Frame :=
+def encrypt (a : IpsecPolicy) (sa : InstalledSa) (f : IpsecFrame) : IpsecFrame :=
   { f with
     packet := { f.packet with
       source := a.sender
@@ -152,48 +148,48 @@ def encrypt (a : IpsecPolicy) (sa : InstalledSA) (f : Frame) : Frame :=
       ipv6NextHeader := if a.sender < 2^32 then 0 else 50 }
     encapLayers := ⟨a.seal sa, f.packet⟩ :: f.encapLayers }
 
-inductive Step (c : DataPlaneModel) : State → Action → State → Prop
-  | receive {iface : Nat} {f : Frame} (tracking : String) :
-      Step c ⟨iface, .received, f, []⟩ .internalProcessing
+inductive ForwardingStep (c : DataPlaneModel) : ForwardingState → ForwardingAction → ForwardingState → Prop
+  | receive {iface : Nat} {f : IpsecFrame} (tracking : String) :
+      ForwardingStep c ⟨iface, .received, f, []⟩ .internalProcessing
         ⟨iface, .ingress, { f with enteredIface := iface, packet := { f.packet with
           ingress := c.interfaceName iface, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [],
           connectionState := tracking } }, []⟩
-  | route {iface : Nat} {f : Frame} {authenticated : List Nat} (r : FibRoute)
+  | route {iface : Nat} {f : IpsecFrame} {authenticated : List Nat} (r : FibRoute)
       (chosen : SelectedFibRoute c.routes r f.packet) (atIngress : r.ingress = iface) :
-      Step c ⟨iface, .ingress, f, authenticated⟩ .route
+      ForwardingStep c ⟨iface, .ingress, f, authenticated⟩ .route
         ⟨r.egress, .routed, f, authenticated⟩
-  | routeLocalOutput {iface : Nat} {f : Frame} (r : FibRoute)
+  | routeLocalOutput {iface : Nat} {f : IpsecFrame} (r : FibRoute)
       (chosen : SelectedFibRoute c.routes r f.packet) (atOrigin : r.ingress = iface) :
-      Step c ⟨iface, .localOutput, f, []⟩ .route ⟨r.egress, .outputRouted, f, []⟩
-  | filter {iface : Nat} {f : Frame} {authenticated : List Nat}
-      (accepted : accepts (c.forwardRules iface) (c.forwardFallback iface)
+      ForwardingStep c ⟨iface, .localOutput, f, []⟩ .route ⟨r.egress, .outputRouted, f, []⟩
+  | filter {iface : Nat} {f : IpsecFrame} {authenticated : List Nat}
+      (accepted : TDN.PacketPolicy.AclAllows (c.forwardRules iface) (c.forwardFallback iface)
         (policyPacket c iface f authenticated)) :
-      Step c ⟨iface, .routed, f, authenticated⟩ .filter
+      ForwardingStep c ⟨iface, .routed, f, authenticated⟩ .filter
         ⟨iface, .filtered, f, authenticated⟩
-  | outputFilter {iface : Nat} {f : Frame}
-      (accepted : accepts (c.outputRules iface) (c.outputFallback iface)
+  | outputFilter {iface : Nat} {f : IpsecFrame}
+      (accepted : TDN.PacketPolicy.AclAllows (c.outputRules iface) (c.outputFallback iface)
         (policyPacket c iface f [])) :
-      Step c ⟨iface, .outputRouted, f, []⟩ .filter ⟨iface, .filtered, f, []⟩
-  | encrypt {iface : Nat} {f : Frame} {authenticated : List Nat} (a : IpsecPolicy)
-      (sa : InstalledSA)
+      ForwardingStep c ⟨iface, .outputRouted, f, []⟩ .filter ⟨iface, .filtered, f, []⟩
+  | encrypt {iface : Nat} {f : IpsecFrame} {authenticated : List Nat} (a : IpsecPolicy)
+      (sa : InstalledSa)
       (selected : a ∈ lookupSpdPolicies (c.egressPolicies iface) f.packet)
       (installed : sa ∈ c.egressSAs iface)
       (bound : saMatchesPolicy sa a) :
-      Step c ⟨iface, .filtered, f, authenticated⟩ .encrypt
+      ForwardingStep c ⟨iface, .filtered, f, authenticated⟩ .encrypt
         ⟨iface, .encapsulated, encrypt a sa f, authenticated⟩
-  | routeOuterPacket {iface : Nat} {f : Frame} {authenticated : List Nat} (r : FibRoute)
+  | routeOuterPacket {iface : Nat} {f : IpsecFrame} {authenticated : List Nat} (r : FibRoute)
       (chosen : SelectedFibRoute c.routes r f.packet) (atEncryptor : r.ingress = iface) :
-      Step c ⟨iface, .encapsulated, f, authenticated⟩ .route
+      ForwardingStep c ⟨iface, .encapsulated, f, authenticated⟩ .route
         ⟨r.egress, .egressReady, f, authenticated⟩
-  | bridge {a b : Nat} {f : Frame} {authenticated : List Nat}
+  | bridge {a b : Nat} {f : IpsecFrame} {authenticated : List Nat}
       (permitted : c.bridging a b f.packet) :
-      Step c ⟨a, .ingress, f, authenticated⟩ .bridge ⟨b, .egressReady, f, authenticated⟩
-  | forwardWithoutEncap {iface : Nat} {f : Frame} {authenticated : List Nat}
+      ForwardingStep c ⟨a, .ingress, f, authenticated⟩ .bridge ⟨b, .egressReady, f, authenticated⟩
+  | forwardWithoutEncap {iface : Nat} {f : IpsecFrame} {authenticated : List Nat}
       (noPolicy : lookupSpdPolicies (c.egressPolicies iface) f.packet = []) :
-      Step c ⟨iface, .filtered, f, authenticated⟩ .internalProcessing
+      ForwardingStep c ⟨iface, .filtered, f, authenticated⟩ .internalProcessing
         ⟨iface, .egressReady, f, authenticated⟩
-  | decrypt {iface : Nat} {f : Frame} (a : IpsecPolicy)
-      (sa : InstalledSA) (header : PacketPolicy.Packet) (rest : List EncapHeaderLayer)
+  | decrypt {iface : Nat} {f : IpsecFrame} (a : IpsecPolicy)
+      (sa : InstalledSa) (header : PacketPolicy.Packet) (rest : List EncapHeaderLayer)
       (tracking : String)
       (configured : a ∈ c.ingressPolicies iface)
       (installed : sa ∈ c.ingressSAs iface)
@@ -203,44 +199,44 @@ inductive Step (c : DataPlaneModel) : State → Action → State → Prop
       (outerDestination : f.packet.destination = a.receiver)
       (esp : f.packet.protocol = "esp")
       (selected : a.matches header = true) :
-      Step c ⟨iface, .received, f, []⟩ .decrypt
+      ForwardingStep c ⟨iface, .received, f, []⟩ .decrypt
         ⟨iface, .ingress, { f with enteredIface := iface, packet := { header with
           ingress := c.interfaceName iface
           matchedInboundPolicyIds := []
           matchedOutboundPolicyIds := [], connectionState := tracking }, encapLayers := rest }, [a.id]⟩
-  | linkTransmit {a b : Nat} {f : Frame} {authenticated : List Nat} (linked : c.link a b) :
-      Step c ⟨a, .egressReady, f, authenticated⟩ .linkTransmit ⟨b, .received, f, []⟩
-  | deliverToLocalHost {iface : Nat} {f : Frame} {authenticated : List Nat}
+  | linkTransmit {a b : Nat} {f : IpsecFrame} {authenticated : List Nat} (linked : c.link a b) :
+      ForwardingStep c ⟨a, .egressReady, f, authenticated⟩ .linkTransmit ⟨b, .received, f, []⟩
+  | deliverToLocalHost {iface : Nat} {f : IpsecFrame} {authenticated : List Nat}
       (addressed : c.localAddress iface f.packet.destination)
-      (accepted : accepts (c.inputRules iface) (c.inputFallback iface)
+      (accepted : TDN.PacketPolicy.AclAllows (c.inputRules iface) (c.inputFallback iface)
         (policyPacket c iface f authenticated)) :
-      Step c ⟨iface, .ingress, f, authenticated⟩ .internalProcessing
+      ForwardingStep c ⟨iface, .ingress, f, authenticated⟩ .internalProcessing
         ⟨iface, .localInput, f, authenticated⟩
-  | deliver {iface : Nat} {f : Frame} {authenticated : List Nat} (domain : Nat)
+  | deliver {iface : Nat} {f : IpsecFrame} {authenticated : List Nat} (domain : Nat)
       (recipient : c.ifaceSecurityDomain iface = some domain) (plaintext : f.encapLayers = []) :
-      Step c ⟨iface, .localInput, f, authenticated⟩ .deliver
+      ForwardingStep c ⟨iface, .localInput, f, authenticated⟩ .deliver
         ⟨iface, .delivered, f, authenticated⟩
-  | drop (s : State) :
-      Step c s .drop { s with datapathStage := .dropped }
+  | drop (s : ForwardingState) :
+      ForwardingStep c s .drop { s with datapathStage := .dropped }
 
-def lts (c : DataPlaneModel) : Cslib.LTS State Action := ⟨Step c⟩
+def lts (c : DataPlaneModel) : Cslib.LTS ForwardingState ForwardingAction := ⟨ForwardingStep c⟩
 
-def ForwardsAlongTrace (net : DataPlaneModel) (startPkt : State)
-    (actions : List Action) (endPkt : State) : Prop :=
+def ForwardsAlongTrace (net : DataPlaneModel) (startPkt : ForwardingState)
+    (actions : List ForwardingAction) (endPkt : ForwardingState) : Prop :=
   (lts net).MTr startPkt actions endPkt
 
-lemma step_preserves_payload {c : DataPlaneModel} {a b : State} {action : Action}
-    (h : Step c a action b) :
+lemma step_preserves_payload {c : DataPlaneModel} {a b : ForwardingState} {action : ForwardingAction}
+    (h : ForwardingStep c a action b) :
     b.frame.payload = a.frame.payload ∧ b.frame.originDomain = a.frame.originDomain := by
   cases h <;> exact ⟨rfl, rfl⟩
 
-lemma step_preserves_original_addresses {c : DataPlaneModel} {a b : State} {action : Action}
-    (h : Step c a action b) : b.frame.addresses = a.frame.addresses := by
+lemma step_preserves_original_addresses {c : DataPlaneModel} {a b : ForwardingState} {action : ForwardingAction}
+    (h : ForwardingStep c a action b) : b.frame.addresses = a.frame.addresses := by
   cases h with
   | receive =>
     exact payload_addresses_ignore_metadata _ rfl rfl
   | decrypt association sa header rest tracking configured installed bound received outerSource outerDestination esp selected =>
-    simp only [Frame.addresses, received, payloadAddresses]
+    simp only [IpsecFrame.addresses, received, payloadAddresses]
     exact payload_addresses_ignore_metadata rest rfl rfl
   | encrypt => rfl
   | route => rfl
@@ -255,27 +251,27 @@ lemma step_preserves_original_addresses {c : DataPlaneModel} {a b : State} {acti
   | deliver => rfl
   | drop => rfl
 
-theorem forwarding_preserves_original_addresses (c : DataPlaneModel) {a b : State}
-    {actions : List Action} (execution : (lts c).MTr a actions b) :
+theorem forwarding_preserves_original_addresses (c : DataPlaneModel) {a b : ForwardingState}
+    {actions : List ForwardingAction} (execution : (lts c).MTr a actions b) :
     b.frame.addresses = a.frame.addresses := by
   have localProof : (lts c).TrInv (fun s => s.frame.addresses = a.frame.addresses) := by
     intro x action y step earlier
     exact (step_preserves_original_addresses step).trans earlier
   exact Cslib.LTS.mtrInv_of_trInv localProof a actions b execution rfl
 
-theorem plaintext_delivery_retains_addresses (c : DataPlaneModel) {a b : State}
-    {actions : List Action} (execution : (lts c).MTr a actions b)
+theorem plaintext_delivery_retains_addresses (c : DataPlaneModel) {a b : ForwardingState}
+    {actions : List ForwardingAction} (execution : (lts c).MTr a actions b)
     (initial : a.frame.encapLayers = []) (delivered : b.frame.encapLayers = []) :
     b.frame.packet.source = a.frame.packet.source ∧
     b.frame.packet.destination = a.frame.packet.destination := by
   have same := forwarding_preserves_original_addresses c execution
-  simp only [Frame.addresses, initial, delivered, payloadAddresses, Prod.mk.injEq] at same
+  simp only [IpsecFrame.addresses, initial, delivered, payloadAddresses, Prod.mk.injEq] at same
   exact same
 
-theorem forwarding_preserves_payload (c : DataPlaneModel) {a b : State} {actions : List Action}
+theorem forwarding_preserves_payload (c : DataPlaneModel) {a b : ForwardingState} {actions : List ForwardingAction}
     (h : (lts c).MTr a actions b) :
     b.frame.payload = a.frame.payload ∧ b.frame.originDomain = a.frame.originDomain := by
-  let invariant := fun s : State =>
+  let invariant := fun s : ForwardingState =>
     s.frame.payload = a.frame.payload ∧ s.frame.originDomain = a.frame.originDomain
   have localProof : (lts c).TrInv invariant := by
     intro x action y step before
@@ -291,8 +287,8 @@ lemma matched_policy_is_configured {associations : List IpsecPolicy} {p : Packet
   have both := Bool.and_eq_true_iff.mp matched
   exact both.1
 
-theorem outbound_policy_atom_selects_operation (c : DataPlaneModel) (iface : Nat) (f : Frame)
-    (authenticated : List Nat) {rule : PacketPolicy.Rule} {id : Nat}
+theorem outbound_policy_atom_selects_operation (c : DataPlaneModel) (iface : Nat) (f : IpsecFrame)
+    (authenticated : List Nat) {rule : PacketPolicy.PacketAclRule} {id : Nat}
     (atom : .outboundPolicy id ∈ rule.atoms)
     (matched : rule.toFilter.accepts (policyPacket c iface f authenticated) = true) :
     ∃ a ∈ c.egressPolicies iface, a.id = id ∧ a.matches f.packet = true := by
@@ -302,8 +298,8 @@ theorem outbound_policy_atom_selects_operation (c : DataPlaneModel) (iface : Nat
   obtain ⟨installed, matched⟩ := matched_policy_is_configured selected
   exact ⟨a, installed, same, matched⟩
 
-lemma outbound_policy_atom_excludes_plain (c : DataPlaneModel) (iface : Nat) (f : Frame)
-    (authenticated : List Nat) {rule : PacketPolicy.Rule} {id : Nat}
+lemma outbound_policy_atom_excludes_plain (c : DataPlaneModel) (iface : Nat) (f : IpsecFrame)
+    (authenticated : List Nat) {rule : PacketPolicy.PacketAclRule} {id : Nat}
     (atom : .outboundPolicy id ∈ rule.atoms)
     (matched : rule.toFilter.accepts (policyPacket c iface f authenticated) = true) :
     lookupSpdPolicies (c.egressPolicies iface) f.packet ≠ [] := by
@@ -313,8 +309,8 @@ lemma outbound_policy_atom_excludes_plain (c : DataPlaneModel) (iface : Nat) (f 
   simp [empty] at present
 
 lemma simulation_of_step_map {Abstract : Type} (c : DataPlaneModel)
-    (abstractLTS : Cslib.LTS Abstract Action) (project : State → Abstract)
-    (stepMap : ∀ a action b, Step c a action b →
+    (abstractLTS : Cslib.LTS Abstract ForwardingAction) (project : ForwardingState → Abstract)
+    (stepMap : ∀ a action b, ForwardingStep c a action b →
       abstractLTS.Tr (project a) action (project b)) :
     Cslib.LTS.IsSimulation (lts c) abstractLTS (fun a b => project a = b) := by
   intro a b related action next step
@@ -322,10 +318,10 @@ lemma simulation_of_step_map {Abstract : Type} (c : DataPlaneModel)
   exact ⟨project next, stepMap a action next step, rfl⟩
 
 theorem matched_forwarding {Abstract : Type} (c : DataPlaneModel)
-    (abstractLTS : Cslib.LTS Abstract Action) (project : State → Abstract)
-    (stepMap : ∀ a action b, Step c a action b →
+    (abstractLTS : Cslib.LTS Abstract ForwardingAction) (project : ForwardingState → Abstract)
+    (stepMap : ∀ a action b, ForwardingStep c a action b →
       abstractLTS.Tr (project a) action (project b))
-    {a b : State} {actions : List Action} (run : (lts c).MTr a actions b) :
+    {a b : ForwardingState} {actions : List ForwardingAction} (run : (lts c).MTr a actions b) :
     abstractLTS.MTr (project a) actions (project b) := by
   obtain ⟨last, trace, related⟩ :=
     (simulation_of_step_map c abstractLTS project stepMap).sim_trace rfl actions b run

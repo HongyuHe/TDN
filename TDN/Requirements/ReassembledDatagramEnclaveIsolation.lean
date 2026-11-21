@@ -18,7 +18,7 @@ theorem received_domain_from_local_checks
       expectedEncapStack iface = [] ∧ c.canOriginateTraffic iface ∧ allowed iface)
     (recipientCheck : ∀ iface, allowed iface →
       c.ifaceSecurityDomain iface = none ∨ c.ifaceSecurityDomain iface = some domain)
-    {start finish : DataPlaneForwarding.State} {actions : List DataPlaneForwarding.Action} {recipient : Nat}
+    {start finish : DataPlaneForwarding.ForwardingState} {actions : List DataPlaneForwarding.ForwardingAction} {recipient : Nat}
     (origin : RedPayloadOrigin c sources start)
     (domainAtSource : c.ifaceSecurityDomain start.iface = some domain)
     (run : (DataPlaneForwarding.lts c).MTr start actions finish)
@@ -35,14 +35,14 @@ theorem received_domain_from_local_checks
   · exact Option.some.inj (same.symm.trans recipientAtEnd)
 
 structure FragmentArrival where
-  start : DataPlaneForwarding.State
-  finish : DataPlaneForwarding.State
-  actions : List DataPlaneForwarding.Action
+  start : DataPlaneForwarding.ForwardingState
+  finish : DataPlaneForwarding.ForwardingState
+  actions : List DataPlaneForwarding.ForwardingAction
 
 def ArrivedFragment {Header Byte : Type}
     (c : DataPlaneForwarding.DataPlaneModel) (sources : List Nat) (recipientIface : Nat)
     (arrival : FragmentArrival)
-    (piece : Fragmentation.Fragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat)) : Prop :=
+    (piece : Fragmentation.PayloadFragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat)) : Prop :=
   RedPayloadOrigin c sources arrival.start ∧
   (DataPlaneForwarding.lts c).MTr arrival.start arrival.actions arrival.finish ∧
   arrival.finish.datapathStage = .received ∧ arrival.finish.frame.encapLayerIds = [] ∧
@@ -57,7 +57,7 @@ lemma arrived_fragment_bytes_match_recipient {Header Byte : Type}
     (recipientIface destinationDomain : Nat)
     (recipient : c.ifaceSecurityDomain recipientIface = some destinationDomain)
     (arrival : FragmentArrival)
-    (piece : Fragmentation.Fragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (piece : Fragmentation.PayloadFragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (arrived : ArrivedFragment c sources recipientIface arrival piece) :
     ReassemblyOrigins.PieceSafe (fun byte => byte.domain = destinationDomain) piece := by
   obtain ⟨origin, run, received, plain, iface, provenance⟩ := arrived
@@ -72,10 +72,10 @@ theorem reassembled_delivery_domain_from_checked_reception {Header Byte : Type}
     (reception : msc_same_domain_plaintext_reception c sources)
     (recipientIface destinationDomain : Nat)
     (recipient : c.ifaceSecurityDomain recipientIface = some destinationDomain)
-    {actions : List ReassemblyOrigins.Action}
-    {pieces : List (Fragmentation.Fragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
+    {actions : List ReassemblyOrigins.BufferAction}
+    {pieces : List (Fragmentation.PayloadFragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
     {header : Header}
-    {result : Fragmentation.Datagram Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat)}
+    {result : Fragmentation.PayloadDatagram Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat)}
     (run : (ReassemblyOrigins.system
       (ArrivedFragment c sources recipientIface)).MTr [] actions pieces)
     (accepted : ReassemblyOrigins.assemble header pieces = some result) :

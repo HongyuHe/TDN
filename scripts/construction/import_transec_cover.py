@@ -216,9 +216,9 @@ def parse(bundle):
 
 def generate(data):
     lines = ["import TDN.Requirements.TrafficFlowConfidentialitySpec", "", "namespace TDN.Deployments.SnapshotTfcCoverTraffic",
-             "open Requirements CoverTraffic", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "",
+             "open Requirements CoverTraffic", "set_option maxRecDepth 100000", "",
              "/-- Parameters come from both recorded sender invocations and their settings readback. -/",
-             "def sender : CoverTraffic.Config := ⟨512, 24, 64, 20000000⟩",
+             "def sender : CoverTraffic.ScheduleConfig := ⟨512, 24, 64, 20000000⟩",
              "lemma valid_parameters : sender.Valid := by native_decide", "",
              "def installations : List CoverInstallation := [" + ", ".join(
                  "⟨" + json.dumps(row["device"]) + ", ⟨false, true, true, true, true⟩, sender, true⟩"

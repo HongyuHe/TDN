@@ -135,7 +135,7 @@ def generate(bundle, output, report_path):
     validation=validate_bundle(bundle)
     snapshot=json.loads((bundle/"snapshot.json").read_text())
     ns=identifier(snapshot["snapshot_id"])
-    lines=["import TDN.Deployments.SnapshotFactTypes","import TDN.Models.IpsecAndAclRuleModel",f"namespace TDN.Deployments.{ns}","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments.SnapshotFactTypes","import TDN.Models.IpsecAndAclRuleModel",f"namespace TDN.Deployments.{ns}","set_option maxRecDepth 100000"]
     devices=[]
     for d in snapshot["devices"]:
         status={"not_applicable":"notApplicable"}.get(d["status"],d["status"])
@@ -168,7 +168,7 @@ def generate(bundle, output, report_path):
             continue
         chain_name="chain_"+identifier(chain["id"])
         emitted=["⟨"+lean_list([lean_atom(a) for a in r["atoms"]])+", ."+r["verdict"]+"⟩" for r in rules]
-        lines.append("def "+chain_name+" : List PacketPolicy.Rule := "+lean_list(emitted))
+        lines.append("def "+chain_name+" : List PacketPolicy.PacketAclRule := "+lean_list(emitted))
         report["translated_chains"].append({"chain_id":chain["id"],"definition":chain_name,"rule_count":len(rules),"source_status":chain["status"]})
         role=device_index[chain["device_id"]]["role"]
         if chain["chain"]=="FORWARD" and role in {"inner","outer","inner-encryption","outer-encryption","inner-vpn","outer-vpn"}:
@@ -186,7 +186,7 @@ def generate(bundle, output, report_path):
             if passed:
                 guard_lemma=chain_name+"_guarded"
                 lines.append("lemma "+guard_lemma+" : ∀ r ∈ "+chain_name+", r.verdict = .allow → PacketPolicy.RequiresIpsecPolicyMatch r "+quoted(inside)+" "+quoted(outside)+" := by unfold "+chain_name+"; decide")
-                lines.append("theorem "+chain_name+"_protects (p : PacketPolicy.Packet) (accepted : Filter.evaluate ("+chain_name+".map PacketPolicy.Rule.toFilter) .deny p = .allow) : PacketPolicy.ProtectedForward "+quoted(inside)+" "+quoted(outside)+" p := PacketPolicy.forwarding_policy_protects "+chain_name+" "+quoted(inside)+" "+quoted(outside)+" "+guard_lemma+" p accepted")
+                lines.append("theorem "+chain_name+"_protects (p : PacketPolicy.Packet) (accepted : Filter.evaluate ("+chain_name+".map PacketPolicy.PacketAclRule.toFilter) .deny p = .allow) : PacketPolicy.ProtectedForward "+quoted(inside)+" "+quoted(outside)+" p := PacketPolicy.forwarding_policy_protects "+chain_name+" "+quoted(inside)+" "+quoted(outside)+" "+guard_lemma+" p accepted")
                 record["theorem"]="TDN.Deployments."+ns+"."+chain_name+"_protects"
             report["forwarding_certificates"].append(record)
     for tunnel in snapshot["tunnels"]:

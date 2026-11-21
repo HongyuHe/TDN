@@ -3,15 +3,15 @@ import TDN.Models.PerHopForwardingChecks
 namespace TDN.DataPlaneForwarding
 
 structure DeviceData where
-  forwardRules : List PacketPolicy.Rule := []
-  inputRules : List PacketPolicy.Rule := []
-  outputRules : List PacketPolicy.Rule := []
+  forwardRules : List PacketPolicy.PacketAclRule := []
+  inputRules : List PacketPolicy.PacketAclRule := []
+  outputRules : List PacketPolicy.PacketAclRule := []
   forwardFallback : Filter.Verdict := .deny
   inputFallback : Filter.Verdict := .deny
   outputFallback : Filter.Verdict := .deny
   egressPolicies : List IpsecPolicy := []
   ingressPolicies : List IpsecPolicy := []
-  states : List InstalledSA := []
+  states : List InstalledSa := []
   localAddresses : List Nat := []
   ifaceSecurityDomain : Option Nat := none
 
@@ -80,7 +80,7 @@ lemma valid_authentication_in_finite_list (devices : List DeviceData) (ifaces : 
     simp [shape]
 
 def RecordRuleCheck (entry output : IfaceData) (device : DeviceData)
-    (authenticated : List Nat) (rule : PacketPolicy.Rule) : Prop :=
+    (authenticated : List Nat) (rule : PacketPolicy.PacketAclRule) : Prop :=
   ¬ IfaceCompatible rule entry.name output.name ∨
   ImpossibleAuthentication rule authenticated ∨
   ((HasOutboundGuard rule ∨
@@ -88,7 +88,7 @@ def RecordRuleCheck (entry output : IfaceData) (device : DeviceData)
     ∀ association ∈ device.egressPolicies, ExcludesSelector rule association ∨
       association.tag :: (if authenticated = [] then entry.stack else entry.stack.tail) = output.stack)
 
-instance (i o : IfaceData) (d : DeviceData) (a : List Nat) (r : PacketPolicy.Rule) :
+instance (i o : IfaceData) (d : DeviceData) (a : List Nat) (r : PacketPolicy.PacketAclRule) :
     Decidable (RecordRuleCheck i o d a r) := by unfold RecordRuleCheck; infer_instance
 
 def TableDrivenForwardChecks (devices : List DeviceData) (ifaces : List IfaceData) : Prop :=
@@ -105,14 +105,14 @@ theorem table_driven_forward_checks_sound (devices : List DeviceData) (ifaces : 
     (routes : List FibRoute) (links switches : List (Nat × Nat))
     (checked : TableDrivenForwardChecks devices ifaces)
     (denying : ∀ p, (dataPlaneModelFromRecords devices ifaces routes links switches).forwardFallback p = .deny)
-    (iface : Nat) (frame : Frame) (authenticated : List Nat)
+    (iface : Nat) (frame : IpsecFrame) (authenticated : List Nat)
     (ingress : frame.packet.ingress =
       (dataPlaneModelFromRecords devices ifaces routes links switches).interfaceName frame.enteredIface)
     (valid : LocalAuthentication (dataPlaneModelFromRecords devices ifaces routes links switches)
       (expectedEncapStackFromRecords ifaces) frame.enteredIface authenticated)
     (owner : (dataPlaneModelFromRecords devices ifaces routes links switches).owner iface =
       (dataPlaneModelFromRecords devices ifaces routes links switches).owner frame.enteredIface)
-    (accepted : accepts
+    (accepted : TDN.PacketPolicy.AclAllows
       ((dataPlaneModelFromRecords devices ifaces routes links switches).forwardRules iface)
       ((dataPlaneModelFromRecords devices ifaces routes links switches).forwardFallback iface)
       (policyPacket (dataPlaneModelFromRecords devices ifaces routes links switches) iface frame authenticated)) :
@@ -143,7 +143,7 @@ instance (devices : List DeviceData) (ifaces : List IfaceData) :
 theorem table_driven_output_checks_sound (devices : List DeviceData) (ifaces : List IfaceData)
     (routes : List FibRoute) (links switches : List (Nat × Nat))
     (checked : TableDrivenOutputChecks devices ifaces)
-    (iface : Nat) (frame : Frame)
+    (iface : Nat) (frame : IpsecFrame)
     (origin : (dataPlaneModelFromRecords devices ifaces routes links switches).canOriginateTraffic frame.enteredIface)
     (owner : (dataPlaneModelFromRecords devices ifaces routes links switches).owner iface =
       (dataPlaneModelFromRecords devices ifaces routes links switches).owner frame.enteredIface) :
@@ -181,7 +181,7 @@ theorem table_driven_outer_routes_sound (devices : List DeviceData) (ifaces : Li
     (iface : Nat) (association : IpsecPolicy)
     (member : association ∈ (dataPlaneModelFromRecords devices ifaces routes links switches).egressPolicies iface)
     (head : (expectedEncapStackFromRecords ifaces iface).head? = some association.tag)
-    (sa : InstalledSA) (frame : Frame) (route : FibRoute)
+    (sa : InstalledSa) (frame : IpsecFrame) (route : FibRoute)
     (chosen : SelectedFibRoute routes route (encrypt association sa frame).packet)
     (atIface : route.ingress = iface) :
     expectedEncapStackFromRecords ifaces iface = expectedEncapStackFromRecords ifaces route.egress := by

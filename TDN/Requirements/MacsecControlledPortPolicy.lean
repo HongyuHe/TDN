@@ -1,58 +1,58 @@
-import TDN.Requirements.DevicePerimeterAclSpec
+import TDN.Requirements.MscRequirements
 import TDN.Requirements.AllZoneCrossingLinksCovered
 import TDN.Requirements.DeriveEndpointInputOutputRules
 
 namespace TDN.Requirements.Msc
 open Compliance
 
-structure MACsecBoundaryPeer where
+structure MacsecBoundaryPeer where
   source : String
   destination : String
   destinationAddress : Nat
   deriving DecidableEq
 
-def MACsecBoundaryPeer.Bound (peer : MACsecBoundaryPeer) (d : Deployment) : Prop :=
+def MacsecBoundaryPeer.Bound (peer : MacsecBoundaryPeer) (d : Deployment) : Prop :=
   (∃ interface ∈ d.interfaces, interface.device = peer.destination ∧
     interface.linkAddress = some peer.destinationAddress) ∧
   d.intendedPeer peer.source peer.destination
 
-instance instDecidableMACsecBoundaryPeerBound (peer : MACsecBoundaryPeer) (d : Deployment) [DecidableRel d.intendedPeer] :
+instance instDecidableMACsecBoundaryPeerBound (peer : MacsecBoundaryPeer) (d : Deployment) [DecidableRel d.intendedPeer] :
     Decidable (peer.Bound d) := by
-  unfold MACsecBoundaryPeer.Bound
+  unfold MacsecBoundaryPeer.Bound
   infer_instance
 
 def MACsecBoundaryDataRule (device : String) (direction : Direction)
-    (peers : List MACsecBoundaryPeer) (rule : PacketPolicy.Rule) : Prop :=
+    (peers : List MacsecBoundaryPeer) (rule : PacketPolicy.PacketAclRule) : Prop :=
   .protocol "ethernet" ∈ rule.atoms ∧ .etherTypes [35045] ∈ rule.atoms ∧
     (direction = .outbound → ∃ peer ∈ peers, peer.source = device ∧
       .destinationRange peer.destinationAddress peer.destinationAddress ∈ rule.atoms)
 
-instance (device : String) (direction : Direction) (peers : List MACsecBoundaryPeer)
-    (rule : PacketPolicy.Rule) : Decidable (MACsecBoundaryDataRule device direction peers rule) := by
+instance (device : String) (direction : Direction) (peers : List MacsecBoundaryPeer)
+    (rule : PacketPolicy.PacketAclRule) : Decidable (MACsecBoundaryDataRule device direction peers rule) := by
   unfold MACsecBoundaryDataRule
   infer_instance
 
-def MACsecBoundaryProgramChecks (device : String) (peers : List MACsecBoundaryPeer)
+def MACsecBoundaryProgramChecks (device : String) (peers : List MacsecBoundaryPeer)
     (policy : LinkAdmission.IfacePolicy) : Prop :=
   ∀ direction ∈ [Direction.inbound, .outbound],
     (if direction = .outbound then policy.outbound else policy.inbound).fallback = .deny ∧
     ∀ rule ∈ (if direction = .outbound then policy.outbound else policy.inbound).rules,
       rule.verdict = .allow → MACsecBoundaryDataRule device direction peers rule
 
-instance (device : String) (peers : List MACsecBoundaryPeer) (policy : LinkAdmission.IfacePolicy) :
+instance (device : String) (peers : List MacsecBoundaryPeer) (policy : LinkAdmission.IfacePolicy) :
     Decidable (MACsecBoundaryProgramChecks device peers policy) := by
   unfold MACsecBoundaryProgramChecks
   infer_instance
 
 def MACsecBoundaryDataChecks (d : Deployment) (inventory : PacketProcessing.Inventory)
-    (peers : List MACsecBoundaryPeer) : Prop :=
+    (peers : List MacsecBoundaryPeer) : Prop :=
   ∀ interface ∈ d.interfaces, interface.zone = .black →
     ∀ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface.id →
       match LinkAdmission.lookup inventory.configuration.linkPolicies iface with
       | none => True
       | some policy => MACsecBoundaryProgramChecks interface.device peers policy
 
-instance (d : Deployment) (inventory : PacketProcessing.Inventory) (peers : List MACsecBoundaryPeer) :
+instance (d : Deployment) (inventory : PacketProcessing.Inventory) (peers : List MacsecBoundaryPeer) :
     Decidable (MACsecBoundaryDataChecks d inventory peers) := by
   unfold MACsecBoundaryDataChecks
   have (interface : Interface) (iface : Nat) : Decidable
@@ -62,7 +62,7 @@ instance (d : Deployment) (inventory : PacketProcessing.Inventory) (peers : List
     cases LinkAdmission.lookup inventory.configuration.linkPolicies iface <;> infer_instance
   infer_instance
 
-lemma interface_without_IP_has_no_native_boundary_admission (d : Deployment)
+lemma interface_without_ip_has_no_native_boundary_admission (d : Deployment)
     (noAddresses : ∀ interface ∈ d.interfaces, interface.address = none)
     (interface : String) (direction : Direction) (traffic : Traffic) :
     ¬ d.DeviceBoundaryAccepts interface direction traffic := by
@@ -71,10 +71,10 @@ lemma interface_without_IP_has_no_native_boundary_admission (d : Deployment)
   have absent := noAddresses filtering member
   simp [Interface.HookApplies, absent] at applies
 
-lemma MACsec_boundary_link_admission_has_matching_rule (d : Deployment)
+lemma macsec_boundary_link_admission_has_matching_rule (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (noAddresses : ∀ interface ∈ d.interfaces, interface.address = none)
-    (peers : List MACsecBoundaryPeer) (checks : MACsecBoundaryDataChecks d inventory peers)
+    (peers : List MacsecBoundaryPeer) (checks : MACsecBoundaryDataChecks d inventory peers)
     (interface : Interface) (member : interface ∈ d.interfaces) (black : interface.zone = .black)
     (direction : Direction) (traffic : Traffic)
     (admitted : d.BoundaryAccepts interface.id direction traffic) :
@@ -86,7 +86,7 @@ lemma MACsec_boundary_link_admission_has_matching_rule (d : Deployment)
         (direction = .outbound) traffic.packet := by
     rcases admitted with native | link | physical
     · exact False.elim
-        (interface_without_IP_has_no_native_boundary_admission d noAddresses interface.id direction traffic native)
+        (interface_without_ip_has_no_native_boundary_admission d noAddresses interface.id direction traffic native)
     · obtain ⟨supported, _, _, other, same, iface, ifaceMember, name, allowed⟩ := link
       have identity : other = inventory := Option.some.inj (same.symm.trans present)
       subst other
@@ -101,21 +101,21 @@ lemma MACsec_boundary_link_admission_has_matching_rule (d : Deployment)
   have directionMember : direction ∈ [Direction.inbound, .outbound] := by cases direction <;> simp
   obtain ⟨fallback, rules⟩ := programChecks direction directionMember
   have allowedProgram :
-      (if direction = .outbound then policy.outbound else policy.inbound).Accepts traffic.packet := by
+      (if direction = .outbound then policy.outbound else policy.inbound).PermitsPacket traffic.packet := by
     cases direction <;> simpa using allowed
   have accepted : Filter.evaluate
-      ((if direction = .outbound then policy.outbound else policy.inbound).rules.map PacketPolicy.Rule.toFilter)
+      ((if direction = .outbound then policy.outbound else policy.inbound).rules.map PacketPolicy.PacketAclRule.toFilter)
       .deny traffic.packet = .allow := by
-    simpa only [LinkAdmission.Program.Accepts, fallback] using allowedProgram
+    simpa only [LinkAdmission.Program.PermitsPacket, PacketPolicy.AclAllows, fallback] using allowedProgram
   obtain ⟨filter, filterMember, matched, verdict⟩ := Filter.allowed_has_matching_allow _ traffic.packet accepted
   obtain ⟨rule, ruleMember, same⟩ := List.mem_map.mp filterMember
   subst filter
   exact ⟨supported, rule, matched, rules rule ruleMember verdict⟩
 
-lemma checked_MACsec_boundary_data_rule_has_protocol_and_peer (d : Deployment)
-    (coherent : d.AddressInventoryCoherent) (peers : List MACsecBoundaryPeer)
+lemma checked_macsec_boundary_data_rule_has_protocol_and_peer (d : Deployment)
+    (coherent : d.AddressInventoryCoherent) (peers : List MacsecBoundaryPeer)
     (bound : ∀ peer ∈ peers, peer.Bound d) (device : String) (direction : Direction)
-    (rule : PacketPolicy.Rule) (traffic : Traffic) (supported : d.Supported traffic)
+    (rule : PacketPolicy.PacketAclRule) (traffic : Traffic) (supported : d.Supported traffic)
     (checks : MACsecBoundaryDataRule device direction peers rule)
     (matched : rule.toFilter.accepts traffic.packet = true) :
     PacketMACsec traffic.packet ∧
@@ -146,21 +146,21 @@ end TDN.Requirements.Msc
 namespace TDN.Requirements.Msc
 open Compliance
 
-theorem MACsec_boundary_interface_filtering_from_link_rule_checks (d : Deployment)
-    (focus : d.focus = none)
+theorem macsec_boundary_interface_filtering_from_link_rule_checks (d : Deployment)
+    (deviceScope : d.deviceScope = none)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (address : d.AddressInventoryCoherent) (processing : d.ProcessingCoherent)
     (udp : d.UDPBindingsCoherent) (coverage : d.LinkPoliciesComplete)
     (noAddresses : ∀ interface ∈ d.interfaces, interface.address = none)
     (roles : ∀ device ∈ d.devices, device.layer = some .outer ∧ device.kind = .macsec)
-    (peers : List MACsecBoundaryPeer) (bound : ∀ peer ∈ peers, peer.Bound d)
+    (peers : List MacsecBoundaryPeer) (bound : ∀ peer ∈ peers, peer.Bound d)
     (checks : MACsecBoundaryDataChecks d inventory peers)
     (required : Bool) (internal : String → Bool) (localOuter : String → String) :
-    msc_boundary_interface_filtering d required internal localOuter := by
-  have cleared : { d with focus := none } = d := by
+    boundary_interface_filtering d required internal localOuter := by
+  have cleared : { d with deviceScope := none } = d := by
     cases d
     simp_all
-  unfold msc_boundary_interface_filtering
+  unfold boundary_interface_filtering
   rw [cleared]
   refine ⟨address, processing, udp, ?_⟩
   intro interface member _ device deviceMember _ owner assessed
@@ -186,9 +186,9 @@ theorem MACsec_boundary_interface_filtering_from_link_rule_checks (d : Deploymen
   have physical : d.BoundaryAccepts interface.id direction traffic := by
     simpa only [Deployment.BoundaryAdmission, crypto, ↓reduceIte] using admitted
   obtain ⟨supported, rule, matched, ruleChecks⟩ :=
-    MACsec_boundary_link_admission_has_matching_rule d inventory present noAddresses peers checks
+    macsec_boundary_link_admission_has_matching_rule d inventory present noAddresses peers checks
       interface member black direction traffic physical
-  obtain ⟨protocol, peer⟩ := checked_MACsec_boundary_data_rule_has_protocol_and_peer d address
+  obtain ⟨protocol, peer⟩ := checked_macsec_boundary_data_rule_has_protocol_and_peer d address
     peers bound interface.device direction rule traffic supported ruleChecks matched
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro _ _
@@ -209,8 +209,8 @@ end TDN.Requirements.Msc
 namespace TDN.Requirements.Msc
 open Compliance
 
-lemma admitted_plaintext_at_MACsec_boundary_violates_requirement (d : Deployment)
-    (focus : d.focus = none) (interface : Interface) (member : interface ∈ d.interfaces)
+lemma admitted_plaintext_at_macsec_boundary_violates_requirement (d : Deployment)
+    (deviceScope : d.deviceScope = none) (interface : Interface) (member : interface ∈ d.interfaces)
     (device : Device) (deviceMember : device ∈ d.devices)
     (owner : interface.device = device.id) (outer : device.layer = some .outer)
     (black : interface.zone = .black) (macsec : device.kind = .macsec)
@@ -218,16 +218,16 @@ lemma admitted_plaintext_at_MACsec_boundary_violates_requirement (d : Deployment
     (admitted : d.BoundaryAdmission device interface direction traffic)
     (plaintext : ¬ PacketMACsec traffic.packet) (unapproved : ¬ ApprovedControl d device.id traffic)
     (required : Bool) (internal : String → Bool) (localOuter : String → String) :
-    ¬ msc_boundary_interface_filtering d required internal localOuter := by
+    ¬ boundary_interface_filtering d required internal localOuter := by
   intro specification
-  have cleared : { d with focus := none } = d := by
+  have cleared : { d with deviceScope := none } = d := by
     cases d
     simp_all
-  unfold msc_boundary_interface_filtering at specification
+  unfold boundary_interface_filtering at specification
   rw [cleared] at specification
   obtain ⟨_, _, _, all⟩ := specification
-  have checked := all interface member (by simp [Deployment.Relevant, focus]) device deviceMember
-    (by simp [Deployment.Relevant, focus]) owner (Or.inl ⟨outer, black⟩)
+  have checked := all interface member (by simp [Deployment.InScope, deviceScope]) device deviceMember
+    (by simp [Deployment.InScope, deviceScope]) owner (Or.inl ⟨outer, black⟩)
   have permitted := ((checked.2 direction traffic admitted).1 outer black).2.1 macsec
   exact permitted.elim plaintext unapproved
 

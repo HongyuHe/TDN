@@ -45,11 +45,11 @@ lemma all_byte_source_domains : ∀ iface ∈ redSources, ∀ d,
 
 
 theorem every_assembled_delivered_byte_preserves_full_label {Byte : Type}
-    {after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action DataPlaneForwarding.Action)}
+    {after : List (ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
+    {actions : List (ByteFlows.ByteFlowAction DataPlaneForwarding.ForwardingAction)}
     (run : (ByteFlows.lts (lts config) (Requirements.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
-    (packet : ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (packet : ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : packet ∈ after) (delivered : packet.state.datapathStage = .delivered)
     (destinationDomain : Nat) (recipient : config.ifaceSecurityDomain packet.state.iface = some destinationDomain) :
     ∀ byte ∈ packet.bytes, fullLevel byte.domain = fullLevel destinationDomain := by
@@ -71,11 +71,11 @@ lemma all_byte_black_checks : ∀ d ∈ domains, ∀ iface ∈ {base}.blackIface
 """
         text += f"""
 theorem every_assembled_black_byte_has_both_layers {{Byte : Type}}
-    {{after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}}
-    {{actions : List (ByteFlows.Action DataPlaneForwarding.Action)}}
+    {{after : List (ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}}
+    {{actions : List (ByteFlows.ByteFlowAction DataPlaneForwarding.ForwardingAction)}}
     (run : (ByteFlows.lts (lts config) (Requirements.RedByteOrigin config redSources)
       PlaintextAssembly).MTr [] actions after)
-    (packet : ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (packet : ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : packet ∈ after) (ready : packet.state.datapathStage = .egressReady)
     (black : packet.state.iface ∈ {base}.blackIfaces) :
     ∀ byte ∈ packet.bytes, packet.state.frame.encapLayerIds = [2, byte.domain + 10] :=

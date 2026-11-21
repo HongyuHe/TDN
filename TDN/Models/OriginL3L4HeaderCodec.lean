@@ -24,21 +24,21 @@ theorem source_transport_header_matches (packet : PacketPolicy.Packet) (bytes : 
   · have encoding : encodeTransportHeader packet bytes payload.length =
         encodeUDPHeader packet payload.length := by simp [encodeTransportHeader, udp]
     rw [encoding, width]
-    exact ⟨encoded_UDP_header_length packet payload.length,
-      encoded_UDP_header_matches packet payload udp source destination (udpSize udp)⟩
+    exact ⟨encoded_udp_header_length packet payload.length,
+      encoded_udp_header_matches packet payload udp source destination (udpSize udp)⟩
   · have encoding : encodeTransportHeader packet bytes payload.length =
         encodeTCPHeader packet bytes := by simp [encodeTransportHeader, tcp]
     rw [encoding]
-    exact ⟨encoded_TCP_header_length packet bytes minimum,
-      encoded_TCP_header_matches packet payload bytes tcp source destination minimum maximum aligned⟩
+    exact ⟨encoded_tcp_header_length packet bytes minimum,
+      encoded_tcp_header_matches packet payload bytes tcp source destination minimum maximum aligned⟩
   · have notUDP : packet.protocol ≠ "udp" := by intro same; simp [same] at icmp
     have notTCP : packet.protocol ≠ "tcp" := by intro same; simp [same] at icmp
     have encoding : encodeTransportHeader packet bytes payload.length = encodeICMPHeader packet := by
       simp [encodeTransportHeader, notUDP, notTCP]
     rw [encoding, width]
     obtain ⟨sourcePort, destinationPort, type, code⟩ := representable.2.2 icmp
-    exact ⟨encoded_ICMP_header_length packet,
-      encoded_ICMP_header_matches packet payload icmp sourcePort destinationPort
+    exact ⟨encoded_icmp_header_length packet,
+      encoded_icmp_header_matches packet payload icmp sourcePort destinationPort
         (by omega) (by omega)⟩
 
 lemma transport_template_protocol_bound (packet : PacketPolicy.Packet) (bytes : Nat)
@@ -79,8 +79,8 @@ theorem source_network_header_matches (packet : PacketPolicy.Packet)
   rcases template with ipv4 | ipv6
   · obtain ⟨source, destination, minimum, maximum⟩ := ipv4
     simp only [encodeNetworkHeader, networkHeaderSize, networkProtocolLimit, source, ↓reduceIte] at size ⊢
-    exact ⟨encoded_IPv4_header_length packet dataBytes identity flags minimum,
-      encoded_IPv4_header_matches packet dataBytes identity flags number source destination
+    exact ⟨encoded_ipv4_header_length packet dataBytes identity flags minimum,
+      encoded_ipv4_header_matches packet dataBytes identity flags number source destination
         minimum maximum (by omega) (by have hop := representable.1; omega)
         protocolValue protocolBound⟩
   · obtain ⟨source, sourceLimit, destination, destinationLimit, words⟩ := ipv6
@@ -88,8 +88,8 @@ theorem source_network_header_matches (packet : PacketPolicy.Packet)
     have next := representable.2.1 (by omega)
     have same : packet.ipv6NextHeader = number := Option.some.inj (next.symm.trans protocolValue)
     simp only [encodeNetworkHeader, networkHeaderSize, networkProtocolLimit, notIPv4, ↓reduceIte] at size ⊢
-    exact ⟨encoded_IPv6_header_length packet dataBytes,
-      encoded_IPv6_header_matches packet dataBytes source sourceLimit destination destinationLimit
+    exact ⟨encoded_ipv6_header_length packet dataBytes,
+      encoded_ipv6_header_matches packet dataBytes source sourceLimit destination destinationLimit
         words (by omega) (by have hop := representable.1; omega) next (by omega)⟩
 
 end TDN.PacketSource

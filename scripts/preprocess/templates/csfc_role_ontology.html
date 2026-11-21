@@ -13,7 +13,7 @@
 @media print{.topbar-actions,.search-wrap,.role-list,.toolbar{display:none}.workspace{display:block}.detail-body,.graph-wrap{max-height:none}.panel{break-inside:avoid;margin-bottom:16px}.guide{display:block}.guide>div{margin-bottom:12px}}
 #representation{grid-column:1/-1}.theory-detail{display:grid;gap:10px;min-width:0;grid-column:1/-1;border:1px solid var(--border);border-radius:9px;padding:12px;background:var(--selected)}.theory-expression{display:block;white-space:normal}.theory-interpretation{font-size:12px;border-top:1px solid var(--border);padding-top:9px}.theory-interpretation summary{cursor:pointer;font-weight:600}.theory-interpretation p{margin:9px 0}.theory-detail ul{margin:0;padding-left:18px}.theory-detail li{margin:6px 0}.theory-detail a{overflow-wrap:anywhere}.theory-detail+.callout{grid-column:1/-1}
 
-.role-obligations{display:grid;gap:12px;min-width:0}.obligation-controls{display:grid;gap:7px}.obligation-controls input{width:100%;min-width:0}.obligation-list{display:grid;gap:12px;max-height:680px;overflow:auto;padding:2px 5px 2px 0}.obligation-card{border:1px solid var(--border);border-radius:9px;padding:13px;display:grid;gap:9px;background:var(--panel);min-width:0}.obligation-card h4{margin:0;font-size:14px;line-height:1.5}.obligation-card p{font-size:13px;line-height:1.65}.obligation-card .obligation-origin{font-size:11px;color:var(--muted)}.obligation-origin button{padding:1px 4px;border:0;background:transparent;font-size:inherit;color:var(--cyan);text-decoration:underline}.obligation-tags{display:flex;gap:6px;flex-wrap:wrap}.obligation-card details{border-top:1px solid var(--border);padding-top:8px;min-width:0}.obligation-card summary{font-size:12px;color:var(--cyan);cursor:pointer}.obligation-code{margin-top:12px;min-width:0}.obligation-code pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:360px;overflow:auto;background:var(--code);padding:12px;border-radius:6px;font-size:11px;line-height:1.7}.obligation-code pre code{padding:0;font:inherit}.obligation-code a{font-size:12px}.obligation-empty{font-size:13px;color:var(--muted)}.obligation-status{color:var(--green)}.obligation-note{color:var(--muted);font-size:12px}
+.role-obligations{display:grid;gap:12px;min-width:0}.obligation-controls{display:grid;gap:7px}.obligation-controls input[type=search]{width:100%;min-width:0}.obligation-list{display:grid;gap:12px;max-height:680px;overflow:auto;padding:2px 5px 2px 0}.obligation-card{border:1px solid var(--border);border-radius:9px;padding:13px;display:grid;gap:9px;background:var(--panel);min-width:0}.obligation-card h4{margin:0;font-size:14px;line-height:1.5}.obligation-card p{font-size:13px;line-height:1.65}.obligation-card .obligation-origin{font-size:11px;color:var(--muted)}.obligation-origin button{padding:1px 4px;border:0;background:transparent;font-size:inherit;color:var(--cyan);text-decoration:underline}.obligation-tags{display:flex;gap:6px;flex-wrap:wrap}.obligation-card details{border-top:1px solid var(--border);padding-top:8px;min-width:0}.obligation-card summary{font-size:12px;color:var(--cyan);cursor:pointer}.obligation-code{margin-top:12px;min-width:0}.obligation-code pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:360px;overflow:auto;background:var(--code);padding:12px;border-radius:6px;font-size:11px;line-height:1.7}.obligation-code pre code{padding:0;font:inherit}.obligation-code a{font-size:12px}.obligation-empty{font-size:13px;color:var(--muted)}.obligation-status{color:var(--green)}.obligation-note{color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
@@ -197,7 +197,7 @@ function obligationCard(binding){
  card.append(origin,el('p',obligation.translation));
  const detail=el('details'),summary=el('summary','Lean code and source links');
  detail.append(summary);
- if(obligation.references[0].kind==='match_branch')detail.append(el('p','The excerpt is the selected branch of MscComplianceContext.RequirementGroupSpec. Its group number is the RG number. The surrounding function supplies the deployment, records, subject, and external-confirmation checks.','obligation-note'));
+ if(obligation.references[0].kind==='match_branch')detail.append(el('p','The excerpt is the selected branch of ComplianceContext.RequirementGroupSpec. Its group number is the RG number. The surrounding function supplies the deployment, records, subject, and external-confirmation checks.','obligation-note'));
  for(const reference of obligation.references){
   const block=el('div',undefined,'obligation-code'),pre=el('pre');
   pre.append(el('code',reference.code));block.append(codeLink(reference),el('small',reference.path+':'+reference.line,'source-id'),pre);detail.append(block);
@@ -207,28 +207,32 @@ function obligationCard(binding){
 }
 function renderObligations(id){
  const node=byId.get(id),target=$('role-obligations'),bindings=node.obligations;
- const direct=bindings.filter(o=>o.direct).length,inherited=bindings.filter(o=>o.inherited_from.length).length;
- target.replaceChildren(el('h3','Associated proof obligations'));
+ target.replaceChildren(el('h3','Requirements for this role'));
  if(!bindings.length){
-  target.append(el('p',node.obligation_note||'No Lean obligation is currently associated with this role or its parent roles.','obligation-empty'));return;
+  target.append(el('p',node.obligation_note||'No requirements are associated with this role or its parents.','obligation-empty'));return;
  }
- target.append(el('p',`${bindings.length} unique obligations: ${direct} directly associated and ${inherited} inherited. An obligation can have both origins.`,'small muted'));
- target.append(el('p','Each entry summarizes the current Lean condition for the role or the network it participates in. Applicability conditions and selected objectives still apply. Reviewed proofs establish the statement for their models under their stated assumptions.','small muted'));
+ const targets=bindings.filter(b=>data.obligations.catalog[b.rg_id].proof_target);
+ const other=bindings.length-targets.length;
+ target.append(el('p',targets.length+' proof targets and '+other+' other catalog requirements, including inherited requirements.','small muted'));
  if(node.obligation_note)target.append(el('p',node.obligation_note,'callout'));
- const controls=el('div',undefined,'obligation-controls'),label=el('label','Find an obligation by RG, condition, or Lean name');
- const search=el('input');search.type='search';search.id='obligation-search';search.placeholder='For example, RG-021 or private key';label.htmlFor=search.id;
- const count=el('p',undefined,'small muted'),list=el('div',undefined,'obligation-list');list.setAttribute('aria-label','Obligation entries');
+ const controls=el('div',undefined,'obligation-controls'),label=el('label','Find a requirement by RG, condition or Lean name');
+ const search=el('input');search.type='search';search.id='obligation-search';search.placeholder='For example, RG-029';label.htmlFor=search.id;
+ const include=el('input');include.type='checkbox';include.id='include-role-catalog';include.checked=!targets.length;
+ const includeLabel=el('label');includeLabel.append(include,document.createTextNode(' Include other catalog requirements'));includeLabel.hidden=!other;
+ const count=el('p',undefined,'small muted'),list=el('div',undefined,'obligation-list');list.setAttribute('aria-label','Role requirements');
  const update=()=>{
   const query=search.value.toLowerCase().trim();
-  const visible=bindings.filter(binding=>{
+  const available=include.checked?[...targets,...bindings.filter(b=>!data.obligations.catalog[b.rg_id].proof_target)]:targets;
+  const visible=available.filter(binding=>{
    const o=data.obligations.catalog[binding.rg_id];
    return !query||[binding.rg_id,o.title,o.translation,...o.references.map(r=>r.label)].join(' ').toLowerCase().includes(query);
   });
-  count.textContent=`Showing ${visible.length} of ${bindings.length} obligations`;
+  count.textContent='Showing '+visible.length+' of '+available.length+' requirements';
   list.replaceChildren(...visible.map(obligationCard));
-  if(!visible.length)list.append(el('p','No obligations match that search.','obligation-empty'));
+  if(!visible.length)list.append(el('p','No requirements match that search.','obligation-empty'));
  };
- search.addEventListener('input',update);controls.append(label,search,count);target.append(controls,list);update();
+ search.addEventListener('input',update);include.addEventListener('change',update);
+ controls.append(label,search,includeLabel,count);target.append(controls,list);update();
 }
 function renderRoleDetail(id){const n=byId.get(id),d=$('details');d.replaceChildren(el('h3',n.label),el('p',n.description),el('code',n.role_id));if(n.theory)d.append(theoryDetail(n));if(n.uncertainty)d.append(el('p','Source extraction note: '+n.uncertainty,'callout'));if(n.parents.length){d.append(el('h3','Broader roles'));const list=el('div',undefined,'chips');for(const pid of n.parents){const b=el('button',byId.get(pid).label);b.style.fontSize='12px';b.addEventListener('click',()=>selectRole(pid));list.append(b);}d.append(list);}if(n.aliases.length)d.append(el('p','Source wording: '+n.aliases.join('; ')+'.'));if(n.source_ids.length){d.append(el('h3','Role evidence'));n.source_ids.slice(0,4).forEach((sid,i)=>d.append(sourceBlock(sid,i===0)));if(n.source_ids.length>4){const b=el('button',`Show all ${n.source_ids.length} source references`);b.addEventListener('click',()=>{b.remove();n.source_ids.slice(4).forEach(sid=>d.append(sourceBlock(sid,false)));});d.append(b);}}else d.append(el('p','The root organizes the extracted vocabulary. It is not a category defined by the CP.','callout'));}
 function renderEdgeDetail(id){const edge=[...data.subclass_edges,...data.associations].find(e=>e.edge_id===id),association=edge.type==='annotation_association',a=byId.get(association?edge.source:edge.child),b=byId.get(association?edge.target:edge.parent),d=$('details');d.replaceChildren(el('span',association?'IpsecPolicy annotation':edge.basis==='analyst_organization'?'Organizational subclass':'OWL subclass','badge'),el('h3',`${a.label} ${association?edge.label:'is a type of'} ${b.label}`),el('p',edge.rationale),el('p','Evidence basis: '+edge.basis.replaceAll('_',' ')+'.','small muted'));if(association)d.append(el('p','The export records a relationship between the role descriptions. It imposes no object-property restriction on every entity in either class.','callout'));if(edge.qualifications.length){const ul=el('ul',undefined,'details-list');edge.qualifications.forEach(q=>ul.append(el('li',q)));d.append(ul);}edge.source_ids.forEach((sid,i)=>d.append(sourceBlock(sid,i===0)));if(!edge.source_ids.length)d.append(el('p','The organizing edge is explicitly analyst-defined.','callout'));}

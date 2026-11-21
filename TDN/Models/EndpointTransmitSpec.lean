@@ -132,33 +132,33 @@ def EthernetHeaderMatches (packet : LayeredFrame.EthernetHeader)
       packet.vlanTags[index]? = some (field header (14 + index * 4) 2)) ∧
   field header (12 + 4 * packet.vlanTags.length) 2 = packet.etherType
 
-structure Fragment where
+structure EncodedFragment where
   networkHeader : List UInt8
   data : List UInt8
   offset : Nat
   more : Bool
 
-def Fragment.Raw (fragment : Fragment) : List UInt8 :=
+def EncodedFragment.Raw (fragment : EncodedFragment) : List UInt8 :=
   fragment.networkHeader ++ fragment.data
 
-def Fragment.MtuBytes (fragment : Fragment) (body : LayeredFrame.Body) : Nat :=
+def EncodedFragment.MtuBytes (fragment : EncodedFragment) (body : LayeredFrame.Body) : Nat :=
   match body with
   | .ethernet _ => fragment.data.length
   | _ => fragment.Raw.length
 
-def Fragment.AsPiece (fragment : Fragment) : Fragmentation.Fragment Unit UInt8 :=
+def EncodedFragment.AsPiece (fragment : EncodedFragment) : Fragmentation.PayloadFragment Unit UInt8 :=
   ⟨(), fragment.offset, fragment.data⟩
 
-def Fragment.IPv4Fields (packet : PacketPolicy.Packet) (identity : Nat)
-    (fragment : Fragment) : Prop :=
+def EncodedFragment.IPv4Fields (packet : PacketPolicy.Packet) (identity : Nat)
+    (fragment : EncodedFragment) : Prop :=
   NetworkHeaderMatches packet fragment.networkHeader fragment.data.length ∧
   field fragment.networkHeader 4 2 = identity ∧
   field fragment.networkHeader 6 2 % 8192 * 8 = fragment.offset ∧
   (field fragment.networkHeader 6 2 / 8192 % 2 = 1 ↔ fragment.more = true) ∧
   (fragment.more = true → fragment.data.length % 8 = 0) ∧ fragment.offset % 8 = 0
 
-def Fragment.IPv6Fields (packet : PacketPolicy.Packet) (identity : Nat)
-    (fragment : Fragment) : Prop :=
+def EncodedFragment.IPv6Fields (packet : PacketPolicy.Packet) (identity : Nat)
+    (fragment : EncodedFragment) : Prop :=
   fragment.networkHeader.length = 48 ∧
   field fragment.networkHeader 0 1 / 16 = 6 ∧
   field fragment.networkHeader 4 2 = 8 + fragment.data.length ∧
@@ -171,25 +171,25 @@ def Fragment.IPv6Fields (packet : PacketPolicy.Packet) (identity : Nat)
   field fragment.networkHeader 44 4 = identity ∧
   (fragment.more = true → fragment.data.length % 8 = 0) ∧ fragment.offset % 8 = 0
 
-structure Datagram where
+structure EncodedDatagram where
   body : LayeredFrame.Body
   application : List UInt8
   networkHeader : List UInt8
   transportHeader : List UInt8
-  fragments : List Fragment
+  fragments : List EncodedFragment
 
-def Datagram.Data (datagram : Datagram) : List UInt8 :=
+def EncodedDatagram.Data (datagram : EncodedDatagram) : List UInt8 :=
   datagram.transportHeader ++ datagram.application
 
-def Datagram.Raw (datagram : Datagram) : List UInt8 :=
+def EncodedDatagram.Raw (datagram : EncodedDatagram) : List UInt8 :=
   datagram.networkHeader ++ datagram.Data
 
-def Datagram.MtuBytes (datagram : Datagram) : Nat :=
+def EncodedDatagram.MtuBytes (datagram : EncodedDatagram) : Nat :=
   match datagram.body with
   | .ethernet _ => datagram.Data.length
   | _ => datagram.Raw.length
 
-def Datagram.Decoded (datagram : Datagram) : Prop :=
+def EncodedDatagram.Decoded (datagram : EncodedDatagram) : Prop :=
   match datagram.body with
   | .datagram packet =>
       packet.payloadBytes = some datagram.application ∧
@@ -203,7 +203,7 @@ def Datagram.Decoded (datagram : Datagram) : Prop :=
       datagram.transportHeader = [] ∧ EthernetHeaderMatches packet datagram.networkHeader
   | _ => False
 
-def Datagram.HeaderFrom (datagram : Datagram) (request : Request) : Prop :=
+def EncodedDatagram.HeaderFrom (datagram : EncodedDatagram) (request : Request) : Prop :=
   match datagram.body, request.body with
   | .datagram actual, .datagram template =>
       actual = { template with
@@ -216,9 +216,9 @@ def Datagram.HeaderFrom (datagram : Datagram) (request : Request) : Prop :=
       datagram.networkHeader.length = request.networkHeaderBytes ∧ datagram.transportHeader = []
   | _, _ => False
 
-def Datagram.Reassembles (datagram : Datagram) (mtu : Nat) : Prop :=
+def EncodedDatagram.Reassembles (datagram : EncodedDatagram) (mtu : Nat) : Prop :=
   Fragmentation.ValidPieces ⟨(), datagram.Data⟩
-    (datagram.fragments.map Fragment.AsPiece) ∧
+    (datagram.fragments.map EncodedFragment.AsPiece) ∧
   (∀ fragment ∈ datagram.fragments,
     fragment.more = decide (fragment.offset + fragment.data.length < datagram.Data.length) ∧
     fragment.MtuBytes datagram.body ≤ mtu) ∧
@@ -238,7 +238,7 @@ def Datagram.Reassembles (datagram : Datagram) (mtu : Nat) : Prop :=
       ∀ fragment ∈ datagram.fragments, fragment.networkHeader = datagram.networkHeader
   | _ => False
 
-def Datagram.ValidFor (datagram : Datagram) (request : Request) (mtu : Nat) : Prop :=
+def EncodedDatagram.ValidFor (datagram : EncodedDatagram) (request : Request) (mtu : Nat) : Prop :=
   datagram.Decoded ∧ datagram.HeaderFrom request ∧ datagram.Reassembles mtu ∧
   datagram.Raw.length ≤ request.ProtocolLimit ∧
   (request.mode = .stream → datagram.Raw.length ≤ mtu) ∧
@@ -254,14 +254,14 @@ inductive Error where
   deriving DecidableEq
 
 inductive Outcome where
-  | emitted (datagrams : List Datagram)
+  | emitted (datagrams : List EncodedDatagram)
   | error (reason : Error)
 
 def Outcome.Valid (outcome : Outcome) (request : Request) (mtu : Nat) : Prop :=
   match outcome with
   | .emitted datagrams =>
       request.TemplateValid ∧ request.MtuOverhead < mtu ∧ datagrams ≠ [] ∧
-      (datagrams.map Datagram.application).flatten = request.application ∧
+      (datagrams.map EncodedDatagram.application).flatten = request.application ∧
       (∀ datagram ∈ datagrams, datagram.ValidFor request mtu) ∧
       (∀ dontFragment, request.mode = .datagram dontFragment → datagrams.length = 1)
   | .error .unsupportedTemplate => ¬ request.TemplateValid

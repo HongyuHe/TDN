@@ -3,7 +3,7 @@ import TDN.Requirements.CompanionFirewallPlacementSpec
 namespace TDN.Requirements.Msc
 open Compliance
 
-structure MscComplianceContext (State Action : Type) where
+structure ComplianceContext (State Action : Type) where
   solution : String
   deployment : Deployment
   model : ForwardingModel State Action
@@ -27,13 +27,13 @@ structure MscComplianceContext (State Action : Type) where
   privateKeys : List PrivateKey
   privateKeyObjective : String → Bool
   privateKeyPolicies : List MandatoryKeyPolicy
-  tls : TLSPrimitive
-  macsecAuthentication : List MACsecAuthentication
-  macsecKeys : List MACsecKey
-  macsecServers : List MACsecServerPair
+  tlsAuth : EapTlsAuthProvider
+  macsecAuthentication : List MacsecAuthentication
+  macsecKeys : List MacsecKey
+  macsecServers : List MacsecServerPair
   provisioning : List KeyProvisioning
   eapCAKGeneratedByApprovedKGS : String → String → Prop
-  macsecParameters : List MACsecParameters
+  macsecParameters : List MacsecParameters
   innerConfigurations : List EncryptionComponentConfiguration
   outerConfigurations : List EncryptionComponentConfiguration
   innerOutboundMACObjective : Bool
@@ -96,34 +96,34 @@ def VerificationScope.external : VerificationScope → ExternalSubject
   | .enclaveNetwork id => .network id
   | .deviceComponent id => .component id
 
-def MscComplianceContext.KnownSubject {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.KnownSubject {S A : Type} (context : ComplianceContext S A)
     (subject : VerificationScope) : Prop :=
   match subject with
   | .entireSolution id => id = context.solution
   | .enclaveNetwork id => ∃ network ∈ context.deployment.networks, network.id = id
   | .deviceComponent id => ∃ device ∈ context.deployment.devices, device.id = id
 
-def MscComplianceContext.EachComponent {S A : Type} (context : MscComplianceContext S A) (subject : VerificationScope)
+def ComplianceContext.EachComponent {S A : Type} (context : ComplianceContext S A) (subject : VerificationScope)
     (condition : Device → ComponentDutyRecord → Prop) : Prop :=
   ∀ device ∈ context.deployment.devices, subject.Contains device.id →
     (¬ context.deployment.OrdinaryGray device.id ∨ context.deployment.standaloneEncapsulator device.id) →
     ∀ record ∈ context.records.components, record.component = device.id → condition device record
 
-def MscComplianceContext.External {S A : Type} (context : MscComplianceContext S A) (subject : VerificationScope)
+def ComplianceContext.External {S A : Type} (context : ComplianceContext S A) (subject : VerificationScope)
     (duties : List ExternalDuty) : Prop :=
   ∀ duty ∈ duties, context.records.external.Confirms duty subject.external
 
-def MscComplianceContext.ConfigurationDefaults {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.ConfigurationDefaults {S A : Type} (context : ComplianceContext S A)
     (subject : VerificationScope) : Prop :=
   context.EachComponent subject (fun _ record => DefaultAndDNSConfiguration record)
 
-def MscComplianceContext.ScopedDeployment {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.ScopedDeployment {S A : Type} (context : ComplianceContext S A)
     (subject : VerificationScope) : Deployment :=
-  { context.deployment with focus := match subject with
+  { context.deployment with deviceScope := match subject with
       | .deviceComponent component => some component
       | _ => none }
 
-def MscComplianceContext.ComponentConnectivity {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.ComponentConnectivity {S A : Type} (context : ComplianceContext S A)
     (component : String) : Prop :=
   (∀ network ∈ context.deployment.networks, component ∈ network.innerComponents →
     ∃ device ∈ context.deployment.devices, device.id = component ∧ device.level = network.level) ∧
@@ -135,7 +135,7 @@ def MscComplianceContext.ComponentConnectivity {S A : Type} (context : MscCompli
       ∃ first ∈ context.deployment.devices, ∃ second ∈ context.deployment.devices,
         first.id = pair.1 ∧ second.id = pair.2 ∧ first.level = second.level
 
-def MscComplianceContext.ComponentSeparation {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.ComponentSeparation {S A : Type} (context : ComplianceContext S A)
     (component : String) : Prop :=
   (context.records.managementDeployed = true → ∀ peer ∈ context.peers,
     peer.component = component → peer.managementDevices.Nonempty) ∧
@@ -147,68 +147,16 @@ def MscComplianceContext.ComponentSeparation {S A : Type} (context : MscComplian
       (context.records.managementDeployed = true →
         Disjoint first.managementDevices second.managementDevices)
 
-def MscComplianceContext.ComponentInterop {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.ComponentInterop {S A : Type} (context : ComplianceContext S A)
     (component : String) : Prop :=
-  let d := { context.deployment with focus := some component }
+  let d := { context.deployment with deviceScope := some component }
   context.model.CoversDeployment d ∧ InteroperationInventory d context.interoperation ∧
     InteroperationTransfers d context.model context.interoperation context.payloadDomain
 
-def MscComplianceContext.FormalizedRequirement {S A : Type} (context : MscComplianceContext S A) (subject : VerificationScope) (group : Fin 76) : Prop :=
-  let d := context.ScopedDeployment subject
-  let model := context.model
-  match group.val + 1 with
-  | 7 => CoreReq_msc_nested_layer_protection d model context.flows context.flowOf context.independentKeys
-  | 8 => match subject with
-    | .deviceComponent component => context.ComponentConnectivity component
-    | _ => SecurityLevelConnectivityCore d model context.authenticatedInnerPairs
-      context.establishedInnerTunnels context.requiredConnectivity context.includedUnclassified
-  | 12 => match subject with
-    | .deviceComponent component => context.ComponentSeparation component
-    | _ => CoreReq_msc_security_level_key_and_management_separation context.records.managementDeployed
-      context.peers context.establishedTunnel
-  | 13 => CoreReq_msc_gray_firewall_path_coverage d context.grayTopology
-  | 14 => CoreReq_msc_gray_addressing_for_level_filtering d context.addressRanges context.intendedAddressPairs
-  | 15 => MACsecEncapsulationCore d model context.encapsulations context.crossesIP
-  | 21 => CoreReq_msc_vpn_private_key_confinement d model context.privateKeys
-      context.privateKeyObjective context.privateKeyPolicies
-  | 24 => CoreReq_msc_macsec_authentication_choice_and_as d model context.tls context.macsecAuthentication
-  | 27 => CoreReq_msc_macsec_key_generation_and_server d context.macsecKeys context.macsecServers
-      context.provisioning context.eapCAKGeneratedByApprovedKGS
-  | 28 => CoreReq_msc_macsec_protection_parameters d model context.macsecParameters
-  | 29 => CoreReq_msc_inner_tunnel_no_bypass d model context.innerConfigurations
-      context.innerOutboundMACObjective context.innerInboundMACObjective
-  | 30 => CoreReq_msc_outer_tunnel_no_bypass d model context.outerConfigurations
-      context.outerOutboundMACObjective context.outerInboundMACObjective
-  | 32 => CoreReq_msc_transec_conditions (context.coverInstallations.filter
-      (fun installation => d.focus.isNone || d.focus == some installation.device))
-  | 33 => context.model.CoversDeployment d ∧
-      context.wireSizes.Correspondence context.model context.sizing ∧
-      context.wireSizes.NoFurtherFragmentation context.model context.sizing ∧ PacketSizingInventory d model context.sizing ∧
-      CoreReq_msc_packet_size_configuration (context.sizing.filter
-      (fun sizing => d.interfaces.any (fun interface =>
-        interface.id == model.native.ifaceName sizing.interface &&
-          (d.focus.isNone || d.focus == some interface.device)))) context.fragmentation
-  | 34 => CoreReq_msc_outer_firewall_placement context.untrustedBlack context.publicInternet
-      context.grayFirewallRequired context.edge context.grayConnection context.outer
-      context.outerFirewall context.black context.grayFirewall context.inner
-      context.insideAttachment context.outsideAttachment context.externalBlackConnection
-  | 35 => CoreReq_msc_boundary_interface_filtering d context.untrustedBlack
-      context.firewallInternal context.localOuter
-  | 37 => CoreReq_msc_outer_third_party_services d context.thirdPartyDisableObjective context.thirdPartyFeatures
-  | 38 => CoreReq_msc_ip_header_and_multicast_filtering d context.dropIPv4OptionsObjective
-  | 39 => CoreReq_msc_outer_gray_interface_policy d context.cdpOnGray
-  | 40 => CoreReq_msc_gray_firewall_allowlist d context.grayFirewallRequired
-  | 47 => CoreReq_msc_administrator_authentication d context.certificateAdminObjective context.nistAdminObjective
-      context.administrativeEvents context.accounts context.sessions context.awAdministrators
-  | 54 => match subject with
-    | .deviceComponent component => context.ComponentInterop component
-    | _ => CoreReq_msc_site_interoperability d model context.requiredSitePairs context.interoperation context.payloadDomain
-  | 56 => RedEgressCore d context.red context.outside context.conformingMSC context.aoApprovedProtection
-  | _ => True
-
-def MscComplianceContext.RequirementGroupSpec {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.RequirementGroupSpec {S A : Type} (context : ComplianceContext S A)
     (subject : VerificationScope) (group : Fin 76) : Prop :=
   let d := context.ScopedDeployment subject
+  let model := context.model
   let records := context.records
   let each := context.EachComponent subject
   let external := context.External subject
@@ -230,15 +178,27 @@ def MscComplianceContext.RequirementGroupSpec {S A : Type} (context : MscComplia
         (.product device.id record.product record.version device.kind) ∧
       records.external.Confirms .supplyChainMitigation
         (.product device.id record.product record.version device.kind))
+  | 7 => scoped_nested_layer_protection d model context.flows context.flowOf context.independentKeys
+  | 8 => match subject with
+    | .deviceComponent component => context.ComponentConnectivity component
+    | _ => scoped_security_level_connectivity d model context.authenticatedInnerPairs
+      context.establishedInnerTunnels context.requiredConnectivity context.includedUnclassified
   | 9 => external [.trustedRedGrayControl, .grayUnclassifiedDetermination]
   | 10 => (records.independentlyManaged = true →
       (∀ record ∈ records.components, ∀ connection ∈ record.managementConnections,
         connection.crossesBlack = false) ∧
-      (∀ tunnel ∈ d.tunnels, tunnel.mechanism = .ipsec →
+      (∀ tunnel ∈ d.tunnels, tunnel.protocol = .ipsec →
         ∃ first ∈ records.certificates, ∃ second ∈ records.certificates,
           first.subject = tunnel.sender ∧ second.subject = tunnel.receiver ∧
           first.issuer ∈ second.chain ∧ second.issuer ∈ first.chain))
   | 11 => CentralManagementConfiguration records d
+  | 12 => match subject with
+    | .deviceComponent component => context.ComponentSeparation component
+    | _ => RoleCatalog.security_level_key_and_management_separation context.records.managementDeployed
+      context.peers context.establishedTunnel
+  | 13 => scoped_gray_firewall_path_coverage d context.grayTopology
+  | 14 => RoleCatalog.gray_addressing_for_level_filtering d context.addressRanges context.intendedAddressPairs
+  | 15 => macsec_encapsulation_over_ip d model context.encapsulations context.crossesIP
   | 16 => each (fun device record => device.kind = .macsec →
       (record.optionalClearVLAN = true → "clear-vlan" ∈ record.supportedFeatures) ∧
       (record.optionalXPN = true → "xpn" ∈ record.supportedFeatures))
@@ -250,6 +210,8 @@ def MscComplianceContext.RequirementGroupSpec {S A : Type} (context : MscComplia
   | 19 => each (fun device record => device.kind = .vpn → IPsecAlgorithmConfiguration record)
   | 20 => each (fun device record => device.kind = .vpn →
       CertificateIdentityConfiguration records device.id record.removeDefaultCertificatesSelected)
+  | 21 => RoleCatalog.vpn_private_key_confinement d model context.privateKeys
+      context.privateKeyObjective context.privateKeyPolicies
   | 22 => each (fun device record => device.kind = .vpn → IPsecModesAndLifetimes record)
   | 23 => each (fun device record => device.kind = .vpn →
       IPsecModesAndLifetimes record ∧
@@ -259,18 +221,45 @@ def MscComplianceContext.RequirementGroupSpec {S A : Type} (context : MscComplia
           observation.input.verifier = device.id ∧ observation.input.claimant = rekey.peer ∧
           observation.association = rekey.association ∧
           observation.input.time = rekey.authenticatedAt ∧ AuthenticatedCertificate records observation)
+  | 24 => RoleCatalog.macsec_authentication_choice_and_as d model context.tlsAuth context.macsecAuthentication
   | 25 => each (fun device record => device.kind = .macsec →
       record.keyWrapAlgorithm = "AES-Key-Wrap" ∧ record.keyWrapBits = 256 ∧
       record.macsecBits = 256 ∧ record.macsecAlgorithm ∈ ["GCM-AES-256", "GCM-AES-XPN-256"])
   | 26 => each (fun device record =>
       (device.kind = .macsec ∧ d.certificateAuthenticated device.id = true ∨
         device.kind = .authenticationServer) → EAPAlgorithmConfiguration record)
+  | 27 => RoleCatalog.macsec_key_generation_and_server d context.macsecKeys context.macsecServers
+      context.provisioning context.eapCAKGeneratedByApprovedKGS
+  | 28 => RoleCatalog.macsec_protection_parameters d model context.macsecParameters
+  | 29 => scoped_inner_tunnel_no_bypass d model context.innerConfigurations
+      context.innerOutboundMACObjective context.innerInboundMACObjective
+  | 30 => scoped_outer_tunnel_no_bypass d model context.outerConfigurations
+      context.outerOutboundMACObjective context.outerInboundMACObjective
   | 31 => ∀ use ∈ records.routing, subject.Contains use.component →
       (d.IsLayer use.component .outer → use.dynamicProtocol = false) ∧
       (d.IsLayer use.component .inner → use.ownTunnelLookup = true ∨
         (use.sourceComponent = use.component ∧ use.destinationComponent = use.component))
+  | 32 => RoleCatalog.traffic_flow_confidentiality (context.coverInstallations.filter
+      (fun installation => d.deviceScope.isNone || d.deviceScope == some installation.device))
+  | 33 => context.model.CoversDeployment d ∧
+      context.wireSizes.Correspondence context.model context.sizing ∧
+      context.wireSizes.NoFurtherFragmentation context.model context.sizing ∧ PacketSizingInventory d model context.sizing ∧
+      RoleCatalog.packet_size_configuration (context.sizing.filter
+      (fun sizing => d.interfaces.any (fun interface =>
+        interface.id == model.deviceDataPlane.ifaceName sizing.interface &&
+          (d.deviceScope.isNone || d.deviceScope == some interface.device)))) context.fragmentation
+  | 34 => TDN.Requirements.graph_outer_firewall_placement context.untrustedBlack context.publicInternet
+      context.grayFirewallRequired context.edge context.grayConnection context.outer
+      context.outerFirewall context.black context.grayFirewall context.inner
+      context.insideAttachment context.outsideAttachment context.externalBlackConnection
+  | 35 => scoped_boundary_interface_filtering d context.untrustedBlack
+      context.firewallInternal context.localOuter
   | 36 => each (fun _ record => record.enabledInterfaces = record.minimumFeasibleExposure ∧
       ∀ interface ∈ record.unusedInterfaces, interface ∉ record.enabledInterfaces)
+  | 37 => RoleCatalog.outer_third_party_services d context.thirdPartyDisableObjective context.thirdPartyFeatures
+  | 38 => scoped_ip_header_and_multicast_filtering d context.dropIPv4OptionsObjective
+  | 39 => scoped_outer_gray_interface_policy d context.cdpOnGray
+  | 40 => scoped_gray_firewall_allowlist d context.grayFirewallRequired
   | 41 => each (fun device record => ControlServiceConfiguration record device)
   | 42 => each (fun device _ => TrustedTimeConfiguration records.time device d)
   | 43 => context.ConfigurationDefaults subject
@@ -280,6 +269,8 @@ def MscComplianceContext.RequirementGroupSpec {S A : Type} (context : MscComplia
       records.external.Confirms .vendorAndLocalHardening (.component device.id) ∧
       records.external.Confirms .protectedFacility (.component device.id))
   | 46 => each (fun _ record => ManagementTransportConfiguration record)
+  | 47 => RoleCatalog.administrator_authentication d context.certificateAdminObjective context.nistAdminObjective
+      context.administrativeEvents context.accounts context.sessions context.awAdministrators
   | 48 => each (fun device _ => ProvisioningConfiguration records d device.id)
   | 49 => external [.authorizedAdministratorClearance, .outerAdministratorClearance]
   | 50 => SIEMConfiguration records d
@@ -300,10 +291,14 @@ def MscComplianceContext.RequirementGroupSpec {S A : Type} (context : MscComplia
       first.vlanTrunk = false ∧ second.vlanTrunk = false ∧
       (first.redNetwork ≠ second.redNetwork →
         first.outerPhysicalInterface ≠ second.outerPhysicalInterface))
+  | 54 => match subject with
+    | .deviceComponent component => context.ComponentInterop component
+    | _ => RoleCatalog.site_interoperability d model context.requiredSitePairs context.interoperation context.payloadDomain
   | 55 => (records.combinedSolutionRequiresGrayFirewall = true →
       ∃ firewall ∈ d.devices, firewall.kind = .grayFirewall) ∧
       (records.combinedEndUserSolution = true ↔ context.companionFirewalls ≠ []) ∧
       ∀ companion ∈ context.companionFirewalls, companion.Requirements d records
+  | 56 => red_egress_waypointing d context.red context.outside context.conformingMSC context.aoApprovedProtection
   | 57 => each (fun device _ =>
       ∀ duty ∈ [.aoVirusUpdatePolicy, .criticalPatchTesting, .localPatchingPolicy, .tempest],
         records.external.Confirms duty (.component device.id))
@@ -349,9 +344,9 @@ def MscComplianceContext.RequirementGroupSpec {S A : Type} (context : MscComplia
   | 75 => (∀ router ∈ records.selectedScreeningRouters,
       ∃ device ∈ d.devices, device.id = router ∧ device.layer = none)
   | 76 => external [.legalUndertaking]
-  | _ => context.FormalizedRequirement subject group
+  | _ => False
 
-def MscComplianceContext.ComponentApplies {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.ComponentApplies {S A : Type} (context : ComplianceContext S A)
     (device : Device) (group : Fin 76) : Prop :=
   let encryption := device.layer = some .inner ∨ device.layer = some .outer
   let infrastructure := device.kind ∈ [.workstation, .certificationAuthority,
@@ -385,7 +380,7 @@ def MscComplianceContext.ComponentApplies {S A : Type} (context : MscComplianceC
   | 51 => device.id ∈ context.records.crossDomainSolutions
   | _ => True
 
-def MscComplianceContext.Applicable {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.Applicable {S A : Type} (context : ComplianceContext S A)
     (subject : VerificationScope) (group : Fin 76) : Prop :=
   match subject with
   | .entireSolution _ | .enclaveNetwork _ => True
@@ -395,17 +390,17 @@ def MscComplianceContext.Applicable {S A : Type} (context : MscComplianceContext
           context.deployment.standaloneEncapsulator component) ∧
         context.ComponentApplies device group
 
-def MscComplianceContext.EncryptionView {S A : Type} (context : MscComplianceContext S A)
-    (encryptor : EGEncryptionComponent) : MscComplianceContext S A :=
+def ComplianceContext.EncryptionView {S A : Type} (context : ComplianceContext S A)
+    (encryptor : EGEncryptionComponent) : ComplianceContext S A :=
   { context with deployment := { context.deployment with
       devices := context.deployment.devices.map (fun device =>
         if device.id = encryptor.component then
-          { device with kind := match encryptor.mechanism with
+          { device with kind := match encryptor.protocol with
             | .ipsec => .vpn
             | .macsec => .macsec }
         else device) } }
 
-def MscComplianceContext.EnterpriseGrayMeaning {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.EnterpriseGrayMeaning {S A : Type} (context : ComplianceContext S A)
     (subject : VerificationScope) : Prop :=
   context.deployment.centralManagementSite.isSome = true →
   ∃ configuration, context.enterpriseGray = some configuration ∧
@@ -421,13 +416,13 @@ def MscComplianceContext.EnterpriseGrayMeaning {S A : Type} (context : MscCompli
         context.ComponentApplies { device with layer := some .inner } group →
         view.RequirementGroupSpec (.deviceComponent encryptor.component) group
 
-def MscComplianceContext.AllApplicableDuties {S A : Type} (context : MscComplianceContext S A)
+def ComplianceContext.AllApplicableDuties {S A : Type} (context : ComplianceContext S A)
     (subject : VerificationScope) : Prop :=
   context.KnownSubject subject ∧ context.records.InventoryComplete context.deployment ∧
   context.EnterpriseGrayMeaning subject ∧
   ∀ group : Fin 76, context.Applicable subject group → context.RequirementGroupSpec subject group
 
-def MSCReferencesClosed {S A : Type} (contexts : List (MscComplianceContext S A)) : Prop :=
+def ReferencesClosed {S A : Type} (contexts : List (ComplianceContext S A)) : Prop :=
   ∀ context ∈ contexts, ∀ solution, context.conformingMSC solution →
     ∃ referenced ∈ contexts, referenced.solution = solution ∧
       referenced.AllApplicableDuties (.entireSolution solution)

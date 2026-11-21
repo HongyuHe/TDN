@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+from proof_targets import SCOPE, check_target_map
 
 
 def load(path):
@@ -27,7 +28,8 @@ def main():
     parser.add_argument("--candidate-definitions", required=True)
     parser.add_argument("--compiled-audit", required=True)
     parser.add_argument("--output", required=True)
-    parser.add_argument("--groups", nargs="+", help="Review only these completed RGs; default: all 24.")
+    parser.add_argument("--scope", type=Path, default=SCOPE, help="Proof scope for the version under review.")
+    parser.add_argument("--groups", nargs="+", help="Review these completed RGs. Defaults to all active targets.")
     args = parser.parse_args()
     accepted = load(args.accepted_map)
     proof_map = load(args.proof_map)
@@ -35,8 +37,12 @@ def main():
         accepted = accepted["groups"]
     catalog = {row["rg_id"]: row for row in accepted}
     selected = set(args.groups) if args.groups else set(catalog)
-    if len(catalog) != 24 or not selected or not selected <= set(catalog):
-        parser.error("Select known RGs from the complete 24-group accepted map.")
+    try:
+        check_target_map(accepted, args.scope)
+    except ValueError as error:
+        parser.error(str(error))
+    if not selected or not selected <= set(catalog):
+        parser.error("Select groups from the active proof targets.")
     expected = {key: value for key, value in catalog.items() if key in selected}
     supplied = {row["rg_id"]: row for row in proof_map}
     failures = []

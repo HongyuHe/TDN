@@ -315,7 +315,7 @@ def main():
                next(d for d in device_rows if d["id"] == i["device_id"])["role"] == "host"]
     black = [port_index[i["id"]] for i in interfaces if i["zone"] == "black"]
     Path(args.output).write_text(render(args.namespace, records, ports, routes, links, [], sources, black,
-                                       "snapshot_IPv4_IPv6_ESP_packet_stack"))
+                                       "snapshot_ipv4_ipv6_esp_packet_stack"))
     report = {"snapshot": str(path), "model_snapshot": {"devices": device_rows, "interfaces": interfaces, "filters": chains},
               "device_ids": device_index, "port_ids": port_index, "levels": {"L1": 1},
               "early_source_guards": source_guards, "early_header_gates": early_gates, "immediate_header_gates": immediate_gates, "red_family": families[0], "families": families, "routes": routes, "route_gateways": gateways,

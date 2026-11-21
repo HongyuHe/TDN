@@ -13,48 +13,48 @@ lemma HeaderIdentity.destination {actual nominal : PacketPolicy.Packet}
   have same := congrArg PacketPolicy.Packet.destination identity.1
   exact same
 
-lemma Frame.forwarded_visible {frame : Frame} {header : PacketPolicy.Packet}
+lemma TunnelFrame.forwarded_visible {frame : TunnelFrame} {header : PacketPolicy.Packet}
     (visible : frame.visibleHeader = some header) :
     frame.forwarded.visibleHeader = some { header with hopLimit := header.hopLimit - 1 } := by
   cases nominal : frame.body.visibleHeader with
-  | none => simp [Frame.visibleHeader, nominal] at visible
+  | none => simp [TunnelFrame.visibleHeader, nominal] at visible
   | some packet =>
     have same : frame.activeHeader.getD packet = header := by
-      simpa [Frame.visibleHeader, nominal] using visible
-    simp [Frame.forwarded, Frame.visibleHeader, nominal, same]
+      simpa [TunnelFrame.visibleHeader, nominal] using visible
+    simp [TunnelFrame.forwarded, TunnelFrame.visibleHeader, nominal, same]
 
-lemma Frame.pop_visible (frame : Frame) (body : Body) (header : PacketPolicy.Packet)
+lemma TunnelFrame.pop_visible (frame : TunnelFrame) (body : Body) (header : PacketPolicy.Packet)
     (visible : body.visibleHeader = some header) :
     (frame.popHeader body).visibleHeader =
       some ((frame.hiddenHeaders.head?.getD none).getD header) := by
-  simp [Frame.visibleHeader, Frame.popHeader, visible]
+  simp [TunnelFrame.visibleHeader, TunnelFrame.popHeader, visible]
 
 end TDN.LayeredFrame
 
 namespace TDN.MultiProtocolForwarding
 open LayeredFrame
 
-abbrev withoutHeaderProcessing (c : Config) : Config := { c with headerProcessing := none }
+abbrev withoutHeaderProcessing (c : TunnelForwardingModel) : TunnelForwardingModel := { c with headerProcessing := none }
 
-abbrev HeaderedLocalConditions (c : Config) (expectedEncapStack : Nat → List Nat) :=
+abbrev HeaderedLocalConditions (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat) :=
   LocalConditions (withoutHeaderProcessing c) expectedEncapStack
 
-lemma carrier_bodies_without_headers (c : Config) (expectedEncapStack : Nat → List Nat) (body : Body) :
+lemma carrier_bodies_without_headers (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat) (body : Body) :
     CarrierBodies (withoutHeaderProcessing c) expectedEncapStack body ↔ CarrierBodies c expectedEncapStack body := by
   induction body <;> simp_all [CarrierBodies, withoutHeaderProcessing]
 
-def HeaderedLocalHeader (c : Config) (entry : Nat) (header : PacketPolicy.Packet) : Prop :=
+def HeaderedLocalHeader (c : TunnelForwardingModel) (entry : Nat) (header : PacketPolicy.Packet) : Prop :=
   c.ip.canOriginateTraffic entry ∨
   ∃ iface ∈ c.carriers, iface.routingIface = entry ∧ HeaderIdentity header (carrierHeader iface)
 
-def HeaderedAcceptedHook (c : Config) (s : State) (header : PacketPolicy.Packet) : Prop :=
-  DataPlaneForwarding.accepts (c.ip.forwardRules s.iface) (c.ip.forwardFallback s.iface)
+def HeaderedAcceptedHook (c : TunnelForwardingModel) (s : TunnelForwardingState) (header : PacketPolicy.Packet) : Prop :=
+  PacketPolicy.AclAllows (c.ip.forwardRules s.iface) (c.ip.forwardFallback s.iface)
     (policyHeader c s header) ∨
   (s.authenticated = [] ∧ HeaderedLocalHeader c s.enteredIface header ∧
-    DataPlaneForwarding.accepts (c.ip.outputRules s.iface) (c.ip.outputFallback s.iface)
+    PacketPolicy.AclAllows (c.ip.outputRules s.iface) (c.ip.outputFallback s.iface)
       (policyHeader c s header))
 
-def HeaderedStackInvariant (c : Config) (expectedEncapStack : Nat → List Nat) (s : State) : Prop :=
+def HeaderedStackInvariant (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat) (s : TunnelForwardingState) : Prop :=
   s.frame.HeadersCoherent ∧ CarrierBodies c expectedEncapStack s.frame.body ∧
   match s.datapathStage with
   | .received | .egressReady => s.frame.body.protectionLayers = expectedEncapStack s.iface
@@ -82,8 +82,8 @@ lemma selected_associations_same_header {actual nominal : PacketPolicy.Packet}
   simp only [DataPlaneForwarding.lookupSpdPolicies, DataPlaneForwarding.IpsecPolicy.matches,
     identity.source, identity.destination]
 
-lemma headered_hook_stack_effect {c : Config} {expectedEncapStack : Nat → List Nat}
-    (conditions : HeaderedLocalConditions c expectedEncapStack) (s : State) (header : PacketPolicy.Packet)
+lemma headered_hook_stack_effect {c : TunnelForwardingModel} {expectedEncapStack : Nat → List Nat}
+    (conditions : HeaderedLocalConditions c expectedEncapStack) (s : TunnelForwardingState) (header : PacketPolicy.Packet)
     (processing : Processing c expectedEncapStack s) (routed : Routed c s header)
     (accepted : HeaderedAcceptedHook c s header) :
     (DataPlaneForwarding.lookupSpdPolicies (c.ip.egressPolicies s.iface) header = [] →
@@ -103,10 +103,10 @@ lemma headered_hook_stack_effect {c : Config} {expectedEncapStack : Nat → List
       have selectors := selected_associations_same_header identity (c.ip.egressPolicies s.iface)
       simpa [DataPlaneForwarding.encapStackAfterIngress, empty, entry, routeExit, selectors, withoutHeaderProcessing] using effect
 
-lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → List Nat}
+lemma headered_step_preserves_stack {c : TunnelForwardingModel} {expectedEncapStack : Nat → List Nat}
     (conditions : HeaderedLocalConditions c expectedEncapStack) (processing : HeaderProcessing)
     (mode : c.headerProcessing = some processing) (bounds : HeaderBounds processing)
-    {before after : State} {action : Action} (step : Step c before action after)
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction} (step : TunnelForwardingStep c before action after)
     (invariant : HeaderedStackInvariant c expectedEncapStack before) :
     HeaderedStackInvariant c expectedEncapStack after := by
   have coherent := invariant.1
@@ -114,28 +114,28 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
   obtain ⟨wellformed, valid⟩ := invariant.2
   cases step with
   | @receive header datapathStage visible tracking =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
     simp only [datapathStage] at valid
     exact ⟨wellformed, header, visible,
       ⟨by simpa [DataPlaneForwarding.encapStackAfterIngress] using valid, Or.inl rfl, rfl⟩, rfl⟩
   | @route header route datapathStage visible chosen entry =>
-    simp only [Config.forwardedFrame_body]
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.forwarded_frame_body]
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
     simp only [datapathStage] at valid
     obtain ⟨h, hv, current, entered⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
     subst h
     refine ⟨wellformed, { header with hopLimit := header.hopLimit - 1 }, ?_,
       ⟨?_, current.2.1, ?_⟩, ⟨route, ?_, entry.trans entered.symm, rfl⟩, ?_⟩
-    · simpa [Config.forwardedFrame, mode] using Frame.forwarded_visible visible
-    · simpa [Config.forwardedFrame, mode] using current.1
+    · simpa [TunnelForwardingModel.forwardedFrame, mode] using TunnelFrame.forwarded_visible visible
+    · simpa [TunnelForwardingModel.forwardedFrame, mode] using current.1
     · exact (conditions.ip.routeOwner route chosen.1).trans
         (by simpa [entry] using current.2.2)
     · exact (selected_route_metadata _ _ _ _ rfl).mp chosen
     · intro impossible
       cases impossible
   | @routeLocalOutput header route datapathStage visible chosen entry =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
     simp only [datapathStage] at valid
     obtain ⟨h, hv, current, origin, empty, entered⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -145,14 +145,14 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
     exact (conditions.ip.routeOwner route chosen.1).trans
       (by simpa [entry] using current.2.2)
   | @forwardFilter header datapathStage visible accepted =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
     simp only [datapathStage] at valid
     obtain ⟨h, hv, current, routed, _⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
     subst h
     exact ⟨wellformed, header, visible, current, routed, Or.inl accepted⟩
   | @outputFilter header datapathStage visible accepted =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
     simp only [datapathStage] at valid
     obtain ⟨h, hv, current, routed, origin⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -160,8 +160,8 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
     obtain ⟨origin, empty⟩ := origin trivial
     exact ⟨wellformed, header, visible, current, routed, Or.inr ⟨empty, origin, accepted⟩⟩
   | @encryptIPsec header policy association datapathStage visible selected installed bound =>
-    simp only [Config.ipsecFrame_body, CarrierBodies]
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.ipsec_frame_body, CarrierBodies]
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
     simp only [datapathStage] at valid
     obtain ⟨h, hv, current, routed, accepted⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -172,7 +172,7 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
     · simpa [Body.protectionLayers, DataPlaneForwarding.IpsecPolicy.seal] using (congrArg (List.cons policy.tag) current.1).trans effect
     · rfl
   | @routeOuterPacket header route datapathStage visible chosen entry =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
     simp only [datapathStage] at valid
     obtain ⟨stack, policy, member, association, body, bound, encrypted⟩ := valid
     obtain ⟨nominal, nominalVisible, identity⟩ := before.frame.coherent_visible coherent header visible
@@ -193,7 +193,7 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
       (conditions.ip.routeOuterPacket before.iface policy member head association (ipFrame c before header)
         route selectedView entry)⟩
   | @forwardWithoutEncap header datapathStage visible noPolicy =>
-    simp only [Config.visibleHeader, mode] at visible
+    simp only [TunnelForwardingModel.visibleHeader, mode] at visible
     simp only [datapathStage] at valid
     obtain ⟨h, hv, current, routed, accepted⟩ := valid
     have same : h = header := Option.some.inj (hv.symm.trans visible)
@@ -201,7 +201,7 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
     exact ⟨wellformed, current.1.trans
       ((headered_hook_stack_effect conditions before header current routed accepted).1 noPolicy)⟩
   | @decryptIPsec policy association body header datapathStage encrypted configured installed bound visible selected tracking =>
-    simp only [Config.restoredFrame_body]
+    simp only [TunnelForwardingModel.restored_frame_body]
     simp only [datapathStage] at valid
     have recursive : CarrierBodies c expectedEncapStack body := by
       simpa [encrypted, CarrierBodies] using wellformed
@@ -209,7 +209,7 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
       simpa [encrypted, Body.protectionLayers, DataPlaneForwarding.IpsecPolicy.seal] using valid
     refine ⟨recursive, (before.frame.hiddenHeaders.head?.getD none).getD header, ?_,
       ⟨?_, Or.inr ⟨policy, configured, rfl, body.protectionLayers, stack.symm⟩, rfl⟩, trivial⟩
-    · simpa [Config.restoredFrame, mode] using before.frame.pop_visible body header visible
+    · simpa [TunnelForwardingModel.restoredFrame, mode] using before.frame.pop_visible body header visible
     · simpa [DataPlaneForwarding.encapStackAfterIngress] using congrArg List.tail stack
   | @inputFilter header datapathStage visible addressed accepted =>
     simp only [datapathStage] at valid
@@ -229,7 +229,7 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
     simp only [datapathStage] at valid
     exact ⟨wellformed, valid.trans (conditions.bridge before.iface next member)⟩
   | @encryptMACsec iface association configured datapathStage logical emits =>
-    simp only [datapathStage, Config.macsecFrame_body, Body.protectionLayers]
+    simp only [datapathStage, TunnelForwardingModel.macsec_frame_body, Body.protectionLayers]
     simp only [datapathStage] at valid
     refine ⟨?_, ?_⟩
     · simpa [CarrierBodies] using (show CarrierBodies c expectedEncapStack before.frame.body ∧
@@ -279,22 +279,22 @@ lemma headered_step_preserves_stack {c : Config} {expectedEncapStack : Nat → L
         ∃ sender ∈ c.carriers, iface.transmit = sender.transmit ∧
           before.frame.body.protectionLayers = expectedEncapStack sender.virtualIface from
           ⟨wellformed, iface, configured, rfl, atVirtual⟩)
-    · simp [Config.carrierFrame, mode, Frame.pushHeader, Frame.visibleHeader,
+    · simp [TunnelForwardingModel.carrierFrame, mode, TunnelFrame.pushHeader, TunnelFrame.visibleHeader,
         Body.visibleHeader, header, carrierHeader]
     · simpa [DataPlaneForwarding.encapStackAfterIngress, Body.protectionLayers] using atVirtual.trans same
     · exact ⟨rfl, (bounds iface.routingIface).2⟩
   | @decapsulate iface body configured datapathStage owner unwrapped =>
-    simp only [Config.restoredFrame_body]
+    simp only [TunnelForwardingModel.restored_frame_body]
     obtain ⟨recursive, layers⟩ := unwrap_carrier_preserves_record conditions iface configured
       before.frame.body body
       ((carrier_bodies_without_headers c expectedEncapStack before.frame.body).mpr wellformed) unwrapped
     exact ⟨(carrier_bodies_without_headers c expectedEncapStack body).mp recursive, layers⟩
   | drop => exact ⟨wellformed, trivial⟩
 
-theorem headered_traces_preserve_stack (c : Config) (expectedEncapStack : Nat → List Nat)
+theorem headered_traces_preserve_stack (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat)
     (conditions : HeaderedLocalConditions c expectedEncapStack) (processing : HeaderProcessing)
     (mode : c.headerProcessing = some processing) (bounds : HeaderBounds processing)
-    {start finish : State} {actions : List Action}
+    {start finish : TunnelForwardingState} {actions : List TunnelForwardingAction}
     (run : (lts c).MTr start actions finish) (initial : HeaderedStackInvariant c expectedEncapStack start) :
     HeaderedStackInvariant c expectedEncapStack finish := by
   have preserved : (lts c).TrInv (HeaderedStackInvariant c expectedEncapStack) := by

@@ -1,19 +1,19 @@
 import TDN.Models.PerStageMtuInvariants
 import TDN.Models.Ipv4AndIpv6FragmentBuilder
 
-namespace TDN.IPsecFrameEncoding
+namespace TDN.IpsecFrameEncoding
 open PacketSource LayeredFrame ESPWire
 
 
-def protectedData {Key : Type} (codec : Codec Key) (source : Datagram)
-    (association : DataPlaneForwarding.TunnelSAStamp) (contents : Body) (hidden : List (Option PacketPolicy.Packet)) : List UInt8 :=
+def protectedData {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (association : DataPlaneForwarding.TunnelSaStamp) (contents : Body) (hidden : List (Option PacketPolicy.Packet)) : List UInt8 :=
   let parameters := codec.parameters association
   encodeESP codec.primitive (codec.key association) association.association parameters.sequence parameters.iv
     (encodeBody codec source source.application contents (hidden.head?.getD none) (hidden.drop 1))
     (nextHeader contents)
 
 
-def bareEmission {Key : Type} (codec : Codec Key) (source : Datagram) (frame : Frame) : Datagram :=
+def bareEmission {Key : Type} (codec : Codec Key) (source : EncodedDatagram) (frame : TunnelFrame) : EncodedDatagram :=
   match frame.body with
   | .datagram nominal =>
       let actual := frame.activeHeader.getD nominal
@@ -33,62 +33,62 @@ def bareEmission {Key : Type} (codec : Codec Key) (source : Datagram) (frame : F
   | .macsec _ _ | .macsecPdu _ _ _ _ | .carrier _ _ => source
 
 
-def wireEmission {Key : Type} (codec : Codec Key) (source : Datagram) (frame : Frame) (mtu : Nat) : Datagram :=
+def wireEmission {Key : Type} (codec : Codec Key) (source : EncodedDatagram) (frame : TunnelFrame) (mtu : Nat) : EncodedDatagram :=
   let bare := bareEmission codec source frame
   match bare.body with
   | .datagram header => bare.fragmentIP header 0 mtu
   | _ => bare.asWhole
 
-lemma bare_emission_raw {Key : Type} (codec : Codec Key) (source : Datagram)
-    (frame : Frame) (shape : frame.body.IPsecOnly KnownIPv4Seal) :
+lemma bare_emission_raw {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (frame : TunnelFrame) (shape : frame.body.IPsecOnly KnownIPv4Seal) :
     (bareEmission codec source frame).Raw = encodeFrame codec source source.application frame := by
   cases body : frame.body <;>
-    simp_all only [bareEmission, Datagram.Raw, Datagram.Data, encodeFrame, encodeBody,
+    simp_all only [bareEmission, EncodedDatagram.Raw, EncodedDatagram.Data, encodeFrame, encodeBody,
       protectedData, List.append_assoc, List.nil_append, Body.IPsecOnly]
 
-lemma wire_emission_raw {Key : Type} (codec : Codec Key) (source : Datagram)
-    (frame : Frame) (mtu : Nat) :
+lemma wire_emission_raw {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (frame : TunnelFrame) (mtu : Nat) :
     (wireEmission codec source frame mtu).Raw = (bareEmission codec source frame).Raw := by
   dsimp only [wireEmission]
   split
-  · unfold Datagram.fragmentIP
+  · unfold EncodedDatagram.fragmentIP
     split <;> rfl
   · rfl
 
-lemma wire_emission_body {Key : Type} (codec : Codec Key) (source : Datagram)
-    (frame : Frame) (mtu : Nat) :
+lemma wire_emission_body {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (frame : TunnelFrame) (mtu : Nat) :
     (wireEmission codec source frame mtu).body = (bareEmission codec source frame).body := by
   dsimp only [wireEmission]
   split
-  · unfold Datagram.fragmentIP
+  · unfold EncodedDatagram.fragmentIP
     split <;> rfl
   · rfl
 
-lemma wire_emission_network {Key : Type} (codec : Codec Key) (source : Datagram)
-    (frame : Frame) (mtu : Nat) :
+lemma wire_emission_network {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (frame : TunnelFrame) (mtu : Nat) :
     (wireEmission codec source frame mtu).networkHeader = (bareEmission codec source frame).networkHeader ∧
       (wireEmission codec source frame mtu).Data = (bareEmission codec source frame).Data := by
   dsimp only [wireEmission]
   split
-  · unfold Datagram.fragmentIP
+  · unfold EncodedDatagram.fragmentIP
     split <;> exact ⟨rfl, rfl⟩
   · exact ⟨rfl, rfl⟩
 
-lemma wire_Ethernet_size {Key : Type} (codec : Codec Key) (source : Datagram)
-    (frame : Frame) (header : EthernetHeader) (body : frame.body = .ethernet header) (mtu : Nat) :
+lemma wire_ethernet_size {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (frame : TunnelFrame) (header : EthernetHeader) (body : frame.body = .ethernet header) (mtu : Nat) :
     (wireEmission codec source frame mtu).MtuBytes = source.application.length := by
-  simp only [wireEmission, bareEmission, body, Datagram.MtuBytes, Datagram.asWhole, Datagram.Data,
+  simp only [wireEmission, bareEmission, body, EncodedDatagram.MtuBytes, EncodedDatagram.asWhole, EncodedDatagram.Data,
     List.nil_append]
 
-lemma wire_fitting_fragment_count {Key : Type} (codec : Codec Key) (source : Datagram)
-    (frame : Frame) (mtu : Nat)
+lemma wire_fitting_fragment_count {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (frame : TunnelFrame) (mtu : Nat)
     (fits : (wireEmission codec source frame mtu).MtuBytes ≤ mtu) :
     (wireEmission codec source frame mtu).fragments.length = 1 := by
   dsimp only [wireEmission] at fits ⊢
   split
   next header body =>
     rw [body] at fits
-    unfold Datagram.fragmentIP at fits ⊢
+    unfold EncodedDatagram.fragmentIP at fits ⊢
     split
     · rfl
     next missed =>
@@ -100,24 +100,24 @@ lemma wire_fitting_fragment_count {Key : Type} (codec : Codec Key) (source : Dat
       contradiction
   next => rfl
 
-lemma forwarded_header_unfragmented (source : Datagram) (nominal actual : PacketPolicy.Packet)
+lemma forwarded_header_unfragmented (source : EncodedDatagram) (nominal actual : PacketPolicy.Packet)
     (body : source.body = .datagram nominal) (decoded : source.Decoded)
     (identity : HeaderIdentity actual nominal) (ipv4 : actual.source < 2^32) :
     field (forwardedNetworkHeader source nominal actual) 6 2 % 8192 = 0 ∧
     field (forwardedNetworkHeader source nominal actual) 6 2 / 8192 % 2 = 0 := by
   have initial := source.decoded_header_is_unfragmented decoded
-  rw [Datagram.UnfragmentedHeader, body] at initial
+  rw [EncodedDatagram.UnfragmentedHeader, body] at initial
   have nominalIPv4 : nominal.source < 2^32 := by rw [← identity.source]; exact ipv4
   have original := initial nominalIPv4
   unfold forwardedNetworkHeader
   split
   · exact original
   · unfold encodeNetworkHeader
-    rw [if_pos ipv4, encoded_IPv4_flags _ _ _ _ (field_bound source.networkHeader 6 2)]
+    rw [if_pos ipv4, encoded_ipv4_flags _ _ _ _ (field_bound source.networkHeader 6 2)]
     exact original
 
-lemma bare_emission_IP_properties {Key : Type} (codec : Codec Key) (source : Datagram)
-    (decoded : source.Decoded) (frame : Frame)
+lemma bare_emission_ip_properties {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (decoded : source.Decoded) (frame : TunnelFrame)
     (shape : frame.body.IPsecOnly KnownIPv4Seal)
     (originalIP : frame.body.originalHeader = source.body.originalHeader)
     (originalEthernet : frame.body.originalEthernet = source.body.originalEthernet)
@@ -135,13 +135,13 @@ lemma bare_emission_IP_properties {Key : Type} (codec : Codec Key) (source : Dat
     have same : nominal = header := by
       simpa only [body, Body.visibleHeader, Option.some.injEq] using nominalVisible.symm
     subst nominal
-    have sourceBody := source_IP_body_from_original source decoded header (by simpa only [body, Body.originalHeader] using originalIP)
+    have sourceBody := source_ip_body_from_original source decoded header (by simpa only [body, Body.originalHeader] using originalIP)
     have actualSame : frame.activeHeader.getD header = actual := by
-      simpa only [Frame.visibleHeader, body, Body.visibleHeader, Option.some.injEq] using visible
+      simpa only [TunnelFrame.visibleHeader, body, Body.visibleHeader, Option.some.injEq] using visible
     have fields := forwarded_network_header_matches source header actual sourceBody decoded identity
-    simp only [bareEmission, body, actualSame, Datagram.Raw, Datagram.Data, List.length_append]
+    simp only [bareEmission, body, actualSame, EncodedDatagram.Raw, EncodedDatagram.Data, List.length_append]
     refine ⟨by simp only [Nat.add_assoc], ?_, ?_⟩
-    · simpa only [leafNetwork, Datagram.Data, List.length_append] using fields.2
+    · simpa only [leafNetwork, EncodedDatagram.Data, List.length_append] using fields.2
     · exact fun ipv4 => forwarded_header_unfragmented source header actual sourceBody decoded identity ipv4
   | ethernet header => simp [Body.visibleHeader, body] at nominalVisible
   | ipsec association contents =>
@@ -152,7 +152,7 @@ lemma bare_emission_IP_properties {Key : Type} (codec : Codec Key) (source : Dat
       by simpa only [body, Body.visibleHeader, Option.some.injEq] using nominalVisible.symm
     subst nominal
     have actualSame : frame.activeHeader.getD (outerHeader association.sender association.receiver "esp" 0 0) = actual := by
-      simpa only [Frame.visibleHeader, body, Body.visibleHeader, Option.some.injEq] using visible
+      simpa only [TunnelFrame.visibleHeader, body, Body.visibleHeader, Option.some.injEq] using visible
     have senderBound : association.sender < 2^32 := known.1
     have actualIPv4 : actual.source < 2^32 := by rw [identity.source]; exact known.1
     have template : NetworkTemplate actual := by
@@ -187,7 +187,7 @@ lemma bare_emission_IP_properties {Key : Type} (codec : Codec Key) (source : Dat
     have totalLength : (encodeFrame codec source source.application frame).length =
         20 + protectedBytes.length := by
       rw [← bare_emission_raw codec source frame shape]
-      simp only [bareEmission, body, Datagram.Raw, Datagram.Data, List.nil_append, List.length_append]
+      simp only [bareEmission, body, EncodedDatagram.Raw, EncodedDatagram.Data, List.nil_append, List.length_append]
       change (encodeNetworkHeader
         (frame.activeHeader.getD (outerHeader association.sender association.receiver "esp" 0 0))
         protectedBytes.length 0 0).length + protectedBytes.length = _
@@ -197,18 +197,18 @@ lemma bare_emission_IP_properties {Key : Type} (codec : Codec Key) (source : Dat
       rw [headerWidth]
       simpa only [totalLength, networkProtocolLimit, actualIPv4, ↓reduceIte] using serializedBound
     have fields := source_network_header_matches actual protectedBytes.length 0 0 template representable protocol size
-    simp only [bareEmission, body, actualSame, Datagram.Raw, Datagram.Data, List.nil_append,
+    simp only [bareEmission, body, actualSame, EncodedDatagram.Raw, EncodedDatagram.Data, List.nil_append,
       List.length_append]
     refine ⟨True.intro, fields.2, ?_⟩
     intro ipv4
-    simp only [encodeNetworkHeader, ipv4, ↓reduceIte, encoded_IPv4_flags _ _ _ _ (by decide : 0 < 65536)]
+    simp only [encodeNetworkHeader, ipv4, ↓reduceIte, encoded_ipv4_flags _ _ _ _ (by decide : 0 < 65536)]
     decide
   | macsec association contents => simp only [body, Body.IPsecOnly] at shape
   | macsecPdu association encryptFrames confidentialityOffset contents => simp only [body, Body.IPsecOnly] at shape
   | carrier endpoint contents => simp only [body, Body.IPsecOnly] at shape
 
-lemma reachable_visible_representable (source : Datagram) (decoded : source.Decoded)
-    (frame : Frame) (shape : frame.body.IPsecOnly KnownIPv4Seal)
+lemma reachable_visible_representable (source : EncodedDatagram) (decoded : source.Decoded)
+    (frame : TunnelFrame) (shape : frame.body.IPsecOnly KnownIPv4Seal)
     (original : frame.body.originalHeader = source.body.originalHeader)
     (coherent : frame.HeadersCoherent) (actual : PacketPolicy.Packet)
     (visible : frame.visibleHeader = some actual) : HeaderRepresentable actual := by
@@ -217,9 +217,9 @@ lemma reachable_visible_representable (source : Datagram) (decoded : source.Deco
   | datagram header =>
     have same : nominal = header := by simpa only [body, Body.visibleHeader, Option.some.injEq] using nominalVisible.symm
     subst nominal
-    have sourceBody := source_IP_body_from_original source decoded header
+    have sourceBody := source_ip_body_from_original source decoded header
       (by simpa only [body, Body.originalHeader] using original)
-    have representable := (decoded_IP_header_properties source header sourceBody decoded).2.2.1
+    have representable := (decoded_ip_header_properties source header sourceBody decoded).2.2.1
     rw [identity.actual_is_nominal_with_hop]
     exact ⟨identity.2, representable.2⟩
   | ipsec association contents =>
@@ -241,8 +241,8 @@ lemma reachable_visible_representable (source : Datagram) (decoded : source.Deco
   | carrier endpoint contents => simp only [body, Body.IPsecOnly] at shape
 
 
-theorem wire_IP_reassembles {Key : Type} (codec : Codec Key) (source : Datagram)
-    (decoded : source.Decoded) (frame : Frame)
+theorem wire_ip_reassembles {Key : Type} (codec : Codec Key) (source : EncodedDatagram)
+    (decoded : source.Decoded) (frame : TunnelFrame)
     (shape : frame.body.IPsecOnly KnownIPv4Seal)
     (originalIP : frame.body.originalHeader = source.body.originalHeader)
     (originalEthernet : frame.body.originalEthernet = source.body.originalEthernet)
@@ -250,21 +250,21 @@ theorem wire_IP_reassembles {Key : Type} (codec : Codec Key) (source : Datagram)
     (budget : MultiProtocolForwarding.BodySizeBudget limit frame.body)
     (actual : PacketPolicy.Packet) (visible : frame.visibleHeader = some actual)
     (mtu : Nat) (minimum : 1280 ≤ mtu) : (wireEmission codec source frame mtu).Reassembles mtu := by
-  have properties := bare_emission_IP_properties codec source decoded frame shape originalIP originalEthernet
+  have properties := bare_emission_ip_properties codec source decoded frame shape originalIP originalEthernet
     coherent limit budget actual visible
   have fields := matched_network_header_properties actual (bareEmission codec source frame).networkHeader
     (bareEmission codec source frame).Data.length properties.2.1
   have representable := reachable_visible_representable source decoded frame shape originalIP coherent actual visible
   dsimp only [wireEmission]
   rw [properties.1]
-  apply Datagram.fragment_IP_reassembles_from_header _ _ 0 mtu properties.1 properties.2.2
+  apply EncodedDatagram.fragment_ip_reassembles_from_header _ _ 0 mtu properties.1 properties.2.2
   · exact fields.1
   · exact representable
   · obtain ⟨number, protocol, bound⟩ := fields.2.2.2.1
     exact ⟨number, bound, protocol⟩
   · decide
   · exact fields.2.1
-  · simpa only [Datagram.Raw, List.length_append, networkProtocolLimit] using fields.2.2.2.2.1
+  · simpa only [EncodedDatagram.Raw, List.length_append, networkProtocolLimit] using fields.2.2.2.2.1
   · exact minimum
 
-end TDN.IPsecFrameEncoding
+end TDN.IpsecFrameEncoding

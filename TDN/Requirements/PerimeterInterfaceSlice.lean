@@ -3,24 +3,24 @@ import TDN.Models.PerimeterWireToModelCorrespondence
 
 namespace TDN.Compliance
 
-def BoundaryFilterStep (configuration : MultiProtocolForwarding.Config)
-    (context : PacketProcessing.Context) (filtered : MultiProtocolForwarding.State) : Prop :=
+def BoundaryFilterStep (configuration : MultiProtocolForwarding.TunnelForwardingModel)
+    (context : PacketProcessing.Context) (filtered : MultiProtocolForwarding.TunnelForwardingState) : Prop :=
   (context.hook = .forward ∧
-    MultiProtocolForwarding.Step configuration context.state .forwardFilter filtered) ∨
+    MultiProtocolForwarding.TunnelForwardingStep configuration context.state .forwardFilter filtered) ∨
   (context.hook = .output ∧
-    MultiProtocolForwarding.Step configuration context.state .outputFilter filtered)
+    MultiProtocolForwarding.TunnelForwardingStep configuration context.state .outputFilter filtered)
 
-inductive DeviceBoundaryView (configuration : MultiProtocolForwarding.Config)
+inductive DeviceBoundaryView (configuration : MultiProtocolForwarding.TunnelForwardingModel)
     (context : PacketProcessing.Context) :
     Direction → Nat → PacketPolicy.Packet → Prop
   | inbound (header : PacketPolicy.Packet)
       (visible : configuration.visibleHeader context.entry.frame = some header) :
       DeviceBoundaryView configuration context .inbound context.entry.iface
         (MultiProtocolForwarding.BoundaryPacket configuration context.entry.iface false header)
-  | outbound (filtered ready afterWire : MultiProtocolForwarding.State)
+  | outbound (filtered ready afterWire : MultiProtocolForwarding.TunnelForwardingState)
       (filter : BoundaryFilterStep configuration context filtered)
       (processing : MultiProtocolForwarding.FirstReadyRun configuration filtered ready)
-      (wire : MultiProtocolForwarding.Step configuration ready .linkTransmit afterWire)
+      (wire : MultiProtocolForwarding.TunnelForwardingStep configuration ready .linkTransmit afterWire)
       (header : PacketPolicy.Packet)
       (visible : configuration.visibleHeader ready.frame = some header) :
       DeviceBoundaryView configuration context .outbound ready.iface
@@ -33,7 +33,7 @@ def Deployment.DeviceBoundaryAccepts (d : Deployment) (interface : String)
     ∃ context : PacketProcessing.Context,
       d.SupportedAt filteringInterface direction context
         (d.Observe (context.Packet inventory.configuration)) ∧
-      d.AcceptsAt filteringInterface.id direction context.hook
+      d.PermitsAtHook filteringInterface.id direction context.hook
         (d.Observe (context.Packet inventory.configuration)) ∧
       context.entry.frame.HeadersCoherent ∧
       ∃ iface ∈ inventory.ifaces,
@@ -44,7 +44,7 @@ def Deployment.DeviceBoundaryAccepts (d : Deployment) (interface : String)
 def Deployment.BoundaryAccepts (d : Deployment) (interface : String)
     (direction : Direction) (traffic : Traffic) : Prop :=
   d.DeviceBoundaryAccepts interface direction traffic ∨
-    d.AcceptsAt interface direction .link traffic ∨
+    d.PermitsAtHook interface direction .link traffic ∨
     d.PhysicalBoundaryAccepts interface direction traffic
 
 end TDN.Compliance
@@ -63,13 +63,13 @@ instance (device : Device) (interface : Interface) :
 def Deployment.BoundaryAdmission (d : Deployment) (device : Device) (interface : Interface)
     (direction : Direction) (traffic : Traffic) : Prop :=
   if CryptographicBoundary device interface then d.BoundaryAccepts interface.id direction traffic
-  else d.Accepts interface.id direction traffic
+  else d.PermitsOnInterface interface.id direction traffic
 
 def TransportServicePort (packet : PacketPolicy.Packet) (source : Bool) : Nat :=
   if packet.protocol ∈ ["icmp", "icmpv6"] then 0
   else if source then packet.sourcePort else packet.destinationPort
 
-lemma decoded_ICMP_service_ports (packet : PacketPolicy.Packet) (header payload : List UInt8)
+lemma decoded_icmp_service_ports (packet : PacketPolicy.Packet) (header payload : List UInt8)
     (icmp : packet.protocol ∈ ["icmp", "icmpv6"])
     (decoded : PacketSource.TransportHeaderMatches packet header payload) :
     TransportServicePort packet true = packet.sourcePort ∧

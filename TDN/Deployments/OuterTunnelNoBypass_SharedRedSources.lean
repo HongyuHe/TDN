@@ -5,7 +5,6 @@ namespace TDN.Deployments.OuterTunnelNoBypass_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel MtuSizing_Records StandardDataPlaneBridge MultiProtocolForwarding LayeredFrame
 
 set_option maxRecDepth 200000
-set_option maxHeartbeats 4000000
 
 abbrev entries := OuterTunnelNoBypass_SharedNetwork.entries
 abbrev roles := OuterTunnelNoBypass_SharedNetwork.roles
@@ -14,25 +13,25 @@ abbrev attachments := OuterTunnelNoBypass_SharedNetwork.attachments
 abbrev services := OuterTunnelNoBypass_SharedNetwork.services
 abbrev epoch := OuterTunnelNoBypass_SharedNetwork.epoch
 
-def material (reference : String) : IPsecKeyMaterial :=
-  let index := (installations.map PublicSARecord.materialReference).idxOf reference + 1
+def material (reference : String) : IpsecKeyMaterial :=
+  let index := (installations.map PublicSaRecord.materialReference).idxOf reference + 1
   { transform := capturedTransform, encryptionKey := List.replicate 32 (UInt8.ofNat index),
     salt := List.replicate 4 (UInt8.ofNat index), integrityKey := [] }
 
 lemma material_valid : PrivateMaterialAssurance installations material := by
   intro record member
   constructor
-  · simp [material, IPsecKeyMaterial.Valid, capturedTransform]
+  · simp [material, IpsecKeyMaterial.Valid, capturedTransform]
   · rfl
 
-def wireParameters (_ : DataPlaneForwarding.TunnelSAStamp) : IPsecFrameEncoding.Parameters :=
+def wireParameters (_ : DataPlaneForwarding.TunnelSaStamp) : IpsecFrameEncoding.Parameters :=
   { sequence := 1, iv := List.replicate 8 0, sequencePositive := by native_decide,
     sequenceFits := by native_decide, ivLength := by simp }
 
-def codec (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :=
+def codec (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :=
   OuterTunnelNoBypass_SharedNetwork.codec material primitive wireParameters
 
-def configuration (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :=
+def configuration (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :=
   completeConfiguration records installations linkPolicies (codec primitive)
 
 def baseDeployment : Deployment :=
@@ -48,17 +47,17 @@ def baseDeployment : Deployment :=
     authority := ⟨fun _ => False, fun _ => False, fun _ => False, fun _ => False,
       fun _ => False, fun _ => False, fun _ => False⟩ }
 
-def deployment (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :=
+def deployment (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :=
   OuterTunnelNoBypass_SharedNetwork.deployment material primitive wireParameters baseDeployment
 
 def redNetwork (domain : Nat) : String :=
   ((entries.find? (fun entry => entry.originDomain == domain)).map SourceEntry.network).getD ""
 
-def deviceBinding (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) : DeviceExecutionBinding Unit Unit :=
+def deviceBinding (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) : DeviceExecutionBinding Unit Unit :=
   { OuterTunnelNoBypass_SharedNetwork.deviceBinding material primitive wireParameters with
     origin := fun domain => .red (redNetwork domain), domainName := redNetwork }
 
-def redForwarding (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :=
+def redForwarding (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :=
   StandardDataPlaneBridge.model (deviceBinding primitive) records.inventory.ifaces (deployment primitive) {}
 
 lemma red_network_of_recorded_origin (domain : Nat) (network : String)
@@ -70,7 +69,7 @@ lemma red_network_of_recorded_origin (domain : Nat) (network : String)
     simp only [selected] at origin
     split at origin <;> cases origin
 
-lemma allowed_source_iface (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) (request : PacketSource.Request)
+lemma allowed_source_iface (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) (request : PacketSource.Request)
     (allowed : (binding (deviceBinding primitive) records.inventory.ifaces).SourceRequestAllowed (deployment primitive) request) :
     request.iface ∈ records.inventory.ifaces := by
   have entry := allowed.2.2
@@ -79,7 +78,7 @@ lemma allowed_source_iface (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) (
   exact List.mem_range.mpr (by simpa only [same] using
     (OuterTunnelNoBypass_SharedNetwork.captured_source_bindings.2.2.1 record member).1)
 
-lemma allowed_source_has_original_red_origin (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
+lemma allowed_source_has_original_red_origin (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial)
     (request : PacketSource.Request)
     (allowed : (binding (deviceBinding primitive) records.inventory.ifaces).SourceRequestAllowed (deployment primitive) request) :
     sourceOrigin entries records.componentName request.originDomain = .red (redNetwork request.originDomain) := by
@@ -93,7 +92,7 @@ lemma allowed_source_has_original_red_origin (primitive : ESPWire.GCMPrimitive I
   | some entry => simp [redNetwork, selected]
   | none => exact False.elim (nonempty (by simp [redNetwork, selected]))
 
-lemma network_sources (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+lemma network_sources (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     ∀ network ∈ (deployment primitive).networks, ∃ request datagrams,
       (binding (deviceBinding primitive) records.inventory.ifaces).SourceRequestAllowed (deployment primitive) request ∧
       request.application ≠ [] ∧ (deviceBinding primitive).origin request.originDomain = .red network.id ∧
@@ -117,7 +116,7 @@ lemma network_sources (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
   · change PayloadOrigin.red (redNetwork request.originDomain) = .red network.id
     rw [name]
 
-lemma static_bindings (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+lemma static_bindings (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     DeviceDeploymentBindings (deviceBinding primitive) records.inventory.ifaces (deployment primitive) := by
   have original := captured_deployment_bindings records installations entries roles linkPolicies epoch (codec primitive) material
     networks attachments services baseDeployment (OuterTunnelNoBypass_SharedNetwork.captured_structure baseDeployment)
@@ -133,7 +132,7 @@ lemma static_bindings (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     original.interfaceIDs, original.tunnelIDs, original.interfaceIndices, original.ifaceRecords,
     original.physicalLinks, original.sourceEntries, original.macsecTunnels, original.ipsecTunnels⟩
 
-theorem deployment_covered (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+theorem deployment_covered (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     (redForwarding primitive).CoversDeployment (deployment primitive) := by
   have budgets := size_checks_from_captured_records records installations roles linkPolicies (codec primitive)
     OuterTunnelNoBypass_SharedNetwork.captured_size_checks

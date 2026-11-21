@@ -3,22 +3,22 @@ import TDN.Models.NetfilterToRoutingLemmas
 namespace TDN.MultiProtocolForwarding
 open LayeredFrame
 
-def BoundaryPacket (configuration : Config) (iface : Nat) (outbound : Bool)
+def BoundaryPacket (configuration : TunnelForwardingModel) (iface : Nat) (outbound : Bool)
     (header : PacketPolicy.Packet) : PacketPolicy.Packet :=
   { header with
     ingress := if outbound then "" else configuration.ip.interfaceName iface
     egress := if outbound then configuration.ip.interfaceName iface else ""
     matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [] }
 
-lemma boundary_packet_keeps_endpoints (configuration : Config) (iface : Nat)
+lemma boundary_packet_keeps_endpoints (configuration : TunnelForwardingModel) (iface : Nat)
     (outbound : Bool) (header : PacketPolicy.Packet) :
     (BoundaryPacket configuration iface outbound header).source = header.source ∧
       (BoundaryPacket configuration iface outbound header).destination = header.destination ∧
       (BoundaryPacket configuration iface outbound header).protocol = header.protocol := by
   exact ⟨rfl, rfl, rfl⟩
 
-lemma IPsec_output_has_configured_outer_header (configuration : Config)
-    {before after : State} (encrypted : Step configuration before .encryptIPsec after) :
+lemma ipsec_output_has_configured_outer_header (configuration : TunnelForwardingModel)
+    {before after : TunnelForwardingState} (encrypted : TunnelForwardingStep configuration before .encryptIPsec after) :
     ∃ policy ∈ configuration.ip.egressPolicies before.iface,
       ∃ association ∈ configuration.ip.egressSAs before.iface,
         DataPlaneForwarding.saMatchesPolicy association policy ∧
@@ -31,17 +31,17 @@ lemma IPsec_output_has_configured_outer_header (configuration : Config)
     cases mode : configuration.headerProcessing with
     | none =>
       refine ⟨outerHeader policy.sender policy.receiver "esp" 0 0, ?_, rfl, rfl, rfl⟩
-      simp [Config.visibleHeader, Config.ipsecFrame, mode, Body.visibleHeader, DataPlaneForwarding.IpsecPolicy.seal, bound.2.1, bound.2.2.1]
+      simp [TunnelForwardingModel.visibleHeader, TunnelForwardingModel.ipsecFrame, mode, Body.visibleHeader, DataPlaneForwarding.IpsecPolicy.seal, bound.2.1, bound.2.2.1]
     | some processing =>
       refine ⟨{ outerHeader policy.sender policy.receiver "esp" 0 0 with
         hopLimit := processing.ipsecHopLimit before.iface }, ?_, rfl, rfl, rfl⟩
-      simp [Config.visibleHeader, Config.ipsecFrame, mode, Frame.visibleHeader,
-        Frame.pushHeader, Body.visibleHeader, DataPlaneForwarding.IpsecPolicy.seal, bound.2.1, bound.2.2.1]
+      simp [TunnelForwardingModel.visibleHeader, TunnelForwardingModel.ipsecFrame, mode, TunnelFrame.visibleHeader,
+        TunnelFrame.pushHeader, Body.visibleHeader, DataPlaneForwarding.IpsecPolicy.seal, bound.2.1, bound.2.2.1]
 
-lemma IPsec_input_has_configured_outer_header (configuration : Config)
+lemma ipsec_input_has_configured_outer_header (configuration : TunnelForwardingModel)
     (processing : HeaderProcessing) (mode : configuration.headerProcessing = some processing)
-    {before after : State} (coherent : before.frame.HeadersCoherent)
-    (decrypted : Step configuration before .decryptIPsec after) :
+    {before after : TunnelForwardingState} (coherent : before.frame.HeadersCoherent)
+    (decrypted : TunnelForwardingStep configuration before .decryptIPsec after) :
     ∃ policy ∈ configuration.ip.ingressPolicies before.iface,
       ∃ association ∈ configuration.ip.ingressSAs before.iface,
         DataPlaneForwarding.saMatchesPolicy association policy ∧
@@ -55,23 +55,23 @@ lemma IPsec_input_has_configured_outer_header (configuration : Config)
       simp [encrypted, Body.visibleHeader, DataPlaneForwarding.IpsecPolicy.seal, bound.2.1, bound.2.2.1]
     have frameVisible : before.frame.visibleHeader =
         some (before.frame.activeHeader.getD (outerHeader policy.sender policy.receiver "esp" 0 0)) := by
-      simp [Frame.visibleHeader, bodyVisible]
+      simp [TunnelFrame.visibleHeader, bodyVisible]
     obtain ⟨nominal, nominalVisible, identity⟩ :=
-      Frame.coherent_visible coherent _ frameVisible
+      TunnelFrame.coherent_visible coherent _ frameVisible
     have nominalEq : nominal = outerHeader policy.sender policy.receiver "esp" 0 0 :=
       Option.some.inj (nominalVisible.symm.trans bodyVisible)
     subst nominal
     refine ⟨policy, configured, association, installed, bound,
       before.frame.activeHeader.getD (outerHeader policy.sender policy.receiver "esp" 0 0),
       ?_, ?_, ?_, ?_⟩
-    · simpa [Config.visibleHeader, mode] using frameVisible
+    · simpa [TunnelForwardingModel.visibleHeader, mode] using frameVisible
     · simpa [outerHeader] using congrArg PacketPolicy.Packet.source identity.1
     · simpa [outerHeader] using congrArg PacketPolicy.Packet.destination identity.1
     · simpa [outerHeader] using congrArg PacketPolicy.Packet.protocol identity.1
 
-lemma outer_route_keeps_boundary_header (configuration : Config)
-    {before after : State} (datapathStage : before.datapathStage = .encapsulated)
-    (routed : Step configuration before .route after) :
+lemma outer_route_keeps_boundary_header (configuration : TunnelForwardingModel)
+    {before after : TunnelForwardingState} (datapathStage : before.datapathStage = .encapsulated)
+    (routed : TunnelForwardingStep configuration before .route after) :
     configuration.visibleHeader after.frame = configuration.visibleHeader before.frame ∧
       after.datapathStage = .egressReady := by
   cases routed with
@@ -79,24 +79,24 @@ lemma outer_route_keeps_boundary_header (configuration : Config)
   | routeLocalOutput route impossible => simp [impossible] at datapathStage
   | routeOuterPacket => exact ⟨rfl, rfl⟩
 
-lemma wire_keeps_boundary_header (configuration : Config)
-    {before after : State} (wire : Step configuration before .linkTransmit after) :
+lemma wire_keeps_boundary_header (configuration : TunnelForwardingModel)
+    {before after : TunnelForwardingState} (wire : TunnelForwardingStep configuration before .linkTransmit after) :
     configuration.visibleHeader after.frame = configuration.visibleHeader before.frame ∧
       after.frame.body = before.frame.body := by
   cases wire
   exact ⟨rfl, rfl⟩
 
-inductive OutboundSuffix (configuration : Config) : State → State → Prop
-  | forwardWithoutEncap {filtered ready : State}
-      (step : Step configuration filtered .forwardWithoutEncap ready)
+inductive OutboundSuffix (configuration : TunnelForwardingModel) : TunnelForwardingState → TunnelForwardingState → Prop
+  | forwardWithoutEncap {filtered ready : TunnelForwardingState}
+      (step : TunnelForwardingStep configuration filtered .forwardWithoutEncap ready)
       (datapathStage : filtered.datapathStage = .filtered) : OutboundSuffix configuration filtered ready
-  | IPsec {filtered encrypted ready : State}
-      (protect : Step configuration filtered .encryptIPsec encrypted)
-      (route : Step configuration encrypted .route ready) :
+  | IPsec {filtered encrypted ready : TunnelForwardingState}
+      (protect : TunnelForwardingStep configuration filtered .encryptIPsec encrypted)
+      (route : TunnelForwardingStep configuration encrypted .route ready) :
       OutboundSuffix configuration filtered ready
 
-lemma outbound_suffix_has_ready_state (configuration : Config)
-    {filtered ready : State} (suffix : OutboundSuffix configuration filtered ready) :
+lemma outbound_suffix_has_ready_state (configuration : TunnelForwardingModel)
+    {filtered ready : TunnelForwardingState} (suffix : OutboundSuffix configuration filtered ready) :
     ready.datapathStage = .egressReady := by
   cases suffix with
   | forwardWithoutEncap step datapathStage =>
@@ -105,8 +105,8 @@ lemma outbound_suffix_has_ready_state (configuration : Config)
     cases protect
     exact (outer_route_keeps_boundary_header configuration rfl route).2
 
-lemma outbound_suffix_is_native_forwarding (configuration : Config)
-    {filtered ready : State} (suffix : OutboundSuffix configuration filtered ready) :
+lemma outbound_suffix_is_native_forwarding (configuration : TunnelForwardingModel)
+    {filtered ready : TunnelForwardingState} (suffix : OutboundSuffix configuration filtered ready) :
     ∃ actions, (lts configuration).MTr filtered actions ready := by
   cases suffix with
   | forwardWithoutEncap step datapathStage =>
@@ -114,10 +114,10 @@ lemma outbound_suffix_is_native_forwarding (configuration : Config)
   | IPsec protect route =>
     exact ⟨[.encryptIPsec, .route], .stepL protect (.stepL route .refl)⟩
 
-lemma IPsec_suffix_boundary_packet_uses_installed_policy (configuration : Config)
-    {filtered encrypted ready : State}
-    (protect : Step configuration filtered .encryptIPsec encrypted)
-    (route : Step configuration encrypted .route ready) :
+lemma ipsec_suffix_boundary_packet_uses_installed_policy (configuration : TunnelForwardingModel)
+    {filtered encrypted ready : TunnelForwardingState}
+    (protect : TunnelForwardingStep configuration filtered .encryptIPsec encrypted)
+    (route : TunnelForwardingStep configuration encrypted .route ready) :
     ∃ policy ∈ configuration.ip.egressPolicies filtered.iface,
       ∃ association ∈ configuration.ip.egressSAs filtered.iface,
         DataPlaneForwarding.saMatchesPolicy association policy ∧
@@ -126,23 +126,23 @@ lemma IPsec_suffix_boundary_packet_uses_installed_policy (configuration : Config
           (BoundaryPacket configuration ready.iface true header).destination = policy.receiver ∧
           (BoundaryPacket configuration ready.iface true header).protocol = "esp" := by
   obtain ⟨policy, member, association, installed, bound, header, visible, source, destination, protocol⟩ :=
-    IPsec_output_has_configured_outer_header configuration protect
+    ipsec_output_has_configured_outer_header configuration protect
   have datapathStage : encrypted.datapathStage = .encapsulated := by cases protect; rfl
   have same := (outer_route_keeps_boundary_header configuration datapathStage route).1
   exact ⟨policy, member, association, installed, bound, header, same.trans visible,
     source, destination, protocol⟩
 
-inductive FirstReadyRun (configuration : Config) : State → State → Prop
-  | ready {state : State} (datapathStage : state.datapathStage = .egressReady) :
+inductive FirstReadyRun (configuration : TunnelForwardingModel) : TunnelForwardingState → TunnelForwardingState → Prop
+  | ready {state : TunnelForwardingState} (datapathStage : state.datapathStage = .egressReady) :
       FirstReadyRun configuration state state
-  | next {before middle ready : State} {action : Action}
+  | next {before middle ready : TunnelForwardingState} {action : TunnelForwardingAction}
       (notReady : before.datapathStage ≠ .egressReady)
-      (step : Step configuration before action middle)
+      (step : TunnelForwardingStep configuration before action middle)
       (tail : FirstReadyRun configuration middle ready) :
       FirstReadyRun configuration before ready
 
-lemma first_ready_run_is_native_forwarding (configuration : Config)
-    {before ready : State} (run : FirstReadyRun configuration before ready) :
+lemma first_ready_run_is_native_forwarding (configuration : TunnelForwardingModel)
+    {before ready : TunnelForwardingState} (run : FirstReadyRun configuration before ready) :
     ∃ actions, (lts configuration).MTr before actions ready := by
   induction run with
   | ready => exact ⟨[], .refl⟩
@@ -150,22 +150,22 @@ lemma first_ready_run_is_native_forwarding (configuration : Config)
     obtain ⟨actions, execution⟩ := ih
     exact ⟨_ :: actions, .stepL step execution⟩
 
-lemma first_ready_run_finishes_ready (configuration : Config)
-    {before ready : State} (run : FirstReadyRun configuration before ready) :
+lemma first_ready_run_finishes_ready (configuration : TunnelForwardingModel)
+    {before ready : TunnelForwardingState} (run : FirstReadyRun configuration before ready) :
     ready.datapathStage = .egressReady := by
   induction run with
   | ready datapathStage => exact datapathStage
   | next _ _ _ ih => exact ih
 
-lemma first_ready_run_from_ready_is_identity (configuration : Config)
-    {before ready : State} (datapathStage : before.datapathStage = .egressReady)
+lemma first_ready_run_from_ready_is_identity (configuration : TunnelForwardingModel)
+    {before ready : TunnelForwardingState} (datapathStage : before.datapathStage = .egressReady)
     (run : FirstReadyRun configuration before ready) : before = ready := by
   cases run with
   | ready => rfl
   | next notReady => exact False.elim (notReady datapathStage)
 
-lemma dropped_state_has_no_first_ready_run (configuration : Config)
-    {before ready : State} (datapathStage : before.datapathStage = .dropped) :
+lemma dropped_state_has_no_first_ready_run (configuration : TunnelForwardingModel)
+    {before ready : TunnelForwardingState} (datapathStage : before.datapathStage = .dropped) :
     ¬ FirstReadyRun configuration before ready := by
   intro run
   induction run with
@@ -174,10 +174,10 @@ lemma dropped_state_has_no_first_ready_run (configuration : Config)
     apply ih
     cases step <;> simp_all
 
-lemma first_ready_run_from_encapsulated_is_one_route (configuration : Config)
-    {before ready : State} (datapathStage : before.datapathStage = .encapsulated)
+lemma first_ready_run_from_encapsulated_is_one_route (configuration : TunnelForwardingModel)
+    {before ready : TunnelForwardingState} (datapathStage : before.datapathStage = .encapsulated)
     (run : FirstReadyRun configuration before ready) :
-    Step configuration before .route ready := by
+    TunnelForwardingStep configuration before .route ready := by
   cases run with
   | ready readyPhase => simp [datapathStage] at readyPhase
   | @next before middle ready action notReady step tail =>
@@ -189,8 +189,8 @@ lemma first_ready_run_from_encapsulated_is_one_route (configuration : Config)
     case drop =>
       exact False.elim (dropped_state_has_no_first_ready_run configuration rfl tail)
 
-theorem first_ready_run_from_filtered_is_native_suffix (configuration : Config)
-    {filtered ready : State} (datapathStage : filtered.datapathStage = .filtered)
+theorem first_ready_run_from_filtered_is_native_suffix (configuration : TunnelForwardingModel)
+    {filtered ready : TunnelForwardingState} (datapathStage : filtered.datapathStage = .filtered)
     (run : FirstReadyRun configuration filtered ready) :
     OutboundSuffix configuration filtered ready := by
   cases run with
@@ -207,27 +207,27 @@ theorem first_ready_run_from_filtered_is_native_suffix (configuration : Config)
     case drop =>
       exact False.elim (dropped_state_has_no_first_ready_run configuration rfl tail)
 
-theorem outbound_policy_annotation_forces_actual_IPsec (configuration : Config)
-    {filtered ready : State} {header : PacketPolicy.Packet}
+theorem outbound_policy_annotation_forces_actual_ipsec (configuration : TunnelForwardingModel)
+    {filtered ready : TunnelForwardingState} {header : PacketPolicy.Packet}
     (datapathStage : filtered.datapathStage = .filtered)
     (visible : configuration.visibleHeader filtered.frame = some header)
     (requestId : Nat)
     (required : requestId ∈ (policyHeader configuration filtered header).matchedOutboundPolicyIds)
     (run : FirstReadyRun configuration filtered ready) :
-    ∃ encrypted, Step configuration filtered .encryptIPsec encrypted ∧
-      Step configuration encrypted .route ready := by
+    ∃ encrypted, TunnelForwardingStep configuration filtered .encryptIPsec encrypted ∧
+      TunnelForwardingStep configuration encrypted .route ready := by
   have suffix := first_ready_run_from_filtered_is_native_suffix configuration datapathStage run
   cases suffix with
   | forwardWithoutEncap step actualPhase =>
     cases step <;> simp_all [policyHeader]
   | IPsec protect route => exact ⟨_, protect, route⟩
 
-theorem inbound_policy_annotation_requires_actual_decryption (configuration : Config)
-    {entry entered routed : State}
+theorem inbound_policy_annotation_requires_actual_decryption (configuration : TunnelForwardingModel)
+    {entry entered routed : TunnelForwardingState}
     (ingress : PacketProcessing.Ingress configuration entry entered)
-    (route : Step configuration entered .route routed)
+    (route : TunnelForwardingStep configuration entered .route routed)
     (authenticated : routed.authenticated ≠ []) :
-    Step configuration entry .decryptIPsec entered := by
+    TunnelForwardingStep configuration entry .decryptIPsec entered := by
   rcases ingress with receive | decrypt
   · cases receive
     have preserved := route_from_ingress_preserves_local_state rfl route

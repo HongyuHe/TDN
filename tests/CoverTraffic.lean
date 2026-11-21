@@ -2,7 +2,7 @@ import TDN.Models.ConstantRateCoverTraffic
 
 open TDN.CoverTraffic
 
-def small : Config := ⟨28, 24, 1, 20⟩
+def small : ScheduleConfig := ⟨28, 24, 1, 20⟩
 
 /-- A full queue preserves its existing payload; new arrivals are discarded. -/
 example : enqueue small [[1, 2]] [3] = [[1, 2]] := by native_decide
@@ -14,12 +14,12 @@ example : enqueue small [] [1, 2, 3, 4, 5] = [] := by native_decide
 example : paddedBytes small (payload []) = paddedBytes small [1, 2, 3] := by native_decide
 
 /-- The sender consumes a queued payload even when its socket send fails. -/
-example : Step small ⟨[[1, 2]], [], 100, 0⟩ (.tick 100 101 false)
+example : SchedulerStep small ⟨[[1, 2]], [], 100, 0⟩ (.tick 100 101 false)
     ⟨[], [⟨100, 28, false⟩], 120, 1⟩ := by
-  exact Step.tick _ _ _ _ (by native_decide) (by native_decide) (by native_decide)
+  exact SchedulerStep.tick _ _ _ _ (by native_decide) (by native_decide) (by native_decide)
 
 /-- A tick cannot fire before its deadline. -/
-example (after : State) : ¬ Step small (initial 100) (.tick 99 99 true) after := by
+example (after : SchedulerState) : ¬ SchedulerStep small (initial 100) (.tick 99 99 true) after := by
   intro step
   cases step <;> simp_all [initial]
 

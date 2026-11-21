@@ -8,25 +8,25 @@ structure ByteOrigin (Byte Domain PacketId : Type) where
   packet : PacketId
 
 def assemble {Header Byte : Type} [DecidableEq Header]
-    (header : Header) (pieces : List (Fragmentation.Fragment Header Byte)) :
-    Option (Fragmentation.Datagram Header Byte) :=
+    (header : Header) (pieces : List (Fragmentation.PayloadFragment Header Byte)) :
+    Option (Fragmentation.PayloadDatagram Header Byte) :=
   if pieces ≠ [] ∧ (∀ piece ∈ pieces, piece.header = header) ∧
       Fragmentation.Contiguous 0 pieces
-  then some ⟨header, (pieces.map Fragmentation.Fragment.bytes).flatten⟩
+  then some ⟨header, (pieces.map Fragmentation.PayloadFragment.bytes).flatten⟩
   else none
 
 def PieceSafe {Header Byte : Type} (safe : Byte → Prop)
-    (piece : Fragmentation.Fragment Header Byte) : Prop :=
+    (piece : Fragmentation.PayloadFragment Header Byte) : Prop :=
   ∀ byte ∈ piece.bytes, safe byte
 
 def BufferSafe {Header Byte : Type} (safe : Byte → Prop)
-    (pieces : List (Fragmentation.Fragment Header Byte)) : Prop :=
+    (pieces : List (Fragmentation.PayloadFragment Header Byte)) : Prop :=
   ∀ piece ∈ pieces, PieceSafe safe piece
 
 lemma flattened_bytes_safe {Header Byte : Type} {safe : Byte → Prop}
-    {pieces : List (Fragmentation.Fragment Header Byte)}
+    {pieces : List (Fragmentation.PayloadFragment Header Byte)}
     (checked : BufferSafe safe pieces) :
-    ∀ byte ∈ (pieces.map Fragmentation.Fragment.bytes).flatten, safe byte := by
+    ∀ byte ∈ (pieces.map Fragmentation.PayloadFragment.bytes).flatten, safe byte := by
   intro byte member
   obtain ⟨bytes, inMap, contains⟩ := List.mem_flatten.mp member
   obtain ⟨piece, inPieces, equal⟩ := List.mem_map.mp inMap
@@ -35,8 +35,8 @@ lemma flattened_bytes_safe {Header Byte : Type} {safe : Byte → Prop}
 
 theorem assembled_bytes_inherit_piece_safety {Header Byte : Type}
     [DecidableEq Header] {header : Header}
-    {pieces : List (Fragmentation.Fragment Header Byte)}
-    {result : Fragmentation.Datagram Header Byte} {safe : Byte → Prop}
+    {pieces : List (Fragmentation.PayloadFragment Header Byte)}
+    {result : Fragmentation.PayloadDatagram Header Byte} {safe : Byte → Prop}
     (checked : BufferSafe safe pieces) (accepted : assemble header pieces = some result) :
     ∀ byte ∈ result.bytes, safe byte := by
   unfold assemble at accepted
@@ -45,27 +45,27 @@ theorem assembled_bytes_inherit_piece_safety {Header Byte : Type}
     exact flattened_bytes_safe checked
   · contradiction
 
-inductive Action where
+inductive BufferAction where
   | receive | discard | clear
   deriving DecidableEq, Repr
 
-inductive Step {Header Byte Input : Type}
-    (acceptsPiece : Input → Fragmentation.Fragment Header Byte → Prop) :
-    List (Fragmentation.Fragment Header Byte) → Action →
-      List (Fragmentation.Fragment Header Byte) → Prop where
+inductive BufferStep {Header Byte Input : Type}
+    (acceptsPiece : Input → Fragmentation.PayloadFragment Header Byte → Prop) :
+    List (Fragmentation.PayloadFragment Header Byte) → BufferAction →
+      List (Fragmentation.PayloadFragment Header Byte) → Prop where
   | receive {before input piece} (accepted : acceptsPiece input piece) :
-      Step acceptsPiece before .receive (before ++ [piece])
+      BufferStep acceptsPiece before .receive (before ++ [piece])
   | discard {before after} (retained : ∀ piece ∈ after, piece ∈ before) :
-      Step acceptsPiece before .discard after
-  | clear {before} : Step acceptsPiece before .clear []
+      BufferStep acceptsPiece before .discard after
+  | clear {before} : BufferStep acceptsPiece before .clear []
 
 def system {Header Byte Input : Type}
-    (acceptsPiece : Input → Fragmentation.Fragment Header Byte → Prop) :
-    Cslib.LTS (List (Fragmentation.Fragment Header Byte)) Action where
-  Tr := Step acceptsPiece
+    (acceptsPiece : Input → Fragmentation.PayloadFragment Header Byte → Prop) :
+    Cslib.LTS (List (Fragmentation.PayloadFragment Header Byte)) BufferAction where
+  Tr := BufferStep acceptsPiece
 
 lemma admission_preserves_byte_safety {Header Byte Input : Type}
-    (acceptsPiece : Input → Fragmentation.Fragment Header Byte → Prop) (safe : Byte → Prop)
+    (acceptsPiece : Input → Fragmentation.PayloadFragment Header Byte → Prop) (safe : Byte → Prop)
     (localGuard : ∀ input piece, acceptsPiece input piece → PieceSafe safe piece) :
     (system acceptsPiece).TrInv (BufferSafe safe) := by
   intro before action after step initial
@@ -82,14 +82,14 @@ lemma admission_preserves_byte_safety {Header Byte Input : Type}
 
 theorem every_reassembly_history_preserves_byte_safety {Header Byte Input : Type}
     [DecidableEq Header]
-    (acceptsPiece : Input → Fragmentation.Fragment Header Byte → Prop) (safe : Byte → Prop)
+    (acceptsPiece : Input → Fragmentation.PayloadFragment Header Byte → Prop) (safe : Byte → Prop)
     (localGuard : ∀ input piece, acceptsPiece input piece → PieceSafe safe piece)
-    {actions : List Action} {pieces : List (Fragmentation.Fragment Header Byte)}
-    {header : Header} {result : Fragmentation.Datagram Header Byte}
+    {actions : List BufferAction} {pieces : List (Fragmentation.PayloadFragment Header Byte)}
+    {header : Header} {result : Fragmentation.PayloadDatagram Header Byte}
     (run : (system acceptsPiece).MTr [] actions pieces)
     (accepted : assemble header pieces = some result) :
     ∀ byte ∈ result.bytes, safe byte := by
-  have initial : BufferSafe safe ([] : List (Fragmentation.Fragment Header Byte)) := by
+  have initial : BufferSafe safe ([] : List (Fragmentation.PayloadFragment Header Byte)) := by
     simp [BufferSafe]
   have invariant := Cslib.LTS.mtrInv_of_trInv
     (admission_preserves_byte_safety acceptsPiece safe localGuard) [] actions pieces run initial
@@ -97,13 +97,13 @@ theorem every_reassembly_history_preserves_byte_safety {Header Byte Input : Type
 
 theorem reassembled_bytes_stay_in_admitted_domain
     {Header Byte Domain PacketId Input : Type} [DecidableEq Header]
-    (acceptsPiece : Input → Fragmentation.Fragment Header (ByteOrigin Byte Domain PacketId) → Prop)
+    (acceptsPiece : Input → Fragmentation.PayloadFragment Header (ByteOrigin Byte Domain PacketId) → Prop)
     (domain : Domain)
     (localGuard : ∀ input piece, acceptsPiece input piece →
       ∀ byte ∈ piece.bytes, byte.domain = domain)
-    {actions : List Action}
-    {pieces : List (Fragmentation.Fragment Header (ByteOrigin Byte Domain PacketId))}
-    {header : Header} {result : Fragmentation.Datagram Header (ByteOrigin Byte Domain PacketId)}
+    {actions : List BufferAction}
+    {pieces : List (Fragmentation.PayloadFragment Header (ByteOrigin Byte Domain PacketId))}
+    {header : Header} {result : Fragmentation.PayloadDatagram Header (ByteOrigin Byte Domain PacketId)}
     (run : (system acceptsPiece).MTr [] actions pieces)
     (accepted : assemble header pieces = some result) :
     ∀ byte ∈ result.bytes, byte.domain = domain :=

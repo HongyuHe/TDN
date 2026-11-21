@@ -2,16 +2,16 @@ import TDN.Models.TableDrivenDataPlane
 
 namespace TDN.DataPlaneForwarding
 
-def ProducedSeal (c : DataPlaneModel) (token : TunnelSAStamp) : Prop :=
+def ProducedSeal (c : DataPlaneModel) (token : TunnelSaStamp) : Prop :=
   ∃ iface association, association ∈ c.egressPolicies iface ∧
     ∃ state, state ∈ c.egressSAs iface ∧ saMatchesPolicy state association ∧
       token = association.seal state
 
-def ProducedEnvelopes (c : DataPlaneModel) (frame : Frame) : Prop :=
+def ProducedEnvelopes (c : DataPlaneModel) (frame : IpsecFrame) : Prop :=
   ∀ envelope ∈ frame.encapLayers, ProducedSeal c envelope.authentication
 
-lemma step_preserves_envelope_provenance {c : DataPlaneModel} {a b : State} {action : Action}
-    (step : Step c a action b) (before : ProducedEnvelopes c a.frame) :
+lemma step_preserves_envelope_provenance {c : DataPlaneModel} {a b : ForwardingState} {action : ForwardingAction}
+    (step : ForwardingStep c a action b) (before : ProducedEnvelopes c a.frame) :
     ProducedEnvelopes c b.frame := by
   cases step with
   | @encrypt iface frame authenticated association sa selected installed bound =>
@@ -40,7 +40,7 @@ lemma step_preserves_envelope_provenance {c : DataPlaneModel} {a b : State} {act
   | drop => exact before
 
 theorem forwarding_envelopes_have_configured_provenance (c : DataPlaneModel)
-    {a b : State} {actions : List Action} (run : (lts c).MTr a actions b)
+    {a b : ForwardingState} {actions : List ForwardingAction} (run : (lts c).MTr a actions b)
     (initial : a.frame.encapLayers = []) : ProducedEnvelopes c b.frame := by
   have preservation : (lts c).TrInv (fun s => ProducedEnvelopes c s.frame) :=
     fun _ _ _ step before => step_preserves_envelope_provenance step before
@@ -48,7 +48,7 @@ theorem forwarding_envelopes_have_configured_provenance (c : DataPlaneModel)
   intro envelope member
   simp [initial] at member
 
-def SameWireAssociation (a b : InstalledSA) : Prop :=
+def SameWireAssociation (a b : InstalledSa) : Prop :=
   a.spi = b.spi ∧ a.sender = b.sender ∧ a.receiver = b.receiver
 
 def PeerTagAgreement (c : DataPlaneModel) : Prop :=
@@ -59,13 +59,13 @@ def PeerTagAgreement (c : DataPlaneModel) : Prop :=
       saMatchesPolicy receiveState incoming → SameWireAssociation sendState receiveState →
       outgoing.tag = incoming.tag
 
-def WireMatchesSeal (token : TunnelSAStamp) (state : InstalledSA) : Prop :=
+def WireMatchesSeal (token : TunnelSaStamp) (state : InstalledSa) : Prop :=
   token.association = state.spi ∧ token.sender = state.sender ∧ token.receiver = state.receiver
 
 theorem wire_match_determines_annotated_seal {c : DataPlaneModel}
-    (agreement : PeerTagAgreement c) {token : TunnelSAStamp} (produced : ProducedSeal c token)
+    (agreement : PeerTagAgreement c) {token : TunnelSaStamp} (produced : ProducedSeal c token)
     (receiver : Nat) (incoming : IpsecPolicy) (configured : incoming ∈ c.ingressPolicies receiver)
-    (state : InstalledSA) (installed : state ∈ c.ingressSAs receiver)
+    (state : InstalledSa) (installed : state ∈ c.ingressSAs receiver)
     (bound : saMatchesPolicy state incoming) (wire : WireMatchesSeal token state) :
     token = incoming.seal state := by
   obtain ⟨sender, outgoing, member, sendState, existsState, boundSend, equal⟩ := produced

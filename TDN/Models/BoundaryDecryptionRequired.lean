@@ -3,11 +3,11 @@ import TDN.Models.SubgraphScopedTraces
 
 namespace TDN.DataPlaneForwarding
 
-def IngressMetadata (c : DataPlaneModel) (s : State) : Prop :=
+def IngressMetadata (c : DataPlaneModel) (s : ForwardingState) : Prop :=
   s.frame.packet.ingress = c.interfaceName s.frame.enteredIface ∧
   c.owner s.iface = c.owner s.frame.enteredIface
 
-def UndecryptedRegion (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (tag : Nat) (s : State) : Prop :=
+def UndecryptedRegion (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (tag : Nat) (s : ForwardingState) : Prop :=
   s.authenticated = [] ∧
   match s.datapathStage with
   | .received | .egressReady => tag ∈ expectedEncapStack s.iface
@@ -23,8 +23,8 @@ def UndecryptedRegion (c : DataPlaneModel) (expectedEncapStack : Nat → List Na
   | .dropped => True
 
 lemma undecrypted_step_retains_region {c : DataPlaneModel} {expectedEncapStack : Nat → List Nat} {tag : Nat}
-    (conditions : PerHopEncapConditions c expectedEncapStack) {before after : State} {action : Action}
-    (step : Step c before action after) (notDecrypt : action ≠ .decrypt)
+    (conditions : PerHopEncapConditions c expectedEncapStack) {before after : ForwardingState} {action : ForwardingAction}
+    (step : ForwardingStep c before action after) (notDecrypt : action ≠ .decrypt)
     (invariant : UndecryptedRegion c expectedEncapStack tag before) :
     UndecryptedRegion c expectedEncapStack tag after := by
   cases step with
@@ -96,8 +96,8 @@ theorem inbound_crossing_requires_local_decryption
     (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (tag component : Nat)
     (conditions : PerHopEncapConditions c expectedEncapStack)
     (inboundTags : ∀ iface, c.owner iface = component → ∀ a ∈ c.ingressPolicies iface, a.tag = tag)
-    {before after : State} {actions : List Action}
-    (run : (RestrictedExecution.within (lts c) (fun s => c.owner s.iface = component)).MTr
+    {before after : ForwardingState} {actions : List ForwardingAction}
+    (run : (SubgraphScopedTraces.within (lts c) (fun s => c.owner s.iface = component)).MTr
       before actions after)
     (received : before.datapathStage = .received) (unauthenticated : before.authenticated = [])
     (outside : tag ∈ expectedEncapStack before.iface)
@@ -123,11 +123,11 @@ theorem inbound_crossing_requires_local_decryption
     cases actual <;> try cases label
     case decrypt association sa header rest tracking configured installed bound received outerSource outerDestination esp selected =>
       have equal := inboundTags _ owner association configured
-      simp only [Frame.encapLayerIds, received, List.map_cons]
+      simp only [IpsecFrame.encapLayerIds, received, List.map_cons]
       simpa [IpsecPolicy.seal, equal]
   exact ⟨earlier, later, left, action, right, sequence,
-    RestrictedExecution.project_trace _ _ first, step.1,
-    RestrictedExecution.project_trace _ _ last, label, layer,
-    forwarding_payload_identity c (RestrictedExecution.project_trace _ _ first), step.2.1⟩
+    SubgraphScopedTraces.project_trace _ _ first, step.1,
+    SubgraphScopedTraces.project_trace _ _ last, label, layer,
+    forwarding_payload_identity c (SubgraphScopedTraces.project_trace _ _ first), step.2.1⟩
 
 end TDN.DataPlaneForwarding

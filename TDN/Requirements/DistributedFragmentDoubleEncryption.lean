@@ -5,13 +5,13 @@ namespace TDN.Requirements
 
 theorem every_distributed_black_piece_is_double_protected {Byte : Type}
     (c : DataPlaneForwarding.DataPlaneModel) (expectedEncapStack : Nat → List Nat) (sources blackIfaces : List Nat)
-    (encodedBytes : DataPlaneForwarding.Frame → List Byte)
+    (encodedBytes : DataPlaneForwarding.IpsecFrame → List Byte)
     (conditions : DataPlaneForwarding.PerHopEncapConditions c expectedEncapStack)
     (sourceCheck : ∀ iface ∈ sources, expectedEncapStack iface = [] ∧ c.canOriginateTraffic iface)
     (blackCheck : ∀ iface ∈ blackIfaces, expectedEncapStack iface = [2, 1])
-    {start : DataPlaneForwarding.State}
-    {located : List (DataPlaneForwarding.State × Fragmentation.Fragment DataPlaneForwarding.FragmentDescriptor Byte)}
-    {actions : List (Option DataPlaneForwarding.Action)}
+    {start : DataPlaneForwarding.ForwardingState}
+    {located : List (DataPlaneForwarding.ForwardingState × Fragmentation.PayloadFragment DataPlaneForwarding.FragmentDescriptor Byte)}
+    {actions : List (Option DataPlaneForwarding.ForwardingAction)}
     (origin : RedPayloadOrigin c sources start)
     (run : (Fragmentation.distributed (DataPlaneForwarding.lts c)
       (DataPlaneForwarding.encodeForFragmentation encodedBytes)).MTr (.whole start) actions (.pieces located)) :
@@ -19,7 +19,7 @@ theorem every_distributed_black_piece_is_double_protected {Byte : Type}
       entry.2.header.layers = [2, 1] ∧
       entry.2.header.payload = start.frame.payload ∧
       entry.2.header.originDomain = start.frame.originDomain := by
-  let invariant := fun state : DataPlaneForwarding.State =>
+  let invariant := fun state : DataPlaneForwarding.ForwardingState =>
     DataPlaneForwarding.EncapStackConsistent c expectedEncapStack state ∧ state.frame.payload = start.frame.payload ∧
       state.frame.originDomain = start.frame.originDomain
   have preserved : (DataPlaneForwarding.lts c).TrInv invariant := by

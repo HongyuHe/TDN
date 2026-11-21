@@ -13,18 +13,18 @@ structure IntendedAddressPair where
 def IntendedPair (pairs : List IntendedAddressPair) (packet : PacketPolicy.Packet) : Prop :=
   ∃ pair ∈ pairs, packet.source = pair.source ∧ packet.destination = pair.destination
 
-def RuleNamesPair (pairs : List IntendedAddressPair) (rule : PacketPolicy.Rule) : Prop :=
+def RuleNamesPair (pairs : List IntendedAddressPair) (rule : PacketPolicy.PacketAclRule) : Prop :=
   ∃ pair ∈ pairs,
     .sourceRange pair.source pair.source ∈ rule.atoms ∧
     .destinationRange pair.destination pair.destination ∈ rule.atoms
 
-instance (pairs : List IntendedAddressPair) (rule : PacketPolicy.Rule) :
+instance (pairs : List IntendedAddressPair) (rule : PacketPolicy.PacketAclRule) :
     Decidable (RuleNamesPair pairs rule) := by
   unfold RuleNamesPair
   infer_instance
 
 lemma named_pair_rule_matches_intended {pairs : List IntendedAddressPair}
-    {rule : PacketPolicy.Rule} {packet : PacketPolicy.Packet}
+    {rule : PacketPolicy.PacketAclRule} {packet : PacketPolicy.Packet}
     (guard : RuleNamesPair pairs rule) (matched : rule.toFilter.accepts packet = true) :
     IntendedPair pairs packet := by
   obtain ⟨pair, member, hs, hd⟩ := guard
@@ -34,33 +34,37 @@ lemma named_pair_rule_matches_intended {pairs : List IntendedAddressPair}
   change pair.destination ≤ packet.destination ∧ packet.destination ≤ pair.destination at destination
   exact ⟨pair, member, by omega, by omega⟩
 
-def msc_gray_addressing_for_level_filtering
-    (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
-    (policies : List (List PacketPolicy.Rule)) : Prop :=
+def ValidGrayAddressPlan (ranges : List (Addressing.Range SecurityLevel))
+    (pairs : List IntendedAddressPair) : Prop :=
   (∀ range ∈ ranges, range.low ≤ range.high) ∧
   (∀ address a b, Addressing.Owns ranges address a →
     Addressing.Owns ranges address b → a = b) ∧
   (∀ pair ∈ pairs, Addressing.Owns ranges pair.source pair.level ∧
-    Addressing.Owns ranges pair.destination pair.level) ∧
+    Addressing.Owns ranges pair.destination pair.level)
+
+def gray_policy_allows_only_intended_peers
+    (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
+    (policies : List (List PacketPolicy.PacketAclRule)) : Prop :=
+  ValidGrayAddressPlan ranges pairs ∧
   (∀ rules ∈ policies, ∀ packet,
-    Filter.evaluate (rules.map PacketPolicy.Rule.toFilter) .deny packet = .allow →
+    Filter.evaluate (rules.map PacketPolicy.PacketAclRule.toFilter) .deny packet = .allow →
     IntendedPair pairs packet)
 
 theorem gray_addressing_of_separated_ranges_and_named_rules
     (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
-    (policies : List (List PacketPolicy.Rule))
+    (policies : List (List PacketPolicy.PacketAclRule))
     (valid : ∀ range ∈ ranges, range.low ≤ range.high)
     (separated : Addressing.Separated ranges)
     (peers : ∀ pair ∈ pairs, Addressing.Owns ranges pair.source pair.level ∧
       Addressing.Owns ranges pair.destination pair.level)
     (rulesChecked : ∀ rules ∈ policies, ∀ rule ∈ rules,
       rule.verdict = .allow → RuleNamesPair pairs rule) :
-    msc_gray_addressing_for_level_filtering ranges pairs policies := by
-  refine ⟨valid, ?_, peers, ?_⟩
+    gray_policy_allows_only_intended_peers ranges pairs policies := by
+  refine ⟨⟨valid, ?_, peers⟩, ?_⟩
   · intro address a b ha hb
     exact Addressing.separated_ranges_unique_label separated ha hb
   · intro rules present packet accepted
-    apply Filter.default_deny_sound (rules.map PacketPolicy.Rule.toFilter)
+    apply Filter.default_deny_sound (rules.map PacketPolicy.PacketAclRule.toFilter)
       (IntendedPair pairs) ?_ packet accepted
     intro rule inRules allow p matched
     obtain ⟨source, member, rfl⟩ := List.mem_map.mp inRules

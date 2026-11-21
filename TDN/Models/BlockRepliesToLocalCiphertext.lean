@@ -3,17 +3,17 @@ import TDN.Models.SourceGuardedAutoReplyNetwork
 namespace TDN.EncryptedResponseGuards
 open DataPlaneForwarding
 
-def LocallyEncrypted (c : DataPlaneForwarding.DataPlaneModel) (state : DataPlaneForwarding.State) : Prop :=
+def LocallyEncrypted (c : DataPlaneForwarding.DataPlaneModel) (state : DataPlaneForwarding.ForwardingState) : Prop :=
   ∃ iface, c.owner state.iface = c.owner iface ∧
     ∃ association ∈ c.egressPolicies iface, ∃ sa previous,
       state.frame = encrypt association sa previous
 
-def ExcludesWireSource (rule : PacketPolicy.Rule) (source : Nat) : Prop :=
+def ExcludesWireSource (rule : PacketPolicy.PacketAclRule) (source : Nat) : Prop :=
   ∃ atom ∈ rule.atoms, match atom with
     | .destinationRange low high => source < low ∨ high < source
     | _ => False
 
-instance (rule : PacketPolicy.Rule) (source : Nat) :
+instance (rule : PacketPolicy.PacketAclRule) (source : Nat) :
     Decidable (ExcludesWireSource rule source) := by
   unfold ExcludesWireSource
   letI (atom : PacketPolicy.MatchCondition) : Decidable (match atom with
@@ -21,7 +21,7 @@ instance (rule : PacketPolicy.Rule) (source : Nat) :
     | _ => False) := by cases atom <;> infer_instance
   infer_instance
 
-lemma matching_destination_not_excluded {rule : PacketPolicy.Rule}
+lemma matching_destination_not_excluded {rule : PacketPolicy.PacketAclRule}
     {packet : PacketPolicy.Packet} {source : Nat}
     (matched : rule.toFilter.accepts packet = true)
     (destination : packet.destination = source)
@@ -41,13 +41,13 @@ def LocalDeny (c : DataPlaneForwarding.DataPlaneModel) : Prop :=
 
 theorem encrypted_error_cannot_leave_component
     (c : DataPlaneForwarding.DataPlaneModel) (checked : LocalDeny c)
-    (state : DataPlaneForwarding.State) (reply : PacketPolicy.Packet) (output : Nat)
+    (state : DataPlaneForwarding.ForwardingState) (reply : PacketPolicy.Packet) (output : Nat)
     (encrypted : LocallyEncrypted c state)
     (sameOwner : c.owner output = c.owner state.iface)
     (returns : reply.destination = state.frame.packet.source)
     (protocol : KernelResponses.ResponseProtocol reply.protocol)
     (external : reply.egress ≠ "lo")
-    (accepted : Filter.evaluate ((c.outputRules output).map PacketPolicy.Rule.toFilter)
+    (accepted : Filter.evaluate ((c.outputRules output).map PacketPolicy.PacketAclRule.toFilter)
       (c.outputFallback output) reply = .allow) : False := by
   obtain ⟨input, owner, association, member, sa, previous, frame⟩ := encrypted
   obtain ⟨fallback, checks⟩ := checked input output (owner.symm.trans sameOwner.symm) association member
@@ -88,7 +88,7 @@ theorem table_driven_deny_sound (devices : List DeviceData) (ifaces : List Iface
   rw [← owner]
   exact result
 
-def combinedConfig (data : GuardedResponseNetwork.Data) : KernelResponses.Config DataPlaneForwarding.State :=
+def combinedConfig (data : GuardedResponseNetwork.Data) : KernelResponses.ReplyConfig DataPlaneForwarding.ForwardingState :=
   { GuardedResponseNetwork.responseConfig data with
     generates := fun state =>
       (GuardedResponseNetwork.responseConfig data).generates state ∨
@@ -101,13 +101,13 @@ lemma combined_reply_preserves_safe (data : GuardedResponseNetwork.Data)
     (defaults : ∀ guard ∈ data.sourceGuards,
       (deviceAt data.devices guard.1).outputFallback = .deny)
     (encryptedChecks : LocalDeny data.config)
-    (source : DataPlaneForwarding.State) (header : PacketPolicy.Packet) (output : Nat)
+    (source : DataPlaneForwarding.ForwardingState) (header : PacketPolicy.Packet) (output : Nat)
     (valid : GuardedResponseNetwork.Safe data source)
     (enabled : (combinedConfig data).generates source)
     (protocol : KernelResponses.ResponseProtocol header.protocol)
     (selected : (combinedConfig data).selectedRoute source header output)
     (accepted : Filter.evaluate
-      (((combinedConfig data).outputRules source output).map PacketPolicy.Rule.toFilter)
+      (((combinedConfig data).outputRules source output).map PacketPolicy.PacketAclRule.toFilter)
       ((combinedConfig data).outputFallback source output)
       (KernelResponses.outputPacket (combinedConfig data) header output) = .allow)
     (external : (combinedConfig data).interfaceName output ≠ "lo") :
@@ -129,7 +129,7 @@ theorem combined_traces_preserve_stack (data : GuardedResponseNetwork.Data)
     (defaults : ∀ guard ∈ data.sourceGuards,
       (deviceAt data.devices guard.1).outputFallback = .deny)
     (encryptedChecks : LocalDeny data.config)
-    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {before after : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     (run : (KernelResponses.lts (GuardedResponseNetwork.network data) (combinedConfig data)).MTr
       (.network before) actions (.network after))
     (initial : GuardedResponseNetwork.Safe data before) :
@@ -141,17 +141,17 @@ theorem combined_traces_preserve_stack (data : GuardedResponseNetwork.Data)
     (combined_reply_preserves_safe data conditions pairs coverage defaults encryptedChecks)
     run initial).1
 
-lemma encryption_step_is_local {c : DataPlaneForwarding.DataPlaneModel} {before after : DataPlaneForwarding.State}
-    (step : DataPlaneForwarding.Step c before .encrypt after) : LocallyEncrypted c after := by
+lemma encryption_step_is_local {c : DataPlaneForwarding.DataPlaneModel} {before after : DataPlaneForwarding.ForwardingState}
+    (step : DataPlaneForwarding.ForwardingStep c before .encrypt after) : LocallyEncrypted c after := by
   cases step with
   | encrypt association sa selected installed bound =>
     exact ⟨_, rfl, association, (matched_policy_is_configured selected).1, sa, _, rfl⟩
 
 lemma network_trace_in_response_system {S A : Type} (network : Cslib.LTS S A)
-    (config : KernelResponses.Config S) {before after : S} {actions : List A}
+    (config : KernelResponses.ReplyConfig S) {before after : S} {actions : List A}
     (run : network.MTr before actions after) :
     (KernelResponses.lts network config).MTr (.network before)
-      (actions.map KernelResponses.Action.network) (.network after) := by
+      (actions.map KernelResponses.ReplyAction.network) (.network after) := by
   induction run with
   | refl => exact .refl
   | stepL first tail ih => exact .stepL (.network first) ih

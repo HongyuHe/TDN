@@ -16,7 +16,7 @@ for label, namespace in [("shared", "ProfileShared_DataPlane"), ("baseline", "Pr
     bindings.append({"snapshot": report["snapshot"], "namespace": namespace,
                      "gateway_ids": gateways, "device_numbers": numbers})
     content += ["namespace TDN.Deployments." + namespace,
-                "open DataPlaneForwarding", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0",
+                "open DataPlaneForwarding", "set_option maxRecDepth 1000000",
                 "def responseGateways : List Nat := " + lean_list([str(n) for n in numbers]),
                 "lemma table_driven_gateway_response_guards : ∀ device ∈ responseGateways,",
                 "    (deviceAt devices device).outputFallback = .deny ∧",
@@ -27,7 +27,7 @@ for label, namespace in [("shared", "ProfileShared_DataPlane"), ("baseline", "Pr
                 "  intro iface member",
                 "  exact table_driven_gateway_response_guards (config.owner iface) member",
                 "theorem packet_stack_survives_gateway_echo_and_error_generation",
-                "    {start finish : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}",
+                "    {start finish : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}",
                 "    (run : (KernelResponses.lts (lts config)",
                 "      (Requirements.nativeKernelResponses config responseGateways)).MTr",
                 "      (.network start) actions (.network finish))",

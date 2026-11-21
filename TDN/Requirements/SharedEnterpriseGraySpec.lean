@@ -21,7 +21,7 @@ structure EGEncryptionComponent where
   firewall : String
   outer : String
   separateEncryptorSelected : Bool
-  mechanism : Mechanism
+  protocol : EncryptionProtocol
   internalInterfaces : List String
   externalInterfaces : List String
   managementTunnels : List String
@@ -61,7 +61,7 @@ structure EGRouteRule where
   peer : Option String
   verdict : Filter.Verdict
 
-def EGRouteRule.toFilter (rule : EGRouteRule) : Filter.Rule EGRouteAdvertisement :=
+def EGRouteRule.toFilter (rule : EGRouteRule) : Filter.FirstMatchRule EGRouteAdvertisement :=
   ⟨fun advertisement => decide (rule.low ≤ advertisement.routePrefix.low ∧
     advertisement.routePrefix.high ≤ rule.high ∧
     (rule.peer = none ∨ rule.peer = some advertisement.peer)), rule.verdict⟩
@@ -214,24 +214,24 @@ def EGFirewallRestrictions (configuration : EGConfiguration) (d : Deployment)
 
 def EGConfiguration.FirewallPolicies (configuration : EGConfiguration) (d : Deployment) : Prop :=
   d.AddressInventoryCoherent ∧ d.ProcessingCoherent ∧ d.UDPBindingsCoherent ∧
-  ∀ interface ∈ d.interfaces, d.Relevant interface.device →
+  ∀ interface ∈ d.interfaces, d.InScope interface.device →
     interface.device ∈ configuration.grayFirewalls →
     d.PolicyCoverage interface ∧
     (∀ policy ∈ d.policies, policy.interface = interface.id → policy.defaultVerdict = .deny) ∧
-    (∀ direction traffic, d.Accepts interface.id direction traffic →
+    (∀ direction traffic, d.PermitsOnInterface interface.id direction traffic →
       EGFirewallRestrictions configuration d interface direction traffic) ∧
     ∀ direction hook traffic, d.PacketEligibleAt interface direction hook traffic →
       EGFirewallRestrictions configuration d interface direction traffic →
       (EGAuthenticationRevocationHTTP d traffic ∨ EGControlPeers configuration d traffic) →
-      d.AcceptsAt interface.id direction hook traffic
+      d.PermitsAtHook interface.id direction hook traffic
 
 def EGConfiguration.ManagementTopology (configuration : EGConfiguration)
     (d : Deployment) : Prop :=
   ∀ source target, configuration.Managed source → configuration.ManagedTarget d target →
     source ≠ target →
     Relation.ReflTransGen d.DeviceAdjacent source target ∧
-    ¬ Relation.ReflTransGen (Waypointing.Avoiding d.DeviceAdjacent
-      (fun component => component ∈ configuration.grayFirewalls)) source target
+    ¬ Waypointing.ReachableWithoutWaypoint d.DeviceAdjacent
+      (fun component => component ∈ configuration.grayFirewalls) source target
 
 def EGConfiguration.ManagementPaths (configuration : EGConfiguration) (d : Deployment)
     (records : TechnicalDutyRecords) : Prop :=
@@ -269,7 +269,7 @@ def EGConfiguration.EncryptorArchitecture (configuration : EGConfiguration) (d :
     (records : TechnicalDutyRecords) : Prop :=
   (∀ firewall ∈ configuration.grayFirewalls,
     records.external.Confirms .egTrafficFirewallEligibility (.component firewall)) ∧
-  ∀ encryptor ∈ configuration.encryptors, d.Relevant encryptor.component →
+  ∀ encryptor ∈ configuration.encryptors, d.InScope encryptor.component →
     (if encryptor.separateEncryptorSelected then
       encryptor.component ≠ encryptor.firewall ∧
         records.external.Confirms .egSeparateEncryptorNecessary (.component encryptor.component)
@@ -282,12 +282,12 @@ def EGConfiguration.EncryptorArchitecture (configuration : EGConfiguration) (d :
       (IndependentManufacturers inner outer ∨
         (inner.product ≠ outer.product ∧ records.external.Confirms
           .egEncryptionIndependenceApproval (.componentPair inner.component outer.component)))) ∧
-    (encryptor.mechanism = .ipsec →
+    (encryptor.protocol = .ipsec →
       (encryptor.ipsecTunnelMode = true ∨ encryptor.associatedIPTunnel = true) ∧
       records.external.Confirms .egIPsecEligibility (.component encryptor.component) ∧
       ∀ record ∈ records.components, record.component = encryptor.component →
         IPsecAlgorithmConfiguration record) ∧
-    (encryptor.mechanism = .macsec →
+    (encryptor.protocol = .macsec →
       records.external.Confirms .egMACsecEligibility (.component encryptor.component) ∧
       ∀ record ∈ records.components, record.component = encryptor.component →
         record.macsecBits = 256 ∧ record.macsecAlgorithm ∈ ["GCM-AES-256", "GCM-AES-XPN-256"] ∧
@@ -297,32 +297,32 @@ def EGConfiguration.NoSplitTunneling {S A : Type} (configuration : EGConfigurati
     (d : Deployment) (model : ForwardingModel S A) : Prop :=
   model.CoversDeployment d ∧
   model.AllTraces (fun events =>
-    (∀ encryptor ∈ configuration.encryptors, d.Relevant encryptor.component →
+    (∀ encryptor ∈ configuration.encryptors, d.InScope encryptor.component →
       ∀ earlier middle later payload ingress received receiveClass egress sent sendClass,
       events = earlier ++ [.receive payload ingress received receiveClass] ++ middle ++
         [.transmit payload egress sent sendClass] ++ later →
       ¬ model.GenuineControl payload →
       (ingress ∈ encryptor.internalInterfaces → egress ∈ encryptor.externalInterfaces →
         ∃ tunnel ∈ d.tunnels, tunnel.sender = encryptor.component ∧
-          tunnel.layer = .inner ∧ tunnel.mechanism = encryptor.mechanism ∧
+          tunnel.layer = .inner ∧ tunnel.protocol = encryptor.protocol ∧
           tunnel.id ∈ sent ∧ .encrypt payload tunnel.id ∈ middle) ∧
       (ingress ∈ encryptor.externalInterfaces → egress ∈ encryptor.internalInterfaces →
         ∃ tunnel ∈ d.tunnels, tunnel.receiver = encryptor.component ∧
-          tunnel.layer = .inner ∧ tunnel.mechanism = encryptor.mechanism ∧
+          tunnel.layer = .inner ∧ tunnel.protocol = encryptor.protocol ∧
           tunnel.id ∈ received ∧ .decrypt payload tunnel.id ∈ middle)) ∧
-    (∀ encryptor ∈ configuration.encryptors, d.Relevant encryptor.component →
+    (∀ encryptor ∈ configuration.encryptors, d.InScope encryptor.component →
       ∀ earlier later payload egress sent trafficClass,
         events = earlier ++ [.transmit payload egress sent trafficClass] ++ later →
         egress ∈ encryptor.externalInterfaces → ¬ model.GenuineControl payload →
         ∃ tunnel ∈ d.tunnels, tunnel.sender = encryptor.component ∧
-          tunnel.layer = .inner ∧ tunnel.mechanism = encryptor.mechanism ∧
+          tunnel.layer = .inner ∧ tunnel.protocol = encryptor.protocol ∧
           tunnel.id ∈ sent ∧ .encrypt payload tunnel.id ∈ earlier) ∧
     ∀ earlier middle later payload ingress received receiveClass egress sent sendClass,
       events = earlier ++ [.receive payload ingress received receiveClass] ++ middle ++
         [.transmit payload egress sent sendClass] ++ later →
       ∀ input ∈ d.interfaces, ∀ output ∈ d.interfaces,
         input.id = ingress → output.id = egress → input.device = output.device →
-        d.IsLayer input.device .outer → d.Relevant input.device →
+        d.IsLayer input.device .outer → d.InScope input.device →
         input.zone = .gray → output.zone = .gray → ingress = egress)
 
 def EGConfiguration.IntersiteProtection {S A : Type} (configuration : EGConfiguration)
@@ -331,7 +331,7 @@ def EGConfiguration.IntersiteProtection {S A : Type} (configuration : EGConfigur
     first.site ≠ second.site →
     ∃ tunnel ∈ d.tunnels, tunnel.id ∈ first.managementTunnels ∧
       tunnel.layer = .inner ∧ tunnel.sender = first.component ∧
-      tunnel.receiver = second.component ∧ tunnel.mechanism = first.mechanism ∧
+      tunnel.receiver = second.component ∧ tunnel.protocol = first.protocol ∧
       TunnelTransfer d model domain tunnel) ∧
   (∀ encryptor ∈ configuration.encryptors, ∀ id ∈ encryptor.dataTunnels,
     (∃ tunnel ∈ d.tunnels, tunnel.id = id ∧ tunnel.sender = encryptor.component) ∧
@@ -344,7 +344,7 @@ def EGConfiguration.IntersiteProtection {S A : Type} (configuration : EGConfigur
         configuration.GrayEncryption gray.sender ∧ d.IsLayer outer.sender .outer ∧
         Before events (.encrypt payload gray.id) (.encrypt payload outer.id))
 
-def EGRoutePolicy.Accepts (policy : EGRoutePolicy) (advertisement : EGRouteAdvertisement) : Prop :=
+def EGRoutePolicy.PermitsAdvertisement (policy : EGRoutePolicy) (advertisement : EGRouteAdvertisement) : Prop :=
   Filter.evaluate (policy.rules.map EGRouteRule.toFilter) policy.defaultVerdict advertisement = .allow
 
 def EGConfiguration.SpecificRoute (configuration : EGConfiguration)
@@ -404,7 +404,7 @@ def EGConfiguration.Routing (configuration : EGConfiguration) (d : Deployment)
       ∃ policy ∈ configuration.routingPolicies,
         policy.component = advertisement.component ∧
         policy.interface = advertisement.interface ∧ policy.inbound = advertisement.inbound ∧
-        policy.defaultVerdict = .deny ∧ policy.Accepts advertisement)) ∧
+        policy.defaultVerdict = .deny ∧ policy.PermitsAdvertisement advertisement)) ∧
   (configuration.vrfsSelected = true →
     (∀ encryptor ∈ configuration.encryptors,
       (∃ management ∈ configuration.routingInstances,
@@ -440,9 +440,9 @@ def EGConfiguration.Survivability (configuration : EGConfiguration) (d : Deploym
 
 def EGConfiguration.ExternalSizing {S A : Type} (configuration : EGConfiguration)
     (d : Deployment) (model : ForwardingModel S A) (sizing : List PacketSizing) : Prop :=
-  ∀ encryptor ∈ configuration.encryptors, d.Relevant encryptor.component →
+  ∀ encryptor ∈ configuration.encryptors, d.InScope encryptor.component →
     ∀ id ∈ encryptor.externalInterfaces,
-      ∃ setting ∈ sizing, model.native.ifaceName setting.interface = id ∧
+      ∃ setting ∈ sizing, model.deviceDataPlane.ifaceName setting.interface = id ∧
         setting.role = .grayFirewallOrEncryptionExternal ∧
         0 < setting.externalMtu ∧ 0 < setting.payloadLimit ∧
         (setting.family = .ipv6 → setting.ipv6PmtuConfigured = true) ∧

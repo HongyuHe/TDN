@@ -19,10 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Check source clauses, review status and Lean proof limits
+        run: |
+          python3 scripts/publication/update_requirement_map.py --check
+          python3 scripts/construction/check_proof_limits.py
       - name: Check publication inputs and GitHub source locations
         run: python3 scripts/publication/export_pages.py --check
       - name: Check indexed certificate generation
-        run: python3 -m unittest discover -s scripts/construction -p test_route_certificates.py
+        run: python3 -m unittest discover -s scripts/construction -p test_route_lookup_hints.py
       - name: Check the publication installer
         run: python3 -m unittest discover -s tests -p test_publication.py
 

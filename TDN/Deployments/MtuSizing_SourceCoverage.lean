@@ -1,5 +1,5 @@
 import TDN.Deployments.MtuSizing_Checks
-import TDN.Requirements.VerifiedMtuAndFragmentationCompliance
+import TDN.Requirements.SnapshotCoversAllDeployedIfaces
 import TDN.Requirements.DeviceAndInterfaceNameTable
 
 namespace TDN.Deployments.MtuSizing_Records
@@ -66,9 +66,9 @@ theorem source_bindings_cover_all_ifaces (records : Records) (entries : List Sou
 
 
 theorem allowed_source_iface_is_recorded {Key : Type} (records : Records)
-    (installations : List PublicSARecord) (entries : List SourceEntry) (roles : List SizingRole)
+    (installations : List PublicSaRecord) (entries : List SourceEntry) (roles : List SizingRole)
     (policies : List (Nat × LinkAdmission.IfacePolicy)) (epoch : String)
-    (codec : IPsecFrameEncoding.Codec Key) (material : String → IPsecKeyMaterial)
+    (codec : IpsecFrameEncoding.Codec Key) (material : String → IpsecKeyMaterial)
     (networks : List RedNetworkIdentity) (attachments : List RedNetworkAttachment)
     (services : List ServiceRegistration) (base : Deployment)
     (checked : SourceBindingChecks records entries networks)
@@ -129,9 +129,9 @@ instance (entries : List SourceEntry) (roles : List SizingRole) (names : Nat →
 
 
 theorem every_recorded_network_has_source {Key : Type} (records : Records)
-    (installations : List PublicSARecord) (entries : List SourceEntry) (roles : List SizingRole)
+    (installations : List PublicSaRecord) (entries : List SourceEntry) (roles : List SizingRole)
     (policies : List (Nat × LinkAdmission.IfacePolicy)) (epoch : String)
-    (codec : IPsecFrameEncoding.Codec Key) (material : String → IPsecKeyMaterial)
+    (codec : IpsecFrameEncoding.Codec Key) (material : String → IpsecKeyMaterial)
     (networks : List RedNetworkIdentity) (attachments : List RedNetworkAttachment)
     (services : List ServiceRegistration) (base : Deployment) (flows : List SourceFlow)
     (checked : NetworkSourceChecks entries roles records.componentName networks flows) :

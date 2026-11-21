@@ -4,9 +4,8 @@ namespace TDN.Deployments.Perimeter_Baseline
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
-lemma recorded_firewalls_are_attached_to_their_local_Outers :
+lemma recorded_firewalls_are_attached_to_their_local_outers :
     ∀ binding ∈ firewalls,
       ∃ first ∈ records.inventory.ifaces,
         records.inventory.componentName (records.inventory.configuration.ip.owner first) = binding.firewall ∧

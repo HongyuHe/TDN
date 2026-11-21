@@ -85,7 +85,7 @@ def render(report, namespace):
     return "\n".join([
         "namespace TDN.Deployments." + namespace,
         "open MultiProtocolForwarding LayeredFrame", "set_option maxRecDepth 1000000",
-        "set_option maxHeartbeats 0",
+
         "def devices : List DataPlaneForwarding.DeviceData := " + lean_list(devices),
         "def ifaces : List DataPlaneForwarding.IfaceData := " + lean_list(ports),
         "def routes : List DataPlaneForwarding.FibRoute := " + tuple_list(routes),
@@ -93,7 +93,7 @@ def render(report, namespace):
         "def bridges : List (Nat × Nat) := " + tuple_list(bridges),
         "def macIfaces : List MACIface := " + lean_list(macs),
         "def carriers : List CarrierIface := " + lean_list(carriers),
-        "def config : Config := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers",
+        "def config : TunnelForwardingModel := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers",
         "def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords ifaces",
         "def redSources : List Nat := " + lean_list([str(n) for n in sources]),
         "def grayIfaces : List Nat := " + lean_list([str(n) for n in gray]),
@@ -113,7 +113,7 @@ def render(report, namespace):
         "  refine ⟨association, fun body => ⟨installed, ?_⟩⟩",
         "  simpa [zero] using LinkProtection.enabled_sa_emits_encryption port.settings enabled protect encrypt",
         "    association.keyGeneration body", "",
-        "theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}",
+        "theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}",
         "    (run : (lts config).MTr start actions finish) :",
         "    finish.frame.payload = start.frame.payload ∧ finish.frame.originDomain = start.frame.originDomain :=",
         "  all_traces_preserve_payload config run",

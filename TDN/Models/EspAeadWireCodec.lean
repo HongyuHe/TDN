@@ -43,7 +43,7 @@ def protectedPlaintext (plaintext : List UInt8) (nextHeader : Nat) : List UInt8 
 lemma protected_plaintext_length (plaintext : List UInt8) (nextHeader : Nat) :
     (protectedPlaintext plaintext nextHeader).length =
       (plaintext.length + 2 + 3) / 4 * 4 := by
-  simp only [protectedPlaintext, List.length_append, padding_length, encodeUnsigned_length]
+  simp only [protectedPlaintext, List.length_append, padding_length, encode_unsigned_length]
   have total := padded_length plaintext.length
   omega
 
@@ -52,7 +52,7 @@ def espAAD (spi sequence : Nat) : List UInt8 :=
   encodeUnsigned 4 spi ++ encodeUnsigned 4 sequence
 
 lemma aad_length (spi sequence : Nat) : (espAAD spi sequence).length = 8 := by
-  simp [espAAD, encodeUnsigned_length]
+  simp [espAAD, encode_unsigned_length]
 
 
 def encodeESP (primitive : GCMPrimitive Key) (key : Key)
@@ -66,7 +66,7 @@ def openESP (primitive : GCMPrimitive Key) (key : Key) (wire : List UInt8) :
     Option (List UInt8) :=
   primitive.decrypt key (primitive.salt key ++ (wire.drop 8).take 8) (wire.take 8) (wire.drop 16)
 
-lemma encoded_ESP_length (primitive : GCMPrimitive Key) (key : Key)
+lemma encoded_esp_length (primitive : GCMPrimitive Key) (key : Key)
     (spi sequence : Nat) (iv plaintext : List UInt8) (nextHeader : Nat)
     (ivLength : iv.length = 8) :
     (encodeESP primitive key spi sequence iv plaintext nextHeader).length =
@@ -75,7 +75,7 @@ lemma encoded_ESP_length (primitive : GCMPrimitive Key) (key : Key)
     primitive.encryptedLength, protected_plaintext_length, PacketLength.alignedWireLength]
   omega
 
-lemma open_encoded_ESP (primitive : GCMPrimitive Key) (key : Key)
+lemma open_encoded_esp (primitive : GCMPrimitive Key) (key : Key)
     (spi sequence : Nat) (iv plaintext : List UInt8) (nextHeader : Nat)
     (ivLength : iv.length = 8) :
     openESP primitive key (encodeESP primitive key spi sequence iv plaintext nextHeader) =
@@ -117,7 +117,7 @@ lemma unpad_protected_plaintext (plaintext : List UInt8) (nextHeader : Nat)
       ((protectedPlaintext plaintext nextHeader).length - 2) 1 = paddingLength plaintext.length := by
     have location : (protectedPlaintext plaintext nextHeader).length - 2 =
         (plaintext ++ padding plaintext.length).length := by
-      simp only [protectedPlaintext, List.length_append, encodeUnsigned_length]
+      simp only [protectedPlaintext, List.length_append, encode_unsigned_length]
       omega
     rw [location]
     exact field_encoded_segment (plaintext ++ padding plaintext.length)
@@ -126,7 +126,7 @@ lemma unpad_protected_plaintext (plaintext : List UInt8) (nextHeader : Nat)
       ((protectedPlaintext plaintext nextHeader).length - 1) 1 = nextHeader := by
     have location : (protectedPlaintext plaintext nextHeader).length - 1 =
         (plaintext ++ padding plaintext.length ++ encodeUnsigned 1 (paddingLength plaintext.length)).length := by
-      simp only [protectedPlaintext, List.length_append, encodeUnsigned_length]
+      simp only [protectedPlaintext, List.length_append, encode_unsigned_length]
       omega
     rw [location]
     simpa only [List.append_nil, protectedPlaintext] using field_encoded_segment
@@ -134,7 +134,7 @@ lemma unpad_protected_plaintext (plaintext : List UInt8) (nextHeader : Nat)
       [] 1 nextHeader nextFits
   have length : (protectedPlaintext plaintext nextHeader).length =
       plaintext.length + paddingLength plaintext.length + 2 := by
-    simp only [protectedPlaintext, List.length_append, encodeUnsigned_length, padding_length]
+    simp only [protectedPlaintext, List.length_append, encode_unsigned_length, padding_length]
   unfold unpadESP
   rw [countField, nextField]
   simp only [length]
@@ -151,12 +151,12 @@ def decodeESP (primitive : GCMPrimitive Key) (key : Key) (wire : List UInt8) :
     Option (List UInt8 × Nat) :=
   (openESP primitive key wire).bind unpadESP
 
-theorem decode_encoded_ESP (primitive : GCMPrimitive Key) (key : Key)
+theorem decode_encoded_esp (primitive : GCMPrimitive Key) (key : Key)
     (spi sequence : Nat) (iv plaintext : List UInt8) (nextHeader : Nat)
     (ivLength : iv.length = 8) (nextFits : nextHeader < 256) :
     decodeESP primitive key (encodeESP primitive key spi sequence iv plaintext nextHeader) =
       some (plaintext, nextHeader) := by
-  rw [decodeESP, open_encoded_ESP primitive key spi sequence iv plaintext nextHeader ivLength]
+  rw [decodeESP, open_encoded_esp primitive key spi sequence iv plaintext nextHeader ivLength]
   exact unpad_protected_plaintext plaintext nextHeader nextFits
 
 

@@ -4,7 +4,7 @@ import TDN.Models.InboundIpsecSelectorPreservation
 
 namespace TDN.SourceResponseGuards
 
-lemma fallback_irrelevant {Packet : Type} (rules : List (Filter.Rule Packet))
+lemma fallback_irrelevant {Packet : Type} (rules : List (Filter.FirstMatchRule Packet))
     (packet : Packet) (covered : ∃ rule ∈ rules, rule.accepts packet = true)
     (first second : Filter.Verdict) :
     Filter.evaluate rules first packet = Filter.evaluate rules second packet := by
@@ -21,47 +21,47 @@ lemma fallback_irrelevant {Packet : Type} (rules : List (Filter.Rule Packet))
         contradiction
       · exact ⟨chosen, tail, matched⟩
 
-def WrongIngress (rule : PacketPolicy.Rule) (name : String) : Prop :=
+def WrongIngress (rule : PacketPolicy.PacketAclRule) (name : String) : Prop :=
   ∃ atom ∈ rule.atoms, match atom with
     | .ingress expected => expected ≠ name
     | _ => False
 
-def WrongEgress (rule : PacketPolicy.Rule) (name : String) : Prop :=
+def WrongEgress (rule : PacketPolicy.PacketAclRule) (name : String) : Prop :=
   ∃ atom ∈ rule.atoms, match atom with
     | .egress expected => expected ≠ name
     | _ => False
 
-def NonResponseProtocol (rule : PacketPolicy.Rule) : Prop :=
+def NonResponseProtocol (rule : PacketPolicy.PacketAclRule) : Prop :=
   ∃ atom ∈ rule.atoms, match atom with
     | .protocol name => ¬ KernelResponses.ResponseProtocol name
     | _ => False
 
-def DisjointReplyAddress (source output : PacketPolicy.Rule) : Prop :=
+def DisjointReplyAddress (source output : PacketPolicy.PacketAclRule) : Prop :=
   ∃ a ∈ source.atoms, ∃ b ∈ output.atoms, match a, b with
     | .sourceRange low high, .destinationRange otherLow otherHigh =>
         high < otherLow ∨ otherHigh < low
     | _, _ => False
 
-instance (rule : PacketPolicy.Rule) (name : String) : Decidable (WrongIngress rule name) := by
+instance (rule : PacketPolicy.PacketAclRule) (name : String) : Decidable (WrongIngress rule name) := by
   unfold WrongIngress
   letI (a : PacketPolicy.MatchCondition) : Decidable (match a with
     | .ingress expected => expected ≠ name | _ => False) := by cases a <;> infer_instance
   infer_instance
 
-instance (rule : PacketPolicy.Rule) (name : String) : Decidable (WrongEgress rule name) := by
+instance (rule : PacketPolicy.PacketAclRule) (name : String) : Decidable (WrongEgress rule name) := by
   unfold WrongEgress
   letI (a : PacketPolicy.MatchCondition) : Decidable (match a with
     | .egress expected => expected ≠ name | _ => False) := by cases a <;> infer_instance
   infer_instance
 
-instance (rule : PacketPolicy.Rule) : Decidable (NonResponseProtocol rule) := by
+instance (rule : PacketPolicy.PacketAclRule) : Decidable (NonResponseProtocol rule) := by
   unfold NonResponseProtocol
   letI (a : PacketPolicy.MatchCondition) : Decidable (match a with
     | .protocol name => ¬ KernelResponses.ResponseProtocol name | _ => False) := by
       cases a <;> infer_instance
   infer_instance
 
-instance (source output : PacketPolicy.Rule) : Decidable (DisjointReplyAddress source output) := by
+instance (source output : PacketPolicy.PacketAclRule) : Decidable (DisjointReplyAddress source output) := by
   unfold DisjointReplyAddress
   letI (a b : PacketPolicy.MatchCondition) : Decidable (match a, b with
     | .sourceRange low high, .destinationRange otherLow otherHigh =>
@@ -70,19 +70,19 @@ instance (source output : PacketPolicy.Rule) : Decidable (DisjointReplyAddress s
   infer_instance
 
 def PairCheck (ingress egress : String) (authenticated sourceLayers outputLayers : List Nat)
-    (source output : PacketPolicy.Rule) : Prop :=
+    (source output : PacketPolicy.PacketAclRule) : Prop :=
   sourceLayers = outputLayers ∨ WrongIngress source ingress ∨ WrongEgress output egress ∨
     DataPlaneForwarding.ImpossibleAuthentication source authenticated ∨ NonResponseProtocol output ∨
     DisjointReplyAddress source output
 
 instance (ingress egress : String) (authenticated sourceLayers outputLayers : List Nat)
-    (source output : PacketPolicy.Rule) :
+    (source output : PacketPolicy.PacketAclRule) :
     Decidable (PairCheck ingress egress authenticated sourceLayers outputLayers source output) := by
   unfold PairCheck
   infer_instance
 
 lemma checked_pair_preserves_layers
-    {source output : PacketPolicy.Rule} {original reply : PacketPolicy.Packet}
+    {source output : PacketPolicy.PacketAclRule} {original reply : PacketPolicy.Packet}
     {sourceLayers outputLayers : List Nat}
     (checked : PairCheck original.ingress reply.egress original.matchedInboundPolicyIds
       sourceLayers outputLayers source output)
@@ -111,20 +111,20 @@ lemma checked_pair_preserves_layers
     omega
 
 theorem ordered_reply_checks_preserve_layers
-    (sourceRules outputRules : List PacketPolicy.Rule) (sourceFallback : Filter.Verdict)
+    (sourceRules outputRules : List PacketPolicy.PacketAclRule) (sourceFallback : Filter.Verdict)
     (original reply : PacketPolicy.Packet) (sourceLayers outputLayers : List Nat)
     (checked : ∀ source ∈ sourceRules, source.verdict = .allow →
       ∀ output ∈ outputRules, output.verdict = .allow →
       PairCheck original.ingress reply.egress original.matchedInboundPolicyIds
         sourceLayers outputLayers source output)
     (covered : ∃ rule ∈ sourceRules, rule.toFilter.accepts original = true)
-    (inputAccepted : Filter.evaluate (sourceRules.map PacketPolicy.Rule.toFilter)
+    (inputAccepted : Filter.evaluate (sourceRules.map PacketPolicy.PacketAclRule.toFilter)
       sourceFallback original = .allow)
-    (outputAccepted : Filter.evaluate (outputRules.map PacketPolicy.Rule.toFilter) .deny reply = .allow)
+    (outputAccepted : Filter.evaluate (outputRules.map PacketPolicy.PacketAclRule.toFilter) .deny reply = .allow)
     (returnsToSource : reply.destination = original.source)
     (protocol : KernelResponses.ResponseProtocol reply.protocol) :
     sourceLayers = outputLayers := by
-  have converted := fallback_irrelevant (sourceRules.map PacketPolicy.Rule.toFilter) original
+  have converted := fallback_irrelevant (sourceRules.map PacketPolicy.PacketAclRule.toFilter) original
     (by obtain ⟨rule, member, matched⟩ := covered
         exact ⟨rule.toFilter, List.mem_map.mpr ⟨rule, member, rfl⟩, matched⟩)
     sourceFallback .deny
@@ -139,12 +139,12 @@ theorem ordered_reply_checks_preserve_layers
     (checked sourceRule memberSource sourceAllows outputRule memberOutput outputAllows)
     sourceMatches outputMatches returnsToSource protocol
 
-def ReplyExcludesSelector (output : PacketPolicy.Rule) (association : DataPlaneForwarding.IpsecPolicy) : Prop :=
+def ReplyExcludesSelector (output : PacketPolicy.PacketAclRule) (association : DataPlaneForwarding.IpsecPolicy) : Prop :=
   ∃ atom ∈ output.atoms, match atom with
     | .destinationRange low high => high < association.sourceLow ∨ association.sourceHigh < low
     | _ => False
 
-instance (output : PacketPolicy.Rule) (association : DataPlaneForwarding.IpsecPolicy) :
+instance (output : PacketPolicy.PacketAclRule) (association : DataPlaneForwarding.IpsecPolicy) :
     Decidable (ReplyExcludesSelector output association) := by
   unfold ReplyExcludesSelector
   letI (a : PacketPolicy.MatchCondition) : Decidable (match a with
@@ -153,17 +153,17 @@ instance (output : PacketPolicy.Rule) (association : DataPlaneForwarding.IpsecPo
   infer_instance
 
 def AuthenticationReplyConflict (device : DataPlaneForwarding.DeviceData) (auth : List Nat)
-    (output : PacketPolicy.Rule) : Prop :=
+    (output : PacketPolicy.PacketAclRule) : Prop :=
   ∃ id ∈ auth, ∀ association ∈ device.ingressPolicies, association.id = id →
     ReplyExcludesSelector output association
 
-instance (device : DataPlaneForwarding.DeviceData) (auth : List Nat) (output : PacketPolicy.Rule) :
+instance (device : DataPlaneForwarding.DeviceData) (auth : List Nat) (output : PacketPolicy.PacketAclRule) :
     Decidable (AuthenticationReplyConflict device auth output) := by
   unfold AuthenticationReplyConflict
   infer_instance
 
 lemma authenticated_reply_cannot_match
-    {device : DataPlaneForwarding.DeviceData} {auth : List Nat} {output : PacketPolicy.Rule}
+    {device : DataPlaneForwarding.DeviceData} {auth : List Nat} {output : PacketPolicy.PacketAclRule}
     {original reply : PacketPolicy.Packet}
     (conflict : AuthenticationReplyConflict device auth output)
     (bound : ∀ id ∈ auth, ∃ association ∈ device.ingressPolicies,
@@ -181,7 +181,7 @@ lemma authenticated_reply_cannot_match
   omega
 
 def TableDrivenReplyChecks (devices : List DataPlaneForwarding.DeviceData) (ifaces : List DataPlaneForwarding.IfaceData)
-    (guards : List (Nat × List PacketPolicy.Rule)) : Prop :=
+    (guards : List (Nat × List PacketPolicy.PacketAclRule)) : Prop :=
   ∀ guard ∈ guards, ∀ entry ∈ ifaces, entry.owner = guard.1 → entry.name ≠ "lo" →
     ∀ output ∈ ifaces, output.owner = entry.owner → output.name ≠ "lo" →
       ∀ auth ∈ DataPlaneForwarding.possibleAuthentications (DataPlaneForwarding.deviceAt devices entry.owner) entry,
@@ -192,16 +192,16 @@ def TableDrivenReplyChecks (devices : List DataPlaneForwarding.DeviceData) (ifac
         AuthenticationReplyConflict (DataPlaneForwarding.deviceAt devices entry.owner) auth rule
 
 instance (devices : List DataPlaneForwarding.DeviceData) (ifaces : List DataPlaneForwarding.IfaceData)
-    (guards : List (Nat × List PacketPolicy.Rule)) :
+    (guards : List (Nat × List PacketPolicy.PacketAclRule)) :
     Decidable (TableDrivenReplyChecks devices ifaces guards) := by
   unfold TableDrivenReplyChecks
   infer_instance
 
 theorem table_driven_reply_checks_preserve_layers
     (devices : List DataPlaneForwarding.DeviceData) (ifaces : List DataPlaneForwarding.IfaceData)
-    (guards : List (Nat × List PacketPolicy.Rule))
+    (guards : List (Nat × List PacketPolicy.PacketAclRule))
     (checked : TableDrivenReplyChecks devices ifaces guards)
-    {guard : Nat × List PacketPolicy.Rule} (guardMember : guard ∈ guards)
+    {guard : Nat × List PacketPolicy.PacketAclRule} (guardMember : guard ∈ guards)
     {entry output : DataPlaneForwarding.IfaceData} (entryMember : entry ∈ ifaces)
     (entryOwner : entry.owner = guard.1) (inputExternal : entry.name ≠ "lo")
     (outputMember : output ∈ ifaces) (owner : output.owner = entry.owner)
@@ -215,13 +215,13 @@ theorem table_driven_reply_checks_preserve_layers
     (selectorBound : ∀ id ∈ auth, ∃ association ∈ (DataPlaneForwarding.deviceAt devices entry.owner).ingressPolicies,
       association.id = id ∧ association.matches original = true)
     (covered : ∃ rule ∈ guard.2, rule.toFilter.accepts original = true)
-    (inputAccepted : Filter.evaluate (guard.2.map PacketPolicy.Rule.toFilter) .allow original = .allow)
+    (inputAccepted : Filter.evaluate (guard.2.map PacketPolicy.PacketAclRule.toFilter) .allow original = .allow)
     (outputAccepted : Filter.evaluate
-      ((DataPlaneForwarding.deviceAt devices output.owner).outputRules.map PacketPolicy.Rule.toFilter) .deny reply = .allow)
+      ((DataPlaneForwarding.deviceAt devices output.owner).outputRules.map PacketPolicy.PacketAclRule.toFilter) .deny reply = .allow)
     (returnsToSource : reply.destination = original.source)
     (protocol : KernelResponses.ResponseProtocol reply.protocol) :
     (if auth = [] then entry.stack else entry.stack.tail) = output.stack := by
-  have converted := fallback_irrelevant (guard.2.map PacketPolicy.Rule.toFilter) original
+  have converted := fallback_irrelevant (guard.2.map PacketPolicy.PacketAclRule.toFilter) original
     (by obtain ⟨rule, member, matched⟩ := covered
         exact ⟨rule.toFilter, List.mem_map.mpr ⟨rule, member, rfl⟩, matched⟩) .allow .deny
   rw [converted] at inputAccepted
@@ -239,13 +239,13 @@ theorem table_driven_reply_checks_preserve_layers
   · exact False.elim
       (authenticated_reply_cannot_match conflict selectorBound returnsToSource outputMatches)
 
-def CoverageRule (rule : PacketPolicy.Rule) (ingress : String) (low high : Nat) : Prop :=
+def CoverageRule (rule : PacketPolicy.PacketAclRule) (ingress : String) (low high : Nat) : Prop :=
   ∀ atom ∈ rule.atoms, match atom with
     | .ingress name => name = ingress
     | .sourceRange first last => first ≤ low ∧ high ≤ last
     | _ => False
 
-instance (rule : PacketPolicy.Rule) (ingress : String) (low high : Nat) :
+instance (rule : PacketPolicy.PacketAclRule) (ingress : String) (low high : Nat) :
     Decidable (CoverageRule rule ingress low high) := by
   unfold CoverageRule
   letI (a : PacketPolicy.MatchCondition) : Decidable (match a with
@@ -254,7 +254,7 @@ instance (rule : PacketPolicy.Rule) (ingress : String) (low high : Nat) :
     | _ => False) := by cases a <;> infer_instance
   infer_instance
 
-lemma coverage_rule_matches {rule : PacketPolicy.Rule} {packet : PacketPolicy.Packet}
+lemma coverage_rule_matches {rule : PacketPolicy.PacketAclRule} {packet : PacketPolicy.Packet}
     {low high : Nat} (checked : CoverageRule rule packet.ingress low high)
     (bounds : low ≤ packet.source ∧ packet.source ≤ high) :
     rule.toFilter.accepts packet = true := by
@@ -271,20 +271,20 @@ def ValidSourceAddress (source : Nat) : Prop :=
   source ≤ 2^32 - 1 ∨ (2^128 ≤ source ∧ source ≤ 2 * 2^128 - 1)
 
 def TableDrivenGuardCoverage (ifaces : List DataPlaneForwarding.IfaceData)
-    (guards : List (Nat × List PacketPolicy.Rule)) : Prop :=
+    (guards : List (Nat × List PacketPolicy.PacketAclRule)) : Prop :=
   ∀ guard ∈ guards, ∀ entry ∈ ifaces, entry.owner = guard.1 → entry.name ≠ "lo" →
     (∃ rule ∈ guard.2, CoverageRule rule entry.name 0 (2^32 - 1)) ∧
     (∃ rule ∈ guard.2, CoverageRule rule entry.name (2^128) (2 * 2^128 - 1))
 
-instance (ifaces : List DataPlaneForwarding.IfaceData) (guards : List (Nat × List PacketPolicy.Rule)) :
+instance (ifaces : List DataPlaneForwarding.IfaceData) (guards : List (Nat × List PacketPolicy.PacketAclRule)) :
     Decidable (TableDrivenGuardCoverage ifaces guards) := by
   unfold TableDrivenGuardCoverage
   infer_instance
 
 theorem table_driven_guard_coverage_excludes_fallback
-    (ifaces : List DataPlaneForwarding.IfaceData) (guards : List (Nat × List PacketPolicy.Rule))
+    (ifaces : List DataPlaneForwarding.IfaceData) (guards : List (Nat × List PacketPolicy.PacketAclRule))
     (checked : TableDrivenGuardCoverage ifaces guards)
-    {guard : Nat × List PacketPolicy.Rule} (guardMember : guard ∈ guards)
+    {guard : Nat × List PacketPolicy.PacketAclRule} (guardMember : guard ∈ guards)
     {entry : DataPlaneForwarding.IfaceData} (entryMember : entry ∈ ifaces)
     (owner : entry.owner = guard.1) (external : entry.name ≠ "lo")
     (packet : PacketPolicy.Packet) (inputName : packet.ingress = entry.name)

@@ -1,4 +1,4 @@
-import TDN.Import.NativeDecide
+import TDN.Import.CompiledDecide
 import TDN.Deployments.Perimeter_SharedData
 import TDN.Deployments.Perimeter_SharedAddresses
 import TDN.Deployments.Perimeter_SharedStructure
@@ -10,7 +10,6 @@ namespace TDN.Deployments.Perimeter_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma interface_iface_selection_checked :
     ∀ interface ∈ records.interfaces, records.ifaceIndex interface ∈ records.inventory.ifaces ∧

@@ -4,6 +4,7 @@ import copy
 from collections import deque
 import ipaddress
 import json
+import os
 from pathlib import Path
 from network_names import forwarding_lean
 from import_snapshot import parse_rule, quoted, lean_list
@@ -24,9 +25,23 @@ def packet_lean(packet):
     return "{ " + ", ".join(fields) + " }"
 
 
-def frame_lean(frame):
-    encapLayers = ["⟨⟨" + ", ".join(str(x) for x in envelope["seal"]) + "⟩, " + packet_lean(envelope["header"]) + "⟩" for envelope in frame["encapLayers"]]
-    return "{ payload := 1, originDomain := " + str(frame["originDomain"]) + ", enteredIface := " + str(frame["enteredIface"]) + ", packet := " + packet_lean(frame["packet"]) + ", encapLayers := " + lean_list(encapLayers) + " }"
+def replay_records(namespace, states, steps):
+    def packet_fields(packet):
+        defaults = dict.fromkeys(("etherType", "payloadBytes", "connectionId", "networkBytes", "ipv4FragmentOffset"))
+        return {**defaults, **packet}
+
+    records = {}
+    for index, state in enumerate(states):
+        frame = state["frame"]
+        layers = [{"authentication": dict(zip(("tag", "association", "sender", "receiver"), layer["seal"], strict=True)),
+                   "header": packet_fields(layer["header"])} for layer in frame["encapLayers"]]
+        records[f"{namespace}.witnessState{index}"] = {
+            "iface": state["port"], "datapathStage": "egressReady" if state["phase"] == "ready" else state["phase"],
+            "authenticated": state["authenticated"],
+            "frame": {**frame, "encapLayers": layers, "packet": packet_fields(frame["packet"])},
+        }
+    records[f"{namespace}.witnessActions"] = ["internalProcessing" if step["action"] == "local" else step["action"] for step in steps]
+    return records
 
 
 def matches(association, packet):
@@ -62,7 +77,12 @@ def main():
     parser.add_argument("--destination-port", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--trace", required=True)
+    parser.add_argument("--records", type=Path, help="Replay JSON for Lean, defaults to a sibling of the trace")
     args = parser.parse_args()
+    trace = Path(args.trace)
+    records_path = args.records or trace.with_suffix(".records.json")
+    if records_path.resolve() in {Path(args.output).resolve(), Path(args.report).resolve(), trace.resolve()}:
+        parser.error("The replay records must have their own path")
     report = json.loads(Path(args.report).read_text())
     snapshot = report.get("model_snapshot") or json.loads((Path(report["snapshot"]) / "snapshot.json").read_text())
     interfaces = {i["id"]: i for i in snapshot["interfaces"]}
@@ -209,9 +229,11 @@ def main():
         else:
             raise ValueError("Unexpected phase " + phase)
     require(state["phase"] == "delivered" and current["id"] == args.destination_port, "Witness did not reach destination")
-    lines = ["import " + args.module, "", "namespace TDN.Deployments." + args.namespace, "open DataPlaneForwarding", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "set_option linter.unusedSimpArgs false", ""]
-    for index, item in enumerate(states):
-        lines.append("def witnessState" + str(index) + " : DataPlaneForwarding.State := ⟨" + str(item["port"]) + ", ." + item["phase"] + ", " + frame_lean(item["frame"]) + ", " + lean_list([str(x) for x in item["authenticated"]]) + "⟩")
+    records_path.write_text(json.dumps(replay_records("TDN.Deployments." + args.namespace, states, steps), indent=2) + "\n")
+    relative = os.path.relpath(records_path.resolve(), Path(args.output).resolve().parent)
+    lines = ["import TDN.Import.ForwardingTrace", "import " + args.module, "",
+             "namespace TDN.Deployments." + args.namespace, "open DataPlaneForwarding", "",
+             "replay_forwarding_trace config from " + json.dumps(relative), ""]
     immediate_checks = []
     for index, item in enumerate(states):
         device_name = ports[item["port"]]["device_id"]
@@ -225,12 +247,8 @@ def main():
     if immediate_checks:
         lines += ["", "lemma witness_immediate_header_checks : " +
                   " ∧ ".join(immediate_checks + ["True"]) + " := by native_decide"]
-    for index, step in enumerate(steps):
-        lines += ["", "lemma witnessStep" + str(index) + " : DataPlaneForwarding.Step config witnessState" + str(index) + " ." + step["action"] + " witnessState" + str(index + 1) + " := by", "  exact DataPlaneForwarding.Step." + step["constructor"] + " " + step["arguments"]]
-    lines += ["", "def witnessActions : List Action := " + lean_list(["." + step["action"] for step in steps]), "", "theorem positive_delivery_forwarding : (lts config).MTr witnessState0 witnessActions witnessState" + str(len(steps)) + " := by", "  exact " + "(".join(["Cslib.LTS.MTr.stepL witnessStep" + str(i) + " " for i in range(len(steps))]) + "Cslib.LTS.MTr.refl" + ")" * (len(steps) - 1), "", "lemma witness_initial_stack : EncapStackConsistent config expectedEncapStack witnessState0 := by", "  unfold EncapStackConsistent ProcessingInvariant LocalAuthentication encapStackAfterIngress witnessState0 Frame.encapLayerIds config expectedEncapStack dataPlaneModelFromRecords expectedEncapStackFromRecords ifaceAt deviceAt ifaces devices", "  decide", "", "end TDN.Deployments." + args.namespace, ""]
-    lines = [line.replace("(by native_decide)", "(by (try simp only [config, dataPlaneModelFromRecords, SelectedFibRoute, FibRoute.matches, accepts, saMatchesPolicy]); all_goals native_decide)") for line in lines]
-    start = next(i for i, line in enumerate(lines) if line.startswith("lemma witness_initial_stack"))
-    lines[start + 1:start + 3] = ["  exact ⟨⟨⟨rfl, rfl, Or.inl rfl, rfl⟩, rfl⟩, rfl⟩"]
+    lines += ["", "lemma witness_initial_stack : EncapStackConsistent config expectedEncapStack witnessState0 := by",
+              "  exact ⟨⟨⟨rfl, rfl, Or.inl rfl, rfl⟩, rfl⟩, rfl⟩", "", "end TDN.Deployments." + args.namespace, ""]
     Path(args.output).write_text(forwarding_lean("\n".join(lines)))
     Path(args.trace).write_text(json.dumps({"source": args.source_port, "destination": args.destination_port, "states": states, "steps": steps}, indent=2) + "\n")
     print(json.dumps({"steps": len(steps), "encryption_steps": [i for i, s in enumerate(steps) if s["action"] == "encrypt"], "decryption_steps": [i for i, s in enumerate(steps) if s["action"] == "decrypt"]}))

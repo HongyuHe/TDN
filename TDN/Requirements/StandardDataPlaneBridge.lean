@@ -5,8 +5,8 @@ namespace TDN.Compliance
 
 def DeviceExecutionBinding.withProjection {S A T B : Type}
     (binding : DeviceExecutionBinding S A)
-    (state : T → MultiProtocolForwarding.State)
-    (action : B → Option MultiProtocolForwarding.Action) : DeviceExecutionBinding T B :=
+    (state : T → MultiProtocolForwarding.TunnelForwardingState)
+    (action : B → Option MultiProtocolForwarding.TunnelForwardingAction) : DeviceExecutionBinding T B :=
   { configuration := binding.configuration
     state := state
     action := action
@@ -38,7 +38,7 @@ lemma DeviceExecutionBinding.source_events_are_network {S A : Type}
 
 lemma DeviceExecutionBinding.operation_events_are_network {S A : Type}
     (binding : DeviceExecutionBinding S A) (before : S)
-    (action : MultiProtocolForwarding.Action) (after : S) :
+    (action : MultiProtocolForwarding.TunnelForwardingAction) (after : S) :
     (binding.OperationEvents before action after).filter NetworkEvent.NetworkOperation =
       binding.OperationEvents before action after := by
   cases action
@@ -73,7 +73,7 @@ lemma DeviceExecutionBinding.operation_events_are_network {S A : Type}
 
 lemma DeviceExecutionBinding.required_events_are_network {S A : Type}
     (binding : DeviceExecutionBinding S A) (before : S)
-    (action : MultiProtocolForwarding.Action) (after : S) :
+    (action : MultiProtocolForwarding.TunnelForwardingAction) (after : S) :
     (binding.RequiredEvents before action after).filter NetworkEvent.NetworkOperation =
       binding.RequiredEvents before action after := by
   rw [DeviceExecutionBinding.RequiredEvents, List.filter_append,
@@ -85,33 +85,33 @@ namespace TDN.Requirements.StandardDataPlaneBridge
 open Compliance
 
 structure State (ifaces : List Nat) where
-  native : MultiProtocolForwarding.State
-  ifacePresent : native.iface ∈ ifaces
-  source : Option (PacketSource.Request × PacketSource.Datagram)
+  deviceState : MultiProtocolForwarding.TunnelForwardingState
+  ifacePresent : deviceState.iface ∈ ifaces
+  source : Option (PacketSource.Request × PacketSource.EncodedDatagram)
 
 structure Action (ifaces : List Nat) where
   before : State ifaces
-  operation : MultiProtocolForwarding.Action
+  operation : MultiProtocolForwarding.TunnelForwardingAction
   after : State ifaces
 
 def binding {S A : Type} (prototype : DeviceExecutionBinding S A) (ifaces : List Nat) :
     DeviceExecutionBinding (State ifaces) (Action ifaces) :=
-  prototype.withProjection State.native (fun action => some action.operation)
+  prototype.withProjection State.deviceState (fun action => some action.operation)
 
 def system {S A : Type} (prototype : DeviceExecutionBinding S A) (ifaces : List Nat) :
     Cslib.LTS (State ifaces) (Action ifaces) :=
   ⟨fun before action after =>
     action.before = before ∧ action.after = after ∧ before.source = after.source ∧
-    (binding prototype ifaces).AcceptedStep before.native action.operation after.native⟩
+    (binding prototype ifaces).AcceptedStep before.deviceState action.operation after.deviceState⟩
 
 def initial {S A : Type} (prototype : DeviceExecutionBinding S A) (ifaces : List Nat)
     (d : Deployment) (state : State ifaces) : Prop :=
-  (binding prototype ifaces).SourceInitial d state.native ∧
+  (binding prototype ifaces).SourceInitial d state.deviceState ∧
   ∃ request datagrams datagram,
     state.source = some (request, datagram) ∧
     (binding prototype ifaces).SourceRequestAllowed d request ∧
     prototype.sourceProcessing.process request = .emitted datagrams ∧ datagram ∈ datagrams ∧
-    state.native = (binding prototype ifaces).SourceState request datagram
+    state.deviceState = (binding prototype ifaces).SourceState request datagram
 
 def model {S A : Type} (prototype : DeviceExecutionBinding S A) (ifaces : List Nat)
     (d : Deployment) (history : ObservedHistory) : ForwardingModel (State ifaces) (Action ifaces) :=
@@ -119,7 +119,7 @@ def model {S A : Type} (prototype : DeviceExecutionBinding S A) (ifaces : List N
     initial := initial prototype ifaces d
     events := fun action =>
       (binding prototype ifaces).RequiredEvents action.before action.operation action.after
-    native := binding prototype ifaces
+    deviceDataPlane := binding prototype ifaces
     sourceRecord := State.source
     history := history }
 

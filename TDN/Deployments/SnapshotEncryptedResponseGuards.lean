@@ -3,7 +3,6 @@ import TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4_V13_ReplyForwarding
 
 namespace TDN.Deployments.DualStack_RedV4_GrayV4_BlackV4_V13
 set_option maxRecDepth 100000
-set_option maxHeartbeats 0
 
 lemma locally_encrypted_response_rules_checked :
     EncryptedResponseGuards.TableDrivenDeny devices := by
@@ -14,7 +13,7 @@ lemma locally_encrypted_response_denial : EncryptedResponseGuards.LocalDeny conf
     locally_encrypted_response_rules_checked
 
 theorem gateway_pre_and_post_encryption_responses_keep_stack
-    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {before after : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     (run : (KernelResponses.lts (GuardedResponseNetwork.network responseData)
       (EncryptedResponseGuards.combinedConfig responseData)).MTr
       (.network before) actions (.network after))
@@ -27,7 +26,7 @@ theorem gateway_pre_and_post_encryption_responses_keep_stack
 theorem useful_delivery_in_combined_response_system :
     (KernelResponses.lts (GuardedResponseNetwork.network responseData)
       (EncryptedResponseGuards.combinedConfig responseData)).MTr
-      (.network witnessState0) (witnessActions.map KernelResponses.Action.network)
+      (.network witnessState0) (witnessActions.map KernelResponses.ReplyAction.network)
       (.network witnessState39) :=
   EncryptedResponseGuards.network_trace_in_response_system _ _
     positive_delivery_with_early_source_guards

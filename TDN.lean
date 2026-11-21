@@ -2,117 +2,43 @@ import TDN.Import
 
 import TDN.Models.AuthenticatedCiphertextReassembly
 import TDN.Models.BlackTransitPayloadOpacity
-import TDN.Models.AntiReplayPacketNumberBounds
 
-import TDN.Requirements.PerimeterFilteringSpec
+import TDN.Requirements.MscRequirements
 
-import TDN.Deployments.SnapshotMacsecKeySources
-import TDN.Deployments.SnapshotMacsecRuntime
-import TDN.Deployments.SnapshotAdminSessions
-import TDN.Deployments.ProfileBaseline_Addressing
-import TDN.Deployments.ProfileBaseline_SampleTrace
+import TDN.Deployments.GrayFirewall_Applications
+import TDN.Deployments.InnerTunnelNoBypass_BlockedTrafficTests
+import TDN.Deployments.NamespaceLocalIpChecks
+import TDN.Deployments.OuterToGray_Baseline
+import TDN.Deployments.OuterToGray_Compatibility
+import TDN.Deployments.OuterToGray_Shared
+import TDN.Deployments.Perimeter_VerifiedApplications
 import TDN.Deployments.ProfileBaseline_IsolationTrace
+import TDN.Deployments.ProfileBaseline_SampleTrace
 import TDN.Deployments.ProfileBaseline_Topology
-import TDN.Deployments.ProfileBaseline_PkiTrust
-import TDN.Deployments.SnapshotByteEncryptionOrder
-import TDN.Deployments.SnapshotByteReplyChecks
-import TDN.Deployments.SnapshotTunnelCarriers
-import TDN.Deployments.SnapshotMultiPathFragments
-import TDN.Deployments.SnapshotFamilyImmediateHeaders
-import TDN.Deployments.SnapshotFamilyTunnelBoundaries
-import TDN.Deployments.SnapshotFragmentHeaders
-import TDN.Deployments.SnapshotGrayAddressClauses
-import TDN.Deployments.SnapshotMacsecRuntimeObservations
-import TDN.Deployments.SnapshotMixedByteProtection
-import TDN.Deployments.SnapshotMixedTunnelBoundaries
-import TDN.Deployments.SnapshotNestedSizing
-import TDN.Deployments.SnapshotOuterPeerOutput
-import TDN.Deployments.SnapshotPeerInteroperability
-import TDN.Deployments.SnapshotPlacementClauses
-import TDN.Deployments.SnapshotReassembledDomains
-import TDN.Deployments.SnapshotServiceAuthorization
-import TDN.Deployments.ProfileShared_SampleTrace
 import TDN.Deployments.ProfileShared_IkeSessions
 import TDN.Deployments.ProfileShared_IsolationTrace
-import TDN.Deployments.ProfileShared_PkiTrust
-import TDN.Deployments.SnapshotTfcCoverTraffic
+import TDN.Deployments.ProfileShared_SampleTrace
+import TDN.Deployments.ProfileShared_Topology
+import TDN.Deployments.SecurityLevelConnectivity_Baseline
+import TDN.Deployments.SecurityLevelConnectivity_Shared
+import TDN.Deployments.SnapshotByteEncryptionOrder
+import TDN.Deployments.SnapshotByteReplyChecks
+import TDN.Deployments.SnapshotFactTypes
+import TDN.Deployments.DualStack_ImmediateHeaderChecks
+import TDN.Deployments.DualStack_TunnelBoundaryChecks
+import TDN.Deployments.SnapshotFragmentHeaders
+import TDN.Deployments.SnapshotGrayAddressClauses
+import TDN.Deployments.SnapshotHybridIpsecMacsecByteProtection
+import TDN.Deployments.SnapshotHybridIpsecMacsecTunnelBoundaries
+import TDN.Deployments.SnapshotMultiPathFragments
+import TDN.Deployments.SnapshotOuterPeerOutput
+import TDN.Deployments.SnapshotProof_NestedProtection
+import TDN.Deployments.SnapshotProof_OuterTunnelNoBypass
+import TDN.Deployments.SnapshotProof_TopologyWaypointing
+import TDN.Deployments.SnapshotReassembledDomains
 import TDN.Deployments.SnapshotSameEnclaveReplies
-import TDN.Deployments.Topology_Baseline
+import TDN.Deployments.SnapshotTopologyGraphs
+import TDN.Deployments.SnapshotTunnelCarriers
 import TDN.Deployments.Topology_OutOfBandMgmt
 import TDN.Deployments.Topology_RedundantGateways
 import TDN.Deployments.Topology_SingleSecurityLevel
-import TDN.Deployments.Topology_SharedOuter
-import TDN.Deployments.SnapshotTopologyGraphs
-import TDN.Deployments.SnapshotFactTypes
-
-import TDN.Requirements.MasterMscRequirementSpecs
-
-import TDN.Requirements.VerifiedTrafficFlowConfidentiality
-import TDN.Deployments.SnapshotProof_TrafficFlowConfidentiality
-
-import TDN.Requirements.VerifiedPkiDomainIsolation
-
-import TDN.Requirements.VerifiedPrivateKeyConfinement
-
-import TDN.Deployments.SnapshotProof_PkiIsolation
-
-import TDN.Deployments.KeyStoreConfinementChecks
-
-import TDN.Requirements.VerifiedThirdPartyServiceDisabling
-
-import TDN.Deployments.SnapshotProof_TopologyWaypointing
-
-import TDN.Deployments.HardwareTokenKeyChecks
-
-import TDN.Requirements.StandardDataPlaneBridge
-import TDN.Requirements.VerifiedAdminAuthentication
-import TDN.Deployments.SnapshotProof_Administration
-import TDN.Requirements.AllRedOriginIfacesCovered
-import TDN.Requirements.VerifiedMacsecKeyGeneration
-import TDN.Deployments.SnapshotProof_MacsecKeyGen
-import TDN.Requirements.BuildDeviceAndIfaceInventory
-import TDN.Requirements.VerifiedAddressingCompliance
-import TDN.Deployments.SnapshotProof_Addressing
-import TDN.Requirements.BuildDevicePipelineInventory
-import TDN.Deployments.DevicePipelineInventoryChecks
-import TDN.Requirements.VerifiedIpHeaderAndMulticastFiltering
-import TDN.Deployments.SnapshotProof_HeaderFiltering
-
-import TDN.Requirements.StandardParsedHeaderBridge
-import TDN.Models.HeaderAwareEncapPreservation
-import TDN.Requirements.StandardEncapStackBridge
-import TDN.Requirements.EthernetAndVlanHeaderFiltering
-import TDN.Deployments.SnapshotProof_LinkHeaderFiltering
-import TDN.Requirements.DataPlaneToEventTraceBridge
-import TDN.Requirements.UniqueOriginEnclaveBinding
-import TDN.Models.PayloadToNatEncoding
-import TDN.Requirements.DeriveEndpointInputOutputRules
-import TDN.Requirements.VerifiedGrayFirewallWaypointing
-import TDN.Deployments.SnapshotProof_GrayFirewall
-import TDN.Deployments.SnapshotProof_LinkAddressing
-
-import TDN.Deployments.SnapshotProof_KeyConfinement
-import TDN.Deployments.SnapshotProof_ThirdPartyServices
-import TDN.Deployments.SnapshotProof_AssuranceReuse
-import TDN.Deployments.SnapshotProof_GrayFirewallReuse
-import TDN.Deployments.OuterToGray_Baseline
-import TDN.Deployments.OuterToGray_Shared
-import TDN.Deployments.OuterToGray_BaselineCases
-import TDN.Deployments.OuterToGray_SharedCases
-import TDN.Deployments.OuterToGray_Compatibility
-import TDN.Deployments.Perimeter_VerifiedApplications
-import TDN.Deployments.GrayFirewallApplications
-import TDN.Models.InvalidHeaderTemplateCounterexamples
-import TDN.Deployments.NamespaceLocalIpChecks
-import TDN.Deployments.MtuSizing_BaselineSampleFrames
-import TDN.Deployments.MtuSizing_SharedSampleFrames
-import TDN.Requirements.MultiHopMtuPreservation
-
-import TDN.Deployments.MacsecProtection_FramingCounterexamples
-
-import TDN.Deployments.SnapshotProof_MacsecAuthentication
-import TDN.Deployments.InnerTunnelNoBypass_BlockedTrafficTests
-
-import TDN.Deployments.SnapshotProof_OuterTunnelNoBypass
-
-import TDN.Deployments.SnapshotProof_NestedProtection

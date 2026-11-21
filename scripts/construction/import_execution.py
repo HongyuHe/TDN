@@ -272,11 +272,11 @@ def main():
         ports = [i for i in interfaces if i["device_id"] == device["id"] and i["link_kind"] == "veth"]
         require(ports, "Empty physical bridge membership")
         bridging.extend([[port_index[a["id"]], port_index[b["id"]]] for a in ports for b in ports if a != b])
-    lines = ["import TDN.Requirements.DoubleEncryptionOnBlackLinks", "import TDN.Models.TunnelSaOriginAttribution", "", "namespace TDN.Deployments." + args.namespace, "", "open DataPlaneForwarding", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "", "def devices : List DeviceData := " + lean_list(device_records), "", "def ifaces : List IfaceData := " + lean_list(port_records), "", "def routes : List FibRoute := " + tuple_list(routes), "", "def links : List (Nat × Nat) := " + tuple_list(links), "", "def switches : List (Nat × Nat) := " + tuple_list(bridging), "", "def config : DataPlaneModel := dataPlaneModelFromRecords devices ifaces routes links switches", "def expectedEncapStack : Nat → List Nat := expectedEncapStackFromRecords ifaces", "", "lemma forward_checks : TableDrivenForwardChecks devices ifaces := by", "  unfold TableDrivenForwardChecks devices ifaces", "  decide", "", "end TDN.Deployments." + args.namespace, ""]
+    lines = ["import TDN.Requirements.DoubleEncryptionOnBlackLinks", "import TDN.Models.TunnelSaOriginAttribution", "", "namespace TDN.Deployments." + args.namespace, "", "open DataPlaneForwarding", "", "set_option maxRecDepth 1000000", "", "def devices : List DeviceData := " + lean_list(device_records), "", "def ifaces : List IfaceData := " + lean_list(port_records), "", "def routes : List FibRoute := " + tuple_list(routes), "", "def links : List (Nat × Nat) := " + tuple_list(links), "", "def switches : List (Nat × Nat) := " + tuple_list(bridging), "", "def config : DataPlaneModel := dataPlaneModelFromRecords devices ifaces routes links switches", "def expectedEncapStack : Nat → List Nat := expectedEncapStackFromRecords ifaces", "", "lemma forward_checks : TableDrivenForwardChecks devices ifaces := by", "  unfold TableDrivenForwardChecks devices ifaces", "  decide", "", "end TDN.Deployments." + args.namespace, ""]
     checks = [
         "lemma peer_tag_checks : TableDrivenPeerTagAgreement devices := by",
         "  unfold TableDrivenPeerTagAgreement devices saMatchesPolicy SameWireAssociation; decide",
-        "lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=",
+        "lemma peer_tags_justified_by_wire_s_as : PeerTagAgreement config :=",
         "  table_driven_peer_tag_agreement_sound devices ports routes links switches peer_tag_checks",
         "",
         "lemma route_owner_checks : ∀ r ∈ routes, (ifaceAt ifaces r.egress).owner = (ifaceAt ifaces r.ingress).owner := by",
@@ -296,7 +296,7 @@ def main():
         "  local_stack_conditions_of_finite_checks devices ports routes links switches",
         "    route_owner_checks link_checks switch_checks forward_default_checks forward_checks output_checks outer_route_checks",
         "",
-        "theorem every_transmission_has_iface_stack {start finish : DataPlaneForwarding.State} {actions : List Action}",
+        "theorem every_transmission_has_iface_stack {start finish : DataPlaneForwarding.ForwardingState} {actions : List ForwardingAction}",
         "    (run : (lts config).MTr start actions finish) (initial : EncapStackConsistent config expectedEncapStack start)",
         "    (ready : finish.datapathStage = .egressReady) : finish.frame.encapLayerIds = expectedEncapStack finish.iface :=",
         "  egress_packet_has_expected_encap_stack config expectedEncapStack local_stack_conditions run initial ready",
@@ -311,7 +311,7 @@ def main():
         "  unfold redSources expectedEncapStack config expectedEncapStackFromRecords dataPlaneModelFromRecords ifaces; decide",
         "lemma black_ifaces_checked : ∀ p ∈ blackIfaces, expectedEncapStack p = [2, 1] := by",
         "  unfold blackIfaces expectedEncapStack expectedEncapStackFromRecords ifaces; decide",
-        "theorem snapshot_RG007_IPv4_ESP_packet_stack : Requirements.red_traffic_is_doubly_encrypted_on_black_links config redSources blackIfaces :=",
+        "theorem snapshot_rg007_ipv4_esp_packet_stack : Requirements.red_traffic_is_doubly_encrypted_on_black_links config redSources blackIfaces :=",
         "  Requirements.protected_red_stack_from_local_checks config expectedEncapStack redSources blackIfaces",
         "    local_stack_conditions sources_checked black_ifaces_checked",
         ""

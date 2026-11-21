@@ -65,7 +65,7 @@ theorem admitted_native_boundary_has_intended_peer (d : Deployment)
       policies context.state.iface location.2.1 policy policyMember
     exact ⟨record, recordMember, source.trans owner, destination⟩
   have visible : inventory.configuration.visibleHeader context.state.frame = some context.header := by
-    simpa [Config.visibleHeader, mode] using atHook.1
+    simpa [TunnelForwardingModel.visibleHeader, mode] using atHook.1
   apply outbound_boundary_peer_from_raw_destination_or_required_transform d addressCoherent
     inventory.configuration context interface.device peers bound selected iface traffic.packet traffic
     trafficSupported rfl visible view

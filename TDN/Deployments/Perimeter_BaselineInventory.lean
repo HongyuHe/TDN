@@ -1,4 +1,4 @@
-import TDN.Import.NativeDecide
+import TDN.Import.CompiledDecide
 import TDN.Deployments.Perimeter_BaselineData
 import TDN.Requirements.DeviceAndInterfaceNameTable
 import TDN.Requirements.PerimeterDeviceAclChecks
@@ -9,7 +9,6 @@ namespace TDN.Deployments.Perimeter_Baseline
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma address_inventory_checked (base : Deployment) :
     addressRecordsChecked (deployment base) = true := by rfl

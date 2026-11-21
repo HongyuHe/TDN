@@ -35,7 +35,7 @@ instance (records : List BoundaryControlFlow) (device : String) (traffic : Traff
 
 def BoundaryControlRule (records : List BoundaryControlFlow)
     (device name : String) (direction : Direction) (hook : PacketProcessing.Hook)
-    (rule : PacketPolicy.Rule) : Prop :=
+    (rule : PacketPolicy.PacketAclRule) : Prop :=
   ∃ record ∈ records, record.device = device ∧ record.nativeName = name ∧
     record.direction = direction ∧ record.hook = hook ∧
     .protocol record.protocol ∈ rule.atoms ∧
@@ -43,7 +43,7 @@ def BoundaryControlRule (records : List BoundaryControlFlow)
     .destinationRange record.destination record.destination ∈ rule.atoms
 
 instance (records : List BoundaryControlFlow) (device name : String) (direction : Direction)
-    (hook : PacketProcessing.Hook) (rule : PacketPolicy.Rule) :
+    (hook : PacketProcessing.Hook) (rule : PacketPolicy.PacketAclRule) :
     Decidable (BoundaryControlRule records device name direction hook rule) := by
   unfold BoundaryControlRule
   infer_instance
@@ -104,7 +104,7 @@ lemma matching_boundary_control_rule_is_approved (d : Deployment)
     (device name : String) (direction : Direction) (hook : PacketProcessing.Hook)
     (traffic : Traffic) (supported : d.Supported traffic)
     (context : PacketAtHook name direction hook traffic.packet)
-    (rule : PacketPolicy.Rule)
+    (rule : PacketPolicy.PacketAclRule)
     (guard : BoundaryControlRule records device name direction hook rule)
     (matched : rule.toFilter.accepts traffic.packet = true) :
     ApprovedControl d device traffic := by

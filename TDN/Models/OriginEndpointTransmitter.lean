@@ -46,7 +46,7 @@ theorem source_processing_valid_for_representable_headers (request : Request) (m
           next fits =>
             have packetRepresentable : HeaderRepresentable packet := by
               simpa only [Request.HeadersRepresentable, body] using representable
-            apply source_IP_datagrams_valid request packet mtu body valid packetRepresentable minimum
+            apply source_ip_datagrams_valid request packet mtu body valid packetRepresentable minimum
             · simpa only [Request.MtuOverhead, body] using room
             · intro datagramMode
               rcases size with stream | bounded
@@ -79,11 +79,11 @@ theorem source_processing_valid_for_representable_headers (request : Request) (m
             omega
           refine ⟨valid, room, by simp, ?_, ?_, ?_⟩
           · simp only [List.map_cons, List.map_nil, List.flatten_cons, List.flatten_nil,
-              List.append_nil, Datagram.asWhole_application, encodeSourceEthernet]
+              List.append_nil, EncodedDatagram.as_whole_application, encodeSourceEthernet]
           · intro datagram member
             have same := List.mem_singleton.mp member
             subst datagram
-            exact source_Ethernet_whole_datagram_valid request header mtu body valid packetFits
+            exact source_ethernet_whole_datagram_valid request header mtu body valid packetFits
           · intro df mode
             rfl
       | ipsec association contents => simp only [Request.TemplateValid, body] at valid
@@ -111,8 +111,8 @@ theorem source_processing_valid (request : Request) (mtu : Nat) (minimum : 1280 
       (request.template_headers_representable valid)
   · simp [processSource, valid, Outcome.Valid]
 
-lemma source_IP_emission_shape (request : Request) (packet : PacketPolicy.Packet)
-    (mtu : Nat) (datagrams : List Datagram) (body : request.body = .datagram packet)
+lemma source_ip_emission_shape (request : Request) (packet : PacketPolicy.Packet)
+    (mtu : Nat) (datagrams : List EncodedDatagram) (body : request.body = .datagram packet)
     (emitted : processSource mtu request = .emitted datagrams) :
     datagrams = sourceIPDatagrams request packet mtu := by
   unfold processSource at emitted
@@ -130,8 +130,8 @@ lemma source_IP_emission_shape (request : Request) (packet : PacketPolicy.Packet
     next noRoom => cases emitted
   next unsupported => cases emitted
 
-lemma source_Ethernet_emission_shape (request : Request) (header : LayeredFrame.EthernetHeader)
-    (mtu : Nat) (datagrams : List Datagram) (body : request.body = .ethernet header)
+lemma source_ethernet_emission_shape (request : Request) (header : LayeredFrame.EthernetHeader)
+    (mtu : Nat) (datagrams : List EncodedDatagram) (body : request.body = .ethernet header)
     (emitted : processSource mtu request = .emitted datagrams) :
     datagrams = [(encodeSourceEthernet header request.application).asWhole] := by
   unfold processSource at emitted
@@ -146,8 +146,8 @@ lemma source_Ethernet_emission_shape (request : Request) (header : LayeredFrame.
     next noRoom => cases emitted
   next unsupported => cases emitted
 
-lemma source_IP_datagrams_have_source_headers (request : Request) (packet : PacketPolicy.Packet)
-    (mtu : Nat) (datagram : Datagram) (body : request.body = .datagram packet)
+lemma source_ip_datagrams_have_source_headers (request : Request) (packet : PacketPolicy.Packet)
+    (mtu : Nat) (datagram : EncodedDatagram) (body : request.body = .datagram packet)
     (valid : request.TemplateValid) (member : datagram ∈ sourceIPDatagrams request packet mtu) :
     ∃ payload, datagram.body = .datagram (sourceHeader request packet payload) ∧
       (packet.payloadBytes = some payload ∨ payload = request.application ∨ packet.protocol = "tcp") := by
@@ -162,7 +162,7 @@ lemma source_IP_datagrams_have_source_headers (request : Request) (packet : Pack
     simp only [sourceIPDatagrams, mode, List.mem_singleton] at member
     subst datagram
     exact ⟨request.application,
-      (source_IP_fragmentation_preserves request packet request.application mtu).1,
+      (source_ip_fragmentation_preserves request packet request.application mtu).1,
       Or.inr (Or.inl rfl)⟩
 
 end TDN.PacketSource

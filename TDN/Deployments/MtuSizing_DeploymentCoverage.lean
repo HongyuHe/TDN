@@ -4,13 +4,13 @@ namespace TDN.Deployments.MtuSizing_Records
 open Compliance Requirements OuterToGray_DeviceModel StandardDataPlaneBridge MultiProtocolForwarding
 
 
-def capturedTransform : IPsecTransform :=
+def capturedTransform : IpsecTransform :=
   { encryptionAlgorithm := "rfc4106(gcm(aes))", encryptionKeyBits := 256, saltBytes := 4,
     integrityAlgorithm := none, integrityKeyBits := 0, authenticationBits := 128 }
 
 
-def PrivateMaterialAssurance (installations : List PublicSARecord)
-    (material : String → IPsecKeyMaterial) : Prop :=
+def PrivateMaterialAssurance (installations : List PublicSaRecord)
+    (material : String → IpsecKeyMaterial) : Prop :=
   ∀ record ∈ installations, (material record.materialReference).Valid ∧
     (material record.materialReference).transform = capturedTransform
 
@@ -29,25 +29,25 @@ instance (records : Records) (policies : List (Nat × LinkAdmission.IfacePolicy)
   infer_instance
 
 
-def RecordedTunnelChecks (records : Records) (installations : List PublicSARecord) : Prop :=
+def RecordedTunnelChecks (records : Records) (installations : List PublicSaRecord) : Prop :=
   ∀ record ∈ installations, ∀ policy ∈ (match record.installation.direction with
     | .outbound => (DataPlaneForwarding.deviceAt records.nativeDevices record.installation.device).egressPolicies
     | .inbound => (DataPlaneForwarding.deviceAt records.nativeDevices record.installation.device).ingressPolicies),
     DataPlaneForwarding.saMatchesPolicy record.installation.association policy →
     ∃ tunnel ∈ records.tunnels, tunnel.id = ipsecTunnel records (policy.seal record.installation.association) ∧
-      tunnel.mechanism = .ipsec ∧
+      tunnel.protocol = .ipsec ∧
       (records.interfaces.find? (fun interface => interface.address == some record.installation.association.sender)).map Interface.device = some tunnel.sender ∧
       (records.interfaces.find? (fun interface => interface.address == some record.installation.association.receiver)).map Interface.device = some tunnel.receiver
 
-instance (records : Records) (installations : List PublicSARecord) :
+instance (records : Records) (installations : List PublicSaRecord) :
     Decidable (RecordedTunnelChecks records installations) := by
   unfold RecordedTunnelChecks
   infer_instance
 
 
 theorem complete_processing_coherent {Key : Type} (records : Records)
-    (installations : List PublicSARecord) (policies : List (Nat × LinkAdmission.IfacePolicy))
-    (codec : IPsecFrameEncoding.Codec Key) (networks : List RedNetworkIdentity)
+    (installations : List PublicSaRecord) (policies : List (Nat × LinkAdmission.IfacePolicy))
+    (codec : IpsecFrameEncoding.Codec Key) (networks : List RedNetworkIdentity)
     (attachments : List RedNetworkAttachment) (services : List ServiceRegistration) (base : Deployment)
     (structureChecked : ProcessingStructuralChecks (records.deployment base) records.inventory)
     (ifaces : ∀ interface ∈ records.interfaces,
@@ -67,9 +67,9 @@ theorem complete_processing_coherent {Key : Type} (records : Records)
 
 
 theorem complete_processing_bound {Key : Type} (records : Records)
-    (installations : List PublicSARecord) (entries : List SourceEntry) (roles : List SizingRole)
+    (installations : List PublicSaRecord) (entries : List SourceEntry) (roles : List SizingRole)
     (policies : List (Nat × LinkAdmission.IfacePolicy)) (epoch : String)
-    (codec : IPsecFrameEncoding.Codec Key) (material : String → IPsecKeyMaterial)
+    (codec : IpsecFrameEncoding.Codec Key) (material : String → IpsecKeyMaterial)
     (networks : List RedNetworkIdentity) (attachments : List RedNetworkAttachment)
     (services : List ServiceRegistration) (base : Deployment)
     (structureChecked : ProcessingStructuralChecks (records.deployment base) records.inventory)
@@ -101,8 +101,8 @@ theorem complete_processing_bound {Key : Type} (records : Records)
 
 
 theorem captured_iface_conditions {Key : Type} (records : Records)
-    (installations : List PublicSARecord) (policies : List (Nat × LinkAdmission.IfacePolicy))
-    (codec : IPsecFrameEncoding.Codec Key)
+    (installations : List PublicSaRecord) (policies : List (Nat × LinkAdmission.IfacePolicy))
+    (codec : IpsecFrameEncoding.Codec Key)
     (routes : ∀ route ∈ records.routes, route.egress ∈ records.inventory.ifaces)
     (physical : ∀ edge ∈ records.links, edge.1 ∈ records.inventory.ifaces ∧ edge.2 ∈ records.inventory.ifaces)
     (bridges : ∀ edge ∈ records.bridges, edge.1 ∈ records.inventory.ifaces ∧ edge.2 ∈ records.inventory.ifaces) :
@@ -114,9 +114,9 @@ theorem captured_iface_conditions {Key : Type} (records : Records)
 
 
 theorem captured_deployment_bindings {Key : Type} (records : Records)
-    (installations : List PublicSARecord) (entries : List SourceEntry) (roles : List SizingRole)
+    (installations : List PublicSaRecord) (entries : List SourceEntry) (roles : List SizingRole)
     (policies : List (Nat × LinkAdmission.IfacePolicy)) (epoch : String)
-    (codec : IPsecFrameEncoding.Codec Key) (material : String → IPsecKeyMaterial)
+    (codec : IpsecFrameEncoding.Codec Key) (material : String → IpsecKeyMaterial)
     (networks : List RedNetworkIdentity) (attachments : List RedNetworkAttachment)
     (services : List ServiceRegistration) (base : Deployment)
     (structureChecked : ProcessingStructuralChecks (records.deployment base) records.inventory)
@@ -162,7 +162,7 @@ theorem captured_deployment_bindings {Key : Type} (records : Records)
       rfl, fun _ _ => by change 0 < 64 ∧ 64 ≤ 255 ∧ 0 < 64 ∧ 64 ≤ 255; native_decide⟩⟩
   · intro mac member
     cases member
-  · exact public_SA_inventory_sound _ installations epoch material rfl rfl (fun _ => rfl) (fun _ => rfl)
+  · exact public_sa_inventory_sound _ installations epoch material rfl rfl (fun _ => rfl) (fun _ => rfl)
       rfl saChecks (fun record member => (privateMaterial record member).1)
   · intro tunnel member
     exact ⟨tunnel, member, rfl, rfl⟩

@@ -2,12 +2,12 @@ import TDN.Models.IkeAndEspPacketFormats
 
 namespace TDN.PacketPolicy
 
-def IPsecForm.maskWithOptions (form : IPsecForm) (source destination : Nat)
+def IpsecForm.maskWithOptions (form : IpsecForm) (source destination : Nat)
     (ingress egress : String) (authenticated selected : List Nat) (mtu : Nat) : AclFlowSelector :=
   { form.mask source destination ingress egress authenticated selected mtu with
     ipv4HeaderWords := none }
 
-lemma IPsecForm.maskWithOptions_matches (form : IPsecForm) (source destination : Nat)
+lemma IpsecForm.mask_with_options_matches (form : IpsecForm) (source destination : Nat)
     (ingress egress : String) (authenticated selected : List Nat) (mtu : Nat)
     (packet : Packet) (fields : form.Matches packet)
     (sourceEq : packet.source = source) (destinationEq : packet.destination = destination)

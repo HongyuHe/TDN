@@ -2,12 +2,12 @@ import TDN.Models.PerHopForwardingChecks
 
 namespace TDN.DataPlaneForwarding
 
-def EarlierSizeGuard (rule : PacketPolicy.Rule) (egress : String) (limit : Nat) : Prop :=
+def EarlierSizeGuard (rule : PacketPolicy.PacketAclRule) (egress : String) (limit : Nat) : Prop :=
   rule.verdict = .deny ∧ match rule.atoms with
   | [.egress name, .networkBytesRange low high] => name = egress ∧ low ≤ limit + 1 ∧ high = 65535
   | _ => False
 
-instance (rule : PacketPolicy.Rule) (egress : String) (limit : Nat) :
+instance (rule : PacketPolicy.PacketAclRule) (egress : String) (limit : Nat) :
     Decidable (EarlierSizeGuard rule egress limit) := by
   unfold EarlierSizeGuard
   split <;> infer_instance
@@ -23,12 +23,12 @@ instance (authenticationLimit : Nat → Nat) (limit : Nat) (atom : PacketPolicy.
   cases atom <;> unfold SizeBoundAtom <;> infer_instance
 
 
-def RuleSizeBound (earlier : List PacketPolicy.Rule) (rule : PacketPolicy.Rule)
+def RuleSizeBound (earlier : List PacketPolicy.PacketAclRule) (rule : PacketPolicy.PacketAclRule)
     (egress : String) (authenticationLimit : Nat → Nat) (limit : Nat) : Prop :=
   (∃ atom ∈ rule.atoms, SizeBoundAtom authenticationLimit limit atom) ∨
   ∃ guard ∈ earlier, EarlierSizeGuard guard egress limit
 
-instance (earlier : List PacketPolicy.Rule) (rule : PacketPolicy.Rule)
+instance (earlier : List PacketPolicy.PacketAclRule) (rule : PacketPolicy.PacketAclRule)
     (egress : String) (authenticationLimit : Nat → Nat) (limit : Nat) :
     Decidable (RuleSizeBound earlier rule egress authenticationLimit limit) := by
   unfold RuleSizeBound
@@ -48,7 +48,7 @@ lemma route_and_policy_overlap {route : FibRoute} {policy : IpsecPolicy} {packet
   simp only [RouteExcludesPolicy, FibRoute.matches, IpsecPolicy.matches, decide_eq_true_eq] at *
   omega
 
-lemma checked_rule_size_bound (earlier : List PacketPolicy.Rule) (rule : PacketPolicy.Rule)
+lemma checked_rule_size_bound (earlier : List PacketPolicy.PacketAclRule) (rule : PacketPolicy.PacketAclRule)
     (packet : PacketPolicy.Packet) (authenticationLimit : Nat → Nat) (limit bytes : Nat)
     (bound : RuleSizeBound earlier rule packet.egress authenticationLimit limit)
     (matched : rule.toFilter.accepts packet = true)
@@ -78,7 +78,7 @@ lemma checked_rule_size_bound (earlier : List PacketPolicy.Rule) (rule : PacketP
           | nil =>
             cases first <;> cases second <;> simp only [atoms] at guardShape <;> try contradiction
             obtain ⟨name, lower, upper⟩ := guardShape
-            simp only [PacketPolicy.Rule.toFilter, atoms, List.all_cons, List.all_nil,
+            simp only [PacketPolicy.PacketAclRule.toFilter, atoms, List.all_cons, List.all_nil,
               Bool.and_true, Bool.and_eq_true, PacketPolicy.MatchCondition.matchesPacket, decide_eq_true_eq]
             exact ⟨decide_eq_true name.symm,
               decide_eq_true ⟨bytes, length, by omega, by simpa [upper] using maximum⟩⟩
@@ -86,7 +86,7 @@ lemma checked_rule_size_bound (earlier : List PacketPolicy.Rule) (rule : PacketP
     contradiction
 
 
-def SizedRuleCheck (earlier : List PacketPolicy.Rule) (rule : PacketPolicy.Rule)
+def SizedRuleCheck (earlier : List PacketPolicy.PacketAclRule) (rule : PacketPolicy.PacketAclRule)
     (route : FibRoute) (ingress egress : String) (required : Bool)
     (mtu : Nat) (outbound : List IpsecPolicy) (authenticationLimit plaintextLimit : Nat → Nat) : Prop :=
   ¬ IfaceCompatible rule ingress egress ∨
@@ -96,7 +96,7 @@ def SizedRuleCheck (earlier : List PacketPolicy.Rule) (rule : PacketPolicy.Rule)
         RuleSizeBound earlier rule egress authenticationLimit (plaintextLimit policy.tag))
 
 
-def SizedProgramChecks (earlier : List PacketPolicy.Rule) : List PacketPolicy.Rule →
+def SizedProgramChecks (earlier : List PacketPolicy.PacketAclRule) : List PacketPolicy.PacketAclRule →
     FibRoute → String → String → Bool → Nat → List IpsecPolicy → (Nat → Nat) → (Nat → Nat) → Prop
   | [], _, _, _, _, _, _, _, _ => True
   | rule :: rest, route, ingress, egress, required, mtu, outbound, authenticationLimit, plaintextLimit =>
@@ -105,14 +105,14 @@ def SizedProgramChecks (earlier : List PacketPolicy.Rule) : List PacketPolicy.Ru
       SizedProgramChecks (earlier ++ [rule]) rest route ingress egress required mtu outbound
         authenticationLimit plaintextLimit
 
-instance (earlier : List PacketPolicy.Rule) (rule : PacketPolicy.Rule)
+instance (earlier : List PacketPolicy.PacketAclRule) (rule : PacketPolicy.PacketAclRule)
     (route : FibRoute) (ingress egress : String) (required : Bool)
     (mtu : Nat) (outbound : List IpsecPolicy) (authenticationLimit plaintextLimit : Nat → Nat) :
     Decidable (SizedRuleCheck earlier rule route ingress egress required mtu outbound authenticationLimit plaintextLimit) := by
   unfold SizedRuleCheck
   infer_instance
 
-instance (earlier rules : List PacketPolicy.Rule) (route : FibRoute) (ingress egress : String)
+instance (earlier rules : List PacketPolicy.PacketAclRule) (route : FibRoute) (ingress egress : String)
     (required : Bool) (mtu : Nat) (outbound : List IpsecPolicy)
     (authenticationLimit plaintextLimit : Nat → Nat) :
     Decidable (SizedProgramChecks earlier rules route ingress egress required mtu outbound
@@ -124,7 +124,7 @@ instance (earlier rules : List PacketPolicy.Rule) (route : FibRoute) (ingress eg
     exact instDecidableAnd
 
 
-theorem checked_program_size_bounds (earlier rules : List PacketPolicy.Rule)
+theorem checked_program_size_bounds (earlier rules : List PacketPolicy.PacketAclRule)
     (route : FibRoute) (ingress egress : String) (required : Bool)
     (mtu : Nat) (outbound : List IpsecPolicy) (authenticationLimit plaintextLimit : Nat → Nat)
     (checked : SizedProgramChecks earlier rules route ingress egress required mtu outbound
@@ -135,14 +135,14 @@ theorem checked_program_size_bounds (earlier rules : List PacketPolicy.Rule)
     (maximum : bytes ≤ 65535)
     (authenticated : ∀ requestId ∈ packet.matchedInboundPolicyIds, bytes ≤ authenticationLimit requestId)
     (misses : ∀ prior ∈ earlier, prior.toFilter.accepts packet = false)
-    (accepted : accepts rules .deny packet) :
+    (accepted : TDN.PacketPolicy.AclAllows rules .deny packet) :
     (required = true → bytes ≤ mtu) ∧
     ∀ policy ∈ outbound, policy.matches packet = true → bytes ≤ plaintextLimit policy.tag := by
   induction rules generalizing earlier with
   | nil => cases accepted
   | cons rule rest ih =>
     change (if rule.toFilter.accepts packet then rule.verdict else
-      Filter.evaluate (rest.map PacketPolicy.Rule.toFilter) .deny packet) = .allow at accepted
+      Filter.evaluate (rest.map PacketPolicy.PacketAclRule.toFilter) .deny packet) = .allow at accepted
     split at accepted
     next matched =>
       rcases checked.1 accepted with incompatible | bounds

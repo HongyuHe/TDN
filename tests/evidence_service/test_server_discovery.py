@@ -36,14 +36,20 @@ class ServerDiscoveryTests(unittest.IsolatedAsyncioTestCase):
             return result[1]
         return result
 
+    async def test_proof_input_contract_is_discoverable(self):
+        response = await self.server.call_tool("describe_evidence_requirements", {"source": "live", "view": "inventory"})
+        result = response[1] if isinstance(response, tuple) else response
+        self.assertEqual(result["providers"]["installed-ipv4-routes"], ["linux.fib4"])
+        self.assertIn("table", result["fields"])
+
     async def test_saved_collection_alias_selects_its_adapter(self):
-        for collection, expected in [('certificates', 'native_authentication_services'),
-                                     ('security-labels', 'security_level_assignments')]:
+        for collection, expected in [('certificates', ['native_authentication_services']),
+                                     ('security-labels', ['security_level_assignments', 'red_connectivity'])]:
             with self.subTest(collection=collection):
                 by_collection = await self.result({'collection': collection})
                 by_network = await self.result({'network': collection})
                 self.assertEqual(by_collection, by_network)
-                self.assertEqual(by_collection['saved_experiment']['lean_views'], [expected])
+                self.assertEqual(by_collection['saved_experiment']['lean_views'], expected)
                 self.assertTrue(by_collection['saved_experiment']['scope'])
 
     async def test_live_network_selects_only_its_adapters(self):

@@ -16,9 +16,8 @@ namespace TDN.Deployments.OuterToGray_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
-lemma all_listed_Gray_interfaces_have_flow_checks (base : Deployment) :
+lemma all_listed_gray_interfaces_have_flow_checks (base : Deployment) :
     ∀ interface ∈ outerGrayInterfaces, ∀ direction,
       records.RouteFirstMaskLookup base interface direction := by
   intro interface member direction
@@ -49,17 +48,17 @@ lemma all_listed_Gray_interfaces_have_flow_checks (base : Deployment) :
     | inbound => exact gray7_inbound_lookup base
     | outbound => exact gray7_outbound_lookup base
 
-lemma Outer_gray_forward_masks_checked (base : Deployment) :
+lemma outer_gray_forward_masks_checked (base : Deployment) :
     ∀ interface ∈ (records.deployment base).interfaces,
       (records.deployment base).IsLayer interface.device .outer → interface.zone = .gray →
         ∀ direction ∈ [Direction.inbound, .outbound],
           records.ForwardMaskLookup base interface direction := by
   intro interface member outer gray direction _
   exact (records.route_first_lookup_iff base interface direction).mp
-    (all_listed_Gray_interfaces_have_flow_checks base interface
-      (all_applicable_Gray_interfaces_are_listed base interface member outer gray) direction)
+    (all_listed_gray_interfaces_have_flow_checks base interface
+      (all_applicable_gray_interfaces_are_listed base interface member outer gray) direction)
 
-lemma Outer_gray_forward_coverage_checked (base : Deployment) :
+lemma outer_gray_forward_coverage_checked (base : Deployment) :
     ∀ interface ∈ (records.deployment base).interfaces,
       (records.deployment base).IsLayer interface.device .outer → interface.zone = .gray →
         ∀ direction ∈ [Direction.inbound, .outbound],
@@ -67,13 +66,13 @@ lemma Outer_gray_forward_coverage_checked (base : Deployment) :
   intro interface member outer gray direction allowedDirection
   exact records.forward_checks_from_mask_lookup base interface_ids_unique
     every_packet_mask_has_an_ordered_allowance interface member direction
-    (Outer_gray_forward_masks_checked base interface member outer gray direction allowedDirection)
+    (outer_gray_forward_masks_checked base interface member outer gray direction allowedDirection)
 
 lemma no_workstations : ∀ device ∈ records.components, device.kind ≠ .workstation := by
   native_decide
 
-lemma all_inner_tunnels_IPsec :
-    ∀ tunnel ∈ records.tunnels, tunnel.layer = .inner → tunnel.mechanism = .ipsec := by
+lemma all_inner_tunnels_ipsec :
+    ∀ tunnel ∈ records.tunnels, tunnel.layer = .inner → tunnel.protocol = .ipsec := by
   native_decide
 
 end TDN.Deployments.OuterToGray_Shared

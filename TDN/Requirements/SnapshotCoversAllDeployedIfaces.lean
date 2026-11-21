@@ -1,8 +1,8 @@
-import TDN.Requirements.StandardMtuSizingBridge
+import TDN.Requirements.StandardEthernetWireBridge
 import TDN.Requirements.VerifiedHostTransmitSources
 
 namespace TDN.Requirements.StandardDataPlaneBridge
-open Compliance LayeredFrame PacketSource MultiProtocolForwarding IPsecFrameEncoding
+open Compliance LayeredFrame PacketSource MultiProtocolForwarding IpsecFrameEncoding
 
 structure DeviceDeploymentBindings {S A : Type} (prototype : DeviceExecutionBinding S A)
     (ifaces : List Nat) (d : Deployment) : Prop where
@@ -32,7 +32,7 @@ structure DeviceDeploymentBindings {S A : Type} (prototype : DeviceExecutionBind
         red.id = network ∧ interface.device ∈ red.innerComponents
   macsecTunnels : ∀ iface ∈ prototype.configuration.macIfaces, ∀ association,
     iface.transmitAssociation = some association → ∃ tunnel ∈ d.tunnels,
-      tunnel.id = prototype.macsecTunnel association ∧ tunnel.mechanism = .macsec ∧
+      tunnel.id = prototype.macsecTunnel association ∧ tunnel.protocol = .macsec ∧
       tunnel.keyContext = prototype.keyName association.keyGeneration ∧
       tunnel.sender = prototype.componentName (prototype.configuration.ip.owner iface.physicalIface) ∧
       ∀ peer ∈ prototype.configuration.macIfaces,
@@ -42,7 +42,7 @@ structure DeviceDeploymentBindings {S A : Type} (prototype : DeviceExecutionBind
     (association ∈ prototype.configuration.ip.egressSAs iface ∧ policy ∈ prototype.configuration.ip.egressPolicies iface ∨
       association ∈ prototype.configuration.ip.ingressSAs iface ∧ policy ∈ prototype.configuration.ip.ingressPolicies iface) →
     DataPlaneForwarding.saMatchesPolicy association policy → ∃ tunnel ∈ d.tunnels,
-      tunnel.id = prototype.ipsecTunnel (policy.seal association) ∧ tunnel.mechanism = .ipsec ∧
+      tunnel.id = prototype.ipsecTunnel (policy.seal association) ∧ tunnel.protocol = .ipsec ∧
       d.AddressOwner association.sender = some tunnel.sender ∧ d.AddressOwner association.receiver = some tunnel.receiver
 
 
@@ -80,6 +80,6 @@ theorem standard_deployment_covered {S A Key : Type}
       standard_reachable_link_encoding prototype ifaces d history codec required mtu plaintextLimit
         authenticationLimit sizeChecks emissions processing mode headerBounds encoding initialized run⟩
   · intro state
-    exact static.ifaceRecords state.native.iface state.ifacePresent
+    exact static.ifaceRecords state.deviceState.iface state.ifacePresent
 
 end TDN.Requirements.StandardDataPlaneBridge

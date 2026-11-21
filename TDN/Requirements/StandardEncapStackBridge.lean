@@ -8,7 +8,7 @@ lemma DeviceExecutionBinding.source_initial_red_stack {S A : Type}
     (binding : DeviceExecutionBinding S A) (d : Deployment)
     (expectedEncapStack : Nat → List Nat)
     (sourceLayouts : ∀ iface network, binding.sourceEntry iface = some network → expectedEncapStack iface = [])
-    (state : MultiProtocolForwarding.State) (source : binding.SourceInitial d state)
+    (state : MultiProtocolForwarding.TunnelForwardingState) (source : binding.SourceInitial d state)
     (network : String) (origin : binding.origin state.frame.originDomain = .red network) :
     HeaderedStackInvariant binding.configuration expectedEncapStack state := by
   have coherent := binding.source_initial_headers d state source
@@ -26,18 +26,18 @@ lemma DeviceExecutionBinding.source_initial_red_stack {S A : Type}
 theorem reachable_stack_from_local_steps {S A : Type}
     (model : ForwardingModel S A) (faithful : model.Faithful)
     (expectedEncapStack : Nat → List Nat)
-    (conditions : HeaderedLocalConditions model.native.configuration expectedEncapStack)
+    (conditions : HeaderedLocalConditions model.deviceDataPlane.configuration expectedEncapStack)
     (processing : HeaderProcessing)
-    (mode : model.native.configuration.headerProcessing = some processing)
+    (mode : model.deviceDataPlane.configuration.headerProcessing = some processing)
     (bounds : HeaderBounds processing)
-    {start finish : S} {actions : List A} (run : model.system.MTr start actions finish)
-    (initial : HeaderedStackInvariant model.native.configuration expectedEncapStack (model.native.state start)) :
-    HeaderedStackInvariant model.native.configuration expectedEncapStack (model.native.state finish) := by
+    {start finish : S} {actions : List A} (run : model.ForwardsAlongTrace start actions finish)
+    (initial : HeaderedStackInvariant model.deviceDataPlane.configuration expectedEncapStack (model.deviceDataPlane.state start)) :
+    HeaderedStackInvariant model.deviceDataPlane.configuration expectedEncapStack (model.deviceDataPlane.state finish) := by
   have preserved : model.system.TrInv
-      (fun state => HeaderedStackInvariant model.native.configuration expectedEncapStack (model.native.state state)) := by
+      (fun state => HeaderedStackInvariant model.deviceDataPlane.configuration expectedEncapStack (model.deviceDataPlane.state state)) := by
     intro before action after step invariant
     have exactStep := faithful before action after step
-    cases projection : model.native.action action with
+    cases projection : model.deviceDataPlane.action action with
     | none =>
       rw [projection] at exactStep
       rw [← exactStep.1]
@@ -63,12 +63,12 @@ theorem standard_red_reachable_stack {S A : Type}
     (sourceLayouts : ∀ iface network, prototype.sourceEntry iface = some network → expectedEncapStack iface = [])
     (start finish : State ifaces) (actions : List (Action ifaces))
     (initialized : (model prototype ifaces d history).initial start)
-    (network : String) (origin : prototype.origin start.native.frame.originDomain = .red network)
+    (network : String) (origin : prototype.origin start.deviceState.frame.originDomain = .red network)
     (run : (model prototype ifaces d history).system.MTr start actions finish) :
-    HeaderedStackInvariant prototype.configuration expectedEncapStack finish.native := by
+    HeaderedStackInvariant prototype.configuration expectedEncapStack finish.deviceState := by
   exact reachable_stack_from_local_steps (model prototype ifaces d history)
     (standard_model_faithful prototype ifaces d history) expectedEncapStack conditions processing mode bounds run
     ((binding prototype ifaces).source_initial_red_stack d expectedEncapStack sourceLayouts
-      start.native initialized.1 network origin)
+      start.deviceState initialized.1 network origin)
 
 end TDN.Requirements.StandardDataPlaneBridge

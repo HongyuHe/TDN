@@ -67,7 +67,7 @@ lemma profile_iface_conditions (records : ProfileRecords) (supported : Supported
   · simp [ProfileRecords.configuration, dataPlaneModelFromRecords]
 
 lemma profile_output_checks (records : ProfileRecords) (supported : SupportedProfile records) :
-    MACsecOutputChecks records.configuration := by
+    MacsecOutputChecks records.configuration := by
   refine ⟨?_, ?_, ?_, ?_⟩
   · rcases supported with rfl | rfl <;> native_decide
   · rcases supported with rfl | rfl <;> native_decide
@@ -75,7 +75,7 @@ lemma profile_output_checks (records : ProfileRecords) (supported : SupportedPro
   · simp [ProfileRecords.configuration, dataPlaneModelFromRecords]
 
 lemma profile_wire_checks (records : ProfileRecords) (supported : SupportedProfile records) :
-    MACsecWireChecks records.configuration := by
+    MacsecWireChecks records.configuration := by
   refine ⟨profile_output_checks records supported, ?_, ?_, rfl⟩
   · rcases supported with rfl | rfl <;> native_decide
   · intro first second connected receiver member same
@@ -86,7 +86,7 @@ lemma profile_wire_checks (records : ProfileRecords) (supported : SupportedProfi
     exact checked _ connected receiver member same
 
 lemma profile_link_encoding (records : ProfileRecords) (supported : SupportedProfile records)
-    (state : MultiProtocolForwarding.State) (framed : PhysicalMACsecFrames records.configuration state) :
+    (state : MultiProtocolForwarding.TunnelForwardingState) (framed : PhysicalMACsecFrames records.configuration state) :
     records.configuration.LinkEncodingComplete state := by
   intro path
   rcases path with ⟨mac, configured, physical⟩ | ⟨next, bridge⟩ | ⟨carrier, configured, virtual⟩
@@ -96,12 +96,12 @@ lemma profile_link_encoding (records : ProfileRecords) (supported : SupportedPro
           encoded.1 = association ∧
           (records.macFrames.find? (fun entry => entry.1 == association)).map Prod.snd = some encoded.2 ∧
           encoded.2.DescribesBody (.macsec association body) := by
-      dsimp only [LinkAdmission.Frame.DescribesBody]
+      dsimp only [LinkAdmission.EthernetFrame.DescribesBody]
       rcases supported with rfl | rfl <;> native_decide
     obtain ⟨encoded, member, same, found, describes⟩ := checked sender member association (by simp [installed])
     refine ⟨encoded.2, ?_, ?_⟩
     · simpa [ProfileRecords.configuration, shape] using found
-    · simp only [LinkAdmission.Frame.Describes, Frame.visibleHeader, shape, Body.visibleHeader]
+    · simp only [LinkAdmission.EthernetFrame.Describes, TunnelFrame.visibleHeader, shape, Body.visibleHeader]
       exact ⟨describes, by simp⟩
   · simp [ProfileRecords.configuration, dataPlaneModelFromRecords] at bridge
   · simp [ProfileRecords.configuration, dataPlaneModelFromRecords] at configured
@@ -123,7 +123,7 @@ lemma profile_source_iface (records : ProfileRecords) (supported : SupportedProf
 lemma profile_initial_wire_safe (records : ProfileRecords) (supported : SupportedProfile records)
     (state : StandardDataPlaneBridge.State (List.range records.ifaceData.length))
     (initial : records.model.initial state) :
-    MACsecOutputProtected records.configuration state.native ∧ PhysicalMACsecFrames records.configuration state.native := by
+    MACsecOutputProtected records.configuration state.deviceState ∧ PhysicalMACsecFrames records.configuration state.deviceState := by
   obtain ⟨sourceInitial, request, datagrams, datagram, source, allowed, emitted, member, same⟩ := initial
   have sourceIface := profile_source_iface records supported request allowed
   have physicalSeparation : ∀ source ∈ records.sourceIfaces, ∀ mac ∈ records.macIfaces,

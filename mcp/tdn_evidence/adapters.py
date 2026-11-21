@@ -105,6 +105,7 @@ class Capability:
     parse: Callable
     meaning: str
     recheck: bool = False
+    provides: str | None = None
 
 
 @dataclass(frozen=True)
@@ -129,8 +130,8 @@ ADAPTERS = {
     "linux": Adapter("linux-iproute2-v1", {
         "interfaces": Capability(("ip", "-j", "-d", "link", "show"), json_records, "Observed links and interface identities", True),
         "addresses": Capability(("ip", "-j", "addr", "show"), json_records, "Observed addresses"),
-        "fib4": Capability(("ip", "-j", "-4", "route", "show", "table", "all"), linux_routes, "Installed IPv4 forwarding entries", True),
-        "fib6": Capability(("ip", "-j", "-6", "route", "show", "table", "all"), linux_routes, "Installed IPv6 forwarding entries", True),
+        "fib4": Capability(("ip", "-j", "-4", "route", "show", "table", "all"), linux_routes, "Installed IPv4 forwarding entries", True, "installed-ipv4-routes"),
+        "fib6": Capability(("ip", "-j", "-6", "route", "show", "table", "all"), linux_routes, "Installed IPv6 forwarding entries", True, "installed-ipv6-routes"),
         "rules4": Capability(("ip", "-j", "-4", "rule", "show"), json_records, "Ordered IPv4 policy routing rules", True),
         "rules6": Capability(("ip", "-j", "-6", "rule", "show"), json_records, "Ordered IPv6 policy routing rules", True),
         "firewall4": Capability(("iptables-save",), raw_config, "Ordered IPv4 firewall text; proof interpretation requires the packet-policy parser", True),

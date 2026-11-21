@@ -1,4 +1,4 @@
-import TDN.Requirements.MACsecLayerBoundaryChecks
+import TDN.Requirements.MacsecLayerBoundaryChecks
 import TDN.Deployments.MacsecProtection_TrafficExamples
 import Mathlib.Tactic.IntervalCases
 
@@ -16,27 +16,27 @@ def receiveTarget (_ : PayloadId) (iface : String) : Option String :=
 
 def components : List EncryptionComponentConfiguration :=
   records.devices.map (fun device =>
-    { id := device.id, mechanism := .macsec, espTunnelMode := false, associatedIPTunnel := false,
+    { id := device.id, protocol := .macsec, espTunnelMode := false, associatedIPTunnel := false,
       outboundMACPolicy := false, inboundMACPolicy := false })
 
 lemma source_ifaces (iface : Nat) (network : String)
-    (entry : forwarding.native.sourceEntry iface = some network) : iface = 0 ∨ iface = 2 := by
+    (entry : forwarding.deviceDataPlane.sourceEntry iface = some network) : iface = 0 ∨ iface = 2 := by
   by_cases first : iface = 0
   · exact Or.inl first
   by_cases second : iface = 2
   · exact Or.inr second
-  have missing : forwarding.native.sourceEntry iface = none := by
+  have missing : forwarding.deviceDataPlane.sourceEntry iface = none := by
     change records.sourceEntry iface = none
     simp [ProfileRecords.sourceEntry, records, direct, first, second]
   rw [missing] at entry
   cases entry
 
-lemma initial_frames (state : MultiProtocolForwarding.State)
-    (initial : forwarding.native.SourceInitial deployment state) :
-    MACsecOutputProtected forwarding.native.configuration state ∧
-      PhysicalMACsecFrames forwarding.native.configuration state := by
+lemma initial_frames (state : MultiProtocolForwarding.TunnelForwardingState)
+    (initial : forwarding.deviceDataPlane.SourceInitial deployment state) :
+    MACsecOutputProtected forwarding.deviceDataPlane.configuration state ∧
+      PhysicalMACsecFrames forwarding.deviceDataPlane.configuration state := by
   have origin := initial.2.2.2
-  change state.datapathStage = .received ∧ forwarding.native.sourceEntry state.iface = some _ ∧ _ at origin
+  change state.datapathStage = .received ∧ forwarding.deviceDataPlane.sourceEntry state.iface = some _ ∧ _ at origin
   have separation : ∀ source ∈ ([0, 2] : List Nat), ∀ mac ∈ records.macIfaces,
       source ≠ mac.physicalIface := by native_decide
   refine ⟨by simp [MACsecOutputProtected, origin.1], ?_⟩
@@ -46,7 +46,7 @@ lemma initial_frames (state : MultiProtocolForwarding.State)
   apply separation state.iface (by simpa using source) mac configured
   exact same
 
-lemma gate_checks : MACsecIngressGateChecks forwarding.native deployment .inner receiveTarget := by
+lemma gate_checks : MacsecIngressGuardChecks forwarding.deviceDataPlane deployment .inner receiveTarget := by
   refine ⟨profile_wire_checks records (Or.inl rfl), ?_, ?_, ?_, ?_, initial_frames, ?_⟩
   · change ∀ first last, ¬ ((first, last) ∈ ([] : List (Nat × Nat)))
     simp
@@ -80,14 +80,14 @@ lemma gate_checks : MACsecIngressGateChecks forwarding.native deployment .inner 
     have checked : ∀ sender ∈ records.macIfaces, ∀ transmitted ∈ sender.transmitAssociation.toList,
         ∀ receiver ∈ records.macIfaces, ∀ association ∈ receiver.receiveAssociations,
         SameMACWireIdentity transmitted association →
-        ∃ tunnel ∈ deployment.tunnels, tunnel.id = forwarding.native.macsecTunnel transmitted ∧
+        ∃ tunnel ∈ deployment.tunnels, tunnel.id = forwarding.deviceDataPlane.macsecTunnel transmitted ∧
           tunnel.layer = .inner ∧ receiveTarget ⟨0, 0⟩ (records.ifaceName receiver.physicalIface) = some tunnel.receiver := by
       native_decide
     obtain ⟨tunnel, member, name, layer, target⟩ :=
       checked sender senderMember transmitted (by simp [installed]) receiver receiverMember association associationMember wire
     exact ⟨tunnel, member, name, layer, Option.some.inj (target.symm.trans selected)⟩
 
-lemma outbound_checks : MACsecLayerBoundaryChecks forwarding.native deployment .inner := by
+lemma outbound_checks : MacsecLayerBoundaryChecks forwarding.deviceDataPlane deployment .inner := by
   refine ⟨profile_wire_checks records (Or.inl rfl), fun state initial => (initial_frames state initial).1, ?_, ?_⟩
   · intro first last linked
     change (first, last) ∈ records.links at linked
@@ -104,13 +104,13 @@ lemma outbound_checks : MACsecLayerBoundaryChecks forwarding.native deployment .
         interface.zone ≠ InternalZone .inner ∧ ∃ mac ∈ records.macIfaces,
           edge.1 = mac.physicalIface ∧ ∀ association ∈ mac.transmitAssociation.toList,
           ∃ tunnel ∈ deployment.tunnels, tunnel.layer = .inner ∧ tunnel.sender = interface.device ∧
-            tunnel.id = forwarding.native.macsecTunnel association := by
+            tunnel.id = forwarding.deviceDataPlane.macsecTunnel association := by
       unfold Deployment.IsLayer
       native_decide
     obtain ⟨outside, mac, member, physical, tunnels⟩ := checked (first,last) linked interface stored name layer
     exact ⟨outside, mac, member, physical, fun association installed => tunnels association (by simp [installed])⟩
 
-lemma target_binding : InboundGateReceiversBound deployment forwarding.GenuineControl .inner receiveTarget := by
+lemma target_binding : InboundGuardReceiversBound deployment forwarding.GenuineControl .inner receiveTarget := by
   have checked : ∀ interface ∈ deployment.interfaces, deployment.IsLayer interface.device .inner →
       interface.zone = ExternalZone .inner → receiveTarget ⟨0,0⟩ interface.id = some interface.device := by
     unfold Deployment.IsLayer
@@ -119,27 +119,27 @@ lemma target_binding : InboundGateReceiversBound deployment forwarding.GenuineCo
   exact checked interface stored layer external
 
 lemma component_coverage : ComponentConfigurationCoverage deployment .inner components := by
-  unfold ComponentConfigurationCoverage Deployment.Relevant
+  unfold ComponentConfigurationCoverage Deployment.InScope
   native_decide
-lemma component_parameters : ∀ component ∈ components, deployment.Relevant component.id →
-    (component.mechanism = .ipsec → component.espTunnelMode = true ∧ component.associatedIPTunnel = true) ∧
+lemma component_parameters : ∀ component ∈ components, deployment.InScope component.id →
+    (component.protocol = .ipsec → component.espTunnelMode = true ∧ component.associatedIPTunnel = true) ∧
     (false = true → component.outboundMACPolicy = true) ∧
     (false = true → component.inboundMACPolicy = true) := by
-  unfold Deployment.Relevant
+  unfold Deployment.InScope
   native_decide
-theorem snapshot_RG029_macsec_inner_tunnel_no_bypass :
-    msc_inner_tunnel_no_bypass deployment forwarding components false false := by
+theorem snapshot_rg029_macsec_inner_tunnel_no_bypass :
+    inner_tunnel_no_bypass deployment forwarding components false false := by
   have covered := profile_deployment_is_covered records (Or.inl rfl)
   exact inner_tunnel_no_bypass_from_outbound_and_inbound_checks deployment forwarding components false false receiveTarget
     covered (macsecLayerOutboundChecks forwarding deployment .inner covered outbound_checks)
-    (macsecIngressDeviceGate forwarding.native deployment .inner receiveTarget gate_checks)
+    (macsecIngressDeviceGuard forwarding.deviceDataPlane deployment .inner receiveTarget gate_checks)
     target_binding component_coverage component_parameters
 
-theorem snapshot_RG029_macsec_nonempty_payload_delivered :
+theorem snapshot_rg029_macsec_nonempty_payload_delivered :
     ∃ start actions finish, forwarding.initial start ∧ forwarding.system.MTr start actions finish ∧
-      (forwarding.native.state finish).datapathStage = .delivered ∧
-      (forwarding.native.state finish).frame.payload = LinkAdmission.payloadCode [7, 8] ∧
-      (forwarding.native.state finish).frame.body = records.trafficDatagram.body :=
+      (forwarding.deviceDataPlane.state finish).datapathStage = .delivered ∧
+      (forwarding.deviceDataPlane.state finish).frame.payload = LinkAdmission.payloadCode [7, 8] ∧
+      (forwarding.deviceDataPlane.state finish).frame.body = records.trafficDatagram.body :=
   profile_nonempty_payload_is_delivered records (Or.inl rfl)
 
 end TDN.Deployments.InnerTunnelNoBypass_Macsec

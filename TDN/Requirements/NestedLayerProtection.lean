@@ -7,17 +7,17 @@ theorem nested_layer_protection_from_local_checks {S A : Type}
     (d : Deployment) (model : ForwardingModel S A) (flows : List Flow)
     (flowAt : S → PayloadId → Flow) (remoteDestination : S → PayloadId → Prop)
     (invariant : S → Prop) (independentKeys : String → String → Prop)
-    (covered : model.CoversDeployment { d with focus := none })
-    (services : ArchitectureServices { d with focus := none })
-    (validFlows : ∀ flow ∈ flows, flow.Valid { d with focus := none } independentKeys)
-    (checks : NestedFlowChecks { d with focus := none } model flows flowAt remoteDestination invariant) :
-    msc_nested_layer_protection d model flows (fun start _ _ payload => flowAt start payload) independentKeys := by
-  let whole : Deployment := { d with focus := none }
-  change CoreReq_msc_nested_layer_protection whole model flows _ independentKeys
+    (covered : model.CoversDeployment { d with deviceScope := none })
+    (services : ArchitectureServices { d with deviceScope := none })
+    (validFlows : ∀ flow ∈ flows, flow.Valid { d with deviceScope := none } independentKeys)
+    (checks : NestedFlowChecks { d with deviceScope := none } model flows flowAt remoteDestination invariant) :
+    nested_layer_protection d model flows (fun start _ _ payload => flowAt start payload) independentKeys := by
+  let whole : Deployment := { d with deviceScope := none }
+  change scoped_nested_layer_protection whole model flows _ independentKeys
   refine ⟨covered, services, validFlows, ?_⟩
   intro start actions finish initial run
   dsimp only
-  have checked := nested_flow_trace_events_checked checks covered.2.2.2.2.1 initial run
+  have checked := nested_flow_trace_events_checked checks covered.validHistory initial run
   have layers := deployment_events_follow_delivery_layers model whole covered initial run
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro payload network injected

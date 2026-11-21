@@ -2,19 +2,19 @@ import TDN.Models.TableDrivenDataPlane
 
 namespace TDN.DataPlaneForwarding
 
-def ExcludesRoute (rule : PacketPolicy.Rule) (route : FibRoute) : Prop :=
+def ExcludesRoute (rule : PacketPolicy.PacketAclRule) (route : FibRoute) : Prop :=
   ∃ atom ∈ rule.atoms, match atom with
     | .destinationRange low high => high < route.destPrefixLow ∨ route.destPrefixHigh < low
     | _ => False
 
-instance (rule : PacketPolicy.Rule) (route : FibRoute) : Decidable (ExcludesRoute rule route) := by
+instance (rule : PacketPolicy.PacketAclRule) (route : FibRoute) : Decidable (ExcludesRoute rule route) := by
   unfold ExcludesRoute
   letI (a : PacketPolicy.MatchCondition) : Decidable (match a with
     | .destinationRange low high => high < route.destPrefixLow ∨ route.destPrefixHigh < low
     | _ => False) := by cases a <;> infer_instance
   infer_instance
 
-lemma matching_route_not_excluded {rule : PacketPolicy.Rule} {route : FibRoute}
+lemma matching_route_not_excluded {rule : PacketPolicy.PacketAclRule} {route : FibRoute}
     {packet : PacketPolicy.Packet} (matched : rule.toFilter.accepts packet = true)
     (routed : route.matches packet) : ¬ ExcludesRoute rule route := by
   rintro ⟨atom, member, conflict⟩
@@ -24,14 +24,14 @@ lemma matching_route_not_excluded {rule : PacketPolicy.Rule} {route : FibRoute}
   unfold FibRoute.matches at routed
   omega
 
-def withRoute (rule : PacketPolicy.Rule) (route : FibRoute) : PacketPolicy.Rule :=
+def withRoute (rule : PacketPolicy.PacketAclRule) (route : FibRoute) : PacketPolicy.PacketAclRule :=
   { rule with atoms := .destinationRange route.destPrefixLow route.destPrefixHigh :: rule.atoms }
 
-lemma matches_with_route {rule : PacketPolicy.Rule} {route : FibRoute}
+lemma matches_with_route {rule : PacketPolicy.PacketAclRule} {route : FibRoute}
     {packet : PacketPolicy.Packet} (matched : rule.toFilter.accepts packet = true)
     (routed : route.matches packet) :
     (withRoute rule route).toFilter.accepts packet = true := by
-  simp only [withRoute, PacketPolicy.Rule.toFilter, List.all_cons, Bool.and_eq_true,
+  simp only [withRoute, PacketPolicy.PacketAclRule.toFilter, List.all_cons, Bool.and_eq_true,
     PacketPolicy.MatchCondition.matchesPacket]
   exact ⟨decide_eq_true routed, matched⟩
 
@@ -54,13 +54,13 @@ theorem table_driven_routed_forward_checks_sound (devices : List DeviceData) (if
     (routes : List FibRoute) (links switches : List (Nat × Nat))
     (checked : TableDrivenRoutedForwardChecks devices ifaces routes)
     (denying : ∀ p, (dataPlaneModelFromRecords devices ifaces routes links switches).forwardFallback p = .deny)
-    (iface : Nat) (frame : Frame) (authenticated : List Nat)
+    (iface : Nat) (frame : IpsecFrame) (authenticated : List Nat)
     (routed : RoutedFrame (dataPlaneModelFromRecords devices ifaces routes links switches) iface frame)
     (ingress : frame.packet.ingress =
       (dataPlaneModelFromRecords devices ifaces routes links switches).interfaceName frame.enteredIface)
     (valid : LocalAuthentication (dataPlaneModelFromRecords devices ifaces routes links switches)
       (expectedEncapStackFromRecords ifaces) frame.enteredIface authenticated)
-    (accepted : accepts
+    (accepted : TDN.PacketPolicy.AclAllows
       ((dataPlaneModelFromRecords devices ifaces routes links switches).forwardRules iface)
       ((dataPlaneModelFromRecords devices ifaces routes links switches).forwardFallback iface)
       (policyPacket (dataPlaneModelFromRecords devices ifaces routes links switches) iface frame authenticated)) :

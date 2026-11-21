@@ -21,7 +21,7 @@ instance (records : Records) (roles : List SizingRole) (output : Bool) (route : 
   infer_instance
 
 
-def SizeRecordChecks (records : Records) (installations : List PublicSARecord) (roles : List SizingRole) : Prop :=
+def SizeRecordChecks (records : Records) (installations : List PublicSaRecord) (roles : List SizingRole) : Prop :=
   (∀ route ∈ records.routes, route.destPrefixHigh < 2^32) ∧
   (∀ record ∈ installations, record.installation.association.sender < 2^32 ∧
     record.installation.association.receiver < 2^32 ∧ record.installation.association.spi < 2^32) ∧
@@ -38,7 +38,7 @@ def SizeRecordChecks (records : Records) (installations : List PublicSARecord) (
   (∀ edge ∈ records.links, sourceMtu roles edge.1 ≤ sourceMtu roles edge.2) ∧
   (∀ edge ∈ records.bridges, sourceMtu roles edge.1 ≤ sourceMtu roles edge.2)
 
-instance (records : Records) (installations : List PublicSARecord) (roles : List SizingRole) :
+instance (records : Records) (installations : List PublicSaRecord) (roles : List SizingRole) :
     Decidable (SizeRecordChecks records installations roles) := by
   unfold SizeRecordChecks
   infer_instance
@@ -57,12 +57,12 @@ lemma raw_device_member (devices : List DataPlaneForwarding.DeviceData) (owner :
 
 
 theorem size_checks_from_captured_records {Key : Type} (records : Records)
-    (installations : List PublicSARecord) (roles : List SizingRole)
-    (policies : List (Nat × LinkAdmission.IfacePolicy)) (codec : IPsecFrameEncoding.Codec Key)
+    (installations : List PublicSaRecord) (roles : List SizingRole)
+    (policies : List (Nat × LinkAdmission.IfacePolicy)) (codec : IpsecFrameEncoding.Codec Key)
     (checked : SizeRecordChecks records installations roles) :
     SizeChecks (completeConfiguration records installations policies codec)
       (requiredSizing roles) (sourceMtu roles) plaintextLimit authenticationLimit ∧
-    EthernetMTUChecks (completeConfiguration records installations policies codec) (sourceMtu roles) := by
+    EthernetMtuChecks (completeConfiguration records installations policies codec) (sourceMtu roles) := by
   obtain ⟨routeBound, stateBounds, outboundBounds, inboundBounds, bridges, forward, output,
     outerRoutes, physicalMtu, bridgeMtu⟩ := checked
   refine ⟨⟨rfl, rfl, fun _ _ => rfl, routeBound, ?_, ?_, ?_, ?_, forward, output, ?_⟩,

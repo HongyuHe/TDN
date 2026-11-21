@@ -1,15 +1,16 @@
 {
   "schema_version": "1.0",
-  "scope": "Associations connect a role to the current formalized requirement in which it participates. Applicability conditions, selected objectives, external evidence, and whole-network quantifiers remain part of each statement. Child roles inherit associations from every subclass ancestor; documented associations do not transmit obligations. Listing a requirement does not assert that a device or deployment satisfies it.",
+  "scope": "Roles inherit the CSfC requirements of their parent roles. The page distinguishes active proof targets from catalog requirements and shows the relevant Lean conditions for each.",
   "source_hashes": {
-    "TDN/Requirements/MasterMscRequirementSpecs.lean": "c633a63cb49a65edb818d44826c69384a15cd9b4c96266d3727a06b0ab49ee74",
-    "TDN/Requirements/CoreMscRequirements.lean": "dc599b8d04847b627555183a6143befc2efbbeed30fd8c4a3db78241f4c53f78",
-    "TDN/Requirements/CsfcRoleObligations.lean": "a7ddae592e47588e9cd4a574932e0b8c4728644938659bc52169c40a128e265c",
-    "TDN/Requirements/CrossEnclavePkiIsolationSpec.lean": "b2215ad3fe0f334437be321a31f1ea89735fc03772386001d8cee57532410b9d",
-    "TDN/Requirements/MscFirewallWaypointingTheorems.lean": "ae662c2dbc60539e6cb971a4e57d2ca7b57f71ab144946a6bb3d82c9cdb46890",
-    "TDN/Requirements/CsfcRoleObligationRecords.lean": "82e2f58719585c5b02912f786c4d2fdc8a5ba66d2355c8b9177976e11f80ef23",
-    "TDN/Requirements/ManagementPlaneRequirements.lean": "043fd7b2ef364d2ecad297cafef311f1fe9c023ce823a087199deaede1e2873b",
-    "TDN/Requirements/TrustedClockSynchronization.lean": "d8bf74ed1da6a895f63e33c3481a53d9c42d1a75210ad05054382cebc2432519"
+    "TDN/Requirements/MscRequirements.lean": "782bd264d4aa6230cc474a23af6f627edc0ad05b2a2dc87dfc6695fd0bc73bd3",
+    "TDN/Requirements/ScopedMscRequirements.lean": "91f785b65b5c92b6c2e8df7f1d409d02b7d485ff973261f5e4210569b83a52db",
+    "TDN/Requirements/CsfcRoleObligations.lean": "69d1ecd03fe0c7468ca2718c7e04c55fbc184671d120d2833acb5596d6b09c02",
+    "TDN/Requirements/CrossEnclavePkiIsolationSpec.lean": "6e896334e989677d5b316dc0eaafe4e5dc38bd39f91c00f05b7479be3711b4f9",
+    "TDN/Requirements/MscFirewallWaypointingTheorems.lean": "4a5d9495e62f438633da7529b3260b0fb397affff4159cf9f005550fa0860116",
+    "TDN/Requirements/CsfcRoleObligationRecords.lean": "d0e3084a0a8954f5d473109bb9fc1e6cd29f8f74181242c4229c2aafcc522c52",
+    "TDN/Requirements/ManagementPlaneRequirements.lean": "74324a00606813bb97ce18efe1b4a7116a2ac1a391294240d78b6f1b4b2a1d24",
+    "TDN/Requirements/TrustedClockSynchronization.lean": "d8bf74ed1da6a895f63e33c3481a53d9c42d1a75210ad05054382cebc2432519",
+    "TDN/Requirements/ExtendedMscRoleSpecs.lean": "50d94518d5087985b09aa3281e507d5bbdd6b077d6ddc6f8be24df9f88faf1bb"
   },
   "translations": {
     "RG-001": "The context must contain external confirmations that local and government guidance, CNSS policy, and the duty to report policy conflicts have been met.",
@@ -26,7 +27,7 @@
     "RG-012": "Inner peers at different levels must use separated authentication material, must not authenticate each other, and must have no established tunnel between them. When management is deployed, each peer has management devices and different levels use disjoint management-device sets.",
     "RG-013": "Every Gray path that crosses the specified security-level boundary must pass through a Gray Firewall. The modeled roles and levels must match the device records. Firewalls and Outer components filter Inner peers by level; Gray management and certificate services have the stated placement and separation conditions. Each Gray Firewall must also lie on an actual Inner-to-Outer path.",
     "RG-014": "Gray address ranges must be valid and must assign an address to at most one security level. Inner Gray addresses and intended address pairs belong to the recorded level. Outer components and Gray Firewalls accept Inner-peer traffic only for the intended same-level pairs.",
-    "RG-015": "Inner MACsec traffic and MACsec traffic crossing IP must have a declared, approved encapsulation arrangement. Encapsulation precedes the required Outer encryption or IP transmission, and the protected MACsec layer stays encrypted between encapsulation and decapsulation. A standalone encapsulator needs the specified Gray attachments and all applicable component duties.",
+    "RG-015": "An approved carrier wraps the protected MACsec frame before the required Outer encryption or IP transmission. The Inner layer stays encrypted until the remote endpoint. Check the attachments of a standalone encapsulator and assess its applicable component duties separately.",
     "RG-016": "A MACsec device may select clear VLAN tags or XPN only when its recorded supported features contain the corresponding option.",
     "RG-017": "Every relevant tunnel needs authentication observations in both directions, with each verifier authenticating the opposite peer for that tunnel. The current shared condition uses certificate authentication for IPsec and proof of possession of the tunnel key for MACsec.",
     "RG-018": "Every VPN gateway offers a nonempty set of suites satisfying the chosen CNSA profile. Selecting CNSA 2 also requires the recorded classical initial exchange and encrypted ML-KEM-1024 intermediate exchange, with multiple exchanges and IKE fragmentation supported. MACsec components use 256-bit GCM-AES or GCM-AES-XPN.",
@@ -67,7 +68,7 @@
     "RG-053": "Inner components sharing an Outer must be parallel: no serial predecessor and no VLAN trunk in the recorded attachments. Distinct Red networks must use distinct Outer physical interfaces.",
     "RG-054": "Required site pairs must be bound to the deployment and have an interoperation choice for each layer. Choices cover intended peers and recorded tunnels. For each relevant choice, matching forward and reverse tunnels must support the modeled payload domain in both directions.",
     "RG-055": "Combined solutions must include a Gray Firewall when required. A combined end-user solution must have companion-firewall records, and every such record must satisfy its associated requirements.",
-    "RG-056": "Every modeled Red-to-outside path must pass through a conforming MSC solution or approved alternative protection. Approval must be backed by the authority record. Referenced MSC solutions must have supplied contexts satisfying all applicable duties, and their further MSC references must be accounted for.",
+    "RG-056": "Every Red exit must cross a conforming MSC solution or an approved transit protection solution. The catalog condition checks the path and the approval predicate. Assess the referenced solution’s conformance separately.",
     "RG-057": "Each component needs external confirmations of the required antivirus-update policy, critical-patch testing, local patching policy, and TEMPEST duties.",
     "RG-058": "Each component needs external confirmations that its hardware inventory is authorized and its baseline configuration is available to the auditor.",
     "RG-059": "The context needs external confirmation that procurement documentation follows the restriction on mentioning the classified-protection purpose.",
@@ -85,7 +86,7 @@
     "RG-071": "The context needs external confirmations for assessment and authorization, AO review and implementation verification, lifecycle configuration and update control, external engagements, compromise revocation, and risk assessment.",
     "RG-072": "The context needs external confirmations that the required tests, coverage, discrepancy records, baseline, test plan, and preserved results and AO report exist.",
     "RG-073": "When the signing objective is selected, the record contains at least one software-signing algorithm and every listed algorithm satisfies the modeled Approved condition.",
-    "RG-074": "Every selected redundant component must satisfy all applicable component duties whenever it is outside ordinary Gray scope or is a standalone encapsulator. The condition applies separately to each selected redundant device.",
+    "RG-074": "Redundant security components keep the duties for their roles. Check each additional component and rerun the relevant network-wide checks. The shared catalog branch adds no separate redundancy condition.",
     "RG-075": "Every selected screening router must exist in the device inventory and have no encryption-layer assignment.",
     "RG-076": "The context needs external confirmation of the legal undertaking. The Lean branch records that confirmation as an external input."
   },
@@ -565,41 +566,41 @@
     ],
     "RG-029": [
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ScopedMscRequirements.lean",
         "name": "TraceNoBypass"
       }
     ],
     "RG-030": [
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ScopedMscRequirements.lean",
         "name": "TraceNoBypass"
       }
     ],
     "RG-039": [
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ScopedMscRequirements.lean",
         "name": "OuterGrayRestrictions"
       },
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ScopedMscRequirements.lean",
         "name": "OuterPolicyAllowance"
       },
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ScopedMscRequirements.lean",
         "name": "OuterTunnelAllowance"
       },
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ScopedMscRequirements.lean",
         "name": "OuterManagementInitiation"
       }
     ],
     "RG-040": [
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ScopedMscRequirements.lean",
         "name": "GrayFirewallRestrictions"
       },
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ScopedMscRequirements.lean",
         "name": "GrayPolicyAllowance"
       }
     ],
@@ -625,7 +626,7 @@
     ],
     "RG-028": [
       {
-        "path": "TDN/Requirements/CoreMscRequirements.lean",
+        "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
         "name": "MACsecParametersBound"
       }
     ]

@@ -28,13 +28,13 @@ lemma event_split_append_exact {α : Type} (first second earlier later : List α
       · exact Or.inr ⟨leading, suffix, found, congrArg (head :: ·) equal, remaining⟩
 
 theorem forwarding_event_has_step {S A : Type} (model : ForwardingModel S A)
-    {start finish : S} {actions : List A} (run : model.system.MTr start actions finish)
+    {start finish : S} {actions : List A} (run : model.ForwardsAlongTrace start actions finish)
     {earlier later : List NetworkEvent} {event : NetworkEvent}
     (split : actions.flatMap model.events = earlier ++ [event] ++ later) :
     ∃ before after action leading trailing localBefore localAfter,
       actions = leading ++ [action] ++ trailing ∧
-      model.system.MTr start leading before ∧ model.system.Tr before action after ∧
-      model.system.MTr after trailing finish ∧
+      model.ForwardsAlongTrace start leading before ∧ model.system.Tr before action after ∧
+      model.ForwardsAlongTrace after trailing finish ∧
       model.events action = localBefore ++ [event] ++ localAfter ∧
       earlier = leading.flatMap model.events ++ localBefore ∧
       later = localAfter ++ trailing.flatMap model.events := by

@@ -2,13 +2,13 @@
 
 `TDN/Models` provides network models and general proofs that can be applied to different configurations and snapshots. The modules describe packet processing, topology, filtering, encryption layers, authentication, fragmentation, generated replies, authenticated operations and cover traffic. A caller supplies the relevant configuration and proves the theorem's premises for that configuration.
 
-The catalog covers all 115 active Lean files in `TDN/Models`. It indexes 1107 explicitly named declarations and 85 explicit instances. Each index links to its source line. Constructors, structure-field projections, and automatically derived declarations are represented by their parent types.
+The catalog covers all 112 active Lean files in `TDN/Models`. It indexes 1070 explicitly named declarations and 86 explicit instances. Each index links to its source line. Constructors, structure-field projections, and automatically derived declarations are represented by their parent types.
 
 Each module section explains its purpose, principal results, and conditions for reuse. The expandable declaration index in each section links every named declaration to its source line. The source links are relative to the repository so they remain usable in another checkout and on GitHub.
 
 ## How to read the library
 
-A **model** describes the states and operations considered by a proof. For example, `DataPlaneForwarding.Step` describes one packet-processing operation. An **invariant** is a condition that remains true after every permitted step when it is true initially. A **trace** is a finite sequence of permitted steps. A theorem about every trace can cover arbitrarily long finite executions without enumerating them.
+A **model** describes the states and operations considered by a proof. For example, `DataPlaneForwarding.ForwardingStep` describes one packet-processing operation. An **invariant** is a condition that remains true after every permitted step when it is true initially. A **trace** is a finite sequence of permitted steps. A theorem about every trace can cover arbitrarily long finite executions without enumerating them.
 
 A **predicate** is a condition on a value, such as whether a node is a firewall. A **contract** is an explicitly required guarantee from another model or implementation. A **soundness theorem** proves that passing a check is sufficient for the condition claimed by that check. An **induction proof** establishes an initial case and proves that one more permitted step preserves the result. The same argument then covers any finite number of steps.
 
@@ -19,7 +19,7 @@ Lean declarations serve the following roles:
 | Lean construct | Meaning in the library |
 | --- | --- |
 | `structure` | A record with named fields, such as a route or device. A structure ending in `: Prop` packages logical conditions that need proofs. |
-| `inductive` | A type or relation defined by its permitted cases. The constructors of `DataPlaneForwarding.Step` specify which packet-processing steps exist. |
+| `inductive` | A type or relation defined by its permitted cases. The constructors of `DataPlaneForwarding.ForwardingStep` specify which packet-processing steps exist. |
 | `def` | A named computation or expression. A definition returning `Prop` states a condition, such as a required relationship between interfaces. |
 | `abbrev` | A short name for another expression or type. |
 | `lemma` | A checked supporting result, such as preservation by one step, a finite record check, or the assembly of local assumptions. |
@@ -45,9 +45,26 @@ An **interface** is a modeled connection point identified by a natural number. T
 
 A **projection** maps a detailed state to the information retained by a simpler model. For example, a fragmented-packet state contains both a logical packet state and its pieces; a projection can retain only the logical state. A proof relating the models checks each detailed step and then transfers properties across complete traces. Some detailed steps can leave the projected state unchanged, as splitting a packet can leave its logical identity unchanged.
 
+## Which packet representation to use
+
+Choose the type by the information the proof needs.
+
+| A proof needs to know… | Lean type | What the value contains |
+| --- | --- | --- |
+| Which IPsec layers surround a packet at a forwarding interface | `DataPlaneForwarding.IpsecFrame` | The packet header, its source domain and the ordered IPsec layers. |
+| How IPsec, MACsec or an Ethernet tunnel wraps another frame | `LayeredFrame.TunnelFrame` | The nested packet bodies and the headers saved or restored at each boundary. Its `EthernetTunnelHeader` identifies the tunnel endpoints and peer session. |
+| What an Ethernet interface can inspect on receipt | `LinkAdmission.EthernetFrame` | The decoded Ethernet header, its original bytes and the payload bytes. |
+| How splitting bytes and joining them back together preserves a payload | `Fragmentation.PayloadDatagram` and `PayloadFragment` | A header and a list of bytes. Each fragment also carries its offset. |
+| Whether an endpoint encoded the IP headers and offsets correctly | `PacketSource.EncodedDatagram` and `EncodedFragment` | Network and transport bytes and the fields needed to check the wire format. `EncodedFragment.AsPiece` gives the byte-reassembly proof the offset and data from the encoded fragment. |
+| Where payload bytes came from across packet copies, splits and joins | `ByteFlows.PacketBytes` | A forwarding state paired with the bytes it carries. |
+
+ACL checks share one first-match evaluator. A `PacketPolicy.PacketAclRule` stores match conditions and a verdict. Its `toFilter` function turns those conditions into the test that a `Filter.FirstMatchRule` runs on a packet. `PacketPolicy.AclAllows` evaluates the rules in order and uses the specified default when none matches. A deployment also checks the interface, direction and processing hook when it decides whether traffic can pass.
+
 ## Organization and dependencies
 
-The modules separate general arguments from the finite data used to apply them. None of the 112 modules imports a snapshot, an instance module, or a document-specific target. Every direct project import stays within `TDN.Models`. Some modules describe broadly reusable mathematics; others describe a specific supported network mechanism or configuration pattern, such as authenticated fragment assembly.
+Every project import in `TDN.Models` points to another model. The library includes general arguments about paths and packet sequences alongside networking models for particular operations, such as authenticated fragment reassembly. Deployment modules supply the records that let a proof apply those models to a network.
+
+The ten selected MSC specifications are defined together. Nine set the device scope to the whole deployment. RG-034 applies the graph rule for Outer Firewall placement directly. Eleven further role obligations live in a separate module and remain available to the full CSfC catalog. [Selected specifications](../TDN/Requirements/MscRequirements.lean), [conditions used by the selected specifications](../TDN/Requirements/ScopedMscRequirements.lean), [firewall placement](../TDN/Requirements/MscFirewallWaypointingTheorems.lean), [additional role obligations](../TDN/Requirements/ExtendedMscRoleSpecs.lean).
 
 | Topic | Starting modules | What a caller supplies |
 | --- | --- | --- |
@@ -56,8 +73,8 @@ The modules separate general arguments from the finite data used to apply them. 
 | [MACsec and mixed-protocol execution](#macsec-and-mixed-protocol-execution) | `MacsecPortProtection`, `NestedTunnelFrame`, `MultiProtocolForwarding` | MACsec settings, associations, logical/physical interfaces, carriers, and their connection to IP processing. |
 | [Generated replies](#generated-replies) | `KernelGeneratedReplies`, `IngressToOutputReplyPairChecks`, `SourceGuardedAutoReplyNetwork` | Reply-generation scope, source/output rules, route choices, and safety of allowed emissions. |
 | [Fragments, copied bytes, and reassembly](#fragments-copied-bytes-and-reassembly) | `DatagramFragmentationAndSimulation`, `MultiPacketByteFlows`, `AuthenticatedCiphertextReassembly` | Byte origins, assembly rules, encodings, and any authentication contract. |
-| [Trust and access](#trust-and-access) | `PkiAndPskTrustDomains`, `IkePeerSessionAgreement`, `MacsecKeyOriginModel`, `RoleBasedAccessControl` | Authority/key ownership, reciprocal peer observations, permitted key sources, and role permissions. |
-| [Events and general trace arguments](#events-and-general-trace-arguments) | `PrerequisiteEventHistory`, `LocateTransitionStepInTrace`, `TraceCreditDebitBalance` | Event meanings, timestamps, prerequisites, step invariants, or per-step arithmetic equations. |
+| [Trust and access](#trust-and-access) | `PkiAndPskTrustDomains`, `IkePeerSessionAgreement` | Authority/key ownership, reciprocal peer observations and trust relationships. |
+| [Events and general trace arguments](#events-and-general-trace-arguments) | `PrerequisiteEventHistory`, `FindStepInForwardingTrace`, `TracePushPopBalance` | Event meanings, timestamps, prerequisites, step invariants, or per-step arithmetic equations. |
 | [Packet sizes and cover traffic](#packet-sizes-and-cover-traffic) | `BlockAlignedEspLength`, `ConstantRateCoverTraffic` | Size budgets and the cover-traffic sender model. |
 
 The packet-stack proof follows the dependency chain shown below. Each arrow means that the lower result uses the information or proof above it.
@@ -170,27 +187,70 @@ The catalog groups all modules by their primary purpose. Namespaces are listed s
 
 [Waypointing](#waypointing), [DisjointAddressRanges](#disjointaddressranges), [UnifiedIpv4Ipv6AddressKey](#unifiedipv4ipv6addresskey), [OrderedAclFilter](#orderedaclfilter), [IpsecAndAclRuleModel](#ipsecandaclrulemodel), [IpHeaderAclGuards](#ipheaderaclguards)
 
+### Checking recorded forwarding steps
+
+A recorded path supplies the before and after packet states and the action at each hop. The checker constructs the steps permitted by the installed routes, filters, links and security associations. It accepts a recorded hop only when the entire resulting packet state and action agree. The recorded next interface and connection state provide candidates for the link and receive decisions. A candidate still needs a proof from the forwarding rules.
+
+Source: [RecordedForwarding.lean](../TDN/Models/RecordedForwarding.lean)
+
+<details>
+<summary>All 5 named declarations in RecordedForwarding</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `abbrev` | [`Hop`](../TDN/Models/RecordedForwarding.lean#L17) |
+| `def` | [`hop`](../TDN/Models/RecordedForwarding.lean#L20) |
+| `def` | [`candidates`](../TDN/Models/RecordedForwarding.lean#L23) |
+| `def` | [`admits`](../TDN/Models/RecordedForwarding.lean#L85) |
+| `theorem` | [`step_of_admits`](../TDN/Models/RecordedForwarding.lean#L88) |
+
+</details>
+
+### Forwarding an encapsulated IP packet onto a link
+
+Both forwarding models route an already encapsulated packet using its visible IP header and send it across a link. The correspondence preserves the interface, stage, payload and nested IPsec associations. It uses the same route table, an enabled explicit-header representation, and physical links corresponding to the IP model’s links. It covers the Outer route lookup and link transmission. Bridging has separate admission and stage rules in each model. The IPv4 deployment reuses its recorded route and link proofs in [the two-model example](../TDN/Deployments/DualStack_RedV4_GrayV4_BlackV4_SampleTrace.lean).
+
+Source: [IpsecEgressCorrespondence.lean](../TDN/Models/IpsecEgressCorrespondence.lean)
+
+<details>
+<summary>All 8 named declarations in IpsecEgressCorrespondence</summary>
+
+| Kind | Declaration |
+| --- | --- |
+| `def` | [`body`](../TDN/Models/IpsecEgressCorrespondence.lean#L7) |
+| `def` | [`asTunnelState`](../TDN/Models/IpsecEgressCorrespondence.lean#L11) |
+| `inductive` | [`EgressAction`](../TDN/Models/IpsecEgressCorrespondence.lean#L24) |
+| `def` | [`EgressAction.tunnel`](../TDN/Models/IpsecEgressCorrespondence.lean#L27) |
+| `def` | [`segment`](../TDN/Models/IpsecEgressCorrespondence.lean#L31) |
+| `lemma` | [`visible_ip_header`](../TDN/Models/IpsecEgressCorrespondence.lean#L36) |
+| `lemma` | [`egress_step`](../TDN/Models/IpsecEgressCorrespondence.lean#L43) |
+| `theorem` | [`egress_trace`](../TDN/Models/IpsecEgressCorrespondence.lean#L61) |
+
+</details>
+
 ### Waypointing
 
 Source: [Waypointing.lean](../TDN/Models/Waypointing.lean). Namespace: `TDN.Waypointing`.
 
 `Waypointing` turns an edge-level check into a statement about every finite path. You supply the graph, a predicate identifying the acceptable waypoints, and a `region` label for each node. Firewalls are one application of that waypoint set. [`Avoiding`](../TDN/Models/Waypointing.lean#L5) permits an edge only when its destination is outside the waypoint set; the theorems separately require a starting node outside that set.
 
-[`waypoint_free_path_preserves_region`](../TDN/Models/Waypointing.lean#L8) proves that a path avoiding the waypoints preserves its starting label when every edge outside the waypoint set does so. [`waypointing_of_edge_invariant`](../TDN/Models/Waypointing.lean#L17) then excludes waypoint-free paths between differently labeled endpoints. [`path_avoids_absent_waypoints`](../TDN/Models/Waypointing.lean#L25) establishes that every graph path avoids the waypoint set when that set is empty. A requirement proof can combine that result with an existing connection to show that a mandatory waypoint must exist.
+[`waypoint_free_path_preserves_region`](../TDN/Models/Waypointing.lean#L15) proves that a path avoiding the waypoints preserves its starting label when every edge outside the waypoint set does so. [`waypointing_of_edge_invariant`](../TDN/Models/Waypointing.lean#L24) then excludes waypoint-free paths between differently labeled endpoints. [`path_avoids_absent_waypoints`](../TDN/Models/Waypointing.lean#L32) establishes that every graph path avoids the waypoint set when that set is empty. A requirement proof can combine that result with an existing connection to show that a mandatory waypoint must exist.
 
 A new topology supplies new edges and labels. The proofs stay unchanged. The graph must include every connection relevant to the claimed path property.
 
 Direct imports: `Mathlib.Logic.Relation`.
 
 <details>
-<summary>All 4 named declarations in Waypointing</summary>
+<summary>All 6 named declarations in Waypointing</summary>
 
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`Avoiding`](../TDN/Models/Waypointing.lean#L5) |
-| `theorem` | [`waypoint_free_path_preserves_region`](../TDN/Models/Waypointing.lean#L8) |
-| `theorem` | [`waypointing_of_edge_invariant`](../TDN/Models/Waypointing.lean#L17) |
-| `lemma` | [`path_avoids_absent_waypoints`](../TDN/Models/Waypointing.lean#L25) |
+| `abbrev` | [`ReachableByLinks`](../TDN/Models/Waypointing.lean#L8) |
+| `abbrev` | [`ReachableWithoutWaypoint`](../TDN/Models/Waypointing.lean#L11) |
+| `theorem` | [`waypoint_free_path_preserves_region`](../TDN/Models/Waypointing.lean#L15) |
+| `theorem` | [`waypointing_of_edge_invariant`](../TDN/Models/Waypointing.lean#L24) |
+| `lemma` | [`path_avoids_absent_waypoints`](../TDN/Models/Waypointing.lean#L32) |
 
 </details>
 
@@ -260,7 +320,7 @@ Direct imports: `Mathlib.Data.List.Basic`.
 | Kind | Declaration |
 | --- | --- |
 | `inductive` | [`Verdict`](../TDN/Models/OrderedAclFilter.lean#L5) |
-| `structure` | [`Rule`](../TDN/Models/OrderedAclFilter.lean#L9) |
+| `structure` | [`FirstMatchRule`](../TDN/Models/OrderedAclFilter.lean#L9) |
 | `def` | [`evaluate`](../TDN/Models/OrderedAclFilter.lean#L13) |
 | `lemma` | [`allowed_has_matching_allow`](../TDN/Models/OrderedAclFilter.lean#L18) |
 | `theorem` | [`default_deny_sound`](../TDN/Models/OrderedAclFilter.lean#L31) |
@@ -278,7 +338,7 @@ Source: [IpsecAndAclRuleModel.lean](../TDN/Models/IpsecAndAclRuleModel.lean). Na
 
 `IpsecAndAclRuleModel` supplies the concrete packet fields and rule conditions used by the execution models. [`Packet`](../TDN/Models/IpsecAndAclRuleModel.lean#L5) includes addresses, protocol, interfaces, transport ports, header fields, connection state, and inbound/outbound IPsec-policy identifiers. [`MatchCondition`](../TDN/Models/IpsecAndAclRuleModel.lean#L98) describes one condition on those fields. A [`Rule`](../TDN/Models/IpsecAndAclRuleModel.lean#L159) matches only when every atom holds.
 
-[`Rule.toFilter`](../TDN/Models/IpsecAndAclRuleModel.lean#L164) connects those records to the ordered evaluator in `OrderedAclFilter`. [`matching_atom`](../TDN/Models/IpsecAndAclRuleModel.lean#L167) recovers any atom's condition from a successful match. [`RequiresIpsecPolicyMatch`](../TDN/Models/IpsecAndAclRuleModel.lean#L181) requires the appropriate interface direction and an inbound or outbound policy condition. [`forwarding_policy_protects`](../TDN/Models/IpsecAndAclRuleModel.lean#L211) proves that every accepted packet has one of those guarded directions when every allow rule is guarded and the fallback denies traffic.
+[`Rule.toFilter`](../TDN/Models/IpsecAndAclRuleModel.lean#L164) connects those records to the ordered evaluator in `OrderedAclFilter`. [`matching_atom`](../TDN/Models/IpsecAndAclRuleModel.lean#L170) recovers any atom's condition from a successful match. [`RequiresIpsecPolicyMatch`](../TDN/Models/IpsecAndAclRuleModel.lean#L184) requires the appropriate interface direction and an inbound or outbound policy condition. [`forwarding_policy_protects`](../TDN/Models/IpsecAndAclRuleModel.lean#L214) proves that every accepted packet has one of those guarded directions when every allow rule is guarded and the fallback denies traffic.
 
 The result concerns policy metadata on the modeled packet. The execution modules connect outbound policy selection to an encryption operation and installed state.
 
@@ -287,7 +347,7 @@ The boundary proofs also inspect packet contents. `IKEHeader` checks the represe
 Direct imports: [OrderedAclFilter](#orderedaclfilter).
 
 <details>
-<summary>All 19 named declarations in IpsecAndAclRuleModel</summary>
+<summary>All 20 named declarations in IpsecAndAclRuleModel</summary>
 
 | Kind | Declaration |
 | --- | --- |
@@ -301,15 +361,16 @@ Direct imports: [OrderedAclFilter](#orderedaclfilter).
 | `def` | [`Packet.MKAFraming`](../TDN/Models/IpsecAndAclRuleModel.lean#L87) |
 | `inductive` | [`MatchCondition`](../TDN/Models/IpsecAndAclRuleModel.lean#L98) |
 | `def` | [`MatchCondition.matchesPacket`](../TDN/Models/IpsecAndAclRuleModel.lean#L126) |
-| `structure` | [`Rule`](../TDN/Models/IpsecAndAclRuleModel.lean#L159) |
-| `def` | [`Rule.toFilter`](../TDN/Models/IpsecAndAclRuleModel.lean#L164) |
-| `lemma` | [`matching_atom`](../TDN/Models/IpsecAndAclRuleModel.lean#L167) |
-| `def` | [`OutboundGuard`](../TDN/Models/IpsecAndAclRuleModel.lean#L173) |
-| `def` | [`InboundGuard`](../TDN/Models/IpsecAndAclRuleModel.lean#L177) |
-| `def` | [`RequiresIpsecPolicyMatch`](../TDN/Models/IpsecAndAclRuleModel.lean#L181) |
-| `def` | [`ProtectedForward`](../TDN/Models/IpsecAndAclRuleModel.lean#L192) |
-| `lemma` | [`guarded_rule_protects`](../TDN/Models/IpsecAndAclRuleModel.lean#L196) |
-| `theorem` | [`forwarding_policy_protects`](../TDN/Models/IpsecAndAclRuleModel.lean#L211) |
+| `structure` | [`PacketAclRule`](../TDN/Models/IpsecAndAclRuleModel.lean#L159) |
+| `def` | [`PacketAclRule.toFilter`](../TDN/Models/IpsecAndAclRuleModel.lean#L164) |
+| `abbrev` | [`AclAllows`](../TDN/Models/IpsecAndAclRuleModel.lean#L167) |
+| `lemma` | [`matching_atom`](../TDN/Models/IpsecAndAclRuleModel.lean#L170) |
+| `def` | [`OutboundGuard`](../TDN/Models/IpsecAndAclRuleModel.lean#L176) |
+| `def` | [`InboundGuard`](../TDN/Models/IpsecAndAclRuleModel.lean#L180) |
+| `def` | [`RequiresIpsecPolicyMatch`](../TDN/Models/IpsecAndAclRuleModel.lean#L184) |
+| `def` | [`ProtectedForward`](../TDN/Models/IpsecAndAclRuleModel.lean#L195) |
+| `lemma` | [`guarded_rule_protects`](../TDN/Models/IpsecAndAclRuleModel.lean#L199) |
+| `theorem` | [`forwarding_policy_protects`](../TDN/Models/IpsecAndAclRuleModel.lean#L214) |
 
 Explicit instances:
 
@@ -319,7 +380,7 @@ Explicit instances:
 - [Instance at line 79](../TDN/Models/IpsecAndAclRuleModel.lean#L79)
 - [Instance at line 94](../TDN/Models/IpsecAndAclRuleModel.lean#L94)
 - [Instance at line 156](../TDN/Models/IpsecAndAclRuleModel.lean#L156)
-- [Instance at line 184](../TDN/Models/IpsecAndAclRuleModel.lean#L184)
+- [Instance at line 187](../TDN/Models/IpsecAndAclRuleModel.lean#L187)
 
 </details>
 
@@ -340,7 +401,7 @@ Direct imports: [IpsecAndAclRuleModel](#ipsecandaclrulemodel).
 | --- | --- |
 | `def` | [`ProtocolGuard`](../TDN/Models/IpHeaderAclGuards.lean#L5) |
 | `def` | [`UnicastGuard`](../TDN/Models/IpHeaderAclGuards.lean#L12) |
-| `abbrev` | [`Accepts`](../TDN/Models/IpHeaderAclGuards.lean#L27) |
+| `abbrev` | [`DefaultDenyAllows`](../TDN/Models/IpHeaderAclGuards.lean#L27) |
 | `theorem` | [`accepted_protocol`](../TDN/Models/IpHeaderAclGuards.lean#L30) |
 | `def` | [`ImmediateHeaderGuard`](../TDN/Models/IpHeaderAclGuards.lean#L40) |
 | `theorem` | [`accepted_immediate_header`](../TDN/Models/IpHeaderAclGuards.lean#L47) |
@@ -365,54 +426,53 @@ Source: [DataPlaneForwarding.lean](../TDN/Models/DataPlaneForwarding.lean). Name
 
 `DataPlaneForwarding` defines the packet-processing steps shared by the IPsec proofs. A [`State`](../TDN/Models/DataPlaneForwarding.lean#L44) contains an interface, a processing phase, a [`Frame`](../TDN/Models/DataPlaneForwarding.lean#L18), and the policy identifiers authenticated at ingress. The frame stores the current header, payload identity, origin domain, saved encapsulation layers, and the entry interface. Each [`EncapHeaderLayer`](../TDN/Models/DataPlaneForwarding.lean#L14) preserves the preceding header so that decryption can restore it.
 
-[`DataPlaneModel`](../TDN/Models/DataPlaneForwarding.lean#L110) supplies routes, INPUT/FORWARD/OUTPUT rules and fallback verdicts, IPsec policies, installed security associations, interface names, device ownership, links, switching, local addresses, and Red payload origins. [`IpsecPolicy`](../TDN/Models/DataPlaneForwarding.lean#L50) represents a policy and its selectors. [`InstalledSA`](../TDN/Models/DataPlaneForwarding.lean#L63) represents installed state. [`saMatchesPolicy`](../TDN/Models/DataPlaneForwarding.lean#L70) checks the local request identifier, endpoints, and any required SPI. [`lookupSpdPolicies`](../TDN/Models/DataPlaneForwarding.lean#L82) retains all equally best matching policies.
+[`DataPlaneModel`](../TDN/Models/DataPlaneForwarding.lean#L110) supplies routes, INPUT/FORWARD/OUTPUT rules and fallback verdicts, IPsec policies, installed security associations, interface names, device ownership, links, switching, local addresses, and Red payload origins. [`IpsecPolicy`](../TDN/Models/DataPlaneForwarding.lean#L50) represents a policy and its selectors. [`InstalledSa`](../TDN/Models/DataPlaneForwarding.lean#L63) represents installed state. [`saMatchesPolicy`](../TDN/Models/DataPlaneForwarding.lean#L70) checks the local request identifier, endpoints, and any required SPI. [`lookupSpdPolicies`](../TDN/Models/DataPlaneForwarding.lean#L82) retains all equally best matching policies.
 
-[`SelectedFibRoute`](../TDN/Models/DataPlaneForwarding.lean#L104) chooses among matching routes for the same ingress: lowest table priority first, then longest prefix, then lowest metric. Equal choices remain possible. [`Step`](../TDN/Models/DataPlaneForwarding.lean#L155) describes receipt, route selection, filtering, encryption, decryption, transmission, switching, local delivery, and dropping. Encryption requires both a selected policy and matching installed state. Plain transmission after filtering requires that no outbound policy was selected.
+[`SelectedFibRoute`](../TDN/Models/DataPlaneForwarding.lean#L104) chooses among matching routes for the same ingress: lowest table priority first, then longest prefix, then lowest metric. Equal choices remain possible. [`ForwardingStep`](../TDN/Models/DataPlaneForwarding.lean#L151) describes receipt, route selection, filtering, encryption, decryption, transmission, switching, local delivery, and dropping. Encryption requires both a selected policy and matching installed state. Plain transmission after filtering requires that no outbound policy was selected.
 
-The preservation theorems retain payload identity, origin domain, and original addresses across every finite execution. The policy-atom results connect a matched outbound-policy condition to a configured operation and exclude the plain-transmission case. [`matched_forwarding`](../TDN/Models/DataPlaneForwarding.lean#L324) transfers an execution to another model when the caller proves that each detailed step maps to an allowed step in that model. The route and policy records remain fixed throughout each execution.
+The preservation theorems retain payload identity, origin domain, and original addresses across every finite execution. The policy-atom results connect a matched outbound-policy condition to a configured operation and exclude the plain-transmission case. [`matched_forwarding`](../TDN/Models/DataPlaneForwarding.lean#L320) transfers an execution to another model when the caller proves that each detailed step maps to an allowed step in that model. The route and policy records remain fixed throughout each execution.
 
 Direct imports: `Cslib.Foundations.Semantics.LTS.Simulation`, [IpsecAndAclRuleModel](#ipsecandaclrulemodel), [UnifiedIpv4Ipv6AddressKey](#unifiedipv4ipv6addresskey).
 
 <details>
-<summary>All 35 named declarations in DataPlaneForwarding</summary>
+<summary>All 34 named declarations in DataPlaneForwarding</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`TunnelSAStamp`](../TDN/Models/DataPlaneForwarding.lean#L7) |
+| `structure` | [`TunnelSaStamp`](../TDN/Models/DataPlaneForwarding.lean#L7) |
 | `structure` | [`EncapHeaderLayer`](../TDN/Models/DataPlaneForwarding.lean#L14) |
-| `structure` | [`Frame`](../TDN/Models/DataPlaneForwarding.lean#L18) |
+| `structure` | [`IpsecFrame`](../TDN/Models/DataPlaneForwarding.lean#L18) |
 | `def` | [`payloadAddresses`](../TDN/Models/DataPlaneForwarding.lean#L25) |
-| `def` | [`Frame.addresses`](../TDN/Models/DataPlaneForwarding.lean#L29) |
+| `def` | [`IpsecFrame.addresses`](../TDN/Models/DataPlaneForwarding.lean#L29) |
 | `lemma` | [`payload_addresses_ignore_metadata`](../TDN/Models/DataPlaneForwarding.lean#L32) |
 | `inductive` | [`DatapathStage`](../TDN/Models/DataPlaneForwarding.lean#L39) |
-| `structure` | [`State`](../TDN/Models/DataPlaneForwarding.lean#L44) |
+| `structure` | [`ForwardingState`](../TDN/Models/DataPlaneForwarding.lean#L44) |
 | `structure` | [`IpsecPolicy`](../TDN/Models/DataPlaneForwarding.lean#L50) |
-| `structure` | [`InstalledSA`](../TDN/Models/DataPlaneForwarding.lean#L63) |
+| `structure` | [`InstalledSa`](../TDN/Models/DataPlaneForwarding.lean#L63) |
 | `def` | [`saMatchesPolicy`](../TDN/Models/DataPlaneForwarding.lean#L70) |
 | `def` | [`IpsecPolicy.seal`](../TDN/Models/DataPlaneForwarding.lean#L75) |
 | `def` | [`IpsecPolicy.matches`](../TDN/Models/DataPlaneForwarding.lean#L78) |
 | `def` | [`lookupSpdPolicies`](../TDN/Models/DataPlaneForwarding.lean#L82) |
-| `inductive` | [`Action`](../TDN/Models/DataPlaneForwarding.lean#L87) |
+| `inductive` | [`ForwardingAction`](../TDN/Models/DataPlaneForwarding.lean#L87) |
 | `structure` | [`FibRoute`](../TDN/Models/DataPlaneForwarding.lean#L91) |
 | `def` | [`FibRoute.matches`](../TDN/Models/DataPlaneForwarding.lean#L101) |
 | `def` | [`SelectedFibRoute`](../TDN/Models/DataPlaneForwarding.lean#L104) |
 | `structure` | [`DataPlaneModel`](../TDN/Models/DataPlaneForwarding.lean#L110) |
 | `def` | [`policyPacket`](../TDN/Models/DataPlaneForwarding.lean#L130) |
-| `def` | [`accepts`](../TDN/Models/DataPlaneForwarding.lean#L137) |
-| `def` | [`encrypt`](../TDN/Models/DataPlaneForwarding.lean#L141) |
-| `inductive` | [`Step`](../TDN/Models/DataPlaneForwarding.lean#L155) |
-| `def` | [`lts`](../TDN/Models/DataPlaneForwarding.lean#L226) |
-| `def` | [`ForwardsAlongTrace`](../TDN/Models/DataPlaneForwarding.lean#L228) |
-| `lemma` | [`step_preserves_payload`](../TDN/Models/DataPlaneForwarding.lean#L232) |
-| `lemma` | [`step_preserves_original_addresses`](../TDN/Models/DataPlaneForwarding.lean#L237) |
-| `theorem` | [`forwarding_preserves_original_addresses`](../TDN/Models/DataPlaneForwarding.lean#L258) |
-| `theorem` | [`plaintext_delivery_retains_addresses`](../TDN/Models/DataPlaneForwarding.lean#L266) |
-| `theorem` | [`forwarding_preserves_payload`](../TDN/Models/DataPlaneForwarding.lean#L275) |
-| `lemma` | [`matched_policy_is_configured`](../TDN/Models/DataPlaneForwarding.lean#L286) |
-| `theorem` | [`outbound_policy_atom_selects_operation`](../TDN/Models/DataPlaneForwarding.lean#L294) |
-| `lemma` | [`outbound_policy_atom_excludes_plain`](../TDN/Models/DataPlaneForwarding.lean#L305) |
-| `lemma` | [`simulation_of_step_map`](../TDN/Models/DataPlaneForwarding.lean#L315) |
-| `theorem` | [`matched_forwarding`](../TDN/Models/DataPlaneForwarding.lean#L324) |
+| `def` | [`encrypt`](../TDN/Models/DataPlaneForwarding.lean#L137) |
+| `inductive` | [`ForwardingStep`](../TDN/Models/DataPlaneForwarding.lean#L151) |
+| `def` | [`lts`](../TDN/Models/DataPlaneForwarding.lean#L222) |
+| `def` | [`ForwardsAlongTrace`](../TDN/Models/DataPlaneForwarding.lean#L224) |
+| `lemma` | [`step_preserves_payload`](../TDN/Models/DataPlaneForwarding.lean#L228) |
+| `lemma` | [`step_preserves_original_addresses`](../TDN/Models/DataPlaneForwarding.lean#L233) |
+| `theorem` | [`forwarding_preserves_original_addresses`](../TDN/Models/DataPlaneForwarding.lean#L254) |
+| `theorem` | [`plaintext_delivery_retains_addresses`](../TDN/Models/DataPlaneForwarding.lean#L262) |
+| `theorem` | [`forwarding_preserves_payload`](../TDN/Models/DataPlaneForwarding.lean#L271) |
+| `lemma` | [`matched_policy_is_configured`](../TDN/Models/DataPlaneForwarding.lean#L282) |
+| `theorem` | [`outbound_policy_atom_selects_operation`](../TDN/Models/DataPlaneForwarding.lean#L290) |
+| `lemma` | [`outbound_policy_atom_excludes_plain`](../TDN/Models/DataPlaneForwarding.lean#L301) |
+| `lemma` | [`simulation_of_step_map`](../TDN/Models/DataPlaneForwarding.lean#L311) |
+| `theorem` | [`matched_forwarding`](../TDN/Models/DataPlaneForwarding.lean#L320) |
 
 </details>
 
@@ -424,7 +484,7 @@ Source: [EncapStackPreservation.lean](../TDN/Models/EncapStackPreservation.lean)
 
 [`PerHopEncapConditions`](../TDN/Models/EncapStackPreservation.lean#L32) packages six kinds of premises: routes stay within a device; links preserve the expected stack; switching preserves the processing stack; accepted forwarding rules produce the expected output stack; locally generated output does the same; and routing after encryption preserves the resulting stack. The conditions cover every selected policy, including ties.
 
-[`hop_preserves_encap_stack`](../TDN/Models/EncapStackPreservation.lean#L91) checks every constructor of `DataPlaneForwarding.Step`. [`forwarding_preserves_encap_stack`](../TDN/Models/EncapStackPreservation.lean#L143) applies CSLib's general induction result to any finite execution. [`egress_packet_has_expected_encap_stack`](../TDN/Models/EncapStackPreservation.lean#L152) concludes that a state ready for transmission has exactly the stack assigned to its interface. A new network supplies a configuration, expected encapsulation stacks, and proofs of the local conditions.
+[`hop_preserves_encap_stack`](../TDN/Models/EncapStackPreservation.lean#L91) checks every constructor of `DataPlaneForwarding.ForwardingStep`. [`forwarding_preserves_encap_stack`](../TDN/Models/EncapStackPreservation.lean#L143) applies CSLib's general induction result to any finite execution. [`egress_packet_has_expected_encap_stack`](../TDN/Models/EncapStackPreservation.lean#L152) concludes that a state ready for transmission has exactly the stack assigned to its interface. A new network supplies a configuration, expected encapsulation stacks, and proofs of the local conditions.
 
 Direct imports: [DataPlaneForwarding](#dataplaneforwarding).
 
@@ -433,7 +493,7 @@ Direct imports: [DataPlaneForwarding](#dataplaneforwarding).
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`Frame.encapLayerIds`](../TDN/Models/EncapStackPreservation.lean#L5) |
+| `def` | [`IpsecFrame.encapLayerIds`](../TDN/Models/EncapStackPreservation.lean#L5) |
 | `def` | [`encapStackAfterIngress`](../TDN/Models/EncapStackPreservation.lean#L8) |
 | `def` | [`LocalAuthentication`](../TDN/Models/EncapStackPreservation.lean#L12) |
 | `def` | [`ProcessingInvariant`](../TDN/Models/EncapStackPreservation.lean#L16) |
@@ -701,19 +761,19 @@ Direct imports: [TunnelEncryptionEvents](#tunnelencryptionevents), [SubgraphScop
 
 Source: [EncapDecapBalance.lean](../TDN/Models/EncapDecapBalance.lean). Namespace: `TDN.DataPlaneForwarding`.
 
-`EncapDecapBalance` counts encryption and decryption operations across a finite execution. [`encryptionCredit`](../TDN/Models/EncapDecapBalance.lean#L6) assigns one to encryption; [`decryptionDebit`](../TDN/Models/EncapDecapBalance.lean#L7) assigns one to decryption. The step lemma relates those counts to the change in envelope depth.
+`EncapDecapBalance` counts encryption and decryption operations across a finite execution. [`encapsulationCount`](../TDN/Models/EncapDecapBalance.lean#L6) assigns one to encryption; [`decapsulationCount`](../TDN/Models/EncapDecapBalance.lean#L7) assigns one to decryption. The step lemma relates those counts to the change in envelope depth.
 
-[`forwarding_envelope_balance`](../TDN/Models/EncapDecapBalance.lean#L15) proves that final depth plus decryptions equals initial depth plus encryptions. [`stack_growth_requires_encryptions`](../TDN/Models/EncapDecapBalance.lean#L22) and [`stack_removal_requires_decryptions`](../TDN/Models/EncapDecapBalance.lean#L29) derive lower bounds on the number of operations. Those counts follow directly from `DataPlaneForwarding.Step`; identifying particular Inner and Outer operations in order uses `TunnelEncryptionEvents`.
+[`forwarding_envelope_balance`](../TDN/Models/EncapDecapBalance.lean#L15) proves that final depth plus decryptions equals initial depth plus encryptions. [`stack_growth_requires_encryptions`](../TDN/Models/EncapDecapBalance.lean#L22) and [`stack_removal_requires_decryptions`](../TDN/Models/EncapDecapBalance.lean#L29) derive lower bounds on the number of operations. Those counts follow directly from `DataPlaneForwarding.ForwardingStep`; identifying particular Inner and Outer operations in order uses `TunnelEncryptionEvents`.
 
-Direct imports: [DataPlaneForwarding](#dataplaneforwarding), [TraceCreditDebitBalance](#tracecreditdebitbalance).
+Direct imports: [DataPlaneForwarding](#dataplaneforwarding), [TracePushPopBalance](#tracepushpopbalance).
 
 <details>
 <summary>All 6 named declarations in EncapDecapBalance</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`encryptionCredit`](../TDN/Models/EncapDecapBalance.lean#L6) |
-| `def` | [`decryptionDebit`](../TDN/Models/EncapDecapBalance.lean#L7) |
+| `def` | [`encapsulationCount`](../TDN/Models/EncapDecapBalance.lean#L6) |
+| `def` | [`decapsulationCount`](../TDN/Models/EncapDecapBalance.lean#L7) |
 | `lemma` | [`step_envelope_balance`](../TDN/Models/EncapDecapBalance.lean#L9) |
 | `theorem` | [`forwarding_envelope_balance`](../TDN/Models/EncapDecapBalance.lean#L15) |
 | `theorem` | [`stack_growth_requires_encryptions`](../TDN/Models/EncapDecapBalance.lean#L22) |
@@ -729,7 +789,7 @@ Source: [TunnelEncryptionEvents.lean](../TDN/Models/TunnelEncryptionEvents.lean)
 
 [`OrderedEncryptions`](../TDN/Models/TunnelEncryptionEvents.lean#L95) states that an Inner encryption event occurs before a particular Outer encryption event. [`nested_stack_requires_ordered_encryptions`](../TDN/Models/TunnelEncryptionEvents.lean#L107) proves that order when the execution starts with an empty stack, ends with the Outer tag present, satisfies [`PerHopEncapConditions`](../TDN/Models/EncapStackPreservation.lean#L32), and every interface headed by the Outer tag expects exactly `[outerTag, innerTag]`. The theorem supplies event witnesses within the modeled execution.
 
-Direct imports: [EncapStackPreservation](#encapstackpreservation), [LocateTransitionStepInTrace](#locatetransitionstepintrace).
+Direct imports: [EncapStackPreservation](#encapstackpreservation), [FindStepInForwardingTrace](#findstepinforwardingtrace).
 
 <details>
 <summary>All 8 named declarations in TunnelEncryptionEvents</summary>
@@ -750,6 +810,8 @@ Direct imports: [EncapStackPreservation](#encapstackpreservation), [LocateTransi
 ### BlackTransitPayloadOpacity
 
 Source: [BlackTransitPayloadOpacity.lean](../TDN/Models/BlackTransitPayloadOpacity.lean). Namespace: `TDN.DataPlaneForwarding`.
+
+The [standalone Lean regression](../tests/CiphertextTransit.lean) exercises this library result. It belongs to the standalone library suite.
 
 `BlackTransitPayloadOpacity` isolates execution steps that do not encrypt, decrypt, or deliver payloads. [`withHiddenContent`](../TDN/Models/BlackTransitPayloadOpacity.lean#L15) replaces the payload identifier, origin domain, and saved encapLayers while preserving the visible packet and processing state.
 
@@ -794,7 +856,7 @@ Direct imports: .
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`Config`](../TDN/Models/MacsecPortProtection.lean#L3) |
+| `structure` | [`MacsecPortConfig`](../TDN/Models/MacsecPortProtection.lean#L3) |
 | `inductive` | [`WireFrame`](../TDN/Models/MacsecPortProtection.lean#L10) |
 | `def` | [`transmit`](../TDN/Models/MacsecPortProtection.lean#L16) |
 | `def` | [`FullyEncrypted`](../TDN/Models/MacsecPortProtection.lean#L26) |
@@ -806,11 +868,11 @@ Direct imports: .
 
 ### NestedTunnelFrame
 
-Source: [NestedTunnelFrame.lean](../TDN/Models/NestedTunnelFrame.lean). Namespace: `TDN.LayeredFrame`.
+Source: [NestedTunnelFrame.lean](../TDN/Models/NestedTunnelFrame.lean). Namespace: `TDN.EncryptionLayeredFrame`.
 
 `NestedTunnelFrame` represents nested IPsec, MACsec, and carrier encapsulation. [`Body`](../TDN/Models/NestedTunnelFrame.lean#L38) can contain an IP datagram, an Ethernet frame, or another body wrapped in one of those three mechanisms. `visibleHeader` returns the currently routable IP header. `protectionLayers` collects only the IPsec and MACsec tags; a carrier wrapper preserves that list.
 
-[`MACsecAssociation`](../TDN/Models/NestedTunnelFrame.lean#L6) records a tag, SCI, association number, and a local key-generation identifier. [`SameMACWireIdentity`](../TDN/Models/NestedTunnelFrame.lean#L14) compares SCI and association number. [`Carrier`](../TDN/Models/NestedTunnelFrame.lean#L21) records addresses, ports, and the peer session. [`unwrapCarrier`](../TDN/Models/NestedTunnelFrame.lean#L99) checks the receiving address, remote address, ports, and local session before removing the wrapper.
+[`MacsecAssociation`](../TDN/Models/NestedTunnelFrame.lean#L6) records a tag, SCI, association number, and a local key-generation identifier. [`SameMACWireIdentity`](../TDN/Models/NestedTunnelFrame.lean#L14) compares SCI and association number. [`EthernetTunnelHeader`](../TDN/Models/NestedTunnelFrame.lean#L21) records addresses, ports, and the peer session. [`unwrapCarrier`](../TDN/Models/NestedTunnelFrame.lean#L99) checks the receiving address, remote address, ports, and local session before removing the wrapper.
 
 The lemmas establish the expected header visibility and layer order. [`successful_carrier_unwrap_preserves_layers`](../TDN/Models/NestedTunnelFrame.lean#L110) proves that successful removal of a carrier changes no encryption layers. Cryptographic operations remain represented by typed wrappers.
 
@@ -821,12 +883,12 @@ Direct imports: [DataPlaneForwarding](#dataplaneforwarding), [MacsecPortProtecti
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`MACsecAssociation`](../TDN/Models/NestedTunnelFrame.lean#L6) |
+| `structure` | [`MacsecAssociation`](../TDN/Models/NestedTunnelFrame.lean#L6) |
 | `def` | [`SameMACWireIdentity`](../TDN/Models/NestedTunnelFrame.lean#L14) |
-| `structure` | [`Carrier`](../TDN/Models/NestedTunnelFrame.lean#L21) |
+| `structure` | [`EthernetTunnelHeader`](../TDN/Models/NestedTunnelFrame.lean#L21) |
 | `structure` | [`EthernetHeader`](../TDN/Models/NestedTunnelFrame.lean#L31) |
 | `inductive` | [`Body`](../TDN/Models/NestedTunnelFrame.lean#L38) |
-| `structure` | [`Frame`](../TDN/Models/NestedTunnelFrame.lean#L47) |
+| `structure` | [`TunnelFrame`](../TDN/Models/NestedTunnelFrame.lean#L47) |
 | `def` | [`outerHeader`](../TDN/Models/NestedTunnelFrame.lean#L54) |
 | `def` | [`Body.visibleHeader`](../TDN/Models/NestedTunnelFrame.lean#L61) |
 | `def` | [`Body.protectionLayers`](../TDN/Models/NestedTunnelFrame.lean#L69) |
@@ -838,16 +900,16 @@ Direct imports: [DataPlaneForwarding](#dataplaneforwarding), [MacsecPortProtecti
 | `lemma` | [`nested_outer_inner_order`](../TDN/Models/NestedTunnelFrame.lean#L95) |
 | `def` | [`unwrapCarrier`](../TDN/Models/NestedTunnelFrame.lean#L99) |
 | `theorem` | [`successful_carrier_unwrap_preserves_layers`](../TDN/Models/NestedTunnelFrame.lean#L110) |
-| `def` | [`Frame.visibleHeader`](../TDN/Models/NestedTunnelFrame.lean#L125) |
-| `def` | [`Frame.pushHeader`](../TDN/Models/NestedTunnelFrame.lean#L130) |
-| `def` | [`Frame.popHeader`](../TDN/Models/NestedTunnelFrame.lean#L135) |
-| `def` | [`Frame.forwarded`](../TDN/Models/NestedTunnelFrame.lean#L140) |
-| `lemma` | [`Frame.forwarded_payload`](../TDN/Models/NestedTunnelFrame.lean#L149) |
-| `lemma` | [`Frame.forwarded_origin`](../TDN/Models/NestedTunnelFrame.lean#L153) |
+| `def` | [`TunnelFrame.visibleHeader`](../TDN/Models/NestedTunnelFrame.lean#L125) |
+| `def` | [`TunnelFrame.pushHeader`](../TDN/Models/NestedTunnelFrame.lean#L130) |
+| `def` | [`TunnelFrame.popHeader`](../TDN/Models/NestedTunnelFrame.lean#L135) |
+| `def` | [`TunnelFrame.forwarded`](../TDN/Models/NestedTunnelFrame.lean#L140) |
+| `lemma` | [`TunnelFrame.forwarded_payload`](../TDN/Models/NestedTunnelFrame.lean#L149) |
+| `lemma` | [`TunnelFrame.forwarded_origin`](../TDN/Models/NestedTunnelFrame.lean#L153) |
 | `def` | [`HeaderIdentity`](../TDN/Models/NestedTunnelFrame.lean#L162) |
 | `def` | [`Body.HeadersCoherent`](../TDN/Models/NestedTunnelFrame.lean#L165) |
-| `def` | [`Frame.HeadersCoherent`](../TDN/Models/NestedTunnelFrame.lean#L184) |
-| `lemma` | [`Frame.forwarded_body`](../TDN/Models/NestedTunnelFrame.lean#L191) |
+| `def` | [`TunnelFrame.HeadersCoherent`](../TDN/Models/NestedTunnelFrame.lean#L184) |
+| `lemma` | [`TunnelFrame.forwarded_body`](../TDN/Models/NestedTunnelFrame.lean#L191) |
 
 Explicit instances:
 
@@ -877,36 +939,36 @@ Direct imports: [NestedTunnelFrame](#nestedtunnelframe).
 | `structure` | [`MACIface`](../TDN/Models/MultiProtocolForwarding.lean#L7) |
 | `structure` | [`CarrierIface`](../TDN/Models/MultiProtocolForwarding.lean#L16) |
 | `structure` | [`HeaderProcessing`](../TDN/Models/MultiProtocolForwarding.lean#L23) |
-| `structure` | [`Config`](../TDN/Models/MultiProtocolForwarding.lean#L27) |
-| `def` | [`Config.forwardedFrame`](../TDN/Models/MultiProtocolForwarding.lean#L39) |
-| `def` | [`Config.ipsecFrame`](../TDN/Models/MultiProtocolForwarding.lean#L44) |
-| `def` | [`Config.macsecFrame`](../TDN/Models/MultiProtocolForwarding.lean#L53) |
-| `def` | [`Config.macsecPduFrame`](../TDN/Models/MultiProtocolForwarding.lean#L59) |
-| `def` | [`Config.carrierFrame`](../TDN/Models/MultiProtocolForwarding.lean#L65) |
-| `def` | [`Config.restoredFrame`](../TDN/Models/MultiProtocolForwarding.lean#L74) |
-| `def` | [`Config.visibleHeader`](../TDN/Models/MultiProtocolForwarding.lean#L79) |
-| `structure` | [`State`](../TDN/Models/MultiProtocolForwarding.lean#L84) |
-| `inductive` | [`Action`](../TDN/Models/MultiProtocolForwarding.lean#L93) |
+| `structure` | [`TunnelForwardingModel`](../TDN/Models/MultiProtocolForwarding.lean#L27) |
+| `def` | [`TunnelForwardingModel.forwardedFrame`](../TDN/Models/MultiProtocolForwarding.lean#L39) |
+| `def` | [`TunnelForwardingModel.ipsecFrame`](../TDN/Models/MultiProtocolForwarding.lean#L44) |
+| `def` | [`TunnelForwardingModel.macsecFrame`](../TDN/Models/MultiProtocolForwarding.lean#L53) |
+| `def` | [`TunnelForwardingModel.macsecPduFrame`](../TDN/Models/MultiProtocolForwarding.lean#L59) |
+| `def` | [`TunnelForwardingModel.carrierFrame`](../TDN/Models/MultiProtocolForwarding.lean#L65) |
+| `def` | [`TunnelForwardingModel.restoredFrame`](../TDN/Models/MultiProtocolForwarding.lean#L74) |
+| `def` | [`TunnelForwardingModel.visibleHeader`](../TDN/Models/MultiProtocolForwarding.lean#L79) |
+| `structure` | [`TunnelForwardingState`](../TDN/Models/MultiProtocolForwarding.lean#L84) |
+| `inductive` | [`TunnelForwardingAction`](../TDN/Models/MultiProtocolForwarding.lean#L93) |
 | `def` | [`policyHeader`](../TDN/Models/MultiProtocolForwarding.lean#L99) |
 | `def` | [`fullMACsecTransmit`](../TDN/Models/MultiProtocolForwarding.lean#L102) |
-| `inductive` | [`Step`](../TDN/Models/MultiProtocolForwarding.lean#L107) |
+| `inductive` | [`TunnelForwardingStep`](../TDN/Models/MultiProtocolForwarding.lean#L107) |
 | `def` | [`lts`](../TDN/Models/MultiProtocolForwarding.lean#L229) |
 | `def` | [`ForwardsAlongTrace`](../TDN/Models/MultiProtocolForwarding.lean#L231) |
 | `lemma` | [`step_preserves_payload`](../TDN/Models/MultiProtocolForwarding.lean#L235) |
 | `theorem` | [`all_traces_preserve_payload`](../TDN/Models/MultiProtocolForwarding.lean#L243) |
-| `def` | [`Config.LinkPath`](../TDN/Models/MultiProtocolForwarding.lean#L261) |
-| `def` | [`Config.LinkAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L266) |
-| `def` | [`Config.LinkStepAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L273) |
-| `def` | [`Config.ForwardableHeader`](../TDN/Models/MultiProtocolForwarding.lean#L292) |
-| `def` | [`Config.HeaderStepAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L295) |
-| `def` | [`Config.HeaderGenerationKnown`](../TDN/Models/MultiProtocolForwarding.lean#L299) |
-| `def` | [`Config.LinkEncodingComplete`](../TDN/Models/MultiProtocolForwarding.lean#L305) |
-| `lemma` | [`Config.forwardedFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L315) |
-| `lemma` | [`Config.ipsecFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L319) |
-| `lemma` | [`Config.macsecFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L325) |
-| `lemma` | [`Config.macsec_pdu_frame_body`](../TDN/Models/MultiProtocolForwarding.lean#L331) |
-| `lemma` | [`Config.carrierFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L338) |
-| `lemma` | [`Config.restoredFrame_body`](../TDN/Models/MultiProtocolForwarding.lean#L344) |
+| `def` | [`TunnelForwardingModel.LinkPath`](../TDN/Models/MultiProtocolForwarding.lean#L261) |
+| `def` | [`TunnelForwardingModel.LinkAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L266) |
+| `def` | [`TunnelForwardingModel.LinkStepAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L273) |
+| `def` | [`TunnelForwardingModel.ForwardableHeader`](../TDN/Models/MultiProtocolForwarding.lean#L292) |
+| `def` | [`TunnelForwardingModel.HeaderStepAdmitted`](../TDN/Models/MultiProtocolForwarding.lean#L295) |
+| `def` | [`TunnelForwardingModel.HeaderGenerationKnown`](../TDN/Models/MultiProtocolForwarding.lean#L299) |
+| `def` | [`TunnelForwardingModel.LinkEncodingComplete`](../TDN/Models/MultiProtocolForwarding.lean#L305) |
+| `lemma` | [`TunnelForwardingModel.forwarded_frame_body`](../TDN/Models/MultiProtocolForwarding.lean#L315) |
+| `lemma` | [`TunnelForwardingModel.ipsec_frame_body`](../TDN/Models/MultiProtocolForwarding.lean#L319) |
+| `lemma` | [`TunnelForwardingModel.macsec_frame_body`](../TDN/Models/MultiProtocolForwarding.lean#L325) |
+| `lemma` | [`TunnelForwardingModel.macsec_pdu_frame_body`](../TDN/Models/MultiProtocolForwarding.lean#L331) |
+| `lemma` | [`TunnelForwardingModel.carrier_frame_body`](../TDN/Models/MultiProtocolForwarding.lean#L338) |
+| `lemma` | [`TunnelForwardingModel.restored_frame_body`](../TDN/Models/MultiProtocolForwarding.lean#L344) |
 
 </details>
 
@@ -914,11 +976,11 @@ Direct imports: [NestedTunnelFrame](#nestedtunnelframe).
 
 Source: [MacsecExternalOutputProtection.lean](../TDN/Models/MacsecExternalOutputProtection.lean). Namespace: `TDN.MultiProtocolForwarding`.
 
-`MacsecExternalOutputProtection` proves that packets ready to leave a protected physical interface carry the configured MACsec encryption layer. `MACsecOutputChecks` requires full-frame encryption, a zero confidentiality offset, and a unique logical-to-physical interface assignment. It also checks that routes and bridge forwarding cannot send packets directly to a MACsec physical interface. Packets must reach that interface through the modeled MACsec operation.
+`MacsecExternalOutputProtection` proves that packets ready to leave a protected physical interface carry the configured MACsec encryption layer. `MacsecOutputChecks` requires full-frame encryption, a zero confidentiality offset, and a unique logical-to-physical interface assignment. It also checks that routes and bridge forwarding cannot send packets directly to a MACsec physical interface. Packets must reach that interface through the modeled MACsec operation.
 
 `step_preserves_macsec_output_protection` checks every packet-processing operation against those conditions. `forwarding_preserves_macsec_output_protection` applies CSLib's invariant theorem to extend the result to every finite trace from a valid initial state. Each deployment supplies its interface settings, routes, bridge relation and initial-state proof. The general argument is independent of device names and counts.
 
-`MACsecWireChecks` adds conditions for received physical frames. Logical and physical interfaces must remain separate, links into MACsec physical interfaces must come from MACsec senders, and the configuration must have no carrier encapsulators. Under those conditions, `step_preserves_physical_macsec_frames` preserves a full-MACsec frame on each protected physical interface. The no-carrier condition limits the configurations to which that additional result applies.
+`MacsecWireChecks` adds conditions for received physical frames. Logical and physical interfaces must remain separate, links into MACsec physical interfaces must come from MACsec senders, and the configuration must have no carrier encapsulators. Under those conditions, `step_preserves_physical_macsec_frames` preserves a full-MACsec frame on each protected physical interface. The no-carrier condition limits the configurations to which that additional result applies.
 
 Direct imports: [MultiProtocolForwarding](#multiprotocolforwarding).
 
@@ -927,12 +989,12 @@ Direct imports: [MultiProtocolForwarding](#multiprotocolforwarding).
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`MACsecOutputChecks`](../TDN/Models/MacsecExternalOutputProtection.lean#L6) |
+| `structure` | [`MacsecOutputChecks`](../TDN/Models/MacsecExternalOutputProtection.lean#L6) |
 | `def` | [`MACsecOutputProtected`](../TDN/Models/MacsecExternalOutputProtection.lean#L17) |
 | `lemma` | [`step_preserves_macsec_output_protection`](../TDN/Models/MacsecExternalOutputProtection.lean#L26) |
 | `lemma` | [`link_transmit_uses_ready_output`](../TDN/Models/MacsecExternalOutputProtection.lean#L75) |
 | `theorem` | [`forwarding_preserves_macsec_output_protection`](../TDN/Models/MacsecExternalOutputProtection.lean#L81) |
-| `structure` | [`MACsecWireChecks`](../TDN/Models/MacsecExternalOutputProtection.lean#L89) |
+| `structure` | [`MacsecWireChecks`](../TDN/Models/MacsecExternalOutputProtection.lean#L89) |
 | `def` | [`PhysicalMACsecFrames`](../TDN/Models/MacsecExternalOutputProtection.lean#L98) |
 | `lemma` | [`step_preserves_physical_macsec_frames`](../TDN/Models/MacsecExternalOutputProtection.lean#L103) |
 
@@ -1033,7 +1095,7 @@ Source: [MultiProtocolEncryptionEvents.lean](../TDN/Models/MultiProtocolEncrypti
 
 [`nested_stack_requires_ordered_encryptions`](../TDN/Models/MultiProtocolEncryptionEvents.lean#L136) establishes Inner-before-Outer encryption under the mixed-protocol local conditions and the two-layer placement condition. The original-Ethernet lemmas and theorem also preserve the innermost Ethernet header through all modeled steps. Carrier encapsulation preserves the encryption-layer list, so a carrier operation cannot supply an encryption event.
 
-Direct imports: [MultiProtocolEncapPreservation](#multiprotocolencappreservation), [LocateTransitionStepInTrace](#locatetransitionstepintrace).
+Direct imports: [MultiProtocolEncapPreservation](#multiprotocolencappreservation), [FindStepInForwardingTrace](#findstepinforwardingtrace).
 
 <details>
 <summary>All 13 named declarations in MultiProtocolEncryptionEvents</summary>
@@ -1134,11 +1196,11 @@ Direct imports: [IpsecAndAclRuleModel](#ipsecandaclrulemodel), `Cslib.Foundation
 | `def` | [`ResponseProtocol`](../TDN/Models/KernelGeneratedReplies.lean#L10) |
 | `def` | [`SafeResponseRule`](../TDN/Models/KernelGeneratedReplies.lean#L17) |
 | `theorem` | [`accepted_response_is_loopback`](../TDN/Models/KernelGeneratedReplies.lean#L30) |
-| `inductive` | [`State`](../TDN/Models/KernelGeneratedReplies.lean#L44) |
-| `inductive` | [`Action`](../TDN/Models/KernelGeneratedReplies.lean#L50) |
-| `structure` | [`Config`](../TDN/Models/KernelGeneratedReplies.lean#L54) |
+| `inductive` | [`ReplyState`](../TDN/Models/KernelGeneratedReplies.lean#L44) |
+| `inductive` | [`ReplyAction`](../TDN/Models/KernelGeneratedReplies.lean#L50) |
+| `structure` | [`ReplyConfig`](../TDN/Models/KernelGeneratedReplies.lean#L54) |
 | `def` | [`outputPacket`](../TDN/Models/KernelGeneratedReplies.lean#L62) |
-| `inductive` | [`Step`](../TDN/Models/KernelGeneratedReplies.lean#L66) |
+| `inductive` | [`ReplyStep`](../TDN/Models/KernelGeneratedReplies.lean#L66) |
 | `def` | [`lts`](../TDN/Models/KernelGeneratedReplies.lean#L85) |
 | `def` | [`Invariant`](../TDN/Models/KernelGeneratedReplies.lean#L88) |
 | `lemma` | [`response_output_guards_preserve_network_invariant`](../TDN/Models/KernelGeneratedReplies.lean#L94) |
@@ -1372,9 +1434,9 @@ Direct imports: [KernelGeneratedReplies](#kernelgeneratedreplies).
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`State`](../TDN/Models/DelayedPacketReplySafety.lean#L5) |
-| `inductive` | [`Action`](../TDN/Models/DelayedPacketReplySafety.lean#L9) |
-| `inductive` | [`Step`](../TDN/Models/DelayedPacketReplySafety.lean#L13) |
+| `structure` | [`ReplyHistoryState`](../TDN/Models/DelayedPacketReplySafety.lean#L5) |
+| `inductive` | [`ReplyHistoryAction`](../TDN/Models/DelayedPacketReplySafety.lean#L9) |
+| `inductive` | [`ReplyHistoryStep`](../TDN/Models/DelayedPacketReplySafety.lean#L13) |
 | `def` | [`lts`](../TDN/Models/DelayedPacketReplySafety.lean#L21) |
 | `def` | [`Safe`](../TDN/Models/DelayedPacketReplySafety.lean#L24) |
 | `lemma` | [`network_preserves_retained_safety`](../TDN/Models/DelayedPacketReplySafety.lean#L27) |
@@ -1405,8 +1467,8 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Simulation`, `Mathlib.Data.List
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`Datagram`](../TDN/Models/DatagramFragmentationAndSimulation.lean#L6) |
-| `structure` | [`Fragment`](../TDN/Models/DatagramFragmentationAndSimulation.lean#L10) |
+| `structure` | [`PayloadDatagram`](../TDN/Models/DatagramFragmentationAndSimulation.lean#L6) |
+| `structure` | [`PayloadFragment`](../TDN/Models/DatagramFragmentationAndSimulation.lean#L10) |
 | `def` | [`split`](../TDN/Models/DatagramFragmentationAndSimulation.lean#L15) |
 | `def` | [`join`](../TDN/Models/DatagramFragmentationAndSimulation.lean#L20) |
 | `theorem` | [`split_preserves_header`](../TDN/Models/DatagramFragmentationAndSimulation.lean#L25) |
@@ -1533,8 +1595,8 @@ Direct imports: [DatagramFragmentationAndSimulation](#datagramfragmentationandsi
 | `def` | [`BufferSafe`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L22) |
 | `lemma` | [`flattened_bytes_safe`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L26) |
 | `theorem` | [`assembled_bytes_inherit_piece_safety`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L36) |
-| `inductive` | [`Action`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L48) |
-| `inductive` | [`Step`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L52) |
+| `inductive` | [`BufferAction`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L48) |
+| `inductive` | [`BufferStep`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L52) |
 | `def` | [`system`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L62) |
 | `lemma` | [`admission_preserves_byte_safety`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L67) |
 | `theorem` | [`every_reassembly_history_preserves_byte_safety`](../TDN/Models/ReassemblyBufferDomainSafety.lean#L83) |
@@ -1544,7 +1606,9 @@ Direct imports: [DatagramFragmentationAndSimulation](#datagramfragmentationandsi
 
 ### AuthenticatedCiphertextReassembly
 
-Source: [AuthenticatedCiphertextReassembly.lean](../TDN/Models/AuthenticatedCiphertextReassembly.lean). Namespace: `TDN.AuthenticatedAssembly`.
+Source: [AuthenticatedCiphertextReassembly.lean](../TDN/Models/AuthenticatedCiphertextReassembly.lean). Namespace: `TDN.AuthenticatedReassembly`.
+
+The [standalone Lean regression](../tests/AuthenticatedAssembly.lean) exercises this library result. It belongs to the standalone library suite.
 
 `AuthenticatedCiphertextReassembly` connects accepted reassembled ciphertext to messages previously produced under compatible authentication contexts. [`Context`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L5) includes secret identity, receiver, protocol domain, direction, and key-use epoch. [`Compatible`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L13) checks those fields and a caller-supplied epoch-acceptance relation. A [`Message`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L20) retains producer annotations; a [`Decoded`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L27) value contains the context, wire bytes, and recovered plaintext.
 
@@ -1564,10 +1628,10 @@ Direct imports: [ReassemblyBufferDomainSafety](#reassemblybufferdomainsafety).
 | `structure` | [`Message`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L20) |
 | `structure` | [`Decoded`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L27) |
 | `def` | [`Matches`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L33) |
-| `structure` | [`State`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L39) |
-| `inductive` | [`Action`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L44) |
+| `structure` | [`ReassemblyState`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L39) |
+| `inductive` | [`ReassemblyAction`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L44) |
 | `def` | [`AuthenticationSound`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L47) |
-| `inductive` | [`Step`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L54) |
+| `inductive` | [`ReassemblyStep`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L54) |
 | `def` | [`system`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L77) |
 | `def` | [`Safe`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L84) |
 | `lemma` | [`local_publication_preserves`](../TDN/Models/AuthenticatedCiphertextReassembly.lean#L92) |
@@ -1581,7 +1645,7 @@ Direct imports: [ReassemblyBufferDomainSafety](#reassemblybufferdomainsafety).
 
 Source: [MultiPacketByteFlows.lean](../TDN/Models/MultiPacketByteFlows.lean). Namespace: `TDN.ByteFlows`.
 
-`MultiPacketByteFlows` lifts a packet-state model to a collection of packets carrying explicit byte lists. [`Carrier`](../TDN/Models/MultiPacketByteFlows.lean#L6) pairs a network state with its bytes. The steps inject packets, advance one packet, split, assemble, copy selected bytes, discard packets, or reorder the collection.
+`MultiPacketByteFlows` lifts a packet-state model to a collection of packets carrying explicit byte lists. [`PacketBytes`](../TDN/Models/MultiPacketByteFlows.lean#L6) pairs a network state with its bytes. The steps inject packets, advance one packet, split, assemble, copy selected bytes, discard packets, or reorder the collection.
 
 [`all_traces_preserve_byte_properties`](../TDN/Models/MultiPacketByteFlows.lean#L108) proves a property for every byte in every resulting carrier. The caller supplies three premises: valid origins satisfy the property; network steps preserve it; and permitted assembly preserves it. [`network_trace_on_one_carrier`](../TDN/Models/MultiPacketByteFlows.lean#L122) embeds an ordinary network trace into the collection model. Copying is based on membership in a source byte list, so applications should use origin-bearing byte identities when equal byte values could otherwise hide distinct sources.
 
@@ -1592,9 +1656,9 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basi
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`Carrier`](../TDN/Models/MultiPacketByteFlows.lean#L6) |
-| `inductive` | [`Action`](../TDN/Models/MultiPacketByteFlows.lean#L10) |
-| `inductive` | [`Step`](../TDN/Models/MultiPacketByteFlows.lean#L14) |
+| `structure` | [`PacketBytes`](../TDN/Models/MultiPacketByteFlows.lean#L6) |
+| `inductive` | [`ByteFlowAction`](../TDN/Models/MultiPacketByteFlows.lean#L10) |
+| `inductive` | [`ByteFlowStep`](../TDN/Models/MultiPacketByteFlows.lean#L14) |
 | `def` | [`lts`](../TDN/Models/MultiPacketByteFlows.lean#L38) |
 | `def` | [`Safe`](../TDN/Models/MultiPacketByteFlows.lean#L42) |
 | `lemma` | [`step_preserves_bytes`](../TDN/Models/MultiPacketByteFlows.lean#L45) |
@@ -1605,7 +1669,7 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basi
 
 ### PayloadByteOriginPath
 
-Source: [PayloadByteOriginPath.lean](../TDN/Models/PayloadByteOriginPath.lean). Namespace: `TDN.ByteLineage`.
+Source: [PayloadByteOriginPath.lean](../TDN/Models/PayloadByteOriginPath.lean). Namespace: `TDN.PayloadByteOriginPath`.
 
 `PayloadByteOriginPath` records a path from an admitted byte's source state to its current state. Its steps include network processing and permitted assembly changes. [`HasOrigin`](../TDN/Models/PayloadByteOriginPath.lean#L15) states that such a source and path exist.
 
@@ -1618,7 +1682,7 @@ Direct imports: [MultiPacketByteFlows](#multipacketbyteflows).
 
 | Kind | Declaration |
 | --- | --- |
-| `inductive` | [`Step`](../TDN/Models/PayloadByteOriginPath.lean#L5) |
+| `inductive` | [`ByteOriginStep`](../TDN/Models/PayloadByteOriginPath.lean#L5) |
 | `def` | [`lts`](../TDN/Models/PayloadByteOriginPath.lean#L12) |
 | `def` | [`HasOrigin`](../TDN/Models/PayloadByteOriginPath.lean#L15) |
 | `theorem` | [`every_byte_has_source_path`](../TDN/Models/PayloadByteOriginPath.lean#L19) |
@@ -1630,7 +1694,7 @@ Direct imports: [MultiPacketByteFlows](#multipacketbyteflows).
 
 Source: [PlaintextReassemblyPreservesEnclave.lean](../TDN/Models/PlaintextReassemblyPreservesEnclave.lean). Namespace: `TDN.DataPlaneForwarding`.
 
-[`PlaintextReassemblyPreservesEnclave`](../TDN/Models/PlaintextReassemblyPreservesEnclave.lean#L6) permits assembly between received states at the same interface when both states have empty encryption-tag lists. [`plaintext_assembly_preserves_domain`](../TDN/Models/PlaintextReassemblyPreservesEnclave.lean#L10) proves that such a change preserves [`DomainInvariant`](../TDN/Models/EnclaveIsolationInvariants.lean#L38).
+[`PlaintextAssembly`](../TDN/Models/PlaintextReassemblyPreservesEnclave.lean#L6) permits assembly between received states at the same interface when both states have empty encryption-tag lists. [`plaintext_assembly_preserves_domain`](../TDN/Models/PlaintextReassemblyPreservesEnclave.lean#L10) proves that such a change preserves [`DomainInvariant`](../TDN/Models/EnclaveIsolationInvariants.lean#L38).
 
 The proof works because the received-state domain invariant depends on the interface and expected stack. It gives a specific assembly relation for byte-flow applications. Authenticated ciphertext assembly uses the separate authentication model.
 
@@ -1674,7 +1738,7 @@ Direct imports: [MultiPacketByteFlows](#multipacketbyteflows), [KernelGeneratedR
 
 Source: [BytePathEncryptionEvents.lean](../TDN/Models/BytePathEncryptionEvents.lean). Namespace: `TDN.ByteProtectionEvents`.
 
-`BytePathEncryptionEvents` follows protection tags along byte-origin paths that include IP execution, generated responses, and plaintext assembly. [`tags`](../TDN/Models/BytePathEncryptionEvents.lean#L10) reads the source frame's tags during response generation and routing. [`EncryptionEvent`](../TDN/Models/BytePathEncryptionEvents.lean#L19) identifies an actual underlying IP encryption step.
+`BytePathEncryptionEvents` follows protection tags along byte-origin paths that include IP execution, generated responses, and plaintext assembly. [`encapLayerIds`](../TDN/Models/BytePathEncryptionEvents.lean#L10) reads the source frame's tags during response generation and routing. [`EncryptionEvent`](../TDN/Models/BytePathEncryptionEvents.lean#L19) identifies an actual underlying IP encryption step.
 
 [`trace_tag_addition_has_encryption`](../TDN/Models/BytePathEncryptionEvents.lean#L49) proves that a tag appearing along such a path has a corresponding encryption event. [`domain_lineage_preservation`](../TDN/Models/BytePathEncryptionEvents.lean#L63) preserves the allowed-domain invariant through the combined model under local domain conditions and strict/uniform response checks. The module prevents copying or assembly steps from being mistaken for encryption operations in the proof.
 
@@ -1700,7 +1764,7 @@ Source: [MultiProtocolByteFlows.lean](../TDN/Models/MultiProtocolByteFlows.lean)
 
 `MultiProtocolByteFlows` applies byte-origin reasoning to the IPsec/MACsec/carrier model. [`PlainByteAssembly`](../TDN/Models/MultiProtocolByteFlows.lean#L7) permits same-interface assembly of received plaintext into a datagram or Ethernet body. [`mixed_byte_forwarding_preserves_stack`](../TDN/Models/MultiProtocolByteFlows.lean#L26) lifts the mixed stack invariant to all resulting byte carriers when injection and local conditions are checked.
 
-[`byteLineage`](../TDN/Models/MultiProtocolByteFlows.lean#L40) tracks the individual source paths. [`byte_path_layer_addition_has_encryption`](../TDN/Models/MultiProtocolByteFlows.lean#L68) locates an IPsec or MACsec encryption event on such a path. [`mixed_byte_path_requires_ordered_encryptions`](../TDN/Models/MultiProtocolByteFlows.lean#L88) proves Inner-before-Outer order under the two-layer placement premise. The scope is the mixed network and stated plaintext assembly relation; generated-response composition is provided separately for the IP model.
+[`payloadByteOriginPath`](../TDN/Models/MultiProtocolByteFlows.lean#L40) tracks the individual source paths. [`byte_path_layer_addition_has_encryption`](../TDN/Models/MultiProtocolByteFlows.lean#L68) locates an IPsec or MACsec encryption event on such a path. [`mixed_byte_path_requires_ordered_encryptions`](../TDN/Models/MultiProtocolByteFlows.lean#L88) proves Inner-before-Outer order under the two-layer placement premise. The scope is the mixed network and stated plaintext assembly relation; generated-response composition is provided separately for the IP model.
 
 Direct imports: [PayloadByteOriginPath](#payloadbyteoriginpath), [MultiProtocolEncryptionEvents](#multiprotocolencryptionevents).
 
@@ -1713,7 +1777,7 @@ Direct imports: [PayloadByteOriginPath](#payloadbyteoriginpath), [MultiProtocolE
 | `lemma` | [`plain_byte_assembly_preserves_stack`](../TDN/Models/MultiProtocolByteFlows.lean#L13) |
 | `def` | [`byteSystem`](../TDN/Models/MultiProtocolByteFlows.lean#L23) |
 | `theorem` | [`mixed_byte_forwarding_preserves_stack`](../TDN/Models/MultiProtocolByteFlows.lean#L26) |
-| `def` | [`byteLineage`](../TDN/Models/MultiProtocolByteFlows.lean#L40) |
+| `def` | [`payloadByteOriginPath`](../TDN/Models/MultiProtocolByteFlows.lean#L40) |
 | `lemma` | [`byte_lineage_preserves_stack`](../TDN/Models/MultiProtocolByteFlows.lean#L42) |
 | `def` | [`ByteEncryptionEvent`](../TDN/Models/MultiProtocolByteFlows.lean#L49) |
 | `lemma` | [`byte_layer_added_only_by_encryption`](../TDN/Models/MultiProtocolByteFlows.lean#L54) |
@@ -1725,7 +1789,7 @@ Direct imports: [PayloadByteOriginPath](#payloadbyteoriginpath), [MultiProtocolE
 
 ## Trust and access
 
-[PkiAndPskTrustDomains](#pkiandpsktrustdomains), [IkePeerSessionAgreement](#ikepeersessionagreement), [MacsecKeyOriginModel](#macseckeyoriginmodel), [AntiReplayPacketNumberBounds](#antireplaypacketnumberbounds), [RoleBasedAccessControl](#rolebasedaccesscontrol)
+[PkiAndPskTrustDomains](#pkiandpsktrustdomains), [IkePeerSessionAgreement](#ikepeersessionagreement)
 
 ### PkiAndPskTrustDomains
 
@@ -1782,89 +1846,9 @@ Explicit instances:
 
 </details>
 
-### MacsecKeyOriginModel
-
-Source: [MacsecKeyOriginModel.lean](../TDN/Models/MacsecKeyOriginModel.lean). Namespace: `TDN.KeySources`.
-
-`MacsecKeyOriginModel` tracks how key-agreement participants were created. A participant originates either from an authenticated exchange or from pre-shared configuration. The configuration enables the pre-shared path only when both CAK and CKN are present.
-
-[`executions_have_only_authenticated_sources`](../TDN/Models/MacsecKeyOriginModel.lean#L67) proves that every retained participant comes from an authenticated exchange when the pre-shared path is disabled and the execution starts empty. The model includes participant creation, removal, and unchanged progress steps. A concrete application must connect those permitted creation paths to the actual key-management implementation.
-
-Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basic`.
-
-<details>
-<summary>All 11 named declarations in MacsecKeyOriginModel</summary>
-
-| Kind | Declaration |
-| --- | --- |
-| `structure` | [`Config`](../TDN/Models/MacsecKeyOriginModel.lean#L6) |
-| `def` | [`Config.preSharedEnabled`](../TDN/Models/MacsecKeyOriginModel.lean#L11) |
-| `inductive` | [`Origin`](../TDN/Models/MacsecKeyOriginModel.lean#L14) |
-| `structure` | [`Participant`](../TDN/Models/MacsecKeyOriginModel.lean#L19) |
-| `abbrev` | [`State`](../TDN/Models/MacsecKeyOriginModel.lean#L24) |
-| `inductive` | [`Action`](../TDN/Models/MacsecKeyOriginModel.lean#L26) |
-| `inductive` | [`Step`](../TDN/Models/MacsecKeyOriginModel.lean#L32) |
-| `def` | [`system`](../TDN/Models/MacsecKeyOriginModel.lean#L45) |
-| `def` | [`OnlyAuthenticatedSources`](../TDN/Models/MacsecKeyOriginModel.lean#L47) |
-| `lemma` | [`creation_preserves_authenticated_sources`](../TDN/Models/MacsecKeyOriginModel.lean#L50) |
-| `theorem` | [`executions_have_only_authenticated_sources`](../TDN/Models/MacsecKeyOriginModel.lean#L67) |
-
-</details>
-
-### AntiReplayPacketNumberBounds
-
-Source: [AntiReplayPacketNumberBounds.lean](../TDN/Models/AntiReplayPacketNumberBounds.lean). Namespace: `TDN.SequenceFreshness`.
-
-`AntiReplayPacketNumberBounds` relates a packet number to a recent counter sample. [`Transmission`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L6) records association, generation, packet number, and send time. [`Sample`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L13) records the next packet number at a sampling time. [`CounterSampleValid`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L23) requires every earlier recorded transmission for the same counter to have a smaller number.
-
-[`accepted_transmission_is_recent`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L30) derives an age bound when the counter sample is recent, its next number has been installed or exceeded, and the packet passes a zero-window replay test. The history-membership and counter-validity premises are explicit. [`installed_samples_have_matching_updates`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L51) uses `PrerequisiteEventHistory` to require a matching earlier update for every admitted installation. The receive rule is a lower-bound check; the module does not implement a complete replay bitmap or counter-wrap protocol.
-
-Direct imports: [PrerequisiteEventHistory](#prerequisiteeventhistory), `Lean.Elab.Tactic.Omega`.
-
-<details>
-<summary>All 8 named declarations in AntiReplayPacketNumberBounds</summary>
-
-| Kind | Declaration |
-| --- | --- |
-| `structure` | [`Transmission`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L6) |
-| `structure` | [`Sample`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L13) |
-| `def` | [`SameCounter`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L20) |
-| `def` | [`CounterSampleValid`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L23) |
-| `def` | [`accepts`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L27) |
-| `theorem` | [`accepted_transmission_is_recent`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L30) |
-| `def` | [`InstallMatches`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L45) |
-| `theorem` | [`installed_samples_have_matching_updates`](../TDN/Models/AntiReplayPacketNumberBounds.lean#L51) |
-
-</details>
-
-### RoleBasedAccessControl
-
-Source: [RoleBasedAccessControl.lean](../TDN/Models/RoleBasedAccessControl.lean). Namespace: `TDN.AccessControl`.
-
-`RoleBasedAccessControl` authorizes a request using an authenticated certificate fingerprint, a role mapping, and exact method/path permissions. `Request.normalizedPath` is the path presented to the authorization function. [`authorize`](../TDN/Models/RoleBasedAccessControl.lean#L17) denies unknown fingerprints and otherwise checks for a matching permission.
-
-[`authorized_request_has_permission`](../TDN/Models/RoleBasedAccessControl.lean#L24) recovers the matching role and permission from a successful decision. The denial theorems reject unmapped peers and absent paths. [`role_permission_restricts_operations`](../TDN/Models/RoleBasedAccessControl.lean#L54) lifts a check over a role's permission list to every authorized request. Authentication of the fingerprint and correct path normalization are inputs to the model.
-
-Direct imports: `Mathlib.Data.List.Basic`.
-
-<details>
-<summary>All 7 named declarations in RoleBasedAccessControl</summary>
-
-| Kind | Declaration |
-| --- | --- |
-| `structure` | [`Permission`](../TDN/Models/RoleBasedAccessControl.lean#L5) |
-| `structure` | [`Request`](../TDN/Models/RoleBasedAccessControl.lean#L11) |
-| `def` | [`authorize`](../TDN/Models/RoleBasedAccessControl.lean#L17) |
-| `lemma` | [`authorized_request_has_permission`](../TDN/Models/RoleBasedAccessControl.lean#L24) |
-| `theorem` | [`unmapped_peer_is_denied`](../TDN/Models/RoleBasedAccessControl.lean#L37) |
-| `theorem` | [`absent_path_is_denied`](../TDN/Models/RoleBasedAccessControl.lean#L43) |
-| `theorem` | [`role_permission_restricts_operations`](../TDN/Models/RoleBasedAccessControl.lean#L54) |
-
-</details>
-
 ## Events and general trace arguments
 
-[PrerequisiteEventHistory](#prerequisiteeventhistory), [LocateTransitionStepInTrace](#locatetransitionstepintrace), [TraceCreditDebitBalance](#tracecreditdebitbalance), [SubgraphScopedTraces](#subgraphscopedtraces)
+[PrerequisiteEventHistory](#prerequisiteeventhistory), [FindStepInForwardingTrace](#findstepinforwardingtrace), [TracePushPopBalance](#tracepushpopbalance), [SubgraphScopedTraces](#subgraphscopedtraces)
 
 ### PrerequisiteEventHistory
 
@@ -1881,7 +1865,7 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`.
 
 | Kind | Declaration |
 | --- | --- |
-| `inductive` | [`Step`](../TDN/Models/PrerequisiteEventHistory.lean#L5) |
+| `inductive` | [`AdmissionStep`](../TDN/Models/PrerequisiteEventHistory.lean#L5) |
 | `def` | [`lts`](../TDN/Models/PrerequisiteEventHistory.lean#L11) |
 | `def` | [`HasPrerequisites`](../TDN/Models/PrerequisiteEventHistory.lean#L14) |
 | `lemma` | [`step_preserves_prerequisites`](../TDN/Models/PrerequisiteEventHistory.lean#L18) |
@@ -1889,56 +1873,56 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`.
 
 </details>
 
-### LocateTransitionStepInTrace
+### FindStepInForwardingTrace
 
-Source: [LocateTransitionStepInTrace.lean](../TDN/Models/LocateTransitionStepInTrace.lean). Namespace: `TDN.TraceEvents`.
+Source: [FindStepInForwardingTrace.lean](../TDN/Models/FindStepInForwardingTrace.lean). Namespace: `TDN.TraceEvents`.
 
-`LocateTransitionStepInTrace` finds a particular kind of step within a finite execution. [`Contains`](../TDN/Models/LocateTransitionStepInTrace.lean#L5) decomposes the action list into an earlier trace, one witnessed step, and a later trace. The event predicate can inspect the states on both sides and the action itself.
+`FindStepInForwardingTrace` finds a particular kind of step within a finite execution. [`Contains`](../TDN/Models/FindStepInForwardingTrace.lean#L5) decomposes the action list into an earlier trace, one witnessed step, and a later trace. The event predicate can inspect the states on both sides and the action itself.
 
-[`changing_predicate_has_event`](../TDN/Models/LocateTransitionStepInTrace.lean#L13) proves that a property holding initially and failing finally must be lost at some actual step. [`map_event`](../TDN/Models/LocateTransitionStepInTrace.lean#L31) strengthens the description of an already located event using a one-step argument. The execution-event modules reuse those results to locate encryption and decryption operations.
+[`changing_predicate_has_event`](../TDN/Models/FindStepInForwardingTrace.lean#L13) proves that a property holding initially and failing finally must be lost at some actual step. [`map_event`](../TDN/Models/FindStepInForwardingTrace.lean#L31) strengthens the description of an already located event using a one-step argument. The execution-event modules reuse those results to locate encryption and decryption operations.
 
 Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`.
 
 <details>
-<summary>All 3 named declarations in LocateTransitionStepInTrace</summary>
+<summary>All 3 named declarations in FindStepInForwardingTrace</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`Contains`](../TDN/Models/LocateTransitionStepInTrace.lean#L5) |
-| `theorem` | [`changing_predicate_has_event`](../TDN/Models/LocateTransitionStepInTrace.lean#L13) |
-| `theorem` | [`map_event`](../TDN/Models/LocateTransitionStepInTrace.lean#L31) |
+| `def` | [`Contains`](../TDN/Models/FindStepInForwardingTrace.lean#L5) |
+| `theorem` | [`changing_predicate_has_event`](../TDN/Models/FindStepInForwardingTrace.lean#L13) |
+| `theorem` | [`map_event`](../TDN/Models/FindStepInForwardingTrace.lean#L31) |
 
 </details>
 
-### TraceCreditDebitBalance
+### TracePushPopBalance
 
-Source: [TraceCreditDebitBalance.lean](../TDN/Models/TraceCreditDebitBalance.lean). Namespace: `TDN.TraceAccounting`.
+Source: [TracePushPopBalance.lean](../TDN/Models/TracePushPopBalance.lean). Namespace: `TDN.TracePushPopBalance`.
 
-`TraceCreditDebitBalance` adds a one-step arithmetic balance across a finite trace. The caller provides a natural-number state measure, a credit for each action, a debit for each action, and a balance equation for every permitted step.
+`TracePushPopBalance` adds a one-step arithmetic balance across a finite trace. For a tunnel stack, each step adds or removes a known number of layers. The caller supplies each count and shows how the step changes the stack size.
 
-[`trace_balance`](../TDN/Models/TraceCreditDebitBalance.lean#L7) proves the complete-run balance. [`increase_requires_credit`](../TDN/Models/TraceCreditDebitBalance.lean#L21) bounds the total increase by the sum of credits. `EncapDecapBalance` instantiates the measure with envelope count and the credits/debits with encryption/decryption events. Other applications can reuse the same proofs with a different measure.
+[`trace_balance`](../TDN/Models/TracePushPopBalance.lean#L7) proves the complete-run balance. [`increase_requires_pushes`](../TDN/Models/TracePushPopBalance.lean#L21) bounds the increase in stack size by the total number of layers added. `EncapDecapBalance` instantiates the measure with envelope count and the additions and removals with encryption and decryption events. Other applications can reuse the same proofs with a different measure.
 
 Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basic`, `Lean.Elab.Tactic.Omega`.
 
 <details>
-<summary>All 2 named declarations in TraceCreditDebitBalance</summary>
+<summary>All 2 named declarations in TracePushPopBalance</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `theorem` | [`trace_balance`](../TDN/Models/TraceCreditDebitBalance.lean#L7) |
-| `theorem` | [`increase_requires_credit`](../TDN/Models/TraceCreditDebitBalance.lean#L21) |
+| `theorem` | [`trace_balance`](../TDN/Models/TracePushPopBalance.lean#L7) |
+| `theorem` | [`increase_requires_pushes`](../TDN/Models/TracePushPopBalance.lean#L21) |
 
 </details>
 
 ### SubgraphScopedTraces
 
-Source: [SubgraphScopedTraces.lean](../TDN/Models/SubgraphScopedTraces.lean). Namespace: `TDN.RestrictedExecution`.
+Source: [SubgraphScopedTraces.lean](../TDN/Models/SubgraphScopedTraces.lean). Namespace: `TDN.SubgraphScopedTraces`.
 
-`RestrictedExecution.within` retains only steps whose starting and ending states satisfy a supplied scope predicate. [`project_trace`](../TDN/Models/SubgraphScopedTraces.lean#L8) proves that every restricted trace is also an original trace.
+`SubgraphScopedTraces.within` retains only steps whose starting and ending states satisfy a supplied scope predicate. [`project_trace`](../TDN/Models/SubgraphScopedTraces.lean#L8) proves that every restricted trace is also an original trace.
 
 [`actual_event_in_scope`](../TDN/Models/SubgraphScopedTraces.lean#L16) transfers an event witness to the original system and retains the scope conditions at the event's endpoints. Boundary-decryption proofs instantiate the predicate with membership in one component. A caller must separately establish that the execution being analyzed stays within that scope.
 
-Direct imports: [LocateTransitionStepInTrace](#locatetransitionstepintrace).
+Direct imports: [FindStepInForwardingTrace](#findstepinforwardingtrace).
 
 <details>
 <summary>All 3 named declarations in SubgraphScopedTraces</summary>
@@ -1991,8 +1975,8 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basi
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`Config`](../TDN/Models/ConstantRateCoverTraffic.lean#L7) |
-| `def` | [`Config.Valid`](../TDN/Models/ConstantRateCoverTraffic.lean#L14) |
+| `structure` | [`ScheduleConfig`](../TDN/Models/ConstantRateCoverTraffic.lean#L7) |
+| `def` | [`ScheduleConfig.Valid`](../TDN/Models/ConstantRateCoverTraffic.lean#L14) |
 | `abbrev` | [`Packet`](../TDN/Models/ConstantRateCoverTraffic.lean#L21) |
 | `def` | [`QueueValid`](../TDN/Models/ConstantRateCoverTraffic.lean#L23) |
 | `def` | [`enqueue`](../TDN/Models/ConstantRateCoverTraffic.lean#L27) |
@@ -2003,12 +1987,12 @@ Direct imports: `Cslib.Foundations.Semantics.LTS.Basic`, `Mathlib.Data.List.Basi
 | `lemma` | [`tail_preserves_queue`](../TDN/Models/ConstantRateCoverTraffic.lean#L63) |
 | `lemma` | [`payload_fits`](../TDN/Models/ConstantRateCoverTraffic.lean#L76) |
 | `structure` | [`Attempt`](../TDN/Models/ConstantRateCoverTraffic.lean#L83) |
-| `structure` | [`State`](../TDN/Models/ConstantRateCoverTraffic.lean#L89) |
+| `structure` | [`SchedulerState`](../TDN/Models/ConstantRateCoverTraffic.lean#L89) |
 | `def` | [`initial`](../TDN/Models/ConstantRateCoverTraffic.lean#L96) |
 | `def` | [`nextDeadline`](../TDN/Models/ConstantRateCoverTraffic.lean#L98) |
 | `lemma` | [`deadline_advances`](../TDN/Models/ConstantRateCoverTraffic.lean#L102) |
-| `inductive` | [`Action`](../TDN/Models/ConstantRateCoverTraffic.lean#L107) |
-| `inductive` | [`Step`](../TDN/Models/ConstantRateCoverTraffic.lean#L112) |
+| `inductive` | [`SchedulerAction`](../TDN/Models/ConstantRateCoverTraffic.lean#L107) |
+| `inductive` | [`SchedulerStep`](../TDN/Models/ConstantRateCoverTraffic.lean#L112) |
 | `def` | [`system`](../TDN/Models/ConstantRateCoverTraffic.lean#L124) |
 | `def` | [`Safe`](../TDN/Models/ConstantRateCoverTraffic.lean#L126) |
 | `lemma` | [`step_preserves_size_and_capacity`](../TDN/Models/ConstantRateCoverTraffic.lean#L129) |
@@ -2039,12 +2023,12 @@ Converts integers to fixed-width bytes and reads integer fields back. The proofs
 | `lemma` | [`unsigned_bound`](../TDN/Models/BigEndianByteCodec.lean#L23) |
 | `lemma` | [`field_bound`](../TDN/Models/BigEndianByteCodec.lean#L33) |
 | `def` | [`encodeUnsigned`](../TDN/Models/BigEndianByteCodec.lean#L42) |
-| `lemma` | [`encodeUnsigned_length`](../TDN/Models/BigEndianByteCodec.lean#L46) |
-| `theorem` | [`encodeUnsigned_decodes`](../TDN/Models/BigEndianByteCodec.lean#L52) |
+| `lemma` | [`encode_unsigned_length`](../TDN/Models/BigEndianByteCodec.lean#L46) |
+| `theorem` | [`encode_unsigned_decodes`](../TDN/Models/BigEndianByteCodec.lean#L52) |
 | `theorem` | [`field_encoded_segment`](../TDN/Models/BigEndianByteCodec.lean#L71) |
 | `lemma` | [`field_append_before`](../TDN/Models/BigEndianByteCodec.lean#L80) |
 | `lemma` | [`field_append_after`](../TDN/Models/BigEndianByteCodec.lean#L88) |
-| `lemma` | [`field_encodeUnsigned`](../TDN/Models/BigEndianByteCodec.lean#L93) |
+| `lemma` | [`field_encode_unsigned`](../TDN/Models/BigEndianByteCodec.lean#L93) |
 | `lemma` | [`field_two_bytes`](../TDN/Models/BigEndianByteCodec.lean#L99) |
 | `lemma` | [`decoded_fragment_offset_from_field`](../TDN/Models/BigEndianByteCodec.lean#L115) |
 
@@ -2063,14 +2047,14 @@ Connects a packet observed at a physical boundary to the modeled operations that
 | --- | --- |
 | `def` | [`BoundaryPacket`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L6) |
 | `lemma` | [`boundary_packet_keeps_endpoints`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L13) |
-| `lemma` | [`IPsec_output_has_configured_outer_header`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L20) |
-| `lemma` | [`IPsec_input_has_configured_outer_header`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L41) |
+| `lemma` | [`ipsec_output_has_configured_outer_header`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L20) |
+| `lemma` | [`ipsec_input_has_configured_outer_header`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L41) |
 | `lemma` | [`outer_route_keeps_boundary_header`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L72) |
 | `lemma` | [`wire_keeps_boundary_header`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L82) |
 | `inductive` | [`OutboundSuffix`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L89) |
 | `lemma` | [`outbound_suffix_has_ready_state`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L98) |
 | `lemma` | [`outbound_suffix_is_native_forwarding`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L108) |
-| `lemma` | [`IPsec_suffix_boundary_packet_uses_installed_policy`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L117) |
+| `lemma` | [`ipsec_suffix_boundary_packet_uses_installed_policy`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L117) |
 | `inductive` | [`FirstReadyRun`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L135) |
 | `lemma` | [`first_ready_run_is_native_forwarding`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L144) |
 | `lemma` | [`first_ready_run_finishes_ready`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L153) |
@@ -2078,7 +2062,7 @@ Connects a packet observed at a physical boundary to the modeled operations that
 | `lemma` | [`dropped_state_has_no_first_ready_run`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L167) |
 | `lemma` | [`first_ready_run_from_encapsulated_is_one_route`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L177) |
 | `theorem` | [`first_ready_run_from_filtered_is_native_suffix`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L192) |
-| `theorem` | [`outbound_policy_annotation_forces_actual_IPsec`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L210) |
+| `theorem` | [`outbound_policy_annotation_forces_actual_ipsec`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L210) |
 | `theorem` | [`inbound_policy_annotation_requires_actual_decryption`](../TDN/Models/PerimeterWireToModelCorrespondence.lean#L225) |
 
 </details>
@@ -2116,8 +2100,8 @@ Source: [InnermostPacketReconstruction.lean](../TDN/Models/InnermostPacketRecons
 | --- | --- |
 | `lemma` | [`matched_transport_template`](../TDN/Models/InnermostPacketReconstruction.lean#L7) |
 | `def` | [`canonicalIPRoot`](../TDN/Models/InnermostPacketReconstruction.lean#L36) |
-| `theorem` | [`standard_IP_root_decodes`](../TDN/Models/InnermostPacketReconstruction.lean#L45) |
-| `lemma` | [`matched_Ethernet_header_bounds`](../TDN/Models/InnermostPacketReconstruction.lean#L113) |
+| `theorem` | [`standard_ip_root_decodes`](../TDN/Models/InnermostPacketReconstruction.lean#L45) |
+| `lemma` | [`matched_ethernet_header_bounds`](../TDN/Models/InnermostPacketReconstruction.lean#L113) |
 | `def` | [`canonicalRoot`](../TDN/Models/InnermostPacketReconstruction.lean#L134) |
 | `theorem` | [`standard_root_properties`](../TDN/Models/InnermostPacketReconstruction.lean#L143) |
 
@@ -2135,8 +2119,8 @@ Extracts address, protocol, header-size and representability conditions from a d
 | Kind | Declaration |
 | --- | --- |
 | `lemma` | [`matched_network_header_properties`](../TDN/Models/DecodedIpHeaderBounds.lean#L5) |
-| `lemma` | [`matched_transport_ICMP_representable`](../TDN/Models/DecodedIpHeaderBounds.lean#L45) |
-| `theorem` | [`decoded_IP_header_properties`](../TDN/Models/DecodedIpHeaderBounds.lean#L62) |
+| `lemma` | [`matched_transport_icmp_representable`](../TDN/Models/DecodedIpHeaderBounds.lean#L45) |
+| `theorem` | [`decoded_ip_header_properties`](../TDN/Models/DecodedIpHeaderBounds.lean#L62) |
 
 </details>
 
@@ -2163,12 +2147,12 @@ Builds the modeled ESP header, IV, padding, trailer and protected bytes. The gen
 | `lemma` | [`aad_length`](../TDN/Models/EspAeadWireCodec.lean#L54) |
 | `def` | [`encodeESP`](../TDN/Models/EspAeadWireCodec.lean#L58) |
 | `def` | [`openESP`](../TDN/Models/EspAeadWireCodec.lean#L65) |
-| `lemma` | [`encoded_ESP_length`](../TDN/Models/EspAeadWireCodec.lean#L69) |
-| `lemma` | [`open_encoded_ESP`](../TDN/Models/EspAeadWireCodec.lean#L78) |
+| `lemma` | [`encoded_esp_length`](../TDN/Models/EspAeadWireCodec.lean#L69) |
+| `lemma` | [`open_encoded_esp`](../TDN/Models/EspAeadWireCodec.lean#L78) |
 | `def` | [`unpadESP`](../TDN/Models/EspAeadWireCodec.lean#L104) |
 | `lemma` | [`unpad_protected_plaintext`](../TDN/Models/EspAeadWireCodec.lean#L111) |
 | `def` | [`decodeESP`](../TDN/Models/EspAeadWireCodec.lean#L150) |
-| `theorem` | [`decode_encoded_ESP`](../TDN/Models/EspAeadWireCodec.lean#L154) |
+| `theorem` | [`decode_encoded_esp`](../TDN/Models/EspAeadWireCodec.lean#L154) |
 
 </details>
 
@@ -2184,11 +2168,11 @@ Constructs Ethernet headers with supported VLAN tags. The matching theorem prove
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`encodeVLANs`](../TDN/Models/EthernetAndVlanWireCodec.lean#L5) |
-| `lemma` | [`encoded_VLAN_length`](../TDN/Models/EthernetAndVlanWireCodec.lean#L9) |
-| `lemma` | [`encoded_VLAN_fields`](../TDN/Models/EthernetAndVlanWireCodec.lean#L15) |
+| `lemma` | [`encoded_vlan_length`](../TDN/Models/EthernetAndVlanWireCodec.lean#L9) |
+| `lemma` | [`encoded_vlan_fields`](../TDN/Models/EthernetAndVlanWireCodec.lean#L15) |
 | `def` | [`encodeEthernetHeader`](../TDN/Models/EthernetAndVlanWireCodec.lean#L42) |
-| `lemma` | [`encoded_Ethernet_header_length`](../TDN/Models/EthernetAndVlanWireCodec.lean#L46) |
-| `theorem` | [`encoded_Ethernet_header_matches`](../TDN/Models/EthernetAndVlanWireCodec.lean#L51) |
+| `lemma` | [`encoded_ethernet_header_length`](../TDN/Models/EthernetAndVlanWireCodec.lean#L46) |
+| `theorem` | [`encoded_ethernet_header_matches`](../TDN/Models/EthernetAndVlanWireCodec.lean#L51) |
 
 </details>
 
@@ -2204,10 +2188,10 @@ Preserves a plain Ethernet payload size bound across the supported native steps.
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`EthernetSizeBound`](../TDN/Models/L2BridgeMtuPreservation.lean#L8) |
-| `structure` | [`EthernetMTUChecks`](../TDN/Models/L2BridgeMtuPreservation.lean#L12) |
-| `lemma` | [`Ethernet_no_visible`](../TDN/Models/L2BridgeMtuPreservation.lean#L16) |
-| `theorem` | [`device_step_preserves_Ethernet_size`](../TDN/Models/L2BridgeMtuPreservation.lean#L22) |
-| `lemma` | [`Ethernet_reassembly_size`](../TDN/Models/L2BridgeMtuPreservation.lean#L69) |
+| `structure` | [`EthernetMtuChecks`](../TDN/Models/L2BridgeMtuPreservation.lean#L12) |
+| `lemma` | [`ethernet_no_visible`](../TDN/Models/L2BridgeMtuPreservation.lean#L16) |
+| `theorem` | [`device_step_preserves_ethernet_size`](../TDN/Models/L2BridgeMtuPreservation.lean#L22) |
+| `lemma` | [`ethernet_reassembly_size`](../TDN/Models/L2BridgeMtuPreservation.lean#L69) |
 
 </details>
 
@@ -2281,8 +2265,8 @@ Maintains the expected encryption layers as packets move through routing, filter
 | --- | --- |
 | `lemma` | [`HeaderIdentity.source`](../TDN/Models/HeaderAwareEncapPreservation.lean#L6) |
 | `lemma` | [`HeaderIdentity.destination`](../TDN/Models/HeaderAwareEncapPreservation.lean#L11) |
-| `lemma` | [`Frame.forwarded_visible`](../TDN/Models/HeaderAwareEncapPreservation.lean#L16) |
-| `lemma` | [`Frame.pop_visible`](../TDN/Models/HeaderAwareEncapPreservation.lean#L26) |
+| `lemma` | [`TunnelFrame.forwarded_visible`](../TDN/Models/HeaderAwareEncapPreservation.lean#L16) |
+| `lemma` | [`TunnelFrame.pop_visible`](../TDN/Models/HeaderAwareEncapPreservation.lean#L26) |
 | `abbrev` | [`withoutHeaderProcessing`](../TDN/Models/HeaderAwareEncapPreservation.lean#L37) |
 | `abbrev` | [`HeaderedLocalConditions`](../TDN/Models/HeaderAwareEncapPreservation.lean#L39) |
 | `lemma` | [`carrier_bodies_without_headers`](../TDN/Models/HeaderAwareEncapPreservation.lean#L42) |
@@ -2307,7 +2291,7 @@ Adds the actual receiving or sending interface to a rule program. The proofs sho
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`Rule.withContext`](../TDN/Models/NetfilterHookChains.lean#L5) |
+| `def` | [`PacketAclRule.withContext`](../TDN/Models/NetfilterHookChains.lean#L5) |
 | `def` | [`contextProgram`](../TDN/Models/NetfilterHookChains.lean#L8) |
 | `lemma` | [`context_rule_matches`](../TDN/Models/NetfilterHookChains.lean#L11) |
 | `theorem` | [`context_program_evaluation`](../TDN/Models/NetfilterHookChains.lean#L20) |
@@ -2319,7 +2303,7 @@ Adds the actual receiving or sending interface to a rule program. The proofs sho
 | `def` | [`contextPolicies`](../TDN/Models/NetfilterHookChains.lean#L72) |
 | `lemma` | [`lookup_context_policies`](../TDN/Models/NetfilterHookChains.lean#L76) |
 | `theorem` | [`contextual_link_admission_preserves_actual_hook`](../TDN/Models/NetfilterHookChains.lean#L90) |
-| `def` | [`Config.withLinkContext`](../TDN/Models/NetfilterHookChains.lean#L114) |
+| `def` | [`TunnelForwardingModel.withLinkContext`](../TDN/Models/NetfilterHookChains.lean#L114) |
 | `theorem` | [`link_context_preserves_native_admission`](../TDN/Models/NetfilterHookChains.lean#L118) |
 | `theorem` | [`link_context_preserves_native_step_admission`](../TDN/Models/NetfilterHookChains.lean#L132) |
 
@@ -2340,10 +2324,10 @@ Chooses fragment capacities from the IP header size and MTU, then constructs IPv
 | `def` | [`fragmentCapacity`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L12) |
 | `def` | [`encodeIPFragmentHeader`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L15) |
 | `lemma` | [`fragment_capacity_bounds`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L21) |
-| `theorem` | [`encoded_IP_fragment_is_valid`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L36) |
-| `def` | [`Datagram.fragmentIP`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L104) |
-| `theorem` | [`Datagram.fragment_IP_reassembles`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L109) |
-| `theorem` | [`Datagram.fragment_IP_reassembles_from_header`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L137) |
+| `theorem` | [`encoded_ip_fragment_is_valid`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L36) |
+| `def` | [`EncodedDatagram.fragmentIP`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L104) |
+| `theorem` | [`EncodedDatagram.fragment_ip_reassembles`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L109) |
+| `theorem` | [`EncodedDatagram.fragment_ip_reassembles_from_header`](../TDN/Models/Ipv4AndIpv6FragmentBuilder.lean#L137) |
 
 </details>
 
@@ -2359,8 +2343,8 @@ Tracks whether a packet contains only the supported IPsec layers and a plain inn
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`Body.IPsecOnly`](../TDN/Models/IpsecOnlyEncapInvariant.lean#L5) |
-| `lemma` | [`Config.visible_implies_body_header`](../TDN/Models/IpsecOnlyEncapInvariant.lean#L16) |
-| `lemma` | [`step_preserves_IPsec_body_shape`](../TDN/Models/IpsecOnlyEncapInvariant.lean#L27) |
+| `lemma` | [`TunnelForwardingModel.visible_implies_body_header`](../TDN/Models/IpsecOnlyEncapInvariant.lean#L16) |
+| `lemma` | [`step_preserves_ipsec_body_shape`](../TDN/Models/IpsecOnlyEncapInvariant.lean#L27) |
 
 </details>
 
@@ -2388,8 +2372,8 @@ Serializes and decodes nested IPsec bodies while preserving their original paylo
 | `def` | [`decodeFrame`](../TDN/Models/RecursiveEspWireCodec.lean#L82) |
 | `lemma` | [`known_outer_header_size`](../TDN/Models/RecursiveEspWireCodec.lean#L87) |
 | `theorem` | [`initial_body_serialization`](../TDN/Models/RecursiveEspWireCodec.lean#L100) |
-| `lemma` | [`source_IP_body_from_original`](../TDN/Models/RecursiveEspWireCodec.lean#L115) |
-| `lemma` | [`ESP_network_length_at_least_inner`](../TDN/Models/RecursiveEspWireCodec.lean#L128) |
+| `lemma` | [`source_ip_body_from_original`](../TDN/Models/RecursiveEspWireCodec.lean#L115) |
+| `lemma` | [`esp_network_length_at_least_inner`](../TDN/Models/RecursiveEspWireCodec.lean#L128) |
 | `theorem` | [`decode_encoded_body`](../TDN/Models/RecursiveEspWireCodec.lean#L135) |
 | `theorem` | [`encoded_body_network_length`](../TDN/Models/RecursiveEspWireCodec.lean#L194) |
 
@@ -2406,7 +2390,7 @@ Connects admitted decryption and subsequent routing to the installed IPsec polic
 
 | Kind | Declaration |
 | --- | --- |
-| `lemma` | [`coherent_IPsec_visible_fields`](../TDN/Models/IpsecIngressDecapLemmas.lean#L5) |
+| `lemma` | [`coherent_ipsec_visible_fields`](../TDN/Models/IpsecIngressDecapLemmas.lean#L5) |
 | `def` | [`IPsecInputAtom`](../TDN/Models/IpsecIngressDecapLemmas.lean#L20) |
 | `def` | [`IPsecInputPossible`](../TDN/Models/IpsecIngressDecapLemmas.lean#L33) |
 | `lemma` | [`admitted_decryption_has_possible_rule`](../TDN/Models/IpsecIngressDecapLemmas.lean#L43) |
@@ -2424,7 +2408,7 @@ Explicit instances:
 
 Source: [IpsecOverEthernetWireCodec.lean](../TDN/Models/IpsecOverEthernetWireCodec.lean).
 
-`linkEncoding` gives a modeled frame an Ethernet representation. IP traffic receives an Ethernet header with the appropriate IPv4 or IPv6 EtherType and the bytes produced by the IPsec emission model. The Ethernet source and destination fields are zero placeholders. An existing Ethernet body retains its modeled header and payload. `encoded_link_describes_reachable_IPsec_frame` proves that the resulting header and byte layout describe a reachable frame, assuming source decoding, consistent headers and the established packet-size limits. That connection lets bridge-rule checks operate on the represented transmitted frame.
+`linkEncoding` gives a modeled frame an Ethernet representation. IP traffic receives an Ethernet header with the appropriate IPv4 or IPv6 EtherType and the bytes produced by the IPsec emission model. The Ethernet source and destination fields are zero placeholders. An existing Ethernet body retains its modeled header and payload. `encoded_link_describes_reachable_ipsec_frame` proves that the resulting header and byte layout describe a reachable frame, assuming source decoding, consistent headers and the established packet-size limits. That connection lets bridge-rule checks operate on the represented transmitted frame.
 
 <details>
 <summary>All 4 named declarations in IpsecOverEthernetWireCodec</summary>
@@ -2433,8 +2417,8 @@ Source: [IpsecOverEthernetWireCodec.lean](../TDN/Models/IpsecOverEthernetWireCod
 | --- | --- |
 | `def` | [`IPLinkHeader`](../TDN/Models/IpsecOverEthernetWireCodec.lean#L7) |
 | `def` | [`linkEncoding`](../TDN/Models/IpsecOverEthernetWireCodec.lean#L11) |
-| `lemma` | [`IP_link_header_decoded`](../TDN/Models/IpsecOverEthernetWireCodec.lean#L21) |
-| `theorem` | [`encoded_link_describes_reachable_IPsec_frame`](../TDN/Models/IpsecOverEthernetWireCodec.lean#L31) |
+| `lemma` | [`ip_link_header_decoded`](../TDN/Models/IpsecOverEthernetWireCodec.lean#L21) |
+| `theorem` | [`encoded_link_describes_reachable_ipsec_frame`](../TDN/Models/IpsecOverEthernetWireCodec.lean#L31) |
 
 </details>
 
@@ -2449,8 +2433,8 @@ Extends the finite IPsec packet descriptions with IPv4-header options. Its match
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`IPsecForm.maskWithOptions`](../TDN/Models/Ipv4OptionsIpsecMasks.lean#L5) |
-| `lemma` | [`IPsecForm.maskWithOptions_matches`](../TDN/Models/Ipv4OptionsIpsecMasks.lean#L10) |
+| `def` | [`IpsecForm.maskWithOptions`](../TDN/Models/Ipv4OptionsIpsecMasks.lean#L5) |
+| `lemma` | [`IpsecForm.mask_with_options_matches`](../TDN/Models/Ipv4OptionsIpsecMasks.lean#L10) |
 
 </details>
 
@@ -2465,19 +2449,19 @@ Describes the supported ESP and UDP request/reply forms used in the boundary-rul
 
 | Kind | Declaration |
 | --- | --- |
-| `inductive` | [`IPsecForm`](../TDN/Models/IkeAndEspPacketFormats.lean#L6) |
-| `def` | [`IPsecForm.all`](../TDN/Models/IkeAndEspPacketFormats.lean#L10) |
-| `def` | [`IPsecForm.protocol`](../TDN/Models/IkeAndEspPacketFormats.lean#L12) |
-| `def` | [`IPsecForm.sourcePort`](../TDN/Models/IkeAndEspPacketFormats.lean#L16) |
-| `def` | [`IPsecForm.destinationPort`](../TDN/Models/IkeAndEspPacketFormats.lean#L21) |
-| `def` | [`IPsecForm.requestFraming`](../TDN/Models/IkeAndEspPacketFormats.lean#L26) |
-| `def` | [`IPsecForm.replyFraming`](../TDN/Models/IkeAndEspPacketFormats.lean#L30) |
-| `def` | [`IPsecForm.Matches`](../TDN/Models/IkeAndEspPacketFormats.lean#L34) |
+| `inductive` | [`IpsecForm`](../TDN/Models/IkeAndEspPacketFormats.lean#L6) |
+| `def` | [`IpsecForm.all`](../TDN/Models/IkeAndEspPacketFormats.lean#L10) |
+| `def` | [`IpsecForm.protocol`](../TDN/Models/IkeAndEspPacketFormats.lean#L12) |
+| `def` | [`IpsecForm.sourcePort`](../TDN/Models/IkeAndEspPacketFormats.lean#L16) |
+| `def` | [`IpsecForm.destinationPort`](../TDN/Models/IkeAndEspPacketFormats.lean#L21) |
+| `def` | [`IpsecForm.requestFraming`](../TDN/Models/IkeAndEspPacketFormats.lean#L26) |
+| `def` | [`IpsecForm.replyFraming`](../TDN/Models/IkeAndEspPacketFormats.lean#L30) |
+| `def` | [`IpsecForm.Matches`](../TDN/Models/IkeAndEspPacketFormats.lean#L34) |
 | `lemma` | [`request_framing_has_form`](../TDN/Models/IkeAndEspPacketFormats.lean#L41) |
 | `lemma` | [`reply_framing_has_form`](../TDN/Models/IkeAndEspPacketFormats.lean#L58) |
-| `lemma` | [`decoded_IPsec_has_form`](../TDN/Models/IkeAndEspPacketFormats.lean#L75) |
-| `def` | [`IPsecForm.mask`](../TDN/Models/IkeAndEspPacketFormats.lean#L96) |
-| `lemma` | [`IPsecForm.mask_matches`](../TDN/Models/IkeAndEspPacketFormats.lean#L105) |
+| `lemma` | [`decoded_ipsec_has_form`](../TDN/Models/IkeAndEspPacketFormats.lean#L75) |
+| `def` | [`IpsecForm.mask`](../TDN/Models/IkeAndEspPacketFormats.lean#L96) |
+| `lemma` | [`IpsecForm.mask_matches`](../TDN/Models/IkeAndEspPacketFormats.lean#L105) |
 
 </details>
 
@@ -2499,12 +2483,12 @@ Constructs the emitted datagram from the current plain or nested IPsec packet bo
 | `lemma` | [`wire_emission_raw`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L49) |
 | `lemma` | [`wire_emission_body`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L58) |
 | `lemma` | [`wire_emission_network`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L67) |
-| `lemma` | [`wire_Ethernet_size`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L77) |
+| `lemma` | [`wire_ethernet_size`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L77) |
 | `lemma` | [`wire_fitting_fragment_count`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L83) |
 | `lemma` | [`forwarded_header_unfragmented`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L103) |
-| `lemma` | [`bare_emission_IP_properties`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L119) |
+| `lemma` | [`bare_emission_ip_properties`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L119) |
 | `lemma` | [`reachable_visible_representable`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L210) |
-| `theorem` | [`wire_IP_reassembles`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L244) |
+| `theorem` | [`wire_ip_reassembles`](../TDN/Models/IpsecEgressFragmentAndEmit.lean#L244) |
 
 </details>
 
@@ -2522,8 +2506,8 @@ Constructs IPv4 fragment headers and proves their identification, offset, length
 | `def` | [`ipv4FragmentFlags`](../TDN/Models/Ipv4FragmentHeaderCodec.lean#L5) |
 | `def` | [`encodeIPv4Fragment`](../TDN/Models/Ipv4FragmentHeaderCodec.lean#L8) |
 | `lemma` | [`ipv4_fragment_flags_bound`](../TDN/Models/Ipv4FragmentHeaderCodec.lean#L13) |
-| `theorem` | [`encoded_IPv4_fragment_fields`](../TDN/Models/Ipv4FragmentHeaderCodec.lean#L17) |
-| `lemma` | [`encoded_IPv4_fragment_size`](../TDN/Models/Ipv4FragmentHeaderCodec.lean#L39) |
+| `theorem` | [`encoded_ipv4_fragment_fields`](../TDN/Models/Ipv4FragmentHeaderCodec.lean#L17) |
+| `lemma` | [`encoded_ipv4_fragment_size`](../TDN/Models/Ipv4FragmentHeaderCodec.lean#L39) |
 
 </details>
 
@@ -2540,35 +2524,8 @@ Constructs the supported IPv6 base and fragment headers. The field theorem conne
 | --- | --- |
 | `def` | [`fragmentMoreBit`](../TDN/Models/Ipv6FragmentExtHeaderCodec.lean#L5) |
 | `def` | [`encodeIPv6FragmentHeader`](../TDN/Models/Ipv6FragmentExtHeaderCodec.lean#L7) |
-| `lemma` | [`encoded_IPv6_fragment_header_length`](../TDN/Models/Ipv6FragmentExtHeaderCodec.lean#L15) |
-| `theorem` | [`encoded_IPv6_fragment_fields`](../TDN/Models/Ipv6FragmentExtHeaderCodec.lean#L20) |
-
-</details>
-
-### KeyStoreConfinementModel
-
-Source: [KeyStoreConfinementModel.lean](../TDN/Models/KeyStoreConfinementModel.lean).
-
-Models a protected key store and its operations. The reusable proofs exclude forbidden key exports and require authorization for reads across every modeled execution. The caller supplies key confidentiality, principal permissions and an initial safe store. Applying the results to a token requires correspondence with its actual interfaces.
-
-<details>
-<summary>All 13 named declarations in KeyStoreConfinementModel</summary>
-
-| Kind | Declaration |
-| --- | --- |
-| `structure` | [`Object`](../TDN/Models/KeyStoreConfinementModel.lean#L5) |
-| `def` | [`Object.Restricted`](../TDN/Models/KeyStoreConfinementModel.lean#L12) |
-| `def` | [`StoreSafe`](../TDN/Models/KeyStoreConfinementModel.lean#L15) |
-| `inductive` | [`Event`](../TDN/Models/KeyStoreConfinementModel.lean#L18) |
-| `inductive` | [`Action`](../TDN/Models/KeyStoreConfinementModel.lean#L23) |
-| `def` | [`Action.events`](../TDN/Models/KeyStoreConfinementModel.lean#L34) |
-| `inductive` | [`Step`](../TDN/Models/KeyStoreConfinementModel.lean#L41) |
-| `def` | [`system`](../TDN/Models/KeyStoreConfinementModel.lean#L69) |
-| `lemma` | [`step_preserves_store`](../TDN/Models/KeyStoreConfinementModel.lean#L74) |
-| `lemma` | [`step_export_impossible`](../TDN/Models/KeyStoreConfinementModel.lean#L101) |
-| `lemma` | [`step_read_authorized`](../TDN/Models/KeyStoreConfinementModel.lean#L127) |
-| `theorem` | [`protected_exports_impossible`](../TDN/Models/KeyStoreConfinementModel.lean#L144) |
-| `theorem` | [`all_reads_authorized`](../TDN/Models/KeyStoreConfinementModel.lean#L160) |
+| `lemma` | [`encoded_ipv6_fragment_header_length`](../TDN/Models/Ipv6FragmentExtHeaderCodec.lean#L15) |
+| `theorem` | [`encoded_ipv6_fragment_fields`](../TDN/Models/Ipv6FragmentExtHeaderCodec.lean#L20) |
 
 </details>
 
@@ -2585,16 +2542,16 @@ Represents ordered link-layer filtering at a named input or output interface. A 
 | --- | --- |
 | `structure` | [`Program`](../TDN/Models/L2FrameFilter.lean#L5) |
 | `structure` | [`IfacePolicy`](../TDN/Models/L2FrameFilter.lean#L10) |
-| `def` | [`Program.Accepts`](../TDN/Models/L2FrameFilter.lean#L15) |
-| `structure` | [`Frame`](../TDN/Models/L2FrameFilter.lean#L18) |
-| `def` | [`Frame.Packet`](../TDN/Models/L2FrameFilter.lean#L24) |
-| `def` | [`Frame.Decoded`](../TDN/Models/L2FrameFilter.lean#L32) |
+| `def` | [`Program.PermitsPacket`](../TDN/Models/L2FrameFilter.lean#L15) |
+| `structure` | [`EthernetFrame`](../TDN/Models/L2FrameFilter.lean#L18) |
+| `def` | [`EthernetFrame.Packet`](../TDN/Models/L2FrameFilter.lean#L24) |
+| `def` | [`EthernetFrame.Decoded`](../TDN/Models/L2FrameFilter.lean#L32) |
 | `def` | [`MACsecFraming`](../TDN/Models/L2FrameFilter.lean#L35) |
-| `def` | [`Frame.DescribesBody`](../TDN/Models/L2FrameFilter.lean#L45) |
+| `def` | [`EthernetFrame.DescribesBody`](../TDN/Models/L2FrameFilter.lean#L45) |
 | `def` | [`lookup`](../TDN/Models/L2FrameFilter.lean#L70) |
 | `def` | [`Admitted`](../TDN/Models/L2FrameFilter.lean#L73) |
 | `def` | [`payloadCode`](../TDN/Models/L2FrameFilter.lean#L88) |
-| `def` | [`Frame.Describes`](../TDN/Models/L2FrameFilter.lean#L91) |
+| `def` | [`EthernetFrame.Describes`](../TDN/Models/L2FrameFilter.lean#L91) |
 
 Explicit instances:
 
@@ -2617,7 +2574,7 @@ Replaces the local-address predicate in an execution configuration and proves wh
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`Config.withLocalAddresses`](../TDN/Models/SwapLocalAddressBindings.lean#L5) |
+| `def` | [`TunnelForwardingModel.withLocalAddresses`](../TDN/Models/SwapLocalAddressBindings.lean#L5) |
 | `lemma` | [`local_address_projection_preserves_policy_packet`](../TDN/Models/SwapLocalAddressBindings.lean#L8) |
 | `lemma` | [`local_address_projection_preserves_input_admission`](../TDN/Models/SwapLocalAddressBindings.lean#L13) |
 | `lemma` | [`local_address_projection_preserves_forward_decision`](../TDN/Models/SwapLocalAddressBindings.lean#L19) |
@@ -2640,16 +2597,16 @@ Tracks the visible and hidden headers through forwarding, IPsec, MACsec and carr
 | `lemma` | [`HeaderIdentity.decrement`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L5) |
 | `lemma` | [`Body.coherent_visible`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L12) |
 | `lemma` | [`Body.coherent_set_active`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L19) |
-| `lemma` | [`Frame.coherent_visible`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L27) |
-| `lemma` | [`Frame.forwarded_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L39) |
-| `lemma` | [`Frame.push_ipsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L49) |
-| `lemma` | [`Frame.push_carrier_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L56) |
-| `lemma` | [`Frame.push_macsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L63) |
-| `lemma` | [`Frame.push_macsec_pdu_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L68) |
-| `lemma` | [`Frame.pop_macsec_pdu_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L73) |
-| `lemma` | [`Frame.pop_ipsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L82) |
-| `lemma` | [`Frame.pop_macsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L90) |
-| `lemma` | [`Frame.pop_carrier_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L98) |
+| `lemma` | [`TunnelFrame.coherent_visible`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L27) |
+| `lemma` | [`TunnelFrame.forwarded_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L39) |
+| `lemma` | [`TunnelFrame.push_ipsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L49) |
+| `lemma` | [`TunnelFrame.push_carrier_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L56) |
+| `lemma` | [`TunnelFrame.push_macsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L63) |
+| `lemma` | [`TunnelFrame.push_macsec_pdu_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L68) |
+| `lemma` | [`TunnelFrame.pop_macsec_pdu_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L73) |
+| `lemma` | [`TunnelFrame.pop_ipsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L82) |
+| `lemma` | [`TunnelFrame.pop_macsec_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L90) |
+| `lemma` | [`TunnelFrame.pop_carrier_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L98) |
 | `lemma` | [`unwrap_carrier_has_body`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L106) |
 | `def` | [`HeaderBounds`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L124) |
 | `lemma` | [`step_preserves_headers`](../TDN/Models/MultiProtocolHeaderCoherence.lean#L127) |
@@ -2694,22 +2651,22 @@ Keeps every reachable packet state within an explicit interface inventory. Local
 
 </details>
 
-### DecidableAclInstances
+### ExecutableAclMatchers
 
-Source: [DecidableAclInstances.lean](../TDN/Models/DecidableAclInstances.lean).
+Source: [ExecutableAclMatchers.lean](../TDN/Models/ExecutableAclMatchers.lean).
 
 Provides decidability instances for concrete rule acceptance and association-to-policy binding. The instances let Lean compute these finite conditions when a network application supplies concrete records.
 
 <details>
-<summary>All 0 named declarations in DecidableAclInstances</summary>
+<summary>All 0 named declarations in ExecutableAclMatchers</summary>
 
 | Kind | Declaration |
 | --- | --- |
 
 Explicit instances:
 
-- [Instance at line 5](../TDN/Models/DecidableAclInstances.lean#L5)
-- [Instance at line 10](../TDN/Models/DecidableAclInstances.lean#L10)
+- [Instance at line 5](../TDN/Models/ExecutableAclMatchers.lean#L5)
+- [Instance at line 10](../TDN/Models/ExecutableAclMatchers.lean#L10)
 
 </details>
 
@@ -2806,22 +2763,22 @@ Constructs the modeled IPv4, IPv6, UDP, TCP and ICMP header fields and proves th
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`encodeIPv4Header`](../TDN/Models/IpAndTransportHeaderCodec.lean#L5) |
-| `lemma` | [`encoded_IPv4_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L15) |
-| `theorem` | [`encoded_IPv4_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L22) |
+| `lemma` | [`encoded_ipv4_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L15) |
+| `theorem` | [`encoded_ipv4_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L22) |
 | `def` | [`encodeIPv6Header`](../TDN/Models/IpAndTransportHeaderCodec.lean#L42) |
-| `lemma` | [`encoded_IPv6_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L47) |
-| `theorem` | [`encoded_IPv6_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L51) |
+| `lemma` | [`encoded_ipv6_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L47) |
+| `theorem` | [`encoded_ipv6_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L51) |
 | `def` | [`encodeUDPHeader`](../TDN/Models/IpAndTransportHeaderCodec.lean#L68) |
-| `lemma` | [`encoded_UDP_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L72) |
-| `theorem` | [`encoded_UDP_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L76) |
+| `lemma` | [`encoded_udp_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L72) |
+| `theorem` | [`encoded_udp_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L76) |
 | `def` | [`encodeICMPHeader`](../TDN/Models/IpAndTransportHeaderCodec.lean#L87) |
-| `lemma` | [`encoded_ICMP_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L90) |
-| `theorem` | [`encoded_ICMP_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L94) |
+| `lemma` | [`encoded_icmp_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L90) |
+| `theorem` | [`encoded_icmp_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L94) |
 | `def` | [`encodeTCPHeader`](../TDN/Models/IpAndTransportHeaderCodec.lean#L107) |
-| `lemma` | [`encoded_TCP_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L113) |
-| `theorem` | [`encoded_TCP_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L118) |
-| `lemma` | [`encoded_IPv4_flags`](../TDN/Models/IpAndTransportHeaderCodec.lean#L142) |
-| `lemma` | [`encoded_IPv4_identity`](../TDN/Models/IpAndTransportHeaderCodec.lean#L148) |
+| `lemma` | [`encoded_tcp_header_length`](../TDN/Models/IpAndTransportHeaderCodec.lean#L113) |
+| `theorem` | [`encoded_tcp_header_matches`](../TDN/Models/IpAndTransportHeaderCodec.lean#L118) |
+| `lemma` | [`encoded_ipv4_flags`](../TDN/Models/IpAndTransportHeaderCodec.lean#L142) |
+| `lemma` | [`encoded_ipv4_identity`](../TDN/Models/IpAndTransportHeaderCodec.lean#L148) |
 
 </details>
 
@@ -2858,9 +2815,9 @@ Defines raw packet decoding, IP and link-layer filter contexts, and the observed
 | `def` | [`CarrierEncoding.Valid`](../TDN/Models/RawPacketDecodeAndHooks.lean#L139) |
 | `structure` | [`CarrierBinding`](../TDN/Models/RawPacketDecodeAndHooks.lean#L151) |
 | `structure` | [`MKAEndpoint`](../TDN/Models/RawPacketDecodeAndHooks.lean#L159) |
-| `structure` | [`IPsecSizeBinding`](../TDN/Models/RawPacketDecodeAndHooks.lean#L166) |
-| `def` | [`IPsecSizeBinding.EncodedSize`](../TDN/Models/RawPacketDecodeAndHooks.lean#L172) |
-| `def` | [`IPsecSizeBinding.Valid`](../TDN/Models/RawPacketDecodeAndHooks.lean#L175) |
+| `structure` | [`IpsecSizeBinding`](../TDN/Models/RawPacketDecodeAndHooks.lean#L166) |
+| `def` | [`IpsecSizeBinding.EncodedSize`](../TDN/Models/RawPacketDecodeAndHooks.lean#L172) |
+| `def` | [`IpsecSizeBinding.Valid`](../TDN/Models/RawPacketDecodeAndHooks.lean#L175) |
 | `structure` | [`Inventory`](../TDN/Models/RawPacketDecodeAndHooks.lean#L185) |
 | `inductive` | [`UDPMode`](../TDN/Models/RawPacketDecodeAndHooks.lean#L194) |
 | `structure` | [`UDPBinding`](../TDN/Models/RawPacketDecodeAndHooks.lean#L198) |
@@ -2918,20 +2875,20 @@ Defines an application request, its network and transport headers, emitted datag
 | `def` | [`NetworkHeaderMatches`](../TDN/Models/EndpointTransmitSpec.lean#L95) |
 | `def` | [`TransportHeaderMatches`](../TDN/Models/EndpointTransmitSpec.lean#L114) |
 | `def` | [`EthernetHeaderMatches`](../TDN/Models/EndpointTransmitSpec.lean#L126) |
-| `structure` | [`Fragment`](../TDN/Models/EndpointTransmitSpec.lean#L135) |
-| `def` | [`Fragment.Raw`](../TDN/Models/EndpointTransmitSpec.lean#L141) |
-| `def` | [`Fragment.MtuBytes`](../TDN/Models/EndpointTransmitSpec.lean#L144) |
-| `def` | [`Fragment.AsPiece`](../TDN/Models/EndpointTransmitSpec.lean#L149) |
-| `def` | [`Fragment.IPv4Fields`](../TDN/Models/EndpointTransmitSpec.lean#L152) |
-| `def` | [`Fragment.IPv6Fields`](../TDN/Models/EndpointTransmitSpec.lean#L160) |
-| `structure` | [`Datagram`](../TDN/Models/EndpointTransmitSpec.lean#L174) |
-| `def` | [`Datagram.Data`](../TDN/Models/EndpointTransmitSpec.lean#L181) |
-| `def` | [`Datagram.Raw`](../TDN/Models/EndpointTransmitSpec.lean#L184) |
-| `def` | [`Datagram.MtuBytes`](../TDN/Models/EndpointTransmitSpec.lean#L187) |
-| `def` | [`Datagram.Decoded`](../TDN/Models/EndpointTransmitSpec.lean#L192) |
-| `def` | [`Datagram.HeaderFrom`](../TDN/Models/EndpointTransmitSpec.lean#L206) |
-| `def` | [`Datagram.Reassembles`](../TDN/Models/EndpointTransmitSpec.lean#L219) |
-| `def` | [`Datagram.ValidFor`](../TDN/Models/EndpointTransmitSpec.lean#L241) |
+| `structure` | [`EncodedFragment`](../TDN/Models/EndpointTransmitSpec.lean#L135) |
+| `def` | [`EncodedFragment.Raw`](../TDN/Models/EndpointTransmitSpec.lean#L141) |
+| `def` | [`EncodedFragment.MtuBytes`](../TDN/Models/EndpointTransmitSpec.lean#L144) |
+| `def` | [`EncodedFragment.AsPiece`](../TDN/Models/EndpointTransmitSpec.lean#L149) |
+| `def` | [`EncodedFragment.IPv4Fields`](../TDN/Models/EndpointTransmitSpec.lean#L152) |
+| `def` | [`EncodedFragment.IPv6Fields`](../TDN/Models/EndpointTransmitSpec.lean#L160) |
+| `structure` | [`EncodedDatagram`](../TDN/Models/EndpointTransmitSpec.lean#L174) |
+| `def` | [`EncodedDatagram.Data`](../TDN/Models/EndpointTransmitSpec.lean#L181) |
+| `def` | [`EncodedDatagram.Raw`](../TDN/Models/EndpointTransmitSpec.lean#L184) |
+| `def` | [`EncodedDatagram.MtuBytes`](../TDN/Models/EndpointTransmitSpec.lean#L187) |
+| `def` | [`EncodedDatagram.Decoded`](../TDN/Models/EndpointTransmitSpec.lean#L192) |
+| `def` | [`EncodedDatagram.HeaderFrom`](../TDN/Models/EndpointTransmitSpec.lean#L206) |
+| `def` | [`EncodedDatagram.Reassembles`](../TDN/Models/EndpointTransmitSpec.lean#L219) |
+| `def` | [`EncodedDatagram.ValidFor`](../TDN/Models/EndpointTransmitSpec.lean#L241) |
 | `inductive` | [`Error`](../TDN/Models/EndpointTransmitSpec.lean#L252) |
 | `inductive` | [`Outcome`](../TDN/Models/EndpointTransmitSpec.lean#L256) |
 | `def` | [`Outcome.Valid`](../TDN/Models/EndpointTransmitSpec.lean#L260) |
@@ -2950,14 +2907,14 @@ Encodes payload bytes as a natural number and proves that distinct byte lists re
 
 | Kind | Declaration |
 | --- | --- |
-| `lemma` | [`payloadCode_concat`](../TDN/Models/PayloadToNatEncoding.lean#L6) |
-| `lemma` | [`payloadCode_as_digits`](../TDN/Models/PayloadToNatEncoding.lean#L10) |
-| `lemma` | [`digits_payloadCode`](../TDN/Models/PayloadToNatEncoding.lean#L17) |
-| `theorem` | [`payloadCode_injective`](../TDN/Models/PayloadToNatEncoding.lean#L29) |
-| `lemma` | [`Frame.Describes.plain_Ethernet_payload`](../TDN/Models/PayloadToNatEncoding.lean#L43) |
-| `lemma` | [`Frame.Describes.plain_IP_payload`](../TDN/Models/PayloadToNatEncoding.lean#L51) |
+| `lemma` | [`payload_code_concat`](../TDN/Models/PayloadToNatEncoding.lean#L6) |
+| `lemma` | [`payload_code_as_digits`](../TDN/Models/PayloadToNatEncoding.lean#L10) |
+| `lemma` | [`digits_payload_code`](../TDN/Models/PayloadToNatEncoding.lean#L17) |
+| `theorem` | [`payload_code_injective`](../TDN/Models/PayloadToNatEncoding.lean#L29) |
+| `lemma` | [`EthernetFrame.Describes.plain_ethernet_payload`](../TDN/Models/PayloadToNatEncoding.lean#L43) |
+| `lemma` | [`EthernetFrame.Describes.plain_ip_payload`](../TDN/Models/PayloadToNatEncoding.lean#L51) |
 | `def` | [`decodePayload`](../TDN/Models/PayloadToNatEncoding.lean#L65) |
-| `lemma` | [`decodePayload_payloadCode`](../TDN/Models/PayloadToNatEncoding.lean#L68) |
+| `lemma` | [`decode_payload_payload_code`](../TDN/Models/PayloadToNatEncoding.lean#L68) |
 
 </details>
 
@@ -2974,11 +2931,11 @@ Applies a fragment plan to a datagram and proves reassembly. A separate result s
 | --- | --- |
 | `lemma` | [`made_fragments_length`](../TDN/Models/PlannedDatagramFragmentation.lean#L5) |
 | `lemma` | [`partition_of_oversized_packet_has_multiple_chunks`](../TDN/Models/PlannedDatagramFragmentation.lean#L12) |
-| `def` | [`Datagram.withPlannedFragments`](../TDN/Models/PlannedDatagramFragmentation.lean#L24) |
-| `lemma` | [`Datagram.planned_body`](../TDN/Models/PlannedDatagramFragmentation.lean#L30) |
-| `lemma` | [`Datagram.planned_data`](../TDN/Models/PlannedDatagramFragmentation.lean#L33) |
-| `lemma` | [`Datagram.planned_raw`](../TDN/Models/PlannedDatagramFragmentation.lean#L36) |
-| `theorem` | [`Datagram.planned_fragments_reassemble`](../TDN/Models/PlannedDatagramFragmentation.lean#L39) |
+| `def` | [`EncodedDatagram.withPlannedFragments`](../TDN/Models/PlannedDatagramFragmentation.lean#L24) |
+| `lemma` | [`EncodedDatagram.planned_body`](../TDN/Models/PlannedDatagramFragmentation.lean#L30) |
+| `lemma` | [`EncodedDatagram.planned_data`](../TDN/Models/PlannedDatagramFragmentation.lean#L33) |
+| `lemma` | [`EncodedDatagram.planned_raw`](../TDN/Models/PlannedDatagramFragmentation.lean#L36) |
+| `theorem` | [`EncodedDatagram.planned_fragments_reassemble`](../TDN/Models/PlannedDatagramFragmentation.lean#L39) |
 
 </details>
 
@@ -3001,7 +2958,7 @@ Describes a set of packets using finite conditions on addresses, protocols, port
 | `lemma` | [`AclFlowSelector.rejected_atom_fails`](../TDN/Models/AclFlowCoverageMasks.lean#L97) |
 | `def` | [`AclFlowSelector.IsPermittedByAclChain`](../TDN/Models/AclFlowCoverageMasks.lean#L128) |
 | `def` | [`AclFlowSelector.checkPermittedByAclChain`](../TDN/Models/AclFlowCoverageMasks.lean#L134) |
-| `lemma` | [`AclFlowSelector.finiteCovers_correct`](../TDN/Models/AclFlowCoverageMasks.lean#L141) |
+| `lemma` | [`AclFlowSelector.finite_covers_correct`](../TDN/Models/AclFlowCoverageMasks.lean#L141) |
 | `theorem` | [`AclFlowSelector.covered_packets_are_allowed`](../TDN/Models/AclFlowCoverageMasks.lean#L152) |
 
 Explicit instances:
@@ -3024,9 +2981,9 @@ Derives supported IKE and UDP-encapsulated ESP framing from the original packet 
 | Kind | Declaration |
 | --- | --- |
 | `lemma` | [`two_byte_field`](../TDN/Models/RawIkeAndUdpEspByteOffsets.lean#L6) |
-| `lemma` | [`decoded_IPv4_UDP_framing`](../TDN/Models/RawIkeAndUdpEspByteOffsets.lean#L27) |
-| `lemma` | [`eligible_IKE_has_framing`](../TDN/Models/RawIkeAndUdpEspByteOffsets.lean#L59) |
-| `lemma` | [`eligible_UDPESP_has_framing`](../TDN/Models/RawIkeAndUdpEspByteOffsets.lean#L98) |
+| `lemma` | [`decoded_ipv4_udp_framing`](../TDN/Models/RawIkeAndUdpEspByteOffsets.lean#L27) |
+| `lemma` | [`eligible_ike_has_framing`](../TDN/Models/RawIkeAndUdpEspByteOffsets.lean#L59) |
+| `lemma` | [`eligible_udpesp_has_framing`](../TDN/Models/RawIkeAndUdpEspByteOffsets.lean#L98) |
 
 </details>
 
@@ -3066,9 +3023,9 @@ Builds an IP source datagram from an application request. The proofs preserve it
 | `def` | [`sourceHeader`](../TDN/Models/OriginIpDatagramCodec.lean#L23) |
 | `def` | [`encodeSourceDatagram`](../TDN/Models/OriginIpDatagramCodec.lean#L30) |
 | `lemma` | [`Request.ip_template_parts`](../TDN/Models/OriginIpDatagramCodec.lean#L39) |
-| `theorem` | [`source_IP_datagram_decodes`](../TDN/Models/OriginIpDatagramCodec.lean#L55) |
-| `lemma` | [`source_IP_datagram_flags`](../TDN/Models/OriginIpDatagramCodec.lean#L145) |
-| `theorem` | [`source_IP_whole_datagram_valid`](../TDN/Models/OriginIpDatagramCodec.lean#L153) |
+| `theorem` | [`source_ip_datagram_decodes`](../TDN/Models/OriginIpDatagramCodec.lean#L55) |
+| `lemma` | [`source_ip_datagram_flags`](../TDN/Models/OriginIpDatagramCodec.lean#L145) |
+| `theorem` | [`source_ip_whole_datagram_valid`](../TDN/Models/OriginIpDatagramCodec.lean#L153) |
 
 </details>
 
@@ -3084,9 +3041,9 @@ Builds an Ethernet source datagram from a header and payload. The proofs establi
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`encodeSourceEthernet`](../TDN/Models/OriginEthernetFrameCodec.lean#L6) |
-| `lemma` | [`source_Ethernet_mtu_bytes`](../TDN/Models/OriginEthernetFrameCodec.lean#L10) |
-| `theorem` | [`source_Ethernet_datagram_decodes`](../TDN/Models/OriginEthernetFrameCodec.lean#L13) |
-| `theorem` | [`source_Ethernet_whole_datagram_valid`](../TDN/Models/OriginEthernetFrameCodec.lean#L27) |
+| `lemma` | [`source_ethernet_mtu_bytes`](../TDN/Models/OriginEthernetFrameCodec.lean#L10) |
+| `theorem` | [`source_ethernet_datagram_decodes`](../TDN/Models/OriginEthernetFrameCodec.lean#L13) |
+| `theorem` | [`source_ethernet_whole_datagram_valid`](../TDN/Models/OriginEthernetFrameCodec.lean#L27) |
 
 </details>
 
@@ -3124,8 +3081,8 @@ Proves that a valid emitted datagram requires fields that fit their packet encod
 
 | Kind | Declaration |
 | --- | --- |
-| `lemma` | [`Datagram.valid_source_hop_bound`](../TDN/Models/ValidHeaderFieldWidths.lean#L5) |
-| `lemma` | [`Datagram.valid_source_header_representable`](../TDN/Models/ValidHeaderFieldWidths.lean#L24) |
+| `lemma` | [`EncodedDatagram.valid_source_hop_bound`](../TDN/Models/ValidHeaderFieldWidths.lean#L5) |
+| `lemma` | [`EncodedDatagram.valid_source_header_representable`](../TDN/Models/ValidHeaderFieldWidths.lean#L24) |
 
 </details>
 
@@ -3141,8 +3098,8 @@ Connects source-request encoding to IP fragmentation. The resulting datagram pre
 | Kind | Declaration |
 | --- | --- |
 | `def` | [`encodeFragmentedSourceDatagram`](../TDN/Models/OriginHostIpFragmentation.lean#L6) |
-| `lemma` | [`source_IP_fragmentation_preserves`](../TDN/Models/OriginHostIpFragmentation.lean#L11) |
-| `theorem` | [`source_IP_fragmented_datagram_valid`](../TDN/Models/OriginHostIpFragmentation.lean#L23) |
+| `lemma` | [`source_ip_fragmentation_preserves`](../TDN/Models/OriginHostIpFragmentation.lean#L11) |
+| `theorem` | [`source_ip_fragmented_datagram_valid`](../TDN/Models/OriginHostIpFragmentation.lean#L23) |
 
 </details>
 
@@ -3162,7 +3119,7 @@ Splits stream data into source datagrams that fit the MTU and protocol-length li
 | `lemma` | [`Request.segment_capacity_positive`](../TDN/Models/OriginStreamSegmentation.lean#L22) |
 | `def` | [`sourceIPDatagrams`](../TDN/Models/OriginStreamSegmentation.lean#L29) |
 | `lemma` | [`source_whole_application`](../TDN/Models/OriginStreamSegmentation.lean#L36) |
-| `theorem` | [`source_IP_datagrams_valid`](../TDN/Models/OriginStreamSegmentation.lean#L40) |
+| `theorem` | [`source_ip_datagrams_valid`](../TDN/Models/OriginStreamSegmentation.lean#L40) |
 
 </details>
 
@@ -3182,9 +3139,9 @@ Implements the modeled source processor for supported IP and Ethernet requests. 
 | `def` | [`sourceProcessing`](../TDN/Models/OriginEndpointTransmitter.lean#L96) |
 | `lemma` | [`Request.template_headers_representable`](../TDN/Models/OriginEndpointTransmitter.lean#L99) |
 | `theorem` | [`source_processing_valid`](../TDN/Models/OriginEndpointTransmitter.lean#L107) |
-| `lemma` | [`source_IP_emission_shape`](../TDN/Models/OriginEndpointTransmitter.lean#L114) |
-| `lemma` | [`source_Ethernet_emission_shape`](../TDN/Models/OriginEndpointTransmitter.lean#L133) |
-| `lemma` | [`source_IP_datagrams_have_source_headers`](../TDN/Models/OriginEndpointTransmitter.lean#L149) |
+| `lemma` | [`source_ip_emission_shape`](../TDN/Models/OriginEndpointTransmitter.lean#L114) |
+| `lemma` | [`source_ethernet_emission_shape`](../TDN/Models/OriginEndpointTransmitter.lean#L133) |
+| `lemma` | [`source_ip_datagrams_have_source_headers`](../TDN/Models/OriginEndpointTransmitter.lean#L149) |
 
 Explicit instances:
 
@@ -3208,50 +3165,27 @@ Packages the source processor correctness results into its successful-emission a
 
 </details>
 
-### InvalidHeaderTemplateCounterexamples
+### MultiStepTraceBridge
 
-Source: [InvalidHeaderTemplateCounterexamples.lean](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean).
-
-Preserves concrete failures of the earlier request-template conditions. The examples cover a hop limit of 256, an inconsistent IPv6 next-header value and nonzero ICMP transport ports. The corrected template rejects those unrepresentable requests with the specified error result.
-
-<details>
-<summary>All 16 named declarations in InvalidHeaderTemplateCounterexamples</summary>
-
-| Kind | Declaration |
-| --- | --- |
-| `def` | [`Request.TemplateValidBeforeRepresentability`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L6) |
-| `def` | [`Outcome.ValidBeforeRepresentability`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L30) |
-| `theorem` | [`request_with_unrepresentable_hop_has_no_valid_outcome`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L48) |
-| `theorem` | [`request_with_unrepresentable_header_has_no_valid_outcome`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L78) |
-| `def` | [`oversizedHopRequest`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L108) |
-| `lemma` | [`oversized_hop_old_template_is_allowed`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L118) |
-| `theorem` | [`oversized_hop_request_cannot_be_processed`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L122) |
-| `def` | [`ipv6NextHeaderMismatchRequest`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L129) |
-| `def` | [`nonzeroICMPPortRequest`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L139) |
-| `lemma` | [`ipv6_next_header_mismatch_old_template_is_allowed`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L147) |
-| `lemma` | [`nonzero_icmp_port_old_template_is_allowed`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L152) |
-| `theorem` | [`ipv6_next_header_mismatch_cannot_be_processed`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L156) |
-| `theorem` | [`nonzero_icmp_port_cannot_be_processed`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L164) |
-| `theorem` | [`oversized_hop_receives_valid_unsupported_result`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L172) |
-| `theorem` | [`ipv6_next_header_mismatch_receives_valid_unsupported_result`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L177) |
-| `theorem` | [`nonzero_icmp_port_receives_valid_unsupported_result`](../TDN/Models/InvalidHeaderTemplateCounterexamples.lean#L182) |
-
-</details>
-
-### StutteringTraceSimulation
-
-Source: [StutteringTraceSimulation.lean](../TDN/Models/StutteringTraceSimulation.lean).
+Source: [MultiStepTraceBridge.lean](../TDN/Models/MultiStepTraceBridge.lean).
 
 Maps detailed executions to a simpler transition system. Actions omitted by the mapping must preserve the represented state. The general theorem constructs the corresponding simpler execution from the per-step mapping condition.
 
 <details>
-<summary>All 3 named declarations in StutteringTraceSimulation</summary>
+<summary>All 6 named declarations in MultiStepTraceBridge</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `theorem` | [`optional_actions`](../TDN/Models/StutteringTraceSimulation.lean#L5) |
-| `theorem` | [`action_member_has_actual_step`](../TDN/Models/StutteringTraceSimulation.lean#L30) |
-| `theorem` | [`project_forwarding`](../TDN/Models/StutteringTraceSimulation.lean#L44) |
+| `theorem` | [`optional_actions`](../TDN/Models/MultiStepTraceBridge.lean#L5) |
+| `theorem` | [`action_member_has_actual_step`](../TDN/Models/MultiStepTraceBridge.lean#L30) |
+| `theorem` | [`project_forwarding`](../TDN/Models/MultiStepTraceBridge.lean#L44) |
+| `def` | [`finish`](../TDN/Models/MultiStepTraceBridge.lean#L63) |
+| `def` | [`Checks`](../TDN/Models/MultiStepTraceBridge.lean#L67) |
+| `theorem` | [`reaches`](../TDN/Models/MultiStepTraceBridge.lean#L78) |
+
+Explicit instances:
+
+- [Instance at line 71](../TDN/Models/MultiStepTraceBridge.lean#L71)
 
 </details>
 
@@ -3266,116 +3200,116 @@ Emits a datagram as one fragment when it fits and constructs fragments when nece
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`Datagram.wholeFragment`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L5) |
-| `def` | [`Datagram.asWhole`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L8) |
-| `lemma` | [`Datagram.asWhole_body`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L11) |
-| `lemma` | [`Datagram.asWhole_application`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L14) |
-| `lemma` | [`Datagram.asWhole_raw`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L17) |
-| `lemma` | [`Datagram.asWhole_mtuBytes`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L20) |
-| `lemma` | [`Datagram.asWhole_decoded`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L23) |
-| `lemma` | [`Datagram.asWhole_headerFrom`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L27) |
-| `lemma` | [`Datagram.asWhole_fragment_count`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L31) |
-| `lemma` | [`Datagram.whole_fragment_mtuBytes`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L34) |
-| `lemma` | [`Datagram.whole_fragment_pieces_valid`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L40) |
-| `def` | [`Datagram.UnfragmentedHeader`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L47) |
-| `lemma` | [`Datagram.decoded_header_is_unfragmented`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L55) |
-| `theorem` | [`Datagram.whole_packet_reassembles_from_header`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L68) |
-| `theorem` | [`Datagram.whole_packet_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L92) |
-| `def` | [`Datagram.fragmentOnlyWhenNeeded`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L117) |
-| `lemma` | [`Datagram.needed_fragmentation_preserves_raw`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L120) |
-| `lemma` | [`Datagram.fitting_packet_uses_one_fragment`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L125) |
-| `theorem` | [`Datagram.fragment_only_when_needed_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L130) |
+| `def` | [`EncodedDatagram.wholeFragment`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L5) |
+| `def` | [`EncodedDatagram.asWhole`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L8) |
+| `lemma` | [`EncodedDatagram.as_whole_body`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L11) |
+| `lemma` | [`EncodedDatagram.as_whole_application`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L14) |
+| `lemma` | [`EncodedDatagram.as_whole_raw`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L17) |
+| `lemma` | [`EncodedDatagram.as_whole_mtu_bytes`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L20) |
+| `lemma` | [`EncodedDatagram.as_whole_decoded`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L23) |
+| `lemma` | [`EncodedDatagram.as_whole_header_from`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L27) |
+| `lemma` | [`EncodedDatagram.as_whole_fragment_count`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L31) |
+| `lemma` | [`EncodedDatagram.whole_fragment_mtu_bytes`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L34) |
+| `lemma` | [`EncodedDatagram.whole_fragment_pieces_valid`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L40) |
+| `def` | [`EncodedDatagram.UnfragmentedHeader`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L47) |
+| `lemma` | [`EncodedDatagram.decoded_header_is_unfragmented`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L55) |
+| `theorem` | [`EncodedDatagram.whole_packet_reassembles_from_header`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L68) |
+| `theorem` | [`EncodedDatagram.whole_packet_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L92) |
+| `def` | [`EncodedDatagram.fragmentOnlyWhenNeeded`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L117) |
+| `lemma` | [`EncodedDatagram.needed_fragmentation_preserves_raw`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L120) |
+| `lemma` | [`EncodedDatagram.fitting_packet_uses_one_fragment`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L125) |
+| `theorem` | [`EncodedDatagram.fragment_only_when_needed_reassembles`](../TDN/Models/UnfragmentedOrSegmentedEmit.lean#L130) |
 
 </details>
 
-## Indexed evidence certificates
+## Indexed route and ACL checks
 
-The certificate modules move repeated route and ACL searches into the generator. Lean checks the proposed record indices and proves that the resulting conclusions follow from the original captured tables. The [construction tools](../scripts/construction/README.md#generate-indexed-checking-certificates) generate and check those witnesses.
+The generator identifies the matching routes and firewall rules in the captured tables. Lean checks each proposed index and proves that applying the original table gives the same result. The [construction tools](../scripts/construction/README.md#generate-route-and-acl-lookup-hints) generate these lookup hints.
 
-### IndexedWitnessTree
+### IndexedLookupTree
 
-Source: [TDN/Models/IndexedWitnessTree.lean](../TDN/Models/IndexedWitnessTree.lean)
+Source: [TDN/Models/IndexedLookupTree.lean](../TDN/Models/IndexedLookupTree.lean)
 
-`WitnessTree` stores records in a binary tree. `lookup_mem` proves that a successful indexed lookup returns an actual leaf. `checkWith_sound` checks a witness for every leaf and rejects missing branches. A balanced tree supports a lookup in a number of steps proportional to the logarithm of its leaf count.
+`LookupTree` stores records in a binary tree. `lookup_mem` proves that a successful indexed lookup returns an actual leaf. `check_with_sound` checks a supplied entry for every leaf and rejects missing branches. A balanced tree supports a lookup in a number of steps proportional to the logarithm of its leaf count.
 
 `NatIndex` follows the bits of a numeric key. `OrderedIndex` compares a key with the value stored at each branch. These structures select proposed witnesses. The calling checker verifies the retrieved record, so an incorrectly constructed index cannot justify an incorrect result.
 
 <details>
-<summary>All 10 named declarations in IndexedWitnessTree</summary>
+<summary>All 10 named declarations in IndexedLookupTree</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `inductive` | [`WitnessTree`](../TDN/Models/IndexedWitnessTree.lean#L8) |
-| `def` | [`values`](../TDN/Models/IndexedWitnessTree.lean#L16) |
-| `def` | [`lookup`](../TDN/Models/IndexedWitnessTree.lean#L21) |
-| `lemma` | [`lookup_mem`](../TDN/Models/IndexedWitnessTree.lean#L27) |
-| `def` | [`checkWith`](../TDN/Models/IndexedWitnessTree.lean#L42) |
-| `theorem` | [`checkWith_sound`](../TDN/Models/IndexedWitnessTree.lean#L49) |
-| `inductive` | [`NatIndex`](../TDN/Models/IndexedWitnessTree.lean#L73) |
-| `def` | [`NatIndex.lookup`](../TDN/Models/IndexedWitnessTree.lean#L78) |
-| `inductive` | [`OrderedIndex`](../TDN/Models/IndexedWitnessTree.lean#L86) |
-| `def` | [`OrderedIndex.lookup`](../TDN/Models/IndexedWitnessTree.lean#L91) |
+| `inductive` | [`LookupTree`](../TDN/Models/IndexedLookupTree.lean#L8) |
+| `def` | [`values`](../TDN/Models/IndexedLookupTree.lean#L16) |
+| `def` | [`lookup`](../TDN/Models/IndexedLookupTree.lean#L21) |
+| `lemma` | [`lookup_mem`](../TDN/Models/IndexedLookupTree.lean#L27) |
+| `def` | [`checkWith`](../TDN/Models/IndexedLookupTree.lean#L42) |
+| `theorem` | [`check_with_sound`](../TDN/Models/IndexedLookupTree.lean#L49) |
+| `inductive` | [`NatIndex`](../TDN/Models/IndexedLookupTree.lean#L73) |
+| `def` | [`NatIndex.lookup`](../TDN/Models/IndexedLookupTree.lean#L78) |
+| `inductive` | [`OrderedIndex`](../TDN/Models/IndexedLookupTree.lean#L86) |
+| `def` | [`OrderedIndex.lookup`](../TDN/Models/IndexedLookupTree.lean#L91) |
 
 </details>
 
-### FibRouteCertificates
+### FibRouteLookupHints
 
-Source: [TDN/Models/FibRouteCertificates.lean](../TDN/Models/FibRouteCertificates.lean)
+Source: [TDN/Models/FibRouteLookupHints.lean](../TDN/Models/FibRouteLookupHints.lean)
 
-`RouteCertificate` supplies the selected routes for one destination address. Every matching captured route is compared with a proposed best route for its incoming interface. Every equal-priority alternative must be retained. Retained records also have checked indices into the original table.
+`FibRouteLookupHint` supplies the selected routes for one destination address. Every matching captured route is compared with a proposed best route for its incoming interface. Every equal-priority alternative must be retained. Retained records also have checked indices into the original table.
 
-`table_driven_route_certificate_sound` proves that the retained routes are exactly those permitted by `SelectedFibRoute`. The theorem preserves routing-table priority, longest-prefix matching, metric comparisons, and equal-cost alternatives. A new snapshot supplies new records and indices while reusing the same proof.
+`checked_route_hint_selects_exact_routes` proves that the retained routes are exactly those permitted by `SelectedFibRoute`. The theorem preserves routing-table priority, longest-prefix matching, metric comparisons, and equal-cost alternatives. A new snapshot supplies new records and indices while reusing the same proof.
 
 <details>
-<summary>All 9 named declarations in FibRouteCertificates</summary>
+<summary>All 9 named declarations in FibRouteLookupHints</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `def` | [`routePriorityAllows`](../TDN/Models/FibRouteCertificates.lean#L8) |
-| `lemma` | [`route_priority_transitive`](../TDN/Models/FibRouteCertificates.lean#L17) |
-| `structure` | [`RouteCertificate`](../TDN/Models/FibRouteCertificates.lean#L36) |
-| `def` | [`RouteCertificate.best`](../TDN/Models/FibRouteCertificates.lean#L44) |
-| `def` | [`RouteCertificate.Covers`](../TDN/Models/FibRouteCertificates.lean#L48) |
-| `def` | [`RouteCertificate.Retains`](../TDN/Models/FibRouteCertificates.lean#L62) |
-| `def` | [`RouteCertificate.check`](../TDN/Models/FibRouteCertificates.lean#L73) |
-| `lemma` | [`route_certificate_covers`](../TDN/Models/FibRouteCertificates.lean#L77) |
-| `theorem` | [`table_driven_route_certificate_sound`](../TDN/Models/FibRouteCertificates.lean#L98) |
+| `def` | [`routePriorityAllows`](../TDN/Models/FibRouteLookupHints.lean#L8) |
+| `lemma` | [`route_priority_transitive`](../TDN/Models/FibRouteLookupHints.lean#L17) |
+| `structure` | [`FibRouteLookupHint`](../TDN/Models/FibRouteLookupHints.lean#L36) |
+| `def` | [`FibRouteLookupHint.best`](../TDN/Models/FibRouteLookupHints.lean#L44) |
+| `def` | [`FibRouteLookupHint.Covers`](../TDN/Models/FibRouteLookupHints.lean#L48) |
+| `def` | [`FibRouteLookupHint.Retains`](../TDN/Models/FibRouteLookupHints.lean#L62) |
+| `def` | [`FibRouteLookupHint.check`](../TDN/Models/FibRouteLookupHints.lean#L73) |
+| `lemma` | [`route_hint_covers`](../TDN/Models/FibRouteLookupHints.lean#L77) |
+| `theorem` | [`checked_route_hint_selects_exact_routes`](../TDN/Models/FibRouteLookupHints.lean#L98) |
 
 Explicit instances:
 
-- [Instance at line 13](../TDN/Models/FibRouteCertificates.lean#L13)
-- [Instance at line 57](../TDN/Models/FibRouteCertificates.lean#L57)
-- [Instance at line 68](../TDN/Models/FibRouteCertificates.lean#L68)
+- [Instance at line 13](../TDN/Models/FibRouteLookupHints.lean#L13)
+- [Instance at line 57](../TDN/Models/FibRouteLookupHints.lean#L57)
+- [Instance at line 68](../TDN/Models/FibRouteLookupHints.lean#L68)
 
 </details>
 
-### AclPermitCertificates
+### AclPermitLookupHints
 
-Source: [TDN/Models/AclPermitCertificates.lean](../TDN/Models/AclPermitCertificates.lean)
+Source: [TDN/Models/AclPermitLookupHints.lean](../TDN/Models/AclPermitLookupHints.lean)
 
-`AclRuleIndex` divides an ordered ACL into earlier rules and a remaining tree containing only allow rules. An `AclPermitWitness` names an allow rule and one rejecting condition for each earlier deny rule. The caller establishes that the indexed rules reconstruct the captured ACL.
+`AclRuleIndex` divides an ordered ACL into earlier rules and a remaining tree containing only allow rules. An `AclPermitLookupHint` names an allow rule and one rejecting condition for each earlier deny rule. The caller establishes that the indexed rules reconstruct the captured ACL.
 
-`table_driven_acl_certificate_sound` derives `IsPermittedByAclChain` after checking the selected allow rule and every earlier deny rule. The proof preserves first-match behavior. The selected-rule lookup uses a balanced tree; checking earlier deny rules remains necessary.
+`checked_acl_hint_proves_permit` derives `IsPermittedByAclChain` after checking the selected allow rule and every earlier deny rule. The proof preserves first-match behavior. The selected-rule lookup uses a balanced tree; checking earlier deny rules remains necessary.
 
 <details>
-<summary>All 10 named declarations in AclPermitCertificates</summary>
+<summary>All 10 named declarations in AclPermitLookupHints</summary>
 
 | Kind | Declaration |
 | --- | --- |
-| `structure` | [`AclRuleIndex`](../TDN/Models/AclPermitCertificates.lean#L8) |
-| `structure` | [`AclPermitWitness`](../TDN/Models/AclPermitCertificates.lean#L13) |
-| `def` | [`AclRuleIndex.rules`](../TDN/Models/AclPermitCertificates.lean#L18) |
-| `def` | [`AclRuleIndex.Valid`](../TDN/Models/AclPermitCertificates.lean#L20) |
-| `def` | [`checkAclPrefix`](../TDN/Models/AclPermitCertificates.lean#L25) |
-| `lemma` | [`checked_acl_prefix_is_safe`](../TDN/Models/AclPermitCertificates.lean#L33) |
-| `lemma` | [`allow_only_rules_permit`](../TDN/Models/AclPermitCertificates.lean#L52) |
-| `lemma` | [`safe_prefix_preserves_permit`](../TDN/Models/AclPermitCertificates.lean#L66) |
-| `def` | [`checkAclPermit`](../TDN/Models/AclPermitCertificates.lean#L75) |
-| `theorem` | [`table_driven_acl_certificate_sound`](../TDN/Models/AclPermitCertificates.lean#L81) |
+| `structure` | [`AclRuleIndex`](../TDN/Models/AclPermitLookupHints.lean#L8) |
+| `structure` | [`AclPermitLookupHint`](../TDN/Models/AclPermitLookupHints.lean#L13) |
+| `def` | [`AclRuleIndex.rules`](../TDN/Models/AclPermitLookupHints.lean#L18) |
+| `def` | [`AclRuleIndex.Valid`](../TDN/Models/AclPermitLookupHints.lean#L20) |
+| `def` | [`checkAclPrefix`](../TDN/Models/AclPermitLookupHints.lean#L25) |
+| `lemma` | [`checked_acl_prefix_is_safe`](../TDN/Models/AclPermitLookupHints.lean#L33) |
+| `lemma` | [`allow_only_rules_permit`](../TDN/Models/AclPermitLookupHints.lean#L52) |
+| `lemma` | [`safe_prefix_preserves_permit`](../TDN/Models/AclPermitLookupHints.lean#L66) |
+| `def` | [`checkAclPermit`](../TDN/Models/AclPermitLookupHints.lean#L75) |
+| `theorem` | [`checked_acl_hint_proves_permit`](../TDN/Models/AclPermitLookupHints.lean#L81) |
 
 Explicit instances:
 
-- [Instance at line 23](../TDN/Models/AclPermitCertificates.lean#L23)
+- [Instance at line 23](../TDN/Models/AclPermitLookupHints.lean#L23)
 
 </details>
 

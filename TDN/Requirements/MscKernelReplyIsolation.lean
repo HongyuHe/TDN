@@ -4,7 +4,7 @@ import TDN.Requirements.DoubleEncryptionOnBlackLinks
 namespace TDN.Requirements
 
 def nativeKernelResponses (c : DataPlaneForwarding.DataPlaneModel) (gatewayDevices : List Nat) :
-    KernelResponses.Config DataPlaneForwarding.State where
+    KernelResponses.ReplyConfig DataPlaneForwarding.ForwardingState where
   generates state := c.owner state.iface ∈ gatewayDevices
   selectedRoute state header iface := ∃ route,
     DataPlaneForwarding.SelectedFibRoute c.routes route header ∧ route.ingress = state.iface ∧ route.egress = iface
@@ -23,7 +23,7 @@ theorem device_packet_stack_with_kernel_response_guards
     (c : DataPlaneForwarding.DataPlaneModel) (expectedEncapStack : Nat → List Nat) (gatewayDevices : List Nat)
     (conditions : DataPlaneForwarding.PerHopEncapConditions c expectedEncapStack)
     (guards : GatewayResponseGuards c gatewayDevices)
-    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {before after : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     (run : (KernelResponses.lts (DataPlaneForwarding.lts c) (nativeKernelResponses c gatewayDevices)).MTr
       (.network before) actions (.network after))
     (initial : DataPlaneForwarding.EncapStackConsistent c expectedEncapStack before) :

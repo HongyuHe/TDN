@@ -5,7 +5,6 @@ import TDN.Models.TableDrivenMultiProtocolDataPlane
 namespace TDN.Deployments.PairingIpsecIpsecIntegrated
 open MultiProtocolForwarding LayeredFrame
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 load_network_records devices : List DataPlaneForwarding.DeviceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingIpsecIpsecIntegrated.devices"]
 
 load_network_records ifaces : List DataPlaneForwarding.IfaceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingIpsecIpsecIntegrated.ifaces"]
@@ -20,7 +19,7 @@ load_network_records macIfaces : List MACIface from "../../data/evidence/spec002
 
 load_network_records carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingIpsecIpsecIntegrated.carriers"]
 
-def config : Config := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
+def config : TunnelForwardingModel := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
 def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords ifaces
 load_network_records redSources : List Nat from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingIpsecIpsecIntegrated.redSources"]
 
@@ -46,7 +45,7 @@ theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
   simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
-theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
     (run : (lts config).MTr start actions finish) :
     finish.frame.payload = start.frame.payload ∧ finish.frame.originDomain = start.frame.originDomain :=
   all_traces_preserve_payload config run
@@ -55,7 +54,6 @@ end TDN.Deployments.PairingIpsecIpsecIntegrated
 namespace TDN.Deployments.PairingIpsecMacsecIntegrated
 open MultiProtocolForwarding LayeredFrame
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 load_network_records devices : List DataPlaneForwarding.DeviceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingIpsecMacsecIntegrated.devices"]
 
 load_network_records ifaces : List DataPlaneForwarding.IfaceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingIpsecMacsecIntegrated.ifaces"]
@@ -70,7 +68,7 @@ load_network_records macIfaces : List MACIface from "../../data/evidence/spec002
 
 load_network_records carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingIpsecMacsecIntegrated.carriers"]
 
-def config : Config := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
+def config : TunnelForwardingModel := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
 def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords ifaces
 load_network_records redSources : List Nat from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingIpsecMacsecIntegrated.redSources"]
 
@@ -96,7 +94,7 @@ theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
   simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
-theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
     (run : (lts config).MTr start actions finish) :
     finish.frame.payload = start.frame.payload ∧ finish.frame.originDomain = start.frame.originDomain :=
   all_traces_preserve_payload config run
@@ -105,7 +103,6 @@ end TDN.Deployments.PairingIpsecMacsecIntegrated
 namespace TDN.Deployments.PairingMacsecIpsecIntegrated
 open MultiProtocolForwarding LayeredFrame
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 load_network_records devices : List DataPlaneForwarding.DeviceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecIpsecIntegrated.devices"]
 
 load_network_records ifaces : List DataPlaneForwarding.IfaceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecIpsecIntegrated.ifaces"]
@@ -120,7 +117,7 @@ load_network_records macIfaces : List MACIface from "../../data/evidence/spec002
 
 load_network_records carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecIpsecIntegrated.carriers"]
 
-def config : Config := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
+def config : TunnelForwardingModel := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
 def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords ifaces
 load_network_records redSources : List Nat from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecIpsecIntegrated.redSources"]
 
@@ -146,7 +143,7 @@ theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
   simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
-theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
     (run : (lts config).MTr start actions finish) :
     finish.frame.payload = start.frame.payload ∧ finish.frame.originDomain = start.frame.originDomain :=
   all_traces_preserve_payload config run
@@ -155,7 +152,6 @@ end TDN.Deployments.PairingMacsecIpsecIntegrated
 namespace TDN.Deployments.PairingMacsecIpsecStandalone
 open MultiProtocolForwarding LayeredFrame
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 load_network_records devices : List DataPlaneForwarding.DeviceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecIpsecStandalone.devices"]
 
 load_network_records ifaces : List DataPlaneForwarding.IfaceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecIpsecStandalone.ifaces"]
@@ -170,7 +166,7 @@ load_network_records macIfaces : List MACIface from "../../data/evidence/spec002
 
 load_network_records carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecIpsecStandalone.carriers"]
 
-def config : Config := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
+def config : TunnelForwardingModel := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
 def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords ifaces
 load_network_records redSources : List Nat from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecIpsecStandalone.redSources"]
 
@@ -196,7 +192,7 @@ theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
   simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
-theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
     (run : (lts config).MTr start actions finish) :
     finish.frame.payload = start.frame.payload ∧ finish.frame.originDomain = start.frame.originDomain :=
   all_traces_preserve_payload config run
@@ -205,7 +201,6 @@ end TDN.Deployments.PairingMacsecIpsecStandalone
 namespace TDN.Deployments.PairingMacsecMacsecIntegrated
 open MultiProtocolForwarding LayeredFrame
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 load_network_records devices : List DataPlaneForwarding.DeviceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecMacsecIntegrated.devices"]
 
 load_network_records ifaces : List DataPlaneForwarding.IfaceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecMacsecIntegrated.ifaces"]
@@ -220,7 +215,7 @@ load_network_records macIfaces : List MACIface from "../../data/evidence/spec002
 
 load_network_records carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecMacsecIntegrated.carriers"]
 
-def config : Config := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
+def config : TunnelForwardingModel := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
 def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords ifaces
 load_network_records redSources : List Nat from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecMacsecIntegrated.redSources"]
 
@@ -246,7 +241,7 @@ theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
   simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
-theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
     (run : (lts config).MTr start actions finish) :
     finish.frame.payload = start.frame.payload ∧ finish.frame.originDomain = start.frame.originDomain :=
   all_traces_preserve_payload config run
@@ -255,7 +250,6 @@ end TDN.Deployments.PairingMacsecMacsecIntegrated
 namespace TDN.Deployments.PairingMacsecMacsecStandalone
 open MultiProtocolForwarding LayeredFrame
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 load_network_records devices : List DataPlaneForwarding.DeviceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecMacsecStandalone.devices"]
 
 load_network_records ifaces : List DataPlaneForwarding.IfaceData from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecMacsecStandalone.ifaces"]
@@ -270,7 +264,7 @@ load_network_records macIfaces : List MACIface from "../../data/evidence/spec002
 
 load_network_records carriers : List CarrierIface from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecMacsecStandalone.carriers"]
 
-def config : Config := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
+def config : TunnelForwardingModel := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links bridges macIfaces carriers
 def expectedEncapStack := DataPlaneForwarding.expectedEncapStackFromRecords ifaces
 load_network_records redSources : List Nat from "../../data/evidence/spec002-carrier-fields/TunnelMatrix_Configs.json" ["TDN.Deployments.PairingMacsecMacsecStandalone.redSources"]
 
@@ -296,7 +290,7 @@ theorem every_configured_mac_iface_emits_full_encryption (iface : MACIface)
   simpa [zero] using LinkProtection.enabled_sa_emits_encryption iface.settings enabled protect encrypt
     association.keyGeneration body
 
-theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+theorem payload_preserved_by_every_mixed_forwarding {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
     (run : (lts config).MTr start actions finish) :
     finish.frame.payload = start.frame.payload ∧ finish.frame.originDomain = start.frame.originDomain :=
   all_traces_preserve_payload config run

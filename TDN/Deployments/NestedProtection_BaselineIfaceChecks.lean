@@ -6,7 +6,6 @@ namespace TDN.Deployments.NestedProtection_Baseline
 open Compliance Requirements Requirements.Msc MtuSizing_Records LayeredFrame MultiProtocolForwarding
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma named_iface_is_recorded (iface : Nat) (interface : Interface)
     (listed : interface ∈ records.interfaces) (name : records.ifaceName iface = interface.id) :
@@ -31,9 +30,9 @@ lemma recipient_iface_is_recorded (iface domain : Nat)
   rw [empty] at recipient
   cases recipient
 
-lemma flow_iface_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
-    (selected : IPsecFlowEndpoints) (member : selected ∈ contexts) :
-    IPsecFlowIfaceChecks (deviceBinding primitive) (authenticationDeployment primitive) selected expectedEncapStack := by
+lemma flow_iface_checks (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial)
+    (selected : IpsecFlowEndpoints) (member : selected ∈ contexts) :
+    IpsecFlowIfaceChecks (deviceBinding primitive) (authenticationDeployment primitive) selected expectedEncapStack := by
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro iface interface listed name gray
     exact (recorded_iface_zones iface (named_iface_is_recorded iface interface listed name) interface listed name).1 gray

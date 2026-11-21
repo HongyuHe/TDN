@@ -14,7 +14,7 @@ load_network_records grayFirewalls : List Nat
 load_network_records grayRegions : List Nat
   from "../../data/evidence/v3-baseline-topology.json" ["grayRegions"]
 
-load_network_records innerForward : List TDN.PacketPolicy.Rule
+load_network_records innerForward : List TDN.PacketPolicy.PacketAclRule
   from "../../data/evidence/v3-baseline-packet_filters.json" ["NB_I_A1:filters4:FORWARD"]
 
 lemma saved_inventory_has_sources : TDN.Deployments.HasProvenance captured := by

@@ -156,32 +156,35 @@ def MatchCondition.matchesPacket : MatchCondition → Packet → Prop
 instance (a : MatchCondition) (p : Packet) : Decidable (a.matchesPacket p) := by
   cases a <;> unfold MatchCondition.matchesPacket <;> infer_instance
 
-structure Rule where
+structure PacketAclRule where
   atoms : List MatchCondition
   verdict : Filter.Verdict
   deriving DecidableEq, Repr
 
-def Rule.toFilter (r : Rule) : Filter.Rule Packet :=
+def PacketAclRule.toFilter (r : PacketAclRule) : Filter.FirstMatchRule Packet :=
   ⟨fun p => r.atoms.all (fun a => decide (a.matchesPacket p)), r.verdict⟩
 
-lemma matching_atom {r : Rule} {p : Packet}
+abbrev AclAllows (rules : List PacketAclRule) (fallback : Filter.Verdict) (packet : Packet) : Prop :=
+  Filter.evaluate (rules.map PacketAclRule.toFilter) fallback packet = .allow
+
+lemma matching_atom {r : PacketAclRule} {p : Packet}
     (matched : r.toFilter.accepts p = true) {a : MatchCondition} (member : a ∈ r.atoms) :
     a.matchesPacket p := by
   have all := List.all_eq_true.mp matched
   exact of_decide_eq_true (all a member)
 
-def OutboundGuard (r : Rule) (inside outside : String) : Prop :=
+def OutboundGuard (r : PacketAclRule) (inside outside : String) : Prop :=
   .ingress inside ∈ r.atoms ∧ .egress outside ∈ r.atoms ∧
   ∃ a ∈ r.atoms, match a with | .outboundPolicy _ => True | _ => False
 
-def InboundGuard (r : Rule) (inside outside : String) : Prop :=
+def InboundGuard (r : PacketAclRule) (inside outside : String) : Prop :=
   .ingress outside ∈ r.atoms ∧ .egress inside ∈ r.atoms ∧
   ∃ a ∈ r.atoms, match a with | .inboundPolicy _ => True | _ => False
 
-def RequiresIpsecPolicyMatch (r : Rule) (inside outside : String) : Prop :=
+def RequiresIpsecPolicyMatch (r : PacketAclRule) (inside outside : String) : Prop :=
   OutboundGuard r inside outside ∨ InboundGuard r inside outside
 
-instance (r : Rule) (inside outside : String) : Decidable (RequiresIpsecPolicyMatch r inside outside) := by
+instance (r : PacketAclRule) (inside outside : String) : Decidable (RequiresIpsecPolicyMatch r inside outside) := by
   unfold RequiresIpsecPolicyMatch OutboundGuard InboundGuard
   letI dout (a : MatchCondition) : Decidable (match a with | .outboundPolicy _ => True | _ => False) := by
     cases a <;> infer_instance
@@ -193,7 +196,7 @@ def ProtectedForward (inside outside : String) (p : Packet) : Prop :=
   (p.ingress = inside ∧ p.egress = outside ∧ ∃ id, id ∈ p.matchedOutboundPolicyIds) ∨
   (p.ingress = outside ∧ p.egress = inside ∧ ∃ id, id ∈ p.matchedInboundPolicyIds)
 
-lemma guarded_rule_protects {r : Rule} {inside outside : String} {p : Packet}
+lemma guarded_rule_protects {r : PacketAclRule} {inside outside : String} {p : Packet}
     (guard : RequiresIpsecPolicyMatch r inside outside) (matched : r.toFilter.accepts p = true) :
     ProtectedForward inside outside p := by
   rcases guard with ⟨hin, hout, a, ha, hkind⟩ | ⟨hin, hout, a, ha, hkind⟩
@@ -208,11 +211,11 @@ lemma guarded_rule_protects {r : Rule} {inside outside : String} {p : Packet}
     cases a <;> simp only at hkind <;> try contradiction
     exact Or.inr ⟨pi, po, _, policyEvidence⟩
 
-theorem forwarding_policy_protects (rules : List Rule) (inside outside : String)
+theorem forwarding_policy_protects (rules : List PacketAclRule) (inside outside : String)
     (checked : ∀ r ∈ rules, r.verdict = .allow → RequiresIpsecPolicyMatch r inside outside)
-    (p : Packet) (accepted : Filter.evaluate (rules.map Rule.toFilter) .deny p = .allow) :
+    (p : Packet) (accepted : Filter.evaluate (rules.map PacketAclRule.toFilter) .deny p = .allow) :
     ProtectedForward inside outside p := by
-  apply Filter.default_deny_sound (rules.map Rule.toFilter) (ProtectedForward inside outside) ?_ p accepted
+  apply Filter.default_deny_sound (rules.map PacketAclRule.toFilter) (ProtectedForward inside outside) ?_ p accepted
   intro r hr allow packet matched
   obtain ⟨source, hsource, rfl⟩ := List.mem_map.mp hr
   exact guarded_rule_protects (checked source hsource allow) matched

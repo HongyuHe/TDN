@@ -104,7 +104,7 @@ def build():
     (DEST / "IPsecDelivery.json").write_text(json.dumps(delivery,indent=2,sort_keys=True)+"\n")
     bindings=[]
     for tunnel in records["tunnels"]:
-        if tunnel["mechanism"] != "ipsec":
+        if tunnel["protocol"] != "ipsec":
             continue
         owner=records["ownerNames"].index(tunnel["sender"])
         for record in installations:

@@ -15,7 +15,7 @@ instance (d : Deployment) (controls : List BoundaryControlFlow) :
   unfold GrayControlInventoryDisjoint
   infer_instance
 
-lemma declared_control_inventory_has_no_Gray_firewall_approval (d : Deployment)
+lemma declared_control_inventory_has_no_gray_firewall_approval (d : Deployment)
     (controls : List BoundaryControlFlow) (approval : d.policyApproved = BoundaryControlApproval controls)
     (disjoint : GrayControlInventoryDisjoint d controls)
     (interface : Interface) (member : interface ∈ d.interfaces)

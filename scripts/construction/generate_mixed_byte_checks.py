@@ -20,23 +20,23 @@ def main():
 open MultiProtocolForwarding
 
 theorem every_mixed_byte_keeps_stack {{Byte : Type}}
-    {{after : List (ByteFlows.Carrier MultiProtocolForwarding.State Byte)}}
-    {{actions : List (ByteFlows.Action MultiProtocolForwarding.Action)}}
+    {{after : List (ByteFlows.PacketBytes MultiProtocolForwarding.TunnelForwardingState Byte)}}
+    {{actions : List (ByteFlows.ByteFlowAction MultiProtocolForwarding.TunnelForwardingAction)}}
     (run : (byteSystem config (Requirements.MixedByteOrigin redSources)).MTr [] actions after) :
     ByteFlows.Safe (fun _ => EncapStackConsistent config expectedEncapStack) after :=
   Requirements.mixed_bytes_keep_protection config expectedEncapStack redSources mixed_local_conditions
     red_sources_checked run
 
 theorem every_mixed_black_byte_has_actual_layer_order {{Byte : Type}}
-    {{after : List (ByteFlows.Carrier MultiProtocolForwarding.State Byte)}}
-    {{actions : List (ByteFlows.Action MultiProtocolForwarding.Action)}}
+    {{after : List (ByteFlows.PacketBytes MultiProtocolForwarding.TunnelForwardingState Byte)}}
+    {{actions : List (ByteFlows.ByteFlowAction MultiProtocolForwarding.TunnelForwardingAction)}}
     (run : (byteSystem config (Requirements.MixedByteOrigin redSources)).MTr [] actions after)
-    (packet : ByteFlows.Carrier MultiProtocolForwarding.State Byte) (member : packet ∈ after)
+    (packet : ByteFlows.PacketBytes MultiProtocolForwarding.TunnelForwardingState Byte) (member : packet ∈ after)
     (ready : packet.state.datapathStage = .egressReady) (black : packet.state.iface ∈ blackIfaces)
     (byte : Byte) (contains : byte ∈ packet.bytes) :
     packet.state.frame.body.protectionLayers = [2, 1] ∧
     ∃ start labels, Requirements.MixedByteOrigin redSources start byte ∧
-      (byteLineage config).MTr start labels packet.state ∧
+      (payloadByteOriginPath config).MTr start labels packet.state ∧
       ByteOrderedEncryptions config 1 2 start labels packet.state :=
   Requirements.every_mixed_black_byte_has_ordered_encryptions config expectedEncapStack redSources blackIfaces
     mixed_local_conditions red_sources_checked black_ifaces_checked
@@ -57,10 +57,10 @@ open MultiProtocolForwarding
 
 theorem positive_three_byte_delivery :
     (byteSystem config (Requirements.MixedByteOrigin redSources)).MTr []
-      (ByteFlows.Action.inject :: usefulActions.map ByteFlows.Action.network)
+      (ByteFlows.ByteFlowAction.inject :: usefulActions.map ByteFlows.ByteFlowAction.network)
       [⟨{final}, ([1, 2, 3] : List Nat)⟩] := by
   have injection :
-      ByteFlows.Step (lts config) (Requirements.MixedByteOrigin redSources) PlainByteAssembly
+      ByteFlows.ByteFlowStep (lts config) (Requirements.MixedByteOrigin redSources) PlainByteAssembly
         [] .inject [⟨usefulState0, ([1, 2, 3] : List Nat)⟩] :=
     .inject (fun _ _ => useful_red_origin)
   exact .stepL injection (ByteFlows.network_trace_on_one_carrier (lts config)

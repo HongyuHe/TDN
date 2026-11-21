@@ -25,13 +25,23 @@ VERSION = 'v' + (ROOT / 'THEORY_VERSION').read_text().strip()
 SUBMISSION = Path('data/publication') / VERSION
 REGISTER = SUBMISSION / 'register.json'
 compiled = {row['name']: row for row in load(HERE.relative_to(ROOT) / 'lean-dependencies.json')}
+private_declarations = {(row['module'], row['sourceName']): row['name'] for row in compiled.values()
+                        if 'sourceName' in row}
 register = load(REGISTER)['groups']
+catalog = {row['id']: row for row in load('specs/proof_scope.json')['groups']}
+selected = {key: row['specification'] for key, row in catalog.items() if row['decision'] == 'formal'}
 proof_map = {row['rg_id']: row for row in load(SUBMISSION / 'proof_map.json')}
 applications_register = {row['rg_id']: row for row in load(SUBMISSION / 'applications.json')}
 verdict = load(SUBMISSION / 'verdict.json')
 RUN = Path(verdict.get('source_run', 'data/construction/v3.2-20261031T231942Z'))
 extracted = {row['group_id']: row for row in load('data/extraction/requirements/groups.json')['groups']}
-assert verdict['verdict'] == 'PASS' and set(proof_map) == set(verdict['selected_RGs'])
+assert verdict['verdict'] == ('INCOMPLETE' if verdict['deferred_RGs'] else 'PASS')
+assert set(proof_map) == set(verdict['reviewed_RGs'])
+assert set(proof_map) == set(applications_register)
+assert set(verdict['selected_RGs']) == set(selected) == set(proof_map) | set(verdict['deferred_RGs'])
+assert set(proof_map).isdisjoint(verdict['deferred_RGs'])
+assert {row['rg_id']: row['specification'] for row in register if row.get('specification')} == selected
+assert set(catalog) == set(extracted) == {row['rg_id'] for row in register}
 nodes = {}
 source_hashes = {}
 active_modules, pending_modules = set(), ['TDN']
@@ -74,8 +84,6 @@ def without_comments(text):
 #* Source spelling distinguishes lemma from theorem; Lean checks both as theorems.
 declaration = re.compile(r'^(?:@\[[^\]]+\]\s*)?(?:(?:noncomputable|private|protected)\s+)*(theorem|lemma|def|abbrev|structure|inductive|load_network_records)\s+([\w.\u0080-\uffff]+)')
 for path in sorted((ROOT / 'TDN').rglob('*.lean')):
-    if 'Import' in path.relative_to(ROOT / 'TDN').parts[:-1]:
-        continue
     module = '.'.join(path.relative_to(ROOT).with_suffix('').parts)
     if module not in active_modules:
         inactive_source_files.append(str(path.relative_to(ROOT)))
@@ -85,8 +93,10 @@ for path in sorted((ROOT / 'TDN').rglob('*.lean')):
     clean = without_comments(original).splitlines()
     relative = str(path.relative_to(ROOT))
     source_hashes[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+    if 'Import' in path.relative_to(ROOT / 'TDN').parts[:-1]:
+        continue
     #* Deployments JSON contributes to the compiled declarations shown by the page.
-    for imported in re.findall(r'^load_network_(?:records|snapshot)\b[^\n]*(?:\n[ \t]+[^\n]*)*?\bfrom\s+"([^"\n]+)"', original, re.M):
+    for imported in re.findall(r'^(?:load_network_(?:records|snapshot)|replay_forwarding_trace)\b[^\n]*(?:\n[ \t]+[^\n]*)*?\bfrom\s+"([^"\n]+)"', original, re.M):
         evidence = (path.parent / imported).resolve()
         if not evidence.is_relative_to(ROOT) or not evidence.is_file():
             raise ValueError('Missing or external hierarchy evidence input: ' + imported)
@@ -99,23 +109,39 @@ for path in sorted((ROOT / 'TDN').rglob('*.lean')):
             scopes.append((scope[1], scope[2] or ''))
         if re.match(r'^end(?:\s|$)', line) and scopes:
             scopes.pop()
+        if line.startswith("replay_forwarding_trace "):
+            ns = ".".join(name for kind, name in scopes if kind == "namespace")
+            capture = re.search(r'\bfrom "([^"]+)"', lines[i])
+            if capture is None:
+                raise ValueError("Could not find forwarding trace in " + relative)
+            records = json.loads((path.parent / capture[1]).read_text())
+            count = len(records[ns + ".witnessActions"])
+            starts.append((i, ns + ".witnessActions", "replayed_def"))
+            starts.extend((i, ns + f".witnessState{j}", "replayed_def") for j in range(count + 1))
+            starts.extend((i, ns + f".witness_step{j}", "replayed_lemma") for j in range(count))
+            starts.append((i, ns + ".witness_delivery_endpoints", "replayed_lemma"))
+            starts.append((i, ns + ".positive_delivery_forwarding", "replayed_theorem"))
         match = declaration.match(line)
         if match:
             name = '.'.join([s[1] for s in scopes if s[0] == 'namespace'] + [match[2]])
+            if 'private' in line[:match.start(1)].split():
+                name = private_declarations[module, name]
             starts.append((i, name, match[1]))
     for pos, (i, name, keyword) in enumerate(starts):
         if name not in compiled:
             raise ValueError('Source declaration absent from compiled environment: ' + name)
         stop = starts[pos + 1][0] if pos + 1 < len(starts) else len(lines)
-        source = '\n'.join(lines[i:stop])
+        generated = keyword.startswith('replayed_')
+        source = lines[i] if generated else '\n'.join(lines[i:stop])
         source = re.split(r'\n(?:/--|end\s|namespace\s)', source)[0].rstrip()
         prefix = '\n'.join(lines[:i]).rstrip()
         doc = re.search(r'/--((?:(?!/--).)*?)\-/\s*$', prefix, re.S)
         nodes[name] = {
             'name': name, 'short': name.split('.')[-1], 'path': relative, 'line': i + 1,
-            'source': source, 'kind': 'def' if keyword == 'load_network_records' else keyword, 'compiledKind': compiled[name]['kind'],
-            'decide': bool(re.search(r'\b(?:(?:native_)?decide|of_decide_eq_true|decide_eq_true)\b', without_comments(source))),
-            'doc': ' '.join(doc[1].split()) if doc else '',
+            'source': source, 'kind': 'def' if keyword == 'load_network_records' else keyword.removeprefix('replayed_'), 'compiledKind': compiled[name]['kind'],
+            'decide': keyword == 'replayed_lemma' or bool(re.search(r'\b(?:(?:native_)?decide|of_decide_eq_true|decide_eq_true)\b', without_comments(source))),
+            'doc': ('Checks the recorded action and both packet states against the forwarding rules.'
+                    if keyword == 'replayed_lemma' else ' '.join(doc[1].split()) if doc else ''),
             'conclusionHead': compiled[name]['conclusionHead'],
             'aliasOf': compiled[name].get('aliasOf', ''),
         }
@@ -200,10 +226,18 @@ for row in register:
     complete_applications = []
     partial_specs = []
     if formal:
-        #* Keep the accepted specification as the root; older narrower definitions remain named clauses.
-        old_name = 'TDN.Requirements.' + original['theorem_name']
-        if old_name in nodes and canonical(old_name) != canonical(formal):
-            partial_specs.append(old_name)
+        for clause in catalog[gid].get('supporting_specifications', []):
+            assert clause in nodes and canonical(clause) != canonical(formal), (gid, clause)
+            partial_specs.append(clause)
+        if not reviewed:
+            supporting = catalog[gid]
+            general, application = supporting['general'], supporting['application']
+            clause = supporting.get('clause_specification')
+            if clause:
+                assert clause in nodes and canonical(clause) != canonical(formal)
+                partial_specs.append(clause)
+            generals.append(general)
+            applications[application] = supporting['clause']
         for name, node in nodes.items():
             if node['compiledKind'] != 'theorem':
                 continue
@@ -218,17 +252,16 @@ for row in register:
                 if full:
                     scopes[name] = applications[name]
             else:
-                generals.append(name)
+                if name not in generals:
+                    generals.append(name)
     if formal:
         #* Retain explicitly RG-named partial applications without promoting their scope.
         tagged = [name for name, node in nodes.items() if node['compiledKind'] == 'theorem'
-                  and re.search(r'RG' + gid[3:] + r'(?:_|$)', node['short'])]
+                  and re.search(r'(?:^|_)rg' + gid[3:] + r'(?:_|$)', node['short'], re.I)]
         for name in tagged:
             node = nodes[name]
             head = node['conclusionHead']
-            if head in nodes and head.startswith('TDN.Requirements.') and nodes[head]['short'].startswith('msc_'):
-                if canonical(head) != canonical(formal) and head not in partial_specs:
-                    partial_specs.append(head)
+            if head in partial_specs or (head in nodes and canonical(head) == canonical(formal)):
                 if node['path'].startswith('TDN/Deployments/'):
                     applications.setdefault(name, 'Retained RG-specific application. Its conclusion establishes the named clause; the complete specification has the status shown above.')
                 elif name not in generals:
@@ -257,8 +290,10 @@ for row in register:
     status = 'review_pass' if reviewed else 'deferred' if formal else 'outside_selected_scope'
     reason = ('All clauses of the accepted specification have a general proof and checked applications within the recorded model scope. Complete-candidate review passed. Applying the result to a running deployment still requires its explicit premises.' if reviewed else
               verdict.get('deferred_reason', 'The specification passed interpretation review. A complete proof remains deferred under the user-selected stopping point.') if formal else
-              row['prior_reason'])
+              catalog[gid]['action'])
     conditions = reviewed.get('open_application_conditions', []) if reviewed else []
+    if row.get('profile_summary'):
+        reason = row['profile_summary']
     roots = list(dict.fromkeys(generals + list(applications)))
     record = {
         'id': gid, 'title': original['title'], 'status': status, 'positive': bool(reviewed),
@@ -266,10 +301,10 @@ for row in register:
         'roots': roots, 'generals': generals, 'applications': applications, 'scopes': scopes,
         'countedGeneral': reviewed['general_theorem'] if reviewed else None,
         'countedApplication': complete_applications[0] if complete_applications else None,
-        'clause': 'Every clause of the accepted specification.' if reviewed else 'Complete proof deferred.' if formal else 'Outside the 24 selected formal-proof targets.',
+        'clause': 'Every clause of the accepted specification.' if reviewed else 'Complete proof deferred.' if formal else 'Catalog requirement outside the selected proof targets.',
         'reason': reason, 'remaining': conditions if reviewed else ([reason] if formal else []),
         'evidence': [], 'certificates': [], 'partialSpecifications': partial_specs,
-        'completeApplications': complete_applications, 'disposition': row['prior_disposition'],
+        'completeApplications': complete_applications, 'disposition': catalog[gid]['decision'],
         'registerPath': str(REGISTER),
         'reviewPath': str(SUBMISSION / 'verdict.json') if reviewed else None,
     }
@@ -284,10 +319,10 @@ for row in register:
                    'formal_alias': canonical(formal) if formal else None})
 
 assert len(groups) == 76
-assert sum(g['formal'] is not None for g in groups) == 24
+assert {g['id'] for g in groups if g['formal']} == set(selected)
 passed_count = sum(g['positive'] for g in groups)
 formal_count = sum(g['formal'] is not None for g in groups)
-assert passed_count == len(verdict['selected_RGs'])
+assert passed_count == len(verdict['reviewed_RGs'])
 summary = {'groups': len(groups), 'formal_definitions': formal_count, 'review_pass_groups': passed_count,
            'deferred_groups': formal_count - passed_count, 'outside_selected_groups': len(groups) - formal_count,
            'complete_model_applications': sum(len(g['completeApplications']) for g in groups),

@@ -4,9 +4,9 @@ import TDN.Models.MultiProtocolEncryptionEvents
 namespace TDN.MultiProtocolForwarding
 open LayeredFrame
 
-lemma headered_encryption_output_layout {c : Config} {expectedEncapStack : Nat → List Nat}
-    {before after : State} {action : Action}
-    (step : Step c before action after) (label : IsEncryption action)
+lemma headered_encryption_output_layout {c : TunnelForwardingModel} {expectedEncapStack : Nat → List Nat}
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep c before action after) (label : IsEncryption action)
     (invariant : HeaderedStackInvariant c expectedEncapStack after) :
     after.frame.body.protectionLayers = expectedEncapStack after.iface := by
   cases step <;> simp only [IsEncryption, reduceCtorEq, false_or] at label
@@ -15,13 +15,13 @@ lemma headered_encryption_output_layout {c : Config} {expectedEncapStack : Nat �
     simpa only [HeaderedStackInvariant, datapathStage] using invariant.2.2
 
 theorem headered_nested_stack_requires_ordered_encryptions
-    (c : Config) (expectedEncapStack : Nat → List Nat)
+    (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat)
     (conditions : HeaderedLocalConditions c expectedEncapStack)
     (processing : HeaderProcessing) (mode : c.headerProcessing = some processing)
     (bounds : HeaderBounds processing) (innerTag outerTag : Nat)
     (placement : ∀ iface, (expectedEncapStack iface).head? = some outerTag →
       expectedEncapStack iface = [outerTag, innerTag])
-    {before after : State} {actions : List Action}
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction}
     (run : (lts c).MTr before actions after)
     (initial : HeaderedStackInvariant c expectedEncapStack before)
     (empty : before.frame.body.protectionLayers = [])

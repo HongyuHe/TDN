@@ -3,10 +3,10 @@ import TDN.Requirements.OuterToGrayIptablesPatterns
 namespace TDN.Requirements.Msc
 open Compliance DeriveEndpointInputOutputRules MultiProtocolForwarding
 
-theorem outer_gray_IPsec_policy_from_native_checks (d : Deployment)
+theorem outer_gray_ipsec_policy_from_native_checks (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (processing : HeaderProcessing) (mode : inventory.configuration.headerProcessing = some processing)
-    (bounds : HeaderBounds processing) (pairs : List InnerIPsecPair)
+    (bounds : HeaderBounds processing) (pairs : List InnerIpsecPair)
     (addressChecked : addressRecordsChecked d = true)
     (workstations : d.grayWorkstation = grayWorkstationRole d)
     (coherent : d.ProcessingCoherent) (udpCoherent : d.UDPBindingsCoherent)
@@ -14,7 +14,7 @@ theorem outer_gray_IPsec_policy_from_native_checks (d : Deployment)
     (bindings : ∀ record ∈ pairs, record.Bound d)
     (observations : IPsecObservationChecks d)
     (udp : d.udpBindings = []) (carrier : d.carrierBindings = [])
-    (mechanisms : ∀ tunnel ∈ d.tunnels, tunnel.layer = .inner → tunnel.mechanism = .ipsec)
+    (mechanisms : ∀ tunnel ∈ d.tunnels, tunnel.layer = .inner → tunnel.protocol = .ipsec)
     (coverage : InnerIPsecAddressCoverage d pairs)
     (noApproved : ∀ component traffic, ¬ d.policyApproved component traffic)
     (noManagement : ∀ component traffic, ¬ d.grayManagementService component traffic)
@@ -36,14 +36,14 @@ theorem outer_gray_IPsec_policy_from_native_checks (d : Deployment)
       InterfaceMtuBound d interface (interface.mtu.getD 0))
     (forward : ∀ interface ∈ d.interfaces, d.IsLayer interface.device .outer → interface.zone = .gray →
       ∀ direction, OuterGrayForwardChecks d inventory pairs interface direction) :
-    msc_outer_gray_interface_policy d false := by
+    outer_gray_interface_policy d false := by
   have address := address_inventory_from_checked_records d addressChecked workstations
   refine ⟨address, coherent, udpCoherent, ?_⟩
   intro interface member _ outer gray
   have covered := policy_coverage_from_checked_indices d indices interface member
   refine ⟨covered, ?_, ?_⟩
   · intro direction traffic accepted
-    exact admitted_Outer_gray_packet_is_safe d inventory present interface pairs bindings address observations gray
+    exact admitted_outer_gray_packet_is_safe d inventory present interface pairs bindings address observations gray
       (routed interface member outer gray) (rules interface member outer gray) direction traffic accepted false
   · intro direction hook traffic eligible restrictions allowance
     obtain ⟨context, contextHook, supported, _⟩ := routed_eligible_packet_has_native_context
@@ -55,7 +55,7 @@ theorem outer_gray_IPsec_policy_from_native_checks (d : Deployment)
     have notLink : hook ≠ .link := applies.2.1
     simp only [notLink, ↓reduceIte]
     refine ⟨policy, policyMember, name, policyDirection, policyHook, unique, ?_⟩
-    exact eligible_Outer_gray_IPsec_packet_is_allowed d inventory present processing mode bounds pairs udp carrier
+    exact eligible_outer_gray_ipsec_packet_is_allowed d inventory present processing mode bounds pairs udp carrier
       mechanisms coverage noApproved noManagement separation ipv4 vpn interface member outer gray
       (routed interface member outer gray) (mtus interface member outer gray) direction
       (forward interface member outer gray direction) hook traffic eligible restrictions allowance policy
@@ -66,28 +66,28 @@ end TDN.Requirements.Msc
 namespace TDN.Requirements.Msc
 open Compliance DeriveEndpointInputOutputRules
 
-instance (d : Deployment) (component : String) (layer : Layer) :
+instance (d : Deployment) (component : String) (layer : EncryptionLayer) :
     Decidable (d.IsLayer component layer) := by
   unfold Deployment.IsLayer
   infer_instance
 
-instance (record : InnerIPsecPair) (d : Deployment) [DecidableRel d.intendedPeer] :
+instance (record : InnerIpsecPair) (d : Deployment) [DecidableRel d.intendedPeer] :
     Decidable (record.Bound d) := by
-  unfold InnerIPsecPair.Bound SameLevelComponents
+  unfold InnerIpsecPair.Bound SameLevelComponents
   infer_instance
 
-instance (d : Deployment) (pairs : List InnerIPsecPair) :
+instance (d : Deployment) (pairs : List InnerIpsecPair) :
     Decidable (OuterLocalSeparation d pairs) := by
   unfold OuterLocalSeparation
   infer_instance
 
-instance (d : Deployment) (interface : Interface) (rule : PacketPolicy.Rule) :
+instance (d : Deployment) (interface : Interface) (rule : PacketPolicy.PacketAclRule) :
     Decidable (OuterGrayHeaderRule d interface rule) := by
   unfold OuterGrayHeaderRule
   infer_instance
 
 instance (d : Deployment) (interface : Interface) (name : String) (direction : Direction)
-    (pairs : List InnerIPsecPair) (rule : PacketPolicy.Rule)
+    (pairs : List InnerIpsecPair) (rule : PacketPolicy.PacketAclRule)
     [DecidablePred (d.reachableSource interface.id)] :
     Decidable (OuterGrayRuleChecks d interface name direction pairs rule) := by
   unfold OuterGrayRuleChecks

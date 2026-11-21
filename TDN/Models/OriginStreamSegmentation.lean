@@ -26,7 +26,7 @@ lemma Request.segment_capacity_positive (request : Request) (packet : PacketPoli
   unfold Request.segmentCapacity
   omega
 
-def sourceIPDatagrams (request : Request) (packet : PacketPolicy.Packet) (mtu : Nat) : List Datagram :=
+def sourceIPDatagrams (request : Request) (packet : PacketPolicy.Packet) (mtu : Nat) : List EncodedDatagram :=
   match request.mode with
   | .stream =>
       (Fragmentation.bytePartition request.application.length (request.segmentCapacity mtu)
@@ -37,7 +37,7 @@ def sourceIPDatagrams (request : Request) (packet : PacketPolicy.Packet) (mtu : 
     (payload : List UInt8) :
     (encodeSourceDatagram request packet payload).asWhole.application = payload := rfl
 
-theorem source_IP_datagrams_valid (request : Request) (packet : PacketPolicy.Packet) (mtu : Nat)
+theorem source_ip_datagrams_valid (request : Request) (packet : PacketPolicy.Packet) (mtu : Nat)
     (body : request.body = .datagram packet) (valid : request.TemplateValid)
     (representable : HeaderRepresentable packet) (minimum : 1280 ≤ mtu)
     (room : request.Overhead < mtu)
@@ -64,7 +64,7 @@ theorem source_IP_datagrams_valid (request : Request) (packet : PacketPolicy.Pac
       rw [List.map_id]
       exact Fragmentation.byte_partition_restores_bytes _ _ _
     | datagram df =>
-      have preserved := source_IP_fragmentation_preserves request packet request.application mtu
+      have preserved := source_ip_fragmentation_preserves request packet request.application mtu
       simp only [sourceIPDatagrams, mode, List.map_cons, List.map_nil, List.flatten_cons,
         List.flatten_nil, List.append_nil, preserved.2.1]
   · intro datagram member
@@ -80,11 +80,11 @@ theorem source_IP_datagrams_valid (request : Request) (packet : PacketPolicy.Pac
         have overheadBound := request.ip_overhead_bounds packet body valid
         unfold Request.segmentCapacity at bound
         omega
-      exact source_IP_whole_datagram_valid request packet payload mtu body valid representable size.2 size.1
+      exact source_ip_whole_datagram_valid request packet payload mtu body valid representable size.2 size.1
     | datagram df =>
       simp only [sourceIPDatagrams, mode, List.mem_singleton] at member
       subst datagram
-      apply source_IP_fragmented_datagram_valid request packet request.application mtu body valid
+      apply source_ip_fragmented_datagram_valid request packet request.application mtu body valid
         representable (length ⟨df, mode⟩) minimum
       · intro stream
         rw [mode] at stream

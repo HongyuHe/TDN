@@ -70,7 +70,7 @@ def generate(output,report_path):
         content=safe_path(root,entry["path"]).read_bytes()
         require(hashlib.sha256(content).hexdigest()==entry["sha256"] and len(content)==entry["bytes"],"declaration hash/size mismatch")
     configs=validate_declaration(json.loads(path.read_text()))
-    lines=["import TDN.Deployments.DomainTypes","namespace TDN.Deployments.Domains","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments.DomainTypes","namespace TDN.Deployments.Domains","set_option maxRecDepth 100000"]
     reports=[]
     for config in configs:
         ns=identifier(config["configuration_id"])

@@ -11,7 +11,7 @@ instance (d : Deployment) : Decidable (GrayIPsecObservationChecks d) := by
   unfold GrayIPsecObservationChecks
   infer_instance
 
-lemma registered_ESP_service_is_absent (d : Deployment) (packet : PacketPolicy.Packet)
+lemma registered_esp_service_is_absent (d : Deployment) (packet : PacketPolicy.Packet)
     (checks : GrayIPsecObservationChecks d) (esp : packet.protocol = "esp") :
     d.RegisteredService packet = none := by
   unfold Deployment.RegisteredService
@@ -27,7 +27,7 @@ lemma registered_ESP_service_is_absent (d : Deployment) (packet : PacketPolicy.P
   rw [absent]
   rfl
 
-lemma Gray_IPsec_observation_is_not_management (d : Deployment)
+lemma gray_ipsec_observation_is_not_management (d : Deployment)
     (packet : PacketPolicy.Packet) (checks : GrayIPsecObservationChecks d)
     (protocol : IPsecPacket packet) :
     (d.Observe packet).trafficClass ≠ .management ∧ (d.Observe packet).service ≠ "http" := by
@@ -39,7 +39,7 @@ lemma Gray_IPsec_observation_is_not_management (d : Deployment)
     simp [checks.2 device member]
   have observedClass : d.ObservedClass packet ≠ .management := by
     rcases protocol with esp | ike | udpESP
-    · have absent := registered_ESP_service_is_absent d packet checks esp
+    · have absent := registered_esp_service_is_absent d packet checks esp
       have notIKE : ¬ PacketIKE packet := by simp [PacketIKE, esp]
       have notUDPESP : ¬ PacketUDPESP packet := by simp [PacketUDPESP, esp]
       unfold Deployment.ObservedClass
@@ -59,7 +59,7 @@ lemma Gray_IPsec_observation_is_not_management (d : Deployment)
     · exact observedClass
   · change d.ObservedService packet ≠ "http"
     rcases protocol with esp | ike | udpESP
-    · have absent := registered_ESP_service_is_absent d packet checks esp
+    · have absent := registered_esp_service_is_absent d packet checks esp
       simp [Deployment.ObservedService, PacketService, PacketPortService, PacketIKE,
         PacketUDPESP, esp, absent]
     · simp [Deployment.ObservedService, ike]
@@ -67,7 +67,7 @@ lemma Gray_IPsec_observation_is_not_management (d : Deployment)
       · simp [Deployment.ObservedService, ike]
       · simp [Deployment.ObservedService, ike, udpESP]
 
-lemma IPsec_same_level_excludes_different_classification (d : Deployment)
+lemma ipsec_same_level_excludes_different_classification (d : Deployment)
     (identifiers : ∀ first ∈ d.devices, ∀ second ∈ d.devices,
       first.id = second.id → first = second)
     (carrier : d.carrierBindings = []) (traffic : Traffic)
@@ -75,10 +75,10 @@ lemma IPsec_same_level_excludes_different_classification (d : Deployment)
     ¬ DifferentClassificationVPNs d traffic := by
   obtain ⟨source, sourceMember, destination, destinationMember, _, _, level, _, pair⟩ := same
   obtain ⟨sourceMetadata, destinationMetadata, _, _⟩ :=
-    IPsecPacket.InnerPair_is_IP d traffic source.id destination.id ipsec carrier pair
+    IPsecPacket.inner_pair_is_ip d traffic source.id destination.id ipsec carrier pair
   rintro ⟨first, firstMember, second, secondMember, _, _, _, _, different, pair⟩
   obtain ⟨firstMetadata, secondMetadata, _, _⟩ :=
-    IPsecPacket.InnerPair_is_IP d traffic first.id second.id ipsec carrier pair
+    IPsecPacket.inner_pair_is_ip d traffic first.id second.id ipsec carrier pair
   have firstID : first.id = source.id := Option.some.inj (firstMetadata.symm.trans sourceMetadata)
   have secondID : second.id = destination.id :=
     Option.some.inj (secondMetadata.symm.trans destinationMetadata)
@@ -88,7 +88,7 @@ lemma IPsec_same_level_excludes_different_classification (d : Deployment)
   subst second
   exact different (congrArg SecurityLevel.classification level)
 
-lemma Gray_firewall_header_is_eligible (d : Deployment) (interface : Interface)
+lemma gray_firewall_header_is_eligible (d : Deployment) (interface : Interface)
     (roles : ∀ device ∈ d.devices, device.id = interface.device →
       device.kind = .grayFirewall ∧ device.layer = none)
     (traffic : Traffic) : d.HeaderEligible interface traffic := by
@@ -97,47 +97,47 @@ lemma Gray_firewall_header_is_eligible (d : Deployment) (interface : Interface)
   simp [actual.1, actual.2]
 
 def GrayIPsecRuleChecks (d : Deployment) (interface : Interface) (name : String)
-    (direction : Direction) (pairs : List InnerIPsecPair) (rule : PacketPolicy.Rule) : Prop :=
+    (direction : Direction) (pairs : List InnerIpsecPair) (rule : PacketPolicy.PacketAclRule) : Prop :=
   RuleMissesHook name direction rule ∨
     ∃ record ∈ pairs, record.Guards rule ∧
       (direction = .inbound → d.reachableSource interface.id record.endpoints.sourceAddress)
 
 instance (d : Deployment) (interface : Interface) (name : String)
-    (direction : Direction) (pairs : List InnerIPsecPair) (rule : PacketPolicy.Rule)
+    (direction : Direction) (pairs : List InnerIpsecPair) (rule : PacketPolicy.PacketAclRule)
     [DecidablePred (d.reachableSource interface.id)] :
     Decidable (GrayIPsecRuleChecks d interface name direction pairs rule) := by
   unfold GrayIPsecRuleChecks
   infer_instance
 
-lemma checked_Gray_IPsec_rule_is_safe (d : Deployment) (interface : Interface)
+lemma checked_gray_ipsec_rule_is_safe (d : Deployment) (interface : Interface)
     (name : String) (direction : Direction) (hook : PacketProcessing.Hook)
-    (pairs : List InnerIPsecPair) (bindings : ∀ record ∈ pairs, record.Bound d)
+    (pairs : List InnerIpsecPair) (bindings : ∀ record ∈ pairs, record.Bound d)
     (identifiers : ∀ first ∈ d.devices, ∀ second ∈ d.devices,
       first.id = second.id → first = second)
     (roles : ∀ device ∈ d.devices, device.id = interface.device →
       device.kind = .grayFirewall ∧ device.layer = none)
     (carrier : d.carrierBindings = []) (coherent : d.AddressInventoryCoherent)
     (observations : GrayIPsecObservationChecks d)
-    (rule : PacketPolicy.Rule) (checks : GrayIPsecRuleChecks d interface name direction pairs rule)
+    (rule : PacketPolicy.PacketAclRule) (checks : GrayIPsecRuleChecks d interface name direction pairs rule)
     (traffic : Traffic) (supported : d.Supported traffic)
     (context : PacketAtHook name direction hook traffic.packet)
     (matched : rule.toFilter.accepts traffic.packet = true) :
     GrayFirewallRestrictions d interface direction traffic ∧ GrayPolicyAllowance d interface traffic := by
   rcases checks with missed | ⟨record, member, guarded, reachable⟩
   · exact False.elim (hook_mismatch_cannot_match name direction hook traffic.packet context rule missed matched)
-  obtain ⟨tunnel, sameLevel, appropriate⟩ := matched_IPsec_pair_is_permitted_tunnel d
+  obtain ⟨tunnel, sameLevel, appropriate⟩ := matched_ipsec_pair_is_permitted_tunnel d
     coherent record (bindings record member) rule guarded traffic supported matched
-  have ipsec := IPsec_rule_has_IPsec_packet rule traffic.packet guarded.2.2.2 matched
+  have ipsec := ipsec_rule_has_ipsec_packet rule traffic.packet guarded.2.2.2 matched
   obtain ⟨notManagement, notHTTP⟩ :=
-    Gray_IPsec_observation_is_not_management d traffic.packet observations ipsec
+    gray_ipsec_observation_is_not_management d traffic.packet observations ipsec
   have notManagementTraffic : traffic.trafficClass ≠ .management := by
     rw [supported.1]
     exact notManagement
   have notHTTPTraffic : traffic.service ≠ "http" := by
     rw [supported.1]
     exact notHTTP
-  refine ⟨⟨Gray_firewall_header_is_eligible d interface roles traffic, ?_, ?_, ?_, ?_,
-    IPsec_same_level_excludes_different_classification d identifiers carrier traffic ipsec sameLevel⟩,
+  refine ⟨⟨gray_firewall_header_is_eligible d interface roles traffic, ?_, ?_, ?_, ?_,
+    ipsec_same_level_excludes_different_classification d identifiers carrier traffic ipsec sameLevel⟩,
     Or.inl ⟨Or.inl tunnel, sameLevel, appropriate⟩⟩
   · intro management
     exact False.elim (notManagementTraffic management)
@@ -159,9 +159,9 @@ end TDN.Requirements.Msc
 namespace TDN.Requirements.Msc
 open Compliance DeriveEndpointInputOutputRules
 
-lemma admitted_Gray_firewall_IPsec_packet_is_safe (d : Deployment)
+lemma admitted_gray_firewall_ipsec_packet_is_safe (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
-    (interface : Interface) (pairs : List InnerIPsecPair)
+    (interface : Interface) (pairs : List InnerIpsecPair)
     (bindings : ∀ record ∈ pairs, record.Bound d)
     (identifiers : ∀ first ∈ d.devices, ∀ second ∈ d.devices,
       first.id = second.id → first = second)
@@ -176,7 +176,7 @@ lemma admitted_Gray_firewall_IPsec_packet_is_safe (d : Deployment)
         policy.defaultVerdict = .deny ∧ ∀ rule ∈ policy.rules, rule.verdict = .allow →
           GrayIPsecRuleChecks d interface (inventory.configuration.ip.interfaceName iface)
             policy.direction pairs rule)
-    (direction : Direction) (traffic : Traffic) (accepted : d.Accepts interface.id direction traffic) :
+    (direction : Direction) (traffic : Traffic) (accepted : d.PermitsOnInterface interface.id direction traffic) :
     GrayFirewallRestrictions d interface direction traffic ∧ GrayPolicyAllowance d interface traffic := by
   obtain ⟨hook, supported, context, admitted⟩ := accepted
   obtain ⟨actual, actualPresent, iface, ifaceMember, ifaceName, _, _, _, _, bound⟩ := context
@@ -191,13 +191,13 @@ lemma admitted_Gray_firewall_IPsec_packet_is_safe (d : Deployment)
     have localChecks := checks iface ifaceMember ifaceName policy policyMember policyName
     obtain ⟨rule, ruleMember, matched, allow⟩ :=
       DeriveDataPlaneFromDeviceRecords.policy_acceptance_has_matching_rule policy traffic localChecks.1 allows
-    apply checked_Gray_IPsec_rule_is_safe d interface _ direction hook pairs bindings identifiers
+    apply checked_gray_ipsec_rule_is_safe d interface _ direction hook pairs bindings identifiers
       roles carrier coherent observations rule _ traffic supported bound matched
     simpa only [policyDirection] using localChecks.2 rule ruleMember allow
 
-theorem Gray_firewall_cross_classification_denied_from_local_rules (d : Deployment)
+theorem gray_firewall_cross_classification_denied_from_local_rules (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
-    (interface : Interface) (pairs : List InnerIPsecPair)
+    (interface : Interface) (pairs : List InnerIpsecPair)
     (bindings : ∀ record ∈ pairs, record.Bound d)
     (identifiers : ∀ first ∈ d.devices, ∀ second ∈ d.devices,
       first.id = second.id → first = second)
@@ -214,9 +214,9 @@ theorem Gray_firewall_cross_classification_denied_from_local_rules (d : Deployme
             policy.direction pairs rule)
     (direction : Direction) (traffic : Traffic)
     (different : DifferentClassificationVPNs d traffic) :
-    ¬ d.Accepts interface.id direction traffic := by
+    ¬ d.PermitsOnInterface interface.id direction traffic := by
   intro accepted
-  have safe := admitted_Gray_firewall_IPsec_packet_is_safe d inventory present interface pairs bindings
+  have safe := admitted_gray_firewall_ipsec_packet_is_safe d inventory present interface pairs bindings
     identifiers roles carrier coherent observations routed checks direction traffic accepted
   exact safe.1.2.2.2.2.2 different
 

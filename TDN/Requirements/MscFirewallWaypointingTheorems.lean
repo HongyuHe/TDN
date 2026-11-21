@@ -2,7 +2,7 @@ import TDN.Models.Waypointing
 
 namespace TDN.Requirements
 
-def msc_outer_firewall_placement {Node : Type}
+def graph_outer_firewall_placement {Node : Type}
     (untrustedBlack publicInternet grayFirewallRequired : Bool)
     (edge grayConnection : Node → Node → Prop)
     (outer firewall black grayFirewall inner : Node → Prop)
@@ -15,7 +15,7 @@ def msc_outer_firewall_placement {Node : Type}
       insideAttachment o f ∧ outsideAttachment f b
    else ∀ o, outer o → ∃ b, black b ∧ externalBlackConnection o b) ∧
   (untrustedBlack = true → ∀ o b, outer o → black b →
-    ¬ Relation.ReflTransGen (Waypointing.Avoiding edge firewall) o b) ∧
+    ¬ Waypointing.ReachableWithoutWaypoint edge firewall o b) ∧
   (if grayFirewallRequired then
     ∀ o, outer o → ∃ g, grayFirewall g ∧ grayConnection o g
    else ∀ o, outer o → ∃ i, inner i ∧ grayConnection o i)
@@ -39,7 +39,7 @@ theorem outer_firewall_placement_from_local_checks {Node Side : Type}
       ¬ firewall a → ¬ firewall b → side a = side b)
     (outerClear : untrusted = true → ∀ o, outer o → ¬ firewall o)
     (differentSides : untrusted = true → ∀ o b, outer o → black b → side o ≠ side b) :
-    msc_outer_firewall_placement untrusted publicInternet grayRequired edge grayConnection
+    graph_outer_firewall_placement untrusted publicInternet grayRequired edge grayConnection
       outer firewall black grayFirewall inner inside outside external := by
   refine ⟨internetUntrusted, connections, placement, ?_, grayPlacement⟩
   intro applies o b ho hb
@@ -51,7 +51,7 @@ theorem untrusted_outer_connection_has_firewall {Node : Type}
     (edge grayConnection : Node → Node → Prop)
     (outer firewall black grayFirewall inner : Node → Prop)
     (inside outside external : Node → Node → Prop)
-    (conform : msc_outer_firewall_placement untrusted internetSelected grayRequired edge grayConnection
+    (conform : graph_outer_firewall_placement untrusted internetSelected grayRequired edge grayConnection
       outer firewall black grayFirewall inner inside outside external)
     (applies : untrusted = true) (o : Node) (present : outer o) :
     ∃ f, firewall f := by
@@ -77,7 +77,7 @@ theorem rejected_direct_edge_strengthening_conflicts {Node : Type}
     (wire : ∀ a b, externalBlackConnection a b → edge a b)
     (blackNotFirewall : ∀ b, black b → ¬ firewall b)
     (o : Node) (present : outer o)
-    (literal : msc_outer_firewall_placement true false grayFirewallRequired edge grayConnection
+    (literal : graph_outer_firewall_placement true false grayFirewallRequired edge grayConnection
       outer firewall black grayFirewall inner insideAttachment outsideAttachment externalBlackConnection) : False := by
   obtain ⟨b, hb, attachment⟩ := literal.2.2.1 o present
   exact literal.2.2.2.1 rfl o b present hb
@@ -87,15 +87,15 @@ end TDN.Requirements
 
 namespace TDN.Requirements
 
-def msc_gray_firewall_path_coverage {Node Label : Type}
+def graph_gray_firewall_waypointing {Node Label : Type}
     (grayEdge : Node → Node → Prop) (grayFirewall inner management : Node → Prop)
     (level : Node → Label) (highest : Label) (dominates : Label → Label → Prop)
     (filtersIntendedSameLevel physicallyProtected : Node → Prop) : Prop :=
   (∀ a b, inner a → inner b → level a ≠ level b →
-    ¬ Relation.ReflTransGen (Waypointing.Avoiding grayEdge grayFirewall) a b) ∧
+    ¬ Waypointing.ReachableWithoutWaypoint grayEdge grayFirewall a b) ∧
   (∀ administrator component, management administrator → inner component →
     level component ≠ highest →
-      ¬ Relation.ReflTransGen (Waypointing.Avoiding grayEdge grayFirewall) administrator component) ∧
+      ¬ Waypointing.ReachableWithoutWaypoint grayEdge grayFirewall administrator component) ∧
   (∀ administrator, management administrator → level administrator = highest) ∧
   (∀ component, inner component → dominates highest (level component)) ∧
   (∀ firewall, grayFirewall firewall →
@@ -115,7 +115,7 @@ theorem gray_firewall_paths_from_local_separation {Node Label : Type}
       filtersIntendedSameLevel firewall ∧ physicallyProtected firewall)
     (firewallPresent : (∃ a b, inner a ∧ inner b ∧ level a ≠ level b) →
       ∃ firewall, grayFirewall firewall) :
-    msc_gray_firewall_path_coverage grayEdge grayFirewall inner management level highest
+    graph_gray_firewall_waypointing grayEdge grayFirewall inner management level highest
       dominates filtersIntendedSameLevel physicallyProtected := by
   refine ⟨?_, ?_, managementLevel, highestLevel, firewallChecks, firewallPresent⟩
   · intro a b innerA _ different

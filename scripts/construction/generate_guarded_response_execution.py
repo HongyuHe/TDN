@@ -25,7 +25,7 @@ def main():
         "namespace TDN.Deployments." + args.namespace,
         "open DataPlaneForwarding",
         "set_option maxRecDepth 100000",
-        "set_option maxHeartbeats 0",
+
         "",
         "def responseData : GuardedResponseNetwork.Data :=",
         "  ⟨devices, ifaces, routes, links, switches, responseSourceGuards⟩",
@@ -35,7 +35,7 @@ def main():
         "",
         "",
         "theorem gateway_response_traces_keep_stack",
-        "    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}",
+        "    {before after : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}",
         "    (run : (KernelResponses.lts (GuardedResponseNetwork.network responseData)",
         "      (GuardedResponseNetwork.responseConfig responseData)).MTr",
         "      (.network before) actions (.network after))",
@@ -48,14 +48,14 @@ def main():
     ]
     for index in range(count):
         lines += [
-            "lemma guardedWitnessStep" + str(index) + " :",
+            "lemma guarded_witness_step" + str(index) + " :",
             "    (GuardedResponseNetwork.network responseData).Tr witnessState" + str(index) +
             " ." + trace["steps"][index]["action"] + " witnessState" + str(index + 1) + " := by",
-            "  exact ⟨witnessStep" + str(index) + ", by native_decide⟩", ""
+            "  exact ⟨witness_step" + str(index) + ", by native_decide⟩", ""
         ]
     proof = "Cslib.LTS.MTr.refl"
     for index in reversed(range(count)):
-        proof = "Cslib.LTS.MTr.stepL guardedWitnessStep" + str(index) + " (" + proof + ")"
+        proof = "Cslib.LTS.MTr.stepL guarded_witness_step" + str(index) + " (" + proof + ")"
     lines += [
         "theorem positive_delivery_with_early_source_guards :",
         "    (GuardedResponseNetwork.network responseData).MTr witnessState0 witnessActions witnessState" +

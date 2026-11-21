@@ -48,7 +48,6 @@ import TDN.Deployments.ProfileShared_Topology
 
 namespace TDN.Deployments.ProfileShared_Topology
 set_option maxRecDepth 100000
-set_option maxHeartbeats 0
 """
     text += "def independentBranches : List (Node × Node × List Node) := [" + ", ".join(
         "(" + str(p[0]) + ", " + str(p[-1]) + ", " + str(p[1:]) + ")" for p in paths) + "]\n"
@@ -98,7 +97,6 @@ end TDN.Deployments.ProfileShared_Topology
 
 namespace TDN.Deployments.SnapshotRedundantPlacement
 set_option maxRecDepth 100000
-set_option maxHeartbeats 0
 """
     text += "abbrev Node := Fin " + str(len(rg["devices"])) + "\n"
     for name, values in [("edges", sorted(rg["edges"])), ("outerNodes", rg["outer"]),

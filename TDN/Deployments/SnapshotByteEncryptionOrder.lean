@@ -4,7 +4,6 @@ import TDN.Deployments.SnapshotComponentByteResponses
 namespace TDN.Deployments.ProfileShared_EnclaveIsolation
 open DataPlaneForwarding
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma byte_outer_placement1 : ∀ iface,
     (domainLayout1 iface).head? = some 2 →
@@ -49,13 +48,13 @@ lemma all_byte_outer_placement : ∀ d ∈ domains, ∀ iface,
   · exact byte_outer_placement4
 
 theorem every_assembled_black_byte_has_inner_before_outer {Byte : Type}
-    {after : List (ByteFlows.Carrier (KernelResponses.State DataPlaneForwarding.State)
+    {after : List (ByteFlows.PacketBytes (KernelResponses.ReplyState DataPlaneForwarding.ForwardingState)
       (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action (KernelResponses.Action DataPlaneForwarding.Action))}
+    {actions : List (ByteFlows.ByteFlowAction (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))}
     (run : (ResponseByteFlows.system (lts config)
       (UniformDomainResponses.responseConfig config TDN.Deployments.ProfileShared_DataPlane.responseGateways uniformResponseOwners)
       (Requirements.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
-    (finish : DataPlaneForwarding.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (finish : DataPlaneForwarding.ForwardingState) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (packetPresent : ⟨.network finish, bytes⟩ ∈ after)
     (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ TDN.Deployments.ProfileShared_DataPlane.blackIfaces)
     (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (bytePresent : byte ∈ bytes) :
@@ -73,7 +72,6 @@ end TDN.Deployments.ProfileShared_EnclaveIsolation
 namespace TDN.Deployments.ProfileBaseline_EnclaveIsolation
 open DataPlaneForwarding
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma byte_outer_placement1 : ∀ iface,
     (domainLayout1 iface).head? = some 2 →
@@ -100,13 +98,13 @@ lemma all_byte_outer_placement : ∀ d ∈ domains, ∀ iface,
   · exact byte_outer_placement2
 
 theorem every_assembled_black_byte_has_inner_before_outer {Byte : Type}
-    {after : List (ByteFlows.Carrier (KernelResponses.State DataPlaneForwarding.State)
+    {after : List (ByteFlows.PacketBytes (KernelResponses.ReplyState DataPlaneForwarding.ForwardingState)
       (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action (KernelResponses.Action DataPlaneForwarding.Action))}
+    {actions : List (ByteFlows.ByteFlowAction (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))}
     (run : (ResponseByteFlows.system (lts config)
       (UniformDomainResponses.responseConfig config TDN.Deployments.ProfileBaseline_DataPlane.responseGateways uniformResponseOwners)
       (Requirements.RedByteOrigin config redSources) PlaintextAssembly).MTr [] actions after)
-    (finish : DataPlaneForwarding.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (finish : DataPlaneForwarding.ForwardingState) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (packetPresent : ⟨.network finish, bytes⟩ ∈ after)
     (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ TDN.Deployments.ProfileBaseline_DataPlane.blackIfaces)
     (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (bytePresent : byte ∈ bytes) :

@@ -71,25 +71,4 @@ def msc_administrator_authentication (certificateObjective nistObjective : Bool)
     ∀ b ∈ accounts, b.workstationAccount = true →
       a.person ≠ b.person → a.credential ≠ b.credential
 
-theorem administrator_authentication_from_admitted_operations
-    (certificateObjective nistObjective : Bool) (events actions : List AdminEvent)
-    (accounts : List AdministrativeAccount) (sessions : List AdministrativeSession)
-    (awAdministrators : List Nat) (credentialOwner : String → Nat)
-    (run : (Admission.lts (fun e : AdminEvent => e.kind = .operation)
-      (MatchingAdministratorAuthentication certificateObjective nistObjective events accounts sessions)).MTr
-        [] actions events)
-    (individual : ∀ account ∈ accounts,
-      account.credential ≠ "" ∧ (account.workstationAccount = true →
-        account.groupAccount = false ∧ credentialOwner account.credential = account.person))
-    (roster : ∀ person ∈ awAdministrators, ∃ account ∈ accounts,
-      account.person = person ∧ account.workstationAccount = true) :
-    msc_administrator_authentication certificateObjective nistObjective events accounts sessions
-      awAdministrators := by
-  refine ⟨Admission.all_admitted_events_have_prerequisites _ _ run, ?_, roster, ?_⟩
-  · intro account member
-    exact ⟨(individual account member).1, fun aw => ((individual account member).2 aw).1⟩
-  · intro a memberA awA b memberB awB different same
-    apply different
-    rw [← ((individual a memberA).2 awA).2, ← ((individual b memberB).2 awB).2, same]
-
 end TDN.Requirements

@@ -1,5 +1,5 @@
-import TDN.Deployments.OuterToGray_DeviceCases
-import TDN.Models.DecidableAclInstances
+import TDN.Deployments.OuterToGray_ForwardingTestVectors
+import TDN.Models.ExecutableAclMatchers
 
 namespace TDN.Deployments.OuterToGray_DeviceModel
 open Compliance Requirements Requirements.Msc MultiProtocolForwarding
@@ -26,9 +26,9 @@ lemma checked_plain_forward_case_is_supported (sample : ForwardCase) (records : 
     (records.deployment base).SupportedAt sample.interface direction (sample.context records)
       ((records.deployment base).Observe (sample.packet records)) := by
   obtain ⟨member, applies, entry, selected, ttl, location, raw⟩ := checks
-  have received : MultiProtocolForwarding.Step records.configuration sample.entry .receive sample.entered :=
+  have received : MultiProtocolForwarding.TunnelForwardingStep records.configuration sample.entry .receive sample.entered :=
     .receive rfl rfl "new"
-  have routed : MultiProtocolForwarding.Step records.configuration sample.entered .route (sample.routed records) :=
+  have routed : MultiProtocolForwarding.TunnelForwardingStep records.configuration sample.entered .route (sample.routed records) :=
     .route sample.route rfl rfl selected entry
   refine ⟨records.inventory, rfl, member, applies, ?_, location, raw, rfl,
     observed_packet_is_supported records base _ rfl⟩
@@ -41,10 +41,10 @@ lemma checked_plain_forward_case_is_supported (sample : ForwardCase) (records : 
   · exact (selected_route_depends_on_destination records.routes sample.route sample.header
       (sample.context records).header rfl).mp selected
 
-lemma datagram_cannot_be_decrypted (configuration : MultiProtocolForwarding.Config)
-    (before after : MultiProtocolForwarding.State) (header : PacketPolicy.Packet)
+lemma datagram_cannot_be_decrypted (configuration : MultiProtocolForwarding.TunnelForwardingModel)
+    (before after : MultiProtocolForwarding.TunnelForwardingState) (header : PacketPolicy.Packet)
     (plain : before.frame.body = .datagram header) :
-    ¬ MultiProtocolForwarding.Step configuration before .decryptIPsec after := by
+    ¬ MultiProtocolForwarding.TunnelForwardingStep configuration before .decryptIPsec after := by
   intro step
   cases step with
   | decryptIPsec policy association body nominal datapathStage encrypted configured installed bound visible selected tracking =>
@@ -65,7 +65,7 @@ lemma checked_plaintext_required_arrival_is_not_positive_eligible (sample : Forw
   · exact approved
 
 lemma device_arrival_iff_visible_source (d : Deployment) (inventory : PacketProcessing.Inventory)
-    (state : MultiProtocolForwarding.State) (header : PacketPolicy.Packet)
+    (state : MultiProtocolForwarding.TunnelForwardingState) (header : PacketPolicy.Packet)
     (visible : state.frame.visibleHeader = some header) :
     d.DeviceArrivalEligible inventory state ↔
       DeviceIngressAttachment inventory state.iface ∨

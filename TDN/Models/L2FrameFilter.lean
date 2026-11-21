@@ -3,7 +3,7 @@ import TDN.Models.EndpointTransmitSpec
 namespace TDN.LinkAdmission
 
 structure Program where
-  rules : List PacketPolicy.Rule
+  rules : List PacketPolicy.PacketAclRule
   fallback : Filter.Verdict
   deriving DecidableEq, Repr
 
@@ -12,16 +12,16 @@ structure IfacePolicy where
   outbound : Program
   deriving DecidableEq, Repr
 
-def Program.Accepts (program : Program) (packet : PacketPolicy.Packet) : Prop :=
-  Filter.evaluate (program.rules.map PacketPolicy.Rule.toFilter) program.fallback packet = .allow
+def Program.PermitsPacket (program : Program) (packet : PacketPolicy.Packet) : Prop :=
+  PacketPolicy.AclAllows program.rules program.fallback packet
 
-structure Frame where
+structure EthernetFrame where
   header : LayeredFrame.EthernetHeader
   headerBytes : List UInt8
   payload : List UInt8
   deriving DecidableEq
 
-def Frame.Packet (frame : Frame) (ingress egress : String) : PacketPolicy.Packet :=
+def EthernetFrame.Packet (frame : EthernetFrame) (ingress egress : String) : PacketPolicy.Packet :=
   { source := frame.header.source, destination := frame.header.destination,
     protocol := "ethernet", ingress := ingress, egress := egress,
     sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 0,
@@ -29,20 +29,20 @@ def Frame.Packet (frame : Frame) (ingress egress : String) : PacketPolicy.Packet
     etherType := some frame.header.etherType, payloadBytes := some frame.payload,
     networkBytes := some (frame.headerBytes.length + frame.payload.length) }
 
-def Frame.Decoded (frame : Frame) : Prop :=
+def EthernetFrame.Decoded (frame : EthernetFrame) : Prop :=
   PacketSource.EthernetHeaderMatches frame.header frame.headerBytes
 
-def MACsecFraming (association : LayeredFrame.MACsecAssociation) (bytes : List UInt8) : Prop :=
+def MACsecFraming (association : LayeredFrame.MacsecAssociation) (bytes : List UInt8) : Prop :=
   22 ≤ bytes.length ∧ PacketSource.field bytes 0 1 % 4 = association.associationNumber ∧
   (if PacketSource.field bytes 0 1 / 32 % 2 = 1 then
     30 ≤ bytes.length ∧ PacketSource.field bytes 6 8 = association.sci
    else True)
 
-instance (frame : Frame) : Decidable frame.Decoded := by
-  unfold Frame.Decoded PacketSource.EthernetHeaderMatches
+instance (frame : EthernetFrame) : Decidable frame.Decoded := by
+  unfold EthernetFrame.Decoded PacketSource.EthernetHeaderMatches
   infer_instance
 
-def Frame.DescribesBody (frame : Frame) (body : LayeredFrame.Body) : Prop :=
+def EthernetFrame.DescribesBody (frame : EthernetFrame) (body : LayeredFrame.Body) : Prop :=
   frame.Decoded ∧
   match body with
   | .ethernet header => frame.header = header
@@ -58,13 +58,13 @@ def Frame.DescribesBody (frame : Frame) (body : LayeredFrame.Body) : Prop :=
       PacketSource.field frame.payload 0 1 / 8 % 2 = if encryptFrames then 1 else 0
   | _ => False
 
-instance (association : LayeredFrame.MACsecAssociation) (bytes : List UInt8) :
+instance (association : LayeredFrame.MacsecAssociation) (bytes : List UInt8) :
     Decidable (MACsecFraming association bytes) := by
   unfold MACsecFraming
   infer_instance
 
-instance (frame : Frame) (body : LayeredFrame.Body) : Decidable (frame.DescribesBody body) := by
-  unfold Frame.DescribesBody
+instance (frame : EthernetFrame) (body : LayeredFrame.Body) : Decidable (frame.DescribesBody body) := by
+  unfold EthernetFrame.DescribesBody
   cases body <;> dsimp <;> infer_instance
 
 def lookup (policies : List (Nat × IfacePolicy)) (iface : Nat) : Option IfacePolicy :=
@@ -73,11 +73,11 @@ def lookup (policies : List (Nat × IfacePolicy)) (iface : Nat) : Option IfacePo
 def Admitted (policies : List (Nat × IfacePolicy)) (iface : Nat) (outbound : Bool)
     (packet : PacketPolicy.Packet) : Prop :=
   ∃ policy, lookup policies iface = some policy ∧
-    (if outbound then policy.outbound else policy.inbound).Accepts packet
+    (if outbound then policy.outbound else policy.inbound).PermitsPacket packet
 
 instance (program : Program) (packet : PacketPolicy.Packet) :
-    Decidable (program.Accepts packet) := by
-  unfold Program.Accepts
+    Decidable (program.PermitsPacket packet) := by
+  unfold Program.PermitsPacket
   infer_instance
 
 instance (policies : List (Nat × IfacePolicy)) (iface : Nat) (outbound : Bool)
@@ -88,7 +88,7 @@ instance (policies : List (Nat × IfacePolicy)) (iface : Nat) (outbound : Bool)
 def payloadCode (bytes : List UInt8) : Nat :=
   bytes.foldl (fun accumulator byte => accumulator * 256 + byte.toNat) 1
 
-def Frame.Describes (frame : Frame) (native : LayeredFrame.Frame) : Prop :=
+def EthernetFrame.Describes (frame : EthernetFrame) (native : LayeredFrame.TunnelFrame) : Prop :=
   match native.visibleHeader with
   | none => frame.DescribesBody native.body ∧
       (∀ header, native.body = .ethernet header → native.payload = payloadCode frame.payload)

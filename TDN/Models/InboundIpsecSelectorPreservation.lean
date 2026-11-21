@@ -2,11 +2,11 @@ import TDN.Models.EncapStackPreservation
 
 namespace TDN.DataPlaneForwarding
 
-def AuthenticationMatches (c : DataPlaneModel) (s : State) : Prop :=
+def AuthenticationMatches (c : DataPlaneModel) (s : ForwardingState) : Prop :=
   ∀ id ∈ s.authenticated, ∃ association ∈ c.ingressPolicies s.frame.enteredIface,
     association.id = id ∧ association.matches s.frame.packet = true
 
-def ProcessingAuthenticationMatches (c : DataPlaneModel) (s : State) : Prop :=
+def ProcessingAuthenticationMatches (c : DataPlaneModel) (s : ForwardingState) : Prop :=
   match s.datapathStage with
   | .ingress | .routed | .filtered | .localInput | .delivered => AuthenticationMatches c s
   | _ => True
@@ -29,7 +29,7 @@ lemma step_preserves_authentication_selectors (c : DataPlaneModel) :
   case deliver => exact initial
 
 theorem forwarding_preserves_authentication_selectors (c : DataPlaneModel)
-    {before after : State} {actions : List Action}
+    {before after : ForwardingState} {actions : List ForwardingAction}
     (run : (lts c).MTr before actions after)
     (initial : ProcessingAuthenticationMatches c before) :
     ProcessingAuthenticationMatches c after :=

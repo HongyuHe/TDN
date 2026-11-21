@@ -8,8 +8,8 @@ theorem same_domain_delivery_with_strict_gateway_responses
     (c : DataPlaneForwarding.DataPlaneModel) (sources gateways : List Nat)
     (delivery : plaintext_delivery_preserves_security_enclave c sources)
     (guards : GatewayResponseGuards c gateways)
-    {start finish : DataPlaneForwarding.State}
-    {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {start finish : DataPlaneForwarding.ForwardingState}
+    {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     {sourceDomain destinationDomain : Nat}
     (origin : RedPayloadOrigin c sources start)
     (sourceLevel : c.ifaceSecurityDomain start.iface = some sourceDomain)

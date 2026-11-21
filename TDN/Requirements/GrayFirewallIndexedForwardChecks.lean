@@ -4,14 +4,14 @@ namespace TDN.Requirements.Msc
 open Compliance DeriveEndpointInputOutputRules MultiProtocolForwarding
 
 def GrayIndexedForwardChecks (d : Deployment) (inventory : PacketProcessing.Inventory)
-    (pairs : List InnerIPsecPair) (candidates : Nat → List DataPlaneForwarding.FibRoute)
+    (pairs : List InnerIpsecPair) (candidates : Nat → List DataPlaneForwarding.FibRoute)
     (aclCheck : Interface → Direction → PacketPolicy.AclFlowSelector → Bool) (interface : Interface) (direction : Direction) : Prop :=
   ∀ record ∈ pairs, ∀ route ∈ candidates record.endpoints.destinationAddress,
     (if direction = .inbound then inventory.ifaceName route.ingress = interface.id
       else inventory.ifaceName route.egress = interface.id) →
     route.ingress ∈ inventory.ifaces → route.egress ∈ inventory.ifaces →
     GrayIncomingSource d inventory interface.device route.ingress record.endpoints.sourceAddress →
-    ∀ form ∈ PacketPolicy.IPsecForm.all,
+    ∀ form ∈ PacketPolicy.IpsecForm.all,
       aclCheck interface direction (form.maskWithOptions record.endpoints.sourceAddress record.endpoints.destinationAddress
         (inventory.configuration.ip.interfaceName route.ingress)
         (inventory.configuration.ip.interfaceName route.egress) []
@@ -20,7 +20,7 @@ def GrayIndexedForwardChecks (d : Deployment) (inventory : PacketProcessing.Inve
             DataPlaneForwarding.IpsecPolicy.id) (interface.mtu.getD 0)) = true
 
 set_option synthInstance.maxSize 2048 in
-instance (d : Deployment) (inventory : PacketProcessing.Inventory) (pairs : List InnerIPsecPair)
+instance (d : Deployment) (inventory : PacketProcessing.Inventory) (pairs : List InnerIpsecPair)
     (candidates : Nat → List DataPlaneForwarding.FibRoute)
     (aclCheck : Interface → Direction → PacketPolicy.AclFlowSelector → Bool) (interface : Interface) (direction : Direction)
     [∀ name, DecidablePred (d.reachableSource name)] :
@@ -29,8 +29,8 @@ instance (d : Deployment) (inventory : PacketProcessing.Inventory) (pairs : List
   infer_instance
 
 
-theorem gray_forward_checks_from_route_certificates (d : Deployment)
-    (inventory : PacketProcessing.Inventory) (pairs : List InnerIPsecPair)
+theorem gray_forward_checks_from_indexed_routes (d : Deployment)
+    (inventory : PacketProcessing.Inventory) (pairs : List InnerIpsecPair)
     (candidates : Nat → List DataPlaneForwarding.FibRoute)
     (coverage : ∀ record ∈ pairs, ∀ route,
       DataPlaneForwarding.SelectedFibRoute inventory.configuration.ip.routes route

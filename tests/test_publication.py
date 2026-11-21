@@ -20,6 +20,28 @@ with patch.dict(sys.modules, {'export_pages': publication}):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_both_explorers_match_the_ten_selected_targets(self):
+        expected = {f'RG-{n:03}' for n in (7, 8, 13, 29, 30, 34, 35, 38, 39, 40)}
+        scope = json.loads((ROOT / 'specs/proof_scope.json').read_text())['groups']
+        self.assertEqual({g['id'] for g in scope if g['decision'] == 'formal'}, expected)
+        pages = {}
+        for name, (_, identifier) in publication.PAGES.items():
+            _, pages[name] = publication.embedded((publication.PUBLIC / name / 'index.html').read_text(), identifier)
+        hierarchy = pages['hierarchy']['groups']
+        self.assertEqual({g['id'] for g in hierarchy if g['formal']}, expected)
+        self.assertEqual({g['id'] for g in hierarchy if g['positive']}, expected)
+        isolation = next(g for g in hierarchy if g['id'] == 'RG-008')
+        self.assertTrue(any('baseline_security_level_connectivity' in name for name in isolation['completeApplications']))
+        failures = [name for name in isolation['applications'] if name.endswith('shared_physical_separation_failure')]
+        self.assertEqual(len(failures), 1)
+        self.assertNotIn(failures[0], isolation['completeApplications'])
+        self.assertIn('physical separation', isolation['reason'])
+        self.assertTrue(all(not g['roots'] for g in hierarchy if not g['formal']))
+        ontology = pages['ontology']['obligations']['catalog']
+        self.assertEqual({rg for rg, row in ontology.items() if row['proof_target']}, expected)
+        self.assertEqual(set(ontology), {g['id'] for g in hierarchy})
+        self.assertIn('physical separation', ontology['RG-008']['proof_note'])
+
     def test_project_version_is_named_tdn_in_both_explorers(self):
         version = (ROOT / 'THEORY_VERSION').read_text().strip()
         for page in publication.PAGES:

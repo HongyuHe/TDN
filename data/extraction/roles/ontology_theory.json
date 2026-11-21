@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "theory_version": "v3.3",
+  "theory_version": "v3.4",
   "source_run": "v3.2-20261111T040601Z-remaining",
-  "mapping_scope": "These annotations explain how source roles are represented by the current Lean model. Device kind, encryption layer and interface zone are separate fields. The local zone represents device-internal interfaces. Device roles remain classified separately. Namespace-local addresses belong to their recorded device, including loopback addresses shared by several devices. Source subtype relationships remain unchanged. Role mappings alone do not establish requirement compliance.",
+  "mapping_scope": "The ontology lists roles from the CSfC document. Device kind, encryption layer and interface zone have separate meanings in Lean. The ten selected proof targets appear first for each role. Other requirements remain available in the catalog and keep their inherited role associations.",
   "status_labels": {
     "direct": "Explicit Lean representation",
     "composed": "Combination of Lean fields",
@@ -32,151 +32,151 @@
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "structure Deployment where",
       "label": "Deployment",
-      "line": 601
+      "line": 605
     },
     "ordinary": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "def Deployment.OrdinaryGray",
       "label": "Deployment.OrdinaryGray",
-      "line": 688
+      "line": 692
     },
     "service": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "inductive ServiceKind where",
       "label": "ServiceKind",
-      "line": 539
+      "line": 543
     },
     "management": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "structure ManagementServiceInstance where",
       "label": "ManagementServiceInstance",
-      "line": 587
+      "line": 591
     },
     "management_function": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "inductive ManagementServiceFunction where",
       "label": "ManagementServiceFunction",
-      "line": 574
+      "line": 578
     },
     "management_domain": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "inductive ManagementDomain where",
       "label": "ManagementDomain",
-      "line": 579
+      "line": 583
     },
     "authority": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "structure AuthorityFacts where",
       "label": "AuthorityFacts",
-      "line": 530
+      "line": 534
     },
     "exchange": {
       "path": "TDN/Requirements/MscComplianceSchema.lean",
       "anchor": "structure ManagementExchange where",
       "label": "ManagementExchange",
-      "line": 567
+      "line": 571
     },
     "eap_role": {
-      "path": "TDN/Requirements/CoreMscRequirements.lean",
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
       "anchor": "inductive EAPRole where",
       "label": "EAPRole",
       "line": 273
     },
     "mac_auth": {
-      "path": "TDN/Requirements/CoreMscRequirements.lean",
-      "anchor": "structure MACsecAuthentication where",
-      "label": "MACsecAuthentication",
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "structure MacsecAuthentication where",
+      "label": "MacsecAuthentication",
       "line": 358
     },
     "key_server": {
-      "path": "TDN/Requirements/CoreMscRequirements.lean",
-      "anchor": "structure MACsecServerPair where",
-      "label": "MACsecServerPair",
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "structure MacsecServerPair where",
+      "label": "MacsecServerPair",
       "line": 589
     },
     "carrier": {
-      "path": "TDN/Requirements/CoreMscRequirements.lean",
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
       "anchor": "structure EncapsulationUse where",
       "label": "EncapsulationUse",
       "line": 202
     },
     "carrier_core": {
-      "path": "TDN/Requirements/CoreMscRequirements.lean",
-      "anchor": "def MACsecEncapsulationCore",
-      "label": "MACsecEncapsulationCore",
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "def macsec_encapsulation_over_ip",
+      "label": "macsec_encapsulation_over_ip",
       "line": 214
     },
     "services": {
-      "path": "TDN/Requirements/CoreMscRequirements.lean",
+      "path": "TDN/Requirements/ScopedMscRequirements.lean",
       "anchor": "def AuthenticationServices",
       "label": "AuthenticationServices",
       "line": 45
     },
     "flow": {
-      "path": "TDN/Requirements/CoreMscRequirements.lean",
+      "path": "TDN/Requirements/ScopedMscRequirements.lean",
       "anchor": "def Flow.Valid",
       "label": "Flow.Valid",
       "line": 21
     },
     "applicability": {
       "path": "TDN/Requirements/CsfcRoleObligations.lean",
-      "anchor": "def MscComplianceContext.ComponentApplies",
-      "label": "MscComplianceContext.ComponentApplies",
-      "line": 354
+      "anchor": "def ComplianceContext.ComponentApplies",
+      "label": "ComplianceContext.ComponentApplies",
+      "line": 349
     },
     "duties": {
       "path": "TDN/Requirements/CsfcRoleObligations.lean",
-      "anchor": "def MscComplianceContext.AllApplicableDuties",
-      "label": "MscComplianceContext.AllApplicableDuties",
-      "line": 424
+      "anchor": "def ComplianceContext.AllApplicableDuties",
+      "label": "ComplianceContext.AllApplicableDuties",
+      "line": 419
     },
     "rg007": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_nested_layer_protection",
-      "label": "msc_nested_layer_protection",
+      "path": "TDN/Requirements/MscRequirements.lean",
+      "anchor": "def nested_layer_protection",
+      "label": "nested_layer_protection",
       "line": 6
     },
     "rg012": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_security_level_key_and_management_separation",
-      "label": "msc_security_level_key_and_management_separation",
-      "line": 17
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "def RoleCatalog.security_level_key_and_management_separation",
+      "label": "RoleCatalog.security_level_key_and_management_separation",
+      "line": 119
     },
     "rg013": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_gray_firewall_path_coverage",
-      "label": "msc_gray_firewall_path_coverage",
-      "line": 20
+      "path": "TDN/Requirements/MscRequirements.lean",
+      "anchor": "def gray_firewall_path_coverage",
+      "label": "gray_firewall_path_coverage",
+      "line": 17
     },
     "rg015": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_macsec_encapsulation",
-      "label": "msc_macsec_encapsulation",
-      "line": 27
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "def macsec_encapsulation_over_ip",
+      "label": "macsec_encapsulation_over_ip",
+      "line": 214
     },
     "rg024": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_macsec_authentication_choice_and_as",
-      "label": "msc_macsec_authentication_choice_and_as",
-      "line": 38
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "def RoleCatalog.macsec_authentication_choice_and_as",
+      "label": "RoleCatalog.macsec_authentication_choice_and_as",
+      "line": 537
     },
     "rg027": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_macsec_key_generation_and_server",
-      "label": "msc_macsec_key_generation_and_server",
-      "line": 43
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "def RoleCatalog.macsec_key_generation_and_server",
+      "label": "RoleCatalog.macsec_key_generation_and_server",
+      "line": 596
     },
     "rg047": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_administrator_authentication",
-      "label": "msc_administrator_authentication",
-      "line": 94
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "def RoleCatalog.administrator_authentication",
+      "label": "RoleCatalog.administrator_authentication",
+      "line": 1068
     },
     "rg074": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_redundant_component_permission",
-      "label": "msc_redundant_component_permission",
-      "line": 114
+      "path": "TDN/Requirements/CsfcRoleObligations.lean",
+      "anchor": "def ComplianceContext.AllApplicableDuties",
+      "label": "ComplianceContext.AllApplicableDuties",
+      "line": 419
     },
     "credentials": {
       "path": "TDN/Requirements/CrossEnclavePkiIsolationSpec.lean",
@@ -227,7 +227,7 @@
       "line": 22
     },
     "sizing_inventory": {
-      "path": "TDN/Requirements/CoreMscRequirements.lean",
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
       "anchor": "def PacketSizingInventory",
       "label": "PacketSizingInventory",
       "line": 869
@@ -239,49 +239,50 @@
       "line": 6
     },
     "rg033": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_packet_size_configuration",
-      "label": "msc_packet_size_configuration",
-      "line": 67
+      "path": "TDN/Requirements/ExtendedMscRoleSpecs.lean",
+      "anchor": "def RoleCatalog.packet_size_configuration",
+      "label": "RoleCatalog.packet_size_configuration",
+      "line": 773
     },
     "rg040": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_gray_firewall_allowlist",
-      "label": "msc_gray_firewall_allowlist",
-      "line": 91
+      "path": "TDN/Requirements/MscRequirements.lean",
+      "anchor": "def gray_firewall_allowlist",
+      "label": "gray_firewall_allowlist",
+      "line": 46
     },
     "rg035": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_boundary_interface_filtering",
-      "label": "msc_boundary_interface_filtering",
-      "line": 75
+      "path": "TDN/Requirements/MscRequirements.lean",
+      "anchor": "def boundary_interface_filtering",
+      "label": "boundary_interface_filtering",
+      "line": 34
     },
     "rg039": {
-      "path": "TDN/Requirements/MasterMscRequirementSpecs.lean",
-      "anchor": "def msc_outer_gray_interface_policy",
-      "label": "msc_outer_gray_interface_policy",
-      "line": 88
+      "path": "TDN/Requirements/MscRequirements.lean",
+      "anchor": "def outer_gray_interface_policy",
+      "label": "outer_gray_interface_policy",
+      "line": 43
     }
   },
   "source_hashes": {
-    "TDN/Requirements/ManagementPlaneRequirements.lean": "043fd7b2ef364d2ecad297cafef311f1fe9c023ce823a087199deaede1e2873b",
-    "TDN/Requirements/TwoLayerOverlayArchitecture.lean": "45a9f17bfde04506b6c5791f94af74e962cc9cb92645396f074e3c2ec467a82f",
-    "TDN/Requirements/CrossEnclavePkiIsolationSpec.lean": "b2215ad3fe0f334437be321a31f1ea89735fc03772386001d8cee57532410b9d",
-    "TDN/Requirements/CsfcRoleObligations.lean": "a7ddae592e47588e9cd4a574932e0b8c4728644938659bc52169c40a128e265c",
-    "TDN/Requirements/CsfcRoleObligationRecords.lean": "82e2f58719585c5b02912f786c4d2fdc8a5ba66d2355c8b9177976e11f80ef23",
-    "TDN/Requirements/MasterMscRequirementSpecs.lean": "c633a63cb49a65edb818d44826c69384a15cd9b4c96266d3727a06b0ab49ee74",
-    "TDN/Requirements/MscComplianceSchema.lean": "e9363540ecbd456f7617703aa74fe39926575af1f1dad036a90da4d514348c6f",
-    "TDN/Requirements/CoreMscRequirements.lean": "dc599b8d04847b627555183a6143befc2efbbeed30fd8c4a3db78241f4c53f78",
+    "TDN/Requirements/ManagementPlaneRequirements.lean": "74324a00606813bb97ce18efe1b4a7116a2ac1a391294240d78b6f1b4b2a1d24",
+    "TDN/Requirements/TwoLayerOverlayArchitecture.lean": "3165b3bd57c44ed983b368ddc34dfb00c22b287c204c1e3cc9ff98c1c7f14ab1",
+    "TDN/Requirements/CrossEnclavePkiIsolationSpec.lean": "6e896334e989677d5b316dc0eaafe4e5dc38bd39f91c00f05b7479be3711b4f9",
+    "TDN/Requirements/CsfcRoleObligations.lean": "69d1ecd03fe0c7468ca2718c7e04c55fbc184671d120d2833acb5596d6b09c02",
+    "TDN/Requirements/CsfcRoleObligationRecords.lean": "d0e3084a0a8954f5d473109bb9fc1e6cd29f8f74181242c4229c2aafcc522c52",
+    "TDN/Requirements/MscRequirements.lean": "782bd264d4aa6230cc474a23af6f627edc0ad05b2a2dc87dfc6695fd0bc73bd3",
+    "TDN/Requirements/MscComplianceSchema.lean": "1e00467e3a72d8495db3feffb42049efdacf4e90cd951f78b8a8fa281ac0783b",
+    "TDN/Requirements/ScopedMscRequirements.lean": "91f785b65b5c92b6c2e8df7f1d409d02b7d485ff973261f5e4210569b83a52db",
     "TDN/Requirements/NamespaceLocalIpOwnership.lean": "ea163cda25f066b84f170283ccd1530cf566cbad6ca9049de64b2cb729d6de55",
-    "TDN/Requirements/TunnelMtuAndFragmentationSpec.lean": "bfc69ba199f850b2636c266c7b010c3353f35c1eeaf5ee9e6fd739ec4d7f9503",
-    "TDN/Requirements/TrustedClockSynchronization.lean": "d8bf74ed1da6a895f63e33c3481a53d9c42d1a75210ad05054382cebc2432519"
+    "TDN/Requirements/TunnelMtuAndFragmentationSpec.lean": "29f90c6e9bf76163dc5448fe9978cc4d58b5d3ec35250a004d6c92e1f6ac1cf0",
+    "TDN/Requirements/TrustedClockSynchronization.lean": "d8bf74ed1da6a895f63e33c3481a53d9c42d1a75210ad05054382cebc2432519",
+    "TDN/Requirements/ExtendedMscRoleSpecs.lean": "50d94518d5087985b09aa3281e507d5bbdd6b077d6ddc6f8be24df9f88faf1bb"
   },
   "interpretations": {
     "V31-007": {
       "title": "V31-007: data-plane protection, tunnel endpoints, and services",
       "source_path": "data/construction/v3.2-20261031T231942Z/interpretations.md",
       "source_line": 67,
-      "source_text": "Affected groups: RG-007, RG-008, RG-029, RG-030, RG-035. Original pages 10–14, 18–19, 22–25, 42–47. Page 10 requires Inner encryption followed by Outer encryption and reverse Outer/Inner decryption. Pages 12–13 distinguish protected data from permitted control traffic. Arbitrary classified payloads cannot be labelled harmless control.\n\nThe selected reading tracks protected payload identities through complete executions. Gray transmission carries Inner protection. Black transmission carries Outer around Inner, with ordered encryption and matching configured endpoints. A completed cross-Black plaintext delivery has ordered reverse decryption. Local Red deliveries that never cross Black do not acquire a fictitious two-decryption duty. The mechanism type admits exactly the four IPsec/MACsec combinations. Outer MACsec restricts the solution to two sites.\n\nThe page-22 service clause remains recorded. Under the explicit user optional-management scope, actual management deployment requires its workstations and method-specific CA/KGS infrastructure. Different levels sharing an Outer still require a Gray Firewall. These facts do not gate the packet-transition relation. Management-free packet results have no administrative service-presence prerequisite. The user scope is a stated modeling choice, not a claim that the source's unconditional architectural wording disappeared. Cryptographic confidentiality, integrity, key independence, and faithful operation labels require separately justified primitive and implementation correspondence. Event ordering alone does not establish cryptographic secrecy. Affected declarations: ArchitectureServices, Flow.Valid, CrossedBlack, msc_nested_layer_protection, LayerNoBypass. Inherited decision: INT-007.",
+      "source_text": "Affected groups: RG-007, RG-008, RG-029, RG-030, RG-035. Original pages 10–14, 18–19, 22–25, 42–47. Page 10 requires Inner encryption followed by Outer encryption and reverse Outer/Inner decryption. Pages 12–13 distinguish protected data from permitted control traffic. Arbitrary classified payloads cannot be labelled harmless control.\n\nThe selected reading tracks protected payload identities through complete executions. Gray transmission carries Inner protection. Black transmission carries Outer around Inner, with ordered encryption and matching configured endpoints. A completed cross-Black plaintext delivery has ordered reverse decryption. Local Red deliveries that never cross Black do not acquire a fictitious two-decryption duty. The mechanism type admits exactly the four IPsec/MACsec combinations. Outer MACsec restricts the solution to two sites.\n\nThe page-22 service clause remains recorded. Under the explicit user optional-management scope, actual management deployment requires its workstations and method-specific CA/KGS infrastructure. Different levels sharing an Outer still require a Gray Firewall. These facts do not gate the packet-transition relation. Management-free packet results have no administrative service-presence prerequisite. The user scope is a stated modeling choice, not a claim that the source's unconditional architectural wording disappeared. Cryptographic confidentiality, integrity, key independence, and faithful operation labels require separately justified primitive and implementation correspondence. Event ordering alone does not establish cryptographic secrecy. Affected declarations: ArchitectureServices, Flow.Valid, CrossedBlack, nested_layer_protection, LayerNoBypass. Inherited decision: INT-007.",
       "summary": "V3.1 separates encryption mechanism, Inner/Outer layer, interface zone and full security level. Flow.Valid binds the two tunnel endpoints and independent key contexts. AuthenticationServices requires a CA or key-generation service according to each component’s selected authentication method. Workstations are optional under the current scope."
     },
     "V31-012": {
@@ -317,7 +318,7 @@
       "source_path": "data/construction/v3.2-20261031T231942Z/interpretations.md",
       "source_line": 117,
       "source_text": "Affected group: RG-027. Original pages 20, 29, 41–42. Page 20 explicitly requires all CAKs and CKNs from an NSA-approved KGS while also describing EAP-MSK-derived CAKs. Both duties are retained: an EAP-derived CAK needs an approved generation mechanism. An arbitrary EAP implementation is not assumed approved. Exempting all EAP CAKs from the word all is rejected. Approval remains external.\n\nEach CKN has at least 16 bytes and approved generator provenance. PSK provisioning identifies an authorized Security Administrator obtaining the key before applying it to both endpoints. Each actual tunnel has values 0 and 1 for its key-server pair. A present central management site supplies the server endpoint. The pair central-site declaration must bind the actual deployment; omitting that fact cannot establish the conditional duty.\n\nFallback means configured alternate CAKs for fallback or rollover. Fresh CAKs from a new authenticated EAP exchange remain permitted. The current INT-MD15-20261024 input was reviewed with the original page-42 row. Its fresh-process and unchanged-configuration assumptions remain explicit. No approval fact is inferred from that interpretation.",
-      "summary": "The key server is an endpoint function. MACsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation."
+      "summary": "The key server is an endpoint function. MacsecServerPair and the actual central-management-site declaration determine the server’s placement. Approved key-generation provenance remains an explicit authority condition, including the chosen EAP-derived CAK interpretation."
     },
     "V31-047": {
       "title": "V31-047: live sessions and individual credentials",
@@ -346,8 +347,8 @@
       "status": "context",
       "meaning": "Applicable duties are selected from a device’s kind, encryption layer, deployment membership, and standalone-encapsulator status. V3.1 has no single SolutionComponent membership type.",
       "expressions": [
-        "MscComplianceContext.ComponentApplies",
-        "MscComplianceContext.AllApplicableDuties"
+        "ComplianceContext.ComponentApplies",
+        "ComplianceContext.AllApplicableDuties"
       ],
       "references": [
         "applicability",
@@ -750,8 +751,8 @@
       "meaning": "Authentication Servers have a dedicated device kind. MACsec authentication records identify the server and its site/network attachments.",
       "expressions": [
         "Device.kind = .authenticationServer",
-        "MACsecAuthentication.server",
-        "MACsecAuthentication.serverAttachments"
+        "MacsecAuthentication.server",
+        "MacsecAuthentication.serverAttachments"
       ],
       "references": [
         "kind",
@@ -767,7 +768,7 @@
       "meaning": "The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements.",
       "expressions": [
         "EAPRole.supplicant",
-        "MACsecAuthentication.supportedRoles"
+        "MacsecAuthentication.supportedRoles"
       ],
       "references": [
         "eap_role",
@@ -783,7 +784,7 @@
       "meaning": "The EAP role is a protocol function recorded separately from device kind. A MACsec device can support both functions across different arrangements.",
       "expressions": [
         "EAPRole.authenticator",
-        "MACsecAuthentication.supportedRoles"
+        "MacsecAuthentication.supportedRoles"
       ],
       "references": [
         "eap_role",
@@ -798,8 +799,8 @@
       "status": "composed",
       "meaning": "The key server is an endpoint selected in MACsec authentication and key-server-pair records. The role is not a separate DeviceKind.",
       "expressions": [
-        "MACsecAuthentication.keyServer",
-        "MACsecServerPair"
+        "MacsecAuthentication.keyServer",
+        "MacsecServerPair"
       ],
       "references": [
         "mac_auth",
@@ -1392,5 +1393,5 @@
       "interpretations": []
     }
   },
-  "refactoring_version": "v3.2"
+  "refactoring_version": "v3.4"
 }

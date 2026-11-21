@@ -3,7 +3,7 @@ import TDN.Models.TunnelSaOriginAttribution
 namespace TDN.DataPlaneForwarding
 
 def DomainProcessing (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (allowed : Nat → Prop)
-    (s : State) : Prop :=
+    (s : ForwardingState) : Prop :=
   ProcessingInvariant c expectedEncapStack s ∧ allowed s.frame.enteredIface
 
 structure LocalDomainConditions (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat)
@@ -17,7 +17,7 @@ structure LocalDomainConditions (c : DataPlaneModel) (expectedEncapStack : Nat �
     frame.packet.ingress = c.interfaceName frame.enteredIface →
     LocalAuthentication c expectedEncapStack frame.enteredIface authenticated →
     c.owner iface = c.owner frame.enteredIface → allowed frame.enteredIface →
-    accepts (c.forwardRules iface) (c.forwardFallback iface) (policyPacket c iface frame authenticated) →
+    TDN.PacketPolicy.AclAllows (c.forwardRules iface) (c.forwardFallback iface) (policyPacket c iface frame authenticated) →
     ((lookupSpdPolicies (c.egressPolicies iface) frame.packet = [] →
       encapStackAfterIngress expectedEncapStack frame.enteredIface authenticated = expectedEncapStack iface) ∧
     (∀ a ∈ lookupSpdPolicies (c.egressPolicies iface) frame.packet,
@@ -25,7 +25,7 @@ structure LocalDomainConditions (c : DataPlaneModel) (expectedEncapStack : Nat �
   output : ∀ iface frame, c.canOriginateTraffic frame.enteredIface →
     frame.packet.ingress = c.interfaceName frame.enteredIface →
     c.owner iface = c.owner frame.enteredIface → allowed frame.enteredIface →
-    accepts (c.outputRules iface) (c.outputFallback iface) (policyPacket c iface frame []) →
+    TDN.PacketPolicy.AclAllows (c.outputRules iface) (c.outputFallback iface) (policyPacket c iface frame []) →
     ((lookupSpdPolicies (c.egressPolicies iface) frame.packet = [] →
       encapStackAfterIngress expectedEncapStack frame.enteredIface [] = expectedEncapStack iface) ∧
     (∀ a ∈ lookupSpdPolicies (c.egressPolicies iface) frame.packet,
@@ -36,7 +36,7 @@ structure LocalDomainConditions (c : DataPlaneModel) (expectedEncapStack : Nat �
     expectedEncapStack iface = expectedEncapStack r.egress ∧ allowed r.egress
 
 def DomainInvariant (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat) (allowed : Nat → Prop)
-    (s : State) : Prop :=
+    (s : ForwardingState) : Prop :=
   match s.datapathStage with
   | .received | .egressReady => s.frame.encapLayerIds = expectedEncapStack s.iface ∧ allowed s.iface
   | .ingress | .localInput | .delivered =>
@@ -51,7 +51,7 @@ def DomainInvariant (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat)
 
 lemma accepted_hook_domain_effect {c : DataPlaneModel} {expectedEncapStack : Nat → List Nat}
     {allowed : Nat → Prop} (conditions : LocalDomainConditions c expectedEncapStack allowed)
-    {s : State} (processing : DomainProcessing c expectedEncapStack allowed s)
+    {s : ForwardingState} (processing : DomainProcessing c expectedEncapStack allowed s)
     (accepted : AcceptedHook c s) :
     ((lookupSpdPolicies (c.egressPolicies s.iface) s.frame.packet = [] →
       encapStackAfterIngress expectedEncapStack s.frame.enteredIface s.authenticated = expectedEncapStack s.iface) ∧
@@ -66,7 +66,7 @@ lemma accepted_hook_domain_effect {c : DataPlaneModel} {expectedEncapStack : Nat
 
 lemma step_preserves_domain_invariant {c : DataPlaneModel} {expectedEncapStack : Nat → List Nat}
     {allowed : Nat → Prop} (conditions : LocalDomainConditions c expectedEncapStack allowed)
-    {a b : State} {action : Action} (step : Step c a action b)
+    {a b : ForwardingState} {action : ForwardingAction} (step : ForwardingStep c a action b)
     (before : DomainInvariant c expectedEncapStack allowed a) :
     DomainInvariant c expectedEncapStack allowed b := by
   cases step with
@@ -110,11 +110,11 @@ lemma step_preserves_domain_invariant {c : DataPlaneModel} {expectedEncapStack :
   | @decrypt iface frame association sa header rest tracking configured installed bound received
       outerSource outerDestination esp selected =>
     have stackTail := congrArg List.tail before.1
-    simp only [Frame.encapLayerIds, received, List.map_cons, List.tail_cons] at stackTail
+    simp only [IpsecFrame.encapLayerIds, received, List.map_cons, List.tail_cons] at stackTail
     refine ⟨⟨⟨?_, rfl, Or.inr ⟨association, configured, rfl,
       rest.map (fun e => e.authentication.tag), ?_⟩, rfl⟩, before.2⟩, rfl⟩
-    · simpa [Frame.encapLayerIds, encapStackAfterIngress] using stackTail
-    · simpa [Frame.encapLayerIds, received, IpsecPolicy.seal] using before.1.symm
+    · simpa [IpsecFrame.encapLayerIds, encapStackAfterIngress] using stackTail
+    · simpa [IpsecFrame.encapLayerIds, received, IpsecPolicy.seal] using before.1.symm
   | @linkTransmit a b frame authenticated linked =>
     have effect := conditions.link a b linked before.2
     exact ⟨before.1.trans effect.1, effect.2⟩
@@ -124,7 +124,7 @@ lemma step_preserves_domain_invariant {c : DataPlaneModel} {expectedEncapStack :
 
 theorem forwarding_preserves_enclave_invariant (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat)
     (allowed : Nat → Prop) (conditions : LocalDomainConditions c expectedEncapStack allowed)
-    {a b : State} {actions : List Action} (run : (lts c).MTr a actions b)
+    {a b : ForwardingState} {actions : List ForwardingAction} (run : (lts c).MTr a actions b)
     (initial : DomainInvariant c expectedEncapStack allowed a) :
     DomainInvariant c expectedEncapStack allowed b := by
   have preservation : (lts c).TrInv (DomainInvariant c expectedEncapStack allowed) :=
@@ -133,7 +133,7 @@ theorem forwarding_preserves_enclave_invariant (c : DataPlaneModel) (expectedEnc
 
 theorem delivered_iface_is_allowed (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat)
     (allowed : Nat → Prop) (conditions : LocalDomainConditions c expectedEncapStack allowed)
-    {a b : State} {actions : List Action} (run : (lts c).MTr a actions b)
+    {a b : ForwardingState} {actions : List ForwardingAction} (run : (lts c).MTr a actions b)
     (initial : DomainInvariant c expectedEncapStack allowed a) (delivered : b.datapathStage = .delivered) :
     allowed b.iface := by
   have preserved := forwarding_preserves_enclave_invariant c expectedEncapStack allowed conditions run initial

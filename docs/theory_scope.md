@@ -1,20 +1,32 @@
 # Active theory scope
 
-TDN now concentrates formal proofs on network behavior that requires reasoning across packets, paths, or sequences of operations. The [scope assessment](../specs/proof_scope.json) selected 24 requirement groups for those arguments. The other current positive contributions use direct checks over saved records. All 76 source requirements remain in [the catalog](../specs/requirement_groups.md).
+<!-- BEGIN review status -->
+TDN v3.4 selects 10 requirement groups. General proofs for 10 have passed review under their stated assumptions.
 
-The [machine-readable scope register](../specs/proof_scope.json) records the decision and reason for every RG. Each retained proof entry names its general result and a concrete application. Nineteen of the 24 selected groups now have reviewed proofs of every clause of their instantiated specifications. Five groups retain supporting results and are deferred by the user. The [current review record](../data/publication/v3.3/verdict.json) gives the accepted scopes and assumptions.
+- The baseline deployment satisfies the full connectivity requirement. Lean checks 4 intended delivery paths.
+- The shared deployment preserves forwarding isolation and violates the inherited physical-separation duty because `V31F_I_A4` and `V31F_O_A1` share a host. Lean checks 8 intended delivery paths.
 
-## Current construction result
+[Current verdict](../data/publication/v3.4/verdict.json). [Source clauses, interpretations and evidence](../specs/requirement_clauses.md).
+<!-- END review status -->
 
-The accepted groups are RG-007, RG-012, RG-013, RG-014, RG-021, RG-024, RG-027, RG-028, RG-029, RG-030, RG-032, RG-033, RG-034, RG-035, RG-037, RG-038, RG-039, RG-040 and RG-047. Each result has a reusable general theorem and checked applications. The theorem states the required assumptions explicitly; snapshot-specific records and finite checks live in `TDN/Deployments`.
+| What the proofs cover | Active requirements |
+| --- | --- |
+| Protected Red traffic on Black links and delivery within a security level | RG-007, RG-008 |
+| Gray and Outer Firewall placement | RG-013, RG-034 |
+| Preventing encryption and decryption bypass at the Inner and Outer boundaries | RG-029, RG-030 |
+| Allowed boundary traffic, IP headers, multicast, and Gray firewall rules | RG-035, RG-038, RG-039, RG-040 |
 
-The November 4 continuation completed four groups. RG-035 connects boundary filters to native processing and physical-frame observations. RG-039 proves the Outer Gray-interface allowlist. RG-040 proves the Gray Firewall allowlist and cross-level denial. RG-033 connects packet preparation, native processing and emitted sizes to the configured interface limits. Earlier applications were rechecked after shared model changes.
+The [scope register](../specs/proof_scope.json) identifies each active specification, general result and example. The [formalization map](../specs/requirement_formalizations.md) links all 76 source groups to their current Lean definitions or catalog conditions. The [November 11 record](../data/publication/v3.3/verdict.json) preserves the review of the earlier selection.
 
-The five deferred groups are RG-008, RG-015, RG-054, RG-056 and RG-074. Their existing lemmas remain available. The user requested stopping after RG-007 passed review and releasing v3.3. Deferral does not classify those requirements as fundamentally unprovable.
+## How the source is organized
+
+[MscRequirements.lean](../TDN/Requirements/MscRequirements.lean) defines the ten targets. Network models describe the steps a device can take. General theorems in [Requirements](../TDN/Requirements/) use those steps to prove properties across possible paths and packets. Files in [Deployments](../TDN/Deployments/) check the facts for a specific deployment and apply the general theorem.
+
+The other 66 groups retain their source text and catalog conditions. RG-008 refers to the catalog when it requires included networks and referenced solutions to satisfy their applicable duties. The library also retains packet-size, authentication and encapsulation definitions used by selected packet proofs. For RG-054, the catalog calls for testing each selected tunnel between the actual peers in both directions.
 
 ### How RG-007 connects two protection layers to packet processing
 
-`msc_nested_layer_protection` requires the declared Inner and Outer tunnel pairing throughout a protected Red payload’s execution. Gray transmission carries the Inner layer. Black transmission and reception carry Outer around Inner. Inner encryption precedes Outer encryption. Successful cross-Black delivery reaches the selected destination after Outer decryption and then Inner decryption. The specification also includes model coverage, endpoint placement, authentication-service conditions and independent key contexts.
+`nested_layer_protection` requires the declared Inner and Outer tunnel pairing throughout a protected Red payload’s execution. Gray transmission carries the Inner layer. Black transmission and reception carry Outer around Inner. Inner encryption precedes Outer encryption. Successful cross-Black delivery reaches the selected destination after Outer decryption and then Inner decryption. The specification also includes model coverage, endpoint placement, authentication-service conditions and independent key contexts.
 
 `nested_layer_protection_from_local_checks` proves those clauses from initial-state and individual-step conditions. The proof tracks named tunnels through every finite sequence of device operations. General arguments about adding and removing protection layers establish the required encryption and decryption order. The theorem contains no concrete device names or snapshot dependencies.
 
@@ -22,61 +34,11 @@ Two checked applications use the same theorem. The native IPsec application cove
 
 The applications require an explicit relation stating that the two layers use independent keys. Distinct key identifiers do not prove cryptographic independence. The native application also takes the stated GCM implementation interface. Both models hold the captured installed associations fixed and cover admitted Red payloads. Public certificate validation, faithful collection and correspondence with Linux remain explicit assumptions. Optional administration does not gate these packet proofs.
 
-The v3.3 continuation also completed MACsec authentication under RG-024, mandatory MACsec protection under RG-028, Inner no-bypass behavior under RG-029 and Outer no-bypass behavior under RG-030. Their general theorems and exact application assumptions are retained in the current publication records.
+RG-029 and RG-030 cover bypass at the Inner and Outer encryption boundaries. Their proofs share packet-size bounds and records of transmitted frames with the double-encryption proof. The earlier review of MACsec authentication and protection settings under RG-024 and RG-028 remains in the [November 11 review](../data/publication/v3.3/verdict.json).
 
-### How RG-033 connects packet sizes to evidence
+### How to inspect RG-008
 
-`msc_packet_size_configuration` contains five requirements. The execution model must cover the deployment. Its size calculations must correspond to the represented packets. Transmissions at Inner Gray interfaces, Outer Black interfaces and applicable Gray Firewall external interfaces must avoid further fragmentation. Every required interface must have a sizing record. Those records must satisfy the selected IPv4 or IPv6 configuration conditions and any selected Inner objective.
-
-`complete_canonical_IPsec_packet_sizing` proves those five requirements from explicit conditions. Source processing converts application data into packets and accounts for fragmentation or stream segmentation. Device processing follows the recorded routes, ordered filters, IPsec policies, installed associations and bridge rules. The recorded forwarding guards block oversized packets after reassembly, before ESP adds its headers and encryption overhead. General proofs track the resulting size bounds through every finite execution. The emitted-byte model then accounts for the headers and encryption overhead at transmission.
-
-The baseline application has four Red source entries and 12 required external interfaces. The shared application has eight Red source entries and 26 required external interfaces. Both import their complete interface and processing records. Finite Lean checks validate source attachments, unique identities, bridge endpoints, tunnel bindings, interface coverage and size limits. Those checks supply the general theorem's conditions. Separate checked examples follow nonempty HTTP traffic through the recorded processing rules to both an Inner Gray wire and an Outer Black wire. A stored `encodedSize` value is an upper bound set to the interface ceiling; the separate transmission proof establishes that actual represented bytes fit that ceiling.
-
-The accepted applications select IPv4 MTU configuration and leave the optional IR-2 Inner objective unselected. Packet encoding includes modeled header fields and length calculations. The encryption primitive supplies its stated length and decoding assumptions. Checksums and unused header fields are initialized to zero, so the constructed bytes do not establish byte-for-byte replay of a captured transmission. Public SA records bind identities and transform parameters. Private-key validity, cryptographic guarantees and faithful Linux execution remain explicit implementation assumptions.
-
-The projection preserves device-local interfaces through `Zone.local`. Local addresses belong to their recorded device, so separate namespaces can each contain loopback addresses. Ordinary Gray infrastructure must have at least one Gray interface and only Gray or local interfaces. Optional administration remains independent of the core packet proofs.
-
-## Current requirement decisions
-
-| Decision | Groups | Meaning |
-| --- | ---: | --- |
-| General proof | 24 | Retain the behavioral argument and its required evidence checks. |
-| Direct check | 29 | Check the assessed finite-record clause outside Lean. |
-| External assurance or unsupported capability | 22 | Keep the requirement and limitation in the catalog. |
-| Permission | 1 | RG-075 has no mandatory claim to prove. |
-
-Each decision applies to the contribution assessed in the supplied report. RG-023 illustrates the distinction: the current lifetime-number comparison uses a direct check. A future requirement proof about reauthentication before rekeying would require reasoning about protocol actions. The scope register retains that possible extension.
-
-## General results and supporting contributions
-
-| RG | Requirement area | General result |
-| --- | --- | --- |
-| RG-007 | Two independent encryption layers and allowed tunnel pairings | `TDN.Requirements.Msc.nested_layer_protection_from_local_checks` |
-| RG-008 | Connectivity restricted to the same security level | `TDN.Requirements.delivered_domain_from_local_checks` |
-| RG-012 | Separate authentication and management for security levels | `TDN.Requirements.Msc.key_and_management_separation_from_scoped_inventory` |
-| RG-013 | Gray Firewalls on all paths needing level separation | `TDN.Requirements.Msc.gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms` |
-| RG-014 | Gray addressing supports security-level filtering | `TDN.Requirements.Msc.gray_addressing_from_ip_and_link_endpoint_rules` |
-| RG-015 | MACsec encapsulation and standalone encapsulator obligations | `TDN.Requirements.carrier_step_wraps_the_exact_input_body` |
-| RG-021 | VPN private-key access confinement | `TDN.Requirements.Msc.vpn_private_key_confinement_from_interface_steps` |
-| RG-024 | MACsec authentication alternatives and AS scope | `TDN.Requirements.Msc.macsec_authentication_from_local_checks` |
-| RG-027 | MACsec key generation, key-server selection, and rollover | `TDN.Requirements.Msc.macsec_key_generation_from_checked_records` |
-| RG-028 | MACsec mandatory protection parameters | `TDN.Requirements.Msc.macsec_protection_from_local_checks` |
-| RG-029 | Inner encryption and decryption cannot be bypassed | `TDN.Requirements.Msc.inner_tunnel_no_bypass_from_outbound_and_inbound_checks` |
-| RG-030 | Outer encryption and decryption cannot be bypassed | `TDN.Requirements.Msc.outer_tunnel_no_bypass_from_local_checks` |
-| RG-032 | TRANSEC under the stated deployment conditions | `TDN.Requirements.Msc.transec_conditions_from_checked_installations` |
-| RG-033 | Packet sizing to control fragmentation | `TDN.Requirements.Msc.complete_canonical_IPsec_packet_sizing` |
-| RG-034 | Outer Firewall placement for untrusted Black transport | `TDN.Requirements.outer_firewall_placement_from_local_checks` |
-| RG-035 | Permitted protocols and peers at encryption and firewall boundaries | `TDN.Requirements.Msc.device_boundary_interface_filtering_from_checks` |
-| RG-037 | Outer-component third-party contact restrictions | `TDN.Requirements.Msc.third_party_services_from_disabled_features_and_rule_checks` |
-| RG-038 | IP header and multicast filtering | `TDN.Requirements.Msc.ip_and_link_header_filtering_from_inventory_and_rule_atoms` |
-| RG-039 | Outer Gray-interface allowlist and default denial | `TDN.Requirements.Msc.outer_gray_IPsec_policy_from_native_checks` |
-| RG-040 | Gray Firewall allowlist and cross-level denial | `TDN.Requirements.Msc.gray_firewall_allowlist_from_native_IPsec_checks` |
-| RG-047 | Administrator authentication and individual credentials | `TDN.Requirements.Msc.administrator_authentication_from_local_admission_and_credential_checks` |
-| RG-054 | Interoperable components across communicating sites | `TDN.Requirements.successful_ethernet_peer_restores_header` |
-| RG-056 | Approved physical paths out of Red Networks | `TDN.Requirements.red_egress_crosses_inner_from_attachment_cut` |
-| RG-074 | Redundant component and load-balancing permission | `TDN.Waypointing.waypointing_of_edge_invariant` |
-
-The snapshot application for each row is listed in `specs/proof_scope.json`. The selected model and evidence assumptions remain part of each result. In particular, the proofs do not establish cryptographic secrecy or universal correspondence with Linux merely by compiling.
+The [scoped forwarding theorem](../TDN/Requirements/SecurityLevelConnectivity.lean) proves dedicated Inner assignments, matching security levels, successful intended delivery and isolation on every forwarding trace. Both deployments use that argument. The full specification adds closed references to other solutions and inherited duties for each included unclassified network. The [baseline proof](../TDN/Deployments/SecurityLevelConnectivity_Baseline.lean) discharges those conditions with its roster. The [shared deployment](../TDN/Deployments/SecurityLevelConnectivity_Shared.lean) has eight successful paths and a physical-host counterexample to the full specification.
 
 ## Direct checks and their evidence
 
@@ -96,6 +58,8 @@ RG-011 reuses the existing generic first-match filter reasoning. Its direct chec
 
 ## Build and inspect the result
 
+Lean uses its default elaboration allowance across the theory. Two declarations in [the MACsec traffic examples](../TDN/Deployments/MacsecProtection_TrafficExamples.lean) need a larger finite allowance. Each increase applies only to the named declaration. The [source check](../scripts/construction/check_proof_limits.py) also checks the construction generators.
+
 Run from the repository root:
 
 ```sh
@@ -109,17 +73,3 @@ lake env lean scripts/construction/audit_axioms.lean
 The direct-check command prints JSON and exits unsuccessfully if any comparison fails or an input is missing. Empty inventories fail the migrated comparisons. Regression tests exercise changed cipher settings, invalid lifetimes, shared AW assignments, weakened DNS rules, journal gaps and truncation, and changed evidence hashes.
 
 The all-theorem audit accepts Lean’s standard logical axioms and re-evaluated closed `native_decide` results. The [trust policy](proof_trust.md) includes Lean’s compiler and runtime, the C compiler, and LLVM when used. Other axioms are rejected. `tests/ProofScope.lean` checks all retained general results and applications. A static import check also rejects references to retired modules, even if an old compiled file remains in a local build cache.
-
-## Historical validation of the October 31 simplification
-
-The clean staged-source validation on 2026-10-31 passed the 902-job Lean build, all 20 active Lean regression files, the saved-snapshot and BIRD import examples, and all 20 MCP tests. The 25 direct checks passed, covering the 29 migrated RG contributions. Ten focused Python tests check rejection cases, scope accounting, and module separation. The axiom audit checked 4,437 imported theorem declarations, including generated helper declarations, and found no dependencies beyond Lean’s three permitted logical axioms.
-
-Before publication, 356 comments were removed from the Lean modules while preserving the two file-level introductions. A source comparison confirmed that the removal left all non-whitespace code tokens unchanged. The library guide’s source-line links were updated. Existing Lean tactic-style warnings remain.
-
-The historical Python importer suite also uses archived run inputs outside the core checkout. The current validation commands above exercise the retained theory, direct checks, and MCP import path.
-
-## Historical records
-
-The earlier construction registers and HTML audits preserve the results of their recorded revisions. Their 53-group contribution count and source links describe those revisions. Use `specs/proof_scope.json` for the active scope. The full source requirements, saved observations, JSON evidence, parser implementations, and historical checkpoints remain available.
-
-The retired module and test names are recorded in `specs/proof_scope.json`. The prior source is recoverable from Git and the existing construction history. Historical importer recipes may generate retired modules, so the construction tools guide limits those recipes to the corresponding historical checkout. New work follows the revised scope in `workflows/construction.md`.

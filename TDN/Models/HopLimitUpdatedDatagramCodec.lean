@@ -14,18 +14,18 @@ end TDN.LayeredFrame
 namespace TDN.PacketSource
 open LayeredFrame
 
-def forwardedNetworkHeader (datagram : Datagram) (nominal actual : PacketPolicy.Packet) :
+def forwardedNetworkHeader (datagram : EncodedDatagram) (nominal actual : PacketPolicy.Packet) :
     List UInt8 :=
   if actual = nominal then datagram.networkHeader
   else encodeNetworkHeader actual datagram.Data.length
     (field datagram.networkHeader 4 2) (field datagram.networkHeader 6 2)
 
-lemma forwarded_network_header_matches (datagram : Datagram) (nominal actual : PacketPolicy.Packet)
+lemma forwarded_network_header_matches (datagram : EncodedDatagram) (nominal actual : PacketPolicy.Packet)
     (body : datagram.body = .datagram nominal) (decoded : datagram.Decoded)
     (identity : HeaderIdentity actual nominal) :
     (forwardedNetworkHeader datagram nominal actual).length = datagram.networkHeader.length ∧
       NetworkHeaderMatches actual (forwardedNetworkHeader datagram nominal actual) datagram.Data.length := by
-  have properties := decoded_IP_header_properties datagram nominal body decoded
+  have properties := decoded_ip_header_properties datagram nominal body decoded
   have same := identity.actual_is_nominal_with_hop
   have network : NetworkTemplate actual := by
     rw [same]
@@ -43,7 +43,7 @@ lemma forwarded_network_header_matches (datagram : Datagram) (nominal actual : P
     rw [same]
     change networkHeaderSize nominal + datagram.Data.length ≤ networkProtocolLimit nominal
     rw [← properties.2.1]
-    simpa only [Datagram.Raw, List.length_append] using properties.2.2.2.2
+    simpa only [EncodedDatagram.Raw, List.length_append] using properties.2.2.2.2
   have width : networkHeaderSize actual = datagram.networkHeader.length := by
     rw [same]
     exact properties.2.1.symm
@@ -51,7 +51,7 @@ lemma forwarded_network_header_matches (datagram : Datagram) (nominal actual : P
   split
   next equal =>
     subst actual
-    rw [Datagram.Decoded, body] at decoded
+    rw [EncodedDatagram.Decoded, body] at decoded
     exact ⟨rfl, decoded.2.2.1⟩
   next different =>
     have encoded := source_network_header_matches actual datagram.Data.length
@@ -59,16 +59,16 @@ lemma forwarded_network_header_matches (datagram : Datagram) (nominal actual : P
       network representable protocol size
     exact ⟨encoded.1.trans width, encoded.2⟩
 
-lemma forwarded_transport_header_matches (datagram : Datagram) (nominal actual : PacketPolicy.Packet)
+lemma forwarded_transport_header_matches (datagram : EncodedDatagram) (nominal actual : PacketPolicy.Packet)
     (body : datagram.body = .datagram nominal) (decoded : datagram.Decoded)
     (identity : HeaderIdentity actual nominal) :
     TransportHeaderMatches actual datagram.transportHeader datagram.application := by
   rw [identity.actual_is_nominal_with_hop]
   change TransportHeaderMatches nominal datagram.transportHeader datagram.application
-  rw [Datagram.Decoded, body] at decoded
+  rw [EncodedDatagram.Decoded, body] at decoded
   exact decoded.2.2.2.1
 
-lemma initial_forwarded_network_bytes (datagram : Datagram) (nominal : PacketPolicy.Packet) :
+lemma initial_forwarded_network_bytes (datagram : EncodedDatagram) (nominal : PacketPolicy.Packet) :
     forwardedNetworkHeader datagram nominal nominal = datagram.networkHeader := by
   simp [forwardedNetworkHeader]
 

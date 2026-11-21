@@ -6,7 +6,6 @@ namespace TDN.Deployments.Perimeter_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma address_inventory_checked (base : Deployment) :
     addressRecordsChecked (deployment base) = true := by rfl

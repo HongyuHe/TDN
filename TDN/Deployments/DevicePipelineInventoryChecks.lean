@@ -11,7 +11,7 @@ def interfaces : List Interface :=
 
 def name (iface : Nat) : String := if iface = 0 then "in" else "out"
 
-def rules : List PacketPolicy.Rule :=
+def rules : List PacketPolicy.PacketAclRule :=
   [⟨[.protocol "esp", .sourceRange 0 100, .destinationRange 0 100], .allow⟩]
 
 def policies : List InterfacePolicy :=

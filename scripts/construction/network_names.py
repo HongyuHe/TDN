@@ -18,7 +18,7 @@ def tunnel_matrix_module(namespace, direction):
 
 def forwarding_lean(source):
     """Render older trace labels using the current Lean forwarding names."""
-    source = source.replace('DataPlaneForwarding.Step.local', 'DataPlaneForwarding.Step.deliverToLocalHost')
+    source = source.replace('DataPlaneForwarding.ForwardingStep.local', 'DataPlaneForwarding.ForwardingStep.deliverToLocalHost')
     source = source.replace('Step.«local»', 'Step.deliverToLocalHost')
     for old, new in [('ready', 'egressReady'), ('local', 'internalProcessing'),
                      ('passWithoutTransform', 'forwardWithoutEncap'), ('plain', 'forwardWithoutEncap'),

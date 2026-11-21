@@ -19,7 +19,7 @@ structure Device where
   id : String
   site : String
   kind : DeviceKind
-  layer : Option Layer
+  layer : Option EncryptionLayer
   level : SecurityLevel
   infrastructure : Bool
 
@@ -66,18 +66,17 @@ structure Traffic where
 structure InterfacePolicy where
   interface : String
   direction : Direction
-  rules : List PacketPolicy.Rule
+  rules : List PacketPolicy.PacketAclRule
   defaultVerdict : Filter.Verdict
   hook : PacketProcessing.Hook := .forward
 
-def InterfacePolicy.Accepts (policy : InterfacePolicy) (traffic : Traffic) : Prop :=
-  Filter.evaluate (policy.rules.map PacketPolicy.Rule.toFilter) policy.defaultVerdict
-    traffic.packet = .allow
+def InterfacePolicy.PermitsTraffic (policy : InterfacePolicy) (traffic : Traffic) : Prop :=
+  PacketPolicy.AclAllows policy.rules policy.defaultVerdict traffic.packet
 
 structure Tunnel where
   id : String
-  layer : Layer
-  mechanism : Mechanism
+  layer : EncryptionLayer
+  protocol : EncryptionProtocol
   sender : String
   receiver : String
   keyContext : String
@@ -99,8 +98,8 @@ def PayloadCode (bytes : List UInt8) : Nat :=
   bytes.foldl (fun accumulator byte => accumulator * 256 + byte.toNat) 1
 
 inductive ProtectionSession where
-  | ipsec (association : DataPlaneForwarding.TunnelSAStamp)
-  | macsec (association : LayeredFrame.MACsecAssociation)
+  | ipsec (association : DataPlaneForwarding.TunnelSaStamp)
+  | macsec (association : LayeredFrame.MacsecAssociation)
   deriving DecidableEq
 
 inductive NetworkEvent where
@@ -130,24 +129,24 @@ inductive NetworkEvent where
   deriving DecidableEq
 
 def MACsecKeyMaterialMatches
-    (keyMaterial : LayeredFrame.MACsecAssociation → Option (List UInt8))
-    (transmitted installed : LayeredFrame.MACsecAssociation) : Prop :=
+    (keyMaterial : LayeredFrame.MacsecAssociation → Option (List UInt8))
+    (transmitted installed : LayeredFrame.MacsecAssociation) : Prop :=
   ∃ key, (key.length = 16 ∨ key.length = 32) ∧
     keyMaterial transmitted = some key ∧ keyMaterial installed = some key
 
-inductive IPsecSADirection where
+inductive IpsecSaDirection where
   | outbound | inbound
   deriving DecidableEq
 
-structure IPsecLocalSA where
+structure IpsecLocalSa where
   device : Nat
-  direction : IPsecSADirection
-  association : DataPlaneForwarding.InstalledSA
+  direction : IpsecSaDirection
+  association : DataPlaneForwarding.InstalledSa
   epoch : String
   installation : String
   deriving DecidableEq
 
-structure IPsecTransform where
+structure IpsecTransform where
   encryptionAlgorithm : String
   encryptionKeyBits : Nat
   saltBytes : Nat
@@ -156,14 +155,14 @@ structure IPsecTransform where
   authenticationBits : Nat
   deriving DecidableEq
 
-structure IPsecKeyMaterial where
-  transform : IPsecTransform
+structure IpsecKeyMaterial where
+  transform : IpsecTransform
   encryptionKey : List UInt8
   salt : List UInt8
   integrityKey : List UInt8
   deriving DecidableEq
 
-def IPsecKeyMaterial.Valid (material : IPsecKeyMaterial) : Prop :=
+def IpsecKeyMaterial.Valid (material : IpsecKeyMaterial) : Prop :=
   material.transform.encryptionAlgorithm ≠ "" ∧
   0 < material.transform.encryptionKeyBits ∧
   material.encryptionKey.length * 8 = material.transform.encryptionKeyBits ∧
@@ -174,23 +173,23 @@ def IPsecKeyMaterial.Valid (material : IPsecKeyMaterial) : Prop :=
   | some algorithm => algorithm ≠ "" ∧ 0 < material.transform.integrityKeyBits ∧
       material.integrityKey.length * 8 = material.transform.integrityKeyBits
 
-def IPsecKeyMaterialMatches (keyMaterial : IPsecLocalSA → Option IPsecKeyMaterial)
-    (source receiver : IPsecLocalSA) : Prop :=
+def IPsecKeyMaterialMatches (keyMaterial : IpsecLocalSa → Option IpsecKeyMaterial)
+    (source receiver : IpsecLocalSa) : Prop :=
   ∃ material, material.Valid ∧
     keyMaterial source = some material ∧ keyMaterial receiver = some material
 
 structure DeviceExecutionBinding (State Action : Type) where
-  configuration : MultiProtocolForwarding.Config
-  state : State → MultiProtocolForwarding.State
-  action : Action → Option MultiProtocolForwarding.Action
+  configuration : MultiProtocolForwarding.TunnelForwardingModel
+  state : State → MultiProtocolForwarding.TunnelForwardingState
+  action : Action → Option MultiProtocolForwarding.TunnelForwardingAction
   ifaceName : Nat → String
-  ipsecTunnel : DataPlaneForwarding.TunnelSAStamp → String
+  ipsecTunnel : DataPlaneForwarding.TunnelSaStamp → String
   ipsecEpoch : Option String
-  ipsecInstallations : List IPsecLocalSA
-  ipsecKeyMaterial : IPsecLocalSA → Option IPsecKeyMaterial
+  ipsecInstallations : List IpsecLocalSa
+  ipsecKeyMaterial : IpsecLocalSa → Option IpsecKeyMaterial
   macsecEpoch : Option String := none
-  macsecTunnel : LayeredFrame.MACsecAssociation → String
-  macsecKeyMaterial : LayeredFrame.MACsecAssociation → Option (List UInt8)
+  macsecTunnel : LayeredFrame.MacsecAssociation → String
+  macsecKeyMaterial : LayeredFrame.MacsecAssociation → Option (List UInt8)
   componentName : Nat → String
   sourceEntry : Nat → Option String
   sourceProcessing : PacketSource.Processing
@@ -254,9 +253,9 @@ def ObservedHistory.Valid (history : ObservedHistory) : Prop :=
   history.entries.Pairwise (fun first second => first.position < second.position) ∧
   (∀ edge ∈ history.dependencies, edge.1 < edge.2 ∧ history.DependencyValid edge)
 
-structure MACsecHistoryInstallation where
+structure MacsecHistoryInstallation where
   device : Nat
-  association : LayeredFrame.MACsecAssociation
+  association : LayeredFrame.MacsecAssociation
   epoch : String
   installation : String
   source : String
@@ -272,11 +271,15 @@ structure ForwardingModel (State Action : Type) where
   system : Cslib.LTS State Action
   initial : State → Prop
   events : Action → List NetworkEvent
-  native : DeviceExecutionBinding State Action
-  sourceRecord : State → Option (PacketSource.Request × PacketSource.Datagram) := fun _ => none
+  deviceDataPlane : DeviceExecutionBinding State Action
+  sourceRecord : State → Option (PacketSource.Request × PacketSource.EncodedDatagram) := fun _ => none
   history : ObservedHistory := {}
-  macsecInstallationHistory : List MACsecHistoryInstallation := []
+  macsecInstallationHistory : List MacsecHistoryInstallation := []
   historicalKeyMaterial : String → Option (List UInt8) := fun _ => none
+
+abbrev ForwardingModel.ForwardsAlongTrace {S A : Type} (model : ForwardingModel S A)
+    (start : S) (actions : List A) (finish : S) : Prop :=
+  model.system.MTr start actions finish
 
 def DeviceExecutionBinding.LayerIds {S A : Type} (binding : DeviceExecutionBinding S A) :
     LayeredFrame.Body → List String
@@ -298,7 +301,7 @@ def BodySessions : LayeredFrame.Body → List ProtectionSession
   | .carrier _ body => BodySessions body
 
 def DeviceExecutionBinding.OperationEvents {S A : Type} (binding : DeviceExecutionBinding S A)
-    (before : S) (action : MultiProtocolForwarding.Action) (after : S) : List NetworkEvent :=
+    (before : S) (action : MultiProtocolForwarding.TunnelForwardingAction) (after : S) : List NetworkEvent :=
   let first := binding.state before
   let last := binding.state after
   let payload : PayloadId := ⟨first.frame.originDomain, first.frame.payload⟩
@@ -384,7 +387,7 @@ def DeviceExecutionBinding.SourceEvents {S A : Type} (binding : DeviceExecutionB
   else []
 
 def DeviceExecutionBinding.RequiredEvents {S A : Type} (binding : DeviceExecutionBinding S A)
-    (before : S) (action : MultiProtocolForwarding.Action) (after : S) : List NetworkEvent :=
+    (before : S) (action : MultiProtocolForwarding.TunnelForwardingAction) (after : S) : List NetworkEvent :=
   binding.SourceEvents before ++ binding.OperationEvents before action after
 
 def NetworkEvent.NetworkOperation : NetworkEvent → Bool
@@ -400,23 +403,23 @@ def DeviceExecutionBinding.MACsecKeyInventory {S A : Type}
     ∃ key, binding.macsecKeyMaterial association = some key ∧
       (key.length = 16 ∨ key.length = 32)
 
-def IPsecLocalSA.InstalledAt {S A : Type} (installation : IPsecLocalSA)
+def IpsecLocalSa.InstalledAt {S A : Type} (installation : IpsecLocalSa)
     (binding : DeviceExecutionBinding S A) (iface : Nat) : Prop :=
   installation.device = binding.configuration.ip.owner iface ∧
   match installation.direction with
   | .outbound => installation.association ∈ binding.configuration.ip.egressSAs iface
   | .inbound => installation.association ∈ binding.configuration.ip.ingressSAs iface
 
-def IPsecLocalSA.OutboundSeal {S A : Type} (installation : IPsecLocalSA)
-    (binding : DeviceExecutionBinding S A) (wireSeal : DataPlaneForwarding.TunnelSAStamp) : Prop :=
+def IpsecLocalSa.OutboundSeal {S A : Type} (installation : IpsecLocalSa)
+    (binding : DeviceExecutionBinding S A) (wireSeal : DataPlaneForwarding.TunnelSaStamp) : Prop :=
   installation.direction = .outbound ∧
   ∃ iface, installation.InstalledAt binding iface ∧
     ∃ policy ∈ binding.configuration.ip.egressPolicies iface,
       DataPlaneForwarding.saMatchesPolicy installation.association policy ∧
       policy.seal installation.association = wireSeal
 
-def IPsecLocalSA.InboundSeal {S A : Type} (installation : IPsecLocalSA)
-    (binding : DeviceExecutionBinding S A) (iface : Nat) (wireSeal : DataPlaneForwarding.TunnelSAStamp) : Prop :=
+def IpsecLocalSa.InboundSeal {S A : Type} (installation : IpsecLocalSa)
+    (binding : DeviceExecutionBinding S A) (iface : Nat) (wireSeal : DataPlaneForwarding.TunnelSaStamp) : Prop :=
   installation.direction = .inbound ∧ installation.InstalledAt binding iface ∧
   ∃ policy ∈ binding.configuration.ip.ingressPolicies iface,
     DataPlaneForwarding.saMatchesPolicy installation.association policy ∧
@@ -445,9 +448,9 @@ def DeviceExecutionBinding.IPsecKeyInventory {S A : Type}
     first.InboundSeal binding iface wireSeal → second.InboundSeal binding iface wireSeal → first = second)
 
 def DeviceExecutionBinding.AcceptedStep {S A : Type} (binding : DeviceExecutionBinding S A)
-    (before : MultiProtocolForwarding.State) (action : MultiProtocolForwarding.Action)
-    (after : MultiProtocolForwarding.State) : Prop :=
-  MultiProtocolForwarding.Step binding.configuration before action after ∧
+    (before : MultiProtocolForwarding.TunnelForwardingState) (action : MultiProtocolForwarding.TunnelForwardingAction)
+    (after : MultiProtocolForwarding.TunnelForwardingState) : Prop :=
+  MultiProtocolForwarding.TunnelForwardingStep binding.configuration before action after ∧
   (action = .decryptMACsec →
     ∃ iface ∈ binding.configuration.macIfaces, ∃ installed ∈ iface.receiveAssociations,
       ∃ transmitted body,
@@ -474,39 +477,39 @@ def DeviceExecutionBinding.AcceptedStep {S A : Type} (binding : DeviceExecutionB
 
 def ForwardingModel.Faithful {S A : Type} (model : ForwardingModel S A) : Prop :=
   ∀ before action after, model.system.Tr before action after →
-    match model.native.action action with
+    match model.deviceDataPlane.action action with
     | some nativeAction =>
-        model.native.AcceptedStep
-          (model.native.state before) nativeAction (model.native.state after) ∧
+        model.deviceDataPlane.AcceptedStep
+          (model.deviceDataPlane.state before) nativeAction (model.deviceDataPlane.state after) ∧
         (model.events action).filter NetworkEvent.NetworkOperation =
-          model.native.RequiredEvents before nativeAction after
+          model.deviceDataPlane.RequiredEvents before nativeAction after
     | none =>
-        model.native.state before = model.native.state after ∧
+        model.deviceDataPlane.state before = model.deviceDataPlane.state after ∧
         (model.events action).filter NetworkEvent.NetworkOperation = []
 
 def ForwardingModel.DeviceStepCoverage {S A : Type} (model : ForwardingModel S A) : Prop :=
   ∀ before nativeAction nativeAfter,
-    model.native.AcceptedStep
-      (model.native.state before) nativeAction nativeAfter →
+    model.deviceDataPlane.AcceptedStep
+      (model.deviceDataPlane.state before) nativeAction nativeAfter →
     ∃ action after, model.system.Tr before action after ∧
-      model.native.action action = some nativeAction ∧ model.native.state after = nativeAfter
+      model.deviceDataPlane.action action = some nativeAction ∧ model.deviceDataPlane.state after = nativeAfter
 
 def ForwardingModel.TraceEvents {S A : Type} (model : ForwardingModel S A)
     (actions : List A) : List NetworkEvent :=
   model.history.Events ++ actions.flatMap model.events
 
-def MACsecHistoryInstallation.Bound {S A : Type} (record : MACsecHistoryInstallation)
+def MacsecHistoryInstallation.Bound {S A : Type} (record : MacsecHistoryInstallation)
     (model : ForwardingModel S A) : Prop :=
-  model.native.macsecEpoch = some record.epoch ∧
+  model.deviceDataPlane.macsecEpoch = some record.epoch ∧
   record.epoch = model.history.epoch ∧ record.installation ≠ "" ∧ record.source ≠ "" ∧
   record.keyReference ≠ "" ∧
-  model.native.keyName record.association.keyGeneration = record.keyReference ∧
+  model.deviceDataPlane.keyName record.association.keyGeneration = record.keyReference ∧
   model.history.CausallyBefore record.issuedAt record.installedAt ∧
   record.installedAt < model.history.cut ∧
   (∃ observation ∈ model.history.entries,
     observation.position = record.installedAt ∧ observation.epoch = record.epoch ∧
     observation.session = record.session ∧
-    observation.event = .installSAK (model.native.componentName record.device)
+    observation.event = .installSAK (model.deviceDataPlane.componentName record.device)
       record.keyReference record.installation record.epoch) ∧
   (∃ observation ∈ model.history.entries,
     observation.position = record.issuedAt ∧ observation.epoch = record.epoch ∧
@@ -514,11 +517,11 @@ def MACsecHistoryInstallation.Bound {S A : Type} (record : MACsecHistoryInstalla
     observation.event = .issueSAK record.issuer record.peer record.keyReference) ∧
   ∃ material, (material.length = 16 ∨ material.length = 32) ∧
     model.historicalKeyMaterial record.keyReference = some material ∧
-    model.native.macsecKeyMaterial record.association = some material
+    model.deviceDataPlane.macsecKeyMaterial record.association = some material
 
 def ForwardingModel.AllTraces {S A : Type} (model : ForwardingModel S A)
     (property : List NetworkEvent → Prop) : Prop :=
-  ∀ start actions finish, model.initial start → model.system.MTr start actions finish →
+  ∀ start actions finish, model.initial start → model.ForwardsAlongTrace start actions finish →
     property (model.TraceEvents actions)
 
 def Before (events : List NetworkEvent) (first second : NetworkEvent) : Prop :=
@@ -604,7 +607,7 @@ structure Deployment where
   grayManagementTunnels : List String := []
   carrierBindings : List PacketProcessing.CarrierBinding := []
   dropIPv4Options : String → Bool := fun _ => false
-  focus : Option String := none
+  deviceScope : Option String := none
   services : List ServiceRegistration := []
   managementServices : List ManagementServiceInstance := []
   managementHistory : List ManagementPacketObservation := []
@@ -672,17 +675,17 @@ def Deployment.OwnedGrayExit (d : Deployment)
     destination.device = second ∧ destination.zone = .gray ∧
     d.physicalLink source.id destination.id
 
-def Deployment.Relevant (d : Deployment) (component : String) : Prop :=
-  d.focus = none ∨ d.focus = some component
+def Deployment.InScope (d : Deployment) (component : String) : Prop :=
+  d.deviceScope = none ∨ d.deviceScope = some component
 
-def Deployment.RelevantKey (d : Deployment) (key : String) : Prop :=
-  d.focus = none ∨ ∃ tunnel ∈ d.tunnels, tunnel.keyContext = key ∧
-    (d.Relevant tunnel.sender ∨ d.Relevant tunnel.receiver)
+def Deployment.KeyInScope (d : Deployment) (key : String) : Prop :=
+  d.deviceScope = none ∨ ∃ tunnel ∈ d.tunnels, tunnel.keyContext = key ∧
+    (d.InScope tunnel.sender ∨ d.InScope tunnel.receiver)
 
 def Deployment.IsDevice (d : Deployment) (id : String) (kind : DeviceKind) : Prop :=
   ∃ device ∈ d.devices, device.id = id ∧ device.kind = kind
 
-def Deployment.IsLayer (d : Deployment) (id : String) (layer : Layer) : Prop :=
+def Deployment.IsLayer (d : Deployment) (id : String) (layer : EncryptionLayer) : Prop :=
   ∃ device ∈ d.devices, device.id = id ∧ device.layer = some layer
 
 def Deployment.OrdinaryGray (d : Deployment) (component : String) : Prop :=
@@ -691,7 +694,7 @@ def Deployment.OrdinaryGray (d : Deployment) (component : String) : Prop :=
     device.kind ∈ [.ordinaryGrayRouter, .ordinaryGraySwitch]) ∧
   (∃ interface ∈ d.interfaces, interface.device = component ∧ interface.zone = .gray) ∧
   ∀ interface ∈ d.interfaces, interface.device = component →
-    interface.zone = .gray ∨ interface.zone = .local
+    interface.zone = .gray ∨ interface.zone = .hostLocal
 
 def Interface.PacketAddress (interface : Interface) (packet : PacketPolicy.Packet) : Option Nat :=
   if packet.protocol = "ethernet" ∧ packet.etherType.isSome = true
@@ -1002,9 +1005,9 @@ def Deployment.GrayManagementTunnel (d : Deployment) (traffic : Traffic) : Prop 
   ∃ tunnel ∈ d.tunnels, tunnel.id ∈ d.grayManagementTunnels ∧
     d.intendedPeer tunnel.sender tunnel.receiver ∧
     traffic.sourceDevice = some tunnel.sender ∧ traffic.destinationDevice = some tunnel.receiver ∧
-    ((tunnel.mechanism = .ipsec ∧
+    ((tunnel.protocol = .ipsec ∧
       (IPsecProtocol traffic ∨ d.ConfiguredUDPProtocol traffic.packet)) ∨
-     (tunnel.mechanism = .macsec ∧ (PacketMKA traffic.packet ∨ PacketMACsec traffic.packet)))
+     (tunnel.protocol = .macsec ∧ (PacketMKA traffic.packet ∨ PacketMACsec traffic.packet)))
 
 
 def Deployment.IPsecTraffic (d : Deployment) (traffic : Traffic) : Prop :=
@@ -1013,18 +1016,18 @@ def Deployment.IPsecTraffic (d : Deployment) (traffic : Traffic) : Prop :=
 def Deployment.TunnelTraffic (d : Deployment) (traffic : Traffic) : Prop :=
   d.IPsecTraffic traffic ∨ PacketMKA traffic.packet ∨ PacketMACsec traffic.packet
 
-def MACsecPayload (association : LayeredFrame.MACsecAssociation) (bytes : List UInt8) : Prop :=
+def MACsecPayload (association : LayeredFrame.MacsecAssociation) (bytes : List UInt8) : Prop :=
   22 ≤ bytes.length ∧ PacketSource.field bytes 0 1 % 4 = association.associationNumber ∧
   (if PacketSource.field bytes 0 1 / 32 % 2 = 1 then
     30 ≤ bytes.length ∧ PacketSource.field bytes 6 8 = association.sci
   else True)
 
-def MKAPayloadSCI (association : LayeredFrame.MACsecAssociation) (bytes : List UInt8) : Prop :=
+def MKAPayloadSCI (association : LayeredFrame.MacsecAssociation) (bytes : List UInt8) : Prop :=
   36 ≤ bytes.length ∧ bytes[1]? = some 5 ∧
     PacketSource.field bytes 2 2 = bytes.length - 4 ∧
     PacketSource.field bytes 8 8 = association.sci
 
-def Deployment.AssociationPeers (d : Deployment) (association : LayeredFrame.MACsecAssociation)
+def Deployment.AssociationPeers (d : Deployment) (association : LayeredFrame.MacsecAssociation)
     (source destination : String) : Prop :=
   ∃ inventory, d.processing = some inventory ∧
     ∃ sender ∈ inventory.configuration.macIfaces, sender.transmitAssociation = some association ∧
@@ -1034,7 +1037,7 @@ def Deployment.AssociationPeers (d : Deployment) (association : LayeredFrame.MAC
         ∃ installed ∈ receiver.receiveAssociations,
           LayeredFrame.SameMACWireIdentity association installed ∧
           ∃ tunnel ∈ d.tunnels, tunnel.id = inventory.macsecTunnel association ∧
-            tunnel.mechanism = .macsec ∧ tunnel.sender = source ∧ tunnel.receiver = destination
+            tunnel.protocol = .macsec ∧ tunnel.sender = source ∧ tunnel.receiver = destination
 
 def Deployment.LinkInnerPair (d : Deployment) (traffic : Traffic) (source destination : String) : Prop :=
   ∃ association bytes, d.AssociationPeers association source destination ∧
@@ -1075,7 +1078,7 @@ def Deployment.MKAActorPeers (d : Deployment) (sci : Nat) (source destination : 
       inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = source ∧
       inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = destination ∧
       ∃ tunnel ∈ d.tunnels, tunnel.id = endpoint.tunnel ∧ tunnel.layer = .inner ∧
-        tunnel.mechanism = .macsec ∧ tunnel.sender = source ∧ tunnel.receiver = destination
+        tunnel.protocol = .macsec ∧ tunnel.sender = source ∧ tunnel.receiver = destination
 
 def Deployment.MKAInnerPair (d : Deployment) (traffic : Traffic) (source destination : String) : Prop :=
   ∃ sci bytes, d.MKAActorPeers sci source destination ∧
@@ -1125,8 +1128,8 @@ def Deployment.SameLevelInner (d : Deployment) (traffic : Traffic) : Prop :=
 
 def Deployment.AppropriateInnerTunnel (d : Deployment) (traffic : Traffic) : Prop :=
   ∃ tunnel ∈ d.tunnels, tunnel.layer = .inner ∧ d.InnerPair traffic tunnel.sender tunnel.receiver ∧
-    ((tunnel.mechanism = .ipsec ∧ d.IPsecTraffic traffic) ∨
-      (tunnel.mechanism = .macsec ∧
+    ((tunnel.protocol = .ipsec ∧ d.IPsecTraffic traffic) ∨
+      (tunnel.protocol = .macsec ∧
         (PacketMACsec traffic.packet ∨ PacketMKA traffic.packet ∨
           d.CarrierInnerPair traffic tunnel.sender tunnel.receiver)))
 
@@ -1161,7 +1164,7 @@ def Deployment.IntendedMKAPeerAt (d : Deployment) (interface device : String)
           destination.id = inventory.ifaceName endpoint.destinationIface ∧
           destination.device = receiver.id ∧ destination.zone = .black) ∧
         (∃ tunnel ∈ d.tunnels, tunnel.id = endpoint.tunnel ∧ tunnel.layer = .outer ∧
-          tunnel.mechanism = .macsec ∧ tunnel.sender = device ∧ tunnel.receiver = receiver.id) ∧
+          tunnel.protocol = .macsec ∧ tunnel.sender = device ∧ tunnel.receiver = receiver.id) ∧
         d.intendedPeer device receiver.id ∧ traffic.packet.MKAFraming endpoint.actorSCI ∧
         traffic.packet.destination = 1652522221571 ∧
         traffic.packet.payloadBytes.bind (fun bytes => bytes[0]?) = some 3 ∧
@@ -1255,18 +1258,18 @@ def Deployment.HookContext (d : Deployment) (interface : String) (direction : Di
         record.device = inventory.componentName (inventory.configuration.ip.owner iface) ∧
         PacketAtHook (inventory.configuration.ip.interfaceName iface) direction hook packet
 
-def Deployment.AcceptsAt (d : Deployment) (interface : String) (direction : Direction)
+def Deployment.PermitsAtHook (d : Deployment) (interface : String) (direction : Direction)
     (hook : PacketProcessing.Hook) (traffic : Traffic) : Prop :=
   d.Supported traffic ∧ d.HookContext interface direction hook traffic.packet ∧
   if hook = .link then d.LinkOperation interface direction traffic else
   ∃ policy ∈ d.policies,
     policy.interface = interface ∧ policy.direction = direction ∧ policy.hook = hook ∧
     (∀ other ∈ d.policies, other.interface = interface → other.direction = direction →
-      other.hook = hook → other = policy) ∧ policy.Accepts traffic
+      other.hook = hook → other = policy) ∧ policy.PermitsTraffic traffic
 
-def Deployment.Accepts (d : Deployment) (interface : String) (direction : Direction)
+def Deployment.PermitsOnInterface (d : Deployment) (interface : String) (direction : Direction)
     (traffic : Traffic) : Prop :=
-  ∃ hook, d.AcceptsAt interface direction hook traffic
+  ∃ hook, d.PermitsAtHook interface direction hook traffic
 
 def AtomAtHook (hook : PacketProcessing.Hook) : PacketPolicy.MatchCondition → Prop
   | .egress _ | .outboundPolicy _ => hook ≠ .input
@@ -1282,7 +1285,7 @@ def Deployment.ProcessingCoherent (d : Deployment) : Prop :=
       (∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = endpoint.destinationIface) ∧
       ∃ interface ∈ d.interfaces, interface.id = inventory.ifaceName endpoint.sourceIface ∧
         interface.linkAddress = some (endpoint.actorSCI / 65536)) ∧
-    (∀ tunnel ∈ d.tunnels, tunnel.mechanism = .macsec →
+    (∀ tunnel ∈ d.tunnels, tunnel.protocol = .macsec →
       ∃ endpoint ∈ inventory.mkaPeers, endpoint.tunnel = tunnel.id ∧
         inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = tunnel.sender ∧
         inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = tunnel.receiver) ∧
@@ -1423,7 +1426,7 @@ def DeviceIngressAttachment (inventory : PacketProcessing.Inventory) (iface : Na
   ∃ carrier ∈ inventory.configuration.carriers, carrier.virtualIface = iface
 
 def Deployment.DeviceArrivalEligible (d : Deployment) (inventory : PacketProcessing.Inventory)
-    (state : MultiProtocolForwarding.State) : Prop :=
+    (state : MultiProtocolForwarding.TunnelForwardingState) : Prop :=
   DeviceIngressAttachment inventory state.iface ∨
     ∃ header, state.frame.visibleHeader = some header ∧
       d.LocalSourceAddress (inventory.componentName (inventory.configuration.ip.owner state.iface)) header
@@ -1445,8 +1448,8 @@ def Deployment.ContextIngressEligible (d : Deployment) (context : PacketProcessi
   ∃ inventory, d.processing = some inventory ∧ context.entry.frame.HeadersCoherent ∧
     (context.hook = .forward → d.DeviceArrivalEligible inventory context.entry) ∧
     (context.hook = .forward → d.InboundIPsecRequired inventory context.entry.iface context.header →
-      (∃ entered, MultiProtocolForwarding.Step inventory.configuration context.entry .decryptIPsec entered ∧
-        MultiProtocolForwarding.Step inventory.configuration entered .route context.state ∧
+      (∃ entered, MultiProtocolForwarding.TunnelForwardingStep inventory.configuration context.entry .decryptIPsec entered ∧
+        MultiProtocolForwarding.TunnelForwardingStep inventory.configuration entered .route context.state ∧
         PacketProcessing.InputAdmitted inventory.configuration context.entry) ∨
       (traffic.trafficClass = .control ∧
         d.policyApproved (inventory.componentName
@@ -1504,11 +1507,11 @@ def DeviceExecutionBinding.ProcessingBound {S A : Type} (binding : DeviceExecuti
 
 def ForwardingModel.ProtectedPayload {S A : Type} (model : ForwardingModel S A)
     (d : Deployment) (payload : PayloadId) : Prop :=
-  ∃ network ∈ d.networks, model.native.origin payload.originDomain = .red network.id
+  ∃ network ∈ d.networks, model.deviceDataPlane.origin payload.originDomain = .red network.id
 
 def ForwardingModel.GenuineControl {S A : Type} (model : ForwardingModel S A)
     (payload : PayloadId) : Prop :=
-  ∃ component protocol, model.native.origin payload.originDomain = .control component protocol
+  ∃ component protocol, model.deviceDataPlane.origin payload.originDomain = .control component protocol
 
 def DeviceExecutionBinding.SourceBody {S A : Type} (_binding : DeviceExecutionBinding S A)
     (body : LayeredFrame.Body) : Prop :=
@@ -1543,7 +1546,7 @@ def SourceOutputPhase : LayeredFrame.Body → DataPlaneForwarding.DatapathStage
 
 def DeviceExecutionBinding.SourceState {S A : Type}
     (binding : DeviceExecutionBinding S A) (request : PacketSource.Request)
-    (datagram : PacketSource.Datagram) : MultiProtocolForwarding.State :=
+    (datagram : PacketSource.EncodedDatagram) : MultiProtocolForwarding.TunnelForwardingState :=
   { initialEntry := true, iface := request.iface,
     datapathStage := match binding.origin request.originDomain with
       | .red _ => .received
@@ -1554,7 +1557,7 @@ def DeviceExecutionBinding.SourceState {S A : Type}
 
 def DeviceExecutionBinding.SourceDatagram {S A : Type}
     (binding : DeviceExecutionBinding S A) (d : Deployment)
-    (state : MultiProtocolForwarding.State) : Prop :=
+    (state : MultiProtocolForwarding.TunnelForwardingState) : Prop :=
   ∃ request datagrams datagram,
     binding.SourceRequestAllowed d request ∧
     binding.sourceProcessing.process request = .emitted datagrams ∧ datagram ∈ datagrams ∧
@@ -1562,7 +1565,7 @@ def DeviceExecutionBinding.SourceDatagram {S A : Type}
 state = binding.SourceState request datagram
 
 def DeviceExecutionBinding.SourceInitial {S A : Type} (binding : DeviceExecutionBinding S A)
-    (d : Deployment) (state : MultiProtocolForwarding.State) : Prop :=
+    (d : Deployment) (state : MultiProtocolForwarding.TunnelForwardingState) : Prop :=
   state.initialEntry = true ∧ binding.SourceBody state.frame.body ∧
   binding.SourceDatagram d state ∧
   match binding.origin state.frame.originDomain with
@@ -1580,77 +1583,97 @@ def DeviceExecutionBinding.SourceInitial {S A : Type} (binding : DeviceExecution
 
 def ForwardingModel.SourceCoverage {S A : Type} (model : ForwardingModel S A)
     (d : Deployment) : Prop :=
-  (∀ request, model.native.SourceRequestAllowed d request →
-    (model.native.sourceProcessing.process request).Valid request
-      (model.native.sourceProcessing.sourceMtu request.iface)) ∧
-  (∀ request datagrams datagram, model.native.SourceRequestAllowed d request →
-    model.native.sourceProcessing.process request = .emitted datagrams → datagram ∈ datagrams →
-    model.native.SourceInitial d (model.native.SourceState request datagram) ∧
+  (∀ request, model.deviceDataPlane.SourceRequestAllowed d request →
+    (model.deviceDataPlane.sourceProcessing.process request).Valid request
+      (model.deviceDataPlane.sourceProcessing.sourceMtu request.iface)) ∧
+  (∀ request datagrams datagram, model.deviceDataPlane.SourceRequestAllowed d request →
+    model.deviceDataPlane.sourceProcessing.process request = .emitted datagrams → datagram ∈ datagrams →
+    model.deviceDataPlane.SourceInitial d (model.deviceDataPlane.SourceState request datagram) ∧
     ∃ start, model.initial start ∧
-      model.native.state start = model.native.SourceState request datagram ∧
+      model.deviceDataPlane.state start = model.deviceDataPlane.SourceState request datagram ∧
       model.sourceRecord start = some (request, datagram)) ∧
-  (∀ state, model.native.SourceInitial d state →
-    ∃ start, model.initial start ∧ model.native.state start = state) ∧
+  (∀ state, model.deviceDataPlane.SourceInitial d state →
+    ∃ start, model.initial start ∧ model.deviceDataPlane.state start = state) ∧
   (∀ start, model.initial start →
-    model.native.SourceInitial d (model.native.state start) ∧
+    model.deviceDataPlane.SourceInitial d (model.deviceDataPlane.state start) ∧
     ∃ request datagrams datagram,
       model.sourceRecord start = some (request, datagram) ∧
-      model.native.SourceRequestAllowed d request ∧
-      model.native.sourceProcessing.process request = .emitted datagrams ∧ datagram ∈ datagrams ∧
-      model.native.state start = model.native.SourceState request datagram) ∧
+      model.deviceDataPlane.SourceRequestAllowed d request ∧
+      model.deviceDataPlane.sourceProcessing.process request = .emitted datagrams ∧ datagram ∈ datagrams ∧
+      model.deviceDataPlane.state start = model.deviceDataPlane.SourceState request datagram) ∧
   (∀ network ∈ d.networks, ∃ request datagrams,
-    model.native.SourceRequestAllowed d request ∧ request.application ≠ [] ∧
-    model.native.origin request.originDomain = .red network.id ∧
-    model.native.sourceProcessing.process request = .emitted datagrams)
+    model.deviceDataPlane.SourceRequestAllowed d request ∧ request.application ≠ [] ∧
+    model.deviceDataPlane.origin request.originDomain = .red network.id ∧
+    model.deviceDataPlane.sourceProcessing.process request = .emitted datagrams)
 
 def ForwardingModel.CoversDeployment {S A : Type} (model : ForwardingModel S A)
     (d : Deployment) : Prop :=
-  model.native.ProcessingBound d ∧ model.Faithful ∧ model.DeviceStepCoverage ∧ model.SourceCoverage d ∧ model.history.Valid ∧
+  model.deviceDataPlane.ProcessingBound d ∧ model.Faithful ∧ model.DeviceStepCoverage ∧ model.SourceCoverage d ∧ model.history.Valid ∧
   d.InterfaceLinksWellFormed ∧ d.LinkPoliciesComplete ∧
   (∃ inventory, d.processing = some inventory ∧
-    model.native.configuration.HeaderGenerationKnown inventory.ifaces) ∧
-  (∀ start actions state, model.initial start → model.system.MTr start actions state →
-    (model.native.state state).frame.HeadersCoherent ∧
-    model.native.configuration.LinkEncodingComplete (model.native.state state)) ∧
-  model.native.MACsecKeyInventory ∧ model.native.IPsecKeyInventory ∧ d.networks ≠ [] ∧
+    model.deviceDataPlane.configuration.HeaderGenerationKnown inventory.ifaces) ∧
+  (∀ start actions state, model.initial start → model.ForwardsAlongTrace start actions state →
+    (model.deviceDataPlane.state state).frame.HeadersCoherent ∧
+    model.deviceDataPlane.configuration.LinkEncodingComplete (model.deviceDataPlane.state state)) ∧
+  model.deviceDataPlane.MACsecKeyInventory ∧ model.deviceDataPlane.IPsecKeyInventory ∧ d.networks ≠ [] ∧
   (∀ tunnel ∈ d.tunnels, d.intendedPeer tunnel.sender tunnel.receiver) ∧
   (∀ first ∈ d.devices, ∀ second ∈ d.devices, first.id = second.id → first = second) ∧
   (∀ first ∈ d.interfaces, ∀ second ∈ d.interfaces, first.id = second.id → first = second) ∧
   (∀ first ∈ d.tunnels, ∀ second ∈ d.tunnels, first.id = second.id → first = second) ∧
   (∀ interface ∈ d.interfaces, ∃ iface,
-    model.native.ifaceName iface = interface.id ∧
-      model.native.componentName (model.native.configuration.ip.owner iface) = interface.device) ∧
+    model.deviceDataPlane.ifaceName iface = interface.id ∧
+      model.deviceDataPlane.componentName (model.deviceDataPlane.configuration.ip.owner iface) = interface.device) ∧
   (∀ state : S, ∃ interface ∈ d.interfaces,
-    interface.id = model.native.ifaceName (model.native.state state).iface ∧
-      interface.device = model.native.componentName
-        (model.native.configuration.ip.owner (model.native.state state).iface)) ∧
-  (∀ first second, model.native.configuration.physicalLink first second →
-    d.physicalLink (model.native.ifaceName first) (model.native.ifaceName second)) ∧
-  (∀ iface network, model.native.sourceEntry iface = some network ↔
-    ∃ interface ∈ d.interfaces, interface.id = model.native.ifaceName iface ∧
+    interface.id = model.deviceDataPlane.ifaceName (model.deviceDataPlane.state state).iface ∧
+      interface.device = model.deviceDataPlane.componentName
+        (model.deviceDataPlane.configuration.ip.owner (model.deviceDataPlane.state state).iface)) ∧
+  (∀ first second, model.deviceDataPlane.configuration.physicalLink first second →
+    d.physicalLink (model.deviceDataPlane.ifaceName first) (model.deviceDataPlane.ifaceName second)) ∧
+  (∀ iface network, model.deviceDataPlane.sourceEntry iface = some network ↔
+    ∃ interface ∈ d.interfaces, interface.id = model.deviceDataPlane.ifaceName iface ∧
       interface.zone = .red ∧ interface.managementNetwork = false ∧ ∃ red ∈ d.networks, red.id = network ∧
         interface.device ∈ red.innerComponents) ∧
-  (∀ iface ∈ model.native.configuration.macIfaces, ∀ association,
+  (∀ iface ∈ model.deviceDataPlane.configuration.macIfaces, ∀ association,
     iface.transmitAssociation = some association →
-    ∃ tunnel ∈ d.tunnels, tunnel.id = model.native.macsecTunnel association ∧
-      tunnel.mechanism = .macsec ∧
-      tunnel.keyContext = model.native.keyName association.keyGeneration ∧
-      tunnel.sender = model.native.componentName
-        (model.native.configuration.ip.owner iface.physicalIface) ∧
-      ∀ peer ∈ model.native.configuration.macIfaces,
+    ∃ tunnel ∈ d.tunnels, tunnel.id = model.deviceDataPlane.macsecTunnel association ∧
+      tunnel.protocol = .macsec ∧
+      tunnel.keyContext = model.deviceDataPlane.keyName association.keyGeneration ∧
+      tunnel.sender = model.deviceDataPlane.componentName
+        (model.deviceDataPlane.configuration.ip.owner iface.physicalIface) ∧
+      ∀ peer ∈ model.deviceDataPlane.configuration.macIfaces,
         (∃ installed ∈ peer.receiveAssociations,
           LayeredFrame.SameMACWireIdentity association installed) →
-        tunnel.receiver = model.native.componentName
-          (model.native.configuration.ip.owner peer.physicalIface)) ∧
+        tunnel.receiver = model.deviceDataPlane.componentName
+          (model.deviceDataPlane.configuration.ip.owner peer.physicalIface)) ∧
   (∀ iface association policy,
-    (association ∈ model.native.configuration.ip.egressSAs iface ∧
-      policy ∈ model.native.configuration.ip.egressPolicies iface ∨
-      association ∈ model.native.configuration.ip.ingressSAs iface ∧
-      policy ∈ model.native.configuration.ip.ingressPolicies iface) →
+    (association ∈ model.deviceDataPlane.configuration.ip.egressSAs iface ∧
+      policy ∈ model.deviceDataPlane.configuration.ip.egressPolicies iface ∨
+      association ∈ model.deviceDataPlane.configuration.ip.ingressSAs iface ∧
+      policy ∈ model.deviceDataPlane.configuration.ip.ingressPolicies iface) →
     DataPlaneForwarding.saMatchesPolicy association policy →
-    ∃ tunnel ∈ d.tunnels, tunnel.id = model.native.ipsecTunnel (policy.seal association) ∧
-      tunnel.mechanism = .ipsec ∧
+    ∃ tunnel ∈ d.tunnels, tunnel.id = model.deviceDataPlane.ipsecTunnel (policy.seal association) ∧
+      tunnel.protocol = .ipsec ∧
       d.AddressOwner association.sender = some tunnel.sender ∧
       d.AddressOwner association.receiver = some tunnel.receiver)
+
+lemma ForwardingModel.CoversDeployment.processingBound {S A : Type} {model : ForwardingModel S A}
+    {d : Deployment} (covered : model.CoversDeployment d) : model.deviceDataPlane.ProcessingBound d :=
+  covered.1
+
+lemma ForwardingModel.CoversDeployment.faithful {S A : Type} {model : ForwardingModel S A}
+    {d : Deployment} (covered : model.CoversDeployment d) : model.Faithful :=
+  covered.2.1
+
+lemma ForwardingModel.CoversDeployment.deviceSteps {S A : Type} {model : ForwardingModel S A}
+    {d : Deployment} (covered : model.CoversDeployment d) : model.DeviceStepCoverage :=
+  covered.2.2.1
+
+lemma ForwardingModel.CoversDeployment.sources {S A : Type} {model : ForwardingModel S A}
+    {d : Deployment} (covered : model.CoversDeployment d) : model.SourceCoverage d :=
+  covered.2.2.2.1
+
+lemma ForwardingModel.CoversDeployment.validHistory {S A : Type} {model : ForwardingModel S A}
+    {d : Deployment} (covered : model.CoversDeployment d) : model.history.Valid :=
+  covered.2.2.2.2.1
 
 end TDN.Compliance

@@ -19,7 +19,6 @@ def generate():
         header = f"namespace TDN.Deployments.Profile{name}_EnclaveIsolation\nopen DataPlaneForwarding\n"
         extra = f"""
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 def uniformResponseOwners : List Nat :=
   (List.range {base}.devices.length).filter (fun owner => !(owner ∈ {base}.responseGateways))
@@ -29,7 +28,7 @@ lemma every_retained_owner_has_response_case :
       iface.owner ∈ {base}.responseGateways ∨ iface.owner ∈ uniformResponseOwners := by
   decide
 
-lemma every_active_component_can_generate (state : DataPlaneForwarding.State)
+lemma every_active_component_can_generate (state : DataPlaneForwarding.ForwardingState)
     (active : state.datapathStage ≠ .dropped) :
     (UniformDomainResponses.responseConfig config {base}.responseGateways
       uniformResponseOwners).generates state := by

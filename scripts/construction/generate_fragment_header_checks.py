@@ -13,7 +13,6 @@ import TDN.Deployments.ProfileBaseline_EnclaveIsolation
         text += f"""namespace TDN.Deployments.Profile{name}_EnclaveIsolation
 open DataPlaneForwarding
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma device_all_hooks_only_allow : ∀ device ∈ ({{}} : DeviceData) :: taggedDevices,
     ∀ rules ∈ [device.inputRules, device.forwardRules, device.outputRules],

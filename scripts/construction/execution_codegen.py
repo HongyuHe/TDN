@@ -7,7 +7,7 @@ def render(namespace, devices, ports, routes, links, switches, sources, black_po
     head = [
         "import TDN.Requirements.DoubleEncryptionOnBlackLinks", "import TDN.Models.RouteAwareAclChecks", "import TDN.Models.TunnelSaOriginAttribution", "",
         "namespace TDN.Deployments." + namespace, "", "open DataPlaneForwarding", "",
-        "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "",
+        "set_option maxRecDepth 1000000", "",
         "def devices : List DeviceData := " + lean_list(devices),
         "def ifaces : List IfaceData := " + lean_list(ports),
         "def routes : List FibRoute := " + tuple_list(routes),
@@ -25,7 +25,7 @@ lemma peer_tag_checks : TableDrivenPeerTagAgreement devices := by
   unfold TableDrivenPeerTagAgreement devices saMatchesPolicy SameWireAssociation
   decide
 
-lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=
+lemma peer_tags_justified_by_wire_s_as : PeerTagAgreement config :=
   table_driven_peer_tag_agreement_sound devices ifaces routes links switches peer_tag_checks
 
 lemma route_owner_checks : ∀ r ∈ routes,
@@ -62,7 +62,7 @@ lemma local_stack_conditions : PerHopEncapConditions config expectedEncapStack :
     route_owner_checks link_checks switch_checks forward_default_checks forward_checks
     output_checks outer_route_checks
 
-theorem every_transmission_has_iface_stack {start finish : DataPlaneForwarding.State} {actions : List Action}
+theorem every_transmission_has_iface_stack {start finish : DataPlaneForwarding.ForwardingState} {actions : List ForwardingAction}
     (run : (lts config).MTr start actions finish) (initial : EncapStackConsistent config expectedEncapStack start)
     (ready : finish.datapathStage = .egressReady) : finish.frame.encapLayerIds = expectedEncapStack finish.iface :=
   egress_packet_has_expected_encap_stack config expectedEncapStack local_stack_conditions run initial ready

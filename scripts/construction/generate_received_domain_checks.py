@@ -32,10 +32,10 @@ theorem snapshot_received_domain :
 theorem reassembled_bytes_have_recipient_full_label {Header Byte : Type}
     [DecidableEq Header] (recipientIface destinationDomain : Nat)
     (recipient : config.ifaceSecurityDomain recipientIface = some destinationDomain)
-    {actions : List ReassemblyOrigins.Action}
-    {pieces : List (Fragmentation.Fragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
+    {actions : List ReassemblyOrigins.BufferAction}
+    {pieces : List (Fragmentation.PayloadFragment Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
     {header : Header}
-    {result : Fragmentation.Datagram Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat)}
+    {result : Fragmentation.PayloadDatagram Header (ReassemblyOrigins.ByteOrigin Byte Nat Nat)}
     (run : (ReassemblyOrigins.system
       (Requirements.ArrivedFragment config redSources recipientIface)).MTr [] actions pieces)
     (accepted : ReassemblyOrigins.assemble header pieces = some result) :

@@ -5,14 +5,14 @@ namespace TDN.Requirements.Msc
 open Compliance MultiProtocolForwarding
 
 def OutboundPeerRule (device name : String) (peers : List BoundaryPeer)
-    (rule : PacketPolicy.Rule) : Prop :=
+    (rule : PacketPolicy.PacketAclRule) : Prop :=
   RuleMissesHook name .outbound rule ∨
     (∃ atom ∈ rule.atoms, DevicePolicyAtom .outbound atom) ∨
     ∃ record ∈ peers, record.source = device ∧
       .destinationRange record.destinationAddress record.destinationAddress ∈ rule.atoms ∧
       DeriveDataPlaneFromDeviceRecords.RuleIPGuard rule
 
-instance (device name : String) (peers : List BoundaryPeer) (rule : PacketPolicy.Rule) :
+instance (device name : String) (peers : List BoundaryPeer) (rule : PacketPolicy.PacketAclRule) :
     Decidable (OutboundPeerRule device name peers rule) := by
   unfold OutboundPeerRule
   infer_instance
@@ -20,7 +20,7 @@ instance (device name : String) (peers : List BoundaryPeer) (rule : PacketPolicy
 lemma matching_outbound_peer_rule (device name : String) (peers : List BoundaryPeer)
     (hook : PacketProcessing.Hook) (packet : PacketPolicy.Packet)
     (context : PacketAtHook name .outbound hook packet)
-    (rule : PacketPolicy.Rule) (checks : OutboundPeerRule device name peers rule)
+    (rule : PacketPolicy.PacketAclRule) (checks : OutboundPeerRule device name peers rule)
     (matched : rule.toFilter.accepts packet = true) :
     (∃ record ∈ peers, record.source = device ∧ packet.destination = record.destinationAddress ∧
       packet.protocol ≠ "ethernet") ∨ ∃ requestId, requestId ∈ packet.matchedOutboundPolicyIds := by
@@ -44,7 +44,7 @@ lemma admitted_native_packet_has_peer_or_outbound_annotation (d : Deployment)
       ∀ policy ∈ d.policies, policy.interface = interface.id →
         policy.defaultVerdict = .deny ∧ (policy.direction = .outbound → ∀ rule ∈ policy.rules, rule.verdict = .allow →
           OutboundPeerRule interface.device (inventory.configuration.ip.interfaceName iface) peers rule))
-    (traffic : Traffic) (accepted : d.Accepts interface.id .outbound traffic) :
+    (traffic : Traffic) (accepted : d.PermitsOnInterface interface.id .outbound traffic) :
     (∃ record ∈ peers, record.source = interface.device ∧
       traffic.packet.destination = record.destinationAddress ∧ traffic.packet.protocol ≠ "ethernet") ∨
       ∃ requestId, requestId ∈ traffic.packet.matchedOutboundPolicyIds := by

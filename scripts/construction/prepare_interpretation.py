@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+from proof_targets import check_target_map
 import re
 import shutil
 import subprocess
@@ -40,19 +41,19 @@ def main():
     tooling = directory / 'tooling'
     tooling.mkdir()
     shutil.copy2(Path(__file__), tooling / Path(__file__).name)
+    shutil.copy2(Path(__file__).with_name('proof_targets.py'), tooling / 'proof_targets.py')
     shutil.copy2(root / 'scripts/construction/export_spec_definitions.lean', tooling / 'export_spec_definitions.lean')
     mapping = json.loads((work / args.map).read_text())
     groups = mapping if isinstance(mapping, list) else mapping['groups']
-    assert len(groups) == 24 and len({g['rg_id'] for g in groups}) == 24
+    check_target_map(groups, work / 'specs/proof_scope.json')
     selected_ids = set(args.groups) if args.groups else {g['rg_id'] for g in groups}
     if not selected_ids or not selected_ids <= {g['rg_id'] for g in groups}:
-        parser.error('Select known RGs from the complete 24-group specification map.')
+        parser.error('Select groups from the active proof targets.')
     selected_groups = [g for g in groups if g['rg_id'] in selected_ids]
     modules = args.import_module or ['TDN']
     if any(not re.fullmatch(r'TDN(?:\.[A-Za-z_][A-Za-z_0-9]*)*', module) for module in modules):
         parser.error('Import modules must be ordinary TDN module names.')
     names = [g['specification'] for g in groups]
-    assert len(set(names)) == 24
     (directory / 'spec_map.json').write_text(json.dumps(mapping, indent=2) + '\n')
     snapshot = directory / 'candidate'
     snapshot.mkdir()

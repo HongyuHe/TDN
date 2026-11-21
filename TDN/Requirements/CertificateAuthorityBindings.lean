@@ -1,4 +1,4 @@
-import TDN.Requirements.CoreMscRequirements
+import TDN.Requirements.ScopedMscRequirements
 
 namespace TDN.Requirements.Msc
 open Compliance

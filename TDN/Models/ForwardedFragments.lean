@@ -11,18 +11,18 @@ structure FragmentDescriptor where
   layers : List Nat
   deriving DecidableEq, Repr
 
-def fragmentDescriptor (state : State) : FragmentDescriptor :=
+def fragmentDescriptor (state : ForwardingState) : FragmentDescriptor :=
   ⟨state.frame.payload, state.frame.originDomain, state.frame.packet.source,
     state.frame.packet.destination, state.frame.encapLayerIds⟩
 
-def encodeForFragmentation {Byte : Type} (encodedBytes : Frame → List Byte)
-    (state : State) : Fragmentation.Datagram FragmentDescriptor Byte :=
+def encodeForFragmentation {Byte : Type} (encodedBytes : IpsecFrame → List Byte)
+    (state : ForwardingState) : Fragmentation.PayloadDatagram FragmentDescriptor Byte :=
   ⟨fragmentDescriptor state, encodedBytes state.frame⟩
 
 theorem forwarding_fragment_descriptors_match {Byte : Type} (c : DataPlaneModel)
-    (encodedBytes : Frame → List Byte)
-    {before after : Fragmentation.SegmentedState State FragmentDescriptor Byte}
-    {actions : List (Option Action)}
+    (encodedBytes : IpsecFrame → List Byte)
+    {before after : Fragmentation.SegmentedState ForwardingState FragmentDescriptor Byte}
+    {actions : List (Option ForwardingAction)}
     (run : (Fragmentation.segmented (lts c) (encodeForFragmentation encodedBytes)).MTr
       before actions after)
     (whole : before.fragments = none) :

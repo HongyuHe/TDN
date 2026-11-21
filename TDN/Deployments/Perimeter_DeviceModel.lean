@@ -41,7 +41,7 @@ instance (records : Records) (services : List ServiceRegistration)
   change Decidable (∃ tunnel ∈ records.tunnels, tunnel.sender = source ∧ tunnel.receiver = destination)
   infer_instance
 
-lemma every_declared_Red_endpoint_is_bound (records : Records)
+lemma every_declared_red_endpoint_is_bound (records : Records)
     (services : List ServiceRegistration) (endpoints : List RedServiceEndpoint) (base : Deployment)
     (controls : List BoundaryControlFlow := []) :
     ∀ endpoint ∈ endpoints, endpoint.Bound (registeredDeployment records services endpoints base controls) := by

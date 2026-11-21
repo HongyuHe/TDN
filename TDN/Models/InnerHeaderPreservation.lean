@@ -16,16 +16,16 @@ lemma unwrap_preserves_original_header
     next matched => cases unwrapped; rfl
     next missed => cases unwrapped
 
-lemma step_preserves_original_header {c : Config} {before after : State} {action : Action}
-    (step : Step c before action after) :
+lemma step_preserves_original_header {c : TunnelForwardingModel} {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep c before action after) :
     after.frame.body.originalHeader = before.frame.body.originalHeader := by
-  cases step <;> simp only [Config.forwardedFrame_body, Config.ipsecFrame_body,
-    Config.macsecFrame_body, Config.macsec_pdu_frame_body, Config.carrierFrame_body, Config.restoredFrame_body] <;> try rfl
+  cases step <;> simp only [TunnelForwardingModel.forwarded_frame_body, TunnelForwardingModel.ipsec_frame_body,
+    TunnelForwardingModel.macsec_frame_body, TunnelForwardingModel.macsec_pdu_frame_body, TunnelForwardingModel.carrier_frame_body, TunnelForwardingModel.restored_frame_body] <;> try rfl
   all_goals try simp_all only [Body.originalHeader]
   all_goals exact unwrap_preserves_original_header _ _ _ _ _ _ _ ‹_›
 
-theorem all_traces_preserve_original_header (c : Config)
-    {before after : State} {actions : List Action} (run : (lts c).MTr before actions after) :
+theorem all_traces_preserve_original_header (c : TunnelForwardingModel)
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction} (run : (lts c).MTr before actions after) :
     after.frame.body.originalHeader = before.frame.body.originalHeader := by
   have preserved : (lts c).TrInv
       (fun state => state.frame.body.originalHeader = before.frame.body.originalHeader) := by

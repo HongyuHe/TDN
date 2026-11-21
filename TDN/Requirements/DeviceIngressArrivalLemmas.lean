@@ -4,32 +4,32 @@ namespace TDN.Compliance
 open MultiProtocolForwarding
 
 lemma wire_arrival_has_recorded_ingress (d : Deployment)
-    (inventory : PacketProcessing.Inventory) {before after : MultiProtocolForwarding.State}
+    (inventory : PacketProcessing.Inventory) {before after : MultiProtocolForwarding.TunnelForwardingState}
     (ifaceRecorded : before.iface ∈ inventory.ifaces)
-    (arrival : MultiProtocolForwarding.Step inventory.configuration before .linkTransmit after) :
+    (arrival : MultiProtocolForwarding.TunnelForwardingStep inventory.configuration before .linkTransmit after) :
     d.DeviceArrivalEligible inventory after := by
   cases arrival with
   | linkTransmit next datapathStage linked =>
     exact Or.inl (Or.inl ⟨before.iface, ifaceRecorded, linked⟩)
 
-lemma MACsec_arrival_has_configured_ingress (d : Deployment)
-    (inventory : PacketProcessing.Inventory) {before after : MultiProtocolForwarding.State}
-    (arrival : MultiProtocolForwarding.Step inventory.configuration before .decryptMACsec after) :
+lemma macsec_arrival_has_configured_ingress (d : Deployment)
+    (inventory : PacketProcessing.Inventory) {before after : MultiProtocolForwarding.TunnelForwardingState}
+    (arrival : MultiProtocolForwarding.TunnelForwardingStep inventory.configuration before .decryptMACsec after) :
     d.DeviceArrivalEligible inventory after := by
   cases arrival with
   | decryptMACsec iface association transmitted body configured datapathStage physical encrypted installed identity =>
     exact Or.inl (Or.inr (Or.inl ⟨iface, configured, rfl⟩))
 
 lemma carrier_arrival_has_configured_ingress (d : Deployment)
-    (inventory : PacketProcessing.Inventory) {before after : MultiProtocolForwarding.State}
-    (arrival : MultiProtocolForwarding.Step inventory.configuration before .decapsulate after) :
+    (inventory : PacketProcessing.Inventory) {before after : MultiProtocolForwarding.TunnelForwardingState}
+    (arrival : MultiProtocolForwarding.TunnelForwardingStep inventory.configuration before .decapsulate after) :
     d.DeviceArrivalEligible inventory after := by
   cases arrival with
   | decapsulate iface body configured datapathStage owner unwrapped =>
     exact Or.inl (Or.inr (Or.inr ⟨iface, configured, rfl⟩))
 
 lemma source_bound_local_reinjection_is_eligible (d : Deployment)
-    (inventory : PacketProcessing.Inventory) (state : MultiProtocolForwarding.State)
+    (inventory : PacketProcessing.Inventory) (state : MultiProtocolForwarding.TunnelForwardingState)
     (header : PacketPolicy.Packet) (visible : state.frame.visibleHeader = some header)
     (source : d.LocalSourceAddress
       (inventory.componentName (inventory.configuration.ip.owner state.iface)) header) :

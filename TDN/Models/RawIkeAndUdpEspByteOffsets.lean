@@ -24,7 +24,7 @@ end TDN.PacketSource
 
 namespace TDN.PacketProcessing
 
-lemma decoded_IPv4_UDP_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
+lemma decoded_ipv4_udp_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
     (complete : raw.Complete packet) (ipv4 : packet.source < 2^32)
     (udp : packet.protocol = "udp") :
     packet.destination < 2^32 ∧ 5 ≤ packet.ipv4HeaderWords ∧ packet.ipv4HeaderWords ≤ 15 ∧
@@ -56,7 +56,7 @@ lemma decoded_IPv4_UDP_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
     · have large := v6.1
       omega
 
-lemma eligible_IKE_has_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
+lemma eligible_ike_has_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
     (complete : raw.Complete packet) (ipv4 : packet.source < 2^32)
     (ike : packet.protocol = "udp" ∧
       (((packet.sourcePort = 500 ∨ packet.destinationPort = 500) ∧
@@ -66,7 +66,7 @@ lemma eligible_IKE_has_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
           PacketPolicy.IKEHeader ((packet.payloadBytes.getD []).drop 4)))) :
     packet.IPsecUDPFramingWithOptions ∨ packet.IPsecUDPReplyFramingWithOptions := by
   obtain ⟨destination, lower, upper, offset, bytes, payload, total⟩ :=
-    decoded_IPv4_UDP_framing raw packet complete ipv4 ike.1
+    decoded_ipv4_udp_framing raw packet complete ipv4 ike.1
   rcases ike.2 with ⟨iface | iface, header⟩ | ⟨iface | iface, zero, header⟩
   · right
     refine ⟨ipv4, destination, lower, upper, offset, ike.1, bytes, payload, total,
@@ -95,14 +95,14 @@ lemma eligible_IKE_has_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
     · simpa only [payload, Option.getD_some] using zero
     · simpa only [payload, Option.getD_some] using header
 
-lemma eligible_UDPESP_has_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
+lemma eligible_udpesp_has_framing (raw : RawPacket) (packet : PacketPolicy.Packet)
     (complete : raw.Complete packet) (ipv4 : packet.source < 2^32)
     (esp : packet.protocol = "udp" ∧ (packet.sourcePort = 4500 ∨ packet.destinationPort = 4500) ∧
       8 ≤ (packet.payloadBytes.getD []).length ∧
       (packet.payloadBytes.getD []).take 4 ≠ [0, 0, 0, 0]) :
     packet.IPsecUDPFramingWithOptions ∨ packet.IPsecUDPReplyFramingWithOptions := by
   obtain ⟨destination, lower, upper, offset, bytes, payload, total⟩ :=
-    decoded_IPv4_UDP_framing raw packet complete ipv4 esp.1
+    decoded_ipv4_udp_framing raw packet complete ipv4 esp.1
   have size : 8 ≤ bytes.length := by simpa [payload] using esp.2.2.1
   have nonzero : bytes.take 4 ≠ [0, 0, 0, 0] := by simpa [payload] using esp.2.2.2
   rcases esp.2.1 with iface | iface

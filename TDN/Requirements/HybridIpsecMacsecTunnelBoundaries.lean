@@ -4,10 +4,10 @@ import TDN.Models.MultiProtocolBoundaryDecryption
 namespace TDN.Requirements
 open MultiProtocolForwarding
 
-def mixedTunnelBoundary (c : MultiProtocolForwarding.Config) (expectedEncapStack : Nat → List Nat)
+def mixedTunnelBoundary (c : MultiProtocolForwarding.TunnelForwardingModel) (expectedEncapStack : Nat → List Nat)
     (inside outside : List Nat) (tag component : Nat) :
-    TunnelBoundaryView MultiProtocolForwarding.State MultiProtocolForwarding.Action where
-  system := RestrictedExecution.within (MultiProtocolForwarding.lts c)
+    TunnelBoundaryView MultiProtocolForwarding.TunnelForwardingState MultiProtocolForwarding.TunnelForwardingAction where
+  system := SubgraphScopedTraces.within (MultiProtocolForwarding.lts c)
     (fun state => c.ip.owner state.iface = component)
   outboundEntry := fun state => state.datapathStage = .received ∧ state.iface ∈ inside ∧
     MultiProtocolForwarding.EncapStackConsistent c expectedEncapStack state
@@ -23,7 +23,7 @@ def mixedTunnelBoundary (c : MultiProtocolForwarding.Config) (expectedEncapStack
   splitTunnelExit := fun state => state.datapathStage = .egressReady ∧ state.iface ∈ outside ∧
     tag ∉ state.frame.body.protectionLayers
 
-theorem mixed_tunnel_boundary_from_local_checks (c : MultiProtocolForwarding.Config)
+theorem multi_protocol_tunnel_boundary_from_local_checks (c : MultiProtocolForwarding.TunnelForwardingModel)
     (expectedEncapStack : Nat → List Nat) (inside outside : List Nat) (tag component : Nat)
     (conditions : MultiProtocolForwarding.LocalConditions c expectedEncapStack)
     (carrierCheck : CarrierInputCheck c expectedEncapStack tag)
@@ -39,7 +39,7 @@ theorem mixed_tunnel_boundary_from_local_checks (c : MultiProtocolForwarding.Con
     obtain ⟨received, member, invariant⟩ := entry
     obtain ⟨ready, outsideMember⟩ := exitIface
     have final := MultiProtocolForwarding.all_traces_preserve_stack c expectedEncapStack conditions
-      (RestrictedExecution.project_trace _ _ run) invariant
+      (SubgraphScopedTraces.project_trace _ _ run) invariant
     have stack : finish.frame.body.protectionLayers = expectedEncapStack finish.iface := by
       simpa only [ready] using final.2
     change tag ∈ finish.frame.body.protectionLayers
@@ -55,7 +55,7 @@ theorem mixed_tunnel_boundary_from_local_checks (c : MultiProtocolForwarding.Con
     obtain ⟨received, member, invariant⟩ := entry
     obtain ⟨ready, outsideMember, missing⟩ := bypass
     have final := MultiProtocolForwarding.all_traces_preserve_stack c expectedEncapStack conditions
-      (RestrictedExecution.project_trace _ _ run) invariant
+      (SubgraphScopedTraces.project_trace _ _ run) invariant
     have stack : finish.frame.body.protectionLayers = expectedEncapStack finish.iface := by
       simpa only [ready] using final.2
     exact missing (stack ▸ outsideCheck finish.iface outsideMember)

@@ -52,6 +52,7 @@ class Observation(StrictModel):
     stderr_path: str
     stderr_sha256: str
     parser_version: str
+    provides: str | None = None
     records: list[dict[str, Any]] = Field(default_factory=list)
     diagnostics: list[str] = Field(default_factory=list)
 

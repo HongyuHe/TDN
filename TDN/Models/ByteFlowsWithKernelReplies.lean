@@ -4,24 +4,24 @@ import TDN.Models.KernelGeneratedReplies
 namespace TDN.ResponseByteFlows
 
 def source {S B : Type} (origin : S → B → Prop) :
-    KernelResponses.State S → B → Prop
+    KernelResponses.ReplyState S → B → Prop
   | .network state, byte => origin state byte
   | _, _ => False
 
 def assembly {S : Type} (canAssemble : S → S → Prop) :
-    KernelResponses.State S → KernelResponses.State S → Prop
+    KernelResponses.ReplyState S → KernelResponses.ReplyState S → Prop
   | .network before, .network after => canAssemble before after
   | _, _ => False
 
-def system {S B A : Type} (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
+def system {S B A : Type} (network : Cslib.LTS S A) (responses : KernelResponses.ReplyConfig S)
     (origin : S → B → Prop) (canAssemble : S → S → Prop) :=
   ByteFlows.lts (KernelResponses.lts network responses) (source origin) (assembly canAssemble)
 
-lemma assembled_response_state_preserves {S B : Type} (responses : KernelResponses.Config S)
+lemma assembled_response_state_preserves {S B : Type} (responses : KernelResponses.ReplyConfig S)
     (canAssemble : S → S → Prop) (property : B → S → Prop)
     (preserved : ∀ before after byte, canAssemble before after →
       property byte before → property byte after)
-    {before after : KernelResponses.State S} (byte : B)
+    {before after : KernelResponses.ReplyState S} (byte : B)
     (compatible : assembly canAssemble before after)
     (safe : KernelResponses.Invariant responses (property byte) before) :
     KernelResponses.Invariant responses (property byte) after := by
@@ -29,7 +29,7 @@ lemma assembled_response_state_preserves {S B : Type} (responses : KernelRespons
   exact preserved _ _ byte compatible safe
 
 theorem all_fragment_and_response_histories_preserve_bytes {S B A : Type}
-    (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
+    (network : Cslib.LTS S A) (responses : KernelResponses.ReplyConfig S)
     (origin : S → B → Prop) (canAssemble : S → S → Prop)
     (property : B → S → Prop)
     (injection : ∀ state byte, origin state byte → property byte state)
@@ -40,8 +40,8 @@ theorem all_fragment_and_response_histories_preserve_bytes {S B A : Type}
       responses.outputFallback state iface = .deny ∧
       ∀ rule ∈ responses.outputRules state iface,
         rule.verdict = .allow → KernelResponses.SafeResponseRule rule)
-    {after : List (ByteFlows.Carrier (KernelResponses.State S) B)}
-    {actions : List (ByteFlows.Action (KernelResponses.Action A))}
+    {after : List (ByteFlows.PacketBytes (KernelResponses.ReplyState S) B)}
+    {actions : List (ByteFlows.ByteFlowAction (KernelResponses.ReplyAction A))}
     (run : (system network responses origin canAssemble).MTr [] actions after) :
     ByteFlows.Safe (fun byte => KernelResponses.Invariant responses (property byte)) after := by
   refine ByteFlows.all_traces_preserve_byte_properties
@@ -59,7 +59,7 @@ theorem all_fragment_and_response_histories_preserve_bytes {S B A : Type}
   · simp [ByteFlows.Safe]
 
 theorem all_fragment_and_permitted_response_histories_preserve_bytes {S B A : Type}
-    (network : Cslib.LTS S A) (responses : KernelResponses.Config S)
+    (network : Cslib.LTS S A) (responses : KernelResponses.ReplyConfig S)
     (origin : S → B → Prop) (canAssemble : S → S → Prop)
     (property : B → S → Prop)
     (injection : ∀ state byte, origin state byte → property byte state)
@@ -70,11 +70,11 @@ theorem all_fragment_and_permitted_response_histories_preserve_bytes {S B A : Ty
       property byte state → responses.generates state →
       KernelResponses.ResponseProtocol header.protocol →
       responses.selectedRoute state header iface →
-      Filter.evaluate ((responses.outputRules state iface).map PacketPolicy.Rule.toFilter)
+      Filter.evaluate ((responses.outputRules state iface).map PacketPolicy.PacketAclRule.toFilter)
         (responses.outputFallback state iface) (KernelResponses.outputPacket responses header iface) = .allow →
       responses.interfaceName iface ≠ "lo" → property byte (responses.emit state header iface))
-    {after : List (ByteFlows.Carrier (KernelResponses.State S) B)}
-    {actions : List (ByteFlows.Action (KernelResponses.Action A))}
+    {after : List (ByteFlows.PacketBytes (KernelResponses.ReplyState S) B)}
+    {actions : List (ByteFlows.ByteFlowAction (KernelResponses.ReplyAction A))}
     (run : (system network responses origin canAssemble).MTr [] actions after) :
     ByteFlows.Safe (fun byte => KernelResponses.ProvenanceInvariant responses (property byte)) after := by
   refine ByteFlows.all_traces_preserve_byte_properties

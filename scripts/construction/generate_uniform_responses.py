@@ -25,7 +25,6 @@ import MODULE
 
 namespace TDN.Deployments.NAMESPACE
 set_option maxRecDepth 100000
-set_option maxHeartbeats 0
 
 def uniformResponseOwners : List Nat := OWNERS
 
@@ -39,7 +38,7 @@ lemma response_component_inventory_complete :
       ∃ guard ∈ responseSourceGuards, iface.owner = guard.1 := by native_decide
 
 theorem all_component_copied_responses_keep_stack
-    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {before after : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     (run : (KernelResponses.lts (GuardedResponseNetwork.network responseData)
       (UniformResponseRegions.responseConfig responseData uniformResponseOwners)).MTr
       (.network before) actions (.network after))
@@ -53,7 +52,7 @@ theorem all_component_copied_responses_keep_stack
 theorem useful_delivery_with_all_component_responses :
     (KernelResponses.lts (GuardedResponseNetwork.network responseData)
       (UniformResponseRegions.responseConfig responseData uniformResponseOwners)).MTr
-      (.network witnessState0) (witnessActions.map KernelResponses.Action.network)
+      (.network witnessState0) (witnessActions.map KernelResponses.ReplyAction.network)
       (.network witnessStateFINAL) :=
   EncryptedResponseGuards.network_trace_in_response_system _ _
     positive_delivery_with_early_source_guards
@@ -64,8 +63,8 @@ def responseHistoryConfig :=
 
 
 theorem all_retained_packet_responses_keep_stack
-    {before after : HistoricalResponses.State DataPlaneForwarding.State}
-    {actions : List (KernelResponses.Action (HistoricalResponses.Action DataPlaneForwarding.Action))}
+    {before after : HistoricalResponses.ReplyHistoryState DataPlaneForwarding.ForwardingState}
+    {actions : List (KernelResponses.ReplyAction (HistoricalResponses.ReplyHistoryAction DataPlaneForwarding.ForwardingAction))}
     (run : (KernelResponses.lts
       (HistoricalResponses.lts (GuardedResponseNetwork.network responseData))
       responseHistoryConfig).MTr (.network before) actions (.network after))
@@ -85,7 +84,7 @@ theorem useful_delivery_with_retained_packet_contexts :
     ∃ saved, (KernelResponses.lts
       (HistoricalResponses.lts (GuardedResponseNetwork.network responseData))
       responseHistoryConfig).MTr (.network ⟨witnessState0, []⟩)
-      ((witnessActions.map HistoricalResponses.Action.network).map KernelResponses.Action.network)
+      ((witnessActions.map HistoricalResponses.ReplyHistoryAction.network).map KernelResponses.ReplyAction.network)
       (.network ⟨witnessStateFINAL, saved⟩) := by
   obtain ⟨saved, run⟩ := HistoricalResponses.lift_network_trace
     (GuardedResponseNetwork.network responseData) positive_delivery_with_early_source_guards []

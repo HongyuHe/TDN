@@ -36,8 +36,8 @@ structure SizingRole where
   role : SizingInterface
 
 
-def directionalConfiguration (records : Records) (installations : List PublicSARecord) :
-    MultiProtocolForwarding.Config :=
+def directionalConfiguration (records : Records) (installations : List PublicSaRecord) :
+    MultiProtocolForwarding.TunnelForwardingModel :=
   let native := records.configuration
   { native with ip := { native.ip with
       egressSAs := fun iface => directionalStates installations (native.ip.owner iface) .outbound
@@ -63,23 +63,23 @@ def authenticationLimit (requestId : Nat) : Nat :=
   else if requestId ∈ [201, 202] then 1400 else 0
 
 
-def completeConfiguration {Key : Type} (records : Records) (installations : List PublicSARecord)
-    (policies : List (Nat × LinkAdmission.IfacePolicy)) (codec : IPsecFrameEncoding.Codec Key) :
-    MultiProtocolForwarding.Config :=
+def completeConfiguration {Key : Type} (records : Records) (installations : List PublicSaRecord)
+    (policies : List (Nat × LinkAdmission.IfacePolicy)) (codec : IpsecFrameEncoding.Codec Key) :
+    MultiProtocolForwarding.TunnelForwardingModel :=
   { directionalConfiguration records installations with
     linkPolicies := policies
-    linkEncoding := fun _ frame => some (IPsecFrameEncoding.linkEncoding codec frame)
-    networkBytes := fun body _ => IPsecFrameEncoding.networkLength body }
+    linkEncoding := fun _ frame => some (IpsecFrameEncoding.linkEncoding codec frame)
+    networkBytes := fun body _ => IpsecFrameEncoding.networkLength body }
 
 
-def completeInventory {Key : Type} (records : Records) (installations : List PublicSARecord)
-    (policies : List (Nat × LinkAdmission.IfacePolicy)) (codec : IPsecFrameEncoding.Codec Key) :
+def completeInventory {Key : Type} (records : Records) (installations : List PublicSaRecord)
+    (policies : List (Nat × LinkAdmission.IfacePolicy)) (codec : IpsecFrameEncoding.Codec Key) :
     PacketProcessing.Inventory :=
   { records.inventory with configuration := completeConfiguration records installations policies codec }
 
 
-def completeDeployment {Key : Type} (records : Records) (installations : List PublicSARecord)
-    (policies : List (Nat × LinkAdmission.IfacePolicy)) (codec : IPsecFrameEncoding.Codec Key)
+def completeDeployment {Key : Type} (records : Records) (installations : List PublicSaRecord)
+    (policies : List (Nat × LinkAdmission.IfacePolicy)) (codec : IpsecFrameEncoding.Codec Key)
     (networks : List RedNetworkIdentity) (attachments : List RedNetworkAttachment)
     (services : List ServiceRegistration) (base : Deployment) : Deployment :=
   let inventory := completeInventory records installations policies codec
@@ -125,16 +125,16 @@ def SourceFlow.request (flow : SourceFlow) : PacketSource.Request :=
     mode := .stream, requestId := 133 }
 
 
-def ipsecTunnel (records : Records) (wireSeal : DataPlaneForwarding.TunnelSAStamp) : String :=
+def ipsecTunnel (records : Records) (wireSeal : DataPlaneForwarding.TunnelSaStamp) : String :=
   let sender := (records.interfaces.find? (fun interface => interface.address == some wireSeal.sender)).map Interface.device
   let receiver := (records.interfaces.find? (fun interface => interface.address == some wireSeal.receiver)).map Interface.device
   ((records.tunnels.find? (fun tunnel => sender == some tunnel.sender && receiver == some tunnel.receiver)).map Tunnel.id).getD
     "unlisted-IPsec-tunnel"
 
 
-def prototype {Key : Type} (records : Records) (installations : List PublicSARecord)
+def prototype {Key : Type} (records : Records) (installations : List PublicSaRecord)
     (entries : List SourceEntry) (roles : List SizingRole) (policies : List (Nat × LinkAdmission.IfacePolicy))
-    (epoch : String) (codec : IPsecFrameEncoding.Codec Key) (material : String → IPsecKeyMaterial) :
+    (epoch : String) (codec : IpsecFrameEncoding.Codec Key) (material : String → IpsecKeyMaterial) :
     DeviceExecutionBinding Unit Unit :=
   { configuration := completeConfiguration records installations policies codec
     state := fun _ => {
@@ -144,7 +144,7 @@ def prototype {Key : Type} (records : Records) (installations : List PublicSARec
     action := fun _ => none
     ifaceName := records.ifaceName, componentName := records.componentName
     ipsecTunnel := ipsecTunnel records
-    ipsecEpoch := some epoch, ipsecInstallations := installations.map PublicSARecord.installation
+    ipsecEpoch := some epoch, ipsecInstallations := installations.map PublicSaRecord.installation
     ipsecKeyMaterial := publicKeyMaterial installations material
     macsecTunnel := fun _ => "unlisted-MACsec-tunnel", macsecKeyMaterial := fun _ => none
     sourceEntry := sourceEntry entries, sourceProcessing := PacketSource.sourceProcessing (sourceMtu roles)

@@ -10,7 +10,7 @@ abbrev OriginByte := ReassemblyOrigins.ByteOrigin Nat Nat Nat
 def tracked : OriginByte := ⟨65, 1, 1⟩
 
 lemma path_to_black : (lts config).MTr witnessState0 (witnessActions.take 33) witnessState33 := by
-  exact (Cslib.LTS.MTr.stepL witnessStep0 (Cslib.LTS.MTr.stepL witnessStep1 (Cslib.LTS.MTr.stepL witnessStep2 (Cslib.LTS.MTr.stepL witnessStep3 (Cslib.LTS.MTr.stepL witnessStep4 (Cslib.LTS.MTr.stepL witnessStep5 (Cslib.LTS.MTr.stepL witnessStep6 (Cslib.LTS.MTr.stepL witnessStep7 (Cslib.LTS.MTr.stepL witnessStep8 (Cslib.LTS.MTr.stepL witnessStep9 (Cslib.LTS.MTr.stepL witnessStep10 (Cslib.LTS.MTr.stepL witnessStep11 (Cslib.LTS.MTr.stepL witnessStep12 (Cslib.LTS.MTr.stepL witnessStep13 (Cslib.LTS.MTr.stepL witnessStep14 (Cslib.LTS.MTr.stepL witnessStep15 (Cslib.LTS.MTr.stepL witnessStep16 (Cslib.LTS.MTr.stepL witnessStep17 (Cslib.LTS.MTr.stepL witnessStep18 (Cslib.LTS.MTr.stepL witnessStep19 (Cslib.LTS.MTr.stepL witnessStep20 (Cslib.LTS.MTr.stepL witnessStep21 (Cslib.LTS.MTr.stepL witnessStep22 (Cslib.LTS.MTr.stepL witnessStep23 (Cslib.LTS.MTr.stepL witnessStep24 (Cslib.LTS.MTr.stepL witnessStep25 (Cslib.LTS.MTr.stepL witnessStep26 (Cslib.LTS.MTr.stepL witnessStep27 (Cslib.LTS.MTr.stepL witnessStep28 (Cslib.LTS.MTr.stepL witnessStep29 (Cslib.LTS.MTr.stepL witnessStep30 (Cslib.LTS.MTr.stepL witnessStep31 (Cslib.LTS.MTr.stepL witnessStep32 Cslib.LTS.MTr.refl)))))))))))))))))))))))))))))))))
+  exact (Cslib.LTS.MTr.stepL witness_step0 (Cslib.LTS.MTr.stepL witness_step1 (Cslib.LTS.MTr.stepL witness_step2 (Cslib.LTS.MTr.stepL witness_step3 (Cslib.LTS.MTr.stepL witness_step4 (Cslib.LTS.MTr.stepL witness_step5 (Cslib.LTS.MTr.stepL witness_step6 (Cslib.LTS.MTr.stepL witness_step7 (Cslib.LTS.MTr.stepL witness_step8 (Cslib.LTS.MTr.stepL witness_step9 (Cslib.LTS.MTr.stepL witness_step10 (Cslib.LTS.MTr.stepL witness_step11 (Cslib.LTS.MTr.stepL witness_step12 (Cslib.LTS.MTr.stepL witness_step13 (Cslib.LTS.MTr.stepL witness_step14 (Cslib.LTS.MTr.stepL witness_step15 (Cslib.LTS.MTr.stepL witness_step16 (Cslib.LTS.MTr.stepL witness_step17 (Cslib.LTS.MTr.stepL witness_step18 (Cslib.LTS.MTr.stepL witness_step19 (Cslib.LTS.MTr.stepL witness_step20 (Cslib.LTS.MTr.stepL witness_step21 (Cslib.LTS.MTr.stepL witness_step22 (Cslib.LTS.MTr.stepL witness_step23 (Cslib.LTS.MTr.stepL witness_step24 (Cslib.LTS.MTr.stepL witness_step25 (Cslib.LTS.MTr.stepL witness_step26 (Cslib.LTS.MTr.stepL witness_step27 (Cslib.LTS.MTr.stepL witness_step28 (Cslib.LTS.MTr.stepL witness_step29 (Cslib.LTS.MTr.stepL witness_step30 (Cslib.LTS.MTr.stepL witness_step31 (Cslib.LTS.MTr.stepL witness_step32 Cslib.LTS.MTr.refl)))))))))))))))))))))))))))))))))
 
 lemma byte_reaches_black : ∃ actions, (ResponseByteFlows.system (lts config)
     (UniformDomainResponses.responseConfig config
@@ -23,7 +23,7 @@ lemma byte_reaches_black : ∃ actions, (ResponseByteFlows.system (lts config)
   have lifted := ByteFlows.network_trace_on_one_carrier _
     (ResponseByteFlows.source (Requirements.RedByteOrigin config redSources))
     (ResponseByteFlows.assembly PlaintextAssembly) [tracked] path
-  refine ⟨_, Cslib.LTS.MTr.stepL (ByteFlows.Step.inject ?_) lifted⟩
+  refine ⟨_, Cslib.LTS.MTr.stepL (ByteFlows.ByteFlowStep.inject ?_) lifted⟩
   intro byte member
   simp only [List.mem_singleton] at member
   subst byte

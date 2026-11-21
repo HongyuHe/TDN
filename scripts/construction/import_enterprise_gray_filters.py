@@ -88,17 +88,17 @@ def generate(data):
 namespace TDN.Deployments.FreshEnterpriseGrayFilters
 open TDN.PacketPolicy
 
-def forwardChains : List (List Rule) := [""" + ",\n  ".join(entries) + """]
-def inputChains : List (List Rule × TDN.Filter.Verdict) :=
+def forwardChains : List (List PacketAclRule) := [""" + ",\n  ".join(entries) + """]
+def inputChains : List (List PacketAclRule × TDN.Filter.Verdict) :=
   [([], .allow), ([], .allow), ([], .allow), ([], .allow)]
 
 /-- The four saved FORWARD chains require a matching explicit allow rule.
 The conclusion covers first-match filter evaluation, with its saved DROP default. -/
-theorem selected_forwarding_requires_an_explicit_allow (rules : List Rule)
-    (_member : rules ∈ forwardChains) (packet : Packet) (accepted : Accepts rules packet) :
+theorem selected_forwarding_requires_an_explicit_allow (rules : List PacketAclRule)
+    (_member : rules ∈ forwardChains) (packet : Packet) (accepted : DefaultDenyAllows rules packet) :
     ∃ rule ∈ rules, rule.toFilter.accepts packet = true ∧ rule.verdict = .allow := by
   obtain ⟨rule, member, matched, allowed⟩ :=
-    TDN.Filter.allowed_has_matching_allow (rules.map Rule.toFilter) packet accepted
+    TDN.Filter.allowed_has_matching_allow (rules.map PacketAclRule.toFilter) packet accepted
   obtain ⟨original, present, rfl⟩ := List.mem_map.mp member
   exact ⟨original, present, matched, allowed⟩
 
@@ -108,9 +108,9 @@ lemma input_defaults_are_acceptance : ∀ chain ∈ inputChains,
 /-- The complete saved INPUT chains accept in this selected filter model.
 The observation identifies missing local-chain enforcement without inventing a
 live arrival trace or asserting that other kernel hooks permit the packet. -/
-theorem captured_local_input_accepts_every_packet (chain : List Rule × TDN.Filter.Verdict)
+theorem captured_local_input_accepts_every_packet (chain : List PacketAclRule × TDN.Filter.Verdict)
     (member : chain ∈ inputChains) (packet : Packet) :
-    TDN.Filter.evaluate (chain.1.map Rule.toFilter) chain.2 packet = .allow := by
+    TDN.Filter.evaluate (chain.1.map PacketAclRule.toFilter) chain.2 packet = .allow := by
   obtain ⟨empty, default⟩ := input_defaults_are_acceptance chain member
   simp [empty, default, TDN.Filter.evaluate]
 

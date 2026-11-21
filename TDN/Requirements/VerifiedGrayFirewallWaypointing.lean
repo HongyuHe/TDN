@@ -1,4 +1,4 @@
-import TDN.Requirements.MasterMscRequirementSpecs
+import TDN.Requirements.MscRequirements
 import TDN.Requirements.DeriveEndpointInputOutputRules
 import Cslib.Foundations.Data.List.IsChainFromTo
 
@@ -29,7 +29,7 @@ lemma bound_gray_endpoint_rules_filter_inner_peers (d : Deployment)
     (checks : ∀ program ∈ admissionPrograms d inventory interface.id,
       ProgramRuleChecks (RuleEndpointGuard d (GrayEndpointNode d topology) pairs) program) :
     d.PolicyCoverage interface ∧ ∀ direction traffic,
-      d.Accepts interface.id direction traffic → InnerEndpoints d traffic →
+      d.PermitsOnInterface interface.id direction traffic → InnerEndpoints d traffic →
       d.SameLevelInner traffic := by
   refine ⟨policy_coverage_from_checked_indices d indices interface member, ?_⟩
   intro direction traffic accepted endpoints
@@ -66,7 +66,7 @@ lemma bound_gray_endpoint_rules_reject_lower_management (d : Deployment)
     (checks : ∀ program ∈ admissionPrograms d inventory interface.id,
       ProgramRuleChecks (RuleEndpointGuard d (GrayEndpointNode d topology) pairs) program)
     (direction : Direction) (traffic : Traffic)
-    (accepted : d.Accepts interface.id direction traffic)
+    (accepted : d.PermitsOnInterface interface.id direction traffic)
     (manager component : String) (managed : GrayManagement topology manager)
     (inner : topology.inner component) (lower : topology.level component ≠ topology.highest) :
     ¬ ((traffic.sourceDevice = some manager ∧ traffic.destinationDevice = some component) ∨
@@ -203,7 +203,7 @@ theorem gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms
     (pathChecks : ∀ witness ∈ paths, witness.Checked topology)
     (pathCoverage : ∀ device ∈ d.devices, device.kind = .grayFirewall →
       ∃ witness ∈ paths, witness.firewall = device.id) :
-    msc_gray_firewall_path_coverage d topology := by
+    gray_firewall_path_coverage d topology := by
   have coherent := address_inventory_from_checked_records d addressChecked workstations
   have localEdges : ∀ first second, topology.edge first second →
       ¬ topology.grayFirewall first → ¬ topology.grayFirewall second →
@@ -241,7 +241,7 @@ theorem gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms
     rw [← same, levelBinding device member]
     exact highestLevels device member layer
   have filters : ∀ node, topology.outer node ∨ topology.grayFirewall node →
-      FiltersIntendedPeers {d with focus := none} node := by
+      FiltersIntendedPeers {d with deviceScope := none} node := by
     intro node role interface member _ owner gray
     apply bound_gray_endpoint_rules_filter_inner_peers d topology inventory present coherent
       pairs pairChecks interface indices member
@@ -250,7 +250,7 @@ theorem gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms
     · exact Or.inl ⟨owner ▸ (outerBinding node).mp outer, gray⟩
     · exact Or.inr (owner ▸ (firewallBinding node).mp firewall)
   have firewallChecks : ∀ node, topology.grayFirewall node →
-      FiltersIntendedPeers {d with focus := none} node ∧
+      FiltersIntendedPeers {d with deviceScope := none} node ∧
         d.authority.protectsAsClassified node := by
     intro node firewall
     refine ⟨filters node (Or.inr firewall), ?_⟩
@@ -269,9 +269,9 @@ theorem gray_firewall_path_coverage_from_edge_inventory_and_rule_atoms
     exact ⟨firewall.id, (firewallBinding firewall.id).mpr ⟨firewall, member, rfl, kind⟩⟩
   have core := TDN.Requirements.gray_firewall_paths_from_local_separation topology.edge
     topology.grayFirewall topology.inner (GrayManagement topology) topology.level topology.highest
-    topology.dominates (FiltersIntendedPeers {d with focus := none}) d.authority.protectsAsClassified
+    topology.dominates (FiltersIntendedPeers {d with deviceScope := none}) d.authority.protectsAsClassified
     localEdges innerClear managerClear managerHighest innerDominated firewallChecks presentFirewall
-  change CoreReq_msc_gray_firewall_path_coverage {d with focus := none} topology
+  change scoped_gray_firewall_path_coverage {d with deviceScope := none} topology
   refine ⟨coherent, innerBinding, firewallBinding, outerBinding, workstationBinding,
     localCABinding, caBinding, revocationBinding, ?_, core, ?_, ?_, ?_, ?_⟩
   · intro device member _

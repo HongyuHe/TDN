@@ -1,5 +1,7 @@
 # Import network evidence through MCP and Lean commands
 
+The server exposes the evidence needed for each supported proof input through `describe_evidence_requirements`. The [adapter guide](../mcp/README.md#evidence-required-by-a-proof) gives the calls for installed routes, firewall paths, ordered filters and native IPsec execution.
+
 The evidence service gives the construction agent one interface for collecting network state, inspecting saved observations, and preparing JSON data for Lean. Device adapters select read commands and interpret their outputs. Lean commands turn the resulting JSON into ordinary definitions that existing proofs can unfold.
 
 The `security-level-assignment-v1` adapter imports explicit laboratory policy through the `security_level_assignments` view. Each Red network and Inner device receives a classification, compartment set, dissemination set and other-control set. Every dimension must be present, including intentionally empty sets. The adapter checks complete Inner-device coverage and binds each assignment to the exact retained profile and snapshot hashes. Its records carry `evidenceStatus: declared`. The assigned labels express the experiment's intended restrictions; they do not recover missing runtime values or establish real classification approval. The [retained assignment declaration](../data/extraction/networks/profiles/security-level-assignments-20261111/README.md) covers the baseline and shared-Outer profiles.
@@ -51,6 +53,8 @@ The `bridge_processing` query and export connect saved OVS records to the corres
 The current bridge parser accepts an uncontrolled OVS bridge with a single `NORMAL` flow, untagged ports, no bonds, and empty group and meter tables. It rejects unsupported settings. Empty `nftInbound` and `nftOutbound` programs mean the complete captured ruleset contains no nftables `bridge` or `netdev` objects. Those programs describe the recorded nftables checks. The view explicitly identifies TC, XDP, legacy ebtables, STP and host interference as outside its audit. OVS has before/after read-backs; nftables has one namespace-bound read. A proof using the export must retain those scope and timing assumptions.
 
 ## Load JSON in Lean
+
+The saved snapshot exporter writes a tunnel’s `protocol` into its Lean record. The source device observation still supplies that value as `mechanism`. The overlay interface exporter maps the captured zone `local` to `hostLocal`. See the [typed evidence guide](../data/evidence/README.md) for the conversion command for older exports.
 
 Use `load_network_records` when an evidence record should populate an existing TDN type:
 

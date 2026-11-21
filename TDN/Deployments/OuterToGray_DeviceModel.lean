@@ -20,9 +20,9 @@ structure Records where
   ownerNames : List String
   policies : List InterfacePolicy
   tunnels : List Tunnel
-  pairs : List InnerIPsecPair
+  pairs : List InnerIpsecPair
   masks : List OwnerMask
-  ipsecSizes : List PacketProcessing.IPsecSizeBinding
+  ipsecSizes : List PacketProcessing.IpsecSizeBinding
   nativeDevices : List DataPlaneForwarding.DeviceData
   nativeIfaces : List DataPlaneForwarding.IfaceData
   routes : List DataPlaneForwarding.FibRoute
@@ -35,7 +35,7 @@ def Records.ifaceName (records : Records) (iface : Nat) : String :=
 def Records.componentName (records : Records) (owner : Nat) : String :=
   records.ownerNames[owner]?.getD "unlisted-device"
 
-def Records.configuration (records : Records) : MultiProtocolForwarding.Config :=
+def Records.configuration (records : Records) : MultiProtocolForwarding.TunnelForwardingModel :=
   let native := MultiProtocolForwarding.dataPlaneModelFromRecords records.nativeDevices records.nativeIfaces
     records.routes records.links records.bridges [] []
   { native with
@@ -75,7 +75,7 @@ def Records.deployment (records : Records) (base : Deployment) : Deployment :=
     interfaces := records.interfaces
     tunnels := records.tunnels
     policies := records.projectedPolicies
-    focus := none
+    deviceScope := none
     services := [], managementServices := [], managementHistory := [], managementExchanges := []
     udpBindings := [], grayManagementTunnels := [], carrierBindings := []
     dropIPv4Options := fun _ => true
@@ -204,7 +204,7 @@ def Records.ForwardMaskLookup (records : Records) (base : Deployment)
     ∀ choice ∈ authenticationChoices records.configuration route.ingress,
       AuthenticationChoiceValid (records.deployment base) records.inventory route.ingress
         record.endpoints.sourceAddress record.endpoints.destinationAddress choice →
-      ∀ form ∈ PacketPolicy.IPsecForm.all, ∃ entry ∈ records.masks,
+      ∀ form ∈ PacketPolicy.IpsecForm.all, ∃ entry ∈ records.masks,
         entry.owner = (DataPlaneForwarding.ifaceAt records.nativeIfaces (records.ifaceIndex interface)).owner ∧
         entry.packet = form.mask record.endpoints.sourceAddress record.endpoints.destinationAddress
           (records.configuration.ip.interfaceName route.ingress)

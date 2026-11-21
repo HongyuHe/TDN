@@ -16,7 +16,7 @@ example : UniformResponseRegions.TableDrivenUniform []
   native_decide
 /-- Retained context selection uses an actually stored state. -/
 example (network : Cslib.LTS Nat Unit) :
-    HistoricalResponses.Step network ⟨20, [7, 10]⟩ .selectRetained ⟨7, [7, 10]⟩ :=
+    HistoricalResponses.ReplyHistoryStep network ⟨20, [7, 10]⟩ .selectRetained ⟨7, [7, 10]⟩ :=
   .select (by simp)
 
 /-- A saved unsafe packet cannot be hidden by a safe current packet. -/

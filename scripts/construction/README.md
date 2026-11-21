@@ -20,12 +20,12 @@ The active construction workflow uses the [evidence MCP server](../../mcp/README
 python3 scripts/construction/start_v31.py
 ```
 
-The supervisor launches the independent Constructor with GPT-6.1 Sol at `xhigh`. After the Constructor compiles a complete 24-specification candidate, `prepare_interpretation.py` freezes its sources and uses `export_spec_definitions.lean` to export the actual compiled definitions. Each fresh GPT-6.1 Sol interpreter at `high` receives only those definitions and their dependencies. The supervisor retains the source-to-RG mapping outside the interpreter workspace.
+The supervisor launches the independent Constructor with GPT-6.1 Sol at `xhigh`. After the Constructor compiles a candidate containing the ten selected specifications, `prepare_interpretation.py` freezes its sources and uses `export_spec_definitions.lean` to export the actual compiled definitions. Each fresh GPT-6.1 Sol interpreter at `high` receives only those definitions and their dependencies. The supervisor retains the source-to-RG mapping outside the interpreter workspace.
 
 ```sh
 python3 scripts/construction/prepare_interpretation.py \
-  --run v3.3-TIMESTAMP \
-  --workspace /tmp/tdn-v3.3-TIMESTAMP/constructor \
+  --run v3.4-TIMESTAMP \
+  --workspace /tmp/tdn-v3.4-TIMESTAMP/constructor \
   --round 1
 ```
 
@@ -48,15 +48,15 @@ TDN_PROOF_AUDIT=outputs/proof-audit.json \
 lake env lean scripts/construction/export_proof_audit.lean
 ```
 
-`export_spec_definitions.lean` records each specification's readable form and complete internal Lean expressions, including implicit arguments. Rebuild the accepted frozen source and the proof candidate with the same pinned dependencies before comparing those exports. `check_proof_submission.py` checks the 24-target mapping, the compiled general proofs, their evidence dependencies, and changes to the accepted definitions. The checker reports whether the accepted export contains the complete expressions. Older exports remain usable but compare only their recorded fields. The supervisor reviews clause coverage and assumptions separately.
+`export_spec_definitions.lean` records each specification's readable form and complete internal Lean expressions, including implicit arguments. Rebuild the accepted frozen source and the proof candidate with the same pinned dependencies before comparing those exports. `check_proof_submission.py` checks the selected target mapping, the compiled general proofs, their evidence dependencies, and changes to the accepted definitions. The checker reports whether the accepted export contains the complete expressions. Older exports remain usable but compare only their recorded fields. The supervisor reviews clause coverage and assumptions separately.
 
-For a completed individual RG, pass `--groups RG-039` to `check_proof_submission.py` and provide a proof map containing that RG. The accepted map still contains all 24 specifications. The default checks all 24 groups. Selecting one group changes the submission scope; it preserves the checks for specification changes, unexpected axioms and dependencies on concrete evidence.
+For a completed individual RG, pass `--groups RG-039` to `check_proof_submission.py` and provide a proof map containing that RG. The accepted map still contains every selected specification. The default reviews the selected set. Selecting one group changes the submission scope; it preserves the checks for specification changes, unexpected axioms and dependencies on concrete evidence.
 
-When a completed RG changes a specification's meaning, `prepare_interpretation.py --groups RG-039` limits the blind Interpreter's targets to that group. The supervisor's export still records all 24 definitions for change tracking. Use `--import-module TDN.Requirements.MasterMscRequirementSpecs` to build the specification modules without rebuilding unrelated snapshot proofs. Additional `--import-module` arguments are supported when the specification map spans several modules. The default imports `TDN` and gives the Interpreter all 24 targets.
+When a completed RG changes a specification's meaning, `prepare_interpretation.py --groups RG-039` limits the blind Interpreter's targets to that group. The supervisor's export still records all selected definitions for change tracking. Use `--import-module TDN.Requirements.MscRequirements` to build the specification modules without rebuilding unrelated snapshot proofs. Additional `--import-module` arguments are supported when the specification map spans several modules. The default imports `TDN` and gives the Interpreter all selected targets.
 
 A frozen candidate can supply its existing compiled definitions through `--compiled-export FILE --compiled-export-sha256 HASH` while the independent validation build runs. The preparation script verifies the hash, preserves the supplied definitions and source hashes, and tests the Interpreter's access restrictions. It does not repeat the build. Acceptance still requires the independent build to export exactly the same definitions; the preparation manifest records that outstanding check.
 
-The RG-033 packet-size application uses `packet_sizing_records.py` to combine saved native processing, public IPsec association records, packet-size observations, bridge processing and declared Red services. The output retains the raw inputs and their hashes. `packet_sizing_cases.py` selects concrete source, rejection and wire examples. `packet_sizing_continuation.py` extends a source example through the recorded route, filter, encryption and switching steps to an Outer Black interface. Both scripts produce JSON; Lean imports the records and checks the proposed steps.
+The archived RG-033 experiment used `packet_sizing_records.py` to combine saved native processing, public IPsec association records, packet-size observations, bridge processing and declared Red services. The output retains the raw inputs and their hashes. `packet_sizing_cases.py` selects concrete source, rejection and wire examples. `packet_sizing_continuation.py` extends a source example through the recorded route, filter, encryption and switching steps to an Outer Black interface. Both scripts produce JSON; Lean imports the records and checks the proposed steps.
 
 ```sh
 python3 scripts/construction/packet_sizing_records.py \
@@ -81,9 +81,9 @@ lake env lean scripts/construction/audit_axioms.lean
 
 The [scope guide](../../docs/theory_scope.md) and [76-group scope register](../../specs/proof_scope.json) describe the current theory. The direct-check command validates the migrated configuration and recorded-operation clauses without generating Lean code. Its JSON output includes the checked claims and input hashes.
 
-## Generate indexed checking certificates
+## Generate route and ACL lookup hints
 
-`route_certificates.py` and `acl_certificates.py` generate JSON witnesses for the shared Gray-firewall checks. Lean verifies each witness and binds the indexed tables to the captured records. Both commands accept `--check` to detect stale output. The [library guide](../../docs/library.md#indexed-evidence-certificates) explains the checking algorithms and their proof obligations.
+`route_lookup_hints.py` and `acl_lookup_hints.py` generate JSON lookup hints for the shared Gray Firewall. Lean checks each index against the original rule or route and binds the indexed tables to the captured records. Both commands accept `--check` to detect stale output. The [library guide](../../docs/library.md#indexed-route-and-acl-checks) explains the checking algorithms and their proof obligations.
 
 ## Historical tools and records
 
@@ -93,4 +93,4 @@ The retained importers and shared parsing helpers still have proof, MCP, or regr
 
 Unique proof-review records and timestamped network snapshots retain their original paths and hashes. The completed script-relocation rehearsal and superseded untracked evidence values were archived outside the repository during the November 3 cleanup. Current proof inputs remain under `data/evidence/`.
 
-The [publication tools](../publication/README.md) rebuild the hierarchy and ontology and validate their source links. Their current source mappings are under `data/publication/v3.3/`. The earlier review decisions remain available under `data/publication/v3.1/` and `data/publication/v3.2/`.
+The [publication tools](../publication/README.md) rebuild the hierarchy and ontology and validate their source links. Their current source mappings are under `data/publication/v3.4/`. The earlier review decisions remain available under `data/publication/v3.1/`, `data/publication/v3.2/` and `data/publication/v3.3/`.

@@ -12,6 +12,7 @@ def main():
     commands = [
         ['lake', 'build', 'TDN'],
         [sys.executable, 'scripts/publication/update_model_catalog.py'],
+        [sys.executable, 'scripts/publication/update_requirement_map.py'],
         ['lake', 'env', 'lean', 'scripts/publication/hierarchy/ExportDependencies.lean'],
         [sys.executable, 'scripts/publication/hierarchy/build_proof_map.py'],
         [sys.executable, 'scripts/publication/build_hierarchy.py'],

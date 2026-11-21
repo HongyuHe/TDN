@@ -5,9 +5,9 @@ namespace TDN.Requirements
 open DataPlaneForwarding
 
 def BytePathOrderedEncryptions (c : DataPlaneForwarding.DataPlaneModel) (strict uniformOwners : List Nat)
-    (innerTag outerTag : Nat) (before : KernelResponses.State DataPlaneForwarding.State)
-    (actions : List (Option (KernelResponses.Action DataPlaneForwarding.Action)))
-    (after : KernelResponses.State DataPlaneForwarding.State) : Prop :=
+    (innerTag outerTag : Nat) (before : KernelResponses.ReplyState DataPlaneForwarding.ForwardingState)
+    (actions : List (Option (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)))
+    (after : KernelResponses.ReplyState DataPlaneForwarding.ForwardingState) : Prop :=
   ∃ earlier later left action right,
     actions = earlier ++ action :: later ∧
     (ByteProtectionEvents.system c strict uniformOwners).MTr before earlier left ∧
@@ -26,8 +26,8 @@ theorem byte_path_nested_layers_require_ordered_encryptions
     (innerTag outerTag : Nat)
     (placement : ∀ iface, (expectedEncapStack iface).head? = some outerTag →
       expectedEncapStack iface = [outerTag, innerTag])
-    {before after : KernelResponses.State DataPlaneForwarding.State}
-    {actions : List (Option (KernelResponses.Action DataPlaneForwarding.Action))}
+    {before after : KernelResponses.ReplyState DataPlaneForwarding.ForwardingState}
+    {actions : List (Option (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))}
     (run : (ByteProtectionEvents.system c strict uniformOwners).MTr before actions after)
     (initial : KernelResponses.ProvenanceInvariant
       (UniformDomainResponses.responseConfig c strict uniformOwners)
@@ -70,13 +70,13 @@ theorem every_black_byte_has_ordered_encryption_path {Byte : Type}
     (blackChecks : ∀ d ∈ domains, ∀ iface ∈ blackIfaces, expectedEncapStack d iface = [outerTag, innerTag d])
     (placement : ∀ d ∈ domains, ∀ iface, (expectedEncapStack d iface).head? = some outerTag →
       expectedEncapStack d iface = [outerTag, innerTag d])
-    {after : List (ByteFlows.Carrier (KernelResponses.State DataPlaneForwarding.State)
+    {after : List (ByteFlows.PacketBytes (KernelResponses.ReplyState DataPlaneForwarding.ForwardingState)
       (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action (KernelResponses.Action DataPlaneForwarding.Action))}
+    {actions : List (ByteFlows.ByteFlowAction (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))}
     (run : (ResponseByteFlows.system (DataPlaneForwarding.lts c)
       (UniformDomainResponses.responseConfig c strict uniformOwners)
       (RedByteOrigin c sources) PlaintextAssembly).MTr [] actions after)
-    (finish : DataPlaneForwarding.State) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (finish : DataPlaneForwarding.ForwardingState) (bytes : List (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (packetPresent : ⟨.network finish, bytes⟩ ∈ after)
     (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ blackIfaces)
     (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (bytePresent : byte ∈ bytes) :
@@ -89,7 +89,7 @@ theorem every_black_byte_has_ordered_encryption_path {Byte : Type}
   change ByteDomainInvariant c domains expectedEncapStack allowed byte finish at safe
   obtain ⟨supported, finalSafe⟩ := safe
   simp only [DomainInvariant, ready] at finalSafe
-  have path := ByteLineage.every_byte_has_source_path
+  have path := PayloadByteOriginPath.every_byte_has_source_path
     (KernelResponses.lts (DataPlaneForwarding.lts c)
       (UniformDomainResponses.responseConfig c strict uniformOwners))
     (ResponseByteFlows.source (RedByteOrigin c sources))
@@ -105,7 +105,7 @@ theorem every_black_byte_has_ordered_encryption_path {Byte : Type}
   · exact red_origin_has_domain_invariant c (expectedEncapStack byte.domain) (allowed byte.domain)
       sources byte.domain (sourceChecks byte.domain supported) origin.1 origin.2.1
   · change start.frame.encapLayerIds = []
-    simp [Frame.encapLayerIds, origin.1.2.2.2.1]
+    simp [IpsecFrame.encapLayerIds, origin.1.2.2.2.1]
   · change outerTag ∈ finish.frame.encapLayerIds
     rw [finalSafe.1, blackChecks byte.domain supported finish.iface black]
     simp

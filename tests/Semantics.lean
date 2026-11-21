@@ -1,6 +1,7 @@
 import TDN
 
 namespace TDN.Tests
+open TwoLayerOverlay
 
 def level : SecurityLevel := ⟨"Secret", {"Compartment-A"}, {"US-only"}, {}⟩
 def otherCompartment : SecurityLevel := ⟨"Secret", {"Compartment-B"}, {"US-only"}, {}⟩
@@ -22,7 +23,7 @@ def network : Network where
   innerPeer := fun a b => a = 1 ∧ b = 2
   outerPeer := fun a b => a = 3 ∧ b = 4
   linked := fun a b => (a = 1 ∧ b = 3) ∨ (a = 3 ∧ b = 4) ∨ (a = 4 ∧ b = 2)
-  allowedPair := fun _ _ => True
+  allowedTunnelPairing := fun _ _ => True
 
 def inner : TunnelHeader := ⟨.inner, 1, 2, .ipsec⟩
 def outer : TunnelHeader := ⟨.outer, 3, 4, .ipsec⟩
@@ -35,8 +36,13 @@ def grayRemote : State := ⟨.gray, 4, level, [inner]⟩
 def grayDestination : State := ⟨.gray, 2, level, [inner]⟩
 def finish : State := ⟨.red, 2, level, []⟩
 
+example {S A : Type} (model : Compliance.ForwardingModel S A) (start finish : S) (actions : List A) :
+    model.ForwardsAlongTrace start actions finish ↔ model.system.MTr start actions finish := Iff.rfl
+
+example : Waypointing.ReachableWithoutWaypoint (fun _ _ : Nat => False) (fun _ => True) 0 0 := .refl
+
 /-- A nonempty seven-step useful delivery rules out an empty-transition-model test. -/
-theorem useful_delivery : Relation.ReflTransGen (Step network) start finish := by
+theorem useful_delivery : ForwardsAlongOverlayPath network start finish := by
   have s1 : Step network start graySource := .innerEncrypt 1 2 level .ipsec ⟨rfl, rfl⟩ rfl
   have s2 : Step network graySource grayOuter := .grayTransit 1 3 level inner (Or.inl ⟨rfl, rfl⟩)
   have s3 : Step network grayOuter blackSource := .outerEncrypt 3 4 level inner .ipsec ⟨rfl, rfl⟩ trivial
@@ -53,14 +59,14 @@ theorem no_inner_plaintext_bypass (n : Network) (a b : Nat) (l : SecurityLevel) 
 
 open Filter
 
-def policy : List (Rule Nat) := [⟨fun p => p == 7, .allow⟩]
+def policy : List (FirstMatchRule Nat) := [⟨fun p => p == 7, .allow⟩]
 
 theorem useful_filter : HasUsefulTraffic policy (fun p => p = 7) := by
   exact ⟨7, rfl, rfl⟩
 
 theorem rejects_other : evaluate policy .deny 8 = .deny := rfl
 
-theorem empty_filter_has_no_useful_traffic : ¬ HasUsefulTraffic ([] : List (Rule Nat)) (fun _ => True) := by
+theorem empty_filter_has_no_useful_traffic : ¬ HasUsefulTraffic ([] : List (FirstMatchRule Nat)) (fun _ => True) := by
   intro ⟨p, _, hp⟩
   cases hp
 

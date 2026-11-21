@@ -3,7 +3,7 @@ import TDN.Models.MacsecPortProtection
 
 namespace TDN.LayeredFrame
 
-structure MACsecAssociation where
+structure MacsecAssociation where
   tag : Nat
   sci : Nat
   associationNumber : Nat
@@ -11,14 +11,14 @@ structure MACsecAssociation where
   keyGeneration : Nat
   deriving DecidableEq, Repr
 
-def SameMACWireIdentity (first second : MACsecAssociation) : Prop :=
+def SameMACWireIdentity (first second : MacsecAssociation) : Prop :=
   first.sci = second.sci ∧ first.associationNumber = second.associationNumber
 
-instance (first second : MACsecAssociation) : Decidable (SameMACWireIdentity first second) := by
+instance (first second : MacsecAssociation) : Decidable (SameMACWireIdentity first second) := by
   unfold SameMACWireIdentity
   infer_instance
 
-structure Carrier where
+structure EthernetTunnelHeader where
   source : Nat
   destination : Nat
   sourcePort : Nat
@@ -38,13 +38,13 @@ structure EthernetHeader where
 inductive Body where
   | datagram (header : PacketPolicy.Packet)
   | ethernet (header : EthernetHeader)
-  | ipsec (authentication : DataPlaneForwarding.TunnelSAStamp) (body : Body)
-  | macsec (association : MACsecAssociation) (body : Body)
-  | macsecPdu (association : MACsecAssociation) (encryptFrames : Bool)
+  | ipsec (authentication : DataPlaneForwarding.TunnelSaStamp) (body : Body)
+  | macsec (association : MacsecAssociation) (body : Body)
+  | macsecPdu (association : MacsecAssociation) (encryptFrames : Bool)
       (confidentialityOffset : Nat) (body : Body)
-  | carrier (endpoint : Carrier) (body : Body)
+  | carrier (endpoint : EthernetTunnelHeader) (body : Body)
 
-structure Frame where
+structure TunnelFrame where
   payload : Nat
   originDomain : Nat
   body : Body
@@ -86,13 +86,13 @@ def Body.isMACsecPdu : Body → Bool
   | .macsec _ _ | .macsecPdu _ _ _ _ => true
   | _ => false
 
-lemma macsec_has_no_routable_inner_header (association : MACsecAssociation) (body : Body) :
+lemma macsec_has_no_routable_inner_header (association : MacsecAssociation) (body : Body) :
     (Body.macsec association body).visibleHeader = none := rfl
 
-lemma carrier_preserves_protection_layers (endpoint : Carrier) (body : Body) :
+lemma carrier_preserves_protection_layers (endpoint : EthernetTunnelHeader) (body : Body) :
     (Body.carrier endpoint body).protectionLayers = body.protectionLayers := rfl
 
-lemma nested_outer_inner_order (outer inner : MACsecAssociation) (header : PacketPolicy.Packet) :
+lemma nested_outer_inner_order (outer inner : MacsecAssociation) (header : PacketPolicy.Packet) :
     (Body.macsec outer (.macsec inner (.datagram header))).protectionLayers =
       [outer.tag, inner.tag] := rfl
 
@@ -122,22 +122,22 @@ end TDN.LayeredFrame
 
 namespace TDN.LayeredFrame
 
-def Frame.visibleHeader (frame : Frame) : Option PacketPolicy.Packet :=
+def TunnelFrame.visibleHeader (frame : TunnelFrame) : Option PacketPolicy.Packet :=
   match frame.body.visibleHeader with
   | none => none
   | some header => some (frame.activeHeader.getD header)
 
-def Frame.pushHeader (frame : Frame) (body : Body) (header : Option PacketPolicy.Packet) : Frame :=
+def TunnelFrame.pushHeader (frame : TunnelFrame) (body : Body) (header : Option PacketPolicy.Packet) : TunnelFrame :=
   { frame with
     body := body, activeHeader := header,
     hiddenHeaders := frame.activeHeader :: frame.hiddenHeaders }
 
-def Frame.popHeader (frame : Frame) (body : Body) : Frame :=
+def TunnelFrame.popHeader (frame : TunnelFrame) (body : Body) : TunnelFrame :=
   { frame with
     body := body, activeHeader := frame.hiddenHeaders.head?.getD none,
     hiddenHeaders := frame.hiddenHeaders.drop 1 }
 
-def Frame.forwarded (frame : Frame) : Frame :=
+def TunnelFrame.forwarded (frame : TunnelFrame) : TunnelFrame :=
   match frame.visibleHeader with
   | none => frame
   | some header => { frame with activeHeader := some { header with hopLimit := header.hopLimit - 1 } }
@@ -146,13 +146,13 @@ end TDN.LayeredFrame
 
 namespace TDN.LayeredFrame
 
-@[simp] lemma Frame.forwarded_payload (frame : Frame) : frame.forwarded.payload = frame.payload := by
-  unfold Frame.forwarded
+@[simp] lemma TunnelFrame.forwarded_payload (frame : TunnelFrame) : frame.forwarded.payload = frame.payload := by
+  unfold TunnelFrame.forwarded
   cases frame.visibleHeader <;> rfl
 
-@[simp] lemma Frame.forwarded_origin (frame : Frame) :
+@[simp] lemma TunnelFrame.forwarded_origin (frame : TunnelFrame) :
     frame.forwarded.originDomain = frame.originDomain := by
-  unfold Frame.forwarded
+  unfold TunnelFrame.forwarded
   cases frame.visibleHeader <;> rfl
 
 end TDN.LayeredFrame
@@ -181,15 +181,15 @@ def Body.HeadersCoherent : Body → Option PacketPolicy.Packet →
       active = none ∧
       ∃ inner rest, hidden = inner :: rest ∧ body.HeadersCoherent inner rest
 
-def Frame.HeadersCoherent (frame : Frame) : Prop :=
+def TunnelFrame.HeadersCoherent (frame : TunnelFrame) : Prop :=
   frame.body.HeadersCoherent frame.activeHeader frame.hiddenHeaders
 
 end TDN.LayeredFrame
 
 namespace TDN.LayeredFrame
 
-@[simp] lemma Frame.forwarded_body (frame : Frame) : frame.forwarded.body = frame.body := by
-  unfold Frame.forwarded
+@[simp] lemma TunnelFrame.forwarded_body (frame : TunnelFrame) : frame.forwarded.body = frame.body := by
+  unfold TunnelFrame.forwarded
   cases frame.visibleHeader <;> rfl
 
 end TDN.LayeredFrame

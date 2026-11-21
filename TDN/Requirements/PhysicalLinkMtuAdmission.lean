@@ -3,9 +3,9 @@ import TDN.Requirements.AllZoneCrossingLinksCovered
 namespace TDN.Requirements.Msc
 open MultiProtocolForwarding
 
-lemma device_wire_is_admitted_by_recorded_directional_programs (configuration : Config)
-    (before after : MultiProtocolForwarding.State) (encoded : LinkAdmission.Frame)
-    (wire : MultiProtocolForwarding.Step configuration before .linkTransmit after)
+lemma device_wire_is_admitted_by_recorded_directional_programs (configuration : TunnelForwardingModel)
+    (before after : MultiProtocolForwarding.TunnelForwardingState) (encoded : LinkAdmission.EthernetFrame)
+    (wire : MultiProtocolForwarding.TunnelForwardingStep configuration before .linkTransmit after)
     (beforeEncoding : configuration.linkEncoding before.iface before.frame = some encoded)
     (afterEncoding : configuration.linkEncoding after.iface after.frame = some encoded)
     (describes : encoded.Describes before.frame)

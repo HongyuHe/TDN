@@ -1,10 +1,10 @@
 import TDN.Models.EncapStackPreservation
-import TDN.Models.LocateTransitionStepInTrace
+import TDN.Models.FindStepInForwardingTrace
 
 namespace TDN.DataPlaneForwarding
 
-lemma missing_tag_added_only_by_encryption {c : DataPlaneModel} {before after : State}
-    {action : Action} {tag : Nat} (step : Step c before action after)
+lemma missing_tag_added_only_by_encryption {c : DataPlaneModel} {before after : ForwardingState}
+    {action : ForwardingAction} {tag : Nat} (step : ForwardingStep c before action after)
     (absent : tag ∉ before.frame.encapLayerIds) (present : tag ∈ after.frame.encapLayerIds) :
     action = .encrypt ∧ after.frame.encapLayerIds = tag :: before.frame.encapLayerIds := by
   cases step <;> try exact False.elim (absent present)
@@ -16,25 +16,25 @@ lemma missing_tag_added_only_by_encryption {c : DataPlaneModel} {before after : 
   case decrypt association sa header rest tracking configured installed bound received outerSource outerDestination esp selected =>
     apply False.elim
     apply absent
-    simp only [Frame.encapLayerIds, received, List.map_cons]
+    simp only [IpsecFrame.encapLayerIds, received, List.map_cons]
     exact List.mem_cons_of_mem _ present
 
-lemma present_tag_removed_only_by_decryption {c : DataPlaneModel} {before after : State}
-    {action : Action} {tag : Nat} (step : Step c before action after)
+lemma present_tag_removed_only_by_decryption {c : DataPlaneModel} {before after : ForwardingState}
+    {action : ForwardingAction} {tag : Nat} (step : ForwardingStep c before action after)
     (present : tag ∈ before.frame.encapLayerIds) (absent : tag ∉ after.frame.encapLayerIds) :
     action = .decrypt ∧ before.frame.encapLayerIds = tag :: after.frame.encapLayerIds := by
   cases step <;> try exact False.elim (absent present)
   case encrypt association sa selected installed bound =>
     exact False.elim (absent (List.mem_cons_of_mem _ present))
   case decrypt association sa header rest tracking configured installed bound received outerSource outerDestination esp selected =>
-    simp only [Frame.encapLayerIds, received, List.map_cons] at present
+    simp only [IpsecFrame.encapLayerIds, received, List.map_cons] at present
     rcases List.mem_cons.mp present with head | tail
     · refine ⟨rfl, ?_⟩
-      simp only [Frame.encapLayerIds, received, List.map_cons]
+      simp only [IpsecFrame.encapLayerIds, received, List.map_cons]
       rw [head]
     · exact False.elim (absent tail)
 
-lemma forwarding_payload_identity (c : DataPlaneModel) {before after : State} {actions : List Action}
+lemma forwarding_payload_identity (c : DataPlaneModel) {before after : ForwardingState} {actions : List ForwardingAction}
     (run : (lts c).MTr before actions after) : after.frame.payload = before.frame.payload := by
   induction run with
   | refl => rfl
@@ -43,7 +43,7 @@ lemma forwarding_payload_identity (c : DataPlaneModel) {before after : State} {a
     cases step <;> exact same
 
 theorem boundary_layer_removal_has_decryption (c : DataPlaneModel) (tag : Nat)
-    {before after : State} {actions : List Action}
+    {before after : ForwardingState} {actions : List ForwardingAction}
     (run : (lts c).MTr before actions after)
     (initial : tag ∈ before.frame.encapLayerIds) (final : tag ∉ after.frame.encapLayerIds) :
     TraceEvents.Contains (lts c) before actions after
@@ -57,7 +57,7 @@ theorem boundary_layer_removal_has_decryption (c : DataPlaneModel) (tag : Nat)
     label, removed, forwarding_payload_identity c first⟩
 
 theorem boundary_layer_addition_has_encryption (c : DataPlaneModel) (tag : Nat)
-    {before after : State} {actions : List Action}
+    {before after : ForwardingState} {actions : List ForwardingAction}
     (run : (lts c).MTr before actions after)
     (initial : tag ∉ before.frame.encapLayerIds) (final : tag ∈ after.frame.encapLayerIds) :
     TraceEvents.Contains (lts c) before actions after
@@ -72,17 +72,17 @@ theorem boundary_layer_addition_has_encryption (c : DataPlaneModel) (tag : Nat)
     label, added, forwarding_payload_identity c first⟩
 
 lemma outer_encryption_has_inner_stack {c : DataPlaneModel} {expectedEncapStack : Nat → List Nat}
-    {innerTag outerTag : Nat} {before after : State} {action : Action}
+    {innerTag outerTag : Nat} {before after : ForwardingState} {action : ForwardingAction}
     (placement : ∀ iface, (expectedEncapStack iface).head? = some outerTag →
       expectedEncapStack iface = [outerTag, innerTag])
-    (step : Step c before action after) (label : action = .encrypt)
+    (step : ForwardingStep c before action after) (label : action = .encrypt)
     (added : after.frame.encapLayerIds = outerTag :: before.frame.encapLayerIds)
     (invariant : EncapStackConsistent c expectedEncapStack after) : before.frame.encapLayerIds = [innerTag] := by
   cases step <;> try cases label
   case encrypt iface frame authenticated association sa selected installed bound =>
     have tag : association.tag = outerTag := by
       have heads := congrArg List.head? added
-      simpa [Frame.encapLayerIds, encrypt, IpsecPolicy.seal] using heads
+      simpa [IpsecFrame.encapLayerIds, encrypt, IpsecPolicy.seal] using heads
     have head : (expectedEncapStack iface).head? = some outerTag := by
       rw [← invariant.1]
       change some association.tag = some outerTag
@@ -93,10 +93,10 @@ lemma outer_encryption_has_inner_stack {c : DataPlaneModel} {expectedEncapStack 
     exact (List.cons.inj shape).2
 
 def OrderedEncryptions (c : DataPlaneModel) (innerTag outerTag : Nat)
-    (before : State) (actions : List Action) (after : State) : Prop :=
+    (before : ForwardingState) (actions : List ForwardingAction) (after : ForwardingState) : Prop :=
   ∃ earlier later left action right,
     actions = earlier ++ action :: later ∧
-    (lts c).MTr before earlier left ∧ Step c left action right ∧
+    (lts c).MTr before earlier left ∧ ForwardingStep c left action right ∧
     (lts c).MTr right later after ∧
     action = .encrypt ∧ right.frame.encapLayerIds = outerTag :: left.frame.encapLayerIds ∧
     left.frame.payload = before.frame.payload ∧
@@ -108,7 +108,7 @@ theorem nested_stack_requires_ordered_encryptions (c : DataPlaneModel) (expected
     (conditions : PerHopEncapConditions c expectedEncapStack) (innerTag outerTag : Nat)
     (placement : ∀ iface, (expectedEncapStack iface).head? = some outerTag →
       expectedEncapStack iface = [outerTag, innerTag])
-    {before after : State} {actions : List Action}
+    {before after : ForwardingState} {actions : List ForwardingAction}
     (run : (lts c).MTr before actions after) (initial : EncapStackConsistent c expectedEncapStack before)
     (empty : before.frame.encapLayerIds = []) (present : outerTag ∈ after.frame.encapLayerIds) :
     OrderedEncryptions c innerTag outerTag before actions after := by

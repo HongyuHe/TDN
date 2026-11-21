@@ -5,11 +5,10 @@ import TDN.Deployments.ProfileShared_DataPlane
 
 namespace TDN.Deployments.ProfileShared_Addressing
 set_option maxRecDepth 100000
-set_option maxHeartbeats 0
 
-theorem outer_accepted_addresses_share_full_level (rules : List PacketPolicy.Rule)
+theorem outer_accepted_addresses_share_full_level (rules : List PacketPolicy.PacketAclRule)
     (member : rules ∈ policies) (packet : PacketPolicy.Packet)
-    (accepted : PacketPolicy.Accepts rules packet) :
+    (accepted : PacketPolicy.DefaultDenyAllows rules packet) :
     ∃ level, Addressing.Owns ranges packet.source level ∧
       Addressing.Owns ranges packet.destination level :=
   Requirements.accepted_named_peer_addresses_share_level ranges pairs rules
@@ -17,7 +16,7 @@ theorem outer_accepted_addresses_share_full_level (rules : List PacketPolicy.Rul
 
 load_network_records grayFirewallDevices : List Nat from "../../data/evidence/SnapshotGrayAddressClauses.json" ["TDN.Deployments.ProfileShared_Addressing.grayFirewallDevices"]
 
-def grayFirewallRules (device : Nat) : List PacketPolicy.Rule :=
+def grayFirewallRules (device : Nat) : List PacketPolicy.PacketAclRule :=
   (DataPlaneForwarding.deviceAt ProfileShared_DataPlane.devices device).forwardRules
 
 lemma gray_firewall_defaults : ∀ device ∈ grayFirewallDevices,
@@ -32,7 +31,7 @@ theorem gray_firewall_rejects_cross_level_addresses (device : Nat)
     (source : Addressing.Owns ranges packet.source sourceLevel)
     (destination : Addressing.Owns ranges packet.destination destinationLevel)
     (different : sourceLevel ≠ destinationLevel) :
-    Filter.evaluate ((grayFirewallRules device).map PacketPolicy.Rule.toFilter)
+    Filter.evaluate ((grayFirewallRules device).map PacketPolicy.PacketAclRule.toFilter)
       (DataPlaneForwarding.deviceAt ProfileShared_DataPlane.devices device).forwardFallback packet = .deny := by
   rw [gray_firewall_defaults device member]
   exact Requirements.different_level_addresses_are_denied ranges pairs (grayFirewallRules device)
@@ -40,10 +39,10 @@ theorem gray_firewall_rejects_cross_level_addresses (device : Nat)
     packet sourceLevel destinationLevel source destination different
 
 theorem both_gray_firewalls_allow_selected_peer_esp :
-    PacketPolicy.Accepts (grayFirewallRules 2)
+    PacketPolicy.DefaultDenyAllows (grayFirewallRules 2)
       { source := 174326018, destination := 180879618, ingress := "s1", egress := "g1", protocol := "esp", sourcePort := 0, destinationPort := 0,
         ipv4HeaderWords := 5, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" } ∧
-    PacketPolicy.Accepts (grayFirewallRules 3)
+    PacketPolicy.DefaultDenyAllows (grayFirewallRules 3)
       { source := 180879618, destination := 174326018, ingress := "s1", egress := "g1", protocol := "esp", sourcePort := 0, destinationPort := 0,
         ipv4HeaderWords := 5, matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "NEW" } := by
   native_decide

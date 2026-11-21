@@ -5,13 +5,13 @@ import TDN.Models.ReassemblyBufferDomainSafety
 namespace TDN.Requirements
 
 def RedByteOrigin {Byte : Type} (c : DataPlaneForwarding.DataPlaneModel) (sources : List Nat)
-    (state : DataPlaneForwarding.State) (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) : Prop :=
+    (state : DataPlaneForwarding.ForwardingState) (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) : Prop :=
   RedPayloadOrigin c sources state ∧
   c.ifaceSecurityDomain state.iface = some byte.domain ∧ byte.packet = state.frame.payload
 
 def ByteDomainInvariant {Byte : Type} (c : DataPlaneForwarding.DataPlaneModel) (domains : List Nat)
     (expectedEncapStack : Nat → Nat → List Nat) (allowed : Nat → Nat → Prop)
-    (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (state : DataPlaneForwarding.State) : Prop :=
+    (byte : ReassemblyOrigins.ByteOrigin Byte Nat Nat) (state : DataPlaneForwarding.ForwardingState) : Prop :=
   byte.domain ∈ domains ∧ DataPlaneForwarding.DomainInvariant c (expectedEncapStack byte.domain) (allowed byte.domain) state
 
 theorem all_packet_and_plaintext_assembly_histories_preserve_domains {Byte : Type}
@@ -23,8 +23,8 @@ theorem all_packet_and_plaintext_assembly_histories_preserve_domains {Byte : Typ
     (sourceChecks : ∀ d ∈ domains, ∀ iface ∈ sources,
       c.ifaceSecurityDomain iface = some d →
       expectedEncapStack d iface = [] ∧ c.canOriginateTraffic iface ∧ allowed d iface)
-    {after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action DataPlaneForwarding.Action)}
+    {after : List (ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
+    {actions : List (ByteFlows.ByteFlowAction DataPlaneForwarding.ForwardingAction)}
     (run : (ByteFlows.lts (DataPlaneForwarding.lts c) (RedByteOrigin c sources)
       DataPlaneForwarding.PlaintextAssembly).MTr [] actions after) :
     ByteFlows.Safe (ByteDomainInvariant c domains expectedEncapStack allowed) after := by
@@ -54,11 +54,11 @@ theorem assembled_packet_delivery_preserves_each_byte_domain {Byte : Type}
       expectedEncapStack d iface = [] ∧ c.canOriginateTraffic iface ∧ allowed d iface)
     (recipientChecks : ∀ d ∈ domains, ∀ iface, allowed d iface →
       c.ifaceSecurityDomain iface = none ∨ c.ifaceSecurityDomain iface = some d)
-    {after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action DataPlaneForwarding.Action)}
+    {after : List (ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
+    {actions : List (ByteFlows.ByteFlowAction DataPlaneForwarding.ForwardingAction)}
     (run : (ByteFlows.lts (DataPlaneForwarding.lts c) (RedByteOrigin c sources)
       DataPlaneForwarding.PlaintextAssembly).MTr [] actions after)
-    (packet : ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (packet : ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : packet ∈ after) (delivered : packet.state.datapathStage = .delivered)
     (destinationDomain : Nat) (recipient : c.ifaceSecurityDomain packet.state.iface = some destinationDomain) :
     ∀ byte ∈ packet.bytes, byte.domain = destinationDomain := by
@@ -85,11 +85,11 @@ theorem assembled_packet_at_black_keeps_each_byte_protected {Byte : Type}
       expectedEncapStack d iface = [] ∧ c.canOriginateTraffic iface ∧ allowed d iface)
     (blackChecks : ∀ d ∈ domains, ∀ iface ∈ blackIfaces,
       expectedEncapStack d iface = [outerTag, innerTag d])
-    {after : List (ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action DataPlaneForwarding.Action)}
+    {after : List (ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
+    {actions : List (ByteFlows.ByteFlowAction DataPlaneForwarding.ForwardingAction)}
     (run : (ByteFlows.lts (DataPlaneForwarding.lts c) (RedByteOrigin c sources)
       DataPlaneForwarding.PlaintextAssembly).MTr [] actions after)
-    (packet : ByteFlows.Carrier DataPlaneForwarding.State (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
+    (packet : ByteFlows.PacketBytes DataPlaneForwarding.ForwardingState (ReassemblyOrigins.ByteOrigin Byte Nat Nat))
     (present : packet ∈ after) (ready : packet.state.datapathStage = .egressReady)
     (black : packet.state.iface ∈ blackIfaces) :
     ∀ byte ∈ packet.bytes, packet.state.frame.encapLayerIds = [outerTag, innerTag byte.domain] := by

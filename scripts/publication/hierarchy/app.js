@@ -55,18 +55,21 @@ const initial=new URLSearchParams(location.hash.slice(1));
 let activeID=initial.get('target')||'RG-034';
 if(!data.groups.some(g=>g.id===activeID))activeID='RG-034';
 const coverage=data.metadata.summary;
-$('#coverage-summary').textContent=`${coverage.formal_definitions} selected specifications: ${coverage.review_pass_groups} complete proofs passed review; ${coverage.deferred_groups} deferred. The other ${coverage.outside_selected_groups} RGs remain catalog entries.`;
-$('#source-summary').textContent=`TDN ${data.metadata.version}: ${coverage.formal_definitions} accepted specifications, ${coverage.review_pass_groups} reviewed complete general proofs, and ${coverage.deferred_groups} deferred targets. Status comes from the recorded complete-candidate reviews. Dependencies and source links were refreshed from the current Lean development. ${coverage.complete_model_applications} registered complete model applications use the reviewed general proofs. Applying those results to a live deployment requires the stated observation and implementation assumptions.`;
+$('#targets-title').textContent=coverage.formal_definitions+' proof targets';
+$('#coverage-summary').textContent=coverage.review_pass_groups+' reviewed complete proofs, '+coverage.deferred_groups+' open. The other '+coverage.outside_selected_groups+' requirements remain in the catalog.';
+$('#source-summary').textContent='The current review records cover '+coverage.complete_model_applications+' complete model applications. Each application uses the general proof under its stated observations and assumptions.';
 function renderTargets(){
  const query=$('#search').value.toLowerCase();
- const matches=data.groups.filter(g=>[g.id,g.title,g.target,g.targetName,...g.choices].join(' ').toLowerCase().includes(query));
- $('#target-count').textContent=`${matches.length} of 76 groups`;
+ const available=data.groups.filter(g=>g.formal||$('#include-catalog').checked);
+ const matches=available.filter(g=>[g.id,g.title,g.target,g.targetName,...g.choices].join(' ').toLowerCase().includes(query));
+ $('#target-count').textContent=matches.length+' of '+available.length+($('#include-catalog').checked?' catalog requirements':' proof targets');
  $('#compact-target').innerHTML=matches.map(g=>`<option value="${g.id}" ${g.id===activeID?'selected':''}>${g.id}: ${esc(g.title)}</option>`).join('');
  $('#target-list').innerHTML=matches.map(g=>`<button class="target-button ${g.status}" data-target="${g.id}" title="${esc(g.id+': '+g.title+' — '+data.statusLabels[g.status])}" aria-label="${esc(g.id+': '+g.title)}" aria-current="${g.id===activeID}"><span class="number">${g.id}</span><span class="target-name">${esc(g.title)}</span></button>`).join('');
  $('#target-list').querySelectorAll('button').forEach(b=>b.onclick=()=>chooseGroup(b.dataset.target));
 }
 function chooseGroup(id,desired){
  activeID=id;group=data.groups.find(g=>g.id===id);
+ if(!group.formal)$('#include-catalog').checked=true;
  $('#group-id').textContent=group.id;$('#group-title').textContent=group.title;
  $('#status').textContent=data.statusLabels[group.status];$('#status').classList.toggle('complete',group.positive);
  expanded.clear();selectedKey=null;$('#instance').value='';locatorIndex=0;
@@ -76,7 +79,7 @@ function chooseGroup(id,desired){
  const shortcuts=[['Overview',group.formal],['General proof',group.countedGeneral||group.generals[0]],['Model application',group.countedApplication||Object.keys(group.applications)[0]]].filter(([,n])=>n);
  $('#quick-choices').innerHTML=shortcuts.map(([label,n])=>`<button data-inspect="${esc(n)}">${label}</button>`).join('');
  $('#quick-choices').querySelectorAll('[data-inspect]').forEach(b=>b.onclick=()=>b.dataset.inspect===group.formal?chooseGroup(group.id):inspect(b.dataset.inspect));
- $('#requirement-detail').innerHTML=`<p><code>${esc(group.targetName)}</code></p><p>${esc(group.target)}</p><h3>${group.positive?'Reviewed proof scope':'Current status'}</h3><p>${esc(group.clause)}</p><p>${esc(group.reason)}</p>${group.evidence.length?'<h3>Evidence for the application</h3><ul>'+group.evidence.map(p=>`<li><a href="${sourceURL({path:esc(p),line:1})}">${esc(p)}</a></li>`).join('')+'</ul>':''}${group.remaining.length?'<h3>Conditions for applying the result</h3><ul>'+group.remaining.map(x=>'<li>'+esc(typeof x==='string'?x:JSON.stringify(x))+'</li>').join('')+'</ul>':''}<p><a href="${sourceURL({path:data.registerPath,line:group.registerLine})}">Open the requirement record</a></p>`;
+ $('#requirement-detail').innerHTML=`${group.formal?'<p><code>'+esc(data.nodes[group.formal].short)+'</code></p>':''}<p>${esc(group.target)}</p><h3>${group.positive?'Reviewed proof scope':'Current status'}</h3><p>${esc(group.clause)}</p><p>${esc(group.reason)}</p>${group.evidence.length?'<h3>Evidence for the application</h3><ul>'+group.evidence.map(p=>`<li><a href="${sourceURL({path:esc(p),line:1})}">${esc(p)}</a></li>`).join('')+'</ul>':''}${group.remaining.length?'<h3>Conditions for applying the result</h3><ul>'+group.remaining.map(x=>'<li>'+esc(typeof x==='string'?x:JSON.stringify(x))+'</li>').join('')+'</ul>':''}<p><a href="${sourceURL({path:data.registerPath,line:group.registerLine})}">Open the requirement record</a></p>`;
  renderTargets();renderGraph();if(desired)requestAnimationFrame(()=>focusNode(desired));
 }
 function updateHash(){
@@ -170,7 +173,7 @@ function renderGraph(refit=true){
  if(!group.formal){
   layout=null;$('#canvas').innerHTML='';$('#canvas').hidden=true;$('#detail').hidden=true;
   $('#empty').hidden=false;$('#empty').innerHTML='<p>'+esc(group.reason)+'</p><p>No top-level proof target was selected for this RG.</p>';
-  $('#graph-count').textContent='Outside the 24 selected targets';$('#selection-meaning').textContent=group.reason;
+  $('#graph-count').textContent='Catalog requirement';$('#selection-meaning').textContent=group.reason;
   $('#related-specification').innerHTML='';$('#collapse').disabled=true;$('#choice-count').textContent='Catalog entry; no selected proof tree.';
   $('#locator-status').textContent='Choose a selected RG to explore its declarations.';return;
  }
@@ -288,6 +291,10 @@ function setZoom(value,center=true){
 }
 function fit(readable=false){if(!layout)return;const port=$('#viewport');const widthFit=Math.min(1,(port.clientWidth-40)/layout.width);const target=readable?Math.max(.85,widthFit):widthFit;if(!document.fullscreenElement)port.style.height=Math.min(Math.max(390,innerHeight*.57),Math.max(330,layout.height*target+44))+'px';setZoom(readable?Math.max(.85,Math.min(target,(port.clientHeight-44)/layout.height)):Math.min(target,(port.clientHeight-44)/layout.height),false);port.scrollTop=0;const top=layout.nodes.find(n=>n.key===layout.top);port.scrollLeft=Math.max(0,Math.min(layout.width*zoom+40-port.clientWidth,(top?top.x:layout.width/2)*zoom+20-port.clientWidth/2));}
 $('#search').oninput=renderTargets;
+$('#include-catalog').onchange=()=>{
+ if(!$('#include-catalog').checked&&!group.formal)chooseGroup('RG-034');
+ else renderTargets();
+};
 $('#compact-target').onchange=()=>chooseGroup($('#compact-target').value);
 $('#instance').oninput=()=>{locatorMatches=[];locatorIndex=0;renderLocator(true);};
 $('#instance').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();moveLocator(e.shiftKey?-1:1);}};

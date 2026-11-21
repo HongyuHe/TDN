@@ -53,7 +53,7 @@ def build(path):
         sender, receiver = address_owner[association["sender"]], address_owner[association["receiver"]]
         name = "ipsec:" + sender + "->" + receiver + ":" + str(association["spi"])
         stamp = {"tag": policy["tag"], "association": association["spi"], "sender": association["sender"], "receiver": association["receiver"]}
-        tunnels.append({"id": name, "layer": "inner", "mechanism": "ipsec", "sender": sender, "receiver": receiver, "keyContext": "ipsec:" + record["materialReference"], "espTunnelMode": True, "associatedIPTunnel": True})
+        tunnels.append({"id": name, "layer": "inner", "protocol": "ipsec", "sender": sender, "receiver": receiver, "keyContext": "ipsec:" + record["materialReference"], "espTunnelMode": True, "associatedIPTunnel": True})
         ipsec_tunnel_bindings.append([stamp, name])
     mac_materials = [[record["association"], record["materialReference"]] for record in execution["macsecKeyBindings"]]
     static_peers = []
@@ -64,7 +64,7 @@ def build(path):
         receiver = owner_names[ports[peer["destinationIface"]]["owner"]]
         name = "macsec:" + sender + "->" + receiver + ":" + str(association["sci"])
         material = only((material for current, material in mac_materials if current == association), "MACsec material reference")
-        tunnels.append({"id": name, "layer": "outer", "mechanism": "macsec", "sender": sender, "receiver": receiver, "keyContext": "macsec:" + material, "espTunnelMode": False, "associatedIPTunnel": False})
+        tunnels.append({"id": name, "layer": "outer", "protocol": "macsec", "sender": sender, "receiver": receiver, "keyContext": "macsec:" + material, "espTunnelMode": False, "associatedIPTunnel": False})
         macsec_tunnel_bindings.append([association, name])
         static_peers.append(dict(peer, tunnel=name))
     contexts = []
@@ -111,7 +111,9 @@ def build(path):
         header = {"source": source_mac, "destination": destination_mac, "etherType": 35045, "vlanTags": []}
         payload = [40 + association["associationNumber"], 0] + [0, 0, 0, 1] + octets(association["sci"], 8) + [0] * 16
         frames.append([association, {"header": header, "headerBytes": octets(destination_mac, 6) + octets(source_mac, 6) + octets(35045, 2), "payload": payload}])
-    return {"records": {"ownerNames": owner_names, "ifaceNames": raw["ifaceNames"], "deviceData": devices, "ifaceData": ports, "components": raw["components"], "interfaces": raw["interfaces"], "networks": raw["networks"], "entries": raw["sourceEntries"], "attachments": raw["redNetworkAttachments"], "sourceFlows": raw["sourceFlows"], "routes": execution["routes"], "links": execution["links"], "bridges": execution["bridges"], "macIfaces": execution["macIfaces"], "staticPeers": static_peers, "ipsecSizes": sizes, "installations": raw["installations"], "epoch": only({record["installation"]["epoch"] for record in raw["installations"]}, "fixed epoch"), "tunnels": tunnels, "ipsecTunnelBindings": ipsec_tunnel_bindings, "macsecTunnelBindings": macsec_tunnel_bindings, "macMaterials": mac_materials, "macFrames": frames, "linkPolicies": link_policies, "bridgeRules": bridge_rules, "contexts": contexts, "innerOuterUses": inner_outer_uses, "authentication": [{"device": record["device"], "certificateAuth": record["certificateAuth"], "pskAuth": record["pskAuth"]} for record in raw["authentication"]]}, "rawInventory": raw, "provenance": {"input": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "interpretation": "Corrected per-network host IDs; transit-gateway infrastructure derived by source-bound inventory projection; directional tunnel IDs from actual SA/SCI peers; opaque constructed MACsec framing representatives carry no ciphertext transformation claim; two-sided bridge programs retain the original two allowed data edges."}}
+    interfaces = [{**item, "zone": "hostLocal" if item["zone"] == "local" else item["zone"]}
+                  for item in raw["interfaces"]]
+    return {"records": {"ownerNames": owner_names, "ifaceNames": raw["ifaceNames"], "deviceData": devices, "ifaceData": ports, "components": raw["components"], "interfaces": interfaces, "networks": raw["networks"], "entries": raw["sourceEntries"], "attachments": raw["redNetworkAttachments"], "sourceFlows": raw["sourceFlows"], "routes": execution["routes"], "links": execution["links"], "bridges": execution["bridges"], "macIfaces": execution["macIfaces"], "staticPeers": static_peers, "ipsecSizes": sizes, "installations": raw["installations"], "epoch": only({record["installation"]["epoch"] for record in raw["installations"]}, "fixed epoch"), "tunnels": tunnels, "ipsecTunnelBindings": ipsec_tunnel_bindings, "macsecTunnelBindings": macsec_tunnel_bindings, "macMaterials": mac_materials, "macFrames": frames, "linkPolicies": link_policies, "bridgeRules": bridge_rules, "contexts": contexts, "innerOuterUses": inner_outer_uses, "authentication": [{"device": record["device"], "certificateAuth": record["certificateAuth"], "pskAuth": record["pskAuth"]} for record in raw["authentication"]]}, "rawInventory": raw, "provenance": {"input": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "interpretation": "Corrected per-network host IDs; transit-gateway infrastructure derived by source-bound inventory projection; directional tunnel IDs from actual SA/SCI peers; opaque constructed MACsec framing representatives carry no ciphertext transformation claim; two-sided bridge programs retain the original two allowed data edges."}}
 
 
 def main():

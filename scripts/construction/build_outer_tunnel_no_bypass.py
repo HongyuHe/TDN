@@ -14,9 +14,8 @@ def read(relative):
 def digest(relative):
     return hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
 
-def build(profile):
+def build_delivery(profile, cohort, flow=None):
     source_path = f"data/evidence/continuation/MtuSizing_{profile}.json"
-    cohort = read(source_path)
     records = cohort["records"]
     network_by_host = {}
     endpoint_bindings = []
@@ -32,6 +31,8 @@ def build(profile):
         if device["ifaceSecurityDomain"] is not None:
             assert records["ownerNames"][owner] in network_by_host
     sample = read(f"data/evidence/continuation/Sizing{profile}Cases.json")["path"]
+    if flow is not None:
+        sample["flow"] = flow
     prototype = read(f"data/evidence/continuation/Sizing{profile}Continuation.json")["moves"][0]
     defaults = copy.deepcopy(prototype["header"])
     header = copy.deepcopy(defaults)
@@ -108,7 +109,7 @@ def build(profile):
                        for interface in records["interfaces"])
             domain = endpoint["originDomain"]
         moves.append(dict(step=step, domain=domain, source=copy.deepcopy(source), receiver=copy.deepcopy(receiver)))
-    if profile == "Baseline":
+    if profile == "Baseline" and flow is None:
         for operation, next_iface in [
             ("receive",None),("route",57),("forwardFilter",None),("encryptIPsec",None),("route",57),
             ("linkTransmit",25),("bridge",27),("linkTransmit",106),("receive",None),("route",104),("forwardFilter",None),("encryptIPsec",None),("route",104),
@@ -124,6 +125,10 @@ def build(profile):
             if stage == "received":
                 bridges = [edge[1] for edge in records["bridges"] if edge[0] == iface]
                 if bridges:
+                    if len(bridges) > 1:
+                        ingress_port = records["ifaceNames"][iface].split(":")[-1]
+                        target_port = {"inner": "outer", "outer": "inner"}[ingress_port]
+                        bridges = [port for port in bridges if records["ifaceNames"][port].endswith(":" + target_port)]
                     emit("bridge", bridges[0])
                     continue
                 owner = records["nativeIfaces"][iface]["owner"]
@@ -159,14 +164,22 @@ def build(profile):
         else:
             raise ValueError("The shared sample did not reach its Red destination")
     assert stage == "delivered" and not layers
-    DEST.mkdir(parents=True,exist_ok=True)
-    delivery = dict(source=source_path, sourceSHA256=digest(source_path), path=sample, moves=moves,
+    return dict(source=source_path, sourceSHA256=digest(source_path), path=sample, moves=moves,
                     destinationEndpoint=endpoint_bindings[[binding["owner"] for binding in endpoint_bindings].index(records["nativeIfaces"][iface]["owner"])], endpointBindings=endpoint_bindings,
                     scope="Constructed TCP delivery through the November4 forwarding configuration with per-network recipient IDs derived from all imported Red host records; source/interface path and SA records are captured, modeled bytes are generated, no cross-capture packet identity is asserted.")
+
+
+def build(profile):
+    source_path = f"data/evidence/continuation/MtuSizing_{profile}.json"
+    cohort = read(source_path)
+    records = cohort["records"]
+    installations = cohort["installations"]
+    delivery = build_delivery(profile, cohort)
+    DEST.mkdir(parents=True, exist_ok=True)
     (DEST / f"{profile}IPsecDelivery.json").write_text(json.dumps(delivery,indent=2,sort_keys=True)+"\n")
     bindings=[]
     for tunnel in records["tunnels"]:
-        if tunnel["mechanism"] != "ipsec":
+        if tunnel["protocol"] != "ipsec":
             continue
         owner=records["ownerNames"].index(tunnel["sender"])
         for record in installations:
@@ -184,7 +197,7 @@ def build(profile):
                                  sourceHash=digest(source_path)))
     if profile == "Shared":
         (DEST / f"{profile}IPsecTunnelBindings.json").write_text(json.dumps(dict(bindings=bindings,source=source_path,sourceSHA256=digest(source_path)),indent=2,sort_keys=True)+"\n")
-    print(json.dumps(dict(moves=len(moves),bindings=len(bindings),destination=str(DEST)),indent=2))
+    print(json.dumps(dict(moves=len(delivery["moves"]),bindings=len(bindings),destination=str(DEST)),indent=2))
 
 if __name__ == "__main__":
     for profile in ["Baseline", "Shared"]:

@@ -91,8 +91,8 @@ open PacketPolicy
 structure DNSDevice where
   name : String
   family : Nat
-  earlierRules : List Rule
-  guards : List Rule
+  earlierRules : List PacketAclRule
+  guards : List PacketAclRule
 
 def devices : List DNSDevice := [
   """ + ",\n  ".join(entries) + """]
@@ -113,9 +113,9 @@ lemma ipv6_has_no_earlier_rules : ∀ device ∈ devices, device.family = 6 → 
   decide
 
 lemma guarded_dns_is_denied (device : DNSDevice) (member : device ∈ devices)
-    (suffix : List (Filter.Rule Packet)) (fallback : Filter.Verdict)
+    (suffix : List (Filter.FirstMatchRule Packet)) (fallback : Filter.Verdict)
     (packet : Packet) (dns : Requirements.ConventionalDNS packet) :
-    Filter.evaluate (device.guards.map Rule.toFilter ++ suffix) fallback packet = .deny := by
+    Filter.evaluate (device.guards.map PacketAclRule.toFilter ++ suffix) fallback packet = .deny := by
   apply Requirements.dns_egress_disabled_of_deny_prefix
   · rw [all_prefixes device member]
     simp
@@ -123,17 +123,17 @@ lemma guarded_dns_is_denied (device : DNSDevice) (member : device ∈ devices)
     rw [all_prefixes device member]
     rcases request with ⟨iface, protocol | protocol⟩
     · refine ⟨{ atoms := [.protocol "tcp", .destinationPorts [53]], verdict := .deny }, by simp, ?_⟩
-      simp [Rule.toFilter, MatchCondition.matchesPacket, iface, protocol]
+      simp [PacketAclRule.toFilter, MatchCondition.matchesPacket, iface, protocol]
     · refine ⟨{ atoms := [.protocol "udp", .destinationPorts [53]], verdict := .deny }, by simp, ?_⟩
-      simp [Rule.toFilter, MatchCondition.matchesPacket, iface, protocol]
+      simp [PacketAclRule.toFilter, MatchCondition.matchesPacket, iface, protocol]
   · exact dns
 
 theorem every_new_conventional_dns_request_is_denied (device : DNSDevice)
-    (member : device ∈ devices) (suffix : List (Filter.Rule Packet))
+    (member : device ∈ devices) (suffix : List (Filter.FirstMatchRule Packet))
     (fallback : Filter.Verdict) (packet : Packet) (dns : Requirements.ConventionalDNS packet)
     (newRequest : packet.connectionState = "NEW") :
-    Filter.evaluate (device.earlierRules.map Rule.toFilter ++
-      (device.guards.map Rule.toFilter ++ suffix)) fallback packet = .deny := by
+    Filter.evaluate (device.earlierRules.map PacketAclRule.toFilter ++
+      (device.guards.map PacketAclRule.toFilter ++ suffix)) fallback packet = .deny := by
   rw [Filter.evaluate_skips_nonmatching_prefix]
   · exact guarded_dns_is_denied device member suffix fallback packet dns
   · intro rule present
@@ -146,10 +146,10 @@ theorem every_new_conventional_dns_request_is_denied (device : DNSDevice)
 
 theorem every_ipv6_conventional_dns_packet_is_denied (device : DNSDevice)
     (member : device ∈ devices) (ipv6 : device.family = 6)
-    (suffix : List (Filter.Rule Packet)) (fallback : Filter.Verdict)
+    (suffix : List (Filter.FirstMatchRule Packet)) (fallback : Filter.Verdict)
     (packet : Packet) (dns : Requirements.ConventionalDNS packet) :
-    Filter.evaluate (device.earlierRules.map Rule.toFilter ++
-      (device.guards.map Rule.toFilter ++ suffix)) fallback packet = .deny := by
+    Filter.evaluate (device.earlierRules.map PacketAclRule.toFilter ++
+      (device.guards.map PacketAclRule.toFilter ++ suffix)) fallback packet = .deny := by
   rw [ipv6_has_no_earlier_rules device member ipv6]
   exact guarded_dns_is_denied device member suffix fallback packet dns
 

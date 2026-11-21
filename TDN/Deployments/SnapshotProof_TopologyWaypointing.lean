@@ -1,4 +1,4 @@
-import TDN.Requirements.MasterMscRequirementSpecs
+import TDN.Requirements.MscRequirements
 import TDN.Deployments.Topology_Baseline
 import TDN.Deployments.Topology_SharedOuter
 
@@ -7,14 +7,14 @@ namespace TDN.Deployments.SnapshotProof_TopologyWaypointing
 namespace Baseline
 open native_baseline_20261017T2237Z_topology
 
-theorem configured_graph_RG034 :
-    Requirements.Msc.msc_outer_firewall_placement true true true
+theorem configured_graph_rg034 :
+    Requirements.Msc.outer_firewall_placement true true true
       edge (Relation.ReflTransGen grayEdge)
       (fun node => node ∈ outerNodes) firewall (fun node => node ∈ blackNodes)
       grayFirewall (fun node => node ∈ innerNodes)
       (fun a b => (a, b) ∈ insideAttachments)
       (fun a b => (a, b) ∈ outsideAttachments) (fun _ _ => False) :=
-  snapshot_public_internet_RG034
+  snapshot_public_internet_rg034
 
 lemma nonempty_outer_inventory : outerNodes ≠ [] := by native_decide
 
@@ -23,14 +23,14 @@ end Baseline
 namespace Shared
 open native_shared_four_levels_20261017T2240Z_scope_v2_topology
 
-theorem configured_graph_RG034 :
-    Requirements.Msc.msc_outer_firewall_placement true true true
+theorem configured_graph_rg034 :
+    Requirements.Msc.outer_firewall_placement true true true
       edge (Relation.ReflTransGen grayEdge)
       (fun node => node ∈ outerNodes) firewall (fun node => node ∈ blackNodes)
       grayFirewall (fun node => node ∈ innerNodes)
       (fun a b => (a, b) ∈ insideAttachments)
       (fun a b => (a, b) ∈ outsideAttachments) (fun _ _ => False) :=
-  snapshot_public_internet_RG034
+  snapshot_public_internet_rg034
 
 lemma nonempty_outer_inventory : outerNodes ≠ [] := by native_decide
 
@@ -50,7 +50,7 @@ def outside (a b : Node) : Prop := a = 1 ∧ b = 2
 def side (node : Node) : Nat := if node = 2 then 1 else 0
 
 lemma full_firewall_path :
-    Requirements.Msc.msc_outer_firewall_placement true true false edge grayConnection
+    Requirements.Msc.outer_firewall_placement true true false edge grayConnection
       outer firewall black (fun _ => False) inner inside outside (fun _ _ => False) := by
   apply Requirements.outer_firewall_placement_from_local_checks side (fun _ => rfl)
   · intro a b attachment
@@ -75,7 +75,7 @@ lemma full_firewall_path :
     unfold outer black side
     native_decide
 lemma bypass_edge_rejected :
-    ¬ Requirements.Msc.msc_outer_firewall_placement true true false
+    ¬ Requirements.Msc.outer_firewall_placement true true false
       (fun a b => edge a b ∨ (a = 0 ∧ b = 2)) grayConnection
       outer firewall black (fun _ => False) inner inside outside (fun _ _ => False) := by
   intro conform

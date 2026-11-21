@@ -1,4 +1,4 @@
-import TDN.Import.NativeDecide
+import TDN.Import.CompiledDecide
 import TDN.Deployments.OuterTunnelNoBypass_SharedNetworkData
 import TDN.Deployments.MtuSizing_DeploymentCoverage
 
@@ -8,7 +8,6 @@ namespace TDN.Deployments.OuterTunnelNoBypass_SharedNetwork
 open Compliance Requirements OuterToGray_DeviceModel MtuSizing_Records
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma captured_iface_names_nodup : records.ifaceNames.Nodup := by
   native_decide

@@ -3,7 +3,7 @@ import TDN.Models.MultiProtocolForwarding
 namespace TDN.MultiProtocolForwarding
 open LayeredFrame
 
-structure MACsecOutputChecks (config : Config) : Prop where
+structure MacsecOutputChecks (config : TunnelForwardingModel) : Prop where
   secure : ∀ iface ∈ config.macIfaces,
     iface.settings.protectFrames = true ∧ iface.settings.encryptFrames = true ∧
       iface.settings.confidentialityOffset = 0
@@ -14,7 +14,7 @@ structure MACsecOutputChecks (config : Config) : Prop where
   bridgeOutputs : ∀ first second, config.bridge first second →
     ∀ iface ∈ config.macIfaces, second ≠ iface.physicalIface
 
-def MACsecOutputProtected (config : Config) (state : State) : Prop :=
+def MACsecOutputProtected (config : TunnelForwardingModel) (state : TunnelForwardingState) : Prop :=
   ((state.datapathStage = .routed ∨ state.datapathStage = .outputRouted ∨
       state.datapathStage = .filtered ∨ state.datapathStage = .encapsulated) →
     ∀ iface ∈ config.macIfaces, state.iface ≠ iface.physicalIface) ∧
@@ -23,9 +23,9 @@ def MACsecOutputProtected (config : Config) (state : State) : Prop :=
       ∃ association body, iface.transmitAssociation = some association ∧
         state.frame.body = .macsec association body)
 
-lemma step_preserves_macsec_output_protection {config : Config}
-    (checks : MACsecOutputChecks config) {before after : State} {action : Action}
-    (step : Step config before action after) (safe : MACsecOutputProtected config before) :
+lemma step_preserves_macsec_output_protection {config : TunnelForwardingModel}
+    (checks : MacsecOutputChecks config) {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep config before action after) (safe : MACsecOutputProtected config before) :
     MACsecOutputProtected config after := by
   obtain ⟨processing, output⟩ := safe
   cases step with
@@ -54,7 +54,7 @@ lemma step_preserves_macsec_output_protection {config : Config}
     · intro _ other member same
       have equal : iface = other := checks.uniquePhysical iface configured other member same
       subst other
-      exact ⟨association, before.frame.body, emits.1, Config.macsecFrame_body config before.frame association⟩
+      exact ⟨association, before.frame.body, emits.1, TunnelForwardingModel.macsec_frame_body config before.frame association⟩
   | unprotectedMACsec iface configured stage logical enabled unprotected =>
     simp [(checks.secure iface configured).1] at unprotected
   | protectMACsec iface association configured stage logical enabled protection installed limited =>
@@ -72,22 +72,22 @@ lemma step_preserves_macsec_output_protection {config : Config}
       linkTransmit | encapsulate | decapsulate | drop =>
     simp [MACsecOutputProtected]
 
-lemma link_transmit_uses_ready_output {config : Config} {before after : State}
-    (step : Step config before .linkTransmit after) :
+lemma link_transmit_uses_ready_output {config : TunnelForwardingModel} {before after : TunnelForwardingState}
+    (step : TunnelForwardingStep config before .linkTransmit after) :
     before.datapathStage = .egressReady ∧ config.physicalLink before.iface after.iface := by
   cases step with
   | linkTransmit next ready linked => exact ⟨ready, linked⟩
 
-theorem forwarding_preserves_macsec_output_protection (config : Config)
-    (checks : MACsecOutputChecks config) {start finish : State} {actions : List Action}
+theorem forwarding_preserves_macsec_output_protection (config : TunnelForwardingModel)
+    (checks : MacsecOutputChecks config) {start finish : TunnelForwardingState} {actions : List TunnelForwardingAction}
     (run : ForwardsAlongTrace config start actions finish)
     (initial : MACsecOutputProtected config start) : MACsecOutputProtected config finish := by
   have preserved : (lts config).TrInv (MACsecOutputProtected config) :=
     fun _ _ _ step safe => step_preserves_macsec_output_protection checks step safe
   exact Cslib.LTS.mtrInv_of_trInv preserved start actions finish run initial
 
-structure MACsecWireChecks (config : Config) : Prop where
-  output : MACsecOutputChecks config
+structure MacsecWireChecks (config : TunnelForwardingModel) : Prop where
+  output : MacsecOutputChecks config
   logicalSeparation : ∀ first ∈ config.macIfaces, ∀ second ∈ config.macIfaces,
     first.logicalIface ≠ second.physicalIface
   linkSources : ∀ first second, config.physicalLink first second →
@@ -95,13 +95,13 @@ structure MACsecWireChecks (config : Config) : Prop where
     ∃ sender ∈ config.macIfaces, sender.physicalIface = first
   noCarriers : config.carriers = []
 
-def PhysicalMACsecFrames (config : Config) (state : State) : Prop :=
+def PhysicalMACsecFrames (config : TunnelForwardingModel) (state : TunnelForwardingState) : Prop :=
   ∀ iface ∈ config.macIfaces, state.iface = iface.physicalIface →
     ∃ sender ∈ config.macIfaces, ∃ association body,
       sender.transmitAssociation = some association ∧ state.frame.body = .macsec association body
 
-lemma step_preserves_physical_macsec_frames {config : Config} (checks : MACsecWireChecks config)
-    {before after : State} {action : Action} (step : Step config before action after)
+lemma step_preserves_physical_macsec_frames {config : TunnelForwardingModel} (checks : MacsecWireChecks config)
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction} (step : TunnelForwardingStep config before action after)
     (output : MACsecOutputProtected config before) (framed : PhysicalMACsecFrames config before) :
     PhysicalMACsecFrames config after := by
   cases step with
@@ -122,7 +122,7 @@ lemma step_preserves_physical_macsec_frames {config : Config} (checks : MACsecWi
   | encryptMACsec iface association configured =>
     intro other member same
     exact ⟨iface, configured, association, before.frame.body, ‹fullMACsecTransmit _ _ _›.1,
-      Config.macsecFrame_body _ _ _⟩
+      TunnelForwardingModel.macsec_frame_body _ _ _⟩
   | unprotectedMACsec iface configured stage logical enabled unprotected =>
     simp [(checks.output.secure iface configured).1] at unprotected
   | protectMACsec iface association configured stage logical enabled protection installed limited =>

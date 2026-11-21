@@ -4,7 +4,7 @@ import TDN.Requirements.MacsecControlledPortPolicy
 import TDN.Models.TableDrivenMultiProtocolDataPlane
 import TDN.Import.SnapshotLoader
 
-namespace TDN.Deployments.BoundaryMACsec
+namespace TDN.Deployments.BoundaryMacsec
 open Compliance Requirements Requirements.Msc MultiProtocolForwarding
 
 structure Records where
@@ -18,10 +18,10 @@ structure Records where
   links : List (Nat × Nat)
   macIfaces : List MACIface
   linkPolicies : List (Nat × LinkAdmission.IfacePolicy)
-  sourceCase : RoutedMACsecCase
-  sourceFrame : LinkAdmission.Frame
-  logicalFrame : LinkAdmission.Frame
-  physicalFrame : LinkAdmission.Frame
+  sourceCase : RoutedMacsecCase
+  sourceFrame : LinkAdmission.EthernetFrame
+  logicalFrame : LinkAdmission.EthernetFrame
+  physicalFrame : LinkAdmission.EthernetFrame
   sourceNetwork : List UInt8
   sourceTransport : List UInt8
   logicalNetwork : List UInt8
@@ -37,7 +37,7 @@ def Records.ifaceName (records : Records) (iface : Nat) : String :=
 def Records.componentName (records : Records) (owner : Nat) : String :=
   records.ownerNames[owner]?.getD "unlisted-owner"
 
-def Records.configuration (records : Records) : Config :=
+def Records.configuration (records : Records) : TunnelForwardingModel :=
   { dataPlaneModelFromRecords records.nativeDevices records.nativeIfaces records.routes records.links [] records.macIfaces [] with
     headerProcessing := some ⟨fun _ => 64, fun _ => 64⟩
     linkPolicies := records.linkPolicies
@@ -64,7 +64,7 @@ def Records.deployment (records : Records) (base : Deployment) : Deployment :=
     devices := devices
     interfaces := records.interfaces
     policies := []
-    focus := none
+    deviceScope := none
     services := []
     managementServices := []
     managementExchanges := []
@@ -76,7 +76,7 @@ def Records.deployment (records : Records) (base : Deployment) : Deployment :=
     intendedPeer := fun source destination => (source, destination) ∈ [("A", "B"), ("B", "A")]
     grayWorkstation := fun _ => False }
 
-def Records.physicalReady (records : Records) : MultiProtocolForwarding.State :=
+def Records.physicalReady (records : Records) : MultiProtocolForwarding.TunnelForwardingState :=
   let ready := records.sourceCase.egressReady records.configuration
   { ready with
     initialEntry := false
@@ -86,7 +86,7 @@ def Records.physicalReady (records : Records) : MultiProtocolForwarding.State :=
         (records.sourceCase.mac.transmitAssociation.getD ⟨0, 0, 0, 0⟩)
       else ready.frame }
 
-def Records.wired (records : Records) : MultiProtocolForwarding.State :=
+def Records.wired (records : Records) : MultiProtocolForwarding.TunnelForwardingState :=
   { records.physicalReady with
     initialEntry := false
     iface := records.sourceCase.peerIface
@@ -98,4 +98,4 @@ def Records.packet (records : Records) (direction : Direction) : PacketPolicy.Pa
     (if direction = .outbound then records.sourceCase.mac.physicalIface else records.sourceCase.peerIface)
     direction records.physicalFrame
 
-end TDN.Deployments.BoundaryMACsec
+end TDN.Deployments.BoundaryMacsec

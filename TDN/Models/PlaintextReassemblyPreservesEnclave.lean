@@ -3,12 +3,12 @@ import TDN.Models.EnclaveIsolationInvariants
 
 namespace TDN.DataPlaneForwarding
 
-def PlaintextAssembly (before after : State) : Prop :=
+def PlaintextAssembly (before after : ForwardingState) : Prop :=
   before.datapathStage = .received ∧ after.datapathStage = .received ∧ before.iface = after.iface ∧
   before.frame.encapLayerIds = [] ∧ after.frame.encapLayerIds = []
 
 lemma plaintext_assembly_preserves_domain (c : DataPlaneModel) (expectedEncapStack : Nat → List Nat)
-    (allowed : Nat → Prop) {before after : State}
+    (allowed : Nat → Prop) {before after : ForwardingState}
     (assembly : PlaintextAssembly before after)
     (safe : DomainInvariant c expectedEncapStack allowed before) :
     DomainInvariant c expectedEncapStack allowed after := by

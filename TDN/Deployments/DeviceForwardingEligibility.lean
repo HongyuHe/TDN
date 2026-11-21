@@ -1,7 +1,7 @@
-import TDN.Deployments.Perimeter_ForwardCases
+import TDN.Deployments.Perimeter_ForwardingTestVectors
 
 namespace TDN.Deployments.DeviceForwardingEligibility
-open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_ForwardCases
+open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_ForwardingTestVectors
 
 def ForwardEligibilityChecks (sample : ForwardCase) (records : Records)
     (d : Deployment) (direction : Direction) : Prop :=

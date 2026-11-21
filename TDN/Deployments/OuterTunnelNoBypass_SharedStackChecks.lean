@@ -6,7 +6,6 @@ namespace TDN.Deployments.OuterTunnelNoBypass_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel MtuSizing_Records MultiProtocolForwarding LayeredFrame
 
 set_option maxRecDepth 200000
-set_option maxHeartbeats 4000000
 
 abbrev records := OuterTunnelNoBypass_SharedNetwork.records
 abbrev installations := OuterTunnelNoBypass_SharedNetwork.installations
@@ -42,7 +41,7 @@ lemma table_stack_conditions : DataPlaneForwarding.PerHopEncapConditions
   DataPlaneForwarding.local_stack_conditions_of_routed_finite_checks records.nativeDevices records.nativeIfaces
     records.routes records.links [] route_owners physical_stacks (by simp) forward_defaults forward_rules output_rules outer_routes
 
-lemma headered_stack_conditions {Key : Type} (codec : IPsecFrameEncoding.Codec Key) :
+lemma headered_stack_conditions {Key : Type} (codec : IpsecFrameEncoding.Codec Key) :
     HeaderedLocalConditions (completeConfiguration records installations linkPolicies codec) expectedEncapStack := by
   refine ⟨rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · refine ⟨table_stack_conditions.routeOwner, table_stack_conditions.link, table_stack_conditions.bridge,

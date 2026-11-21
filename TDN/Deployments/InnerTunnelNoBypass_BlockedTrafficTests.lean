@@ -1,26 +1,25 @@
-import TDN.Deployments.InnerTunnelNoBypass_IPsecSampleTrace
+import TDN.Deployments.InnerTunnelNoBypass_IpsecSampleTrace
 import TDN.Deployments.InnerTunnelNoBypass_Macsec
 
-namespace TDN.Deployments.InnerTunnelNoBypass_IPsec
+namespace TDN.Deployments.InnerTunnelNoBypass_Ipsec
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel MtuSizing_Records StandardDataPlaneBridge MultiProtocolForwarding LayeredFrame
 
 set_option maxRecDepth 200000
-set_option maxHeartbeats 4000000
 
-def unauthenticatedGrayInput : MultiProtocolForwarding.State :=
+def unauthenticatedGrayInput : MultiProtocolForwarding.TunnelForwardingState :=
   { deliveryPath.start with
     initialEntry := false, iface := 73, enteredIface := 69,
     datapathStage := .routed, authenticated := [] }
 
 lemma unauthenticated_gray_input_denied :
-    ¬ DataPlaneForwarding.accepts (capturedConfiguration.ip.forwardRules 73)
+    ¬ PacketPolicy.AclAllows (capturedConfiguration.ip.forwardRules 73)
       (capturedConfiguration.ip.forwardFallback 73)
-      (policyHeader { records.configuration with networkBytes := fun body _ => IPsecFrameEncoding.networkLength body }
+      (policyHeader { records.configuration with networkBytes := fun body _ => IpsecFrameEncoding.networkLength body }
         unauthenticatedGrayInput deliveryPath.header) := by
-  unfold DataPlaneForwarding.accepts
+  unfold PacketPolicy.AclAllows
   native_decide
-theorem snapshot_RG029_ipsec_plaintext_gray_input_blocked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    ¬ ∃ after, (interpretedForwarding primitive).native.AcceptedStep
+theorem snapshot_rg029_ipsec_plaintext_gray_input_blocked (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    ¬ ∃ after, (interpretedForwarding primitive).deviceDataPlane.AcceptedStep
       unauthenticatedGrayInput .forwardFilter after := by
   rintro ⟨after, accepted⟩
   cases accepted.1 with
@@ -30,10 +29,10 @@ theorem snapshot_RG029_ipsec_plaintext_gray_input_blocked (primitive : ESPWire.G
     subst headerSame
     exact unauthenticated_gray_input_denied permitted
 
-def uninstalledAssociation : DataPlaneForwarding.InstalledSA :=
+def uninstalledAssociation : DataPlaneForwarding.InstalledSa :=
   { deliveryPath.association with spi := 0 }
 
-def uninstalledGrayInput : MultiProtocolForwarding.State :=
+def uninstalledGrayInput : MultiProtocolForwarding.TunnelForwardingState :=
   { deliveryPath.start with
     initialEntry := false, iface := 69, enteredIface := 69,
     frame := records.configuration.ipsecFrame 57 deliveryPath.start.frame
@@ -42,8 +41,8 @@ def uninstalledGrayInput : MultiProtocolForwarding.State :=
 lemma ingress_association_spi_nonzero :
     ∀ association ∈ capturedConfiguration.ip.ingressSAs 69, association.spi ≠ 0 := by native_decide
 
-theorem snapshot_RG029_ipsec_uninstalled_spi_blocked (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    ¬ ∃ after, (interpretedForwarding primitive).native.AcceptedStep
+theorem snapshot_rg029_ipsec_uninstalled_spi_blocked (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    ¬ ∃ after, (interpretedForwarding primitive).deviceDataPlane.AcceptedStep
       uninstalledGrayInput .decryptIPsec after := by
   rintro ⟨after, accepted⟩
   cases accepted.1 with
@@ -51,7 +50,7 @@ theorem snapshot_RG029_ipsec_uninstalled_spi_blocked (primitive : ESPWire.GCMPri
     have shape : uninstalledGrayInput.frame.body =
         .ipsec (deliveryPath.policy.seal uninstalledAssociation) deliveryPath.start.frame.body := rfl
     have same := (Body.ipsec.inj (encrypted.symm.trans shape)).1
-    have zero := congrArg DataPlaneForwarding.TunnelSAStamp.association same
+    have zero := congrArg DataPlaneForwarding.TunnelSaStamp.association same
     change association.spi = 0 at zero
     exact ingress_association_spi_nonzero association installed zero
 
@@ -74,8 +73,8 @@ lemma mismatched_mode_binding_is_rejected : ¬ mismatchedModeBinding.Check := by
 
 lemma mismatched_endpoint_binding_is_rejected : ¬ mismatchedEndpointBinding.Check := by native_decide
 
-theorem snapshot_RG029_observed_mode_mismatch_blocks_application (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    ¬ msc_inner_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive)
+theorem snapshot_rg029_observed_mode_mismatch_blocks_application (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    ¬ inner_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive)
       (componentsWithObservedBinding mismatchedModeBinding) false false := by
   intro accepted
   have member : mismatchedModeBinding.component ∈ componentsWithObservedBinding mismatchedModeBinding := by
@@ -86,8 +85,8 @@ theorem snapshot_RG029_observed_mode_mismatch_blocks_application (primitive : ES
   rw [disabled] at enabled
   cases enabled.1
 
-theorem snapshot_RG029_observed_endpoint_mismatch_blocks_application (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    ¬ msc_inner_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive)
+theorem snapshot_rg029_observed_endpoint_mismatch_blocks_application (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    ¬ inner_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive)
       (componentsWithObservedBinding mismatchedEndpointBinding) false false := by
   intro accepted
   have member : mismatchedEndpointBinding.component ∈ componentsWithObservedBinding mismatchedEndpointBinding := by
@@ -98,29 +97,29 @@ theorem snapshot_RG029_observed_endpoint_mismatch_blocks_application (primitive 
   rw [disabled] at enabled
   cases enabled.1
 
-end TDN.Deployments.InnerTunnelNoBypass_IPsec
+end TDN.Deployments.InnerTunnelNoBypass_Ipsec
 
 namespace TDN.Deployments.InnerTunnelNoBypass_Macsec
 open Compliance Requirements Requirements.Msc
 
 lemma outbound_mac_objective_has_unconfigured_component :
-    ∃ component ∈ components, deployment.Relevant component.id ∧ component.outboundMACPolicy = false := by
-  unfold Deployment.Relevant
+    ∃ component ∈ components, deployment.InScope component.id ∧ component.outboundMACPolicy = false := by
+  unfold Deployment.InScope
   native_decide
 lemma inbound_mac_objective_has_unconfigured_component :
-    ∃ component ∈ components, deployment.Relevant component.id ∧ component.inboundMACPolicy = false := by
-  unfold Deployment.Relevant
+    ∃ component ∈ components, deployment.InScope component.id ∧ component.inboundMACPolicy = false := by
+  unfold Deployment.InScope
   native_decide
-theorem snapshot_RG029_outbound_mac_objective_rejects_missing_policy :
-    ¬ msc_inner_tunnel_no_bypass deployment forwarding components true false := by
+theorem snapshot_rg029_outbound_mac_objective_rejects_missing_policy :
+    ¬ inner_tunnel_no_bypass deployment forwarding components true false := by
   intro accepted
   obtain ⟨component, member, relevant, disabled⟩ := outbound_mac_objective_has_unconfigured_component
   have enabled := (accepted.2.2 component member relevant).2.1 rfl
   rw [disabled] at enabled
   cases enabled
 
-theorem snapshot_RG029_inbound_mac_objective_rejects_missing_policy :
-    ¬ msc_inner_tunnel_no_bypass deployment forwarding components false true := by
+theorem snapshot_rg029_inbound_mac_objective_rejects_missing_policy :
+    ¬ inner_tunnel_no_bypass deployment forwarding components false true := by
   intro accepted
   obtain ⟨component, member, relevant, disabled⟩ := inbound_mac_objective_has_unconfigured_component
   have enabled := (accepted.2.2 component member relevant).2.2 rfl

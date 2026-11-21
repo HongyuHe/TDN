@@ -197,10 +197,13 @@ class RoleOntologyContract(unittest.TestCase):
                 source = '\n'.join(lines[ref['line'] - 1:ref['line'] - 1 + len(ref['code'].splitlines())]).strip()
                 self.assertEqual(ref['code'], source, rg)
 
-    def test_proof_status_does_not_promote_deferred_or_external_conditions(self):
+    def test_proof_status_distinguishes_reviewed_and_external_conditions(self):
         catalog = self.graph['obligations']['catalog']
-        self.assertEqual(catalog['RG-007']['status'], 'Complete proof unfinished')
-        self.assertEqual(catalog['RG-021']['status'], 'Complete model proof reviewed')
+        self.assertEqual(catalog['RG-007']['status'], 'Complete model proof reviewed')
+        self.assertEqual(catalog['RG-008']['status'], 'Complete model proof reviewed')
+        self.assertIn('violates physical separation', catalog['RG-008']['proof_note'])
+        self.assertEqual(catalog['RG-021']['status'], 'Outside the selected proof targets')
+        self.assertFalse(catalog['RG-054']['proof_target'])
         self.assertEqual(catalog['RG-003']['status'], 'Requires external evidence')
         self.assertEqual(catalog['RG-070']['references'][0]['code'], '| 70 => True')
         self.assertIn('adds no condition', catalog['RG-070']['translation'])
@@ -214,7 +217,7 @@ class RoleOntologyContract(unittest.TestCase):
 
     def test_changed_obligation_code_requires_translation_review(self):
         mapping = json.loads((OUT / 'roles/ontology_obligations.json').read_text())
-        mapping['source_hashes']['TDN/Requirements/MasterMscRequirementSpecs.lean'] = 'stale'
+        mapping['source_hashes']['TDN/Requirements/MscRequirements.lean'] = 'stale'
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory)
             (out / 'roles').mkdir()

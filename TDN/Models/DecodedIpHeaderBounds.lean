@@ -42,7 +42,7 @@ lemma matched_network_header_properties (packet : PacketPolicy.Packet) (bytes : 
       rw [nextHeader]
       exact protocol
 
-lemma matched_transport_ICMP_representable (packet : PacketPolicy.Packet)
+lemma matched_transport_icmp_representable (packet : PacketPolicy.Packet)
     (transport payload : List UInt8) (matched : TransportHeaderMatches packet transport payload)
     (icmp : packet.protocol ∈ ["icmp", "icmpv6"]) :
     packet.sourcePort = 0 ∧ packet.destinationPort = 0 ∧
@@ -59,18 +59,18 @@ lemma matched_transport_ICMP_representable (packet : PacketPolicy.Packet)
     rw [code] at codeBound
     exact ⟨source, destination, by omega, by omega⟩
 
-theorem decoded_IP_header_properties (datagram : Datagram) (packet : PacketPolicy.Packet)
+theorem decoded_ip_header_properties (datagram : EncodedDatagram) (packet : PacketPolicy.Packet)
     (body : datagram.body = .datagram packet) (decoded : datagram.Decoded) :
     NetworkTemplate packet ∧ datagram.networkHeader.length = networkHeaderSize packet ∧
       HeaderRepresentable packet ∧
       (∃ number, protocolNumber packet.protocol = some number ∧ number < 256) ∧
       datagram.Raw.length ≤ networkProtocolLimit packet := by
-  rw [Datagram.Decoded, body] at decoded
+  rw [EncodedDatagram.Decoded, body] at decoded
   have network := matched_network_header_properties packet datagram.networkHeader datagram.Data.length decoded.2.2.1
   refine ⟨network.1, network.2.1,
     ⟨network.2.2.1, network.2.2.2.2.2,
-      matched_transport_ICMP_representable packet datagram.transportHeader datagram.application decoded.2.2.2.1⟩,
+      matched_transport_icmp_representable packet datagram.transportHeader datagram.application decoded.2.2.2.1⟩,
     network.2.2.2.1, ?_⟩
-  simpa only [Datagram.Raw, List.length_append] using network.2.2.2.2.1
+  simpa only [EncodedDatagram.Raw, List.length_append] using network.2.2.2.2.1
 
 end TDN.PacketSource

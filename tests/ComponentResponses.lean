@@ -21,7 +21,7 @@ lemma host_reply_route : responses.selectedRoute witnessState60 replyHeader 196 
 lemma host_reply_emit : (KernelResponses.lts (lts config) responses).Tr
     (.routed witnessState60 .echo replyHeader 196) .emit
     (.network (responses.emit witnessState60 replyHeader 196)) := by
-  apply KernelResponses.Step.emit
+  apply KernelResponses.ReplyStep.emit
   · native_decide
   · native_decide
 -- A delivered packet may generate and emit an actual permitted host reply.
@@ -29,14 +29,14 @@ example : (KernelResponses.lts (lts config) responses).MTr
     (.network witnessState60) [.generate, .route, .emit]
     (.network (responses.emit witnessState60 replyHeader 196)) := by
   apply Cslib.LTS.MTr.stepL
-    (KernelResponses.Step.generate witnessState60 .echo replyHeader
+    (KernelResponses.ReplyStep.generate witnessState60 .echo replyHeader
       (every_active_component_can_generate witnessState60 (by native_decide)) (Or.inl rfl))
-  apply Cslib.LTS.MTr.stepL (KernelResponses.Step.route _ _ _ _ host_reply_route)
+  apply Cslib.LTS.MTr.stepL (KernelResponses.ReplyStep.route _ _ _ _ host_reply_route)
   exact Cslib.LTS.MTr.stepL host_reply_emit Cslib.LTS.MTr.refl
 
 -- Both imported inventories include the transport, firewall, bridge and host
 -- owners in the checked cases. No source-domain constraint is assumed here.
-example (state : DataPlaneForwarding.State) (active : state.datapathStage ≠ .dropped) :
+example (state : DataPlaneForwarding.ForwardingState) (active : state.datapathStage ≠ .dropped) :
     responses.generates state := every_active_component_can_generate state active
 
 -- A Black-router error quote retains already encrypted byte provenance.

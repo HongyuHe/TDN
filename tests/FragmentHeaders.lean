@@ -14,9 +14,9 @@ example : (FragmentHeaders.rule ⟨[.sourceRange 10 10, .protocol "tcp"], .allow
     testPacket = true := by native_decide
 
 -- An earlier port-specific denial shows why allow-only evidence is required.
-def unsafeCompletionRules : List Rule :=
+def unsafeCompletionRules : List PacketAclRule :=
   [⟨[.destinationPorts [80]], .deny⟩, ⟨[], .allow⟩]
 
 example : Filter.evaluate (unsafeCompletionRules.map FragmentHeaders.rule) .deny testPacket = .allow ∧
-    Filter.evaluate (unsafeCompletionRules.map Rule.toFilter) .deny testPacket = .deny := by
+    Filter.evaluate (unsafeCompletionRules.map PacketAclRule.toFilter) .deny testPacket = .deny := by
   native_decide

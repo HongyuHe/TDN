@@ -5,7 +5,7 @@ namespace TDN.Compliance
 
 def DeviceExecutionBinding.SourceOriginCompatible {S A : Type}
     (binding : DeviceExecutionBinding S A) (d : Deployment)
-    (request : PacketSource.Request) (datagram : PacketSource.Datagram) : Prop :=
+    (request : PacketSource.Request) (datagram : PacketSource.EncodedDatagram) : Prop :=
   match binding.origin request.originDomain with
   | .red _ => True
   | .management component => BodyManagement d datagram.body ∧
@@ -15,8 +15,8 @@ def DeviceExecutionBinding.SourceOriginCompatible {S A : Type}
 
 lemma DeviceExecutionBinding.emitted_source_state_initial {S A : Type}
     (binding : DeviceExecutionBinding S A) (d : Deployment)
-    (request : PacketSource.Request) (datagrams : List PacketSource.Datagram)
-    (datagram : PacketSource.Datagram)
+    (request : PacketSource.Request) (datagrams : List PacketSource.EncodedDatagram)
+    (datagram : PacketSource.EncodedDatagram)
     (allowed : binding.SourceRequestAllowed d request)
     (emitted : binding.sourceProcessing.process request = .emitted datagrams)
     (member : datagram ∈ datagrams)
@@ -28,10 +28,10 @@ lemma DeviceExecutionBinding.emitted_source_state_initial {S A : Type}
     cases shape : datagram.body with
     | datagram header => exact Or.inl ⟨header, rfl⟩
     | ethernet header => exact Or.inr ⟨header, rfl⟩
-    | ipsec association contents => simp [PacketSource.Datagram.Decoded, shape] at decoded
-    | macsec association contents => simp [PacketSource.Datagram.Decoded, shape] at decoded
-    | macsecPdu association encryptFrames confidentialityOffset contents => simp [PacketSource.Datagram.Decoded, shape] at decoded
-    | carrier endpoint contents => simp [PacketSource.Datagram.Decoded, shape] at decoded
+    | ipsec association contents => simp [PacketSource.EncodedDatagram.Decoded, shape] at decoded
+    | macsec association contents => simp [PacketSource.EncodedDatagram.Decoded, shape] at decoded
+    | macsecPdu association encryptFrames confidentialityOffset contents => simp [PacketSource.EncodedDatagram.Decoded, shape] at decoded
+    | carrier endpoint contents => simp [PacketSource.EncodedDatagram.Decoded, shape] at decoded
   refine ⟨rfl, body, ⟨request, datagrams, datagram, allowed, emitted, member, valid, rfl⟩, ?_⟩
   cases origin : binding.origin request.originDomain with
   | red network =>

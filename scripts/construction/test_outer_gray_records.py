@@ -11,7 +11,7 @@ from outer_gray_records import project
 class ProjectionTests(unittest.TestCase):
     def captures(self):
         for name in ("Baseline", "Shared"):
-            path = Path("data/evidence/continuation") / ("OuterGray" + name + ".json")
+            path = Path("data/evidence/continuation") / ("OuterToGray_" + name + ".json")
             saved = json.loads(path.read_text())
             yield name, saved["rawBundle"], saved["records"]
 

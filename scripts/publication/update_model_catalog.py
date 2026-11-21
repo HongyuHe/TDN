@@ -15,6 +15,7 @@ def refresh():
     text = CATALOG.read_text()
     blocks = re.split(r'(?=^### )', text, flags=re.M)
     covered = set()
+    source_lines = {}
     declaration_count = instance_count = 0
     for index, block in enumerate(blocks):
         source = re.search(r'^Source:.*?\(\.\./(TDN/Models/\w+\.lean)\)', block, re.M)
@@ -27,6 +28,7 @@ def refresh():
             match = DECLARATION.match(content)
             if match:
                 declarations.append((match[1], match[2], line))
+                source_lines[relative, match[2]] = line
             if INSTANCE.match(content):
                 instances.append(line)
         covered.add(path)
@@ -46,6 +48,13 @@ def refresh():
     if covered != expected:
         raise ValueError(f'Unindexed modules: {expected - covered}')
     text = ''.join(blocks)
+
+    def source_link(match):
+        name, path = match.groups()
+        line = source_lines.get((path, name))
+        return f'[`{name}`](../{path}#L{line})' if line else match[0]
+
+    text = re.sub(r'\[`([\w.]+)`\]\(\.\./(TDN/Models/\w+\.lean)#L\d+\)', source_link, text)
     text = re.sub(r'The catalog covers all \d+ active Lean files',
                   f'The catalog covers all {len(covered)} active Lean files', text)
     text = re.sub(r'It indexes \d+ explicitly named declarations and \d+ explicit instances\.',

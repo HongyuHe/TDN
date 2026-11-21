@@ -2,19 +2,19 @@ import TDN.Requirements.MscComplianceSchema
 
 namespace TDN.Compliance
 
-inductive PhysicalBoundaryView (configuration : MultiProtocolForwarding.Config) :
-    Direction → Nat → LinkAdmission.Frame → Prop
-  | outbound (before after : MultiProtocolForwarding.State) (encoded : LinkAdmission.Frame)
-      (wire : MultiProtocolForwarding.Step configuration before .linkTransmit after)
+inductive PhysicalBoundaryView (configuration : MultiProtocolForwarding.TunnelForwardingModel) :
+    Direction → Nat → LinkAdmission.EthernetFrame → Prop
+  | outbound (before after : MultiProtocolForwarding.TunnelForwardingState) (encoded : LinkAdmission.EthernetFrame)
+      (wire : MultiProtocolForwarding.TunnelForwardingStep configuration before .linkTransmit after)
       (describes : encoded.Describes before.frame) :
       PhysicalBoundaryView configuration .outbound before.iface encoded
-  | inbound (before after : MultiProtocolForwarding.State) (encoded : LinkAdmission.Frame)
-      (wire : MultiProtocolForwarding.Step configuration before .linkTransmit after)
+  | inbound (before after : MultiProtocolForwarding.TunnelForwardingState) (encoded : LinkAdmission.EthernetFrame)
+      (wire : MultiProtocolForwarding.TunnelForwardingStep configuration before .linkTransmit after)
       (describes : encoded.Describes after.frame) :
       PhysicalBoundaryView configuration .inbound after.iface encoded
 
-def PhysicalBoundaryPacket (configuration : MultiProtocolForwarding.Config)
-    (iface : Nat) (direction : Direction) (encoded : LinkAdmission.Frame) : PacketPolicy.Packet :=
+def PhysicalBoundaryPacket (configuration : MultiProtocolForwarding.TunnelForwardingModel)
+    (iface : Nat) (direction : Direction) (encoded : LinkAdmission.EthernetFrame) : PacketPolicy.Packet :=
   encoded.Packet
     (if direction = .inbound then configuration.ip.interfaceName iface else "")
     (if direction = .outbound then configuration.ip.interfaceName iface else "")

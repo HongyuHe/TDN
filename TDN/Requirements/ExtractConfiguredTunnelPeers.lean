@@ -22,7 +22,7 @@ instance boundaryPeerBoundDecidable (record : BoundaryPeer) (d : Deployment) [De
   unfold BoundaryPeer.Bound
   infer_instance
 
-lemma bound_IP_peer_has_intended_destination (d : Deployment)
+lemma bound_ip_peer_has_intended_destination (d : Deployment)
     (coherent : d.AddressInventoryCoherent) (record : BoundaryPeer) (bound : record.Bound d)
     (traffic : Traffic) (supported : d.Supported traffic)
     (protocol : traffic.packet.protocol ≠ "ethernet")
@@ -40,7 +40,7 @@ lemma bound_IP_peer_has_intended_destination (d : Deployment)
 
 theorem outbound_boundary_peer_from_raw_destination_or_required_transform
     (d : Deployment) (coherent : d.AddressInventoryCoherent)
-    (configuration : Config) (context : PacketProcessing.Context)
+    (configuration : TunnelForwardingModel) (context : PacketProcessing.Context)
     (device : String) (peers : List BoundaryPeer)
     (bound : ∀ record ∈ peers, record.Bound d)
     (policies : ∀ policy ∈ configuration.ip.egressPolicies context.state.iface,
@@ -60,13 +60,13 @@ theorem outbound_boundary_peer_from_raw_destination_or_required_transform
     have filteredVisible : configuration.visibleHeader filtered.frame = some context.header := by
       simpa only [preserved.1] using visible
     have generatedPeer : ∀ encrypted,
-        MultiProtocolForwarding.Step configuration filtered .encryptIPsec encrypted →
-        MultiProtocolForwarding.Step configuration encrypted .route ready →
+        MultiProtocolForwarding.TunnelForwardingStep configuration filtered .encryptIPsec encrypted →
+        MultiProtocolForwarding.TunnelForwardingStep configuration encrypted .route ready →
         d.IntendedPacketPeer device traffic := by
       intro encrypted protect route
       obtain ⟨policy, member, association, installed, selected, actual, actualVisible,
         source, destination, protocol⟩ :=
-        IPsec_suffix_boundary_packet_uses_installed_policy configuration protect route
+        ipsec_suffix_boundary_packet_uses_installed_policy configuration protect route
       have actualSame : actual = header := Option.some.inj (actualVisible.symm.trans boundaryVisible)
       subst actual
       have policyMember : policy ∈ configuration.ip.egressPolicies context.state.iface := by
@@ -80,7 +80,7 @@ theorem outbound_boundary_peer_from_raw_destination_or_required_transform
       have finalDestination : traffic.packet.destination = record.destinationAddress := by
         rw [samePacket]
         exact destination.trans peer
-      simpa only [owner] using bound_IP_peer_has_intended_destination d coherent record
+      simpa only [owner] using bound_ip_peer_has_intended_destination d coherent record
         (bound record recordMember) traffic supported finalProtocol finalDestination
     have suffix := first_ready_run_from_filtered_is_native_suffix configuration preserved.2.2 run
     cases suffix with
@@ -104,7 +104,7 @@ theorem outbound_boundary_peer_from_raw_destination_or_required_transform
           rw [samePacket]
           change header.destination = record.destinationAddress
           exact headerSame ▸ peer
-        simpa only [owner] using bound_IP_peer_has_intended_destination d coherent record
+        simpa only [owner] using bound_ip_peer_has_intended_destination d coherent record
           (bound record recordMember) traffic supported finalProtocol finalDestination
       · have annotation := boundary_filter_preserves_outbound_annotation configuration context filtered
           filter requestId required

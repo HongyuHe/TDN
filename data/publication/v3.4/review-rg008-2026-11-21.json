@@ -1,0 +1,44 @@
+{
+  "rg_id": "RG-008",
+  "review_verdict": "PASS",
+  "specification": "TDN.Requirements.Msc.security_level_connectivity",
+  "general_theorem": "TDN.Requirements.Msc.security_level_connectivity_from_forwarding",
+  "profile_outcomes": {
+    "baseline": {
+      "outcome": "SATISFIES",
+      "positive_paths": 4,
+      "proof": "TDN.Deployments.SecurityLevelConnectivity_Baseline.snapshot_rg008_baseline_has_evidence_matched_context"
+    },
+    "shared": {
+      "outcome": "VIOLATES",
+      "positive_paths": 8,
+      "scoped_forwarding_proof": "TDN.Deployments.SecurityLevelConnectivity_Shared.snapshot_rg008_shared_scoped_connectivity",
+      "counterexample": "TDN.Deployments.SecurityLevelConnectivity_Shared.snapshot_rg008_shared_has_evidence_matched_context",
+      "component_pair": [
+        "V31F_I_A4",
+        "V31F_O_A1"
+      ],
+      "duty": "MSC-PS-11, applied through the unclassified Red network clause"
+    }
+  },
+  "scope": "The result covers the November 4 IPv4/IPsec forwarding records and November 11 laboratory security labels. The source must enter through a recorded Red interface. ESP uses the model’s AES-GCM contract. Each experiment declares zero referenced protection solutions.",
+  "source_requirements": "specs/requirement_groups.md#rg-008",
+  "experiment_scope": "data/evidence/RedSolutionReferences.json",
+  "captured_inputs": "data/evidence/RedConnectivity.json",
+  "evidence_regeneration": "scripts/construction/build_security_level_connectivity.py",
+  "lean_tests": "tests/SecurityLevelConnectivity.lean",
+  "validated": {
+    "lean_build": "PASS",
+    "whole_candidate_rounds": 2,
+    "independent_final_review": "PASS",
+    "standalone_lean_regression_files": 22,
+    "mcp_regressions": 198,
+    "compiled_RG008_roots_checked": 12,
+    "requirements_and_types_unchanged": 2535,
+    "imported_lean_theorems_audited": 10411,
+    "native_decisions_rechecked": 3864,
+    "general_theorem_snapshot_dependencies": 0,
+    "unexpected_axiom_roots": [],
+    "model_source_admits_wrong_level_tcp_destination": true
+  }
+}

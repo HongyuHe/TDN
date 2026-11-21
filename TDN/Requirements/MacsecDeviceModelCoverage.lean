@@ -8,12 +8,12 @@ theorem macsec_model_covers_deployment {S A : Type}
     (prototype : DeviceExecutionBinding S A) (ifaces : List Nat) (d : Deployment)
     (static : DeviceDeploymentBindings prototype ifaces d)
     (ifaceChecks : IfaceConditions prototype.configuration ifaces)
-    (wireChecks : MACsecWireChecks prototype.configuration)
+    (wireChecks : MacsecWireChecks prototype.configuration)
     (processing : HeaderProcessing) (mode : prototype.configuration.headerProcessing = some processing)
     (bounds : HeaderBounds processing)
     (sourceSafe : ∀ state, (model prototype ifaces d {}).initial state →
-      MACsecOutputProtected prototype.configuration state.native ∧
-        PhysicalMACsecFrames prototype.configuration state.native)
+      MACsecOutputProtected prototype.configuration state.deviceState ∧
+        PhysicalMACsecFrames prototype.configuration state.deviceState)
     (encoding : ∀ state, PhysicalMACsecFrames prototype.configuration state →
       prototype.configuration.LinkEncodingComplete state)
     (mtu : Nat → Nat) (sources : prototype.sourceProcessing = sourceProcessing mtu)
@@ -35,16 +35,16 @@ theorem macsec_model_covers_deployment {S A : Type}
     static.physicalLinks, static.sourceEntries, static.macsecTunnels, static.ipsecTunnels⟩
   · intro start actions state initialized run
     have preserved : (model prototype ifaces d {}).system.TrInv (fun state =>
-        MACsecOutputProtected prototype.configuration state.native ∧
-          PhysicalMACsecFrames prototype.configuration state.native) := by
+        MACsecOutputProtected prototype.configuration state.deviceState ∧
+          PhysicalMACsecFrames prototype.configuration state.deviceState) := by
       intro before action after step invariant
       exact ⟨step_preserves_macsec_output_protection wireChecks.output step.2.2.2.1 invariant.1,
         step_preserves_physical_macsec_frames wireChecks step.2.2.2.1 invariant.1 invariant.2⟩
     have framed := (Cslib.LTS.mtrInv_of_trInv preserved start actions state run
       (sourceSafe start initialized)).2
     exact ⟨standard_reachable_headers prototype ifaces d {} processing mode bounds
-      start state actions initialized run, encoding state.native framed⟩
+      start state actions initialized run, encoding state.deviceState framed⟩
   · intro state
-    exact static.ifaceRecords state.native.iface state.ifacePresent
+    exact static.ifaceRecords state.deviceState.iface state.ifacePresent
 
 end TDN.Requirements.StandardDataPlaneBridge

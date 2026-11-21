@@ -2,26 +2,26 @@ import TDN.Models.RawPacketDecodeAndHooks
 
 namespace TDN.PacketPolicy
 
-def Rule.withContext (context : List MatchCondition) (rule : Rule) : Rule :=
+def PacketAclRule.withContext (context : List MatchCondition) (rule : PacketAclRule) : PacketAclRule :=
   { rule with atoms := context ++ rule.atoms }
 
-def contextProgram (context : List MatchCondition) (rules : List Rule) : List Rule :=
-  rules.map (Rule.withContext context)
+def contextProgram (context : List MatchCondition) (rules : List PacketAclRule) : List PacketAclRule :=
+  rules.map (PacketAclRule.withContext context)
 
-lemma context_rule_matches (context : List MatchCondition) (rule : Rule) (packet : Packet)
+lemma context_rule_matches (context : List MatchCondition) (rule : PacketAclRule) (packet : Packet)
     (holds : ∀ atom ∈ context, atom.matchesPacket packet) :
     (rule.withContext context).toFilter.accepts packet = rule.toFilter.accepts packet := by
-  simp only [Rule.toFilter, Rule.withContext, List.all_append]
+  simp only [PacketAclRule.toFilter, PacketAclRule.withContext, List.all_append]
   have checked : context.all (fun atom => decide (atom.matchesPacket packet)) = true := by
     exact List.all_eq_true.mpr (fun atom member => decide_eq_true (holds atom member))
   rw [checked]
   rfl
 
-theorem context_program_evaluation (context : List MatchCondition) (rules : List Rule)
+theorem context_program_evaluation (context : List MatchCondition) (rules : List PacketAclRule)
     (fallback : Filter.Verdict) (packet : Packet)
     (holds : ∀ atom ∈ context, atom.matchesPacket packet) :
-    Filter.evaluate ((contextProgram context rules).map Rule.toFilter) fallback packet =
-      Filter.evaluate (rules.map Rule.toFilter) fallback packet := by
+    Filter.evaluate ((contextProgram context rules).map PacketAclRule.toFilter) fallback packet =
+      Filter.evaluate (rules.map PacketAclRule.toFilter) fallback packet := by
   induction rules with
   | nil => rfl
   | cons rule remaining ih =>
@@ -31,20 +31,20 @@ theorem context_program_evaluation (context : List MatchCondition) (rules : List
     · rfl
     · exact ih
 
-lemma context_rule_requires_context (context : List MatchCondition) (rule : Rule) (packet : Packet)
+lemma context_rule_requires_context (context : List MatchCondition) (rule : PacketAclRule) (packet : Packet)
     (matched : (rule.withContext context).toFilter.accepts packet = true) :
     ∀ atom ∈ context, atom.matchesPacket packet := by
   intro atom member
   exact matching_atom matched (List.mem_append_left rule.atoms member)
 
-theorem context_program_rejects_wrong_context (context : List MatchCondition) (rules : List Rule)
+theorem context_program_rejects_wrong_context (context : List MatchCondition) (rules : List PacketAclRule)
     (packet : Packet) (wrong : ∃ atom ∈ context, ¬ atom.matchesPacket packet) :
-    Filter.evaluate ((contextProgram context rules).map Rule.toFilter) .deny packet = .deny := by
-  cases outcome : Filter.evaluate ((contextProgram context rules).map Rule.toFilter) .deny packet with
+    Filter.evaluate ((contextProgram context rules).map PacketAclRule.toFilter) .deny packet = .deny := by
+  cases outcome : Filter.evaluate ((contextProgram context rules).map PacketAclRule.toFilter) .deny packet with
   | deny => rfl
   | allow =>
     obtain ⟨selected, member, matched, _⟩ := Filter.allowed_has_matching_allow
-      ((contextProgram context rules).map Rule.toFilter) packet outcome
+      ((contextProgram context rules).map PacketAclRule.toFilter) packet outcome
     obtain ⟨guarded, guardedMember, same⟩ := List.mem_map.mp member
     obtain ⟨raw, rawMember, guardedEq⟩ := List.mem_map.mp guardedMember
     subst selected
@@ -61,8 +61,8 @@ def Program.withContext (context : List PacketPolicy.MatchCondition) (program : 
 
 lemma Program.context_evaluation (context : List PacketPolicy.MatchCondition) (program : Program)
     (packet : PacketPolicy.Packet) (holds : ∀ atom ∈ context, atom.matchesPacket packet) :
-    (program.withContext context).Accepts packet ↔ program.Accepts packet := by
-  unfold Program.Accepts Program.withContext
+    (program.withContext context).PermitsPacket packet ↔ program.PermitsPacket packet := by
+  unfold Program.PermitsPacket Program.withContext PacketPolicy.AclAllows
   rw [PacketPolicy.context_program_evaluation context program.rules program.fallback packet holds]
 
 def IfacePolicy.withContext (name : String) (policy : IfacePolicy) : IfacePolicy :=
@@ -88,7 +88,7 @@ lemma lookup_context_policies (name : Nat → String) (policies : List (Nat × I
       simpa only [missed] using ih
 
 theorem contextual_link_admission_preserves_actual_hook (name : Nat → String)
-    (policies : List (Nat × IfacePolicy)) (iface : Nat) (outbound : Bool) (frame : Frame) :
+    (policies : List (Nat × IfacePolicy)) (iface : Nat) (outbound : Bool) (frame : EthernetFrame) :
     Admitted (contextPolicies name policies) iface outbound
         (frame.Packet (if outbound then "" else name iface) (if outbound then name iface else "")) ↔
       Admitted policies iface outbound
@@ -111,15 +111,15 @@ end TDN.LinkAdmission
 
 namespace TDN.MultiProtocolForwarding
 
-def Config.withLinkContext (configuration : Config) : Config :=
+def TunnelForwardingModel.withLinkContext (configuration : TunnelForwardingModel) : TunnelForwardingModel :=
   { configuration with
     linkPolicies := LinkAdmission.contextPolicies configuration.ip.interfaceName configuration.linkPolicies }
 
-theorem link_context_preserves_native_admission (configuration : Config) (iface : Nat)
-    (outbound : Bool) (frame : LayeredFrame.Frame) :
+theorem link_context_preserves_native_admission (configuration : TunnelForwardingModel) (iface : Nat)
+    (outbound : Bool) (frame : LayeredFrame.TunnelFrame) :
     configuration.withLinkContext.LinkAdmitted iface outbound frame ↔
       configuration.LinkAdmitted iface outbound frame := by
-  unfold Config.LinkAdmitted Config.withLinkContext
+  unfold TunnelForwardingModel.LinkAdmitted TunnelForwardingModel.withLinkContext
   simp only
   constructor
   · rintro ⟨encoded, selected, describes, admitted⟩
@@ -129,11 +129,11 @@ theorem link_context_preserves_native_admission (configuration : Config) (iface 
     exact ⟨encoded, selected, describes,
       (LinkAdmission.contextual_link_admission_preserves_actual_hook ..).mpr admitted⟩
 
-theorem link_context_preserves_native_step_admission (configuration : Config)
-    (before : State) (operation : Action) (after : State) :
+theorem link_context_preserves_native_step_admission (configuration : TunnelForwardingModel)
+    (before : TunnelForwardingState) (operation : TunnelForwardingAction) (after : TunnelForwardingState) :
     configuration.withLinkContext.LinkStepAdmitted before operation after ↔
       configuration.LinkStepAdmitted before operation after := by
-  simp only [Config.LinkStepAdmitted, link_context_preserves_native_admission]
+  simp only [TunnelForwardingModel.LinkStepAdmitted, link_context_preserves_native_admission]
   rfl
 
 end TDN.MultiProtocolForwarding

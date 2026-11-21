@@ -50,7 +50,7 @@ theorem table_driven_carrier_input_checks_sound (devices : List DataPlaneForward
   rcases checked carrier configured (DataPlaneForwarding.ifaceAt ifaces entry)
       (DataPlaneForwarding.iface_at_member_or_default ifaces entry) owner outside with inside | ⟨fallback, rules⟩
   · exact inside
-  · change DataPlaneForwarding.accepts (DataPlaneForwarding.deviceAt devices (DataPlaneForwarding.ifaceAt ifaces entry).owner).inputRules
+  · change PacketPolicy.AclAllows (DataPlaneForwarding.deviceAt devices (DataPlaneForwarding.ifaceAt ifaces entry).owner).inputRules
       (DataPlaneForwarding.deviceAt devices (DataPlaneForwarding.ifaceAt ifaces entry).owner).inputFallback
       (carrierRecordPacket (DataPlaneForwarding.deviceAt devices (DataPlaneForwarding.ifaceAt ifaces entry).owner)
         (DataPlaneForwarding.ifaceAt ifaces entry) tracking networkBytes carrier) at accepted

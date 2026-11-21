@@ -1,4 +1,4 @@
-import TDN.Import.NativeDecide
+import TDN.Import.CompiledDecide
 import TDN.Deployments.OuterToGray_SharedData
 
 set_option synthInstance.maxSize 16384
@@ -7,7 +7,6 @@ namespace TDN.Deployments.OuterToGray_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma inner_pair_bindings_checked (base : Deployment) :
     ∀ record ∈ records.pairs, record.Bound (records.deployment base) := by unfold_check_parameters; native_decide
@@ -18,20 +17,20 @@ lemma inner_address_coverage_checked (base : Deployment) :
 lemma local_endpoints_separate (base : Deployment) :
     OuterLocalSeparation (records.deployment base) records.pairs := by unfold_check_parameters; native_decide
 
-lemma inner_endpoints_IPv4 :
+lemma inner_endpoints_ipv4 :
     ∀ record ∈ records.pairs, 0 < record.endpoints.sourceAddress ∧
       record.endpoints.sourceAddress < 2^32 ∧ record.endpoints.destinationAddress < 2^32 := by native_decide
 
-lemma Outer_VPN_options_checked (base : Deployment) :
+lemma outer_vpn_options_checked (base : Deployment) :
     ∀ device ∈ (records.deployment base).devices, device.layer = some .outer →
       device.kind = .vpn ∧ (records.deployment base).dropIPv4Options device.id = true := by unfold_check_parameters; native_decide
 
-lemma Outer_gray_mtu_checked (base : Deployment) :
+lemma outer_gray_mtu_checked (base : Deployment) :
     ∀ interface ∈ (records.deployment base).interfaces,
       (records.deployment base).IsLayer interface.device .outer → interface.zone = .gray →
         InterfaceMtuBound (records.deployment base) interface (interface.mtu.getD 0) := by unfold_check_parameters; native_decide
 
-lemma Outer_gray_ifaces_routed (base : Deployment) :
+lemma outer_gray_ifaces_routed (base : Deployment) :
     ∀ interface ∈ (records.deployment base).interfaces,
       (records.deployment base).IsLayer interface.device .outer → interface.zone = .gray →
         ∀ iface ∈ records.inventory.ifaces, records.inventory.ifaceName iface = interface.id →

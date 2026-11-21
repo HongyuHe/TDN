@@ -2,7 +2,7 @@ import TDN.Models.EspAeadWireCodec
 import TDN.Models.HopLimitUpdatedDatagramCodec
 import TDN.Models.IpsecOnlyEncapInvariant
 
-namespace TDN.IPsecFrameEncoding
+namespace TDN.IpsecFrameEncoding
 open PacketSource LayeredFrame ESPWire
 
 structure Parameters where
@@ -14,12 +14,12 @@ structure Parameters where
 
 structure Codec (Key : Type) where
   primitive : GCMPrimitive Key
-  key : DataPlaneForwarding.TunnelSAStamp → Key
-  parameters : DataPlaneForwarding.TunnelSAStamp → Parameters
+  key : DataPlaneForwarding.TunnelSaStamp → Key
+  parameters : DataPlaneForwarding.TunnelSaStamp → Parameters
 
 variable {Key : Type}
 
-def KnownIPv4Seal (association : DataPlaneForwarding.TunnelSAStamp) : Prop :=
+def KnownIPv4Seal (association : DataPlaneForwarding.TunnelSaStamp) : Prop :=
   association.sender < 2^32 ∧ association.receiver < 2^32 ∧ association.association < 2^32
 
 
@@ -41,11 +41,11 @@ def networkLength : Body → Option Nat
   | .ethernet _ | .macsec _ _ | .macsecPdu _ _ _ _ | .carrier _ _ => none
 
 
-def leafNetwork (source : Datagram) (nominal actual : PacketPolicy.Packet) : List UInt8 :=
+def leafNetwork (source : EncodedDatagram) (nominal actual : PacketPolicy.Packet) : List UInt8 :=
   forwardedNetworkHeader source nominal actual
 
 
-def encodeBody (codec : Codec Key) (source : Datagram) (payload : List UInt8) :
+def encodeBody (codec : Codec Key) (source : EncodedDatagram) (payload : List UInt8) :
     Body → Option PacketPolicy.Packet → List (Option PacketPolicy.Packet) → List UInt8
   | .datagram nominal, active, _ =>
       leafNetwork source nominal (active.getD nominal) ++ source.transportHeader ++ payload
@@ -60,7 +60,7 @@ def encodeBody (codec : Codec Key) (source : Datagram) (payload : List UInt8) :
   | .macsec _ _, _, _ | .macsecPdu _ _ _ _, _, _ | .carrier _ _, _, _ => []
 
 
-def decodeBody (codec : Codec Key) (source : Datagram) :
+def decodeBody (codec : Codec Key) (source : EncodedDatagram) :
     Body → Option PacketPolicy.Packet → List (Option PacketPolicy.Packet) → List UInt8 → Option (List UInt8)
   | .datagram _, _, _, bytes =>
       some (bytes.drop (source.networkHeader.length + source.transportHeader.length))
@@ -75,16 +75,16 @@ def decodeBody (codec : Codec Key) (source : Datagram) :
   | .macsec _ _, _, _, _ | .macsecPdu _ _ _ _, _, _, _ | .carrier _ _, _, _, _ => none
 
 
-def encodeFrame (codec : Codec Key) (source : Datagram) (payload : List UInt8) (frame : Frame) :
+def encodeFrame (codec : Codec Key) (source : EncodedDatagram) (payload : List UInt8) (frame : TunnelFrame) :
     List UInt8 := encodeBody codec source payload frame.body frame.activeHeader frame.hiddenHeaders
 
 
-def decodeFrame (codec : Codec Key) (source : Datagram) (frame : Frame) (bytes : List UInt8) :
+def decodeFrame (codec : Codec Key) (source : EncodedDatagram) (frame : TunnelFrame) (bytes : List UInt8) :
     Option (Body × List UInt8) :=
   (decodeBody codec source frame.body frame.activeHeader frame.hiddenHeaders bytes).map
     (fun payload => (frame.body, payload))
 
-lemma known_outer_header_size (association : DataPlaneForwarding.TunnelSAStamp) (known : KnownIPv4Seal association)
+lemma known_outer_header_size (association : DataPlaneForwarding.TunnelSaStamp) (known : KnownIPv4Seal association)
     (active : Option PacketPolicy.Packet)
     (identity : HeaderIdentity
       (active.getD (outerHeader association.sender association.receiver "esp" 0 0))
@@ -95,24 +95,24 @@ lemma known_outer_header_size (association : DataPlaneForwarding.TunnelSAStamp) 
   rw [identity.actual_is_nominal_with_hop]
   simp only [networkHeaderSize, encodeNetworkHeader, outerHeader, InternetAddresses.headerWords,
     known.1, ↓reduceIte]
-  exact ⟨True.intro, encoded_IPv4_header_length _ dataBytes 0 0 (by norm_num)⟩
+  exact ⟨True.intro, encoded_ipv4_header_length _ dataBytes 0 0 (by norm_num)⟩
 
-theorem initial_body_serialization (codec : Codec Key) (source : Datagram) (decoded : source.Decoded) :
+theorem initial_body_serialization (codec : Codec Key) (source : EncodedDatagram) (decoded : source.Decoded) :
     encodeBody codec source source.application source.body none [] = source.Raw := by
   cases body : source.body with
   | datagram header =>
     simp only [encodeBody, Option.getD_none, leafNetwork, forwardedNetworkHeader,
-      ↓reduceIte, Datagram.Raw, Datagram.Data, List.append_assoc]
+      ↓reduceIte, EncodedDatagram.Raw, EncodedDatagram.Data, List.append_assoc]
   | ethernet header =>
-    simp only [Datagram.Decoded, body] at decoded
-    simp only [encodeBody, Datagram.Raw, Datagram.Data, decoded.1, List.nil_append]
-  | ipsec association contents => simp [Datagram.Decoded, body] at decoded
-  | macsec association contents => simp [Datagram.Decoded, body] at decoded
-  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
-  | carrier endpoint contents => simp [Datagram.Decoded, body] at decoded
+    simp only [EncodedDatagram.Decoded, body] at decoded
+    simp only [encodeBody, EncodedDatagram.Raw, EncodedDatagram.Data, decoded.1, List.nil_append]
+  | ipsec association contents => simp [EncodedDatagram.Decoded, body] at decoded
+  | macsec association contents => simp [EncodedDatagram.Decoded, body] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [EncodedDatagram.Decoded, body] at decoded
+  | carrier endpoint contents => simp [EncodedDatagram.Decoded, body] at decoded
 
 
-lemma source_IP_body_from_original (source : Datagram) (decoded : source.Decoded)
+lemma source_ip_body_from_original (source : EncodedDatagram) (decoded : source.Decoded)
     (header : PacketPolicy.Packet) (same : some header = source.body.originalHeader) :
     source.body = .datagram header := by
   cases sourceCase : source.body with
@@ -120,19 +120,19 @@ lemma source_IP_body_from_original (source : Datagram) (decoded : source.Decoded
     have equal : header = nominal := by simpa [Body.originalHeader, sourceCase] using same
     simpa only [equal] using sourceCase
   | ethernet nominal => simp [Body.originalHeader, sourceCase] at same
-  | ipsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
-  | macsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
-  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, sourceCase] at decoded
-  | carrier endpoint contents => simp [Datagram.Decoded, sourceCase] at decoded
+  | ipsec association contents => simp [EncodedDatagram.Decoded, sourceCase] at decoded
+  | macsec association contents => simp [EncodedDatagram.Decoded, sourceCase] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [EncodedDatagram.Decoded, sourceCase] at decoded
+  | carrier endpoint contents => simp [EncodedDatagram.Decoded, sourceCase] at decoded
 
-lemma ESP_network_length_at_least_inner (bytes : Nat) :
+lemma esp_network_length_at_least_inner (bytes : Nat) :
     bytes ≤ PacketLength.alignedWireLength 4 2 52 bytes := by
   have padded := padded_length bytes
   unfold PacketLength.alignedWireLength
   omega
 
 
-theorem decode_encoded_body (codec : Codec Key) (source : Datagram) (payload : List UInt8)
+theorem decode_encoded_body (codec : Codec Key) (source : EncodedDatagram) (payload : List UInt8)
     (decoded : source.Decoded) (body : Body)
     (shape : body.IPsecOnly KnownIPv4Seal)
     (originalIP : body.originalHeader = source.body.originalHeader)
@@ -149,10 +149,10 @@ theorem decode_encoded_body (codec : Codec Key) (source : Datagram) (payload : L
         have same : nominal = sourceHeader := by simpa [Body.originalHeader, sourceCase] using originalIP
         simpa only [same] using sourceCase
       | ethernet header => simp [Body.originalHeader, sourceCase] at originalIP
-      | ipsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
-      | macsec association contents => simp [Datagram.Decoded, sourceCase] at decoded
-      | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, sourceCase] at decoded
-      | carrier endpoint contents => simp [Datagram.Decoded, sourceCase] at decoded
+      | ipsec association contents => simp [EncodedDatagram.Decoded, sourceCase] at decoded
+      | macsec association contents => simp [EncodedDatagram.Decoded, sourceCase] at decoded
+      | macsecPdu association encryptFrames confidentialityOffset contents => simp [EncodedDatagram.Decoded, sourceCase] at decoded
+      | carrier endpoint contents => simp [EncodedDatagram.Decoded, sourceCase] at decoded
     have width := (forwarded_network_header_matches source nominal (active.getD nominal)
       sourceBody decoded coherent.1).1
     have prefixLength : (leafNetwork source nominal (active.getD nominal) ++ source.transportHeader).length =
@@ -182,7 +182,7 @@ theorem decode_encoded_body (codec : Codec Key) (source : Datagram) (payload : L
         protectedBytes.length 0 0 ++ protectedBytes).drop
           (networkHeaderSize (active.getD (outerHeader association.sender association.receiver "esp" 0 0))))).bind _ = _
     rw [← headerSize.2.trans headerSize.1.symm, List.drop_left]
-    rw [decode_encoded_ESP codec.primitive (codec.key association) association.association parameters.sequence
+    rw [decode_encoded_esp codec.primitive (codec.key association) association.association parameters.sequence
       parameters.iv encodedContents (nextHeader contents) parameters.ivLength (next_header_bound contents)]
     simp only [Option.bind_some, ↓reduceIte]
     exact recurse
@@ -191,7 +191,7 @@ theorem decode_encoded_body (codec : Codec Key) (source : Datagram) (payload : L
   | carrier endpoint contents ih => exact False.elim shape
 
 
-theorem encoded_body_network_length (codec : Codec Key) (source : Datagram)
+theorem encoded_body_network_length (codec : Codec Key) (source : EncodedDatagram)
     (decoded : source.Decoded) (body : Body)
     (shape : body.IPsecOnly KnownIPv4Seal)
     (originalIP : body.originalHeader = source.body.originalHeader)
@@ -203,17 +203,17 @@ theorem encoded_body_network_length (codec : Codec Key) (source : Datagram)
     source.application.length ≤ (encodeBody codec source source.application body active hidden).length := by
   induction body generalizing active hidden with
   | datagram nominal =>
-    have sourceBody := source_IP_body_from_original source decoded nominal originalIP
+    have sourceBody := source_ip_body_from_original source decoded nominal originalIP
     have width := (forwarded_network_header_matches source nominal (active.getD nominal)
       sourceBody decoded coherent.1).1
     have fields := decoded
-    rw [Datagram.Decoded, sourceBody] at fields
+    rw [EncodedDatagram.Decoded, sourceBody] at fields
     have length : (encodeBody codec source source.application (.datagram nominal) active hidden).length =
         source.Raw.length := by
-      simp only [encodeBody, List.length_append, leafNetwork, width, Datagram.Raw, Datagram.Data]
+      simp only [encodeBody, List.length_append, leafNetwork, width, EncodedDatagram.Raw, EncodedDatagram.Data]
       omega
     rw [length]
-    exact ⟨fields.2.1, by simp only [Datagram.Raw, Datagram.Data, List.length_append]; omega⟩
+    exact ⟨fields.2.1, by simp only [EncodedDatagram.Raw, EncodedDatagram.Data, List.length_append]; omega⟩
   | ethernet header =>
     simp [networkLength, Body.visibleHeader, encodeBody]
   | ipsec association contents ih =>
@@ -231,7 +231,7 @@ theorem encoded_body_network_length (codec : Codec Key) (source : Datagram)
       cases value : contents.visibleHeader with
       | none => simp [value] at visible
       | some header => rfl
-    have protectedLength := encoded_ESP_length codec.primitive (codec.key association)
+    have protectedLength := encoded_esp_length codec.primitive (codec.key association)
       association.association parameters.sequence parameters.iv encodedContents (nextHeader contents) parameters.ivLength
     have length : (encodeBody codec source source.application (.ipsec association contents)
         active (inner :: rest)).length =
@@ -242,11 +242,11 @@ theorem encoded_body_network_length (codec : Codec Key) (source : Datagram)
       simp only [PacketLength.alignedWireLength]
       omega
     rw [length]
-    refine ⟨?_, recurse.2.trans (ESP_network_length_at_least_inner encodedContents.length)⟩
+    refine ⟨?_, recurse.2.trans (esp_network_length_at_least_inner encodedContents.length)⟩
     simp only [networkLength, innerLength, Option.map_some, Body.visibleHeader]
   | macsec association contents ih => exact False.elim shape
   | macsecPdu association encryptFrames confidentialityOffset contents => exact False.elim shape
   | carrier endpoint contents ih => exact False.elim shape
 
 
-end TDN.IPsecFrameEncoding
+end TDN.IpsecFrameEncoding

@@ -1,42 +1,41 @@
-import TDN.Import.NativeDecide
-import TDN.Deployments.OuterToGray_SharedCases
+import TDN.Import.CompiledDecide
+import TDN.Deployments.OuterToGray_SharedTestVectors
 import TDN.Deployments.OuterToGray_Counterexamples
 
 namespace TDN.Deployments.OuterToGray_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel MultiProtocolForwarding
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 set_option synthInstance.maxSize 2048
 
 load_network_records plaintextBlack : ForwardCase from "../../data/evidence/continuation/OuterToGray_SharedCases.json" ["plaintextBlack"]
 
 load_network_records inboundPolicy : DataPlaneForwarding.IpsecPolicy from "../../data/evidence/continuation/OuterToGray_SharedCases.json" ["inboundPolicy"]
 
-load_network_records inboundAssociation : DataPlaneForwarding.InstalledSA from "../../data/evidence/continuation/OuterToGray_SharedCases.json" ["inboundAssociation"]
+load_network_records inboundAssociation : DataPlaneForwarding.InstalledSa from "../../data/evidence/continuation/OuterToGray_SharedCases.json" ["inboundAssociation"]
 
 load_network_records loopbackIface : Nat from "../../data/evidence/continuation/OuterToGray_SharedCases.json" ["loopbackIface"]
 
 load_network_records erspanIface : Nat from "../../data/evidence/continuation/OuterToGray_SharedCases.json" ["erspanIface"]
 
-lemma plaintext_Black_context_remains_supported (base : Deployment) :
+lemma plaintext_black_context_remains_supported (base : Deployment) :
     (records.deployment base).SupportedAt plaintextBlack.interface .outbound (plaintextBlack.context records)
       ((records.deployment base).Observe (plaintextBlack.packet records)) :=
   checked_plain_forward_case_is_supported plaintextBlack records base .outbound (by unfold_check_parameters; native_decide)
 
-lemma plaintext_Black_is_required_to_decrypt (base : Deployment) :
+lemma plaintext_black_is_required_to_decrypt (base : Deployment) :
     (records.deployment base).InboundIPsecRequired records.inventory plaintextBlack.entryIface
       (plaintextBlack.context records).header := by
   unfold_check_parameters; native_decide
 
-lemma plaintext_Black_context_fails_positive_prerequisite (base : Deployment) :
+lemma plaintext_black_context_fails_positive_prerequisite (base : Deployment) :
     ¬ (records.deployment base).ContextIngressEligible (plaintextBlack.context records)
       ((records.deployment base).Observe (plaintextBlack.packet records)) :=
   checked_plaintext_required_arrival_is_not_positive_eligible plaintextBlack records base
-    (plaintext_Black_is_required_to_decrypt base)
+    (plaintext_black_is_required_to_decrypt base)
 
-lemma plaintext_Black_is_denied_by_raw_Gray_forward_program :
-    Filter.evaluate ((records.configuration.ip.forwardRules plaintextBlack.route.egress).map PacketPolicy.Rule.toFilter)
+lemma plaintext_black_is_denied_by_raw_gray_forward_program :
+    Filter.evaluate ((records.configuration.ip.forwardRules plaintextBlack.route.egress).map PacketPolicy.PacketAclRule.toFilter)
       (records.configuration.ip.forwardFallback plaintextBlack.route.egress)
       (plaintextBlack.packet records) = .deny := by
   native_decide
@@ -45,34 +44,34 @@ def authenticatedReturn : PacketPolicy.Packet :=
   { plaintextBlack.packet records with matchedInboundPolicyIds := [inboundPolicy.id] }
 
 lemma authenticated_return_is_allowed_by_raw_program :
-    DataPlaneForwarding.accepts (records.configuration.ip.forwardRules plaintextBlack.route.egress)
+    PacketPolicy.AclAllows (records.configuration.ip.forwardRules plaintextBlack.route.egress)
       (records.configuration.ip.forwardFallback plaintextBlack.route.egress) authenticatedReturn := by
   native_decide
 
-lemma authenticated_return_is_not_Gray_inbound_at_any_native_iface :
+lemma authenticated_return_is_not_gray_inbound_at_any_native_iface :
     ∀ iface ∈ records.inventory.ifaces, records.ifaceName iface = plaintextBlack.interface.id →
       ¬ PacketAtHook (records.configuration.ip.interfaceName iface) .inbound .forward authenticatedReturn := by
   unfold PacketAtHook HookDirection
   native_decide
 
-lemma authenticated_return_cannot_be_misattributed_to_Gray_inbound (base : Deployment) :
+lemma authenticated_return_cannot_be_misattributed_to_gray_inbound (base : Deployment) :
     ¬ (records.deployment base).HookContext plaintextBlack.interface.id .inbound .forward authenticatedReturn := by
   rintro ⟨inventory, present, iface, member, name, interface, interfaceMember, interfaceName, owner, atHook⟩
   have same : inventory = records.inventory := Option.some.inj present.symm
   subst inventory
-  exact authenticated_return_is_not_Gray_inbound_at_any_native_iface iface member name atHook
+  exact authenticated_return_is_not_gray_inbound_at_any_native_iface iface member name atHook
 
 def encryptedHeader : PacketPolicy.Packet :=
   { LayeredFrame.outerHeader inboundPolicy.sender inboundPolicy.receiver "esp" 0 0 with hopLimit := 64 }
 
-def encryptedEntry (iface : Nat) : MultiProtocolForwarding.State :=
+def encryptedEntry (iface : Nat) : MultiProtocolForwarding.TunnelForwardingState :=
   { plaintextBlack.entry with
     iface := iface
     enteredIface := iface
     frame := plaintextBlack.entry.frame.pushHeader
       (.ipsec (inboundPolicy.seal inboundAssociation) plaintextBlack.entry.frame.body) (some encryptedHeader) }
 
-def decryptedEntry (iface : Nat) : MultiProtocolForwarding.State :=
+def decryptedEntry (iface : Nat) : MultiProtocolForwarding.TunnelForwardingState :=
   { encryptedEntry iface with
     initialEntry := false
     datapathStage := .ingress
@@ -84,7 +83,7 @@ def decryptedEntry (iface : Nat) : MultiProtocolForwarding.State :=
 def decryptedRoute (iface : Nat) : DataPlaneForwarding.FibRoute :=
   { plaintextBlack.route with ingress := iface }
 
-def decryptedRouted (iface : Nat) : MultiProtocolForwarding.State :=
+def decryptedRouted (iface : Nat) : MultiProtocolForwarding.TunnelForwardingState :=
   { decryptedEntry iface with
     initialEntry := false
     iface := plaintextBlack.route.egress
@@ -102,27 +101,27 @@ lemma encrypted_entry_headers_are_coherent (iface : Nat) :
 lemma configured_outer_decryption (iface : Nat)
     (configured : inboundPolicy ∈ records.configuration.ip.ingressPolicies iface)
     (installed : inboundAssociation ∈ records.configuration.ip.ingressSAs iface) :
-    MultiProtocolForwarding.Step records.configuration (encryptedEntry iface) .decryptIPsec (decryptedEntry iface) :=
+    MultiProtocolForwarding.TunnelForwardingStep records.configuration (encryptedEntry iface) .decryptIPsec (decryptedEntry iface) :=
   .decryptIPsec inboundPolicy inboundAssociation plaintextBlack.entry.frame.body plaintextBlack.header
     rfl rfl configured installed (by native_decide) rfl (by native_decide) "new"
 
-lemma loopback_admits_encrypted_envelope_at_INPUT :
+lemma loopback_admits_encrypted_envelope_at_input :
     PacketProcessing.InputAdmitted records.configuration (encryptedEntry loopbackIface) := by
   refine ⟨encryptedHeader, rfl, ?_⟩
   native_decide
 
-lemma Black_admits_encrypted_envelope_at_INPUT :
+lemma black_admits_encrypted_envelope_at_input :
     PacketProcessing.InputAdmitted records.configuration (encryptedEntry plaintextBlack.entryIface) := by
   refine ⟨encryptedHeader, rfl, ?_⟩
   native_decide
 
-lemma erspan_rejects_encrypted_envelope_at_INPUT :
+lemma erspan_rejects_encrypted_envelope_at_input :
     ¬ PacketProcessing.InputAdmitted records.configuration (encryptedEntry erspanIface) := by
   rintro ⟨header, visible, admitted⟩
   have same : header = encryptedHeader := Option.some.inj visible.symm
   subst header
   exact (by native_decide :
-    ¬ DataPlaneForwarding.accepts (records.configuration.ip.inputRules erspanIface)
+    ¬ PacketPolicy.AclAllows (records.configuration.ip.inputRules erspanIface)
       (records.configuration.ip.inputFallback erspanIface)
       (PacketProcessing.inputPacket records.configuration (encryptedEntry erspanIface) encryptedHeader)) admitted
 
@@ -138,38 +137,38 @@ lemma erspan_remote_envelope_has_no_native_arrival (base : Deployment) :
   unfold Deployment.LocalSourceAddress
   unfold_check_parameters; native_decide
 
-lemma Black_envelope_has_native_arrival (base : Deployment) :
+lemma black_envelope_has_native_arrival (base : Deployment) :
     (records.deployment base).DeviceArrivalEligible records.inventory (encryptedEntry plaintextBlack.entryIface) := by
   apply Or.inl
   native_decide
 
 lemma invented_loopback_decryption_and_route :
-    MultiProtocolForwarding.Step records.configuration (encryptedEntry loopbackIface) .decryptIPsec (decryptedEntry loopbackIface) ∧
-      MultiProtocolForwarding.Step records.configuration (decryptedEntry loopbackIface) .route (decryptedRouted loopbackIface) := by
+    MultiProtocolForwarding.TunnelForwardingStep records.configuration (encryptedEntry loopbackIface) .decryptIPsec (decryptedEntry loopbackIface) ∧
+      MultiProtocolForwarding.TunnelForwardingStep records.configuration (decryptedEntry loopbackIface) .route (decryptedRouted loopbackIface) := by
   refine ⟨configured_outer_decryption loopbackIface (by native_decide)
     (by native_decide), ?_⟩
   exact .route (decryptedRoute loopbackIface) rfl rfl (by native_decide) rfl
 
-lemma actual_Black_decryption_and_route :
-    MultiProtocolForwarding.Step records.configuration (encryptedEntry plaintextBlack.entryIface) .decryptIPsec
+lemma actual_black_decryption_and_route :
+    MultiProtocolForwarding.TunnelForwardingStep records.configuration (encryptedEntry plaintextBlack.entryIface) .decryptIPsec
         (decryptedEntry plaintextBlack.entryIface) ∧
-      MultiProtocolForwarding.Step records.configuration (decryptedEntry plaintextBlack.entryIface) .route
+      MultiProtocolForwarding.TunnelForwardingStep records.configuration (decryptedEntry plaintextBlack.entryIface) .route
         (decryptedRouted plaintextBlack.entryIface) := by
   refine ⟨configured_outer_decryption plaintextBlack.entryIface (by native_decide)
     (by native_decide), ?_⟩
   exact .route (decryptedRoute plaintextBlack.entryIface) rfl rfl (by native_decide) rfl
 
-lemma actual_Black_context_satisfies_ingress_prerequisites (base : Deployment) :
+lemma actual_black_context_satisfies_ingress_prerequisites (base : Deployment) :
     (records.deployment base).ContextIngressEligible (decryptedContext plaintextBlack.entryIface)
       ((records.deployment base).Observe ((decryptedContext plaintextBlack.entryIface).Packet records.configuration)) := by
   refine ⟨records.inventory, rfl, encrypted_entry_headers_are_coherent _, fun _ =>
-    Black_envelope_has_native_arrival base, ?_⟩
+    black_envelope_has_native_arrival base, ?_⟩
   intro _ _
-  exact Or.inl ⟨decryptedEntry plaintextBlack.entryIface, actual_Black_decryption_and_route.1,
-    actual_Black_decryption_and_route.2, Black_admits_encrypted_envelope_at_INPUT⟩
+  exact Or.inl ⟨decryptedEntry plaintextBlack.entryIface, actual_black_decryption_and_route.1,
+    actual_black_decryption_and_route.2, black_admits_encrypted_envelope_at_input⟩
 
 
-def inconsistentHeaderEntry : MultiProtocolForwarding.State :=
+def inconsistentHeaderEntry : MultiProtocolForwarding.TunnelForwardingState :=
   { plaintextBlack.entry with frame := { plaintextBlack.entry.frame with
       activeHeader := some { plaintextBlack.header with source := plaintextBlack.header.source + 1 } } }
 

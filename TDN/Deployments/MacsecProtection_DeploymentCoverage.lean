@@ -78,7 +78,7 @@ lemma profile_static_bindings (records : ProfileRecords) (supported : SupportedP
   · have checked : ∀ iface ∈ records.macIfaces,
         ∀ association ∈ iface.transmitAssociation.toList,
         ∃ tunnel ∈ records.tunnels,
-          tunnel.id = records.macsecTunnel association ∧ tunnel.mechanism = .macsec ∧
+          tunnel.id = records.macsecTunnel association ∧ tunnel.protocol = .macsec ∧
           tunnel.keyContext = records.prototype.keyName association.keyGeneration ∧
           tunnel.sender = records.componentName (records.configuration.ip.owner iface.physicalIface) ∧
           ∀ peer ∈ records.macIfaces,
@@ -95,7 +95,7 @@ def ProfileRecords.sampleRequest (records : ProfileRecords) (index : Nat) : Pack
     application := [7, 8], networkHeaderBytes := 14, transportHeaderBytes := 0
     mode := .datagram false }
 
-def sampleDatagram : PacketSource.Datagram :=
+def sampleDatagram : PacketSource.EncodedDatagram :=
   (PacketSource.encodeSourceEthernet ⟨1, 2, 34997, []⟩ [7, 8]).asWhole
 
 lemma profile_network_sources (records : ProfileRecords) (supported : SupportedProfile records) :

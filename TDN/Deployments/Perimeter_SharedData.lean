@@ -4,7 +4,6 @@ namespace TDN.Deployments.Perimeter_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 load_network_records capturedComponents : List Device from "../../data/evidence/continuation/BoundarySharedFields.json" ["components"]
 
@@ -18,11 +17,11 @@ load_network_records capturedPolicies : List InterfacePolicy from "../../data/ev
 
 load_network_records capturedTunnels : List Tunnel from "../../data/evidence/continuation/BoundarySharedFields.json" ["tunnels"]
 
-load_network_records capturedPairs : List InnerIPsecPair from "../../data/evidence/continuation/BoundarySharedFields.json" ["pairs"]
+load_network_records capturedPairs : List InnerIpsecPair from "../../data/evidence/continuation/BoundarySharedFields.json" ["pairs"]
 
 load_network_records capturedMasks : List OwnerMask from "../../data/evidence/continuation/BoundarySharedFields.json" ["masks"]
 
-load_network_records capturedIpsecSizes : List PacketProcessing.IPsecSizeBinding from "../../data/evidence/continuation/BoundarySharedFields.json" ["ipsecSizes"]
+load_network_records capturedIpsecSizes : List PacketProcessing.IpsecSizeBinding from "../../data/evidence/continuation/BoundarySharedFields.json" ["ipsecSizes"]
 
 load_network_records capturedNativeDevices : List DataPlaneForwarding.DeviceData from "../../data/evidence/continuation/BoundarySharedFields.json" ["nativeDevices"]
 

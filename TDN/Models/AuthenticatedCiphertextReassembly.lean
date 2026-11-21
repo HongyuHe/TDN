@@ -1,6 +1,6 @@
 import TDN.Models.ReassemblyBufferDomainSafety
 
-namespace TDN.AuthenticatedAssembly
+namespace TDN.AuthenticatedReassembly
 
 structure Context (Secret Principal Epoch : Type) where
   secret : Secret
@@ -36,12 +36,12 @@ def Matches {Key Producer Wire Annotation Plain : Type}
   compatible message.context decoded.context ∧ message.wire = decoded.wire ∧
     project message.annotation = decoded.plaintext
 
-structure State (Key Producer Header Wire Annotation Plain : Type) where
+structure ReassemblyState (Key Producer Header Wire Annotation Plain : Type) where
   published : List (Message Key Producer Wire Annotation)
-  fragments : List (Fragmentation.Fragment Header Wire)
+  fragments : List (Fragmentation.PayloadFragment Header Wire)
   accepted : List (Decoded Key Wire Plain)
 
-inductive Action where
+inductive ReassemblyAction where
   | publish | receive | discard | clear | accept
 
 def AuthenticationSound {Key Producer Wire Annotation Plain : Type}
@@ -51,26 +51,26 @@ def AuthenticationSound {Key Producer Wire Annotation Plain : Type}
   ∀ published decoded, authenticates published decoded →
     ∃ message ∈ published, Matches compatible project message decoded
 
-inductive Step {Key Producer Header Wire Annotation Plain : Type} [DecidableEq Header]
+inductive ReassemblyStep {Key Producer Header Wire Annotation Plain : Type} [DecidableEq Header]
     (produces : Message Key Producer Wire Annotation → Prop)
     (authenticates : List (Message Key Producer Wire Annotation) →
       Decoded Key Wire Plain → Prop) :
-    State Key Producer Header Wire Annotation Plain → Action →
-      State Key Producer Header Wire Annotation Plain → Prop where
+    ReassemblyState Key Producer Header Wire Annotation Plain → ReassemblyAction →
+      ReassemblyState Key Producer Header Wire Annotation Plain → Prop where
   | publish {before message} (produced : produces message) :
-      Step produces authenticates before .publish
+      ReassemblyStep produces authenticates before .publish
         { before with published := before.published ++ [message] }
   | receive {before fragment} :
-      Step produces authenticates before .receive
+      ReassemblyStep produces authenticates before .receive
         { before with fragments := before.fragments ++ [fragment] }
   | discard {before retained} (subset : retained.Sublist before.fragments) :
-      Step produces authenticates before .discard { before with fragments := retained }
+      ReassemblyStep produces authenticates before .discard { before with fragments := retained }
   | clear {before} :
-      Step produces authenticates before .clear { before with fragments := [] }
+      ReassemblyStep produces authenticates before .clear { before with fragments := [] }
   | accept {before header packet context plaintext}
       (assembled : ReassemblyOrigins.assemble header before.fragments = some packet)
       (verified : authenticates before.published ⟨context, packet.bytes, plaintext⟩) :
-      Step produces authenticates before .accept
+      ReassemblyStep produces authenticates before .accept
         { before with fragments := []
                       accepted := before.accepted ++ [⟨context, packet.bytes, plaintext⟩] }
 
@@ -78,13 +78,13 @@ def system {Key Producer Header Wire Annotation Plain : Type} [DecidableEq Heade
     (produces : Message Key Producer Wire Annotation → Prop)
     (authenticates : List (Message Key Producer Wire Annotation) →
       Decoded Key Wire Plain → Prop) :
-    Cslib.LTS (State Key Producer Header Wire Annotation Plain) Action :=
-  ⟨Step produces authenticates⟩
+    Cslib.LTS (ReassemblyState Key Producer Header Wire Annotation Plain) ReassemblyAction :=
+  ⟨ReassemblyStep produces authenticates⟩
 
 def Safe {Key Producer Header Wire Annotation Plain : Type}
     (compatible : Key → Key → Prop) (project : Annotation → Plain)
     (property : Message Key Producer Wire Annotation → Prop)
-    (state : State Key Producer Header Wire Annotation Plain) : Prop :=
+    (state : ReassemblyState Key Producer Header Wire Annotation Plain) : Prop :=
   (∀ message ∈ state.published, property message) ∧
   (∀ decoded ∈ state.accepted, ∃ message ∈ state.published,
     Matches compatible project message decoded)
@@ -134,13 +134,13 @@ theorem all_accepted_messages_inherit_publication_property
     (sound : AuthenticationSound compatible project authenticates)
     (property : Message Key Producer Wire Annotation → Prop)
     (publication : ∀ message, produces message → property message)
-    {after : State Key Producer Header Wire Annotation Plain} {actions : List Action}
+    {after : ReassemblyState Key Producer Header Wire Annotation Plain} {actions : List ReassemblyAction}
     (run : (system produces authenticates).MTr ⟨[], [], []⟩ actions after) :
     ∀ decoded ∈ after.accepted,
       (∃ message ∈ after.published, Matches compatible project message decoded) ∧
       (∀ message ∈ after.published, Matches compatible project message decoded → property message) := by
   have initial : Safe compatible project property
-      (⟨[], [], []⟩ : State Key Producer Header Wire Annotation Plain) := by
+      (⟨[], [], []⟩ : ReassemblyState Key Producer Header Wire Annotation Plain) := by
     simp [Safe]
   have preserved := Cslib.LTS.mtrInv_of_trInv
     (local_publication_preserves produces authenticates compatible project sound property publication)
@@ -157,7 +157,7 @@ theorem accepted_messages_from_seeded_history
     (sound : AuthenticationSound compatible project authenticates)
     (property : Message Key Producer Wire Annotation → Prop)
     (publication : ∀ message, produces message → property message)
-    {before after : State Key Producer Header Wire Annotation Plain} {actions : List Action}
+    {before after : ReassemblyState Key Producer Header Wire Annotation Plain} {actions : List ReassemblyAction}
     (initial : Safe compatible project property before)
     (run : (system produces authenticates).MTr before actions after) :
     ∀ decoded ∈ after.accepted,
@@ -174,7 +174,7 @@ theorem published_messages_were_produced
     (produces : Message Key Producer Wire Annotation → Prop)
     (authenticates : List (Message Key Producer Wire Annotation) →
       Decoded Key Wire Plain → Prop)
-    {after : State Key Producer Header Wire Annotation Plain} {actions : List Action}
+    {after : ReassemblyState Key Producer Header Wire Annotation Plain} {actions : List ReassemblyAction}
     (run : (system produces authenticates).MTr ⟨[], [], []⟩ actions after) :
     ∀ message ∈ after.published, produces message := by
   have preserved : (system (Header := Header) produces authenticates).TrInv
@@ -194,4 +194,4 @@ theorem published_messages_were_produced
     | accept => exact old
   exact Cslib.LTS.mtrInv_of_trInv preserved _ actions after run (by simp)
 
-end TDN.AuthenticatedAssembly
+end TDN.AuthenticatedReassembly

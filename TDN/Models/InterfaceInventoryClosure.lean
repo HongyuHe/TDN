@@ -2,7 +2,7 @@ import TDN.Models.MultiProtocolForwarding
 
 namespace TDN.MultiProtocolForwarding
 
-structure IfaceConditions (configuration : Config) (ifaces : List Nat) : Prop where
+structure IfaceConditions (configuration : TunnelForwardingModel) (ifaces : List Nat) : Prop where
   routeTargets : ∀ route ∈ configuration.ip.routes, route.egress ∈ ifaces
   physicalEndpoints : ∀ first second, configuration.physicalLink first second →
     first ∈ ifaces ∧ second ∈ ifaces
@@ -13,10 +13,10 @@ structure IfaceConditions (configuration : Config) (ifaces : List Nat) : Prop wh
   carrierEndpoints : ∀ carrier ∈ configuration.carriers,
     carrier.virtualIface ∈ ifaces ∧ carrier.routingIface ∈ ifaces
 
-lemma step_preserves_iface_inventory {configuration : Config} {ifaces : List Nat}
+lemma step_preserves_iface_inventory {configuration : TunnelForwardingModel} {ifaces : List Nat}
     (conditions : IfaceConditions configuration ifaces)
-    {before after : State} {action : Action}
-    (step : Step configuration before action after) (present : before.iface ∈ ifaces) :
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep configuration before action after) (present : before.iface ∈ ifaces) :
     after.iface ∈ ifaces := by
   cases step with
   | receive => exact present
@@ -45,9 +45,9 @@ lemma step_preserves_iface_inventory {configuration : Config} {ifaces : List Nat
   | decapsulate iface _ configured _ _ _ => exact (conditions.carrierEndpoints iface configured).1
   | drop => exact present
 
-theorem all_traces_stay_in_iface_inventory {configuration : Config} {ifaces : List Nat}
+theorem all_traces_stay_in_iface_inventory {configuration : TunnelForwardingModel} {ifaces : List Nat}
     (conditions : IfaceConditions configuration ifaces)
-    {before after : State} {actions : List Action}
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction}
     (run : (lts configuration).MTr before actions after) (present : before.iface ∈ ifaces) :
     after.iface ∈ ifaces := by
   have preserved : (lts configuration).TrInv (fun state => state.iface ∈ ifaces) :=

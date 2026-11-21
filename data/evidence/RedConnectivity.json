@@ -1,0 +1,1566 @@
+{
+  "manifestSha256": "b89c7d67ef13d5ffebac31489d0ac7e8932dc35ea1d0278a7beab5845746f32a",
+  "profiles": {
+    "baseline": {
+      "configuredPeers": [
+        {
+          "peerInner": "V31B_I_B1",
+          "peerNetwork": "V31B_I_B1/red-network",
+          "sourceInner": "V31B_I_A1",
+          "sourceNetwork": "V31B_I_A1/red-network"
+        },
+        {
+          "peerInner": "V31B_I_B2",
+          "peerNetwork": "V31B_I_B2/red-network",
+          "sourceInner": "V31B_I_A2",
+          "sourceNetwork": "V31B_I_A2/red-network"
+        },
+        {
+          "peerInner": "V31B_I_A1",
+          "peerNetwork": "V31B_I_A1/red-network",
+          "sourceInner": "V31B_I_B1",
+          "sourceNetwork": "V31B_I_B1/red-network"
+        },
+        {
+          "peerInner": "V31B_I_A2",
+          "peerNetwork": "V31B_I_A2/red-network",
+          "sourceInner": "V31B_I_B2",
+          "sourceNetwork": "V31B_I_B2/red-network"
+        }
+      ],
+      "endpoints": [
+        {
+          "assignedLevel": {
+            "classification": "S1",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          },
+          "declaredInner": "V31B_I_A1",
+          "host": "V31B_R_A1",
+          "link": "link-000",
+          "network": "V31B_I_A1/red-network",
+          "observedInner": "V31B_I_A1",
+          "profileLevel": "S1",
+          "site": "A"
+        },
+        {
+          "assignedLevel": {
+            "classification": "S2",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          },
+          "declaredInner": "V31B_I_A2",
+          "host": "V31B_R_A2",
+          "link": "link-006",
+          "network": "V31B_I_A2/red-network",
+          "observedInner": "V31B_I_A2",
+          "profileLevel": "S2",
+          "site": "A"
+        },
+        {
+          "assignedLevel": {
+            "classification": "S1",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          },
+          "declaredInner": "V31B_I_B1",
+          "host": "V31B_R_B1",
+          "link": "link-012",
+          "network": "V31B_I_B1/red-network",
+          "observedInner": "V31B_I_B1",
+          "profileLevel": "S1",
+          "site": "B"
+        },
+        {
+          "assignedLevel": {
+            "classification": "S2",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          },
+          "declaredInner": "V31B_I_B2",
+          "host": "V31B_R_B2",
+          "link": "link-018",
+          "network": "V31B_I_B2/red-network",
+          "observedInner": "V31B_I_B2",
+          "profileLevel": "S2",
+          "site": "B"
+        }
+      ],
+      "placements": [
+        {
+          "device": "V31B_BLACK",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00002",
+            "obs-00081"
+          ],
+          "role": "transport",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_GF_A",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00004",
+            "obs-00100"
+          ],
+          "role": "gray-firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_GF_B",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00026",
+            "obs-00285"
+          ],
+          "role": "gray-firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_G_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00010",
+            "obs-00146"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_G_A2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00020",
+            "obs-00230"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_G_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00032",
+            "obs-00331"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_G_B2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00042",
+            "obs-00415"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_I_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00008",
+            "obs-00129"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_I_A2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00018",
+            "obs-00213"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_I_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00030",
+            "obs-00314"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_I_B2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00040",
+            "obs-00398"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_OF_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00014",
+            "obs-00182"
+          ],
+          "role": "firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_OF_A2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00024",
+            "obs-00266"
+          ],
+          "role": "firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_OF_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00036",
+            "obs-00367"
+          ],
+          "role": "firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_OF_B2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00046",
+            "obs-00451"
+          ],
+          "role": "firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_O_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00012",
+            "obs-00165"
+          ],
+          "role": "outer",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_O_A2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00022",
+            "obs-00249"
+          ],
+          "role": "outer",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_O_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00034",
+            "obs-00350"
+          ],
+          "role": "outer",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_O_B2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00044",
+            "obs-00434"
+          ],
+          "role": "outer",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_R_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00006",
+            "obs-00117"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_R_A2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00016",
+            "obs-00201"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_R_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00028",
+            "obs-00302"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31B_R_B2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00038",
+            "obs-00386"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        }
+      ],
+      "probes": [
+        {
+          "destination": "V31B_I_A2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00460",
+          "observations": [
+            "obs-00460"
+          ],
+          "observed": "no_reply",
+          "source": "V31B_I_A1/red-network"
+        },
+        {
+          "destination": "V31B_I_B1/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00461",
+          "observations": [
+            "obs-00461"
+          ],
+          "observed": "delivered",
+          "source": "V31B_I_A1/red-network"
+        },
+        {
+          "destination": "V31B_I_B2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00462",
+          "observations": [
+            "obs-00462"
+          ],
+          "observed": "no_reply",
+          "source": "V31B_I_A1/red-network"
+        },
+        {
+          "destination": "V31B_I_A1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00463",
+          "observations": [
+            "obs-00463"
+          ],
+          "observed": "no_reply",
+          "source": "V31B_I_A2/red-network"
+        },
+        {
+          "destination": "V31B_I_B1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00464",
+          "observations": [
+            "obs-00464"
+          ],
+          "observed": "no_reply",
+          "source": "V31B_I_A2/red-network"
+        },
+        {
+          "destination": "V31B_I_B2/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00465",
+          "observations": [
+            "obs-00465"
+          ],
+          "observed": "delivered",
+          "source": "V31B_I_A2/red-network"
+        },
+        {
+          "destination": "V31B_I_A1/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00466",
+          "observations": [
+            "obs-00466"
+          ],
+          "observed": "delivered",
+          "source": "V31B_I_B1/red-network"
+        },
+        {
+          "destination": "V31B_I_A2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00467",
+          "observations": [
+            "obs-00467"
+          ],
+          "observed": "no_reply",
+          "source": "V31B_I_B1/red-network"
+        },
+        {
+          "destination": "V31B_I_B2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00468",
+          "observations": [
+            "obs-00468"
+          ],
+          "observed": "no_reply",
+          "source": "V31B_I_B1/red-network"
+        },
+        {
+          "destination": "V31B_I_A1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00469",
+          "observations": [
+            "obs-00469"
+          ],
+          "observed": "no_reply",
+          "source": "V31B_I_B2/red-network"
+        },
+        {
+          "destination": "V31B_I_A2/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00470",
+          "observations": [
+            "obs-00470"
+          ],
+          "observed": "delivered",
+          "source": "V31B_I_B2/red-network"
+        },
+        {
+          "destination": "V31B_I_B1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00471",
+          "observations": [
+            "obs-00471"
+          ],
+          "observed": "no_reply",
+          "source": "V31B_I_B2/red-network"
+        }
+      ],
+      "profileSha256": "0602c4db84817aa71bd4f342772e158b5ad02196863f389cde3074d2566b6297",
+      "snapshotSha256": "4ddeb420a523943ff35e16c0b0bdd8f368ee1a9eeada0fb9ba45d4827f29e142",
+      "solution": "native-v31b"
+    },
+    "shared": {
+      "configuredPeers": [
+        {
+          "peerInner": "V31F_I_B1",
+          "peerNetwork": "V31F_I_B1/red-network",
+          "sourceInner": "V31F_I_A1",
+          "sourceNetwork": "V31F_I_A1/red-network"
+        },
+        {
+          "peerInner": "V31F_I_B2",
+          "peerNetwork": "V31F_I_B2/red-network",
+          "sourceInner": "V31F_I_A2",
+          "sourceNetwork": "V31F_I_A2/red-network"
+        },
+        {
+          "peerInner": "V31F_I_B3",
+          "peerNetwork": "V31F_I_B3/red-network",
+          "sourceInner": "V31F_I_A3",
+          "sourceNetwork": "V31F_I_A3/red-network"
+        },
+        {
+          "peerInner": "V31F_I_B4",
+          "peerNetwork": "V31F_I_B4/red-network",
+          "sourceInner": "V31F_I_A4",
+          "sourceNetwork": "V31F_I_A4/red-network"
+        },
+        {
+          "peerInner": "V31F_I_A1",
+          "peerNetwork": "V31F_I_A1/red-network",
+          "sourceInner": "V31F_I_B1",
+          "sourceNetwork": "V31F_I_B1/red-network"
+        },
+        {
+          "peerInner": "V31F_I_A2",
+          "peerNetwork": "V31F_I_A2/red-network",
+          "sourceInner": "V31F_I_B2",
+          "sourceNetwork": "V31F_I_B2/red-network"
+        },
+        {
+          "peerInner": "V31F_I_A3",
+          "peerNetwork": "V31F_I_A3/red-network",
+          "sourceInner": "V31F_I_B3",
+          "sourceNetwork": "V31F_I_B3/red-network"
+        },
+        {
+          "peerInner": "V31F_I_A4",
+          "peerNetwork": "V31F_I_A4/red-network",
+          "sourceInner": "V31F_I_B4",
+          "sourceNetwork": "V31F_I_B4/red-network"
+        }
+      ],
+      "endpoints": [
+        {
+          "assignedLevel": {
+            "classification": "top_secret",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          },
+          "declaredInner": "V31F_I_A1",
+          "host": "V31F_R_A1",
+          "link": "link-000",
+          "network": "V31F_I_A1/red-network",
+          "observedInner": "V31F_I_A1",
+          "profileLevel": "TOP_SECRET",
+          "site": "A"
+        },
+        {
+          "assignedLevel": {
+            "classification": "secret",
+            "compartments": [],
+            "dissemination": [
+              "US_ONLY"
+            ],
+            "otherControls": []
+          },
+          "declaredInner": "V31F_I_A2",
+          "host": "V31F_R_A2",
+          "link": "link-006",
+          "network": "V31F_I_A2/red-network",
+          "observedInner": "V31F_I_A2",
+          "profileLevel": "SECRET_US_ONLY",
+          "site": "A"
+        },
+        {
+          "assignedLevel": {
+            "classification": "secret",
+            "compartments": [],
+            "dissemination": [
+              "COALITION"
+            ],
+            "otherControls": []
+          },
+          "declaredInner": "V31F_I_A3",
+          "host": "V31F_R_A3",
+          "link": "link-020",
+          "network": "V31F_I_A3/red-network",
+          "observedInner": "V31F_I_A3",
+          "profileLevel": "SECRET_COALITION",
+          "site": "A"
+        },
+        {
+          "assignedLevel": {
+            "classification": "unclassified",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          },
+          "declaredInner": "V31F_I_A4",
+          "host": "V31F_R_A4",
+          "link": "link-028",
+          "network": "V31F_I_A4/red-network",
+          "observedInner": "V31F_I_A4",
+          "profileLevel": "UNCLASSIFIED",
+          "site": "A"
+        },
+        {
+          "assignedLevel": {
+            "classification": "top_secret",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          },
+          "declaredInner": "V31F_I_B1",
+          "host": "V31F_R_B1",
+          "link": "link-010",
+          "network": "V31F_I_B1/red-network",
+          "observedInner": "V31F_I_B1",
+          "profileLevel": "TOP_SECRET",
+          "site": "B"
+        },
+        {
+          "assignedLevel": {
+            "classification": "secret",
+            "compartments": [],
+            "dissemination": [
+              "US_ONLY"
+            ],
+            "otherControls": []
+          },
+          "declaredInner": "V31F_I_B2",
+          "host": "V31F_R_B2",
+          "link": "link-016",
+          "network": "V31F_I_B2/red-network",
+          "observedInner": "V31F_I_B2",
+          "profileLevel": "SECRET_US_ONLY",
+          "site": "B"
+        },
+        {
+          "assignedLevel": {
+            "classification": "secret",
+            "compartments": [],
+            "dissemination": [
+              "COALITION"
+            ],
+            "otherControls": []
+          },
+          "declaredInner": "V31F_I_B3",
+          "host": "V31F_R_B3",
+          "link": "link-024",
+          "network": "V31F_I_B3/red-network",
+          "observedInner": "V31F_I_B3",
+          "profileLevel": "SECRET_COALITION",
+          "site": "B"
+        },
+        {
+          "assignedLevel": {
+            "classification": "unclassified",
+            "compartments": [],
+            "dissemination": [],
+            "otherControls": []
+          },
+          "declaredInner": "V31F_I_B4",
+          "host": "V31F_R_B4",
+          "link": "link-032",
+          "network": "V31F_I_B4/red-network",
+          "observedInner": "V31F_I_B4",
+          "profileLevel": "UNCLASSIFIED",
+          "site": "B"
+        }
+      ],
+      "placements": [
+        {
+          "device": "V31F_BLACK",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00002",
+            "obs-00105"
+          ],
+          "role": "transport",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_GF_A",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00004",
+            "obs-00124"
+          ],
+          "role": "gray-firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_GF_B",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00022",
+            "obs-00273"
+          ],
+          "role": "gray-firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_G_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00010",
+            "obs-00170"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_G_A2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00020",
+            "obs-00254"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_G_A3",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00044",
+            "obs-00451"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_G_A4",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00056",
+            "obs-00547"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_G_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00028",
+            "obs-00319"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_G_B2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00038",
+            "obs-00403"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_G_B3",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00050",
+            "obs-00499"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_G_B4",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:c0785b89babe2fc8c3a09192005b1ff56b025dcc2332820c4709fa855829dbd5",
+          "observations": [
+            "obs-00062",
+            "obs-00595"
+          ],
+          "role": "switch",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_I_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00008",
+            "obs-00153"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_I_A2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00018",
+            "obs-00237"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_I_A3",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00042",
+            "obs-00434"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_I_A4",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00054",
+            "obs-00530"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_I_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00026",
+            "obs-00302"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_I_B2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00036",
+            "obs-00386"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_I_B3",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00048",
+            "obs-00482"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_I_B4",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00060",
+            "obs-00578"
+          ],
+          "role": "inner",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_OF_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00014",
+            "obs-00206"
+          ],
+          "role": "firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_OF_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:ee85d675b0bc76e4474ca3ea1ccd9a1fc7cb8a63b16882782d552e39bf28475d",
+          "observations": [
+            "obs-00032",
+            "obs-00355"
+          ],
+          "role": "firewall",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_O_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00012",
+            "obs-00189"
+          ],
+          "role": "outer",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_O_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00030",
+            "obs-00338"
+          ],
+          "role": "outer",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_R_A1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00006",
+            "obs-00141"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_R_A2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00016",
+            "obs-00225"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_R_A3",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00040",
+            "obs-00422"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_R_A4",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00052",
+            "obs-00518"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_R_B1",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00024",
+            "obs-00290"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_R_B2",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00034",
+            "obs-00374"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_R_B3",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00046",
+            "obs-00470"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        },
+        {
+          "device": "V31F_R_B4",
+          "host": "node-0.twinet-msc.netsyn-pg0.clemson.cloudlab.us",
+          "image": "sha256:5eeeb318938d7796b36e10b5914a2b60d6e694667c99fdbfca3f6997207d6cbd",
+          "observations": [
+            "obs-00058",
+            "obs-00566"
+          ],
+          "role": "host",
+          "virtualization": "container-shared-kernel"
+        }
+      ],
+      "probes": [
+        {
+          "destination": "V31F_I_A2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00604",
+          "observations": [
+            "obs-00604"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A1/red-network"
+        },
+        {
+          "destination": "V31F_I_B1/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00605",
+          "observations": [
+            "obs-00605"
+          ],
+          "observed": "delivered",
+          "source": "V31F_I_A1/red-network"
+        },
+        {
+          "destination": "V31F_I_B2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00606",
+          "observations": [
+            "obs-00606"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A1/red-network"
+        },
+        {
+          "destination": "V31F_I_A3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00607",
+          "observations": [
+            "obs-00607"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A1/red-network"
+        },
+        {
+          "destination": "V31F_I_B3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00608",
+          "observations": [
+            "obs-00608"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A1/red-network"
+        },
+        {
+          "destination": "V31F_I_A4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00609",
+          "observations": [
+            "obs-00609"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A1/red-network"
+        },
+        {
+          "destination": "V31F_I_B4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00610",
+          "observations": [
+            "obs-00610"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A1/red-network"
+        },
+        {
+          "destination": "V31F_I_A1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00611",
+          "observations": [
+            "obs-00611"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A2/red-network"
+        },
+        {
+          "destination": "V31F_I_B1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00612",
+          "observations": [
+            "obs-00612"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A2/red-network"
+        },
+        {
+          "destination": "V31F_I_B2/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00613",
+          "observations": [
+            "obs-00613"
+          ],
+          "observed": "delivered",
+          "source": "V31F_I_A2/red-network"
+        },
+        {
+          "destination": "V31F_I_A3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00614",
+          "observations": [
+            "obs-00614"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A2/red-network"
+        },
+        {
+          "destination": "V31F_I_B3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00615",
+          "observations": [
+            "obs-00615"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A2/red-network"
+        },
+        {
+          "destination": "V31F_I_A4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00616",
+          "observations": [
+            "obs-00616"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A2/red-network"
+        },
+        {
+          "destination": "V31F_I_B4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00617",
+          "observations": [
+            "obs-00617"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A2/red-network"
+        },
+        {
+          "destination": "V31F_I_A1/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00618",
+          "observations": [
+            "obs-00618"
+          ],
+          "observed": "delivered",
+          "source": "V31F_I_B1/red-network"
+        },
+        {
+          "destination": "V31F_I_A2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00619",
+          "observations": [
+            "obs-00619"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B1/red-network"
+        },
+        {
+          "destination": "V31F_I_B2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00620",
+          "observations": [
+            "obs-00620"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B1/red-network"
+        },
+        {
+          "destination": "V31F_I_A3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00621",
+          "observations": [
+            "obs-00621"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B1/red-network"
+        },
+        {
+          "destination": "V31F_I_B3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00622",
+          "observations": [
+            "obs-00622"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B1/red-network"
+        },
+        {
+          "destination": "V31F_I_A4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00623",
+          "observations": [
+            "obs-00623"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B1/red-network"
+        },
+        {
+          "destination": "V31F_I_B4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00624",
+          "observations": [
+            "obs-00624"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B1/red-network"
+        },
+        {
+          "destination": "V31F_I_A1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00625",
+          "observations": [
+            "obs-00625"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B2/red-network"
+        },
+        {
+          "destination": "V31F_I_A2/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00626",
+          "observations": [
+            "obs-00626"
+          ],
+          "observed": "delivered",
+          "source": "V31F_I_B2/red-network"
+        },
+        {
+          "destination": "V31F_I_B1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00627",
+          "observations": [
+            "obs-00627"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B2/red-network"
+        },
+        {
+          "destination": "V31F_I_A3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00628",
+          "observations": [
+            "obs-00628"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B2/red-network"
+        },
+        {
+          "destination": "V31F_I_B3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00629",
+          "observations": [
+            "obs-00629"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B2/red-network"
+        },
+        {
+          "destination": "V31F_I_A4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00630",
+          "observations": [
+            "obs-00630"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B2/red-network"
+        },
+        {
+          "destination": "V31F_I_B4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00631",
+          "observations": [
+            "obs-00631"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B2/red-network"
+        },
+        {
+          "destination": "V31F_I_A1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00632",
+          "observations": [
+            "obs-00632"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A3/red-network"
+        },
+        {
+          "destination": "V31F_I_A2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00633",
+          "observations": [
+            "obs-00633"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A3/red-network"
+        },
+        {
+          "destination": "V31F_I_B1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00634",
+          "observations": [
+            "obs-00634"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A3/red-network"
+        },
+        {
+          "destination": "V31F_I_B2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00635",
+          "observations": [
+            "obs-00635"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A3/red-network"
+        },
+        {
+          "destination": "V31F_I_B3/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00636",
+          "observations": [
+            "obs-00636"
+          ],
+          "observed": "delivered",
+          "source": "V31F_I_A3/red-network"
+        },
+        {
+          "destination": "V31F_I_A4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00637",
+          "observations": [
+            "obs-00637"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A3/red-network"
+        },
+        {
+          "destination": "V31F_I_B4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00638",
+          "observations": [
+            "obs-00638"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A3/red-network"
+        },
+        {
+          "destination": "V31F_I_A1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00639",
+          "observations": [
+            "obs-00639"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B3/red-network"
+        },
+        {
+          "destination": "V31F_I_A2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00640",
+          "observations": [
+            "obs-00640"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B3/red-network"
+        },
+        {
+          "destination": "V31F_I_B1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00641",
+          "observations": [
+            "obs-00641"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B3/red-network"
+        },
+        {
+          "destination": "V31F_I_B2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00642",
+          "observations": [
+            "obs-00642"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B3/red-network"
+        },
+        {
+          "destination": "V31F_I_A3/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00643",
+          "observations": [
+            "obs-00643"
+          ],
+          "observed": "delivered",
+          "source": "V31F_I_B3/red-network"
+        },
+        {
+          "destination": "V31F_I_A4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00644",
+          "observations": [
+            "obs-00644"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B3/red-network"
+        },
+        {
+          "destination": "V31F_I_B4/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00645",
+          "observations": [
+            "obs-00645"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B3/red-network"
+        },
+        {
+          "destination": "V31F_I_A1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00646",
+          "observations": [
+            "obs-00646"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A4/red-network"
+        },
+        {
+          "destination": "V31F_I_A2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00647",
+          "observations": [
+            "obs-00647"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A4/red-network"
+        },
+        {
+          "destination": "V31F_I_B1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00648",
+          "observations": [
+            "obs-00648"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A4/red-network"
+        },
+        {
+          "destination": "V31F_I_B2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00649",
+          "observations": [
+            "obs-00649"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A4/red-network"
+        },
+        {
+          "destination": "V31F_I_A3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00650",
+          "observations": [
+            "obs-00650"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A4/red-network"
+        },
+        {
+          "destination": "V31F_I_B3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00651",
+          "observations": [
+            "obs-00651"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_A4/red-network"
+        },
+        {
+          "destination": "V31F_I_B4/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00652",
+          "observations": [
+            "obs-00652"
+          ],
+          "observed": "delivered",
+          "source": "V31F_I_A4/red-network"
+        },
+        {
+          "destination": "V31F_I_A1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00653",
+          "observations": [
+            "obs-00653"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B4/red-network"
+        },
+        {
+          "destination": "V31F_I_A2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00654",
+          "observations": [
+            "obs-00654"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B4/red-network"
+        },
+        {
+          "destination": "V31F_I_B1/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00655",
+          "observations": [
+            "obs-00655"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B4/red-network"
+        },
+        {
+          "destination": "V31F_I_B2/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00656",
+          "observations": [
+            "obs-00656"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B4/red-network"
+        },
+        {
+          "destination": "V31F_I_A3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00657",
+          "observations": [
+            "obs-00657"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B4/red-network"
+        },
+        {
+          "destination": "V31F_I_B3/red-network",
+          "expected": "no_reply",
+          "id": "probe-obs-00658",
+          "observations": [
+            "obs-00658"
+          ],
+          "observed": "no_reply",
+          "source": "V31F_I_B4/red-network"
+        },
+        {
+          "destination": "V31F_I_A4/red-network",
+          "expected": "delivered",
+          "id": "probe-obs-00659",
+          "observations": [
+            "obs-00659"
+          ],
+          "observed": "delivered",
+          "source": "V31F_I_B4/red-network"
+        }
+      ],
+      "profileSha256": "20b0b43e75b0c5e9f59f6ec57882c26aad807d6eda62a32989b0c14d4a1eb074",
+      "snapshotSha256": "d215cbd050e687eb07e18a27594e8456b6cc8663b0454830aadf76caaa5dcebc",
+      "solution": "native-v31f"
+    }
+  },
+  "projectionVersion": "red-connectivity-v1"
+}

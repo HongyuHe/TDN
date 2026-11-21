@@ -15,9 +15,9 @@ theorem bytes_with_plaintext_assembly_and_gateway_responses_keep_domains {Byte :
       c.ifaceSecurityDomain iface = some d →
       expectedEncapStack d iface = [] ∧ c.canOriginateTraffic iface ∧ allowed d iface)
     (guards : GatewayResponseGuards c gateways)
-    {after : List (ByteFlows.Carrier (KernelResponses.State DataPlaneForwarding.State)
+    {after : List (ByteFlows.PacketBytes (KernelResponses.ReplyState DataPlaneForwarding.ForwardingState)
       (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action (KernelResponses.Action DataPlaneForwarding.Action))}
+    {actions : List (ByteFlows.ByteFlowAction (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))}
     (run : (ResponseByteFlows.system (DataPlaneForwarding.lts c) (nativeKernelResponses c gateways)
       (RedByteOrigin c sources) DataPlaneForwarding.PlaintextAssembly).MTr [] actions after) :
     ByteFlows.Safe (fun byte => KernelResponses.Invariant (nativeKernelResponses c gateways)
@@ -51,9 +51,9 @@ theorem bytes_with_plaintext_assembly_and_component_responses_keep_domains {Byte
     (guards : GatewayResponseGuards c gateways)
     (uniform : ∀ d ∈ domains, ∀ owner ∈ uniformOwners,
       UniformDomainResponses.Uniform c (expectedEncapStack d) (allowed d) owner)
-    {after : List (ByteFlows.Carrier (KernelResponses.State DataPlaneForwarding.State)
+    {after : List (ByteFlows.PacketBytes (KernelResponses.ReplyState DataPlaneForwarding.ForwardingState)
       (ReassemblyOrigins.ByteOrigin Byte Nat Nat))}
-    {actions : List (ByteFlows.Action (KernelResponses.Action DataPlaneForwarding.Action))}
+    {actions : List (ByteFlows.ByteFlowAction (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))}
     (run : (ResponseByteFlows.system (DataPlaneForwarding.lts c) (UniformDomainResponses.responseConfig c gateways uniformOwners)
       (RedByteOrigin c sources) DataPlaneForwarding.PlaintextAssembly).MTr [] actions after) :
     ByteFlows.Safe (fun byte => KernelResponses.ProvenanceInvariant (UniformDomainResponses.responseConfig c gateways uniformOwners)

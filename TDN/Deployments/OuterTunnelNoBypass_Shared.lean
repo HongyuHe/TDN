@@ -4,10 +4,9 @@ namespace TDN.Deployments.OuterTunnelNoBypass_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel MtuSizing_Records StandardDataPlaneBridge MultiProtocolForwarding LayeredFrame
 
 set_option maxRecDepth 200000
-set_option maxHeartbeats 4000000
 
-lemma ingress_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    IPsecIngressGateChecks (interpretedForwarding primitive).native (interpretedDeployment primitive) .outer receiveComponent := by
+lemma ingress_checks (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    IpsecIngressGuardChecks (interpretedForwarding primitive).deviceDataPlane (interpretedDeployment primitive) .outer receiveComponent := by
   refine ⟨rfl, rfl, ?_, source_receive_components, route_owners, ?_, ?_, ?_⟩
   · intro payload iface component selected
     exact (receive_component_iface payload iface component selected).2
@@ -29,8 +28,8 @@ lemma ingress_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
       inbound_tunnel_bindings iface member policy configured association installed bound
     exact ⟨tunnel, present, identity, selectedLayer, receiver.trans owner⟩
 
-lemma encap_layer_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    IPsecEncapLayerChecks (interpretedForwarding primitive).native (interpretedDeployment primitive) := by
+lemma encap_layer_checks (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    IpsecEncapLayerChecks (interpretedForwarding primitive).deviceDataPlane (interpretedDeployment primitive) := by
   refine ⟨rfl, rfl, ?_, tunnel_layer_names_unique⟩
   intro iface policy association configured installed bound
   obtain ⟨device, deviceMember, policyMember⟩ := raw_device_member records.nativeDevices
@@ -44,8 +43,8 @@ lemma encap_layer_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
   rw [← same]
   exact configured_layer_bindings device deviceMember policy policyMember record stored direction recordBound
 
-lemma outbound_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    IPsecOuterBoundaryChecks (interpretedForwarding primitive).native (interpretedDeployment primitive)
+lemma outbound_checks (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    IpsecOuterBoundaryChecks (interpretedForwarding primitive).deviceDataPlane (interpretedDeployment primitive)
       expectedEncapStack OuterOwner ⟨fun _ => 64, fun _ => 64⟩ := by
   refine ⟨encap_layer_checks primitive, source_not_outer_gray, headered_stack_conditions (codec primitive), rfl, ?_, ?_, ?_, source_encap_stacks, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro iface
@@ -76,26 +75,26 @@ lemma outbound_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
     subst iface
     exact outbound_tunnel_bindings route member policy configured association installed bound low high interface stored name layer
 
-lemma receive_component_binding (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    InboundGateReceiversBound (interpretedDeployment primitive) (interpretedForwarding primitive).GenuineControl .outer receiveComponent := by
+lemma receive_component_binding (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    InboundGuardReceiversBound (interpretedDeployment primitive) (interpretedForwarding primitive).GenuineControl .outer receiveComponent := by
   intro payload data interface member layer external
   exact external_receive_components interface member layer external
 
 def components : List EncryptionComponentConfiguration :=
   outerModeBindings.map (fun record => record.component)
 
-lemma component_coverage (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+lemma component_coverage (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     ComponentConfigurationCoverage (interpretedDeployment primitive) .outer components := by
   have checked : ∀ device ∈ records.components, device.layer = some .outer →
       ∃ component ∈ components, component.id = device.id ∧
-        ((device.kind = .vpn ∧ component.mechanism = .ipsec) ∨
-          (device.kind = .macsec ∧ component.mechanism = .macsec)) := by native_decide
+        ((device.kind = .vpn ∧ component.protocol = .ipsec) ∨
+          (device.kind = .macsec ∧ component.protocol = .macsec)) := by native_decide
   intro device member relevant layer
   exact checked device member layer
 
-lemma component_parameters (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    ∀ component ∈ components, (interpretedDeployment primitive).Relevant component.id →
-      (component.mechanism = .ipsec → component.espTunnelMode = true) ∧
+lemma component_parameters (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    ∀ component ∈ components, (interpretedDeployment primitive).InScope component.id →
+      (component.protocol = .ipsec → component.espTunnelMode = true) ∧
       (false = true → component.outboundMACPolicy = true) ∧
       (false = true → component.inboundMACPolicy = true) := by
   intro component member relevant
@@ -106,14 +105,14 @@ lemma component_parameters (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
   exact ⟨fun _ => parameters.1, fun impossible => Bool.noConfusion impossible,
     fun impossible => Bool.noConfusion impossible⟩
 
-theorem snapshot_RG030_shared_outer_tunnel_no_bypass (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
-    msc_outer_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive) components false false := by
+theorem snapshot_rg030_shared_outer_tunnel_no_bypass (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
+    outer_tunnel_no_bypass (interpretedDeployment primitive) (interpretedForwarding primitive) components false false := by
   have covered := interpreted_deployment_covered primitive
   exact outer_tunnel_no_bypass_from_local_checks (interpretedDeployment primitive)
     (interpretedForwarding primitive) components false false receiveComponent covered
     (ipsecOuterOutboundChecks (interpretedForwarding primitive) (interpretedDeployment primitive) expectedEncapStack OuterOwner
       ⟨fun _ => 64, fun _ => 64⟩ covered (outbound_checks primitive))
-    (ipsecIngressDeviceGate (interpretedForwarding primitive).native (interpretedDeployment primitive) .outer receiveComponent
+    (ipsecIngressDeviceGuard (interpretedForwarding primitive).deviceDataPlane (interpretedDeployment primitive) .outer receiveComponent
       (ingress_checks primitive)) (receive_component_binding primitive) (component_coverage primitive) (component_parameters primitive)
     (ipsecOuterGrayReceiveChecks (interpretedForwarding primitive) (interpretedDeployment primitive) expectedEncapStack OuterOwner
       ⟨fun _ => 64, fun _ => 64⟩ covered (outbound_checks primitive))

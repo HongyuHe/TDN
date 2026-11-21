@@ -5,7 +5,6 @@ namespace TDN.Deployments.OuterTunnelNoBypass_Baseline
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel MtuSizing_Records StandardDataPlaneBridge MultiProtocolForwarding LayeredFrame
 
 set_option maxRecDepth 200000
-set_option maxHeartbeats 8000000
 
 load_network_records deliveryPath : SizingPath from "../../data/evidence/outerTunnelNoBypass/BaselineIPsecDelivery.json" ["path"]
 load_network_records deliveryMoves : List DeliveryMove from "../../data/evidence/outerTunnelNoBypass/BaselineIPsecDelivery.json" ["moves"]
@@ -25,12 +24,12 @@ lemma delivery_path_reaches_red_host :
     (deliveryFinish deliveryPath.start deliveryMoves).frame.originDomain = 1 ∧
     (deliveryFinish deliveryPath.start deliveryMoves).frame.body.protectionLayers = [] := by native_decide
 
-theorem snapshot_RG030_baseline_nonempty_payload_delivered (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial) :
+theorem snapshot_rg030_baseline_nonempty_payload_delivered (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial) :
     ∃ start actions last, (interpretedForwarding primitive).initial start ∧
       (interpretedForwarding primitive).system.MTr start actions last ∧
-      last.native.datapathStage = .delivered ∧ last.native.iface = 142 ∧
-      last.native.frame.originDomain = 1 ∧ last.native.frame.payload ≠ 0 ∧
-      last.native.frame.body.protectionLayers = [] := by
+      last.deviceState.datapathStage = .delivered ∧ last.deviceState.iface = 142 ∧
+      last.deviceState.frame.originDomain = 1 ∧ last.deviceState.frame.payload ≠ 0 ∧
+      last.deviceState.frame.body.protectionLayers = [] := by
   obtain ⟨network, networkMember, entry, origin⟩ := delivery_source_checked.1
   have name := red_network_of_recorded_origin deliveryPath.flow.domain network.id origin
   have allowed : (binding (deviceBinding primitive) records.inventory.ifaces).SourceRequestAllowed
@@ -47,7 +46,7 @@ theorem snapshot_RG030_baseline_nonempty_payload_delivered (primitive : ESPWire.
     rfl
   obtain ⟨_, start, initialized, sameStart, _⟩ := (interpreted_deployment_covered primitive).2.2.2.1.2.1
     deliveryPath.flow.request [deliveryPath.datagram] deliveryPath.datagram allowed delivery_source_checked.2 (by simp)
-  have same : start.native = deliveryPath.start := sameStart.trans sourceState
+  have same : start.deviceState = deliveryPath.start := sameStart.trans sourceState
   obtain ⟨actions, last, run, finish, payload⟩ := delivery_path_reaches primitive deliveryMoves start start []
     initialized Cslib.LTS.MTr.refl (by rw [same]; exact delivery_path_checked)
   rw [same] at finish payload

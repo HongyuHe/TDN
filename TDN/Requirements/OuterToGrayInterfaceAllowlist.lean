@@ -10,7 +10,7 @@ open Compliance DeriveEndpointInputOutputRules
 def IPsecPacket (packet : PacketPolicy.Packet) : Prop :=
   packet.protocol = "esp" ∨ PacketIKE packet ∨ PacketUDPESP packet
 
-lemma request_framing_is_IPsec (packet : PacketPolicy.Packet)
+lemma request_framing_is_ipsec (packet : PacketPolicy.Packet)
     (framing : packet.IPsecUDPFramingWithOptions) : IPsecPacket packet := by
   obtain ⟨_, _, _, _, _, udp, bytes, payload, _, alternatives⟩ := framing
   rcases alternatives with ⟨port, header⟩ | ⟨port, length, nonzero | ⟨zero, header⟩⟩
@@ -20,26 +20,26 @@ lemma request_framing_is_IPsec (packet : PacketPolicy.Packet)
   · exact Or.inr (Or.inl ⟨udp, Or.inr ⟨Or.inr port,
       by simpa [payload] using zero, by simpa [payload, PacketIKEHeader] using header⟩⟩)
 
-lemma reply_framing_is_IPsec (packet : PacketPolicy.Packet)
+lemma reply_framing_is_ipsec (packet : PacketPolicy.Packet)
     (framing : packet.IPsecUDPReplyFramingWithOptions) : IPsecPacket packet := by
-  have request := request_framing_is_IPsec
+  have request := request_framing_is_ipsec
     ({ packet with sourcePort := packet.destinationPort, destinationPort := packet.sourcePort } : PacketPolicy.Packet)
     framing
   simpa only [IPsecPacket, PacketIKE, PacketUDPESP, or_comm] using request
 
-lemma IKE_service_is_control (packet : PacketPolicy.Packet) (ike : PacketIKE packet) :
+lemma ike_service_is_control (packet : PacketPolicy.Packet) (ike : PacketIKE packet) :
     PacketService packet = "ike" ∧ PacketClass packet = .control := by
   simp [PacketService, PacketClass, ike]
 
-lemma IPsec_service_is_not_management (packet : PacketPolicy.Packet)
+lemma ipsec_service_is_not_management (packet : PacketPolicy.Packet)
     (protocol : IPsecPacket packet) : PacketClass packet ≠ .management := by
   rcases protocol with esp | ike | udpESP
   · simp [PacketClass, PacketService, PacketPortService, PacketIKE, PacketUDPESP,
       PacketMKA, PacketARP, PacketIsEthernet, esp]
-  · rw [(IKE_service_is_control packet ike).2]
+  · rw [(ike_service_is_control packet ike).2]
     decide
   · by_cases ike : PacketIKE packet
-    · rw [(IKE_service_is_control packet ike).2]
+    · rw [(ike_service_is_control packet ike).2]
       decide
     · have udp := udpESP.1
       simp [PacketClass, PacketService, ike, udpESP, PacketMKA, PacketARP,
@@ -53,14 +53,14 @@ def IPsecAtom : PacketPolicy.MatchCondition → Prop
 instance (atom : PacketPolicy.MatchCondition) : Decidable (IPsecAtom atom) := by
   cases atom <;> unfold IPsecAtom <;> infer_instance
 
-def IPsecRule (rule : PacketPolicy.Rule) : Prop :=
+def IPsecRule (rule : PacketPolicy.PacketAclRule) : Prop :=
   ∃ atom ∈ rule.atoms, IPsecAtom atom
 
-instance (rule : PacketPolicy.Rule) : Decidable (IPsecRule rule) := by
+instance (rule : PacketPolicy.PacketAclRule) : Decidable (IPsecRule rule) := by
   unfold IPsecRule
   infer_instance
 
-lemma IPsec_rule_has_IPsec_packet (rule : PacketPolicy.Rule) (packet : PacketPolicy.Packet)
+lemma ipsec_rule_has_ipsec_packet (rule : PacketPolicy.PacketAclRule) (packet : PacketPolicy.Packet)
     (guard : IPsecRule rule) (matched : rule.toFilter.accepts packet = true) :
     IPsecPacket packet := by
   obtain ⟨atom, member, kind⟩ := guard
@@ -68,38 +68,38 @@ lemma IPsec_rule_has_IPsec_packet (rule : PacketPolicy.Rule) (packet : PacketPol
   cases atom <;> simp only [IPsecAtom] at kind
   case protocol name =>
     exact Or.inl (holds.trans kind)
-  case ipsecUDPFramingWithOptions => exact request_framing_is_IPsec packet holds
-  case ipsecUDPReplyFramingWithOptions => exact reply_framing_is_IPsec packet holds
+  case ipsecUDPFramingWithOptions => exact request_framing_is_ipsec packet holds
+  case ipsecUDPReplyFramingWithOptions => exact reply_framing_is_ipsec packet holds
 
-structure InnerIPsecPair where
+structure InnerIpsecPair where
   endpoints : EndpointPair
   tunnel : String
 
-def InnerIPsecPair.Bound (record : InnerIPsecPair) (d : Deployment) : Prop :=
+def InnerIpsecPair.Bound (record : InnerIpsecPair) (d : Deployment) : Prop :=
   record.endpoints.Bound d ∧ record.endpoints.view = .internet ∧
   SameLevelComponents d record.endpoints.source record.endpoints.destination ∧
   ∃ tunnel ∈ d.tunnels, tunnel.id = record.tunnel ∧ tunnel.layer = .inner ∧
-    tunnel.mechanism = .ipsec ∧ tunnel.sender = record.endpoints.source ∧
+    tunnel.protocol = .ipsec ∧ tunnel.sender = record.endpoints.source ∧
     tunnel.receiver = record.endpoints.destination
 
-def InnerIPsecPair.Guards (record : InnerIPsecPair) (rule : PacketPolicy.Rule) : Prop :=
+def InnerIpsecPair.Guards (record : InnerIpsecPair) (rule : PacketPolicy.PacketAclRule) : Prop :=
   record.endpoints.view.RuleGuard rule ∧
   .sourceRange record.endpoints.sourceAddress record.endpoints.sourceAddress ∈ rule.atoms ∧
   .destinationRange record.endpoints.destinationAddress record.endpoints.destinationAddress ∈ rule.atoms ∧
   IPsecRule rule
 
-instance (record : InnerIPsecPair) (rule : PacketPolicy.Rule) :
+instance (record : InnerIpsecPair) (rule : PacketPolicy.PacketAclRule) :
     Decidable (record.Guards rule) := by
-  unfold InnerIPsecPair.Guards
+  unfold InnerIpsecPair.Guards
   infer_instance
 
-lemma matched_IPsec_pair_is_permitted_tunnel (d : Deployment)
-    (coherent : d.AddressInventoryCoherent) (record : InnerIPsecPair)
-    (bound : record.Bound d) (rule : PacketPolicy.Rule) (guard : record.Guards rule)
+lemma matched_ipsec_pair_is_permitted_tunnel (d : Deployment)
+    (coherent : d.AddressInventoryCoherent) (record : InnerIpsecPair)
+    (bound : record.Bound d) (rule : PacketPolicy.PacketAclRule) (guard : record.Guards rule)
     (traffic : Traffic) (supported : d.Supported traffic)
     (matched : rule.toFilter.accepts traffic.packet = true) :
     d.TunnelTraffic traffic ∧ d.SameLevelInner traffic ∧ d.AppropriateInnerTunnel traffic := by
-  have protocol : IPsecProtocol traffic := IPsec_rule_has_IPsec_packet rule traffic.packet guard.2.2.2 matched
+  have protocol : IPsecProtocol traffic := ipsec_rule_has_ipsec_packet rule traffic.packet guard.2.2.2 matched
   have sameLevel := matched_same_level_pair_is_inner_traffic d coherent record.endpoints bound.1
     bound.2.2.1 rule guard.1 guard.2.1 guard.2.2.1 traffic supported matched
   obtain ⟨source, destination, sourceInterface, destinationInterface⟩ :=
@@ -112,14 +112,14 @@ lemma matched_IPsec_pair_is_permitted_tunnel (d : Deployment)
   exact ⟨source, destination, sourceInterface, destinationInterface⟩
 
 
-def RuleMissesHook (name : String) (direction : Direction) (rule : PacketPolicy.Rule) : Prop :=
+def RuleMissesHook (name : String) (direction : Direction) (rule : PacketPolicy.PacketAclRule) : Prop :=
   ∃ atom ∈ rule.atoms,
     match atom, direction with
     | .ingress other, .inbound => name ≠ other
     | .egress other, .outbound => name ≠ other
     | _, _ => False
 
-instance (name : String) (direction : Direction) (rule : PacketPolicy.Rule) :
+instance (name : String) (direction : Direction) (rule : PacketPolicy.PacketAclRule) :
     Decidable (RuleMissesHook name direction rule) := by
   unfold RuleMissesHook
   have (atom : PacketPolicy.MatchCondition) : Decidable
@@ -132,7 +132,7 @@ instance (name : String) (direction : Direction) (rule : PacketPolicy.Rule) :
 lemma hook_mismatch_cannot_match (name : String) (direction : Direction)
     (hook : PacketProcessing.Hook) (packet : PacketPolicy.Packet)
     (context : PacketAtHook name direction hook packet)
-    (rule : PacketPolicy.Rule) (missed : RuleMissesHook name direction rule) :
+    (rule : PacketPolicy.PacketAclRule) (missed : RuleMissesHook name direction rule) :
     rule.toFilter.accepts packet ≠ true := by
   intro matchesRule
   obtain ⟨atom, member, mismatch⟩ := missed
@@ -143,7 +143,7 @@ lemma hook_mismatch_cannot_match (name : String) (direction : Direction)
 def IPsecObservationChecks (d : Deployment) : Prop :=
   d.services = [] ∧ ∀ device ∈ d.devices, device.kind ≠ .workstation
 
-lemma IPsec_observation_is_not_management (d : Deployment) (packet : PacketPolicy.Packet)
+lemma ipsec_observation_is_not_management (d : Deployment) (packet : PacketPolicy.Packet)
     (checks : IPsecObservationChecks d) (protocol : IPsecPacket packet) :
     (d.Observe packet).trafficClass ≠ .management ∧ (d.Observe packet).service ≠ "http" := by
   have workstation : d.devices.any (fun device => device.kind == .workstation &&
@@ -153,7 +153,7 @@ lemma IPsec_observation_is_not_management (d : Deployment) (packet : PacketPolic
     intro device member
     simp [checks.2 device member]
   have observedClass : d.ObservedClass packet ≠ .management := by
-    have packetClass := IPsec_service_is_not_management packet protocol
+    have packetClass := ipsec_service_is_not_management packet protocol
     unfold Deployment.ObservedClass
     split
     · decide
@@ -183,13 +183,13 @@ lemma IPsec_observation_is_not_management (d : Deployment) (packet : PacketPolic
         · simp_all [PacketService]
         · simp_all [PacketService]
 
-def OuterGrayHeaderRule (d : Deployment) (interface : Interface) (rule : PacketPolicy.Rule) : Prop :=
+def OuterGrayHeaderRule (d : Deployment) (interface : Interface) (rule : PacketPolicy.PacketAclRule) : Prop :=
   RuleHeaderGuard rule ∧ ∀ device ∈ d.devices, device.id = interface.device →
     device.kind = .vpn → device.layer = some .outer → d.dropIPv4Options device.id = true →
       .ipv4HeaderWords 5 ∈ rule.atoms
 
 lemma guarded_rule_has_eligible_header (d : Deployment) (interface : Interface)
-    (rule : PacketPolicy.Rule) (guard : OuterGrayHeaderRule d interface rule)
+    (rule : PacketPolicy.PacketAclRule) (guard : OuterGrayHeaderRule d interface rule)
     (traffic : Traffic) (supported : d.Supported traffic)
     (gray : interface.zone = .gray) (matched : rule.toFilter.accepts traffic.packet = true) :
     d.HeaderEligible interface traffic := by
@@ -215,16 +215,16 @@ lemma guarded_rule_has_eligible_header (d : Deployment) (interface : Interface)
     simp [gray] at black
 
 def OuterGrayRuleChecks (d : Deployment) (interface : Interface) (name : String)
-    (direction : Direction) (pairs : List InnerIPsecPair) (rule : PacketPolicy.Rule) : Prop :=
+    (direction : Direction) (pairs : List InnerIpsecPair) (rule : PacketPolicy.PacketAclRule) : Prop :=
   RuleMissesHook name direction rule ∨
   ∃ record ∈ pairs, record.Guards rule ∧ OuterGrayHeaderRule d interface rule ∧
     (direction = .inbound → d.reachableSource interface.id record.endpoints.sourceAddress)
 
-lemma checked_Outer_gray_rule_is_safe (d : Deployment) (interface : Interface)
+lemma checked_outer_gray_rule_is_safe (d : Deployment) (interface : Interface)
     (name : String) (direction : Direction) (hook : PacketProcessing.Hook)
-    (pairs : List InnerIPsecPair) (bindings : ∀ record ∈ pairs, record.Bound d)
+    (pairs : List InnerIpsecPair) (bindings : ∀ record ∈ pairs, record.Bound d)
     (coherent : d.AddressInventoryCoherent) (observations : IPsecObservationChecks d)
-    (gray : interface.zone = .gray) (rule : PacketPolicy.Rule)
+    (gray : interface.zone = .gray) (rule : PacketPolicy.PacketAclRule)
     (checks : OuterGrayRuleChecks d interface name direction pairs rule)
     (traffic : Traffic) (supported : d.Supported traffic)
     (context : PacketAtHook name direction hook traffic.packet)
@@ -233,10 +233,10 @@ lemma checked_Outer_gray_rule_is_safe (d : Deployment) (interface : Interface)
       OuterPolicyAllowance d interface.device cdpOnGray traffic := by
   rcases checks with missed | ⟨record, member, guarded, header, reachable⟩
   · exact False.elim (hook_mismatch_cannot_match name direction hook traffic.packet context rule missed matched)
-  · obtain ⟨tunnel, sameLevel, appropriate⟩ := matched_IPsec_pair_is_permitted_tunnel d
+  · obtain ⟨tunnel, sameLevel, appropriate⟩ := matched_ipsec_pair_is_permitted_tunnel d
       coherent record (bindings record member) rule guarded traffic supported matched
-    have protocol := IPsec_rule_has_IPsec_packet rule traffic.packet guarded.2.2.2 matched
-    obtain ⟨notManagement, notHTTP⟩ := IPsec_observation_is_not_management d traffic.packet observations protocol
+    have protocol := ipsec_rule_has_ipsec_packet rule traffic.packet guarded.2.2.2 matched
+    obtain ⟨notManagement, notHTTP⟩ := ipsec_observation_is_not_management d traffic.packet observations protocol
     have notManagementTraffic : traffic.trafficClass ≠ .management := by rw [supported.1]; exact notManagement
     have notHTTPTraffic : traffic.service ≠ "http" := by rw [supported.1]; exact notHTTP
     refine ⟨⟨guarded_rule_has_eligible_header d interface rule header traffic supported gray matched,
@@ -290,9 +290,9 @@ structure HookMask where
   hook : PacketProcessing.Hook
   packet : PacketPolicy.AclFlowSelector
 
-lemma admitted_Outer_gray_packet_is_safe (d : Deployment)
+lemma admitted_outer_gray_packet_is_safe (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
-    (interface : Interface) (pairs : List InnerIPsecPair)
+    (interface : Interface) (pairs : List InnerIpsecPair)
     (bindings : ∀ record ∈ pairs, record.Bound d)
     (coherent : d.AddressInventoryCoherent) (observations : IPsecObservationChecks d)
     (gray : interface.zone = .gray)
@@ -303,7 +303,7 @@ lemma admitted_Outer_gray_packet_is_safe (d : Deployment)
         policy.defaultVerdict = .deny ∧ ∀ rule ∈ policy.rules, rule.verdict = .allow →
           OuterGrayRuleChecks d interface (inventory.configuration.ip.interfaceName iface)
             policy.direction pairs rule)
-    (direction : Direction) (traffic : Traffic) (accepted : d.Accepts interface.id direction traffic)
+    (direction : Direction) (traffic : Traffic) (accepted : d.PermitsOnInterface interface.id direction traffic)
     (cdpOnGray : Bool) :
     OuterGrayRestrictions d interface direction cdpOnGray traffic ∧
       OuterPolicyAllowance d interface.device cdpOnGray traffic := by
@@ -320,13 +320,13 @@ lemma admitted_Outer_gray_packet_is_safe (d : Deployment)
     have records := checks iface ifaceMember ifaceName policy policyMember policyName
     obtain ⟨rule, ruleMember, matched, allow⟩ :=
       DeriveDataPlaneFromDeviceRecords.policy_acceptance_has_matching_rule policy traffic records.1 allows
-    apply checked_Outer_gray_rule_is_safe d interface _ direction hook pairs bindings
+    apply checked_outer_gray_rule_is_safe d interface _ direction hook pairs bindings
       coherent observations gray rule _ traffic supported bound matched cdpOnGray
     simpa only [policyDirection] using records.2 rule ruleMember allow
 
-theorem outer_gray_IPsec_policy_from_rule_and_mask_checks (d : Deployment)
+theorem outer_gray_ipsec_policy_from_rule_and_mask_checks (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
-    (cdpOnGray : Bool) (pairs : List InnerIPsecPair) (masks : List HookMask)
+    (cdpOnGray : Bool) (pairs : List InnerIpsecPair) (masks : List HookMask)
     (addressChecked : addressRecordsChecked d = true)
     (workstations : d.grayWorkstation = grayWorkstationRole d)
     (processing : d.ProcessingCoherent) (udp : d.UDPBindingsCoherent)
@@ -351,14 +351,14 @@ theorem outer_gray_IPsec_policy_from_rule_and_mask_checks (d : Deployment)
         OuterPolicyAllowance d interface.device cdpOnGray traffic →
         ∃ entry ∈ masks, entry.interface = interface.id ∧ entry.direction = direction ∧
           entry.hook = hook ∧ entry.packet.Matches traffic.packet) :
-    msc_outer_gray_interface_policy d cdpOnGray := by
+    outer_gray_interface_policy d cdpOnGray := by
   have address := address_inventory_from_checked_records d addressChecked workstations
   refine ⟨address, processing, udp, ?_⟩
   intro interface member _ outer gray
   have covered := policy_coverage_from_checked_indices d indices interface member
   refine ⟨covered, ?_, ?_⟩
   · intro direction traffic accepted
-    exact admitted_Outer_gray_packet_is_safe d inventory present interface pairs bindings
+    exact admitted_outer_gray_packet_is_safe d inventory present interface pairs bindings
       address observations gray (routed interface member outer gray)
       (rules interface member outer gray) direction traffic accepted cdpOnGray
   · intro direction hook traffic eligible restrictions allowance

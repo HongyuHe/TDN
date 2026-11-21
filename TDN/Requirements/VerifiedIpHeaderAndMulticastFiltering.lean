@@ -1,4 +1,4 @@
-import TDN.Requirements.MasterMscRequirementSpecs
+import TDN.Requirements.MscRequirements
 import TDN.Requirements.BuildDevicePipelineInventory
 import TDN.Requirements.DeriveDataPlaneFromDeviceRecords
 
@@ -58,7 +58,7 @@ def IPv6WireProtocolAtom : PacketPolicy.MatchCondition → Prop
 instance (atom : PacketPolicy.MatchCondition) : Decidable (IPv6WireProtocolAtom atom) := by
   cases atom <;> unfold IPv6WireProtocolAtom <;> infer_instance
 
-def RuleHeaderGuard (rule : PacketPolicy.Rule) : Prop :=
+def RuleHeaderGuard (rule : PacketPolicy.PacketAclRule) : Prop :=
   ((∃ atom ∈ rule.atoms, IPv4SourceAtom atom) ∧
     (∃ atom ∈ rule.atoms, IPv4DestinationAtom atom) ∧
     ∃ atom ∈ rule.atoms, IPv4ProtocolAtom atom) ∨
@@ -67,18 +67,18 @@ def RuleHeaderGuard (rule : PacketPolicy.Rule) : Prop :=
     (∃ atom ∈ rule.atoms, IPv6ProtocolAtom atom) ∧
     ∃ atom ∈ rule.atoms, IPv6WireProtocolAtom atom)
 
-instance (rule : PacketPolicy.Rule) : Decidable (RuleHeaderGuard rule) := by
+instance (rule : PacketPolicy.PacketAclRule) : Decidable (RuleHeaderGuard rule) := by
   unfold RuleHeaderGuard
   infer_instance
 
-def RuleUnicastGuard (rule : PacketPolicy.Rule) : Prop :=
+def RuleUnicastGuard (rule : PacketPolicy.PacketAclRule) : Prop :=
   ∃ atom ∈ rule.atoms, UnicastDestinationAtom atom
 
-instance (rule : PacketPolicy.Rule) : Decidable (RuleUnicastGuard rule) := by
+instance (rule : PacketPolicy.PacketAclRule) : Decidable (RuleUnicastGuard rule) := by
   unfold RuleUnicastGuard
   infer_instance
 
-lemma source_bound_v4 (rule : PacketPolicy.Rule) (packet : PacketPolicy.Packet)
+lemma source_bound_v4 (rule : PacketPolicy.PacketAclRule) (packet : PacketPolicy.Packet)
     (guard : ∃ atom ∈ rule.atoms, IPv4SourceAtom atom)
     (matched : rule.toFilter.accepts packet = true) : packet.source < 2^32 := by
   obtain ⟨atom, member, bound⟩ := guard
@@ -88,7 +88,7 @@ lemma source_bound_v4 (rule : PacketPolicy.Rule) (packet : PacketPolicy.Packet)
     change low ≤ packet.source ∧ packet.source ≤ high at holds
     omega
 
-lemma destination_bound_v4 (rule : PacketPolicy.Rule) (packet : PacketPolicy.Packet)
+lemma destination_bound_v4 (rule : PacketPolicy.PacketAclRule) (packet : PacketPolicy.Packet)
     (guard : ∃ atom ∈ rule.atoms, IPv4DestinationAtom atom)
     (matched : rule.toFilter.accepts packet = true) : packet.destination < 2^32 := by
   obtain ⟨atom, member, bound⟩ := guard
@@ -98,7 +98,7 @@ lemma destination_bound_v4 (rule : PacketPolicy.Rule) (packet : PacketPolicy.Pac
     change low ≤ packet.destination ∧ packet.destination ≤ high at holds
     omega
 
-lemma source_bound_v6 (rule : PacketPolicy.Rule) (packet : PacketPolicy.Packet)
+lemma source_bound_v6 (rule : PacketPolicy.PacketAclRule) (packet : PacketPolicy.Packet)
     (guard : ∃ atom ∈ rule.atoms, IPv6SourceAtom atom)
     (matched : rule.toFilter.accepts packet = true) :
     2^128 ≤ packet.source ∧ packet.source < 2^129 := by
@@ -109,7 +109,7 @@ lemma source_bound_v6 (rule : PacketPolicy.Rule) (packet : PacketPolicy.Packet)
     change low ≤ packet.source ∧ packet.source ≤ high at holds
     constructor <;> omega
 
-lemma destination_bound_v6 (rule : PacketPolicy.Rule) (packet : PacketPolicy.Packet)
+lemma destination_bound_v6 (rule : PacketPolicy.PacketAclRule) (packet : PacketPolicy.Packet)
     (guard : ∃ atom ∈ rule.atoms, IPv6DestinationAtom atom)
     (matched : rule.toFilter.accepts packet = true) :
     2^128 ≤ packet.destination ∧ packet.destination < 2^129 := by
@@ -120,7 +120,7 @@ lemma destination_bound_v6 (rule : PacketPolicy.Rule) (packet : PacketPolicy.Pac
     change low ≤ packet.destination ∧ packet.destination ≤ high at holds
     constructor <;> omega
 
-lemma guarded_rule_has_permitted_header (rule : PacketPolicy.Rule)
+lemma guarded_rule_has_permitted_header (rule : PacketPolicy.PacketAclRule)
     (packet : PacketPolicy.Packet) (guard : RuleHeaderGuard rule)
     (matched : rule.toFilter.accepts packet = true) :
     (PacketIPVersion packet = some 4 ∧ PacketIPProtocol packet ∈ [6, 17, 50, 1]) ∨
@@ -156,7 +156,7 @@ lemma guarded_rule_has_permitted_header (rule : PacketPolicy.Rule)
       have sourceLarge : ¬ packet.source < 2^32 := by omega
       simp [PacketIPVersion, notSpecial, sourceBound, destinationBound, sourceLarge]
 
-lemma unicast_rule_is_not_multicast (rule : PacketPolicy.Rule)
+lemma unicast_rule_is_not_multicast (rule : PacketPolicy.PacketAclRule)
     (packet : PacketPolicy.Packet) (guard : RuleUnicastGuard rule)
     (headers : PacketIPVersion packet = some 4 ∨ PacketIPVersion packet = some 6)
     (matched : rule.toFilter.accepts packet = true) : PacketMulticast packet = false := by
@@ -184,13 +184,13 @@ instance (device : Device) (interface : Interface) :
   infer_instance
 
 def HeaderRuleChecks (d : Deployment) (device : Device) (interface : Interface)
-    (rule : PacketPolicy.Rule) : Prop :=
+    (rule : PacketPolicy.PacketAclRule) : Prop :=
   RuleHeaderGuard rule ∧
     (device.layer = some .outer → interface.zone = .black → RuleUnicastGuard rule) ∧
     (device.kind = .vpn → device.layer = some .outer →
       d.dropIPv4Options device.id = true → .ipv4HeaderWords 5 ∈ rule.atoms)
 
-instance (d : Deployment) (device : Device) (interface : Interface) (rule : PacketPolicy.Rule) :
+instance (d : Deployment) (device : Device) (interface : Interface) (rule : PacketPolicy.PacketAclRule) :
     Decidable (HeaderRuleChecks d device interface rule) := by
   unfold HeaderRuleChecks
   exact instDecidableAnd
@@ -234,7 +234,7 @@ theorem ip_header_filtering_from_inventory_and_rule_atoms (d : Deployment)
     (routed : ∀ interface ∈ d.interfaces, ∀ device ∈ d.devices,
       interface.device = device.id → HeaderFilterApplies device interface →
       ∀ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface.id → RoutedIface inventory iface) :
-    msc_ip_header_and_multicast_filtering d objective := by
+    ip_header_and_multicast_filtering d objective := by
   have address := address_inventory_from_checked_records d addressChecked workstationDefinition
   have processing := processing_coherence_from_record_checks d inventory present processingChecked
     lengthDefinition localAddressDefinition
@@ -243,7 +243,7 @@ theorem ip_header_filtering_from_inventory_and_rule_atoms (d : Deployment)
   intro interface member _ device deviceMember _ owner applies
   refine ⟨policy_coverage_from_checked_indices d indicesChecked interface member, ?_⟩
   intro traffic accepted
-  have acceptedBase : d.Accepts interface.id .inbound traffic := accepted
+  have acceptedBase : d.PermitsOnInterface interface.id .inbound traffic := accepted
   have supported := accepted_traffic_supported d interface.id .inbound traffic acceptedBase
   obtain ⟨policy, policyMember, name, direction, admits⟩ :=
     routed_acceptance_has_policy d inventory present interface.id .inbound traffic

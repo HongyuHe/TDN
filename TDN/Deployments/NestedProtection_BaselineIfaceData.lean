@@ -4,7 +4,6 @@ namespace TDN.Deployments.NestedProtection_Baseline
 open Compliance Requirements Requirements.Msc MtuSizing_Records LayeredFrame MultiProtocolForwarding
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma recorded_iface_zones : ∀ iface ∈ records.inventory.ifaces, ∀ interface ∈ records.interfaces,
     records.ifaceName iface = interface.id →

@@ -104,7 +104,7 @@ def import_case(root):
 def generate(roots,output,report_path):
     cases=[import_case(p.parent) for root in roots for p in sorted(root.glob("*/manifest.json"))]
     require(cases and len({c["id"] for c in cases})==len(cases),"empty/duplicate mechanism cases")
-    lines=["import TDN.Deployments.MechanismTypes","namespace TDN.Deployments.Mechanisms","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments.MechanismTypes","namespace TDN.Deployments.Mechanisms","set_option maxRecDepth 100000"]
     values=[]
     for case in cases:
         family="none" if case["families"] is None else "some ("+", ".join(map(str,case["families"]))+")"

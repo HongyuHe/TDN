@@ -34,6 +34,13 @@ class AttemptInputsTests(unittest.TestCase):
         self.assertEqual(selected, ["outputs/fixtures/Check.lean", "outputs/fixtures/items.json"])
         self.assertEqual(missing, [])
 
+    def test_replay_command_keeps_its_input(self):
+        (self.root / "outputs/fixtures/Trace.lean").write_text('replay_forwarding_trace config from "path.json"\n')
+        (self.root / "outputs/fixtures/path.json").write_text("{}")
+        selected, missing = MODULE.referenced_inputs(self.root, ["outputs/fixtures/Trace.lean"], [])
+        self.assertIn("outputs/fixtures/path.json", selected)
+        self.assertFalse(missing)
+
     def test_multiline_imports_and_explicit_inputs_are_captured(self):
         (self.root / "outputs/fixtures/Check.lean").write_text(
             'load_network_records a : List Nat\n  from "a.json" ["a"]\n'

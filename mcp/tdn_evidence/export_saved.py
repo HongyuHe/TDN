@@ -11,7 +11,7 @@ def export_saved(directory, destination):
     devices = [{"id": d["id"], "role": d["role"], "site": d.get("site"), "securityLevel": d.get("security_level_id"),
                 "status": status[d["status"]], "observationIds": d["observation_ids"]} for d in snapshot["devices"]]
     tunnels = [{"id": t["id"], "device": t["device_id"], "peer": t["peer_device_id"], "layer": t["layer"],
-                "mechanism": t["mechanism"], "mode": t.get("mode") or "", "status": status[t["status"]], "observationIds": t["observation_ids"]} for t in snapshot["tunnels"]]
+                "protocol": t["mechanism"], "mode": t.get("mode") or "", "status": status[t["status"]], "observationIds": t["observation_ids"]} for t in snapshot["tunnels"]]
     probes = [{"id": p["id"], "source": p["source_device"], "destination": p["destination"],
                "purpose": p["purpose"], "observedResult": p["observed_result"], "status": status[p["status"]], "observationIds": p["observation_ids"]} for p in snapshot["probes"]]
     result = {"id": snapshot["snapshot_id"], "manifestSha256": hashlib.sha256((directory / "manifest.json").read_bytes()).hexdigest(),
@@ -30,7 +30,7 @@ def export_projection(directory, destination, view, execution_supplement=None,
     from .projections import packet_filters, PROJECTIONS
     from .parsers.topology import validated_graph
     from .parsers.correspondence import check_filter_correspondence
-    manifest, snapshot, _ = validated_snapshot(directory)
+    manifest, snapshot, _ = validated_snapshot(directory, view)
     if view == "packet_filters":
         check_filter_correspondence(directory, snapshot)
         values, coverage = packet_filters(snapshot)

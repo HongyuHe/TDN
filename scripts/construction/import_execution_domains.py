@@ -49,11 +49,11 @@ def main():
     owner_tags = {report["device_ids"][d["id"]]: labels[d["security_level_id"]] + 10 if d["role"] == "inner" else 2 for d in devices.values() if d["role"] in {"inner", "outer"}}
     domains = sorted(full_levels)
     base = "TDN.Deployments." + args.base_namespace
-    declarations = [f"import {args.base_module}", "import TDN.Requirements.PacketEnclaveIsolation", "import TDN.Requirements.TwoLayerOverlayArchitecture", "", "namespace TDN.Deployments." + args.namespace, "open DataPlaneForwarding", "", "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0", "set_option linter.unusedSimpArgs false", "", "def ownerDomain : Nat → Option Nat"]
+    declarations = [f"import {args.base_module}", "import TDN.Requirements.PacketEnclaveIsolation", "import TDN.Requirements.TwoLayerOverlayArchitecture", "", "namespace TDN.Deployments." + args.namespace, "open DataPlaneForwarding", "", "set_option maxRecDepth 1000000", "set_option linter.unusedSimpArgs false", "", "def ownerDomain : Nat → Option Nat"]
     declarations += ["  | " + str(owner) + " => some " + str(domain) for owner, domain in sorted(owner_domains.items())] + ["  | _ => none", "", "def ownerTag : Nat → Nat"]
     declarations += ["  | " + str(owner) + " => " + str(tag) for owner, tag in sorted(owner_tags.items())] + ["  | _ => 0", "", "def fullLevel : Nat → SecurityLevel"]
     declarations += ["  | " + str(domain) + " => " + lean_level(value) for domain, value in full_levels.items()]
-    declarations += ['  | _ => ⟨"", {}, {}, {}⟩', "", f"def taggedDevices : List DeviceData := {base}.devices.zipIdx.map fun pair =>", "  { pair.1 with", "    egressPolicies := pair.1.outbound.map (fun a => { a with tag := ownerTag pair.2 })", "    ingressPolicies := pair.1.inbound.map (fun a => { a with tag := ownerTag pair.2 })", "    ifaceSecurityDomain := pair.1.ifaceSecurityDomain.bind (fun _ => ownerDomain pair.2) }", "", "def stackFor (domain : Nat) (iface : IfaceData) : List Nat :=", "  if port.stack = [] then [] else if port.stack = [1] then [domain + 10] else [2, domain + 10]", "def allowedRecord (domain : Nat) (iface : IfaceData) : Bool :=", "  !port.stack.isEmpty || decide (ownerDomain port.owner = some domain)", "", f"def config : DataPlaneForwarding.DataPlaneModel := dataPlaneModelFromRecords taggedDevices {base}.ifaces {base}.routes {base}.links {base}.switches", f"def redSources : List Nat := {base}.redSources", "def domains : List Nat := " + lean_list([str(d) for d in domains]), "", "lemma peer_tag_checks : TableDrivenPeerTagAgreement taggedDevices := by", f"  unfold TableDrivenPeerTagAgreement taggedDevices {base}.devices ownerTag ownerDomain saMatchesPolicy SameWireAssociation; decide", "lemma peer_tags_justified_by_wire_SAs : PeerTagAgreement config :=", f"  table_driven_peer_tag_agreement_sound taggedDevices {base}.ifaces {base}.routes {base}.links {base}.switches peer_tag_checks", ""]
+    declarations += ['  | _ => ⟨"", {}, {}, {}⟩', "", f"def taggedDevices : List DeviceData := {base}.devices.zipIdx.map fun pair =>", "  { pair.1 with", "    egressPolicies := pair.1.outbound.map (fun a => { a with tag := ownerTag pair.2 })", "    ingressPolicies := pair.1.inbound.map (fun a => { a with tag := ownerTag pair.2 })", "    ifaceSecurityDomain := pair.1.ifaceSecurityDomain.bind (fun _ => ownerDomain pair.2) }", "", "def stackFor (domain : Nat) (iface : IfaceData) : List Nat :=", "  if port.stack = [] then [] else if port.stack = [1] then [domain + 10] else [2, domain + 10]", "def allowedRecord (domain : Nat) (iface : IfaceData) : Bool :=", "  !port.stack.isEmpty || decide (ownerDomain port.owner = some domain)", "", f"def config : DataPlaneForwarding.DataPlaneModel := dataPlaneModelFromRecords taggedDevices {base}.ifaces {base}.routes {base}.links {base}.switches", f"def redSources : List Nat := {base}.redSources", "def domains : List Nat := " + lean_list([str(d) for d in domains]), "", "lemma peer_tag_checks : TableDrivenPeerTagAgreement taggedDevices := by", f"  unfold TableDrivenPeerTagAgreement taggedDevices {base}.devices ownerTag ownerDomain saMatchesPolicy SameWireAssociation; decide", "lemma peer_tags_justified_by_wire_s_as : PeerTagAgreement config :=", f"  table_driven_peer_tag_agreement_sound taggedDevices {base}.ifaces {base}.routes {base}.links {base}.switches peer_tag_checks", ""]
     for domain in domains:
         n = str(domain)
         port_name = "domainIfaces" + n
@@ -100,7 +100,7 @@ def main():
     declarations += [
         "lemma source_domains_checked : ∀ p ∈ redSources, config.ifaceSecurityDomain p ∈ domains.map some := by",
         f"  unfold redSources {base}.redSources config dataPlaneModelFromRecords taggedDevices ownerTag ownerDomain domains {base}.devices {base}.ifaces; decide",
-        "theorem snapshot_RG008_IPv4_ESP_delivery : Requirements.plaintext_delivery_preserves_security_enclave config redSources := by",
+        "theorem snapshot_rg008_ipv4_esp_delivery : Requirements.plaintext_delivery_preserves_security_enclave config redSources := by",
         "  intro start finish actions sourceDomain recipientDomain origin sourceLevel run delivered recipientLevel",
         "  have member : some sourceDomain ∈ domains.map some := by",
         "    rw [← sourceLevel]",
@@ -115,11 +115,11 @@ def main():
                          f"      local_domain_conditions{n} source_checks{n} recipient_checks{n} origin sourceLevel run delivered recipientLevel"]
     declarations += [
         "",
-        "theorem snapshot_RG008_full_label_delivery {start finish : DataPlaneForwarding.State} {actions : List DataPlaneForwarding.Action} {source recipient : Nat}",
+        "theorem snapshot_rg008_full_label_delivery {start finish : DataPlaneForwarding.ForwardingState} {actions : List DataPlaneForwarding.ForwardingAction} {source recipient : Nat}",
         "    (origin : Requirements.RedPayloadOrigin config redSources start) (sourceLevel : config.ifaceSecurityDomain start.iface = some source)",
         "    (run : (lts config).MTr start actions finish) (delivered : finish.datapathStage = .delivered)",
         "    (recipientLevel : config.ifaceSecurityDomain finish.iface = some recipient) : fullLevel source = fullLevel recipient :=",
-        "  congrArg fullLevel (snapshot_RG008_IPv4_ESP_delivery start finish actions source recipient origin sourceLevel run delivered recipientLevel)",
+        "  congrArg fullLevel (snapshot_rg008_ipv4_esp_delivery start finish actions source recipient origin sourceLevel run delivered recipientLevel)",
         "",
         "def expectedEncapStack : Nat → List Nat := domainLayout" + str(domains[0]),
         "",

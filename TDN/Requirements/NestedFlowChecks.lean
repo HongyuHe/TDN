@@ -1,5 +1,5 @@
 import TDN.Requirements.DeliveredPayloadLayers
-import TDN.Requirements.MasterMscRequirementSpecs
+import TDN.Requirements.MscRequirements
 
 namespace TDN.Requirements.Msc
 open Compliance
@@ -10,12 +10,12 @@ def NestedFlowEventChecks {S A : Type} (d : Deployment) (model : ForwardingModel
   | .inject payload network => flow payload ∈ flows ∧ (flow payload).sourceNetwork = network ∧
       model.ProtectedPayload d payload
   | .transmit payload iface layers _ => model.ProtectedPayload d payload →
-      ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = iface →
+      ∀ interface ∈ d.interfaces, d.InScope interface.device → interface.id = iface →
       (interface.zone = .gray → flow payload ∈ flows ∧ layers = [(flow payload).innerTunnel]) ∧
       (interface.zone = .black → flow payload ∈ flows ∧
         layers = [(flow payload).outerTunnel, (flow payload).innerTunnel] ∧ remoteDestination payload)
   | .receive payload iface layers _ => model.ProtectedPayload d payload →
-      ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = iface →
+      ∀ interface ∈ d.interfaces, d.InScope interface.device → interface.id = iface →
       interface.zone = .black → flow payload ∈ flows ∧
         layers = [(flow payload).outerTunnel, (flow payload).innerTunnel] ∧ remoteDestination payload
   | .deliver payload network layers => remoteDestination payload →
@@ -39,7 +39,7 @@ lemma nested_flow_forwarding_events_checked {S A : Type} {d : Deployment} {model
     {flows : List Flow} {flowAt : S → PayloadId → Flow}
     {remoteDestination : S → PayloadId → Prop} {invariant : S → Prop}
     (checks : NestedFlowChecks d model flows flowAt remoteDestination invariant)
-    {start finish : S} {actions : List A} (run : model.system.MTr start actions finish) :
+    {start finish : S} {actions : List A} (run : model.ForwardsAlongTrace start actions finish) :
     invariant start → ∀ event ∈ actions.flatMap model.events,
       NestedFlowEventChecks d model flows (flowAt start) (remoteDestination start) event := by
   induction run with
@@ -69,7 +69,7 @@ lemma nested_flow_trace_events_checked {S A : Type} {d : Deployment} {model : Fo
     {remoteDestination : S → PayloadId → Prop} {invariant : S → Prop}
     (checks : NestedFlowChecks d model flows flowAt remoteDestination invariant)
     (history : model.history.Valid) {start finish : S} {actions : List A}
-    (initial : model.initial start) (run : model.system.MTr start actions finish) :
+    (initial : model.initial start) (run : model.ForwardsAlongTrace start actions finish) :
     ∀ event ∈ model.TraceEvents actions,
       NestedFlowEventChecks d model flows (flowAt start) (remoteDestination start) event := by
   intro event member

@@ -3,24 +3,24 @@ import TDN.Requirements.GrayFirewallRuleTemplates
 namespace TDN.Requirements.Msc
 open Compliance DeriveEndpointInputOutputRules MultiProtocolForwarding
 
-def PeerEndpointSeparation (d : Deployment) (pairs : List InnerIPsecPair)
+def PeerEndpointSeparation (d : Deployment) (pairs : List InnerIpsecPair)
     (interface : Interface) : Prop :=
   ∀ endpoint ∈ d.interfaces, endpoint.device = interface.device →
     ∀ record ∈ pairs, ¬ endpoint.HasLocalAddress record.endpoints.sourceAddress ∧
       endpoint.address ≠ some record.endpoints.destinationAddress
 
-instance (d : Deployment) (pairs : List InnerIPsecPair) (interface : Interface) :
+instance (d : Deployment) (pairs : List InnerIpsecPair) (interface : Interface) :
     Decidable (PeerEndpointSeparation d pairs interface) := by
   unfold PeerEndpointSeparation
   infer_instance
 
 lemma separated_peer_packet_uses_forward_hook (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
-    (pairs : List InnerIPsecPair) (interface : Interface)
+    (pairs : List InnerIpsecPair) (interface : Interface)
     (separation : PeerEndpointSeparation d pairs interface) (direction : Direction)
     (context : PacketProcessing.Context) (traffic : Traffic)
     (supported : d.SupportedAt interface direction context traffic)
-    (record : InnerIPsecPair) (recordMember : record ∈ pairs)
+    (record : InnerIpsecPair) (recordMember : record ∈ pairs)
     (nonzero : record.endpoints.sourceAddress ≠ 0)
     (nonIPv6 : record.endpoints.sourceAddress ≠ 2^128)
     (source : traffic.packet.source = record.endpoints.sourceAddress)
@@ -59,7 +59,7 @@ lemma separated_peer_packet_uses_forward_hook (d : Deployment)
   | link => simp [Interface.HookApplies, hook] at applies
 
 def GrayForwardChecks (d : Deployment) (inventory : PacketProcessing.Inventory)
-    (pairs : List InnerIPsecPair) (interface : Interface) (direction : Direction) : Prop :=
+    (pairs : List InnerIpsecPair) (interface : Interface) (direction : Direction) : Prop :=
   ∀ record ∈ pairs, ∀ route ∈ inventory.configuration.ip.routes,
     (if direction = .inbound then inventory.ifaceName route.ingress = interface.id
       else inventory.ifaceName route.egress = interface.id) →
@@ -67,7 +67,7 @@ def GrayForwardChecks (d : Deployment) (inventory : PacketProcessing.Inventory)
     DataPlaneForwarding.SelectedFibRoute inventory.configuration.ip.routes route
       (addressPoint record.endpoints.sourceAddress record.endpoints.destinationAddress) →
     GrayIncomingSource d inventory interface.device route.ingress record.endpoints.sourceAddress →
-    ∀ form ∈ PacketPolicy.IPsecForm.all, ∀ policy ∈ d.policies,
+    ∀ form ∈ PacketPolicy.IpsecForm.all, ∀ policy ∈ d.policies,
       policy.interface = interface.id → policy.direction = direction → policy.hook = .forward →
       (form.maskWithOptions record.endpoints.sourceAddress record.endpoints.destinationAddress
         (inventory.configuration.ip.interfaceName route.ingress)
@@ -77,19 +77,19 @@ def GrayForwardChecks (d : Deployment) (inventory : PacketProcessing.Inventory)
             DataPlaneForwarding.IpsecPolicy.id) (interface.mtu.getD 0)).IsPermittedByAclChain policy.rules
 
 set_option synthInstance.maxSize 2048 in
-instance (d : Deployment) (inventory : PacketProcessing.Inventory) (pairs : List InnerIPsecPair)
+instance (d : Deployment) (inventory : PacketProcessing.Inventory) (pairs : List InnerIpsecPair)
     (interface : Interface) (direction : Direction)
     [∀ name, DecidablePred (d.reachableSource name)] :
     Decidable (GrayForwardChecks d inventory pairs interface direction) := by
   unfold GrayForwardChecks
   infer_instance
 
-lemma eligible_Gray_IPsec_packet_is_allowed (d : Deployment)
+lemma eligible_gray_ipsec_packet_is_allowed (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (processing : HeaderProcessing) (mode : inventory.configuration.headerProcessing = some processing)
-    (bounds : HeaderBounds processing) (pairs : List InnerIPsecPair)
+    (bounds : HeaderBounds processing) (pairs : List InnerIpsecPair)
     (udp : d.udpBindings = []) (carrier : d.carrierBindings = [])
-    (mechanisms : ∀ tunnel ∈ d.tunnels, tunnel.layer = .inner → tunnel.mechanism = .ipsec)
+    (mechanisms : ∀ tunnel ∈ d.tunnels, tunnel.layer = .inner → tunnel.protocol = .ipsec)
     (coverage : InnerIPsecAddressCoverage d pairs) (revocation : GrayRevocationServiceAbsent d)
     (unique : DeviceNamesUniqueByComponent inventory)
     (interface : Interface) (separation : PeerEndpointSeparation d pairs interface)
@@ -110,14 +110,14 @@ lemma eligible_Gray_IPsec_packet_is_allowed (d : Deployment)
     (allowance : GrayPolicyAllowance d interface traffic)
     (policy : InterfacePolicy) (policyMember : policy ∈ d.policies)
     (policyName : policy.interface = interface.id) (policyDirection : policy.direction = direction)
-    (policyHook : policy.hook = hook) : policy.Accepts traffic := by
+    (policyHook : policy.hook = hook) : policy.PermitsTraffic traffic := by
   obtain ⟨context, contextHook, supported, sizeEligible, ingressEligible⟩ :=
     routed_eligible_packet_has_native_context d inventory present interface routed direction hook traffic eligible
   have supportedForLater := supported
   obtain ⟨actual, actualPresent, _, _, atHook, location, raw, packetEq, packetSupported⟩ := supported
   have same : actual = inventory := Option.some.inj (actualPresent.symm.trans present)
   subst actual
-  obtain ⟨ipsec, record, recordMember, source, destination⟩ := Gray_IPsec_allowance_has_record
+  obtain ⟨ipsec, record, recordMember, source, destination⟩ := gray_ipsec_allowance_has_record
     d pairs udp carrier mechanisms coverage revocation interface noApproved noManagement traffic packetSupported allowance
   have recordIPv4 := ipv4 record recordMember
   have sourceNonIPv6 : record.endpoints.sourceAddress ≠ 2^128 := by omega
@@ -171,7 +171,7 @@ lemma eligible_Gray_IPsec_packet_is_allowed (d : Deployment)
     (addressPoint record.endpoints.sourceAddress record.endpoints.destinationAddress) destinationHeader).mp selected
   have complete : context.raw.Complete traffic.packet := by
     simpa only [packetEq] using raw.1
-  obtain ⟨form, formMember, formMatches⟩ := PacketPolicy.decoded_IPsec_has_form context.raw traffic.packet
+  obtain ⟨form, formMember, formMatches⟩ := PacketPolicy.decoded_ipsec_has_form context.raw traffic.packet
     complete (by simpa only [source] using recordIPv4.2.1) ipsec
   have size := eligible_forward_size_at_interface d inventory present interface direction context traffic
     forwardHook supportedForLater sizeEligible (interface.mtu.getD 0) mtuBound
@@ -193,7 +193,7 @@ lemma eligible_Gray_IPsec_packet_is_allowed (d : Deployment)
     rw [selected_associations_depend_on_addresses _ context.header
       (addressPoint record.endpoints.sourceAddress record.endpoints.destinationAddress) sourceHeader destinationHeader]
   exact PacketPolicy.AclFlowSelector.covered_packets_are_allowed _ policy.rules covered policy.defaultVerdict traffic.packet
-    (PacketPolicy.IPsecForm.maskWithOptions_matches form _ _ _ _ _ _ _ traffic.packet formMatches source destination
+    (PacketPolicy.IpsecForm.mask_with_options_matches form _ _ _ _ _ _ _ traffic.packet formMatches source destination
       ingressName.symm egressName inbound outbound size)
 
 end TDN.Requirements.Msc

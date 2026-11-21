@@ -118,7 +118,7 @@ def generate(data):
     quote = json.dumps
     principals = {row["fingerprint"]: row["id"] for row in data["principals"]}
     lines = ["import TDN.Requirements.ManagementPlaneRequirements", "", "namespace TDN.Deployments.SnapshotAdminSessions",
-             "open Requirements", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "",
+             "open Requirements", "set_option maxRecDepth 100000", "",
              "/-- Credential identities are modeled here. Human appointments and AW accounts remain external. -/",
              "def accounts : List AdministrativeAccount := [" + ", ".join(
                  "⟨" + str(row["id"]) + ", 0, " + quote(row["fingerprint"]) + ", false, false, 0⟩"
@@ -148,7 +148,7 @@ def generate(data):
         result = "[" + ", ".join(reversed(actions[:index + 1])) + "]"
         lines += ["lemma step" + str(index) + " : (Admission.lts needsAuthentication prerequisite).Tr " +
                   history + " " + action + " " + result + " := by",
-                  "  apply Admission.Step.record",
+                  "  apply Admission.AdmissionStep.record",
                   "  simp [needsAuthentication, prerequisite, MatchingAdministratorAuthentication, AdministrativeSessionActive, accounts, sessions, events, " + ", ".join(actions) + "]", ""]
     proof = "Cslib.LTS.MTr.refl"
     for index in reversed(range(len(actions))):

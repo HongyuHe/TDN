@@ -9,7 +9,7 @@ def Uniform (c : DataPlaneForwarding.DataPlaneModel) (expectedEncapStack : Nat �
     expectedEncapStack input = expectedEncapStack output
 
 lemma processing_stack_at_iface {c : DataPlaneForwarding.DataPlaneModel} {expectedEncapStack : Nat → List Nat}
-    {state : DataPlaneForwarding.State}
+    {state : DataPlaneForwarding.ForwardingState}
     (uniform : Uniform c expectedEncapStack (c.owner state.iface))
     (processing : ProcessingInvariant c expectedEncapStack state) :
     state.frame.encapLayerIds = expectedEncapStack state.iface := by
@@ -24,7 +24,7 @@ lemma processing_stack_at_iface {c : DataPlaneForwarding.DataPlaneModel} {expect
   exact stack.trans (uniform.2 state.frame.enteredIface state.iface processing.2.2.2.symm rfl)
 
 theorem all_active_phases_have_uniform_stack
-    {c : DataPlaneForwarding.DataPlaneModel} {expectedEncapStack : Nat → List Nat} {state : DataPlaneForwarding.State}
+    {c : DataPlaneForwarding.DataPlaneModel} {expectedEncapStack : Nat → List Nat} {state : DataPlaneForwarding.ForwardingState}
     (uniform : Uniform c expectedEncapStack (c.owner state.iface))
     (valid : EncapStackConsistent c expectedEncapStack state) (active : state.datapathStage ≠ .dropped) :
     state.frame.encapLayerIds = expectedEncapStack state.iface := by
@@ -65,7 +65,7 @@ theorem table_driven_uniform_sound (devices : List DeviceData) (ifaces : List If
         (second.trans first.symm)
 
 def responseConfig (data : GuardedResponseNetwork.Data) (owners : List Nat) :
-    KernelResponses.Config DataPlaneForwarding.State :=
+    KernelResponses.ReplyConfig DataPlaneForwarding.ForwardingState :=
   { EncryptedResponseGuards.combinedConfig data with
     generates := fun state =>
       (EncryptedResponseGuards.combinedConfig data).generates state ∨
@@ -79,13 +79,13 @@ lemma reply_preserves_safe (data : GuardedResponseNetwork.Data) (owners : List N
       (deviceAt data.devices guard.1).outputFallback = .deny)
     (encryptedChecks : EncryptedResponseGuards.LocalDeny data.config)
     (uniformChecks : TableDrivenUniform data.devices data.ifaces owners)
-    (source : DataPlaneForwarding.State) (header : PacketPolicy.Packet) (output : Nat)
+    (source : DataPlaneForwarding.ForwardingState) (header : PacketPolicy.Packet) (output : Nat)
     (valid : GuardedResponseNetwork.Safe data source)
     (enabled : (responseConfig data owners).generates source)
     (protocol : KernelResponses.ResponseProtocol header.protocol)
     (selected : (responseConfig data owners).selectedRoute source header output)
     (accepted : Filter.evaluate
-      (((responseConfig data owners).outputRules source output).map PacketPolicy.Rule.toFilter)
+      (((responseConfig data owners).outputRules source output).map PacketPolicy.PacketAclRule.toFilter)
       ((responseConfig data owners).outputFallback source output)
       (KernelResponses.outputPacket (responseConfig data owners) header output) = .allow)
     (external : (responseConfig data owners).interfaceName output ≠ "lo") :
@@ -115,7 +115,7 @@ theorem all_component_response_traces_preserve_stack
       (deviceAt data.devices guard.1).outputFallback = .deny)
     (encryptedChecks : EncryptedResponseGuards.LocalDeny data.config)
     (uniformChecks : TableDrivenUniform data.devices data.ifaces owners)
-    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {before after : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     (run : (KernelResponses.lts (GuardedResponseNetwork.network data)
       (responseConfig data owners)).MTr (.network before) actions (.network after))
     (initial : GuardedResponseNetwork.Safe data before) :

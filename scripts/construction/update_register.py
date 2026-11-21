@@ -19,14 +19,14 @@ for request in requests["requests"]:
         request["status"]=response["status"]
 (output_path("evidence_requests.json")).write_text(json.dumps(requests,indent=2,ensure_ascii=False)+"\n")
 external={1,2,3,4,5,6,9,21,45,49,51,52,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,74,76}
-formal={31:"TDN.Requirements.msc_encryption_component_routing_limits",42:"TDN.Requirements.msc_trusted_time_synchronization",43:"TDN.Requirements.msc_defaults_dns_and_boot_configuration",22:"TDN.Requirements.msc_ike_version_and_encryption_modes",23:"TDN.Requirements.msc_vpn_sa_lifetimes_and_reauthentication",25:"TDN.Requirements.msc_macsec_encryption_and_key_wrap",28:"TDN.Requirements.msc_macsec_protection_parameters",34:"TDN.Requirements.msc_outer_firewall_placement",38:"TDN.Requirements.msc_ip_header_and_multicast_filtering"}
+formal={31:"TDN.Requirements.msc_encryption_component_routing_limits",42:"TDN.Requirements.msc_trusted_time_synchronization",43:"TDN.Requirements.msc_defaults_dns_and_boot_configuration",22:"TDN.Requirements.msc_ike_version_and_encryption_modes",23:"TDN.Requirements.msc_vpn_sa_lifetimes_and_reauthentication",25:"TDN.Requirements.msc_macsec_encryption_and_key_wrap",28:"TDN.Requirements.msc_macsec_protection_parameters",34:"TDN.Requirements.graph_outer_firewall_placement",38:"TDN.Requirements.msc_ip_header_and_multicast_filtering"}
 generic={
-7:["TDN.black_has_two_layers","TDN.concrete_black_protection","TDN.Boundary.checked_machine_preserves_layers"],
+7:["TDN.black_has_two_layers","TDN.concrete_black_protection"],
 8:["TDN.forwarding_preserves_level","TDN.inner_delivery_same_level"],
 13:["TDN.Waypointing.waypointing_of_edge_invariant"],
 23:["TDN.Temporal.deadline_elapsed_bound"],
-29:["TDN.PacketPolicy.forwarding_policy_protects","TDN.Boundary.checked_machine_preserves_layers"],
-30:["TDN.PacketPolicy.forwarding_policy_protects","TDN.Boundary.checked_machine_preserves_layers"],
+29:["TDN.PacketPolicy.forwarding_policy_protects"],
+30:["TDN.PacketPolicy.forwarding_policy_protects"],
 34:["TDN.Waypointing.waypointing_of_edge_invariant"],
 35:["TDN.Filter.default_deny_sound"],
 39:["TDN.Filter.rejects_outside_allowlist"],
@@ -141,7 +141,7 @@ for group in data["groups"]:
         group["lean_theorems"] += [c["theorem"] for c in import_report["forwarding_certificates"] if c.get("theorem") and c["chain_id"].startswith(prefix)]
         group["status"]="partial_results"
     if number==34:
-        group["lean_theorems"]=["TDN.Deployments.baseline_adjacency_ipv6_20261017T2112Z_topology.snapshot_public_internet_RG034"]
+        group["lean_theorems"]=["TDN.Deployments.baseline_adjacency_ipv6_20261017T2112Z_topology.snapshot_public_internet_rg034"]
         group["status"]="conditional_results"
         group["establishment_scope"]="Candidate complete selected Public-Internet virtual-topology branch; ER-014 hashed applicability declaration pending."
     if number==22:

@@ -4,7 +4,6 @@ namespace TDN.Deployments.OuterTunnelNoBypass_SharedNetwork
 open Compliance Requirements OuterToGray_DeviceModel MtuSizing_Records
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma captured_sa_inventory_checks :
     PublicSAInventoryChecks (directionalConfiguration records installations) epoch installations := by

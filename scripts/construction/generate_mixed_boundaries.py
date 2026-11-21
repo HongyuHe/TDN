@@ -23,7 +23,7 @@ def main():
         device_ids = {name: i + 1 for i, name in enumerate(sorted(report["devices"]))}
         blocks += ["namespace TDN.Deployments." + namespace,
                    "open MultiProtocolForwarding LayeredFrame",
-                   "set_option maxRecDepth 1000000", "set_option maxHeartbeats 0"]
+                   "set_option maxRecDepth 1000000"]
         for tag in [1, 2]:
             blocks.append(f"""lemma carrier_inbound_checks_{tag} :
     TableDrivenCarrierInputChecks devices ifaces carriers {tag} := by
@@ -87,7 +87,7 @@ theorem {name}_no_bypass : Requirements.BoundaryNoBypass {name} :=
             actions = "[" + ", ".join("." + action for action in trace["actions"][first:last]) + "]"
             proof = "Cslib.LTS.MTr.refl"
             for index in reversed(range(first, last)):
-                proof = ("Cslib.LTS.MTr.stepL ⟨" + label + ".usefulStep" + str(index) +
+                proof = ("Cslib.LTS.MTr.stepL ⟨" + label + ".useful_step" + str(index) +
                          ", by native_decide, by native_decide⟩ (" + proof + ")")
             blocks.append(f"""theorem {name}_positive_inbound :
     ∃ start actions finish, {name}.inboundEntry start ∧

@@ -1,5 +1,5 @@
-import TDN.Deployments.NativeCheckDefaults
-import TDN.Import.NativeDecide
+import TDN.Deployments.DeviceCheckDefaults
+import TDN.Import.CompiledDecide
 import TDN.Deployments.OuterToGray_SharedGrayInterfaces
 
 set_option synthInstance.maxSize 16384
@@ -8,7 +8,6 @@ namespace TDN.Deployments.OuterToGray_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma gray5_inbound_lookup (base : Deployment) :
     records.RouteFirstMaskLookup base (outerGrayInterfaces[5]'(by native_decide)) .inbound := by

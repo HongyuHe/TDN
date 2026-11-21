@@ -1,6 +1,6 @@
-import TDN.Deployments.Perimeter_MacsecCases
+import TDN.Deployments.Perimeter_MacsecTestVectors
 
-namespace TDN.Deployments.BoundaryMACsec
+namespace TDN.Deployments.BoundaryMacsec
 open Compliance Requirements Requirements.Msc MultiProtocolForwarding LayeredFrame
 
 def SourceChecks (records : Records) : Prop :=
@@ -29,17 +29,17 @@ lemma checked_source_frames_bind_native_entry_and_logical_output (records : Reco
     records.logicalFrame.Describes (records.sourceCase.egressReady records.configuration).frame := by
   obtain ⟨_, attachment, source, logical, application, forwardedApplication⟩ := checks
   refine ⟨Or.inl attachment, ?_, ?_⟩
-  · exact checked_IP_frame_describes_native records.sourceFrame records.sourceCase.entry.frame
+  · exact checked_ip_frame_describes_native records.sourceFrame records.sourceCase.entry.frame
       records.sourceCase.header rfl records.sourceNetwork records.sourceTransport records.sourceCase.application
       source rfl application
-  · apply checked_IP_frame_describes_native records.logicalFrame
+  · apply checked_ip_frame_describes_native records.logicalFrame
       (records.sourceCase.egressReady records.configuration).frame records.sourceCase.forwardedHeader
       _ records.logicalNetwork records.logicalTransport records.sourceCase.application logical _ forwardedApplication
-    · simp [RoutedMACsecCase.egressReady, RoutedMACsecCase.filtered, RoutedMACsecCase.routed,
-        RoutedMACsecCase.entry, RoutedMACsecCase.forwardedHeader, Records.configuration,
-        Config.forwardedFrame, Frame.forwarded, Frame.visibleHeader, Body.visibleHeader]
-    · simp [RoutedMACsecCase.egressReady, RoutedMACsecCase.filtered, RoutedMACsecCase.routed,
-        RoutedMACsecCase.entry, Records.configuration, Config.forwardedFrame]
+    · simp [RoutedMacsecCase.egressReady, RoutedMacsecCase.filtered, RoutedMacsecCase.routed,
+        RoutedMacsecCase.entry, RoutedMacsecCase.forwardedHeader, Records.configuration,
+        TunnelForwardingModel.forwardedFrame, TunnelFrame.forwarded, TunnelFrame.visibleHeader, Body.visibleHeader]
+    · simp [RoutedMacsecCase.egressReady, RoutedMacsecCase.filtered, RoutedMacsecCase.routed,
+        RoutedMacsecCase.entry, Records.configuration, TunnelForwardingModel.forwardedFrame]
 
 theorem all_three_cases_start_at_a_recorded_arrival_with_decoded_payload :
     ∀ records ∈ [protectedCase, unprotectedAllowed, unprotectedDenied],
@@ -49,4 +49,4 @@ theorem all_three_cases_start_at_a_recorded_arrival_with_decoded_payload :
   intro records member
   exact checked_source_frames_bind_native_entry_and_logical_output records (captured_source_checks records member)
 
-end TDN.Deployments.BoundaryMACsec
+end TDN.Deployments.BoundaryMacsec

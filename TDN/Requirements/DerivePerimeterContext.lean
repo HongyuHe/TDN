@@ -59,7 +59,7 @@ lemma admitted_native_packet_has_protocol_or_annotation (d : Deployment)
         policy.defaultVerdict = .deny ∧ ∀ rule ∈ policy.rules, rule.verdict = .allow →
           DeviceProtocolRule (inventory.configuration.ip.interfaceName iface) policy.direction rule)
     (direction : Direction) (traffic : Traffic)
-    (accepted : d.Accepts interface direction traffic) :
+    (accepted : d.PermitsOnInterface interface direction traffic) :
     IPsecPacket traffic.packet ∨
       if direction = .inbound then traffic.packet.matchedInboundPolicyIds ≠ []
       else traffic.packet.matchedOutboundPolicyIds ≠ [] := by

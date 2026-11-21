@@ -1,4 +1,5 @@
-import TDN.Requirements.VerifiedMacsecProtectionParameters
+import TDN.Requirements.MscRequirements
+import TDN.Models.MacsecExternalOutputProtection
 import TDN.Requirements.MacsecDeviceModelCoverage
 import TDN.Requirements.DeviceRoutingAndFirewallRecords
 import TDN.Models.TableDrivenMultiProtocolDataPlane
@@ -36,7 +37,7 @@ structure ObservedParameters where
 load_network_records observedParameters : List ObservedParameters from
   "../../data/evidence/macsecProtection/MkaParametersLive.json" ["parameters"]
 
-def ObservedParameters.parameter (record : ObservedParameters) : MACsecParameters :=
+def ObservedParameters.parameter (record : ObservedParameters) : MacsecParameters :=
   { device := record.device
     dataDelayProtection := record.dataDelayProtectionLogged
     lifetimeMilliseconds := record.lifetimeMilliseconds
@@ -47,7 +48,7 @@ def ObservedParameters.parameter (record : ObservedParameters) : MACsecParameter
     confidentialityOffset := record.confidentialityOffset
     mustSecure := record.protectFrames && record.encryptFrames }
 
-def parameters : List MACsecParameters := observedParameters.map ObservedParameters.parameter
+def parameters : List MacsecParameters := observedParameters.map ObservedParameters.parameter
 
 structure ProfileRecords where
   ownerNames : List String
@@ -60,7 +61,7 @@ structure ProfileRecords where
   macIfaces : List MACIface
   mkaPeers : List PacketProcessing.MKAEndpoint
   tunnels : List Tunnel
-  macFrames : List (MACsecAssociation × LinkAdmission.Frame)
+  macFrames : List (MacsecAssociation × LinkAdmission.EthernetFrame)
   sourceIfaces : List Nat
   sourceAddresses : List Nat
   networks : List RedNetworkIdentity
@@ -79,7 +80,7 @@ def ProfileRecords.componentName (records : ProfileRecords) (owner : Nat) : Stri
 def ProfileRecords.ifaceIndex (records : ProfileRecords) (interface : Interface) : Nat :=
   (records.ifaceData.findIdx? (fun iface => iface.name == interface.id)).getD 0
 
-def ProfileRecords.macsecTunnel (records : ProfileRecords) (association : MACsecAssociation) : String :=
+def ProfileRecords.macsecTunnel (records : ProfileRecords) (association : MacsecAssociation) : String :=
   if association.keyGeneration = 1 then records.tunnels[0]?.map Tunnel.id |>.getD "unlisted-tunnel"
   else records.tunnels[1]?.map Tunnel.id |>.getD "unlisted-tunnel"
 
@@ -88,7 +89,7 @@ def ProfileRecords.sourceEntry (records : ProfileRecords) (iface : Nat) : Option
   else if iface = records.sourceIfaces[1]?.getD 0 then some "red-1"
   else none
 
-def ProfileRecords.configuration (records : ProfileRecords) : Config :=
+def ProfileRecords.configuration (records : ProfileRecords) : TunnelForwardingModel :=
   let base := dataPlaneModelFromRecords records.deviceData records.ifaceData records.routes
     records.links [] records.macIfaces []
   { base with
@@ -114,7 +115,7 @@ def ProfileRecords.inventory (records : ProfileRecords) : PacketProcessing.Inven
     macsecTunnel := records.macsecTunnel }
 
 def ProfileRecords.prototype (records : ProfileRecords) :
-    DeviceExecutionBinding MultiProtocolForwarding.State MultiProtocolForwarding.Action :=
+    DeviceExecutionBinding MultiProtocolForwarding.TunnelForwardingState MultiProtocolForwarding.TunnelForwardingAction :=
   { configuration := records.configuration
     state := id
     action := some

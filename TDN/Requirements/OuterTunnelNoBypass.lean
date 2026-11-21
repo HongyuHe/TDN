@@ -5,7 +5,7 @@ open Compliance
 
 def OuterGrayReceiveShape (d : Deployment) (genuineControl : PayloadId → Prop) : NetworkEvent → Prop
   | .receive payload ingress layers _ => ¬ genuineControl payload →
-      ∀ interface ∈ d.interfaces, d.Relevant interface.device → interface.id = ingress →
+      ∀ interface ∈ d.interfaces, d.InScope interface.device → interface.id = ingress →
         interface.zone = .gray → d.IsLayer interface.device .outer →
         ∃ tunnel ∈ d.tunnels, tunnel.layer = .inner ∧ layers = [tunnel.id]
   | _ => True
@@ -19,7 +19,7 @@ structure OuterGrayReceiveLocalChecks {S A : Type} (d : Deployment) (model : For
 
 lemma forwarding_has_gray_receive_shapes {S A : Type} (d : Deployment) (model : ForwardingModel S A)
     (checks : OuterGrayReceiveLocalChecks d model) {start finish : S} {actions : List A}
-    (run : model.system.MTr start actions finish) (safe : checks.safe start) :
+    (run : model.ForwardsAlongTrace start actions finish) (safe : checks.safe start) :
     ∀ event ∈ actions.flatMap model.events, OuterGrayReceiveShape d model.GenuineControl event := by
   induction run with
   | refl => simp
@@ -42,32 +42,32 @@ lemma setup_history_has_gray_receive_shapes (d : Deployment) (history : Observed
 theorem outer_tunnel_no_bypass_from_local_checks {S A : Type} (d : Deployment)
     (model : ForwardingModel S A) (components : List EncryptionComponentConfiguration)
     (outboundMACObjective inboundMACObjective : Bool) (receiveComponent : PayloadId → String → Option String)
-    (covered : model.CoversDeployment { d with focus := none })
-    (outbound : LayerOutboundLocalChecks { d with focus := none } model .outer)
-    (inbound : DeviceInboundGateChecks model.native { d with focus := none } .outer receiveComponent)
-    (receivers : InboundGateReceiversBound { d with focus := none } model.GenuineControl .outer receiveComponent)
-    (configurations : ComponentConfigurationCoverage { d with focus := none } .outer components)
-    (parameters : ∀ component ∈ components, ({ d with focus := none } : Deployment).Relevant component.id →
-      (component.mechanism = .ipsec → component.espTunnelMode = true) ∧
+    (covered : model.CoversDeployment { d with deviceScope := none })
+    (outbound : LayerOutboundLocalChecks { d with deviceScope := none } model .outer)
+    (inbound : DeviceInboundGuardChecks model.deviceDataPlane { d with deviceScope := none } .outer receiveComponent)
+    (receivers : InboundGuardReceiversBound { d with deviceScope := none } model.GenuineControl .outer receiveComponent)
+    (configurations : ComponentConfigurationCoverage { d with deviceScope := none } .outer components)
+    (parameters : ∀ component ∈ components, ({ d with deviceScope := none } : Deployment).InScope component.id →
+      (component.protocol = .ipsec → component.espTunnelMode = true) ∧
       (outboundMACObjective = true → component.outboundMACPolicy = true) ∧
       (inboundMACObjective = true → component.inboundMACPolicy = true))
-    (gray : OuterGrayReceiveLocalChecks { d with focus := none } model) :
-    msc_outer_tunnel_no_bypass d model components outboundMACObjective inboundMACObjective := by
+    (gray : OuterGrayReceiveLocalChecks { d with deviceScope := none } model) :
+    outer_tunnel_no_bypass d model components outboundMACObjective inboundMACObjective := by
   refine ⟨configurations, ⟨covered, ?_⟩, parameters, ?_⟩
   · intro start actions finish initial run
-    obtain ⟨next, gate⟩ := deployment_events_follow_inbound_gate model _ .outer receiveComponent covered inbound initial run
-    apply layer_events_have_no_bypass_with_inbound_gate _ .outer model.GenuineControl receiveComponent
+    obtain ⟨next, gate⟩ := deployment_events_follow_inbound_guard model _ .outer receiveComponent covered inbound initial run
+    apply layer_events_have_no_bypass_with_inbound_guard _ .outer model.GenuineControl receiveComponent
       (deployment_events_follow_layers model _ covered initial run) gate receivers
     intro event member
     rcases List.mem_append.mp member with setup | forwarding
-    · exact setup_history_has_outbound_boundary_shapes _ model.history covered.2.2.2.2.1 _ .outer event setup
+    · exact setup_history_has_outbound_boundary_shapes _ model.history covered.validHistory _ .outer event setup
     · exact forwarding_has_outbound_boundary_shapes _ model .outer outbound run
         (outbound.initial start initial) event forwarding
   · intro start actions finish initial run payload ingress layers trafficClass member data interface stored relevant name zone outer
-    have shape : OuterGrayReceiveShape { d with focus := none } model.GenuineControl
+    have shape : OuterGrayReceiveShape { d with deviceScope := none } model.GenuineControl
         (.receive payload ingress layers trafficClass) := by
       rcases List.mem_append.mp member with setup | forwarding
-      · exact setup_history_has_gray_receive_shapes _ model.history covered.2.2.2.2.1 _ _ setup
+      · exact setup_history_has_gray_receive_shapes _ model.history covered.validHistory _ _ setup
       · exact forwarding_has_gray_receive_shapes _ model gray run (gray.initial start initial) _ forwarding
     exact shape data interface stored relevant name zone outer
 

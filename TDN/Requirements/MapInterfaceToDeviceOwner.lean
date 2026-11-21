@@ -3,14 +3,14 @@ import TDN.Requirements.ExtractAllowedIpProtocols
 namespace TDN.Requirements.Msc
 open Compliance MultiProtocolForwarding
 
-def RouteOwnersCoherent (configuration : Config) : Prop :=
+def RouteOwnersCoherent (configuration : TunnelForwardingModel) : Prop :=
   ∀ route ∈ configuration.ip.routes,
     configuration.ip.owner route.ingress = configuration.ip.owner route.egress
 
-lemma device_route_preserves_owner (configuration : Config)
+lemma device_route_preserves_owner (configuration : TunnelForwardingModel)
     (owners : RouteOwnersCoherent configuration)
-    {before after : MultiProtocolForwarding.State}
-    (route : MultiProtocolForwarding.Step configuration before .route after) :
+    {before after : MultiProtocolForwarding.TunnelForwardingState}
+    (route : MultiProtocolForwarding.TunnelForwardingStep configuration before .route after) :
     configuration.ip.owner after.iface = configuration.ip.owner before.iface := by
   cases route with
   | route route datapathStage visible selected entry =>
@@ -20,7 +20,7 @@ lemma device_route_preserves_owner (configuration : Config)
   | routeOuterPacket route datapathStage visible selected entry =>
     simpa only [entry] using (owners route selected.1).symm
 
-lemma device_context_preserves_owner (configuration : Config)
+lemma device_context_preserves_owner (configuration : TunnelForwardingModel)
     (owners : RouteOwnersCoherent configuration) (context : PacketProcessing.Context)
     (atHook : context.AtHook configuration) :
     configuration.ip.owner context.state.iface = configuration.ip.owner context.entry.iface := by
@@ -39,9 +39,9 @@ lemma device_context_preserves_owner (configuration : Config)
     exact device_route_preserves_owner configuration owners atHook.2.2.1
   | link => simp [PacketProcessing.Context.AtHook, hook] at atHook
 
-lemma device_outbound_suffix_preserves_owner (configuration : Config)
+lemma device_outbound_suffix_preserves_owner (configuration : TunnelForwardingModel)
     (owners : RouteOwnersCoherent configuration)
-    {filtered ready : MultiProtocolForwarding.State}
+    {filtered ready : MultiProtocolForwarding.TunnelForwardingState}
     (suffix : OutboundSuffix configuration filtered ready) :
     configuration.ip.owner ready.iface = configuration.ip.owner filtered.iface := by
   cases suffix with
@@ -52,7 +52,7 @@ lemma device_outbound_suffix_preserves_owner (configuration : Config)
     cases protect
     exact selectedOwner
 
-theorem boundary_view_preserves_owner (configuration : Config)
+theorem boundary_view_preserves_owner (configuration : TunnelForwardingModel)
     (owners : RouteOwnersCoherent configuration) (context : PacketProcessing.Context)
     (atHook : context.AtHook configuration)
     (direction : Direction) (iface : Nat) (packet : PacketPolicy.Packet)

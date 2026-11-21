@@ -1,4 +1,4 @@
-import TDN.Requirements.CoreMscRequirements
+import TDN.Requirements.ExtendedMscRoleSpecs
 import TDN.Requirements.TrustedClockSynchronization
 
 namespace TDN.Requirements.Msc
@@ -400,7 +400,7 @@ def IndependentCryptographicLibraries (records : TechnicalDutyRecords)
 
 def IndependentComponents (records : TechnicalDutyRecords) (d : Deployment) : Prop :=
   ∀ inner ∈ d.devices, inner.layer = some .inner →
-    ∀ other ∈ d.devices, (d.Relevant inner.id ∨ d.Relevant other.id) →
+    ∀ other ∈ d.devices, (d.InScope inner.id ∨ d.InScope other.id) →
     other.layer = some .outer ∨ other.kind = .grayFirewall →
     ∀ first ∈ records.components, ∀ second ∈ records.components,
       first.component = inner.id → second.component = other.id →
@@ -414,7 +414,7 @@ def IndependentComponents (records : TechnicalDutyRecords) (d : Deployment) : Pr
 
 def PhysicalRoleSeparation (records : TechnicalDutyRecords) (d : Deployment) : Prop :=
   ∀ first ∈ records.components, ∀ second ∈ records.components,
-    first.component ≠ second.component → (d.Relevant first.component ∨ d.Relevant second.component) →
+    first.component ≠ second.component → (d.InScope first.component ∨ d.InScope second.component) →
     (d.IsLayer first.component .inner ∧ d.IsLayer second.component .outer ∨
       d.IsDevice first.component .grayFirewall ∧
         (d.IsLayer second.component .inner ∨ d.IsLayer second.component .outer)) →
@@ -442,12 +442,12 @@ def AuthenticatedSharedKey (records : TechnicalDutyRecords)
   records.authenticationPrimitive.verifySharedKeyPossession observation.input = true
 
 def MutuallyAuthenticatedTunnels (records : TechnicalDutyRecords) (d : Deployment) : Prop :=
-  ∀ tunnel ∈ d.tunnels, (d.Relevant tunnel.sender ∨ d.Relevant tunnel.receiver) →
+  ∀ tunnel ∈ d.tunnels, (d.InScope tunnel.sender ∨ d.InScope tunnel.receiver) →
     ∃ first ∈ records.authentications, ∃ second ∈ records.authentications,
       first.input.verifier = tunnel.sender ∧ first.input.claimant = tunnel.receiver ∧
       second.input.verifier = tunnel.receiver ∧ second.input.claimant = tunnel.sender ∧
       first.association = tunnel.id ∧ second.association = tunnel.id ∧
-      match tunnel.mechanism with
+      match tunnel.protocol with
       | .ipsec => AuthenticatedCertificate records first ∧ AuthenticatedCertificate records second
       | .macsec => AuthenticatedSharedKey records first tunnel.keyContext ∧
           AuthenticatedSharedKey records second tunnel.keyContext
@@ -532,7 +532,7 @@ def ManagementAttachmentConfiguration (records : TechnicalDutyRecords) (d : Depl
   (∃ gray ∈ d.devices, gray.kind = .workstation ∧
     ∃ interface ∈ d.interfaces, interface.device = gray.id ∧ interface.zone = .gray ∧
       interface.managementNetwork = true) ∧
-  ∀ device ∈ d.devices, d.Relevant device.id →
+  ∀ device ∈ d.devices, d.InScope device.id →
     ∀ record ∈ records.components, record.component = device.id →
       ManagementSeparation record ∧
       (∀ iface ∈ record.managementInterfaces, ∃ interface ∈ d.interfaces,
@@ -586,7 +586,7 @@ def ComponentMonitoringZone (d : Deployment) (device : Device) (zone : Zone) : P
     interface.managementNetwork = true ∧ interface.zone = zone
 
 def SIEMConfiguration (records : TechnicalDutyRecords) (d : Deployment) : Prop :=
-  ∀ device ∈ d.devices, d.Relevant device.id → ∀ zone,
+  ∀ device ∈ d.devices, d.InScope device.id → ∀ zone,
     ComponentMonitoringZone d device zone →
     (∃ siem ∈ d.devices, siem.kind = .siem ∧
       ∃ interface ∈ d.interfaces, interface.device = siem.id ∧

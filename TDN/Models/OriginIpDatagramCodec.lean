@@ -28,7 +28,7 @@ def sourceHeader (request : Request) (packet : PacketPolicy.Packet) (payload : L
     ipv4FragmentOffset := if packet.source < 2^32 then some 0 else none }
 
 def encodeSourceDatagram (request : Request) (packet : PacketPolicy.Packet)
-    (payload : List UInt8) : Datagram :=
+    (payload : List UInt8) : EncodedDatagram :=
   let header := sourceHeader request packet payload
   { body := .datagram header, application := payload,
     transportHeader := encodeTransportHeader header request.transportHeaderBytes payload.length,
@@ -52,7 +52,7 @@ lemma Request.ip_template_parts (request : Request) (packet : PacketPolicy.Packe
     · have notIPv4 : ¬ packet.source < 2^32 := by have bound := ipv6.1; omega
       simpa only [networkHeaderSize, notIPv4, ↓reduceIte] using ipv6.2.2.2.2.2
 
-theorem source_IP_datagram_decodes (request : Request) (packet : PacketPolicy.Packet)
+theorem source_ip_datagram_decodes (request : Request) (packet : PacketPolicy.Packet)
     (payload : List UInt8) (body : request.body = .datagram packet)
     (valid : request.TemplateValid) (representable : HeaderRepresentable packet)
     (length : request.Overhead + payload.length ≤ request.ProtocolLimit) :
@@ -105,7 +105,7 @@ theorem source_IP_datagram_decodes (request : Request) (packet : PacketPolicy.Pa
       request.transportHeaderBytes := encodedTransport.1
   have rawLength : (encodeSourceDatagram request packet payload).Raw.length =
       request.Overhead + payload.length := by
-    simp only [Datagram.Raw, Datagram.Data, List.length_append]
+    simp only [EncodedDatagram.Raw, EncodedDatagram.Data, List.length_append]
     rw [netLength, transportLength]
     exact (Nat.add_assoc ..).symm
   refine ⟨?_, ?_, rawLength⟩
@@ -114,7 +114,7 @@ theorem source_IP_datagram_decodes (request : Request) (packet : PacketPolicy.Pa
     refine ⟨rfl, ?_, ?_, encodedTransport.2, ?_⟩
     · rw [rawLength]
       rfl
-    · simp only [Datagram.Data, List.length_append]
+    · simp only [EncodedDatagram.Data, List.length_append]
       change NetworkHeaderMatches actual
         (encodeNetworkHeader actual (request.transportHeaderBytes + payload.length)
           (request.requestId % 65536) (sourceFlags request))
@@ -127,13 +127,13 @@ theorem source_IP_datagram_decodes (request : Request) (packet : PacketPolicy.Pa
           sourceFlags request := by
         change field (encodeNetworkHeader actual _ _ _) 6 2 = sourceFlags request
         rw [encodeNetworkHeader, if_pos ipv4]
-        exact encoded_IPv4_flags actual _ _ _ (source_flags_fit request)
+        exact encoded_ipv4_flags actual _ _ _ (source_flags_fit request)
       refine ⟨decoded_fragment_offset_from_field actual _ (by omega) ?_, ?_⟩
       · rw [flags, notFragments.1]
         change (if packet.source < 2^32 then some 0 else none) = some 0
         exact if_pos ipv4
       · simpa only [flags] using notFragments
-  · simp only [Datagram.HeaderFrom, body]
+  · simp only [EncodedDatagram.HeaderFrom, body]
     change actual = { packet with
       payloadBytes := some payload
       networkBytes := some (encodeSourceDatagram request packet payload).Raw.length
@@ -142,32 +142,32 @@ theorem source_IP_datagram_decodes (request : Request) (packet : PacketPolicy.Pa
     exact ⟨rfl, netLength, transportLength⟩
 
 
-lemma source_IP_datagram_flags (request : Request) (packet : PacketPolicy.Packet)
+lemma source_ip_datagram_flags (request : Request) (packet : PacketPolicy.Packet)
     (payload : List UInt8) (ipv4 : packet.source < 2^32) :
     field (encodeSourceDatagram request packet payload).networkHeader 6 2 = sourceFlags request := by
   change field (encodeNetworkHeader (sourceHeader request packet payload) _ _ _) 6 2 = _
   have source : (sourceHeader request packet payload).source < 2^32 := ipv4
   simp only [encodeNetworkHeader, source, ↓reduceIte]
-  exact encoded_IPv4_flags _ _ _ _ (source_flags_fit request)
+  exact encoded_ipv4_flags _ _ _ _ (source_flags_fit request)
 
-theorem source_IP_whole_datagram_valid (request : Request) (packet : PacketPolicy.Packet)
+theorem source_ip_whole_datagram_valid (request : Request) (packet : PacketPolicy.Packet)
     (payload : List UInt8) (mtu : Nat) (body : request.body = .datagram packet)
     (valid : request.TemplateValid) (representable : HeaderRepresentable packet)
     (length : request.Overhead + payload.length ≤ request.ProtocolLimit)
     (fits : request.Overhead + payload.length ≤ mtu) :
     (encodeSourceDatagram request packet payload).asWhole.ValidFor request mtu := by
   obtain ⟨decoded, headerFrom, rawLength⟩ :=
-    source_IP_datagram_decodes request packet payload body valid representable length
+    source_ip_datagram_decodes request packet payload body valid representable length
   have packetFits : (encodeSourceDatagram request packet payload).MtuBytes ≤ mtu := by
     change (encodeSourceDatagram request packet payload).Raw.length ≤ mtu
     rw [rawLength]
     exact fits
-  refine ⟨decoded, headerFrom, Datagram.whole_packet_reassembles _ mtu decoded packetFits,
+  refine ⟨decoded, headerFrom, EncodedDatagram.whole_packet_reassembles _ mtu decoded packetFits,
     ?_, ?_, ?_⟩
-  · rw [Datagram.asWhole_raw, rawLength]
+  · rw [EncodedDatagram.as_whole_raw, rawLength]
     exact length
   · intro _
-    rw [Datagram.asWhole_raw, rawLength]
+    rw [EncodedDatagram.as_whole_raw, rawLength]
     exact fits
   · intro dontFragment mode
     refine ⟨fun _ => packetFits, ?_⟩
@@ -175,7 +175,7 @@ theorem source_IP_whole_datagram_valid (request : Request) (packet : PacketPolic
       (field (encodeSourceDatagram request packet payload).networkHeader 6 2 / 16384 % 2 = 1 ↔
         dontFragment = true)
     intro ipv4
-    rw [source_IP_datagram_flags request packet payload ipv4, source_flags_match_df, mode]
+    rw [source_ip_datagram_flags request packet payload ipv4, source_flags_match_df, mode]
     simp
 
 end TDN.PacketSource

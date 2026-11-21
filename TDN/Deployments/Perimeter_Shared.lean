@@ -1,4 +1,4 @@
-import TDN.Import.NativeDecide
+import TDN.Import.CompiledDecide
 import TDN.Deployments.Perimeter_SharedInventory
 import TDN.Deployments.Perimeter_SharedRules
 import TDN.Deployments.Perimeter_SharedControlChecks
@@ -10,7 +10,7 @@ namespace TDN.Deployments.Perimeter_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel Perimeter_DeviceModel
 
 theorem complete_native_boundary_policy (base : Deployment) :
-    msc_boundary_interface_filtering (deployment base) true
+    boundary_interface_filtering (deployment base) true
       (fun name => firewallInternal.contains name) (localOuter firewalls) := by
   have workstations := gray_workstation_role_is_empty (deployment base) no_workstations rfl
   have address := address_inventory_from_checked_records (deployment base)
@@ -26,7 +26,7 @@ theorem complete_native_boundary_policy (base : Deployment) :
     (by intro iface; exact ⟨by change 64 ≤ 255; native_decide, by change 64 ≤ 255; native_decide⟩)
     true (fun name => firewallInternal.contains name) (localOuter firewalls) redEndpoints peers controls
     rfl (control_observations_checked base) address coherent udp indices
-    (every_declared_Red_endpoint_is_bound records services redEndpoints base controls)
+    (every_declared_red_endpoint_is_bound records services redEndpoints base controls)
     (peer_bindings_checked base) configured_policies_have_recorded_peers
     (device_roles_checked base)
   · intro interface member device deviceMember owner applicable

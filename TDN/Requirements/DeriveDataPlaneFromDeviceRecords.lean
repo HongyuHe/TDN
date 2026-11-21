@@ -16,9 +16,9 @@ lemma non_ethernet_has_no_link_operation (d : Deployment) (interface : String)
 lemma ip_acceptance_has_policy (d : Deployment) (interface : String)
     (direction : Direction) (traffic : Traffic)
     (notEthernet : traffic.packet.protocol ≠ "ethernet")
-    (accepted : d.Accepts interface direction traffic) :
+    (accepted : d.PermitsOnInterface interface direction traffic) :
     ∃ policy ∈ d.policies,
-      policy.interface = interface ∧ policy.direction = direction ∧ policy.Accepts traffic := by
+      policy.interface = interface ∧ policy.direction = direction ∧ policy.PermitsTraffic traffic := by
   obtain ⟨hook, _, _, accepted⟩ := accepted
   by_cases link : hook = .link
   · subst hook
@@ -33,12 +33,12 @@ lemma policy_denies_if_allow_rules_miss (policy : InterfacePolicy) (traffic : Tr
     (fallback : policy.defaultVerdict = .deny)
     (misses : ∀ rule ∈ policy.rules, rule.verdict = .allow →
       rule.toFilter.accepts traffic.packet = false) :
-    ¬ policy.Accepts traffic := by
+    ¬ policy.PermitsTraffic traffic := by
   intro accepted
-  unfold InterfacePolicy.Accepts at accepted
+  unfold InterfacePolicy.PermitsTraffic PacketPolicy.AclAllows at accepted
   rw [fallback] at accepted
   obtain ⟨rule, member, matched, allow⟩ :=
-    Filter.allowed_has_matching_allow (policy.rules.map PacketPolicy.Rule.toFilter)
+    Filter.allowed_has_matching_allow (policy.rules.map PacketPolicy.PacketAclRule.toFilter)
       traffic.packet accepted
   obtain ⟨source, present, same⟩ := List.mem_map.mp member
   subst rule
@@ -89,14 +89,14 @@ def IPProtocolAtom : PacketPolicy.MatchCondition → Prop
 instance (atom : PacketPolicy.MatchCondition) : Decidable (IPProtocolAtom atom) := by
   cases atom <;> unfold IPProtocolAtom <;> infer_instance
 
-def RuleIPGuard (rule : PacketPolicy.Rule) : Prop :=
+def RuleIPGuard (rule : PacketPolicy.PacketAclRule) : Prop :=
   ∃ atom ∈ rule.atoms, IPProtocolAtom atom
 
-instance (rule : PacketPolicy.Rule) : Decidable (RuleIPGuard rule) := by
+instance (rule : PacketPolicy.PacketAclRule) : Decidable (RuleIPGuard rule) := by
   unfold RuleIPGuard
   infer_instance
 
-lemma ip_rule_cannot_match_ethernet (rule : PacketPolicy.Rule) (packet : PacketPolicy.Packet)
+lemma ip_rule_cannot_match_ethernet (rule : PacketPolicy.PacketAclRule) (packet : PacketPolicy.Packet)
     (guard : RuleIPGuard rule) (matched : rule.toFilter.accepts packet = true) :
     packet.protocol ≠ "ethernet" := by
   obtain ⟨atom, present, guarded⟩ := guard
@@ -113,9 +113,9 @@ lemma routed_acceptance_has_ip_policy (d : Deployment)
     (fallback : ∀ policy ∈ d.policies, policy.defaultVerdict = .deny)
     (guards : ∀ policy ∈ d.policies, ∀ rule ∈ policy.rules,
       rule.verdict = .allow → RuleIPGuard rule)
-    (accepted : d.Accepts interface direction traffic) :
+    (accepted : d.PermitsOnInterface interface direction traffic) :
     traffic.packet.protocol ≠ "ethernet" ∧ ∃ policy ∈ d.policies,
-      policy.interface = interface ∧ policy.direction = direction ∧ policy.Accepts traffic := by
+      policy.interface = interface ∧ policy.direction = direction ∧ policy.PermitsTraffic traffic := by
   obtain ⟨hook, _, _, admission⟩ := accepted
   by_cases link : hook = .link
   · subst hook
@@ -124,10 +124,10 @@ lemma routed_acceptance_has_ip_policy (d : Deployment)
   · simp only [link, ↓reduceIte] at admission
     obtain ⟨policy, member, name, direction, _, _, admits⟩ := admission
     have allows := admits
-    unfold InterfacePolicy.Accepts at allows
+    unfold InterfacePolicy.PermitsTraffic PacketPolicy.AclAllows at allows
     rw [fallback policy member] at allows
     obtain ⟨rule, ruleMember, matchesRule, allow⟩ :=
-      Filter.allowed_has_matching_allow (policy.rules.map PacketPolicy.Rule.toFilter) traffic.packet allows
+      Filter.allowed_has_matching_allow (policy.rules.map PacketPolicy.PacketAclRule.toFilter) traffic.packet allows
     obtain ⟨original, originalMember, same⟩ := List.mem_map.mp ruleMember
     subst rule
     exact ⟨ip_rule_cannot_match_ethernet original traffic.packet
@@ -143,9 +143,9 @@ lemma routed_acceptance_has_policy (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (interface : String) (direction : Direction) (traffic : Traffic)
     (ifaces : ∀ iface ∈ inventory.ifaces, inventory.ifaceName iface = interface → RoutedIface inventory iface)
-    (accepted : d.Accepts interface direction traffic) :
+    (accepted : d.PermitsOnInterface interface direction traffic) :
     ∃ policy ∈ d.policies, policy.interface = interface ∧
-      policy.direction = direction ∧ policy.Accepts traffic := by
+      policy.direction = direction ∧ policy.PermitsTraffic traffic := by
   obtain ⟨hook, _, _, admission⟩ := accepted
   by_cases link : hook = .link
   · subst hook
@@ -156,12 +156,12 @@ lemma routed_acceptance_has_policy (d : Deployment)
     exact ⟨policy, member, name, direction, admits⟩
 
 lemma policy_acceptance_has_matching_rule (policy : InterfacePolicy) (traffic : Traffic)
-    (fallback : policy.defaultVerdict = .deny) (accepted : policy.Accepts traffic) :
+    (fallback : policy.defaultVerdict = .deny) (accepted : policy.PermitsTraffic traffic) :
     ∃ rule ∈ policy.rules, rule.toFilter.accepts traffic.packet = true ∧ rule.verdict = .allow := by
-  unfold InterfacePolicy.Accepts at accepted
+  unfold InterfacePolicy.PermitsTraffic PacketPolicy.AclAllows at accepted
   rw [fallback] at accepted
   obtain ⟨rule, member, matched, allow⟩ :=
-    Filter.allowed_has_matching_allow (policy.rules.map PacketPolicy.Rule.toFilter)
+    Filter.allowed_has_matching_allow (policy.rules.map PacketPolicy.PacketAclRule.toFilter)
       traffic.packet accepted
   obtain ⟨source, present, same⟩ := List.mem_map.mp member
   subst rule

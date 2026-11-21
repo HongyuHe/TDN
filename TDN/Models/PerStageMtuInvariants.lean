@@ -4,7 +4,7 @@ import TDN.Models.HeaderAwareEncapPreservation
 import TDN.Models.DecodedIpHeaderBounds
 
 namespace TDN.MultiProtocolForwarding
-open LayeredFrame IPsecFrameEncoding PacketSource
+open LayeredFrame IpsecFrameEncoding PacketSource
 
 def BodySizeBudget (plaintextLimit : Nat → Nat) : Body → Prop
   | .datagram header => NetworkTemplate header ∧ ∃ bytes,
@@ -46,47 +46,47 @@ lemma body_budget_has_length {limit : Nat → Nat} {body : Body}
   | macsecPdu association encryptFrames confidentialityOffset contents => cases budget
   | carrier endpoint contents => cases budget
 
-lemma decoded_source_body_budget (source : Datagram) (decoded : source.Decoded)
+lemma decoded_source_body_budget (source : EncodedDatagram) (decoded : source.Decoded)
     (limit : Nat → Nat) : BodySizeBudget limit source.body := by
   cases body : source.body with
   | datagram header =>
-    obtain ⟨network, _, _, _, length⟩ := decoded_IP_header_properties source header body decoded
+    obtain ⟨network, _, _, _, length⟩ := decoded_ip_header_properties source header body decoded
     have same := decoded
-    simp only [Datagram.Decoded, body] at same
+    simp only [EncodedDatagram.Decoded, body] at same
     exact ⟨network, source.Raw.length, same.2.1, length⟩
   | ethernet header => trivial
-  | ipsec association contents => simp [Datagram.Decoded, body] at decoded
-  | macsec association contents => simp [Datagram.Decoded, body] at decoded
-  | macsecPdu association encryptFrames confidentialityOffset contents => simp [Datagram.Decoded, body] at decoded
-  | carrier endpoint contents => simp [Datagram.Decoded, body] at decoded
+  | ipsec association contents => simp [EncodedDatagram.Decoded, body] at decoded
+  | macsec association contents => simp [EncodedDatagram.Decoded, body] at decoded
+  | macsecPdu association encryptFrames confidentialityOffset contents => simp [EncodedDatagram.Decoded, body] at decoded
+  | carrier endpoint contents => simp [EncodedDatagram.Decoded, body] at decoded
 
 
-def AuthenticationSizeBound (configuration : Config) (limit : Nat → Nat) (state : State) : Prop :=
+def AuthenticationSizeBound (configuration : TunnelForwardingModel) (limit : Nat → Nat) (state : TunnelForwardingState) : Prop :=
   ∀ bytes, configuration.networkBytes state.frame.body state.frame.payload = some bytes →
     ∀ requestId ∈ state.authenticated, bytes ≤ limit requestId
 
 
-def FilteredSizeBound (configuration : Config) (required : Nat → Bool)
-    (mtu plaintextLimit : Nat → Nat) (state : State) (header : PacketPolicy.Packet) : Prop :=
+def FilteredSizeBound (configuration : TunnelForwardingModel) (required : Nat → Bool)
+    (mtu plaintextLimit : Nat → Nat) (state : TunnelForwardingState) (header : PacketPolicy.Packet) : Prop :=
   ∀ bytes, configuration.networkBytes state.frame.body state.frame.payload = some bytes →
     (required state.iface = true → bytes ≤ mtu state.iface) ∧
     ∀ policy ∈ configuration.ip.egressPolicies state.iface,
       policy.matches header = true → bytes ≤ plaintextLimit policy.tag
 
 
-def SizeRouted (configuration : Config) (state : State) (header : PacketPolicy.Packet) : Prop :=
+def SizeRouted (configuration : TunnelForwardingModel) (state : TunnelForwardingState) (header : PacketPolicy.Packet) : Prop :=
   ∃ route ∈ configuration.ip.routes,
     route.ingress = state.enteredIface ∧ route.egress = state.iface ∧ route.matches header
 
 
-def ReadySizeBound (configuration : Config) (required : Nat → Bool)
-    (mtu : Nat → Nat) (state : State) : Prop :=
+def ReadySizeBound (configuration : TunnelForwardingModel) (required : Nat → Bool)
+    (mtu : Nat → Nat) (state : TunnelForwardingState) : Prop :=
   required state.iface = true → ∀ bytes,
     configuration.networkBytes state.frame.body state.frame.payload = some bytes → bytes ≤ mtu state.iface
 
 
-def SizeInvariant (configuration : Config) (required : Nat → Bool)
-    (mtu plaintextLimit authenticationLimit : Nat → Nat) (state : State) : Prop :=
+def SizeInvariant (configuration : TunnelForwardingModel) (required : Nat → Bool)
+    (mtu plaintextLimit authenticationLimit : Nat → Nat) (state : TunnelForwardingState) : Prop :=
   BodySizeBudget plaintextLimit state.frame.body ∧
   match state.datapathStage with
   | .ingress | .localOutput =>
@@ -104,7 +104,7 @@ def SizeInvariant (configuration : Config) (required : Nat → Bool)
   | .egressReady => ReadySizeBound configuration required mtu state
   | _ => True
 
-structure SizeChecks (configuration : Config) (required : Nat → Bool)
+structure SizeChecks (configuration : TunnelForwardingModel) (required : Nat → Bool)
     (mtu plaintextLimit authenticationLimit : Nat → Nat) : Prop where
   noMAC : configuration.macIfaces = []
   noCarriers : configuration.carriers = []
@@ -137,23 +137,23 @@ structure SizeChecks (configuration : Config) (required : Nat → Bool)
     route.destPrefixLow ≤ policy.receiver → policy.receiver ≤ route.destPrefixHigh → required route.egress = true →
     PacketLength.alignedWireLength 4 2 52 (plaintextLimit policy.tag) ≤ mtu route.egress
 
-lemma filtered_size_from_checks {configuration : Config} {required : Nat → Bool}
+lemma filtered_size_from_checks {configuration : TunnelForwardingModel} {required : Nat → Bool}
     {mtu plaintextLimit authenticationLimit : Nat → Nat}
     (checks : SizeChecks configuration required mtu plaintextLimit authenticationLimit)
     (processing : HeaderProcessing) (mode : configuration.headerProcessing = some processing)
-    (state : State) (header : PacketPolicy.Packet) (coherent : state.frame.HeadersCoherent)
+    (state : TunnelForwardingState) (header : PacketPolicy.Packet) (coherent : state.frame.HeadersCoherent)
     (budget : BodySizeBudget plaintextLimit state.frame.body)
     (visible : configuration.visibleHeader state.frame = some header)
     (authenticated : AuthenticationSizeBound configuration authenticationLimit state)
     (routed : SizeRouted configuration state header)
-    (rules : List PacketPolicy.Rule) (fallback : Filter.Verdict)
+    (rules : List PacketPolicy.PacketAclRule) (fallback : Filter.Verdict)
     (checked : ∀ route ∈ configuration.ip.routes, route.egress = state.iface →
       (required route.egress = true ∨ configuration.ip.egressPolicies route.egress ≠ []) →
       fallback = .deny ∧ DataPlaneForwarding.SizedProgramChecks [] rules route
         (configuration.ip.interfaceName route.ingress) (configuration.ip.interfaceName route.egress)
         (required route.egress) (mtu route.egress) (configuration.ip.egressPolicies route.egress)
         authenticationLimit plaintextLimit)
-    (accepted : DataPlaneForwarding.accepts rules fallback (policyHeader configuration state header)) :
+    (accepted : PacketPolicy.AclAllows rules fallback (policyHeader configuration state header)) :
     FilteredSizeBound configuration required mtu plaintextLimit state header := by
   intro bytes length
   by_cases relevant : required state.iface = true ∨ configuration.ip.egressPolicies state.iface ≠ []
@@ -162,7 +162,7 @@ lemma filtered_size_from_checks {configuration : Config} {required : Nat → Boo
     have destination : header.destination < 2^32 :=
       lt_of_le_of_lt matched.2 (checks.routeIPv4 route member)
     have actualVisible : state.frame.visibleHeader = some header := by
-      simpa only [Config.visibleHeader, mode] using visible
+      simpa only [TunnelForwardingModel.visibleHeader, mode] using visible
     obtain ⟨nominal, nominalVisible, identity⟩ := state.frame.coherent_visible coherent header actualVisible
     obtain ⟨actualBytes, actualLength, upper⟩ := body_budget_has_length budget nominal nominalVisible
     have sameBytes : actualBytes = bytes :=
@@ -190,24 +190,24 @@ lemma filtered_size_from_checks {configuration : Config} {required : Nat → Boo
       exact relevant (Or.inr nonempty)
     exact ⟨fun needed => False.elim (notRequired needed), by simp [empty]⟩
 
-lemma authentication_bound_empty (configuration : Config) (limit : Nat → Nat) (state : State)
+lemma authentication_bound_empty (configuration : TunnelForwardingModel) (limit : Nat → Nat) (state : TunnelForwardingState)
     (empty : state.authenticated = []) : AuthenticationSizeBound configuration limit state := by
   intro bytes length requestId member
   simp only [empty, List.not_mem_nil] at member
 
-lemma size_ready_if_not_required (configuration : Config) (required : Nat → Bool)
-    (mtu : Nat → Nat) (state : State) (irrelevant : required state.iface = false) :
+lemma size_ready_if_not_required (configuration : TunnelForwardingModel) (required : Nat → Bool)
+    (mtu : Nat → Nat) (state : TunnelForwardingState) (irrelevant : required state.iface = false) :
     ReadySizeBound configuration required mtu state := by
   intro needed
   rw [irrelevant] at needed
   contradiction
 
 
-theorem device_step_preserves_size_budget {configuration : Config} {required : Nat → Bool}
+theorem device_step_preserves_size_budget {configuration : TunnelForwardingModel} {required : Nat → Bool}
     {mtu plaintextLimit authenticationLimit : Nat → Nat}
     (checks : SizeChecks configuration required mtu plaintextLimit authenticationLimit)
     (processing : HeaderProcessing) (mode : configuration.headerProcessing = some processing)
-    {before after : State} {action : Action} (step : Step configuration before action after)
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction} (step : TunnelForwardingStep configuration before action after)
     (coherent : before.frame.HeadersCoherent)
     (invariant : SizeInvariant configuration required mtu plaintextLimit authenticationLimit before) :
     SizeInvariant configuration required mtu plaintextLimit authenticationLimit after := by
@@ -218,12 +218,12 @@ theorem device_step_preserves_size_budget {configuration : Config} {required : N
   | @route header route datapathStage visible chosen entry =>
     simp only [datapathStage] at phaseBudget
     have actualVisible : before.frame.visibleHeader = some header := by
-      simpa only [Config.visibleHeader, mode] using visible
-    refine ⟨by simpa only [Config.forwardedFrame_body] using bodyBudget,
+      simpa only [TunnelForwardingModel.visibleHeader, mode] using visible
+    refine ⟨by simpa only [TunnelForwardingModel.forwarded_frame_body] using bodyBudget,
       { header with hopLimit := header.hopLimit - 1 }, ?_, ?_, ?_⟩
-    · simpa only [Config.visibleHeader, mode, Config.forwardedFrame] using Frame.forwarded_visible actualVisible
-    · simpa only [AuthenticationSizeBound, Config.forwardedFrame_body, Frame.forwarded_payload,
-        Config.forwardedFrame, mode, Frame.forwarded_body] using phaseBudget.2.1
+    · simpa only [TunnelForwardingModel.visibleHeader, mode, TunnelForwardingModel.forwardedFrame] using TunnelFrame.forwarded_visible actualVisible
+    · simpa only [AuthenticationSizeBound, TunnelForwardingModel.forwarded_frame_body, TunnelFrame.forwarded_payload,
+        TunnelForwardingModel.forwardedFrame, mode, TunnelFrame.forwarded_body] using phaseBudget.2.1
     · exact ⟨route, chosen.1, entry.trans phaseBudget.2.2.symm, rfl, chosen.2.1⟩
   | @routeLocalOutput header route datapathStage visible chosen entry =>
     simp only [datapathStage] at phaseBudget
@@ -254,16 +254,16 @@ theorem device_step_preserves_size_budget {configuration : Config} {required : N
     subst priorHeader
     have configured := DataPlaneForwarding.matched_policy_is_configured selected
     obtain ⟨nominal, nominalVisible, identity⟩ := before.frame.coherent_visible coherent header
-      (by simpa only [Config.visibleHeader, mode] using visible)
+      (by simpa only [TunnelForwardingModel.visibleHeader, mode] using visible)
     obtain ⟨bytes, length, maximum⟩ := body_budget_has_length bodyBudget nominal nominalVisible
     have checkedLength : configuration.networkBytes before.frame.body before.frame.payload = some bytes :=
       (checks.networkDefinition _ _).trans length
     refine ⟨?_, policy, configured.1, association, installed, bound, before.frame.body, ?_⟩
-    · simp only [Config.ipsecFrame_body, BodySizeBudget]
+    · simp only [TunnelForwardingModel.ipsec_frame_body, BodySizeBudget]
       exact ⟨checks.outboundIPv4 _ policy association configured.1 installed bound, bodyBudget,
         bytes, length, (filtered bytes checkedLength).2 policy configured.1 configured.2,
         checks.plaintextMaximum _ policy configured.1⟩
-    · exact Config.ipsecFrame_body ..
+    · exact TunnelForwardingModel.ipsec_frame_body ..
   | @routeOuterPacket header route datapathStage visible chosen entry =>
     simp only [datapathStage] at phaseBudget
     obtain ⟨policy, configured, association, installed, bound, contents, body⟩ := phaseBudget
@@ -271,7 +271,7 @@ theorem device_step_preserves_size_budget {configuration : Config} {required : N
     rw [body] at bodyFacts
     obtain ⟨known, innerBudget, bytes, innerLength, innerBound, maximum⟩ := bodyFacts
     have actualVisible : before.frame.visibleHeader = some header := by
-      simpa only [Config.visibleHeader, mode] using visible
+      simpa only [TunnelForwardingModel.visibleHeader, mode] using visible
     obtain ⟨nominal, nominalVisible, identity⟩ := before.frame.coherent_visible coherent header actualVisible
     have nominalHeader : nominal = outerHeader policy.sender policy.receiver "esp" 0 0 := by
       rw [body] at nominalVisible
@@ -302,13 +302,13 @@ theorem device_step_preserves_size_budget {configuration : Config} {required : N
   | decryptIPsec policy association contents header datapathStage encrypted configured installed bound visible selected tracking =>
     rw [encrypted] at bodyBudget
     obtain ⟨known, innerBudget, bytes, innerLength, innerBound, maximum⟩ := bodyBudget
-    refine ⟨by simpa only [Config.restoredFrame_body] using innerBudget, ?_, ?_, rfl⟩
-    · simp only [Config.visibleHeader, mode, Config.restoredFrame, Frame.pop_visible _ _ _ visible]
+    refine ⟨by simpa only [TunnelForwardingModel.restored_frame_body] using innerBudget, ?_, ?_, rfl⟩
+    · simp only [TunnelForwardingModel.visibleHeader, mode, TunnelForwardingModel.restoredFrame, TunnelFrame.pop_visible _ _ _ visible]
       exact ⟨_, rfl⟩
     · intro actualBytes actualLength requestId member
       have sameId : requestId = policy.id := List.mem_singleton.mp member
       have sameLength : bytes = actualBytes := by
-        rw [checks.networkDefinition, Config.restoredFrame_body] at actualLength
+        rw [checks.networkDefinition, TunnelForwardingModel.restored_frame_body] at actualLength
         exact Option.some.inj (innerLength.symm.trans actualLength)
       rw [sameId, ← sameLength]
       exact innerBound.trans (checks.inboundLimit _ policy configured)

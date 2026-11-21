@@ -3,19 +3,19 @@ import TDN.Models.IpHeaderAclGuards
 namespace TDN.Requirements
 open PacketPolicy
 
-def PeerOutputGuard (peer : Nat) (rule : Rule) : Prop :=
+def PeerOutputGuard (peer : Nat) (rule : PacketAclRule) : Prop :=
   .egress "lo" ∈ rule.atoms ∨ .destinationRange peer peer ∈ rule.atoms
 
-instance (peer : Nat) (rule : Rule) : Decidable (PeerOutputGuard peer rule) := by
+instance (peer : Nat) (rule : PacketAclRule) : Decidable (PeerOutputGuard peer rule) := by
   unfold PeerOutputGuard
   infer_instance
 
-theorem accepted_nonloopback_output_has_peer_destination (rules : List Rule) (peer : Nat)
+theorem accepted_nonloopback_output_has_peer_destination (rules : List PacketAclRule) (peer : Nat)
     (checked : ∀ rule ∈ rules, rule.verdict = .allow → PeerOutputGuard peer rule)
-    (packet : Packet) (accepted : Accepts rules packet) (external : packet.egress ≠ "lo") :
+    (packet : Packet) (accepted : DefaultDenyAllows rules packet) (external : packet.egress ≠ "lo") :
     packet.destination = peer := by
   have property : packet.egress ≠ "lo" → packet.destination = peer := by
-    apply TDN.Filter.default_deny_sound (rules.map Rule.toFilter)
+    apply TDN.Filter.default_deny_sound (rules.map PacketAclRule.toFilter)
       (fun p => p.egress ≠ "lo" → p.destination = peer) ?_ packet accepted
     intro target member allow candidate matched outside
     obtain ⟨rule, present, rfl⟩ := List.mem_map.mp member
@@ -26,11 +26,11 @@ theorem accepted_nonloopback_output_has_peer_destination (rules : List Rule) (pe
       omega
   exact property external
 
-theorem nonpeer_local_output_is_blocked (rules : List Rule) (peer : Nat)
+theorem nonpeer_local_output_is_blocked (rules : List PacketAclRule) (peer : Nat)
     (checked : ∀ rule ∈ rules, rule.verdict = .allow → PeerOutputGuard peer rule)
     (packet : Packet) (external : packet.egress ≠ "lo") (thirdParty : packet.destination ≠ peer) :
-    TDN.Filter.evaluate (rules.map Rule.toFilter) .deny packet = .deny := by
-  cases verdict : TDN.Filter.evaluate (rules.map Rule.toFilter) .deny packet with
+    TDN.Filter.evaluate (rules.map PacketAclRule.toFilter) .deny packet = .deny := by
+  cases verdict : TDN.Filter.evaluate (rules.map PacketAclRule.toFilter) .deny packet with
   | deny => rfl
   | allow => exact False.elim (thirdParty
       (accepted_nonloopback_output_has_peer_destination rules peer checked packet verdict external))

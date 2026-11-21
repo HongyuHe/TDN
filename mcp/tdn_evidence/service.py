@@ -98,7 +98,7 @@ class EvidenceService:
         if network in self.settings.saved_experiments:
             adapter, _ = self.experiment(network)
             return {"saved_experiment": {"parser": self.settings.saved_experiments[network].parser,
-                "capabilities": adapter.CAPABILITIES, "lean_views": [adapter.LEAN_VIEW],
+                "capabilities": adapter.CAPABILITIES, "lean_views": [adapter.LEAN_VIEW, *getattr(adapter, "EXTRA_EXPORTS", {})],
                 "scope": adapter.SCOPE}}
         if network in self.settings.saved_snapshots:
             from .projections import PROJECTIONS
@@ -115,7 +115,7 @@ class EvidenceService:
                 "execution_epoch_union": network in self.settings.execution_epoch_union}}
         names = ADAPTERS if network is None else {a for d in self.networks[network].devices for a in d.adapters}
         return {name: {"parser_version": ADAPTERS[name].version, "capabilities": {
-            k: {"meaning": c.meaning, "rechecked": c.recheck} for k, c in ADAPTERS[name].capabilities.items()}}
+            k: {"meaning": c.meaning, "rechecked": c.recheck, **({"provides": c.provides} if c.provides else {})} for k, c in ADAPTERS[name].capabilities.items()}}
             for name in names}
 
     def collect_evidence(self, network, capabilities=None):
@@ -196,7 +196,7 @@ class EvidenceService:
                             adapter=adapter_name, capability=capability_name, argv=list(capability.argv),
                             started=began, finished=ended, exit_code=code, status=status, path=path,
                             sha256=digest(stdout), stderr_path=error_path, stderr_sha256=digest(stderr),
-                            parser_version=adapter.version, records=records, diagnostics=diagnostics))
+                            parser_version=adapter.version, provides=capability.provides, records=records, diagnostics=diagnostics))
                         if capability.recheck:
                             rechecks.append((device, capability, oid, stdout, code))
             for device, capability, oid, original, original_code in rechecks:
@@ -321,10 +321,10 @@ class EvidenceService:
         from .bundle import prepare_bundle
         if collection in self.settings.saved_experiments:
             adapter, directory = self.experiment(collection)
-            if view != adapter.LEAN_VIEW:
-                raise ValueError("Selected experiment exports view=" + adapter.LEAN_VIEW)
-            result = adapter.export_experiment(directory,
-                self.root / (safe_id(collection) + "-export") / (adapter.LEAN_VIEW + ".json"))
+            exporters = {adapter.LEAN_VIEW: adapter.export_experiment, **getattr(adapter, "EXTRA_EXPORTS", {})}
+            if view not in exporters:
+                raise ValueError("Selected experiment exports view=" + ", ".join(exporters))
+            result = exporters[view](directory, self.root / (safe_id(collection) + "-export") / (safe_id(view) + ".json"))
         elif collection in self.settings.saved_snapshots:
             from .export_saved import export_saved, export_projection
             if view != "inventory":

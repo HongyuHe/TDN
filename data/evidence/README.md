@@ -1,11 +1,13 @@
-# Typed network evidence for TDN v3.2
+# Typed network evidence for TDN v3.4
 
-These JSON files contain the network records loaded by Lean. The record types describe the fields used by the supported models. The import commands reject unknown fields and values outside those types. The original device observations remain under `data/snapshots` and in the selected captured test fixtures.
+These JSON files hold the records that Lean reads. Device observations and collection manifests are kept in [the snapshots directory](../snapshots/). The importer reads a record at a named JSON key, converts it to the requested Lean type, and encodes it back to JSON. The two values must match exactly.
 
-Version 3.2 renames the typed fields alongside the Lean declarations. IPsec records distinguish `IpsecPolicy` from `InstalledSA`. Installed associations use `reqid` and `spi`. Device records use `ingressPolicies`, `egressPolicies`, and `ifaceSecurityDomain`. Routes use `destPrefixLow` and `destPrefixHigh`. Packet states use `encapLayers` and `egressReady`.
+In the current overlay records, `protocol` identifies the tunnel protocol and `hostLocal` identifies an interface local to its device. Collectors retain their original field names and values. For example, an IPsec device observation can record `mechanism`, and a loopback interface in a saved inventory can carry the zone `local`. The exporter converts those values when it builds the Lean records. The shared Gray Firewall’s [ACL and route indexes](lookup-hints/) identify the records Lean should check.
 
-The MCP exporters produce the same field names. Regenerate an export into a new destination when upgrading; the service rejects overwriting an existing export with different contents. The saved view names remain available, while each changed view reports a v3.2 `projectionVersion`.
+To load a typed export produced before the field changes, convert it into a new file:
 
-The manifest retains the original source commit and source-module identity for the initial export. Its file paths and hashes identify the current typed files. The migration base and theory version record the naming update. Later typed refinements also appear in subdirectories; each Lean import identifies the exact file and record it uses. Publication validates the hashes of all imported files used by the current hierarchy.
+```sh
+python3 scripts/construction/migrate_typed_overlay_records.py previous.json current.json
+```
 
-The [v3.2 migration guide](../../docs/refactoring_v3.2.md) explains the names. The [migration map](../publication/v3.2/renames.json) lists module and declaration changes. The raw observations and historical review records keep their original names and formats.
+The converter preserves embedded source captures and the JSON keys that identify individual observations. The [evidence manifest](manifest.json) records the paths and SHA-256 hashes of the original collection of typed files. Its source commit and module names identify their origin. Later exports appear in subdirectories. The [formalization map](../../specs/requirement_formalizations.md) links the current requirements to their Lean declarations.

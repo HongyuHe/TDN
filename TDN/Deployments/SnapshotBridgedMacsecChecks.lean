@@ -4,7 +4,6 @@ import TDN.Models.MultiProtocolSaOriginAttribution
 namespace TDN.Deployments.PairingInnerMacsecOuterIpsec
 open MultiProtocolForwarding LayeredFrame
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma ip_peer_tag_checks : DataPlaneForwarding.TableDrivenPeerTagAgreement devices := by
   unfold DataPlaneForwarding.TableDrivenPeerTagAgreement DataPlaneForwarding.saMatchesPolicy DataPlaneForwarding.SameWireAssociation devices
@@ -12,9 +11,9 @@ lemma ip_peer_tag_checks : DataPlaneForwarding.TableDrivenPeerTagAgreement devic
 lemma ip_peer_wire_tag_agreement : DataPlaneForwarding.PeerTagAgreement config.ip :=
   DataPlaneForwarding.table_driven_peer_tag_agreement_sound devices ifaces routes links [] ip_peer_tag_checks
 
-theorem reachable_IPsec_seals_have_actual_transmit_provenance
-    {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
-    (source : Requirements.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish) :
+theorem reachable_ipsec_seals_have_actual_transmit_provenance
+    {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
+    (source : Requirements.MultiProtocolRedOrigin redSources start) (run : (lts config).MTr start actions finish) :
     ProducedIPBodies config finish.frame.body := by
   apply all_traces_preserve_ip_provenance config run
   rcases source.2.2.2 with ⟨_, header, plain⟩ | ⟨_, header, plain⟩ <;>
@@ -95,12 +94,12 @@ lemma black_ifaces_checked : ∀ iface ∈ blackIfaces, expectedEncapStack iface
   unfold blackIfaces expectedEncapStack DataPlaneForwarding.expectedEncapStackFromRecords ifaces; native_decide
 
 theorem every_red_origin_transmission_has_gray_or_black_protection
-    {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
-    (source : Requirements.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish)
+    {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
+    (source : Requirements.MultiProtocolRedOrigin redSources start) (run : (lts config).MTr start actions finish)
     (ready : finish.datapathStage = .egressReady) :
     (finish.iface ∈ grayIfaces → finish.frame.body.protectionLayers = [1]) ∧
     (finish.iface ∈ blackIfaces → finish.frame.body.protectionLayers = [2, 1]) := by
-  have initial := Requirements.mixed_red_initial_invariant config expectedEncapStack redSources red_sources_checked source
+  have initial := Requirements.multi_protocol_red_initial_invariant config expectedEncapStack redSources red_sources_checked source
   have preserved := all_traces_preserve_stack config expectedEncapStack mixed_local_conditions run initial
   have layers : finish.frame.body.protectionLayers = expectedEncapStack finish.iface := by
     simpa only [ready] using preserved.2
@@ -111,17 +110,17 @@ lemma outer_iface_shapes : ∀ iface ∈ ({} : DataPlaneForwarding.IfaceData) ::
     iface.stack.head? = some 2 → iface.stack = [2, 1] := by
   unfold ifaces; native_decide
 
-theorem actual_inner_encryption_precedes_outer {start finish : MultiProtocolForwarding.State}
-    {actions : List MultiProtocolForwarding.Action}
-    (source : Requirements.MixedRedOrigin redSources start) (run : (lts config).MTr start actions finish)
+theorem actual_inner_encryption_precedes_outer {start finish : MultiProtocolForwarding.TunnelForwardingState}
+    {actions : List MultiProtocolForwarding.TunnelForwardingAction}
+    (source : Requirements.MultiProtocolRedOrigin redSources start) (run : (lts config).MTr start actions finish)
     (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ blackIfaces) :
     MultiProtocolForwarding.OrderedEncryptions config 1 2 start actions finish :=
-  Requirements.mixed_black_transmission_has_ordered_encryptions config expectedEncapStack redSources blackIfaces
+  Requirements.multi_protocol_black_transmission_has_ordered_encryptions config expectedEncapStack redSources blackIfaces
     mixed_local_conditions red_sources_checked black_ifaces_checked
     (fun iface => outer_iface_shapes _ (DataPlaneForwarding.iface_at_member_or_default ifaces iface))
     source run ready black
 
-theorem every_mixed_forwarding_keeps_actual_layers {start finish : MultiProtocolForwarding.State} {actions : List MultiProtocolForwarding.Action}
+theorem every_mixed_forwarding_keeps_actual_layers {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
     (run : (lts config).MTr start actions finish)
     (initial : EncapStackConsistent config expectedEncapStack start) :
     EncapStackConsistent config expectedEncapStack finish :=

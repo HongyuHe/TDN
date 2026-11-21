@@ -74,11 +74,14 @@ class ConfigurationRecordTests(unittest.TestCase):
         import re
         scope = json.loads((ROOT / "specs/proof_scope.json").read_text())
         retired = set(scope["retired_modules"])
-        for path in [ROOT / "TDN.lean", *ROOT.joinpath("TDN").rglob("*.lean"),
-                     *ROOT.joinpath("tests").rglob("*.lean")]:
+        sources = [ROOT / "TDN.lean", *ROOT.joinpath("TDN").rglob("*.lean")]
+        modules = {".".join(path.relative_to(ROOT).with_suffix("").parts) for path in sources}
+        tests = (path for path in ROOT.joinpath("tests").rglob("*.lean")
+                 if "runs" not in path.relative_to(ROOT / "tests").parts)
+        for path in [*sources, *tests]:
             for name in re.findall(r"^import (TDN[\w.]*)", path.read_text(), re.M):
                 self.assertNotIn(name, retired, str(path))
-                self.assertTrue((ROOT / (name.replace(".", "/") + ".lean")).is_file(), name)
+                self.assertIn(name, modules, f"{path} imports a missing or incorrectly capitalized module: {name}")
 
     def test_scope_claims_and_layering_remain_consistent(self):
         import re

@@ -1,6 +1,6 @@
-import TDN.Models.LocateTransitionStepInTrace
+import TDN.Models.FindStepInForwardingTrace
 
-namespace TDN.RestrictedExecution
+namespace TDN.SubgraphScopedTraces
 
 def within {S A : Type} (system : Cslib.LTS S A) (scope : S → Prop) : Cslib.LTS S A where
   Tr := fun before action after => system.Tr before action after ∧ scope before ∧ scope after
@@ -22,4 +22,4 @@ theorem actual_event_in_scope {S A : Type} (system : Cslib.LTS S A) (scope : S �
   exact ⟨earlier, later, left, action, right, sequence, project_trace system scope first,
     step.1, project_trace system scope last, event, step.2⟩
 
-end TDN.RestrictedExecution
+end TDN.SubgraphScopedTraces

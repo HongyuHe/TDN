@@ -1,0 +1,1091 @@
+{
+  "RG-007": {
+    "scope": "A flow names two tunnels and the two Red networks. The trace records which tunnel handled the same payload. Exact layer lists implement the Red, Gray and Black data definitions. The phrase “at least two” on PDF page 22 alone would permit an additional layer. Cryptographic independence is an explicit input. Page 22 also names administrative workstations. This target checks the CA, key generator and Gray Firewall conditions there. Workstation provisioning belongs to the administration requirements. The clause about workstations concerns their presence. Stack and event proofs establish the modeled processing order. Confidentiality and integrity of the encryption operation depend on the supplied primitive. The general flow selector can inspect the complete trace. The two deployed applications fix the flow from the initial state.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u006.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u006.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s002"
+        ],
+        "declaration": "Flow.Valid",
+        "anchor": "inner.layer = .inner",
+        "interpretation": "Choose one Inner and one Outer tunnel and require independent key contexts. IPsec and MACsec can each occupy either layer. Table 1 on PDF page 19 lists all four combinations.",
+        "counterexample": "Both named layers use one key context that the independence relation rejects."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u006.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s003"
+        ],
+        "declaration": "Flow.Valid",
+        "anchor": "sender.infrastructure = true",
+        "interpretation": "Each end is infrastructure of the proper kind and layer. A flow joins different sites and uses the Inner devices assigned to its Red networks.",
+        "counterexample": "An IPsec tunnel terminates on a device recorded as a MACsec device."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s005"
+        ],
+        "declaration": "Flow.Valid",
+        "anchor": "outer.protocol = .macsec →",
+        "interpretation": "An Outer MACsec flow limits all in-scope Outer devices to two sites.",
+        "counterexample": "A third site has an Outer device in the same solution."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003"
+        ],
+        "declaration": "ArchitectureServices",
+        "anchor": "AuthenticationServices d",
+        "interpretation": "Certificate users have a CA, pre-shared CAK users have a key generator, and different-level Inners sharing an Outer require a Gray Firewall.",
+        "counterexample": "Two levels share an Outer and the deployment lists no Gray Firewall."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s002"
+        ],
+        "declaration": "scoped_nested_layer_protection",
+        "anchor": "selectedFlow payload ∈ flows ∧ (selectedFlow payload).sourceNetwork",
+        "interpretation": "An injected payload selects a declared flow starting on its actual Red network. On Gray egress it carries exactly the selected Inner layer after Inner encryption.",
+        "counterexample": "A Red payload leaves Gray with a different flow’s Inner tunnel."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s002"
+        ],
+        "declaration": "scoped_nested_layer_protection",
+        "anchor": "Before earlier (.encrypt",
+        "interpretation": "Black egress carries the Outer layer around the Inner layer. The two encryption events must already have occurred in that order. Black reception requires the same two identified layers.",
+        "counterexample": "The stack has the expected length but the trace records Outer encryption first."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s002"
+        ],
+        "declaration": "scoped_nested_layer_protection",
+        "anchor": "Before earlier (.decrypt",
+        "interpretation": "A delivered payload that was injected and crossed Black reaches its declared destination in plaintext after Outer and then Inner decryption.",
+        "counterexample": "A payload reaches a different Red network after its two layers are removed."
+      }
+    ],
+    "related_sources": [
+      "p019:u003",
+      "p019:u004",
+      "p019:u005",
+      "p019:u006"
+    ],
+    "evidence": [
+      {
+        "profile": "Two-level IPsec",
+        "records": [
+          {
+            "path": "data/evidence/nestedProtection/BaselineIPsec.json",
+            "field": "authenticationBindings"
+          },
+          {
+            "path": "data/evidence/nestedProtection/BaselineIPsec.json",
+            "field": "contexts"
+          }
+        ],
+        "declared": "The source flow selects the intended Inner and Outer peers.",
+        "assumed": "The caller supplies the GCM implementation and evidence that the two identified key contexts are independent.",
+        "positive": "snapshot_rg007_ipsec_nonempty_payload_delivered",
+        "negative": "snapshot_rg007_missing_key_independence_rejected"
+      },
+      {
+        "profile": "Inner IPsec and Outer MACsec",
+        "records": [
+          {
+            "path": "data/evidence/nestedProtection/MixedIPsecMACsec.json",
+            "field": "records"
+          },
+          {
+            "path": "data/evidence/nestedProtection/MixedDeliveryPlans.json",
+            "field": "plans"
+          }
+        ],
+        "declared": "The deployment specifies its Red source domains and the two layer roles.",
+        "assumed": "The caller supplies key independence for the declared contexts.",
+        "positive": "snapshot_rg007_hybrid_ipsec_macsec_forward_payload_delivered",
+        "negative": "snapshot_rg007_hybrid_ipsec_macsec_missing_key_independence_rejected"
+      }
+    ],
+    "helpers": [
+      "Flow.Valid",
+      "AuthenticationServices",
+      "ForwardingModel.CoversDeployment",
+      "DeviceExecutionBinding.ProcessingBound"
+    ],
+    "reviewed_sha256": "9726160a7a7a6311a48c3d3dbc6bc2c73b4cc7c8bf9f9bdb7df20172214af468"
+  },
+  "RG-008": {
+    "scope": "Security level includes classification, compartments, release controls and other controls. The reached safety conclusion compares the entire level. Forwarding, solution references and inherited duties can be inspected separately. For an enclave, Applicable admits all 76 catalog cases and Contains spans all devices. Each case still has its own conditions. The standalone baseline has no unclassified enclave and no referenced solution. The shared example includes an unclassified enclave and exercises the physical-host duty.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s003"
+        ],
+        "declaration": "scoped_security_level_connectivity",
+        "anchor": "DedicatedInnerAssignments",
+        "interpretation": "Every Red network has dedicated Inner assignments at its own level. The network list can include several levels, shared Outer infrastructure and unclassified networks. The importer must supply a complete inventory.",
+        "counterexample": "Two Red networks share the same dedicated Inner component."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p039:u007"
+        ],
+        "declaration": "scoped_security_level_connectivity",
+        "anchor": "authenticatedInnerPairs ++ establishedInnerTunnels",
+        "interpretation": "Every listed authenticated pair and every installed tunnel pair joins Inner devices at equal levels. VG-15 explicitly describes Inner VPN gateways. The model checks every listed Inner pair.",
+        "counterexample": "Two recorded Inner peers authenticate across different dissemination controls."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s002"
+        ],
+        "declaration": "scoped_security_level_connectivity",
+        "anchor": "model.AllTraces",
+        "interpretation": "For every permitted execution, a packet delivered after injection comes from and ends at recorded Red networks with the same full level.",
+        "counterexample": "A packet from Secret/US-only reaches Secret/Coalition."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s002"
+        ],
+        "declaration": "scoped_security_level_connectivity",
+        "anchor": "∀ pair ∈ requiredConnectivity",
+        "interpretation": "For every intended pair supplied by the deployment, an actual forwarding trace injects and delivers a plaintext payload. The caller must identify the intended pairs.",
+        "counterexample": "A required same-level pair can authenticate but has no delivery trace."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s001"
+        ],
+        "declaration": "security_level_connectivity",
+        "anchor": "∃ contexts",
+        "interpretation": "The model adds a closed list as evidence when relying on another MSC solution. Every declared reference must resolve to a context satisfying the applicable duties of that solution.",
+        "counterexample": "A declared referenced solution has no possible context that satisfies its applicable duties."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s001"
+        ],
+        "declaration": "security_level_connectivity",
+        "anchor": "context.AllApplicableDuties",
+        "interpretation": "Each included unclassified network is in the Red inventory and satisfies the duties that apply to it. The full target therefore also covers matters outside forwarding.",
+        "counterexample": "An included network’s Inner and Outer components share a physical host in violation of PS-11."
+      }
+    ],
+    "evidence": [
+      {
+        "profile": "Baseline",
+        "records": [
+          {
+            "path": "data/evidence/securityLevelConnectivity/Baseline.json",
+            "field": "capture"
+          },
+          {
+            "path": "data/evidence/securityLevelConnectivity/Baseline.json",
+            "field": "plans"
+          }
+        ],
+        "declared": "The intended pairs and their full security labels are checked against the roster and assigned networks.",
+        "assumed": "The GCM interface is supplied. The standalone roster declares no referenced solution. Host-based claims depend on the observed placement records.",
+        "positive": "SecurityLevelConnectivity_BaselinePaths.required_pairs_have_forwarding_traces",
+        "negative": "SecurityLevelConnectivity_Baseline.intended_pairs_and_observed_probe_matrix",
+        "negative_label": "Observed cross-level no-reply probes and intended deliveries"
+      },
+      {
+        "profile": "Shared",
+        "records": [
+          {
+            "path": "data/evidence/securityLevelConnectivity/Shared.json",
+            "field": "capture"
+          },
+          {
+            "path": "data/evidence/securityLevelConnectivity/Shared.json",
+            "field": "plans"
+          }
+        ],
+        "declared": "The intended pairs and their full security labels are checked against the roster and assigned networks.",
+        "assumed": "The GCM interface is supplied. The standalone roster declares no referenced solution. Host-based claims depend on the observed placement records.",
+        "positive": "SecurityLevelConnectivity_SharedPaths.required_pairs_have_forwarding_traces",
+        "negative": "SecurityLevelConnectivity_Shared.snapshot_rg008_shared_physical_separation_failure"
+      }
+    ],
+    "helpers": [
+      "DedicatedInnerAssignments",
+      "ForwardingModel.CoversDeployment",
+      "ComplianceContext.Applicable",
+      "ComplianceContext.ScopedDeployment",
+      "VerificationScope.Contains",
+      "ReferencesClosed",
+      "ComplianceContext.AllApplicableDuties"
+    ],
+    "reviewed_sha256": "4e71d437a6cd371cda03230d0535881b22cd7cf71bebc9c6cbc419fb6fc96e3a"
+  },
+  "RG-013": {
+    "scope": "The graph represents physical connectivity. Its edges, the highest security level and the ordering of levels enter as inputs. Bidirectional physical links must be represented in both directions. Lean compares graph roles with the inventory. Local CA identification is supplied in one direction. Policy checks identify peers by address and by their device identities. The authority supplies the physical-protection fact. Packet filtering uses the processing inventory. Without a processing inventory there can be no admitted traffic, even on a connected graph. The examples check positive and rejected traffic separately. Management filtering covers all traffic between identified AW/local CA and non-highest Inner endpoints.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s005",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u003.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u003.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s005",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s006",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u006.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p035:u009"
+        ],
+        "declaration": "graph_gray_firewall_waypointing",
+        "anchor": "inner a → inner b",
+        "interpretation": "Every path between different-level Inners crosses a Gray Firewall. At least one firewall exists when the solution has two such levels. The interrupted section reference on page 17 introduces the reason for filtering.",
+        "counterexample": "Two different-level Inners have a direct Gray link."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u001.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u001.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s007",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p035:u010"
+        ],
+        "declaration": "scoped_gray_firewall_path_coverage",
+        "anchor": "topology.workstation service ∨ topology.certificationAuthority service",
+        "interpretation": "Gray workstations and local CAs share the highest level. Paths to a different-level Inner from a workstation, Gray CA or revocation service cross a firewall. Firewall rules block any admitted traffic between an identified AW or local CA and a non-highest Inner in either direction.",
+        "counterexample": "A Gray revocation server directly reaches an Inner at another level."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u005.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u005.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s006",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u006.s003"
+        ],
+        "declaration": "FiltersIntendedPeers",
+        "anchor": "d.SameLevelInner traffic",
+        "interpretation": "Gray Firewalls and Outer devices filter identified Inner peers by intended communication and full security level. The implication starts when both endpoints are identified as Inner devices.",
+        "counterexample": "A firewall permits a packet between identified same-level Inners that are not intended peers."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p018:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s005",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s008"
+        ],
+        "declaration": "graph_gray_firewall_waypointing",
+        "anchor": "physicallyProtected firewall",
+        "interpretation": "Each Gray Firewall has filtering and physical protection appropriate for classified equipment. The formal placement also asks for paths from an Inner to each firewall and from that firewall to an Outer.",
+        "counterexample": "A listed firewall has valid rules but lacks the required physical protection."
+      }
+    ],
+    "evidence": [
+      {
+        "profile": "Declared Gray network and management-free variant",
+        "records": [],
+        "declared": "The Lean example defines its own graph, levels, roles and eligible filter traffic. The management-free variant supplies a separate role inventory.",
+        "assumed": "Classified physical protection is an authority-supplied premise. The complete example is a model witness. The positive packet and bypass regressions use the first graph.",
+        "positive": "same_level_inner_traffic_is_admitted",
+        "negative": "direct_cross_level_bypass_fails_local_edge_check",
+        "also_checked": [
+          "management_free_chain_model_rg013"
+        ]
+      }
+    ],
+    "helpers": [
+      "Deployment.AddressInventoryCoherent",
+      "GrayManagement",
+      "FiltersIntendedPeers",
+      "Deployment.SameLevelInner",
+      "graph_gray_firewall_waypointing"
+    ],
+    "reviewed_sha256": "f0db7d55405e0e029557d08893a92104129e2585c9de839fd8d92216abe9f3e7"
+  },
+  "RG-029": {
+    "scope": "The no-bypass predicate pairs receive and transmit events on the same device and follows a payload identifier. It also checks external transmissions. The shared predicate excludes genuine control in both directions. The IR rows do not state that blanket exception. For split tunneling it checks a listed tunnel at the correct layer and device. Identifying the particular tunnel selected for the payload is a stronger claim. The native application interprets the associated IP tunnel through correlated ESP tunnel-mode evidence. The directional mandatory-access settings are checked separately from packet behavior. The proof does not attribute each individual decision to that setting.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p042:u018"
+        ],
+        "declaration": "scoped_inner_tunnel_no_bypass",
+        "anchor": "component.espTunnelMode = true",
+        "interpretation": "Every listed Inner IPsec gateway uses ESP tunnel mode with an associated IP tunnel. Every in-scope Inner has a matching protocol record.",
+        "counterexample": "An Inner gateway uses transport mode."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p025:u006.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u007",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p061:u010.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p061:u010.s002"
+        ],
+        "declaration": "TraceNoBypass",
+        "anchor": "input.zone = InternalZone layer",
+        "interpretation": "A protected Red payload leaving the Inner’s internal zone must be encrypted by a local Inner tunnel before transmission. Every non-control external transmission must show earlier encryption.",
+        "counterexample": "An Inner receives a protected packet on Red and sends it to Gray unchanged."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p025:u006.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u005",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u007",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p061:u010.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p061:u010.s002"
+        ],
+        "declaration": "TraceNoBypass",
+        "anchor": "input.zone = ExternalZone layer",
+        "interpretation": "A packet crossing from Gray into Red must arrive with a local receiving Inner tunnel and be decrypted before it leaves on Red. The check covers paired crossings and external egress.",
+        "counterexample": "A packet crosses into Red with no Inner decryption event."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u006"
+        ],
+        "declaration": "scoped_inner_tunnel_no_bypass",
+        "anchor": "outboundMACObjective = true",
+        "interpretation": "When selected, each directional Mandatory Access Control objective requires the corresponding policy setting. The two objective flags are independent.",
+        "counterexample": "The inbound objective is selected and the device has no inbound policy."
+      }
+    ],
+    "evidence": [
+      {
+        "profile": "Inner IPsec",
+        "records": [
+          {
+            "path": "data/evidence/innerTunnelNoBypass/IPsecDelivery.json",
+            "field": "moves"
+          },
+          {
+            "path": "data/evidence/innerTunnelNoBypass/IPsecTunnelBindings.json",
+            "field": "bindings"
+          }
+        ],
+        "declared": "The deployment identifies the Inner boundary and its selected mandatory-access objectives.",
+        "assumed": "The GCM primitive is supplied. The associated IP tunnel is interpreted from the recorded endpoint, policy, SA and tunnel mode.",
+        "positive": "snapshot_rg029_ipsec_nonempty_payload_delivered",
+        "negative": "snapshot_rg029_ipsec_uninstalled_spi_blocked"
+      },
+      {
+        "profile": "Inner MACsec",
+        "records": [
+          {
+            "path": "data/evidence/macsecProtection/MacsecProtectionProfiles.json",
+            "field": "direct"
+          }
+        ],
+        "declared": "The direct MACsec profile specifies its controlled and physical interfaces. Both optional mandatory-access objectives are off.",
+        "assumed": "The MACsec application uses its own link and receiver model.",
+        "positive": "snapshot_rg029_macsec_nonempty_payload_delivered",
+        "negative": "snapshot_rg029_inbound_mac_objective_rejects_missing_policy",
+        "negative_label": "Configuration regression for the selected objective"
+      }
+    ],
+    "helpers": [
+      "ComponentConfigurationCoverage",
+      "LayerNoBypass",
+      "ForwardingModel.CoversDeployment",
+      "TraceNoBypass"
+    ],
+    "reviewed_sha256": "a139b7e9250ef084cf0485aab0699e47cada75787a7ea6e1319810f9a4960547"
+  },
+  "RG-030": {
+    "scope": "OR-4 explicitly exempts control traffic at Gray ingress. The general no-bypass predicate also exempts genuine control on the other crossings, where the table does not repeat the exception. Inbound protection checks packets that traverse Black to Gray on the same device. Local termination and other egress paths are outside that implication. OR-7 uses a same-layer local tunnel, as in the Inner case. The directional mandatory-access settings are checked separately from packet behavior. The proof does not attribute each individual decision to that setting.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u012"
+        ],
+        "declaration": "scoped_outer_tunnel_no_bypass",
+        "anchor": "component.espTunnelMode = true",
+        "interpretation": "Every Outer has a protocol-matched record and each Outer VPN uses ESP tunnel mode.",
+        "counterexample": "An Outer VPN is configured in transport mode."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u002.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u013",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p044:u006"
+        ],
+        "declaration": "TraceNoBypass",
+        "anchor": "input.zone = InternalZone layer",
+        "interpretation": "For a non-control packet crossing out of Gray, the Outer must encrypt before forwarding. External transmissions also require an earlier Outer encryption event.",
+        "counterexample": "An Outer forwards an Inner-only protected packet onto Black."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p024:u002.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p044:u004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p044:u006"
+        ],
+        "declaration": "TraceNoBypass",
+        "anchor": "input.zone = ExternalZone layer",
+        "interpretation": "A packet crossing from Black into Gray must arrive with the receiving Outer tunnel and undergo Outer decryption on that device.",
+        "counterexample": "An Outer forwards an arriving Black packet to Gray before decrypting it."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p043:u014",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p044:u005"
+        ],
+        "declaration": "scoped_outer_tunnel_no_bypass",
+        "anchor": "outboundMACObjective = true",
+        "interpretation": "A selected mandatory-access-control objective requires the corresponding directional policy on each Outer component.",
+        "counterexample": "The outbound policy is absent while its objective is selected."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p044:u003"
+        ],
+        "declaration": "scoped_outer_tunnel_no_bypass",
+        "anchor": "tunnel.layer = .inner ∧ layers = [tunnel.id]",
+        "interpretation": "Every modeled non-control reception on an Outer Gray interface already has exactly one identified Inner encryption layer.",
+        "counterexample": "A plaintext data packet arrives at an Outer Gray interface."
+      }
+    ],
+    "evidence": [
+      {
+        "profile": "Baseline",
+        "records": [
+          {
+            "path": "data/evidence/outerTunnelNoBypass/BaselineIPsecDelivery.json",
+            "field": "moves"
+          }
+        ],
+        "declared": "Role and zone assignments select the Outer boundary. Directional objectives select the corresponding configuration clauses.",
+        "assumed": "The GCM interface is supplied. The observed policies and SAs are fixed for the execution.",
+        "positive": "snapshot_rg030_baseline_nonempty_payload_delivered",
+        "negative": "snapshot_rg030_baseline_missing_outer_policy_blocked"
+      },
+      {
+        "profile": "Shared",
+        "records": [
+          {
+            "path": "data/evidence/outerTunnelNoBypass/SharedIPsecDelivery.json",
+            "field": "moves"
+          }
+        ],
+        "declared": "Role and zone assignments select the Outer boundary. Directional objectives select the corresponding configuration clauses.",
+        "assumed": "The GCM interface is supplied. The observed policies and SAs are fixed for the execution.",
+        "positive": "snapshot_rg030_shared_nonempty_payload_delivered",
+        "negative": "snapshot_rg030_shared_missing_outer_policy_blocked"
+      }
+    ],
+    "helpers": [
+      "ComponentConfigurationCoverage",
+      "LayerNoBypass",
+      "ForwardingModel.CoversDeployment",
+      "TraceNoBypass"
+    ],
+    "reviewed_sha256": "cb0a1e3a3319392d2be60db62392b203c23f23d8ac4e368aaa7af16c6ed4174a"
+  },
+  "RG-034": {
+    "scope": "The source requires a firewall for untrusted transport and explicitly names the Public Internet for the interface-to-interface arrangement. Attachments imply graph reachability, which can include intermediate nodes. Internal Gray connectivity is supplied separately from the physical edge relation. The deployment must identify the participating devices and provide actual attachments.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p012:u003.s005",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p036:u002"
+        ],
+        "declaration": "graph_outer_firewall_placement",
+        "anchor": "untrustedBlack = true → ∀ o b",
+        "interpretation": "Every graph path from an Outer to untrusted Black passes a firewall. Public Internet counts as untrusted.",
+        "counterexample": "A second link reaches untrusted Black around the firewall."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u008.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p036:u002"
+        ],
+        "declaration": "graph_outer_firewall_placement",
+        "anchor": "insideAttachment o f ∧ outsideAttachment f b",
+        "interpretation": "For Public Internet transport, each Outer attaches to the firewall’s inside and the firewall attaches to Black on its outside.",
+        "counterexample": "The Outer and Black both attach on the firewall’s outside."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u008.s002"
+        ],
+        "declaration": "graph_outer_firewall_placement",
+        "anchor": "externalBlackConnection o b",
+        "interpretation": "For other transports each Outer has an external Black connection supported by graph reachability.",
+        "counterexample": "An Outer lists a Black attachment that is disconnected in the graph."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u008.s003"
+        ],
+        "declaration": "graph_outer_firewall_placement",
+        "anchor": "if grayFirewallRequired then",
+        "interpretation": "Each Outer connects internally to a Gray Firewall when required, or to an Inner otherwise.",
+        "counterexample": "A site requiring a Gray Firewall declares only a direct internal connection to an Inner."
+      }
+    ],
+    "evidence": [
+      {
+        "profile": "Baseline",
+        "records": [
+          {
+            "path": "data/evidence/Topology_Baseline.json",
+            "field": "*.insideAttachments"
+          }
+        ],
+        "declared": "The transport is declared public and untrusted. A Gray Firewall is required.",
+        "assumed": "The graph represents the included physical connections and the side assignments are checked on that graph.",
+        "positive": "SnapshotProof_TopologyWaypointing.Baseline.nonempty_outer_inventory",
+        "negative": "bypass_edge_rejected",
+        "also_checked": [
+          "SnapshotProof_TopologyWaypointing.Baseline.configured_graph_rg034",
+          "native_baseline_20261017T2237Z_topology.outer_firewall_waypointing"
+        ],
+        "negative_label": "Separate four-node regression with an extra link"
+      },
+      {
+        "profile": "Shared",
+        "records": [
+          {
+            "path": "data/evidence/Topology_SharedOuter.json",
+            "field": "*.insideAttachments"
+          }
+        ],
+        "declared": "The transport is declared public and untrusted. A Gray Firewall is required.",
+        "assumed": "The graph represents the included physical connections and the side assignments are checked on that graph.",
+        "positive": "SnapshotProof_TopologyWaypointing.Shared.nonempty_outer_inventory",
+        "negative": "bypass_edge_rejected",
+        "also_checked": [
+          "SnapshotProof_TopologyWaypointing.Shared.configured_graph_rg034",
+          "native_shared_four_levels_20261017T2240Z_scope_v2_topology.outer_firewall_waypointing"
+        ],
+        "negative_label": "Separate four-node regression with an extra link"
+      }
+    ],
+    "helpers": [
+      "graph_outer_firewall_placement"
+    ],
+    "reviewed_sha256": "5aa68e5dffa942e7d4ecc719d3d00a03fbf09cb1343c79f3c188b3b47b47840f"
+  },
+  "RG-035": {
+    "scope": "Scope follows the role and side of each interface. Permitted control services and intended peers are policy inputs. Outer Firewall address restrictions are tested on inbound admission outside the approved-control exception on each face. Approval for Inner Gray control applies in both directions in Lean. The page 25 narrative explicitly names approval for egress.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s002",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s003",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s005",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s006",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p044:u009",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p044:u016",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p044:u017"
+        ],
+        "declaration": "scoped_boundary_interface_filtering",
+        "anchor": "direction = .outbound → d.IntendedPacketPeerAt",
+        "interpretation": "Check every Outer Black interface in both directions. A VPN admits IPsec traffic or approved control. A MACsec device admits MACsec or approved control. Egress also requires an intended peer.",
+        "counterexample": "An Outer VPN allows an outbound connection to an unrelated destination."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p025:u005.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u003"
+        ],
+        "declaration": "scoped_boundary_interface_filtering",
+        "anchor": "d.PermittedTunnelTraffic traffic ∨ AOApprovedControl",
+        "interpretation": "Inner Gray interfaces admit the allowed tunnel protocols or control approved by both policy and the authorizing official.",
+        "counterexample": "An Inner Gray interface admits control approved only by a local rule."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p025:u005.s002"
+        ],
+        "declaration": "scoped_boundary_interface_filtering",
+        "anchor": "d.redService device.id traffic.packet.source",
+        "interpretation": "Inner Red traffic must match a declared Red service address and transport port at either endpoint.",
+        "counterexample": "A packet with an arbitrary address and port at each end is admitted."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u003.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s001",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u009"
+        ],
+        "declaration": "scoped_boundary_interface_filtering",
+        "anchor": "if firewallInternal interface.id then",
+        "interpretation": "A required Outer Firewall admits tunnel traffic or approved control. Inbound packets outside the approved-control exception name the local Outer as source on the inside or destination on the outside.",
+        "counterexample": "A packet arriving on the firewall’s outside names another Outer as its destination."
+      }
+    ],
+    "evidence": [
+      {
+        "profile": "Baseline",
+        "records": [
+          {
+            "path": "data/evidence/continuation/BoundaryBaselineFields.json",
+            "field": "policies"
+          },
+          {
+            "path": "data/evidence/continuation/Perimeter_Baseline.json",
+            "field": "controls"
+          },
+          {
+            "path": "data/evidence/continuation/BoundaryApplicationBaseline.json",
+            "field": "redHTTP"
+          },
+          {
+            "path": "data/evidence/continuation/BoundaryApplicationBaseline.json",
+            "field": "redWrongPort"
+          }
+        ],
+        "declared": "Red services, intended peers and approved control traffic are inputs to the policy. Checking a firewall rule alone cannot establish approval.",
+        "assumed": "The example specializes the policy-relevant fields of a deployment supplied as a parameter.",
+        "positive": "Perimeter_Baseline.red_http_is_accepted_at_actual_forward_hook",
+        "negative": "Perimeter_Baseline.red_wrong_port_has_real_context_and_is_denied"
+      },
+      {
+        "profile": "Shared",
+        "records": [
+          {
+            "path": "data/evidence/continuation/BoundarySharedFields.json",
+            "field": "policies"
+          },
+          {
+            "path": "data/evidence/continuation/Perimeter_Shared.json",
+            "field": "controls"
+          },
+          {
+            "path": "data/evidence/continuation/BoundaryApplicationShared.json",
+            "field": "redHTTP"
+          },
+          {
+            "path": "data/evidence/continuation/BoundaryApplicationShared.json",
+            "field": "redWrongPort"
+          }
+        ],
+        "declared": "Red services, intended peers and approved control traffic are inputs to the policy. Checking a firewall rule alone cannot establish approval.",
+        "assumed": "The example specializes the policy-relevant fields of a deployment supplied as a parameter.",
+        "positive": "Perimeter_Shared.red_http_is_accepted_at_actual_forward_hook",
+        "negative": "Perimeter_Shared.red_wrong_port_has_real_context_and_is_denied"
+      }
+    ],
+    "helpers": [
+      "Deployment.AddressInventoryCoherent",
+      "Deployment.ProcessingCoherent",
+      "Deployment.UDPBindingsCoherent",
+      "Deployment.BoundaryAdmission",
+      "AOApprovedControl",
+      "LocalOuterAddress"
+    ],
+    "reviewed_sha256": "e57304ba75ba8ffdfcc62ed5a880833bec77e43a6589985c5489a15f6d073e55"
+  },
+  "RG-038": {
+    "scope": "The IP protocol checks cover inbound admissions for each VPN. The IPv6 test reads the immediate Next Header. For PF-9, the model interprets the general necessary Layer 2 control allowance as a narrow exception for approved, peer-bound MKA. The literal multicast row states a drop. PF-10 has an Objective designation and a blank alternative cell. The deployment selects the objective per Outer VPN.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p021:u004.s004",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u007"
+        ],
+        "declaration": "NecessaryApprovedL2Control",
+        "anchor": "PacketPolicy.Packet.MKAFraming",
+        "interpretation": "An Outer Black interface drops multicast unless the model establishes approved MKA control with the expected group address, framing, peer and Outer MACsec tunnel.",
+        "counterexample": "A matching Ethernet group address alone lets an unrelated sender through."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u008"
+        ],
+        "declaration": "scoped_ip_header_and_multicast_filtering",
+        "anchor": "traffic.packet.ipv4HeaderWords = 5",
+        "interpretation": "An Outer VPN that selects PF-10 admits only a five-word IPv4 header.",
+        "counterexample": "A packet with a six-word IPv4 header is admitted on that gateway."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u009"
+        ],
+        "declaration": "scoped_ip_header_and_multicast_filtering",
+        "anchor": "traffic.ipProtocol ∈",
+        "interpretation": "A VPN admits IPv4 only with TCP, UDP, ESP or ICMP in its protocol field.",
+        "counterexample": "A VPN accepts IPv4 protocol 47."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u010"
+        ],
+        "declaration": "scoped_ip_header_and_multicast_filtering",
+        "anchor": "traffic.packet.ipv6NextHeader ∈",
+        "interpretation": "A VPN admits IPv6 only with ESP, TCP, UDP or ICMPv6 in its immediate Next Header field.",
+        "counterexample": "An IPv6 packet presents an extension header first and is admitted because its later payload is TCP."
+      }
+    ],
+    "related_sources": [
+      "p021:u004.s001"
+    ],
+    "evidence": [
+      {
+        "profile": "Routed IPv4 example",
+        "records": [],
+        "declared": "The routed IPv4 example turns PF-10 off and constructs the rules in Lean. A separate regression turns the objective on to check the required guard.",
+        "assumed": "The base deployment and processing inventory parameterize the model.",
+        "positive": "permitted_esp_is_accepted",
+        "negative": "gre_is_rejected",
+        "also_checked": [
+          "selected_options_need_actual_atom"
+        ]
+      },
+      {
+        "profile": "Captured link-layer programs",
+        "records": [
+          {
+            "path": "data/evidence/proof010-link-header/CapturedProgramsAndFrames.json",
+            "field": "programs"
+          },
+          {
+            "path": "data/evidence/proof010-link-header/InstalledAssociations-v2.json",
+            "field": "ATx"
+          }
+        ],
+        "declared": "The control exception is explicitly limited to the approved MKA group and binding.",
+        "assumed": "The program and installed-association results apply to the captured interfaces.",
+        "positive": "captured_bootstrap_mka_is_fully_admitted",
+        "negative": "captured_negative_group_actor_length_and_vlan",
+        "also_checked": [
+          "captured_installed_data_is_fully_admitted"
+        ]
+      }
+    ],
+    "helpers": [
+      "HeaderFilterApplies",
+      "NecessaryApprovedL2Control",
+      "Deployment.PolicyCoverage",
+      "Deployment.LinkPoliciesComplete"
+    ],
+    "reviewed_sha256": "449b4ab01833dd5f98e7afae8391dfdca475a7d469bf5b726d00aa6ed42b90ee"
+  },
+  "RG-039": {
+    "scope": "The check applies on Outer Gray interfaces. A source address must be reachable on ingress. Eligible traffic must be admitted at the applicable local processing hook. HTTP revocation is identified by the transport service and an Inner revocation endpoint. That classifier alone cannot identify the other endpoint as an Inner VPN or establish the request’s contents. The management initiation clause has this same interface scope. A carrier may identify a pair through adjacent encapsulators. The closure and case rules treat approved control as a separate allowance.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u006"
+        ],
+        "declaration": "OuterManagementInitiation",
+        "anchor": "d.grayWorkstation traffic.originator",
+        "interpretation": "Management starts at a Gray workstation. An Outer may initiate logging or authentication.",
+        "counterexample": "An Outer initiates an unrelated management service."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u011",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u004"
+        ],
+        "declaration": "OuterTunnelAllowance",
+        "anchor": "d.AppropriateInnerTunnel traffic",
+        "interpretation": "Allow an appropriate tunnel exchange between intended same-level Inner peers, or one used for Gray management. Inspect the embedded Inner pair for a recognized carrier.",
+        "counterexample": "Protected user traffic goes to an Inner at a different release level."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u011",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u004"
+        ],
+        "declaration": "OuterGrayRestrictions",
+        "anchor": "traffic.trafficClass = .protectedData → ¬ RevocationHTTP traffic →",
+        "interpretation": "An admitted protected payload other than revocation HTTP must match the intended same-level Inner pair. An appropriate Gray management tunnel also qualifies.",
+        "counterexample": "A cross-level protected packet is admitted through a catch-all ACL."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p045:u013"
+        ],
+        "declaration": "OuterGrayRestrictions",
+        "anchor": "traffic.innerRevocation = true",
+        "interpretation": "With a Gray data-plane revocation service, allow necessary Inner revocation HTTP on an Outer VPN. The implementation recognizes the service by its address and port.",
+        "counterexample": "Ordinary HTTP to an unrelated server is admitted as revocation traffic."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u005"
+        ],
+        "declaration": "OuterGrayRestrictions",
+        "anchor": "d.reachableSource",
+        "interpretation": "Inbound packets must have a source reachable on the receiving interface.",
+        "counterexample": "An admitted packet claims an address reachable only through another interface."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u006"
+        ],
+        "declaration": "OuterPolicyAllowance",
+        "anchor": "d.policyApproved device traffic",
+        "interpretation": "The separate management and control allowance requires approval for the Outer. A tunnel exchange may independently qualify under the tunnel allowance.",
+        "counterexample": "The Outer Gray interface admits unapproved standalone NTP that qualifies under no other allowance."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u007"
+        ],
+        "declaration": "scoped_outer_gray_interface_policy",
+        "anchor": "d.PermitsAtHook",
+        "interpretation": "Every admitted packet must meet both the restrictions and an allowance. Every eligible packet satisfying both must pass its local hook.",
+        "counterexample": "A deny-all ruleset blocks an eligible, intended same-level tunnel exchange."
+      }
+    ],
+    "evidence": [
+      {
+        "profile": "Baseline",
+        "records": [
+          {
+            "path": "data/evidence/continuation/OuterGrayBaselineFields.json",
+            "field": "policies"
+          },
+          {
+            "path": "data/evidence/continuation/OuterToGray_BaselineCases.json",
+            "field": "plaintextBlack"
+          },
+          {
+            "path": "data/evidence/continuation/OuterToGray_BaselineCases.json",
+            "field": "reply"
+          }
+        ],
+        "declared": "These profiles have no Gray revocation service on the data plane and no Gray management workstation in the modeled profile. The reachable source prefixes determine admissible ingress.",
+        "assumed": "The two examples use the native IPv4 IPsec processing and filtering model.",
+        "positive": "OuterToGray_Baseline.framed_reply_is_eligible_and_accepted",
+        "negative": "OuterToGray_Baseline.plaintext_black_is_denied_by_raw_gray_forward_program"
+      },
+      {
+        "profile": "Shared",
+        "records": [
+          {
+            "path": "data/evidence/continuation/OuterGraySharedFields.json",
+            "field": "policies"
+          },
+          {
+            "path": "data/evidence/continuation/OuterToGray_SharedCases.json",
+            "field": "plaintextBlack"
+          },
+          {
+            "path": "data/evidence/continuation/OuterToGray_SharedCases.json",
+            "field": "reply"
+          }
+        ],
+        "declared": "These profiles have no Gray revocation service on the data plane and no Gray management workstation in the modeled profile. The reachable source prefixes determine admissible ingress.",
+        "assumed": "The two examples use the native IPv4 IPsec processing and filtering model.",
+        "positive": "OuterToGray_Shared.framed_reply_is_eligible_and_accepted",
+        "negative": "OuterToGray_Shared.plaintext_black_is_denied_by_raw_gray_forward_program"
+      }
+    ],
+    "helpers": [
+      "Deployment.PacketEligibleAt",
+      "Deployment.RevocationEndpoint",
+      "Deployment.SameLevelInner",
+      "OuterGrayRestrictions",
+      "OuterPolicyAllowance"
+    ],
+    "reviewed_sha256": "7e23b52e57fd97c8a9a8a44aee53bd0a28ceedd1ab0c8089da17e4379c4272fd"
+  },
+  "RG-040": {
+    "scope": "The allowlist applies when a Gray Firewall is required. The separate prohibition on identified Inner VPN pairs of different classifications applies to every listed Gray Firewall. Requirements about a full security level also account for release controls. The HTTP classifier uses endpoints and transport service. Positive forwarding additionally needs the modeled forwarding permission. The management-port test covers both directions. Endpoint interpretation can use a bound carrier between devices adjacent to the intended Inner peers.",
+    "clauses": [
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u010",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p047:u005"
+        ],
+        "declaration": "GrayPolicyAllowance",
+        "anchor": "d.SameLevelInner traffic ∧ d.AppropriateInnerTunnel",
+        "interpretation": "Allow appropriate tunnel traffic between identified intended Inner peers at the same full security level.",
+        "counterexample": "Two Secret peers with incompatible release controls exchange protected traffic."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u010",
+          "CSFC-MSC-1.3.0-4e40e3d83708:p047:u005"
+        ],
+        "declaration": "GrayFirewallRestrictions",
+        "anchor": "traffic.trafficClass = .protectedData → ¬ RevocationHTTP traffic →",
+        "interpretation": "An admitted protected payload other than revocation HTTP must match the intended same-level Inner pair.",
+        "counterexample": "A cross-level protected packet is admitted through a catch-all ACL."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p046:u012"
+        ],
+        "declaration": "GrayFirewallRestrictions",
+        "anchor": "traffic.service = \"http\"",
+        "interpretation": "Allow necessary Inner revocation HTTP and reject other HTTP under the model’s service classifier.",
+        "counterexample": "The firewall admits ordinary web traffic to an unrelated server."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p047:u004"
+        ],
+        "declaration": "GrayManagementAllowance",
+        "anchor": "interface.physical = true",
+        "interpretation": "Management admission needs a physical Gray management port, a recognized service and approval.",
+        "counterexample": "The same management flow is admitted on a data-only port."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p047:u006"
+        ],
+        "declaration": "GrayFirewallRestrictions",
+        "anchor": "d.reachableSource",
+        "interpretation": "On ingress, reject a source outside the reachable addresses or prefixes for that interface.",
+        "counterexample": "An admitted source prefix belongs on the opposite side of the firewall."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p047:u007"
+        ],
+        "declaration": "GrayPolicyAllowance",
+        "anchor": "traffic.trafficClass = .control",
+        "interpretation": "The separate control allowance requires policy approval. A control packet may also qualify as an appropriate tunnel exchange.",
+        "counterexample": "Unapproved standalone NTP passes despite qualifying under no other allowance."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p047:u008"
+        ],
+        "declaration": "scoped_gray_firewall_allowlist",
+        "anchor": "d.GrayForwardPermission",
+        "interpretation": "Reject traffic outside the allowed classes. Eligible allowed traffic with forwarding permission must pass the local hook.",
+        "counterexample": "A catch-all rule admits an unlisted application or drops an eligible and explicitly allowed exchange."
+      },
+      {
+        "sources": [
+          "CSFC-MSC-1.3.0-4e40e3d83708:p047:u009"
+        ],
+        "declaration": "scoped_gray_firewall_allowlist",
+        "anchor": "¬ d.PermitsOnInterface",
+        "interpretation": "Block traffic between identified Inner VPN gateways at different classifications on any listed Gray Firewall.",
+        "counterexample": "A routed packet from a Secret Inner VPN to a Top Secret Inner VPN is admitted."
+      }
+    ],
+    "evidence": [
+      {
+        "profile": "Baseline",
+        "records": [
+          {
+            "path": "data/evidence/continuation/BoundaryBaselineFields.json",
+            "field": "policies"
+          },
+          {
+            "path": "data/evidence/continuation/GrayFirewallCases.json",
+            "field": "baselineCross"
+          }
+        ],
+        "declared": "The scenario requires a Gray Firewall. The declared policy identifies intended pairs, allowed management ports and control flows.",
+        "assumed": "The baseline rejection has an explicit eligible packet. The separate successful IKE forwarding example uses the shared profile.",
+        "positive": "Perimeter_Baseline.complete_native_gray_firewall_allowlist",
+        "negative": "baseline_cross_classification_is_eligible_and_denied",
+        "positive_label": "Proof of the full allowlist for the baseline",
+        "negative_label": "An eligible packet exercises the cross-classification rule"
+      },
+      {
+        "profile": "Shared",
+        "records": [
+          {
+            "path": "data/evidence/continuation/GrayFirewallSharedFields.json",
+            "field": "policies"
+          },
+          {
+            "path": "data/evidence/continuation/GrayFirewallCases.json",
+            "field": "sharedCross"
+          },
+          {
+            "path": "data/evidence/continuation/GrayFirewallCases.json",
+            "field": "ordinaryIKE"
+          }
+        ],
+        "declared": "The scenario requires a Gray Firewall. The declared policy identifies intended pairs, allowed management ports and control flows.",
+        "assumed": "Traffic is assessed at a modeled eligible hook. The positive IKE trace uses the shared fixture.",
+        "positive": "shared_ordinary_ike_is_eligible_and_accepted",
+        "negative": "shared_cross_classification_is_eligible_and_denied"
+      }
+    ],
+    "helpers": [
+      "Deployment.PacketEligibleAt",
+      "Deployment.GrayForwardPermission",
+      "Deployment.RevocationEndpoint",
+      "DifferentClassificationVPNs",
+      "GrayFirewallRestrictions",
+      "GrayPolicyAllowance"
+    ],
+    "reviewed_sha256": "c8c0cbf3c6dd050c71dae76d030772c021c0d8e8537518b239e0a56e59ff6da9"
+  }
+}

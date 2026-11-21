@@ -19,8 +19,7 @@ def main():
         report = json.loads((RUN / ("fresh-family" + family + "-import.json")).read_text())
         trace = json.loads((RUN / ("family" + family + "-positive-trace.json")).read_text())
         namespace = "TDN.Deployments." + address_family_module(family)
-        blocks += ["namespace " + namespace, "open DataPlaneForwarding", "set_option maxRecDepth 1000000",
-                   "set_option maxHeartbeats 0"]
+        blocks += ["namespace " + namespace, "open DataPlaneForwarding", "set_option maxRecDepth 1000000"]
         for device in ["IA", "IB", "OA", "OB"]:
             inner = device[0] == "I"
             tag = 1 if inner else 2
@@ -55,7 +54,7 @@ theorem {name}_no_bypass : Requirements.BoundaryNoBypass {name} :=
             actions = "[" + ", ".join("." + s["action"] for s in trace["steps"][first:last]) + "]"
             proof = "Cslib.LTS.MTr.refl"
             for index in reversed(range(first, last)):
-                proof = ("Cslib.LTS.MTr.stepL ⟨witnessStep" + str(index) +
+                proof = ("Cslib.LTS.MTr.stepL ⟨witness_step" + str(index) +
                          ", by native_decide, by native_decide⟩ (" + proof + ")")
             direction = "outbound" if outbound else "inbound"
             blocks.append(f"""theorem {name}_positive_{direction} :

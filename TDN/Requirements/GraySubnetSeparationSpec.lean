@@ -5,15 +5,15 @@ namespace TDN.Requirements
 
 theorem accepted_named_peer_addresses_share_level
     (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
-    (rules : List PacketPolicy.Rule)
+    (rules : List PacketPolicy.PacketAclRule)
     (peers : ∀ pair ∈ pairs, Addressing.Owns ranges pair.source pair.level ∧
       Addressing.Owns ranges pair.destination pair.level)
     (checked : ∀ rule ∈ rules, rule.verdict = .allow → RuleNamesPair pairs rule)
-    (packet : PacketPolicy.Packet) (accepted : PacketPolicy.Accepts rules packet) :
+    (packet : PacketPolicy.Packet) (accepted : PacketPolicy.DefaultDenyAllows rules packet) :
     ∃ level, Addressing.Owns ranges packet.source level ∧
       Addressing.Owns ranges packet.destination level := by
   have intended : IntendedPair pairs packet := by
-    apply Filter.default_deny_sound (rules.map PacketPolicy.Rule.toFilter)
+    apply Filter.default_deny_sound (rules.map PacketPolicy.PacketAclRule.toFilter)
       (IntendedPair pairs) ?_ packet accepted
     intro target member allow candidate matched
     obtain ⟨rule, present, rfl⟩ := List.mem_map.mp member
@@ -23,7 +23,7 @@ theorem accepted_named_peer_addresses_share_level
 
 theorem different_level_addresses_are_denied
     (ranges : List (Addressing.Range SecurityLevel)) (pairs : List IntendedAddressPair)
-    (rules : List PacketPolicy.Rule) (separated : Addressing.Separated ranges)
+    (rules : List PacketPolicy.PacketAclRule) (separated : Addressing.Separated ranges)
     (peers : ∀ pair ∈ pairs, Addressing.Owns ranges pair.source pair.level ∧
       Addressing.Owns ranges pair.destination pair.level)
     (checked : ∀ rule ∈ rules, rule.verdict = .allow → RuleNamesPair pairs rule)
@@ -31,8 +31,8 @@ theorem different_level_addresses_are_denied
     (source : Addressing.Owns ranges packet.source sourceLevel)
     (destination : Addressing.Owns ranges packet.destination destinationLevel)
     (different : sourceLevel ≠ destinationLevel) :
-    Filter.evaluate (rules.map PacketPolicy.Rule.toFilter) .deny packet = .deny := by
-  cases verdict : Filter.evaluate (rules.map PacketPolicy.Rule.toFilter) .deny packet with
+    Filter.evaluate (rules.map PacketPolicy.PacketAclRule.toFilter) .deny packet = .deny := by
+  cases verdict : Filter.evaluate (rules.map PacketPolicy.PacketAclRule.toFilter) .deny packet with
   | deny => rfl
   | allow =>
     obtain ⟨level, sourceOwned, destinationOwned⟩ :=

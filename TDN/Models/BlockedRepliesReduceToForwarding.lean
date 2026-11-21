@@ -3,12 +3,12 @@ import TDN.Models.KernelGeneratedReplies
 namespace TDN.KernelResponses
 
 theorem strict_response_result_has_network_forwarding {S A : Type}
-    (network : Cslib.LTS S A) (config : Config S)
+    (network : Cslib.LTS S A) (config : ReplyConfig S)
     (checked : ∀ source, config.generates source → ∀ iface,
       config.outputFallback source iface = .deny ∧
       ∀ rule ∈ config.outputRules source iface,
         rule.verdict = .allow → SafeResponseRule rule)
-    {before after : S} {actions : List (Action A)}
+    {before after : S} {actions : List (ReplyAction A)}
     (run : (lts network config).MTr (.network before) actions (.network after)) :
     ∃ networkActions, network.MTr before networkActions after := by
   let reachable := fun state => ∃ labels, network.MTr before labels state

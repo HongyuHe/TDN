@@ -24,84 +24,84 @@ lemma Body.coherent_set_active {body : Body} {active : Option PacketPolicy.Packe
     body.HeadersCoherent (some actual) hidden := by
   cases body <;> simp_all [Body.HeadersCoherent, Body.visibleHeader]
 
-lemma Frame.coherent_visible {frame : Frame} (coherent : frame.HeadersCoherent)
+lemma TunnelFrame.coherent_visible {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
     (actual : PacketPolicy.Packet) (visible : frame.visibleHeader = some actual) :
     ∃ nominal, frame.body.visibleHeader = some nominal ∧ HeaderIdentity actual nominal := by
   cases nominal : frame.body.visibleHeader with
-  | none => simp [Frame.visibleHeader, nominal] at visible
+  | none => simp [TunnelFrame.visibleHeader, nominal] at visible
   | some header =>
     have same : frame.activeHeader.getD header = actual := by
-      simpa [Frame.visibleHeader, nominal] using visible
+      simpa [TunnelFrame.visibleHeader, nominal] using visible
     refine ⟨header, rfl, ?_⟩
     rw [← same]
     exact Body.coherent_visible coherent header nominal
 
-lemma Frame.forwarded_headers {frame : Frame} (coherent : frame.HeadersCoherent) :
+lemma TunnelFrame.forwarded_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent) :
     frame.forwarded.HeadersCoherent := by
   cases visible : frame.visibleHeader with
-  | none => simpa [Frame.forwarded, visible] using coherent
+  | none => simpa [TunnelFrame.forwarded, visible] using coherent
   | some actual =>
     obtain ⟨nominal, bodyVisible, identity⟩ := frame.coherent_visible coherent actual visible
-    simpa [Frame.HeadersCoherent, Frame.forwarded, visible] using
+    simpa [TunnelFrame.HeadersCoherent, TunnelFrame.forwarded, visible] using
       Body.coherent_set_active coherent nominal
         { actual with hopLimit := actual.hopLimit - 1 } bodyVisible identity.decrement
 
-lemma Frame.push_ipsec_headers {frame : Frame} (coherent : frame.HeadersCoherent)
-    (association : DataPlaneForwarding.TunnelSAStamp) (hopLimit : Nat) (bound : hopLimit ≤ 255) :
+lemma TunnelFrame.push_ipsec_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
+    (association : DataPlaneForwarding.TunnelSaStamp) (hopLimit : Nat) (bound : hopLimit ≤ 255) :
     (frame.pushHeader (.ipsec association frame.body)
       (some { outerHeader association.sender association.receiver "esp" 0 0 with
         hopLimit := hopLimit })).HeadersCoherent := by
   refine ⟨⟨rfl, bound⟩, frame.activeHeader, frame.hiddenHeaders, rfl, coherent⟩
 
-lemma Frame.push_carrier_headers {frame : Frame} (coherent : frame.HeadersCoherent)
-    (endpoint : Carrier) (hopLimit : Nat) (bound : hopLimit ≤ 255) :
+lemma TunnelFrame.push_carrier_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
+    (endpoint : EthernetTunnelHeader) (hopLimit : Nat) (bound : hopLimit ≤ 255) :
     (frame.pushHeader (.carrier endpoint frame.body)
       (some { outerHeader endpoint.source endpoint.destination endpoint.networkProtocol
         endpoint.sourcePort endpoint.destinationPort with hopLimit := hopLimit })).HeadersCoherent := by
   refine ⟨⟨rfl, bound⟩, frame.activeHeader, frame.hiddenHeaders, rfl, coherent⟩
 
-lemma Frame.push_macsec_headers {frame : Frame} (coherent : frame.HeadersCoherent)
-    (association : MACsecAssociation) :
+lemma TunnelFrame.push_macsec_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
+    (association : MacsecAssociation) :
     (frame.pushHeader (.macsec association frame.body) none).HeadersCoherent :=
   ⟨rfl, frame.activeHeader, frame.hiddenHeaders, rfl, coherent⟩
 
-lemma Frame.push_macsec_pdu_headers {frame : Frame} (coherent : frame.HeadersCoherent)
-    (association : MACsecAssociation) (encryptFrames : Bool) (confidentialityOffset : Nat) :
+lemma TunnelFrame.push_macsec_pdu_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
+    (association : MacsecAssociation) (encryptFrames : Bool) (confidentialityOffset : Nat) :
     (frame.pushHeader (.macsecPdu association encryptFrames confidentialityOffset frame.body) none).HeadersCoherent :=
   ⟨rfl, frame.activeHeader, frame.hiddenHeaders, rfl, coherent⟩
 
-lemma Frame.pop_macsec_pdu_headers {frame : Frame} (coherent : frame.HeadersCoherent)
-    (association : MACsecAssociation) (encryptFrames : Bool) (confidentialityOffset : Nat)
+lemma TunnelFrame.pop_macsec_pdu_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
+    (association : MacsecAssociation) (encryptFrames : Bool) (confidentialityOffset : Nat)
     (body : Body) (shape : frame.body = .macsecPdu association encryptFrames confidentialityOffset body) :
     (frame.popHeader body).HeadersCoherent := by
   change frame.body.HeadersCoherent frame.activeHeader frame.hiddenHeaders at coherent
   rw [shape] at coherent
   obtain ⟨_, inner, rest, hidden, coherent⟩ := coherent
-  simpa [Frame.HeadersCoherent, Frame.popHeader, hidden] using coherent
+  simpa [TunnelFrame.HeadersCoherent, TunnelFrame.popHeader, hidden] using coherent
 
-lemma Frame.pop_ipsec_headers {frame : Frame} (coherent : frame.HeadersCoherent)
-    (association : DataPlaneForwarding.TunnelSAStamp) (body : Body) (shape : frame.body = .ipsec association body) :
+lemma TunnelFrame.pop_ipsec_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
+    (association : DataPlaneForwarding.TunnelSaStamp) (body : Body) (shape : frame.body = .ipsec association body) :
     (frame.popHeader body).HeadersCoherent := by
   change frame.body.HeadersCoherent frame.activeHeader frame.hiddenHeaders at coherent
   rw [shape] at coherent
   obtain ⟨_, inner, rest, hidden, coherent⟩ := coherent
-  simpa [Frame.HeadersCoherent, Frame.popHeader, hidden] using coherent
+  simpa [TunnelFrame.HeadersCoherent, TunnelFrame.popHeader, hidden] using coherent
 
-lemma Frame.pop_macsec_headers {frame : Frame} (coherent : frame.HeadersCoherent)
-    (association : MACsecAssociation) (body : Body) (shape : frame.body = .macsec association body) :
+lemma TunnelFrame.pop_macsec_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
+    (association : MacsecAssociation) (body : Body) (shape : frame.body = .macsec association body) :
     (frame.popHeader body).HeadersCoherent := by
   change frame.body.HeadersCoherent frame.activeHeader frame.hiddenHeaders at coherent
   rw [shape] at coherent
   obtain ⟨_, inner, rest, hidden, coherent⟩ := coherent
-  simpa [Frame.HeadersCoherent, Frame.popHeader, hidden] using coherent
+  simpa [TunnelFrame.HeadersCoherent, TunnelFrame.popHeader, hidden] using coherent
 
-lemma Frame.pop_carrier_headers {frame : Frame} (coherent : frame.HeadersCoherent)
-    (endpoint : Carrier) (body : Body) (shape : frame.body = .carrier endpoint body) :
+lemma TunnelFrame.pop_carrier_headers {frame : TunnelFrame} (coherent : frame.HeadersCoherent)
+    (endpoint : EthernetTunnelHeader) (body : Body) (shape : frame.body = .carrier endpoint body) :
     (frame.popHeader body).HeadersCoherent := by
   change frame.body.HeadersCoherent frame.activeHeader frame.hiddenHeaders at coherent
   rw [shape] at coherent
   obtain ⟨_, inner, rest, hidden, coherent⟩ := coherent
-  simpa [Frame.HeadersCoherent, Frame.popHeader, hidden] using coherent
+  simpa [TunnelFrame.HeadersCoherent, TunnelFrame.popHeader, hidden] using coherent
 
 lemma unwrap_carrier_has_body {localAddress remote sourcePort destinationPort localSession : Nat}
     {before after : Body} {protocol networkProtocol : String}
@@ -124,27 +124,27 @@ open LayeredFrame
 def HeaderBounds (processing : HeaderProcessing) : Prop :=
   ∀ iface, processing.ipsecHopLimit iface ≤ 255 ∧ processing.carrierHopLimit iface ≤ 255
 
-lemma step_preserves_headers {c : Config} (processing : HeaderProcessing)
+lemma step_preserves_headers {c : TunnelForwardingModel} (processing : HeaderProcessing)
     (mode : c.headerProcessing = some processing) (bounds : HeaderBounds processing)
-    {before after : State} {action : Action}
-    (step : Step c before action after) (coherent : before.frame.HeadersCoherent) :
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep c before action after) (coherent : before.frame.HeadersCoherent) :
     after.frame.HeadersCoherent := by
   cases step with
   | receive => exact coherent
   | route =>
-    simpa [Config.forwardedFrame, mode] using Frame.forwarded_headers coherent
+    simpa [TunnelForwardingModel.forwardedFrame, mode] using TunnelFrame.forwarded_headers coherent
   | routeLocalOutput => exact coherent
   | forwardFilter => exact coherent
   | outputFilter => exact coherent
   | encryptIPsec policy association =>
-    simpa [Config.ipsecFrame, mode] using
-      Frame.push_ipsec_headers coherent (policy.seal association) _
+    simpa [TunnelForwardingModel.ipsecFrame, mode] using
+      TunnelFrame.push_ipsec_headers coherent (policy.seal association) _
         (bounds before.iface).1
   | routeOuterPacket => exact coherent
   | forwardWithoutEncap => exact coherent
   | decryptIPsec policy association body header datapathStage encrypted =>
-    simpa [Config.restoredFrame, mode] using
-      Frame.pop_ipsec_headers coherent (policy.seal association) body encrypted
+    simpa [TunnelForwardingModel.restoredFrame, mode] using
+      TunnelFrame.pop_ipsec_headers coherent (policy.seal association) body encrypted
   | inputFilter => exact coherent
   | deliver => exact coherent
   | deliverEthernet => exact coherent
@@ -152,30 +152,30 @@ lemma step_preserves_headers {c : Config} (processing : HeaderProcessing)
   | bridge => exact coherent
   | bridgeOutput => exact coherent
   | encryptMACsec iface association =>
-    simpa [Config.macsecFrame, mode] using Frame.push_macsec_headers coherent association
+    simpa [TunnelForwardingModel.macsecFrame, mode] using TunnelFrame.push_macsec_headers coherent association
   | protectMACsec iface association =>
-    simpa [Config.macsecPduFrame, mode] using
-      Frame.push_macsec_pdu_headers coherent association iface.settings.encryptFrames iface.settings.confidentialityOffset
+    simpa [TunnelForwardingModel.macsecPduFrame, mode] using
+      TunnelFrame.push_macsec_pdu_headers coherent association iface.settings.encryptFrames iface.settings.confidentialityOffset
   | validateMACsec iface association transmitted encryptFrames confidentialityOffset body configured datapathStage physical framed =>
-    simpa [Config.restoredFrame, mode] using
-      Frame.pop_macsec_pdu_headers coherent transmitted encryptFrames confidentialityOffset body framed
+    simpa [TunnelForwardingModel.restoredFrame, mode] using
+      TunnelFrame.pop_macsec_pdu_headers coherent transmitted encryptFrames confidentialityOffset body framed
   | unprotectedMACsec => exact coherent
   | decryptMACsec iface association transmitted body configured datapathStage physical encrypted =>
-    simpa [Config.restoredFrame, mode] using
-      Frame.pop_macsec_headers coherent transmitted body encrypted
+    simpa [TunnelForwardingModel.restoredFrame, mode] using
+      TunnelFrame.pop_macsec_headers coherent transmitted body encrypted
   | uncheckedMACsec => exact coherent
   | encapsulate iface =>
-    simpa [Config.carrierFrame, mode] using
-      Frame.push_carrier_headers coherent iface.transmit _ (bounds iface.routingIface).2
+    simpa [TunnelForwardingModel.carrierFrame, mode] using
+      TunnelFrame.push_carrier_headers coherent iface.transmit _ (bounds iface.routingIface).2
   | decapsulate iface body configured datapathStage owner unwrapped =>
     obtain ⟨endpoint, shape⟩ := unwrap_carrier_has_body unwrapped
-    simpa [Config.restoredFrame, mode] using
-      Frame.pop_carrier_headers coherent endpoint body shape
+    simpa [TunnelForwardingModel.restoredFrame, mode] using
+      TunnelFrame.pop_carrier_headers coherent endpoint body shape
   | drop => exact coherent
 
-theorem all_traces_preserve_headers (c : Config) (processing : HeaderProcessing)
+theorem all_traces_preserve_headers (c : TunnelForwardingModel) (processing : HeaderProcessing)
     (mode : c.headerProcessing = some processing) (bounds : HeaderBounds processing)
-    {before after : State} {actions : List Action}
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction}
     (run : (lts c).MTr before actions after) (coherent : before.frame.HeadersCoherent) :
     after.frame.HeadersCoherent := by
   have preserved : (lts c).TrInv (fun state => state.frame.HeadersCoherent) := by
@@ -209,17 +209,17 @@ lemma matched_network_hop_bound {packet : PacketPolicy.Packet} {bytes : List UIn
     rw [same]
     exact field_byte_bound bytes 7
 
-lemma decoded_source_headers (datagram : Datagram) (decoded : datagram.Decoded) :
+lemma decoded_source_headers (datagram : EncodedDatagram) (decoded : datagram.Decoded) :
     ({ payload := 0, originDomain := 0,
-       body := datagram.body } : LayeredFrame.Frame).HeadersCoherent := by
+       body := datagram.body } : LayeredFrame.TunnelFrame).HeadersCoherent := by
   cases shape : datagram.body with
   | datagram packet =>
-    simp only [Datagram.Decoded, shape] at decoded
+    simp only [EncodedDatagram.Decoded, shape] at decoded
     exact ⟨⟨rfl, matched_network_hop_bound decoded.2.2.1⟩, rfl⟩
   | ethernet header => exact ⟨rfl, rfl⟩
-  | ipsec => simp [Datagram.Decoded, shape] at decoded
-  | macsec => simp [Datagram.Decoded, shape] at decoded
-  | macsecPdu => simp [Datagram.Decoded, shape] at decoded
-  | carrier => simp [Datagram.Decoded, shape] at decoded
+  | ipsec => simp [EncodedDatagram.Decoded, shape] at decoded
+  | macsec => simp [EncodedDatagram.Decoded, shape] at decoded
+  | macsecPdu => simp [EncodedDatagram.Decoded, shape] at decoded
+  | carrier => simp [EncodedDatagram.Decoded, shape] at decoded
 
 end TDN.PacketSource

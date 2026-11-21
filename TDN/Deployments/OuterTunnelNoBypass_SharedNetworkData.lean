@@ -6,7 +6,6 @@ namespace TDN.Deployments.OuterTunnelNoBypass_SharedNetwork
 open Compliance Requirements OuterToGray_DeviceModel MtuSizing_Records
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 abbrev originalRecords := MtuSizing_Shared.records
 abbrev installations := MtuSizing_Shared.installations

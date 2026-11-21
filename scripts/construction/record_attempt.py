@@ -36,7 +36,7 @@ def referenced_inputs(root, command, explicit):
             raise ValueError("An explicit attempt input must be a file: " + relative)
         selected.append(relative)
         if path.suffix == ".lean":
-            for match in re.finditer(r'\bload_network_records\b[^;]*?\bfrom\s+"([^"\n]+)"', path.read_text()):
+            for match in re.finditer(r'\b(?:load_network_records|replay_forwarding_trace)\b[^;]*?\bfrom\s+"([^"\n]+)"', path.read_text()):
                 referenced = (path.parent / match.group(1)).resolve()
                 candidates.append(str(referenced.relative_to(root)))
     return sorted(selected), sorted(missing)

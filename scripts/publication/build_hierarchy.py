@@ -22,7 +22,7 @@ nodes = raw['nodes']
 
 #* Descriptions explain the declaration's actual role; the boxes retain its Lean name.
 MEANINGS = {
-    'snapshot_public_internet_RG034': 'Proves RG-034 for the selected imported topology. The Public Internet is marked as untrusted, declared attachments have graph paths, each Outer connects through an Outer Firewall to Black, every Outer-to-Black path crosses a firewall, and each Outer has the required Gray-side connection.',
+    'snapshot_public_internet_rg034': 'Proves RG-034 for the selected imported topology. The Public Internet is marked as untrusted, declared attachments have graph paths, each Outer connects through an Outer Firewall to Black, every Outer-to-Black path crosses a firewall, and each Outer has the required Gray-side connection.',
     'inside_outside_placement': 'Checks that each Outer has an inside connection to an Outer Firewall whose outside connection reaches a Black node.',
     'outer_firewall_waypointing': 'Proves that every finite path from an Outer encryptor to Black visits an Outer Firewall in the imported graph.',
     'gray_internal_connected': 'Provides a Gray path from every Outer encryptor to a Gray Firewall. The witnesses may pass through Gray switches.',
@@ -62,11 +62,10 @@ MEANINGS = {
     'forwarding_preserves_level': 'Shows that any finite sequence of modeled operations leaves the payload’s security level unchanged.',
     'black_has_two_layers': 'Concludes that a modeled payload reaching Black has an Outer layer around an Inner layer, assuming the initial state has the required layer structure.',
     'inner_delivery_same_level': 'Shows that modeled Inner decryption delivers the payload at an endpoint assigned the payload’s security level.',
-    'underlay_path_simulates_overlay_path': 'Turns a sequence of detailed steps into a sequence of modeled steps, given a proof that every detailed step maps to an allowed modeled step.',
+    'underlay_path_maps_to_overlay_path': 'Turns a sequence of detailed steps into a sequence of modeled steps, given a proof that every detailed step maps to an allowed modeled step.',
     'concrete_black_protection': 'Transfers the two-layer Black conclusion to a detailed execution whose steps have been connected to the protected-payload model.',
     'effect_preserves_shape': 'Checks that each safe operation changes the protection-layer list to the shape required by the destination zone.',
     'checked_edge_preserves_layers': 'Uses one edge’s safety proof and its layer operation to preserve the required protection-layer structure.',
-    'checked_machine_preserves_layers': 'Proves that every finite execution preserves the protection layers when all listed machine edges satisfy the local safety condition.',
     'deadline_elapsed_bound': 'Derives an elapsed-time bound from a reporting time that lies between detection and the permitted deadline.',
     'all_eight_declared_family_choices': 'Checks that the imported mechanism cases include all eight declared IPv4/IPv6 choices across Red, Gray and Black.',
     'all_four_declared_layer_pairings': 'Checks that the imported cases include the four IPsec/MACsec choices for the Inner and Outer layers.',
@@ -140,17 +139,17 @@ MEANINGS = {
     'Shape': 'The required layer-list shape for a zone: empty in Red, Inner in Gray, and Outer around Inner in Black.',
     'MatchesZoneEncryptionPolicy': 'States that a modeled payload has the protection-layer list required by its current Red, Gray or Black zone.',
     'StackEffect': 'Describes how one operation leaves, adds to or removes from the protection-layer list.',
-    'SimulatesOverlayStep': 'Requires every detailed step to map to an allowed step in the protected-payload model.',
+    'MapsToOverlayStep': 'Requires every detailed step to map to an allowed step in the protected-payload model.',
     'Step': 'The allowed one-step transitions of the protected-payload model, including encryption, transit and decryption.',
     'WithinDeadline': 'Requires the report time to lie between detection and detection plus the allowed delay.',
     'SecurityLevel': 'A security label containing classification, compartments, dissemination restrictions and other controls.',
     'State': 'A modeled payload’s zone, location, security level and protection-layer list.',
     'Network': 'The configured relationships used by the payload model: endpoint levels, Inner and Outer peers, links and permitted mechanism pairings.',
-    'TunnelSAStamp': 'Records an IPsec protection-layer identifier, the installed association’s SPI, and its sender and receiver addresses.',
+    'TunnelSaStamp': 'Records an IPsec protection-layer identifier, the installed association’s SPI, and its sender and receiver addresses.',
     'TunnelHeader': 'One protection layer in the Red/Gray/Black architecture model, with its Inner/Outer role, endpoints, and IPsec or MACsec mechanism.',
     'DataPlaneModel': 'Supplies the forwarding tables, ordered firewall rules, IPsec policies and installed associations, interfaces, bridges, and links used by the packet model.',
     'IpsecPolicy': 'An IPsec policy with source and destination selectors, tunnel endpoints, priority, and an optional required SPI.',
-    'InstalledSA': 'An installed IPsec security association identified by its local reqid, wire SPI, and tunnel endpoints.',
+    'InstalledSa': 'An installed IPsec security association identified by its local reqid, wire SPI, and tunnel endpoints.',
     'FibRoute': 'A forwarding entry with ingress and egress interfaces, destination-address bounds, prefix length, metric, and policy-table priority.',
     'SelectedFibRoute': 'Selects an applicable route by policy-table priority, longest destination prefix, and lowest metric.',
     'PerHopEncapConditions': 'The conditions on routing, filtering, encapsulation, bridging, and links that preserve the expected protection layers through each permitted step.',
@@ -172,8 +171,8 @@ MEANINGS = {
     'ESPModeProposal': 'One offered ESP encryption mode and whether it includes HMAC integrity.',
     'CipherMode': 'The encryption-mode choices distinguished by the configuration model: CBC, GCM and other.',
     'Frame': 'The Ethernet-frame fields represented by the bridge-filter model.',
-    'msc_outer_firewall_placement': 'Defines RG-034 as the required external connections, firewall traversal for every Outer-to-Black path, and the conditional internal Gray connection.',
-    'msc_ip_header_and_multicast_filtering': 'Defines RG-038 for a nonempty gateway inventory: accepted packets obey the applicable protocol, external multicast and IPv4-options restrictions.',
+    'outer_firewall_placement': 'Defines RG-034 as the required external connections, firewall traversal for every Outer-to-Black path, and the conditional internal Gray connection.',
+    'ip_header_and_multicast_filtering': 'Defines RG-038 for a nonempty gateway inventory: accepted packets obey the applicable protocol, external multicast and IPv4-options restrictions.',
     'msc_ike_version_and_encryption_modes': 'Defines RG-022 by checking every loaded IKE version, IKE mode and ESP proposal against the permitted alternatives.',
     'msc_vpn_sa_lifetimes_and_reauthentication': 'Combines the IKE and ESP lifetime bounds with earlier peer reauthentication for every listed IKE-rekey event.',
     'msc_macsec_encryption_and_key_wrap': 'Requires AES Key Wrap with a 256-bit key and AES-GCM data protection with a 256-bit key for every listed MACsec device.',
@@ -213,13 +212,13 @@ def describe(node):
     if node.get('description'):
         return node['description']
     qualified = {
-        'TDN.DataPlaneForwarding.State': 'A packet’s interface, processing stage, frame, and authenticated incoming IPsec policy identifiers.',
-        'TDN.DataPlaneForwarding.Frame': 'The packet header, payload identity, source security domain, saved encapsulation layers, and entry interface.',
-        'TDN.DataPlaneForwarding.Step': 'One permitted routing, filtering, IPsec, bridging, transmission, or delivery operation, with the conditions required for that operation.',
-        'TDN.MultiProtocolForwarding.Config': 'The combined forwarding model: IP processing plus MACsec interfaces, carriers, bridges, physical links, and header processing.',
-        'TDN.MultiProtocolForwarding.State': 'The current interface and processing stage of a possibly nested IPsec/MACsec frame, together with entry and authentication information.',
-        'TDN.MultiProtocolForwarding.Step': 'One permitted operation in the combined IPsec, MACsec, carrier, Ethernet, and IP forwarding model.',
-        'TDN.LayeredFrame.Frame': 'A packet body that can contain nested IPsec, MACsec, and carrier layers, with payload identity and any saved visible headers.',
+        'TDN.DataPlaneForwarding.ForwardingState': 'A packet’s interface, processing stage, frame, and authenticated incoming IPsec policy identifiers.',
+        'TDN.DataPlaneForwarding.IpsecFrame': 'The packet header, payload identity, source security domain, saved encapsulation layers, and entry interface.',
+        'TDN.DataPlaneForwarding.ForwardingStep': 'One permitted routing, filtering, IPsec, bridging, transmission, or delivery operation, with the conditions required for that operation.',
+        'TDN.MultiProtocolForwarding.TunnelForwardingModel': 'The combined forwarding model: IP processing plus MACsec interfaces, carriers, bridges, physical links, and header processing.',
+        'TDN.MultiProtocolForwarding.TunnelForwardingState': 'The current interface and processing stage of a possibly nested IPsec/MACsec frame, together with entry and authentication information.',
+        'TDN.MultiProtocolForwarding.TunnelForwardingStep': 'One permitted operation in the combined IPsec, MACsec, carrier, Ethernet, and IP forwarding model.',
+        'TDN.EncryptionLayeredFrame.Frame': 'A packet body that can contain nested IPsec, MACsec, and carrier layers, with payload identity and any saved visible headers.',
     }
     if node['name'] in qualified:
         return qualified[node['name']]
@@ -402,6 +401,8 @@ def tree_graph(root, definitions, formal=None, relationship=None, clause=None, b
 
 register_path = raw['metadata']['register_path']
 register_lines = (ROOT / register_path).read_text().splitlines()
+registered_specs = {name for entry in raw['groups']
+                    for name in [entry['formal'], *entry.get('partialSpecifications', [])] if name}
 for group in raw['groups']:
     group['registerLine'] = next(i for i,s in enumerate(register_lines,1) if f'"rg_id": "{group["id"]}"' in s)
     if group['formal'] is None:
@@ -417,7 +418,8 @@ for group in raw['groups']:
         proof_names.add(name)
         pending.extend(nodes[name]['proofs'])
         specifications.update(n for n in nodes[name]['statementDefinitions']
-                              if n.startswith('TDN.Requirements.') and nodes[n]['short'].startswith('msc_') and nodes[n]['kind'] in {'def', 'abbrev'} and nodes[n]['canonicalName'] != nodes[group['formal']]['canonicalName'])
+                              if n in registered_specs
+                              and nodes[n]['canonicalName'] != nodes[group['formal']]['canonicalName'])
     group['specifications'] = [group['formal']] + sorted(specifications - {group['formal']})
     group['specificationProofs'] = {spec: sorted(name for name in proof_names
         if nodes[name]['canonicalHead'] == nodes[spec]['canonicalName']) for spec in group['specifications']}
@@ -454,7 +456,7 @@ details = {name: {k:node[k] for k in ['name','short','path','line','kind','decid
 payload = {'groups':raw['groups'],'nodes':details,'layouts':layouts,'root':str(ROOT),'registerPath':register_path,
     'metadata':raw['metadata'], 'statusLabels':{
     'review_pass':'Complete conditional proof: review passed',
-    'deferred':'Complete proof deferred',
+    'deferred':'Supporting proofs only',
     'outside_selected_scope':'Outside selected proof scope'}}
 template = (ASSETS / 'template.html').read_text().replace('__THEORY_VERSION__', VERSION)
 script = (ASSETS / 'app.js').read_text()

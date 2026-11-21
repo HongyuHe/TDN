@@ -5,25 +5,25 @@ namespace TDN.Compliance
 
 lemma DeviceExecutionBinding.source_initial_headers {S A : Type}
     (binding : DeviceExecutionBinding S A) (d : Deployment)
-    (state : MultiProtocolForwarding.State) (source : binding.SourceInitial d state) :
+    (state : MultiProtocolForwarding.TunnelForwardingState) (source : binding.SourceInitial d state) :
     state.frame.HeadersCoherent := by
   obtain ⟨request, datagrams, datagram, _, _, _, valid, same⟩ := source.2.2.1
   rw [same]
-  simpa only [DeviceExecutionBinding.SourceState, LayeredFrame.Frame.HeadersCoherent] using
+  simpa only [DeviceExecutionBinding.SourceState, LayeredFrame.TunnelFrame.HeadersCoherent] using
     PacketSource.decoded_source_headers datagram valid.1
 
 theorem reachable_headers_from_local_steps {S A : Type} (model : ForwardingModel S A)
     (faithful : model.Faithful) (processing : MultiProtocolForwarding.HeaderProcessing)
-    (mode : model.native.configuration.headerProcessing = some processing)
+    (mode : model.deviceDataPlane.configuration.headerProcessing = some processing)
     (bounds : MultiProtocolForwarding.HeaderBounds processing)
-    {start finish : S} {actions : List A} (run : model.system.MTr start actions finish)
-    (initial : (model.native.state start).frame.HeadersCoherent) :
-    (model.native.state finish).frame.HeadersCoherent := by
+    {start finish : S} {actions : List A} (run : model.ForwardsAlongTrace start actions finish)
+    (initial : (model.deviceDataPlane.state start).frame.HeadersCoherent) :
+    (model.deviceDataPlane.state finish).frame.HeadersCoherent := by
   have preserved : model.system.TrInv
-      (fun state => (model.native.state state).frame.HeadersCoherent) := by
+      (fun state => (model.deviceDataPlane.state state).frame.HeadersCoherent) := by
     intro before action after step coherent
     have exactStep := faithful before action after step
-    cases projection : model.native.action action with
+    cases projection : model.deviceDataPlane.action action with
     | none =>
       rw [projection] at exactStep
       rw [← exactStep.1]
@@ -48,9 +48,9 @@ theorem standard_reachable_headers {S A : Type}
     (start finish : State ifaces) (actions : List (Action ifaces))
     (initialized : (model prototype ifaces d history).initial start)
     (run : (model prototype ifaces d history).system.MTr start actions finish) :
-    finish.native.frame.HeadersCoherent := by
+    finish.deviceState.frame.HeadersCoherent := by
   exact reachable_headers_from_local_steps (model prototype ifaces d history)
     (standard_model_faithful prototype ifaces d history) processing mode bounds run
-    ((binding prototype ifaces).source_initial_headers d start.native initialized.1)
+    ((binding prototype ifaces).source_initial_headers d start.deviceState initialized.1)
 
 end TDN.Requirements.StandardDataPlaneBridge

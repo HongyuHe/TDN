@@ -4,7 +4,6 @@ namespace TDN.Deployments.OuterTunnelNoBypass_Shared
 open Compliance Requirements Requirements.Msc OuterToGray_DeviceModel MtuSizing_Records StandardDataPlaneBridge MultiProtocolForwarding LayeredFrame
 
 set_option maxRecDepth 200000
-set_option maxHeartbeats 4000000
 set_option maxSynthPendingDepth 256
 set_option synthInstance.maxSize 1024
 
@@ -12,7 +11,7 @@ structure TunnelModeBinding where
   tunnel : String
   owner : Nat
   localIface : Nat
-  association : DataPlaneForwarding.InstalledSA
+  association : DataPlaneForwarding.InstalledSa
   installation : String
   mode : String
   protocol : String
@@ -26,7 +25,7 @@ load_network_records tunnelModeBindings : List TunnelModeBinding from "../../dat
 def TunnelModeBinding.Check (record : TunnelModeBinding) : Prop :=
   record.mode = "tunnel" ∧ record.protocol = "esp" ∧ record.observation ≠ "" ∧ record.sourceHash ≠ "" ∧
   record.originalAssociatedIPTunnel = false ∧ record.interpretedAssociatedIPTunnel = true ∧
-  ∃ tunnel ∈ records.tunnels, tunnel.id = record.tunnel ∧ tunnel.mechanism = .ipsec ∧
+  ∃ tunnel ∈ records.tunnels, tunnel.id = record.tunnel ∧ tunnel.protocol = .ipsec ∧
     tunnel.espTunnelMode = true ∧ tunnel.associatedIPTunnel = record.originalAssociatedIPTunnel ∧
     tunnel.sender = records.componentName record.owner ∧
     ∃ installed ∈ installations, installed.installation.installation = record.installation ∧
@@ -49,11 +48,11 @@ instance tunnelModeCheckDecidable (record : TunnelModeBinding) : Decidable recor
 
 lemma tunnel_mode_bindings_checked : ∀ record ∈ tunnelModeBindings, record.Check := by native_decide
 
-lemma ipsec_tunnels_have_mode_bindings : ∀ tunnel ∈ records.tunnels, tunnel.mechanism = .ipsec →
+lemma ipsec_tunnels_have_mode_bindings : ∀ tunnel ∈ records.tunnels, tunnel.protocol = .ipsec →
     ∃ record ∈ tunnelModeBindings, record.tunnel = tunnel.id := by native_decide
 
 def TunnelModeBinding.component (record : TunnelModeBinding) : EncryptionComponentConfiguration :=
-  { id := records.componentName record.owner, mechanism := .ipsec,
+  { id := records.componentName record.owner, protocol := .ipsec,
     espTunnelMode := decide (record.Check ∧ record.mode = "tunnel" ∧ record.protocol = "esp"),
     associatedIPTunnel := decide (record.Check ∧ record.interpretedAssociatedIPTunnel = true),
     outboundMACPolicy := false, inboundMACPolicy := false }
@@ -68,17 +67,17 @@ lemma checked_mode_binding_has_component_parameters (record : TunnelModeBinding)
   · exact decide_eq_true_eq.mpr ⟨checked, checked.1, checked.2.1⟩
   · exact decide_eq_true_eq.mpr ⟨checked, checked.2.2.2.2.2.1⟩
 
-lemma tunnel_view_preserves_non_ipsec (tunnel : Tunnel) (other : tunnel.mechanism ≠ .ipsec) :
+lemma tunnel_view_preserves_non_ipsec (tunnel : Tunnel) (other : tunnel.protocol ≠ .ipsec) :
     associatedIPTunnelView tunnel = tunnel := by simp [associatedIPTunnelView, other]
 
-lemma ipsec_frame_has_bound_outer_header (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
-    (iface : Nat) (before : Frame) (association : DataPlaneForwarding.TunnelSAStamp) :
+lemma ipsec_frame_has_bound_outer_header (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial)
+    (iface : Nat) (before : TunnelFrame) (association : DataPlaneForwarding.TunnelSaStamp) :
     (configuration primitive).visibleHeader ((configuration primitive).ipsecFrame iface before association) =
       some { outerHeader association.sender association.receiver "esp" 0 0 with hopLimit := 64 } := by
-  simp [Config.visibleHeader, Config.ipsecFrame, configuration, completeConfiguration,
-    directionalConfiguration, Records.configuration, Frame.visibleHeader, Frame.pushHeader, Body.visibleHeader]
+  simp [TunnelForwardingModel.visibleHeader, TunnelForwardingModel.ipsecFrame, configuration, completeConfiguration,
+    directionalConfiguration, Records.configuration, TunnelFrame.visibleHeader, TunnelFrame.pushHeader, Body.visibleHeader]
 
-lemma tunnel_interpretation_is_bound : ∀ tunnel ∈ records.tunnels, tunnel.mechanism = .ipsec →
+lemma tunnel_interpretation_is_bound : ∀ tunnel ∈ records.tunnels, tunnel.protocol = .ipsec →
     ∃ record ∈ tunnelModeBindings, record.tunnel = tunnel.id ∧ record.mode = "tunnel" ∧
       record.protocol = "esp" ∧ record.Check ∧
       (associatedIPTunnelView tunnel).associatedIPTunnel = true ∧

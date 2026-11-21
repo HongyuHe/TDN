@@ -3,7 +3,7 @@ import TDN.Models.EnclaveIsolationInvariants
 namespace TDN.DataPlaneForwarding
 
 def RecordDomainCheck (allowed : IfaceData → Bool) (entry output : IfaceData)
-    (device : DeviceData) (authenticated : List Nat) (rule : PacketPolicy.Rule) : Prop :=
+    (device : DeviceData) (authenticated : List Nat) (rule : PacketPolicy.PacketAclRule) : Prop :=
   ¬ IfaceCompatible rule entry.name output.name ∨
   ImpossibleAuthentication rule authenticated ∨
   (allowed output = true ∧
@@ -13,11 +13,11 @@ def RecordDomainCheck (allowed : IfaceData → Bool) (entry output : IfaceData)
       association.tag :: (if authenticated = [] then entry.stack else entry.stack.tail) = output.stack)
 
 instance (allowed : IfaceData → Bool) (i o : IfaceData) (d : DeviceData)
-    (a : List Nat) (r : PacketPolicy.Rule) :
+    (a : List Nat) (r : PacketPolicy.PacketAclRule) :
     Decidable (RecordDomainCheck allowed i o d a r) := by unfold RecordDomainCheck; infer_instance
 
 lemma domain_check_implies_stack_check {allowed : IfaceData → Bool} {i o : IfaceData}
-    {d : DeviceData} {auth : List Nat} {r : PacketPolicy.Rule}
+    {d : DeviceData} {auth : List Nat} {r : PacketPolicy.PacketAclRule}
     (checked : RecordDomainCheck allowed i o d auth r) :
     RecordRuleCheck i o d auth r := by
   rcases checked with incompatible | impossible | ⟨_, stack⟩
@@ -26,7 +26,7 @@ lemma domain_check_implies_stack_check {allowed : IfaceData → Bool} {i o : Ifa
   · exact Or.inr (Or.inr stack)
 
 lemma matched_domain_check_allows_output {allowed : IfaceData → Bool} {i o : IfaceData}
-    {d : DeviceData} {auth : List Nat} {r : PacketPolicy.Rule} {p : PacketPolicy.Packet}
+    {d : DeviceData} {auth : List Nat} {r : PacketPolicy.PacketAclRule} {p : PacketPolicy.Packet}
     (checked : RecordDomainCheck allowed i o d auth r)
     (matched : r.toFilter.accepts p = true)
     (ingress : p.ingress = i.name) (egress : p.egress = o.name)
@@ -54,7 +54,7 @@ theorem table_driven_domain_forward_checks_sound (devices : List DeviceData) (if
     (routes : List FibRoute) (links switches : List (Nat × Nat)) (allowed : IfaceData → Bool)
     (checked : TableDrivenDomainForwardChecks devices ifaces allowed)
     (denying : ∀ p, (dataPlaneModelFromRecords devices ifaces routes links switches).forwardFallback p = .deny)
-    (iface : Nat) (frame : Frame) (authenticated : List Nat)
+    (iface : Nat) (frame : IpsecFrame) (authenticated : List Nat)
     (ingress : frame.packet.ingress =
       (dataPlaneModelFromRecords devices ifaces routes links switches).interfaceName frame.enteredIface)
     (valid : LocalAuthentication (dataPlaneModelFromRecords devices ifaces routes links switches)
@@ -62,7 +62,7 @@ theorem table_driven_domain_forward_checks_sound (devices : List DeviceData) (if
     (owner : (dataPlaneModelFromRecords devices ifaces routes links switches).owner iface =
       (dataPlaneModelFromRecords devices ifaces routes links switches).owner frame.enteredIface)
     (permitted : allowed (ifaceAt ifaces frame.enteredIface) = true)
-    (accepted : accepts ((dataPlaneModelFromRecords devices ifaces routes links switches).forwardRules iface)
+    (accepted : TDN.PacketPolicy.AclAllows ((dataPlaneModelFromRecords devices ifaces routes links switches).forwardRules iface)
       ((dataPlaneModelFromRecords devices ifaces routes links switches).forwardFallback iface)
       (policyPacket (dataPlaneModelFromRecords devices ifaces routes links switches) iface frame authenticated)) :
     ((lookupSpdPolicies ((dataPlaneModelFromRecords devices ifaces routes links switches).egressPolicies iface)

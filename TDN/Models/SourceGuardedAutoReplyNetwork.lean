@@ -16,33 +16,33 @@ structure Data where
   routes : List FibRoute
   links : List (Nat × Nat)
   switches : List (Nat × Nat)
-  sourceGuards : List (Nat × List PacketPolicy.Rule)
+  sourceGuards : List (Nat × List PacketPolicy.PacketAclRule)
 
 def Data.config (data : Data) : DataPlaneForwarding.DataPlaneModel :=
   dataPlaneModelFromRecords data.devices data.ifaces data.routes data.links data.switches
 
 def Data.expectedEncapStack (data : Data) : Nat → List Nat := expectedEncapStackFromRecords data.ifaces
 
-def sourcePacket (data : Data) (state : DataPlaneForwarding.State) : PacketPolicy.Packet :=
+def sourcePacket (data : Data) (state : DataPlaneForwarding.ForwardingState) : PacketPolicy.Packet :=
   policyPacket data.config state.frame.enteredIface state.frame state.authenticated
 
-def RequiresIpsecPolicyMatch (data : Data) (state : DataPlaneForwarding.State) : Prop :=
+def RequiresIpsecPolicyMatch (data : Data) (state : DataPlaneForwarding.ForwardingState) : Prop :=
   ActivePhase state.datapathStage →
     ∀ guard ∈ data.sourceGuards, data.config.owner state.frame.enteredIface = guard.1 →
-      Filter.evaluate (guard.2.map PacketPolicy.Rule.toFilter) .allow (sourcePacket data state) = .allow
+      Filter.evaluate (guard.2.map PacketPolicy.PacketAclRule.toFilter) .allow (sourcePacket data state) = .allow
 
-instance (data : Data) (state : DataPlaneForwarding.State) : Decidable (RequiresIpsecPolicyMatch data state) := by
+instance (data : Data) (state : DataPlaneForwarding.ForwardingState) : Decidable (RequiresIpsecPolicyMatch data state) := by
   unfold RequiresIpsecPolicyMatch
   infer_instance
 
-def network (data : Data) : Cslib.LTS DataPlaneForwarding.State DataPlaneForwarding.Action where
-  Tr before action after := DataPlaneForwarding.Step data.config before action after ∧ RequiresIpsecPolicyMatch data after
+def network (data : Data) : Cslib.LTS DataPlaneForwarding.ForwardingState DataPlaneForwarding.ForwardingAction where
+  Tr before action after := DataPlaneForwarding.ForwardingStep data.config before action after ∧ RequiresIpsecPolicyMatch data after
 
-def Safe (data : Data) (state : DataPlaneForwarding.State) : Prop :=
+def Safe (data : Data) (state : DataPlaneForwarding.ForwardingState) : Prop :=
   EncapStackConsistent data.config data.expectedEncapStack state ∧
     ProcessingAuthenticationMatches data.config state ∧ RequiresIpsecPolicyMatch data state
 
-def responseConfig (data : Data) : KernelResponses.Config DataPlaneForwarding.State where
+def responseConfig (data : Data) : KernelResponses.ReplyConfig DataPlaneForwarding.ForwardingState where
   generates state := ActivePhase state.datapathStage ∧
     ∃ guard ∈ data.sourceGuards,
       (ifaceAt data.ifaces state.frame.enteredIface).owner = guard.1 ∧
@@ -59,12 +59,12 @@ def responseConfig (data : Data) : KernelResponses.Config DataPlaneForwarding.St
   emit state header output :=
     { iface := output, datapathStage := .egressReady, frame := { state.frame with packet := header }, authenticated := [] }
 
-lemma processing_of_active (data : Data) {state : DataPlaneForwarding.State}
+lemma processing_of_active (data : Data) {state : DataPlaneForwarding.ForwardingState}
     (active : ActivePhase state.datapathStage) (valid : EncapStackConsistent data.config data.expectedEncapStack state) :
     ProcessingInvariant data.config data.expectedEncapStack state := by
   cases datapathStage : state.datapathStage <;> simp_all [ActivePhase, EncapStackConsistent]
 
-lemma selectors_of_active (data : Data) {state : DataPlaneForwarding.State}
+lemma selectors_of_active (data : Data) {state : DataPlaneForwarding.ForwardingState}
     (active : ActivePhase state.datapathStage)
     (valid : ProcessingAuthenticationMatches data.config state) :
     AuthenticationMatches data.config state := by
@@ -83,12 +83,12 @@ lemma reply_emission_preserves_safe (data : Data)
     (coverage : SourceResponseGuards.TableDrivenGuardCoverage data.ifaces data.sourceGuards)
     (defaults : ∀ guard ∈ data.sourceGuards,
       (deviceAt data.devices guard.1).outputFallback = .deny)
-    (source : DataPlaneForwarding.State) (header : PacketPolicy.Packet) (output : Nat)
+    (source : DataPlaneForwarding.ForwardingState) (header : PacketPolicy.Packet) (output : Nat)
     (valid : Safe data source) (enabled : (responseConfig data).generates source)
     (protocol : KernelResponses.ResponseProtocol header.protocol)
     (selected : (responseConfig data).selectedRoute source header output)
     (accepted : Filter.evaluate
-      (((responseConfig data).outputRules source output).map PacketPolicy.Rule.toFilter)
+      (((responseConfig data).outputRules source output).map PacketPolicy.PacketAclRule.toFilter)
       ((responseConfig data).outputFallback source output)
       (KernelResponses.outputPacket (responseConfig data) header output) = .allow)
     (external : (responseConfig data).interfaceName output ≠ "lo") :
@@ -133,7 +133,7 @@ theorem all_guarded_response_traces_preserve_stack (data : Data)
     (coverage : SourceResponseGuards.TableDrivenGuardCoverage data.ifaces data.sourceGuards)
     (defaults : ∀ guard ∈ data.sourceGuards,
       (deviceAt data.devices guard.1).outputFallback = .deny)
-    {before after : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {before after : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     (run : (KernelResponses.lts (network data) (responseConfig data)).MTr
       (.network before) actions (.network after))
     (initial : Safe data before) : EncapStackConsistent data.config data.expectedEncapStack after :=

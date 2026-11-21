@@ -101,7 +101,7 @@ instance (atom : PacketPolicy.MatchCondition) : Decidable (UnicastLinkDestinatio
   cases atom <;> unfold UnicastLinkDestinationAtom <;> infer_instance
 
 def LinkRuleHeaderGuard (d : Deployment) (inventory : PacketProcessing.Inventory)
-    (interface : Interface) (iface : Nat) (rule : PacketPolicy.Rule) : Prop :=
+    (interface : Interface) (iface : Nat) (rule : PacketPolicy.PacketAclRule) : Prop :=
   (∃ atom ∈ rule.atoms, UnicastLinkDestinationAtom atom) ∨
   ∃ endpoint ∈ inventory.mkaPeers,
     endpoint.destinationIface = iface ∧
@@ -110,13 +110,13 @@ def LinkRuleHeaderGuard (d : Deployment) (inventory : PacketProcessing.Inventory
     .payloadByteEquals 0 3 ∈ rule.atoms ∧
     MKAObservationRecords d endpoint.actorSCI ∧
     ∃ tunnel ∈ d.tunnels, tunnel.id = endpoint.tunnel ∧ tunnel.layer = .outer ∧
-      tunnel.mechanism = .macsec ∧
+      tunnel.protocol = .macsec ∧
       inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = tunnel.sender ∧
       inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = tunnel.receiver ∧
       tunnel.receiver = interface.device ∧ d.intendedPeer tunnel.sender tunnel.receiver
 
 instance (d : Deployment) [DecidableRel d.intendedPeer] (inventory : PacketProcessing.Inventory)
-    (interface : Interface) (iface : Nat) (rule : PacketPolicy.Rule) :
+    (interface : Interface) (iface : Nat) (rule : PacketPolicy.PacketAclRule) :
     Decidable (LinkRuleHeaderGuard d inventory interface iface rule) := by
   unfold LinkRuleHeaderGuard
   infer_instance
@@ -124,7 +124,7 @@ instance (d : Deployment) [DecidableRel d.intendedPeer] (inventory : PacketProce
 lemma link_rule_multicast_restriction (d : Deployment)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (interface : Interface) (iface : Nat) (name : inventory.ifaceName iface = interface.id)
-    (rule : PacketPolicy.Rule) (traffic : Traffic) (supported : d.Supported traffic)
+    (rule : PacketPolicy.PacketAclRule) (traffic : Traffic) (supported : d.Supported traffic)
     (ethernet : traffic.packet.protocol = "ethernet")
     (guard : LinkRuleHeaderGuard d inventory interface iface rule)
     (approvedMKA : ∀ endpoint ∈ inventory.mkaPeers,
@@ -172,7 +172,7 @@ lemma header_atoms_force_admission_properties (d : Deployment)
     (device : Device) (interface : Interface) (policy : InterfacePolicy) (traffic : Traffic)
     (supported : d.Supported traffic)
     (checked : HeaderInterfacePolicyCheck d device interface policy)
-    (admitted : policy.Accepts traffic) :
+    (admitted : policy.PermitsTraffic traffic) :
     (device.layer = some .outer → interface.zone = .black →
       traffic.multicast = false ∨ NecessaryApprovedL2Control d interface traffic) ∧
     (device.kind = .vpn → traffic.ipVersion = some 4 → traffic.ipProtocol ∈ [6, 17, 50, 1]) ∧
@@ -274,7 +274,7 @@ theorem ip_and_link_header_filtering_from_inventory_and_rule_atoms (d : Deployme
       ∀ packet, packet.MKAFraming endpoint.actorSCI →
       packet.destination = 1652522221571 →
         d.policyApproved interface.device (d.Observe packet)) :
-    msc_ip_header_and_multicast_filtering d objective := by
+    ip_header_and_multicast_filtering d objective := by
   have address := address_inventory_from_checked_records d addressChecked workstationDefinition
   have processing := processing_coherence_from_record_checks d inventory present processingChecked
     lengthDefinition localAddressDefinition
@@ -300,11 +300,11 @@ theorem ip_and_link_header_filtering_from_inventory_and_rule_atoms (d : Deployme
     rw [selected] at policyChecks
     have acceptedRule : ∃ rule ∈ policy.inbound.rules,
         rule.toFilter.accepts traffic.packet = true ∧ rule.verdict = .allow := by
-      change Filter.evaluate (policy.inbound.rules.map PacketPolicy.Rule.toFilter)
+      change Filter.evaluate (policy.inbound.rules.map PacketPolicy.PacketAclRule.toFilter)
         policy.inbound.fallback traffic.packet = .allow at accepted
       rw [policyChecks.1] at accepted
       obtain ⟨rule, member, matched, allow⟩ := Filter.allowed_has_matching_allow
-        (policy.inbound.rules.map PacketPolicy.Rule.toFilter) traffic.packet accepted
+        (policy.inbound.rules.map PacketPolicy.PacketAclRule.toFilter) traffic.packet accepted
       obtain ⟨original, originalMember, sameRule⟩ := List.mem_map.mp member
       subst rule
       exact ⟨original, originalMember, matched, allow⟩
@@ -331,7 +331,7 @@ end TDN.Requirements.Msc
 
 namespace TDN.Compliance
 
-instance (association : LayeredFrame.MACsecAssociation) (bytes : List UInt8) :
+instance (association : LayeredFrame.MacsecAssociation) (bytes : List UInt8) :
     Decidable (MACsecPayload association bytes) := by
   unfold MACsecPayload
   infer_instance

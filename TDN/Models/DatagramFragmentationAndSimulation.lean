@@ -3,31 +3,31 @@ import Mathlib.Data.List.Basic
 
 namespace TDN.Fragmentation
 
-structure Datagram (Header Byte : Type) where
+structure PayloadDatagram (Header Byte : Type) where
   header : Header
   bytes : List Byte
 
-structure Fragment (Header Byte : Type) where
+structure PayloadFragment (Header Byte : Type) where
   header : Header
   offset : Nat
   bytes : List Byte
 
-def split {Header Byte : Type} (packet : Datagram Header Byte) (size : Nat) :
-    Fragment Header Byte × Fragment Header Byte :=
+def split {Header Byte : Type} (packet : PayloadDatagram Header Byte) (size : Nat) :
+    PayloadFragment Header Byte × PayloadFragment Header Byte :=
   (⟨packet.header, 0, packet.bytes.take size⟩,
    ⟨packet.header, (packet.bytes.take size).length, packet.bytes.drop size⟩)
 
 def join {Header Byte : Type} [DecidableEq Header]
-    (first second : Fragment Header Byte) : Option (Datagram Header Byte) :=
+    (first second : PayloadFragment Header Byte) : Option (PayloadDatagram Header Byte) :=
   if first.header = second.header ∧ first.offset = 0 ∧ second.offset = first.bytes.length
   then some ⟨first.header, first.bytes ++ second.bytes⟩ else none
 
-theorem split_preserves_header {Header Byte : Type} (packet : Datagram Header Byte) (size : Nat) :
+theorem split_preserves_header {Header Byte : Type} (packet : PayloadDatagram Header Byte) (size : Nat) :
     (split packet size).1.header = packet.header ∧
     (split packet size).2.header = packet.header := ⟨rfl, rfl⟩
 
 theorem reassembly_restores_bytes {Header Byte : Type} [DecidableEq Header]
-    (packet : Datagram Header Byte) (size : Nat) :
+    (packet : PayloadDatagram Header Byte) (size : Nat) :
     join (split packet size).1 (split packet size).2 = some packet := by
   cases packet
   simp [join, split]
@@ -75,11 +75,11 @@ theorem fragmented_forwarding_preserves_invariant {Detailed Abstract Action : Ty
   simpa [← equal] using result
 
 def Contiguous {Header Byte : Type} (offset : Nat) :
-    List (Fragment Header Byte) → Prop
+    List (PayloadFragment Header Byte) → Prop
   | [] => True
   | first :: rest => first.offset = offset ∧ Contiguous (offset + first.bytes.length) rest
 
-instance {Header Byte : Type} (offset : Nat) (pieces : List (Fragment Header Byte)) :
+instance {Header Byte : Type} (offset : Nat) (pieces : List (PayloadFragment Header Byte)) :
     Decidable (Contiguous offset pieces) := by
   induction pieces generalizing offset with
   | nil => exact isTrue trivial
@@ -88,13 +88,13 @@ instance {Header Byte : Type} (offset : Nat) (pieces : List (Fragment Header Byt
     haveI := ih (offset + first.bytes.length)
     infer_instance
 
-def ValidPieces {Header Byte : Type} (packet : Datagram Header Byte)
-    (pieces : List (Fragment Header Byte)) : Prop :=
+def ValidPieces {Header Byte : Type} (packet : PayloadDatagram Header Byte)
+    (pieces : List (PayloadFragment Header Byte)) : Prop :=
   pieces ≠ [] ∧ (∀ piece ∈ pieces, piece.header = packet.header) ∧
-    Contiguous 0 pieces ∧ (pieces.map Fragment.bytes).flatten = packet.bytes
+    Contiguous 0 pieces ∧ (pieces.map PayloadFragment.bytes).flatten = packet.bytes
 
 def makePieces {Header Byte : Type} (header : Header) (offset : Nat) :
-    List (List Byte) → List (Fragment Header Byte)
+    List (List Byte) → List (PayloadFragment Header Byte)
   | [] => []
   | bytes :: rest => ⟨header, offset, bytes⟩ :: makePieces header (offset + bytes.length) rest
 
@@ -102,7 +102,7 @@ lemma made_pieces_metadata {Header Byte : Type} (header : Header) (offset : Nat)
     (chunks : List (List Byte)) :
     (∀ piece ∈ makePieces header offset chunks, piece.header = header) ∧
     Contiguous offset (makePieces header offset chunks) ∧
-    ((makePieces header offset chunks).map Fragment.bytes).flatten = chunks.flatten := by
+    ((makePieces header offset chunks).map PayloadFragment.bytes).flatten = chunks.flatten := by
   induction chunks generalizing offset with
   | nil => simp [makePieces, Contiguous]
   | cons bytes rest ih =>
@@ -115,7 +115,7 @@ lemma made_pieces_metadata {Header Byte : Type} (header : Header) (offset : Nat)
       · exact headers piece tail
     · simp [makePieces, body]
 
-theorem arbitrary_partition_is_valid {Header Byte : Type} (packet : Datagram Header Byte)
+theorem arbitrary_partition_is_valid {Header Byte : Type} (packet : PayloadDatagram Header Byte)
     (chunks : List (List Byte)) (nonempty : chunks ≠ []) (body : chunks.flatten = packet.bytes) :
     ValidPieces packet (makePieces packet.header 0 chunks) := by
   obtain ⟨headers, contiguous, restored⟩ := made_pieces_metadata packet.header 0 chunks
@@ -126,10 +126,10 @@ theorem arbitrary_partition_is_valid {Header Byte : Type} (packet : Datagram Hea
 
 structure SegmentedState (Logical Header Byte : Type) where
   logical : Logical
-  fragments : Option (List (Fragment Header Byte))
+  fragments : Option (List (PayloadFragment Header Byte))
 
 inductive SegmentedStep {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte) :
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte) :
     SegmentedState Logical Header Byte → Option Action →
     SegmentedState Logical Header Byte → Prop where
   | packet {before after action} (step : system.Tr before action after) :
@@ -145,12 +145,12 @@ inductive SegmentedStep {Logical Header Byte Action : Type}
       SegmentedStep system encode ⟨state, some pieces⟩ none ⟨state, none⟩
 
 def segmented {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte) :
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte) :
     Cslib.LTS (SegmentedState Logical Header Byte) (Option Action) where
   Tr := SegmentedStep system encode
 
 theorem segmented_projection_checked {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte) :
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte) :
     StepProjection (segmented system encode) system SegmentedState.logical := by
   intro before action after step
   cases step with
@@ -160,11 +160,11 @@ theorem segmented_projection_checked {Logical Header Byte Action : Type}
   | reassemble => rfl
 
 def PiecesConsistent {Logical Header Byte : Type}
-    (encode : Logical → Datagram Header Byte) (state : SegmentedState Logical Header Byte) : Prop :=
+    (encode : Logical → PayloadDatagram Header Byte) (state : SegmentedState Logical Header Byte) : Prop :=
   ∀ pieces, state.fragments = some pieces → ValidPieces (encode state.logical) pieces
 
 lemma segmented_preserves_piece_consistency {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte) :
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte) :
     (segmented system encode).TrInv (PiecesConsistent encode) := by
   intro before action after step consistent
   cases step with
@@ -179,7 +179,7 @@ lemma segmented_preserves_piece_consistency {Logical Header Byte Action : Type}
   | reassemble => intro pieces equal; cases equal
 
 theorem forwarding_preserves_piece_consistency {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte)
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte)
     {before after : SegmentedState Logical Header Byte} {actions : List (Option Action)}
     (run : (segmented system encode).MTr before actions after)
     (initial : PiecesConsistent encode before) : PiecesConsistent encode after :=
@@ -187,7 +187,7 @@ theorem forwarding_preserves_piece_consistency {Logical Header Byte Action : Typ
     before actions after run initial
 
 theorem arbitrary_partition_reassembles {Logical Header Byte Action : Type}
-    (system : Cslib.LTS Logical Action) (encode : Logical → Datagram Header Byte)
+    (system : Cslib.LTS Logical Action) (encode : Logical → PayloadDatagram Header Byte)
     (state : Logical) (chunks : List (List Byte))
     (nonempty : chunks ≠ []) (body : chunks.flatten = (encode state).bytes) :
     (segmented system encode).MTr ⟨state, none⟩ [none, none] ⟨state, none⟩ := by

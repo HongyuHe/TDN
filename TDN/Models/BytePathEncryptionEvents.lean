@@ -7,26 +7,26 @@ import TDN.Models.TunnelEncryptionEvents
 namespace TDN.ByteProtectionEvents
 open DataPlaneForwarding
 
-def encapLayerIds : KernelResponses.State DataPlaneForwarding.State → List Nat
+def encapLayerIds : KernelResponses.ReplyState DataPlaneForwarding.ForwardingState → List Nat
   | .network state | .generated state _ _ | .routed state _ _ _ => state.frame.encapLayerIds
   | .consumed => []
 
 def system (c : DataPlaneForwarding.DataPlaneModel) (strict uniformOwners : List Nat) :=
-  ByteLineage.lts
+  PayloadByteOriginPath.lts
     (KernelResponses.lts (DataPlaneForwarding.lts c) (UniformDomainResponses.responseConfig c strict uniformOwners))
     (ResponseByteFlows.assembly PlaintextAssembly)
 
 def EncryptionEvent (c : DataPlaneForwarding.DataPlaneModel) (tag : Nat)
-    (left : KernelResponses.State DataPlaneForwarding.State)
-    (action : Option (KernelResponses.Action DataPlaneForwarding.Action))
-    (right : KernelResponses.State DataPlaneForwarding.State) : Prop :=
+    (left : KernelResponses.ReplyState DataPlaneForwarding.ForwardingState)
+    (action : Option (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))
+    (right : KernelResponses.ReplyState DataPlaneForwarding.ForwardingState) : Prop :=
   ∃ before after, left = .network before ∧ right = .network after ∧
-    action = some (.network .encrypt) ∧ Step c before .encrypt after ∧
+    action = some (.network .encrypt) ∧ ForwardingStep c before .encrypt after ∧
     after.frame.encapLayerIds = tag :: before.frame.encapLayerIds
 
 lemma added_tag_is_actual_encryption (c : DataPlaneForwarding.DataPlaneModel) (strict uniformOwners : List Nat)
-    {before after : KernelResponses.State DataPlaneForwarding.State}
-    {action : Option (KernelResponses.Action DataPlaneForwarding.Action)} {tag : Nat}
+    {before after : KernelResponses.ReplyState DataPlaneForwarding.ForwardingState}
+    {action : Option (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)} {tag : Nat}
     (step : (system c strict uniformOwners).Tr before action after)
     (absent : tag ∉ encapLayerIds before) (present : tag ∈ encapLayerIds after) :
     EncryptionEvent c tag before action after := by
@@ -47,8 +47,8 @@ lemma added_tag_is_actual_encryption (c : DataPlaneForwarding.DataPlaneModel) (s
     simp only [encapLayerIds, compatible.2.2.2.2, List.not_mem_nil] at present
 
 theorem trace_tag_addition_has_encryption (c : DataPlaneForwarding.DataPlaneModel) (strict uniformOwners : List Nat)
-    (tag : Nat) {before after : KernelResponses.State DataPlaneForwarding.State}
-    {actions : List (Option (KernelResponses.Action DataPlaneForwarding.Action))}
+    (tag : Nat) {before after : KernelResponses.ReplyState DataPlaneForwarding.ForwardingState}
+    {actions : List (Option (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction))}
     (run : (system c strict uniformOwners).MTr before actions after)
     (absent : tag ∉ encapLayerIds before) (present : tag ∈ encapLayerIds after) :
     TraceEvents.Contains (system c strict uniformOwners) before actions after
@@ -70,7 +70,7 @@ lemma domain_lineage_preservation (c : DataPlaneForwarding.DataPlaneModel) (expe
     (system c strict uniformOwners).TrInv
       (KernelResponses.ProvenanceInvariant (UniformDomainResponses.responseConfig c strict uniformOwners)
         (DomainInvariant c expectedEncapStack allowed)) := by
-  apply ByteLineage.local_checks_preserve_lineage
+  apply PayloadByteOriginPath.local_checks_preserve_lineage
   · exact KernelResponses.local_reply_checks_preserve_network_safety
       (DataPlaneForwarding.lts c) (UniformDomainResponses.responseConfig c strict uniformOwners)
       (DomainInvariant c expectedEncapStack allowed)

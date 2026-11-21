@@ -23,6 +23,12 @@ def create_server(config):
         return service.describe_capabilities(collection if collection is not None else network)
 
     @mcp.tool(structured_output=True)
+    def describe_evidence_requirements(source: str, view: str) -> dict[str, Any]:
+        """List the observations, fields and local checks for a proof input. Use live/inventory or saved/topology, packet_filters, multi_protocol_execution."""
+        from .contracts import describe
+        return describe(source, view)
+
+    @mcp.tool(structured_output=True)
     def collect_evidence(network: str, capabilities: list[str] | None = None) -> dict[str, Any]:
         """Start read-only capture for a configured live network. For saved snapshot IDs, use query_evidence directly. Poll collection_status for live capture completion."""
         return service.collect_evidence(network, capabilities)

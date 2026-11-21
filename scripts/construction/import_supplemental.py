@@ -172,7 +172,7 @@ def generate(output,report_path):
                 cds.append({"case_id":case["id"],"accepted":1,"rejected":1,"received":1,"event":valid,"observation_ids":[r["id"] for r in sends],"log_files":["CDS-service.log","SIEM-service.log"],"scope":"Finite software relay filter event; no approved CDS or complete SIEM claim"})
     require(len(cases)==16 and len({c["id"] for c in cases})==16,"supplemental case inventory differs")
     ca=[parse_ca(source_path("ca_"+mode)) for mode in ["local","enterprise","central"]]
-    lines=["import TDN.Deployments.SupplementalTypes","namespace TDN.Deployments.Supplemental","set_option maxRecDepth 100000","set_option maxHeartbeats 0"]
+    lines=["import TDN.Deployments.SupplementalTypes","namespace TDN.Deployments.Supplemental","set_option maxRecDepth 100000"]
     probes=[p for c in cases for p in c["probes"]]
     lines.append("def probes : List Evidence.MechanismProbe := "+lean_list(["⟨"+", ".join([quoted(p["id"]),quoted(p["expected_result"]),quoted(p["observed_result"]),str(p["transmitted"]),str(p["received"])])+"⟩" for p in probes]))
     lines.append("theorem recorded_probe_expectations : probes ≠ [] ∧ ∀ p ∈ probes, p.expected = p.observed := by unfold probes; decide")

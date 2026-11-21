@@ -1,21 +1,21 @@
 import TDN.Requirements.StandardEncapStackBridge
-import TDN.Models.StutteringTraceSimulation
+import TDN.Models.MultiStepTraceBridge
 import TDN.Models.InnerHeaderPreservation
 
 namespace TDN.Compliance
 
 theorem ForwardingModel.project_native_trace {S A : Type} (model : ForwardingModel S A)
     (faithful : model.Faithful)
-    {before after : S} {actions : List A} (run : model.system.MTr before actions after) :
-    (MultiProtocolForwarding.lts model.native.configuration).MTr
-      (model.native.state before) (actions.filterMap model.native.action)
-      (model.native.state after) := by
-  apply TraceProjection.optional_actions model.system
-    (MultiProtocolForwarding.lts model.native.configuration)
-    model.native.state model.native.action _ run
+    {before after : S} {actions : List A} (run : model.ForwardsAlongTrace before actions after) :
+    (MultiProtocolForwarding.lts model.deviceDataPlane.configuration).MTr
+      (model.deviceDataPlane.state before) (actions.filterMap model.deviceDataPlane.action)
+      (model.deviceDataPlane.state after) := by
+  apply MultiStepTraceBridge.optional_actions model.system
+    (MultiProtocolForwarding.lts model.deviceDataPlane.configuration)
+    model.deviceDataPlane.state model.deviceDataPlane.action _ run
   intro first action last step
   have checked := faithful first action last step
-  cases selected : model.native.action action with
+  cases selected : model.deviceDataPlane.action action with
   | none =>
     rw [selected] at checked
     exact checked.1
@@ -25,24 +25,24 @@ theorem ForwardingModel.project_native_trace {S A : Type} (model : ForwardingMod
 
 theorem ForwardingModel.preserves_payload_identity {S A : Type} (model : ForwardingModel S A)
     (faithful : model.Faithful)
-    {before after : S} {actions : List A} (run : model.system.MTr before actions after) :
-    (model.native.state after).frame.payload = (model.native.state before).frame.payload ∧
-    (model.native.state after).frame.originDomain = (model.native.state before).frame.originDomain :=
-  MultiProtocolForwarding.all_traces_preserve_payload model.native.configuration
+    {before after : S} {actions : List A} (run : model.ForwardsAlongTrace before actions after) :
+    (model.deviceDataPlane.state after).frame.payload = (model.deviceDataPlane.state before).frame.payload ∧
+    (model.deviceDataPlane.state after).frame.originDomain = (model.deviceDataPlane.state before).frame.originDomain :=
+  MultiProtocolForwarding.all_traces_preserve_payload model.deviceDataPlane.configuration
     (model.project_native_trace faithful run)
 
 theorem ForwardingModel.preserves_source_headers {S A : Type} (model : ForwardingModel S A)
     (faithful : model.Faithful)
-    {before after : S} {actions : List A} (run : model.system.MTr before actions after) :
-    (model.native.state after).frame.body.originalHeader =
-        (model.native.state before).frame.body.originalHeader ∧
-    (model.native.state after).frame.body.originalEthernet =
-        (model.native.state before).frame.body.originalEthernet := by
+    {before after : S} {actions : List A} (run : model.ForwardsAlongTrace before actions after) :
+    (model.deviceDataPlane.state after).frame.body.originalHeader =
+        (model.deviceDataPlane.state before).frame.body.originalHeader ∧
+    (model.deviceDataPlane.state after).frame.body.originalEthernet =
+        (model.deviceDataPlane.state before).frame.body.originalEthernet := by
   have native := model.project_native_trace faithful run
   exact ⟨MultiProtocolForwarding.all_traces_preserve_original_header
-      model.native.configuration native,
+      model.deviceDataPlane.configuration native,
     MultiProtocolForwarding.all_traces_preserve_original_ethernet
-      model.native.configuration native⟩
+      model.deviceDataPlane.configuration native⟩
 
 end TDN.Compliance
 
@@ -65,11 +65,11 @@ theorem device_forwarding {S A : Type} (prototype : DeviceExecutionBinding S A)
     {before after : State ifaces} {actions : List (Action ifaces)}
     (run : (model prototype ifaces d history).system.MTr before actions after) :
     (MultiProtocolForwarding.lts prototype.configuration).MTr
-      before.native (actions.map Action.operation) after.native := by
+      before.deviceState (actions.map Action.operation) after.deviceState := by
   have projected := (model prototype ifaces d history).project_native_trace
     (standard_model_faithful prototype ifaces d history) run
   change (MultiProtocolForwarding.lts prototype.configuration).MTr
-    before.native (actions.filterMap (fun action => some action.operation)) after.native at projected
+    before.deviceState (actions.filterMap (fun action => some action.operation)) after.deviceState at projected
   have same : actions.filterMap (fun action : Action ifaces => some action.operation) =
       actions.map Action.operation :=
     List.filterMap_eq_map_iff_forall_eq_some.mpr (by intro action member; rfl)
@@ -80,10 +80,10 @@ theorem source_identity_preserved {S A : Type} (prototype : DeviceExecutionBindi
     (ifaces : List Nat) (d : Deployment) (history : ObservedHistory)
     {before after : State ifaces} {actions : List (Action ifaces)}
     (run : (model prototype ifaces d history).system.MTr before actions after) :
-    after.native.frame.payload = before.native.frame.payload ∧
-    after.native.frame.originDomain = before.native.frame.originDomain ∧
-    after.native.frame.body.originalHeader = before.native.frame.body.originalHeader ∧
-    after.native.frame.body.originalEthernet = before.native.frame.body.originalEthernet ∧
+    after.deviceState.frame.payload = before.deviceState.frame.payload ∧
+    after.deviceState.frame.originDomain = before.deviceState.frame.originDomain ∧
+    after.deviceState.frame.body.originalHeader = before.deviceState.frame.body.originalHeader ∧
+    after.deviceState.frame.body.originalEthernet = before.deviceState.frame.body.originalEthernet ∧
     after.source = before.source := by
   have payload := (model prototype ifaces d history).preserves_payload_identity
     (standard_model_faithful prototype ifaces d history) run

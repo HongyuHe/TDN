@@ -142,27 +142,26 @@ def obligation_catalog(out, role_ids):
             raise ValueError('Missing obligation translation: ' + rg)
         if group.get('specification'):
             name = group['specification'].removeprefix('TDN.Requirements.Msc.')
-            reference = lean_excerpt('TDN/Requirements/MasterMscRequirementSpecs.lean', name)
+            reference = lean_excerpt('TDN/Requirements/MscRequirements.lean', name)
             references = [reference]
-            for primitive in dict.fromkeys(re.findall(r'\b(?:CoreReq_msc_\w+|SecurityLevelConnectivityCore|MACsecEncapsulationCore|RedEgressCore)\b', reference['code'])):
-                references.append(lean_excerpt('TDN/Requirements/CoreMscRequirements.lean', primitive))
-            if rg == 'RG-012':
-                references.append(lean_excerpt('TDN/Requirements/CrossEnclavePkiIsolationSpec.lean', name))
+            for primitive in dict.fromkeys(re.findall(r'\bscoped_\w+\b', reference['code'])):
+                references.append(lean_excerpt('TDN/Requirements/ScopedMscRequirements.lean', primitive))
             if rg in {'RG-013', 'RG-034'}:
-                references.append(lean_excerpt('TDN/Requirements/MscFirewallWaypointingTheorems.lean', name))
+                graph_spec = {'RG-013': 'graph_gray_firewall_waypointing', 'RG-034': 'graph_outer_firewall_placement'}[rg]
+                references.append(lean_excerpt('TDN/Requirements/MscFirewallWaypointingTheorems.lean', graph_spec))
             status = 'Complete model proof reviewed' if group['proof_status'] == 'PASS' else 'Complete proof unfinished'
             formalization = 'Dedicated requirement specification'
         else:
-            references = [lean_excerpt('TDN/Requirements/CsfcRoleObligations.lean', 'MscComplianceContext.RequirementGroupSpec', int(rg[3:]))]
+            references = [lean_excerpt('TDN/Requirements/CsfcRoleObligations.lean', 'ComplianceContext.RequirementGroupSpec', int(rg[3:]))]
             status = {'check': 'Assigned to direct checks', 'external': 'Requires external evidence',
-                      'scope': 'Permission or applicability condition'}.get(group['proof_status'], group['proof_status'])
-            formalization = 'Shared requirement condition'
+                      'scope': 'Permission or applicability condition', 'catalog': 'Outside the selected proof targets'}.get(group['proof_status'], group['proof_status'])
+            formalization = 'Catalog condition'
         for declaration in curated.get('supporting_declarations', {}).get(rg, []):
             if declaration['path'] not in curated['source_hashes']:
                 raise ValueError('Unpinned obligation source: ' + declaration['path'])
             references.append(lean_excerpt(declaration['path'], declaration['name']))
         catalog[rg] = {'rg_id': rg, 'title': group['title'], 'translation': translation,
-                       'status': status, 'formalization': formalization, 'references': references,
+                       'status': status, 'proof_target': bool(group.get('specification')), 'formalization': formalization, 'references': references,
                        'proof_note': group['new_validation_claim']}
     hashes = {**curated['source_hashes'], register_path: digest(ROOT / register_path)}
     return {**curated, 'source_hashes': hashes, 'catalog': catalog}
@@ -261,7 +260,7 @@ def triples(graph):
     add(ONTOLOGY_IRI, NS['rdfs'] + 'comment', graph['class_semantics'] + ' ' + graph['association_semantics'], True)
     add(ONTOLOGY_IRI, NS['owl'] + 'versionInfo', f'CSfC MSC 1.3.0; TDN role hierarchy 1.1; TDN theory {VERSION}', True)
     props = ['roleId', 'roleKind', 'sourceUnit', 'sourceText', 'pdfPages', 'basis', 'rationale', 'qualification', 'inputHash', 'theoryVersion', 'leanRepresentation', 'leanMapping', 'leanExpression', 'leanReference', 'theoryInterpretation']
-    props += ['associatedRequirement', 'directRequirement', 'inheritedRequirement', 'requirementTranslation', 'requirementCode', 'requirementStatus']
+    props += ['associatedRequirement', 'directRequirement', 'inheritedRequirement', 'requirementTranslation', 'requirementCode', 'requirementStatus', 'proofTarget']
     props += sorted({a['relation'] for a in graph['associations']})
     for prop in props:
         add(BASE + prop, rdf_type, NS['owl'] + 'AnnotationProperty')
@@ -308,6 +307,7 @@ def triples(graph):
         add(iri, label, obligation['title'], True)
         add(iri, BASE + 'requirementTranslation', obligation['translation'], True)
         add(iri, BASE + 'requirementStatus', obligation['status'], True)
+        add(iri, BASE + 'proofTarget', str(obligation['proof_target']).lower(), True)
         for reference in obligation['references']:
             add(iri, BASE + 'requirementCode', reference['path'] + ':' + str(reference['line']) + '\n' + reference['code'], True)
     for edge in graph['subclass_edges'] + graph['associations']:
@@ -388,8 +388,8 @@ def markdown(graph):
         references = [graph['theory']['references'][key] for key in record['references']]
         links = ', '.join('[' + r['label'] + '](../../../' + r['path'] + ')' for r in references)
         lines.append('| ' + node['label'] + ' | ' + graph['theory']['status_labels'][record['status']] + ' | ' + record['meaning'] + ' | ' + links + ' |')
-    lines += ['', '## Associated proof obligations', '', graph['obligations']['scope'], '',
-              'The explorer shows each selected role’s obligations below its name. Every entry includes a plain-English summary, its current Lean code, source links, and the recorded proof status. Parent-role obligations are included once and identify the roles from which they were inherited.', '',
+    lines += ['', '## Requirements associated with each role', '', graph['obligations']['scope'], '',
+              'The explorer shows the selected proof targets first. Other catalog requirements can be included. Every entry includes a plain-English summary, its current Lean code, source links, and the recorded proof status. Parent-role obligations are included once and identify the roles from which they were inherited.', '',
               '[Curated obligation mappings and translations](ontology_obligations.json) connect roles to requirement groups. The generator reads the code and proof status from the current sources. Source changes require reviewing the translations before regeneration.', '',
               '| Role | Directly associated RGs | Inherited RGs |', '| --- | --- | --- |']
     for node in graph['nodes']:

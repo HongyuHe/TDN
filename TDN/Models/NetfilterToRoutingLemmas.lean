@@ -3,7 +3,7 @@ import TDN.Models.MultiProtocolHeaderCoherence
 
 namespace TDN.MultiProtocolForwarding
 
-lemma ingress_has_native_ifaces {configuration : Config} {before after : State}
+lemma ingress_has_native_ifaces {configuration : TunnelForwardingModel} {before after : TunnelForwardingState}
     (ingress : PacketProcessing.Ingress configuration before after) :
     after.iface = before.iface ∧ after.enteredIface = before.iface ∧ after.datapathStage = .ingress := by
   rcases ingress with received | decrypted
@@ -12,17 +12,17 @@ lemma ingress_has_native_ifaces {configuration : Config} {before after : State}
   · cases decrypted
     exact ⟨rfl, rfl, rfl⟩
 
-lemma route_from_ingress_preserves_local_state {configuration : Config} {before after : State}
-    (datapathStage : before.datapathStage = .ingress) (step : Step configuration before .route after) :
+lemma route_from_ingress_preserves_local_state {configuration : TunnelForwardingModel} {before after : TunnelForwardingState}
+    (datapathStage : before.datapathStage = .ingress) (step : TunnelForwardingStep configuration before .route after) :
     after.frame.body = before.frame.body ∧ after.enteredIface = before.enteredIface ∧
       after.authenticated = before.authenticated ∧ after.datapathStage = .routed := by
   cases step with
   | route =>
     refine ⟨?_, rfl, rfl, rfl⟩
-    simp only [Config.forwardedFrame]
+    simp only [TunnelForwardingModel.forwardedFrame]
     split
     · rfl
-    · exact LayeredFrame.Frame.forwarded_body _
+    · exact LayeredFrame.TunnelFrame.forwarded_body _
   | routeLocalOutput route impossible => simp [impossible] at datapathStage
   | routeOuterPacket route impossible => simp [impossible] at datapathStage
 
@@ -50,20 +50,20 @@ def addressPoint (source destination : Nat) : PacketPolicy.Packet :=
     sourcePort := 0, destinationPort := 0, ipv4HeaderWords := 5,
     matchedInboundPolicyIds := [], matchedOutboundPolicyIds := [], connectionState := "" }
 
-lemma decrypted_route_has_authentication {configuration : Config} {entry entered final : State}
-    (decrypted : Step configuration entry .decryptIPsec entered)
-    (routed : Step configuration entered .route final) : final.authenticated ≠ [] := by
+lemma decrypted_route_has_authentication {configuration : TunnelForwardingModel} {entry entered final : TunnelForwardingState}
+    (decrypted : TunnelForwardingStep configuration entry .decryptIPsec entered)
+    (routed : TunnelForwardingStep configuration entered .route final) : final.authenticated ≠ [] := by
   cases decrypted
   have preserved := route_from_ingress_preserves_local_state rfl routed
   rw [preserved.2.2.1]
   simp
 
-lemma ingress_route_authentication {configuration : Config} (processing : HeaderProcessing)
+lemma ingress_route_authentication {configuration : TunnelForwardingModel} (processing : HeaderProcessing)
     (mode : configuration.headerProcessing = some processing) (bounds : HeaderBounds processing)
-    {entry entered final : State} {header : PacketPolicy.Packet}
+    {entry entered final : TunnelForwardingState} {header : PacketPolicy.Packet}
     (coherent : entry.frame.HeadersCoherent)
     (ingress : PacketProcessing.Ingress configuration entry entered)
-    (routed : Step configuration entered .route final)
+    (routed : TunnelForwardingStep configuration entered .route final)
     (visible : final.frame.visibleHeader = some header) :
     final.enteredIface = entry.iface ∧
       (final.authenticated = [] ∨ ∃ policy ∈ configuration.ip.ingressPolicies entry.iface,
@@ -77,13 +77,13 @@ lemma ingress_route_authentication {configuration : Config} (processing : Header
   · cases decrypted with
     | decryptIPsec policy association body nominal datapathStage encrypted configured installed bound bodyVisible selected tracking =>
       have enteredCoherent := step_preserves_headers processing mode bounds
-        (Step.decryptIPsec policy association body nominal datapathStage encrypted configured installed bound
+        (TunnelForwardingStep.decryptIPsec policy association body nominal datapathStage encrypted configured installed bound
           bodyVisible selected tracking) coherent
       have finalCoherent := step_preserves_headers processing mode bounds routed enteredCoherent
       obtain ⟨actualNominal, finalBodyVisible, identity⟩ :=
-        LayeredFrame.Frame.coherent_visible finalCoherent header visible
+        LayeredFrame.TunnelFrame.coherent_visible finalCoherent header visible
       have finalBody : final.frame.body = body := by
-        simpa only [Config.restoredFrame, mode, LayeredFrame.Frame.popHeader] using preserved.1
+        simpa only [TunnelForwardingModel.restoredFrame, mode, LayeredFrame.TunnelFrame.popHeader] using preserved.1
       have sameNominal : actualNominal = nominal := by
         rw [finalBody, bodyVisible] at finalBodyVisible
         exact Option.some.inj finalBodyVisible.symm

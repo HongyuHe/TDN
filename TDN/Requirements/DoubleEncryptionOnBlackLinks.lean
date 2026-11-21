@@ -5,7 +5,7 @@ import TDN.Models.ForwardedFragments
 namespace TDN.Requirements
 
 def RedPayloadOrigin (env : DataPlaneForwarding.DataPlaneModel) (redSourceIfaces : List Nat)
-    (initialState : DataPlaneForwarding.State) : Prop :=
+    (initialState : DataPlaneForwarding.ForwardingState) : Prop :=
   initialState.iface ∈ redSourceIfaces ∧ initialState.datapathStage = .localOutput ∧
   initialState.frame.enteredIface = initialState.iface ∧ initialState.frame.encapLayers = [] ∧
   initialState.frame.packet.ingress = env.interfaceName initialState.iface ∧ initialState.authenticated = []
@@ -19,13 +19,13 @@ def red_traffic_is_doubly_encrypted_on_black_links (env : DataPlaneForwarding.Da
 lemma red_origin_has_initial_stack (c : DataPlaneForwarding.DataPlaneModel) (expectedEncapStack : Nat → List Nat)
     (sources : List Nat)
     (sourceCheck : ∀ iface ∈ sources, expectedEncapStack iface = [] ∧ c.canOriginateTraffic iface)
-    {start : DataPlaneForwarding.State} (origin : RedPayloadOrigin c sources start) :
+    {start : DataPlaneForwarding.ForwardingState} (origin : RedPayloadOrigin c sources start) :
     DataPlaneForwarding.EncapStackConsistent c expectedEncapStack start := by
   obtain ⟨member, datapathStage, entry, empty, ingress, authentication⟩ := origin
   obtain ⟨stack, admitted⟩ := sourceCheck start.iface member
   simp only [DataPlaneForwarding.EncapStackConsistent, datapathStage]
   refine ⟨⟨⟨?_, ?_, Or.inl authentication, ?_⟩, ?_⟩, entry⟩
-  · simp [DataPlaneForwarding.Frame.encapLayerIds, empty, DataPlaneForwarding.encapStackAfterIngress, authentication, entry, stack]
+  · simp [DataPlaneForwarding.IpsecFrame.encapLayerIds, empty, DataPlaneForwarding.encapStackAfterIngress, authentication, entry, stack]
   · simpa [entry] using ingress
   · simp [entry]
   · simpa [entry] using admitted
@@ -47,7 +47,7 @@ theorem protected_black_forwarding_applies_layers_in_order
     (sourceCheck : ∀ iface ∈ sources, expectedEncapStack iface = [] ∧ c.canOriginateTraffic iface)
     (blackCheck : ∀ iface ∈ blackIfaces, expectedEncapStack iface = [2, 1])
     (layerShapes : ∀ iface, (expectedEncapStack iface).head? = some 2 → expectedEncapStack iface = [2, 1])
-    {start finish : DataPlaneForwarding.State} {actions : List DataPlaneForwarding.Action}
+    {start finish : DataPlaneForwarding.ForwardingState} {actions : List DataPlaneForwarding.ForwardingAction}
     (origin : RedPayloadOrigin c sources start) (run : DataPlaneForwarding.ForwardsAlongTrace c start actions finish)
     (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ blackIfaces) :
     DataPlaneForwarding.OrderedEncryptions c 1 2 start actions finish := by
@@ -56,17 +56,17 @@ theorem protected_black_forwarding_applies_layers_in_order
     (blackCheck finish.iface black)
   apply DataPlaneForwarding.nested_stack_requires_ordered_encryptions c expectedEncapStack conditions 1 2
     layerShapes run initial
-  · simp [DataPlaneForwarding.Frame.encapLayerIds, origin.2.2.2.1]
+  · simp [DataPlaneForwarding.IpsecFrame.encapLayerIds, origin.2.2.2.1]
   · simp [stack]
 
 theorem fragmented_black_transmission_keeps_layers {Header Byte : Type} [DecidableEq Header]
     (c : DataPlaneForwarding.DataPlaneModel) (expectedEncapStack : Nat → List Nat) (sources blackIfaces : List Nat)
-    (encode : DataPlaneForwarding.State → Fragmentation.Datagram Header Byte)
+    (encode : DataPlaneForwarding.ForwardingState → Fragmentation.PayloadDatagram Header Byte)
     (conditions : DataPlaneForwarding.PerHopEncapConditions c expectedEncapStack)
     (sourceCheck : ∀ iface ∈ sources, expectedEncapStack iface = [] ∧ c.canOriginateTraffic iface)
     (blackCheck : ∀ iface ∈ blackIfaces, expectedEncapStack iface = [2, 1])
-    {start finish : Fragmentation.SegmentedState DataPlaneForwarding.State Header Byte}
-    {actions : List (Option DataPlaneForwarding.Action)}
+    {start finish : Fragmentation.SegmentedState DataPlaneForwarding.ForwardingState Header Byte}
+    {actions : List (Option DataPlaneForwarding.ForwardingAction)}
     (origin : RedPayloadOrigin c sources start.logical)
     (run : (Fragmentation.segmented (DataPlaneForwarding.lts c) encode).MTr start actions finish)
     (ready : finish.logical.datapathStage = .egressReady) (black : finish.logical.iface ∈ blackIfaces) :
@@ -84,12 +84,12 @@ theorem fragmented_black_transmission_keeps_layers {Header Byte : Type} [Decidab
 
 theorem every_black_fragment_has_both_layers {Byte : Type}
     (c : DataPlaneForwarding.DataPlaneModel) (expectedEncapStack : Nat → List Nat) (sources blackIfaces : List Nat)
-    (encodedBytes : DataPlaneForwarding.Frame → List Byte)
+    (encodedBytes : DataPlaneForwarding.IpsecFrame → List Byte)
     (conditions : DataPlaneForwarding.PerHopEncapConditions c expectedEncapStack)
     (sourceCheck : ∀ iface ∈ sources, expectedEncapStack iface = [] ∧ c.canOriginateTraffic iface)
     (blackCheck : ∀ iface ∈ blackIfaces, expectedEncapStack iface = [2, 1])
-    {start finish : Fragmentation.SegmentedState DataPlaneForwarding.State DataPlaneForwarding.FragmentDescriptor Byte}
-    {actions : List (Option DataPlaneForwarding.Action)}
+    {start finish : Fragmentation.SegmentedState DataPlaneForwarding.ForwardingState DataPlaneForwarding.FragmentDescriptor Byte}
+    {actions : List (Option DataPlaneForwarding.ForwardingAction)}
     (origin : RedPayloadOrigin c sources start.logical) (whole : start.fragments = none)
     (run : (Fragmentation.segmented (DataPlaneForwarding.lts c)
       (DataPlaneForwarding.encodeForFragmentation encodedBytes)).MTr start actions finish)

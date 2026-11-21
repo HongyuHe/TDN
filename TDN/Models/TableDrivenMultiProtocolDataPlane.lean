@@ -6,7 +6,7 @@ open LayeredFrame
 
 def dataPlaneModelFromRecords (devices : List DataPlaneForwarding.DeviceData) (ifaces : List DataPlaneForwarding.IfaceData)
     (routes : List DataPlaneForwarding.FibRoute) (links bridges : List (Nat × Nat))
-    (macIfaces : List MACIface) (carriers : List CarrierIface) : Config :=
+    (macIfaces : List MACIface) (carriers : List CarrierIface) : TunnelForwardingModel :=
   { ip := DataPlaneForwarding.dataPlaneModelFromRecords devices ifaces routes links [],
     macIfaces := macIfaces, carriers := carriers,
     bridge := fun a b => (a, b) ∈ bridges, physicalLink := fun a b => (a, b) ∈ links }

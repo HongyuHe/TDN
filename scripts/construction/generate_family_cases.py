@@ -50,7 +50,7 @@ open PacketPolicy
 def gates : List (String × List Nat) := """ + lean_list(gates) + """
 def gatePriorities : List (String × Int) := """ + lean_list(priorities) + """
 
-def rules (values : List Nat) : List Rule := [⟨[.ipv6NextHeaders values], .allow⟩]
+def rules (values : List Nat) : List PacketAclRule := [⟨[.ipv6NextHeaders values], .allow⟩]
 
 lemma gate_values_checked : ∀ gate ∈ gates, gate.2 = [6, 17, 50, 58] := by
   unfold gates
@@ -62,7 +62,7 @@ lemma every_gate_precedes_defragmentation : ∀ gate ∈ gatePriorities, gate.2 
 
 
 theorem admitted_header_before_defragmentation_is_permitted (gate : String × List Nat)
-    (member : gate ∈ gates) (packet : Packet) (accepted : Accepts (rules gate.2) packet) :
+    (member : gate ∈ gates) (packet : Packet) (accepted : DefaultDenyAllows (rules gate.2) packet) :
     packet.ipv6NextHeader ∈ [6, 17, 50, 58] := by
   apply accepted_immediate_header (rules gate.2) [6, 17, 50, 58] ?_ packet accepted
   intro rule inRules allow

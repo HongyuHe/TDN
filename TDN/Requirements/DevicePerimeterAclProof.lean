@@ -21,7 +21,7 @@ lemma routed_boundary_admission_is_native (d : Deployment)
       interface.id routed direction traffic physical)
 
 theorem device_boundary_interface_filtering_from_checks (d : Deployment)
-    (focus : d.focus = none)
+    (deviceScope : d.deviceScope = none)
     (inventory : PacketProcessing.Inventory) (present : d.processing = some inventory)
     (processing : HeaderProcessing) (mode : inventory.configuration.headerProcessing = some processing)
     (bounds : HeaderBounds processing) (required : Bool)
@@ -49,11 +49,11 @@ theorem device_boundary_interface_filtering_from_checks (d : Deployment)
         DeriveDataPlaneFromDeviceRecords.RoutedIface inventory iface)
     (checks : ∀ interface ∈ d.interfaces, ∀ device ∈ d.devices, interface.device = device.id →
       BoundaryInterfaceChecks d inventory required internal localOuter endpoints peers controls interface device) :
-    msc_boundary_interface_filtering d required internal localOuter := by
-  have cleared : { d with focus := none } = d := by
+    boundary_interface_filtering d required internal localOuter := by
+  have cleared : { d with deviceScope := none } = d := by
     cases d
     simp_all
-  unfold msc_boundary_interface_filtering
+  unfold boundary_interface_filtering
   rw [cleared]
   refine ⟨address, coherent, udp, ?_⟩
   intro interface member _ device deviceMember _ owner assessed
@@ -70,7 +70,7 @@ theorem device_boundary_interface_filtering_from_checks (d : Deployment)
     have crypto : CryptographicBoundary device interface := Or.inl ⟨outer, black⟩
     have native := routed_boundary_admission_is_native d inventory present device interface crypto
       ifaceRouted direction traffic admitted
-    have protocol := admitted_native_boundary_has_IPsec_protocol d inventory present processing mode bounds
+    have protocol := admitted_native_boundary_has_ipsec_protocol d inventory present processing mode bounds
       interface.id ifaceRouted (protocolChecks crypto) direction traffic native
     have vpn := (roles device deviceMember).1 outer
     refine ⟨fun _ => Or.inl (Or.inl protocol), ?_, ?_⟩
@@ -87,22 +87,22 @@ theorem device_boundary_interface_filtering_from_checks (d : Deployment)
     have crypto : CryptographicBoundary device interface := Or.inr ⟨inner, gray⟩
     have native := routed_boundary_admission_is_native d inventory present device interface crypto
       ifaceRouted direction traffic admitted
-    have protocol := admitted_native_boundary_has_IPsec_protocol d inventory present processing mode bounds
+    have protocol := admitted_native_boundary_has_ipsec_protocol d inventory present processing mode bounds
       interface.id ifaceRouted (protocolChecks crypto) direction traffic native
     exact Or.inl (Or.inl (Or.inl (Or.inl protocol)))
   · intro inner red
     have nonCrypto : ¬ CryptographicBoundary device interface := by
       simp [CryptographicBoundary, inner, red]
-    have raw : d.Accepts interface.id direction traffic := by
+    have raw : d.PermitsOnInterface interface.id direction traffic := by
       simpa only [Deployment.BoundaryAdmission, nonCrypto, ↓reduceIte] using admitted
-    have service := Red_admission_from_local_rule_checks d inventory present interface endpoints
+    have service := red_admission_from_local_rule_checks d inventory present interface endpoints
       endpointBound ifaceRouted (redChecks ⟨inner, red⟩) direction traffic raw
     simpa only [owner] using service
   · intro firewall requiredTrue
     have noLayer := (roles device deviceMember).2 firewall
     have nonCrypto : ¬ CryptographicBoundary device interface := by
       simp [CryptographicBoundary, noLayer]
-    have raw : d.Accepts interface.id direction traffic := by
+    have raw : d.PermitsOnInterface interface.id direction traffic := by
       simpa only [Deployment.BoundaryAdmission, nonCrypto, ↓reduceIte] using admitted
     obtain ⟨outerRole, checked⟩ := firewallChecks ⟨firewall, requiredTrue⟩
     have firewallRole : d.IsDevice interface.device .outerFirewall :=

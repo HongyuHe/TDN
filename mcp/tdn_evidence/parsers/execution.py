@@ -193,8 +193,8 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
 
     def supplemental(device, kind):
         records = [r for r in supplement["records"] if r["device_id"] == device and r["kind"] == kind]
-        require(len(records) == 2 and {r["phase"] for r in records} == {"before", "after"}, "Supplement coverage")
-        require(all(r["returncode"] == 0 for r in records), "Supplement command failed")
+        require(len(records) == 2 and {r["phase"] for r in records} == {"before", "after"}, f"Missing before/after {kind} observations on {device}")
+        require(all(r["returncode"] == 0 for r in records), f"Failed {kind} processing observation on {device}")
         records.sort(key=lambda r: r["phase"] != "before")
         return records
 
@@ -314,9 +314,13 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
         device = next(d for d in devices if d["id"] == interface["device_id"])
         zone = interface["zone"]
         if zone == "local":
-            zone = {"transport": "black", "firewall": "black", "gray-firewall": "gray", "switch": "gray", "outer": "gray"}.get(device["role"], "red")
-        require(zone in {"red", "gray", "black"}, "Unsupported port zone")
-        stack = {"red": [], "gray": [1], "black": [2, 1]}[zone]
+            declared_zones = {i["zone"] for i in declared_devices[device["id"]]["interfaces"] if i["zone"] != "local"}
+            if len(declared_zones) == 1:
+                zone = next(iter(declared_zones))
+            else:
+                zone = {"transport": "black", "firewall": "black", "gray-firewall": "gray", "switch": "gray", "outer": "gray"}.get(device["role"], "red")
+        require(zone in {"red", "gray", "black", "management"}, "Unsupported port zone")
+        stack = {"red": [], "gray": [1], "black": [2, 1], "management": []}[zone]
         origin = device["role"] == "host" and interface["zone"] == "red"
         port_records.append({"owner": device_index[interface["device_id"]],
             "name": interface["name"], "stack": stack, "canOriginateTraffic": origin})

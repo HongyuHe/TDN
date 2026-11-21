@@ -15,14 +15,14 @@ lemma red_origin_has_domain_invariant (c : DataPlaneForwarding.DataPlaneModel) (
     (allowed : Nat → Prop) (sources : List Nat) (domain : Nat)
     (sourceCheck : ∀ iface ∈ sources, c.ifaceSecurityDomain iface = some domain →
       expectedEncapStack iface = [] ∧ c.canOriginateTraffic iface ∧ allowed iface)
-    {start : DataPlaneForwarding.State} (origin : RedPayloadOrigin c sources start)
+    {start : DataPlaneForwarding.ForwardingState} (origin : RedPayloadOrigin c sources start)
     (domainAtSource : c.ifaceSecurityDomain start.iface = some domain) :
     DataPlaneForwarding.DomainInvariant c expectedEncapStack allowed start := by
   obtain ⟨member, datapathStage, entry, empty, ingress, authentication⟩ := origin
   obtain ⟨stack, admitted, permitted⟩ := sourceCheck start.iface member domainAtSource
   simp only [DataPlaneForwarding.DomainInvariant, datapathStage]
   refine ⟨⟨⟨?_, ?_, Or.inl authentication, ?_⟩, ?_⟩, ?_⟩
-  · simp [DataPlaneForwarding.Frame.encapLayerIds, empty, DataPlaneForwarding.encapStackAfterIngress, authentication, entry, stack]
+  · simp [DataPlaneForwarding.IpsecFrame.encapLayerIds, empty, DataPlaneForwarding.encapStackAfterIngress, authentication, entry, stack]
   · simpa [entry] using ingress
   · simp [entry]
   · simpa [entry] using permitted
@@ -36,7 +36,7 @@ theorem delivered_domain_from_local_checks
       expectedEncapStack iface = [] ∧ c.canOriginateTraffic iface ∧ allowed iface)
     (recipientCheck : ∀ iface, allowed iface →
       c.ifaceSecurityDomain iface = none ∨ c.ifaceSecurityDomain iface = some domain)
-    {start finish : DataPlaneForwarding.State} {actions : List DataPlaneForwarding.Action} {recipient : Nat}
+    {start finish : DataPlaneForwarding.ForwardingState} {actions : List DataPlaneForwarding.ForwardingAction} {recipient : Nat}
     (origin : RedPayloadOrigin c sources start)
     (domainAtSource : c.ifaceSecurityDomain start.iface = some domain)
     (run : DataPlaneForwarding.ForwardsAlongTrace c start actions finish)

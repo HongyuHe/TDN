@@ -11,7 +11,7 @@ def Uniform (c : DataPlaneForwarding.DataPlaneModel) (expectedEncapStack : Nat �
       allowed input → allowed output
 
 lemma processing_at_iface {c : DataPlaneForwarding.DataPlaneModel} {expectedEncapStack : Nat → List Nat}
-    {allowed : Nat → Prop} {state : DataPlaneForwarding.State}
+    {allowed : Nat → Prop} {state : DataPlaneForwarding.ForwardingState}
     (uniform : Uniform c expectedEncapStack allowed (c.owner state.iface))
     (processing : DomainProcessing c expectedEncapStack allowed state) :
     state.frame.encapLayerIds = expectedEncapStack state.iface ∧ allowed state.iface :=
@@ -19,7 +19,7 @@ lemma processing_at_iface {c : DataPlaneForwarding.DataPlaneModel} {expectedEnca
     uniform.2 state.frame.enteredIface state.iface processing.1.2.2.2.symm rfl processing.2⟩
 
 lemma active_domain_at_iface {c : DataPlaneForwarding.DataPlaneModel} {expectedEncapStack : Nat → List Nat}
-    {allowed : Nat → Prop} {state : DataPlaneForwarding.State}
+    {allowed : Nat → Prop} {state : DataPlaneForwarding.ForwardingState}
     (uniform : Uniform c expectedEncapStack allowed (c.owner state.iface))
     (valid : DomainInvariant c expectedEncapStack allowed state) (active : state.datapathStage ≠ .dropped) :
     state.frame.encapLayerIds = expectedEncapStack state.iface ∧ allowed state.iface := by
@@ -37,7 +37,7 @@ lemma active_domain_at_iface {c : DataPlaneForwarding.DataPlaneModel} {expectedE
   · exact False.elim (active datapathStage)
 
 def responseConfig (c : DataPlaneForwarding.DataPlaneModel) (strict uniformOwners : List Nat) :
-    KernelResponses.Config DataPlaneForwarding.State where
+    KernelResponses.ReplyConfig DataPlaneForwarding.ForwardingState where
   generates state := state.datapathStage ≠ .dropped ∧
     (c.owner state.iface ∈ strict ∨ c.owner state.iface ∈ uniformOwners)
   selectedRoute state header iface := ∃ route,
@@ -55,13 +55,13 @@ lemma reply_preserves_domain (c : DataPlaneForwarding.DataPlaneModel) (expectedE
       c.outputFallback iface = .deny ∧ ∀ rule ∈ c.outputRules iface,
         rule.verdict = .allow → KernelResponses.SafeResponseRule rule)
     (uniform : ∀ owner ∈ uniformOwners, Uniform c expectedEncapStack allowed owner)
-    (source : DataPlaneForwarding.State) (header : PacketPolicy.Packet) (output : Nat)
+    (source : DataPlaneForwarding.ForwardingState) (header : PacketPolicy.Packet) (output : Nat)
     (valid : DomainInvariant c expectedEncapStack allowed source)
     (enabled : (responseConfig c strict uniformOwners).generates source)
     (protocol : KernelResponses.ResponseProtocol header.protocol)
     (selected : (responseConfig c strict uniformOwners).selectedRoute source header output)
     (accepted : Filter.evaluate
-      (((responseConfig c strict uniformOwners).outputRules source output).map PacketPolicy.Rule.toFilter)
+      (((responseConfig c strict uniformOwners).outputRules source output).map PacketPolicy.PacketAclRule.toFilter)
       ((responseConfig c strict uniformOwners).outputFallback source output)
       (KernelResponses.outputPacket (responseConfig c strict uniformOwners) header output) = .allow)
     (external : (responseConfig c strict uniformOwners).interfaceName output ≠ "lo") :

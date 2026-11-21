@@ -43,13 +43,13 @@ def encodeUnsigned : Nat → Nat → List UInt8
   | 0, _ => []
   | width + 1, value => encodeUnsigned width (value / 256) ++ [UInt8.ofNat (value % 256)]
 
-@[simp] lemma encodeUnsigned_length (width value : Nat) :
+@[simp] lemma encode_unsigned_length (width value : Nat) :
     (encodeUnsigned width value).length = width := by
   induction width generalizing value with
   | zero => rfl
   | succ width ih => simp [encodeUnsigned, ih]
 
-theorem encodeUnsigned_decodes (width value : Nat) (fits : value < 256^width) :
+theorem encode_unsigned_decodes (width value : Nat) (fits : value < 256^width) :
     unsigned (encodeUnsigned width value) = value := by
   induction width generalizing value with
   | zero =>
@@ -72,9 +72,9 @@ theorem field_encoded_segment (leading suffix : List UInt8) (width value : Nat)
     (fits : value < 256^width) :
     field (leading ++ encodeUnsigned width value ++ suffix) leading.length width = value := by
   simp only [field, List.append_assoc, List.drop_left, List.take_append_of_le_length,
-    encodeUnsigned_length, le_refl]
+    encode_unsigned_length, le_refl]
   rw [List.take_of_length_le (by simp)]
-  exact encodeUnsigned_decodes width value fits
+  exact encode_unsigned_decodes width value fits
 
 
 lemma field_append_before (first second : List UInt8) (offset count : Nat)
@@ -90,7 +90,7 @@ lemma field_append_after (first second : List UInt8) (offset count : Nat)
     field (first ++ second) offset count = field second (offset - first.length) count := by
   simp [field, List.drop_append, List.drop_eq_nil_of_le fits]
 
-lemma field_encodeUnsigned (width value : Nat) (fits : value < 256^width) :
+lemma field_encode_unsigned (width value : Nat) (fits : value < 256^width) :
     field (encodeUnsigned width value) 0 width = value := by
   simpa only [List.nil_append, List.append_nil, List.length_nil] using
     field_encoded_segment [] [] width value fits

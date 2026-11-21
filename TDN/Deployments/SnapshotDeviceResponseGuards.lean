@@ -6,7 +6,6 @@ import TDN.Deployments.ProfileBaseline_DataPlane
 namespace TDN.Deployments.ProfileShared_DataPlane
 open DataPlaneForwarding
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 load_network_records responseGateways : List Nat from "../../data/evidence/SnapshotDeviceResponseGuards.json" ["TDN.Deployments.ProfileShared_DataPlane.responseGateways"]
 
 lemma table_driven_gateway_response_guards : ∀ device ∈ responseGateways,
@@ -18,7 +17,7 @@ lemma gateway_response_guards : Requirements.GatewayResponseGuards config respon
   intro iface member
   exact table_driven_gateway_response_guards (config.owner iface) member
 theorem packet_stack_survives_gateway_echo_and_error_generation
-    {start finish : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {start finish : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     (run : (KernelResponses.lts (lts config)
       (Requirements.nativeKernelResponses config responseGateways)).MTr
       (.network start) actions (.network finish))
@@ -30,7 +29,6 @@ end TDN.Deployments.ProfileShared_DataPlane
 namespace TDN.Deployments.ProfileBaseline_DataPlane
 open DataPlaneForwarding
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 load_network_records responseGateways : List Nat from "../../data/evidence/SnapshotDeviceResponseGuards.json" ["TDN.Deployments.ProfileBaseline_DataPlane.responseGateways"]
 
 lemma table_driven_gateway_response_guards : ∀ device ∈ responseGateways,
@@ -42,7 +40,7 @@ lemma gateway_response_guards : Requirements.GatewayResponseGuards config respon
   intro iface member
   exact table_driven_gateway_response_guards (config.owner iface) member
 theorem packet_stack_survives_gateway_echo_and_error_generation
-    {start finish : DataPlaneForwarding.State} {actions : List (KernelResponses.Action DataPlaneForwarding.Action)}
+    {start finish : DataPlaneForwarding.ForwardingState} {actions : List (KernelResponses.ReplyAction DataPlaneForwarding.ForwardingAction)}
     (run : (KernelResponses.lts (lts config)
       (Requirements.nativeKernelResponses config responseGateways)).MTr
       (.network start) actions (.network finish))

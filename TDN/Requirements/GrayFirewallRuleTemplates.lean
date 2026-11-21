@@ -13,7 +13,7 @@ instance (d : Deployment) : Decidable (GrayRevocationServiceAbsent d) := by
   unfold GrayRevocationServiceAbsent
   infer_instance
 
-lemma Gray_revocation_HTTP_is_absent (d : Deployment) (checks : GrayRevocationServiceAbsent d)
+lemma gray_revocation_http_is_absent (d : Deployment) (checks : GrayRevocationServiceAbsent d)
     (traffic : Traffic) (supported : d.Supported traffic) : ¬ RevocationHTTP traffic := by
   have noEndpoint : d.RevocationEndpoint traffic.packet = false := by
     unfold Deployment.RevocationEndpoint
@@ -26,9 +26,9 @@ lemma Gray_revocation_HTTP_is_absent (d : Deployment) (checks : GrayRevocationSe
   rw [supported.1] at http
   exact Bool.false_ne_true (noEndpoint.symm.trans http.2)
 
-lemma Gray_IPsec_allowance_has_record (d : Deployment) (pairs : List InnerIPsecPair)
+lemma gray_ipsec_allowance_has_record (d : Deployment) (pairs : List InnerIpsecPair)
     (udp : d.udpBindings = []) (carrier : d.carrierBindings = [])
-    (mechanisms : ∀ tunnel ∈ d.tunnels, tunnel.layer = .inner → tunnel.mechanism = .ipsec)
+    (mechanisms : ∀ tunnel ∈ d.tunnels, tunnel.layer = .inner → tunnel.protocol = .ipsec)
     (coverage : InnerIPsecAddressCoverage d pairs) (revocation : GrayRevocationServiceAbsent d)
     (interface : Interface)
     (noApproved : ∀ traffic, ¬ d.policyApproved interface.device traffic)
@@ -39,8 +39,8 @@ lemma Gray_IPsec_allowance_has_record (d : Deployment) (pairs : List InnerIPsecP
       traffic.packet.source = record.endpoints.sourceAddress ∧
       traffic.packet.destination = record.endpoints.destinationAddress := by
   rcases allowance with ⟨_, _, appropriate⟩ | http | management | ⟨_, approved⟩
-  · exact appropriate_inner_IPsec_has_record d pairs udp carrier mechanisms coverage traffic appropriate
-  · exact False.elim (Gray_revocation_HTTP_is_absent d revocation traffic supported http)
+  · exact appropriate_inner_ipsec_has_record d pairs udp carrier mechanisms coverage traffic appropriate
+  · exact False.elim (gray_revocation_http_is_absent d revocation traffic supported http)
   · exact False.elim (noManagement traffic management.2.2.2.1)
   · exact False.elim (noApproved traffic approved)
 
@@ -84,7 +84,7 @@ lemma forward_permission_has_known_source_at_actual_iface (d : Deployment)
   exact ⟨incoming, incomingMember, name, incomingOwner, source⟩
 
 lemma forward_context_without_inbound_policies_has_empty_authentication
-    (configuration : Config) (processing : HeaderProcessing)
+    (configuration : TunnelForwardingModel) (processing : HeaderProcessing)
     (mode : configuration.headerProcessing = some processing) (bounds : HeaderBounds processing)
     (context : PacketProcessing.Context) (hook : context.hook = .forward)
     (coherent : context.entry.frame.HeadersCoherent)

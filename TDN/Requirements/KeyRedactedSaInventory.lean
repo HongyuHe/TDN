@@ -4,20 +4,20 @@ import TDN.Models.TunnelSaOriginAttribution
 namespace TDN.Requirements
 open Compliance
 
-structure PublicSARecord where
-  installation : IPsecLocalSA
+structure PublicSaRecord where
+  installation : IpsecLocalSa
   localIface : Nat
   materialReference : String
   deriving DecidableEq
 
 
-def directionalStates (records : List PublicSARecord) (owner : Nat) (direction : IPsecSADirection) :
-    List DataPlaneForwarding.InstalledSA :=
+def directionalStates (records : List PublicSaRecord) (owner : Nat) (direction : IpsecSaDirection) :
+    List DataPlaneForwarding.InstalledSa :=
   (records.filter (fun record => record.installation.device == owner && record.installation.direction == direction)).map
     (fun record => record.installation.association)
 
-lemma directional_state_member (records : List PublicSARecord) (owner : Nat)
-    (direction : IPsecSADirection) (association : DataPlaneForwarding.InstalledSA) :
+lemma directional_state_member (records : List PublicSaRecord) (owner : Nat)
+    (direction : IpsecSaDirection) (association : DataPlaneForwarding.InstalledSa) :
     association ∈ directionalStates records owner direction ↔
       ∃ record ∈ records, record.installation.device = owner ∧ record.installation.direction = direction ∧
         record.installation.association = association := by
@@ -29,8 +29,8 @@ lemma directional_state_member (records : List PublicSARecord) (owner : Nat)
     exact ⟨record, ⟨member, owner, direction⟩, same⟩
 
 
-def publicKeyMaterial (records : List PublicSARecord) (material : String → IPsecKeyMaterial)
-    (installation : IPsecLocalSA) : Option IPsecKeyMaterial :=
+def publicKeyMaterial (records : List PublicSaRecord) (material : String → IpsecKeyMaterial)
+    (installation : IpsecLocalSa) : Option IpsecKeyMaterial :=
   match records with
   | [] => none
   | record :: rest =>
@@ -38,12 +38,12 @@ def publicKeyMaterial (records : List PublicSARecord) (material : String → IPs
       else publicKeyMaterial rest material installation
 
 
-def MaterialReferencesConsistent (records : List PublicSARecord) : Prop :=
+def MaterialReferencesConsistent (records : List PublicSaRecord) : Prop :=
   ∀ first ∈ records, ∀ second ∈ records, first.installation = second.installation →
     first.materialReference = second.materialReference
 
-lemma public_key_material_lookup (records : List PublicSARecord) (material : String → IPsecKeyMaterial)
-    (consistent : MaterialReferencesConsistent records) (record : PublicSARecord) (member : record ∈ records) :
+lemma public_key_material_lookup (records : List PublicSaRecord) (material : String → IpsecKeyMaterial)
+    (consistent : MaterialReferencesConsistent records) (record : PublicSaRecord) (member : record ∈ records) :
     publicKeyMaterial records material record.installation = some (material record.materialReference) := by
   induction records with
   | nil => cases member
@@ -62,13 +62,13 @@ lemma public_key_material_lookup (records : List PublicSARecord) (material : Str
         · exact inRest
 
 
-def CapturedStatePoolCovered (records : List PublicSARecord) (devices : List DataPlaneForwarding.DeviceData) : Prop :=
+def CapturedStatePoolCovered (records : List PublicSaRecord) (devices : List DataPlaneForwarding.DeviceData) : Prop :=
   (∀ record ∈ records, record.installation.association ∈ (DataPlaneForwarding.deviceAt devices record.installation.device).states) ∧
   (∀ owner, ∀ association ∈ (DataPlaneForwarding.deviceAt devices owner).states,
     ∃ record ∈ records, record.installation.device = owner ∧ record.installation.association = association)
 
 
-def CapturedStatePoolChecks (records : List PublicSARecord) (devices : List DataPlaneForwarding.DeviceData) : Prop :=
+def CapturedStatePoolChecks (records : List PublicSaRecord) (devices : List DataPlaneForwarding.DeviceData) : Prop :=
   (∀ record ∈ records, record.installation.association ∈
     (DataPlaneForwarding.deviceAt devices record.installation.device).states) ∧
   (∀ owner ∈ List.range devices.length,
@@ -76,7 +76,7 @@ def CapturedStatePoolChecks (records : List PublicSARecord) (devices : List Data
       ∃ record ∈ records, record.installation.device = owner ∧
         record.installation.association = association)
 
-theorem checked_raw_state_pool_is_covered (records : List PublicSARecord)
+theorem checked_raw_state_pool_is_covered (records : List PublicSaRecord)
     (devices : List DataPlaneForwarding.DeviceData) (checked : CapturedStatePoolChecks records devices) :
     CapturedStatePoolCovered records devices := by
   refine ⟨checked.1, ?_⟩
@@ -88,9 +88,9 @@ theorem checked_raw_state_pool_is_covered (records : List PublicSARecord)
     cases member
 
 
-theorem directional_inventory_covers_exact_raw_pool (records : List PublicSARecord)
+theorem directional_inventory_covers_exact_raw_pool (records : List PublicSaRecord)
     (devices : List DataPlaneForwarding.DeviceData) (covered : CapturedStatePoolCovered records devices)
-    (owner : Nat) (association : DataPlaneForwarding.InstalledSA) :
+    (owner : Nat) (association : DataPlaneForwarding.InstalledSa) :
     association ∈ directionalStates records owner .outbound ∨
         association ∈ directionalStates records owner .inbound ↔
       association ∈ (DataPlaneForwarding.deviceAt devices owner).states := by
@@ -115,35 +115,35 @@ theorem directional_inventory_covers_exact_raw_pool (records : List PublicSAReco
       exact Or.inr ((directional_state_member records owner .inbound association).mpr
         ⟨record, inRecords, sameOwner, direction, sameAssociation⟩)
 
-def SAWireKey (association : DataPlaneForwarding.InstalledSA) : Nat × Nat × Nat :=
+def SAWireKey (association : DataPlaneForwarding.InstalledSa) : Nat × Nat × Nat :=
   (association.spi, association.sender, association.receiver)
 
-def SealWireKey (wireSeal : DataPlaneForwarding.TunnelSAStamp) : Nat × Nat × Nat :=
+def SealWireKey (wireSeal : DataPlaneForwarding.TunnelSaStamp) : Nat × Nat × Nat :=
   (wireSeal.association, wireSeal.sender, wireSeal.receiver)
 
 lemma outbound_seal_wire_key {S A : Type} (binding : DeviceExecutionBinding S A)
-    (installation : IPsecLocalSA) (wireSeal : DataPlaneForwarding.TunnelSAStamp) (outbound : installation.OutboundSeal binding wireSeal) :
+    (installation : IpsecLocalSa) (wireSeal : DataPlaneForwarding.TunnelSaStamp) (outbound : installation.OutboundSeal binding wireSeal) :
     SAWireKey installation.association = SealWireKey wireSeal := by
   obtain ⟨_, _, _, policy, _, bound, same⟩ := outbound
   rw [← same]
   simp only [SAWireKey, SealWireKey, DataPlaneForwarding.IpsecPolicy.seal]
 
 lemma inbound_seal_wire_key {S A : Type} (binding : DeviceExecutionBinding S A)
-    (installation : IPsecLocalSA) (iface : Nat) (wireSeal : DataPlaneForwarding.TunnelSAStamp)
+    (installation : IpsecLocalSa) (iface : Nat) (wireSeal : DataPlaneForwarding.TunnelSaStamp)
     (inbound : installation.InboundSeal binding iface wireSeal) :
     SAWireKey installation.association = SealWireKey wireSeal := by
   obtain ⟨_, _, policy, _, bound, same⟩ := inbound
   rw [← same]
   simp only [SAWireKey, SealWireKey, DataPlaneForwarding.IpsecPolicy.seal]
 
-instance (association : DataPlaneForwarding.InstalledSA) (policy : DataPlaneForwarding.IpsecPolicy) :
+instance (association : DataPlaneForwarding.InstalledSa) (policy : DataPlaneForwarding.IpsecPolicy) :
     Decidable (DataPlaneForwarding.saMatchesPolicy association policy) := by
   unfold DataPlaneForwarding.saMatchesPolicy
   infer_instance
 
 
-def RecordedDirectionPolicyChecks (configuration : MultiProtocolForwarding.Config)
-    (records : List PublicSARecord) : Prop :=
+def RecordedDirectionPolicyChecks (configuration : MultiProtocolForwarding.TunnelForwardingModel)
+    (records : List PublicSaRecord) : Prop :=
   ∀ record ∈ records,
     configuration.ip.owner record.localIface = record.installation.device ∧
     ∃ policy ∈ (match record.installation.direction with
@@ -151,14 +151,14 @@ def RecordedDirectionPolicyChecks (configuration : MultiProtocolForwarding.Confi
       | .inbound => configuration.ip.ingressPolicies record.localIface),
       DataPlaneForwarding.saMatchesPolicy record.installation.association policy
 
-instance (configuration : MultiProtocolForwarding.Config) (records : List PublicSARecord) :
+instance (configuration : MultiProtocolForwarding.TunnelForwardingModel) (records : List PublicSaRecord) :
     Decidable (RecordedDirectionPolicyChecks configuration records) := by
   unfold RecordedDirectionPolicyChecks
   infer_instance
 
-theorem recorded_direction_has_bound_policy (configuration : MultiProtocolForwarding.Config)
-    (records : List PublicSARecord) (checked : RecordedDirectionPolicyChecks configuration records)
-    (record : PublicSARecord) (member : record ∈ records) :
+theorem recorded_direction_has_bound_policy (configuration : MultiProtocolForwarding.TunnelForwardingModel)
+    (records : List PublicSaRecord) (checked : RecordedDirectionPolicyChecks configuration records)
+    (record : PublicSaRecord) (member : record ∈ records) :
     configuration.ip.owner record.localIface = record.installation.device ∧
     ((record.installation.direction = .outbound ∧
       ∃ policy ∈ configuration.ip.egressPolicies record.localIface,
@@ -173,8 +173,8 @@ theorem recorded_direction_has_bound_policy (configuration : MultiProtocolForwar
   | inbound => exact Or.inr ⟨rfl, by simpa only [direction] using facts.2⟩
 
 
-def PublicSAInventoryChecks (configuration : MultiProtocolForwarding.Config) (epoch : String)
-    (records : List PublicSARecord) : Prop :=
+def PublicSAInventoryChecks (configuration : MultiProtocolForwarding.TunnelForwardingModel) (epoch : String)
+    (records : List PublicSaRecord) : Prop :=
   MaterialReferencesConsistent records ∧
   (∀ record ∈ records, record.installation.epoch = epoch ∧ record.installation.installation ≠ "" ∧
     configuration.ip.owner record.localIface = record.installation.device) ∧
@@ -192,20 +192,20 @@ def PublicSAInventoryChecks (configuration : MultiProtocolForwarding.Config) (ep
     SAWireKey first.installation.association = SAWireKey second.installation.association →
     first.installation = second.installation)
 
-instance (configuration : MultiProtocolForwarding.Config) (epoch : String)
-    (records : List PublicSARecord) : Decidable (PublicSAInventoryChecks configuration epoch records) := by
+instance (configuration : MultiProtocolForwarding.TunnelForwardingModel) (epoch : String)
+    (records : List PublicSaRecord) : Decidable (PublicSAInventoryChecks configuration epoch records) := by
   unfold PublicSAInventoryChecks MaterialReferencesConsistent SAWireKey
   infer_instance
 
-instance (records : List PublicSARecord) (devices : List DataPlaneForwarding.DeviceData) :
+instance (records : List PublicSaRecord) (devices : List DataPlaneForwarding.DeviceData) :
     Decidable (CapturedStatePoolChecks records devices) := by
   unfold CapturedStatePoolChecks
   infer_instance
 
 
-theorem public_SA_inventory_sound {S A : Type} (binding : DeviceExecutionBinding S A)
-    (records : List PublicSARecord) (epoch : String) (material : String → IPsecKeyMaterial)
-    (recorded : binding.ipsecInstallations = records.map PublicSARecord.installation)
+theorem public_sa_inventory_sound {S A : Type} (binding : DeviceExecutionBinding S A)
+    (records : List PublicSaRecord) (epoch : String) (material : String → IpsecKeyMaterial)
+    (recorded : binding.ipsecInstallations = records.map PublicSaRecord.installation)
     (keys : binding.ipsecKeyMaterial = publicKeyMaterial records material)
     (outbound : ∀ iface, binding.configuration.ip.egressSAs iface =
       directionalStates records (binding.configuration.ip.owner iface) .outbound)

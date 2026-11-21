@@ -1,5 +1,5 @@
 import TDN.Models.MultiProtocolEncapPreservation
-import TDN.Models.LocateTransitionStepInTrace
+import TDN.Models.FindStepInForwardingTrace
 
 namespace TDN.MultiProtocolForwarding
 open LayeredFrame
@@ -15,16 +15,16 @@ lemma unwrap_preserves_original_ethernet
     next matched => cases unwrapped; rfl
     next missed => cases unwrapped
 
-lemma step_preserves_original_ethernet {c : Config} {before after : State} {action : Action}
-    (step : Step c before action after) :
+lemma step_preserves_original_ethernet {c : TunnelForwardingModel} {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep c before action after) :
     after.frame.body.originalEthernet = before.frame.body.originalEthernet := by
-  cases step <;> simp only [Config.forwardedFrame_body, Config.ipsecFrame_body,
-    Config.macsecFrame_body, Config.macsec_pdu_frame_body, Config.carrierFrame_body, Config.restoredFrame_body] <;> try rfl
+  cases step <;> simp only [TunnelForwardingModel.forwarded_frame_body, TunnelForwardingModel.ipsec_frame_body,
+    TunnelForwardingModel.macsec_frame_body, TunnelForwardingModel.macsec_pdu_frame_body, TunnelForwardingModel.carrier_frame_body, TunnelForwardingModel.restored_frame_body] <;> try rfl
   all_goals try simp_all only [Body.originalEthernet]
   all_goals exact unwrap_preserves_original_ethernet _ _ _ _ _ _ _ ‹_›
 
-theorem all_traces_preserve_original_ethernet (c : Config)
-    {before after : State} {actions : List Action} (run : (lts c).MTr before actions after) :
+theorem all_traces_preserve_original_ethernet (c : TunnelForwardingModel)
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction} (run : (lts c).MTr before actions after) :
     after.frame.body.originalEthernet = before.frame.body.originalEthernet := by
   have preserved : (lts c).TrInv
       (fun state => state.frame.body.originalEthernet = before.frame.body.originalEthernet) := by
@@ -32,27 +32,27 @@ theorem all_traces_preserve_original_ethernet (c : Config)
     exact (step_preserves_original_ethernet step).trans valid
   exact Cslib.LTS.mtrInv_of_trInv preserved before actions after run rfl
 
-def IsEncryption (action : Action) : Prop :=
+def IsEncryption (action : TunnelForwardingAction) : Prop :=
   action = .encryptIPsec ∨ action = .encryptMACsec
 
-def IsDecryption (action : Action) : Prop :=
+def IsDecryption (action : TunnelForwardingAction) : Prop :=
   action = .decryptIPsec ∨ action = .decryptMACsec
 
-lemma step_layer_effect {c : Config} {before after : State} {action : Action}
-    (step : Step c before action after) :
+lemma step_layer_effect {c : TunnelForwardingModel} {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep c before action after) :
     after.frame.body.protectionLayers = before.frame.body.protectionLayers ∨
     (IsEncryption action ∧ ∃ tag,
       after.frame.body.protectionLayers = tag :: before.frame.body.protectionLayers) ∨
     (IsDecryption action ∧ ∃ tag,
       before.frame.body.protectionLayers = tag :: after.frame.body.protectionLayers) := by
-  cases step <;> simp only [Config.forwardedFrame_body, Config.ipsecFrame_body,
-    Config.macsecFrame_body, Config.macsec_pdu_frame_body, Config.carrierFrame_body, Config.restoredFrame_body] <;> try exact Or.inl rfl
+  cases step <;> simp only [TunnelForwardingModel.forwarded_frame_body, TunnelForwardingModel.ipsec_frame_body,
+    TunnelForwardingModel.macsec_frame_body, TunnelForwardingModel.macsec_pdu_frame_body, TunnelForwardingModel.carrier_frame_body, TunnelForwardingModel.restored_frame_body] <;> try exact Or.inl rfl
   all_goals first
     | exact Or.inl (successful_carrier_unwrap_preserves_layers _ _ _ _ _ _ _ ‹_›)
     | simp_all [IsEncryption, IsDecryption, Body.protectionLayers]
 
-lemma missing_layer_requires_encryption {c : Config} {before after : State} {action : Action}
-    {tag : Nat} (step : Step c before action after)
+lemma missing_layer_requires_encryption {c : TunnelForwardingModel} {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    {tag : Nat} (step : TunnelForwardingStep c before action after)
     (absent : tag ∉ before.frame.body.protectionLayers)
     (present : tag ∈ after.frame.body.protectionLayers) :
     IsEncryption action ∧
@@ -65,8 +65,8 @@ lemma missing_layer_requires_encryption {c : Config} {before after : State} {act
     · exact False.elim (absent previous)
   · exact False.elim (absent (removed ▸ List.mem_cons_of_mem oldTag present))
 
-lemma removed_layer_requires_decryption {c : Config} {before after : State} {action : Action}
-    {tag : Nat} (step : Step c before action after)
+lemma removed_layer_requires_decryption {c : TunnelForwardingModel} {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    {tag : Nat} (step : TunnelForwardingStep c before action after)
     (present : tag ∈ before.frame.body.protectionLayers)
     (absent : tag ∉ after.frame.body.protectionLayers) :
     IsDecryption action ∧
@@ -79,8 +79,8 @@ lemma removed_layer_requires_decryption {c : Config} {before after : State} {act
     · exact ⟨label, by simpa [equal] using removed⟩
     · exact False.elim (absent previous)
 
-theorem boundary_addition_has_actual_encryption (c : Config) (tag : Nat)
-    {before after : State} {actions : List Action} (run : (lts c).MTr before actions after)
+theorem boundary_addition_has_actual_encryption (c : TunnelForwardingModel) (tag : Nat)
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction} (run : (lts c).MTr before actions after)
     (initial : tag ∉ before.frame.body.protectionLayers)
     (final : tag ∈ after.frame.body.protectionLayers) :
     TraceEvents.Contains (lts c) before actions after
@@ -94,8 +94,8 @@ theorem boundary_addition_has_actual_encryption (c : Config) (tag : Nat)
   exact ⟨earlier, later, left, action, right, sequence, first, step, last,
     label, added, (all_traces_preserve_payload c first).1⟩
 
-theorem boundary_removal_has_actual_decryption (c : Config) (tag : Nat)
-    {before after : State} {actions : List Action} (run : (lts c).MTr before actions after)
+theorem boundary_removal_has_actual_decryption (c : TunnelForwardingModel) (tag : Nat)
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction} (run : (lts c).MTr before actions after)
     (initial : tag ∈ before.frame.body.protectionLayers)
     (final : tag ∉ after.frame.body.protectionLayers) :
     TraceEvents.Contains (lts c) before actions after
@@ -109,9 +109,9 @@ theorem boundary_removal_has_actual_decryption (c : Config) (tag : Nat)
   exact ⟨earlier, later, left, action, right, sequence, first, step, last,
     label, removed, (all_traces_preserve_payload c first).1⟩
 
-lemma encryption_output_layout {c : Config} {expectedEncapStack : Nat → List Nat}
-    {before after : State} {action : Action}
-    (step : Step c before action after) (label : IsEncryption action)
+lemma encryption_output_layout {c : TunnelForwardingModel} {expectedEncapStack : Nat → List Nat}
+    {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep c before action after) (label : IsEncryption action)
     (invariant : EncapStackConsistent c expectedEncapStack after) :
     after.frame.body.protectionLayers = expectedEncapStack after.iface := by
   cases step <;> simp only [IsEncryption, reduceCtorEq, false_or] at label
@@ -119,11 +119,11 @@ lemma encryption_output_layout {c : Config} {expectedEncapStack : Nat → List N
   case encryptMACsec iface association configured datapathStage logical emits =>
     simpa only [EncapStackConsistent, datapathStage] using invariant.2
 
-def OrderedEncryptions (c : Config) (innerTag outerTag : Nat)
-    (before : State) (actions : List Action) (after : State) : Prop :=
+def OrderedEncryptions (c : TunnelForwardingModel) (innerTag outerTag : Nat)
+    (before : TunnelForwardingState) (actions : List TunnelForwardingAction) (after : TunnelForwardingState) : Prop :=
   ∃ earlier later left action right,
     actions = earlier ++ action :: later ∧
-    (lts c).MTr before earlier left ∧ Step c left action right ∧
+    (lts c).MTr before earlier left ∧ TunnelForwardingStep c left action right ∧
     (lts c).MTr right later after ∧
     IsEncryption action ∧
     right.frame.body.protectionLayers = outerTag :: left.frame.body.protectionLayers ∧
@@ -133,11 +133,11 @@ def OrderedEncryptions (c : Config) (innerTag outerTag : Nat)
         b.frame.body.protectionLayers = innerTag :: a.frame.body.protectionLayers ∧
         a.frame.payload = before.frame.payload)
 
-theorem nested_stack_requires_ordered_encryptions (c : Config) (expectedEncapStack : Nat → List Nat)
+theorem nested_stack_requires_ordered_encryptions (c : TunnelForwardingModel) (expectedEncapStack : Nat → List Nat)
     (conditions : LocalConditions c expectedEncapStack) (innerTag outerTag : Nat)
     (placement : ∀ iface, (expectedEncapStack iface).head? = some outerTag →
       expectedEncapStack iface = [outerTag, innerTag])
-    {before after : State} {actions : List Action}
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction}
     (run : (lts c).MTr before actions after) (initial : EncapStackConsistent c expectedEncapStack before)
     (empty : before.frame.body.protectionLayers = [])
     (present : outerTag ∈ after.frame.body.protectionLayers) :

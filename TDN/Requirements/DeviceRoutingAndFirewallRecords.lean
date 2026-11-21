@@ -156,7 +156,7 @@ def ProcessingStructuralChecks (d : Deployment) (inventory : PacketProcessing.In
     (∃ mac ∈ inventory.configuration.macIfaces, mac.physicalIface = endpoint.destinationIface) ∧
     ∃ interface ∈ d.interfaces, interface.id = inventory.ifaceName endpoint.sourceIface ∧
       interface.linkAddress = some (endpoint.actorSCI / 65536)) ∧
-  (∀ tunnel ∈ d.tunnels, tunnel.mechanism = .macsec →
+  (∀ tunnel ∈ d.tunnels, tunnel.protocol = .macsec →
     ∃ endpoint ∈ inventory.mkaPeers, endpoint.tunnel = tunnel.id ∧
       inventory.componentName (inventory.configuration.ip.owner endpoint.sourceIface) = tunnel.sender ∧
       inventory.componentName (inventory.configuration.ip.owner endpoint.destinationIface) = tunnel.receiver) ∧

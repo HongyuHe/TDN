@@ -31,8 +31,7 @@ def CompanionFirewall.AttachmentPaths (configuration : CompanionFirewall)
       Relation.ReflTransGen d.DeviceAdjacent endpoint target) ∧
   (∀ endpoint ∈ configuration.innerEndpoints, ∀ network ∈ configuration.redNetworks,
     ∀ target, d.RedAttachmentDevice network target →
-    ¬ Relation.ReflTransGen
-      (Waypointing.Avoiding d.DeviceAdjacent (fun node => node = configuration.innerFirewall))
+    ¬ Waypointing.ReachableWithoutWaypoint d.DeviceAdjacent (fun node => node = configuration.innerFirewall)
         endpoint target)
 
 def CompanionFirewall.Bound (configuration : CompanionFirewall) (d : Deployment) : Prop :=
@@ -54,7 +53,7 @@ def CompanionFirewall.Bound (configuration : CompanionFirewall) (d : Deployment)
 def CompanionFirewall.ACL (configuration : CompanionFirewall) (d : Deployment) : Prop :=
   ∀ interface ∈ d.interfaces, interface.id ∈ configuration.externalInterfaces →
     d.PolicyCoverage interface ∧
-    ∀ direction traffic, d.Accepts interface.id direction traffic →
+    ∀ direction traffic, d.PermitsOnInterface interface.id direction traffic →
       (direction = .inbound →
         ∃ endpoint ∈ configuration.innerEndpoints, traffic.sourceDevice = some endpoint) ∧
       (direction = .outbound →

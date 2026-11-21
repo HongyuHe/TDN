@@ -4,12 +4,12 @@ import TDN.Models.TunnelSaOriginAttribution
 namespace TDN.MultiProtocolForwarding
 open LayeredFrame
 
-def ProducedIPBodies (c : Config) : Body → Prop
+def ProducedIPBodies (c : TunnelForwardingModel) : Body → Prop
   | .datagram _ | .ethernet _ => True
   | .ipsec token body => DataPlaneForwarding.ProducedSeal c.ip token ∧ ProducedIPBodies c body
   | .macsec _ body | .macsecPdu _ _ _ body | .carrier _ body => ProducedIPBodies c body
 
-lemma unwrap_preserves_ip_provenance (c : Config)
+lemma unwrap_preserves_ip_provenance (c : TunnelForwardingModel)
     (localAddress remote sourcePort destinationPort localSession : Nat) {protocol networkProtocol : String} (before after : Body)
     (valid : ProducedIPBodies c before)
     (unwrapped : unwrapCarrier localAddress remote sourcePort destinationPort localSession before protocol networkProtocol = some after) :
@@ -21,12 +21,12 @@ lemma unwrap_preserves_ip_provenance (c : Config)
     next matched => cases unwrapped; exact valid
     next missed => cases unwrapped
 
-lemma step_preserves_ip_provenance {c : Config} {before after : State} {action : Action}
-    (step : Step c before action after) (valid : ProducedIPBodies c before.frame.body) :
+lemma step_preserves_ip_provenance {c : TunnelForwardingModel} {before after : TunnelForwardingState} {action : TunnelForwardingAction}
+    (step : TunnelForwardingStep c before action after) (valid : ProducedIPBodies c before.frame.body) :
     ProducedIPBodies c after.frame.body := by
   cases step <;>
-    simp only [Config.forwardedFrame_body, Config.ipsecFrame_body, Config.macsecFrame_body, Config.macsec_pdu_frame_body,
-      Config.carrierFrame_body, Config.restoredFrame_body] <;> try exact valid
+    simp only [TunnelForwardingModel.forwarded_frame_body, TunnelForwardingModel.ipsec_frame_body, TunnelForwardingModel.macsec_frame_body, TunnelForwardingModel.macsec_pdu_frame_body,
+      TunnelForwardingModel.carrier_frame_body, TunnelForwardingModel.restored_frame_body] <;> try exact valid
   case encryptIPsec policy association datapathStage visible selected installed bound =>
     exact ⟨⟨before.iface, policy, (DataPlaneForwarding.matched_policy_is_configured selected).1,
       association, installed, bound, rfl⟩, valid⟩
@@ -40,17 +40,17 @@ lemma step_preserves_ip_provenance {c : Config} {before after : State} {action :
   case decapsulate iface body configured datapathStage owner unwrapped =>
     exact unwrap_preserves_ip_provenance c _ _ _ _ _ _ _ valid unwrapped
 
-theorem all_traces_preserve_ip_provenance (c : Config)
-    {before after : State} {actions : List Action} (run : (lts c).MTr before actions after)
+theorem all_traces_preserve_ip_provenance (c : TunnelForwardingModel)
+    {before after : TunnelForwardingState} {actions : List TunnelForwardingAction} (run : (lts c).MTr before actions after)
     (initial : ProducedIPBodies c before.frame.body) : ProducedIPBodies c after.frame.body := by
   have preservation : (lts c).TrInv (fun state => ProducedIPBodies c state.frame.body) :=
     fun _ _ _ step valid => step_preserves_ip_provenance step valid
   exact Cslib.LTS.mtrInv_of_trInv preservation before actions after run initial
 
-theorem wire_matching_ipsec_decryption_is_admitted (c : Config)
-    (agreement : DataPlaneForwarding.PeerTagAgreement c.ip) (state : State)
-    (policy : DataPlaneForwarding.IpsecPolicy) (association : DataPlaneForwarding.InstalledSA)
-    (transmitted : DataPlaneForwarding.TunnelSAStamp) (body : Body) (header : PacketPolicy.Packet)
+theorem wire_matching_ipsec_decryption_is_admitted (c : TunnelForwardingModel)
+    (agreement : DataPlaneForwarding.PeerTagAgreement c.ip) (state : TunnelForwardingState)
+    (policy : DataPlaneForwarding.IpsecPolicy) (association : DataPlaneForwarding.InstalledSa)
+    (transmitted : DataPlaneForwarding.TunnelSaStamp) (body : Body) (header : PacketPolicy.Packet)
     (datapathStage : state.datapathStage = .received)
     (encrypted : state.frame.body = .ipsec transmitted body)
     (provenance : ProducedIPBodies c state.frame.body)
@@ -60,14 +60,14 @@ theorem wire_matching_ipsec_decryption_is_admitted (c : Config)
     (wire : DataPlaneForwarding.WireMatchesSeal transmitted association)
     (visible : body.visibleHeader = some header)
     (selected : policy.matches header = true) (tracking : String) :
-    Step c state .decryptIPsec
+    TunnelForwardingStep c state .decryptIPsec
       { state with initialEntry := false, datapathStage := .ingress, enteredIface := state.iface, frame := c.restoredFrame state.frame body, authenticated := [policy.id], tracking := tracking } := by
   have produced : DataPlaneForwarding.ProducedSeal c.ip transmitted := by
     rw [encrypted] at provenance
     exact provenance.1
   have same := DataPlaneForwarding.wire_match_determines_annotated_seal agreement produced state.iface
     policy configured association installed bound wire
-  exact Step.decryptIPsec policy association body header datapathStage (same ▸ encrypted)
+  exact TunnelForwardingStep.decryptIPsec policy association body header datapathStage (same ▸ encrypted)
     configured installed bound visible selected tracking
 
 end TDN.MultiProtocolForwarding

@@ -1,28 +1,27 @@
 import TDN.Deployments.NestedProtection_BaselineFlowData
-import TDN.Requirements.IPsecNestedFlowEvents
+import TDN.Requirements.IpsecNestedFlowEvents
 
 namespace TDN.Deployments.NestedProtection_Baseline
 open Compliance Requirements Requirements.Msc MtuSizing_Records LayeredFrame MultiProtocolForwarding
 
 set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 lemma recorded_plain_links : ∀ selected ∈ contexts, ∀ edge ∈ records.links,
     expectedEncapStack edge.1 = [] →
     (selected.SourceSide (capturedConfiguration.ip.owner edge.1) ↔ selected.SourceSide (capturedConfiguration.ip.owner edge.2)) ∧
     (selected.DestinationSide (capturedConfiguration.ip.owner edge.1) ↔ selected.DestinationSide (capturedConfiguration.ip.owner edge.2)) := by
-  unfold IPsecFlowEndpoints.SourceSide IPsecFlowEndpoints.DestinationSide
+  unfold IpsecFlowEndpoints.SourceSide IpsecFlowEndpoints.DestinationSide
   native_decide
 lemma recorded_plain_bridges : ∀ edge ∈ records.bridges, expectedEncapStack edge.1 ≠ [] := by native_decide
 
-lemma flow_tunnel_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
-    (selected : IPsecFlowEndpoints) (member : selected ∈ contexts) :
-    IPsecFlowTunnelChecks (deviceBinding primitive) selected.flow selected.RemoteHeader selected.AllowedStamp
+lemma flow_tunnel_checks (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial)
+    (selected : IpsecFlowEndpoints) (member : selected ∈ contexts) :
+    IpsecFlowTunnelChecks (deviceBinding primitive) selected.flow selected.RemoteHeader selected.AllowedStamp
       (selected.PlainAllowed (configuration primitive).ip.owner) expectedEncapStack := by
   refine ⟨rfl, rfl, OuterTunnelNoBypass_Baseline.route_owners, ?_, ?_, ?_, ?_, ?_⟩
   · intro first last body same allowed
     change (configuration primitive).ip.owner first = (configuration primitive).ip.owner last at same
-    unfold IPsecFlowEndpoints.PlainAllowed at allowed ⊢
+    unfold IpsecFlowEndpoints.PlainAllowed at allowed ⊢
     rw [same] at allowed
     exact allowed
   · intro first last body linked empty allowed
@@ -37,10 +36,10 @@ lemma flow_tunnel_checks (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
   · exact ipsec_flow_incoming_plain_destination (deviceBinding primitive) selected expectedEncapStack
       (flow_policy_checks primitive selected member)
 
-lemma step_preserves_selected_flow (primitive : ESPWire.GCMPrimitive IPsecKeyMaterial)
-    (selected : IPsecFlowEndpoints) (member : selected ∈ contexts)
-    {before after : MultiProtocolForwarding.State} {operation : MultiProtocolForwarding.Action}
-    (step : MultiProtocolForwarding.Step (configuration primitive) before operation after)
+lemma step_preserves_selected_flow (primitive : ESPWire.GCMPrimitive IpsecKeyMaterial)
+    (selected : IpsecFlowEndpoints) (member : selected ∈ contexts)
+    {before after : MultiProtocolForwarding.TunnelForwardingState} {operation : MultiProtocolForwarding.TunnelForwardingAction}
+    (step : MultiProtocolForwarding.TunnelForwardingStep (configuration primitive) before operation after)
     (safe : IPsecFlowInvariant (deviceBinding primitive) selected.flow selected.RemoteHeader selected.AllowedStamp
       (selected.PlainAllowed (configuration primitive).ip.owner) expectedEncapStack before) :
     IPsecFlowInvariant (deviceBinding primitive) selected.flow selected.RemoteHeader selected.AllowedStamp
@@ -56,7 +55,7 @@ lemma recorded_source_contexts : ∀ entry ∈ entries,
     (contextFor entry.originDomain).flow.sourceNetwork = entry.network ∧
     (contextFor entry.originDomain).originDomain = entry.originDomain ∧
     (contextFor entry.originDomain).SourceSide (capturedConfiguration.ip.owner entry.iface) := by
-  unfold IPsecFlowEndpoints.SourceSide
+  unfold IpsecFlowEndpoints.SourceSide
   native_decide
 lemma recorded_context_networks : ∀ selected ∈ contexts,
     ∃ network ∈ networks, selected.flow.sourceNetwork = network.id := by native_decide
