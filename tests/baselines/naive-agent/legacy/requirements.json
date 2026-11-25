@@ -1,0 +1,87 @@
+{
+  "MSC-VG-1": {
+    "page": 38,
+    "text": "The proposals offered by VPN Gateways in the course of establishing the Internet Key Exchange (IKE) Security Association and the Encapsulating Security Payload (ESP) SA for inner and outer tunnels must be configured to offer algorithm suite(s) containing only CNSA 1.0 algorithms as detailed in Table 6.",
+    "interpretation": "The experiment selects the CNSA 1.0 branch. AES-128 is outside every listed alternative."
+  },
+  "MSC-VG-4": {
+    "page": 38,
+    "text": "When using certificate-based authentication, a unique device certificate must be loaded onto each VPN Gateway along with the corresponding CA certificate chain, to include the Trust Anchor CA certificate."
+  },
+  "MSC-VG-6": {
+    "page": 38,
+    "text": "A device certificate must be used for VPN Gateway authentication during IKE."
+  },
+  "MSC-VG-7": {
+    "page": 38,
+    "text": "VPN Gateway authentication must include a check that the certificate is not revoked, which can include a CRL, OCSP Responder, or other similar revocation reporting mechanism."
+  },
+  "MSC-VG-9": {
+    "page": 38,
+    "text": "All VPN Gateways must use IKEv2 (IETF RFC 7296) key exchange."
+  },
+  "MSC-VG-13": {
+    "page": 39,
+    "text": "All VPN Gateways must set the IKE SA lifetime to at most 24 hours."
+  },
+  "MSC-VG-14": {
+    "page": 39,
+    "text": "All VPN Gateways must set the ESP SA lifetime to no more than 8 hours."
+  },
+  "MSC-IR-1": {
+    "page": 42,
+    "text": "The Inner VPN Gateway must use ESP Tunnel mode IPsec, with an associated IP tunneling protocol."
+  },
+  "MSC-OR-1": {
+    "page": 43,
+    "text": "Outer VPN Gateways must use ESP Tunnel mode IPsec."
+  },
+  "MSC-IR-3": {
+    "page": 43,
+    "text": "The Inner Encryption Component must not allow packets received on an interface connected to a Red Network to bypass encryption and be forwarded out through an interface connected to a Gray Network."
+  },
+  "MSC-IR-5": {
+    "page": 43,
+    "text": "The Inner Encryption Component must not allow packets received on an interface connected to a Gray Network to bypass decryption and be forwarded out through an interface connected to a Red Network."
+  },
+  "MSC-OR-2": {
+    "page": 43,
+    "text": "Outer Encryption Components must not allow packets received on an interface connected to a Gray Network to bypass encryption and be forwarded out through an interface connected to a Black Network."
+  },
+  "MSC-OR-5": {
+    "page": 44,
+    "text": "Outer Encryption Components must not allow any packets received on an interface connected to a Black Network to bypass decryption.",
+    "interpretation": "The test uses forwarded application data, outside the CP's permitted control traffic."
+  },
+  "MSC-OR-8": {
+    "page": 44,
+    "text": "Outer Encryption Components must not use routing protocols (e.g., OSPF, BGP)."
+  },
+  "MSC-PF-2": {
+    "page": 44,
+    "text": "All Solution Components must have all unused network interfaces disabled.",
+    "interpretation": "A declared spare, unconnected virtual interface is the emulated counterpart of an unused interface."
+  },
+  "MSC-PF-9": {
+    "page": 45,
+    "text": "Multicast messages received on external interfaces of Outer Encryption Components must be dropped."
+  },
+  "MSC-PF-11": {
+    "page": 45,
+    "text": "For solutions using IPv4, each VPN Gateway must only accept packets with Transmission Control Protocol (TCP), User Datagram Protocol (UDP), ESP, or ICMP in the IPv4 Protocol field and drop all other packets."
+  },
+  "MSC-PF-17": {
+    "page": 46,
+    "text": "The Gray Network interfaces of Outer Encryption Components must only permit packets whose source and destination IP addresses match the external interfaces of Inner Encryption Components that support Red Networks of the same security level.",
+    "interpretation": "The test targets an unlisted destination. It does not rely on the document's disputed same-level firewall sentence."
+  },
+  "MSC-PF-18": {
+    "page": 46,
+    "text": "The Gray Network interfaces of Outer Encryption Components must block all packets whose source address does not match a list of addresses or address ranges known to be reachable from the interface where the packet was received."
+  },
+  "MSC-PF-22": {
+    "page": 46,
+    "text": "If an Outer Firewall is required, for all Outer Firewall interfaces, traffic filtering rules must be applied to both inbound and outbound traffic, such that only IKE, ESP, MKA, MACsec and control plane protocols (as defined in this CP) approved by organization-defined policy are allowed.",
+    "interpretation": "Each test declares Black to represent public Internet transport. The extra HTTP service is not an approved control service."
+  }
+}

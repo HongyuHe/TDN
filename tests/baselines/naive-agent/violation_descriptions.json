@@ -1,0 +1,89 @@
+{
+  "inner-peer-loopback": {
+    "observation": "fresh-peer-fault.json",
+    "variants": [{
+      "requirement": "Section 4.2.1 of the CSfC Multi-Site Connectivity Capability Package (CP) describes an Inner tunnel and an Outer tunnel between communicating sites. The Inner gateway must reach the peer assigned to the remote Red network.",
+      "change": "Loaded the gateway’s own loopback address (127.0.0.2) as its remote Inner peer. The saved configuration still named the correct remote address (10.200.1.2). The test repeated the same tunnel negotiation and checked the result at both gateways."
+    }]
+  },
+  "delivery-outage": {
+    "observation": "independent-evidence.json",
+    "variants": [{
+      "requirement": "The CP describes secure connectivity between Red networks at the same security level. TDN checks that traffic can reach every Red peer the deployment identifies as an intended recipient.",
+      "change": "Placed a temporary rule first in the Black router’s IPv4 forwarding rules. It dropped traffic crossing the router between the sites. The test sent pings in both directions for each intended Red pair before, during and after the change."
+    }]
+  },
+  "gray-firewall-detached": {
+    "observation": "gray-links-observed.json",
+    "note": "Net-02 carries one security level. The CP permits shared Gray infrastructure at that level. The trial records the loss of connectivity to the optional firewall listed in TDN’s model.",
+    "variants": [{
+      "requirement": "Section 5.3 places the Gray Firewall between the Inner and Outer components. TDN interprets that placement to require a Gray path from an Inner gateway to each listed firewall and from that firewall to an Outer gateway.",
+      "change": "Temporarily disconnected all the Site A firewall interfaces facing the Inner gateways as one group. The trial moved those virtual link ends into an isolated Linux network namespace, a separate network environment with no connection back to the deployment. It then checked which devices could still reach the firewall over Gray links."
+    }]
+  },
+  "inner-mode": {
+    "observation": "snapshot.json",
+    "variants": [{
+      "requirement": "MSC-IR-1 requires an Inner VPN gateway to use IPsec ESP in tunnel mode with an associated IP tunneling protocol. The trial tests the ESP mode setting.",
+      "change": "Changed the protected connection on one Inner gateway from tunnel mode to transport mode and reloaded its connection profile. A fresh reading showed which mode the next negotiation would use. An established tunnel could continue using its earlier mode."
+    }]
+  },
+  "outer-mode": {
+    "observation": "snapshot.json",
+    "variants": [{
+      "requirement": "MSC-OR-1 requires an Outer VPN gateway to use IPsec ESP in tunnel mode for the outer layer of protection.",
+      "change": "Changed the protected connection on one Outer gateway from tunnel mode to transport mode and reloaded its connection profile. The trial checked the newly loaded setting against the settings on the other gateways."
+    }]
+  },
+  "firewall-inside-disconnected": {
+    "observation": "interface-stability.json",
+    "variants": [{
+      "requirement": "The four profiles model public Internet transport. MSC-SR-12 places an Outer Firewall between each Outer gateway and Black. Section 5.2 connects the gateway’s external interface to the inside of that firewall.",
+      "change": "Disconnected the virtual link between the Outer gateway and the inside of its Outer Firewall. The trial moved only the firewall end into an isolated network environment. Two live interface readings checked the missing connection before the same interface was reattached."
+    }]
+  },
+  "firewall-outside-disconnected": {
+    "observation": "interface-stability.json",
+    "variants": [{
+      "requirement": "For public Internet transport, MSC-SR-12 and section 5.1 place the same Outer Firewall at the Black boundary. Its outside interface must connect to the Black network.",
+      "change": "Disconnected the firewall’s outside interface from the Black router by moving the firewall end of their virtual link into an isolated network environment. The trial checked both link endpoints. After reconnection it also checked that the original learned routes returned."
+    }]
+  },
+  "firewall-local-empty-udp": {
+    "observation": "independent-evidence.json",
+    "variants": [{
+      "requirement": "MSC-PF-22 limits Outer Firewall traffic to the selected tunnel protocols and control traffic approved by the owner. The recorded policy approved OSPF for Black-side control traffic. The extra UDP flow had no such approval.",
+      "change": "Added one input exception that admitted an empty UDP datagram from the adjacent Black router to an unused port on the firewall itself. The test compared the rule’s packet count and the firewall’s count of datagrams received on a closed port."
+    }]
+  },
+  "inner-empty-ipv4-header": {
+    "observation": "independent-evidence.json",
+    "variants": [{
+      "requirement": "MSC-PF-11 permits only TCP, UDP, ESP or ICMP in the IPv4 protocol field at a VPN gateway. Protocol number 253 is outside that list.",
+      "change": "Added one input exception on the Inner gateway’s Red interface. It admitted a header-only IPv4 packet with protocol number 253 from the directly attached Red host to the gateway itself. The packet contained no application data."
+    }]
+  },
+  "outer-eligible-deny": {
+    "observation": "independent-evidence.json",
+    "variants": [{
+      "requirement": "MSC-PF-13 requires the Gray interface of an Outer gateway to pass the appropriate IKE and IPsec traffic between Inner gateways protecting Red networks at the same security level.",
+      "change": "Placed a deny rule ahead of the existing allow rules on the Site A Outer gateway’s Gray interface. It matched traffic from one local Inner gateway to its intended remote Inner peer. Pings tested the affected pair and the other Red pairs."
+    }]
+  },
+  "gray-eligible-deny": {
+    "observation": "independent-evidence.json",
+    "note": "Net-02 carries one security level, so the condition for a required Gray Firewall does not apply. Each method receives one assigned point for net-02. The other three networks each had a live trial.",
+    "variants": [
+      {
+        "networks": ["net-03", "net-04"],
+        "requirement": "MSC-PF-23 requires the Gray Firewall in these multi-level networks to allow the appropriate tunnel traffic between Red networks at the same security level.",
+        "change": "Placed a deny rule ahead of the Gray Firewall’s forwarding permission for the two Top Secret Inner peers. The rule blocked their Site A to Site B exchange. Pings tested whether the corresponding Red hosts could still communicate."
+      },
+      {
+        "networks": ["net-05"],
+        "requirement": "Section 6.2 requires the Gray Firewall to permit approved management traffic. On net-05 the designated Gray workstation is authorized to connect to the firewall’s management service.",
+        "change": "Placed a deny rule ahead of the existing permission on the firewall’s management interface. It matched the designated workstation’s TCP connection to the listening service on port 8443. The test repeated that connection before, during and after the change."
+      }
+    ]
+  }
+}

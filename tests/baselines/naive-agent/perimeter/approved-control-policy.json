@@ -1,0 +1,10 @@
+{
+  "policy_id": "msc-experiment-black-underlay-v1",
+  "description": "The experiment permits OSPF between each Outer Firewall and its directly linked Black transport router. IKE and ESP are handled by the existing firewall theorem. Control-service approval is specified independently of captured ACL allowances.",
+  "protocol": "ospf",
+  "neighbor_roles": ["firewall", "transport"],
+  "firewall_interface": "outside",
+  "hooks": ["input", "output"],
+  "destinations": ["adjacent-unicast-address", "224.0.0.5"],
+  "additional_services": []
+}

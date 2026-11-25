@@ -1,0 +1,52 @@
+{
+  "RG-007": {
+    "check": "SnapshotCompliance.lean",
+    "meaning": "For a protected Red origin that reaches a Black egress in the captured IPv4 model, the encapsulation identifiers must be Outer then Inner. Per-hop checks cover forwarding, routing, switches and links.",
+    "scope": "The captured stack and its order form one part of the full RG. Key independence and historical authentication have separate premises."
+  },
+  "RG-008": {
+    "check": "DeliveryPathChecks.lean",
+    "meaning": "Lean replays a complete packet path from each authorized Red host to its declared remote peer. Each step must be permitted by the captured model, and delivery must reach the correct plaintext endpoint.",
+    "scope": "One validated path gives a witness of possible delivery. A failed witness identifies the blocked step on that path. The live trial separately checks each intended pair. The published whole-network proof also has label, reference and authority requirements."
+  },
+  "RG-013": {
+    "check": "TopologyChecks.lean",
+    "meaning": "Every Gray path between different-level Inners must meet a Gray Firewall. Each Gray Firewall must also have a connection from an Inner and a connection to an Outer. The GrayConnectivityChecks application validates those two paths and can establish that no Inner reaches a disconnected firewall.",
+    "scope": "A finite edge check covers arbitrary path lengths. Management roles, firewall rule behavior and physical protection have additional premises."
+  },
+  "RG-029": {
+    "check": "ModeChecks.lean",
+    "meaning": "A full Inner no-bypass proof requires every covered IPsec Inner to use ESP tunnel mode. The application checks the mode loaded for each named Inner.",
+    "scope": "An installed session can keep its earlier mode until the next negotiation. The result concerns the loaded connection."
+  },
+  "RG-030": {
+    "check": "ModeChecks.lean",
+    "meaning": "A full Outer no-bypass proof requires every covered IPsec Outer to use ESP tunnel mode. The application checks the mode loaded for each named Outer.",
+    "scope": "Packet decryption and admission of already-protected Gray traffic have additional premises."
+  },
+  "RG-034": {
+    "check": "TopologyChecks.lean",
+    "meaning": "The application checks the public Black placement requirement on the actual peer graph. A separate check pairs both ends of each inside and outside link.",
+    "scope": "On a single-level network, the Gray side can connect to an Inner. Multi-level networks require a Gray Firewall on that side."
+  },
+  "RG-035": {
+    "check": "FirewallChecks.lean",
+    "meaning": "The Outer Firewall’s local rules must admit only the tunnel traffic and control exchanges allowed by the captured peer information and the independently declared Black control policy.",
+    "scope": "The other interface roles and rules for transit traffic have additional obligations."
+  },
+  "RG-038": {
+    "check": "HeaderCompliance.lean",
+    "meaning": "The captured IPv4 rules restrict admitted protocols at VPN gateways and exclude external IPv4 multicast at Outers.",
+    "scope": "All four profiles disable IPv6. The four profiles provide no independently recorded decision to select the optional five-word IPv4 header check."
+  },
+  "RG-039": {
+    "check": "DeliveryPathChecks.lean",
+    "meaning": "The replay applies the original Outer forwarding rules and tunnel policies to every step of the selected approved Red deliveries. The trial can identify the exact Outer filtering step that blocks an eligible peer.",
+    "scope": "These selected exchanges test positive cases. The entire allowlist also covers other packets, approvals, and source-address checks."
+  },
+  "RG-040": {
+    "check": "DeliveryPathChecks.lean",
+    "meaning": "For the multi-level profiles whose service path visits a Gray Firewall, Lean checks the permitted filter step. On the managed profile it also checks authorized workstation requests to the dedicated management interfaces.",
+    "scope": "The full allowlist covers every eligible packet. PF-23 activates its conditional duties on the three multi-level networks."
+  }
+}

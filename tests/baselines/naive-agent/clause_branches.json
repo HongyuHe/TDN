@@ -1,0 +1,392 @@
+{
+  "RG-007.01": [
+    {
+      "duty": "The flow names a distinct Inner layer and Outer layer."
+    },
+    {
+      "duty": "The two selected tunnels have independent key contexts."
+    }
+  ],
+  "RG-007.02": [
+    {
+      "duty": "Each tunnel joins infrastructure devices at different sites and at its own layer.",
+      "types": [
+        "inner-peer-loopback"
+      ]
+    },
+    {
+      "duty": "An IPsec tunnel terminates on VPN gateways."
+    },
+    {
+      "duty": "A MACsec tunnel terminates on MACsec devices.",
+      "profiles": [],
+      "condition": "All four encrypted layers use IPsec."
+    },
+    {
+      "duty": "The Inner endpoints belong to the declared Red networks. The corresponding Outer endpoints are at the same respective sites."
+    }
+  ],
+  "RG-007.04": [
+    {
+      "duty": "Every certificate-authenticated component has a responsible certificate authority."
+    },
+    {
+      "duty": "A component that uses a pre-shared connectivity-association key has a key generator.",
+      "profiles": [],
+      "condition": "The IPsec deployments use certificate authentication."
+    },
+    {
+      "duty": "Different-level Inners sharing an Outer require a Gray Firewall.",
+      "profiles": [
+        "net-03",
+        "net-04"
+      ],
+      "condition": "These two profiles share an Outer across multiple levels."
+    }
+  ],
+  "RG-007.05": [
+    {
+      "duty": "The flow selected at injection starts on the actual Red network."
+    },
+    {
+      "duty": "Gray egress has exactly the selected Inner layer and an earlier matching encryption event."
+    }
+  ],
+  "RG-007.06": [
+    {
+      "duty": "Black egress carries the selected Outer layer around the selected Inner layer."
+    },
+    {
+      "duty": "Inner encryption occurred before Outer encryption and both preceded Black egress."
+    },
+    {
+      "duty": "Protected traffic received on Black carries both selected layers in that order."
+    }
+  ],
+  "RG-007.07": [
+    {
+      "duty": "After crossing Black, plaintext delivery reaches the destination of the injected flow."
+    },
+    {
+      "duty": "Outer decryption preceded Inner decryption and both preceded delivery."
+    }
+  ],
+  "RG-008.01": [
+    {
+      "duty": "The declared Red networks have dedicated Inner assignments."
+    },
+    {
+      "duty": "Each assigned device is an Inner at its Red network’s full security level."
+    }
+  ],
+  "RG-008.02": [
+    {
+      "duty": "Both endpoints of each authenticated pair and each established Inner tunnel are Inner devices."
+    },
+    {
+      "duty": "Authenticated Inner peers have the same full security label.",
+      "profiles": [
+        "net-03",
+        "net-04",
+        "net-05"
+      ],
+      "condition": "A cross-level fault requires two different labels."
+    },
+    {
+      "duty": "Established Inner tunnel endpoints have the same full security label.",
+      "profiles": [
+        "net-03",
+        "net-04",
+        "net-05"
+      ],
+      "condition": "A cross-level fault requires two different labels."
+    }
+  ],
+  "RG-008.04": [
+    {
+      "duty": "Each declared cross-site peer pair has a realizable path from injection to plaintext delivery.",
+      "types": [
+        "delivery-outage"
+      ]
+    }
+  ],
+  "RG-008.06": [
+    {
+      "duty": "An included Unclassified Red network has its own Inner."
+    },
+    {
+      "duty": "All applicable Red duties also apply to the included Unclassified network. Physical separation has an independently documented pre-existing failure on both applicable profiles."
+    }
+  ],
+  "RG-013.01": [
+    {
+      "duty": "Every Gray path between different-level Inners visits a Gray Firewall."
+    },
+    {
+      "duty": "A Gray Firewall exists whenever there are Inners at two different levels."
+    }
+  ],
+  "RG-013.02": [
+    {
+      "duty": "A Gray administrative workstation is at the highest applicable level."
+    },
+    {
+      "duty": "A locally run Gray CA is placed at the highest level.",
+      "profiles": [],
+      "condition": "The certificate authorities in these profiles are worker-hosted."
+    },
+    {
+      "duty": "The specified management-to-Inner paths visit a Gray Firewall. Admitted traffic between the identified manager and a lower-level Inner is blocked in both directions."
+    },
+    {
+      "duty": "The same path restriction applies to a Gray revocation service.",
+      "profiles": [],
+      "condition": "The four profiles distribute files for revocation checking."
+    }
+  ],
+  "RG-013.03": [
+    {
+      "duty": "The Outer filters traffic between identified Inner peers by level and intended communication."
+    },
+    {
+      "duty": "A Gray Firewall filters the identified Inner peers by the same conditions."
+    }
+  ],
+  "RG-013.04": [
+    {
+      "duty": "A Gray Firewall filters the relevant traffic."
+    },
+    {
+      "duty": "The device receives the required physical protection."
+    },
+    {
+      "duty": "Each Gray Firewall has a path from at least one Inner gateway.",
+      "types": ["gray-firewall-detached"]
+    },
+    {
+      "duty": "Each Gray Firewall has a path to at least one Outer gateway.",
+      "types": ["gray-firewall-detached"],
+      "requires_observation": "gray_firewall_has_no_path_to_an_outer"
+    }
+  ],
+  "RG-029.01": [
+    {
+      "duty": "The loaded Inner IPsec connection specifies ESP tunnel mode.",
+      "types": [
+        "inner-mode"
+      ]
+    },
+    {
+      "duty": "The Inner has an associated IP tunnel."
+    }
+  ],
+  "RG-029.02": [
+    {
+      "duty": "A non-control packet crossing from the internal side receives matching Inner encryption before external transmission."
+    },
+    {
+      "duty": "A non-control external transmission contains the sender’s Inner layer and has an earlier encryption event."
+    }
+  ],
+  "RG-029.04": [
+    {
+      "duty": "The outbound mandatory-access-control policy is present when selected."
+    },
+    {
+      "duty": "The inbound mandatory-access-control policy is present when selected."
+    }
+  ],
+  "RG-030.01": [
+    {
+      "duty": "The loaded Outer IPsec connection specifies ESP tunnel mode.",
+      "types": [
+        "outer-mode"
+      ]
+    },
+    {
+      "duty": "The Outer has an associated IP tunnel.",
+      "condition": "OR-1 explicitly calls for ESP tunnel mode. The Lean condition also records its associated IP tunnel."
+    }
+  ],
+  "RG-030.02": [
+    {
+      "duty": "A non-control packet crossing from the internal side receives matching Outer encryption before external transmission."
+    },
+    {
+      "duty": "A non-control external transmission contains the sender’s Outer layer and has an earlier encryption event."
+    }
+  ],
+  "RG-030.04": [
+    {
+      "duty": "The outbound mandatory-access-control policy is present when selected."
+    },
+    {
+      "duty": "The inbound mandatory-access-control policy is present when selected."
+    }
+  ],
+  "RG-034.02": [
+    {
+      "duty": "Each Outer attaches to the inside of an Outer Firewall.",
+      "types": [
+        "firewall-inside-disconnected"
+      ]
+    },
+    {
+      "duty": "That same firewall attaches to Black on its outside.",
+      "types": ["firewall-outside-disconnected"]
+    }
+  ],
+  "RG-034.04": [
+    {
+      "duty": "Each Outer reaches a Gray Firewall on its Gray side when one is required.",
+      "profiles": [
+        "net-03",
+        "net-04",
+        "net-05"
+      ],
+      "condition": "These profiles have multiple levels."
+    },
+    {
+      "duty": "Each Outer reaches an Inner when a Gray Firewall is optional.",
+      "profiles": [
+        "net-02"
+      ],
+      "condition": "Net-02 has a single security level."
+    }
+  ],
+  "RG-035.01": [
+    {
+      "duty": "The Outer VPN’s Black-side rules admit only IPsec or approved control traffic in either direction."
+    },
+    {
+      "duty": "An Outer MACsec device admits MACsec or approved control.",
+      "profiles": [],
+      "condition": "The four Outers are VPN gateways."
+    },
+    {
+      "duty": "An outbound packet names an intended peer."
+    }
+  ],
+  "RG-035.02": [
+    {
+      "duty": "Inner Gray interfaces allow the designated tunnel protocols."
+    },
+    {
+      "duty": "The separate control-traffic permission has both policy and authorizing-official approval."
+    }
+  ],
+  "RG-035.04": [
+    {
+      "duty": "The Outer Firewall admits only tunnel traffic or approved control.",
+      "types": ["firewall-local-empty-udp"]
+    },
+    {
+      "duty": "On the inside, inbound non-control traffic identifies the local Outer as its source."
+    },
+    {
+      "duty": "On the outside, inbound non-control traffic identifies the local Outer as its destination.",
+      "types": ["firewall-local-empty-udp"]
+    }
+  ],
+  "RG-038.01": [
+    {
+      "duty": "External multicast is rejected by the Outer."
+    },
+    {
+      "duty": "The narrow exception concerns necessary, approved link control for an Outer MACsec peer.",
+      "profiles": [],
+      "condition": "All four Outers use IPsec."
+    }
+  ],
+  "RG-038.03": [
+    {
+      "duty": "An IPv4 VPN gateway accepts only TCP, UDP, ESP or ICMP.",
+      "types": ["inner-empty-ipv4-header"]
+    }
+  ],
+  "RG-039.01": [
+    {
+      "duty": "A Gray workstation may originate the designated management traffic.",
+      "profiles": [
+        "net-05"
+      ],
+      "condition": "Only net-05 has Gray administrative workstations."
+    },
+    {
+      "duty": "An Outer’s own management initiation is restricted to logging and authentication."
+    }
+  ],
+  "RG-039.02": [
+    {
+      "duty": "An appropriate same-level Inner tunnel exchange qualifies under the tunnel allowance."
+    },
+    {
+      "duty": "The appropriate Gray management exchange qualifies when that service is present.",
+      "profiles": [],
+      "condition": "The original tunnel selectors cover the Red or Gray data networks. Even net-05 uses local management interfaces and declares no Gray management tunnel."
+    },
+    {
+      "duty": "When an eligible carrier is used, the policy must identify its embedded Inner pair.",
+      "profiles": [],
+      "condition": "All four forwarding captures have an empty carrier inventory."
+    }
+  ],
+  "RG-039.03": [
+    {
+      "duty": "Approved protected data uses the designated same-level pair."
+    },
+    {
+      "duty": "Alternatively, the data belongs to an appropriate Gray management tunnel.",
+      "profiles": [],
+      "condition": "The original tunnel selectors cover the Red or Gray data networks. Even net-05 uses local management interfaces and declares no Gray management tunnel."
+    }
+  ],
+  "RG-039.06": [
+    {
+      "duty": "Standalone approved control and management traffic satisfy the Outer policy."
+    },
+    {
+      "duty": "Traffic with an independent tunnel allowance can qualify under that allowance."
+    }
+  ],
+  "RG-039.07": [
+    {
+      "duty": "Everything the local hook admits meets the restrictions and an allowance."
+    },
+    {
+      "duty": "Every eligible packet satisfying both passes the local hook.",
+      "types": [
+        "outer-eligible-deny"
+      ]
+    }
+  ],
+  "RG-040.03": [
+    {
+      "duty": "Necessary HTTP to a designated Inner revocation service is admitted.",
+      "profiles": [],
+      "condition": "None of the four profiles defines that service as a Gray data-plane endpoint."
+    },
+    {
+      "duty": "Other HTTP is rejected when a Gray Firewall is required."
+    }
+  ],
+  "RG-040.04": [
+    {
+      "duty": "Admitted management traffic uses a physical interface connected to the Gray management network."
+    },
+    {
+      "duty": "The management service is recognized and approved."
+    }
+  ],
+  "RG-040.07": [
+    {
+      "duty": "Traffic outside the allowed classes is denied."
+    },
+    {
+      "duty": "An eligible permitted exchange passes the required local hook.",
+      "types": [
+        "gray-eligible-deny"
+      ]
+    }
+  ]
+}

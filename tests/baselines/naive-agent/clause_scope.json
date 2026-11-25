@@ -1,0 +1,865 @@
+{
+  "RG-007.01": {
+    "name": "Independent tunnel key contexts",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u006.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u006.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s002"
+    ],
+    "interpretation": "Choose one Inner and one Outer tunnel and require independent key contexts. IPsec and MACsec can each occupy either layer. Table 1 on PDF page 19 lists all four combinations.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "The four profiles negotiate IPsec at both layers. The independence relation needs evidence of key provenance. A common certificate authority alone does not show shared traffic keys."
+  },
+  "RG-007.02": {
+    "name": "Correct tunnel endpoints and sites",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u006.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s003"
+    ],
+    "interpretation": "Each end is infrastructure of the proper kind and layer. A flow joins different sites and uses the Inner devices assigned to its Red networks.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Both endpoint roles and site assignments are present. Validate the intended flow as well as the active tunnel."
+  },
+  "RG-007.03": {
+    "name": "Two-site limit for Outer MACsec",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u007.s005"
+    ],
+    "interpretation": "An Outer MACsec flow limits all in-scope Outer devices to two sites.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "inapplicable",
+      "net-04": "inapplicable",
+      "net-05": "inapplicable"
+    },
+    "scope_reason": "All four run IPsec on their Outer gateways."
+  },
+  "RG-007.04": {
+    "name": "Authentication services and a required Gray Firewall",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s003"
+    ],
+    "interpretation": "Certificate users have a CA, pre-shared CAK users have a key generator, and different-level Inners sharing an Outer require a Gray Firewall.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "The certificate branch applies throughout. The shared different-level Outer branch also applies to net-03 and net-04. A CA on the worker is a signing authority even when it has no service container."
+  },
+  "RG-007.05": {
+    "name": "Correct Inner protection at Gray egress",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p014:u002.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s002"
+    ],
+    "interpretation": "An injected payload selects a declared flow starting on its actual Red network. On Gray egress it carries exactly the selected Inner layer after Inner encryption.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Identify the same synthetic Red payload across the boundary and the specific Inner tunnel. A failed ping cannot establish an exposure."
+  },
+  "RG-007.06": {
+    "name": "Ordered double protection at Black",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u005.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p022:u004.s002"
+    ],
+    "interpretation": "Black egress carries the Outer layer around the Inner layer. The two encryption events must already have occurred in that order. Black reception requires the same two identified layers.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Both named layers, their order and the same payload must be observable on the recorded execution."
+  },
+  "RG-007.07": {
+    "name": "Correct plaintext destination and decryption order",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u007.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p012:u006.s002"
+    ],
+    "interpretation": "A delivered payload that was injected and crossed Black reaches its declared destination in plaintext after Outer and then Inner decryption.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Establish injection, Black transit, decryption order and final delivery on the same execution."
+  },
+  "RG-008.01": {
+    "name": "Dedicated Inner assignment",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s003"
+    ],
+    "interpretation": "Every Red network has dedicated Inner assignments at its own level. The network list can include several levels, shared Outer infrastructure and unclassified networks. The importer must supply a complete inventory.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "All four have dedicated Inner gateways. A claimed reassignment must affect actual attachment or credentials."
+  },
+  "RG-008.02": {
+    "name": "Equal security label for authenticated Inner peers",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p039:u007"
+    ],
+    "interpretation": "Every listed authenticated pair and every installed tunnel pair joins Inner devices at equal levels. VG-15 explicitly describes Inner VPN gateways. The model checks every listed Inner pair.",
+    "scope": {
+      "net-02": "partly applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Every authenticated pair must identify two Inner devices. A cross-level example also needs different full labels. Only the endpoint-role check applies to net-02."
+  },
+  "RG-008.03": {
+    "name": "No cross-level Red delivery",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p011:u005.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s002"
+    ],
+    "interpretation": "For every permitted execution, a packet delivered after injection comes from and ends at recorded Red networks with the same full level.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "The target is unequal full labels. Two distinct networks on net-02 share the same full label."
+  },
+  "RG-008.04": {
+    "name": "Delivery between intended peers",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p010:u004.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p015:u007.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s002"
+    ],
+    "interpretation": "For every intended pair supplied by the deployment, an actual forwarding trace injects and delivers a plaintext payload. The caller must identify the intended pairs.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Each network specifies cross-site Red peers. Confirm a usable path before the outage and delivery again after restoration."
+  },
+  "RG-008.05": {
+    "name": "Referenced solutions satisfy their duties",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s001"
+    ],
+    "interpretation": "The model adds a closed list as evidence when relying on another MSC solution. Every declared reference must resolve to a context satisfying the applicable duties of that solution.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "inapplicable",
+      "net-04": "inapplicable",
+      "net-05": "inapplicable"
+    },
+    "scope_reason": "The four profiles declare no referenced MSC solutions. Closure is conditional on relying on one."
+  },
+  "RG-008.06": {
+    "name": "Duties of included unclassified networks",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p016:u001.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u003.s001"
+    ],
+    "interpretation": "Each included unclassified network is in the Red inventory and satisfies the duties that apply to it. The full target therefore also covers matters outside forwarding.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "inapplicable"
+    },
+    "scope_reason": "Only net-03 and net-04 include an Unclassified Red segment. Inclusion and the applicable policy need independent confirmation. Physical colocation predates the experiment."
+  },
+  "RG-013.01": {
+    "name": "Firewall on every cross-level Gray path",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u004.s005",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u003.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u003.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s005",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s006",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u006.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p035:u009"
+    ],
+    "interpretation": "Every path between different-level Inners crosses a Gray Firewall. At least one firewall exists when the solution has two such levels. The interrupted section reference on page 17 introduces the reason for filtering.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "The cross-level path predicate requires different security levels."
+  },
+  "RG-013.02": {
+    "name": "Gray management placement and reachability",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u001.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u001.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s007",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p035:u010"
+    ],
+    "interpretation": "Gray workstations and local CAs share the highest level. Paths to a different-level Inner from a workstation, Gray CA or revocation service cross a firewall. Firewall rules block any admitted traffic between an identified AW or local CA and a non-highest Inner in either direction.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "inapplicable",
+      "net-04": "inapplicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Only net-05 provides Gray management workstations. Worker-side CAs and revocation files are separate from Gray-LAN services."
+  },
+  "RG-013.03": {
+    "name": "Filter identified Inner peers",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p017:u005.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u005.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u005.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s006",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u006.s003"
+    ],
+    "interpretation": "Gray Firewalls and Outer devices filter identified Inner peers by intended communication and full security level. The implication starts when both endpoints are identified as Inner devices.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "The profiles have peer identities. Verify the intended pair and full labels independently of the rule under test."
+  },
+  "RG-013.04": {
+    "name": "Firewall protection and connectivity",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u002.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p018:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s005",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u005.s008"
+    ],
+    "interpretation": "Each Gray Firewall has filtering and physical protection appropriate for classified equipment. The formal placement also asks for paths from an Inner to each firewall and from that firewall to an Outer.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Connectivity has an observable graph. Classified physical protection requires facility evidence."
+  },
+  "RG-029.01": {
+    "name": "Inner ESP tunnel mode",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p042:u018"
+    ],
+    "interpretation": "Every listed Inner IPsec gateway uses ESP tunnel mode with an associated IP tunnel. Every in-scope Inner has a matching protocol record.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Read the effective strongSwan child configuration on every Inner. The associated-IP-tunnel duty is a separate part of the same row."
+  },
+  "RG-029.02": {
+    "name": "Inner outbound encryption",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p025:u006.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u007",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p061:u010.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p061:u010.s002"
+    ],
+    "interpretation": "A protected Red payload leaving the Inner’s internal zone must be encrypted by a local Inner tunnel before transmission. Every non-control external transmission must show earlier encryption.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Identify a protected Red payload and its processing before transmission."
+  },
+  "RG-029.03": {
+    "name": "Inner inbound decryption",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p025:u006.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u005",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u007",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p061:u010.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p061:u010.s002"
+    ],
+    "interpretation": "A packet crossing from Gray into Red must arrive with a local receiving Inner tunnel and be decrypted before it leaves on Red. The check covers paired crossings and external egress.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Trace one protected payload from Gray to Red at the receiving Inner."
+  },
+  "RG-029.04": {
+    "name": "Selected Inner mandatory access controls",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u006"
+    ],
+    "interpretation": "When selected, each directional Mandatory Access Control objective requires the corresponding policy setting. The two objective flags are independent.",
+    "scope": {
+      "net-02": "selection unconfirmed",
+      "net-03": "selection unconfirmed",
+      "net-04": "selection unconfirmed",
+      "net-05": "selection unconfirmed"
+    },
+    "scope_reason": "The profiles contain no authority selection for either directional objective. Keep selection unknown until supported."
+  },
+  "RG-030.01": {
+    "name": "Outer ESP tunnel mode",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u012"
+    ],
+    "interpretation": "Every Outer has a protocol-matched record and each Outer VPN uses ESP tunnel mode.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Read the effective strongSwan child configuration on every Outer."
+  },
+  "RG-030.02": {
+    "name": "Outer outbound encryption",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u002.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u013",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p044:u006"
+    ],
+    "interpretation": "For a non-control packet crossing out of Gray, the Outer must encrypt before forwarding. External transmissions also require an earlier Outer encryption event.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Identify the same non-control payload at Gray ingress, encryption and Black egress."
+  },
+  "RG-030.03": {
+    "name": "Outer inbound decryption",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p024:u002.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p044:u004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p044:u006"
+    ],
+    "interpretation": "A packet crossing from Black into Gray must arrive with the receiving Outer tunnel and undergo Outer decryption on that device.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Identify the tunnel and decryption for the payload crossing into Gray."
+  },
+  "RG-030.04": {
+    "name": "Selected Outer mandatory access controls",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p043:u014",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p044:u005"
+    ],
+    "interpretation": "A selected mandatory-access-control objective requires the corresponding directional policy on each Outer component.",
+    "scope": {
+      "net-02": "selection unconfirmed",
+      "net-03": "selection unconfirmed",
+      "net-04": "selection unconfirmed",
+      "net-05": "selection unconfirmed"
+    },
+    "scope_reason": "The profiles contain no authority selection for either directional objective."
+  },
+  "RG-030.05": {
+    "name": "One Inner layer on Outer Gray reception",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p044:u003"
+    ],
+    "interpretation": "Every modeled non-control reception on an Outer Gray interface already has exactly one identified Inner encryption layer.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "A non-control input must be associated with a specific Inner tunnel."
+  },
+  "RG-034.01": {
+    "name": "Firewall on every untrusted Black path",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p012:u003.s005",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p036:u002"
+    ],
+    "interpretation": "Every graph path from an Outer to untrusted Black passes a firewall. Public Internet counts as untrusted.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "All four declare the isolated Black transport to represent the public Internet."
+  },
+  "RG-034.02": {
+    "name": "Inside and outside firewall attachment",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u002.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u008.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p036:u002"
+    ],
+    "interpretation": "For Public Internet transport, each Outer attaches to the firewall’s inside and the firewall attaches to Black on its outside.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Check both named sides of every Outer Firewall against the live link observations."
+  },
+  "RG-034.03": {
+    "name": "Black connectivity on other transports",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u008.s002"
+    ],
+    "interpretation": "For other transports each Outer has an external Black connection supported by graph reachability.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "inapplicable",
+      "net-04": "inapplicable",
+      "net-05": "inapplicable"
+    },
+    "scope_reason": "The alternative branch applies to non-public transport. All four select the public Internet."
+  },
+  "RG-034.04": {
+    "name": "Gray-side connection to the required component",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u008.s003"
+    ],
+    "interpretation": "Each Outer connects internally to a Gray Firewall when required, or to an Inner otherwise.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "On net-02 the Gray-side path can end at an Inner. On net-03, net-04 and net-05 it must reach a Gray Firewall. The choice follows the deployed security levels and PF-23."
+  },
+  "RG-035.01": {
+    "name": "Outer Black traffic and intended peers",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s002",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s003",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s005",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u009.s006",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p044:u009",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p044:u016",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p044:u017"
+    ],
+    "interpretation": "Check every Outer Black interface in both directions. A VPN admits IPsec traffic or approved control. A MACsec device admits MACsec or approved control. Egress also requires an intended peer.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "The VPN branch applies. A conclusion about control approval requires the independent approved-service policy."
+  },
+  "RG-035.02": {
+    "name": "Inner Gray traffic and approved control",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p025:u005.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u003"
+    ],
+    "interpretation": "Inner Gray interfaces admit the allowed tunnel protocols or control approved by both policy and the authorizing official.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Check the configured tunnel protocol and any independent organization and authorizing-official approvals."
+  },
+  "RG-035.03": {
+    "name": "Red service addresses and ports",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p025:u005.s002"
+    ],
+    "interpretation": "Inner Red traffic must match a declared Red service address and transport port at either endpoint.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "The permitted service list must be declared independently of observed firewall allows."
+  },
+  "RG-035.04": {
+    "name": "Outer Firewall local traffic and peer addresses",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u003.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p023:u004.s001",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u009"
+    ],
+    "interpretation": "A required Outer Firewall admits tunnel traffic or approved control. Inbound packets outside the approved-control exception name the local Outer as source on the inside or destination on the outside.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Each profile requires an Outer Firewall. The experiment defines approved Black control independently of the filter."
+  },
+  "RG-038.01": {
+    "name": "Reject external multicast",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p021:u004.s004",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u007"
+    ],
+    "interpretation": "An Outer Black interface drops multicast unless the model establishes approved MKA control with the expected group address, framing, peer and Outer MACsec tunnel.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "IPv4 VPN filtering applies on all four. The MKA exception requires an Outer MACsec device."
+  },
+  "RG-038.02": {
+    "name": "Five-word IPv4 header when PF-10 is selected",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u008"
+    ],
+    "interpretation": "An Outer VPN that selects PF-10 admits only a five-word IPv4 header.",
+    "scope": {
+      "net-02": "selection unconfirmed",
+      "net-03": "selection unconfirmed",
+      "net-04": "selection unconfirmed",
+      "net-05": "selection unconfirmed"
+    },
+    "scope_reason": "A deployed rule can be inspected; objective selection is a separate input."
+  },
+  "RG-038.03": {
+    "name": "Allowed IPv4 protocols",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u009"
+    ],
+    "interpretation": "A VPN admits IPv4 only with TCP, UDP, ESP or ICMP in its protocol field.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "IPv4 is active at every VPN gateway."
+  },
+  "RG-038.04": {
+    "name": "Allowed IPv6 immediate Next Header",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u010"
+    ],
+    "interpretation": "A VPN admits IPv6 only with ESP, TCP, UDP or ICMPv6 in its immediate Next Header field.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "inapplicable",
+      "net-04": "inapplicable",
+      "net-05": "inapplicable"
+    },
+    "scope_reason": "Every captured VPN gateway has IPv6 disabled and no data-interface IPv6 address."
+  },
+  "RG-039.01": {
+    "name": "Origin of Gray management traffic",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u006"
+    ],
+    "interpretation": "Management starts at a Gray workstation. An Outer may initiate logging or authentication.",
+    "scope": {
+      "net-02": "partly applicable",
+      "net-03": "partly applicable",
+      "net-04": "partly applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Only net-05 has a named Gray workstation. On all four, an Outer can still violate the rule by initiating a classified management service outside logging or authentication. Distinguish missing service declarations from an observed violation."
+  },
+  "RG-039.02": {
+    "name": "Intended same-level Inner tunnel exchange",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u011",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u004"
+    ],
+    "interpretation": "Allow an appropriate tunnel exchange between intended same-level Inner peers, or one used for Gray management. Inspect the embedded Inner pair for a recognized carrier.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Tie the allowed exchange to two Inner peers, including separate network identities at one level."
+  },
+  "RG-039.03": {
+    "name": "Protected payload uses the authorized pair",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u011",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u004"
+    ],
+    "interpretation": "An admitted protected payload other than revocation HTTP must match the intended same-level Inner pair. An appropriate Gray management tunnel also qualifies.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Identify the protected payload and pair. Protocol or destination port alone cannot identify the pair."
+  },
+  "RG-039.04": {
+    "name": "Data-plane revocation HTTP",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p045:u013"
+    ],
+    "interpretation": "With a Gray data-plane revocation service, allow necessary Inner revocation HTTP on an Outer VPN. The implementation recognizes the service by its address and port.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "inapplicable",
+      "net-04": "inapplicable",
+      "net-05": "inapplicable"
+    },
+    "scope_reason": "The profiles distribute CRLs as files. The conditional service branch requires a designated Gray data-plane revocation service."
+  },
+  "RG-039.05": {
+    "name": "Reachable source on the Outer Gray interface",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u005"
+    ],
+    "interpretation": "Inbound packets must have a source reachable on the receiving interface.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Use the actual incoming interface and independently derived reachable source addresses."
+  },
+  "RG-039.06": {
+    "name": "Approved standalone Outer control",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u006"
+    ],
+    "interpretation": "The separate management and control allowance requires approval for the Outer. A tunnel exchange may independently qualify under the tunnel allowance.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Verify the control approval and whether the packet could independently qualify as tunnel traffic."
+  },
+  "RG-039.07": {
+    "name": "Admit every eligible permitted Outer flow",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u007"
+    ],
+    "interpretation": "Every admitted packet must meet both the restrictions and an allowance. Every eligible packet satisfying both must pass its local hook.",
+    "scope": {
+      "net-02": "applicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "An eligible, intended exchange can be denied by a single added DROP. Verify eligibility, direction and the actual hook."
+  },
+  "RG-040.01": {
+    "name": "Intended equal-label Gray tunnel peers",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u010",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p047:u005"
+    ],
+    "interpretation": "Allow appropriate tunnel traffic between identified intended Inner peers at the same full security level.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "PF-23 makes the Gray Firewall mandatory when multiple protection levels share the solution. Net-02 has two networks at the same full security level. The Gray Firewall exists there as an optional device."
+  },
+  "RG-040.02": {
+    "name": "Match protected Gray traffic to its peers",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u010",
+      "CSFC-MSC-1.3.0-4e40e3d83708:p047:u005"
+    ],
+    "interpretation": "An admitted protected payload other than revocation HTTP must match the intended same-level Inner pair.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. A cross-label counterexample needs multiple labels. An unintended equal-label pair can also violate the authorization rule."
+  },
+  "RG-040.03": {
+    "name": "Gray revocation HTTP restrictions",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p046:u012"
+    ],
+    "interpretation": "Allow necessary Inner revocation HTTP and reject other HTTP under the model’s service classifier.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. Distinguish ordinary HTTP from the conditional permission for a designated revocation service."
+  },
+  "RG-040.04": {
+    "name": "Gray management port and approval",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p047:u004"
+    ],
+    "interpretation": "Management admission needs a physical Gray management port, a recognized service and approval.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "partly applicable",
+      "net-04": "partly applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. Only net-05 has a physical management interface for the positive allowance. The multi-level networks also restrict management admission on their data interfaces."
+  },
+  "RG-040.05": {
+    "name": "Reachable source on the Gray Firewall",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p047:u006"
+    ],
+    "interpretation": "On ingress, reject a source outside the reachable addresses or prefixes for that interface.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. Bind the source to the receiving interface and its reachable prefixes."
+  },
+  "RG-040.06": {
+    "name": "Approved standalone Gray control",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p047:u007"
+    ],
+    "interpretation": "The separate control allowance requires policy approval. A control packet may also qualify as an appropriate tunnel exchange.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. A standalone exchange requires approval if no independent tunnel permission applies."
+  },
+  "RG-040.07": {
+    "name": "Default deny and eligible permitted Gray flows",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p047:u008"
+    ],
+    "interpretation": "Reject traffic outside the allowed classes. Eligible allowed traffic with forwarding permission must pass the local hook.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. Both unauthorized acceptance and unjustified rejection can violate the row."
+  },
+  "RG-040.08": {
+    "name": "No cross-level Inner VPN exchange",
+    "sources": [
+      "CSFC-MSC-1.3.0-4e40e3d83708:p047:u009"
+    ],
+    "interpretation": "Block traffic between identified Inner VPN gateways at different classifications on any listed Gray Firewall.",
+    "scope": {
+      "net-02": "inapplicable",
+      "net-03": "applicable",
+      "net-04": "applicable",
+      "net-05": "applicable"
+    },
+    "scope_reason": "The cross-level prohibition needs two distinct labels. net-02 has one."
+  }
+}
