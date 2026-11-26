@@ -169,6 +169,15 @@ def held(p, key, out):
         yield observed
     finally:
         put(out / "restoration.json", change("restore", token))
+        if key == "inner-peer-loopback":
+            from restore_health import verify
+
+            state = verify(p)
+            put(out / "restored-health.json", state)
+            if not state["ready"]:
+                raise RuntimeError(
+                    "The intended peer could not re-establish its tunnel"
+                )
         after = reading(token)
         put(out / "after.json", after)
         if after["observed"]:

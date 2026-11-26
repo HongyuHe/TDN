@@ -4,7 +4,8 @@ import json
 from pathlib import Path
 import unittest
 
-from tdn_evidence.parsers.native_nft import check_ruleset
+from tdn_evidence.parsers.native_nft import actual_conditions, check_ruleset, expected_conditions
+from tdn_evidence.parsers.packet_policy import parse_rule
 
 
 class NativeServiceRulesTests(unittest.TestCase):
@@ -22,6 +23,35 @@ class NativeServiceRulesTests(unittest.TestCase):
     def test_captured_service_rules_match(self):
         result = self.check()
         self.assertGreater(result["rules"], 8)
+
+    def test_protocol_numbers_match_across_exports_and_reach_the_packet_model(self):
+        for token, literal, expected in [("253", 253, "253"), ("254", "254", "254"),
+                                         ("tcp", 6, "tcp"), ("17", "udp", "udp"), ("255", 255, "255")]:
+            with self.subTest(token=token, literal=literal):
+                rule = {"matches": {"iptables_tokens": ["-p", token]}, "action": "drop",
+                        "ordinal": 0, "raw_text": f"-A INPUT -p {token} -j DROP"}
+                match = {"op": "==", "left": {"payload": {"protocol": "ip", "field": "protocol"}},
+                         "right": literal}
+                conditions = expected_conditions(rule)
+                self.assertEqual(actual_conditions([{"match": match}, {"drop": None}], "drop"), conditions)
+                self.assertEqual(parse_rule(rule)["atoms"], [{"kind": "protocol", "value": expected}])
+                match["right"] = 252
+                self.assertNotEqual(actual_conditions([{"match": match}, {"drop": None}], "drop"), conditions)
+
+    def test_invalid_nft_protocol_values_are_rejected(self):
+        for value in [True, -1, 256, 253.0, "", "256", {"range": [252, 254]}]:
+            match = {"op": "==", "left": {"payload": {"protocol": "ip", "field": "protocol"}},
+                     "right": value}
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                actual_conditions([{"match": match}, {"drop": None}], "drop")
+
+    def test_iptables_all_protocols_does_not_equal_an_exact_header_zero(self):
+        for token in ["0", "all"]:
+            rule = {"matches": {"iptables_tokens": ["-p", token]}, "action": "drop",
+                    "ordinal": 0, "raw_text": f"-A INPUT -p {token} -j DROP"}
+            self.assertEqual(expected_conditions(rule), actual_conditions([{"drop": None}], "drop"))
+            match = {"op": "==", "left": {"payload": {"protocol": "ip", "field": "protocol"}}, "right": 0}
+            self.assertNotEqual(expected_conditions(rule), actual_conditions([{"match": match}, {"drop": None}], "drop"))
 
     def test_altered_transport_values_are_rejected(self):
         original = copy.deepcopy(self.fixture)

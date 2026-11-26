@@ -5,7 +5,7 @@ import ipaddress
 import json
 from pathlib import Path
 
-from .packet_policy import parse_rule
+from .packet_policy import ip_protocol_literal, parse_rule
 from .correspondence import check_filter_correspondence
 from .snapshot import require, safe_path, utc
 
@@ -31,16 +31,16 @@ def address(value):
 
 
 def expected_conditions(rule):
-    parse_rule(rule)
+    parsed = parse_rule(rule)
     tokens = rule["matches"]["iptables_tokens"]
     require(len(tokens) % 2 == 0, "Unpaired native iptables token")
-    pairs = list(zip(tokens[::2], tokens[1::2]))
-    transport = [value for key, value in pairs if key == "-p"]
-    conditions = []
+    pairs = [(key, value) for key, value in zip(tokens[::2], tokens[1::2]) if key != "-p"]
+    transport = [atom["value"] for atom in parsed["atoms"] if atom["kind"] == "protocol"]
+    conditions = [("-p", value) for value in transport]
     for key, value in pairs:
         if key in ["-s", "-d"]:
             conditions.append((key, address(value)))
-        elif key in ["-i", "-o", "-p"]:
+        elif key in ["-i", "-o"]:
             conditions.append((key, value))
         elif key == "-m":
             if value in ["tcp", "udp"]:
@@ -99,7 +99,7 @@ def actual_conditions(expressions, action):
             if field in ["saddr", "daddr"]:
                 conditions.append(("-s" if field == "saddr" else "-d", address(right)))
             else:
-                conditions.append(("-p", right))
+                conditions.append(("-p", ip_protocol_literal(right)))
     if payload_protocols:
         require(len(payload_protocols) == 1, "Mixed native transport payload protocols")
         protocol = next(iter(payload_protocols))

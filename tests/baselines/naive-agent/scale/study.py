@@ -172,39 +172,69 @@ def offline(root, n, key, method):
     return n, key, result
 
 
+def service_busy(path):
+    outcome = read(path / "execution.json")
+    if outcome.get("reader_calls") or outcome.get("status") != "invalid_run":
+        return False
+    errors = (path / "events.jsonl").read_text().casefold()
+    return any(
+        term in errors
+        for term in ("429 too many requests", "503 service unavailable", "rate limit")
+    )
+
+
 def stream(root, method, workers, stopped=None):
     jobs = {(n, c.key) for n in NETWORKS for c in CASES}
     pending = {}
+    attempts = {}
+    resume_at = 0.0
+    cooldown = 90
     with ThreadPoolExecutor(max_workers=workers) as pool:
         while jobs or pending:
             if stopped is not None and stopped.is_set():
                 return
             for f in list(pending):
-                if f.done():
-                    n, key = pending.pop(f)
-                    r = f.result()
-                    print(method, r, flush=True)
-                    if method == "astra" and r[2] != "completed":
-                        with (root / "detector-interruptions.jsonl").open("a") as out:
-                            out.write(
-                                json.dumps(
-                                    {
-                                        "time": timestamp(),
-                                        "network": n,
-                                        "case": key,
-                                        "status": r[2],
-                                    }
-                                )
-                                + "\n"
-                            )
+                if not f.done():
+                    continue
+                n, key = pending.pop(f)
+                result = f.result()
+                print(method, result, flush=True)
+                if method != "astra" or result[2] == "completed":
+                    continue
+                path = root / "trials" / key / n / "astra"
+                retry = service_busy(path) and attempts[n, key] < 6
+                if retry:
+                    jobs.add((n, key))
+                    resume_at = max(resume_at, time.monotonic() + cooldown)
+                    cooldown = min(1200, cooldown * 2)
+                with (root / "detector-interruptions.jsonl").open("a") as out:
+                    out.write(
+                        json.dumps(
+                            {
+                                "time": timestamp(),
+                                "network": n,
+                                "case": key,
+                                "status": result[2],
+                                "retry": retry,
+                                "next_start_after_seconds": max(
+                                    0, int(resume_at - time.monotonic())
+                                ),
+                            }
+                        )
+                        + "\n"
+                    )
             available = sorted(
                 (n, key)
                 for n, key in jobs
                 if (root / "measurements" / n / key / "cell.json").exists()
             )
-            for n, key in available[: max(0, workers - len(pending))]:
+            capacity = workers - len(pending)
+            if method == "astra" and time.monotonic() < resume_at:
+                capacity = 0
+            for n, key in available[:capacity]:
                 jobs.remove((n, key))
-                pending[pool.submit(offline, root, n, key, method)] = (n, key)
+                attempts[n, key] = attempts.get((n, key), 0) + 1
+                pending[pool.submit(offline, root, n, key, method)] = n, key
             if jobs or pending:
                 time.sleep(2)
 

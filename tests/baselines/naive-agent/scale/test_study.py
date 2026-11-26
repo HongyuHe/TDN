@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -94,3 +95,64 @@ class ScalingDesign(unittest.TestCase):
         for c in CASES:
             self.assertNotIn(c.key, PROMPT)
         self.assertFalse(FORBIDDEN.search(PROMPT.encode()))
+
+
+class RecoveryTests(unittest.TestCase):
+    def test_restore_reestablishes_a_peer_before_repeating_the_clean_probe(self):
+        from tempfile import TemporaryDirectory
+        from unittest.mock import patch
+        from scale.live import held
+
+        events = []
+
+        def change(action, token):
+            events.append(action)
+            return {"applied": action}
+
+        def check(token):
+            events.append("observe")
+            return {"observed": events.count("observe") == 2}
+
+        def restore(p):
+            events.append("bring up original tunnel")
+            return {"ready": True}
+
+        with (
+            TemporaryDirectory() as tmp,
+            patch("scale.live.change_and_read", return_value=(change, check)),
+            patch("restore_health.verify", side_effect=restore),
+        ):
+            with held(
+                profile("Base"), "inner-peer-loopback", Path(tmp) / "trial"
+            ) as result:
+                self.assertTrue(result["observed"])
+        self.assertEqual(
+            events,
+            [
+                "observe",
+                "edit",
+                "observe",
+                "restore",
+                "bring up original tunnel",
+                "observe",
+            ],
+        )
+
+    def test_only_service_failures_before_any_reader_access_are_retried(self):
+        from tempfile import TemporaryDirectory
+        from scale.study import service_busy
+
+        with TemporaryDirectory() as tmp:
+            p = Path(tmp)
+            (p / "events.jsonl").write_text(
+                '{"type":"error","message":"429 Too Many Requests"}\n'
+            )
+            for calls, status, expected in [
+                (0, "invalid_run", True),
+                (2, "invalid_run", False),
+                (0, "timeout", False),
+            ]:
+                (p / "execution.json").write_text(
+                    json.dumps({"status": status, "reader_calls": calls})
+                )
+                self.assertEqual(service_busy(p), expected)

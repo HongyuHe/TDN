@@ -1,7 +1,24 @@
 """Interpret the supported ordered packet-filter subset as structured records."""
 import ipaddress
+import re
 from ..adapters import Unsupported
 from .ipsec_framing import canonical_kind as canonical_ipsec_framing
+
+
+_IP_PROTOCOL_NAMES = {1: "icmp", 6: "tcp", 17: "udp", 47: "gre", 50: "esp",
+                      51: "ah", 58: "ipv6-icmp", 89: "ospf"}
+
+
+def ip_protocol_literal(value):
+    if isinstance(value, str):
+        if re.fullmatch(r"[a-zA-Z][a-zA-Z0-9_-]*", value):
+            return value
+        if not re.fullmatch(r"0|[1-9][0-9]{0,2}", value):
+            raise Unsupported("expected a literal IP protocol name or decimal number")
+        value = int(value)
+    if type(value) is not int or not 0 <= value <= 255:
+        raise Unsupported("IP protocol number must be an integer from 0 to 255")
+    return _IP_PROTOCOL_NAMES.get(value, str(value))
 
 
 def parse_rule(rule):
@@ -23,10 +40,14 @@ def parse_rule(rule):
         if key in {"-s","-d"}:
             prefix=ipaddress.ip_network(value,strict=True)
             atoms.append({"kind":"sourceRange" if key=="-s" else "destinationRange","low":int(prefix.network_address),"high":int(prefix.broadcast_address),"family":prefix.version})
-        elif key in {"-i","-o","-p"}:
-            if key in {"-i","-o"} and "+" in value:
+        elif key == "-p":
+            protocol = ip_protocol_literal(value)
+            if protocol not in {"all", "0"}:
+                atoms.append({"kind": "protocol", "value": protocol})
+        elif key in {"-i","-o"}:
+            if "+" in value:
                 raise Unsupported("interface wildcard")
-            atoms.append({"kind":{"-i":"ingress","-o":"egress","-p":"protocol"}[key],"value":value})
+            atoms.append({"kind":"ingress" if key == "-i" else "egress","value":value})
         elif key == "-m":
             if value not in {"policy","multiport","u32","conntrack","tcp","udp","icmp","icmp6","hl","length","bpf"}:
                 raise Unsupported("unknown module " + value)
