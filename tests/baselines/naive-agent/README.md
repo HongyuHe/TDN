@@ -1,10 +1,40 @@
 # Blind audits of the ten MSC proof targets
 
-The active benchmark tests eleven fault types on three multi-level network profiles. Net-03 shares its Outer gateways across four levels. Net-04 adds redundant Outer gateways. Net-05 has two levels and separate management networks. Each trial changes one network and leaves the other two available as clean controls. The design has 33 scored cases. [Net-03](profiles/net-03.json) · [Net-04](profiles/net-04.json) · [Net-05](profiles/net-05.json) · [Clause scope](clause_scope.json)
+## Comparing Astra and TDN as the topology grows
+
+The scaling benchmark tests 20 fault types on three two-site Twinet networks. The 60 trials each change one network and exercise one fault. GPT-6 Astra High and TDN inspect the same saved network. Astra also receives the original CSfC PDF. The reader exposes the original design, the observed state, and their source records. Each Astra session starts from an empty workspace. The supervisor assigns neutral names to temporary namespaces and rejects a reader bundle containing an operator fault label. TDN reads the same capture and uses its registered Lean checks. The case name, operator log, answers, live network, and results from other sessions stay with the supervisor.
+
+| Network | Security levels | Devices | Data links and management links |
+| --- | ---: | ---: | ---: |
+| Base | 2 | 33 | 40 |
+| 10xLevels | 20 | 213 | 292 |
+| 10xDevices | 2 | 321 | 400 |
+
+The larger device profile repeats the two-level site architecture ten times on each side of a shared Black transport. The profile with twenty levels gives each level its own Red host, Inner gateway, Gray switch and Red management equipment at each site. A single Gray router, Gray Firewall, Outer gateway and Outer Firewall serve each site. The benchmark retains the IPsec, administrative access and public transport choices from net-05. Each topology has one route to a private measurement endpoint on the Black test segment. The clean firewall blocks connections to that endpoint. Red administrative workstations record the operating security level of each Red network. The collector reads the designation separately from the gateway's certificate and tunnel configuration. [Topology generator](scale/profiles.py) · [Twenty fault definitions](scale/catalog.py)
+
+Run from the benchmark directory with the pinned Twinet executable on the three registered workers, the project's Lean dependencies built, and PyMuPDF installed in the local reader environment. Set `TDN_BENCHMARK_READER_PYTHON` to that environment's Python executable when using a separate checkout.
+
+```sh
+python3 scale/provision.py up Base
+python3 scale/provision.py up 10xLevels
+python3 scale/provision.py up 10xDevices
+python3 scale/study.py controls runs/topology-scaling
+python3 scale/study.py all runs/topology-scaling --workers 4
+```
+
+The supervisor verifies the healthy network, applies one change, records the independent observation, saves the converged snapshot, restores the change, and confirms that the intended Red deliveries work again. Study records include the PDF and snapshot hashes, the SHA of the theory, raw device responses, Astra's complete transcript and reader queries, and Lean's source, diagnostics and timing for each check. The detector has one hour per session. Lean has twenty minutes per file, including loading. The measured Lean interval starts after the file has loaded the evidence. A refused connection or a blocked packet cannot count as an observed successful transfer. An observed violation earns Astra credit when its answer describes that violation on the affected devices, including when the cited requirement number differs. The all-network score credits a type only when the detector finds it on all three networks. [Adjudication](scale/review.py) · [Study runner](scale/study.py)
+
+Use `scale/review.py` to record each decision. For an Astra detection, quote the sentence that identifies the change and give the reason for credit. For a TDN detection, use `--method tdn` and quote a failed Lean assertion. A failure to import data receives no credit by itself. The report reads both decisions from the trial directory. [Report generator](scale/report.py)
+
+After restoring every trial, remove the three experiment-owned deployments with `python3 scale/provision.py down NAME`. Runtime artifacts are stored under the ignored `runs/` directory.
+
+## Earlier eleven-fault benchmark
+
+The earlier benchmark tests eleven fault types on three multi-level network profiles. Net-03 shares its Outer gateways across four levels. Net-04 adds redundant Outer gateways. Net-05 has two levels and separate management networks. Each trial changes one network and leaves the other two available as clean controls. The design has 33 scored cases. [Net-03](profiles/net-03.json) · [Net-04](profiles/net-04.json) · [Net-05](profiles/net-05.json) · [Clause scope](clause_scope.json)
 
 Twinet builds complete, isolated copies of the three profiles. The copies use their original addresses, links, roles and tunnel settings. Their device names begin with `QF`, `QR` or `QM`, and each copy receives its own credentials and private deployment directory. Using a copy keeps an experiment from interrupting a running reference deployment. [Replica definitions](cohort.py) · [Provisioning](replicas.py)
 
-## Three architectural faults
+### Three architectural faults
 
 | CSfC requirement | Change in one trial | Evidence required for a detection |
 |---|---|---|
@@ -14,9 +44,9 @@ Twinet builds complete, isolated copies of the three profiles. The copies use th
 
 The Lean checks read the saved device observations independently of the fault description. They check disjoint gateway assignments, use the general path theorem to establish the Gray Firewall requirement, and check every pair of observed Inner IPv4 addresses against every Gray Firewall’s ordered ESP rules. Lean checks both interface directions and all nonzero 32-bit ESP association identifiers. The verifier derives those checks from the snapshot. Only the separate traffic experiment knows which pair and identifier the test packet uses. The other eight fault types retain their original clause assignments. [Lean checks](MscArchitectureChecks.lean) · [Snapshot importer](architecture_cases.py) · [All fault descriptions](violation_descriptions.json) · [Proof applications](proof_applications.json)
 
-## Running and reviewing trials
+### Running and reviewing trials
 
-Run the commands below from this directory. The active run needs the repository's pinned Lean dependencies, CloudLab access to the benchmark worker and the isolated reader's Python environment under `.runtime/venv`.
+Run the commands below from this directory. The earlier runner needs the repository's pinned Lean dependencies, CloudLab access to the benchmark worker and the isolated reader's Python environment under `.runtime/venv`.
 
 ```bash
 python3 replicas.py up
@@ -49,7 +79,7 @@ python3 build_clause_report.py runs/multilevel-live-01
 
 The active report is written to `.lavish/naive-agent-multilevel.html`. A pending cell means that the corresponding method has no reviewed result yet. [Snapshot reader](snapshot_reader.py) · [Snapshot scoring](score_snapshot_audits.py)
 
-## Testing the implementation without starting detector sessions
+### Testing the implementation without starting detector sessions
 
 The qualification runner collects a clean reading, applies one change, takes a full snapshot and restores the network. Lean must accept the clean state, reject the specific clause on the faulty snapshot and accept the restored state. Each run uses a new output directory. The independent replay reads the raw observations again and checks all nine network–fault combinations with the same Lean source. These runs have their own records and contribute no detector scores.
 
@@ -62,29 +92,3 @@ python3 validate_replacements.py runs/qualification-verified runs/qualification
 ```
 
 Run `python3 replicas.py down` to remove the dedicated replica containers after testing. The artifacts under `runs/` contain captures, hashes, answers and logs and are ignored by Git. The November 22–23 four-network trials, the corresponding snapshot comparison and their report retain their original scores. The [earlier five-network experiment](legacy/README.md) has its own records.
-
-## Comparing two detectors as the topology grows
-
-[The scaling benchmark](scale/study.py) runs one fault at a time on each of three two-site Twinet networks. Each trial supplies GPT-6 Astra with the CSfC PDF and one saved network. The reader exposes the original design, the observed state, and their source records. Each Astra session starts from an empty workspace. The supervisor assigns neutral names to temporary namespaces and rejects a reader bundle containing an operator fault label. TDN reads the same capture and uses its registered Lean checks. The case name, operator log, answers, live network, and results from other sessions stay with the supervisor.
-
-| Network | Security levels | Devices | Data links and management links |
-| --- | ---: | ---: | ---: |
-| Base | 2 | 33 | 40 |
-| 10xLevels | 20 | 213 | 292 |
-| 10xDevices | 2 | 321 | 400 |
-
-The larger device profile repeats the two-level site architecture ten times on each side of a shared Black transport. The profile with twenty levels gives each level its own Red host, Inner gateway, Gray switch and Red management equipment at each site. A single Gray router, Gray Firewall, Outer gateway and Outer Firewall serve each site. The benchmark retains the IPsec, administrative access and public transport choices from net-05. Each topology has one route to a private measurement endpoint on the Black test segment. The clean firewall blocks connections to that endpoint. Red administrative workstations record the operating security level of each Red network. The collector reads the designation separately from the gateway's certificate and tunnel configuration. [Topology generator](scale/profiles.py) · [Twenty fault definitions](scale/catalog.py)
-
-Run from the benchmark directory with the pinned Twinet executable on the three registered workers, the project's Lean dependencies built, and PyMuPDF installed in the local reader environment. Set `TDN_BENCHMARK_READER_PYTHON` to that environment's Python executable when using a separate checkout.
-
-```sh
-python3 scale/provision.py up Base
-python3 scale/provision.py up 10xLevels
-python3 scale/provision.py up 10xDevices
-python3 scale/study.py controls runs/topology-scaling
-python3 scale/study.py all runs/topology-scaling --workers 4
-```
-
-The supervisor verifies the healthy network, applies one change, records the independent observation, saves the converged snapshot, restores the change, and confirms that the intended Red deliveries work again. Study records include the PDF and snapshot hashes, the SHA of the theory, raw device responses, Astra's complete transcript and reader queries, and Lean's source, diagnostics and timing for each check. The detector has one hour per session. Lean has twenty minutes per file, including loading. The measured Lean interval starts after the file has loaded the evidence. A refused connection or a blocked packet cannot count as an observed successful transfer. An observed violation earns Astra credit when its answer describes that violation on the affected devices, including when the cited requirement number differs. The all-network score credits a type only when the detector finds it on all three networks. [Adjudication](scale/review.py)
-
-After restoring every cell, remove the three experiment-owned deployments with `python3 scale/provision.py down NAME`. Runtime artifacts are stored under the ignored `runs/` directory.

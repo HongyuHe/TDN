@@ -169,3 +169,32 @@ class BlindNamespaceTests(unittest.TestCase):
         for sample in (b'{"peer":"tdn-disconnected-96e2d4"}', b'{"hint":"outer-mode"}'):
             with self.assertRaisesRegex(ValueError, "operator label"):
                 validate_reader_bytes(sample, labels)
+
+
+class LeanReviewTests(unittest.TestCase):
+    def test_credit_requires_a_matching_rejected_assertion(self):
+        from tempfile import TemporaryDirectory
+        from scale.review import record_lean
+
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            cell = root / "measurements/Base/example"
+            (cell / "tdn").mkdir(parents=True)
+            (cell / "cell.json").write_text('{"observed": true, "bundle": "capture"}')
+            result = cell / "tdn/verification.json"
+            args = (root, "Base", "example", "detected", "The declared path failed.")
+            result.write_text('{"edges": {"status": "import_error"}}')
+            with self.assertRaisesRegex(ValueError, "failed Lean assertion"):
+                record_lean(*args, "separated")
+            result.write_text(json.dumps({"edges": {
+                "status": "rejected", "failed_obligations": ["lemma separated : ..."]
+            }}))
+            with self.assertRaisesRegex(ValueError, "failed Lean assertion"):
+                record_lean(*args, "other_lemma")
+            record_lean(*args, "separated")
+            record_lean(*args, "separated")
+            written = json.loads((cell / "tdn-adjudication.json").read_text())
+            self.assertEqual(written["failed_assertions"]["edges"], ["lemma separated : ..."])
+            self.assertEqual(written["bundle"], "capture")
+            with self.assertRaisesRegex(ValueError, "different decision"):
+                record_lean(root, "Base", "example", "missed", "Changed review")
