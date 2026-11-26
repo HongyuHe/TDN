@@ -65,7 +65,7 @@ Run `python3 replicas.py down` to remove the dedicated replica containers after 
 
 ## Comparing two detectors as the topology grows
 
-[The scaling benchmark](scale/study.py) runs one fault at a time on each of three two-site Twinet networks. Each trial supplies GPT-6 Astra with the CSfC PDF and one saved network. The reader exposes the original design, the observed state, and their source records. Each Astra session starts from an empty workspace. TDN reads the same capture and uses its registered Lean checks. The case name, operator log, answers, live network, and results from other sessions stay with the supervisor.
+[The scaling benchmark](scale/study.py) runs one fault at a time on each of three two-site Twinet networks. Each trial supplies GPT-6 Astra with the CSfC PDF and one saved network. The reader exposes the original design, the observed state, and their source records. Each Astra session starts from an empty workspace. The supervisor assigns neutral names to temporary namespaces and rejects a reader bundle containing an operator fault label. TDN reads the same capture and uses its registered Lean checks. The case name, operator log, answers, live network, and results from other sessions stay with the supervisor.
 
 | Network | Security levels | Devices | Data links and management links |
 | --- | ---: | ---: | ---: |

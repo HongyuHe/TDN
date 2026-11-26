@@ -17,7 +17,7 @@ if ports not in (["inside"], ["outside"]):
     raise ValueError("Select one inside or outside interface on the Outer Firewall")
 
 lease = Path("/var/tmp/tdn-naive-rg-mode-lease")
-park, unit = "tdn-disconnected-" + nonce, "tdn-rg-rollback-" + nonce
+park, unit = "tns-" + nonce, "tdn-rg-rollback-" + nonce
 
 
 def cmd(argv):

@@ -14,7 +14,7 @@ import json,secrets,subprocess,sys,tempfile,time
 req=json.load(sys.stdin);script=req['script'];side=req.get('side','inside');nonce=secrets.token_hex(6)
 if side not in ('inside','outside','gray2','gray4'):raise ValueError('Unknown rehearsal side')
 ports=['s'+str(i+1) for i in range(int(side[-1]))] if side.startswith('gray') else [side]
-a='tdn-link-test-a-'+nonce; b='tdn-link-test-b-'+nonce; parked='tdn-disconnected-'+nonce
+a='tdn-link-test-a-'+nonce; b='tdn-link-test-b-'+nonce; parked='tns-'+nonce
 def call(*args):
     return subprocess.check_output(list(args),text=True,stderr=subprocess.STDOUT,timeout=25)
 with tempfile.TemporaryDirectory() as scratch:

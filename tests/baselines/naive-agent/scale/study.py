@@ -124,10 +124,19 @@ def capture_one(root, n, key):
         saved = dest / "snapshot"
         modes = connections(saved / "native")
         blob, signatures = publish_capture(
-            saved, root / "raw", modes, intent=p["topology"]
+            saved,
+            root / "raw",
+            modes,
+            intent=p["topology"],
+            private_labels=(*BY_NAME, "tdn-disconnected-"),
         )
         put(trial / "reader-input.json", {"bundle": blob, "source_hashes": signatures})
     after = health(p)
+    deadline = time.monotonic() + 180
+    while not after["ready"] and time.monotonic() < deadline:
+        put(trial / "restore-health-attempts" / (str(time.time_ns()) + ".json"), after)
+        time.sleep(5)
+        after = health(p)
     put(trial / "post-health.json", after)
     if not after["ready"]:
         raise RuntimeError("Post-trial Red delivery did not recover on " + n)

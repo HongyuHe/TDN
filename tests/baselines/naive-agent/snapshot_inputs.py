@@ -27,6 +27,14 @@ def put(path, obj):
     path.write_text(payload)
 
 
+def validate_reader_bytes(data, private_labels=()):
+    if FORBIDDEN.search(data):
+        raise ValueError("Restricted credential material in capture; review locally")
+    for label in private_labels:
+        if label.encode() in data:
+            raise ValueError("An operator label appears in the blind evidence. Capture again with a neutral fixture name.")
+
+
 def build_capture(family, name):
     require_current_run(LIVE)
     require_current_run(RUN)
@@ -54,7 +62,7 @@ def build_capture(family, name):
     return blob
 
 
-def publish_capture(source, blobs, modes, extra=None, *, intent=None, readings=()):
+def publish_capture(source, blobs, modes, extra=None, *, intent=None, readings=(), private_labels=()):
     """Publish verified raw data and independent deployment intent to the static reader."""
     signatures = {}
     def load(path):
@@ -139,8 +147,7 @@ def publish_capture(source, blobs, modes, extra=None, *, intent=None, readings=(
             "fields":sorted({k for r in rows for k in r["record"]}),
             "kinds":sorted({r["record"]["kind"] for r in rows if isinstance(r["record"].get("kind"), str)})}
     data = json.dumps({"catalogue":catalogue, "views":views},ensure_ascii=False,separators=(",",":")).encode()
-    if FORBIDDEN.search(data):
-        raise ValueError("Restricted credential material in capture; review locally")
+    validate_reader_bytes(data, private_labels)
     packed = gzip.compress(data, compresslevel=1,mtime=0)
     blob = blobs / (digest(packed)+".json.gz")
     blob.parent.mkdir(parents=True,exist_ok=True)

@@ -156,3 +156,16 @@ class RecoveryTests(unittest.TestCase):
                     json.dumps({"status": status, "reader_calls": calls})
                 )
                 self.assertEqual(service_busy(p), expected)
+
+
+class BlindNamespaceTests(unittest.TestCase):
+    def test_neutral_names_preserve_the_observed_link_state(self):
+        from snapshot_inputs import validate_reader_bytes
+
+        labels = (*BY_NAME, "tdn-disconnected-")
+        validate_reader_bytes(
+            b'{"peer":"tns-96e2d4","reciprocal":false,"up":false}', labels
+        )
+        for sample in (b'{"peer":"tdn-disconnected-96e2d4"}', b'{"hint":"outer-mode"}'):
+            with self.assertRaisesRegex(ValueError, "operator label"):
+                validate_reader_bytes(sample, labels)
