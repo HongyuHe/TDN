@@ -63,7 +63,7 @@ def prepare(profiles):
     sys.path.insert(0, str(legacy))
     from worker import renew_crls
     if [p["network"] for p in profiles] != list(NETWORKS):
-        raise ValueError("Expected four benchmark networks")
+        raise ValueError("Expected the active benchmark networks")
     renewals = []
     for p in profiles:
         base = Path(p["deployment_directory"])
@@ -112,7 +112,8 @@ def main():
     dest = Path(sys.argv[1])
     if dest.exists():
         raise FileExistsError(dest)
-    profiles = [json.loads((HERE / "profiles" / (n + ".json")).read_text()) for n in NETWORKS]
+    from cohort import runtime_profile
+    profiles = [runtime_profile(n) for n in NETWORKS]
     worker = {p["worker"] for p in profiles}
     if len(worker) != 1:
         raise ValueError("Expected a common worker")

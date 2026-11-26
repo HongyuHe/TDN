@@ -5,14 +5,14 @@
     "scope": "The captured stack and its order form one part of the full RG. Key independence and historical authentication have separate premises."
   },
   "RG-008": {
-    "check": "DeliveryPathChecks.lean",
-    "meaning": "Lean replays a complete packet path from each authorized Red host to its declared remote peer. Each step must be permitted by the captured model, and delivery must reach the correct plaintext endpoint.",
-    "scope": "One validated path gives a witness of possible delivery. A failed witness identifies the blocked step on that path. The live trial separately checks each intended pair. The published whole-network proof also has label, reference and authority requirements."
+    "check": "MscArchitectureChecks.lean",
+    "meaning": "The independently identified Red subnets and observed gateway attachments must assign disjoint Inner devices to distinct Red networks.",
+    "scope": "The experiment exercises the specified clause on each of the three multi-level profiles."
   },
   "RG-013": {
-    "check": "TopologyChecks.lean",
-    "meaning": "Every Gray path between different-level Inners must meet a Gray Firewall. Each Gray Firewall must also have a connection from an Inner and a connection to an Outer. The GrayConnectivityChecks application validates those two paths and can establish that no Inner reaches a disconnected firewall.",
-    "scope": "A finite edge check covers arbitrary path lengths. Management roles, firewall rule behavior and physical protection have additional premises."
+    "check": "MscArchitectureChecks.lean",
+    "meaning": "Each Gray path between different-level Inner gateways must pass through a Gray Firewall.",
+    "scope": "The experiment exercises the specified clause on each of the three multi-level profiles."
   },
   "RG-029": {
     "check": "ModeChecks.lean",
@@ -37,7 +37,7 @@
   "RG-038": {
     "check": "HeaderCompliance.lean",
     "meaning": "The captured IPv4 rules restrict admitted protocols at VPN gateways and exclude external IPv4 multicast at Outers.",
-    "scope": "All four profiles disable IPv6. The four profiles provide no independently recorded decision to select the optional five-word IPv4 header check."
+    "scope": "All three profiles disable IPv6. The three profiles provide no independently recorded decision to select the optional five-word IPv4 header check."
   },
   "RG-039": {
     "check": "DeliveryPathChecks.lean",
@@ -45,8 +45,8 @@
     "scope": "These selected exchanges test positive cases. The entire allowlist also covers other packets, approvals, and source-address checks."
   },
   "RG-040": {
-    "check": "DeliveryPathChecks.lean",
-    "meaning": "For the multi-level profiles whose service path visits a Gray Firewall, Lean checks the permitted filter step. On the managed profile it also checks authorized workstation requests to the dedicated management interfaces.",
-    "scope": "The full allowlist covers every eligible packet. PF-23 activates its conditional duties on the three multi-level networks."
+    "check": "MscArchitectureChecks.lean",
+    "meaning": "A protected ESP flow forwarded by a Gray Firewall must have Inner peer endpoints at the same security level.",
+    "scope": "The experiment exercises the specified clause on each of the three multi-level profiles."
   }
 }

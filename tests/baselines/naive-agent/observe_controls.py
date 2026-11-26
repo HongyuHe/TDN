@@ -1,4 +1,4 @@
-"""Record the four benchmark deployments using public Linux and strongSwan state."""
+"""Record the active benchmark deployments using public Linux and strongSwan state."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -6,8 +6,9 @@ import json
 from pathlib import Path
 import subprocess
 
+from cohort import NETWORKS
+
 HERE = Path(__file__).resolve().parent
-NETWORKS = ("net-02", "net-03", "net-04", "net-05")
 
 
 def local_command(argv, timeout=20):
@@ -56,12 +57,13 @@ def main():
     args = parser.parse_args()
     if not args.output:
         parser.error("--output is required")
-    profiles = [json.loads((HERE / "profiles" / (n + ".json")).read_text()) for n in NETWORKS]
+    from cohort import runtime_profile
+    profiles = [runtime_profile(n) for n in NETWORKS]
     workers = {p["worker"] for p in profiles}
     if len(workers) != 1:
         raise ValueError("Profiles require distinct worker connections")
     source = Path(__file__).read_text()
-    remote = source[:source.index("def main():")] + "\nprint(json.dumps([collect_network(p) for p in " + repr(profiles) + "]))\n"
+    remote = source[:source.index("def main():")].replace("from cohort import NETWORKS", "NETWORKS = " + repr(NETWORKS)) + "\nprint(json.dumps([collect_network(p) for p in " + repr(profiles) + "]))\n"
     start = datetime.now(timezone.utc).isoformat()
     proc = subprocess.run(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8", "-o", "StrictHostKeyChecking=yes",
                            workers.pop(), "sudo", "-n", "python3", "-"], input=remote, capture_output=True, text=True, timeout=220)

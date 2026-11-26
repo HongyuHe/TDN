@@ -10,14 +10,10 @@ import time
 
 req = json.load(sys.stdin)
 dev, nonce = req["device"], req["nonce"]
-if not re.fullmatch(r"(NT|NF|NR|NM)_(OF_A1|GF_A)", dev) or not re.fullmatch(r"[a-f0-9]{12}", nonce):
+if not re.fullmatch(r"(QF|QR|QM|XB|XL|XD)_OF_A1", dev) or not re.fullmatch(r"[a-f0-9]{12}", nonce):
     raise ValueError("Select a designated firewall on an original benchmark network")
 ports = req.get("ports", [req.get("side", "inside")])
-if dev.endswith("_GF_A"):
-    expected = ["s1","s2","s3","s4"] if dev.startswith(("NF_","NR_")) else ["s1","s2"]
-    if ports != expected:
-        raise ValueError("Select the complete original Inner-facing interface set of this Gray Firewall")
-elif ports not in (["inside"], ["outside"]):
+if ports not in (["inside"], ["outside"]):
     raise ValueError("Select one inside or outside interface on the Outer Firewall")
 
 lease = Path("/var/tmp/tdn-naive-rg-mode-lease")

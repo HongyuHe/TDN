@@ -12,7 +12,7 @@ from observe_controls import HERE, collect_network, local_command, read_device
 def live(profile):
     text="from concurrent.futures import ThreadPoolExecutor\nimport json, subprocess, sys\n"
     text+="\n".join(inspect.getsource(f) for f in (local_command,read_device,collect_network))
-    return remote(text+"\nprint(json.dumps(collect_network(json.load(sys.stdin))))",profile)
+    return remote(text+"\nprint(json.dumps(collect_network(json.load(sys.stdin))))",profile,profile["worker"])
 
 
 def attachments(profile,observed):

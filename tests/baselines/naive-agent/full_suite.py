@@ -6,6 +6,7 @@ from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 import sys
 
+from architecture_cases import complete_proof_input
 from measure import typecheck
 from observe_controls import HERE
 
@@ -69,6 +70,7 @@ def suite(native,processing,out):
             summary[key]={k:result[k] for k in ("status","typecheck_ns","source_sha256","evidence_sha256","failed_obligations")}
         except Exception as err:
             summary[key]={"status":"import_error","message":str(err),"typecheck_ns":None}
+    check("architecture", HERE/"MscArchitectureChecks.lean", lambda:complete_proof_input(native))
     check("topology", HERE/"TopologyChecks.lean",lambda:graph_input(native))
     parsed=None
     def packet_input():
@@ -86,7 +88,10 @@ def suite(native,processing,out):
         mod=module_from_spec(spec);spec.loader.exec_module(mod)
         policy=json.loads((HERE/"perimeter/approved-control-policy.json").read_text())
         declaration=json.loads((native/"spec.json").read_text())
-        return mod.project(packet_input(),mod.controls_from_intent(declaration,policy))
+        projected=mod.project(packet_input(),mod.controls_from_intent(declaration,policy))
+        if projected["records"].get("policies") != []:
+            raise ValueError("Unexpected separate policies in the legacy adapter")
+        return projected
     check("firewall",HERE/"FirewallChecks.lean",firewall_input)
     (out/"summary.json").write_text(json.dumps(summary,indent=2)+'\n')
     return summary

@@ -1,56 +1,90 @@
 # Blind audits of the ten MSC proof targets
 
-The benchmark uses four original CloudLab networks. Each trial changes one device on one network. A fresh GPT-6 Astra High and a fresh GPT-6 Sol High independently inspect all four networks. The active profiles are [net-02](profiles/net-02.json), [net-03](profiles/net-03.json), [net-04](profiles/net-04.json), and [net-05](profiles/net-05.json).
+The active benchmark tests eleven fault types on three multi-level network profiles. Net-03 shares its Outer gateways across four levels. Net-04 adds redundant Outer gateways. Net-05 has two levels and separate management networks. Each trial changes one network and leaves the other two available as clean controls. The design has 33 scored cases. [Net-03](profiles/net-03.json) · [Net-04](profiles/net-04.json) · [Net-05](profiles/net-05.json) · [Clause scope](clause_scope.json)
 
-Git contains the network profiles, experiment definitions, runners, Lean checks, and scoring and report code. Each run writes its snapshots, logs, answers, and scores under `runs/`. These records and the local environment under `.runtime/` stay on the machine that runs the experiment.
+Twinet builds complete, isolated copies of the three profiles. The copies use their original addresses, links, roles and tunnel settings. Their device names begin with `QF`, `QR` or `QM`, and each copy receives its own credentials and private deployment directory. Using a copy keeps an experiment from interrupting a running reference deployment. [Replica definitions](cohort.py) · [Provisioning](replicas.py)
 
-[The clause scope](clause_scope.json) lists every row in the current [TDN clause guide](../../../specs/requirement_clauses.md). Applicability depends on the original architecture. For example, all four profiles use IPsec and public Black transport. Each has a separate clean snapshot, and each candidate fault needs an independent observation of its effect.
+## Three architectural faults
 
-[The individual duties](clause_branches.json) split rows that combine several obligations. Net-02 has two named Red networks at the same full security level. PF-23 makes a Gray Firewall mandatory on the three multi-level profiles. The local scope table also tracks conditional services, missing objective selections and obligations that have an active condition and still need a test.
+| CSfC requirement | Change in one trial | Evidence required for a detection |
+|---|---|---|
+| **RG-008.01** · MSC §4.2.2 requires a dedicated Inner component for each Red network. | Add a second attachment from the Site A Red network at level 2 to the level 1 Inner gateway. Negotiate an additional IPsec child connection on that same gateway for the second subnet. The original level 2 gateway and its connections stay operational. | Match the links at both ends and the installed local traffic selectors. Send one test packet from each Red subnet to an unused remote test address. Each packet must increase its own outbound IPsec counter on the **same** running gateway. |
+| **RG-013.01** · MSC-SR-7 requires a Gray Firewall on every Gray path between different-level Inner components. | Add one address-free virtual Ethernet link between the two Site A Inner gateways. It discards incoming frames at both ends. The fault concerns the physical arrangement of Gray links. | Read both interface peer identifiers. Remove the Gray Firewalls from the observed graph and exhibit the new path between unlike-level gateways. A lost connection cannot establish that path. |
+| **RG-040.02** · MSC-PF-28 restricts protected Gray traffic to appropriate same-level Inner endpoints. | Add one ESP forwarding rule to the Site A Gray Firewall. It matches only IPv4 ESP from the first Inner gateway to the second on the two selected interfaces. The test uses a fresh key and fixed test addresses. | Capture the encrypted test packet on firewall ingress and egress. Its two addresses, association identifier, sequence number and encrypted bytes must match. The same test reaches only ingress before the change and after restoration. |
 
-## What the Detector sees
+The Lean checks read the saved device observations independently of the fault description. They check disjoint gateway assignments, use the general path theorem to establish the Gray Firewall requirement, and check every pair of observed Inner IPv4 addresses against every Gray Firewall’s ordered ESP rules. Lean checks both interface directions and all nonzero 32-bit ESP association identifiers. The verifier derives those checks from the snapshot. Only the separate traffic experiment knows which pair and identifier the test packet uses. The other eight fault types retain their original clause assignments. [Lean checks](MscArchitectureChecks.lean) · [Snapshot importer](architecture_cases.py) · [All fault descriptions](violation_descriptions.json) · [Proof applications](proof_applications.json)
 
-The [reader](reader.py) provides the original 66-page CSfC PDF, the four inventories, and read-only device commands. Each Detector starts in an empty working directory. It can read or search the document, inspect a figure, and query live interfaces, routing, firewall, IPsec, and switching state. The [launcher](blind_audit.py) disables shell access, other apps, web search, and agent memory. The supervisor checks the reader access log and retains the complete answer even when the two Detectors disagree. The prompt contains no RG numbers, target questions, case counts, mutation names, or expected answers.
+## Running and reviewing trials
 
-## What TDN checks
+Run the commands below from this directory. The active run needs the repository's pinned Lean dependencies, CloudLab access to the benchmark worker and the isolated reader's Python environment under `.runtime/venv`.
 
-The [topology checks](TopologyChecks.lean) apply TDN’s public Black firewall placement theorem and its Gray firewall traversal argument to live interface peers. The [attachment check](AttachmentChecks.lean) checks a necessary condition of RG-034 directly against the interfaces present in each network. The [mode checks](ModeChecks.lean) prove that the recorded modes are necessary conditions of RG-029 and RG-030. An installed association can still use tunnel mode while the loaded configuration specifies a different mode for the next negotiation.
+```bash
+python3 replicas.py up
+python3 register_controls.py runs/multilevel-live-01 --freeze
+python3 run_series.py runs/multilevel-live-01 --list
+python3 run_series.py runs/multilevel-live-01
+```
 
-The mode application uses the settings loaded by strongSwan for its next negotiation. The original [Inner tunnel binding](../../../TDN/Deployments/InnerTunnelNoBypass_IpsecTunnelBindings.lean) also consults an installed association and policy. The benchmark proves the link to the whole requirement under the explicit `ModeObservationsMatch` premise. The timing covers checking the loaded strings. The individual results name each rejecting application so a reader can see exactly where each detection came from.
+The registration step captures the three clean controls, checks the Lean proofs and records their source and input hashes. Each scored trial holds one fault in place while a fresh GPT-6 Astra High and a fresh GPT-6 Sol High inspect all three networks. They receive the original CSfC PDF and a read-only device interface. The prompts contain no target clauses, expected answers, or fault counts. The supervisor reviews each answer against the independent observations and records its evidence before the series advances. [Registration](register_controls.py) · [Detector prompt](blind_audit.py) · [Live reader](reader.py) · [Review tool](review_trial.py)
 
-The [full suite](full_suite.py) also applies the recorded forwarding, IPv4 header, and local Outer Firewall rules to fresh packet-processing records. The [timing code](measure.py) measures the interval between two monotonic clock readings inside Lean. Both readings follow evidence import. Async elaboration is disabled, and Lean uses one worker. The reported time includes the finite proof checks and theorem applications between those readings. The Detector time runs from process start to its final response, including its own device queries.
+The one-case runner also accepts a network and a fault name. The following example runs just the Gray path trial.
 
-The repaired importer lets TDN detect the protocol-253 fault on all four networks. The original importer compared the text `"253"` from iptables with the number `253` from nftables and stopped. The rerun used eight original proof applications on each saved clean and faulty snapshot. All 32 clean checks passed. On every faulty snapshot, Lean rejected the rule admitting protocol 253 and the other seven checks passed. The trial directories retain the original import errors. The [rerun driver](recheck_header_trials.py) writes each network’s result to `runs/20261122-rg-clauses-01/reruns/ipv4-protocol-import/record.json`.
+```bash
+python3 run_case.py runs/multilevel-live-01 net-03 gray-cross-level-path
+```
 
-The [delivery check](DeliveryPathChecks.lean) replays all 24 intended Red deliveries, covering 1,440 model steps across the four clean networks. The original TDN witness generator proposes each path using the clean capture. Lean checks every proposed step against the rules, routing table and tunnel state of the capture under evaluation. The [replay driver](delivery_paths.py) keeps the same endpoints and interfaces when an association is renewed. The managed profile also contributes two independently observed management TCP connections. The [proof application list](proof_applications.json) explains which part of each target these checks cover.
+A method earns credit for a type when it identifies the fault on **all three networks**. A detector can cite a different requirement if it identifies the actual fault. TDN earns credit when a fixed proof that passed on the clean network rejects the captured change. Import failures, incomplete checks and timed-out audits are recorded separately. The detector time covers the whole audit. The Lean time starts after importing the data. [Scoring](score_trials.py) · [Timing](measure.py) · [Validation](validate_clause_run.py)
 
-## How the comparison is scored
+## Repeating the audits with snapshots
 
-A finding counts when the answer identifies what changed on the affected network. Another RG citation can support the same finding. The supervisor records the supporting lines or the reason for a miss. A TDN rejection counts when a proof obligation fails on the faulty evidence, its clean counterpart passed, and the failure can be traced to the planted change. Collection errors and unsupported input receive separate statuses.
+The snapshot reader supplies the same three network captures that feed TDN. In each session, one network has a captured fault and two have clean captures. The case records and the supervisor's diagnosis stay outside the reader. After the live cases have been adjudicated, run the following commands in order. Record each snapshot answer's assessment before scoring it.
 
-A fault type earns full credit when the method receives a point on all four networks. An observed detection earns one point. The revised comparison also assigns each method one point for RG-040.07 on net-02, where the Gray Firewall requirement does not apply. The 43 live trials and one assigned case give each method 44 network scores across 11 fault types. Coverage counts the 43 live trials. Only measured audits and proof checks contribute runtime. The [score builder](score_trials.py) reads the local trial records in `runs/20261122-rg-clauses-01/`.
+```bash
+python3 score_trials.py runs/multilevel-live-01
+python3 snapshot_inputs.py
+python3 run_snapshot_audits.py
+python3 score_snapshot_audits.py
+python3 build_clause_report.py runs/multilevel-live-01
+```
 
-The [review tool](review_trial.py) records the supervisor’s reading of both complete answers and the causal interpretation of a Lean result. The [source manifest](freeze_protocol.py) verifies the four clean controls, the current source-clause mapping and the files used for the comparison. The [collection wrapper](capture_stable.py) retains an unsettled capture and collects again while the same single change is present. Each trial restores its original configuration before the next trial begins.
+The active report is written to `.lavish/naive-agent-multilevel.html`. A pending cell means that the corresponding method has no reviewed result yet. [Snapshot reader](snapshot_reader.py) · [Snapshot scoring](score_snapshot_audits.py)
 
-Use [the single-case runner](run_case.py) to select a registered fault and one of the four original profiles. It checks the links, tunnel endpoints and intended deliveries on all four networks before starting. Each completed case retains the supervisor’s observations, both complete answers, each Lean result, and the restoration check. The [path diagnostics](path_diagnostics.py) match a failed forwarding step to the named interface in the same capture.
+## Testing the implementation without starting detector sessions
 
-The full Lean time covers eight proof applications, including the authorized deliveries and the Gray Firewall paths. Each measurement begins after JSON loading. Each completed case records the original six-check time, the seven-check time with delivery replay, and the full time. [Gray connection checker](GrayConnectivityChecks.lean)
+The qualification runner collects a clean reading, applies one change, takes a full snapshot and restores the network. Lean must accept the clean state, reject the specific clause on the faulty snapshot and accept the restored state. Each run uses a new output directory. The independent replay reads the raw observations again and checks all nine network–fault combinations with the same Lean source. These runs have their own records and contribute no detector scores.
 
-Two local trials send one empty packet between directly connected devices. The Red host sends a header to its own Inner gateway. The Black router sends an empty UDP datagram to a closed port on its adjacent Outer Firewall. A capture records the incoming packet in every phase. The receiver’s Linux counters independently report whether it reached local IP processing. [Local diagnostic](local_packet_probe.py)
+```bash
+python3 -m unittest test_trial_scoring test_architecture_cases
+python3 run_architecture_trial.py runs/qualification net-03
+python3 run_architecture_trial.py runs/qualification net-04
+python3 run_architecture_trial.py runs/qualification net-05
+python3 validate_replacements.py runs/qualification-verified runs/qualification
+```
 
-The [series runner](run_series.py) checks one case, restores the network, waits for the review, and advances to the next applicable case. The report gives each duty a live coverage status. A duty counts toward live coverage only when a recorded trial exhibits it.
+Run `python3 replicas.py down` to remove the dedicated replica containers after testing. The artifacts under `runs/` contain captures, hashes, answers and logs and are ignored by Git. The November 22–23 four-network trials, the corresponding snapshot comparison and their report retain their original scores. The [earlier five-network experiment](legacy/README.md) has its own records.
 
-## Earlier experiments
+## Comparing two detectors as the topology grows
 
-The [earlier experiment](legacy/README.md) used five profiles. Its [profile generator](make_profiles.py) builds them under `legacy/profiles/` from the deployment records. The earlier runs kept their validated copies there.
+[The scaling benchmark](scale/study.py) runs one fault at a time on each of three two-site Twinet networks. Each trial supplies GPT-6 Astra with the CSfC PDF and one saved network. The reader exposes the original design, the observed state, and their source records. Each Astra session starts from an empty workspace. TDN reads the same capture and uses its registered Lean checks. The case name, operator log, answers, live network, and results from other sessions stay with the supervisor.
 
-## Repeating the audits with saved snapshots
+| Network | Security levels | Devices | Data links and management links |
+| --- | ---: | ---: | ---: |
+| Base | 2 | 33 | 40 |
+| 10xLevels | 20 | 213 | 292 |
+| 10xDevices | 2 | 321 | 400 |
 
-The snapshot comparison uses the PDF and the original captures already collected for TDN. Each fresh Detector session receives four networks with neutral names. One network has the captured fault. The other three have their original clean captures. The reader lists the available records and lets the Detector select a device, search the saved output, or read the original PDF. All three tools read local files.
+The larger device profile repeats the two-level site architecture ten times on each side of a shared Black transport. The profile with twenty levels gives each level its own Red host, Inner gateway, Gray switch and Red management equipment at each site. A single Gray router, Gray Firewall, Outer gateway and Outer Firewall serve each site. The benchmark retains the IPsec, administrative access and public transport choices from net-05. Each topology has one route to a private measurement endpoint on the Black test segment. The clean firewall blocks connections to that endpoint. Red administrative workstations record the operating security level of each Red network. The collector reads the designation separately from the gateway's certificate and tunnel configuration. [Topology generator](scale/profiles.py) · [Twenty fault definitions](scale/catalog.py)
 
-1. Run `python3 snapshot_inputs.py` from this directory. It verifies the native data and raw readings against their collection hashes, indexes the supplemental connection and interface readings, and records the four inputs for each trial.
-2. Run `python3 run_snapshot_audits.py` to launch the original two models with high reasoning and the original blind prompt. Each session has a one-hour time limit. A restarted batch reuses completed sessions and reruns incomplete sessions in a fresh context. Invalid attempts retain their own transcripts.
-3. Read each final answer against the observed fault and record its verdict, supporting line numbers, reason, and answer hash in the session’s `assessment.json`. The scoring rule accepts an observation that identifies the change or its specific effect on the correct network. The Detector can cite a different requirement.
-4. Run `python3 score_snapshot_audits.py` to validate the 86 independent sessions and the recorded assessments. Rebuild the report with `python3 build_clause_report.py runs/20261122-rg-clauses-01`.
+Run from the benchmark directory with the pinned Twinet executable on the three registered workers, the project's Lean dependencies built, and PyMuPDF installed in the local reader environment. Set `TDN_BENCHMARK_READER_PYTHON` to that environment's Python executable when using a separate checkout.
 
-The generated `runs/20261123-rg-snapshots-01/matrix.json` identifies each snapshot by its content hash. The [static reader](snapshot_reader.py) serves the document and captured network data. Detector answers, request logs, run times, and grading records are stored separately from the reader’s inputs.
+```sh
+python3 scale/provision.py up Base
+python3 scale/provision.py up 10xLevels
+python3 scale/provision.py up 10xDevices
+python3 scale/study.py controls runs/topology-scaling
+python3 scale/study.py all runs/topology-scaling --workers 4
+```
+
+The supervisor verifies the healthy network, applies one change, records the independent observation, saves the converged snapshot, restores the change, and confirms that the intended Red deliveries work again. Study records include the PDF and snapshot hashes, the SHA of the theory, raw device responses, Astra's complete transcript and reader queries, and Lean's source, diagnostics and timing for each check. The detector has one hour per session. Lean has twenty minutes per file, including loading. The measured Lean interval starts after the file has loaded the evidence. A refused connection or a blocked packet cannot count as an observed successful transfer. An observed violation earns Astra credit when its answer describes that violation on the affected devices, including when the cited requirement number differs. The all-network score credits a type only when the detector finds it on all three networks. [Adjudication](scale/review.py)
+
+After restoring every cell, remove the three experiment-owned deployments with `python3 scale/provision.py down NAME`. Runtime artifacts are stored under the ignored `runs/` directory.

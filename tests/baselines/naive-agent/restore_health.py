@@ -30,7 +30,7 @@ print(json.dumps({'before':before,'after':after,'attempted':attempted}))
 
 def verify(p):
     nodes = [d for d in p["topology"]["devices"] if d["role"] in ("inner", "outer")]
-    sa = remote(HEALTH, nodes)
+    sa = remote(HEALTH, nodes, p["worker"])
     probes = ping(p)
     return {
         "tunnels": sa,

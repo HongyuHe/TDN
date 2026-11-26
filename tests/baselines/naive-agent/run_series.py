@@ -1,4 +1,4 @@
-"""Run the four original networks in sequence and pause for adjudication after each restoration."""
+"""Run the active networks in sequence and pause for adjudication after each restoration."""
 
 import argparse
 import fcntl
@@ -15,21 +15,21 @@ from score_trials import KNOWN_TYPES, records
 ORDER = (
     "inner-mode",
     "outer-mode",
-    "delivery-outage",
+    "shared-inner-gateway",
     "inner-empty-ipv4-header",
     "firewall-local-empty-udp",
     "outer-eligible-deny",
-    "gray-eligible-deny",
+    "gray-cross-level-forward",
     "firewall-inside-disconnected",
     "firewall-outside-disconnected",
-    "gray-firewall-detached",
+    "gray-cross-level-path",
     "inner-peer-loopback",
 )
 
 
 def plan():
     scope = json.loads((HERE / "clause_scope.json").read_text())
-    if set(ORDER) != set(KNOWN_TYPES):
+    if set(ORDER) != set(KNOWN_TYPES) or len(ORDER) != len(KNOWN_TYPES):
         raise ValueError(
             "The sequence must include every registered fault type exactly once"
         )
@@ -44,6 +44,10 @@ def plan():
 
 
 def run(root):
+    from cohort import require_current_run
+    require_current_run(root)
+    if not (root / "protocol.json").is_file():
+        raise ValueError("Register all three clean controls before starting the series")
     with (root / ".series.lock").open("a+") as guard:
         fcntl.flock(guard, fcntl.LOCK_EX | fcntl.LOCK_NB)
         completed = {(r["type"], r["network"]) for r in records(root)}

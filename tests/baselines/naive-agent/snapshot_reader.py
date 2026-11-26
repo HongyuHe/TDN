@@ -11,7 +11,7 @@ import pymupdf
 
 
 ROOT = Path(__file__).resolve().parent
-NETWORKS = ("net-02", "net-03", "net-04", "net-05")
+from cohort import NETWORKS
 STRING = {"type": "string"}
 STRINGS = {"type": "array", "items": STRING}
 TOOLS = {
@@ -19,7 +19,9 @@ TOOLS = {
         "search": STRING, "page": {"type": "integer", "minimum": 1},
         "pages": {"type": "integer", "minimum": 1, "maximum": 8}, "image": {"type": "boolean"}}),
     "networks": ("List networks. Select a network for its declared devices and links and a catalogue of saved observations. "
-                 "Each view lists the number of records, field names and available command names.", {"network": STRING}),
+                 "The optional offset and count select a page of the device and link inventories. "
+                 "Each view lists the number of records, field names and available command names.", {
+                     "network": STRING, "offset": {"type":"integer","minimum":0}, "count": {"type":"integer","minimum":1,"maximum":100}}),
     "observe": ("Read saved snapshot records. Choose a network and view from networks. Optionally select devices, "
                 "exact command names (kinds), a case-insensitive literal filter, or a list of fields to return. "
                 "Matching is on the full record before field selection. Results are newline-delimited JSON, paged by "
@@ -71,7 +73,11 @@ def read(tool, args):
         return content(list(NETWORKS))
     bundle = capture(args["network"])
     if tool == "networks":
-        return content(bundle["catalogue"])
+        cat = bundle["catalogue"]
+        offset = max(0, args.get("offset", 0))
+        count = min(100, max(1, args.get("count", 20)))
+        return content({"views": cat["views"], "device_count": len(cat["devices"]), "link_count": len(cat["links"]),
+                        "offset": offset, "devices": cat["devices"][offset:offset+count], "links": cat["links"][offset:offset+count]})
     view = args["view"]
     if view not in bundle["views"]:
         raise ValueError("Unknown view. Use networks with the network name for available views.")

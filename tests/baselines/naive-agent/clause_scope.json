@@ -17,12 +17,11 @@
     ],
     "interpretation": "Choose one Inner and one Outer tunnel and require independent key contexts. IPsec and MACsec can each occupy either layer. Table 1 on PDF page 19 lists all four combinations.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "The four profiles negotiate IPsec at both layers. The independence relation needs evidence of key provenance. A common certificate authority alone does not show shared traffic keys."
+    "scope_reason": "The three profiles negotiate IPsec at both layers. The independence relation needs evidence of key provenance. A common certificate authority alone does not show shared traffic keys."
   },
   "RG-007.02": {
     "name": "Correct tunnel endpoints and sites",
@@ -35,7 +34,6 @@
     ],
     "interpretation": "Each end is infrastructure of the proper kind and layer. A flow joins different sites and uses the Inner devices assigned to its Red networks.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -49,12 +47,11 @@
     ],
     "interpretation": "An Outer MACsec flow limits all in-scope Outer devices to two sites.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "inapplicable",
       "net-04": "inapplicable",
       "net-05": "inapplicable"
     },
-    "scope_reason": "All four run IPsec on their Outer gateways."
+    "scope_reason": "All three run IPsec on their Outer gateways."
   },
   "RG-007.04": {
     "name": "Authentication services and a required Gray Firewall",
@@ -63,7 +60,6 @@
     ],
     "interpretation": "Certificate users have a CA, pre-shared CAK users have a key generator, and different-level Inners sharing an Outer require a Gray Firewall.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -84,7 +80,6 @@
     ],
     "interpretation": "An injected payload selects a declared flow starting on its actual Red network. On Gray egress it carries exactly the selected Inner layer after Inner encryption.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -102,7 +97,6 @@
     ],
     "interpretation": "Black egress carries the Outer layer around the Inner layer. The two encryption events must already have occurred in that order. Black reception requires the same two identified layers.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -117,7 +111,6 @@
     ],
     "interpretation": "A delivered payload that was injected and crossed Black reaches its declared destination in plaintext after Outer and then Inner decryption.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -142,12 +135,11 @@
     ],
     "interpretation": "Every Red network has dedicated Inner assignments at its own level. The network list can include several levels, shared Outer infrastructure and unclassified networks. The importer must supply a complete inventory.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "All four have dedicated Inner gateways. A claimed reassignment must affect actual attachment or credentials."
+    "scope_reason": "All three have dedicated Inner gateways. A claimed reassignment must affect actual attachment or credentials."
   },
   "RG-008.02": {
     "name": "Equal security label for authenticated Inner peers",
@@ -160,12 +152,11 @@
     ],
     "interpretation": "Every listed authenticated pair and every installed tunnel pair joins Inner devices at equal levels. VG-15 explicitly describes Inner VPN gateways. The model checks every listed Inner pair.",
     "scope": {
-      "net-02": "partly applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Every authenticated pair must identify two Inner devices. A cross-level example also needs different full labels. Only the endpoint-role check applies to net-02."
+    "scope_reason": "Every authenticated pair must identify two Inner devices. A cross-level example also needs different full labels."
   },
   "RG-008.03": {
     "name": "No cross-level Red delivery",
@@ -179,12 +170,11 @@
     ],
     "interpretation": "For every permitted execution, a packet delivered after injection comes from and ends at recorded Red networks with the same full level.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "The target is unequal full labels. Two distinct networks on net-02 share the same full label."
+    "scope_reason": "The target is unequal full labels."
   },
   "RG-008.04": {
     "name": "Delivery between intended peers",
@@ -195,12 +185,11 @@
     ],
     "interpretation": "For every intended pair supplied by the deployment, an actual forwarding trace injects and delivers a plaintext payload. The caller must identify the intended pairs.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Each network specifies cross-site Red peers. Confirm a usable path before the outage and delivery again after restoration."
+    "scope_reason": "Each profile specifies cross-site Red peers whose delivery depends on working Black transport."
   },
   "RG-008.05": {
     "name": "Referenced solutions satisfy their duties",
@@ -210,12 +199,11 @@
     ],
     "interpretation": "The model adds a closed list as evidence when relying on another MSC solution. Every declared reference must resolve to a context satisfying the applicable duties of that solution.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "inapplicable",
       "net-04": "inapplicable",
       "net-05": "inapplicable"
     },
-    "scope_reason": "The four profiles declare no referenced MSC solutions. Closure is conditional on relying on one."
+    "scope_reason": "The three profiles declare no referenced MSC solutions. Closure is conditional on relying on one."
   },
   "RG-008.06": {
     "name": "Duties of included unclassified networks",
@@ -225,7 +213,6 @@
     ],
     "interpretation": "Each included unclassified network is in the Red inventory and satisfies the duties that apply to it. The full target therefore also covers matters outside forwarding.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "inapplicable"
@@ -258,7 +245,6 @@
     ],
     "interpretation": "Every path between different-level Inners crosses a Gray Firewall. At least one firewall exists when the solution has two such levels. The interrupted section reference on page 17 introduces the reason for filtering.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -275,7 +261,6 @@
     ],
     "interpretation": "Gray workstations and local CAs share the highest level. Paths to a different-level Inner from a workstation, Gray CA or revocation service cross a firewall. Firewall rules block any admitted traffic between an identified AW or local CA and a non-highest Inner in either direction.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "inapplicable",
       "net-04": "inapplicable",
       "net-05": "applicable"
@@ -293,7 +278,6 @@
     ],
     "interpretation": "Gray Firewalls and Outer devices filter identified Inner peers by intended communication and full security level. The implication starts when both endpoints are identified as Inner devices.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -312,7 +296,6 @@
     ],
     "interpretation": "Each Gray Firewall has filtering and physical protection appropriate for classified equipment. The formal placement also asks for paths from an Inner to each firewall and from that firewall to an Outer.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -326,7 +309,6 @@
     ],
     "interpretation": "Every listed Inner IPsec gateway uses ESP tunnel mode with an associated IP tunnel. Every in-scope Inner has a matching protocol record.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -344,7 +326,6 @@
     ],
     "interpretation": "A protected Red payload leaving the Inner’s internal zone must be encrypted by a local Inner tunnel before transmission. Every non-control external transmission must show earlier encryption.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -362,7 +343,6 @@
     ],
     "interpretation": "A packet crossing from Gray into Red must arrive with a local receiving Inner tunnel and be decrypted before it leaves on Red. The check covers paired crossings and external egress.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -377,7 +357,6 @@
     ],
     "interpretation": "When selected, each directional Mandatory Access Control objective requires the corresponding policy setting. The two objective flags are independent.",
     "scope": {
-      "net-02": "selection unconfirmed",
       "net-03": "selection unconfirmed",
       "net-04": "selection unconfirmed",
       "net-05": "selection unconfirmed"
@@ -391,7 +370,6 @@
     ],
     "interpretation": "Every Outer has a protocol-matched record and each Outer VPN uses ESP tunnel mode.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -407,7 +385,6 @@
     ],
     "interpretation": "For a non-control packet crossing out of Gray, the Outer must encrypt before forwarding. External transmissions also require an earlier Outer encryption event.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -423,7 +400,6 @@
     ],
     "interpretation": "A packet crossing from Black into Gray must arrive with the receiving Outer tunnel and undergo Outer decryption on that device.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -438,7 +414,6 @@
     ],
     "interpretation": "A selected mandatory-access-control objective requires the corresponding directional policy on each Outer component.",
     "scope": {
-      "net-02": "selection unconfirmed",
       "net-03": "selection unconfirmed",
       "net-04": "selection unconfirmed",
       "net-05": "selection unconfirmed"
@@ -452,7 +427,6 @@
     ],
     "interpretation": "Every modeled non-control reception on an Outer Gray interface already has exactly one identified Inner encryption layer.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -471,12 +445,11 @@
     ],
     "interpretation": "Every graph path from an Outer to untrusted Black passes a firewall. Public Internet counts as untrusted.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "All four declare the isolated Black transport to represent the public Internet."
+    "scope_reason": "All three declare the isolated Black transport to represent the public Internet."
   },
   "RG-034.02": {
     "name": "Inside and outside firewall attachment",
@@ -487,7 +460,6 @@
     ],
     "interpretation": "For Public Internet transport, each Outer attaches to the firewall’s inside and the firewall attaches to Black on its outside.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -501,12 +473,11 @@
     ],
     "interpretation": "For other transports each Outer has an external Black connection supported by graph reachability.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "inapplicable",
       "net-04": "inapplicable",
       "net-05": "inapplicable"
     },
-    "scope_reason": "The alternative branch applies to non-public transport. All four select the public Internet."
+    "scope_reason": "The alternative branch applies to non-public transport. All three select the public Internet."
   },
   "RG-034.04": {
     "name": "Gray-side connection to the required component",
@@ -515,12 +486,11 @@
     ],
     "interpretation": "Each Outer connects internally to a Gray Firewall when required, or to an Inner otherwise.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "On net-02 the Gray-side path can end at an Inner. On net-03, net-04 and net-05 it must reach a Gray Firewall. The choice follows the deployed security levels and PF-23."
+    "scope_reason": "All three multi-level profiles require an Outer-to-Gray-Firewall path under PF-23."
   },
   "RG-035.01": {
     "name": "Outer Black traffic and intended peers",
@@ -539,7 +509,6 @@
     ],
     "interpretation": "Check every Outer Black interface in both directions. A VPN admits IPsec traffic or approved control. A MACsec device admits MACsec or approved control. Egress also requires an intended peer.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -554,7 +523,6 @@
     ],
     "interpretation": "Inner Gray interfaces admit the allowed tunnel protocols or control approved by both policy and the authorizing official.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -568,7 +536,6 @@
     ],
     "interpretation": "Inner Red traffic must match a declared Red service address and transport port at either endpoint.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -584,7 +551,6 @@
     ],
     "interpretation": "A required Outer Firewall admits tunnel traffic or approved control. Inbound packets outside the approved-control exception name the local Outer as source on the inside or destination on the outside.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -599,12 +565,11 @@
     ],
     "interpretation": "An Outer Black interface drops multicast unless the model establishes approved MKA control with the expected group address, framing, peer and Outer MACsec tunnel.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "IPv4 VPN filtering applies on all four. The MKA exception requires an Outer MACsec device."
+    "scope_reason": "IPv4 VPN filtering applies on all three. The MKA exception requires an Outer MACsec device."
   },
   "RG-038.02": {
     "name": "Five-word IPv4 header when PF-10 is selected",
@@ -613,7 +578,6 @@
     ],
     "interpretation": "An Outer VPN that selects PF-10 admits only a five-word IPv4 header.",
     "scope": {
-      "net-02": "selection unconfirmed",
       "net-03": "selection unconfirmed",
       "net-04": "selection unconfirmed",
       "net-05": "selection unconfirmed"
@@ -627,7 +591,6 @@
     ],
     "interpretation": "A VPN admits IPv4 only with TCP, UDP, ESP or ICMP in its protocol field.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -641,7 +604,6 @@
     ],
     "interpretation": "A VPN admits IPv6 only with ESP, TCP, UDP or ICMPv6 in its immediate Next Header field.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "inapplicable",
       "net-04": "inapplicable",
       "net-05": "inapplicable"
@@ -655,12 +617,11 @@
     ],
     "interpretation": "Management starts at a Gray workstation. An Outer may initiate logging or authentication.",
     "scope": {
-      "net-02": "partly applicable",
       "net-03": "partly applicable",
       "net-04": "partly applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Only net-05 has a named Gray workstation. On all four, an Outer can still violate the rule by initiating a classified management service outside logging or authentication. Distinguish missing service declarations from an observed violation."
+    "scope_reason": "Only net-05 has a named Gray workstation. On all three, an Outer can still violate the rule by initiating a classified management service outside logging or authentication. Distinguish missing service declarations from an observed violation."
   },
   "RG-039.02": {
     "name": "Intended same-level Inner tunnel exchange",
@@ -670,7 +631,6 @@
     ],
     "interpretation": "Allow an appropriate tunnel exchange between intended same-level Inner peers, or one used for Gray management. Inspect the embedded Inner pair for a recognized carrier.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -685,7 +645,6 @@
     ],
     "interpretation": "An admitted protected payload other than revocation HTTP must match the intended same-level Inner pair. An appropriate Gray management tunnel also qualifies.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -699,7 +658,6 @@
     ],
     "interpretation": "With a Gray data-plane revocation service, allow necessary Inner revocation HTTP on an Outer VPN. The implementation recognizes the service by its address and port.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "inapplicable",
       "net-04": "inapplicable",
       "net-05": "inapplicable"
@@ -713,7 +671,6 @@
     ],
     "interpretation": "Inbound packets must have a source reachable on the receiving interface.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -727,7 +684,6 @@
     ],
     "interpretation": "The separate management and control allowance requires approval for the Outer. A tunnel exchange may independently qualify under the tunnel allowance.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -741,7 +697,6 @@
     ],
     "interpretation": "Every admitted packet must meet both the restrictions and an allowance. Every eligible packet satisfying both must pass its local hook.",
     "scope": {
-      "net-02": "applicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
@@ -756,12 +711,11 @@
     ],
     "interpretation": "Allow appropriate tunnel traffic between identified intended Inner peers at the same full security level.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "PF-23 makes the Gray Firewall mandatory when multiple protection levels share the solution. Net-02 has two networks at the same full security level. The Gray Firewall exists there as an optional device."
+    "scope_reason": "PF-23 makes the Gray Firewall mandatory when multiple protection levels share the solution."
   },
   "RG-040.02": {
     "name": "Match protected Gray traffic to its peers",
@@ -771,12 +725,11 @@
     ],
     "interpretation": "An admitted protected payload other than revocation HTTP must match the intended same-level Inner pair.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. A cross-label counterexample needs multiple labels. An unintended equal-label pair can also violate the authorization rule."
+    "scope_reason": "A cross-label counterexample needs multiple labels. An unintended equal-label pair can also violate the authorization rule."
   },
   "RG-040.03": {
     "name": "Gray revocation HTTP restrictions",
@@ -785,12 +738,11 @@
     ],
     "interpretation": "Allow necessary Inner revocation HTTP and reject other HTTP under the model’s service classifier.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. Distinguish ordinary HTTP from the conditional permission for a designated revocation service."
+    "scope_reason": "Distinguish ordinary HTTP from the conditional permission for a designated revocation service."
   },
   "RG-040.04": {
     "name": "Gray management port and approval",
@@ -799,12 +751,11 @@
     ],
     "interpretation": "Management admission needs a physical Gray management port, a recognized service and approval.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "partly applicable",
       "net-04": "partly applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. Only net-05 has a physical management interface for the positive allowance. The multi-level networks also restrict management admission on their data interfaces."
+    "scope_reason": "Only net-05 has a physical management interface for the positive allowance. The multi-level networks also restrict management admission on their data interfaces."
   },
   "RG-040.05": {
     "name": "Reachable source on the Gray Firewall",
@@ -813,12 +764,11 @@
     ],
     "interpretation": "On ingress, reject a source outside the reachable addresses or prefixes for that interface.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. Bind the source to the receiving interface and its reachable prefixes."
+    "scope_reason": "Bind the source to the receiving interface and its reachable prefixes."
   },
   "RG-040.06": {
     "name": "Approved standalone Gray control",
@@ -827,12 +777,11 @@
     ],
     "interpretation": "The separate control allowance requires policy approval. A control packet may also qualify as an appropriate tunnel exchange.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. A standalone exchange requires approval if no independent tunnel permission applies."
+    "scope_reason": "A standalone exchange requires approval if no independent tunnel permission applies."
   },
   "RG-040.07": {
     "name": "Default deny and eligible permitted Gray flows",
@@ -841,12 +790,11 @@
     ],
     "interpretation": "Reject traffic outside the allowed classes. Eligible allowed traffic with forwarding permission must pass the local hook.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "Net-02 has one full security level, so the “if a Gray Firewall is required” condition is inactive. Both unauthorized acceptance and unjustified rejection can violate the row."
+    "scope_reason": "Both unauthorized acceptance and unjustified rejection can violate the row."
   },
   "RG-040.08": {
     "name": "No cross-level Inner VPN exchange",
@@ -855,11 +803,10 @@
     ],
     "interpretation": "Block traffic between identified Inner VPN gateways at different classifications on any listed Gray Firewall.",
     "scope": {
-      "net-02": "inapplicable",
       "net-03": "applicable",
       "net-04": "applicable",
       "net-05": "applicable"
     },
-    "scope_reason": "The cross-level prohibition needs two distinct labels. net-02 has one."
+    "scope_reason": "The cross-level prohibition needs two distinct labels."
   }
 }

@@ -7,7 +7,7 @@ import shlex
 import subprocess
 import sys
 
-from observe_controls import HERE, NETWORKS
+from cohort import NETWORKS, registered_profile, runtime_profile as profile
 from supervisor_transport import call as supervisor_call
 
 
@@ -30,7 +30,7 @@ from pathlib import Path
 import hashlib,json,os,re,subprocess,sys,tempfile
 req=json.load(sys.stdin)
 name=req["device"]
-if not re.fullmatch(r"(NT|NF|NR|NM)_[IO]_A1",name):raise ValueError("endpoint outside benchmark")
+if not re.fullmatch(r"(QF|QR|QM|XB|XL|XD)_[IO]_A1",name):raise ValueError("endpoint outside benchmark")
 root=Path("/var/tmp/tdn-naive-rg-mode-lease")
 config=Path(req["directory"])/"devices"/name/"swanctl/swanctl.conf"
 def digest(data):return hashlib.sha256(data).hexdigest()
@@ -87,15 +87,15 @@ if root.exists() and (root/"device").read_text()==sys.argv[1]:
 """
 
 
-def remote(script, request):
-    p=supervisor_call(WORKER,["sudo","-n","python3","-c",script],data=json.dumps(request).encode(),timeout=100)
+def remote(script, request, host=WORKER):
+    p=supervisor_call(host,["sudo","-n","python3","-c",script],data=json.dumps(request).encode(),timeout=160)
     if p.returncode:raise RuntimeError(p.stderr[-1500:].decode(errors='replace'))
     return json.loads(p.stdout)
 
 
 def snapshot(profile):
     nodes=[(d["id"],d["role"]) for d in profile["topology"]["devices"] if d["role"] in ("inner","outer")]
-    result=remote(REMOTE_PROBE,nodes)
+    result=remote(REMOTE_PROBE,nodes,profile["worker"])
     if {r["device"] for r in result}!=set(d for d,_ in nodes):raise ValueError("Incomplete device inventory")
     return result
 
@@ -105,11 +105,6 @@ def evidence(raw):
 
 
 def edit(profile,device,action,nonce):
-    if profile["network"] not in NETWORKS:raise ValueError("Network outside protocol")
+    if not registered_profile(profile):raise ValueError("Network outside protocol")
     return remote(REMOTE_EDIT,{"action":action,"device":device,"directory":profile["deployment_directory"],
-                               "nonce":nonce,"recovery":"SOURCE="+repr(REMOTE_EDIT)+"\n"+RECOVERY})
-
-
-def profile(network):
-    if network not in NETWORKS:raise ValueError(network)
-    return json.loads((HERE/"profiles"/(network+".json")).read_text())
+                               "nonce":nonce,"recovery":"SOURCE="+repr(REMOTE_EDIT)+"\n"+RECOVERY},profile["worker"])

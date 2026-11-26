@@ -3,7 +3,6 @@
 import argparse
 from collections import Counter
 import json
-import os
 from pathlib import Path
 import statistics
 
@@ -14,17 +13,18 @@ from path_diagnostics import decode as delivery_diagnostics
 
 
 METHODS = ("astra", "sol", "tdn")
-CREDITED = ("hit", "assigned_credit")
+CREDITED = ("hit",)
 HEADER_RECHECK = Path("reruns/ipv4-protocol-import")
 CHECK_DIRECTORIES = {
     "modes": "lean", "attachments": "attachment-check", "topology": "tdn-full/topology",
     "forwarding": "tdn-full/forwarding", "headers": "tdn-full/headers", "firewall": "tdn-full/firewall",
+    "architecture": "tdn-full/architecture",
     "delivery": "delivery-check", "gray connectivity": "gray-paths",
 }
 KNOWN_TYPES = {
-    "gray-firewall-detached": {
-        "title": "A Gray Firewall loses every Gray path from an Inner gateway",
-        "clause_ids": ["RG-013.04"],
+    "gray-cross-level-path": {
+        "title": "A Gray path between different-level Inner gateways skips every Gray Firewall",
+        "clause_ids": ["RG-013.01"],
     },
     "firewall-local-empty-udp": {
         "title": "The Outer Firewall admits local UDP outside the approved Black control policy",
@@ -46,18 +46,17 @@ KNOWN_TYPES = {
         "title": "Wrong ESP mode on an Outer gateway",
         "clause_ids": ["RG-030.01"],
     },
-    "delivery-outage": {
-        "title": "Black transit drops intended cross-site deliveries",
-        "clause_ids": ["RG-008.04"],
+    "shared-inner-gateway": {
+        "title": "Two distinct Red networks use one running Inner VPN gateway",
+        "clause_ids": ["RG-008.01"],
     },
     "outer-eligible-deny": {
         "title": "An Outer gateway drops an eligible Inner exchange",
         "clause_ids": ["RG-039.07"],
     },
-    "gray-eligible-deny": {
-        "title": "A Gray Firewall drops traffic it must allow",
-        "clause_ids": ["RG-040.07"],
-        "assigned_credit_networks": ["net-02"],
+    "gray-cross-level-forward": {
+        "title": "A Gray Firewall forwards protected data between different-level Inner gateways",
+        "clause_ids": ["RG-040.02"],
     },
     "firewall-inside-disconnected": {
         "title": "An Outer loses its firewall’s inside connection",
@@ -87,6 +86,8 @@ def type_verdict(results):
 
 
 def records(root):
+    from cohort import require_current_run
+    require_current_run(root)
     results = []
     protocol = read(root / "protocol.json")
     delivery_protocol = (
@@ -96,8 +97,6 @@ def records(root):
     )
     gray_file = root / "gray-connectivity-protocol.json"
     gray_protocol = read(gray_file) if gray_file.is_file() else None
-    recheck_dir = root / HEADER_RECHECK
-    recheck = read(recheck_dir / "record.json") if (recheck_dir / "record.json").is_file() else None
     for p in sorted((root / "trials").glob("*/*/adjudication.json")):
         d = read(p)
         folder = p.parent
@@ -110,20 +109,24 @@ def records(root):
             or d["network"] != n
         ):
             raise ValueError("Unknown or misplaced trial " + str(p))
+        from architecture_cases import FAMILIES
+        if family in FAMILIES:
+            from run_architecture_trial import validate_reading, verify_change, verify_restored
+            from cohort import runtime_profile
+            control = read(folder/"before.json")
+            held,restored = read(folder/"independent-evidence.json"),read(folder/"restored-observations.json")
+            for observation in (control,held,restored):
+                validate_reading(runtime_profile(n),observation)
+            verify_change(family,control,held)
+            verify_restored(family,control,restored)
+            if not read(folder/"restored-health.json")["ready"]:
+                raise ValueError("The original delivery and tunnel controls must pass after restoration")
         if not (folder / "restoration.json").is_file() or not any(
             json.loads(l)["event"] == "restoration_verified"
             for l in (folder / "events.jsonl").read_text().splitlines()
         ):
             raise ValueError("No verified restoration: " + str(p))
         snap = root / "raw" / "trials" / family / n
-        proof_folder = folder
-        if family == "inner-empty-ipv4-header" and recheck is not None:
-            proof_folder = recheck_dir / "trials" / n
-            decision = recheck["networks"][n]
-            header = proof_folder / CHECK_DIRECTORIES["headers"] / "result.json"
-            d["methods"]["tdn"] = {"verdict": decision["verdict"], "reason": decision["reason"],
-                                   "source": os.path.relpath(header, folder)}
-            d["tdn_recheck"] = str(HEADER_RECHECK / "record.json")
         for method in METHODS:
             item = d["methods"][method]
             if item["verdict"] not in ("hit", "miss", "unevaluable", "timeout"):
@@ -171,18 +174,10 @@ def records(root):
                     )
             else:
                 candidates = {
-                    name: proof_folder / subdir / "result.json" for name, subdir in CHECK_DIRECTORIES.items()
+                    name: folder / subdir / "result.json" for name, subdir in CHECK_DIRECTORIES.items()
                     if (name != "delivery" or delivery_protocol) and (name != "gray connectivity" or gray_protocol)
                 }
                 measured = {k: read(v) for k, v in candidates.items() if v.is_file()}
-                if proof_folder != folder:
-                    if measured.keys() != candidates.keys():
-                        raise ValueError(f"Incomplete protocol-import rerun on {n}")
-                    if item["verdict"] == "hit" and not any(
-                        line.startswith("lemma protocol_rules_checked ")
-                        for line in measured["headers"]["failed_obligations"]
-                    ):
-                        raise ValueError(f"No Lean rejection of the protocol rule on {n}")
                 item["proof_results"] = {
                     name: proof["status"] for name, proof in measured.items()
                 }
@@ -198,12 +193,10 @@ def records(root):
                             "Different proof programs in trial and its clean control: "
                             + str(candidates[name])
                         )
-                    if proof_folder != folder:
-                        control = read(recheck_dir / "controls" / n / CHECK_DIRECTORIES[name] / "result.json")
-                        if control["status"] != "pass" or any(
-                            control[key] != expected[key] for key in ("evidence_sha256", "source_sha256")
-                        ):
-                            raise ValueError(f"The clean {name} rerun differs from the registered input on {n}")
+                if family in FAMILIES and item["verdict"] == "hit":
+                    cited = (folder / item["source"]).resolve()
+                    if not any(cited == candidates[k].resolve() and v["status"] == "rejected" for k,v in measured.items()):
+                        raise ValueError("The cited proof must reject the measured faulty snapshot")
                 if item["verdict"] == "hit" and not any(
                     v["status"] == "rejected" for v in measured.values()
                 ):
@@ -243,7 +236,7 @@ def records(root):
         d["capture"] = (
             read(snap / "capture.json") if (snap / "capture.json").is_file() else None
         )
-        d["delivery_paths"] = delivery_diagnostics(proof_folder)
+        d["delivery_paths"] = delivery_diagnostics(folder)
         d["record"] = str(p.relative_to(root))
         results.append(d)
     return results
@@ -270,8 +263,6 @@ def summarize(root):
             if inactive and measured:
                 raise ValueError("A trial was scored outside its stated scope")
             if inactive:
-                if n in definition.get("assigned_credit_networks", ()):
-                    return "assigned_credit"
                 return "inapplicable"
             return measured or "pending"
 

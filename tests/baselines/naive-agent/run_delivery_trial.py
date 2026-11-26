@@ -25,6 +25,8 @@ def delivered(rows):
 
 
 def execute(root, name, family):
+    if family not in {"inner-empty-ipv4-header", "firewall-local-empty-udp", "outer-eligible-deny"}:
+        raise ValueError("Unregistered forwarding case")
     declared = profile(name)
     selected = selection(declared, family)
     trial = root / "trials" / family / name
@@ -73,8 +75,6 @@ def execute(root, name, family):
                 and observed[0]["accepted_by_local_ip"]
                 and last["packets"] == first["packets"] + 1
             )
-        elif family == "delivery-outage":
-            valid = not delivered(observed) and last["packets"] > first["packets"]
         else:
             valid = last["packets"] > first["packets"] and delivered(
                 before
@@ -153,9 +153,7 @@ if __name__ == "__main__":
     p.add_argument(
         "family",
         choices=[
-            "delivery-outage",
             "outer-eligible-deny",
-            "gray-eligible-deny",
             "inner-empty-ipv4-header",
             "firewall-local-empty-udp",
         ],

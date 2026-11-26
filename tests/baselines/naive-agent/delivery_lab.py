@@ -1,17 +1,17 @@
-"""Temporarily deny forwarding on one isolated Black router and verify intended Red delivery."""
+"""Exercise the registered local-header and Outer forwarding faults on a benchmark replica."""
 
 import ipaddress
 import json
 
-from mode_lab import remote
-from observe_controls import NETWORKS
+from mode_lab import WORKER, remote
+from cohort import registered_profile
 
 
 REMOTE_RULE = """
 from pathlib import Path
 import hashlib,json,os,re,subprocess,sys
 r=json.load(sys.stdin);dev=r['device'];rule=r['rule'];chain=r.get('chain','FORWARD')
-if not re.fullmatch(r'(?:NT|NF|NR|NM)_(?:BLACK|O_A1|OF_A1|GF_A|I_A1)',dev):
+if not re.fullmatch(r'(?:QF|QR|QM|XB|XL|XD)_(?:O_A1|OF_A1|I_A1)',dev):
     raise ValueError('Device outside the experiment')
 if r['family']=='inner-empty-ipv4-header':
     red_rule=['-i','red','-s','10.1.1.10/32','-d','10.1.1.1/32','-p','253','-m','length','--length','0:20','-j','ACCEPT']
@@ -22,15 +22,7 @@ elif r['family']=='firewall-local-empty-udp':
     empty_udp=['-i','outside','-s','172.21.11.2/32','-d','172.21.11.1/32','-p','udp','--sport','65431','--dport','65432','-m','length','--length','0:28','-j','ACCEPT']
     if not dev.endswith('_OF_A1') or chain!='INPUT' or rule!=empty_udp:
         raise ValueError('The local UDP test excludes application data and forwarding')
-elif dev.endswith('_OF_A1'):raise ValueError('Unknown Outer Firewall test')
-elif chain=='INPUT':
-    import ipaddress
-    if dev!='NM_GF_A' or r['family']!='gray-eligible-deny' or r['iface']!='mgmt' or rule!=['-i','mgmt','-s','172.30.109.10','-d','172.30.109.20','-p','tcp','--dport','8443','-j','DROP']:
-        raise ValueError('Unexpected local management test')
-elif chain!='FORWARD':raise ValueError('Unknown chain')
-elif r['family']=='delivery-outage':
-    if not dev.endswith('_BLACK') or rule!=['-j','DROP']:raise ValueError('Unexpected Black forwarding test')
-elif r['family'] in ('outer-eligible-deny','gray-eligible-deny'):
+elif r['family']=='outer-eligible-deny' and chain=='FORWARD' and dev.endswith('_O_A1'):
     import ipaddress
     if len(rule)!=8 or rule[0:2]!=['-i',r['iface']] or rule[2]!='-s' or rule[4]!='-d' or rule[-2:]!=['-j','DROP']:
         raise ValueError('Unexpected allowlist test')
@@ -105,7 +97,7 @@ def intended_pairs(profile):
 
 
 def ping(profile):
-    return remote(REMOTE_PINGS, intended_pairs(profile))
+    return remote(REMOTE_PINGS, intended_pairs(profile), profile["worker"])
 
 
 def probe(profile, selected):
@@ -113,89 +105,25 @@ def probe(profile, selected):
         from local_packet_probe import probe as local_probe
 
         return local_probe(selected)
-    if selected.get("chain") != "INPUT":
+    if selected["family"] == "outer-eligible-deny":
         return ping(profile)
-    program = """
-import json,subprocess,sys
-r=json.load(sys.stdin)
-if r['source']!='NM_AW_A99' or r['destination']!='NM_GF_A' or r['address']!='172.30.109.20':
-    raise ValueError('Unexpected management endpoint')
-test='import socket; s=socket.create_connection(("172.30.109.20",8443),4); s.close()'
-p=subprocess.run(['docker','exec',r['source'],'python3','-c',test],capture_output=True,text=True,timeout=9)
-print(json.dumps([{**r,'delivered':p.returncode==0,'returncode':p.returncode,'observation':'TCP connect','error':p.stderr.splitlines()[-1:]}]))
-"""
-    return remote(
-        program,
-        {
-            "source": selected["source_device"],
-            "destination": selected["device"],
-            "address": selected["address"],
-        },
-    )
+    raise ValueError("Unregistered forwarding case")
 
 
 def selection(profile, family):
-    if profile["network"] not in NETWORKS:
+    if not registered_profile(profile):
         raise ValueError("Unknown benchmark network")
     if family in ("inner-empty-ipv4-header", "firewall-local-empty-udp"):
         from local_packet_probe import selection as local_link
 
-        return local_link(profile, family)
+        return {**local_link(profile, family), "worker": profile["worker"]}
     devices = profile["topology"]["devices"]
-    if family == "gray-eligible-deny" and profile["network"] == "net-02":
-        raise ValueError(
-            "PF-23 is conditional on multiple protection levels. The two Red networks on net-02 share one level."
-        )
-    if family == "gray-eligible-deny" and profile["network"] == "net-05":
-        firewall = next(d for d in devices if d["id"] == "NM_GF_A")
-        mgmt = next(i for i in firewall["interfaces"] if i["zone"] == "management")
-        address = str(ipaddress.ip_interface(mgmt["address"]).ip)
-        aw = next(
-            d
-            for d in devices
-            if d["role"] == "admin"
-            and any(
-                str(ipaddress.ip_interface(i["address"]).ip) == firewall["admin"]
-                for i in d["interfaces"]
-                if i.get("address")
-            )
-        )
-        return {
-            "family": family,
-            "device": firewall["id"],
-            "source_device": aw["id"],
-            "address": address,
-            "iface": mgmt["name"],
-            "chain": "INPUT",
-            "rule": [
-                "-i",
-                mgmt["name"],
-                "-s",
-                firewall["admin"],
-                "-d",
-                address,
-                "-p",
-                "tcp",
-                "--dport",
-                "8443",
-                "-j",
-                "DROP",
-            ],
-        }
-    if family == "delivery-outage":
-        target = next(
-            d
-            for d in devices
-            if d["role"] == "transport"
-            and any(i["zone"] == "black" for i in d["interfaces"])
-        )
-        return {"family": family, "device": target["id"], "rule": ["-j", "DROP"]}
+    if family != "outer-eligible-deny":
+        raise ValueError("Unregistered forwarding case")
     prefix = devices[0]["id"].split("_")[0]
     inner = next(d for d in devices if d["id"] == prefix + "_I_A1")
     peer = next(d for d in devices if d["id"] == inner["tunnel"]["peer"])
-    name, iface = (
-        ("_O_A1", "gray") if family == "outer-eligible-deny" else ("_GF_A", "s1")
-    )
+    name, iface = "_O_A1", "gray"
     addr = lambda d: str(
         ipaddress.ip_interface(
             next(i["address"] for i in d["interfaces"] if i["zone"] == "gray")
@@ -203,6 +131,7 @@ def selection(profile, family):
     )
     return {
         "family": family,
+        "worker": profile["worker"],
         "device": prefix + name,
         "iface": iface,
         "rule": ["-i", iface, "-s", addr(inner), "-d", addr(peer), "-j", "DROP"],
@@ -219,7 +148,7 @@ def change(selection, action, nonce):
         + repr(REMOTE_RULE)
         + ")\n"
     )
-    return remote(REMOTE_RULE, req)
+    return remote(REMOTE_RULE, req, selection.get("worker", WORKER))
 
 
 def counter(selection):
@@ -232,4 +161,4 @@ expected='ACCEPT' if r['family'] in ('inner-empty-ipv4-header','firewall-local-e
 if len(values)!=1 or values[0][2]!=expected:raise ValueError('The first rule differs from the test rule')
 print(json.dumps({'packets':int(values[0][0]),'rule':p.stdout}))
 """
-    return remote(code, selection)
+    return remote(code, selection, selection.get("worker", WORKER))

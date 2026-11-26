@@ -7,6 +7,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from architecture_cases import FAMILIES
+from run_architecture_trial import execute as check_architecture
 from attachment_view import live
 from mode_lab import profile, remote
 from observe_controls import HERE, NETWORKS
@@ -35,7 +37,12 @@ def control(network):
 
 
 def execute(run, network, kind):
-    run = run.resolve()
+    from cohort import require_current_run
+    run = require_current_run(run)
+    if not (run/"protocol.json").is_file():
+        raise ValueError("A scored trial requires a frozen protocol with passing clean checks")
+    if network not in NETWORKS or kind not in KNOWN_TYPES:
+        raise ValueError("Unregistered benchmark case")
     scope = json.loads((HERE / "clause_scope.json").read_text())
     clauses = KNOWN_TYPES[kind]["clause_ids"]
     if all(scope[c]["scope"][network] == "inapplicable" for c in clauses):
@@ -60,6 +67,11 @@ def execute(run, network, kind):
     target = folder / (start.strftime("%Y%m%dT%H%M%S%fZ") + ".json")
     sources = (
         "run_case.py",
+        "architecture_cases.py",
+        "run_architecture_trial.py",
+        "architecture_worker.py",
+        "observed_profile.py",
+        "MscArchitectureChecks.lean",
         "blind_audit.py",
         "reader.py",
         "capture_stable.py",
@@ -105,8 +117,8 @@ def execute(run, network, kind):
             "inner-peer-loopback": "inner-peer",
         }[kind]
         check_connection(run, network, field)
-    elif kind == "gray-firewall-detached":
-        check_attachment(run, network, "gray-inner-links")
+    elif kind in FAMILIES:
+        check_architecture(run, network, kind)
     elif kind in ("firewall-inside-disconnected", "firewall-outside-disconnected"):
         check_attachment(run, network, kind.split("-")[1])
     else:

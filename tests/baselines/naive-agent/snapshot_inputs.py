@@ -8,10 +8,8 @@ import re
 
 
 HERE = Path(__file__).resolve().parent
-LIVE = HERE / "runs/20261122-rg-clauses-01"
-RUN = HERE / "runs/20261123-rg-snapshots-01"
+from cohort import LIVE_RUN as LIVE, SNAPSHOT_RUN as RUN, NETWORKS as NETS, require_current_run
 PDF = HERE.parents[2] / "data/extraction/source/CSfC_documentation_v1.3.0.pdf"
-NETS = ("net-02", "net-03", "net-04", "net-05")
 FORBIDDEN = re.compile(rb"-----BEGIN (?:[A-Z0-9 ]* )?PRIVATE KEY-----|(?:AKIA|ASIA)[A-Z0-9]{16}|(?:^|[\s\x22])(?:PASSWORD|ACCESS_TOKEN|SECRET_ACCESS_KEY)=[^\s\x22]+", re.I)
 
 
@@ -30,14 +28,38 @@ def put(path, obj):
 
 
 def build_capture(family, name):
+    require_current_run(LIVE)
+    require_current_run(RUN)
+    if name not in NETS:
+        raise ValueError("Network outside the experiment")
     path = LIVE / "raw" / ("controls" if family == "control" else "trials")
     if family != "control":
         path /= family
     source = path / name / "snapshot"
+    read = lambda path: json.loads(path.read_bytes())
+    trial = LIVE / "trials" / family / name
+    extra = None
+    if family == "control":
+        modes = read(LIVE / "controls" / (name + ".json"))
+        inventories = read(LIVE / "control-inventory.json")["networks"]
+        extra = next(n for n in inventories if n["network"] == name)
+    elif (trial / "mode-observations.json").exists():
+        modes = read(trial / "mode-observations.json")
+        if (trial / "snapshot.json").exists():
+            extra = read(trial / "snapshot.json")
+    else:
+        modes = read(trial / "snapshot.json")[name]
+    blob, signatures = publish_capture(source, RUN / "raw", modes, extra)
+    put(RUN/"inputs"/family/(name+".json"), {"network":name,"bundle":blob,"sources":signatures})
+    return blob
+
+
+def publish_capture(source, blobs, modes, extra=None, *, intent=None, readings=()):
+    """Publish verified raw data and independent deployment intent to the static reader."""
     signatures = {}
     def load(path):
         data = path.read_bytes()
-        signatures[str(path.relative_to(LIVE))] = digest(data)
+        signatures[str(path.relative_to(source))] = digest(data)
         return json.loads(data)
     declared = load(source / "spec.json")
     native_spec = load(source / "native/spec.json")
@@ -45,28 +67,16 @@ def build_capture(family, name):
     processing = load(source / "processing/observations.json")
     manifest = load(source / "native/manifest.json")
     manifest_hashes = {f["path"]: f["sha256"] for f in manifest["files"]}
-    if manifest_hashes["snapshot.json"] != signatures[str((source / "native/snapshot.json").relative_to(LIVE))]:
+    if manifest_hashes["snapshot.json"] != signatures[str((source / "native/snapshot.json").relative_to(source))]:
         raise ValueError("Native snapshot does not match its collection manifest")
     proc_manifest = load(source / "processing/manifest.json")
     for item in proc_manifest["files"]:
-        if item["path"] == "observations.json" and item["sha256"] != signatures[str((source / "processing/observations.json").relative_to(LIVE))]:
+        if item["path"] == "observations.json" and item["sha256"] != signatures[str((source / "processing/observations.json").relative_to(source))]:
             raise ValueError("Processing snapshot does not match its collection manifest")
-    trial = LIVE / "trials" / family / name
-    extra = None
-    if family == "control":
-        modes = load(LIVE / "controls" / (name + ".json"))
-        inventories = load(LIVE / "control-inventory.json")["networks"]
-        extra = next(n for n in inventories if n["network"] == name)
-    elif (trial / "mode-observations.json").exists():
-        modes = load(trial / "mode-observations.json")
-        if (trial / "snapshot.json").exists():
-            extra = load(trial / "snapshot.json")
-    else:
-        modes = load(trial / "snapshot.json")[name]
     views = defaultdict(list)
     def add(view, record, devices=()):
         views[view].append({"devices": [d for d in devices if d], "record": record})
-    for label, spec in (("declared", declared), ("collector-spec", native_spec)):
+    for label, spec in (("declared", intent or declared), ("collector-spec", native_spec)):
         add(label+"-settings", {k:v for k,v in spec.items() if k not in {"devices","links"}})
         for dev in spec["devices"]:
             add(label+"-devices", dev, [dev["id"]])
@@ -79,7 +89,7 @@ def build_capture(family, name):
             raise ValueError("Unexpected archive member")
         raw_file = source / "native" / relative
         raw = load(raw_file)
-        if signatures[str(raw_file.relative_to(LIVE))] != record["raw_sha256"] or record["raw_sha256"] != manifest_hashes[str(relative)]:
+        if signatures[str(raw_file.relative_to(source))] != record["raw_sha256"] or record["raw_sha256"] != manifest_hashes[str(relative)]:
             raise ValueError("Native raw record does not match the snapshot and manifest")
         device = record["device_id"]
         add("raw", {**{k:v for k,v in record.items() if k not in {"raw_path","collector"}}, **raw}, [device])
@@ -118,6 +128,11 @@ def build_capture(family, name):
     if extra and [e["record"] for e in views["link-census"]] != extra["links"]:
         raise ValueError("Published endpoint census differs from the recorded one")
     inventory = [{k:d[k] for k in ("id","role","site","level","network","interfaces") if k in d} for d in declared["devices"]]
+    if (source/"enclave-policy.json").exists():
+        for record in load(source/"enclave-policy.json"):
+            add("enclave-designations",record,[record["admin"],record["red"],record["attached_inner"]])
+    for reading in readings:
+        add("service-observations", reading, reading.get("devices", ()))
     catalogue = {"devices":inventory,"links":declared["links"],"views":{}}
     for label, rows in sorted(views.items()):
         catalogue["views"][label] = {"records":len(rows),
@@ -127,18 +142,20 @@ def build_capture(family, name):
     if FORBIDDEN.search(data):
         raise ValueError("Restricted credential material in capture; review locally")
     packed = gzip.compress(data, compresslevel=1,mtime=0)
-    blob = RUN / "raw" / (digest(packed)+".json.gz")
+    blob = blobs / (digest(packed)+".json.gz")
     blob.parent.mkdir(parents=True,exist_ok=True)
     if not blob.exists():
         blob.write_bytes(packed)
-    put(RUN/"inputs"/family/(name+".json"), {"network":name,"bundle":blob.name,"sources":signatures})
-    return blob.name
+    return blob.name, signatures
 
 
 def main():
+    from run_series import plan
+    require_current_run(LIVE)
+    require_current_run(RUN)
     cases = sorted((p.parent.parent.name,p.parent.name) for p in (LIVE/"trials").glob("*/*/adjudication.json"))
-    if len(cases)!=43 or len(set(cases))!=43:
-        raise ValueError("Expected the 43 separately observed trials")
+    if set(cases) != set(plan()):
+        raise ValueError("Each registered case needs its own live trial and review before the snapshot comparison")
     controls = {n:build_capture("control",n) for n in NETS}
     matrix = {}
     for family,name in cases:

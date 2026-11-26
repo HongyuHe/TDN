@@ -10,9 +10,25 @@ from pathlib import Path
 from statistics import median
 from urllib.parse import quote
 
-from observe_controls import HERE, NETWORKS
-from score_trials import CREDITED, METHODS, summarize, type_verdict
-from snapshot_inputs import LIVE as PAIRED_SOURCE, RUN as SNAPSHOT_RUN
+from observe_controls import HERE
+from score_trials import METHODS, type_verdict as active_verdict
+import subprocess
+NETWORKS = ("net-02", "net-03", "net-04", "net-05")
+CREDITED = ("hit", "assigned_credit")
+PAIRED_SOURCE = HERE / "runs/20261122-rg-clauses-01"
+SNAPSHOT_RUN = HERE / "runs/20261123-rg-snapshots-01"
+
+
+def type_verdict(values):
+    if len(values) == len(NETWORKS) and all(v in CREDITED for v in values):
+        return "hit"
+    return active_verdict(values)
+
+
+def historical_json(name):
+    data = subprocess.check_output(["git", "show", "1d6e508c6f0665dcc282d8c8df84005912c05f0f:tests/baselines/naive-agent/" + name], cwd=HERE)
+    return json.loads(data)
+
 from snapshot_report import paired_report
 
 ROOT = HERE.parents[2]
@@ -600,7 +616,7 @@ def attempt_notes(root):
 
 
 def proof_panel(root):
-    applications = json.loads((HERE / "proof_applications.json").read_text())
+    applications = historical_json("proof_applications.json")
     rows = []
     for rg, item in applications.items():
         source = link(HERE / item["check"], item["check"]) if item["check"] else ""
@@ -1081,11 +1097,14 @@ def fault_matrix(types, snapshot_scores):
 
 
 def build(root, destination):
+    if root.resolve() != PAIRED_SOURCE:
+        from multilevel_report import build as current
+        return current(root,destination)
     paired = root.resolve() == PAIRED_SOURCE and (SNAPSHOT_RUN / "score.json").is_file()
-    data = json.loads((root/"score.json").read_text()) if paired else summarize(root)
+    data = json.loads((root/"score.json").read_text())
     snapshot_scores = json.loads((SNAPSHOT_RUN / "score.json").read_text()) if paired else None
     paired_panels = paired_report(root, SNAPSHOT_RUN, data, esc, link, seconds, result=snapshot_scores) if paired else {}
-    scope = json.loads((HERE / "clause_scope.json").read_text())
+    scope = historical_json("clause_scope.json")
     rows = data["rows"]
     types = data["types"]
     stats = data["stats"]
@@ -1109,7 +1128,7 @@ def build(root, destination):
     scoped = Counter(v for e in scope.values() for v in e["scope"].values())
     group_table, coverage = coverage_table(scope, rows)
     inactive = inactive_table(scope)
-    breakdown = json.loads((HERE / "clause_branches.json").read_text())
+    breakdown = historical_json("clause_branches.json")
     duty = duty_counts(scope, breakdown, rows)
     if breakdown.keys() - scope.keys():
         raise ValueError("Unknown requirement-group row in branch map")
@@ -1171,7 +1190,7 @@ def build(root, destination):
         led.append(
             f'<tr data-search="{esc((cid + " " + record["name"] + " " + record["scope_reason"] + " " + str(breakdown.get(cid, []))).lower())}" data-state="{"measured" if exercised else "open" if applicable else "conditional"}"><th>{cid}</th><td>{esc(record["name"])}<details><summary>Duties and evidence</summary><p>{esc(record["interpretation"])}</p>{duties}<p>{esc(record["scope_reason"])}</p><p>{pointer}</p><small>{esc(branch)}</small></details></td><td>{len(applicable)} / 4</td><td>{cells}</td></tr>'
         )
-    descriptions = json.loads((HERE / "violation_descriptions.json").read_text())
+    descriptions = historical_json("violation_descriptions.json")
     if descriptions.keys() != types.keys():
         raise ValueError("The violation guide and the registered fault types must agree")
     fault_cards, trial_descriptions = violation_catalog(rows, types, descriptions, clause_pointers)
@@ -1405,8 +1424,6 @@ def build(root, destination):
 </main></div><script>{navigation_script}</script><script>function filter(){{const text=document.querySelector("#search").value.toLowerCase(),state=document.querySelector("#state").value;for(const row of document.querySelectorAll("#ledger tbody tr"))row.hidden=!(row.dataset.search.includes(text)&&(!state||row.dataset.state===state));}}document.querySelector("#search").addEventListener("input",filter);document.querySelector("#state").addEventListener("change",filter);</script></body></html>"""
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(doc)
-    if not paired:
-        (root / "score.json").write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
     return destination
 
 
@@ -1414,7 +1431,8 @@ if __name__ == "__main__":
     a = argparse.ArgumentParser(description=__doc__)
     a.add_argument("run", type=Path)
     a.add_argument(
-        "--out", type=Path, default=ROOT / ".lavish/naive-agent-rg-baseline.html"
+        "--out", type=Path
     )
     x = a.parse_args()
-    print(build(x.run.resolve(), x.out.resolve()))
+    output = x.out or ROOT / ".lavish" / ("naive-agent-rg-baseline.html" if x.run.resolve() == PAIRED_SOURCE else "naive-agent-multilevel.html")
+    print(build(x.run.resolve(), output.resolve()))

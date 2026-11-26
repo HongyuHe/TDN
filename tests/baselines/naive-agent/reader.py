@@ -1,4 +1,4 @@
-"""A read-only MCP endpoint for the original PDF and the four emulated networks."""
+"""A read-only MCP endpoint for the original PDF and the active emulated networks."""
 from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
@@ -8,6 +8,8 @@ import subprocess
 import sys
 import time
 
+
+from cohort import NETWORKS
 
 DIR = Path(__file__).resolve().parent
 DOC = DIR / "document.pdf"
@@ -61,6 +63,8 @@ def call(name, args):
             return content([{"page":i+1,"pages_in_document":len(doc),"text":doc[i].get_text()}
                             for i in range(p-1,min(len(doc),p-1+max(1,min(8,args.get("pages",1)))))])
     inventory=json.loads((DIR/"devices.json").read_text())
+    if set(inventory) != set(NETWORKS):
+        raise ValueError("Unexpected network inventory")
     if name == "networks":
         if not args.get("network"): return content(list(inventory))
         return content(inventory[args["network"]])

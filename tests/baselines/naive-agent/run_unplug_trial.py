@@ -14,7 +14,7 @@ from capture_stable import capture_stable
 from delivery_lab import ping
 from delivery_paths import check_trial as check_paths
 from full_suite import suite
-from gray_connectivity import evidence as gray_evidence, trial as gray_check
+from gray_connectivity import trial as gray_check
 from measure import typecheck
 from mode_lab import evidence, profile, snapshot
 from restore_health import verify as verify_health
@@ -32,16 +32,15 @@ def interface_digest(observations):
 
 
 def execute(root, name, side="inside"):
-    if side not in ("inside", "outside", "gray-inner-links"):
+    if side not in ("inside", "outside"):
         raise ValueError(
             "Select the inside or the outside of the designated Outer Firewall"
         )
     p = profile(name)
-    gray = side == "gray-inner-links"
-    family = "gray-firewall-detached" if gray else f"firewall-{side}-disconnected"
+    family = f"firewall-{side}-disconnected"
     trial = root / "trials" / family / name
     trial.mkdir(parents=True, exist_ok=False)
-    dev = target(p, gray)
+    dev = target(p)
     nonce = secrets.token_hex(6)
     before = live(p)
     natural = attachments(p, before)
@@ -64,30 +63,18 @@ def execute(root, name, side="inside"):
         observed = live(p)
         write(trial / "snapshot.json", observed)
         new = attachments(p, observed)
-        if gray:
-            if new != natural or gray_evidence(p, before)["regions"]:
-                raise ValueError("The original Gray or Black connections differ")
-            observed_gray = gray_evidence(
-                p, observed, {(dev, i) for i in original["ports"]}
-            )
-            if [region["firewall"] for region in observed_gray["regions"]] != [dev]:
-                raise ValueError(
-                    "The designated Gray Firewall must uniquely lose its connection to every Inner"
-                )
-            write(trial / "gray-links-observed.json", observed_gray)
-        else:
-            other = "outside" if side == "inside" else "inside"
-            owner = 1 if side == "inside" else 0
-            missing = set(tuple(a) for a in natural[side]) - set(
-                tuple(a) for a in new[side]
-            )
-            if (
-                len(missing) != 1
-                or next(iter(missing))[owner] != dev
-                or len(new[side]) != len(natural[side]) - 1
-                or new[other] != natural[other]
-            ):
-                raise ValueError("Designated Outer lost a different attachment")
+        other = "outside" if side == "inside" else "inside"
+        owner = 1 if side == "inside" else 0
+        missing = set(tuple(a) for a in natural[side]) - set(
+            tuple(a) for a in new[side]
+        )
+        if (
+            len(missing) != 1
+            or next(iter(missing))[owner] != dev
+            or len(new[side]) != len(natural[side]) - 1
+            or new[other] != natural[other]
+        ):
+            raise ValueError("Designated Outer lost a different attachment")
         event(trial, "single_fault_observed", device=dev)
         with ThreadPoolExecutor(max_workers=4) as pool:
             audits = {m: pool.submit(run, m, trial / m) for m in MODELS}
@@ -130,12 +117,6 @@ def execute(root, name, side="inside"):
         write(trial / "interface-stability.json", stability)
         if stability["first"] != stability["last"] or attachments(p, last) != new:
             raise ValueError("Interface observations changed while the fault was held")
-        if (
-            gray
-            and gray_evidence(p, last, {(dev, i) for i in original["ports"]})
-            != observed_gray
-        ):
-            raise ValueError("The disconnected Gray component changed during the trial")
         event(trial, "attachment_snapshot_stable")
     finally:
         restored = change(p, "restore", nonce, side)
@@ -151,10 +132,6 @@ def execute(root, name, side="inside"):
             observed_again = live(p)
             if (
                 attachments(p, observed_again) == natural
-                and (
-                    not gray
-                    or gray_evidence(p, observed_again) == gray_evidence(p, before)
-                )
                 and all(x["delivered"] for x in ping(p))
             ):
                 break
@@ -173,7 +150,7 @@ if __name__ == "__main__":
     parser.add_argument("run", type=Path)
     parser.add_argument("network", choices=NETWORKS)
     parser.add_argument(
-        "--side", choices=("inside", "outside", "gray-inner-links"), default="inside"
+        "--side", choices=("inside", "outside"), default="inside"
     )
     args = parser.parse_args()
     execute(args.run.resolve(), args.network, args.side)

@@ -101,7 +101,7 @@ def validate(root, require_complete):
             if group["verdicts"][m] != type_verdict(
                 [group["cells"][m][n] for n in NETWORKS]
             ):
-                raise ValueError("Four-network score mismatch")
+                raise ValueError("Network cohort score mismatch")
     if require_complete:
         frozen = read(root / "protocol.json")
         current = manifest(root)

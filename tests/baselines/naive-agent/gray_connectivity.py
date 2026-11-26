@@ -164,7 +164,6 @@ def trial(root, case):
     detached = family in (
         "firewall-inside-disconnected",
         "firewall-outside-disconnected",
-        "gray-firewall-detached",
     )
     missing = set()
     if detached:
@@ -185,7 +184,9 @@ def trial(root, case):
                 },
             )
             return
-        census = from_native(p, raw / "snapshot/native")
+        native = raw / "snapshot/native"
+        p = {**p, "topology": read(native / "spec.json")}
+        census = from_native(p, native)
     proof = verify(case / "gray-paths", evidence(p, census, missing))
     write(
         case / "gray-paths-status.json",

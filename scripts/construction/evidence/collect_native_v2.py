@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Collect fresh, allowlisted MSC evidence without reading secret files."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
+from itertools import count
 import json
 import os
 from pathlib import Path
@@ -34,6 +36,7 @@ def main():
     p.add_argument("--probe-expectations")
     p.add_argument("--skip-active-probes",action="store_true",
                    help="Collect configuration/state without host ping or management TLS probes")
+    p.add_argument("--workers", type=int, choices=range(1, 33), default=1)
     a=p.parse_args()
     spec=json.loads(Path(a.spec).read_text())
     probe_policy=json.loads(Path(a.probe_expectations).read_text()) if a.probe_expectations else {}
@@ -47,8 +50,9 @@ def main():
     devices={d["id"]:d for d in spec["devices"]}
     def container(d):
         return d["id"] if spec["version"]==2 else "twinet-"+spec["name"]+"-"+d["id"].lower()
+    observation_ids = count(1)
     def observe(device,kind,command,timeout=20):
-        oid="obs-%05d"%(len(observations)+1)
+        oid="obs-%05d"%next(observation_ids)
         cmd=["docker","exec",container(devices[device]),*command] if device else command
         begin=utc()
         try:
@@ -128,7 +132,8 @@ def main():
         pre[did+"/namespace-peers"]=digest(stable("namespace-peers",json.dumps(nsids[did][0])).encode())
     observed={}
     commands={"interfaces":["ip","-j","-d","address","show"],"routes4":["ip","-j","-4","route","show","table","all"],"routes6":["ip","-j","-6","route","show","table","all"],"filters4":["iptables-save","-t","filter"],"filters6":["ip6tables-save","-t","filter"],"policies":["ip","xfrm","policy","list"],"states":["ip","-s","xfrm","state","list","nokeys"],"forwarding":["sysctl","net.ipv4.ip_forward","net.ipv6.conf.all.forwarding"],"bridge-links":["bridge","-j","link","show"],"bridge-vlans":["bridge","-j","vlan","show"]}
-    for did,d in devices.items():
+    def collect_device(did):
+        d = devices[did]
         rows={}
         for kind,cmd in commands.items():
             body,ob=observe(did,kind,cmd)
@@ -194,6 +199,11 @@ def main():
             observed_mode = modes[0].lower() if len(set(modes)) == 1 else "unknown"
             snapshot["tunnels"].append(fact(did+":tunnel",did,peer_device_id=t["peer"],layer=d["role"],mechanism="IPsec",endpoints={"local":t["local"],"remote":t["remote"]},traffic_selectors={"local":t["local_ts"],"remote":t["remote_ts"]},mode=observed_mode,algorithms={"raw_sas":sas},authentication={"configured":auth_kind,"observed_connections":conns},replay_protection={"raw_states":rows["states"][0]},lifetimes={"raw_connections":conns},observed_state=sas,policies=rows["policies"][0],statistics=rows["states"][0],encapsulation=None,loaded_public_configuration=public_config,loaded_configuration_sha256=digest(public_config.encode()),load_confirmation=load_result,all_runtime_connections=raw_conns,observation_ids=[pc["id"],rc["id"],so["id"],co["id"],rows["states"][1]["id"],rows["policies"][1]["id"]]))
             snapshot["credentials"].append(fact(did+":credentials",did,layer=d["role"],authentication_kind=auth_kind,public_certificate_listing=certs,chain_validation="unavailable from listing alone",revocation_evidence="local CRL details in public listing",observation_ids=[ce["id"]]))
+    with ThreadPoolExecutor(max_workers=a.workers) as workers:
+        list(workers.map(collect_device, devices))
+    order = {name: index for index, name in enumerate(devices)}
+    for key in ("devices", "native_runtime", "interfaces", "routes", "filters", "tunnels", "credentials"):
+        snapshot[key].sort(key=lambda row: order.get(row.get("device_id"), -1))
     for j,l in enumerate(spec["links"]):
         aid=l["a"]["device"]+":"+l["a"]["interface"]
         bid=l["b"]["device"]+":"+l["b"]["interface"]
@@ -260,20 +270,22 @@ print(json.dumps(r))"""
                 result=parsed(body) or {}
                 snapshot["management"]["records"].append(fact("management-"+ob["id"],d["id"],"observed" if ob["returncode"]==0 else "failed",source_device_id=aw["id"],target_device_id=d["id"],profile="mutual_tls",client_certificate=authorized,expected_result="delivered" if authorized else "rejected",result=result,observation_ids=[ob["id"]]))
     post={}
-    for did in devices:
+    def check_stability(did):
         for kind in ["routes4","routes6","filters4","filters6","policies","interfaces","bridge-links","bridge-vlans"]:
             body,ob=observe(did,"convergence-"+kind,commands[kind])
             post[did+"/"+kind]=digest(stable(kind,body).encode())
-    for did,d in devices.items():
+        d = devices[did]
         body,ob=observe(None,"convergence-device-identity",["docker","inspect","--format","{{json .}}",container(d)])
         post[did+"/device-identity"]=digest(stable("device-identity",body).encode())
         pid=str((parsed(body) or {}).get("State",{}).get("Pid",0))
         body,ob=observe(None,"convergence-namespace-peers",["nsenter","-t",pid,"-n","ip","-j","netns","list-id"])
         post[did+"/namespace-peers"]=digest(stable("namespace-peers",body).encode())
-    for did,cmds in native_commands.items():
+        cmds = native_commands.get(did, {})
         for kind,cmd in cmds.items():
             if kind.startswith("native-ovs-") or kind=="native-frr-running":
                 body,ob=observe(did,"convergence-"+kind,cmd);post[did+"/"+kind]=digest(stable(kind,body).encode())
+    with ThreadPoolExecutor(max_workers=a.workers) as workers:
+        list(workers.map(check_stability, devices))
     changed=[k for k in pre if pre[k]!=post[k]]
     for did,alias in aliases.items():
         observe(None,"namespace-alias-release",["ip","netns","delete",alias])

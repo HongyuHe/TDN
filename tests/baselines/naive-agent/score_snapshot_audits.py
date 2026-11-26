@@ -21,6 +21,10 @@ def events(path):
 
 
 def score():
+    from cohort import require_current_run
+    from run_series import plan
+    require_current_run(LIVE)
+    require_current_run(RUN)
     live = load(LIVE/"score.json")
     matrix = load(RUN/"matrix.json")
     protocol = load(RUN/"protocol.json")
@@ -29,7 +33,10 @@ def score():
     assert protocol["reader_sha256"] == digest((HERE/"snapshot_reader.py").read_bytes())
     assert protocol["matrix_sha256"] == digest((RUN/"matrix.json").read_bytes())
     assert protocol["preparation_sha256"] == digest((HERE/"snapshot_inputs.py").read_bytes())
-    assert len(matrix) == 43
+    expected = {f"{kind}/{network}" for kind, network in plan()}
+    assert live["networks"] == list(NETS)
+    assert set(matrix) == expected
+    assert {f'{r["type"]}/{r["network"]}' for r in live["rows"]} == expected
     controls = {n:load(RUN/"inputs/control"/(n+".json"))["bundle"] for n in NETS}
     rows, stats, sessions = [], {}, set()
     tool_counts = Counter()
@@ -86,18 +93,18 @@ def score():
         if row["old"]["astra"] == "miss" or row["new"]["astra"]["verdict"] == "miss":
             row["snapshot_astra_reads"] = visible(case, item["target"])
         rows.append(row)
-    assert len(rows)==43 and len(sessions)==86 and len(types)==11
+    assert len(rows)==len(expected) and len(sessions)==len(expected)*len(MODELS)
     for method in MODELS:
         elapsed = [r["new"][method]["seconds"] for r in rows]
         pairs = Counter((r["old"][method],r["new"][method]["verdict"]) for r in rows)
         hits = sum(r["new"][method]["verdict"]=="hit" for r in rows)
         complete = sum(all(r["new"][method]["verdict"]=="hit" for r in rows if r["type"]==f) for f in types)
         for f in types:
-            assert sum(r["type"]==f for r in rows)==(3 if f=="gray-eligible-deny" else 4)
-        stats[method]={"trials":43,"hit":hits,"miss":43-hits,"credited_slots":hits+1,"complete_types":complete,
+            assert sum(r["type"]==f for r in rows)==len(NETS)
+        stats[method]={"trials":len(rows),"hit":hits,"miss":len(rows)-hits,"credited_slots":hits,"complete_types":complete,
                        "paired":{a+"_"+b:pairs[a,b] for a in ("hit","miss") for b in ("hit","miss")},
                        "median_seconds":statistics.median(elapsed),"min_seconds":min(elapsed),"max_seconds":max(elapsed),
-                       "all_four_read":sum(set(r["new"][method]["networks_read"])==set(NETS) for r in rows)}
+                       "all_networks_read":sum(set(r["new"][method]["networks_read"])==set(NETS) for r in rows)}
     def capture_time(folder):
         return datetime.fromisoformat(load(folder/"snapshot/native/manifest.json")["started_at"])
     control_times = {n:capture_time(LIVE/"raw/controls"/n) for n in NETS}

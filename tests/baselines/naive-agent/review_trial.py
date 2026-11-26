@@ -17,24 +17,12 @@ def read(file):
 
 def observed_fault(family, network, folder):
     change = read(folder / "change.json")
-    if family == "gray-firewall-detached":
-        measured = read(folder / "gray-links-observed.json")
-        original = change["original"]
-        restored = read(folder / "restoration.json")["restored"]
-        if (
-            not change["isolated"]
-            or restored != original
-            or [region["firewall"] for region in measured["regions"]]
-            != [change["device"]]
-        ):
-            raise ValueError(
-                "Missing independent evidence of the loss and restoration of Gray reachability"
-            )
-        return change["device"], (
-            f"The site-A Gray Firewall lost its {len(change['ports'])} Inner-facing connections. "
-            "The complete observed Gray graph put every Inner outside its remaining connected component. "
-            "Reattaching the original interfaces restored their identities and the original paths."
-        )
+    from architecture_cases import FAMILIES
+    if family in FAMILIES:
+        from run_architecture_trial import verify_change, verify_restored
+        before = read(folder / "before.json")
+        verify_restored(family,before,read(folder/"restored-observations.json"))
+        return verify_change(family,before,read(folder/"independent-evidence.json"))
     if family in ("inner-empty-ipv4-header", "firewall-local-empty-udp"):
         before = read(folder / "before.json")
         trial = read(folder / "independent-evidence.json")
@@ -99,13 +87,13 @@ def observed_fault(family, network, folder):
         ]
         if differences != [(network, change["device"], "TUNNEL", "TRANSPORT")]:
             raise ValueError(
-                "Expected exactly one change in the loaded modes of the four networks"
+                "Expected exactly one change in the loaded modes of the active networks"
             )
         return (
             change["device"],
             "The sole protected child connection on "
             + change["device"]
-            + " changed from tunnel to transport mode. The inventories of all four networks located exactly one changed mode.",
+            + " changed from tunnel to transport mode. The inventories of the active networks located exactly one changed mode.",
         )
     if family in ("firewall-inside-disconnected", "firewall-outside-disconnected"):
         side = family.split("-")[1]
@@ -188,6 +176,10 @@ def main():
     args = parser.parse_args()
     folder = args.folder.resolve()
     network, family = folder.name, folder.parent.name
+    from cohort import NETWORKS, require_current_run
+    require_current_run(folder.parents[2])
+    if network not in NETWORKS or family not in KNOWN_TYPES:
+        raise ValueError("Unregistered case")
     events = [
         json.loads(l)["event"]
         for l in (folder / "events.jsonl").read_text().splitlines()
@@ -223,14 +215,6 @@ def main():
         "oracle": oracle,
         "methods": methods,
     }
-    if family == "gray-firewall-detached":
-        observed = read(folder / "gray-links-observed.json")
-        members = next(
-            r["members"] for r in observed["regions"] if r["firewall"] == target
-        )
-        record["gray_firewall_has_no_path_to_an_outer"] = set(members).isdisjoint(
-            observed["outers"]
-        )
     with NamedTemporaryFile(dir=folder, mode="w", encoding="utf-8") as staged:
         json.dump(record, staged, indent=2, ensure_ascii=False)
         staged.write("\n")

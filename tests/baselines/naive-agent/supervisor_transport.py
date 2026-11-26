@@ -8,10 +8,11 @@ import time
 
 
 HOST = 'hy@clnode176.clemson.cloudlab.us'
+WORKERS = {HOST, 'hy@clnode159.clemson.cloudlab.us', 'hy@clnode163.clemson.cloudlab.us'}
 
 
 def call(host, command, *, data, timeout, stream=None):
-    if host != HOST:
+    if host not in WORKERS:
         raise ValueError('Unexpected benchmark worker')
     sockets = Path('/tmp') / f'tdn-benchmark-ssh-{os.getuid()}'
     sockets.mkdir(mode=0o700, exist_ok=True)

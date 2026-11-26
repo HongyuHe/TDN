@@ -20,7 +20,7 @@
     {
       "duty": "A MACsec tunnel terminates on MACsec devices.",
       "profiles": [],
-      "condition": "All four encrypted layers use IPsec."
+      "condition": "Both encrypted layers in each profile use IPsec."
     },
     {
       "duty": "The Inner endpoints belong to the declared Red networks. The corresponding Outer endpoints are at the same respective sites."
@@ -73,7 +73,10 @@
   ],
   "RG-008.01": [
     {
-      "duty": "The declared Red networks have dedicated Inner assignments."
+      "duty": "The declared Red networks have dedicated Inner assignments.",
+      "types": [
+        "shared-inner-gateway"
+      ]
     },
     {
       "duty": "Each assigned device is an Inner at its Red network’s full security level."
@@ -104,10 +107,7 @@
   ],
   "RG-008.04": [
     {
-      "duty": "Each declared cross-site peer pair has a realizable path from injection to plaintext delivery.",
-      "types": [
-        "delivery-outage"
-      ]
+      "duty": "Each declared cross-site peer pair has a realizable path from injection to plaintext delivery."
     }
   ],
   "RG-008.06": [
@@ -120,7 +120,10 @@
   ],
   "RG-013.01": [
     {
-      "duty": "Every Gray path between different-level Inners visits a Gray Firewall."
+      "duty": "Every Gray path between different-level Inners visits a Gray Firewall.",
+      "types": [
+        "gray-cross-level-path"
+      ]
     },
     {
       "duty": "A Gray Firewall exists whenever there are Inners at two different levels."
@@ -160,13 +163,10 @@
       "duty": "The device receives the required physical protection."
     },
     {
-      "duty": "Each Gray Firewall has a path from at least one Inner gateway.",
-      "types": ["gray-firewall-detached"]
+      "duty": "Each Gray Firewall has a path from at least one Inner gateway."
     },
     {
-      "duty": "Each Gray Firewall has a path to at least one Outer gateway.",
-      "types": ["gray-firewall-detached"],
-      "requires_observation": "gray_firewall_has_no_path_to_an_outer"
+      "duty": "Each Gray Firewall has a path to at least one Outer gateway."
     }
   ],
   "RG-029.01": [
@@ -233,7 +233,9 @@
     },
     {
       "duty": "That same firewall attaches to Black on its outside.",
-      "types": ["firewall-outside-disconnected"]
+      "types": [
+        "firewall-outside-disconnected"
+      ]
     }
   ],
   "RG-034.04": [
@@ -248,10 +250,8 @@
     },
     {
       "duty": "Each Outer reaches an Inner when a Gray Firewall is optional.",
-      "profiles": [
-        "net-02"
-      ],
-      "condition": "Net-02 has a single security level."
+      "profiles": [],
+      "condition": "A single security level would activate this alternative. All three profiles have multiple levels."
     }
   ],
   "RG-035.01": [
@@ -278,14 +278,18 @@
   "RG-035.04": [
     {
       "duty": "The Outer Firewall admits only tunnel traffic or approved control.",
-      "types": ["firewall-local-empty-udp"]
+      "types": [
+        "firewall-local-empty-udp"
+      ]
     },
     {
       "duty": "On the inside, inbound non-control traffic identifies the local Outer as its source."
     },
     {
       "duty": "On the outside, inbound non-control traffic identifies the local Outer as its destination.",
-      "types": ["firewall-local-empty-udp"]
+      "types": [
+        "firewall-local-empty-udp"
+      ]
     }
   ],
   "RG-038.01": [
@@ -295,13 +299,15 @@
     {
       "duty": "The narrow exception concerns necessary, approved link control for an Outer MACsec peer.",
       "profiles": [],
-      "condition": "All four Outers use IPsec."
+      "condition": "All three Outers use IPsec."
     }
   ],
   "RG-038.03": [
     {
       "duty": "An IPv4 VPN gateway accepts only TCP, UDP, ESP or ICMP.",
-      "types": ["inner-empty-ipv4-header"]
+      "types": [
+        "inner-empty-ipv4-header"
+      ]
     }
   ],
   "RG-039.01": [
@@ -328,7 +334,7 @@
     {
       "duty": "When an eligible carrier is used, the policy must identify its embedded Inner pair.",
       "profiles": [],
-      "condition": "All four forwarding captures have an empty carrier inventory."
+      "condition": "All three forwarding captures have an empty carrier inventory."
     }
   ],
   "RG-039.03": [
@@ -383,10 +389,18 @@
       "duty": "Traffic outside the allowed classes is denied."
     },
     {
-      "duty": "An eligible permitted exchange passes the required local hook.",
+      "duty": "An eligible permitted exchange passes the required local hook."
+    }
+  ],
+  "RG-040.02": [
+    {
+      "duty": "A Gray Firewall confines protected data to Inner peer addresses at the same security level.",
       "types": [
-        "gray-eligible-deny"
+        "gray-cross-level-forward"
       ]
+    },
+    {
+      "duty": "The Inner peer pair uses an appropriate tunnel."
     }
   ]
 }

@@ -1,4 +1,4 @@
-"""Repeat the blinded audits against frozen, four-network inputs without contacting devices."""
+"""Repeat the blinded audits against the active frozen snapshots without contacting devices."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
@@ -19,7 +19,7 @@ from snapshot_inputs import digest, HERE, LIVE, PDF, put, RUN
 TOOLS = {"document", "networks", "observe"}
 TIMEOUT = 3600
 FEATURES = DISABLED
-PYTHON = HERE / ".runtime/venv/bin/python"
+PYTHON = Path(os.environ.get("TDN_BENCHMARK_READER_PYTHON", HERE / ".runtime/venv/bin/python")).absolute()
 
 
 def utc():
@@ -35,11 +35,24 @@ def lines(path):
 
 
 def audit(case, model, bundles):
-    dest = RUN / "trials" / case / model
+    from cohort import NETWORKS, require_current_run
+    require_current_run(RUN)
+    if set(bundles) != set(NETWORKS) or case.split("/")[-1] not in NETWORKS:
+        raise ValueError("Unexpected snapshot cohort")
+    return audit_saved(case, model, bundles, RUN)
+
+
+def audit_saved(case, model, bundles, root):
+    """The sandbox receives the PDF and the named immutable observation bundles."""
+    if not bundles or not all(n.replace("-", "").isalnum() for n in bundles):
+        raise ValueError("Invalid reader inventory")
+    if model not in MODELS:
+        raise ValueError("Unknown detector")
+    dest = root / "trials" / case / model
     if (dest/"execution.json").exists() and load(dest/"execution.json")["status"] == "completed":
         return "completed"
     if dest.exists():
-        archive = RUN/"attempts"/case/model/str(time.time_ns())
+        archive = root/"attempts"/case/model/str(time.time_ns())
         archive.parent.mkdir(parents=True,exist_ok=True)
         dest.rename(archive)
     dest.mkdir(parents=True)
@@ -49,9 +62,10 @@ def audit(case, model, bundles):
         workspace.mkdir()
         server.mkdir()
         shutil.copyfile(HERE/"snapshot_reader.py", server/"reader.py")
+        (server/"cohort.py").write_text("NETWORKS = " + repr(tuple(sorted(bundles))) + "\n")
         os.link(PDF, server/"document.pdf") if PDF.stat().st_dev == stage.stat().st_dev else shutil.copyfile(PDF, server/"document.pdf")
         for n,file in bundles.items():
-            src = RUN/"raw"/file
+            src = root/"raw"/file
             if digest(src.read_bytes()) != file.removesuffix(".json.gz"):
                 raise ValueError("Changed detector input")
             if src.stat().st_dev == stage.stat().st_dev:
@@ -109,13 +123,16 @@ def main():
     parser.add_argument("--case",action="append")
     parser.add_argument("--model",choices=MODELS,action="append")
     args=parser.parse_args()
+    from cohort import NETWORKS, REVISION, require_current_run
+    require_current_run(RUN)
+    require_current_run(LIVE)
     matrix=load(RUN/"matrix.json")
-    put(RUN/"protocol.json", {"source_run":LIVE.name,"pdf_sha256":digest(PDF.read_bytes()),
+    put(RUN/"protocol.json", {"revision":REVISION,"original_profiles":list(NETWORKS),"source_run":LIVE.name,"pdf_sha256":digest(PDF.read_bytes()),
         "reader_sha256":digest((HERE/"snapshot_reader.py").read_bytes()),"matrix_sha256":digest((RUN/"matrix.json").read_bytes()),
         "preparation_sha256":digest((HERE/"snapshot_inputs.py").read_bytes()),"models":MODELS,"reasoning":"high","prompt":PROMPT,
         "audit_limit_seconds":TIMEOUT,"tools":sorted(TOOLS),"disabled_features":list(FEATURES),
         "scoring":"Same target network and observed fault or effect as the live study; a different CP citation is accepted. "
-                  "Count an observed type only when every applicable instance is identified. Keep the assigned net-02 point separate."})
+                  "Count an observed type only when every applicable instance is identified. Every credited case requires an observed detection."})
     cases=args.case or sorted(matrix)
     random.Random(317).shuffle(cases)
     jobs=[(case,model) for case in cases for model in (args.model or MODELS)]

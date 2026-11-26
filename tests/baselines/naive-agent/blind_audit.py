@@ -10,6 +10,7 @@ import tempfile
 import time
 
 from observe_controls import HERE, NETWORKS
+from cohort import runtime_profile
 
 
 ROOT = HERE.parents[2]
@@ -30,9 +31,10 @@ def run(model, destination):
         stage=Path(base);workspace=stage/"workspace";workspace.mkdir()
         server=stage/"reader";server.mkdir()
         shutil.copyfile(HERE/"reader.py",server/"reader.py");shutil.copyfile(pdf,server/"document.pdf")
+        shutil.copyfile(HERE/"cohort.py",server/"cohort.py")
         inventory={}
         for name in NETWORKS:
-            t=json.loads((HERE/"profiles"/(name+".json")).read_text())["topology"]
+            t=runtime_profile(name)["topology"]
             inventory[name]={"devices":[{k:d[k] for k in FIELDS if k in d} for d in t["devices"]],"links":t["links"]}
         (server/"devices.json").write_text(json.dumps(inventory))
         argv=["codex","exec","--ignore-user-config","--ignore-rules","--skip-git-repo-check","--ephemeral","--json",

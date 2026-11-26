@@ -102,7 +102,7 @@ def clean_management(run, network):
 import json,subprocess,sys
 items=json.load(sys.stdin)
 for item in items:
-    if (item['sourceDevice'],item['destinationAddress']) not in [('NM_AW_A99','172.30.109.20'),('NM_AW_B99','172.30.119.20')]:
+    if (item['sourceDevice'],item['destinationAddress']) not in [('QM_AW_A99','172.30.109.20'),('QM_AW_B99','172.30.119.20')]:
         raise ValueError('Unexpected management circuit')
     sample='import socket,sys,json; s=socket.create_connection((sys.argv[1],8443),4); print(json.dumps(s.getsockname())); s.close()'
     endpoint=json.loads(subprocess.check_output(['docker','exec',item['sourceDevice'],'python3','-c',sample,item['destinationAddress']],text=True,timeout=9))
@@ -196,7 +196,7 @@ def register(run):
     result={'registered_at':datetime.now(timezone.utc).isoformat(),'clean_proofs':clean,'control_files_sha256':inputs,
             'sources_sha256':{str(p.relative_to(ROOT)):digest(p) for p in (HERE/'DeliveryPathChecks.lean',HERE/'delivery_paths.py',GENERATOR,ROOT/'TDN/Models/RecordedForwarding.lean')},
             'allowed_pairs':pairs,'forwarding_steps':transitions,
-            'selection':'Positive paths were generated on the four original clean captures, before the first forwarding-denial trial. Each proved delivery starts at an authorized Red source and ends at the designated same-network peer. Legitimate public association identifiers can be rebound to the same tunnel endpoints after rekeying.',
+            'selection':'Positive paths were generated on the three registered clean captures, before the first forwarding-denial trial. Each proved delivery starts at an authorized Red source and ends at the designated same-network peer. Legitimate public association identifiers can be rebound to the same tunnel endpoints after rekeying.',
             'earlier_trials':'The existing isolated mode trials are replayed against their retained snapshots with this same proof. Original six-check timings remain available separately.'}
     with (run/'delivery-protocol.json').open('x') as file:
         file.write(json.dumps(result,indent=2)+'\n')

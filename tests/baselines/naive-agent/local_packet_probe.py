@@ -1,11 +1,12 @@
 """Observe a single header-only datagram on one of two original local links."""
 
-from mode_lab import remote
+from mode_lab import WORKER, remote
+from cohort import SCALE_PREFIXES
 
 
 IP_HEADER = "inner-empty-ipv4-header"
 FIREWALL_UDP = "firewall-local-empty-udp"
-PREFIX = {"net-02": "NT", "net-03": "NF", "net-04": "NR", "net-05": "NM"}
+PREFIX = {"net-03": "QF", "net-04": "QR", "net-05": "QM", **SCALE_PREFIXES}
 
 
 def selection(profile, family):
@@ -20,6 +21,8 @@ def selection(profile, family):
         host, gateway = prefix + "_BLACK", prefix + "_OF_A1"
         source_role, dest_role, zone = "transport", "firewall", "black"
         source_iface, dest_iface = "p11", "outside"
+        if profile["network"] in SCALE_PREFIXES:
+            source_iface = "p1_1"
         source, dest, width = "172.21.11.2", "172.21.11.1", 30
         protocol = [
             "-p",
@@ -78,7 +81,7 @@ PROBE = """
 import json,re,select,subprocess,sys,time
 row=json.load(sys.stdin);host=row['source_device'];gateway=row['device'];family=row['family']
 prefix=host.split('_')[0]
-if prefix not in ('NT','NF','NR','NM'):raise ValueError('Unknown network')
+if prefix not in ('QF','QR','QM','XB','XL','XD'):raise ValueError('Unknown network')
 if family=='inner-empty-ipv4-header' and (host,gateway)==(prefix+'_R_A1',prefix+'_I_A1'):
     source,dest,source_iface,dest_iface,number,total='10.1.1.10','10.1.1.1','red','red',253,20
     group,column='Ip:','InUnknownProtos'
@@ -89,6 +92,7 @@ with socket.socket(socket.AF_INET,socket.SOCK_RAW,253) as s:
     assert s.sendto(b"",("10.1.1.1",0))==0'''
 elif family=='firewall-local-empty-udp' and (host,gateway)==(prefix+'_BLACK',prefix+'_OF_A1'):
     source,dest,source_iface,dest_iface,number,total='172.21.11.2','172.21.11.1','p11','outside',17,28
+    if prefix in ('XB','XL','XD'):source_iface='p1_1'
     group,column='Udp:','NoPorts'
     emit='''import socket
 with socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as s:
@@ -143,4 +147,4 @@ finally:
 
 
 def probe(selected):
-    return remote(PROBE, selected)
+    return remote(PROBE, selected, selected.get("worker", WORKER))

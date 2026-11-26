@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Collect the read-only processing observations required by the execution export."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import datetime
 import hashlib
 import json
@@ -30,35 +31,42 @@ def now():
     return datetime.datetime.now(datetime.timezone.utc).isoformat()
 
 
-def collect(spec_path, output):
+def collect(spec_path, output, workers=1):
     output.mkdir(parents=True, exist_ok=False)
     spec = json.loads(spec_path.read_text())
     devices = [d['id'] for d in spec['devices']]
     started, records, failures = now(), [], []
+    def device_reads(device):
+        items = []
+        commands = dict(COMMANDS)
+        for kind, arguments in commands.items():
+            command = ['docker', 'exec', device, *arguments]
+            beginning = now()
+            try:
+                result = subprocess.run(command, capture_output=True, text=True, timeout=25)
+                stdout, stderr, code = result.stdout, result.stderr, result.returncode
+            except subprocess.TimeoutExpired:
+                stdout, stderr, code = '', 'Collector timeout', 124
+            if 'PRIVATE KEY-----' in stdout or 'PRIVATE KEY-----' in stderr:
+                raise ValueError('Private key output refused')
+            record = {'device_id': device,
+                'kind': kind, 'command': command, 'started_at': beginning, 'ended_at': now(),
+                'returncode': code, 'stdout': stdout, 'stderr': stderr}
+            items.append(record)
+        return items
     for phase in ['before', 'after']:
-        for device in devices:
-            commands = dict(COMMANDS)
-            for kind, arguments in commands.items():
-                command = ['docker', 'exec', device, *arguments]
-                beginning = now()
-                try:
-                    result = subprocess.run(command, capture_output=True, text=True, timeout=25)
-                    stdout, stderr, code = result.stdout, result.stderr, result.returncode
-                except subprocess.TimeoutExpired:
-                    stdout, stderr, code = '', 'Collector timeout', 124
-                if 'PRIVATE KEY-----' in stdout or 'PRIVATE KEY-----' in stderr:
-                    raise ValueError('Private key output refused')
-                record = {'id': 'processing-%05d' % len(records), 'phase': phase, 'device_id': device,
-                    'kind': kind, 'command': command, 'started_at': beginning, 'ended_at': now(),
-                    'returncode': code, 'stdout': stdout, 'stderr': stderr}
-                records.append(record)
-                if code:
-                    failures.append(record['id'])
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            for batch in pool.map(device_reads, devices):
+                for record in batch:
+                    record.update(id='processing-%05d' % len(records), phase=phase)
+                    records.append(record)
+                    if record['returncode']:
+                        failures.append(record['id'])
     ended = now()
     observations = {'schema_version': 'processing-evidence/v1', 'request_id': output.name,
         'started_at': started, 'ended_at': ended, 'runtime_backend': 'native-frr-ovs-strongswan-linux',
         'expected_device_ids': devices, 'records': records,
-        'limitations': ['Sequential before/after observations do not prove atomicity.']}
+        'limitations': ['Two collection passes are recorded. Device observations within a pass can overlap in time.']}
     (output / 'observations.json').write_text(json.dumps(observations, indent=2) + '\n')
     shutil.copy2(__file__, output / 'collector.source.py')
     files = [{'path': p.name, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest(), 'bytes': p.stat().st_size}
@@ -76,5 +84,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--spec', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--workers', type=int, choices=range(1, 33), default=1)
     arguments = parser.parse_args()
-    collect(arguments.spec, arguments.output)
+    collect(arguments.spec, arguments.output, arguments.workers)

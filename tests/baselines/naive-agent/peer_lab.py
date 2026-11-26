@@ -36,7 +36,7 @@ CHANGE = """
 from pathlib import Path
 import hashlib,ipaddress,json,re,subprocess,sys
 r=json.load(sys.stdin);dev=r['device'];nonce=r['nonce']
-if not re.fullmatch(r'(NT|NF|NR|NM)_I_A1',dev) or not re.fullmatch(r'[a-f0-9]{12}',nonce):
+if not re.fullmatch(r'(QF|QR|QM|XB|XL|XD)_I_A1',dev) or not re.fullmatch(r'[a-f0-9]{12}',nonce):
     raise ValueError('Select the designated Inner on an original benchmark network')
 expected=str(ipaddress.IPv4Address(r['expected']));original='/etc/swanctl/swanctl.conf'
 if expected!='10.200.1.2':raise ValueError('Unexpected original endpoint')
@@ -111,13 +111,13 @@ def change(profile, action, nonce):
         + repr(CHANGE)
         + ")\n"
     )
-    return remote(CHANGE, request)
+    return remote(CHANGE, request, profile["worker"])
 
 
 RECONNECT = """
 import json,re,subprocess,sys,time
 req=json.load(sys.stdin);dev=req['device'];address=req['address']
-if not re.fullmatch(r'(NT|NF|NR|NM)_I_A1',dev) or address not in ('10.200.1.2','127.0.0.2'):
+if not re.fullmatch(r'(QF|QR|QM|XB|XL|XD)_I_A1',dev) or address not in ('10.200.1.2','127.0.0.2'):
     raise ValueError('Unknown designated Inner connection')
 other=dev.replace('_I_A1','_I_B1')
 def swan(name,*args):
@@ -161,4 +161,5 @@ def reconnect(profile, faulty=False):
     return remote(
         RECONNECT,
         {"device": gateway, "address": "127.0.0.2" if faulty else "10.200.1.2"},
+        profile["worker"],
     )
