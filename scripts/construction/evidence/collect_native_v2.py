@@ -36,6 +36,8 @@ def main():
     p.add_argument("--probe-expectations")
     p.add_argument("--skip-active-probes",action="store_true",
                    help="Collect configuration/state without host ping or management TLS probes")
+    p.add_argument("--traffic-control",action="store_true",help="Read Linux traffic-control hooks and their filters")
+    p.add_argument("--public-key-contexts",action="store_true",help="Read operator-supplied opaque key-origin attestations on encryption gateways")
     p.add_argument("--workers", type=int, choices=range(1, 33), default=1)
     a=p.parse_args()
     spec=json.loads(Path(a.spec).read_text())
@@ -51,9 +53,9 @@ def main():
     def container(d):
         return d["id"] if spec["version"]==2 else "twinet-"+spec["name"]+"-"+d["id"].lower()
     observation_ids = count(1)
-    def observe(device,kind,command,timeout=20):
+    def observe(device,kind,command,timeout=20,*,host_command=False):
         oid="obs-%05d"%next(observation_ids)
-        cmd=["docker","exec",container(devices[device]),*command] if device else command
+        cmd=["docker","exec",container(devices[device]),*command] if device and not host_command else command
         begin=utc()
         try:
             r=subprocess.run(cmd,capture_output=True,text=True,timeout=timeout)
@@ -66,6 +68,15 @@ def main():
             stderr="collector timeout"
         if kind=="loaded-public-config" and re.search(r"secrets\s*\{",body):
             raise RuntimeError("Refused secret-bearing configuration")
+        if kind == "public-key-context" and rc == 0:
+            attestation = json.loads(body)
+            if attestation is None:
+                kind = "public-key-context-availability"
+            elif (not isinstance(attestation,dict) or set(attestation) != {"device","active","origin","key_context"}
+                    or attestation["device"] != device or type(attestation["active"]) is not bool
+                    or not all(isinstance(attestation[k],str) and re.fullmatch(r"[a-zA-Z0-9_.:/-]{1,96}",attestation[k])
+                               for k in ("origin","key_context"))):
+                raise ValueError("Expected only the gateway identity, active flag and public key-origin identifiers")
         if "PRIVATE KEY-----" in body or "PRIVATE KEY-----" in stderr:
             raise RuntimeError("Refused secret material in allowlisted observation")
         raw={"stdout":body,"stderr":stderr}
@@ -140,7 +151,20 @@ def main():
             rows[kind]=(body,ob)
             if kind in ["routes4","routes6","filters4","filters6","policies","interfaces","bridge-links","bridge-vlans"]:
                 pre[did+"/"+kind]=digest(stable(kind,body).encode())
-        keys=["net.ipv6.conf."+name+"."+setting for name in ["all","default","lo"]+[i["name"] for i in d["interfaces"]] for setting in ["disable_ipv6","forwarding"]]
+        observed_names = {p["ifname"] for p in parsed(rows["interfaces"][0]) or []}
+        if a.public_key_contexts and d["role"] in {"inner","outer"}:
+            observe(did,"public-key-context",["sh","-c",
+                'if test -e "$1"; then cat "$1"; else echo null; fi',"sh","/run/tdn-public-key-context.json"])
+        if a.traffic_control:
+            tc = ["nsenter","-t",str(inspected[did][0]["State"]["Pid"]),"-n","tc","-j"]
+            qdiscs,_ = observe(did,"traffic-control-qdiscs",[*tc,"qdisc","show"],host_command=True)
+            for hook in parsed(qdiscs) or []:
+                if hook.get("kind") not in {"ingress","clsact"}:
+                    continue
+                directions = ("ingress","egress") if hook["kind"] == "clsact" else ("ingress",)
+                for direction in directions:
+                    observe(did,"traffic-control-filters",[*tc,"filter","show","dev",hook["dev"],direction],host_command=True)
+        keys=["net.ipv6.conf."+name+"."+setting for name in ["all","default","lo"]+[i["name"] for i in d["interfaces"] if i["name"] in observed_names] for setting in ["disable_ipv6","forwarding"]]
         rows["ipv6-settings"]=observe(did,"ipv6-settings",["sysctl",*keys])
         rows["nft-hooks"]=observe(None,"nft-hooks",["nsenter","-t",str(inspected[did][0]["State"]["Pid"]),"-n","nft","-j","list","ruleset"])
         if spec["version"]==2:

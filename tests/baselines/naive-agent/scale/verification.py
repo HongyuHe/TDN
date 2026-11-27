@@ -2,6 +2,8 @@
 
 from pathlib import Path
 import hashlib
+from functools import cache
+from ipaddress import ip_interface
 import json
 import re
 import sys
@@ -16,11 +18,31 @@ from gray_connectivity import evidence as gray_evidence, verify as check_gray
 from measure import typecheck
 from mode_lab import evidence as mode_evidence
 from scale.profiles import profile
+from scale.design import control_profile, key_attestations
+from scale.service_policy import check as check_service_policy
 from snapshot_inputs import put
+
+REGISTERED_PROOF_SUITES = {"architecture", "topology", "forwarding", "headers", "firewall",
+                           "modes", "attachments", "gray-connectivity", "service-policy", "key-contexts", "deliveries"}
 
 
 def read(path):
     return json.loads(path.read_bytes())
+
+
+def management_inputs(topology):
+    admins = {str(ip_interface(p["address"]).ip): d["id"] for d in topology["devices"]
+              if d["role"] == "admin" for p in d["interfaces"] if p.get("address")}
+    result = []
+    for d in topology["devices"]:
+        if d["role"] != "gray-firewall" or not d.get("admin"):
+            continue
+        for p in d["interfaces"]:
+            if p["zone"] == "management":
+                result.append({"iface": d["id"] + ":" + p["name"], "sourceDevice": admins[d["admin"]],
+                               "sourceAddress": d["admin"], "destinationAddress": str(ip_interface(p["address"]).ip),
+                               "sourcePort": 49152, "destinationPort": 8443})
+    return result
 
 
 def connections(native):
@@ -48,8 +70,24 @@ def connections(native):
     return rows
 
 
-def verify(root, name, snapshot, out, *, control=False):
-    p = profile(name)
+def check_key_contexts(native, intended, dest):
+    snapshot = read(native / "snapshot.json")
+    roles = {d["id"]: d["role"] for d in intended["devices"] if d["role"] in {"inner", "outer"}}
+    observed = {d["id"]: d["role"] for d in snapshot["devices"] if d["role"] in {"inner", "outer"}}
+    if observed != roles or set(roles.values()) != {"inner", "outer"}:
+        raise ValueError("The captured gateways differ from the registered Inner and Outer inventory")
+    contexts = key_attestations(native, snapshot, require_complete=True)
+    evidence = {role: sorted((r["origin"], r["key_context"]) for d, r in contexts.items()
+                              if roles[d] == role and r["active"])
+                for role in ("inner", "outer")}
+    if not all(evidence.values()):
+        raise ValueError("The recorded gateways have no active key context to compare at one layer")
+    source = HERE / "KeyContextChecks.lean"
+    return typecheck(source, dest, evidence, set(source.read_text().splitlines()))
+
+
+def verify(root, name, snapshot, out, *, control=False, registered_policy=None, control_variant=None):
+    p = control_profile(name, control_variant) if control_variant is not None else profile(name)
     native = snapshot / "native"
     results = suite(native, snapshot / "processing", out)
 
@@ -83,14 +121,17 @@ def verify(root, name, snapshot, out, *, control=False):
         )
 
     run("modes", mode)
-    census = from_native(p, native)
-    run("attachments", lambda: check_attachments(p, census, out / "attachments"))
+    @cache
+    def census():
+        return from_native(p, native)
+
+    run("attachments", lambda: check_attachments(p, census(), out / "attachments"))
 
     def gray():
         observed_profile = {**p, "topology": read(native / "spec.json")}
         actual = {
             (d["device"], i["ifname"])
-            for d in census["devices"]
+            for d in census()["devices"]
             for i in d["interfaces"]
         }
         expected = {
@@ -100,12 +141,18 @@ def verify(root, name, snapshot, out, *, control=False):
         }
         missing = sorted(expected - actual)
         return check_gray(
-            out / "gray-connectivity", gray_evidence(observed_profile, census, missing)
+            out / "gray-connectivity", gray_evidence(observed_profile, census(), missing)
         )
 
     run("gray-connectivity", gray)
+    run("service-policy", lambda: check_service_policy(
+        native, p["topology"], read(out / "forwarding/evidence.json"), out / "service-policy",
+        registered_policy=registered_policy))
+    if registered_policy is not None:
+        run("key-contexts", lambda: check_key_contexts(native, p["topology"], out / "key-contexts"))
+    if control:
+        put(root / "controls" / (name + "-management-inputs.json"), management_inputs(p["topology"]))
     if control and not (root / "controls" / (name + "-approved-paths.json")).exists():
-        put(root / "controls" / (name + "-management-inputs.json"), [])
         try:
             clean_paths(root, name)
         except Exception as exc:

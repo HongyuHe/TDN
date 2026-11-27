@@ -1,13 +1,14 @@
-"""Generate the three registered, two-site Twinet networks for the size experiment."""
+"""Load the three registered Twinet topologies or regenerate them from net-05."""
 
 from collections import Counter
 from pathlib import Path
 import argparse
 import json
+import sys
 
 
-HERE = Path(__file__).resolve().parent
-BASELINE = HERE.parent
+PROFILE_DIR = Path(__file__).resolve().parent.parent / "profiles"
+NATIVE_BASE = PROFILE_DIR / "native" / "net-05.json"
 NETWORKS = {
     "Base": ("XB", 2, 1, "clnode176.clemson.cloudlab.us"),
     "10xLevels": ("XL", 20, 1, "clnode159.clemson.cloudlab.us"),
@@ -16,9 +17,9 @@ NETWORKS = {
 STATE_ROOT = "/var/tmp/tdn-scale-study"
 
 
-def profile(name):
-    prefix, levels, branches, host = NETWORKS[name]
-    original = json.loads((BASELINE / "profiles/net-05.json").read_text())
+def generate_topology(name):
+    prefix, levels, branches, _ = NETWORKS[name]
+    original = json.loads(NATIVE_BASE.read_text())
     spec = {
         k: v for k, v in original["topology"].items() if k not in ("devices", "links")
     }
@@ -219,12 +220,19 @@ def profile(name):
                 management(site, str(k), octet, [inner])
             gray_id = "99" if branch == 1 else f"99_{branch}"
             management(site, gray_id, 99 + near * 10 + branch - 1, [gf, o, fw])
+    return spec
+
+
+def profile(name):
+    _, _, _, host = NETWORKS[name]
+    original = json.loads(NATIVE_BASE.read_text())
+    spec_path = PROFILE_DIR / "scale" / f"{name}.json"
     return {
         "network": name,
         "worker": "hy@" + host,
         "deployment_directory": f"{STATE_ROOT}/{name}/state",
         "black_transport_interpretation": original["black_transport_interpretation"],
-        "topology": spec,
+        "topology": json.loads(spec_path.read_text()),
     }
 
 
@@ -241,11 +249,18 @@ def inventory(name):
 if __name__ == "__main__":
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument("name", choices=NETWORKS)
-    cli.add_argument("--topology", action="store_true")
-    args = cli.parse_args()
-    print(
-        json.dumps(
-            profile(args.name)["topology"] if args.topology else inventory(args.name),
-            indent=2,
-        )
+    mode = cli.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--topology", action="store_true", help="regenerate the Twinet topology and print its JSON"
     )
+    sys.path.insert(0, str(PROFILE_DIR.parent))
+    from scale.design import CONTROLS, control_topology
+    mode.add_argument("--control-topology", choices=CONTROLS, help="print a healthy topology for the registered study")
+    args = cli.parse_args()
+    if args.control_topology:
+        result = control_topology(args.name,args.control_topology)
+    elif args.topology:
+        result = generate_topology(args.name)
+    else:
+        result = inventory(args.name)
+    print(json.dumps(result, indent=2))

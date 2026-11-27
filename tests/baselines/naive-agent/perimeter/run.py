@@ -55,7 +55,7 @@ def controls_from_intent(spec, policy):
     return result
 
 
-def project(bundle, controls):
+def project(bundle, controls, intent=None):
     kinds = {'inner':'vpn', 'outer':'vpn', 'firewall':'outerFirewall', 'gray-firewall':'grayFirewall',
              'transport':'ordinaryGrayRouter', 'switch':'ordinaryGraySwitch', 'host':'other', 'admin':'workstation'}
     sources = {d['id']: d for d in bundle['sourceDevices']}
@@ -96,27 +96,40 @@ def project(bundle, controls):
     #* Native policies are constructed inside Lean from the complete captured device rules.
     #* The firewall theorem uses no tunnel, payload-size, endpoint-service, or ACL-mask declarations.
     firewalls = []
+    projection = bundle['validation']['snapshot'].get('ipv4_link_observations', {})
+    absent = set(projection.get('absent_interfaces', []))
+    required = {d['id']+':'+p['name'] for d in (intent or {}).get('devices', [])
+                if d['role']=='firewall' for p in d['interfaces'] if p['zone']=='black'}
     for device in components:
         if device['kind'] != 'outerFirewall':
             continue
-        inside = names.index(device['id']+':inside')
+        inside_name = device['id']+':inside'
+        inside = names.index(inside_name) if inside_name not in absent else None
         neighbors = {b for a,b in bundle['links'] if a==inside}
         candidates = {interfaces[i]['device'] for i in neighbors
                       if interfaces[i]['zone']=='black' and sources[interfaces[i]['device']]['role']=='outer'}
+        if not candidates and inside_name in absent and intent:
+            candidates = {peer['device'] for link in intent['links'] for e,peer in
+                          ((link['a'],link['b']),(link['b'],link['a']))
+                          if e['device']+':'+e['interface']==inside_name and sources[peer['device']]['role']=='outer'}
         if len(candidates)!=1:
             raise ValueError('Expected exactly one linked Outer encryptor')
         firewalls.append({'firewall':device['id'], 'outer':candidates.pop()})
     selected = [i for i in interfaces if i['zone']=='black' and sources[i['device']]['role']=='firewall']
     assert selected and all(i['address'] is not None for i in selected)
-    assert len(selected)==2*len(firewalls)
+    required = required or {f['firewall']+':'+side for f in firewalls for side in ('inside','outside')}
+    if {i['id'] for i in selected} != required - absent:
+        raise ValueError('Unexplained Outer Firewall interface inventory difference')
     for control in controls:
+        if control['interface'] in absent:
+            continue
         iface=next(i for i in interfaces if i['id']==control['interface'])
         expected=control['destination'] if control['hook']=='input' and control['destination']<3758096384 else None
         if control['hook']=='output':
             expected=control['source']
         if expected is not None:
             assert iface['address']==expected
-    return {'records':records, 'controls':controls, 'firewalls':firewalls,
+    return {'records':records, 'controls':controls, 'firewalls':firewalls, 'requiredBlackIfaces':sorted(required),
         'internalIfaces':[i['id'] for i in selected if i['id'].endswith(':inside')],
         'coverage':{'allDevices':len(components), 'allIfaces':len(interfaces),
                     'firewalls':len(firewalls), 'checkedBlackIfaces':[i['id'] for i in selected],
@@ -126,7 +139,7 @@ def project(bundle, controls):
 def prepare(folder, target, controls):
     target.mkdir(parents=True, exist_ok=False)
     bundle = parse_execution(folder/'snapshot/native', folder/'snapshot/processing')
-    projected = project(bundle, controls)
+    projected = project(bundle, controls, json.loads((folder/'snapshot/native/spec.json').read_bytes()))
     write(target/'input.json', projected)
     shutil.copy2(HERE/'FirewallCompliance.lean', target/'FirewallCompliance.lean')
     write(target/'provenance.json', {'source':str(folder.relative_to(ROOT)),

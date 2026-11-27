@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import subprocess
 
-from cohort import REVISION, require_current_run
+from cohort import NATIVE_PROFILES, REVISION, require_current_run
 from blind_audit import DISABLED, MODELS, PROMPT
 from observe_controls import HERE, NETWORKS
 
@@ -76,7 +76,7 @@ def source_rows():
 def manifest(run):
     require_current_run(run)
     paths = [*(ROOT / p for p in REPO_INPUTS), *(HERE / p for p in PROGRAMS)]
-    paths.extend(HERE / "profiles" / f"{n}.json" for n in NETWORKS)
+    paths.extend(NATIVE_PROFILES / f"{n}.json" for n in NETWORKS)
     paths.extend((ROOT / "TDN").rglob("*.lean"))
     paths.extend((ROOT / "mcp/tdn_evidence/parsers").rglob("*.py"))
     files = {p.relative_to(ROOT).as_posix(): digest(p) for p in sorted(set(paths))}

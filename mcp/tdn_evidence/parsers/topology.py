@@ -1,6 +1,6 @@
 """Validate observed adjacency and calculate candidate firewall-region labels."""
 import json
-from .snapshot import validate_bundle, EvidenceError, require
+from .snapshot import validated_snapshot, EvidenceError, require
 from .native import validate_native
 
 
@@ -60,10 +60,9 @@ def adjacency_projection(rows):
     return projected
 
 
-def validated_graph(bundle):
-    validation=validate_bundle(bundle)
-    snapshot=json.loads((bundle/"snapshot.json").read_text())
-    require(all(validation["inventory_complete"][kind] for kind in ["devices","interfaces","links"]),
+def validated_graph(bundle, *, ipv4_link_observations=False):
+    validation,snapshot=validated_snapshot(bundle, ipv4_link_observations=ipv4_link_observations)
+    require("ipv4_link_observations" in validation or all(validation["inventory_complete"][kind] for kind in ["devices","interfaces","links"]),
             "complete observed topology inventory required")
     require(all(row["status"]=="observed" for kind in ["devices","interfaces","links"] for row in snapshot[kind]),
             "complete observed topology records required")
@@ -161,7 +160,7 @@ def validated_graph(bundle):
         normalized={i["name"] for i in snapshot["interfaces"] if i["device_id"]==device["id"]}
         if names!=normalized:
             raise EvidenceError("normalized interface inventory does not equal raw observation")
-    veth_ids={i["id"] for i in snapshot["interfaces"] if i["link_kind"]=="veth"}
+    veth_ids={i["id"] for i in snapshot["interfaces"] if i["link_kind"]=="veth"} - set(validation.get("ipv4_link_observations", {}).get("unlinked_interfaces", []))
     veth_endpoints=[endpoint for link in snapshot["links"] if link["relation"]=="veth" for endpoint in link["endpoint_interface_ids"]]
     if set(veth_endpoints)!=veth_ids or len(veth_endpoints)!=len(set(veth_endpoints)):
         raise EvidenceError("veth adjacency does not cover every observed veth interface exactly once")
@@ -204,7 +203,7 @@ def validated_graph(bundle):
         a,b=indices[left["device_id"]],indices[right["device_id"]]
         if a!=b:
             edges.update({(a,b),(b,a)})
-            if left["zone"]==right["zone"]=="gray":
+            if left["zone"] in {"gray","unknown"} and right["zone"] in {"gray","unknown"}:
                 gray_edges.update({(a,b),(b,a)})
         for first,second in ((left,right),(right,left)):
             a,b=indices[first["device_id"]],indices[second["device_id"]]

@@ -91,11 +91,16 @@ def typecheck(source, directory, evidence, expected_lines):
         and "is false" in str(e.get("data", ""))
     ]
     status = "checker_error"
+    proof_errors = [e for e in errors if begin_line < e.get("pos", {}).get("line", 0) < end_line]
     if start is not None and stop is not None and stop >= start:
         if p.returncode == 0 and not errors:
             status = "pass"
         elif p.returncode and failed and len(failed) == len(errors):
             status = "rejected"
+        elif p.returncode and proof_errors and len(proof_errors) == len(errors):
+            status = "proof_error"
+    if any(str(e.get("data","")).startswith(("cannot decode ", "invalid JSON:", "missing evidence record:")) for e in errors):
+        status = "import_error"
     result = {
         "status": status,
         "wall_seconds": time.monotonic() - started,
@@ -114,7 +119,7 @@ def typecheck(source, directory, evidence, expected_lines):
                 ),
                 lines[e["pos"]["line"] - 1],
             )
-            for e in failed
+            for e in (proof_errors if status == "proof_error" else failed)
         ],
         "returncode": p.returncode,
         "errors": errors,

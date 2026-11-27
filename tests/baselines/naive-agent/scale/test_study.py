@@ -9,7 +9,7 @@ sys.path.insert(0, str(HERE))
 from cohort import registered_profile
 from scale.catalog import BY_NAME, CASES, CHANGES
 from scale.level_policy import bindings, effective_topology
-from scale.profiles import NETWORKS, inventory, profile
+from scale.profiles import NETWORKS, generate_topology, inventory, profile
 
 
 class ScalingDesign(unittest.TestCase):
@@ -23,6 +23,7 @@ class ScalingDesign(unittest.TestCase):
                 p = profile(name)
                 self.assertTrue(registered_profile(p))
                 spec = p["topology"]
+                self.assertEqual(spec, generate_topology(name))
                 nodes = {d["id"]: d for d in spec["devices"]}
                 self.assertEqual(len(nodes), inventory(name)["devices"])
                 declared = {
@@ -172,29 +173,19 @@ class BlindNamespaceTests(unittest.TestCase):
 
 
 class LeanReviewTests(unittest.TestCase):
-    def test_credit_requires_a_matching_rejected_assertion(self):
-        from tempfile import TemporaryDirectory
-        from scale.review import record_lean
+    def test_outcome_comes_from_the_frozen_proofs_and_the_control(self):
+        from scale.review import lean_verdict
 
-        with TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            cell = root / "measurements/Base/example"
-            (cell / "tdn").mkdir(parents=True)
-            (cell / "cell.json").write_text('{"observed": true, "bundle": "capture"}')
-            result = cell / "tdn/verification.json"
-            args = (root, "Base", "example", "detected", "The declared path failed.")
-            result.write_text('{"edges": {"status": "import_error"}}')
-            with self.assertRaisesRegex(ValueError, "failed Lean assertion"):
-                record_lean(*args, "separated")
-            result.write_text(json.dumps({"edges": {
-                "status": "rejected", "failed_obligations": ["lemma separated : ..."]
-            }}))
-            with self.assertRaisesRegex(ValueError, "failed Lean assertion"):
-                record_lean(*args, "other_lemma")
-            record_lean(*args, "separated")
-            record_lean(*args, "separated")
-            written = json.loads((cell / "tdn-adjudication.json").read_text())
-            self.assertEqual(written["failed_assertions"]["edges"], ["lemma separated : ..."])
-            self.assertEqual(written["bundle"], "capture")
-            with self.assertRaisesRegex(ValueError, "different decision"):
-                record_lean(root, "Base", "example", "missed", "Changed review")
+        control = {"routes": {"status": "pass", "source_sha256": "a"},
+                   "filters": {"status": "pass", "source_sha256": "b"}}
+        trial = {**control, "routes": {"status": "import_error"}}
+        self.assertEqual(lean_verdict(trial, control)[0], "needs_repair")
+        trial["filters"] = {"status": "proof_error", "source_sha256": "b",
+                            "failed_obligations": ["a different assertion"]}
+        decision, failures, incomplete = lean_verdict(trial, control)
+        self.assertEqual(decision, "detected")
+        self.assertEqual(set(failures), {"filters"})
+        self.assertEqual(incomplete, {"routes": "import_error"})
+        with self.assertRaisesRegex(ValueError, "different proof programs"):
+            lean_verdict(trial, {**control, "filters": {"status":"pass","source_sha256":"changed"}})
+        self.assertEqual(lean_verdict(control, control)[0], "missed")

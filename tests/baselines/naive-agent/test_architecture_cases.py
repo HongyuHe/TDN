@@ -9,7 +9,6 @@ from architecture_cases import (
     FAMILIES,
     SPI,
     esp_rules,
-    installed_subnets,
     observed_links,
 )
 from cohort import NETWORKS, runtime_profile, require_current_run
@@ -21,7 +20,7 @@ from score_trials import KNOWN_TYPES
 class ArchitectureCases(unittest.TestCase):
     def test_replicas_preserve_every_reference_and_never_name_original_devices(self):
         for n in NETWORKS:
-            root = Path(__file__).parent / "profiles"
+            root = Path(__file__).parent / "profiles" / "native"
             original = json.loads((root / (n + ".json")).read_text())["topology"]
             copy = runtime_profile(n)["topology"]
             names = dict(
@@ -80,19 +79,6 @@ class ArchitectureCases(unittest.TestCase):
             & {"delivery-outage", "gray-firewall-detached", "gray-eligible-deny"}
         )
 
-    def test_selectors_must_come_from_an_established_installed_child(self):
-        sample = """msc: #7, ESTABLISHED, IKEv2,
-  red2: #9, reqid 5, INSTALLED, TUNNEL, ESP:AES_GCM_16-256
-    local  10.1.2.0/24
-    remote 10.2.1.0/24
-  protected: #3, reqid 2, REKEYING, TUNNEL, ESP:AES_GCM_16-256
-    local  10.1.3.0/24
-other: #2, CONNECTING, IKEv2,
-  protected: #4, reqid 2, INSTALLED, TUNNEL, ESP:AES_GCM_16-256
-    local  10.1.4.0/24
-"""
-        self.assertEqual(installed_subnets(sample), {"10.1.2.0/24"})
-
     def test_undeclared_link_requires_a_reciprocal_observation(self):
         topo = {
             "devices": [
@@ -121,7 +107,9 @@ other: #2, CONNECTING, IKEv2,
             ds, {(n, "interfaces"): json.dumps(v) for n, v in readings.items()}
         )
         self.assertEqual(links, [(("a", "lan2"), ("b", "lan2"))])
-        self.assertEqual(set(zones.values()), {"gray"})
+        self.assertEqual(set(zones.values()), {"unknown"})
+        assigned = capture_topology(topo, readings, {("a", "lan2"): "gray"})
+        self.assertEqual([d["interfaces"][0]["zone"] for d in assigned["devices"]], ["gray", "gray"])
         readings["b"][0]["link_index"] = 99
         with self.assertRaises(ValueError):
             capture_topology(topo, readings)

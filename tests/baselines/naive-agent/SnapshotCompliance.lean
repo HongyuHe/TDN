@@ -1,5 +1,6 @@
 import TDN.Import.SnapshotLoader
-import TDN.Requirements.DoubleEncryptionOnBlackLinks
+import TDN.Requirements.MultiProtocolPacketDefinitions
+import TDN.Models.TableDrivenMultiProtocolDataPlane
 import TDN.Models.TunnelSaOriginAttribution
 import TDN.Models.IpHeaderAclGuards
 
@@ -17,8 +18,11 @@ load_network_records links : List (Nat × Nat) from "input.json" ["links"]
 load_network_records switches : List (Nat × Nat) from "input.json" ["bridges"]
 load_network_records redSources : List Nat from "input.json" ["redSources"]
 load_network_records blackIfaces : List Nat from "input.json" ["blackIfaces"]
+load_network_records grayIfaces : List Nat from "input.json" ["grayIfaces"]
 
-def config : DataPlaneModel := dataPlaneModelFromRecords devices ifaces routes links switches
+def config : DataPlaneModel := dataPlaneModelFromRecords devices ifaces routes links []
+
+def tunnelConfig := MultiProtocolForwarding.dataPlaneModelFromRecords devices ifaces routes links switches [] []
 def expectedEncapStack : Nat → List Nat := expectedEncapStackFromRecords ifaces
 
 lemma forward_checks : TableDrivenForwardChecks devices ifaces := by native_decide
@@ -31,15 +35,45 @@ lemma output_checks : TableDrivenOutputChecks devices ifaces := by native_decide
 lemma outer_route_checks : TableDrivenOuterRoutes devices ifaces routes := by native_decide
 
 lemma local_stack_conditions : PerHopEncapConditions config expectedEncapStack :=
-  local_stack_conditions_of_finite_checks devices ifaces routes links switches
-    route_owner_checks link_checks switch_checks forward_default_checks forward_checks output_checks outer_route_checks
+  local_stack_conditions_of_finite_checks devices ifaces routes links []
+    route_owner_checks link_checks (by simp) forward_default_checks forward_checks output_checks outer_route_checks
 lemma sources_checked : ∀ p ∈ redSources, expectedEncapStack p = [] ∧ config.canOriginateTraffic p := by
   unfold config dataPlaneModelFromRecords
   native_decide
 lemma black_ifaces_checked : ∀ p ∈ blackIfaces, expectedEncapStack p = [2, 1] := by native_decide
+lemma gray_ifaces_checked : grayIfaces ≠ [] ∧ ∀ p ∈ grayIfaces, expectedEncapStack p = [1] := by native_decide
 
-theorem snapshot_RG007_packet_stack : Requirements.red_traffic_is_doubly_encrypted_on_black_links config redSources blackIfaces :=
-  Requirements.protected_red_stack_from_local_checks config expectedEncapStack redSources blackIfaces
-    local_stack_conditions sources_checked black_ifaces_checked
+lemma tunnel_conditions : MultiProtocolForwarding.LocalConditions tunnelConfig expectedEncapStack := by
+  apply MultiProtocolForwarding.local_conditions_from_finite_checks
+  · exact local_stack_conditions
+  · exact link_checks
+  · exact fun e member => (switch_checks e member).1
+  all_goals simp [MultiProtocolForwarding.CarrierRouteChecks]
+
+lemma red_egress_stack {start finish : MultiProtocolForwarding.TunnelForwardingState}
+    {actions : List MultiProtocolForwarding.TunnelForwardingAction}
+    (origin : Requirements.MultiProtocolRedOrigin redSources start)
+    (run : MultiProtocolForwarding.ForwardsAlongTrace tunnelConfig start actions finish)
+    (ready : finish.datapathStage = .egressReady) :
+    finish.frame.body.protectionLayers = expectedEncapStack finish.iface := by
+  have initial := Requirements.multi_protocol_red_initial_invariant tunnelConfig expectedEncapStack redSources sources_checked origin
+  have preserved := MultiProtocolForwarding.all_traces_preserve_stack tunnelConfig expectedEncapStack tunnel_conditions run initial
+  simpa only [ready] using preserved.2
+
+theorem red_origin_has_inner_layer_at_gray_egress
+    {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
+    (origin : Requirements.MultiProtocolRedOrigin redSources start)
+    (run : MultiProtocolForwarding.ForwardsAlongTrace tunnelConfig start actions finish)
+    (ready : finish.datapathStage = .egressReady) (gray : finish.iface ∈ grayIfaces) :
+    finish.frame.body.protectionLayers = [1] :=
+  (red_egress_stack origin run ready).trans (gray_ifaces_checked.2 _ gray)
+
+theorem snapshot_RG007_packet_stack
+    {start finish : MultiProtocolForwarding.TunnelForwardingState} {actions : List MultiProtocolForwarding.TunnelForwardingAction}
+    (origin : Requirements.MultiProtocolRedOrigin redSources start)
+    (run : MultiProtocolForwarding.ForwardsAlongTrace tunnelConfig start actions finish)
+    (ready : finish.datapathStage = .egressReady) (black : finish.iface ∈ blackIfaces) :
+    finish.frame.body.protectionLayers = [2, 1] :=
+  (red_egress_stack origin run ready).trans (black_ifaces_checked _ black)
 
 end TDN.BlindSnapshot

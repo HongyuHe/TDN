@@ -16,7 +16,7 @@ import peer_lab
 import unplug_lab
 from attachment_view import attachments, live
 from run_architecture_trial import active_change
-from scale.catalog import BY_NAME, CASES
+from scale.catalog import BY_NAME, CASES, HISTORICAL_FIRST_RULE_CASES
 from snapshot_inputs import put
 from supervisor_transport import call
 
@@ -149,6 +149,10 @@ def change_and_read(p, key):
 def held(p, key, out):
     if key not in BY_NAME:
         raise ValueError("Unregistered fault type")
+    if key in HISTORICAL_FIRST_RULE_CASES:
+        raise ValueError(f"The historical {key} fixture changes firewall row 1. Use the archived snapshot for replay.")
+    if key in {"gray-cross-level-path","outer-firewall-alternate-path"}:
+        raise ValueError("The historical test-only link is available for archived replay only")
     out.mkdir(parents=True, exist_ok=False)
     if key in architecture_cases.FAMILIES:
         with active_change(p, key, out) as (_, reading):

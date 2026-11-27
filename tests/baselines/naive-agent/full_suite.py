@@ -17,7 +17,7 @@ from tdn_evidence.parsers.topology import validated_graph
 
 
 def graph_input(native):
-    g=validated_graph(native)
+    g=validated_graph(native, ipv4_link_observations=True)
     gray={v:[] for v in range(len(g["devices"]))}
     for a,b in sorted(g["gray_edges"]):gray[a].append(b)
     security_levels={str(g["devices"][i]["security_level_id"]) for i in g["inner"]}
@@ -76,7 +76,15 @@ def suite(native,processing,out):
     def packet_input():
         nonlocal parsed
         if parsed is None:
-            parsed=parse_execution(native,processing)
+            parsed=parse_execution(native,processing,ipv4_link_observations=True)
+            for device in parsed["devices"]:
+                for hook in ("input", "forward", "output"):
+                    rules = device[hook + "Rules"]
+                    for i, rule in enumerate(rules):
+                        if not rule["atoms"] and rule["verdict"] in {"allow", "deny"}:
+                            device[hook + "Rules"] = rules[:i + 1]
+                            device[hook + "Fallback"] = "deny"
+                            break
             parsed["vpnIndices"]=[parsed["deviceIds"][d["id"]] for d in parsed["sourceDevices"] if d["role"] in ("inner","outer")]
             parsed["outerIndices"]=[parsed["deviceIds"][d["id"]] for d in parsed["sourceDevices"] if d["role"]=="outer"]
         return parsed
@@ -88,10 +96,7 @@ def suite(native,processing,out):
         mod=module_from_spec(spec);spec.loader.exec_module(mod)
         policy=json.loads((HERE/"perimeter/approved-control-policy.json").read_text())
         declaration=json.loads((native/"spec.json").read_text())
-        projected=mod.project(packet_input(),mod.controls_from_intent(declaration,policy))
-        if projected["records"].get("policies") != []:
-            raise ValueError("Unexpected separate policies in the legacy adapter")
-        return projected
+        return mod.project(packet_input(),mod.controls_from_intent(declaration,policy),declaration)
     check("firewall",HERE/"FirewallChecks.lean",firewall_input)
     (out/"summary.json").write_text(json.dumps(summary,indent=2)+'\n')
     return summary

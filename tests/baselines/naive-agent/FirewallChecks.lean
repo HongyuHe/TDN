@@ -13,6 +13,7 @@ load_network_records records : Records from "evidence.json" ["records"]
 load_network_records controls : List BoundaryControlFlow from "evidence.json" ["controls"]
 load_network_records firewalls : List FirewallBinding from "evidence.json" ["firewalls"]
 load_network_records internalIfaces : List String from "evidence.json" ["internalIfaces"]
+load_network_records requiredBlackIfaces : List String from "evidence.json" ["requiredBlackIfaces"]
 
 def net := registeredDeployment records [] [] Deployments.emptyDeploymentForChecks controls
 def blackFirewallIfaces := records.interfaces.filter fun iface =>
@@ -30,6 +31,8 @@ def LocalFirewallChecks : Prop :=
 instance : Decidable LocalFirewallChecks := by unfold LocalFirewallChecks; infer_instance
 
 run_cmd do Lean.logInfo m!"TDN_BEGIN {← IO.monoNanosNow}"
+example : requiredBlackIfaces ≠ [] ∧ ∀ name ∈ requiredBlackIfaces,
+    ∃ iface ∈ blackFirewallIfaces, iface.id = name := by native_decide
 example : LocalFirewallChecks := by native_decide
 run_cmd do Lean.logInfo m!"TDN_END {← IO.monoNanosNow}"
 end TDN.Benchmark.Firewall

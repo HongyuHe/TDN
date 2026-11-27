@@ -40,11 +40,16 @@ with tempfile.TemporaryDirectory(prefix='tdn-evidence-') as name:
     seen={tuple(sorted(row['ifname'] for row in device if row['ifname'] in defaults)) for device in readings.values()}
     if len(seen)!=1:raise ValueError('Kernel default interfaces differ among the namespaces on one worker')
     platform=','.join(seen.pop())
-    spec=capture_topology(spec,readings)
+    zone_assignments = {tuple(k.split(":", 1)): v for k,v in spec.get("interface_zones", {}).items()}
+    spec=capture_topology(spec,readings,zone_assignments)
     p=out/'spec.json';p.write_text(json.dumps(spec))
     commands=[[sys.executable,str(root/'collect_native_v2.py'),'--spec',str(p),'--output',str(out/'native'),
                '--configuration-id',net,'--run-id','single-clause','--platform-interface-names',platform,'--skip-active-probes'],
               [sys.executable,str(root/'collect_processing.py'),'--spec',str(p),'--output',str(out/'processing')]]
+    if request.get('traffic_control'):
+        commands[0].append('--traffic-control')
+    if request.get('public_key_contexts'):
+        commands[0].append('--public-key-contexts')
     def collect(argv):
         if workers>1:argv.extend(['--workers',str(workers)])
         t=time.monotonic();r=subprocess.run(argv,capture_output=True,text=True,timeout=request['collector_timeout'])
@@ -64,7 +69,9 @@ def capture(profile,dest):
     scale=profile['network'] in SCALE_PREFIXES
     if scale:scripts['level_policy.py']=(HERE/'scale/level_policy.py').read_text()
     limit=2500 if scale else 600
-    data=json.dumps({'profile':profile,'scripts':scripts,'workers':12 if scale else 1,'collector_timeout':limit,'read_enclave_policy':scale}).encode()
+    data=json.dumps({'profile':profile,'scripts':scripts,'workers':12 if scale else 1,'collector_timeout':limit,
+                     'read_enclave_policy':scale,'traffic_control':bool(profile.get('control_variant')),
+                     'public_key_contexts':bool(profile.get('control_variant'))}).encode()
     with tempfile.TemporaryFile() as stream:
         p=supervisor_call(profile['worker'],['sudo','-n','python3','-c',(HERE/'observed_profile.py').read_text()+'\n'+REMOTE],data=data,stream=stream,timeout=limit+650)
         (dest/'collector-stderr.txt').write_bytes(p.stderr)
@@ -87,6 +94,8 @@ def capture(profile,dest):
     good=all(c['code']==0 for c in outputs) and json.loads(outputs[0]['stdout'])['converged']
     result={'network':profile['network'],'started_at':start,'seconds':time.monotonic()-clock,'converged':good,
             'source_sha256':{n:hashlib.sha256(s.encode()).hexdigest() for n,s in scripts.items()}}
+    if 'control_variant' in profile:
+        result['control_variant']=profile['control_variant']
     (dest/'capture.json').write_text(json.dumps(result,indent=2)+'\n')
     return result
 

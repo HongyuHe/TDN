@@ -62,7 +62,7 @@ def build_capture(family, name):
     return blob
 
 
-def publish_capture(source, blobs, modes, extra=None, *, intent=None, readings=(), private_labels=()):
+def publish_capture(source, blobs, modes, extra=None, *, intent=None, readings=(), private_labels=(), declared_catalogue=False):
     """Publish verified raw data and independent deployment intent to the static reader."""
     signatures = {}
     def load(path):
@@ -77,10 +77,12 @@ def publish_capture(source, blobs, modes, extra=None, *, intent=None, readings=(
     manifest_hashes = {f["path"]: f["sha256"] for f in manifest["files"]}
     if manifest_hashes["snapshot.json"] != signatures[str((source / "native/snapshot.json").relative_to(source))]:
         raise ValueError("Native snapshot does not match its collection manifest")
+    if manifest_hashes.get("spec.json") != signatures["native/spec.json"]:
+        raise ValueError("Native topology does not match its collection manifest")
     proc_manifest = load(source / "processing/manifest.json")
-    for item in proc_manifest["files"]:
-        if item["path"] == "observations.json" and item["sha256"] != signatures[str((source / "processing/observations.json").relative_to(source))]:
-            raise ValueError("Processing snapshot does not match its collection manifest")
+    processing_hashes = [item["sha256"] for item in proc_manifest["files"] if item["path"] == "observations.json"]
+    if processing_hashes != [signatures["processing/observations.json"]]:
+        raise ValueError("Processing snapshot does not match its collection manifest")
     views = defaultdict(list)
     def add(view, record, devices=()):
         views[view].append({"devices": [d for d in devices if d], "record": record})
@@ -135,13 +137,16 @@ def publish_capture(source, blobs, modes, extra=None, *, intent=None, readings=(
         add("link-census", {**row,"reciprocal":reciprocal,"up":all("UP" in p.get("flags",[]) for p in (a,b))},devices)
     if extra and [e["record"] for e in views["link-census"]] != extra["links"]:
         raise ValueError("Published endpoint census differs from the recorded one")
-    inventory = [{k:d[k] for k in ("id","role","site","level","network","interfaces") if k in d} for d in declared["devices"]]
+    if declared_catalogue and intent is None:
+        raise ValueError("The declared inventory requires an independent deployment design")
+    inventory_source = intent if declared_catalogue else declared
+    inventory = [{k:d[k] for k in ("id","role","site","level","network","interfaces") if k in d} for d in inventory_source["devices"]]
     if (source/"enclave-policy.json").exists():
         for record in load(source/"enclave-policy.json"):
             add("enclave-designations",record,[record["admin"],record["red"],record["attached_inner"]])
     for reading in readings:
         add("service-observations", reading, reading.get("devices", ()))
-    catalogue = {"devices":inventory,"links":declared["links"],"views":{}}
+    catalogue = {"devices":inventory,"links":inventory_source["links"],"views":{}}
     for label, rows in sorted(views.items()):
         catalogue["views"][label] = {"records":len(rows),
             "fields":sorted({k for r in rows for k in r["record"]}),

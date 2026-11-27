@@ -80,7 +80,7 @@ def observation_supports(observation, category):
     )
 
 
-def validate_bundle(bundle):
+def validated_snapshot(bundle, *, ipv4_link_observations=False):
     root = Path(bundle)
     manifest = json.loads(safe_path(root, "manifest.json").read_text())
     snapshot = json.loads(safe_path(root, "snapshot.json").read_text())
@@ -107,6 +107,10 @@ def validate_bundle(bundle):
         name = observation["raw_path"]
         require(name in files, "observation raw file absent from manifest: " + name)
         require(files[name]["sha256"] == observation["raw_sha256"], "observation hash mismatch")
+    projection = None
+    if ipv4_link_observations:
+        from .disconnected import ipv4_link_view
+        projection = ipv4_link_view(snapshot, manifest, root, observations)
     indices = {name: unique_records(snapshot[name], name) for name in CATEGORIES}
     all_ids = set()
     for name, index in indices.items():
@@ -169,7 +173,14 @@ def validate_bundle(bundle):
     if unsupported:
         blockers.append("Unsupported filters prevent any whole-policy theorem")
     counts = {name:{status:sum(r["status"] == status for r in index.values()) for status in sorted(STATUSES)} for name,index in indices.items()}
-    return {"schema_version":"construction-validation-1","snapshot_id":manifest["snapshot_id"],"integrity_valid":True,"counts":counts,"inventory_complete":completeness,"unsupported_filters":unsupported,"data_path_blockers":blockers,"management_profile":management["profile"],"claims":{"physical_independence":False,"implementation_refinement":False,"all_time_behavior":False,"whole_group_establishment":False},"source_manifest_sha256":hashlib.sha256((root/"manifest.json").read_bytes()).hexdigest(),"source_snapshot_sha256":hashlib.sha256((root/"snapshot.json").read_bytes()).hexdigest()}
+    report = {"schema_version":"construction-validation-1","snapshot_id":manifest["snapshot_id"],"integrity_valid":True,"counts":counts,"inventory_complete":completeness,"unsupported_filters":unsupported,"data_path_blockers":blockers,"management_profile":management["profile"],"claims":{"physical_independence":False,"implementation_refinement":False,"all_time_behavior":False,"whole_group_establishment":False},"source_manifest_sha256":hashlib.sha256((root/"manifest.json").read_bytes()).hexdigest(),"source_snapshot_sha256":hashlib.sha256((root/"snapshot.json").read_bytes()).hexdigest()}
+    if projection is not None:
+        report["ipv4_link_observations"] = projection
+    return report, snapshot
+
+
+def validate_bundle(bundle):
+    return validated_snapshot(bundle)[0]
 
 
 def main():

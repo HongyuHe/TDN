@@ -68,9 +68,14 @@ def raw_observations(native):
             raise ValueError(f"{name} hash differs from the collection manifest")
     if not manifest["convergence"]["consistent"]:
         raise ValueError("The device observations changed during collection")
+    namespaces = {d["id"]: d["namespace"] for d in snapshot["devices"]}
+    commands = {
+        "interfaces": ["ip", "-j", "-d", "address", "show"],
+        "filters4": ["iptables-save", "-t", "filter"],
+    }
     records = {}
     for obs in snapshot["observations"]:
-        if obs["kind"] not in {"interfaces", "sas", "filters4"}:
+        if obs["kind"] not in {"interfaces", "filters4"}:
             continue
         key = obs["device_id"], obs["kind"]
         relative = obs["raw_path"]
@@ -83,25 +88,13 @@ def raw_observations(native):
         ):
             raise ValueError(f"Observation hash differs for {key}")
         raw = json.loads(data)
-        if obs["returncode"] != 0:
-            raise ValueError(f"Failed observation {key}")
+        if (obs["returncode"] != 0 or obs["parse_status"] != "parsed"
+                or obs["command"] != ["docker", "exec", namespaces[key[0]], *commands[key[1]]]):
+            raise ValueError(f"Missing successful device observation {key}")
         records[key] = raw["stdout"]
+    if any((device, "interfaces") not in records for device in namespaces):
+        raise ValueError("Missing whole-device interface census")
     return records
-
-
-def installed_subnets(text):
-    prefixes = set()
-    established = installed = False
-    for line in text.splitlines():
-        if line and not line.startswith(" "):
-            established = bool(re.search(r", ESTABLISHED, IKEv2,", line))
-            installed = False
-        elif re.match(r"^  \S+: #", line):
-            installed = established and ", INSTALLED, TUNNEL, ESP:" in line
-        elif installed and line.startswith("    local "):
-            for word in line.split()[1:]:
-                prefixes.add(str(IPv4Network(word.rstrip(","))))
-    return prefixes
 
 
 def prefix_range(value):
@@ -187,15 +180,14 @@ def network_facts(topology, raw):
     ports, zones, pairs = observed_links(devices, raw)
     attachments = defaultdict(set)
     edges = set()
-    selectors = {n: installed_subnets(raw[n, "sas"]) for n in inners}
     for left, right in pairs:
         for host, gateway in ((left, right), (right, left)):
-            if zones[host] == zones[gateway] == "gray":
+            if zones[host] in {"gray", "unknown"} and zones[gateway] in {"gray", "unknown"}:
                 edges.add((host[0], gateway[0]))
             elif (
                 zones[host] == zones[gateway] == "red"
                 and devices[host[0]]["role"] == "host"
-                and gateway[0] in selectors
+                and devices[gateway[0]]["role"] == "inner"
             ):
                 attachments[host[0]].add((gateway[0], gateway[1], host[1]))
 
@@ -203,10 +195,12 @@ def network_facts(topology, raw):
     for host, d in devices.items():
         if d["role"] != "host" or not any(p["zone"] == "red" for p in d["interfaces"]):
             continue
-        original = next(
-            p for p in d["interfaces"] if p["name"] == "red" and p["zone"] == "red"
-        )
-        subnet = IPv4Interface(original["address"]).network
+        red_prefixes = {IPv4Interface(p["address"]).network for p in d["interfaces"]
+                        if p["zone"] == "red" and p.get("address") and ":" not in p["address"]}
+        assigned = {net for net in red_prefixes if all(p.subnet_of(net) for p in red_prefixes)}
+        if len(assigned) != 1:
+            raise ValueError(f"Expected a unique assigned Red IPv4 subnet on {host}")
+        subnet, = assigned
         identity = d["site"] + "/" + str(d.get("network") or subnet)
         components = set()
         for gateway, gi, hi in attachments[host]:
@@ -220,13 +214,8 @@ def network_facts(topology, raw):
             if (
                 has_address(ports[host, hi])
                 and has_address(ports[gateway, gi])
-                and str(subnet) in selectors[gateway]
             ):
                 components.add(gateway)
-        if not components:
-            raise ValueError(
-                f"Could not bind {host}'s Red subnet to a linked Inner with an installed traffic selector"
-            )
         row = reds.setdefault(
             identity,
             {

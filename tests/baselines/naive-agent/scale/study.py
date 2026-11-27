@@ -20,7 +20,8 @@ from blind_audit import PROMPT
 from capture_stable import capture_stable
 from restore_health import verify as health
 from run_snapshot_audits import TIMEOUT, audit_saved
-from scale.catalog import BY_NAME, CASES, CHANGES
+from scale.catalog import BY_NAME, CASES, CHANGES, HISTORICAL_FIRST_RULE_CASES
+from scale.design import CONTROLS, PANEL_REVISION, VERSION, cases_for, clause_coverage, controls_for
 from scale.live import held, install_policy
 from scale.profiles import NETWORKS, inventory, profile
 from scale.verification import connections, verify
@@ -41,7 +42,7 @@ def revision():
     ).strip()
 
 
-def initialize(root):
+def initialize(root, *, panel=False):
     if root == HERE or root == Path("/"):
         raise ValueError("Choose a results directory")
     root.mkdir(parents=True, exist_ok=True)
@@ -60,6 +61,14 @@ def initialize(root):
         "credit": "A substantiated description of the planted violation or its direct effect counts. A nearby but different finding does not. Only observed, restored cases enter detection denominators.",
         "time": "Astra wall time. Lean elapsed time inside each proof file after its data have been imported. Sum each file's interval.",
     }
+    if panel:
+        current_cases = cases_for({"method_version": VERSION})
+        registry.update(method_version=VERSION, panel_revision=PANEL_REVISION, cases=[vars(c) for c in current_cases],
+                        control_kinds=list(CONTROLS), clause_cases=clause_coverage(current_cases),
+                        selected_objectives=["MSC-PF-10"],
+                        placement_sha256=digest((root/"placement-plan.json").read_bytes()), scope="Registered placement across eligible sites, devices and levels. One anonymous snapshot per session, including independent fault-free controls.",
+                        firewall_placement="Row 1 of each IPv4 and IPv6 filter chain matches the healthy control. The assigned third counts from row 2.",
+                        credit="Astra identifies the actual fault on the affected device. An alternative citation is acceptable. Review every other alert. TDN earns credit for any failed post-import proof whose program passes the clean control.")
     put(root / "protocol.json", registry)
     if not (root / "started-at.json").exists():
         put(root / "started-at.json", {"utc": timestamp()})
@@ -169,8 +178,14 @@ def offline(root, n, key, method):
     cell = root / "measurements" / n / key
     record = read(cell / "cell.json")
     if method == "astra":
+        version = read(root/"protocol.json").get("method_version")
+        if version in (2,VERSION):
+            from scale.panel import approved_panel
+            approved = approved_panel(root)["inputs"]
+            if approved.get(n+"/"+key) != record["bundle"]:
+                raise ValueError("Unregistered detector input")
         result = audit_saved(
-            key + "/" + n, "astra", {"network": record["bundle"]}, root
+            key + "/" + n, "astra", {"network": record["bundle"]}, root, require_device_output=version == VERSION
         )
     else:
         target = cell / "tdn"
@@ -193,7 +208,17 @@ def service_busy(path):
 
 
 def stream(root, method, workers, stopped=None):
-    jobs = {(n, c.key) for n in NETWORKS for c in CASES}
+    protocol = read(root/"protocol.json")
+    jobs = {(n, c.key) for n in NETWORKS for c in cases_for(protocol)}
+    panel = protocol.get("method_version") in (2,VERSION)
+    if panel:
+        from scale.panel import approved_panel
+        jobs.update((n,k) for n in NETWORKS for k in controls_for(protocol))
+        if {n+"/"+k for n,k in jobs} != set(approved_panel(root)["inputs"]):
+            raise ValueError("The blind study needs a complete approved panel")
+        ordered = sorted(jobs)
+        random.Random(read(root/"placement-plan.json")["seed"]).shuffle(ordered)
+        ranks = {k:i for i,k in enumerate(ordered)}
     pending = {}
     attempts = {}
     resume_at = 0.0
@@ -237,6 +262,8 @@ def stream(root, method, workers, stopped=None):
                 for n, key in jobs
                 if (root / "measurements" / n / key / "cell.json").exists()
             )
+            if panel:
+                available.sort(key=ranks.__getitem__)
             capacity = workers - len(pending)
             if method == "astra" and time.monotonic() < resume_at:
                 capacity = 0
@@ -258,10 +285,28 @@ def main():
     cli.add_argument("--case", choices=BY_NAME)
     cli.add_argument("--method", choices=["astra", "tdn"])
     cli.add_argument("--workers", type=int, default=4)
+    cli.add_argument("--historical-fixed-locations", action="store_true",
+                     help="Reproduce the original fixed-location study as a regression experiment")
     a = cli.parse_args()
     root = a.results.resolve()
     if not 1 <= a.workers <= 8:
         cli.error("workers must be between one and eight")
+    if not a.historical_fixed_locations:
+        from scale.panel import register, verify_panel
+        if a.action == "init":
+            register(root)
+            return
+        if (root/"approved-panel.json").is_file() and a.action in ("astra", "tdn"):
+            if a.action == "tdn":
+                verify_panel(root, a.workers)
+            else:
+                stream(root, "astra", a.workers)
+            return
+        cli.error("New comparisons use scale/panel.py register and prepare. The study needs a complete approved panel before scoring.")
+    if (root/"placement-plan.json").exists():
+        cli.error("A registered placement study uses scale/panel.py")
+    if a.action == "all" or (a.action == "capture" and (a.case is None or a.case in HISTORICAL_FIRST_RULE_CASES)):
+        cli.error("The requested historical capture includes a fixture that changes firewall row 1. Replay its saved snapshots with scale/replay.py.")
     initialize(root)
     if a.action == "init":
         return

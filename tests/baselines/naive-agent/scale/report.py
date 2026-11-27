@@ -3,6 +3,7 @@
 import argparse
 import html
 import json
+from math import sqrt
 import os
 from pathlib import Path
 from statistics import median
@@ -11,7 +12,8 @@ from urllib.parse import quote
 
 HERE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(HERE))
-from scale.catalog import CASES, CHANGES
+from scale.catalog import CHANGES
+from scale.design import CONTROLS, PANEL_REVISION, VERSION, cases_for, clause_coverage, control_run_root, controls_for
 from scale.profiles import NETWORKS, inventory
 
 
@@ -53,14 +55,42 @@ def read_cell(root, net, case):
         "queries": sess.get("reader_calls"),
         "reason": ast.get("explanation", ""),
         "quote": ast.get("quotation", ""),
+        "anchor": truth.get("anchor"),
+        "level": truth.get("level"),
+        "control_variant": truth.get("control_variant"),
+        "observation": truth.get("location_evidence"),
         "tdn_reason": tdn.get("explanation", ""),
-        "rejected": [k for k, v in checks.items() if v["status"] == "rejected"],
+        "findings": ast.get("findings") if ast.get("complete") else None,
+        "rejected": [k for k, v in checks.items() if v["status"] in {"rejected", "proof_error"}],
         "diagnostics": {
             k: v["status"]
             for k, v in checks.items()
-            if v["status"] not in {"pass", "rejected"}
+            if v["status"] not in {"pass", "rejected", "proof_error"}
         },
     }
+
+
+def alert_statistics(reviews):
+    reviewed = [r for r in reviews if r.get("complete") and isinstance(r.get("findings"), list)]
+    clean = [r for r in reviewed if r["case"] in CONTROLS]
+    findings = [f for r in reviewed for f in r["findings"]]
+    counts = {key:sum(f["classification"] == key for f in findings)
+              for key in ("target","consequence","other_real","false_positive","unresolved")}
+    return {"reviewed_sessions": len(reviewed), "reviewed_clean": len(clean), "findings": counts,
+            "clean_with_any_alert": sum(bool(r["findings"]) for r in clean),
+            "clean_with_false_alarm": sum(any(f["classification"] == "false_positive" for f in r["findings"])
+                                          for r in clean)}
+
+
+def wilson_interval(count, total):
+    if not total:
+        return None
+    z = 1.959963984540054
+    rate = count/total
+    denom = 1 + z*z/total
+    middle = (rate + z*z/(2*total))/denom
+    radius = z*sqrt(rate*(1-rate)/total + z*z/(4*total**2))/denom
+    return max(0,middle-radius), min(1,middle+radius)
 
 
 CSS = """
@@ -72,9 +102,20 @@ CSS = """
 def build(root, out, preview=False):
     root = root.resolve()
     out = out.resolve()
-    cells = {(c.key, n): read_cell(root, n, c) for c in CASES for n in NETWORKS}
+    protocol = load(root/"protocol.json")
+    cases = cases_for(protocol)
+    controls = controls_for(protocol)
+    current = protocol.get("method_version") == VERSION
+    matched_variants = protocol.get("panel_revision") == PANEL_REVISION
+    revised = protocol.get("method_version") in (2,VERSION)
+    cells = {(c.key, n): read_cell(root, n, c) for c in cases for n in NETWORKS}
+    reviews = [load(p) for p in sorted((root/"measurements").glob("*/*/astra-adjudication.json"))]
+    alerts = alert_statistics(reviews)
     judged = {"detected", "missed"}
     if not preview:
+        if revised:
+            from scale.panel import approved_panel
+            approved_panel(root, for_execution=False)
         pending = [
             (c["net"], c["key"])
             for c in cells.values()
@@ -85,6 +126,18 @@ def build(root, out, preview=False):
             raise ValueError(
                 f"{len(pending)} cells still require evidence or adjudication"
             )
+        expected_reviews = {(n,k) for n in NETWORKS for k in [*controls,*(c.key for c in cases)]}
+        if revised and (alerts["reviewed_sessions"] != len(expected_reviews) or
+                        {(r["network"],r["case"]) for r in reviews if r.get("complete")} != expected_reviews):
+            raise ValueError("Every faulty and fault-free session needs a complete finding-by-finding review")
+        if current:
+            for n in NETWORKS:
+                checks = load(root/"controls"/(n+"-frozen")/"verification.json")
+                if not checks or any(v["status"] != "pass" for v in checks.values()):
+                    raise ValueError(f"Missing passing primary control proofs for {n}")
+                for k in controls[1:]:
+                    if load(root/"measurements"/n/k/"tdn-control.json").get("status") not in {"accepted","false_alarm","incomplete"}:
+                        raise ValueError(f"Missing TDN outcome for {n}/{k}")
 
     def link(file, title):
         url = quote(os.path.relpath(file, out.parent), safe="/.")
@@ -126,6 +179,7 @@ def build(root, out, preview=False):
                 ("summary", "Results"),
                 ("networks", "Three topologies"),
                 ("scores", "20 fault types"),
+                ("alerts", "False alerts"),
                 ("misses", "Astra’s misses"),
                 ("times", "Time"),
                 ("cases", "Faults and evidence"),
@@ -139,7 +193,7 @@ def build(root, out, preview=False):
     parts += [
         '<p class="lead">'
         + esc(lead)
-        + '</p><p>Each run changes one network setting. Astra reads the CSfC document and one saved network. TDN checks the same network using Lean.</p><div class="cards">'
+        + '</p><p>Each faulty capture exercises one registered violation. Astra reads the CSfC document and one saved network. TDN checks the same network using Lean.</p><div class="cards">'
     ]
     for n in NETWORKS:
         rows = by(n)
@@ -153,8 +207,51 @@ def build(root, out, preview=False):
         parts.append(
             f'<div class="card"><h3>{esc(n)}</h3>' + "".join(pieces) + "</div>"
         )
+    parts.append('</div>')
+    followup = out.parent/"naive-agent-method-revision.html"
+    if root.name == "topology-scaling-20261125" and followup.is_file():
+        parts.append('<p class="evidence">November 26 follow-up · ' +
+                     link(followup, "Repaired TDN checks, revised sampling and Astra’s false alarms") +
+                     '. The results below preserve the original run.</p>')
+    parts.append('</header>')
+    parts.append('<section id="alerts"><h2>How often did Astra raise a false alarm?</h2>')
+    if alerts["reviewed_sessions"]:
+        f = alerts["findings"]
+        parts.append(f'<p>Reviewers checked {alerts["reviewed_sessions"]} complete answers. '
+                     f'{f["false_positive"]} findings were contradicted by the evidence or the document. '
+                     f'{f["other_real"]} described other genuine conditions. {f["unresolved"]} remained uncertain. '
+                     f'{f["consequence"]} described additional effects of the planted fault.</p>')
+        if alerts["reviewed_clean"]:
+            parts.append(f'<p>{alerts["clean_with_false_alarm"]} of {alerts["reviewed_clean"]} separately audited '
+                         f'healthy controls drew at least one confirmed false alarm. '
+                         f'{alerts["clean_with_any_alert"]} drew an alert of any kind.</p>')
+            if current:
+                low,high = wilson_interval(alerts["clean_with_false_alarm"],alerts["reviewed_clean"])
+                parts.append(f'<p>A 95% Wilson interval for the fraction of healthy sessions with a confirmed false alarm is '
+                             f'{low:.1%} to {high:.1%} under an independent-trial assumption. The controls share three topologies.</p>')
+                for k in controls:
+                    group = alert_statistics([r for r in reviews if r["case"] == k])
+                    parts.append(f'<p>{esc(k)}: {group["clean_with_false_alarm"]} of {group["reviewed_clean"]} audits raised a confirmed false alarm.</p>')
+        else:
+            parts.append('<p>No independently reviewed healthy-control answer is available to estimate a clean-network false-alarm rate.</p>')
+        for review in reviews:
+            for finding in review.get("findings", []):
+                if finding["classification"] in {"false_positive","unresolved"}:
+                    parts.append(f'<details><summary>{esc(review["network"])} · {esc(finding["classification"])}</summary>'
+                                 f'<blockquote>{esc(finding["quotation"])}</blockquote><p>{esc(finding["reason"])} '
+                                 f'{esc(finding["evidence"])}</p></details>')
+    else:
+        parts.append('<p>Individual alerts were not adjudicated in this run. Its false-alarm rate is unknown.</p>')
+    if current:
+        control_status = [load(root/"measurements"/n/k/"tdn-control.json").get("status") for n in NETWORKS for k in controls[1:]]
+        comparison = ("Each fault uses its preregistered healthy configuration for scoring." if matched_variants else
+                      "The three primary controls establish the baseline for scoring faults.")
+        parts.append(f'<p>On the six additional healthy captures, Lean rejected {control_status.count("false_alarm")}, '
+                     f'accepted {control_status.count("accepted")} and returned {control_status.count("incomplete")} incomplete results. '
+                     f'{control_status.count(None)} have no recorded outcome. {comparison}</p>')
+    parts.append('</section>')
     parts.append(
-        '</div></header><section id="networks"><h2>Three networks change the size of the search</h2><div class="scroll"><table><thead><tr><th>Network</th><th>Levels</th><th>Devices</th><th>Links</th><th>Structure at each site</th></tr></thead><tbody>'
+        '<section id="networks"><h2>Three networks change the size of the search</h2><div class="scroll"><table><thead><tr><th>Network</th><th>Levels</th><th>Devices</th><th>Links</th><th>Structure at each site</th></tr></thead><tbody>'
     )
     for n, desc in zip(
         NETWORKS,
@@ -174,7 +271,7 @@ def build(root, out, preview=False):
         + "".join("<th>" + n + "</th>" for n in NETWORKS)
         + "</tr></thead><tbody>",
     ]
-    for c in CASES:
+    for c in cases:
         values = [cells[c.key, n] for n in NETWORKS]
         parts.append(
             '<tr><td><a href="#'
@@ -194,7 +291,7 @@ def build(root, out, preview=False):
             )
             + "</tr>"
         )
-    all_three = [c for c in CASES if all(cells[c.key, n]["observed"] for n in NETWORKS)]
+    all_three = [c for c in cases if all(cells[c.key, n]["observed"] for n in NETWORKS)]
     score3 = {
         m: sum(
             all(cells[c.key, n][m] == "detected" for n in NETWORKS) for c in all_three
@@ -221,7 +318,7 @@ def build(root, out, preview=False):
                 else "<p>Review is in progress.</p>"
             )
         for v in missed:
-            c = next(c for c in CASES if c.key == v["key"])
+            c = next(c for c in cases if c.key == v["key"])
             base = root / "measurements" / n / c.key
             agent = root / "trials" / c.key / n / "astra"
             parts.append(f"<article><b>{esc(c.title)}</b><p>{esc(v['reason'])}</p>")
@@ -233,7 +330,7 @@ def build(root, out, preview=False):
                 + " · "
                 + link(agent / "access.jsonl", "Snapshot queries")
                 + " · "
-                + link(base / "operator", "Observed change and restoration")
+                + link(Path(v["observation"]).parent if v["observation"] else base / "operator", "Observed change and restoration")
                 + "</p></article>"
             )
     parts += [
@@ -255,10 +352,14 @@ def build(root, out, preview=False):
         '</tbody></table></div><p class="fine">The one-hour limit applies to each Astra audit. Lean has twenty minutes per file. A partial Lean timing is recorded in the case log when another check fails to load evidence.</p></section>',
         '<section id="cases"><h2>What each change does</h2>',
     ]
-    for c in CASES:
-        parts.append(
-            f'<details id="{esc(c.key)}"><summary>{esc(c.title)}</summary><p><strong>{esc(c.rule)} · {esc(c.clause)}</strong></p><p>{esc(CHANGES[c.key])}</p><p>{esc(c.observation)}</p>'
-        )
+    if current:
+        coverage = clause_coverage(cases)
+        exercised = {k for k,keys in coverage.items() if any(all(cells[key,n]["observed"] for n in NETWORKS) for key in keys)}
+        parts.append(f'<p>The design targets {sum(bool(v) for v in coverage.values())} of {len(coverage)} distinct clauses. '
+                     f'Independent observations exercise {len(exercised)} clauses on all three networks. A clause can have several duties.</p>')
+    for c in cases:
+        description = c.observation if revised else CHANGES[c.key] + " " + c.observation
+        parts.append(f'<details id="{esc(c.key)}"><summary>{esc(c.title)}</summary><p><strong>{esc(c.rule)} · {esc(c.clause)}</strong></p><p>{esc(description)}</p>')
         for n in NETWORKS:
             v = cells[c.key, n]
             base = root / "measurements" / n / c.key
@@ -266,11 +367,15 @@ def build(root, out, preview=False):
                 "<p><b>"
                 + esc(n)
                 + "</b> "
+                + (esc(" · ".join(str(x) for x in (v["anchor"], v["level"]) if x)) + " " if revised else "")
                 + esc(v["tdn_reason"])
                 + " "
-                + link(base / "operator", "Before, changed and restored readings")
+                + link(Path(v["observation"]).parent if v["observation"] else base / "operator", "Before, changed and restored readings")
                 + " · "
                 + link(base / "tdn/verification.json", "Lean results")
+                + (" · " + link(control_run_root(root, n, v["control_variant"]) / "controls" /
+                                (n + "-frozen") / "verification.json", "Matched control " + v["control_variant"])
+                   if matched_variants and v["control_variant"] else "")
                 + " · "
                 + link(
                     root / "trials" / c.key / n / "astra/answer.md", "Astra’s answer"
@@ -278,13 +383,23 @@ def build(root, out, preview=False):
                 + "</p>"
             )
         parts.append("</details>")
+    if current:
+        method_description = "<p>The study mixes sixty faulty captures with nine independently captured healthy controls. Every recorded firewall chain keeps its healthy first rule. Each topology has three healthy configurations with the same intended forwarding behavior.</p>"
+        if matched_variants:
+            method_description += "<p>Each topology assigns seven, seven and six fault types across its three healthy configurations. Each fault type uses the same variant on all three topologies. The audit copy also omits IPsec byte and packet counts.</p>"
+    elif revised:
+        method_description = "<p>The supervisor registers the device and security level before scoring. The qualification program compares row 1 of every captured IPv4 and IPv6 filter chain against the healthy control. The session order mixes faulty captures with three controls.</p>"
+    else:
+        method_description = "<p>Each network starts with passing TDN checks and successful delivery between its intended Red endpoints. The operator confirms one change, captures the converged network and restores service. Each cell gets a fresh Astra session and fresh Lean checks.</p>"
     parts += [
         '</section><section id="method"><h2>What the comparison measures</h2>',
-        "<p>Each network starts with passing TDN checks and successful delivery between its intended Red endpoints. The operator changes one setting, independently observes the effect, captures the network after its routes and filters stabilize, and restores service. Each cell gets a fresh Astra session and fresh Lean checks.</p>",
-        "<p>Astra has three read-only operations. It can read the PDF, list the captured devices and links, and search the saved records. It sees one network under the name “network.” Both methods receive the intended design, effective classifications, gateway settings, kernel state and interface observations. The operator’s fault name and verification probes are retained separately. Different CSfC citations receive credit when the detector identifies the actual problem.</p>",
-        "<p>A failure to compile or import evidence earns no detection credit by itself. A reviewer checks whether a failed Lean obligation reflects the specific change. The controls and the frozen answer make each decision reproducible.</p>",
-        "<p>Each topology was deployed once. The twenty matched faults permit comparisons within each fault type. The level-heavy network also has more interfaces, routes and rules. The study measures the combined effect of those changes. A single Astra session per cell leaves ordinary run-to-run variation in its results.</p>",
-        "<p>The replacement for the blocked Outer-selector trial was MSC-PF-23. The replacement denies IKE between two authorized same-level Inner gateways at the Gray Firewall. In the discarded trial, an independent firewall still stopped a packet after the Outer selector changed.</p>",
+        method_description,
+        ("<p>Astra reads the PDF, the device roles and effective levels, the deployment policy, and recorded device output. The audit copy omits collector timestamps, IPsec session ages and firewall traffic counters. TDN imports the underlying capture with the declared design. The supervisor retains the original evidence and confirmation records.</p>" if current else
+         "<p>Astra uses the local Python server <code>snapshot_reader.py</code> to read the PDF, list the declared devices and links, and search the saved observations. The server presents one snapshot under the name “network.” Both methods receive the intended design, effective classifications, gateway settings, kernel state and interface observations. The supervisor retains the fault names and independent confirmation records. Astra earns credit for a correct diagnosis even when Astra cites a different CSfC requirement.</p>"),
+        ("<p>Astra earns credit for identifying the actual fault on the affected device. An alternative document citation is acceptable. TDN earns credit for a failed proof on imported data when the same proof program passes its healthy control. Incomplete imports are reported separately.</p>"
+         if revised else "<p>The historical grader credited a substantiated fault or its effect. Lean credit required a related assertion to fail.</p>"),
+        "<p>The twenty matched faults permit comparisons within each fault type. The twenty-level network also has more interfaces, routes and rules. A single Astra session per case leaves run-to-run variation in the results.</p>",
+        ("" if current else "<p>The replacement for the blocked Outer-selector trial was MSC-PF-23. The replacement denies IKE between two authorized same-level Inner gateways at the Gray Firewall. In the discarded trial, an independent firewall still stopped a packet after the Outer selector changed.</p>"),
         '<p class="evidence">'
         + link(root / "protocol.json", "Frozen protocol")
         + " · "
@@ -299,7 +414,7 @@ def build(root, out, preview=False):
     if not preview:
         (root / "scores.json").write_text(
             json.dumps(
-                {"cells": list(cells.values()), "all_three": score3},
+                {"cells": list(cells.values()), "all_three": score3, "alerts": alerts},
                 indent=2,
                 ensure_ascii=False,
             )

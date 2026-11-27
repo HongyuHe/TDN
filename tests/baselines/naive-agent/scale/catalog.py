@@ -1,6 +1,22 @@
-"""The supervisor's paired, one-fault design. The detector never receives this file."""
+"""Original scaling cases for historical replay. The prospective catalogue is in scale.design."""
 
 from dataclasses import dataclass
+
+
+FIREWALL_CHAINS = {
+    "firewall-local-empty-udp": "INPUT",
+    "inner-empty-ipv4-header": "INPUT",
+    "outer-eligible-deny": "FORWARD",
+    "gray-cross-level-forward": "FORWARD",
+    "outer-black-multicast": "INPUT",
+    "inner-gray-application": "INPUT",
+    "gray-ordinary-http": "FORWARD",
+    "outer-gray-wrong-ingress": "INPUT",
+    "outer-unintended-peer": "OUTPUT",
+    "inner-gray-plaintext-delivery": "FORWARD",
+    "gray-authorized-ike-deny": "FORWARD",
+}
+HISTORICAL_FIRST_RULE_CASES = frozenset(FIREWALL_CHAINS) | {"shared-inner-gateway"}
 
 
 @dataclass(frozen=True)

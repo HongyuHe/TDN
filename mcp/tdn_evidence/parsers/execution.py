@@ -7,7 +7,7 @@ import re
 
 from .packet_policy import parse_rule
 from .correspondence import check_filter_correspondence, raw_observation, parse_iptables_save
-from .snapshot import validate_bundle, require, safe_path
+from .snapshot import require, safe_path
 from .topology import validated_graph
 from .native_nft import check_native_nft
 
@@ -136,13 +136,13 @@ def binding_records(snapshot, device_ids, port_ids, devices, policies, states):
                 "Shared-kernel attachments do not establish physical hardware independence"]}
 
 
-def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
+def parse_execution(directory, supplement, include_recorded_sa_epochs=False, *, ipv4_link_observations=False):
     bundle = Path(directory)
-    validation = validate_bundle(bundle)
-    snapshot = json.loads((bundle / "snapshot.json").read_text())
+    topology = validated_graph(bundle, ipv4_link_observations=ipv4_link_observations)
+    validation = topology["validation"]
+    snapshot = topology["snapshot"]
     require(all(t["mechanism"] == "IPsec" for t in snapshot["tunnels"]),
             "This execution parser supports the native IPv4 IPsec profile; use a matching parser for other mechanisms")
-    topology = validated_graph(bundle)
     require(all(link["relation"] in {"veth", "ovs_bridge_membership"} for link in snapshot["links"]), "Additional link kind requires execution semantics")
     require(not any(i["link_kind"] == "bridge" for i in snapshot["interfaces"]), "Linux bridge requires execution semantics")
     spec = json.loads((bundle / "spec.json").read_text())
@@ -333,7 +333,7 @@ def parse_execution(directory, supplement, include_recorded_sa_epochs=False):
         left, right = raw_interfaces[a], raw_interfaces[b]
         require(left.get("link_index") == right["ifindex"] and right.get("link_index") == left["ifindex"], "Raw veth reciprocity failed")
         links.extend([[port_index[a], port_index[b]], [port_index[b], port_index[a]]])
-    physical = {i["id"] for i in interfaces if i["link_kind"] == "veth"}
+    physical = {i["id"] for i in interfaces if i["link_kind"] == "veth"} - set(validation.get("ipv4_link_observations", {}).get("unlinked_interfaces", []))
     require({i for l in snapshot["links"] if l["relation"] == "veth" for i in l["endpoint_interface_ids"]} == physical, "Physical link inventory incomplete")
     for device in devices:
         if device["role"] != "switch":

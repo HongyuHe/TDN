@@ -148,7 +148,11 @@ def check(run, network, records_file, output):
     for src,dst,_ in intended_pairs(profile(network)):
         source,sa = red_iface(members[src]); dest,da = red_iface(members[dst])
         demands.append({'sourceIface':ids[source],'destinationIface':ids[dest],'sourceAddress':sa,'destinationAddress':da})
+    absent = set(records['validation']['snapshot'].get('ipv4_link_observations', {}).get('absent_interfaces', []))
     for p in approved['paths']:
+        if any(original_names[index] in absent for state in [p['start'], *(s for _,s in p['steps'])]
+               for index in (state['iface'],state['frame']['ingressIface'])):
+            continue
         demand = {'sourceIface':ids[p['source']],'destinationIface':ids[p['destination']],
                   'sourceAddress':p['sourceAddress'],'destinationAddress':p['destinationAddress']}
         paths.append({'demand':demand,'start':bind_state(p['start'],original_names,ids,seals),

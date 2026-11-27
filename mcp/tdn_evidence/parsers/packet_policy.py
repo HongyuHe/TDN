@@ -87,9 +87,10 @@ def parse_rule(rule):
                 raise Unsupported("invalid packet length interval")
             atoms.append({"kind": "networkBytesRange", "low": low, "high": high})
         elif key == "--u32":
-            if value != "0x0>>0x18&0xf=0x5":
+            ihl = re.fullmatch(r"0x0>>0x18&0xf=(0x[0-9a-f]|[0-9]|1[0-5])", value, re.I)
+            if ihl is None or "u32" not in modules:
                 raise Unsupported("unsupported u32 expression")
-            atoms.append({"kind":"ipv4HeaderWords","value":5})
+            atoms.append({"kind":"ipv4HeaderWords","value":int(ihl[1], 0)})
         elif key == "--ctstate":
             states=value.split(",")
             if not set(states) <= {"NEW","ESTABLISHED","RELATED","INVALID","UNTRACKED"}:

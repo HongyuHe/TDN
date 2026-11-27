@@ -18,8 +18,8 @@ TOOLS = {
     "document": ("Read the supplied PDF by page, search its text or view a page image.", {
         "search": STRING, "page": {"type": "integer", "minimum": 1},
         "pages": {"type": "integer", "minimum": 1, "maximum": 8}, "image": {"type": "boolean"}}),
-    "networks": ("List networks. Select a network for its declared devices and links and a catalogue of saved observations. "
-                 "The optional offset and count select a page of the device and link inventories. "
+    "networks": ("List networks. Select a network for its device inventory and available saved observations. "
+                 "The optional offset and count select an inventory page. "
                  "Each view lists the number of records, field names and available command names.", {
                      "network": STRING, "offset": {"type":"integer","minimum":0}, "count": {"type":"integer","minimum":1,"maximum":100}}),
     "observe": ("Read saved snapshot records. Choose a network and view from networks. Optionally select devices, "
@@ -76,8 +76,13 @@ def read(tool, args):
         cat = bundle["catalogue"]
         offset = max(0, args.get("offset", 0))
         count = min(100, max(1, args.get("count", 20)))
-        return content({"views": cat["views"], "device_count": len(cat["devices"]), "link_count": len(cat["links"]),
-                        "offset": offset, "devices": cat["devices"][offset:offset+count], "links": cat["links"][offset:offset+count]})
+        page = {"views": cat["views"], "device_count": len(cat["devices"]), "offset": offset,
+                "devices": cat["devices"][offset:offset+count]}
+        if "links" in cat:
+            page.update(link_count=len(cat["links"]), links=cat["links"][offset:offset+count])
+        if "evidence_scope" in cat:
+            page["evidence_scope"] = cat["evidence_scope"]
+        return content(page)
     view = args["view"]
     if view not in bundle["views"]:
         raise ValueError("Unknown view. Use networks with the network name for available views.")
@@ -123,12 +128,14 @@ def main():
                 message = str(exc) if type(exc) is ValueError else "Invalid request or unavailable record."
                 result = {"content": content(message), "isError": True}
             text = result["content"][0]
-            count = None
+            count = returned_characters = None
             if name == "observe" and not result.get("isError"):
-                count = json.loads(text["text"])["records"]
+                page = json.loads(text["text"])
+                count, returned_characters = page["records"], len(page["data"])
             with (ROOT / "access.jsonl").open("a") as log:
                 log.write(encode({"time": time.time(), "tool": name, "arguments": args, "ok": not result.get("isError", False),
-                                  "records": count, "response_bytes": len(text.get("text", text.get("data", ""))),
+                                  "records": count, "returned_characters": returned_characters,
+                                  "response_bytes": len(text.get("text", text.get("data", ""))),
                                   "seconds": time.monotonic()-start})+"\n")
         elif method in {"resources/list", "resources/templates/list", "prompts/list", "ping"}:
             key = {"resources/list": "resources", "resources/templates/list": "resourceTemplates", "prompts/list": "prompts"}

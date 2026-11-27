@@ -92,7 +92,8 @@ def main():
     tdn = json.loads((run / "tdn-final/results.json").read_text())
     detector = json.loads((run / "detector/findings.json").read_text())
     coverage = json.loads((run / "detector/coverage.json").read_text())["coverage"]
-    profiles = [json.loads(p.read_text()) for p in sorted((BASE / "legacy" / "profiles").glob("net-*.json"))]
+    profile_dir = BASE / "legacy" / "profiles"
+    profiles = [json.loads(p.read_text()) for p in sorted(profile_dir.glob("net-*.json"))]
     profile_names = ["Two-site baseline", "Two networks at the same security level", "Four levels with shared Outer devices", "Four levels with redundant Outer paths", "Independent management networks"]
     file = lambda name, label: link(run / name, label)
     cards = []
@@ -102,7 +103,7 @@ def main():
           <p><strong>{len(row['spec']['devices'])} devices, {len(row['spec']['links'])} links</strong>. The original device names start with <code>{esc(row['spec']['devices'][0]['id'].split('_')[0])}_</code>.</p>
           <p>{role_counts['inner']} Inner encryptors, {role_counts['outer']} Outer encryptors, {role_counts['firewall']} Outer Firewalls, and {role_counts['gray-firewall']} Gray Firewalls.</p>
           <p class="scoreline"><span>Detector: <b>18 / 20</b></span><span>TDN: <b>12 / 20</b></span></p>
-          {link(BASE / 'profiles' / (row['id']+'.json'), 'Open the topology and mutations')}</article>''')
+          {link(profile_dir / (row['id']+'.json'), 'Open the topology and mutations')}</article>''')
     requirement_rows = []
     for row in scores["by_requirement"]:
         req = row["requirement"]
@@ -152,7 +153,7 @@ def main():
         "{{INJECTIONS}}": file("injection-freeze.json", "Predeclared requirements and mutation hashes"),
         "{{MAINTENANCE}}": file("raw/baseline-maintenance.json", "Baseline backups and CRL renewal"),
         "{{README}}": link(BASE / "README.md", "Run, inspect, replay, and restore instructions"),
-        "{{PROFILES}}": link(BASE / "profiles/net-01.json", "Start with the first noncompliant profile"),
+        "{{PROFILES}}": link(profile_dir / "net-01.json", "Start with the first noncompliant profile"),
         "{{ROLLBACK}}": link(BASE / "rollback.py", "Restore the saved clean configurations"),
         "{{PDF}}": link(ROOT / "docs/CSfC_documentation_v1.3.0.pdf", "Original CSfC CP 1.3.0"),
         "{{REPORT_GENERATOR}}": link(BASE / "build_report.py", "Report generator"),

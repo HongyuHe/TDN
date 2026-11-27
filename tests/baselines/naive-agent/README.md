@@ -2,35 +2,35 @@
 
 ## Comparing Astra and TDN as the topology grows
 
-The scaling benchmark tests 20 fault types on three two-site Twinet networks. The 60 trials each change one network and exercise one fault. GPT-6 Astra High and TDN inspect the same saved network. Astra also receives the original CSfC PDF. The reader exposes the original design, the observed state, and their source records. Each Astra session starts from an empty workspace. The supervisor assigns neutral names to temporary namespaces and rejects a reader bundle containing an operator fault label. TDN reads the same capture and uses its registered Lean checks. The case name, operator log, answers, live network, and results from other sessions stay with the supervisor.
+The supervisor registers the device and security level before either detector runs. Every faulty snapshot must preserve row 1 of every IPv4 and IPv6 filter chain. The registered comparison mixes 60 fault sessions with nine independent healthy captures. The 20 prospective fault types target 23 distinct clauses. [Current cases and evidence requirements](scale/design.py) Reviewers grade every substantive finding. [Experiment workflow](../../../workflows/benchmark_baseline_agent.md) · [Commands and input format](scale/README.md)
+
+## Replaying the original fixed-location experiment
+
+The original scaling experiment tested 20 fault types on three two-site Twinet networks. Each of the 60 trials exercised one fault. Astra used the Python server `snapshot_reader.py` to inspect the CSfC PDF, intended design and saved device records. TDN applied Lean checks to the same underlying capture. The supervisor kept case names, operator logs and other sessions’ answers private.
 
 | Network | Security levels | Devices | Data links and management links |
 | --- | ---: | ---: | ---: |
-| Base | 2 | 33 | 40 |
-| 10xLevels | 20 | 213 | 292 |
-| 10xDevices | 2 | 321 | 400 |
+| [Base](profiles/scale/Base.json) | 2 | 33 | 40 |
+| [10xLevels](profiles/scale/10xLevels.json) | 20 | 213 | 292 |
+| [10xDevices](profiles/scale/10xDevices.json) | 2 | 321 | 400 |
 
-The larger device profile repeats the two-level site architecture ten times on each side of a shared Black transport. The profile with twenty levels gives each level its own Red host, Inner gateway, Gray switch and Red management equipment at each site. A single Gray router, Gray Firewall, Outer gateway and Outer Firewall serve each site. The benchmark retains the IPsec, administrative access and public transport choices from net-05. Each topology has one route to a private measurement endpoint on the Black test segment. The clean firewall blocks connections to that endpoint. Red administrative workstations record the operating security level of each Red network. The collector reads the designation separately from the gateway's certificate and tunnel configuration. [Topology generator](scale/profiles.py) · [Twenty fault definitions](scale/catalog.py)
+The larger device profile repeats the two-level site architecture ten times on each side of a shared Black transport. The profile with twenty levels gives each level its own Red host, Inner gateway, Gray switch and Red management equipment at each site. A single Gray router, Gray Firewall, Outer gateway and Outer Firewall serve each site. The benchmark retains the IPsec, administrative access and public transport choices from net-05. In the original experiment, the worker installed a measurement route on each Black test segment. The healthy firewall blocked connections to that endpoint. Red administrative workstations record the operating security level of each Red network. The collector reads the designation separately from the gateway's certificate and tunnel configuration. [Topology generator](scale/profiles.py) · [Twenty fault definitions](scale/catalog.py)
 
-Run from the benchmark directory with the pinned Twinet executable on the three registered workers, the project's Lean dependencies built, and PyMuPDF installed in the local reader environment. Set `TDN_BENCHMARK_READER_PYTHON` to that environment's Python executable when using a separate checkout.
+Use the archived snapshots to repeat the original fixed-location checks. The historical runners for cases that altered firewall row 1 are restricted to replay. Run from the benchmark directory with the project’s Lean dependencies built.
 
 ```sh
-python3 scale/provision.py up Base
-python3 scale/provision.py up 10xLevels
-python3 scale/provision.py up 10xDevices
-python3 scale/study.py controls runs/topology-scaling
-python3 scale/study.py all runs/topology-scaling --workers 4
+python3 scale/replay.py runs/topology-scaling-20261125 runs/fixed-location-replay --workers 3
 ```
 
 The supervisor verifies the healthy network, applies one change, records the independent observation, saves the converged snapshot, restores the change, and confirms that the intended Red deliveries work again. Study records include the PDF and snapshot hashes, the SHA of the theory, raw device responses, Astra's complete transcript and reader queries, and Lean's source, diagnostics and timing for each check. The detector has one hour per session. Lean has twenty minutes per file, including loading. The measured Lean interval starts after the file has loaded the evidence. A refused connection or a blocked packet cannot count as an observed successful transfer. An observed violation earns Astra credit when its answer describes that violation on the affected devices, including when the cited requirement number differs. The all-network score credits a type only when the detector finds it on all three networks. [Adjudication](scale/review.py) · [Study runner](scale/study.py)
 
-Use `scale/review.py` to record each decision. For an Astra detection, quote the sentence that identifies the change and give the reason for credit. For a TDN detection, use `--method tdn` and quote a failed Lean assertion. A failure to import data receives no credit by itself. The report reads both decisions from the trial directory. [Report generator](scale/report.py)
+The archived report preserves the rules and proof programs used to score that run. To check the archived snapshots with today's proof programs, run `python3 scale/replay.py OLD_STUDY NEW_DIRECTORY`. The replay checks each source snapshot against its registered hashes, typechecks all three controls, and checks the same proof programs on each faulty capture. [Report generator](scale/report.py)
 
-After restoring every trial, remove the three experiment-owned deployments with `python3 scale/provision.py down NAME`. Runtime artifacts are stored under the ignored `runs/` directory.
+The archived captures, logs and replay results are stored under the ignored `runs/` directory.
 
 ## Earlier eleven-fault benchmark
 
-The earlier benchmark tests eleven fault types on three multi-level network profiles. Net-03 shares its Outer gateways across four levels. Net-04 adds redundant Outer gateways. Net-05 has two levels and separate management networks. Each trial changes one network and leaves the other two available as clean controls. The design has 33 scored cases. [Net-03](profiles/net-03.json) · [Net-04](profiles/net-04.json) · [Net-05](profiles/net-05.json) · [Clause scope](clause_scope.json)
+The original network profiles are in [profiles/native](profiles/native/). The earlier benchmark tests eleven fault types on three of those networks. Net-03 shares its Outer gateways across four levels. Net-04 adds redundant Outer gateways. Net-05 has two levels and separate management networks. Each trial changes one network and leaves the other two available as clean controls. The design has 33 scored cases. [Net-03](profiles/native/net-03.json) · [Net-04](profiles/native/net-04.json) · [Net-05](profiles/native/net-05.json) · [Clause scope](clause_scope.json)
 
 Twinet builds complete, isolated copies of the three profiles. The copies use their original addresses, links, roles and tunnel settings. Their device names begin with `QF`, `QR` or `QM`, and each copy receives its own credentials and private deployment directory. Using a copy keeps an experiment from interrupting a running reference deployment. [Replica definitions](cohort.py) · [Provisioning](replicas.py)
 

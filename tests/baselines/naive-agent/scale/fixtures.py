@@ -223,6 +223,8 @@ def rules(key, pre):
 
 
 def acl(spec, option, verdict):
+    if option not in {"-C", "-D"}:
+        raise ValueError("Historical firewall fixtures support inspection and rollback only")
     node, chain, matches = spec
     return container(
         node,
@@ -243,57 +245,20 @@ def interface(rep, node):
     return json.loads(p.stdout)[0] if not p.returncode else None
 
 
-def placement(rep, pre, edit):
+def restore_placement(rep, pre):
     first, second = pre + "_O_A1", pre + "_BLACK"
-    if edit:
-        if interface(rep, first) or interface(rep, second):
-            raise ValueError("Test link name already exists")
-        rep.net(
-            first,
-            "ip",
-            "link",
-            "add",
-            "lan2",
-            "type",
-            "veth",
-            "peer",
-            "name",
-            "lan2",
-            "netns",
-            str(rep.pids[second]),
-        )
-        for node in (first, second):
-            rep.net(node, "sysctl", "-qw", "net.ipv6.conf.lan2.disable_ipv6=1")
-            rep.net(node, "tc", "qdisc", "add", "dev", "lan2", "clsact")
-            rep.net(
-                node,
-                "tc",
-                "filter",
-                "add",
-                "dev",
-                "lan2",
-                "ingress",
-                "matchall",
-                "action",
-                "drop",
-            )
-            rep.net(node, "ip", "link", "set", "lan2", "up")
-    else:
-        a, b = interface(rep, first), interface(rep, second)
-        if (
-            a
-            and b
-            and a["link_index"] == b["ifindex"]
-            and b["link_index"] == a["ifindex"]
-        ):
-            rep.net(first, "ip", "link", "del", "lan2")
-        elif a or b:
-            raise ValueError("Link ownership changed")
+    a, b = interface(rep, first), interface(rep, second)
+    if a and b and a["link_index"] == b["ifindex"] and b["link_index"] == a["ifindex"]:
+        rep.net(first, "ip", "link", "del", "lan2")
+    elif a or b:
+        raise ValueError("Link ownership changed")
 
 
 def alter(rep, key, pre, edit):
+    if edit and key != AUTH:
+        raise ValueError("This fixed-location fixture is available for archived replay only")
     if key == LINK:
-        return placement(rep, pre, edit)
+        return restore_placement(rep, pre)
     if key == AUTH:
         row = next(r for r in bindings(rep.spec) if r[0] == pre + "_R_B1")
         designate(row, "S2" if edit else row[3])
@@ -330,11 +295,7 @@ def alter(rep, key, pre, edit):
     verdict = "DROP" if key == IKE else "ACCEPT"
     for rule in rules(key, pre):
         present = acl(rule, "-C", verdict).returncode == 0
-        if edit:
-            if present:
-                raise ValueError("The clean control already has the registered rule")
-            acl(rule, "-I", verdict)
-        elif present:
+        if present:
             acl(rule, "-D", verdict)
 
 
@@ -725,35 +686,13 @@ def handle(req):
         or not re.fullmatch("[a-f0-9]{16}", nonce)
     ):
         raise ValueError("Unknown benchmark operation")
+    if action == "edit" and key != AUTH:
+        raise ValueError("This historical fixture is replay-only")
     rep = Replica(name)
     pre = PREFIX[name]
     if action == "inventory-init":
         if key != AUTH:
             raise ValueError("Unexpected enrollment")
-        node = pre + "_O_A1"
-        routes = json.loads(
-            container(
-                node, "ip", "-j", "route", "show", "exact", "192.0.2.245/32"
-            ).stdout
-        )
-        if not routes:
-            container(
-                node,
-                "ip",
-                "route",
-                "add",
-                "192.0.2.245/32",
-                "dev",
-                "black",
-                "src",
-                "172.20.11.1",
-                "proto",
-                "static",
-            )
-        elif (
-            len(routes) != 1 or routes[0]["dev"] != "black" or routes[0].get("gateway")
-        ):
-            raise ValueError("The isolated diagnostic route has another owner")
         return inventory(rep.spec, install=True)
     root = ROOT / name
     lease = root / "active.json"

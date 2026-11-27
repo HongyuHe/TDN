@@ -42,15 +42,31 @@ def audit(case, model, bundles):
     return audit_saved(case, model, bundles, RUN)
 
 
-def audit_saved(case, model, bundles, root):
+def read_device_output(access):
+    for row in access:
+        args = row.get("arguments", {})
+        fields = args.get("fields", [])
+        if (row["tool"] == "observe" and row["ok"] and args.get("view") in {"raw","processing"}
+                and row.get("returned_characters",0) and (not fields or {"stdout","stderr"}.intersection(fields))):
+            return True
+    return False
+
+
+def audit_saved(case, model, bundles, root, *, require_device_output=False):
     """The sandbox receives the PDF and the named immutable observation bundles."""
     if not bundles or not all(n.replace("-", "").isalnum() for n in bundles):
         raise ValueError("Invalid reader inventory")
     if model not in MODELS:
         raise ValueError("Unknown detector")
     dest = root / "trials" / case / model
-    if (dest/"execution.json").exists() and load(dest/"execution.json")["status"] == "completed":
-        return "completed"
+    if (dest/"execution.json").exists():
+        previous = load(dest/"execution.json")
+        if previous["status"] == "completed":
+            if (previous["bundles"] != bundles or previous["model"] != MODELS[model] or
+                    previous["document_sha256"] != digest(PDF.read_bytes()) or previous["prompt"] != PROMPT or
+                    (require_device_output and not previous.get("read_device_output"))):
+                raise ValueError("The completed audit belongs to different registered inputs")
+            return "completed"
     if dest.exists():
         archive = root/"attempts"/case/model/str(time.time_ns())
         archive.parent.mkdir(parents=True,exist_ok=True)
@@ -106,11 +122,15 @@ def audit_saved(case, model, bundles, root):
     access = lines(dest/"access.jsonl")
     pdf_read = any(r["tool"]=="document" and r["ok"] and r["response_bytes"]>2 for r in access)
     rows_read = any(r["tool"]=="observe" and r["ok"] and r["records"] for r in access)
+    device_output_read = read_device_output(access)
+    if require_device_output:
+        rows_read = device_output_read
     success = code==0 and pdf_read and rows_read and not foreign and (dest/"answer.md").is_file() and (dest/"answer.md").stat().st_size>0
     status = "completed" if success else ("timeout" if code==124 else "invalid_run")
     record = {"model":MODELS[model],"reasoning":"high","status":status,"returncode":code,"started_at":began,
               "duration_seconds":duration,"reader_calls":len(access),"unexpected_tools":foreign,
-              "read_pdf":pdf_read,"read_observations":rows_read,"document_sha256":digest(PDF.read_bytes()),
+              "read_pdf":pdf_read,"read_observations":rows_read,"read_device_output":device_output_read,
+              "document_sha256":digest(PDF.read_bytes()),
               "bundles":bundles,"prompt":PROMPT}
     put(dest/"execution.json",record)
     print(f"{case} {model} {status} {duration:.1f}s {len(access)} queries",flush=True)
